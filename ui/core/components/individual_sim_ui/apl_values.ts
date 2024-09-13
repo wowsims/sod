@@ -65,6 +65,7 @@ import {
 	APLValueTotemRemainingTime,
 	APLValueWarlockCurrentPetMana,
 	APLValueWarlockCurrentPetManaPercent,
+	APLValueWarlockPetIsActive,
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
 } from '../../proto/apl.js';
@@ -95,7 +96,7 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 	constructor(parent: HTMLElement, player: Player<any>, config: APLValuePickerConfig) {
 		super(parent, 'apl-value-picker-root', player, config);
 
-		const isPrepull = this.rootElem.closest('.apl-prepull-action-picker') != null;
+		const isPrepull = this.rootElem.closest('.apl-prepull-action-picker') !== null;
 
 		const allValueKinds = (Object.keys(valueKindFactories) as Array<NonNullable<APLValueKind>>).filter(
 			valueKind => valueKindFactories[valueKind].includeIf?.(player, isPrepull) ?? true,
@@ -120,13 +121,13 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 					};
 				}),
 			),
-			equals: (a, b) => a == b,
+			equals: (a, b) => a === b,
 			changedEvent: (player: Player<any>) => player.rotationChangeEmitter,
 			getValue: (_player: Player<any>) => this.getSourceValue()?.value.oneofKind,
 			setValue: (eventID: EventID, player: Player<any>, newKind: APLValueKind) => {
 				const sourceValue = this.getSourceValue();
 				const oldKind = sourceValue?.value.oneofKind;
-				if (oldKind == newKind) {
+				if (oldKind === newKind) {
 					return;
 				}
 
@@ -136,49 +137,49 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 					if (sourceValue) {
 						// Some pre-fill logic when swapping kinds.
 						if (oldKind && this.valuePicker) {
-							if (newKind == 'not') {
+							if (newKind === 'not') {
 								(newSourceValue.value as APLValueImplStruct<'not'>).not.val = this.makeAPLValue(oldKind, this.valuePicker.getInputValue());
-							} else if (sourceValue.value.oneofKind == 'not' && sourceValue.value.not.val?.value.oneofKind == newKind) {
+							} else if (sourceValue.value.oneofKind === 'not' && sourceValue.value.not.val?.value.oneofKind === newKind) {
 								newSourceValue = sourceValue.value.not.val;
-							} else if (newKind == 'and') {
-								if (sourceValue.value.oneofKind == 'or') {
+							} else if (newKind === 'and') {
+								if (sourceValue.value.oneofKind === 'or') {
 									(newSourceValue.value as APLValueImplStruct<'and'>).and.vals = sourceValue.value.or.vals;
 								} else {
 									(newSourceValue.value as APLValueImplStruct<'and'>).and.vals = [
 										this.makeAPLValue(oldKind, this.valuePicker.getInputValue()),
 									];
 								}
-							} else if (newKind == 'or') {
-								if (sourceValue.value.oneofKind == 'and') {
+							} else if (newKind === 'or') {
+								if (sourceValue.value.oneofKind === 'and') {
 									(newSourceValue.value as APLValueImplStruct<'or'>).or.vals = sourceValue.value.and.vals;
 								} else {
 									(newSourceValue.value as APLValueImplStruct<'or'>).or.vals = [this.makeAPLValue(oldKind, this.valuePicker.getInputValue())];
 								}
-							} else if (newKind == 'min') {
-								if (sourceValue.value.oneofKind == 'max') {
+							} else if (newKind === 'min') {
+								if (sourceValue.value.oneofKind === 'max') {
 									(newSourceValue.value as APLValueImplStruct<'min'>).min.vals = sourceValue.value.max.vals;
 								} else {
 									(newSourceValue.value as APLValueImplStruct<'min'>).min.vals = [
 										this.makeAPLValue(oldKind, this.valuePicker.getInputValue()),
 									];
 								}
-							} else if (newKind == 'max') {
-								if (sourceValue.value.oneofKind == 'min') {
+							} else if (newKind === 'max') {
+								if (sourceValue.value.oneofKind === 'min') {
 									(newSourceValue.value as APLValueImplStruct<'max'>).max.vals = sourceValue.value.min.vals;
 								} else {
 									(newSourceValue.value as APLValueImplStruct<'max'>).max.vals = [
 										this.makeAPLValue(oldKind, this.valuePicker.getInputValue()),
 									];
 								}
-							} else if (sourceValue.value.oneofKind == 'and' && sourceValue.value.and.vals?.[0]?.value.oneofKind == newKind) {
+							} else if (sourceValue.value.oneofKind === 'and' && sourceValue.value.and.vals?.[0]?.value.oneofKind === newKind) {
 								newSourceValue = sourceValue.value.and.vals[0];
-							} else if (sourceValue.value.oneofKind == 'or' && sourceValue.value.or.vals?.[0]?.value.oneofKind == newKind) {
+							} else if (sourceValue.value.oneofKind === 'or' && sourceValue.value.or.vals?.[0]?.value.oneofKind === newKind) {
 								newSourceValue = sourceValue.value.or.vals[0];
-							} else if (sourceValue.value.oneofKind == 'min' && sourceValue.value.min.vals?.[0]?.value.oneofKind == newKind) {
+							} else if (sourceValue.value.oneofKind === 'min' && sourceValue.value.min.vals?.[0]?.value.oneofKind === newKind) {
 								newSourceValue = sourceValue.value.min.vals[0];
-							} else if (sourceValue.value.oneofKind == 'max' && sourceValue.value.max.vals?.[0]?.value.oneofKind == newKind) {
+							} else if (sourceValue.value.oneofKind === 'max' && sourceValue.value.max.vals?.[0]?.value.oneofKind === newKind) {
 								newSourceValue = sourceValue.value.max.vals[0];
-							} else if (newKind == 'cmp') {
+							} else if (newKind === 'cmp') {
 								(newSourceValue.value as APLValueImplStruct<'cmp'>).cmp.lhs = this.makeAPLValue(oldKind, this.valuePicker.getInputValue());
 							}
 						}
@@ -245,7 +246,7 @@ export class APLValuePicker extends Input<Player<any>, APLValue | undefined> {
 
 	private updateValuePicker(newKind: APLValueKind) {
 		const oldKind = this.currentKind;
-		if (newKind == oldKind) {
+		if (newKind === oldKind) {
 			return;
 		}
 		this.currentKind = newKind;
@@ -298,7 +299,7 @@ function comparisonOperatorFieldConfig(field: string): AplHelpers.APLPickerBuild
 				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
-				equals: (a, b) => a == b,
+				equals: (a, b) => a === b,
 				values: [
 					{ value: ComparisonOperator.OpEq, label: '==' },
 					{ value: ComparisonOperator.OpNe, label: '!=' },
@@ -320,7 +321,7 @@ function mathOperatorFieldConfig(field: string): AplHelpers.APLPickerBuilderFiel
 				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
-				equals: (a, b) => a == b,
+				equals: (a, b) => a === b,
 				values: [
 					{ value: MathOperator.OpAdd, label: '+' },
 					{ value: MathOperator.OpSub, label: '-' },
@@ -340,7 +341,7 @@ function autoTypeFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldCon
 				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
-				equals: (a, b) => a == b,
+				equals: (a, b) => a === b,
 				values: [
 					{ value: AutoAttackType.Any, label: 'Any' },
 					{ value: AutoAttackType.Melee, label: 'Melee' },
@@ -361,7 +362,7 @@ function autoSwingTypeFieldConfig(field: string): AplHelpers.APLPickerBuilderFie
 				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
-				equals: (a, b) => a == b,
+				equals: (a, b) => a === b,
 				values: [
 					{ value: AutoSwingType.MainHand, label: 'Main Hand' },
 					{ value: AutoSwingType.OffHand, label: 'Off Hand' },
@@ -380,7 +381,7 @@ function executePhaseThresholdFieldConfig(field: string): AplHelpers.APLPickerBu
 				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
-				equals: (a, b) => a == b,
+				equals: (a, b) => a === b,
 				values: [
 					{ value: ExecutePhaseThreshold.E20, label: '20%' },
 					{ value: ExecutePhaseThreshold.E25, label: '25%' },
@@ -399,7 +400,7 @@ function totemTypeFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldCo
 				id: randomUUID(),
 				...config,
 				defaultLabel: 'None',
-				equals: (a, b) => a == b,
+				equals: (a, b) => a === b,
 				values: [
 					{ value: TotemType.Earth, label: 'Earth' },
 					{ value: TotemType.Air, label: 'Air' },
@@ -617,7 +618,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of currently available Mana.',
 		newValue: APLValueCurrentMana.create,
 		fields: [],
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() != Class.ClassRogue && player.getClass() != Class.ClassWarrior,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() !== Class.ClassRogue && player.getClass() !== Class.ClassWarrior,
 	}),
 	currentManaPercent: inputBuilder({
 		label: 'Mana (%)',
@@ -625,7 +626,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of currently available Mana, as a percentage.',
 		newValue: APLValueCurrentManaPercent.create,
 		fields: [],
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() != Class.ClassRogue && player.getClass() != Class.ClassWarrior,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() !== Class.ClassRogue && player.getClass() !== Class.ClassWarrior,
 	}),
 	currentRage: inputBuilder({
 		label: 'Rage',
@@ -633,7 +634,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of currently available Rage.',
 		newValue: APLValueCurrentRage.create,
 		fields: [],
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarrior || player.getClass() == Class.ClassDruid,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassWarrior || player.getClass() === Class.ClassDruid,
 	}),
 	currentEnergy: inputBuilder({
 		label: 'Energy',
@@ -641,7 +642,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of currently available Energy.',
 		newValue: APLValueCurrentEnergy.create,
 		fields: [],
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassRogue || player.getClass() == Class.ClassDruid,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassRogue || player.getClass() === Class.ClassDruid,
 	}),
 	timeToEnergyTick: inputBuilder({
 		label: 'Time to Next Energy Tick',
@@ -649,7 +650,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Time until the next energy regen tick will happen',
 		newValue: APLValueTimeToEnergyTick.create,
 		fields: [],
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassRogue || player.getClass() == Class.ClassDruid,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassRogue || player.getClass() === Class.ClassDruid,
 	}),
 	energyThreshold: inputBuilder({
 		label: 'Energy Threshold',
@@ -659,10 +660,10 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		fields: [
 			AplHelpers.numberFieldConfig('threshold', false, {
 				label: '>=',
-				labelTooltip: "Energy threshold. Subtracted from maximum energy if negative.",
+				labelTooltip: 'Energy threshold. Subtracted from maximum energy if negative.',
 			}),
 		],
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassRogue || player.getClass() == Class.ClassDruid,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassRogue || player.getClass() === Class.ClassDruid,
 	}),
 	currentComboPoints: inputBuilder({
 		label: 'Combo Points',
@@ -670,7 +671,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: 'Amount of currently available Combo Points.',
 		newValue: APLValueCurrentComboPoints.create,
 		fields: [],
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassRogue || player.getClass() == Class.ClassDruid,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassRogue || player.getClass() === Class.ClassDruid,
 	}),
 
 	// GCD
@@ -920,7 +921,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Shaman'],
 		shortDescription: 'Returns the amount of time remaining until the totem will expire.',
 		newValue: APLValueTotemRemainingTime.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassShaman,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassShaman,
 		fields: [totemTypeFieldConfig('totemType')],
 	}),
 	catExcessEnergy: inputBuilder({
@@ -928,7 +929,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Feral Druid'],
 		shortDescription: 'Returns the amount of excess energy available, after subtracting energy that will be needed to maintain DoTs.',
 		newValue: APLValueCatExcessEnergy.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec == Spec.SpecFeralDruid,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec === Spec.SpecFeralDruid,
 		fields: [],
 	}),
 	catNewSavageRoarDuration: inputBuilder({
@@ -936,7 +937,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Feral Druid'],
 		shortDescription: 'Returns duration of savage roar based on current combo points',
 		newValue: APLValueCatNewSavageRoarDuration.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec == Spec.SpecFeralDruid,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec === Spec.SpecFeralDruid,
 		fields: [],
 	}),
 	warlockShouldRecastDrainSoul: inputBuilder({
@@ -944,7 +945,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Warlock'],
 		shortDescription: 'Returns <b>True</b> if the current Drain Soul channel should be immediately recast, to get a better snapshot.',
 		newValue: APLValueWarlockShouldRecastDrainSoul.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassWarlock,
 		fields: [],
 	}),
 	warlockShouldRefreshCorruption: inputBuilder({
@@ -952,15 +953,23 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Warlock'],
 		shortDescription: 'Returns <b>True</b> if the current Corruption has expired, or should be refreshed to get a better snapshot.',
 		newValue: APLValueWarlockShouldRefreshCorruption.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassWarlock,
 		fields: [AplHelpers.unitFieldConfig('targetUnit', 'targets')],
+	}),
+	warlockPetIsActive: inputBuilder({
+		label: 'Pet is Active',
+		submenu: ['Warlock'],
+		shortDescription: 'Returns <b>True</b> if the Warlock has a pet active.',
+		newValue: APLValueWarlockPetIsActive.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassWarlock,
+		fields: [],
 	}),
 	warlockCurrentPetMana: inputBuilder({
 		label: 'Pet Mana',
 		submenu: ['Warlock'],
 		shortDescription: 'Amount of currently available pet mana.',
 		newValue: APLValueWarlockCurrentPetMana.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassWarlock,
 		fields: [],
 	}),
 	warlockCurrentPetManaPercent: inputBuilder({
@@ -968,7 +977,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Warlock'],
 		shortDescription: 'Amount of currently available pet mana, as a percentage.',
 		newValue: APLValueWarlockCurrentPetManaPercent.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassWarlock,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassWarlock,
 		fields: [],
 	}),
 	currentSealRemainingTime: inputBuilder({
@@ -976,7 +985,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		submenu: ['Paladin'],
 		shortDescription: "Returns the amount of time remaining until the Paladin's current Seal aura will expire.",
 		newValue: APLValueCurrentSealRemainingTime.create,
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() == Class.ClassPaladin,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.getClass() === Class.ClassPaladin,
 		fields: [],
 	}),
 };
