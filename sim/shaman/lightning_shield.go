@@ -92,7 +92,7 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 		Duration:  time.Minute * 10,
 		MaxStacks: maxCharges,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.SetStacks(sim, aura.MaxStacks)
+			aura.SetStacks(sim, baseCharges)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if shaman.ActiveShieldAura.ActionID == aura.ActionID {
