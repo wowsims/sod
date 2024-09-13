@@ -17,10 +17,10 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   30 - warrior.FocusedRageDiscount,
+			Cost:   30,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

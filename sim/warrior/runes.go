@@ -204,7 +204,15 @@ func (warrior *Warrior) applyConsumedByRage() {
 }
 
 func (warrior *Warrior) applyFocusedRage() {
-	warrior.FocusedRageDiscount = core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFocusedRage), 3.0, 0)
+	if !warrior.HasRune(proto.WarriorRune_RuneFocusedRage) {
+		return
+	}
+
+	warrior.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagOffensive) && spell.Cost != nil {
+			spell.Cost.FlatModifier -= 3
+		}
+	})
 }
 
 func (warrior *Warrior) applyBloodSurge() {

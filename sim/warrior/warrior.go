@@ -13,6 +13,7 @@ const (
 	SpellFlagBattleStance    = core.SpellFlagAgentReserved1
 	SpellFlagDefensiveStance = core.SpellFlagAgentReserved2
 	SpellFlagBerserkerStance = core.SpellFlagAgentReserved3
+	SpellFlagOffensive       = core.SpellFlagAgentReserved4
 )
 
 const (
@@ -78,9 +79,6 @@ type Warrior struct {
 	EnrageAura             *core.Aura
 	FreshMeatEnrageAura    *core.Aura
 	WreckingCrewEnrageAura *core.Aura
-
-	// Rune passive
-	FocusedRageDiscount float64
 
 	// Reaction time values
 	reactionTime time.Duration
