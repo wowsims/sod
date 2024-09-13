@@ -40,6 +40,7 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerBlunderbussSpell()
 	rogue.registerFanOfKnives()
 	rogue.registerCrimsonTempestSpell()
+	rogue.applySlaughterfromtheShadows()
 }
 
 const SlaughterFromTheShadowsDamageMultiplier = 1.60
@@ -351,3 +352,17 @@ func (rogue *Rogue) registerCutthroat() {
 		Duration: time.Second * 10,
 	})
 }
+
+func (rogue *Rogue) applySlaughterfromtheShadows() {
+	if !rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows) {
+		return
+	}
+
+	rogue.OnSpellRegistered(func(spell *core.Spell) {
+		if (spell.SpellCode == SpellCode_RogueAmbush || spell.SpellCode == SpellCode_RogueBackstab) {
+			spell.DamageMultiplier *= 1.5
+			spell.Cost.FlatModifier -= 30
+		}
+	})
+}
+
