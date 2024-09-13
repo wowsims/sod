@@ -58,7 +58,7 @@ func (paladin *Paladin) registerHolyShield() {
 			BonusCoefficient: 0.05,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicCrit)
 			},
 		})
 

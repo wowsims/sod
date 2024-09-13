@@ -46,7 +46,7 @@ func (paladin *Paladin) registerConsecration() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagPureDot | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+			Flags:       core.SpellFlagPureDot | core.SpellFlagAPL,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,
@@ -82,8 +82,8 @@ func (paladin *Paladin) registerConsecration() {
 					}
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					// consecration ticks can miss, but those misses aren't logged as "resist"
-					outcomeApplier := core.Ternary(hasWrath, dot.OutcomeMagicHitAndSnapshotCrit, dot.Spell.OutcomeMagicHit)
+					// Consecration does not miss but can be resisted.
+					outcomeApplier := core.Ternary(hasWrath, dot.OutcomeSnapshotCrit, dot.OutcomeTick)
 					for _, aoeTarget := range sim.Encounter.TargetUnits {
 						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, outcomeApplier)
 					}

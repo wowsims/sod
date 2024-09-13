@@ -20,7 +20,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
@@ -46,7 +46,8 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 			baseDamage := weapon.CalculateAverageWeaponDamage(spell.MeleeAttackPower()) / weapon.SwingSpeed
 
 			for idx := range results {
-				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				// Hammer of the Righteous does not miss, but can crit and be blocked.
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedCritOnly)
 				target = sim.Environment.NextTargetUnit(target)
 			}
 
