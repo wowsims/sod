@@ -178,7 +178,6 @@ func (paladin *Paladin) applyPurifyingPower() {
 	})
 }
 
-<<<<<<< HEAD
 func (paladin *Paladin) registerAegis() {
 
 	if !paladin.hasRune(proto.PaladinRune_RuneChestAegis) {
@@ -189,7 +188,7 @@ func (paladin *Paladin) registerAegis() {
 	paladin.PseudoStats.BlockValueMultiplier += 0.3
 
 	// Redoubt now has a 10% chance to trigger on any melee or ranged attack against
-	// you (includes misses!), and always triggers on your melee critical strikes.
+	// you, and always triggers on your melee critical strikes.
 	paladin.RegisterAura(core.Aura{
 		Label:    "Redoubt Aegis Trigger",
 		Duration: core.NeverExpires,
@@ -197,7 +196,7 @@ func (paladin *Paladin) registerAegis() {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && result.Landed() {
 				if sim.Proc(0.1, "Aegis Attack") {
 					paladin.redoubtAura.Activate(sim)
 					paladin.redoubtAura.SetStacks(sim, 5)
@@ -220,6 +219,7 @@ func (paladin *Paladin) registerAegis() {
 		Name:       "Reckoning Aegis Trigger",
 		Callback:   core.CallbackOnSpellHitTaken,
 		ProcMask:   core.ProcMaskMeleeOrRanged,
+		Outcome:    core.OutcomeLanded,
 		ProcChance: procChance,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
