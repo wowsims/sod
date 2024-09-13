@@ -185,9 +185,9 @@ var ItemSetLawbringerWill = core.NewItemSet(core.ItemSet{
 
 						damage := values.damage
 
-						// Holy Shield's damage is increased by 100% of shield block value.
+						// Holy Shield's damage is increased by 80% of shield block value.
 						procs[i].ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-							sbv := paladin.BlockValue()
+							sbv := paladin.BlockValue() * 0.8
 							// Reminder: Holy Shield can crit, but does not miss.
 							spell.CalcAndDealDamage(sim, target, (damage + sbv), spell.OutcomeMagicCrit)
 						}
