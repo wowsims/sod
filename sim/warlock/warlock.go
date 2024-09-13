@@ -110,6 +110,7 @@ type Warlock struct {
 	ImprovedShadowBoltAuras core.AuraArray
 	MarkOfChaosAuras        core.AuraArray
 	SoulLinkAura            *core.Aura
+	DecimationAura          *core.Aura
 
 	// The sum total of demonic pact spell power * seconds.
 	DPSPAggregate float64

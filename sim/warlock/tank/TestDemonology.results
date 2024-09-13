@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.01696
+  weights: -0.01044
   weights: 0
-  weights: 0.47138
-  weights: 0
-  weights: 0
+  weights: 0.51249
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.02492
-  weights: 1.13156
+  weights: 0
+  weights: 0
+  weights: 4.32697
+  weights: 1.24176
   weights: 0
   weights: 0
   weights: 0
@@ -204,64 +204,64 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 342.73597
-  tps: 1010.23617
+  dps: 366.70291
+  tps: 1095.07914
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 336.86424
-  tps: 996.02632
+  dps: 360.5694
+  tps: 1079.94257
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 317.14633
-  tps: 1870.97886
+  dps: 340.44261
+  tps: 1953.44771
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 317.14633
-  tps: 954.10073
+  dps: 340.44261
+  tps: 1036.56958
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 338.45322
-  tps: 993.16605
+  dps: 363.95488
+  tps: 1083.44192
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 208.98459
-  tps: 1634.59521
+  dps: 224.25559
+  tps: 1688.65456
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 208.98459
-  tps: 647.12228
+  dps: 224.25559
+  tps: 701.18163
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 227.58362
-  tps: 675.58029
+  dps: 244.74552
+  tps: 736.33345
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 332.70369
-  tps: 987.71776
+  dps: 356.35141
+  tps: 1071.4307
  }
 }
 dps_results: {
