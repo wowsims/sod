@@ -15,10 +15,10 @@ func (warrior *Warrior) registerQuickStrike() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagBloodSurge,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   20 - float64(warrior.Talents.ImprovedHeroicStrike) - warrior.FocusedRageDiscount,
+			Cost:   20 - float64(warrior.Talents.ImprovedHeroicStrike),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

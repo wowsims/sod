@@ -37,10 +37,10 @@ func (warrior *Warrior) registerRendSpell() {
 		ActionID:    core.ActionID{SpellID: rend.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   10 - warrior.FocusedRageDiscount,
+			Cost:   10,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

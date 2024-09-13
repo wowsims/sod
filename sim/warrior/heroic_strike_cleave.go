@@ -34,10 +34,10 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlagBloodSurge,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(warrior.Talents.ImprovedHeroicStrike) - warrior.FocusedRageDiscount,
+			Cost:   15 - float64(warrior.Talents.ImprovedHeroicStrike),
 			Refund: 0.8,
 		},
 
@@ -98,10 +98,10 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
-		Flags:       core.SpellFlagMeleeMetrics,
+		Flags:       core.SpellFlagMeleeMetrics | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost: 20 - warrior.FocusedRageDiscount,
+			Cost: 20,
 		},
 
 		CritDamageBonus: warrior.impale(),

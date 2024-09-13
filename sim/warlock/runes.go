@@ -124,7 +124,7 @@ func (warlock *Warlock) applyBackdraft() {
 }
 
 func (warlock *Warlock) applyDecimation() {
-	if !warlock.HasRune(proto.WarlockRune_RuneCloakDecimation) {
+	if !warlock.HasRune(proto.WarlockRune_RuneBootsDecimation) {
 		return
 	}
 
@@ -158,7 +158,7 @@ func (warlock *Warlock) applyDecimation() {
 }
 
 func (warlock *Warlock) applyMarkOfChaos() {
-	if !warlock.HasRune(proto.WarlockRune_RuneBootsMarkOfChaos) {
+	if !warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos) {
 		return
 	}
 

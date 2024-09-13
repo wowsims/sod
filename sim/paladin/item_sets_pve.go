@@ -165,11 +165,11 @@ var ItemSetMercifulJudgement = core.NewItemSet(core.ItemSet{
 	Name: "Merciful Judgement",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
-			//Increases critical strike chance of holy shock spell by 20%
+			//Increases critical strike chance of holy shock spell by 5%
 			paladin := agent.GetCharacter()
 			paladin.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_PaladinHolyShock {
-					spell.BonusCritRating += 20.0
+					spell.BonusCritRating += 5.0
 				}
 			})
 		},
