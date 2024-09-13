@@ -277,6 +277,7 @@ var ItemSetUnstoppableWrath = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - T2 - Warrior - Damage 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					warrior.HeroicStrike.DamageMultiplier *= 1.10
+					warrior.QuickStrike.DamageMultiplier *= 1.10
 				},
 			})
 		},
