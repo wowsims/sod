@@ -43,9 +43,6 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.applySlaughterfromtheShadows()
 }
 
-const SlaughterFromTheShadowsDamageMultiplier = 1.60
-const SlaughterFromTheShadowsCostReduction = 30.0
-
 func (rogue *Rogue) applyCombatPotency() {
 	if !rogue.HasRune(proto.RogueRune_RuneCombatPotency) {
 		return
