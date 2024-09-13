@@ -182,7 +182,6 @@ func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
 
 		// does correctly not include ff/misery
 		ownerHitChance := ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance
-
 		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + max(ownerStats[stats.FirePower], ownerStats[stats.ShadowPower])
 
 		return stats.Stats{
@@ -197,7 +196,7 @@ func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
 			stats.ShadowPower:      ownerStats[stats.ShadowPower] * 0.15,
 			stats.SpellPenetration: ownerStats[stats.SpellPenetration],
 			stats.MeleeHit:         ownerHitChance * core.MeleeHitRatingPerHitChance,
-			stats.SpellHit:         math.Floor(ownerStats[stats.SpellHit] / 12.0 * 17.0),
+			stats.SpellHit:         math.Floor(ownerHitChance / 12.0 * 17.0),
 			stats.MeleeCrit:        ownerStats[stats.MeleeCrit],
 			stats.SpellCrit:        ownerStats[stats.SpellCrit],
 			stats.Dodge:            ownerStats[stats.MeleeCrit],

@@ -61,7 +61,7 @@ type Mage struct {
 	Options *proto.Mage_Options
 
 	activeBarrier *core.Aura
-	frozenOrb     *FrozenOrb
+	frozenOrbPets []*FrozenOrb
 
 	ArcaneBarrage           *core.Spell
 	ArcaneBlast             *core.Spell
@@ -195,7 +195,7 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 	}
 
 	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
-		mage.frozenOrb = mage.NewFrozenOrb()
+		mage.frozenOrbPets = mage.NewFrozenOrbPets()
 	}
 
 	guardians.ConstructGuardians(&mage.Character)
