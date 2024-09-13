@@ -34,7 +34,7 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlagBloodSurge,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 		RageCost: core.RageCostOptions{
 			Cost:   15 - float64(warrior.Talents.ImprovedHeroicStrike) - warrior.FocusedRageDiscount,

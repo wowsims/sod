@@ -26,7 +26,7 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagAPL | SpellFlagBloodSurge,
+		Flags:       core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
 			Cost: 25 - warrior.FocusedRageDiscount,
