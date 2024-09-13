@@ -178,6 +178,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
+            //OtherInputs.DistanceFromTarget,
 		],
 	},
 	encounterPicker: {
@@ -203,30 +204,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		return Presets.DefaultAPLs[player.getLevel()].rotation.rotation!;
 	},
 
-	raidSimPresets: [
-		{
-			spec: Spec.SpecProtectionPaladin,
-			tooltip: 'Protection Paladin',
-			defaultName: 'Protection',
-			iconUrl: getSpecIcon(Class.ClassPaladin, 1),
+   raidSimPresets: [
+   	{
+   		spec: Spec.SpecProtectionPaladin,
+   		tooltip: 'Protection Paladin',
+   		defaultName: 'Protection',
+   		iconUrl: getSpecIcon(Class.ClassPaladin, 1),
 
-			talents: Presets.DefaultTalents.data,
-			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
-			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceHuman,
-				[Faction.Horde]: Race.RaceUnknown,
-			},
-			defaultGear: {
-				[Faction.Unknown]: {},
-				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase4][0].gear,
-				},
-				[Faction.Horde]: {},
-			},
-		},
-	],
+   		talents: Presets.DefaultTalents.data,
+   		specOptions: Presets.DefaultOptions,
+   		consumes: Presets.DefaultConsumes,
+   		defaultFactionRaces: {
+   			[Faction.Unknown]: Race.RaceUnknown,
+   			[Faction.Alliance]: Race.RaceHuman,
+   			[Faction.Horde]: Race.RaceUnknown,
+   		},
+   		defaultGear: {
+   			[Faction.Unknown]: {},
+   			[Faction.Alliance]: {
+   				1: Presets.GearPresets[Phase.Phase4][0].gear,
+   			},
+   			[Faction.Horde]: {},
+   		},
+   	},
+   ],
 });
 
 export class ProtectionPaladinSimUI extends IndividualSimUI<Spec.SpecProtectionPaladin> {

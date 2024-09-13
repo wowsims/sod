@@ -12,7 +12,8 @@ import (
 var TalentTreeSizes = [3]int{14, 15, 15}
 
 const (
-	SpellFlag_RV = core.SpellFlagAgentReserved1
+	SpellFlag_RV          = core.SpellFlagAgentReserved1
+	SpellFlag_Forbearance = core.SpellFlagAgentReserved2
 )
 
 const (
@@ -23,6 +24,7 @@ const (
 	SpellCode_PaladinHolyWrath
 	SpellCode_PaladinJudgementOfCommand
 	SpellCode_PaladinConsecration
+	SpellCode_PaladinAvengersShield
 	SpellCode_PaladinHolyShield
 	SpellCode_PaladinHolyShieldProc
 )
@@ -123,6 +125,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSotC)
 
 	// Active abilities
+	paladin.registerForbearance()
 	paladin.registerCrusaderStrike()
 	paladin.registerDivineStorm()
 	paladin.registerConsecration()

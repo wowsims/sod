@@ -172,18 +172,18 @@ export class SimLog {
 		return formatted;
 	}
 
-	protected newActionIdLink(isAura?: boolean) {
-		const iconElem = <span className="icon icon-sm"></span>;
+	protected newActionIdLink(actionId: ActionId, isAura?: boolean) {
+		const iconElem = <span className="icon icon-sm me-1"></span>;
 		const actionAnchor = (
 			<a className="log-action" target="_blank">
-				<span>
-					{iconElem} {this.actionId!.name}
+				<span className="d-inline-flex align-items-center align-bottom">
+					{iconElem} {actionId.name}
 				</span>
 			</a>
 		);
-		this.actionId?.setBackground(iconElem as HTMLAnchorElement);
-		this.actionId?.setWowheadHref(actionAnchor as HTMLAnchorElement);
-		this.actionId?.setWowheadDataset(actionAnchor as HTMLAnchorElement, { useBuffAura: isAura });
+		actionId.setBackground(iconElem as HTMLAnchorElement);
+		actionId.setWowheadHref(actionAnchor as HTMLAnchorElement);
+		actionId.setWowheadDataset(actionAnchor as HTMLAnchorElement, { useBuffAura: isAura });
 		return actionAnchor;
 	}
 
@@ -411,7 +411,7 @@ export class DamageDealtLog extends SimLog {
 			const threatPostfix = this.source?.isTarget ? '' : ` (${this.threat.toFixed(2)} Threat)`;
 			return (
 				<>
-					{this.toPrefix(includeTimestamp)} {this.newActionIdLink()} {this.result()}
+					{this.toPrefix(includeTimestamp)} {this.newActionIdLink(this.actionId!)} {this.result()}
 					{threatPostfix}
 				</>
 			);
@@ -570,7 +570,7 @@ export class AuraEventLog extends SimLog {
 			<>
 				{this.toPrefix(includeTimestamp)}
 				{`  Aura  `}
-				{this.isGained ? 'gained' : this.isFaded ? 'faded' : 'refreshed'}: {this.newActionIdLink(true)}.
+				{this.isGained ? 'gained' : this.isFaded ? 'faded' : 'refreshed'}: {this.newActionIdLink(this.actionId!, true)}.
 			</>
 		));
 	}
@@ -604,7 +604,7 @@ export class AuraStacksChangeLog extends SimLog {
 	toHTML(includeTimestamp = true) {
 		return this.cacheOutput(includeTimestamp, () => (
 			<>
-				{this.toPrefix(includeTimestamp)} {this.newActionIdLink(true)} stacks: {this.oldStacks} &rarr; {this.newStacks}.
+				{this.toPrefix(includeTimestamp)} {this.newActionIdLink(this.actionId!, true)} stacks: {this.oldStacks} &rarr; {this.newStacks}.
 			</>
 		));
 	}
@@ -764,7 +764,7 @@ export class ResourceChangedLog extends SimLog {
 						{signedDiff.toFixed(1)} {resourceName}
 					</strong>
 					{` from `}
-					{this.newActionIdLink()}. ({this.valueBefore.toFixed(1)} &rarr; {this.valueAfter.toFixed(1)})
+					{this.newActionIdLink(this.actionId!)}. ({this.valueBefore.toFixed(1)} &rarr; {this.valueAfter.toFixed(1)})
 				</>
 			);
 		});
@@ -860,7 +860,7 @@ export class MajorCooldownUsedLog extends SimLog {
 	toHTML(includeTimestamp = true) {
 		return this.cacheOutput(includeTimestamp, () => (
 			<>
-				{this.toPrefix(includeTimestamp)} Major cooldown used: {this.newActionIdLink()}.
+				{this.toPrefix(includeTimestamp)} Major cooldown used: {this.newActionIdLink(this.actionId!)}.
 			</>
 		));
 	}
@@ -895,8 +895,8 @@ export class CastBeganLog extends SimLog {
 	toHTML(includeTimestamp = true) {
 		return this.cacheOutput(includeTimestamp, () => (
 			<>
-				{this.toPrefix(includeTimestamp)} Casting {this.newActionIdLink()} (Cast time: {this.castTime.toFixed(2)}s, Cost: {this.manaCost.toFixed(1)}{' '}
-				Mana).
+				{this.toPrefix(includeTimestamp)} Casting {this.newActionIdLink(this.actionId!)} (Cast time: {this.castTime.toFixed(2)}s, Cost:{' '}
+				{this.manaCost.toFixed(1)} Mana).
 			</>
 		));
 	}
@@ -1075,13 +1075,13 @@ export class StatChangeLog extends SimLog {
 			if (this.isGain) {
 				return (
 					<>
-						{this.toPrefix(includeTimestamp)} Gained {this.stats} from {this.newActionIdLink()}.
+						{this.toPrefix(includeTimestamp)} Gained {this.stats} from {this.newActionIdLink(this.actionId!)}.
 					</>
 				);
 			} else {
 				return (
 					<>
-						{this.toPrefix(includeTimestamp)} Lost {this.stats} from fading {this.newActionIdLink()}.
+						{this.toPrefix(includeTimestamp)} Lost {this.stats} from fading {this.newActionIdLink(this.actionId!)}.
 					</>
 				);
 			}
@@ -1106,30 +1106,42 @@ export class StatChangeLog extends SimLog {
 
 export class ExtraAttackLog extends SimLog {
 	readonly attacks: number;
+	readonly attacksText: string;
+	readonly attackID: ActionId;
+	readonly triggerID: ActionId;
 
-	constructor(params: SimLogParams, attacks: number) {
+	constructor(params: SimLogParams, attacks: number, attacksText: string, attackID: ActionId, triggerID: ActionId) {
 		super(params);
 		this.attacks = attacks;
+		this.attacksText = attacksText;
+		this.attackID = attackID;
+		this.triggerID = triggerID;
 	}
 
 	toHTML(includeTimestamp = true) {
 		return this.cacheOutput(includeTimestamp, () => {
 			return (
 				<>
-					{this.toPrefix(includeTimestamp)} Gained {this.attacks} extra attacks from {this.newActionIdLink()}.
+					{this.toPrefix(includeTimestamp)} Gained {this.attacks} extra {this.attacksText} from {this.newActionIdLink(this.attackID)} triggered by{' '}
+					{this.newActionIdLink(this.triggerID)}.
 				</>
 			);
 		});
 	}
 
 	static parse(params: SimLogParams): Promise<ExtraAttackLog> | null {
-		const match = params.raw.match(/gains ([0-9]+) extra attacks from (.*)/);
+		const match = params.raw.match(/gained ([0-9]+) extra (?:main-hand|off-hand|ranged) (attacks?) from ({.*?}) triggered by ({.*?})/);
 		if (match) {
-			return ActionId.fromLogString(match[2])
+			console.log(match[4]);
+			return ActionId.fromLogString(match[3])
 				.fill(params.source?.index)
-				.then(effectId => {
-					params.actionId = effectId;
-					return new ExtraAttackLog(params, parseInt(match[1]));
+				.then(attackID => {
+					return ActionId.fromLogString(match[4])
+						.fill(params.source?.index)
+						.then(triggerID => {
+							params.actionId = attackID;
+							return new ExtraAttackLog(params, parseInt(match[1]), match[2], attackID, triggerID);
+						});
 				});
 		} else {
 			return null;

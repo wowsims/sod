@@ -354,6 +354,7 @@ func (mage *Mage) applyBrainFreeze() {
 					mage.Fireball,
 					{mage.FrostfireBolt},
 					{mage.SpellfrostBolt},
+					{mage.BalefireBolt},
 				}),
 				func(spell *core.Spell) bool { return spell != nil },
 			)
@@ -382,12 +383,8 @@ func (mage *Mage) applyBrainFreeze() {
 		},
 	})
 
-	mage.RegisterAura(core.Aura{
-		Label:    "Brain Freeze Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Brain Freeze Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() || !spell.Flags.Matches(SpellFlagChillSpell) {
 				return
@@ -397,7 +394,24 @@ func (mage *Mage) applyBrainFreeze() {
 				procAura.Activate(sim)
 			}
 		},
-	})
+	}))
+
+	if !mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		return
+	}
+
+	core.MakePermanent(mage.frozenOrb.RegisterAura(core.Aura{
+		Label: "Brain Freeze Trigger",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() || !spell.Flags.Matches(SpellFlagChillSpell) {
+				return
+			}
+
+			if sim.RandomFloat("Brain Freeze") < procChance {
+				procAura.Activate(sim)
+			}
+		},
+	}))
 }
 
 func (mage *Mage) applySpellPower() {
@@ -410,4 +424,10 @@ func (mage *Mage) applySpellPower() {
 			spell.CritDamageBonus += 0.5
 		}
 	})
+
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		mage.frozenOrb.OnSpellRegistered(func(spell *core.Spell) {
+			spell.CritDamageBonus += 0.5
+		})
+	}
 }

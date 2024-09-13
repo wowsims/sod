@@ -47,6 +47,7 @@ const (
 	SpellCode_HunterCarve
 	SpellCode_HunterCarveHit
 	SpellCode_HunterMongooseBite
+	SpellCode_HunterWingClip
 	SpellCode_HunterVolley
 
 	SpellCode_HunterPetFlankingStrike

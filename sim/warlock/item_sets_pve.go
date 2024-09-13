@@ -130,60 +130,16 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				stats.SpellCrit: 2 * core.CritRatingPerCritChance,
 			})
 		},
-		// Your Nightfall talent has a 4% increased chance to trigger. Your Immolate periodic damage has a 4% chance to grant Fire Trance, reducing the cast time of your next Incinerate or Immolate by 100%.
+		// Your Nightfall talent has a 4% increased chance to trigger.
+		// Incinerate has a 4% chance to trigger the Warlock’s Decimation.
 		6: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			// Store these so that we can have the default cast time after modifiers
-			immolateCastTime := ImmolateCastTime
-			shadowflameCastTime := ShadowflameCastTime
-			incinerateCastTime := IncinerateCastTime
-			affectedSpellCodes := []int32{SpellCode_WarlockImmolate, SpellCode_WarlockShadowflame, SpellCode_WarlockIncinerate}
-			fireTranceAura := warlock.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 457558},
-				Label:    "Fire Trance",
-				Duration: time.Second * 10,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range warlock.Immolate {
-						spell.DefaultCast.CastTime = 0
-					}
-					if warlock.Shadowflame != nil {
-						warlock.Shadowflame.DefaultCast.CastTime = 0
-					}
-					if warlock.Incinerate != nil {
-						warlock.Incinerate.DefaultCast.CastTime = 0
-					}
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range warlock.Immolate {
-						spell.DefaultCast.CastTime = immolateCastTime
-					}
-					if warlock.Shadowflame != nil {
-						warlock.Shadowflame.DefaultCast.CastTime = shadowflameCastTime
-					}
-					if warlock.Incinerate != nil {
-						warlock.Incinerate.DefaultCast.CastTime = incinerateCastTime
-					}
-				},
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if slices.Contains(affectedSpellCodes, spell.SpellCode) && spell.CurCast.CastTime == 0 {
-						aura.Deactivate(sim)
-					}
-				},
-			})
-
-			warlock.RegisterAura(core.Aura{
+			warlock6pt1Aura := warlock.RegisterAura(core.Aura{
 				Label:    "S03 - Item - T1 - Warlock - Damage 6P Bonus",
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)
-					immolateCastTime = warlock.Immolate[0].DefaultCast.CastTime
-					if warlock.Shadowflame != nil {
-						shadowflameCastTime = warlock.Shadowflame.DefaultCast.CastTime
-					}
-					if warlock.Incinerate != nil {
-						incinerateCastTime = warlock.Incinerate.DefaultCast.CastTime
-					}
 				},
 				OnGain: func(_ *core.Aura, _ *core.Simulation) {
 					warlock.nightfallProcChance += 0.04
@@ -191,12 +147,17 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				OnExpire: func(_ *core.Aura, _ *core.Simulation) {
 					warlock.nightfallProcChance -= 0.04
 				},
-				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if (spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame) && sim.Proc(.04, "Fire Trance") {
-						fireTranceAura.Activate(sim)
-					}
-				},
 			})
+
+			if !warlock.HasRune(proto.WarlockRune_RuneBracerIncinerate) || !warlock.HasRune(proto.WarlockRune_RuneCloakDecimation) {
+				return
+			}
+
+			warlock6pt1Aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.SpellCode == SpellCode_WarlockIncinerate && result.Landed() && sim.Proc(.04, "T1 6P Incinerate Proc") {
+					warlock.DecimationAura.Activate(sim)
+				}
+			}
 		},
 	},
 })

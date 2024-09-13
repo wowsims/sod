@@ -130,7 +130,7 @@ func (warlock *Warlock) applyDecimation() {
 
 	affectedSpellCodes := []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockIncinerate, SpellCode_WarlockSoulFire}
 
-	decimationAura := warlock.RegisterAura(core.Aura{
+	warlock.DecimationAura = warlock.RegisterAura(core.Aura{
 		Label:    "Decimation",
 		ActionID: core.ActionID{SpellID: 440873},
 		Duration: time.Second * 10,
@@ -151,7 +151,7 @@ func (warlock *Warlock) applyDecimation() {
 		Label: "Decimation Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && sim.IsExecutePhase35() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
-				decimationAura.Activate(sim)
+				warlock.DecimationAura.Activate(sim)
 			}
 		},
 	}))
@@ -458,6 +458,12 @@ func (warlock *Warlock) applyDemonicPact() {
 	if !warlock.HasRune(proto.WarlockRune_RuneLegsDemonicPact) {
 		return
 	}
+
+	warlock.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagWarlock) {
+			spell.DamageMultiplier *= 1.10
+		}
+	})
 
 	if warlock.Options.Summon == proto.WarlockOptions_NoSummon {
 		return

@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.13415
+  weights: 0.12218
   weights: 0
-  weights: 0.43904
-  weights: 0
-  weights: 0
+  weights: 0.44779
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.62247
+  weights: 0
+  weights: 0
+  weights: 0.67012
   weights: 0
   weights: 0
   weights: 0
@@ -204,64 +204,64 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl25-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 215.33652
-  tps: 492.54397
+  dps: 225.8131
+  tps: 526.41635
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Average-Default"
  value: {
-  dps: 207.32205
-  tps: 474.81657
+  dps: 217.28247
+  tps: 507.18429
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 314.34421
-  tps: 1334.46201
+  dps: 317.24577
+  tps: 1344.09632
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 206.82468
-  tps: 473.76249
+  dps: 216.64913
+  tps: 505.69559
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 213.54286
-  tps: 486.93074
+  dps: 224.98804
+  tps: 523.32434
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 234.433
-  tps: 1147.19963
+  dps: 236.46998
+  tps: 1153.81722
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 154.66503
-  tps: 352.97156
+  dps: 162.16533
+  tps: 377.10551
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 161.39822
-  tps: 367.05579
+  dps: 170.2128
+  tps: 395.09211
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 206.89015
-  tps: 473.87839
+  dps: 216.7146
+  tps: 505.81149
  }
 }
 dps_results: {
