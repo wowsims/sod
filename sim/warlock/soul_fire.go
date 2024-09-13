@@ -11,7 +11,7 @@ const SoulFireRanks = 2
 const SoulFireCastTime = time.Millisecond * 6000
 
 func (warlock *Warlock) getSoulFireBaseConfig(rank int) core.SpellConfig {
-	hasDecimationRune := warlock.HasRune(proto.WarlockRune_RuneCloakDecimation)
+	hasDecimationRune := warlock.HasRune(proto.WarlockRune_RuneBootsDecimation)
 
 	spellId := [SoulFireRanks + 1]int32{0, 6353, 17924}[rank]
 	baseDamage := [SoulFireRanks + 1][]float64{{0, 0}, {628, 789}, {715, 894}}[rank]

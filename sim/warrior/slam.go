@@ -50,12 +50,12 @@ func (warrior *Warrior) registerSlamSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RequiredLevel: requiredLevel,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - warrior.FocusedRageDiscount,
+			Cost:   15,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

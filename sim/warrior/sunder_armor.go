@@ -32,7 +32,7 @@ func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial, // TODO check whether this can actually proc stuff or not
-			Flags:       core.SpellFlagMeleeMetrics,
+			Flags:       core.SpellFlagMeleeMetrics | SpellFlagOffensive,
 
 			CritDamageBonus:  warrior.impale(),
 			DamageMultiplier: 1.5,
@@ -62,10 +62,10 @@ func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - warrior.FocusedRageDiscount - float64(warrior.Talents.ImprovedSunderArmor),
+			Cost:   15 - float64(warrior.Talents.ImprovedSunderArmor),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

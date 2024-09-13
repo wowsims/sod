@@ -149,7 +149,7 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			if !warlock.HasRune(proto.WarlockRune_RuneBracerIncinerate) || !warlock.HasRune(proto.WarlockRune_RuneCloakDecimation) {
+			if !warlock.HasRune(proto.WarlockRune_RuneBracerIncinerate) || !warlock.HasRune(proto.WarlockRune_RuneBootsDecimation) {
 				return
 			}
 

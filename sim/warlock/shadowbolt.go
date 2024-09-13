@@ -10,7 +10,7 @@ import (
 const ShadowBoltRanks = 10
 
 func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
-	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneBootsMarkOfChaos)
+	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
 
 	spellCoeff := [ShadowBoltRanks + 1]float64{0, .14, .299, .56, .857, .857, .857, .857, .857, .857, .857}[rank]
 	baseDamage := [ShadowBoltRanks + 1][]float64{{0}, {13, 18}, {26, 32}, {52, 61}, {92, 104}, {150, 170}, {213, 240}, {292, 327}, {373, 415}, {455, 507}, {482, 538}}[rank]

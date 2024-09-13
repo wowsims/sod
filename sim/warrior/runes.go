@@ -204,7 +204,15 @@ func (warrior *Warrior) applyConsumedByRage() {
 }
 
 func (warrior *Warrior) applyFocusedRage() {
-	warrior.FocusedRageDiscount = core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFocusedRage), 3.0, 0)
+	if !warrior.HasRune(proto.WarriorRune_RuneFocusedRage) {
+		return
+	}
+
+	warrior.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagOffensive) && spell.Cost != nil {
+			spell.Cost.FlatModifier -= 3
+		}
+	})
 }
 
 func (warrior *Warrior) applyBloodSurge() {
@@ -236,18 +244,21 @@ func (warrior *Warrior) applyBloodSurge() {
 		},
 	})
 
-	warrior.RegisterAura(core.Aura{
-		Label:    "Blood Surge",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	affectedSpells := make(map[*core.Spell]bool)
+
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Blood Surge",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells[warrior.HeroicStrike.Spell] = true
+			affectedSpells[warrior.Bloodthirst.Spell] = true
+			affectedSpells[warrior.Whirlwind.Spell] = true
+
+			if warrior.HasRune(proto.WarriorRune_RuneQuickStrike) {
+				affectedSpells[warrior.QuickStrike.Spell] = true
+			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			if !spell.Flags.Matches(SpellFlagBloodSurge) {
+			if !result.Landed() || !affectedSpells[spell] {
 				return
 			}
 
@@ -255,7 +266,7 @@ func (warrior *Warrior) applyBloodSurge() {
 				warrior.BloodSurgeAura.Activate(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (warrior *Warrior) applyTasteForBlood() {
