@@ -84,6 +84,8 @@ func (hunter *Hunter) ApplyTalents() {
 	}
 
 	hunter.applyEfficiency()
+	hunter.applyTrapMastery()
+	hunter.applyCleverTraps()
 }
 
 func (hunter *Hunter) applyFrenzy() {
@@ -171,8 +173,28 @@ func (hunter *Hunter) mortalShots() float64 {
 	return 0.06 * float64(hunter.Talents.MortalShots)
 }
 
-func (hunter *Hunter) trapMastery() float64 {
-	return 5 * float64(hunter.Talents.TrapMastery) * core.SpellHitRatingPerHitChance
+func (hunter *Hunter) applyTrapMastery() {
+	if hunter.Talents.TrapMastery == 0 {
+		return
+	}
+
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagTrap) {
+			spell.BonusHitRating += 5 * float64(hunter.Talents.TrapMastery)
+		}
+	})
+}
+
+func (hunter *Hunter) applyCleverTraps() {
+	if hunter.Talents.CleverTraps == 0 {
+		return
+	}
+
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagTrap) {
+			spell.DamageMultiplier *= 1 + 0.15*float64(hunter.Talents.CleverTraps)
+		}
+	})
 }
 
 func (hunter *Hunter) applyEfficiency() {

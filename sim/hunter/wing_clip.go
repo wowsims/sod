@@ -11,6 +11,7 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 	level := [4]int{0, 12, 38, 60}[rank]
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_HunterWingClip,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
