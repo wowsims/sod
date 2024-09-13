@@ -55,7 +55,6 @@ func (hunter *Hunter) ApplyTalents() {
 		}))
 	}
 
-
 	hunter.AddStat(stats.MeleeHit, float64(hunter.Talents.Surefooted)*1*core.MeleeHitRatingPerHitChance)
 	hunter.AddStat(stats.SpellHit, float64(hunter.Talents.Surefooted)*1*core.SpellHitRatingPerHitChance)
 
@@ -84,6 +83,8 @@ func (hunter *Hunter) ApplyTalents() {
 	}
 
 	hunter.applyEfficiency()
+	hunter.applyTrapMastery()
+	hunter.applyCleverTraps()
 }
 
 func (hunter *Hunter) applyFrenzy() {
@@ -128,7 +129,7 @@ func (hunter *Hunter) registerBestialWrathCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 19574}
-	
+
 	hunter.BestialWrathPetAura = hunter.pet.RegisterAura(core.Aura{
 		Label:    "Bestial Wrath Pet",
 		ActionID: actionID,
@@ -171,15 +172,35 @@ func (hunter *Hunter) mortalShots() float64 {
 	return 0.06 * float64(hunter.Talents.MortalShots)
 }
 
-func (hunter *Hunter) trapMastery() float64 {
-	return 5 * float64(hunter.Talents.TrapMastery) * core.SpellHitRatingPerHitChance
+func (hunter *Hunter) applyTrapMastery() {
+	if hunter.Talents.TrapMastery == 0 {
+		return
+	}
+
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagTrap) {
+			spell.BonusHitRating += 5 * float64(hunter.Talents.TrapMastery)
+		}
+	})
+}
+
+func (hunter *Hunter) applyCleverTraps() {
+	if hunter.Talents.CleverTraps == 0 {
+		return
+	}
+
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagTrap) {
+			spell.DamageMultiplier *= 1 + 0.15*float64(hunter.Talents.CleverTraps)
+		}
+	})
 }
 
 func (hunter *Hunter) applyEfficiency() {
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		// applies to Stings, Shots, Strikes and Volley
-		if spell.Flags.Matches(SpellFlagSting | SpellFlagShot | SpellFlagStrike) || spell.SpellCode == SpellCode_HunterVolley {
-			spell.Cost.Multiplier -= 2*hunter.Talents.Efficiency
+		if spell.Flags.Matches(SpellFlagSting|SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterVolley {
+			spell.Cost.Multiplier -= 2 * hunter.Talents.Efficiency
 		}
 	})
 }

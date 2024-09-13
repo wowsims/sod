@@ -29,19 +29,15 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 		60: 173,
 	}[warrior.Level]
 
-	// Use a pending action to simulate the re-queueing of Heroic Strike without waiting for an event to happen that would trigger the APL.
-	// While this doesn't have an actual performance impact, it creates a more realistic sequence by queueing Heroic Strike sooner like in real gameplay.
-	var realismPA *core.PendingAction
-
 	warrior.HeroicStrike = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlagBloodSurge,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(warrior.Talents.ImprovedHeroicStrike) - warrior.FocusedRageDiscount,
+			Cost:   15 - float64(warrior.Talents.ImprovedHeroicStrike),
 			Refund: 0.8,
 		},
 
@@ -66,16 +62,6 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 			}
 
 			realismICD.Use(sim)
-
-			if realismPA == nil {
-				realismPA = core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + realismICD.Duration,
-					OnAction: func(sim *core.Simulation) {
-						warrior.HeroicStrikeQueue.Cast(sim, target)
-						realismPA = nil
-					},
-				})
-			}
 		},
 	})
 	warrior.HeroicStrikeQueue = warrior.makeQueueSpellsAndAura(warrior.HeroicStrike, realismICD)
@@ -107,19 +93,15 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 
 	results := make([]*core.SpellResult, min(int32(2), warrior.Env.GetNumTargets()))
 
-	// Use a pending action to simulate the re-queueing of Cleave without waiting for an event to happen that would trigger the APL.
-	// While this doesn't have an actual performance impact, it creates a more realistic sequence by queueing Cleave sooner like in real gameplay.
-	var realismPA *core.PendingAction
-
 	warrior.Cleave = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
-		Flags:       core.SpellFlagMeleeMetrics,
+		Flags:       core.SpellFlagMeleeMetrics | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost: 20 - warrior.FocusedRageDiscount,
+			Cost: 20,
 		},
 
 		CritDamageBonus: warrior.impale(),
@@ -145,16 +127,6 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 			}
 
 			realismICD.Use(sim)
-
-			if realismPA == nil {
-				realismPA = core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + realismICD.Duration,
-					OnAction: func(sim *core.Simulation) {
-						warrior.HeroicStrikeQueue.Cast(sim, target)
-						realismPA = nil
-					},
-				})
-			}
 		},
 	})
 	warrior.CleaveQueue = warrior.makeQueueSpellsAndAura(warrior.Cleave, realismICD)

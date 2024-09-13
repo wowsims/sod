@@ -39,11 +39,15 @@ const (
 	// Stings
 
 	// Traps
+	SpellCode_HunterExplosiveTrap
+	SpellCode_HunterFreezingTrap
+	SpellCode_HunterImmolationTrap
 
 	// Other
 	SpellCode_HunterCarve
 	SpellCode_HunterCarveHit
 	SpellCode_HunterMongooseBite
+	SpellCode_HunterWingClip
 	SpellCode_HunterVolley
 
 	SpellCode_HunterPetFlankingStrike

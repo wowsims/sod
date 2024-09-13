@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.24735
+  weights: 0.27696
   weights: 0
-  weights: 0.61323
-  weights: 0
-  weights: 0
+  weights: 0.68645
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.59008
-  weights: 1.88055
+  weights: 0
+  weights: 0
+  weights: 4.01446
+  weights: 2.10504
   weights: 0
   weights: 0
   weights: 0
@@ -106,63 +106,63 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Lvl40-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 441.34292
-  tps: 461.32874
+  dps: 493.94227
+  tps: 514.20663
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 436.73916
-  tps: 456.19442
+  dps: 488.79879
+  tps: 508.4786
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 435.97222
-  tps: 790.19747
+  dps: 487.93095
+  tps: 842.44812
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 435.97222
-  tps: 455.99944
+  dps: 487.93095
+  tps: 508.25009
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 471.1421
-  tps: 490.2715
+  dps: 526.23747
+  tps: 547.20151
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 293.1177
-  tps: 665.49955
+  dps: 328.08361
+  tps: 700.62839
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 293.1177
-  tps: 313.02666
+  dps: 328.08361
+  tps: 348.1555
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 331.5311
-  tps: 337.00741
+  dps: 370.27373
+  tps: 376.4072
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 435.97222
-  tps: 455.99944
+  dps: 487.93095
+  tps: 508.25009
  }
 }
