@@ -217,20 +217,19 @@ func (value *APLValueWarlockCurrentPetManaPercent) String() string {
 
 type APLValueWarlockPetIsActive struct {
 	core.DefaultAPLValueImpl
-	pet *WarlockPet
+	warlock *Warlock
 }
 
 func (warlock *Warlock) newValueWarlockPetIsActive(_ *core.APLRotation) core.APLValue {
-	pet := warlock.ActivePet
 	return &APLValueWarlockPetIsActive{
-		pet: pet,
+		warlock: warlock,
 	}
 }
 func (value *APLValueWarlockPetIsActive) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
 }
 func (value *APLValueWarlockPetIsActive) GetBool(sim *core.Simulation) bool {
-	return value.pet != nil
+	return value.warlock.ActivePet != nil
 }
 func (value *APLValueWarlockPetIsActive) String() string {
 	return fmt.Sprintf("Current Pet Mana %%")
