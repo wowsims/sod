@@ -270,16 +270,13 @@ var ItemSetUnstoppableWrath = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// Your Whirlwind deals 10% more damage and can be used in all stances.
+		// Increases the damage of Heroic Strike by 10%
 		4: func(agent core.Agent) {
 			warrior := agent.(WarriorAgent).GetWarrior()
 			warrior.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Warrior - Damage 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					if warrior.Whirlwind != nil {
-						warrior.Whirlwind.DamageMultiplier *= 1.10
-						warrior.Whirlwind.StanceMask = AnyStance
-					}
+					warrior.HeroicStrike.DamageMultiplier *= 1.10
 				},
 			})
 		},
