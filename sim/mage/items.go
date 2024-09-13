@@ -87,7 +87,7 @@ func init() {
 				)
 
 				if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
-					affectedSpells = append(affectedSpells, mage.frozenOrb.FrozenOrbTick)
+					affectedSpells = append(affectedSpells, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Spell { return orb.FrozenOrbTick })...)
 				}
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
