@@ -74,6 +74,7 @@ type Paladin struct {
 	rv                *core.Spell
 	holyShieldAura    [3]*core.Aura
 	redoubtAura       *core.Aura
+	holyWrath         []*core.Spell
 
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
