@@ -168,9 +168,10 @@ func (priest *Priest) applyShadowFocus() {
 		return
 	}
 
+	bonusHit := 2 * float64(priest.Talents.ShadowFocus) * core.SpellHitRatingPerHitChance
 	priest.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(SpellFlagPriest) || spell.SpellSchool.Matches(core.SpellSchoolShadow) {
-			spell.BonusHitRating += 2 * float64(priest.Talents.ShadowFocus) * core.SpellHitRatingPerHitChance
+			spell.BonusHitRating += bonusHit
 		}
 	})
 }

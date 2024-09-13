@@ -82,7 +82,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 72
+// NextIndex: 73
 message APLValue {
     oneof value {
         // Operators
@@ -161,13 +161,18 @@ message APLValue {
         APLValueFrontOfTarget front_of_target = 63;
 
         // Class or Spec-specific values
+        // Shaman
         APLValueTotemRemainingTime totem_remaining_time = 49;
+        // Druid
         APLValueCatExcessEnergy cat_excess_energy = 52;
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
+        // Warlock
         APLValueWarlockShouldRecastDrainSoul warlock_should_recast_drain_soul = 59;
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
         APLValueWarlockCurrentPetMana warlock_current_pet_mana = 70;
         APLValueWarlockCurrentPetManaPercent warlock_current_pet_mana_percent = 71;
+        APLValueWarlockPetIsActive warlock_pet_is_active = 72;
+        // Paladin
         APLValueCurrentSealRemainingTime current_seal_remaining_time = 65;
     }
 }
@@ -518,6 +523,8 @@ message APLValueWarlockShouldRefreshCorruption {
 message APLValueWarlockCurrentPetMana {
 }
 message APLValueWarlockCurrentPetManaPercent {
+}
+message APLValueWarlockPetIsActive {
 }
 message APLValueCurrentSealRemainingTime {
 }
