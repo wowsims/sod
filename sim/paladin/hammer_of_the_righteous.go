@@ -39,7 +39,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 			return paladin.MainHand().HandType == proto.HandType_HandTypeOneHand
 		},
 		DamageMultiplier: 3,
-		ThreatMultiplier: 2,
+		ThreatMultiplier: 3, // verified with TinyThreat in game
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			weapon := paladin.AutoAttacks.MH()

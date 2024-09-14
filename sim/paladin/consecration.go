@@ -83,8 +83,9 @@ func (paladin *Paladin) registerConsecration() {
 					}
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					// Consecration can miss by being fully resisted.
-					outcomeApplier := core.Ternary(hasWrath, dot.OutcomeSnapshotCrit, dot.Spell.OutcomeMagicHit)
+					// Consecration can miss, showing up as either a resist in logs or a
+					// silent failure (missing damage tick).
+					outcomeApplier := core.Ternary(hasWrath, dot.OutcomeMagicHitAndSnapshotCrit, dot.Spell.OutcomeMagicHit)
 					for _, aoeTarget := range sim.Encounter.TargetUnits {
 						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, outcomeApplier)
 					}

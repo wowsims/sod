@@ -99,12 +99,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.71826
-  weights: 0.13691
+  weights: 0.71742
+  weights: 0.10746
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.1813
+  weights: 0.18015
   weights: 0
   weights: 0
   weights: 0
@@ -112,13 +112,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.2303
-  weights: 0.14859
+  weights: 1.71758
+  weights: 0.17241
   weights: 0
   weights: 0
-  weights: 0.2968
-  weights: 5.12699
-  weights: 4.30325
+  weights: 0.29646
+  weights: 5.08862
+  weights: 4.53772
   weights: 0
   weights: 0
   weights: 0
@@ -148,12 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestShockadin-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.35816
-  weights: 0.97673
+  weights: 0.35787
+  weights: 2.29673
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.27112
+  weights: 1.2795
   weights: 0
   weights: 0
   weights: 0
@@ -161,13 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 11.6316
-  weights: 14.34751
+  weights: 16.4346
+  weights: 15.57988
   weights: 0
   weights: 0
-  weights: 0.148
-  weights: 11.27316
-  weights: 23.37357
+  weights: 0.14788
+  weights: 12.48836
+  weights: 25.04304
   weights: 0
   weights: 0
   weights: 0
@@ -197,273 +197,273 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin-Lvl40-AllItems-Hero'sBrand-231328"
  value: {
-  dps: 506.30765
-  tps: 530.67259
+  dps: 504.1699
+  tps: 528.54782
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-AllItems-SoulforgeArmor"
  value: {
-  dps: 384.33718
-  tps: 403.89039
+  dps: 383.10113
+  tps: 402.69325
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-AllItems-ZandalarFreethinker'sBelt-231330"
  value: {
-  dps: 447.75751
-  tps: 472.1403
+  dps: 446.69746
+  tps: 471.07924
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-AllItems-ZandalarFreethinker'sBreastplate-231329"
  value: {
-  dps: 501.59147
-  tps: 525.98761
+  dps: 500.4531
+  tps: 524.85419
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Average-Default"
  value: {
-  dps: 513.95577
-  tps: 538.29461
+  dps: 512.00395
+  tps: 536.341
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 561.47893
-  tps: 840.07346
+  dps: 545.35166
+  tps: 824.0562
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 146.86848
-  tps: 160.76669
+  dps: 147.14497
+  tps: 161.04846
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 175.86798
-  tps: 191.71195
+  dps: 174.53791
+  tps: 190.39564
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 264.90617
-  tps: 449.85245
+  dps: 257.61091
+  tps: 442.55719
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 78.16676
-  tps: 87.41407
+  dps: 77.77845
+  tps: 87.02577
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 106.43816
-  tps: 117.36838
+  dps: 105.39775
+  tps: 116.32798
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 577.7161
-  tps: 856.97239
+  dps: 557.92089
+  tps: 837.05075
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 146.42018
-  tps: 160.34367
+  dps: 146.95012
+  tps: 160.91294
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 177.61376
-  tps: 193.48616
+  dps: 176.27547
+  tps: 192.16162
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 271.57684
-  tps: 457.85412
+  dps: 263.83922
+  tps: 450.1165
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 78.64605
-  tps: 87.95991
+  dps: 78.07802
+  tps: 87.39188
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 109.12796
-  tps: 120.11869
+  dps: 107.47706
+  tps: 118.46779
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 483.55864
-  tps: 507.74436
+  dps: 480.68682
+  tps: 504.86239
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1264.34679
-  tps: 1308.73663
+  dps: 1272.14517
+  tps: 1316.81524
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1270.71706
-  tps: 1315.13004
+  dps: 1266.11895
+  tps: 1310.48042
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1286.70005
-  tps: 1330.33218
+  dps: 1290.84379
+  tps: 1334.56933
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-LibramofDraconicDestruction-221457"
  value: {
-  dps: 2124.94179
-  tps: 2188.27023
+  dps: 2180.31771
+  tps: 2245.19882
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2193.74288
-  tps: 2271.02883
+  dps: 2180.75931
+  tps: 2256.99737
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 2863.26558
-  tps: 2944.59314
+  dps: 2841.37045
+  tps: 2922.44102
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1120.52326
-  tps: 1154.94556
+  dps: 1112.03227
+  tps: 1146.35624
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Average-Default"
  value: {
-  dps: 2969.29612
-  tps: 3050.95211
+  dps: 2973.84877
+  tps: 3055.48742
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 5352.19919
-  tps: 6078.90268
+  dps: 5361.23394
+  tps: 6096.6541
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1303.65158
-  tps: 1341.74661
+  dps: 1293.19873
+  tps: 1330.96384
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 2055.699
-  tps: 2117.49245
+  dps: 2067.89252
+  tps: 2129.57514
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1398.3337
-  tps: 1687.95552
+  dps: 1369.3437
+  tps: 1654.63219
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 380.46388
-  tps: 394.80955
+  dps: 382.53231
+  tps: 396.87798
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 900.11098
-  tps: 931.00308
+  dps: 894.2542
+  tps: 924.19837
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 5290.96319
-  tps: 6015.99335
+  dps: 5363.5795
+  tps: 6089.64466
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1313.28381
-  tps: 1351.71367
+  dps: 1310.53053
+  tps: 1348.92098
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 2061.89834
-  tps: 2123.87638
+  dps: 2062.95033
+  tps: 2124.33753
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1393.08869
-  tps: 1679.46052
+  dps: 1398.98171
+  tps: 1690.22853
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 383.9559
-  tps: 398.32866
+  dps: 384.60895
+  tps: 398.98171
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 908.36972
-  tps: 939.26181
+  dps: 897.98764
+  tps: 927.93182
  }
 }
 dps_results: {
  key: "TestShockadin-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2805.60528
-  tps: 2885.66417
+  dps: 2774.25928
+  tps: 2852.17293
  }
 }
