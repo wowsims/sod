@@ -885,7 +885,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 // Applies buffs to pets.
 func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
 	// Summoned pets, like Mage Water Elemental, aren't around to receive raid buffs.
-	if petAgent.GetPet().IsGuardian() {
+	if petAgent.GetPet().IsGuardian() || !petAgent.GetPet().enabledOnStart {
 		return
 	}
 
@@ -897,15 +897,6 @@ func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuf
 	// the owner during combat or don't make sense for a pet.
 	individualBuffs.Innervates = 0
 	individualBuffs.PowerInfusions = 0
-
-	if !petAgent.GetPet().enabledOnStart {
-		raidBuffs.ScrollOfProtection = false
-		raidBuffs.ScrollOfStamina = false
-		raidBuffs.ScrollOfStrength = false
-		raidBuffs.ScrollOfAgility = false
-		raidBuffs.ScrollOfIntellect = false
-		raidBuffs.ScrollOfSpirit = false
-	}
 
 	// Pets only receive Onyxia, Rend, and ZG buffs because they're globally applied in their respective zones
 	// SoD versions were removed from pets though
