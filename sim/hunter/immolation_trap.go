@@ -66,7 +66,7 @@ func (hunter *Hunter) getImmolationTrapConfig(rank int, timer *core.Timer) core.
 			// Traps gain no benefit from hit bonuses except for the Trap Mastery talent, since this is a unique interaction this is my workaround
 			spellHit := spell.Unit.GetStat(stats.SpellHit) + target.PseudoStats.BonusSpellHitRatingTaken
 			spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit*-1)
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit)
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealOutcome(sim, result)

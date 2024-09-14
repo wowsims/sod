@@ -40,7 +40,7 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHitNoHitCounter)
 			if result.Landed() {
 				dot := spell.Dot(target)
 				dot.Spell = spell
