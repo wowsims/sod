@@ -43,7 +43,7 @@ func (paladin *Paladin) registerHolyShield() {
 			break
 		}
 
-		holyShieldProc := paladin.RegisterSpell(core.SpellConfig{
+		paladin.holyShieldProc[i] = paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: procID},
 			SpellCode:   SpellCode_PaladinHolyShieldProc,
 			SpellSchool: core.SpellSchoolHoly,
@@ -58,6 +58,7 @@ func (paladin *Paladin) registerHolyShield() {
 			BonusCoefficient: 0.05,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				// Spell damage from Holy Shield can crit, but does not miss.
 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicCrit)
 			},
 		})
@@ -75,8 +76,8 @@ func (paladin *Paladin) registerHolyShield() {
 				paladin.AddStatDynamic(sim, stats.Block, -blockBonus)
 			},
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Outcome.Matches(core.OutcomeBlock) {
-					holyShieldProc.Cast(sim, spell.Unit)
+				if result.DidBlock() {
+					paladin.holyShieldProc[i].Cast(sim, spell.Unit)
 					aura.RemoveStack(sim)
 				}
 			},

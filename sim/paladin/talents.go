@@ -103,7 +103,6 @@ func (paladin *Paladin) applyReckoning() {
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
 		Name:       "Reckoning Crit Trigger",
-		ActionID:   procID,
 		Callback:   core.CallbackOnSpellHitTaken,
 		Outcome:    core.OutcomeCrit,
 		ProcMask:   core.ProcMaskMeleeOrRanged,
