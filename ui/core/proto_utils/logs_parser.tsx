@@ -1132,7 +1132,6 @@ export class ExtraAttackLog extends SimLog {
 	static parse(params: SimLogParams): Promise<ExtraAttackLog> | null {
 		const match = params.raw.match(/gained ([0-9]+) extra (?:main-hand|off-hand|ranged) (attacks?) from ({.*?}) triggered by ({.*?})/);
 		if (match) {
-			console.log(match[4]);
 			return ActionId.fromLogString(match[3])
 				.fill(params.source?.index)
 				.then(attackID => {
