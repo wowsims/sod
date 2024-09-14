@@ -476,6 +476,7 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 		case proto.AttackPowerBuff_JujuMight:
 			character.AddStats(stats.Stats{
 				stats.AttackPower: 40,
+				stats.RangedAttackPower: 40,
 			})
 		case proto.AttackPowerBuff_WinterfallFirewater:
 			character.AddStats(stats.Stats{

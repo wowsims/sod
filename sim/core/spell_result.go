@@ -95,10 +95,12 @@ func (spell *Spell) MeleeAttackPower() float64 {
 	return spell.Unit.stats[stats.AttackPower] + spell.Unit.PseudoStats.MobTypeAttackPower
 }
 
-func (spell *Spell) RangedAttackPower(target *Unit) float64 {
-	return spell.Unit.stats[stats.RangedAttackPower] +
+func (spell *Spell) RangedAttackPower(target *Unit, ignorePseudoStats bool) float64 {
+	return TernaryFloat64(ignorePseudoStats, 
+		spell.Unit.stats[stats.RangedAttackPower], 
+		spell.Unit.stats[stats.RangedAttackPower] +
 		spell.Unit.PseudoStats.MobTypeAttackPower +
-		target.PseudoStats.BonusRangedAttackPowerTaken
+		target.PseudoStats.BonusRangedAttackPowerTaken)
 }
 
 func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
