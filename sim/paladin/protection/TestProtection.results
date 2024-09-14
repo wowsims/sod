@@ -100,49 +100,49 @@ dps_results: {
  key: "TestProtection-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
   dps: 1487.00259
-  tps: 1952.9071
+  tps: 1737.55887
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-Hero'sBrand-231328"
  value: {
   dps: 1915.08228
-  tps: 2375.62161
+  tps: 2165.40579
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
   dps: 1487.06378
-  tps: 1953.55083
+  tps: 1738.20259
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
   dps: 1572.50543
-  tps: 2063.1332
+  tps: 1836.14928
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-LibramofDraconicDestruction-221457"
  value: {
   dps: 1928.39065
-  tps: 2392.66804
+  tps: 2180.58922
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
   dps: 1653.73421
-  tps: 2163.95646
+  tps: 1927.09264
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-SanctifiedOrb-20512"
  value: {
   dps: 1879.03715
-  tps: 2361.10685
+  tps: 2140.0873
  }
 }
 dps_results: {
@@ -156,111 +156,111 @@ dps_results: {
  key: "TestProtection-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
  value: {
   dps: 1617.17584
-  tps: 1996.78214
+  tps: 1826.91372
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-AllItems-ZandalarFreethinker'sBreastplate-231329"
  value: {
   dps: 1890.53983
-  tps: 2345.72848
+  tps: 2138.1813
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Average-Default"
  value: {
   dps: 1926.0223
-  tps: 2405.47344
+  tps: 2185.77239
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 1120.87616
-  tps: 2486.58786
+  tps: 1937.76542
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 411.72851
-  tps: 787.76506
+  tps: 606.61316
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 613.89419
-  tps: 1100.49059
+  tps: 868.22593
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 340.16655
-  tps: 766.42301
+  tps: 643.66819
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 131.60227
-  tps: 220.18608
+  tps: 180.41285
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 239.80767
-  tps: 397.81143
+  tps: 326.40143
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 1110.25211
-  tps: 2463.96303
+  tps: 1921.09182
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 412.74128
-  tps: 785.73562
+  tps: 606.13433
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 618.46739
-  tps: 1112.97726
+  tps: 876.79275
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
   dps: 347.17199
-  tps: 774.91223
+  tps: 651.41552
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
   dps: 132.86981
-  tps: 221.99029
+  tps: 181.94872
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
   dps: 246.36351
-  tps: 404.92671
+  tps: 333.23699
  }
 }
 dps_results: {
  key: "TestProtection-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
   dps: 1633.0658
-  tps: 2106.23828
+  tps: 1889.29418
  }
 }
