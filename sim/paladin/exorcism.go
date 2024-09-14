@@ -51,7 +51,7 @@ func (paladin *Paladin) registerExorcism() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary,//Logs show it never has partial resists, No clue why, still misses
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary, //Logs show it never has partial resists, No clue why, still misses
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,

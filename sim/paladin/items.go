@@ -206,18 +206,17 @@ func init() {
 			},
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 				core.Each(holyWrathSpells, func(spell *core.Spell) {
-					spell.CastTimeMultiplier += (0.2*float64(oldStacks))
-					spell.Cost.Multiplier += int32(100.0 * (0.2*float64(oldStacks)))
-					spell.DamageMultiplier -= (0.2*float64(oldStacks))
+					spell.CastTimeMultiplier += (0.2 * float64(oldStacks))
+					spell.Cost.Multiplier += int32(100.0 * (0.2 * float64(oldStacks)))
+					spell.DamageMultiplier -= (0.2 * float64(oldStacks))
 
-					spell.CastTimeMultiplier -= (0.2*float64(newStacks))
-					spell.Cost.Multiplier -= int32(100.0 * (0.2*float64(newStacks)))
-					spell.DamageMultiplier += (0.2*float64(newStacks))
-				
+					spell.CastTimeMultiplier -= (0.2 * float64(newStacks))
+					spell.Cost.Multiplier -= int32(100.0 * (0.2 * float64(newStacks)))
+					spell.DamageMultiplier += (0.2 * float64(newStacks))
 
 				})
 			},
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {			
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell.SpellCode == SpellCode_PaladinHolyWrath {
 					aura.Deactivate(sim)
 				}
@@ -228,14 +227,14 @@ func init() {
 			Label:    "Libram Of Wrath Trigger",
 			Duration: core.NeverExpires,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			
+
 				aura.Activate(sim)
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell.SpellCode == SpellCode_PaladinHolyShock {
 					buffAura.Activate(sim)
 					buffAura.AddStack(sim)
-				}			
+				}
 			},
 		})
 	})
