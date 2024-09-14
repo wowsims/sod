@@ -6,7 +6,7 @@ import (
 )
 
 func (warrior *Warrior) registerQuickStrike() {
-	if !warrior.HasRune(proto.WarriorRune_RuneQuickStrike) || warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
+	if !warrior.HasRune(proto.WarriorRune_RuneQuickStrike) {
 		return
 	}
 
@@ -25,6 +25,10 @@ func (warrior *Warrior) registerQuickStrike() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+		},
+
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand
 		},
 
 		CritDamageBonus: warrior.impale(),

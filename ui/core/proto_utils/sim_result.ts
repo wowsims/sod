@@ -1142,64 +1142,66 @@ export class ActionMetrics {
 	get damageDone() {
 		const normalHitAvgDamage = Number(
 			(
-				this.avgDamage -
-				this.avgCritDamage -
-				this.avgResistedDamage +
-				this.avgResistedCritDamage -
-				this.avgTickDamage +
-				this.avgResistedTickDamage +
-				this.avgCritTickDamage -
-				this.avgGlanceDamage -
-				this.avgBlockDamage
+				this.avgDamage 
+				- this.avgResistedDamage + this.avgResistedTickDamage + this.avgResistedCritDamage - this.avgResistedCritTickDamage
+				- this.avgCritDamage + this.avgCritTickDamage
+				- this.avgTickDamage
+				- this.avgGlanceDamage
+				- this.avgBlockDamage 
 			).toFixed(8),
 		);
-
-		const normalResistedHitAvgDamage = Number((this.avgResistedDamage - this.avgResistedTickDamage - this.avgResistedCritDamage).toFixed(8));
-		const normalTickAvgDamage = Number(
-			(this.avgTickDamage - this.avgResistedTickDamage - this.avgCritTickDamage - this.avgResistedCritTickDamage).toFixed(8),
+		const normalResistedHitAvgDamage = Number(
+			(this.avgResistedDamage - this.avgResistedCritDamage - this.avgResistedTickDamage + this.avgResistedCritTickDamage).toFixed(8),
 		);
-		const critHitAvgDamage = Number((this.avgCritDamage - this.avgResistedCritDamage - this.avgCritTickDamage).toFixed(8));
+		const critHitAvgDamage = Number((this.avgCritDamage - this.avgResistedCritDamage - this.avgCritTickDamage + this.avgResistedCritTickDamage).toFixed(8));
+		const resistedCritHitAvgDamage = Number((this.avgResistedCritDamage - this.avgResistedCritTickDamage).toFixed(8));
+		
+		const normalTickAvgDamage = Number(
+			(this.avgTickDamage - this.avgCritTickDamage - this.avgResistedTickDamage + this.avgResistedCritTickDamage).toFixed(8),
+		);
+		const normalResistedTickAvgDamage = Number((this.avgResistedTickDamage - this.avgResistedCritTickDamage).toFixed(8));
+		const normalCritTickAvgDamage = Number((this.avgCritTickDamage - this.avgResistedCritTickDamage).toFixed(8));
 
 		return {
 			hit: {
 				value: normalHitAvgDamage,
 				percentage: (normalHitAvgDamage / this.avgDamage) * 100,
-				average: normalHitAvgDamage / this.hits,
+				average: normalHitAvgDamage / (this.hits - this.resistedHits),
 			},
 			resistedHit: {
 				value: normalResistedHitAvgDamage,
 				percentage: (normalResistedHitAvgDamage / this.avgDamage) * 100,
-				average: normalResistedHitAvgDamage / this.hits,
+				average: normalResistedHitAvgDamage / this.resistedHits,
 			},
 			critHit: {
 				value: critHitAvgDamage,
 				percentage: (critHitAvgDamage / this.avgDamage) * 100,
-				average: critHitAvgDamage / this.crits,
+				average: critHitAvgDamage / (this.crits - this.resistedCrits),
 			},
 			resistedCritHit: {
-				value: this.avgResistedCritDamage,
-				percentage: (this.avgResistedCritDamage / this.avgDamage) * 100,
-				average: this.avgResistedCritDamage / this.crits,
+				value: resistedCritHitAvgDamage,
+				percentage: (resistedCritHitAvgDamage / this.avgDamage) * 100,
+				average: resistedCritHitAvgDamage / this.resistedCrits,
 			},
 			tick: {
 				value: normalTickAvgDamage,
 				percentage: (normalTickAvgDamage / this.avgDamage) * 100,
-				average: normalTickAvgDamage / this.ticks,
+				average: normalTickAvgDamage / (this.ticks - this.resistedTicks),
 			},
 			resistedTick: {
-				value: this.avgResistedTickDamage,
-				percentage: (this.avgResistedTickDamage / this.avgDamage) * 100,
-				average: this.avgResistedTickDamage / this.ticks,
+				value: normalResistedTickAvgDamage,
+				percentage: (normalResistedTickAvgDamage / this.avgDamage) * 100,
+				average: normalResistedTickAvgDamage / this.resistedTicks,
 			},
 			critTick: {
-				value: this.avgCritTickDamage,
-				percentage: (this.avgCritTickDamage / this.avgDamage) * 100,
-				average: this.avgCritTickDamage / this.critTicks,
+				value: normalCritTickAvgDamage,
+				percentage: (normalCritTickAvgDamage / this.avgDamage) * 100,
+				average: normalCritTickAvgDamage / (this.critTicks - this.resistedCritTicks),
 			},
 			resistedCritTick: {
 				value: this.avgResistedCritTickDamage,
 				percentage: (this.avgResistedCritTickDamage / this.avgDamage) * 100,
-				average: this.avgResistedCritTickDamage / this.critTicks,
+				average: this.avgResistedCritTickDamage / this.resistedCritTicks,
 			},
 			glance: {
 				value: this.avgGlanceDamage,

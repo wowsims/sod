@@ -250,8 +250,11 @@ func (warrior *Warrior) applyBloodSurge() {
 		Label: "Blood Surge",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells[warrior.HeroicStrike.Spell] = true
-			affectedSpells[warrior.Bloodthirst.Spell] = true
 			affectedSpells[warrior.Whirlwind.Spell] = true
+
+			if warrior.Bloodthirst != nil {
+				affectedSpells[warrior.Bloodthirst.Spell] = true
+			}
 
 			if warrior.HasRune(proto.WarriorRune_RuneQuickStrike) {
 				affectedSpells[warrior.QuickStrike.Spell] = true
