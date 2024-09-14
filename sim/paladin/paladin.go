@@ -73,6 +73,7 @@ type Paladin struct {
 	judgement         *core.Spell
 	rv                *core.Spell
 	holyShieldAura    [3]*core.Aura
+	holyShieldProc    [3]*core.Spell
 	redoubtAura       *core.Aura
 	holyWrath         []*core.Spell
 
