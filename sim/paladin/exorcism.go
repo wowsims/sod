@@ -27,9 +27,6 @@ func (paladin *Paladin) registerExorcism() {
 		{level: 60, spellID: 415073, manaCost: 345, scaleLevel: 60, minDamage: 505, maxDamage: 563, scale: 3.2},
 	}
 
-	// TODO: 2024-06-13 - Should this become a permanent effect or toggleable?
-	// hasExorcist := paladin.hasRune(proto.PaladinRune_RuneUtilityExorcist)
-	hasExorcist := true
 	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
 	paladin.exorcismCooldown = &core.Cooldown{
@@ -74,13 +71,9 @@ func (paladin *Paladin) registerExorcism() {
 
 			BonusCoefficient: 0.429,
 
-			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-				return hasExorcist || target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead
-			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				bonusCrit := 0.0
-				if hasExorcist && (target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead) {
+				if target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead {
 					bonusCrit += 100 * core.CritRatingPerCritChance
 				}
 				if hasWrath {

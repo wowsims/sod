@@ -268,7 +268,7 @@ var ItemSetMercifulJudgement = core.NewItemSet(core.ItemSet{
 			paladin := agent.GetCharacter()
 			paladin.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_PaladinConsecration {
-					spell.DamageMultiplier *= 1.5
+					spell.AOEDot().DamageMultiplier *= 1.5
 				}
 			})
 		},
