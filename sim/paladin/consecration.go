@@ -63,6 +63,7 @@ func (paladin *Paladin) registerConsecration() {
 			},
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			BonusCoefficient: 0.042,
 			Dot: core.DotConfig{
 				IsAOE: true,
 				Aura: core.Aura{
@@ -82,8 +83,8 @@ func (paladin *Paladin) registerConsecration() {
 					}
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					// Consecration does not miss but can be resisted.
-					outcomeApplier := core.Ternary(hasWrath, dot.OutcomeSnapshotCrit, dot.OutcomeTick)
+					// Consecration can miss by being fully resisted.
+					outcomeApplier := core.Ternary(hasWrath, dot.OutcomeSnapshotCrit, dot.Spell.OutcomeMagicHit)
 					for _, aoeTarget := range sim.Encounter.TargetUnits {
 						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, outcomeApplier)
 					}
