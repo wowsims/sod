@@ -1,10 +1,9 @@
 import * as InputHelpers from '../core/components/input_helpers.js';
 import { Player } from '../core/player.js';
-import { Spec } from '../core/proto/common.js';
-import { PaladinSeal, PaladinAura } from '../core/proto/paladin.js';
+import { ItemSlot, Spec } from '../core/proto/common.js';
+import { PaladinRune, PaladinSeal, PaladinAura } from '../core/proto/paladin.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { TypedEvent } from '../core/typed_event.js';
-
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 
@@ -20,6 +19,13 @@ export const AuraSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.Spec
  		//{ actionId: () => ActionId.fromSpellId(19892), value: PaladinAura.ShadowResistanceAura },
  		//{ actionId: () => ActionId.fromSpellId(19891), value: PaladinAura.FireResistanceAura },
  	],
+});
+
+export const RighteousFuryToggle = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecProtectionPaladin>({
+ 	fieldName: 'righteousFury',
+    actionId: (player: Player<Spec.SpecProtectionPaladin>) => 
+        player.hasRune(ItemSlot.ItemSlotHands, PaladinRune.RuneHandsHandOfReckoning) ?
+        ActionId.fromSpellId(407627) : ActionId.fromSpellId(25780),
 });
 
 // The below is used in the custom APL action "Cast Primary Seal".
