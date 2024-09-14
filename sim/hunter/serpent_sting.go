@@ -52,7 +52,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 			BonusCoefficient: spellCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				damage := baseDamage + (hunter.SerpentStingAPCoeff * dot.Spell.RangedAttackPower(target)) / 5
+				damage := baseDamage + (hunter.SerpentStingAPCoeff*dot.Spell.RangedAttackPower(target))/5
 				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -61,7 +61,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeRangedHitNoHitCounter)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealOutcome(sim, result)
@@ -93,7 +93,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		BonusCoefficient:         0.4,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDamage + (hunter.SerpentStingAPCoeff * spell.RangedAttackPower(target)) / 5
+			damage := baseDamage + (hunter.SerpentStingAPCoeff*spell.RangedAttackPower(target))/5
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedCritOnly)
 		},
 	})

@@ -37,7 +37,7 @@ func (warrior *Warrior) registerRendSpell() {
 		ActionID:    core.ActionID{SpellID: rend.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagOffensive,
+		Flags:       core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
 			Cost:   10,
@@ -73,7 +73,7 @@ func (warrior *Warrior) registerRendSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHitNoHitCounter)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
 			} else {
