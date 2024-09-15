@@ -905,12 +905,6 @@ func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuf
 		raidBuffs.ScrollOfAgility = false
 		raidBuffs.ScrollOfIntellect = false
 		raidBuffs.ScrollOfSpirit = false
-
-		// Summoned pets don't retain world buffs
-		individualBuffs.MightOfStormwind = false
-		individualBuffs.RallyingCryOfTheDragonslayer = false
-		individualBuffs.SpiritOfZandalar = false
-		individualBuffs.WarchiefsBlessing = false
 	}
 
 	// Pets only receive Onyxia, Rend, and ZG buffs because they're globally applied in their respective zones
