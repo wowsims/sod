@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.83842
+  weights: 0.2407
   weights: 0
-  weights: 1.39665
-  weights: 1.27713
-  weights: 0.11952
-  weights: 0
-  weights: 0
+  weights: 1.41964
+  weights: 1.29872
+  weights: 0.12092
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 17.07988
+  weights: 0
+  weights: 0
+  weights: 17.67245
   weights: 0
   weights: 0
   weights: 0
@@ -127,8 +127,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 485.90963
-  tps: 500.06199
+  dps: 569.88758
+  tps: 594.62777
  }
 }
 dps_results: {
@@ -148,43 +148,43 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1780.57462
-  tps: 1797.2112
+  dps: 1803.68777
+  tps: 1823.03045
  }
 }
 dps_results: {
  key: "TestArcane-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 564.54069
-  tps: 579.08405
+  dps: 713.67583
+  tps: 749.37009
  }
 }
 dps_results: {
  key: "TestArcane-Lvl60-Average-Default"
  value: {
-  dps: 2296.60642
-  tps: 2314.65741
+  dps: 2331.14358
+  tps: 2353.02059
  }
 }
 dps_results: {
  key: "TestArcane-Lvl60-Settings-Gnome-p4_arcane-Arcane-p4_arcane-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2304.34182
-  tps: 2612.83159
+  dps: 2339.53698
+  tps: 2717.39767
  }
 }
 dps_results: {
  key: "TestArcane-Lvl60-Settings-Gnome-p4_arcane-Arcane-p4_arcane-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 2304.34182
-  tps: 2319.76631
+  dps: 2339.53698
+  tps: 2358.43001
  }
 }
 dps_results: {
  key: "TestArcane-Lvl60-Settings-Gnome-p4_arcane-Arcane-p4_arcane-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 2523.52453
-  tps: 2539.87712
+  dps: 2523.56111
+  tps: 2543.81837
  }
 }
 dps_results: {
@@ -211,22 +211,22 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl60-Settings-Troll-p4_arcane-Arcane-p4_arcane-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2300.362
-  tps: 2626.4293
+  dps: 2325.55525
+  tps: 2708.33961
  }
 }
 dps_results: {
  key: "TestArcane-Lvl60-Settings-Troll-p4_arcane-Arcane-p4_arcane-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 2300.362
-  tps: 2316.66537
+  dps: 2325.55525
+  tps: 2344.69447
  }
 }
 dps_results: {
  key: "TestArcane-Lvl60-Settings-Troll-p4_arcane-Arcane-p4_arcane-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 2545.74805
-  tps: 2563.41834
+  dps: 2545.78464
+  tps: 2567.26286
  }
 }
 dps_results: {
@@ -253,7 +253,7 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2270.81944
-  tps: 2287.83304
+  dps: 2317.85732
+  tps: 2339.18518
  }
 }
