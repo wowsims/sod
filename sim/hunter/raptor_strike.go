@@ -172,7 +172,7 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.curQueueAura != queueAura &&
 				hunter.CurrentMana() >= hunter.RaptorStrike.Cost.GetCurrentCost() &&
-				sim.CurrentTime >= hunter.Hardcast.Expires &&
+				!hunter.IsCasting(sim) &&
 				hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance &&
 				hunter.RaptorStrike.IsReady(sim)
 		},

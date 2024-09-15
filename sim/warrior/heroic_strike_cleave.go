@@ -159,7 +159,7 @@ func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *WarriorSpell, realismIC
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return warrior.curQueueAura == nil &&
 				warrior.CurrentRage() >= srcSpell.DefaultCast.Cost &&
-				sim.CurrentTime >= warrior.Hardcast.Expires &&
+				!warrior.IsCasting(sim) &&
 				realismICD.IsReady(sim)
 		},
 

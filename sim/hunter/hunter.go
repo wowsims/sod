@@ -312,7 +312,7 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 		},
 	}
 	hunter.AutoAttacks.RangedConfig().ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-		return hunter.Hardcast.Expires < sim.CurrentTime
+		return !hunter.IsCasting(sim)
 	}
 	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
 	hunter.AutoAttacks.RangedConfig().BonusCoefficient = 1

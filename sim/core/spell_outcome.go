@@ -628,11 +628,15 @@ func (spell *Spell) outcomeEnemyMeleeWhite(sim *Simulation, result *SpellResult,
 	roll := sim.RandomFloat("Enemy White Hit Table")
 	chance := 0.0
 
-	if !result.applyEnemyAttackTableMiss(spell, attackTable, roll, &chance) &&
-		!result.applyEnemyAttackTableDodge(spell, attackTable, roll, &chance) &&
-		!result.applyEnemyAttackTableParry(spell, attackTable, roll, &chance) &&
-		!result.applyEnemyAttackTableBlock(spell, attackTable, roll, &chance) &&
-		!result.applyEnemyAttackTableCrit(spell, attackTable, roll, &chance, countHits) {
+	didHit := !result.applyEnemyAttackTableMiss(spell, attackTable, roll, &chance)
+	if !result.Target.IsCasting(sim) {
+		didHit = didHit &&
+			!result.applyEnemyAttackTableDodge(spell, attackTable, roll, &chance) &&
+			!result.applyEnemyAttackTableParry(spell, attackTable, roll, &chance) &&
+			!result.applyEnemyAttackTableBlock(spell, attackTable, roll, &chance)
+	}
+
+	if didHit && !result.applyEnemyAttackTableCrit(spell, attackTable, roll, &chance, countHits) {
 		result.applyAttackTableHit(spell, countHits)
 	}
 }
