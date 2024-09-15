@@ -125,7 +125,8 @@ type Spell struct {
 	expectedTickDamageInternal    ExpectedDamageCalculator
 
 	// The current or most recent cast data.
-	CurCast Cast
+	CurCast    Cast
+	LastCastAt time.Duration
 
 	BonusHitRating           float64
 	BonusCritRating          float64
@@ -419,6 +420,7 @@ func (spell *Spell) reset(_ *Simulation) {
 		}
 	}
 	spell.casts = 0
+	spell.LastCastAt = 0
 }
 
 func (spell *Spell) SetMetricsSplit(splitIdx int32) {

@@ -148,6 +148,30 @@ func (value *APLValueSpellTravelTime) String() string {
 	return fmt.Sprintf("Travel Time(%s)", value.spell.ActionID)
 }
 
+type APLValueSpellInFlight struct {
+	DefaultAPLValueImpl
+	spell *Spell
+}
+
+func (rot *APLRotation) newValueSpellInFlight(config *proto.APLValueSpellInFlight) APLValue {
+	spell := rot.GetAPLSpell(config.SpellId)
+	if spell == nil {
+		return nil
+	}
+	return &APLValueSpellInFlight{
+		spell: spell,
+	}
+}
+func (value *APLValueSpellInFlight) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeBool
+}
+func (value *APLValueSpellInFlight) GetBool(sim *Simulation) bool {
+	return value.spell.MissileSpeed > 0 && value.spell.LastCastAt > 0 && sim.CurrentTime-value.spell.TravelTime() <= value.spell.LastCastAt
+}
+func (value *APLValueSpellInFlight) String() string {
+	return fmt.Sprintf("In Flight(%s)", value.spell.ActionID)
+}
+
 type APLValueSpellCPM struct {
 	DefaultAPLValueImpl
 	spell *Spell

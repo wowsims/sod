@@ -223,6 +223,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			pa := &PendingAction{
 				NextActionAt: sim.CurrentTime + GCDDefault/2,
 				OnAction: func(sim *Simulation) {
+					spell.LastCastAt = sim.CurrentTime
+
 					if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 						spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s, Effective Time = %s)",
 							spell.ActionID, max(0, spell.CurCast.Cost), spell.CurCast.CastTime, spell.CurCast.EffectiveTime())
@@ -257,6 +259,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 				ActionID: spell.ActionID,
 				Pushback: 1.0,
 				OnComplete: func(sim *Simulation, target *Unit) {
+					spell.LastCastAt = sim.CurrentTime
+
 					if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 						spell.Unit.Log(sim, "Completed cast %s", spell.ActionID)
 					}
@@ -288,6 +292,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 
 			return true
 		}
+
+		spell.LastCastAt = sim.CurrentTime
 
 		if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 			spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s, Effective Time = %s)",
