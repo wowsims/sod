@@ -348,6 +348,7 @@ var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 20)
+			c.AddStat(stats.RangedAttackPower, 20)
 		},
 		// Increases the Attack Power your Beast pet gains from your attributes by 20%.
 		3: func(agent core.Agent) {

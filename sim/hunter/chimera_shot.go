@@ -18,7 +18,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 	}
 
 	hunter.ChimeraShot = hunter.RegisterSpell(core.SpellConfig{
-		SpellCode: 	  SpellCode_HunterChimeraShot,
+		SpellCode:    SpellCode_HunterChimeraShot,
 		ActionID:     core.ActionID{SpellID: 409433},
 		SpellSchool:  core.SpellSchoolNature,
 		DefenseType:  core.DefenseTypeRanged,
@@ -50,7 +50,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +
 				hunter.AmmoDamageBonus
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)

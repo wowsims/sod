@@ -499,7 +499,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		BonusCoefficient: TernaryFloat64(options.Ranged.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
+			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target, false))
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *Simulation) {

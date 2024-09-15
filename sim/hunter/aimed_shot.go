@@ -61,10 +61,10 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+			baseDamage := hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +
 				hunter.AmmoDamageBonus +
 				baseDamage
-				
+
 			if has2PDragonStalkerPursuit && (target.HasActiveAuraWithTag("ImmolationTrap") || hunter.HasActiveAuraWithTag("ExplosiveTrap")) {
 				baseDamage *= 1.20
 			}
