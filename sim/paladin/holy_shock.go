@@ -94,7 +94,7 @@ func (paladin *Paladin) registerHolyShock() {
 				if hasInfusionOfLight && result.Outcome.Matches(core.OutcomeCrit) {
 					paladin.AddMana(sim, rank.manaCost, manaMetrics)
 					paladin.holyShockCooldown.Set(sim.CurrentTime + max(0, paladin.holyShockCooldown.TimeToReady(sim)-(time.Second*3)))
-					
+
 				}
 			},
 		})

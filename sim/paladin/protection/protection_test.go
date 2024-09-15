@@ -12,7 +12,7 @@ func init() {
 
 func TestProtection(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
+		{ // Phase 4 Gear
 			Class:      proto.Class_ClassPaladin,
 			Level:      60,
 			Race:       proto.Race_RaceHuman,

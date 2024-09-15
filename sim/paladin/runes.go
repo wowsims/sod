@@ -21,6 +21,7 @@ func (paladin *Paladin) ApplyRunes() {
 	paladin.registerHammerOfTheRighteous()
 	// "RuneWristImprovedHammerOfWrath" is handled Hammer of Wrath
 	paladin.applyPurifyingPower()
+	paladin.registerAegis()
 	paladin.registerAvengersShield()
 }
 
@@ -174,6 +175,55 @@ func (paladin *Paladin) applyPurifyingPower() {
 		if spell.SpellCode == SpellCode_PaladinExorcism || spell.SpellCode == SpellCode_PaladinHolyWrath {
 			spell.CD.Duration /= 2
 		}
+	})
+}
+
+func (paladin *Paladin) registerAegis() {
+
+	if !paladin.hasRune(proto.PaladinRune_RuneChestAegis) {
+		return
+	}
+
+	// The SBV bonus is additive with Shield Specialization.
+	paladin.PseudoStats.BlockValueMultiplier += 0.3
+
+	// Redoubt now has a 10% chance to trigger on any melee or ranged attack against
+	// you, and always triggers on your melee critical strikes.
+	paladin.RegisterAura(core.Aura{
+		Label:    "Redoubt Aegis Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && result.Landed() {
+				if sim.Proc(0.1, "Aegis Attack") {
+					paladin.redoubtAura.Activate(sim)
+					paladin.redoubtAura.SetStacks(sim, 5)
+				}
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.DidCrit() {
+				paladin.redoubtAura.Activate(sim)
+				paladin.redoubtAura.SetStacks(sim, 5)
+			}
+		},
+	})
+
+	// Reckoning now also procs on any melee or ranged attack against you with (2% * talent points) chance
+	procID := core.ActionID{SpellID: 20178} // reckoning proc id
+	procChance := 0.02 * float64(paladin.Talents.Reckoning)
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:       "Reckoning Aegis Trigger",
+		Callback:   core.CallbackOnSpellHitTaken,
+		ProcMask:   core.ProcMaskMeleeOrRanged,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: procChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
+		},
 	})
 }
 

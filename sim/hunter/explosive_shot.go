@@ -30,7 +30,7 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.035,
+			BaseCost: 0.035,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
