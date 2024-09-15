@@ -311,14 +311,10 @@ func (spell *Spell) outcomeMeleeSpecialHitAndCrit(sim *Simulation, result *Spell
 	if unit.PseudoStats.InFrontOfTarget {
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) &&
 			!result.applyAttackTableDodge(spell, attackTable, roll, &chance) &&
-			!result.applyAttackTableParry(spell, attackTable, roll, &chance) {
-			if result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
-				result.applyAttackTableBlock(spell, attackTable, roll, &chance)
-			} else {
-				if !result.applyAttackTableBlock(spell, attackTable, roll, &chance) {
-					result.applyAttackTableHit(spell, countHits)
-				}
-			}
+			!result.applyAttackTableParry(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableBlock(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
+			result.applyAttackTableHit(spell, countHits)
 		}
 	} else {
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) &&
@@ -531,14 +527,10 @@ func (spell *Spell) outcomeRangedHitAndCrit(sim *Simulation, result *SpellResult
 	chance := 0.0
 
 	if spell.Unit.PseudoStats.InFrontOfTarget {
-		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) {
-			if result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
-				result.applyAttackTableBlock(spell, attackTable, roll, &chance)
-			} else {
-				if !result.applyAttackTableBlock(spell, attackTable, roll, &chance) {
-					result.applyAttackTableHit(spell, countHits)
-				}
-			}
+		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableBlock(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
+			result.applyAttackTableHit(spell, countHits)
 		}
 	} else {
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance) &&
@@ -559,14 +551,10 @@ func (dot *Dot) outcomeRangedHitAndCritSnapshot(sim *Simulation, result *SpellRe
 	chance := 0.0
 
 	if dot.Spell.Unit.PseudoStats.InFrontOfTarget {
-		if !result.applyAttackTableMissNoDWPenalty(dot.Spell, attackTable, roll, &chance) {
-			if result.applyAttackTableCritSeparateRollSnapshot(sim, dot, attackTable) {
-				result.applyAttackTableBlock(dot.Spell, attackTable, roll, &chance)
-			} else {
-				if !result.applyAttackTableBlock(dot.Spell, attackTable, roll, &chance) {
-					result.applyAttackTableHit(dot.Spell, countHits)
-				}
-			}
+		if !result.applyAttackTableMissNoDWPenalty(dot.Spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableBlock(dot.Spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableCritSeparateRollSnapshot(sim, dot, attackTable) {
+			result.applyAttackTableHit(dot.Spell, countHits)
 		}
 	} else {
 		if !result.applyAttackTableMissNoDWPenalty(dot.Spell, attackTable, roll, &chance) &&
@@ -604,12 +592,9 @@ func (spell *Spell) outcomeRangedCritOnly(sim *Simulation, result *SpellResult, 
 		roll := sim.RandomFloat("White Hit Table")
 		chance := 0.0
 
-		if result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
-			result.applyAttackTableBlock(spell, attackTable, roll, &chance)
-		} else {
-			if !result.applyAttackTableBlock(spell, attackTable, roll, &chance) {
-				result.applyAttackTableHit(spell, countHits)
-			}
+		if !result.applyAttackTableBlock(spell, attackTable, roll, &chance) &&
+			!result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
+			result.applyAttackTableHit(spell, countHits)
 		}
 	} else {
 		if !result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
