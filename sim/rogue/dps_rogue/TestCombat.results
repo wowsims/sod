@@ -400,7 +400,7 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 501.00536
-  tps: 355.7138
+  dps: 500.92444
+  tps: 355.65635
  }
 }

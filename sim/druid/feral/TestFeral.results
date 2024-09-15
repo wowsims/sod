@@ -659,8 +659,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 190.09472
-  tps: 138.06188
+  dps: 189.64278
+  tps: 137.74117
  }
 }
 dps_results: {
@@ -932,8 +932,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 464.27842
-  tps: 332.51271
+  dps: 463.66843
+  tps: 332.07243
  }
 }
 dps_results: {
@@ -1243,8 +1243,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1243.51501
-  tps: 886.61256
+  dps: 1232.97862
+  tps: 879.13172
   hps: 9.39953
  }
 }
@@ -1601,7 +1601,7 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2699.57091
-  tps: 1928.1658
+  dps: 2702.79655
+  tps: 1930.64368
  }
 }
