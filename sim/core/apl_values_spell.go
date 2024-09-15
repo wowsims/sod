@@ -166,7 +166,7 @@ func (value *APLValueSpellInFlight) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
 }
 func (value *APLValueSpellInFlight) GetBool(sim *Simulation) bool {
-	return value.spell.MissileSpeed > 0 && value.spell.LastCastAt > 0 && sim.CurrentTime-value.spell.TravelTime() <= value.spell.LastCastAt
+	return value.spell.MissileSpeed > 0 && value.spell.casts > 0 && (sim.CurrentTime <= value.spell.LastCastAt+value.spell.TravelTime())
 }
 func (value *APLValueSpellInFlight) String() string {
 	return fmt.Sprintf("In Flight(%s)", value.spell.ActionID)
