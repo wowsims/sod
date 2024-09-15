@@ -142,7 +142,7 @@ func (wp *WarlockPet) Reset(_ *core.Simulation) {
 }
 
 func (wp *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
-	if wp.primaryAbility == nil {
+	if !wp.IsEnabled() || wp.primaryAbility == nil {
 		return
 	}
 
