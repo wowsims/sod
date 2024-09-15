@@ -147,10 +147,13 @@ func init() {
 		druid := agent.(DruidAgent).GetDruid()
 		druid.FerociousBiteExcessEnergyOverride = true
 
-		energyMetrics := druid.NewEnergyMetrics(core.ActionID{SpellID: 470270})
+		actionID := core.ActionID{SpellID: 470270}
+
+		energyMetrics := druid.NewEnergyMetrics(actionID)
 
 		core.MakePermanent(druid.RegisterAura(core.Aura{
-			Label: "Idol of Feline Focus",
+			ActionID: actionID,
+			Label:    "Idol of Feline Focus",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.SpellCode == SpellCode_DruidFerociousBite && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeMiss|core.OutcomeParry) {
 					druid.AddEnergy(sim, 30, energyMetrics)
