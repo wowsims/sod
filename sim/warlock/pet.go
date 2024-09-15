@@ -49,6 +49,25 @@ func (warlock *Warlock) setDefaultActivePet() {
 	}
 }
 
+func (warlock *Warlock) changeActivePet(sim *core.Simulation, newPet *WarlockPet, isSacrifice bool) {
+	if warlock.ActivePet != nil {
+		warlock.ActivePet.Disable(sim)
+
+		// Sacrificed pets lose all buffs
+		if isSacrifice {
+			for _, aura := range warlock.ActivePet.GetAuras() {
+				aura.Deactivate(sim)
+			}
+		}
+	}
+
+	warlock.ActivePet = newPet
+
+	if newPet != nil {
+		newPet.Enable(sim, newPet)
+	}
+}
+
 func (warlock *Warlock) registerPets() {
 	warlock.Felhunter = warlock.makeFelhunter()
 	warlock.Imp = warlock.makeImp()
