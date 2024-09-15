@@ -49,7 +49,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 				spell.CD.Reset()
 			}
 
-			damage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target)) + hunter.AmmoDamageBonus + baseDamage
+			damage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target, false)) + hunter.AmmoDamageBonus + baseDamage
 			result := spell.CalcDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {

@@ -58,7 +58,7 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 			NumberOfTicks: 2,
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.039*dot.Spell.RangedAttackPower(target)
+				baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.039*dot.Spell.RangedAttackPower(target, false)
 				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -67,7 +67,7 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(target)
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(target, false)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
@@ -77,7 +77,7 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 					curTarget := target
 					for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 						if curTarget != target {
-							baseDamage = sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(curTarget)
+							baseDamage = sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(curTarget, false)
 							spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeRangedCritOnly)
 						}
 
