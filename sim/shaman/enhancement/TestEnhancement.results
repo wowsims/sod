@@ -470,8 +470,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 154.73386
-  tps: 153.83967
+  dps: 154.97819
+  tps: 154.08401
  }
 }
 dps_results: {
@@ -652,8 +652,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 754.75468
-  tps: 802.02769
+  dps: 751.6833
+  tps: 798.77043
  }
 }
 dps_results: {
@@ -834,7 +834,7 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1447.166
-  tps: 1060.3309
+  dps: 1448.60632
+  tps: 1059.89316
  }
 }

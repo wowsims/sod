@@ -561,8 +561,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3100.17152
-  tps: 2801.23845
+  dps: 3129.75289
+  tps: 2828.8483
   hps: 19.23476
  }
 }

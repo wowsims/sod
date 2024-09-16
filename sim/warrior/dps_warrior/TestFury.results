@@ -295,8 +295,8 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 560.98122
-  tps: 499.23548
+  dps: 559.87735
+  tps: 496.64252
  }
 }
 dps_results: {
@@ -435,7 +435,7 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2458.14393
-  tps: 2156.89265
+  dps: 2459.51359
+  tps: 2152.33537
  }
 }

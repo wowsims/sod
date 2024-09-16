@@ -232,7 +232,7 @@ dps_results: {
 dps_results: {
  key: "TestTankWarrior-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1299.8156
-  tps: 3416.46122
+  dps: 1305.95715
+  tps: 3427.93863
  }
 }

@@ -295,8 +295,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 261.95471
-  tps: 185.98784
+  dps: 262.24534
+  tps: 186.19419
  }
 }
 dps_results: {
@@ -400,7 +400,7 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 547.2558
-  tps: 388.55162
+  dps: 548.88284
+  tps: 389.70681
  }
 }
