@@ -1128,7 +1128,7 @@ export class ActionMetrics {
 	}
 
 	get blockedCritPercent() {
-		return this.combinedMetrics.blockedCrits;
+		return this.combinedMetrics.blockedCritPercent;
 	}
 
 	get glances() {
