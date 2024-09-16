@@ -60,8 +60,6 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 			if warrior.curQueueAura != nil {
 				warrior.curQueueAura.Deactivate(sim)
 			}
-
-			realismICD.Use(sim)
 		},
 	})
 	warrior.HeroicStrikeQueue = warrior.makeQueueSpellsAndAura(warrior.HeroicStrike, realismICD)
@@ -125,8 +123,6 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 			if warrior.curQueueAura != nil {
 				warrior.curQueueAura.Deactivate(sim)
 			}
-
-			realismICD.Use(sim)
 		},
 	})
 	warrior.CleaveQueue = warrior.makeQueueSpellsAndAura(warrior.Cleave, realismICD)
@@ -159,13 +155,20 @@ func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *WarriorSpell, realismIC
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return warrior.curQueueAura == nil &&
 				warrior.CurrentRage() >= srcSpell.DefaultCast.Cost &&
-				sim.CurrentTime >= warrior.Hardcast.Expires &&
+				!warrior.IsCasting(sim) &&
 				realismICD.IsReady(sim)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			queueAura.Activate(sim)
-			realismICD.Use(sim)
+			if realismICD.IsReady(sim) {
+				realismICD.Use(sim)
+				sim.AddPendingAction(&core.PendingAction{
+					NextActionAt: sim.CurrentTime + realismICD.Duration,
+					OnAction: func(sim *core.Simulation) {
+						queueAura.Activate(sim)
+					},
+				})
+			}
 		},
 	})
 

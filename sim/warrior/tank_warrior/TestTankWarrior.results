@@ -28,7 +28,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 7573.74
-  final_stats: 774
+  final_stats: 814
   final_stats: 165
   final_stats: 16.6
   final_stats: 178.185
@@ -50,7 +50,7 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestTankWarrior-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.36158
+  weights: 0.66526
   weights: 0
   weights: 0
   weights: 0
@@ -67,7 +67,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.3866
+  weights: 0.32786
   weights: 0
   weights: 0
   weights: 0
@@ -78,9 +78,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.63406
+  weights: 0.98649
   weights: 0
-  weights: 0.52775
+  weights: 0.52203
   weights: 0
   weights: 0
   weights: 0
@@ -99,50 +99,50 @@ stat_weights_results: {
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 1607.9423
-  tps: 3551.68394
+  dps: 1606.07121
+  tps: 3554.94323
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 909.9455
-  tps: 1855.66385
+  dps: 908.42792
+  tps: 1858.90542
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 911.28386
-  tps: 1901.84206
+  dps: 909.57183
+  tps: 1897.05933
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 903.18709
-  tps: 1891.3736
+  dps: 899.99802
+  tps: 1877.83817
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 911.28386
-  tps: 1901.84206
+  dps: 909.57183
+  tps: 1897.05933
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 1698.8023
-  tps: 3671.97048
+  dps: 1693.68455
+  tps: 3664.82577
  }
 }
 dps_results: {
  key: "TestTankWarrior-Lvl60-Average-Default"
  value: {
-  dps: 1536.44994
-  tps: 3980.44574
+  dps: 1534.8491
+  tps: 3977.75879
  }
 }
 dps_results: {
@@ -232,7 +232,7 @@ dps_results: {
 dps_results: {
  key: "TestTankWarrior-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1305.95715
-  tps: 3427.93863
+  dps: 1310.09758
+  tps: 3427.17788
  }
 }

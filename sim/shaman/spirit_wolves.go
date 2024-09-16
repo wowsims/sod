@@ -28,7 +28,7 @@ var spiritWolfBaseStats = stats.Stats{
 
 func (shaman *Shaman) NewSpiritWolves() *SpiritWolves {
 	wolves := &SpiritWolves{
-		Pet:         core.NewPet("Spirit Wolves", &shaman.Character, spiritWolfBaseStats, shaman.makeStatInheritance(), false, false),
+		Pet:         core.NewPet("Spirit Wolves", &shaman.Character, spiritWolfBaseStats, shaman.makeStatInheritance(), false, true),
 		shamanOwner: shaman,
 	}
 

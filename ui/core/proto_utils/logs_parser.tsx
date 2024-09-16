@@ -310,6 +310,7 @@ export class DamageDealtLog extends SimLog {
 	readonly dodge: boolean;
 	readonly parry: boolean;
 	readonly block: boolean;
+	readonly blockedCrit: boolean;
 	readonly tick: boolean;
 	readonly partialResist1_4: boolean;
 	readonly partialResist2_4: boolean;
@@ -326,6 +327,7 @@ export class DamageDealtLog extends SimLog {
 		dodge: boolean,
 		parry: boolean,
 		block: boolean,
+		blockedCrit: boolean,
 		tick: boolean,
 		partialResist1_4: boolean,
 		partialResist2_4: boolean,
@@ -339,6 +341,7 @@ export class DamageDealtLog extends SimLog {
 		this.dodge = dodge;
 		this.parry = parry;
 		this.block = block;
+		this.blockedCrit = blockedCrit;
 		this.hit = !miss && !crit;
 		this.crit = crit;
 		this.crush = crush;
@@ -373,6 +376,8 @@ export class DamageDealtLog extends SimLog {
 					? 'Parry'
 					: this.glance
 					? 'Glance'
+					: this.blockedCrit
+					? 'Blocked Crit'
 					: this.block
 					? 'Block'
 					: this.crit
@@ -420,7 +425,7 @@ export class DamageDealtLog extends SimLog {
 
 	static parse(params: SimLogParams): Promise<DamageDealtLog> | null {
 		const match = params.raw.match(
-			/] (.*?) (tick )?((Miss)|(Hit)|(Crit)|(Crush)|(Glance)|(Dodge)|(Parry)|(Block))( \((\d+)% Resist\))?( for (\d+\.\d+) ((damage)|(healing)|(shielding)))?/,
+			/] (.*?) (tick )?((Miss)|(Hit)|(Crit)|(Crush)|(Glance)|(Dodge)|(Parry)|(BlockedCrit)|(Block))( \((\d+)% Resist\))?( for (\d+\.\d+) ((damage)|(healing)|(shielding)))?/,
 		);
 		if (match) {
 			return ActionId.fromLogString(match[1])
@@ -429,8 +434,8 @@ export class DamageDealtLog extends SimLog {
 					params.actionId = cause;
 
 					// Note: You must change these indeces when adding or removing capture groups to the regex above
-					const amount = match[15] ? parseFloat(match[15]) : 0;
-					const type = match[16] || '';
+					const amount = match[16] ? parseFloat(match[16]) : 0;
+					const type = match[17] || '';
 
 					return new DamageDealtLog(
 						params,
@@ -443,6 +448,7 @@ export class DamageDealtLog extends SimLog {
 						match[3] == 'Dodge',
 						match[3] == 'Parry',
 						match[3] == 'Block',
+						match[3] == 'BlockedCrit',
 						Boolean(match[2]) && match[2].includes('tick'),
 						match[13] == '25',
 						match[13] == '50',

@@ -423,7 +423,7 @@ func (character *Character) initialize(agent Agent) {
 	character.gcdAction = &PendingAction{
 		Priority: ActionPriorityGCD,
 		OnAction: func(sim *Simulation) {
-			if hc := &character.Hardcast; hc.Expires != startingCDTime && hc.Expires <= sim.CurrentTime {
+			if hc := &character.Hardcast; hc.Expires != startingCDTime && !character.IsCasting(sim) {
 				hc.Expires = startingCDTime
 				if hc.OnComplete != nil {
 					hc.OnComplete(sim, hc.Target)

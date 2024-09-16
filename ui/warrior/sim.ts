@@ -122,7 +122,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 
 	autoRotation: player => {
 		const level = player.getLevel();
-		let talentTree = player.getTalentTree();
+		const talentTree = player.getTalentTree();
 
 		if (level < 60) {
 			return Presets.DefaultAPLs[level][talentTree].rotation.rotation!;
@@ -130,10 +130,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 
 		if (talentTree === 0) {
 			throw new Error('Automatic level 60 Arms rotation is not supported at this time. Please select an APL in the Rotation tab.');
-		}
-
-		if (player.hasRune(ItemSlot.ItemSlotFeet, WarriorRune.RuneGladiatorStance)) {
-			talentTree += 1;
 		}
 
 		return Presets.DefaultAPLs[level][talentTree].rotation.rotation!;
