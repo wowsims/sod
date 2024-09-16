@@ -781,9 +781,13 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.DemonicPact > 0 {
-		power := float64(raidBuffs.DemonicPact)
-		dpAura := DemonicPactAura(&character.Unit, power, CharacterBuildPhaseBuffs)
+		power := raidBuffs.DemonicPact
+		dpAura := DemonicPactAura(&character.Unit, float64(power), CharacterBuildPhaseBuffs)
 		dpAura.ExclusiveEffects[0].Priority = float64(power)
+		dpAura.OnReset = func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+			aura.SetStacks(sim, power)
+		}
 		MakePermanent(dpAura)
 	}
 
@@ -1915,6 +1919,7 @@ func DemonicPactAura(unit *Unit, spellpower float64, buildPhase CharacterBuildPh
 		Label:      "Demonic Pact",
 		ActionID:   ActionID{SpellID: 425464},
 		Duration:   time.Second * 45,
+		MaxStacks:  10000,
 		BuildPhase: buildPhase,
 	})
 	spellPowerBonusEffect(aura, spellpower)

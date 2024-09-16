@@ -235,7 +235,15 @@ func (pet *Pet) Disable(sim *Simulation) {
 
 	pet.CancelGCDTimer(sim)
 	pet.focusBar.disable(sim)
-	pet.AutoAttacks.CancelAutoSwing(sim)
+
+	if sim.CurrentTime > 0 {
+		pet.AutoAttacks.CancelAutoSwing(sim)
+	} else {
+		sim.AddPendingAction(&PendingAction{
+			NextActionAt: 0,
+			OnAction:     pet.AutoAttacks.CancelAutoSwing,
+		})
+	}
 	pet.enabled = false
 
 	// If a pet is immediately re-summoned it might try to use GCD, so we need to clear it.

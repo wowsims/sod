@@ -225,16 +225,12 @@ func (warrior *Warrior) applyBloodSurge() {
 		ActionID: core.ActionID{SpellID: 413399},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.Slam != nil {
-				warrior.Slam.DefaultCast.CastTime = 0
-				warrior.Slam.Cost.Multiplier -= 100
-			}
+			warrior.Slam.CastTimeMultiplier -= 1
+			warrior.Slam.Cost.Multiplier -= 100
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.Slam != nil {
-				warrior.Slam.DefaultCast.CastTime = 1500 * time.Millisecond
-				warrior.Slam.Cost.Multiplier += 100
-			}
+			warrior.Slam.CastTimeMultiplier += 1
+			warrior.Slam.Cost.Multiplier += 100
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// removed even if slam doesn't land
@@ -247,8 +243,13 @@ func (warrior *Warrior) applyBloodSurge() {
 	affectedSpells := make(map[*core.Spell]bool)
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Blood Surge",
+		Label: "Blood Surge Trigger",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			if warrior.Slam == nil {
+				aura.Deactivate(sim)
+				return
+			}
+
 			affectedSpells[warrior.HeroicStrike.Spell] = true
 			affectedSpells[warrior.Whirlwind.Spell] = true
 
@@ -261,11 +262,7 @@ func (warrior *Warrior) applyBloodSurge() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !affectedSpells[spell] {
-				return
-			}
-
-			if sim.Proc(0.3, "Blood Surge") {
+			if result.Landed() && affectedSpells[spell] && sim.Proc(0.3, "Blood Surge") {
 				warrior.BloodSurgeAura.Activate(sim)
 			}
 		},

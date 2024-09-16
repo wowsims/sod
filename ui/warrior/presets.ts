@@ -8,7 +8,6 @@ import {
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
-	Flask,
 	Food,
 	HealthElixir,
 	IndividualBuffs,
@@ -120,7 +119,6 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 	60: {
 		0: APLPresets[Phase.Phase4][0], // Arms
 		1: APLPresets[Phase.Phase4][1], // Fury
-		3: APLPresets[Phase.Phase4][2], // Glad
 	},
 };
 
@@ -157,9 +155,6 @@ export const TalentsPhase4Arms = PresetUtils.makePresetTalents('60 Arms', SavedT
 export const TalentsPhase4Fury = PresetUtils.makePresetTalents('60 Fury', SavedTalents.create({ talentsString: '20305020302-05050005525010051' }), {
 	customCondition: player => player.getLevel() === 60,
 });
-export const TalentsPhase4Prot = PresetUtils.makePresetTalents('60 Prot', SavedTalents.create({ talentsString: '20304300302-03-55200110530201051' }), {
-	customCondition: player => player.getLevel() === 60,
-});
 export const TalentsPhase4Glad = PresetUtils.makePresetTalents('60 Glad', SavedTalents.create({ talentsString: '30305020302-05050005025012251' }), {
 	customCondition: player => player.getLevel() === 60,
 });
@@ -168,13 +163,12 @@ export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
 	[Phase.Phase2]: [TalentsPhase2Arms, TalentsPhase2Fury],
 	[Phase.Phase3]: [TalentsPhase3Arms, TalentsPhase3Fury, TalentsPhase3Glad],
-	[Phase.Phase4]: [TalentsPhase4Arms, TalentsPhase4Fury, TalentsPhase4Prot, TalentsPhase4Glad],
+	[Phase.Phase4]: [TalentsPhase4Arms, TalentsPhase4Fury, TalentsPhase4Glad],
 	[Phase.Phase5]: [],
 };
 
 export const DefaultTalentsArms = TalentPresets[Phase.Phase4][0];
 export const DefaultTalentsFury = TalentPresets[Phase.Phase4][1];
-export const DefaultTalentsProt = TalentPresets[Phase.Phase4][2];
 export const DefaultTalentsGlad = TalentPresets[Phase.Phase4][3];
 
 export const DefaultTalents = DefaultTalentsFury;
