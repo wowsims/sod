@@ -318,12 +318,15 @@ func init() {
 			},
 		})
 
-		willOfShahramAura := character.RegisterAura(core.Aura{
-			ActionID:  core.ActionID{SpellID: 16598},
-			Label:     "Will of Shahram",
-			Duration:  time.Second * 20,
-			MaxStacks: 5,
-			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+		willOfShahram := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 16598},
+			SpellSchool: core.SpellSchoolArcane,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				counter := 0
+
 				stats := stats.Stats{
 					stats.Agility:   50,
 					stats.Intellect: 50,
@@ -331,18 +334,28 @@ func init() {
 					stats.Spirit:    50,
 					stats.Strength:  50,
 				}
-				character.AddStatsDynamic(sim, stats.Multiply(float64(-1*oldStacks)))
-				character.AddStatsDynamic(sim, stats.Multiply(float64(newStacks)))
-			},
-		})
-		willOfShahram := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 16598},
-			SpellSchool: core.SpellSchoolArcane,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskEmpty,
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				willOfShahramAura.Activate(sim)
-				willOfShahramAura.AddStack(sim)
+
+				for counter < 10 {
+					willOfShahram := character.GetOrRegisterAura(core.Aura{
+						ActionID: core.ActionID{SpellID: 16598},
+						Label:    fmt.Sprintf("Will of Shahram (%d)", counter),
+						Duration: time.Second * 20,
+						OnGain: func(aura *core.Aura, sim *core.Simulation) {
+							character.AddStatsDynamic(sim, stats)
+						},
+						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+							character.AddStatsDynamic(sim, stats.Multiply(-1.0))
+						},
+					})
+
+					if !willOfShahram.IsActive() {
+						willOfShahram.Activate(sim)
+						break
+					}
+
+					counter += 1
+
+				}
 			},
 		})
 
@@ -368,10 +381,19 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1,
+			//PPM:               100.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				spellIdx := int32(sim.Roll(0, 6))
-				castableSpells[spellIdx].Cast(sim, result.Target)
+				i := 0
+				for i < 5 {
+					if int32(sim.Roll(0, 10000)) < 633 {
+						spellIdx := int32(sim.Roll(0, 6))
+						castableSpells[spellIdx].Cast(sim, result.Target)
+					}
+					i++
+				}
+
+				//spellIdx := int32(sim.Roll(0, 6))
+				//castableSpells[spellIdx].Cast(sim, result.Target)
 			},
 		})
 	})
