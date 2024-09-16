@@ -18,7 +18,7 @@ const (
 	LibramOfBenediction                  = 215435
 	LibramOfDraconicDestruction          = 221457
 	LibramOfTheDevoted                   = 228174
-	LibramOfAvenging                     = 232421
+	LibramOfAvengement                   = 232421
 	Truthbearer2H                        = 229749
 	Truthbearer1H                        = 229806
 	HammerOfTheLightbringer              = 230003
@@ -258,7 +258,7 @@ func init() {
 		}))
 	})
 
-	core.NewItemEffect(LibramOfAvenging, func(agent core.Agent) {
+	core.NewItemEffect(LibramOfAvengement, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
 
 		paladin.OnSpellRegistered(func(spell *core.Spell) {
