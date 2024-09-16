@@ -236,7 +236,16 @@ var ItemSetTwilightOfTranscendence = core.NewItemSet(core.ItemSet{
 			priest.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Priest - Shadow 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.10
+					oldOnGain := priest.SpiritTapAura.OnGain
+					priest.SpiritTapAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+						oldOnGain(aura, sim)
+						priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.10
+					}
+					oldOnExpire := priest.SpiritTapAura.OnExpire
+					priest.SpiritTapAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+						oldOnExpire(aura, sim)
+						priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.10
+					}
 				},
 			})
 		},

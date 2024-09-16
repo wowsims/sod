@@ -50,24 +50,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestWardenShaman-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.92666
+  weights: 0.9335
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.46353
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0.42121
+  weights: 0.46314
   weights: 0
   weights: 0
   weights: 0
@@ -78,7 +66,19 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.89169
+  weights: 0
+  weights: 0.42432
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.89153
   weights: 0
   weights: 0
   weights: 0
@@ -99,64 +99,64 @@ stat_weights_results: {
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1087.56221
-  tps: 1147.94158
+  dps: 1114.37531
+  tps: 1152.89027
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1134.75943
-  tps: 1194.38184
+  dps: 1162.23876
+  tps: 1199.62887
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1124.17927
-  tps: 1188.47783
+  dps: 1153.23396
+  tps: 1193.85672
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1113.82761
-  tps: 1174.4092
+  dps: 1140.73015
+  tps: 1179.45763
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1087.25698
-  tps: 1147.69039
+  dps: 1114.21503
+  tps: 1152.657
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1119.5965
-  tps: 1179.58358
+  dps: 1146.9588
+  tps: 1184.54008
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 1506.37069
-  tps: 1698.28104
+  dps: 1528.54766
+  tps: 1693.70629
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 994.34083
-  tps: 1049.28537
+  dps: 1020.45241
+  tps: 1050.78201
  }
 }
 dps_results: {
  key: "TestWardenShaman-Lvl60-Average-Default"
  value: {
-  dps: 1671.17891
-  tps: 1342.34384
+  dps: 1697.62084
+  tps: 1342.19014
  }
 }
 dps_results: {
@@ -246,7 +246,7 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1424.18505
-  tps: 1169.85571
+  dps: 1459.10274
+  tps: 1178.8012
  }
 }
