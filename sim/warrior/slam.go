@@ -65,7 +65,7 @@ func (warrior *Warrior) registerSlamSpell() {
 			},
 			CD: cooldown,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				if cast.CastTime > 0 {
+				if spell.CastTime() > 0 {
 					warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, true)
 				}
 			},
