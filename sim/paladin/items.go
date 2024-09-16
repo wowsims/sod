@@ -263,7 +263,8 @@ func init() {
 
 		paladin.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_PaladinAvengersShield {
-				// Avenger's Shield hits up to 3 targets. It cannot miss or be resisted.
+				// Libram of Avenging causes Avenger's Shield to now hit the primary target
+				// twice (two projectiles).  Note: Avenger's Shield cannot miss or be resisted.
 				results := make([]*core.SpellResult, 2)
 				lowDamage := 366 * paladin.baseRuneAbilityDamage() / 100
 				highDamage := 448 * paladin.baseRuneAbilityDamage() / 100
@@ -275,9 +276,7 @@ func init() {
 						// Avenger's Shield cannot miss and uses magic critical _chance_.
 						results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 					}
-					// Libram of Avenging causes Avenger's Shield to hit the primary target
-					// twice (two projectiles). The second projectile fires after a fixed
-					// 1.5s delay (does not trigger GCD for second projectile).
+					// The second projectile fires after a fixed 1.5s delay (2nd autocast does not trigger GCD)
 
 					// First hit
 					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
