@@ -26,6 +26,8 @@ export const RighteousFuryToggle = InputHelpers.makeSpecOptionsBooleanIconInput<
     actionId: (player: Player<Spec.SpecProtectionPaladin>) => 
         player.hasRune(ItemSlot.ItemSlotHands, PaladinRune.RuneHandsHandOfReckoning) ?
         ActionId.fromSpellId(407627) : ActionId.fromSpellId(25780),
+	changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) =>
+		TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
 });
 
 // The below is used in the custom APL action "Cast Primary Seal".
