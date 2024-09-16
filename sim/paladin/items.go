@@ -17,6 +17,8 @@ const (
 	LibramDiscardedTenetsOfTheSilverHand = 209574
 	LibramOfBenediction                  = 215435
 	LibramOfDraconicDestruction          = 221457
+	LibramOfTheDevoted                   = 228174
+	LibramOfAvenging                     = 232421
 	Truthbearer2H                        = 229749
 	Truthbearer1H                        = 229806
 	HammerOfTheLightbringer              = 230003
@@ -238,6 +240,63 @@ func init() {
 			},
 		})
 	})
+
+	core.NewItemEffect(LibramOfTheDevoted, func(agent core.Agent) {
+		paladin := agent.(PaladinAgent).GetPaladin()
+
+		actionID := core.ActionID{SpellID: 461309}
+		devotedMetrics := paladin.NewManaMetrics(actionID)
+
+		core.MakePermanent(paladin.RegisterAura(core.Aura{
+			Label: "Libram of the Devoted Trigger",
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.DidBlock() {
+					amount := paladin.MaxMana() * 0.03
+					paladin.AddMana(sim, amount, devotedMetrics)
+				}
+			},
+		}))
+	})
+
+	core.NewItemEffect(LibramOfAvenging, func(agent core.Agent) {
+		paladin := agent.(PaladinAgent).GetPaladin()
+
+		paladin.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_PaladinAvengersShield {
+				// Avenger's Shield hits up to 3 targets. It cannot miss or be resisted.
+				results := make([]*core.SpellResult, 2)
+				lowDamage := 366 * paladin.baseRuneAbilityDamage() / 100
+				highDamage := 448 * paladin.baseRuneAbilityDamage() / 100
+
+				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					apBonus := 0.091 * spell.MeleeAttackPower()
+					for idx := range results {
+						baseDamage := sim.Roll(lowDamage, highDamage) + apBonus
+						// Avenger's Shield cannot miss and uses magic critical _chance_.
+						results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
+					}
+					// Libram of Avenging causes Avenger's Shield to hit the primary target
+					// twice (two projectiles). The second projectile fires after a fixed
+					// 1.5s delay (does not trigger GCD for second projectile).
+
+					// First hit
+					spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+						spell.DealDamage(sim, results[0])
+					})
+
+					// Second hit
+					timeToHit := spell.TravelTime() + time.Millisecond*1500
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt: sim.CurrentTime + timeToHit,
+						OnAction: func(s *core.Simulation) {
+							spell.DealDamage(sim, results[1])
+						},
+					})
+				}
+			}
+		})
+	})
+
 }
 
 // https://www.wowhead.com/classic/spell=465414/crusaders-zeal
