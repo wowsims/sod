@@ -55,6 +55,10 @@ func (result *SpellResult) DidBlock() bool {
 	return result.Outcome.Matches(OutcomeBlock)
 }
 
+func (result *SpellResult) DidBlockCrit() bool {
+	return result.Outcome.Matches(OutcomeBlock) && result.Outcome.Matches(OutcomeCrit)
+}
+
 func (result *SpellResult) DidResist() bool {
 	return result.Outcome.Matches(OutcomePartial)
 }
@@ -96,11 +100,11 @@ func (spell *Spell) MeleeAttackPower() float64 {
 }
 
 func (spell *Spell) RangedAttackPower(target *Unit, ignoreTargetModifiers bool) float64 {
-	return TernaryFloat64(ignoreTargetModifiers, 
-		spell.Unit.stats[stats.RangedAttackPower], 
-		spell.Unit.stats[stats.RangedAttackPower] +
-		spell.Unit.PseudoStats.MobTypeAttackPower +
-		target.PseudoStats.BonusRangedAttackPowerTaken)
+	return TernaryFloat64(ignoreTargetModifiers,
+		spell.Unit.stats[stats.RangedAttackPower],
+		spell.Unit.stats[stats.RangedAttackPower]+
+			spell.Unit.PseudoStats.MobTypeAttackPower+
+			target.PseudoStats.BonusRangedAttackPowerTaken)
 }
 
 func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
@@ -386,7 +390,9 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 			}
 		}
 
-		if result.DidCrit() {
+		if result.DidBlockCrit() {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalBlockedCritDamage += result.Damage
+		} else if result.DidCrit() {
 			spell.SpellMetrics[result.Target.UnitIndex].TotalCritDamage += result.Damage
 			if isPartialResist {
 				spell.SpellMetrics[result.Target.UnitIndex].TotalResistedCritDamage += result.Damage
