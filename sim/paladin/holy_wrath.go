@@ -26,17 +26,6 @@ func (paladin *Paladin) registerHolyWrath() {
 	hasPurifyingPower := paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower)
 	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
-	cdTime := time.Duration(60)
-	if hasPurifyingPower {
-		cdTime = cdTime / 2
-	}
-	cd := core.Cooldown{
-		Timer:    paladin.NewTimer(),
-		Duration: time.Second * cdTime,
-	}
-
-	paladin.holyWrath = make([]*core.Spell, len(ranks))
-
 	var results []*core.SpellResult
 
 	for i, rank := range ranks {
@@ -68,7 +57,10 @@ func (paladin *Paladin) registerHolyWrath() {
 					CastTime: time.Second * 2,
 				},
 
-				CD: cd,
+				CD: core.Cooldown{
+					Timer:    paladin.NewTimer(),
+					Duration: time.Second * 60,
+				},
 			},
 
 			DamageMultiplier: 1.0,
