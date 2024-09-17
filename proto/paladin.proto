@@ -131,6 +131,7 @@ enum PaladinSeal {
 message PaladinOptions {
 	PaladinSeal primarySeal = 1;
 	PaladinAura aura = 2;
+    bool sanctuaryBlessing = 3;
 	bool IsUsingDivineStormStopAttack = 4;
 	bool IsUsingJudgementStopAttack = 5;
 	bool IsUsingCrusaderStrikeStopAttack = 6;

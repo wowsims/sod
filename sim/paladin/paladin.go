@@ -140,6 +140,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerAuraMastery()
 	paladin.registerHolyShield()
 	paladin.registerShieldOfRighteousness()
+	paladin.registerBlessingOfSanctuary()
 
 	paladin.enableMultiJudge = true // change this to baseline false when P5 launches
 	paladin.lingerDuration = time.Millisecond * 400
