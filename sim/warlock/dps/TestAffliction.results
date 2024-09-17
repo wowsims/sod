@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.23326
+  weights: -0.25916
   weights: 0
-  weights: 0.78048
-  weights: 0
-  weights: 0
+  weights: 0.73191
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.93775
-  weights: 2.59702
+  weights: 0
+  weights: 0
+  weights: 2.94475
+  weights: 2.48916
   weights: 0
   weights: 0
   weights: 0
@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.23359
+  weights: -0.22541
   weights: 0
-  weights: 0.59539
-  weights: 0
-  weights: 0
+  weights: 0.56405
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 9.04852
-  weights: 10.88319
+  weights: 0
+  weights: 0
+  weights: 9.03399
+  weights: 10.67957
   weights: 0
   weights: 0
   weights: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -1.78018
+  weights: -1.73956
   weights: 0
-  weights: 1.37581
-  weights: 0
-  weights: 0
+  weights: 1.3311
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 13.45991
-  weights: 20.6946
+  weights: 0
+  weights: 0
+  weights: 13.43274
+  weights: 20.40975
   weights: 0
   weights: 0
   weights: 0
@@ -302,64 +302,64 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl40-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 658.39461
-  tps: 634.30277
+  dps: 639.17823
+  tps: 615.08639
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Average-Default"
  value: {
-  dps: 651.00996
-  tps: 627.06086
+  dps: 631.98044
+  tps: 608.03134
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 646.9738
-  tps: 1295.11365
+  dps: 628.08568
+  tps: 1276.22553
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 646.9738
-  tps: 623.07204
+  dps: 628.08568
+  tps: 604.18393
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 632.56072
-  tps: 597.27223
+  dps: 613.40971
+  tps: 578.12122
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 423.69391
-  tps: 1093.0447
+  dps: 412.59788
+  tps: 1081.94867
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 423.69391
-  tps: 414.38749
+  dps: 412.59788
+  tps: 403.29147
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 426.54958
-  tps: 403.84517
+  dps: 414.41768
+  tps: 391.71326
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 652.59995
-  tps: 628.20772
+  dps: 633.73117
+  tps: 609.33893
  }
 }
 dps_results: {
@@ -372,64 +372,64 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl50-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 1561.35131
-  tps: 1358.34708
+  dps: 1527.715
+  tps: 1324.71076
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Average-Default"
  value: {
-  dps: 1563.58568
-  tps: 1362.29529
+  dps: 1530.32987
+  tps: 1329.03949
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 2253.71692
-  tps: 3059.20009
+  dps: 2220.73289
+  tps: 3026.21605
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 1545.86148
-  tps: 1343.5302
+  dps: 1512.47505
+  tps: 1310.14377
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 1607.15834
-  tps: 1392.55894
+  dps: 1573.03603
+  tps: 1358.43662
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongMultiTarget"
  value: {
-  dps: 1392.16493
-  tps: 2329.57534
+  dps: 1374.91999
+  tps: 2312.33039
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongSingleTarget"
  value: {
-  dps: 861.62096
-  tps: 757.14422
+  dps: 844.37602
+  tps: 739.89928
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
  value: {
-  dps: 867.37476
-  tps: 763.74141
+  dps: 849.77564
+  tps: 746.14229
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1548.72949
-  tps: 1348.72096
+  dps: 1515.85861
+  tps: 1315.85009
  }
 }
 dps_results: {
@@ -456,8 +456,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2978.29801
-  tps: 2811.98943
+  dps: 2923.55962
+  tps: 2757.25104
  }
 }
 dps_results: {
@@ -470,8 +470,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 3012.49946
-  tps: 2848.49264
+  dps: 2959.57687
+  tps: 2795.57005
  }
 }
 dps_results: {
@@ -484,70 +484,70 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1331.69967
-  tps: 1133.75815
+  dps: 1285.61969
+  tps: 1087.67817
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1320.12207
-  tps: 1120.30063
+  dps: 1274.63441
+  tps: 1074.81296
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Average-Default"
  value: {
-  dps: 3069.84332
-  tps: 2904.22331
+  dps: 3015.63203
+  tps: 2850.01202
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 3028.86428
-  tps: 4277.33106
+  dps: 2975.04906
+  tps: 4223.51585
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 3028.86428
-  tps: 2863.40499
+  dps: 2975.04906
+  tps: 2809.58977
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 2898.25195
-  tps: 2700.81566
+  dps: 2843.381
+  tps: 2645.94471
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1516.28004
-  tps: 2948.76934
+  dps: 1488.96306
+  tps: 2921.45237
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1516.28004
-  tps: 1460.45722
+  dps: 1488.96306
+  tps: 1433.14024
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1446.74644
-  tps: 1364.95834
+  dps: 1418.61626
+  tps: 1336.82815
  }
 }
 dps_results: {
  key: "TestAffliction-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3040.13334
-  tps: 2873.56342
+  dps: 2986.30813
+  tps: 2819.73822
  }
 }
