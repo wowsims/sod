@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -37,7 +38,12 @@ func (mage *Mage) registerFrozenOrbCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mage.frozenOrb.EnableWithTimeout(sim, mage.frozenOrb, time.Second*15)
+			for _, orb := range mage.frozenOrbPets {
+				if !orb.IsActive() {
+					orb.EnableWithTimeout(sim, orb, time.Second*15)
+					break
+				}
+			}
 		},
 	})
 
@@ -57,9 +63,14 @@ type FrozenOrb struct {
 	TickCount              int64
 }
 
-func (mage *Mage) NewFrozenOrb() *FrozenOrb {
+func (mage *Mage) NewFrozenOrbPets() []*FrozenOrb {
+	// It's possible to have up to 2 Frozen Orbs active at a time because of Cold Snap
+	return []*FrozenOrb{mage.newFrozenOrb(1), mage.newFrozenOrb(2)}
+}
+
+func (mage *Mage) newFrozenOrb(idx int32) *FrozenOrb {
 	frozenOrb := &FrozenOrb{
-		Pet:       core.NewPet("Frozen Orb", &mage.Character, frozenOrbBaseStats, createFrozenOrbInheritance(), false, true),
+		Pet:       core.NewPet(fmt.Sprintf("Frozen Orb %d", idx), &mage.Character, frozenOrbBaseStats, frozenOrbStatInheritance(), false, true),
 		mage:      mage,
 		TickCount: 0,
 	}
@@ -69,26 +80,29 @@ func (mage *Mage) NewFrozenOrb() *FrozenOrb {
 	return frozenOrb
 }
 
-func (ffo *FrozenOrb) GetPet() *core.Pet {
-	return &ffo.Pet
+func (orb *FrozenOrb) GetPet() *core.Pet {
+	return &orb.Pet
 }
 
-func (ffo *FrozenOrb) Initialize() {
-	ffo.registerFrozenOrbTickSpell()
+func (orb *FrozenOrb) Initialize() {
+	orb.registerFrozenOrbTickSpell()
+
+	// Frozen Orb seems to benefit from Frost Specialization
+	orb.PseudoStats.SchoolBonusHitChance = orb.mage.PseudoStats.SchoolBonusHitChance
 }
 
-func (ffo *FrozenOrb) Reset(_ *core.Simulation) {
+func (orb *FrozenOrb) Reset(_ *core.Simulation) {
 }
 
-func (ffo *FrozenOrb) ExecuteCustomRotation(sim *core.Simulation) {
-	if success := ffo.FrozenOrbTick.Cast(sim, ffo.mage.CurrentTarget); !success {
-		ffo.Disable(sim)
+func (orb *FrozenOrb) ExecuteCustomRotation(sim *core.Simulation) {
+	if success := orb.FrozenOrbTick.Cast(sim, orb.mage.CurrentTarget); !success {
+		orb.Disable(sim)
 	}
 }
 
 var frozenOrbBaseStats = stats.Stats{}
 
-var createFrozenOrbInheritance = func() func(stats.Stats) stats.Stats {
+func frozenOrbStatInheritance() core.PetStatInheritance {
 	return func(ownerStats stats.Stats) stats.Stats {
 		return stats.Stats{
 			stats.SpellHit:   ownerStats[stats.SpellHit],
@@ -98,17 +112,17 @@ var createFrozenOrbInheritance = func() func(stats.Stats) stats.Stats {
 	}
 }
 
-func (ffo *FrozenOrb) registerFrozenOrbTickSpell() {
-	hasFOFRune := ffo.mage.HasRune(proto.MageRune_RuneChestFingersOfFrost)
-	baseDamage := ffo.mage.baseRuneAbilityDamage() * 0.9
+func (orb *FrozenOrb) registerFrozenOrbTickSpell() {
+	hasFOFRune := orb.mage.HasRune(proto.MageRune_RuneChestFingersOfFrost)
+	baseDamage := orb.mage.baseRuneAbilityDamage() * 0.9
 	spellCoef := .129
 
-	ffo.FrozenOrbTick = ffo.RegisterSpell(core.SpellConfig{
+	orb.FrozenOrbTick = orb.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 440809},
 		SpellSchool: core.SpellSchoolFrost | core.SpellSchoolArcane,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagNoLogs,
+		Flags:       SpellFlagMage | SpellFlagChillSpell,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -124,20 +138,20 @@ func (ffo *FrozenOrb) registerFrozenOrbTickSpell() {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
-			ffo.TickCount += 1
-			if ffo.TickCount == 15 {
-				ffo.TickCount = 0
+			orb.TickCount += 1
+			if orb.TickCount == 15 {
+				orb.TickCount = 0
 			}
 		},
 	})
 
 	if hasFOFRune {
-		ffo.FrozenOrbFingerOfFrost = core.MakePermanent(ffo.RegisterAura(core.Aura{
+		orb.FrozenOrbFingerOfFrost = core.MakePermanent(orb.RegisterAura(core.Aura{
 			Label: "Frozen Orb FoF",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == ffo.FrozenOrbTick && ffo.TickCount == 1 {
-					ffo.mage.FingersOfFrostAura.Activate(sim)
-					ffo.mage.FingersOfFrostAura.AddStack(sim)
+				if spell == orb.FrozenOrbTick && orb.TickCount == 0 {
+					orb.mage.FingersOfFrostAura.Activate(sim)
+					orb.mage.FingersOfFrostAura.AddStack(sim)
 				}
 			},
 		}))

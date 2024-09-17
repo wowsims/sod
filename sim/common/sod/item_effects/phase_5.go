@@ -5,18 +5,29 @@ import (
 
 	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
 const (
-	DrakeTalonCleaver         = 230271
-	JekliksCrusher            = 230911
-	HaldberdOfSmiting         = 230991
-	Stormwrath                = 231387
-	WrathOfWray               = 231779
-	LightningsCell            = 231784
-	JekliksCrusherBloodied    = 231861
-	HaldberdOfSmitingBloodied = 231870
+	Heartstriker               = 230253
+	DrakeTalonCleaver          = 230271 // 19353
+	JekliksCrusher             = 230911
+	WillOfArlokk               = 230939
+	HaldberdOfSmiting          = 230991
+	TigulesHarpoon             = 231272
+	GrileksCarver              = 231273
+	PitchforkOfMadness         = 231277
+	Stormwrath                 = 231387
+	WrathOfWray                = 231779
+	LightningsCell             = 231784
+	Windstriker                = 231817
+	GrileksCarverBloodied      = 231846
+	TigulesHarpoonBloodied     = 231849
+	WillOfArlokkBloodied       = 231850
+	JekliksCrusherBloodied     = 231861
+	PitchforkOfMadnessBloodied = 231864
+	HaldberdOfSmitingBloodied  = 231870
 )
 
 func init() {
@@ -26,13 +37,51 @@ func init() {
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
 
-	itemhelpers.CreateWeaponEquipProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
+	// https://www.wowhead.com/classic/item=230271/drake-talon-cleaver
+	// Chance on hit: Delivers a fatal wound for 300 damage.
+	// Original proc rate 1.0 increased to approximately 1.60 in SoD phase 5
+	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
 
-	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmiting, "Halberd of Smiting", 0.5, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee)         // TBD does this work as phantom strike?, confirm 0.5 ppm in SoD
-	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmitingBloodied, "Halberd of Smiting", 0.5, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee) // TBD does this work as phantom strike?, confirm 0.5 ppm in SoD
+	// https://www.wowhead.com/classic/item=231273/grileks-carver
+	// +141 Attack Power when fighting Dragonkin.
+	core.NewItemEffect(GrileksCarver, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
+			character.PseudoStats.MobTypeAttackPower += 141
+		}
+	})
+	core.NewItemEffect(GrileksCarverBloodied, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
+			character.PseudoStats.MobTypeAttackPower += 141
+		}
+	})
 
-	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 4.0, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
-	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusherBloodied, "Jeklik's Crusher", 4.0, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
+	// https://www.wowhead.com/classic/item=230991/halberd-of-smiting
+	// Equip: Chance to decapitate the target on a melee swing, causing 452 to 676 damage.
+	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmiting, "Halberd of Smiting", 2.1, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee)         // Works as phantom strike
+	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmitingBloodied, "Halberd of Smiting", 2.1, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee) // Works as phantom strike
+
+	// https://www.wowhead.com/classic/item=230911/jekliks-crusher
+	// Chance on hit: Wounds the target for 200 to 220 damage.
+	// Original proc rate 4.0 lowered to 1.5 in SoD phase 5
+	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 1.5, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusherBloodied, "Jeklik's Crusher", 1.5, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
+
+	// https://www.wowhead.com/classic/item=231277/pitchfork-of-madness
+	// +141 Attack Power when fighting Demons.
+	core.NewItemEffect(PitchforkOfMadness, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+			character.PseudoStats.MobTypeAttackPower += 141
+		}
+	})
+	core.NewItemEffect(PitchforkOfMadnessBloodied, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+			character.PseudoStats.MobTypeAttackPower += 141
+		}
+	})
 
 	// https://www.wowhead.com/classic/item=231387/stormwrath-sanctified-shortblade-of-the-galefinder
 	// Equip: Damaging non-periodic spells have a chance to blast up to 3 targets for 181 to 229.
@@ -77,6 +126,52 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=231272/tigules-harpoon
+	// +99 Attack Power when fighting Beasts.
+	core.NewItemEffect(TigulesHarpoon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
+			character.PseudoStats.MobTypeAttackPower += 99
+		}
+	})
+	core.NewItemEffect(TigulesHarpoonBloodied, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
+			character.PseudoStats.MobTypeAttackPower += 99
+		}
+	})
+
+	// https://www.wowhead.com/classic/item=230939/will-of-arlokk
+	// Use: Calls forth a charmed snake to worship you, increasing your Spirit by 200 for 20 sec. (2 Min Cooldown)
+	core.NewItemEffect(WillOfArlokk, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		makeWillOfWarlookOnUseEffect(character, WillOfArlokk)
+	})
+	core.NewItemEffect(WillOfArlokkBloodied, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		makeWillOfWarlookOnUseEffect(character, WillOfArlokkBloodied)
+	})
+
+	// https://www.wowhead.com/classic/item=231817/windstriker
+	// Chance on hit: All attacks are guaranteed to land and will be critical strikes for the next 3 sec.
+	core.NewItemEffect(Windstriker, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
+		procMask := character.GetProcMaskForItem(Windstriker)
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Felstriker Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               0.6,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				effectAura.Activate(sim)
+			},
+		})
+	})
+
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
@@ -84,7 +179,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=231784/lightnings-cell
 	// You gain a charge of Gathering Storm each time you cause a damaging spell critical strike.
 	// When you reach 3 charges of Gathering Storm, they will release, firing an Unleashed Storm for 277 to 323 damage.
-	// Gathering Storm cannot be gained more often than once every 2.5 sec. (2.5s cooldown)
+	// Gathering Storm cannot be gained more often than once every 2 sec. (2s cooldown)
 	core.NewItemEffect(LightningsCell, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -121,7 +216,7 @@ func init() {
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeCrit,
 			ProcMask: core.ProcMaskSpellDamage,
-			ICD:      time.Millisecond * 2500,
+			ICD:      time.Millisecond * 2000,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				chargeAura.Activate(sim)
 				chargeAura.AddStack(sim)
@@ -129,7 +224,66 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=230253/hearstriker
+	// Equip: 2% chance on ranged hit to gain 1 extra attack. (Proc chance: 1%, 1s cooldown) // obviously something wrong here lol
+	core.NewItemEffect(Heartstriker, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if !character.AutoAttacks.AutoSwingRanged {
+			return
+		}
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Heartstrike",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskRanged,
+			ProcChance:        0.02,
+			ICD:               time.Second * 1,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				spell.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164}, spell.ActionID)
+			},
+		})
+	})
+
 	core.NewSimpleStatOffensiveTrinketEffect(WrathOfWray, stats.Stats{stats.Strength: 92}, time.Second*20, time.Minute*2)
 
 	core.AddEffectsToTest = true
+}
+
+func makeWillOfWarlookOnUseEffect(character *core.Character, itemID int32) {
+	actionID := core.ActionID{ItemID: itemID}
+
+	buffAura := character.RegisterAura(core.Aura{
+		ActionID: actionID,
+		Label:    "Serpentine Spirit",
+		Duration: time.Second * 20,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			character.AddStatDynamic(sim, stats.Spirit, 200)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			character.AddStatDynamic(sim, stats.Spirit, -200)
+		},
+	})
+
+	spell := character.RegisterSpell(core.SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolPhysical,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+		Cast: core.CastConfig{
+			CD: core.Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Minute * 2,
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			buffAura.Activate(sim)
+		},
+	})
+
+	character.AddMajorCooldown(core.MajorCooldown{
+		Spell: spell,
+		Type:  core.CooldownTypeDPS,
+	})
 }

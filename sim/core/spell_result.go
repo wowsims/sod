@@ -55,6 +55,10 @@ func (result *SpellResult) DidBlock() bool {
 	return result.Outcome.Matches(OutcomeBlock)
 }
 
+func (result *SpellResult) DidBlockCrit() bool {
+	return result.Outcome.Matches(OutcomeBlock) && result.Outcome.Matches(OutcomeCrit)
+}
+
 func (result *SpellResult) DidResist() bool {
 	return result.Outcome.Matches(OutcomePartial)
 }
@@ -95,10 +99,12 @@ func (spell *Spell) MeleeAttackPower() float64 {
 	return spell.Unit.stats[stats.AttackPower] + spell.Unit.PseudoStats.MobTypeAttackPower
 }
 
-func (spell *Spell) RangedAttackPower(target *Unit) float64 {
-	return spell.Unit.stats[stats.RangedAttackPower] +
-		spell.Unit.PseudoStats.MobTypeAttackPower +
-		target.PseudoStats.BonusRangedAttackPowerTaken
+func (spell *Spell) RangedAttackPower(target *Unit, ignoreTargetModifiers bool) float64 {
+	return TernaryFloat64(ignoreTargetModifiers,
+		spell.Unit.stats[stats.RangedAttackPower],
+		spell.Unit.stats[stats.RangedAttackPower]+
+			spell.Unit.PseudoStats.MobTypeAttackPower+
+			target.PseudoStats.BonusRangedAttackPowerTaken)
 }
 
 func (spell *Spell) PhysicalHitChance(attackTable *AttackTable) float64 {
@@ -303,8 +309,19 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 
 		spell.Unit.Log(
 			sim,
-			"%s %s [DEBUG] MAP: %0.01f, RAP: %0.01f, SP: %0.01f, BaseDamage:%0.01f, AfterAttackerMods:%0.01f, AfterResistances:%0.01f, AfterTargetMods:%0.01f, AfterOutcome:%0.01f, AfterPostOutcome:%0.01f",
-			target.LogLabel(), spell.ActionID, spell.Unit.GetStat(stats.AttackPower), spell.Unit.GetStat(stats.RangedAttackPower), spell.Unit.GetStat(stats.SpellPower), baseDamage, afterAttackMods, afterResistances, afterTargetMods, afterOutcome, afterPostOutcome)
+			"%s %s [DEBUG] MAP+Bonus: %0.01f, RAP+Bonus: %0.01f, SP+Bonus: %0.01f, BaseDamage:%0.01f, AfterAttackerMods:%0.01f, AfterResistances:%0.01f, AfterTargetMods:%0.01f, AfterOutcome:%0.01f, AfterPostOutcome:%0.01f",
+			target.LogLabel(),
+			spell.ActionID,
+			spell.Unit.GetStat(stats.AttackPower)+TernaryFloat64(spell.SchoolIndex == stats.SchoolIndexPhysical, spell.GetBonusDamage(), 0),
+			spell.Unit.GetStat(stats.RangedAttackPower)+TernaryFloat64(spell.SchoolIndex == stats.SchoolIndexPhysical, spell.GetBonusDamage(), 0),
+			spell.GetBonusDamage(),
+			baseDamage,
+			afterAttackMods,
+			afterResistances,
+			afterTargetMods,
+			afterOutcome,
+			afterPostOutcome,
+		)
 	}
 
 	result.Threat = spell.ThreatFromDamage(result.Outcome, result.Damage)
@@ -320,9 +337,13 @@ func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
-	if dot := spell.DotOrAOEDot(target); dot.BonusCoefficient > 0 {
+
+	dot := spell.DotOrAOEDot(target)
+	attackerMultiplier *= dot.DamageMultiplier
+	if dot.BonusCoefficient > 0 {
 		baseDamage += dot.BonusCoefficient * spell.GetBonusDamage()
 	}
+
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, true, outcomeApplier)
 }
 func (dot *Dot) CalcSnapshotDamage(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
@@ -344,6 +365,8 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
 			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 		}
 
+		dot.SnapshotAttackerMultiplier *= dot.DamageMultiplier
+
 		if dot.Spell.SchoolIndex == stats.SchoolIndexPhysical {
 			dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 		} else {
@@ -355,6 +378,7 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
 func (spell *Spell) DealOutcome(sim *Simulation, result *SpellResult) {
 	spell.DealDamage(sim, result)
 }
+
 func (spell *Spell) CalcAndDealOutcome(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
 	result := spell.CalcOutcome(sim, target, outcomeApplier)
 	spell.DealDamage(sim, result)
@@ -377,19 +401,17 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 			}
 		}
 
-		if result.DidCrit() {
-			if result.DidBlock() {
-				spell.SpellMetrics[result.Target.UnitIndex].TotalCritBlockDamage += result.Damage
-			} else {
-				spell.SpellMetrics[result.Target.UnitIndex].TotalCritDamage += result.Damage
+		if result.DidBlockCrit() {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalBlockedCritDamage += result.Damage
+		} else if result.DidCrit() {
+			spell.SpellMetrics[result.Target.UnitIndex].TotalCritDamage += result.Damage
+			if isPartialResist {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalResistedCritDamage += result.Damage
+			}
+			if isPeriodic {
+				spell.SpellMetrics[result.Target.UnitIndex].TotalCritTickDamage += result.Damage
 				if isPartialResist {
-					spell.SpellMetrics[result.Target.UnitIndex].TotalResistedCritDamage += result.Damage
-				}
-				if isPeriodic {
-					spell.SpellMetrics[result.Target.UnitIndex].TotalCritTickDamage += result.Damage
-					if isPartialResist {
-						spell.SpellMetrics[result.Target.UnitIndex].TotalResistedCritTickDamage += result.Damage
-					}
+					spell.SpellMetrics[result.Target.UnitIndex].TotalResistedCritTickDamage += result.Damage
 				}
 			}
 		} else if result.DidGlance() {
@@ -494,9 +516,12 @@ func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64, isRollover bool)
 		if dot.BonusCoefficient > 0 {
 			dot.SnapshotBaseDamage += dot.BonusCoefficient * dot.Spell.HealingPower(target)
 		}
-		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
+
 		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
 		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+		dot.SnapshotAttackerMultiplier *= dot.DamageMultiplier
+
+		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
 	}
 }
 

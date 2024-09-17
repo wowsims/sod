@@ -36,6 +36,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hunter.RaptorStrikeOH = hunter.newRaptorStrikeHitSpell(rank, false)
 
 	spellConfig := core.SpellConfig{
+		SpellCode:     SpellCode_HunterRaptorStrike,
 		ActionID:      core.ActionID{SpellID: spellID},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
@@ -114,7 +115,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 	}
 
 	return hunter.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_HunterRaptorStrike,
+		SpellCode:   SpellCode_HunterRaptorStrikeHit,
 		ActionID:    core.ActionID{SpellID: spellID}.WithTag(core.TernaryInt32(isMH, 1, 2)),
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -171,7 +172,7 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.curQueueAura != queueAura &&
 				hunter.CurrentMana() >= hunter.RaptorStrike.Cost.GetCurrentCost() &&
-				sim.CurrentTime >= hunter.Hardcast.Expires &&
+				!hunter.IsCasting(sim) &&
 				hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance &&
 				hunter.RaptorStrike.IsReady(sim)
 		},

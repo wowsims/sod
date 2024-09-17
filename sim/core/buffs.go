@@ -564,84 +564,67 @@ type StatConfig struct {
 	IsMultiplicative bool
 }
 
-func makeExclusiveFlatStatBuff(aura *Aura, category string, config StatConfig) {
-	aura.NewExclusiveEffect(category+config.Stat.StatName()+"Buff", false, ExclusiveEffect{
-		Priority: config.Amount,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(config.Stat, config.Amount)
-			} else {
-				aura.Unit.AddStatDynamic(sim, config.Stat, config.Amount)
-			}
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(config.Stat, -config.Amount)
-			} else {
-				aura.Unit.AddStatDynamic(sim, config.Stat, -config.Amount)
-			}
-		},
-	})
-}
-
-func makeExclusiveMultiplierBuff(aura *Aura, category string, config StatConfig) {
-	dep := aura.Unit.NewDynamicMultiplyStat(config.Stat, config.Amount)
-	aura.NewExclusiveEffect(category+config.Stat.StatName()+"%Buff", false, ExclusiveEffect{
-		Priority: config.Amount,
-		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
-			if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
-				aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
-			} else {
-				ee.Aura.Unit.EnableDynamicStatDep(s, dep)
-			}
-		},
-		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
-			if ee.Aura.Unit.Env.MeasuringStats {
-				aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
-			} else {
-				ee.Aura.Unit.DisableDynamicStatDep(s, dep)
-			}
-		},
-	})
-}
-
-func makeExclusivePseudostatsBuff(aura *Aura, config BuffConfig) {
-	hasOnGain := config.ExtraOnGain != nil
-	hasOnExpire := config.ExtraOnExpire != nil
-
-	if !hasOnGain && !hasOnExpire {
-		return
-	}
-	if hasOnGain && !hasOnExpire {
-		panic("Missing ExtraOnExpire for" + config.Category)
-	}
-	if hasOnExpire && !hasOnGain {
-		panic("Missing ExtraOnGain for " + config.Category)
-	}
-
-	aura.NewExclusiveEffect(config.Category+"PseudostatsBuff", false, ExclusiveEffect{
-		Priority: 1, // TODO: May need a way to add priority to these in the future
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			config.ExtraOnGain(ee.Aura, sim)
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			config.ExtraOnExpire(ee.Aura, sim)
-		},
-	})
-}
-
+// Create an exclusive effect that tries to determine within-category priority based on the value of stats provided.
 func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 	aura.BuildPhase = CharacterBuildPhaseBuffs
 
+	startingStats := aura.Unit.GetStats()
+	bonusStats := stats.Stats{}
+	statDeps := []*stats.StatDependency{}
 	for _, statConfig := range config.Stats {
 		if statConfig.IsMultiplicative {
-			makeExclusiveMultiplierBuff(aura, config.Category, statConfig)
+			startingStats[statConfig.Stat] *= statConfig.Amount
+			statDeps = append(statDeps, aura.Unit.NewDynamicMultiplyStat(statConfig.Stat, statConfig.Amount))
 		} else {
-			makeExclusiveFlatStatBuff(aura, config.Category, statConfig)
+			startingStats[statConfig.Stat] += statConfig.Amount
+			bonusStats[statConfig.Stat] += statConfig.Amount
 		}
 	}
 
-	makeExclusivePseudostatsBuff(aura, config)
+	totalStats := 0.0
+	for _, amount := range startingStats {
+		totalStats += amount
+	}
+
+	aura.NewExclusiveEffect(config.Category, false, ExclusiveEffect{
+		Priority: totalStats,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStats(bonusStats)
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats)
+				if config.ExtraOnGain != nil {
+					config.ExtraOnGain(ee.Aura, sim)
+				}
+			}
+
+			for _, dep := range statDeps {
+				if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
+				} else {
+					ee.Aura.Unit.EnableDynamicStatDep(sim, dep)
+				}
+			}
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStats(bonusStats.Multiply(-1))
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats.Multiply(-1))
+				if config.ExtraOnExpire != nil {
+					config.ExtraOnExpire(ee.Aura, sim)
+				}
+			}
+
+			for _, dep := range statDeps {
+				if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
+				} else {
+					ee.Aura.Unit.DisableDynamicStatDep(sim, dep)
+				}
+			}
+		},
+	})
 }
 
 // Applies buffs that affect individual players.
@@ -798,9 +781,13 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.DemonicPact > 0 {
-		power := float64(raidBuffs.DemonicPact)
-		dpAura := DemonicPactAura(&character.Unit, power, CharacterBuildPhaseBuffs)
+		power := raidBuffs.DemonicPact
+		dpAura := DemonicPactAura(&character.Unit, float64(power), CharacterBuildPhaseBuffs)
 		dpAura.ExclusiveEffects[0].Priority = float64(power)
+		dpAura.OnReset = func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+			aura.SetStacks(sim, power)
+		}
 		MakePermanent(dpAura)
 	}
 
@@ -902,7 +889,8 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 // Applies buffs to pets.
 func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
 	// Summoned pets, like Mage Water Elemental, aren't around to receive raid buffs.
-	if petAgent.GetPet().IsGuardian() {
+	// Also assume that applicable world buffs are applied to the starting pet only
+	if petAgent.GetPet().IsGuardian() || !petAgent.GetPet().enabledOnStart {
 		return
 	}
 
@@ -914,15 +902,6 @@ func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuf
 	// the owner during combat or don't make sense for a pet.
 	individualBuffs.Innervates = 0
 	individualBuffs.PowerInfusions = 0
-
-	if !petAgent.GetPet().enabledOnStart {
-		raidBuffs.ScrollOfProtection = false
-		raidBuffs.ScrollOfStamina = false
-		raidBuffs.ScrollOfStrength = false
-		raidBuffs.ScrollOfAgility = false
-		raidBuffs.ScrollOfIntellect = false
-		raidBuffs.ScrollOfSpirit = false
-	}
 
 	// Pets only receive Onyxia, Rend, and ZG buffs because they're globally applied in their respective zones
 	// SoD versions were removed from pets though
@@ -1940,6 +1919,7 @@ func DemonicPactAura(unit *Unit, spellpower float64, buildPhase CharacterBuildPh
 		Label:      "Demonic Pact",
 		ActionID:   ActionID{SpellID: 425464},
 		Duration:   time.Second * 45,
+		MaxStacks:  10000,
 		BuildPhase: buildPhase,
 	})
 	spellPowerBonusEffect(aura, spellpower)
@@ -2075,25 +2055,22 @@ func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
 		// 60: 25291,
 	}[level]
 
-	aura := unit.GetOrRegisterAura(Aura{
+	bonusAP := math.Floor(BuffSpellByLevel[BlessingOfMight][level][stats.AttackPower] * (1 + 0.04*float64(impBomPts)))
+
+	aura := MakePermanent(unit.GetOrRegisterAura(Aura{
 		Label:      "Blessing of Might",
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: math.Floor(BuffSpellByLevel[BlessingOfMight][level][stats.AttackPower] * (1 + 0.04*float64(impBomPts))),
-			})
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: -1 * math.Floor(BuffSpellByLevel[BlessingOfMight][level][stats.AttackPower]*(1+0.04*float64(impBomPts))),
-			})
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "Paladin Physical Buffs",
+		Stats: []StatConfig{
+			{stats.AttackPower, bonusAP, false},
 		},
 	})
+
 	return aura
 }
 
@@ -2106,7 +2083,7 @@ func HornOfLordaeronAura(unit *Unit, level int32) *Aura {
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
-		Category: "ZandalarBuff",
+		Category: "Paladin Physical Buffs",
 		Stats: []StatConfig{
 			{stats.Agility, updateStats[stats.Agility], false},
 			{stats.Strength, updateStats[stats.Strength], false},

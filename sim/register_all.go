@@ -18,7 +18,7 @@ import (
 	"github.com/wowsims/sod/sim/mage"
 
 	// holyPaladin "github.com/wowsims/sod/sim/paladin/holy"
-	// protectionPaladin "github.com/wowsims/sod/sim/paladin/protection"
+	"github.com/wowsims/sod/sim/paladin/protection"
 	// "github.com/wowsims/sod/sim/paladin/retribution"
 	// healingPriest "github.com/wowsims/sod/sim/priest/healing"
 	"github.com/wowsims/sod/sim/priest/shadow"
@@ -55,7 +55,7 @@ func RegisterAll() {
 	dpsWarrior.RegisterDpsWarrior()
 	tankWarrior.RegisterTankWarrior()
 	// holyPaladin.RegisterHolyPaladin()
-	// protectionPaladin.RegisterProtectionPaladin()
+	protection.RegisterProtectionPaladin()
 	retribution.RegisterRetributionPaladin()
 	dpsWarlock.RegisterDpsWarlock()
 	tankWarlock.RegisterTankWarlock()

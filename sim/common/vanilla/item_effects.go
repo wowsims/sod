@@ -501,7 +501,8 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=228397/empyrean-demolisher
 	// Chance on hit: Increases your attack speed by 20% for 10 sec.
-	itemhelpers.CreateWeaponProcAura(EmpyreanDemolisher, "Empyrean Demolisher", 1.0, func(character *core.Character) *core.Aura {
+	// Original proc rate 1.0 lowered to 0.6 in SoD phase 5
+	itemhelpers.CreateWeaponProcAura(EmpyreanDemolisher, "Empyrean Demolisher", 0.6, func(character *core.Character) *core.Aura {
 		return character.GetOrRegisterAura(core.Aura{
 			Label:    "Empyrean Demolisher Haste Aura",
 			ActionID: core.ActionID{SpellID: 21165},
@@ -553,8 +554,9 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=228350/eskhandars-right-claw
 	// Chance on hit: Increases your attack speed by 30% for 5 sec.
-	itemhelpers.CreateWeaponProcAura(EskhandarsRightClaw, "Eskhandar's Right Claw", 1.0, eskhandarsRightClawAura)
-	itemhelpers.CreateWeaponProcAura(EskhandarsRightClawMolten, "Eskhandar's Right Claw (Molten)", 1.0, eskhandarsRightClawAura)
+	// Original proc rate 1.0 lowered to 0.6 in SoD phase 5
+	itemhelpers.CreateWeaponProcAura(EskhandarsRightClaw, "Eskhandar's Right Claw", 0.6, eskhandarsRightClawAura)
+	itemhelpers.CreateWeaponProcAura(EskhandarsRightClawMolten, "Eskhandar's Right Claw (Molten)", 0.6, eskhandarsRightClawAura)
 
 	// https://www.wowhead.com/classic/item=13218/fang-of-the-crystal-spider
 	// Chance on hit: Slows target enemy's casting speed and increases the time between melee and ranged attacks by 10% for 10 sec.
@@ -588,6 +590,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=12590/felstriker
 	// Chance on hit: All attacks are guaranteed to land and will be critical strikes for the next 3 sec.
+	// Original proc rate 1.0 lowered to 0.6 in SoD phase 5
 	core.NewItemEffect(Felstriker, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -599,7 +602,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1,
+			PPM:               0.6,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				effectAura.Activate(sim)
 			},
@@ -1094,7 +1097,11 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcSpell(Ironfoe, "Ironfoe", 1.0, func(character *core.Character) *core.Spell {
+	// https://www.wowhead.com/classic/item=227991/ironfoe
+	// Chance on hit: Grants 2 extra attacks on your next swing.
+	// TODO: Need updated proc rate lowered in SoD phase 5
+	// Original proc rate 0.8 lowered to approximately 0.53 in SoD phase 5
+	itemhelpers.CreateWeaponProcSpell(Ironfoe, "Ironfoe", 0.53, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{SpellID: 15494},
 			SpellSchool:      core.SpellSchoolPhysical,
@@ -1857,7 +1864,8 @@ func init() {
 	// https://www.wowhead.com/classic/item=230242/the-untamed-blade
 	// Chance on hit: Increases Strength by 300 for 8 sec.
 	// Estimated based on data from WoW Armaments Discord
-	itemhelpers.CreateWeaponProcAura(TheUntamedBlade, "The Untamed Blade", 1.0, func(character *core.Character) *core.Aura {
+	// Original proc rate 1.0 lowered to approximately 0.55 in SoD phase 5
+	itemhelpers.CreateWeaponProcAura(TheUntamedBlade, "The Untamed Blade", 0.55, func(character *core.Character) *core.Aura {
 		return character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 23719},
 			Label:    "Untamed Fury",
@@ -1894,7 +1902,7 @@ func init() {
 
 		procMask := character.GetProcMaskForItem(Thunderfury)
 		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
-
+		thunderfuryASAuras := character.NewEnemyAuraArray(core.ThunderfuryASAura)
 		procActionID := core.ActionID{SpellID: 21992}
 
 		singleTargetSpell := character.GetOrRegisterSpell(core.SpellConfig{
@@ -1908,6 +1916,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.CalcAndDealDamage(sim, target, 300, spell.OutcomeMagicHitAndCrit)
+				thunderfuryASAuras.Get(target).Activate(sim)
 			},
 		})
 
@@ -2275,7 +2284,7 @@ func init() {
 				}
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskRanged) && icd.IsReady(sim) && sim.Proc(0.02, "HandOfInjustice") {
 					icd.Use(sim)
-					aura.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164})
+					aura.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164}, spell.ActionID)
 				}
 			},
 		})
@@ -2681,8 +2690,8 @@ func bonereaversEdgeEffect(character *core.Character) *core.Spell {
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			for _, target := range sim.Encounter.TargetUnits {
-				target.AddStatDynamic(sim, stats.Armor, -700*float64(oldStacks))
-				target.AddStatDynamic(sim, stats.Armor, 700*float64(newStacks))
+				target.AddStatDynamic(sim, stats.Armor, 700*float64(oldStacks))
+				target.AddStatDynamic(sim, stats.Armor, -700*float64(newStacks))
 			}
 		},
 	})

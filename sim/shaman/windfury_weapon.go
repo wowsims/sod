@@ -24,16 +24,16 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 	rank := WindfuryWeaponRankByLevel[shaman.Level]
 
 	ewMultiplier := []float64{1, 1.13, 1.27, 1.4}[shaman.Talents.ElementalWeapons]
-	bonusAP := WindfuryWeaponBonusAP[rank] * ewMultiplier * ewMultiplier // currently double-dipping
+	bonusAP := WindfuryWeaponBonusAP[rank]
 
 	actionID := core.ActionID{SpellID: WindfuryWeaponSpellId[rank]}.WithTag(core.TernaryInt32(isMH, 1, 2))
 	procMask := core.ProcMaskMeleeMHSpecial
+	damageMultiplier := 1.0
 	weaponDamageFunc := shaman.MHWeaponDamage
-	damageMultiplier := shaman.AutoAttacks.MHConfig().DamageMultiplier
 	if !isMH {
 		procMask = core.ProcMaskMeleeOHSpecial
-		weaponDamageFunc = shaman.OHWeaponDamage
 		damageMultiplier = shaman.AutoAttacks.OHConfig().DamageMultiplier
+		weaponDamageFunc = shaman.OHWeaponDamage
 	}
 
 	spellConfig := core.SpellConfig{
@@ -47,7 +47,7 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			mAP := spell.MeleeAttackPower() + bonusAP
+			mAP := spell.MeleeAttackPower() + (bonusAP+shaman.bonusWindfuryWeaponAP)*ewMultiplier*ewMultiplier
 			baseDamage := weaponDamageFunc(sim, mAP)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},

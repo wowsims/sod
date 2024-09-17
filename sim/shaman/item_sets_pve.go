@@ -311,8 +311,9 @@ var ItemSetEruptionOfTheTenStorms = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Shaman - Elemental 2P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.Flags.Matches(SpellFlagShaman) && result.DidCrit() {
+					if shaman.isShamanDamagingSpell(spell) && result.DidCrit() {
 						shaman.ClearcastingAura.Activate(sim)
+						shaman.ClearcastingAura.SetStacks(sim, shaman.ClearcastingAura.MaxStacks)
 					}
 				},
 			}))
@@ -337,7 +338,7 @@ var ItemSetEruptionOfTheTenStorms = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// Your Clearcasting also increases the damage of affected spells by 30% [reduced to 10% against player - controlled targets].
+		// While Clearcasting is active, you deal 10% more non-Physical damage.
 		6: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			if !shaman.Talents.ElementalFocus {
@@ -348,20 +349,15 @@ var ItemSetEruptionOfTheTenStorms = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - T2 - Shaman - Elemental 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					oldOnGain := shaman.ClearcastingAura.OnGain
-					oldOnExpire := shaman.ClearcastingAura.OnExpire
-					affectedSpells := shaman.getClearcastingSpells()
-
 					shaman.ClearcastingAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnGain(aura, sim)
-						core.Each(affectedSpells, func(spell *core.Spell) {
-							spell.DamageMultiplier *= 1.30
-						})
+						shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.10)
 					}
+
+					oldOnExpire := shaman.ClearcastingAura.OnExpire
 					shaman.ClearcastingAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnExpire(aura, sim)
-						core.Each(affectedSpells, func(spell *core.Spell) {
-							spell.DamageMultiplier /= 1.30
-						})
+						shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.10)
 					}
 				},
 			}))
@@ -462,19 +458,17 @@ var ItemSetResolveOfTheTenStorms = core.NewItemSet(core.ItemSet{
 var ItemSetImpactOfTheTenStorms = core.NewItemSet(core.ItemSet{
 	Name: "Impact of the Ten Storms",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Increases the frequency of Maelstrom Weapon triggering by 100%.
+		// Your chance to trigger Static Shock is increased by 12% (6% while dual-wielding)
 		2: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
+			if !shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock) {
 				return
 			}
 
 			core.MakePermanent(shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Shaman - Enhancement 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					oldPPMM := shaman.maelstromWeaponPPMM
-					newPPMM := shaman.AutoAttacks.NewPPMManager(oldPPMM.GetPPM()*2, core.ProcMaskMelee)
-					shaman.maelstromWeaponPPMM = &newPPMM
+					shaman.staticSHocksProcChance += 0.06
 				},
 			}))
 		},
@@ -519,28 +513,94 @@ var ItemSetImpactOfTheTenStorms = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// You gain 1 charge of Maelstrom Weapon immediately after casting a spell made instant by Maelstrom Weapon.
+		// Your Lightning Shield now gains a charge each time you hit a target with Lightning Bolt or Chain Lightning, up to a maximum of 9 charges.
+		// In addition, your Lightning Shield can now deal critical damage.
+		// Note: Only works with Static Shock
 		6: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
+			if !shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock) {
 				return
 			}
 
+			affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning}
 			core.MakePermanent(shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Shaman - Enhancement 6P Bonus",
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell.Flags.Matches(SpellFlagMaelstrom) && spell.CurCast.CastTime == 0 {
-						// Delay the bonus charge to ensure the aura isn't deactivated by the aura's handler after the charge is granted
-						core.StartDelayedAction(sim, core.DelayedActionOptions{
-							DoAt: sim.CurrentTime + time.Millisecond*1,
-							OnAction: func(sim *core.Simulation) {
-								shaman.MaelstromWeaponAura.Activate(sim)
-								shaman.MaelstromWeaponAura.AddStack(sim)
-							},
-						})
+				OnInit: func(t26pAura *core.Aura, sim *core.Simulation) {
+					for _, aura := range shaman.LightningShieldAuras {
+						if aura == nil {
+							continue
+						}
+
+						oldOnGain := aura.OnGain
+						aura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+							oldOnGain(aura, sim)
+							t26pAura.Activate(sim)
+						}
+
+						oldOnExpire := aura.OnExpire
+						aura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+							oldOnExpire(aura, sim)
+							t26pAura.Deactivate(sim)
+						}
+					}
+
+					shaman.lightningShieldCanCrit = true
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					// Tested and it doesn't proc from overloads
+					if slices.Contains(affectedSpellCodes, spell.SpellCode) && spell.ActionID.Tag != CastTagOverload && result.Landed() {
+						shaman.ActiveShieldAura.AddStack(sim)
 					}
 				},
 			}))
+		},
+	},
+})
+
+var ItemSetReliefOfTheTenStorms = core.NewItemSet(core.ItemSet{
+	Name: "Relief of the Ten Storms",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your damaging and healing critical strikes now have a 100% chance to trigger your Water Shield, but do not consume a charge or trigger its cooldown.
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Restoration 6P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() {
+						shaman.WaterShieldRestore.Cast(sim, aura.Unit)
+					}
+				},
+			}))
+		},
+		// Your Chain Lightning now also heals the target of your Earth Shield for 100% of the damage done.
+		4: func(agent core.Agent) {
+			// TODO: Implement Earth Shield
+			// shaman := agent.(ShamanAgent).GetShaman()
+
+			// core.MakePermanent(shaman.RegisterAura())
+		},
+		// Increases the healing of Chain Heal and the damage of Chain Lightning by 20%.
+		6: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Restoration 6P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					spells := core.Flatten([][]*core.Spell{
+						shaman.ChainHeal,
+						shaman.ChainHealOverload,
+						shaman.ChainLightning,
+						shaman.ChainLightningOverload,
+					})
+
+					for _, spell := range spells {
+						if spell != nil {
+							spell.DamageMultiplier *= 1.20
+						}
+					}
+				},
+			})
 		},
 	},
 })

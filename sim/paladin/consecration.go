@@ -46,7 +46,7 @@ func (paladin *Paladin) registerConsecration() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagPureDot | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+			Flags:       core.SpellFlagPureDot | core.SpellFlagAPL,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,
@@ -63,6 +63,7 @@ func (paladin *Paladin) registerConsecration() {
 			},
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			BonusCoefficient: 0.042,
 			Dot: core.DotConfig{
 				IsAOE: true,
 				Aura: core.Aura{
@@ -82,7 +83,8 @@ func (paladin *Paladin) registerConsecration() {
 					}
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-					// consecration ticks can miss, but those misses aren't logged as "resist"
+					// Consecration can miss, showing up as either a resist in logs or a
+					// silent failure (missing damage tick).
 					outcomeApplier := core.Ternary(hasWrath, dot.OutcomeMagicHitAndSnapshotCrit, dot.Spell.OutcomeMagicHit)
 					for _, aoeTarget := range sim.Encounter.TargetUnits {
 						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, outcomeApplier)

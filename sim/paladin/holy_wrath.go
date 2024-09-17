@@ -23,11 +23,6 @@ func (paladin *Paladin) registerHolyWrath() {
 		{level: 60, spellID: 10318, manaCost: 805, scaleLevel: 60, minDamage: 490, maxDamage: 576, scale: 1.9},
 	}
 
-	cd := core.Cooldown{
-		Timer:    paladin.NewTimer(),
-		Duration: time.Second * 60,
-	}
-
 	hasPurifyingPower := paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower)
 	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
@@ -42,7 +37,7 @@ func (paladin *Paladin) registerHolyWrath() {
 		minDamage := rank.minDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
 		maxDamage := rank.maxDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
 
-		paladin.GetOrRegisterSpell(core.SpellConfig{
+		holyWrathSpell := paladin.GetOrRegisterSpell(core.SpellConfig{
 			SpellCode:   SpellCode_PaladinHolyWrath,
 			ActionID:    core.ActionID{SpellID: rank.spellID},
 			SpellSchool: core.SpellSchoolHoly,
@@ -58,14 +53,17 @@ func (paladin *Paladin) registerHolyWrath() {
 			},
 			Cast: core.CastConfig{
 				DefaultCast: core.Cast{
-					GCD:      time.Second,
+					GCD:      core.GCDDefault,
 					CastTime: time.Second * 2,
 				},
-				IgnoreHaste: true,
-				CD:          cd,
+
+				CD: core.Cooldown{
+					Timer:    paladin.NewTimer(),
+					Duration: time.Second * 60,
+				},
 			},
 
-			DamageMultiplier: 1,
+			DamageMultiplier: 1.0,
 			ThreatMultiplier: 1,
 			BonusCoefficient: 0.19,
 
@@ -89,5 +87,7 @@ func (paladin *Paladin) registerHolyWrath() {
 				spell.BonusCritRating -= bonusCrit
 			},
 		})
+
+		paladin.holyWrath = append(paladin.holyWrath, holyWrathSpell)
 	}
 }

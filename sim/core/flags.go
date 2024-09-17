@@ -125,12 +125,10 @@ func (ho HitOutcome) String() string {
 		return "Parry"
 	} else if ho.Matches(OutcomeGlance) {
 		return "Glance" + ho.PartialResistString()
+	} else if ho.Matches(OutcomeBlock) && ho.Matches(OutcomeCrit) {
+		return "BlockedCrit"
 	} else if ho.Matches(OutcomeBlock) {
-		if ho.Matches(OutcomeCrit) {
-			return "CriticalBlock"
-		} else {
-			return "Block"
-		}
+		return "Block"
 	} else if ho.Matches(OutcomeCrit) {
 		return "Crit" + ho.PartialResistString()
 	} else if ho.Matches(OutcomeHit) {

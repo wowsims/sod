@@ -15,7 +15,7 @@ func (paladin *Paladin) registerJudgement() {
 		ActionID:    core.ActionID{SpellID: 20271},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagCastTimeNoGCD,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.06,
@@ -32,11 +32,7 @@ func (paladin *Paladin) registerJudgement() {
 		ExtraCastCondition: func(_ *core.Simulation, _ *core.Unit) bool {
 			return paladin.currentSeal.IsActive()
 		},
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// Seal of Command requires this spell to act as its intermediary dummy,
-			// rolling on the spell hit table. If it succeeds, the actual Judgement of Command rolls on the
-			// melee special attack crit/hit table, necessitating two discrete spells.
-			// All other judgements are cast directly.
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
 
 			// Phase 1-3
 			//if paladin.currentJudgement.SpellCode == SpellCode_PaladinJudgementOfCommand {
@@ -46,28 +42,36 @@ func (paladin *Paladin) registerJudgement() {
 			//}
 			// paladin.currentSeal.Deactivate(sim)
 
-			paladin.thisJudgement = SealJudgeCodeNone // Seals Judged this Judgement
+			// Phase 4 - (Double Judge not tied to T1 6pc bonus) - Judge all Seals (2 possible without 6pc, and with 6pc)
+			// Random order of Judgements (Server Side - Indeterministic)
 
-			// Phase 4 - (Not tied to T1 6pc bonus) - Judge all Seals (2 possible without 6pc, 2 or 3 with 6pc TBD)
-
-			for sealTypeIndex, sealAuraType := range paladin.allSealAuras {
-				for rankIndex, sealAuraRankSpecific := range sealAuraType {
-					if sealAuraRankSpecific.IsActive() {
-						if paladin.rollDummyJudgeHit[sealTypeIndex] {
-							spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
-						} else {
-							paladin.allJudgeSpells[sealTypeIndex][rankIndex].Cast(sim, target)
-						}
-						if paladin.consumeSealsOnJudge {
-							sealAuraRankSpecific.Deactivate(sim)
-						}
-						paladin.thisJudgement |= (1 << (sealTypeIndex + 1))
-					}
-				}
+			// Phase 5 - (Double Judge now tied to T1 6pc bonus) - Judge all Seals (2 possible with 6pc)
+			// Otherwise Judge Current Seal, or Previous Seal if two are active
+			multipleSealsActive := false
+			if paladin.prevSeal != nil && paladin.prevSeal.IsActive() {
+				multipleSealsActive = true
 			}
 
-			paladin.lastJudgement = paladin.thisJudgement
+			if multipleSealsActive {
+				paladin.castSpecificJudgement(sim, target, paladin.prevJudgement, paladin.prevSeal)
+
+				if paladin.enableMultiJudge {
+					paladin.castSpecificJudgement(sim, target, paladin.currentJudgement, paladin.currentSeal)
+				}
+			} else {
+				paladin.castSpecificJudgement(sim, target, paladin.currentJudgement, paladin.currentSeal)
+			}
 
 		},
 	})
+}
+
+// Helper Function For casting Judgement
+func (paladin *Paladin) castSpecificJudgement(sim *core.Simulation, target *core.Unit, judgementSpell *core.Spell, matchingSeal *core.Aura) {
+
+	judgementSpell.Cast(sim, target)
+
+	if paladin.consumeSealsOnJudge {
+		matchingSeal.Deactivate(sim)
+	}
 }

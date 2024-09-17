@@ -71,7 +71,7 @@ func (priest *Priest) registerVoidPlagueSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)
 				spell.Dot(target).Apply(sim)

@@ -49,6 +49,25 @@ func (warlock *Warlock) setDefaultActivePet() {
 	}
 }
 
+func (warlock *Warlock) changeActivePet(sim *core.Simulation, newPet *WarlockPet, isSacrifice bool) {
+	if warlock.ActivePet != nil {
+		warlock.ActivePet.Disable(sim)
+
+		// Sacrificed pets lose all buffs
+		if isSacrifice {
+			for _, aura := range warlock.ActivePet.GetAuras() {
+				aura.Deactivate(sim)
+			}
+		}
+	}
+
+	warlock.ActivePet = newPet
+
+	if newPet != nil {
+		newPet.Enable(sim, newPet)
+	}
+}
+
 func (warlock *Warlock) registerPets() {
 	warlock.Felhunter = warlock.makeFelhunter()
 	warlock.Imp = warlock.makeImp()
@@ -123,7 +142,7 @@ func (wp *WarlockPet) Reset(_ *core.Simulation) {
 }
 
 func (wp *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
-	if wp.primaryAbility == nil {
+	if !wp.IsEnabled() || wp.primaryAbility == nil {
 		return
 	}
 
@@ -182,7 +201,6 @@ func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
 
 		// does correctly not include ff/misery
 		ownerHitChance := ownerStats[stats.SpellHit] / core.SpellHitRatingPerHitChance
-
 		highestSchoolPower := ownerStats[stats.SpellPower] + ownerStats[stats.SpellDamage] + max(ownerStats[stats.FirePower], ownerStats[stats.ShadowPower])
 
 		return stats.Stats{
@@ -197,7 +215,7 @@ func (warlock *Warlock) makeStatInheritance() core.PetStatInheritance {
 			stats.ShadowPower:      ownerStats[stats.ShadowPower] * 0.15,
 			stats.SpellPenetration: ownerStats[stats.SpellPenetration],
 			stats.MeleeHit:         ownerHitChance * core.MeleeHitRatingPerHitChance,
-			stats.SpellHit:         math.Floor(ownerStats[stats.SpellHit] / 12.0 * 17.0),
+			stats.SpellHit:         math.Floor(ownerHitChance / 12.0 * 17.0),
 			stats.MeleeCrit:        ownerStats[stats.MeleeCrit],
 			stats.SpellCrit:        ownerStats[stats.SpellCrit],
 			stats.Dodge:            ownerStats[stats.MeleeCrit],

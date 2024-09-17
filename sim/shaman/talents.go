@@ -91,9 +91,10 @@ func (shaman *Shaman) applyElementalFocus() {
 	var affectedSpells []*core.Spell
 
 	shaman.ClearcastingAura = shaman.RegisterAura(core.Aura{
-		Label:    "Clearcasting",
-		ActionID: core.ActionID{SpellID: 16246},
-		Duration: time.Second * 15,
+		Label:     "Clearcasting",
+		ActionID:  core.ActionID{SpellID: 16246},
+		Duration:  time.Second * 15,
+		MaxStacks: 1,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = shaman.getClearcastingSpells()
 		},
@@ -111,36 +112,44 @@ func (shaman *Shaman) applyElementalFocus() {
 				}
 			})
 		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			if newStacks == 0 {
+				aura.Deactivate(sim)
+			}
+		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
 			if aura.RemainingDuration(sim) == aura.Duration {
 				return
 			}
 
-			if spell.Flags.Matches(SpellFlagFocusable) {
-				aura.Deactivate(sim)
+			if aura.GetStacks() > 0 && shaman.isShamanDamagingSpell(spell) {
+				aura.RemoveStack(sim)
 			}
 		},
 	})
 
-	shaman.RegisterAura(core.Aura{
-		Label:    "Elemental Focus",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: "Elemental Focus Trigger",
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagFocusable) && sim.RandomFloat("Elemental Focus") < procChance {
+			if shaman.isShamanDamagingSpell(spell) && sim.Proc(procChance, "Elemental Focus") {
 				shaman.ClearcastingAura.Activate(sim)
+				shaman.ClearcastingAura.SetStacks(sim, shaman.ClearcastingAura.MaxStacks)
 			}
 		},
-	})
+	}))
+}
+
+func (shaman *Shaman) isShamanDamagingSpell(spell *core.Spell) bool {
+	return spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellDamage)
 }
 
 func (shaman *Shaman) getClearcastingSpells() []*core.Spell {
 	return core.FilterSlice(
 		shaman.Spellbook,
-		func(spell *core.Spell) bool { return spell != nil && spell.Flags.Matches(SpellFlagFocusable) },
+		func(spell *core.Spell) bool {
+			return spell != nil && shaman.isShamanDamagingSpell(spell)
+		},
 	)
 }
 
@@ -197,7 +206,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(
 				shaman.Spellbook,
-				func(spell *core.Spell) bool { return spell != nil && spell.Flags.Matches(SpellFlagFocusable) },
+				func(spell *core.Spell) bool { return spell != nil && shaman.isShamanDamagingSpell(spell) },
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -215,9 +224,10 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 					spell.Cost.Multiplier += 100
 				}
 			})
+			shaman.ElementalMastery.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagFocusable) {
+			if shaman.isShamanDamagingSpell(spell) {
 				// Elemental mastery can be batched
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + core.SpellBatchWindow,
@@ -234,7 +244,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		},
 	})
 
-	eleMastSpell := shaman.RegisterSpell(core.SpellConfig{
+	shaman.ElementalMastery = shaman.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
@@ -249,7 +259,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	})
 
 	shaman.AddMajorCooldown(core.MajorCooldown{
-		Spell: eleMastSpell,
+		Spell: shaman.ElementalMastery,
 		Type:  core.CooldownTypeDPS,
 	})
 }

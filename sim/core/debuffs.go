@@ -240,6 +240,9 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.Waylay {
 		MakePermanent(WaylayAura(target))
 	}
+	if debuffs.Thunderfury {
+		MakePermanent(ThunderfuryASAura(target, level))
+	}
 
 	// Miss
 	if debuffs.InsectSwarm && targetIdx == 0 {
@@ -409,8 +412,10 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32, stackCount int32) *Aura {
 	return aura
 }
 
+var ShadowWeavingSpellIDs = [6]int32{0, 15257, 15331, 15332, 15333, 15334}
+
 func ShadowWeavingAura(unit *Unit, rank int) *Aura {
-	spellId := [6]int32{0, 15257, 15331, 15332, 15333, 15334}[rank]
+	spellId := ShadowWeavingSpellIDs[rank]
 	return unit.GetOrRegisterAura(Aura{
 		Label:     "Shadow Weaving",
 		ActionID:  ActionID{SpellID: spellId},
@@ -561,8 +566,8 @@ func OccultPoisonDebuffAura(target *Unit, playerLevel int32) *Aura {
 		Duration:  time.Second * 12,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 / (1 + 0.02*float64(oldStacks)))
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 + 0.02*float64(newStacks))
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 / (1 + 0.03*float64(oldStacks)))
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 + 0.03*float64(newStacks))
 		},
 	})
 
@@ -604,8 +609,9 @@ func MekkatorqueFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 
 // Mark of Chaos does not stack with Curse of Shadows and Elements
 func MarkOfChaosDebuffAura(target *Unit) *Aura {
-	dmgMod := 1.11
-	resistance := 75.0
+	// That's right, 10.01%. Sneaky enough to override lock curses without being much stronger
+	dmgMod := 1.1001
+	resistance := 75.01
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Mark of Chaos",
@@ -1280,6 +1286,16 @@ func WaylayAura(target *Unit) *Aura {
 		Duration: time.Second * 8,
 	})
 	AtkSpeedReductionEffect(aura, 1.1)
+	return aura
+}
+
+func ThunderfuryASAura(target *Unit, _ int32) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Thunderfury",
+		ActionID: ActionID{SpellID: 21992},
+		Duration: time.Second * 12,
+	})
+	AtkSpeedReductionEffect(aura, 1.2)
 	return aura
 }
 

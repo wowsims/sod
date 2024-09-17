@@ -31,15 +31,26 @@ const (
 	SpellCode_HunterSteadyShot
 
 	// Strikes
+	SpellCode_HunterFlankingStrike
 	SpellCode_HunterRaptorStrike
+	SpellCode_HunterRaptorStrikeHit
+	SpellCode_HunterWyvernStrike
 
 	// Stings
 
 	// Traps
+	SpellCode_HunterExplosiveTrap
+	SpellCode_HunterFreezingTrap
+	SpellCode_HunterImmolationTrap
 
 	// Other
+	SpellCode_HunterCarve
+	SpellCode_HunterCarveHit
 	SpellCode_HunterMongooseBite
+	SpellCode_HunterWingClip
 	SpellCode_HunterVolley
+
+	SpellCode_HunterPetFlankingStrike
 )
 
 func RegisterHunter() {
@@ -81,7 +92,7 @@ type Hunter struct {
 	ExplosiveShot  *core.Spell
 	ExplosiveTrap  *core.Spell
 	ImmolationTrap *core.Spell
-	FrostTrap      *core.Spell
+	FreezingTrap   *core.Spell
 	KillCommand    *core.Spell
 	KillShot       *core.Spell
 	MultiShot      *core.Spell
@@ -122,8 +133,6 @@ type Hunter struct {
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
 	BestialWrathPetAura    *core.Aura
-
-	HasPredatorArmor [6]bool
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {
@@ -168,10 +177,8 @@ func (hunter *Hunter) Initialize() {
 		}
 	})
 
-	hunter.HasPredatorArmor[3] = hunter.HasSetBonus(ItemSetPredatorArmor, 3)
-	hunter.HasPredatorArmor[5] = hunter.HasSetBonus(ItemSetPredatorArmor, 5)
-
 	hunter.registerAspectOfTheHawkSpell()
+	hunter.registerAspectOfTheFalconSpell()
 	hunter.registerAspectOfTheViperSpell()
 
 	multiShotTimer := hunter.NewTimer()
@@ -202,13 +209,13 @@ func (hunter *Hunter) Initialize() {
 
 		hunter.registerExplosiveTrapSpell(fireTraps)
 		hunter.registerImmolationTrapSpell(fireTraps)
-		hunter.registerFrostTrapSpell(frostTraps)
+		hunter.registerFreezingTrapSpell(frostTraps)
 	} else {
 		traps := hunter.NewTimer()
 
 		hunter.registerExplosiveTrapSpell(traps)
 		hunter.registerImmolationTrapSpell(traps)
-		hunter.registerFrostTrapSpell(traps)
+		hunter.registerFreezingTrapSpell(traps)
 	}
 
 	// hunter.registerKillCommand()
@@ -217,9 +224,6 @@ func (hunter *Hunter) Initialize() {
 }
 
 func (hunter *Hunter) Reset(sim *core.Simulation) {
-	hunter.Strikes = nil
-	hunter.MeleeSpells = nil
-	hunter.LastShot = nil
 }
 
 func NewHunter(character *core.Character, options *proto.Player) *Hunter {
@@ -308,12 +312,12 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 		},
 	}
 	hunter.AutoAttacks.RangedConfig().ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-		return hunter.Hardcast.Expires < sim.CurrentTime
+		return !hunter.IsCasting(sim)
 	}
 	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
 	hunter.AutoAttacks.RangedConfig().BonusCoefficient = 1
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +
 			hunter.AmmoDamageBonus
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

@@ -551,15 +551,6 @@ func NewPseudoStats() PseudoStats {
 	}
 }
 
-func (p PseudoStats) MultiplySchoolDamageTaken(multiplier float64) {
-	p.SchoolDamageTakenMultiplier[SchoolIndexArcane] *= multiplier
-	p.SchoolDamageTakenMultiplier[SchoolIndexFire] *= multiplier
-	p.SchoolDamageTakenMultiplier[SchoolIndexFrost] *= multiplier
-	p.SchoolDamageTakenMultiplier[SchoolIndexHoly] *= multiplier
-	p.SchoolDamageTakenMultiplier[SchoolIndexNature] *= multiplier
-	p.SchoolDamageTakenMultiplier[SchoolIndexShadow] *= multiplier
-}
-
 type UnitStat int
 
 func (s UnitStat) IsStat() bool                                 { return int(s) < int(Len) }

@@ -68,7 +68,7 @@ enum PaladinRune {
 	RuneCloakRighteousVengeance		= 440672;
 
 	RuneChestDivineStorm			= 407778;
-	RuneChestAegis					= 425619;
+	RuneChestAegis					= 425589;
 	RuneChestHallowedGround			= 458287;
 	RuneChestDivineLight			= 458856;
 
@@ -83,7 +83,7 @@ enum PaladinRune {
 
 	RuneWaistInfusionOfLight		= 426065;
 	RuneWaistSheathOfLight			= 426158;
-	RuneWaistMalleableProtection	= 426173;
+	RuneWaistMalleableProtection	= 458318;
 
 	RuneLegsAuraMastery				= 407624;
 	RuneLegsAvengersShield			= 407669;

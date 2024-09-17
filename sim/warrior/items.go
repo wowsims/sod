@@ -185,11 +185,11 @@ func init() {
 			Label:    "Defense of the Dragonflights",
 			Duration: time.Second * 5,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.MultiplySchoolDamageTaken(0.50)
+				aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(0.50)
 				rageOfSuzerain.Activate(sim)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.MultiplySchoolDamageTaken(2)
+				aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(2)
 			},
 		})
 

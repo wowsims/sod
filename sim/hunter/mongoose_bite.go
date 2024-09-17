@@ -13,7 +13,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 	manaCost := [5]float64{0, 30, 40, 50, 65}[rank]
 	level := [5]int{0, 16, 30, 44, 58}[rank]
 
-	hasCobraSlayer := hunter.HasRune(proto.HunterRune_RuneChestCobraSlayer)
+	hasCobraSlayer := hunter.HasRune(proto.HunterRune_RuneHandsCobraSlayer)
 	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
@@ -90,11 +90,13 @@ func (hunter *Hunter) registerMongooseBiteSpell() {
 		},
 	})
 
-	maxRank := 4
-	for i := 1; i <= maxRank; i++ {
-		config := hunter.getMongooseBiteConfig(i)
-		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.MongooseBite = hunter.GetOrRegisterSpell(config)
-		}
-	}
+	rank := map[int32]int{
+		25: 1,
+		40: 2,
+		50: 3,
+		60: 4,
+	}[hunter.Level]
+
+	config := hunter.getMongooseBiteConfig(rank)
+	hunter.MongooseBite = hunter.GetOrRegisterSpell(config)
 }

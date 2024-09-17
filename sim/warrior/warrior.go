@@ -11,9 +11,9 @@ import (
 
 const (
 	SpellFlagBattleStance    = core.SpellFlagAgentReserved1
-	SpellFlagDefensiveStance = core.SpellFlagAgentReserved1
-	SpellFlagBerserkerStance = core.SpellFlagAgentReserved1
-	SpellFlagBloodSurge      = core.SpellFlagAgentReserved4
+	SpellFlagDefensiveStance = core.SpellFlagAgentReserved2
+	SpellFlagBerserkerStance = core.SpellFlagAgentReserved3
+	SpellFlagOffensive       = core.SpellFlagAgentReserved4
 )
 
 const (
@@ -80,9 +80,6 @@ type Warrior struct {
 	FreshMeatEnrageAura    *core.Aura
 	WreckingCrewEnrageAura *core.Aura
 
-	// Rune passive
-	FocusedRageDiscount float64
-
 	// Reaction time values
 	reactionTime time.Duration
 	LastAMTick   time.Duration
@@ -127,8 +124,10 @@ type Warrior struct {
 	Shockwave         *WarriorSpell
 
 	HeroicStrike       *WarriorSpell
+	HeroicStrikeQueue  *WarriorSpell
 	QuickStrike        *WarriorSpell
 	Cleave             *WarriorSpell
+	CleaveQueue        *WarriorSpell
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *WarriorSpell
 
@@ -158,13 +157,14 @@ func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) RegisterSpell(stanceMask Stance, config core.SpellConfig) *WarriorSpell {
-	ws := &WarriorSpell{StanceMask: stanceMask}
+	ws := &WarriorSpell{
+		StanceMask: stanceMask,
+	}
 
 	castConditionOld := config.ExtraCastCondition
 	config.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-		// Check if we're in allowed form to cast
-		// Allow 'humanoid' auto unshift casts
-		if stance := ws.GetStanceMask(); stance != AnyStance && !warrior.StanceMatches(stance) {
+		// Check if we're in a correct stance to cast the spell
+		if stance := ws.GetStanceMask(); !ws.stanceOverride && stance != AnyStance && !warrior.StanceMatches(stance) {
 			if sim.Log != nil {
 				sim.Log("Failed cast to spell %s, wrong stance", ws.ActionID)
 			}
@@ -190,7 +190,7 @@ func (warrior *Warrior) RegisterSpell(stanceMask Stance, config core.SpellConfig
 
 func (warrior *Warrior) newStanceOverrideExclusiveEffect(stance Stance, aura *core.Aura) *core.ExclusiveEffect {
 	return aura.NewExclusiveEffect("stance-override", false, core.ExclusiveEffect{
-		Priority: float64(stance),
+		Priority: core.TernaryFloat64(stance == AnyStance, 2, 1),
 		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			if stance.Matches(BattleStance) {
 				for _, spell := range warrior.BattleStanceSpells {
@@ -238,10 +238,8 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerStances()
 	warrior.registerBerserkerRageSpell()
 	warrior.registerBloodthirstSpell(primaryTimer)
-	warrior.registerCleaveSpell()
 	warrior.registerDemoralizingShoutSpell()
 	warrior.registerExecuteSpell()
-	warrior.registerHeroicStrikeSpell()
 	warrior.registerMortalStrikeSpell(primaryTimer)
 	warrior.registerOverpowerSpell(overpowerRevengeTimer)
 	warrior.registerRevengeSpell(overpowerRevengeTimer)
@@ -251,6 +249,15 @@ func (warrior *Warrior) Initialize() {
 	warrior.registerWhirlwindSpell()
 	warrior.registerRendSpell()
 	warrior.registerHamstringSpell()
+
+	// The sim often re-enables heroic strike in an unrealistic amount of time.
+	// This can cause an unrealistic immediate double-hit around wild strikes procs
+	queuedRealismICD := &core.Cooldown{
+		Timer:    warrior.NewTimer(),
+		Duration: core.SpellBatchWindow * 10,
+	}
+	warrior.registerHeroicStrikeSpell(queuedRealismICD)
+	warrior.registerCleaveSpell(queuedRealismICD)
 
 	warrior.SunderArmor = warrior.registerSunderArmorSpell()
 

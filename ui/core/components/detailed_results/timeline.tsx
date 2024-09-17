@@ -1219,7 +1219,7 @@ const idToCategoryMap: Record<number, number> = {
 
 	[48465]: SPELL_ACTION_CATEGORY + 0.1, // Starfire
 	[48461]: SPELL_ACTION_CATEGORY + 0.2, // Wrath
-	[53201]: SPELL_ACTION_CATEGORY + 0.3, // Starfall
+	[439748]: SPELL_ACTION_CATEGORY + 0.3, // Starfall
 	[48468]: SPELL_ACTION_CATEGORY + 0.4, // Insect Swarm
 	[48463]: SPELL_ACTION_CATEGORY + 0.5, // Moonfire
 
@@ -1333,7 +1333,7 @@ const idToCategoryMap: Record<number, number> = {
 	[42833]: SPELL_ACTION_CATEGORY + 0.02, // Fireball
 	[42859]: SPELL_ACTION_CATEGORY + 0.03, // Scorch
 	[42891]: SPELL_ACTION_CATEGORY + 0.1, // Pyroblast
-	[42846]: SPELL_ACTION_CATEGORY + 0.1, // Arcane Missiles
+	[10212]: SPELL_ACTION_CATEGORY + 0.1, // Arcane Missiles
 	[44572]: SPELL_ACTION_CATEGORY + 0.1, // Deep Freeze
 	[44781]: SPELL_ACTION_CATEGORY + 0.2, // Arcane Barrage
 	[42914]: SPELL_ACTION_CATEGORY + 0.2, // Ice Lance
@@ -1356,9 +1356,17 @@ const idToCategoryMap: Record<number, number> = {
 	[12536]: SPELL_ACTION_CATEGORY + 0.61, // Clearcasting
 
 	// Warrior
-	[47520]: 0.1, // Cleave
-	[47450]: 0.1, // Heroic Strike
-	[47475]: MELEE_ACTION_CATEGORY + 0.05, // Slam
+	[845]: 0.1, // Cleave
+	[11608]: 0.1, // Cleave
+	[11609]: 0.1, // Cleave
+	[20569]: 0.1, // Cleave
+	[1608]: 0.1, // Heroic Strike
+	[11565]: 0.1, // Heroic Strike
+	[11566]: 0.1, // Heroic Strike
+	[11567]: 0.1, // Heroic Strike
+	[8820]: MELEE_ACTION_CATEGORY + 0.05, // Slam
+	[11604]: MELEE_ACTION_CATEGORY + 0.05, // Slam
+	[11605]: MELEE_ACTION_CATEGORY + 0.05, // Slam
 	[23881]: MELEE_ACTION_CATEGORY + 0.1, // Bloodthirst
 	[47486]: MELEE_ACTION_CATEGORY + 0.1, // Mortal Strike
 	[30356]: MELEE_ACTION_CATEGORY + 0.1, // Shield Slam
@@ -1370,7 +1378,6 @@ const idToCategoryMap: Record<number, number> = {
 	[47471]: MELEE_ACTION_CATEGORY + 0.42, // Execute
 	[12867]: SPELL_ACTION_CATEGORY + 0.51, // Deep Wounds
 	[58874]: SPELL_ACTION_CATEGORY + 0.52, // Damage Shield
-	[47296]: SPELL_ACTION_CATEGORY + 0.53, // Critical Block
 	[46924]: SPELL_ACTION_CATEGORY + 0.61, // Bladestorm
 	[2565]: SPELL_ACTION_CATEGORY + 0.62, // Shield Block
 	[64382]: SPELL_ACTION_CATEGORY + 0.65, // Shattering Throw

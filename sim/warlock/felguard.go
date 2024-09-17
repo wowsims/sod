@@ -152,6 +152,14 @@ func (wp *WarlockPet) registerFelguardDemonicFrenzyAura() {
 		statDeps[i] = wp.NewDynamicMultiplyStat(stats.AttackPower, 1.0+.05*float64(i))
 	}
 
+	// Make a dummy copy on the Warlock for APL tracking
+	ownerAura := wp.owner.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 460907},
+		Label:     "Demonic Frenzy",
+		Duration:  time.Second * 10,
+		MaxStacks: 10,
+	})
+
 	demonicFrenzyAura := wp.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 460907},
 		Label:     "Demonic Frenzy",
@@ -167,17 +175,15 @@ func (wp *WarlockPet) registerFelguardDemonicFrenzyAura() {
 		},
 	})
 
-	wp.RegisterAura(core.Aura{
-		Label:    "Demonic Frenzy Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(wp.RegisterAura(core.Aura{
+		Label: "Demonic Frenzy Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() {
 				demonicFrenzyAura.Activate(sim)
 				demonicFrenzyAura.AddStack(sim)
+				ownerAura.Activate(sim)
+				ownerAura.AddStack(sim)
 			}
 		},
-	})
+	}))
 }

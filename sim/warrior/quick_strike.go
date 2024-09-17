@@ -6,7 +6,7 @@ import (
 )
 
 func (warrior *Warrior) registerQuickStrike() {
-	if !warrior.HasRune(proto.WarriorRune_RuneQuickStrike) || warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
+	if !warrior.HasRune(proto.WarriorRune_RuneQuickStrike) {
 		return
 	}
 
@@ -15,16 +15,20 @@ func (warrior *Warrior) registerQuickStrike() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagBloodSurge,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   20 - float64(warrior.Talents.ImprovedHeroicStrike) - warrior.FocusedRageDiscount,
+			Cost:   20 - float64(warrior.Talents.ImprovedHeroicStrike),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
+		},
+
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand
 		},
 
 		CritDamageBonus: warrior.impale(),

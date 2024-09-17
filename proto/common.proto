@@ -584,9 +584,6 @@ enum SaygesFortune {
 // Buffs that affect the entire raid.
 // NextIndex: 43
 message RaidBuffs {
-	//reserved 33;
-	//reserved "horn_of_lordaeron";
-
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
 
@@ -738,7 +735,7 @@ message Consumes {
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 40
+// NextIndex: 41
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -776,6 +773,7 @@ message Debuffs {
 
 	TristateEffect thunder_clap = 16;
 	bool waylay = 34;
+	bool thunderfury = 40;
 
 	bool insect_swarm = 17;
 	bool scorpid_sting = 18;

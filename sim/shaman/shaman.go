@@ -15,8 +15,7 @@ const (
 	SpellFlagShaman    = core.SpellFlagAgentReserved1
 	SpellFlagTotem     = core.SpellFlagAgentReserved2
 	SpellFlagLightning = core.SpellFlagAgentReserved3
-	SpellFlagFocusable = core.SpellFlagAgentReserved4
-	SpellFlagMaelstrom = core.SpellFlagAgentReserved5
+	SpellFlagMaelstrom = core.SpellFlagAgentReserved4
 )
 
 func NewShaman(character *core.Character, talents string) *Shaman {
@@ -35,16 +34,13 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(shaman.Level)]*core.SpellCritRatingPerCritChance)
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
-	shaman.ApplyRockbiterImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_RockbiterWeapon))
-	shaman.ApplyFlametongueImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FlametongueWeapon))
-	shaman.ApplyFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
-	shaman.ApplyWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_WindfuryWeapon))
+	shaman.ApplyRockbiterImbue(shaman.getImbueProcMask(proto.WeaponImbue_RockbiterWeapon))
+	shaman.ApplyFlametongueImbue(shaman.getImbueProcMask(proto.WeaponImbue_FlametongueWeapon))
+	shaman.ApplyFrostbrandImbue(shaman.getImbueProcMask(proto.WeaponImbue_FrostbrandWeapon))
+	shaman.ApplyWindfuryImbue(shaman.getImbueProcMask(proto.WeaponImbue_WindfuryWeapon))
 
 	if shaman.HasRune(proto.ShamanRune_RuneCloakFeralSpirit) {
-		shaman.SpiritWolves = &SpiritWolves{
-			SpiritWolf1: shaman.NewSpiritWolf(1),
-			SpiritWolf2: shaman.NewSpiritWolf(2),
-		}
+		shaman.SpiritWolves = shaman.NewSpiritWolves()
 	}
 
 	guardians.ConstructGuardians(&shaman.Character)
@@ -52,8 +48,8 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	return shaman
 }
 
-func (shaman *Shaman) getImbueProcMask(_ *core.Character, imbue proto.WeaponImbue) core.ProcMask {
-	var mask core.ProcMask
+func (shaman *Shaman) getImbueProcMask(imbue proto.WeaponImbue) core.ProcMask {
+	mask := core.ProcMaskUnknown
 	if shaman.HasMHWeapon() && shaman.Consumes.MainHandImbue == imbue {
 		mask |= core.ProcMaskMeleeMH
 	}
@@ -106,6 +102,7 @@ type Shaman struct {
 	ChainLightningOverload []*core.Spell
 	EarthShield            *core.Spell
 	EarthShock             []*core.Spell
+	ElementalMastery       *core.Spell
 	FeralSpirit            *core.Spell
 	FireNova               *core.Spell
 	FireNovaTotem          []*core.Spell
@@ -135,16 +132,19 @@ type Shaman struct {
 	StrengthOfEarthTotem   []*core.Spell
 	TremorTotem            *core.Spell
 	WaterShield            *core.Spell
+	WaterShieldRestore     *core.Spell
 	WindfuryTotem          []*core.Spell
 	WindwallTotem          []*core.Spell
 
 	// Auras
 	ClearcastingAura     *core.Aura
+	LightningShieldAuras []*core.Aura
 	LoyalBetaAura        *core.Aura
 	MaelstromWeaponAura  *core.Aura
 	PowerSurgeDamageAura *core.Aura
 	PowerSurgeHealAura   *core.Aura
 	SpiritOfTheAlphaAura *core.Aura
+	WaterShieldAura      *core.Aura
 
 	// Totems
 	ActiveTotems     [4]*core.Spell
@@ -163,11 +163,14 @@ type Shaman struct {
 	SpiritWolves *SpiritWolves
 
 	// Other data
-	ancestralHealingAmount float64    // Used by Ancestral Awakening
-	bonusFlurrySpeed       float64    // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
+	ancestralHealingAmount float64 // Used by Ancestral Awakening
+	bonusFlurrySpeed       float64 // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
+	bonusWindfuryWeaponAP  float64
 	lastFlameShockTarget   *core.Unit // Used by Ancestral Guidance rune
+	lightningShieldCanCrit bool
 	maelstromWeaponPPMM    *core.PPMManager
 	powerSurgeProcChance   float64
+	staticSHocksProcChance float64
 }
 
 // Implemented by each Shaman spec.
@@ -187,8 +190,6 @@ func (shaman *Shaman) AddRaidBuffs(_ *proto.RaidBuffs) {
 }
 
 func (shaman *Shaman) Initialize() {
-	character := shaman.GetCharacter()
-
 	// Core abilities
 	shaman.registerChainLightningSpell()
 	shaman.registerLightningBoltSpell()
@@ -198,10 +199,10 @@ func (shaman *Shaman) Initialize() {
 
 	// Imbues
 	// In the Initialize due to frost brand adding the aura to the enemy
-	shaman.RegisterRockbiterImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_RockbiterWeapon))
-	shaman.RegisterFlametongueImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FlametongueWeapon))
-	shaman.RegisterWindfuryImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_WindfuryWeapon))
-	shaman.RegisterFrostbrandImbue(shaman.getImbueProcMask(character, proto.WeaponImbue_FrostbrandWeapon))
+	shaman.RegisterRockbiterImbue(shaman.getImbueProcMask(proto.WeaponImbue_RockbiterWeapon))
+	shaman.RegisterFlametongueImbue(shaman.getImbueProcMask(proto.WeaponImbue_FlametongueWeapon))
+	shaman.RegisterWindfuryImbue(shaman.getImbueProcMask(proto.WeaponImbue_WindfuryWeapon))
+	shaman.RegisterFrostbrandImbue(shaman.getImbueProcMask(proto.WeaponImbue_FrostbrandWeapon))
 
 	// Totems
 	shaman.registerStrengthOfEarthTotemSpell()
@@ -240,6 +241,9 @@ func (shaman *Shaman) baseRuneAbilityDamage() float64 {
 }
 
 func (shaman *Shaman) Reset(_ *core.Simulation) {
+	shaman.ActiveShield = nil
+	shaman.ActiveShieldAura = nil
+
 	for i := range shaman.TotemExpirations {
 		shaman.TotemExpirations[i] = 0
 	}

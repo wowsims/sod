@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.21593
+  weights: -0.01044
   weights: 0
-  weights: 0.48697
-  weights: 0
-  weights: 0
+  weights: 0.51249
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.63045
-  weights: 0.96032
+  weights: 0
+  weights: 0
+  weights: 4.32697
+  weights: 1.24176
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.45201
+  weights: 0.39712
   weights: 0
-  weights: 1.16683
-  weights: 0
-  weights: 0
+  weights: 1.98518
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 14.25349
-  weights: 9.07356
+  weights: 0
+  weights: 0
+  weights: 17.75189
+  weights: 9.02452
   weights: 0
   weights: 0
   weights: 0
@@ -202,177 +202,191 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestDemonology-Lvl40-AllItems-Kezan'sUnstoppableTaint-231346"
+ value: {
+  dps: 366.70291
+  tps: 1095.07914
+ }
+}
+dps_results: {
  key: "TestDemonology-Lvl40-Average-Default"
  value: {
-  dps: 316.37868
-  tps: 979.90515
+  dps: 360.5694
+  tps: 1079.94257
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 297.91583
-  tps: 1885.0643
+  dps: 340.44261
+  tps: 1953.44771
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 297.91583
-  tps: 935.68872
+  dps: 340.44261
+  tps: 1036.56958
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 318.59554
-  tps: 978.19169
+  dps: 363.95488
+  tps: 1083.44192
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongMultiTarget"
  value: {
-  dps: 195.77904
-  tps: 1652.78933
+  dps: 224.25559
+  tps: 1688.65456
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongSingleTarget"
  value: {
-  dps: 195.77904
-  tps: 635.64191
+  dps: 224.25559
+  tps: 701.18163
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
  value: {
-  dps: 213.96648
-  tps: 664.75247
+  dps: 244.74552
+  tps: 736.33345
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 312.64541
-  tps: 972.10172
+  dps: 356.35141
+  tps: 1071.4307
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1104.66393
-  tps: 408.50563
+  dps: 1126.07772
+  tps: 420.7147
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 104.18416
-  tps: 115.36704
+  dps: 106.19349
+  tps: 117.66338
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1101.81326
-  tps: 411.79258
+  dps: 1115.86148
+  tps: 420.80942
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2012.96561
-  tps: 4153.48948
+  dps: 2152.35684
+  tps: 4370.37501
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 100.94021
-  tps: 111.2931
+  dps: 102.84413
+  tps: 113.46026
+ }
+}
+dps_results: {
+ key: "TestDemonology-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
+ value: {
+  dps: 2223.36542
+  tps: 4339.18645
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1104.66393
-  tps: 408.50563
+  dps: 1126.07772
+  tps: 420.7147
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1156.30548
-  tps: 1280.1951
+  dps: 1205.16503
+  tps: 1332.01756
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1140.01066
-  tps: 1275.90543
+  dps: 1187.75561
+  tps: 1328.50043
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2012.96561
-  tps: 4153.48948
+  dps: 2152.35684
+  tps: 4370.37501
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-Average-Default"
  value: {
-  dps: 2024.31731
-  tps: 4183.79589
+  dps: 2159.1246
+  tps: 4400.9459
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 2542.42033
-  tps: 8136.05626
+  dps: 2709.01045
+  tps: 8317.14783
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 1968.94266
-  tps: 4009.37666
+  dps: 2091.56427
+  tps: 4213.25473
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 1948.68796
-  tps: 4012.51128
+  dps: 2080.71097
+  tps: 4223.26627
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-Phase 4 Consumes-LongMultiTarget"
  value: {
-  dps: 1131.71036
-  tps: 5367.24756
+  dps: 1188.54925
+  tps: 5336.34594
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-Phase 4 Consumes-LongSingleTarget"
  value: {
-  dps: 853.69374
-  tps: 2006.46394
+  dps: 898.64312
+  tps: 2052.75689
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
  value: {
-  dps: 855.15515
-  tps: 2039.39868
+  dps: 897.3688
+  tps: 2076.66163
  }
 }
 dps_results: {
  key: "TestDemonology-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1988.36784
-  tps: 4092.77595
+  dps: 2125.72195
+  tps: 4323.66136
  }
 }

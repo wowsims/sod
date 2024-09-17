@@ -18,6 +18,8 @@ func (warlock *Warlock) NewAPLValue(rot *core.APLRotation, config *proto.APLValu
 		return warlock.newValueWarlockCurrentPetMana(rot, config.GetWarlockCurrentPetMana())
 	case *proto.APLValue_WarlockCurrentPetManaPercent:
 		return warlock.newValueWarlockCurrentPetManaPercent(rot, config.GetWarlockCurrentPetManaPercent())
+	case *proto.APLValue_WarlockPetIsActive:
+		return warlock.newValueWarlockPetIsActive(rot)
 	default:
 		return nil
 	}
@@ -210,5 +212,25 @@ func (value *APLValueWarlockCurrentPetManaPercent) GetFloat(sim *core.Simulation
 	return value.pet.GetPet().CurrentManaPercent()
 }
 func (value *APLValueWarlockCurrentPetManaPercent) String() string {
+	return fmt.Sprintf("Current Pet Mana %%")
+}
+
+type APLValueWarlockPetIsActive struct {
+	core.DefaultAPLValueImpl
+	warlock *Warlock
+}
+
+func (warlock *Warlock) newValueWarlockPetIsActive(_ *core.APLRotation) core.APLValue {
+	return &APLValueWarlockPetIsActive{
+		warlock: warlock,
+	}
+}
+func (value *APLValueWarlockPetIsActive) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeBool
+}
+func (value *APLValueWarlockPetIsActive) GetBool(sim *core.Simulation) bool {
+	return value.warlock.ActivePet != nil
+}
+func (value *APLValueWarlockPetIsActive) String() string {
 	return fmt.Sprintf("Current Pet Mana %%")
 }

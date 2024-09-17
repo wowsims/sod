@@ -1,0 +1,266 @@
+character_stats_results: {
+ key: "TestProtection-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 347.6
+  final_stats: 187
+  final_stats: 777.975
+  final_stats: 149.6
+  final_stats: 173.25
+  final_stats: 198
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 49.6
+  final_stats: 4
+  final_stats: 26.99832
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1892.2
+  final_stats: 7
+  final_stats: 30.1622
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3476
+  final_stats: 0
+  final_stats: 0
+  final_stats: 8044.16
+  final_stats: 810
+  final_stats: 163
+  final_stats: 13.52
+  final_stats: 191.38
+  final_stats: 16.6822
+  final_stats: 16.52
+  final_stats: 0
+  final_stats: 9280.75
+  final_stats: 27
+  final_stats: 188
+  final_stats: 60
+  final_stats: 60
+  final_stats: 60
+  final_stats: 464
+  final_stats: 0
+  final_stats: 35
+  final_stats: 0
+ }
+}
+stat_weights_results: {
+ key: "TestProtection-Lvl60-StatWeights-Default"
+ value: {
+  weights: 1.02692
+  weights: 0.50871
+  weights: 0
+  weights: 0.0132
+  weights: 0
+  weights: 0.20599
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.12672
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 3.63635
+  weights: 2.2153
+  weights: 0
+  weights: 0
+  weights: 0.45626
+  weights: 0
+  weights: 17.33383
+  weights: 13.43394
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 2.23703
+  weights: 0
+  weights: 0.42078
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-AllItems-EmeraldEncrustedBattleplate"
+ value: {
+  dps: 1449.05975
+  tps: 1702.73656
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-AllItems-Hero'sBrand-231328"
+ value: {
+  dps: 1818.00479
+  tps: 2095.2467
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
+ value: {
+  dps: 1449.12088
+  tps: 1703.41348
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
+ value: {
+  dps: 1531.46579
+  tps: 1798.72722
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-AllItems-LibramofDraconicDestruction-221457"
+ value: {
+  dps: 1880.89213
+  tps: 2160.81905
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-AllItems-ObsessedProphet'sPlate"
+ value: {
+  dps: 1652.06632
+  tps: 1934.08068
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-AllItems-SanctifiedOrb-20512"
+ value: {
+  dps: 1889.23354
+  tps: 2169.65251
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-AllItems-SoulforgeArmor"
+ value: {
+  dps: 1154.40755
+  tps: 1184.21575
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
+ value: {
+  dps: 1567.29072
+  tps: 1794.85004
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-AllItems-ZandalarFreethinker'sBreastplate-231329"
+ value: {
+  dps: 1842.8433
+  tps: 2119.14986
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Average-Default"
+ value: {
+  dps: 1864.69391
+  tps: 2142.97601
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 1194.6808
+  tps: 2113.07899
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 457.62392
+  tps: 686.68623
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 609.5157
+  tps: 901.48453
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 409.47519
+  tps: 765.91203
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 138.97267
+  tps: 204.40849
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 281.31093
+  tps: 395.08441
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 1198.66072
+  tps: 2120.65531
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 463.49911
+  tps: 694.25313
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 612.37803
+  tps: 905.99254
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongMultiTarget"
+ value: {
+  dps: 404.46316
+  tps: 746.67678
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-LongSingleTarget"
+ value: {
+  dps: 149.02561
+  tps: 211.11276
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
+ value: {
+  dps: 282.58463
+  tps: 397.02423
+ }
+}
+dps_results: {
+ key: "TestProtection-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 1569.54059
+  tps: 1845.34584
+ }
+}

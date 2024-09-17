@@ -25,6 +25,7 @@ func (rogue *Rogue) registerGarrote() {
 	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
 
 	rogue.Garrote = rogue.GetOrRegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueGarrote,
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -70,7 +71,7 @@ func (rogue *Rogue) registerGarrote() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCrit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialNoBlockDodgeParryNoCritNoHitCounter)
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 				spell.Dot(target).Apply(sim)

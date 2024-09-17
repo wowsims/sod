@@ -14,7 +14,7 @@ import (
 //
 // Passing Character instead of Agent would work for almost all cases,
 // but there are occasionally class-specific item effects.
-type ApplyEffect func(Agent)
+type ApplyEffect func(agent Agent)
 
 // Function for applying permanent effects to an agent's weapon
 type ApplyWeaponEffect func(Agent, proto.ItemSlot)

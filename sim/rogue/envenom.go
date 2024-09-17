@@ -28,6 +28,7 @@ func (rogue *Rogue) registerEnvenom() {
 	})
 
 	rogue.Envenom = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_RogueEnvenom,
 		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneEnvenom)},
 		SpellSchool:  core.SpellSchoolNature,
 		DefenseType:  core.DefenseTypeMelee,

@@ -86,7 +86,8 @@ func (warrior *Warrior) applyShieldMastery() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 2,
+				Period:          time.Second * 2,
+				TickImmediately: true,
 				OnAction: func(sim *core.Simulation) {
 					if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
 						buffAura.Deactivate(sim)
@@ -127,27 +128,34 @@ func (warrior *Warrior) applyFrenziedAssault() {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: 431046}
+	rageMetrics := warrior.NewRageMetrics(actionID)
+
 	buffAura := warrior.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 431046},
+		ActionID: actionID,
 		Label:    "Frenzied Assault",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.MultiplyMeleeSpeed(sim, 1.3)
-			warrior.AddDamageDealtRageBonus(1)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.MultiplyMeleeSpeed(sim, 1/1.3)
-			warrior.AddDamageDealtRageBonus(-1)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskWhiteHit) && result.Landed() {
+				warrior.AddRage(sim, core.Ternary(result.DidCrit(), 4.0, 2.0), rageMetrics)
+			}
 		},
 	})
 
 	// Use a dummy aura to periodically verify that the player is still using a 2H weapon mid-sim, for example if Item Swapping
 	warrior.RegisterAura(core.Aura{
-		Label:    "Frenzied Assault Trigger",
+		Label:    "Frenzied Assault Dummy",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 2,
+				Period:          time.Second * 2,
+				TickImmediately: true,
 				OnAction: func(sim *core.Simulation) {
 					if warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
 						buffAura.Deactivate(sim)
@@ -196,7 +204,15 @@ func (warrior *Warrior) applyConsumedByRage() {
 }
 
 func (warrior *Warrior) applyFocusedRage() {
-	warrior.FocusedRageDiscount = core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFocusedRage), 3.0, 0)
+	if !warrior.HasRune(proto.WarriorRune_RuneFocusedRage) {
+		return
+	}
+
+	warrior.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagOffensive) && spell.Cost != nil {
+			spell.Cost.FlatModifier -= 3
+		}
+	})
 }
 
 func (warrior *Warrior) applyBloodSurge() {
@@ -209,16 +225,12 @@ func (warrior *Warrior) applyBloodSurge() {
 		ActionID: core.ActionID{SpellID: 413399},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.Slam != nil {
-				warrior.Slam.DefaultCast.CastTime = 0
-				warrior.Slam.Cost.Multiplier -= 100
-			}
+			warrior.Slam.CastTimeMultiplier -= 1
+			warrior.Slam.Cost.Multiplier -= 100
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.Slam != nil {
-				warrior.Slam.DefaultCast.CastTime = 1500 * time.Millisecond
-				warrior.Slam.Cost.Multiplier += 100
-			}
+			warrior.Slam.CastTimeMultiplier += 1
+			warrior.Slam.Cost.Multiplier += 100
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// removed even if slam doesn't land
@@ -228,26 +240,33 @@ func (warrior *Warrior) applyBloodSurge() {
 		},
 	})
 
-	warrior.RegisterAura(core.Aura{
-		Label:    "Blood Surge",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	affectedSpells := make(map[*core.Spell]bool)
+
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Blood Surge Trigger",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			if warrior.Slam == nil {
+				aura.Deactivate(sim)
+				return
+			}
+
+			affectedSpells[warrior.HeroicStrike.Spell] = true
+			affectedSpells[warrior.Whirlwind.Spell] = true
+
+			if warrior.Bloodthirst != nil {
+				affectedSpells[warrior.Bloodthirst.Spell] = true
+			}
+
+			if warrior.HasRune(proto.WarriorRune_RuneQuickStrike) {
+				affectedSpells[warrior.QuickStrike.Spell] = true
+			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			if !spell.Flags.Matches(SpellFlagBloodSurge) {
-				return
-			}
-
-			if sim.Proc(0.3, "Blood Surge") {
+			if result.Landed() && affectedSpells[spell] && sim.Proc(0.3, "Blood Surge") {
 				warrior.BloodSurgeAura.Activate(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (warrior *Warrior) applyTasteForBlood() {

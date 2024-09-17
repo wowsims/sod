@@ -9,25 +9,31 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-// Totem Item IDs
 const (
-	TotemOfRage              = 22395
-	TotemOfTheStorm          = 23199
-	TotemOfSustaining        = 23200
-	TotemCarvedDriftwoodIcon = 209575
-	TotemInvigoratingFlame   = 215436
-	TotemTormentedAncestry   = 220607
-	TerrestrisTank           = 224279
-	TotemOfThunder           = 228176
-	TotemOfRagingFire        = 228177
-	TotemOfEarthenVitality   = 228178
-	NaturalAlignmentCrystal  = 230273
-	WushoolaysCharmOfSpirits = 231281
-	TerrestrisEle            = 231890
+	// Keep these ordered by ID
+	TotemOfRage               = 22395
+	TotemOfTheStorm           = 23199
+	TotemOfSustaining         = 23200
+	TotemCarvedDriftwoodIcon  = 209575
+	TotemInvigoratingFlame    = 215436
+	TotemTormentedAncestry    = 220607
+	TerrestrisTank            = 224279
+	TotemOfThunder            = 228176
+	TotemOfRagingFire         = 228177
+	TotemOfEarthenVitality    = 228178
+	NaturalAlignmentCrystal   = 230273
+	WushoolaysCharmOfSpirits  = 231281
+	TerrestrisEle             = 231890
+	TotemOfRelentlessThunder  = 232392
+	TotemOfTheElements        = 232409
+	TotemOfAstralFlow         = 232416
+	TotemOfConductiveCurrents = 232419
 )
 
 func init() {
 	core.AddEffectsToTest = false
+
+	// Keep these ordered by name
 
 	// https://www.wowhead.com/classic/item=231281/wushoolays-charm-of-spirits
 	// Use: Increases the damage dealt by your Lightning Shield spell by 100% for 20 sec. (2 Min Cooldown)
@@ -97,12 +103,12 @@ func init() {
 			Label:    "Nature Aligned",
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.DamageDealtMultiplier *= 1.20
+				shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.20)
 				// shaman.PseudoStats.HealingDealtMultiplier *= 1.20
 				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(20)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.DamageDealtMultiplier /= 1.20
+				shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.20)
 				// shaman.PseudoStats.HealingDealtMultiplier /= 1.20
 				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(-20)
 			},
@@ -341,6 +347,114 @@ func init() {
 		}))
 	})
 
+	core.NewItemEffect(TotemCarvedDriftwoodIcon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.AddStat(stats.MP5, 2)
+	})
+
+	// https://www.wowhead.com/classic/item=232416/totem-of-astral-flow
+	// Increases the attack power bonus on Windfury Weapon attacks by 68.
+	core.NewItemEffect(TotemOfAstralFlow, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.bonusWindfuryWeaponAP += 68
+	})
+
+	// https://www.wowhead.com/classic/item=232419/totem-of-conductive-currents
+	// While Frostbrand Weapon is active, your Water Shield triggers reduce the cast time of your next Chain Lightning spell within 15 sec by 20%, and increases its damage by 20%.
+	// Stacking up to 5 times.
+	core.NewItemEffect(TotemOfConductiveCurrents, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		if shaman.Consumes.MainHandImbue != proto.WeaponImbue_FrostbrandWeapon || !shaman.HasRune(proto.ShamanRune_RuneHandsWaterShield) {
+			return
+		}
+
+		affectedSpells := []*core.Spell{}
+
+		buffAura := shaman.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 470272},
+			Label:     "Totem of Conductive Currents",
+			Duration:  time.Second * 15,
+			MaxStacks: 5,
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				affectedSpells = core.FilterSlice(shaman.ChainLightning, func(spell *core.Spell) bool { return spell != nil })
+				affectedSpells = core.FilterSlice(shaman.ChainLightningOverload, func(spell *core.Spell) bool { return spell != nil })
+			},
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				oldStackValue := .20 * float64(oldStacks)
+				newStackValue := .20 * float64(newStacks)
+
+				for _, spell := range affectedSpells {
+					spell.DamageMultiplier /= 1 + oldStackValue
+					spell.DamageMultiplier *= 1 + newStackValue
+
+					spell.CastTimeMultiplier += oldStackValue
+					spell.CastTimeMultiplier -= newStackValue
+				}
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell.SpellCode == SpellCode_ShamanChainLightning {
+					aura.Deactivate(sim)
+				}
+			},
+		})
+
+		core.MakePermanent(shaman.RegisterAura(core.Aura{
+			Label: "Totem of Conductive Currents Trigger",
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell == shaman.WaterShieldRestore {
+					buffAura.Activate(sim)
+					buffAura.AddStack(sim)
+				}
+			},
+		}))
+	})
+
+	// https://www.wowhead.com/classic/item=232392/totem-of-relentless-thunder
+	// While a Shield is equipped, your melee attacks with Rockbiter Weapon trigger your Maelstrom Weapon rune 100% more often.
+	core.NewItemEffect(TotemOfRelentlessThunder, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
+			return
+		}
+
+		core.MakePermanent(shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 470081},
+			Label:    "Totem of Raging Storms",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				oldPPMM := shaman.maelstromWeaponPPMM
+				newPPMM := shaman.AutoAttacks.NewPPMManager(oldPPMM.GetPPM()*2, core.ProcMaskMelee)
+				shaman.maelstromWeaponPPMM = &newPPMM
+
+				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:          time.Second * 2,
+					TickImmediately: true,
+					OnAction: func(sim *core.Simulation) {
+						if shaman.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
+							shaman.maelstromWeaponPPMM = oldPPMM
+							aura.Deactivate(sim)
+							return
+						}
+
+						if !aura.IsActive() {
+							shaman.maelstromWeaponPPMM = &newPPMM
+							aura.Activate(sim)
+						}
+					},
+				})
+			},
+		}))
+	})
+
+	core.NewItemEffect(TotemOfTheElements, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.RegisterAura(core.Aura{
+			Label: "Totem of the Elements",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.ClearcastingAura.MaxStacks = 2
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=23199/totem-of-the-storm
 	// Equip: Increases damage done by Chain Lightning and Lightning Bolt by up to 33.
 	core.NewItemEffect(TotemOfTheStorm, func(agent core.Agent) {
@@ -361,11 +475,6 @@ func init() {
 				spell.BonusDamage += 53
 			}
 		})
-	})
-
-	core.NewItemEffect(TotemCarvedDriftwoodIcon, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		character.AddStat(stats.MP5, 2)
 	})
 
 	core.NewItemEffect(TotemInvigoratingFlame, func(agent core.Agent) {
@@ -415,7 +524,12 @@ func init() {
 	// Totem of Tormented Ancestry
 	core.NewItemEffect(TotemTormentedAncestry, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		procAura := shaman.NewTemporaryStatsAura("Totem of Tormented Ancestry Proc", core.ActionID{SpellID: 446219}, stats.Stats{stats.AttackPower: 15, stats.SpellDamage: 15, stats.HealingPower: 15}, 12*time.Second)
+		procAura := shaman.NewTemporaryStatsAura(
+			"Totem of Tormented Ancestry Proc",
+			core.ActionID{SpellID: 446219},
+			stats.Stats{stats.AttackPower: 10, stats.SpellDamage: 10, stats.HealingPower: 10},
+			12*time.Second,
+		)
 
 		shaman.RegisterAura(core.Aura{
 			Label:    "Totem of Tormented Ancestry",
@@ -456,7 +570,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=228177/totem-of-raging-fire
-	// Equip: Your Stormstrike spell causes you to gain 50 attack power for 12 sec. (More effective with a two - handed weapon).
+	// Equip: Your Stormstrike spell causes you to gain 24 attack power for 12 sec. (More effective with a two - handed weapon).
 	core.NewItemEffect(TotemOfRagingFire, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 		procAura1H := shaman.RegisterAura(core.Aura{
@@ -464,10 +578,10 @@ func init() {
 			Label:    "Totem of Raging Fire (1H)",
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 50)
+				shaman.AddStatDynamic(sim, stats.AttackPower, 24)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -50)
+				shaman.AddStatDynamic(sim, stats.AttackPower, -24)
 			},
 		})
 		// TODO: Verify 2H value
@@ -476,10 +590,10 @@ func init() {
 			Label:    "Totem of Raging Fire (2H)",
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 200)
+				shaman.AddStatDynamic(sim, stats.AttackPower, 48)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -200)
+				shaman.AddStatDynamic(sim, stats.AttackPower, -48)
 			},
 		})
 

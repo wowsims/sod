@@ -147,6 +147,9 @@ message ActionMetrics {
 
 // Metrics for a specific action, when cast at a particular target.
 message TargetedActionMetrics {
+	reserved 19, 20;
+	reserved "crit_block_damage", "crit_blocks";
+
 	// Raid/Target Index of the unit these metrics are targeted at.
 	int32 unit_index = 12;
 
@@ -189,8 +192,8 @@ message TargetedActionMetrics {
 	// # of times this action was a Block.
 	int32 blocks = 7;
 
-	// # of times this action was a Critical Block.
-	int32 crit_blocks = 20;
+	// # of times this action was a Blocked critical strike.
+	int32 blocked_crits = 33;
 
 	// # of times this action was a Glance.
 	int32 glances = 8;
@@ -225,8 +228,8 @@ message TargetedActionMetrics {
 	// Total block damage done to this target by this action.
 	double block_damage = 18;
 
-	// Total critical block damage done to this target by this action.
-	double crit_block_damage = 19;
+	// Total blocked critical strike damage done to this target by this action.
+	double blocked_crit_damage = 34;
 
 	// Total threat done to this target by this action.
 	double threat = 10;

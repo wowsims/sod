@@ -6,24 +6,25 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (hunter *Hunter) getFrostTrapConfig(timer *core.Timer) core.SpellConfig {
+func (hunter *Hunter) getFreezingTrapConfig(timer *core.Timer) core.SpellConfig {
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: 13809},
-		SpellSchool:   core.SpellSchoolFire,
+		SpellCode:     SpellCode_HunterFreezingTrap,
+		ActionID:      core.ActionID{SpellID: 409510},
+		SpellSchool:   core.SpellSchoolFrost,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
 		Flags:         core.SpellFlagAPL | SpellFlagTrap,
-		RequiredLevel: 28,
+		RequiredLevel: 20,
 		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: 60 * hunter.resourcefulnessManacostModifier(),
+			FlatCost: 50,
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * time.Duration(15 * hunter.resourcefulnessCooldownModifier()),
+				Duration: time.Second * 15,
 			},
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -34,9 +35,7 @@ func (hunter *Hunter) getFrostTrapConfig(timer *core.Timer) core.SpellConfig {
 			return hunter.DistanceFromTarget <= hunter.trapRange()
 		},
 
-		BonusHitRating: hunter.trapMastery(),
-
-		DamageMultiplier: 1 + 0.15*float64(hunter.Talents.CleverTraps),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -44,10 +43,10 @@ func (hunter *Hunter) getFrostTrapConfig(timer *core.Timer) core.SpellConfig {
 	}
 }
 
-func (hunter *Hunter) registerFrostTrapSpell(timer *core.Timer) {
-	config := hunter.getFrostTrapConfig(timer)
+func (hunter *Hunter) registerFreezingTrapSpell(timer *core.Timer) {
+	config := hunter.getFreezingTrapConfig(timer)
 
 	if config.RequiredLevel <= int(hunter.Level) {
-		hunter.FrostTrap = hunter.GetOrRegisterSpell(config)
+		hunter.FreezingTrap = hunter.GetOrRegisterSpell(config)
 	}
 }
