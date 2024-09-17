@@ -2,11 +2,12 @@ package paladin
 
 import (
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	//"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (paladin *Paladin) registerBlessingOfSanctuary() {
-	if paladin.Options.SanctuaryBlessing != true {
+	if paladin.Options.PersonalBlessing != proto.Blessings_BlessingOfSanctuary {
 		return
 	}
 

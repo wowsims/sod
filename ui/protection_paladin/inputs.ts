@@ -1,7 +1,7 @@
 import * as InputHelpers from '../core/components/input_helpers.js';
 import { Player } from '../core/player.js';
 import { Spec } from '../core/proto/common.js';
-import { PaladinSeal, PaladinAura } from '../core/proto/paladin.js';
+import { PaladinSeal, PaladinAura, Blessings } from '../core/proto/paladin.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { TypedEvent } from '../core/typed_event.js';
 
@@ -22,16 +22,35 @@ export const AuraSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.Spec
  	],
 });
 
-export const BlessingOfSanctuaryToggle = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecProtectionPaladin>({
- 	fieldName: 'sanctuaryBlessing',
-    actionId: (player: Player<Spec.SpecProtectionPaladin>) => player.getMatchingSpellActionId([
-                { id: 20911, minLevel: 1,  maxLevel: 39 },
-                { id: 20912, minLevel: 40, maxLevel: 49 },
-                { id: 20913, minLevel: 50, maxLevel: 59 },
-                { id: 20914, minLevel: 60 },
-            ]),
-	changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.levelChangeEmitter,]),
+export const BlessingSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecProtectionPaladin, Blessings>({
+ 	fieldName: 'personalBlessing',
+ 	values: [
+ 		{ value: Blessings.BlessingUnknown, tooltip: 'No Blessing' },
+ 		{
+            actionId: 
+                player => player.getMatchingSpellActionId([
+                    { id: 20911, minLevel: 1,  maxLevel: 39 },
+                    { id: 20912, minLevel: 40, maxLevel: 49 },
+                    { id: 20913, minLevel: 50, maxLevel: 59 },
+                    { id: 20914, minLevel: 60 },
+                ]),
+            value: Blessings.BlessingOfSanctuary,
+        },
+ 	],
+    changeEmitter: player => TypedEvent.onAny([player.levelChangeEmitter]),
 });
+
+
+//export const BlessingOfSanctuaryToggle = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecProtectionPaladin>({
+// 	fieldName: 'sanctuaryBlessing',
+//    actionId: (player: Player<Spec.SpecProtectionPaladin>) => player.getMatchingSpellActionId([
+//                { id: 20911, minLevel: 1,  maxLevel: 39 },
+//                { id: 20912, minLevel: 40, maxLevel: 49 },
+//                { id: 20913, minLevel: 50, maxLevel: 59 },
+//                { id: 20914, minLevel: 60 },
+//            ]),
+//	changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.levelChangeEmitter,]),
+//});
 
 // The below is used in the custom APL action "Cast Primary Seal".
 // Only shows SoC if it's talented.

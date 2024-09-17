@@ -163,7 +163,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [ProtectionPaladinInputs.PrimarySealSelection, ProtectionPaladinInputs.BlessingOfSanctuaryToggle, ProtectionPaladinInputs.AuraSelection],
+	playerIconInputs: [ProtectionPaladinInputs.PrimarySealSelection, ProtectionPaladinInputs.BlessingSelection, ProtectionPaladinInputs.AuraSelection],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.SpellScorchDebuff],
 	excludeBuffDebuffInputs: [],
