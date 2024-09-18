@@ -9,10 +9,10 @@ const LifeTapRanks = 6
 func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 	spellId := [LifeTapRanks + 1]int32{0, 1454, 1455, 1456, 11687, 11688, 11689}[rank]
 	baseDamage := [LifeTapRanks + 1]float64{0, 30, 75, 140, 220, 310, 424}[rank]
+	spellCoef := [LifeTapRanks + 1]float64{0, 0.68, 0.8, 0.8, 0.8, 0.8, 0.8}[rank]
 	level := [LifeTapRanks + 1]int{0, 6, 16, 26, 36, 46, 56}[rank]
 
 	actionID := core.ActionID{SpellID: spellId}
-	spellCoef := 0.68
 
 	manaMetrics := warlock.NewManaMetrics(actionID)
 	for _, pet := range warlock.BasePets {

@@ -309,8 +309,19 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 
 		spell.Unit.Log(
 			sim,
-			"%s %s [DEBUG] MAP: %0.01f, RAP: %0.01f, SP: %0.01f, BaseDamage:%0.01f, AfterAttackerMods:%0.01f, AfterResistances:%0.01f, AfterTargetMods:%0.01f, AfterOutcome:%0.01f, AfterPostOutcome:%0.01f",
-			target.LogLabel(), spell.ActionID, spell.Unit.GetStat(stats.AttackPower), spell.Unit.GetStat(stats.RangedAttackPower), spell.Unit.GetStat(stats.SpellPower), baseDamage, afterAttackMods, afterResistances, afterTargetMods, afterOutcome, afterPostOutcome)
+			"%s %s [DEBUG] MAP+Bonus: %0.01f, RAP+Bonus: %0.01f, SP+Bonus: %0.01f, BaseDamage:%0.01f, AfterAttackerMods:%0.01f, AfterResistances:%0.01f, AfterTargetMods:%0.01f, AfterOutcome:%0.01f, AfterPostOutcome:%0.01f",
+			target.LogLabel(),
+			spell.ActionID,
+			spell.Unit.GetStat(stats.AttackPower)+TernaryFloat64(spell.SchoolIndex == stats.SchoolIndexPhysical, spell.GetBonusDamage(), 0),
+			spell.Unit.GetStat(stats.RangedAttackPower)+TernaryFloat64(spell.SchoolIndex == stats.SchoolIndexPhysical, spell.GetBonusDamage(), 0),
+			spell.GetBonusDamage(),
+			baseDamage,
+			afterAttackMods,
+			afterResistances,
+			afterTargetMods,
+			afterOutcome,
+			afterPostOutcome,
+		)
 	}
 
 	result.Threat = spell.ThreatFromDamage(result.Outcome, result.Damage)
