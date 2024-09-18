@@ -37,7 +37,7 @@ export const BlessingSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.
             value: Blessings.BlessingOfSanctuary,
         },
  	],
-    changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.levelChangeEmitter]),
+    changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.levelChangeEmitter]),
 });
 
 // The below is used in the custom APL action "Cast Primary Seal".
