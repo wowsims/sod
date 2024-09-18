@@ -59,7 +59,7 @@ enum PaladinRune {
 	PaladinRuneNone = 0;
 
 	RuneHeadFanaticism				= 429142;
-	RuneHeadImprovedSanctuary		= 429247;
+	RuneHeadImprovedSanctuary		= 429133;
 	RuneHeadWrath					= 429139;
 
 	RuneCloakShieldOfRighteousness	= 440658;
@@ -131,10 +131,11 @@ enum PaladinSeal {
 message PaladinOptions {
 	PaladinSeal primarySeal = 1;
 	PaladinAura aura = 2;
-    Blessings personalBlessing = 3;
 	bool IsUsingDivineStormStopAttack = 4;
 	bool IsUsingJudgementStopAttack = 5;
 	bool IsUsingCrusaderStrikeStopAttack = 6;
+
+    Blessings personalBlessing = 9;
 }
 
 message RetributionPaladin {

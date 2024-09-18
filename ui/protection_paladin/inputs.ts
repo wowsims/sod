@@ -37,20 +37,8 @@ export const BlessingSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.
             value: Blessings.BlessingOfSanctuary,
         },
  	],
-    changeEmitter: player => TypedEvent.onAny([player.levelChangeEmitter]),
+    changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.levelChangeEmitter]),
 });
-
-
-//export const BlessingOfSanctuaryToggle = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecProtectionPaladin>({
-// 	fieldName: 'sanctuaryBlessing',
-//    actionId: (player: Player<Spec.SpecProtectionPaladin>) => player.getMatchingSpellActionId([
-//                { id: 20911, minLevel: 1,  maxLevel: 39 },
-//                { id: 20912, minLevel: 40, maxLevel: 49 },
-//                { id: 20913, minLevel: 50, maxLevel: 59 },
-//                { id: 20914, minLevel: 60 },
-//            ]),
-//	changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.levelChangeEmitter,]),
-//});
 
 // The below is used in the custom APL action "Cast Primary Seal".
 // Only shows SoC if it's talented.
