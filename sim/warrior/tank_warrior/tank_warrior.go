@@ -25,18 +25,15 @@ func RegisterTankWarrior() {
 
 type TankWarrior struct {
 	*warrior.Warrior
-
-	Options *proto.TankWarrior_Options
 }
 
 func NewTankWarrior(character *core.Character, options *proto.Player) *TankWarrior {
 	warOptions := options.GetTankWarrior()
 
 	war := &TankWarrior{
-		Warrior: warrior.NewWarrior(character, options.TalentsString, warrior.WarriorInputs{
+		Warrior: warrior.NewWarrior(character, options, warrior.WarriorInputs{
 			StanceSnapshot: warOptions.Options.StanceSnapshot,
 		}),
-		Options: warOptions.Options,
 	}
 
 	war.EnableRageBar(core.RageBarOptions{

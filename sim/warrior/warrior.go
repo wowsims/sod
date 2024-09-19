@@ -144,6 +144,15 @@ type Warrior struct {
 	DemoralizingShoutAuras core.AuraArray
 	SunderArmorAuras       core.AuraArray
 	ThunderClapAuras       core.AuraArray
+
+	IsUsingRendStopAttack         bool
+	IsUsingBloodthirstStopAttack  bool
+	IsUsingQuickStrikeStopAttack  bool
+	IsUsingHamstringStopAttack    bool
+	IsUsingWhirlwindStopAttack    bool
+	IsUsingExecuteStopAttack      bool
+	IsUsingOverpowerStopAttack    bool
+	IsUsingHeroicStrikeStopAttack bool
 }
 
 func (warrior *Warrior) GetCharacter() *core.Character {
@@ -263,6 +272,45 @@ func (warrior *Warrior) Initialize() {
 
 	warrior.registerBloodrageCD()
 	warrior.RegisterRecklessnessCD()
+
+	warrior.registerStopAttackMacros()
+
+}
+
+func (warrior *Warrior) registerStopAttackMacros() {
+
+	if warrior.Rend != nil && warrior.IsUsingRendStopAttack {
+		warrior.Rend.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	if warrior.Bloodthirst != nil && warrior.IsUsingBloodthirstStopAttack {
+		warrior.Bloodthirst.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	if warrior.QuickStrike != nil && warrior.IsUsingQuickStrikeStopAttack {
+		warrior.Bloodthirst.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	if warrior.Hamstring != nil && warrior.IsUsingHamstringStopAttack {
+		warrior.Hamstring.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	if warrior.Whirlwind != nil && warrior.IsUsingWhirlwindStopAttack {
+		warrior.Whirlwind.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	if warrior.Execute != nil && warrior.IsUsingExecuteStopAttack {
+		warrior.Execute.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	if warrior.Overpower != nil && warrior.IsUsingOverpowerStopAttack {
+		warrior.Overpower.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	if warrior.HeroicStrike != nil && warrior.IsUsingHeroicStrikeStopAttack {
+		warrior.HeroicStrike.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
 }
 
 func (warrior *Warrior) Reset(sim *core.Simulation) {
@@ -301,13 +349,13 @@ func (warrior *Warrior) Reset(sim *core.Simulation) {
 	}
 }
 
-func NewWarrior(character *core.Character, talents string, inputs WarriorInputs) *Warrior {
+func NewWarrior(character *core.Character, options *proto.Player, inputs WarriorInputs) *Warrior {
 	warrior := &Warrior{
 		Character:     *character,
 		Talents:       &proto.WarriorTalents{},
 		WarriorInputs: inputs,
 	}
-	core.FillTalentsProto(warrior.Talents.ProtoReflect(), talents, TalentTreeSizes)
+	core.FillTalentsProto(warrior.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)
 
 	warrior.PseudoStats.CanParry = true
 

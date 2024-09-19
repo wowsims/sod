@@ -25,19 +25,25 @@ func RegisterDpsWarrior() {
 
 type DpsWarrior struct {
 	*warrior.Warrior
-
-	Options *proto.Warrior_Options
 }
 
 func NewDpsWarrior(character *core.Character, options *proto.Player) *DpsWarrior {
 	warOptions := options.GetWarrior()
 
 	war := &DpsWarrior{
-		Warrior: warrior.NewWarrior(character, options.TalentsString, warrior.WarriorInputs{
+		Warrior: warrior.NewWarrior(character, options, warrior.WarriorInputs{
 			StanceSnapshot: warOptions.Options.StanceSnapshot,
 		}),
-		Options: warOptions.Options,
 	}
+
+	war.IsUsingRendStopAttack = warOptions.Options.IsUsingRendStopAttack
+	war.IsUsingBloodthirstStopAttack = warOptions.Options.IsUsingBloodthirstStopAttack
+	war.IsUsingQuickStrikeStopAttack = warOptions.Options.IsUsingQuickStrikeStopAttack
+	war.IsUsingHamstringStopAttack = warOptions.Options.IsUsingHamstringStopAttack
+	war.IsUsingWhirlwindStopAttack = warOptions.Options.IsUsingWhirlwindStopAttack
+	war.IsUsingExecuteStopAttack = warOptions.Options.IsUsingExecuteStopAttack
+	war.IsUsingOverpowerStopAttack = warOptions.Options.IsUsingOverpowerStopAttack
+	war.IsUsingHeroicStrikeStopAttack = warOptions.Options.IsUsingHeroicStrikeStopAttack
 
 	war.EnableRageBar(core.RageBarOptions{
 		StartingRage:          warOptions.Options.StartingRage,

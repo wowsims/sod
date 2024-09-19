@@ -9,6 +9,7 @@ import { WarriorRune, WarriorStance } from '../core/proto/warrior';
 import { Stats } from '../core/proto_utils/stats';
 import { getSpecIcon } from '../core/proto_utils/utils';
 import * as Presets from './presets';
+import * as DpsWarriorInputs from './inputs.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	cssClass: 'warrior-sim-ui',
@@ -87,8 +88,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [WarriorInputs.StartingRage<Spec.SpecWarrior>(), WarriorInputs.StanceSnapshot<Spec.SpecWarrior>(), OtherInputs.InFrontOfTarget],
+		inputs: [WarriorInputs.StartingRage<Spec.SpecWarrior>(), 
+			WarriorInputs.StanceSnapshot<Spec.SpecWarrior>(),
+			 OtherInputs.InFrontOfTarget,
+			 DpsWarriorInputs.RendStopAttack, DpsWarriorInputs.BloodthirstStopAttack, DpsWarriorInputs.QuickStrikeStopAttack,
+			 DpsWarriorInputs.HamstringStopAttack, DpsWarriorInputs.WhirlwindStopAttack, DpsWarriorInputs.ExecuteStopAttack,
+			 DpsWarriorInputs.OverpowerStopAttack, DpsWarriorInputs.HeroicStrikeStopAttack],
 	},
+
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: true,

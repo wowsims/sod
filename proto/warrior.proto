@@ -129,11 +129,7 @@ enum WarriorStance {
 	WarriorStanceGladiator = 4;
 }
 
-message Warrior {
-	message Rotation {
-	}
-
-	message Options {
+message WarriorBaseOptions {
 		reserved 2;
 		reserved "use_recklessness";
 
@@ -142,20 +138,27 @@ message Warrior {
 
 		WarriorShout shout = 3;
 		WarriorStance stance = 7;
+
+		bool IsUsingRendStopAttack = 8;
+	    bool IsUsingBloodthirstStopAttack = 9;
+	    bool IsUsingQuickStrikeStopAttack = 10;
+		bool IsUsingHamstringStopAttack = 11;
+	    bool IsUsingWhirlwindStopAttack = 12;
+	    bool IsUsingExecuteStopAttack = 13;
+	    bool IsUsingOverpowerStopAttack = 14;
+	    bool IsUsingHeroicStrikeStopAttack = 15;
 	}
-	Options options = 3;
+
+message Warrior {
+	message Rotation {
+	}
+
+	WarriorBaseOptions options = 3;
 }
 
 message TankWarrior {
 	message Rotation {
 	}
 
-	message Options {
-		double starting_rage = 1;
-		bool stance_snapshot = 6;
-
-		WarriorShout shout = 3;
-		WarriorStance stance = 7;
-	}
-	Options options = 3;
+	WarriorBaseOptions options = 3;
 }

@@ -139,7 +139,7 @@ var PlayerOptionsFury = &proto.Player_Warrior{
 	},
 }
 
-var warriorOptions = &proto.Warrior_Options{
+var warriorOptions = &proto.WarriorBaseOptions{
 	StartingRage: 50,
 	Shout:        proto.WarriorShout_WarriorShoutBattle,
 }

@@ -23,7 +23,7 @@ import {
 	ZanzaBuff,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
-import { TankWarrior_Options as TankWarriorOptions, WarriorShout, WarriorStance } from '../core/proto/warrior.js';
+import { WarriorBaseOptions as TankWarriorOptions, WarriorShout, WarriorStance } from '../core/proto/warrior.js';
 import Phase4APL from './apls/phase_4.apl.json';
 import Phase4DamageGear from './gear_sets/phase_4_damage.gear.json';
 import Phase4TankyGear from './gear_sets/phase_4_tanky.gear.json';
