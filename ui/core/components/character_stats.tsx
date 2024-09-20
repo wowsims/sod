@@ -323,6 +323,7 @@ export class CharacterStats extends Component {
 
 		if (stat === Stat.StatBlockValue) {
 			rawValue *= stats.getPseudoStat(PseudoStat.PseudoStatBlockValueMultiplier) || 1;
+			rawValue += Math.max(0, stats.getPseudoStat(PseudoStat.PseudoStatBlockValuePerStrength) * deltaStats.getStat(Stat.StatStrength) - 1);
 		}
 
 		let displayStr = String(Math.round(rawValue));
