@@ -17,12 +17,14 @@ const (
 	HaldberdOfSmiting          = 230991
 	TigulesHarpoon             = 231272
 	GrileksCarver              = 231273
+	GrileksGrinder             = 231274
 	PitchforkOfMadness         = 231277
 	Stormwrath                 = 231387
 	WrathOfWray                = 231779
 	LightningsCell             = 231784
 	Windstriker                = 231817
 	GrileksCarverBloodied      = 231846
+	GrileksGrinderBloodied     = 231847
 	TigulesHarpoonBloodied     = 231849
 	WillOfArlokkBloodied       = 231850
 	JekliksCrusherBloodied     = 231861
@@ -54,6 +56,21 @@ func init() {
 		character := agent.GetCharacter()
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
 			character.PseudoStats.MobTypeAttackPower += 141
+		}
+	})
+
+	// https://www.wowhead.com/classic/item=231274/grileks-grinder
+	// +60 Attack Power when fighting Dragonkin.
+	core.NewItemEffect(GrileksGrinder, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
+			character.PseudoStats.MobTypeAttackPower += 60
+		}
+	})
+	core.NewItemEffect(GrileksGrinderBloodied, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
+			character.PseudoStats.MobTypeAttackPower += 60
 		}
 	})
 
