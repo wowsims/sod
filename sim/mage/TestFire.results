@@ -99,11 +99,11 @@ character_stats_results: {
 character_stats_results: {
  key: "TestFire-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 157.3
-  final_stats: 172.37
-  final_stats: 371.91
-  final_stats: 383.9
-  final_stats: 215.6
+  final_stats: 167.6125
+  final_stats: 183.61475
+  final_stats: 427.6965
+  final_stats: 441.485
+  final_stats: 247.94
   final_stats: 636
   final_stats: 0
   final_stats: 93
@@ -113,19 +113,19 @@ character_stats_results: {
   final_stats: 0
   final_stats: 41.25
   final_stats: 3
-  final_stats: 50.64952
+  final_stats: 51.61695
   final_stats: 0
   final_stats: 0
-  final_stats: 928.3
+  final_stats: 928.1125
   final_stats: 3
   final_stats: 23.2
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 6691.5
+  final_stats: 7555.275
   final_stats: 0
   final_stats: 0
-  final_stats: 961.74
+  final_stats: 961.1295
   final_stats: 740
   final_stats: 0
   final_stats: 5
@@ -133,7 +133,7 @@ character_stats_results: {
   final_stats: 3.2
   final_stats: 5
   final_stats: 0
-  final_stats: 5209.1
+  final_stats: 5766.965
   final_stats: 27
   final_stats: 114
   final_stats: 60
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.70882
+  weights: -0.42078
   weights: 0
-  weights: 1.90739
+  weights: 2.14805
   weights: 0
-  weights: 1.90739
-  weights: 0
-  weights: 0
+  weights: 2.14805
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 47.99973
+  weights: 0
+  weights: 0
+  weights: 26.35867
   weights: 0
   weights: 0
   weights: 0
@@ -491,161 +491,413 @@ dps_results: {
 dps_results: {
  key: "TestFire-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1942.48947
-  tps: 1209.14656
+  dps: 2131.61556
+  tps: 1399.64269
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 1805.67029
-  tps: 1121.40153
+  dps: 1906.34281
+  tps: 1251.02393
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1936.2656
-  tps: 1203.2167
+  dps: 2107.17108
+  tps: 1383.13666
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 1797.61706
-  tps: 1112.47897
+  dps: 1902.84897
+  tps: 1248.17598
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 825.5317
-  tps: 605.41553
+  dps: 723.2529
+  tps: 691.0183
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1942.48947
-  tps: 1209.14656
+  dps: 2131.61556
+  tps: 1399.64269
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 1805.67029
-  tps: 1121.40153
+  dps: 1906.34281
+  tps: 1251.02393
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 2220.30013
-  tps: 1412.95955
+  dps: 2285.92713
+  tps: 1500.10555
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 1104.59831
-  tps: 810.58295
+  dps: 879.96805
+  tps: 840.2698
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-Average-Default"
  value: {
-  dps: 2989.02632
-  tps: 1918.35383
+  dps: 3252.20087
+  tps: 2133.82662
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-FullBuffs-Phase 3 Consumes-LongMultiTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-LongMultiTarget"
  value: {
-  dps: 4397.91605
-  tps: 3445.25706
+  dps: 3242.54818
+  tps: 2695.51213
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-FullBuffs-Phase 3 Consumes-LongSingleTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-LongSingleTarget"
  value: {
-  dps: 3230.8289
-  tps: 2061.76599
+  dps: 3242.54818
+  tps: 2127.52576
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-ShortSingleTarget"
  value: {
-  dps: 3743.7368
-  tps: 2393.5436
+  dps: 3566.38539
+  tps: 2302.00919
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-NoBuffs-Phase 3 Consumes-LongMultiTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-LongMultiTarget"
  value: {
-  dps: 1478.57582
-  tps: 1311.22956
+  dps: 887.27104
+  tps: 926.25408
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-NoBuffs-Phase 3 Consumes-LongSingleTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-LongSingleTarget"
  value: {
-  dps: 901.43812
-  tps: 571.0232
+  dps: 887.27104
+  tps: 579.91231
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-ShortSingleTarget"
  value: {
-  dps: 1847.35456
-  tps: 1167.42834
+  dps: 1664.05752
+  tps: 1065.94392
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-FullBuffs-Phase 3 Consumes-LongMultiTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-LongMultiTarget"
  value: {
-  dps: 4229.82777
-  tps: 3321.01147
+  dps: 7857.68842
+  tps: 5964.71841
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-FullBuffs-Phase 3 Consumes-LongSingleTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-LongSingleTarget"
  value: {
-  dps: 2988.54103
-  tps: 1913.01667
+  dps: 3516.26269
+  tps: 2321.19183
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-ShortSingleTarget"
  value: {
-  dps: 3769.3916
-  tps: 2414.07555
+  dps: 3772.03151
+  tps: 2464.60694
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-NoBuffs-Phase 3 Consumes-LongMultiTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-LongMultiTarget"
  value: {
-  dps: 1372.78019
-  tps: 1240.45755
+  dps: 3083.27205
+  tps: 2452.27751
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-NoBuffs-Phase 3 Consumes-LongSingleTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-LongSingleTarget"
  value: {
-  dps: 866.56786
-  tps: 549.8689
+  dps: 918.23399
+  tps: 602.21371
  }
 }
 dps_results: {
- key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
+ key: "TestFire-Lvl60-Settings-Gnome-p4_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-ShortSingleTarget"
  value: {
-  dps: 1856.43023
-  tps: 1174.88848
+  dps: 1497.74329
+  tps: 967.31724
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 3304.89497
+  tps: 2580.01961
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 3289.33872
+  tps: 1992.231
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 4029.91872
+  tps: 2424.69889
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 1016.42653
+  tps: 979.28007
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 991.07879
+  tps: 615.86403
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 1783.05146
+  tps: 1085.04152
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 16573.7127
+  tps: 10006.9642
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 3724.43346
+  tps: 2164.93534
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 4561.28782
+  tps: 2640.84454
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 5307.68134
+  tps: 3296.57001
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 953.00459
+  tps: 571.5043
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Gnome-p5_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 1746.13212
+  tps: 1031.99934
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 3276.38678
+  tps: 2720.14572
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 3276.38678
+  tps: 2150.17484
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 3681.70227
+  tps: 2381.94203
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 840.63988
+  tps: 887.53123
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 840.63988
+  tps: 547.16891
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 1706.91274
+  tps: 1098.04874
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 7652.20626
+  tps: 5817.29029
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 3531.75651
+  tps: 2335.21991
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 3895.64432
+  tps: 2554.8921
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 2876.83026
+  tps: 2306.98293
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 916.93843
+  tps: 604.94674
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p4_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 1537.5907
+  tps: 996.52949
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 3264.3553
+  tps: 2557.73209
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 3216.55937
+  tps: 1957.5197
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p4_fire-FullBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 3997.57594
+  tps: 2412.34078
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 974.05437
+  tps: 946.18891
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 943.52355
+  tps: 583.32715
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p4_fire-NoBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 1778.36134
+  tps: 1080.90903
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 16071.05452
+  tps: 9709.51438
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 3732.28691
+  tps: 2169.70184
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p5_fire-FullBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 4584.4897
+  tps: 2667.18331
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-LongMultiTarget"
+ value: {
+  dps: 5026.51613
+  tps: 3191.42137
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-LongSingleTarget"
+ value: {
+  dps: 920.08436
+  tps: 554.01865
+ }
+}
+dps_results: {
+ key: "TestFire-Lvl60-Settings-Troll-p5_fire-Fire-p5_fire-NoBuffs-Phase 5 Consumes-ShortSingleTarget"
+ value: {
+  dps: 1717.50593
+  tps: 1018.33478
  }
 }
 dps_results: {
  key: "TestFire-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2971.90603
-  tps: 1908.03684
+  dps: 3276.22907
+  tps: 2152.1949
  }
 }

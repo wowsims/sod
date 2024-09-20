@@ -1,13 +1,14 @@
 package rogue
 
 import (
+	"math"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"math"
 )
 
 func carnageMultiplier(spell *core.Spell, _ *core.AttackTable) float64 {
-	return core.TernaryFloat64(spell.Flags.Matches(SpellFlagCarnage), 1.2, 1)
+	return core.TernaryFloat64(spell.Flags.Matches(SpellFlagCarnage), 1.05, 1)
 }
 
 func (rogue *Rogue) applyCarnage() {

@@ -71,9 +71,16 @@ func TestShadow(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
-			Talents:     Phase4Talents,
-			GearSet:     core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_4"),
-			Rotation:    core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_4"),
+			Talents: Phase4Talents,
+			GearSet: core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_4"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_5_t1"),
+				core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_5_t2"),
+			},
+			Rotation: core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_4"),
+			OtherRotations: []core.RotationCombo{
+				core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_5"),
+			},
 			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},

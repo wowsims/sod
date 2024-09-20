@@ -73,8 +73,8 @@ func (shaman *Shaman) applyMentalDexterity() {
 		return
 	}
 
-	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, .65)
-	apToSpStatDep := shaman.NewDynamicStatDependency(stats.AttackPower, stats.SpellDamage, .20)
+	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, 1.0)
+	apToSpStatDep := shaman.NewDynamicStatDependency(stats.AttackPower, stats.SpellDamage, .35)
 
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Mental Dexterity Proc",
@@ -98,7 +98,7 @@ func (shaman *Shaman) applyMentalDexterity() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && (spell == shaman.LavaLash || spell == shaman.StormstrikeMH) {
+			if result.Landed() && spell == shaman.StormstrikeMH {
 				procAura.Activate(sim)
 			}
 		},
@@ -207,9 +207,9 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 
 	procSpellId := int32(436365)
 
-	// Two-handed mastery gives +10% AP, +30% attack speed, and +10% spell hit
+	// Two-handed mastery gives +15% AP, +30% attack speed, and +10% spell hit
 	attackSpeedMultiplier := 1.5
-	apMultiplier := 1.1
+	apMultiplier := 1.15
 	spellHitIncrease := core.SpellHitRatingPerHitChance * 10.0
 
 	statDep := shaman.NewDynamicMultiplyStat(stats.AttackPower, apMultiplier)

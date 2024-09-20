@@ -234,9 +234,6 @@ export const P4Consumes = Consumes.create({
 	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodGrilledSquid,
 	mainHandImbue: WeaponImbue.WildStrikes,
-	miscConsumes: {
-		jujuEmber: true,
-	},
 	offHandImbue: WeaponImbue.WizardOil,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
@@ -253,7 +250,7 @@ export const DefaultConsumes = {
 export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
-	demonicPact: 80,
+	demonicPact: 110,
 	fireResistanceAura: true,
 	fireResistanceTotem: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
@@ -271,6 +268,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	spiritOfZandalar: true,
 	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });

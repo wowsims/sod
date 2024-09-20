@@ -244,6 +244,7 @@ var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range paladin.exorcism {
 						spell.CD.Duration -= time.Second * 3
+						spell.DamageMultiplier *= 1.50
 					}
 				},
 			})

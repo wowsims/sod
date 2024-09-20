@@ -169,10 +169,10 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 				Label:    "Battle Forecast",
 				Duration: duration,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
+					warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.10
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.05
+					warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.10
 				},
 			})
 			defenseAura := warrior.RegisterAura(core.Aura{
@@ -180,10 +180,10 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 				Label:    "Defense Forecast",
 				Duration: duration,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.PseudoStats.DamageTakenMultiplier *= 0.95
+					warrior.PseudoStats.DamageTakenMultiplier *= 0.90
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.PseudoStats.DamageTakenMultiplier /= 0.95
+					warrior.PseudoStats.DamageTakenMultiplier /= 0.90
 				},
 			})
 			berserkAura := warrior.RegisterAura(core.Aura{
@@ -191,10 +191,10 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 				Label:    "Berserker Forecast",
 				Duration: duration,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.AddStatDynamic(sim, stats.MeleeCrit, 5*core.CritRatingPerCritChance)
+					warrior.AddStatDynamic(sim, stats.MeleeCrit, 10*core.CritRatingPerCritChance)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.AddStatDynamic(sim, stats.MeleeCrit, -5*core.CritRatingPerCritChance)
+					warrior.AddStatDynamic(sim, stats.MeleeCrit, -10*core.CritRatingPerCritChance)
 				},
 			})
 
@@ -270,16 +270,19 @@ var ItemSetUnstoppableWrath = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// Increases the damage of Heroic Strike by 10%
+		// Increases the damage of Heroic Strike, Overpower, and Slam by 30%
 		4: func(agent core.Agent) {
 			warrior := agent.(WarriorAgent).GetWarrior()
 			warrior.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Warrior - Damage 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.HeroicStrike.DamageMultiplier *= 1.10
-
-					if warrior.HasRune(proto.WarriorRune_RuneQuickStrike) {
-						warrior.QuickStrike.DamageMultiplier *= 1.10
+					warrior.HeroicStrike.DamageMultiplier *= 1.30
+					warrior.Overpower.DamageMultiplier *= 1.30
+					if warrior.Slam != nil {
+						warrior.Slam.DamageMultiplier *= 1.30
+					}
+					if warrior.QuickStrike != nil {
+						warrior.QuickStrike.DamageMultiplier *= 1.30
 					}
 				},
 			})

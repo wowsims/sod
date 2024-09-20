@@ -366,7 +366,7 @@ func init() {
 
 	itemhelpers.CreateWeaponProcAura(Kestrel, "Kestrel", 1, func(character *core.Character) *core.Aura {
 		return character.GetOrRegisterAura(core.Aura{
-			Label: "Kestrel Move Speed Aura",
+			Label:    "Kestrel Move Speed Aura",
 			ActionID: core.ActionID{SpellID: 469148},
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -383,12 +383,12 @@ func init() {
 		character := agent.GetCharacter()
 
 		lockedIn := character.RegisterAura(core.Aura{
-			Label: "Locked In",
-			ActionID: core.ActionID{SpellID: 468388},
-			Duration: time.Second * 20,
+			Label:     "Locked In",
+			ActionID:  core.ActionID{SpellID: 468388},
+			Duration:  time.Second * 20,
 			MaxStacks: 3,
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.SpellCode == SpellCode_HunterCarve || spell.SpellCode == SpellCode_HunterMultiShot {
+				if spell.Flags.Matches(SpellFlagShot) || spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) && spell.CD.Timer != nil {
 					spell.CD.Reset()
 					aura.RemoveStack(sim)
 				}
@@ -422,11 +422,11 @@ func init() {
 		character := agent.GetCharacter()
 
 		arcaneDetonation := character.RegisterSpell(core.SpellConfig{
-			ActionID: 		core.ActionID{SpellID: 467447},
-			SpellSchool: 	core.SpellSchoolArcane,
-			DefenseType: 	core.DefenseTypeMagic,
-			ProcMask: 		core.ProcMaskSpellDamage,
-			Flags: 			core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			ActionID:    core.ActionID{SpellID: 467447},
+			SpellSchool: core.SpellSchoolArcane,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -443,7 +443,7 @@ func init() {
 		maxMultishotTargetsPerCast := int32(3)
 
 		arcaneInfused := character.RegisterAura(core.Aura{
-			Label: "Arcane Infused",
+			Label:    "Arcane Infused",
 			ActionID: core.ActionID{SpellID: 467446},
 			Duration: time.Second * 15,
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {

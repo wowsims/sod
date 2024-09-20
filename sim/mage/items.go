@@ -83,7 +83,7 @@ func init() {
 			Duration: duration,
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				affectedSpells = core.FilterSlice(
-					core.Flatten([][]*core.Spell{mage.Frostbolt}), func(spell *core.Spell) bool { return spell != nil },
+					core.Flatten([][]*core.Spell{mage.Frostbolt, {mage.SpellfrostBolt}}), func(spell *core.Spell) bool { return spell != nil },
 				)
 
 				if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {

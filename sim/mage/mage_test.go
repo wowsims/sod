@@ -127,11 +127,17 @@ func TestFire(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase4TalentsFire,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p4_fire"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_fire"),
-			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase4Consumes,
+			Talents: Phase5TalentsFire,
+			GearSet: core.GetGearSet("../../ui/mage/gear_sets", "p4_fire"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../ui/mage/gear_sets", "p5_fire"),
+			},
+			Rotation: core.GetAplRotation("../../ui/mage/apls", "p4_fire"),
+			OtherRotations: []core.RotationCombo{
+				core.GetAplRotation("../../ui/mage/apls", "p5_fire"),
+			},
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
 
 			ItemFilter:      ItemFilters,
@@ -166,11 +172,17 @@ func TestFrost(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase4TalentsFrost,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p4_frost"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_frost"),
-			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase4Consumes,
+			Talents: Phase5TalentsSpellfrost,
+			GearSet: core.GetGearSet("../../ui/mage/gear_sets", "p4_frost"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../ui/mage/gear_sets", "p5_spellfrost"),
+			},
+			Rotation: core.GetAplRotation("../../ui/mage/apls", "p4_frost"),
+			OtherRotations: []core.RotationCombo{
+				core.GetAplRotation("../../ui/mage/apls", "p5_spellfrost"),
+			},
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
 
 			ItemFilter:      ItemFilters,
@@ -191,8 +203,11 @@ var Phase3TalentsFire = "-0550020123033151-2035"
 var Phase3TalentsFrost = "-055-20350203100351051"
 
 var Phase4TalentsArcane = "0550050210031531-054-203500001"
-var Phase4TalentsFire = "21-0552300123033151-203500031"
+var Phase4TalentsFire = "21-5052300123033151-203500031"
 var Phase4TalentsFrost = "-0550320003021-2035020310035105"
+
+var Phase5TalentsFire = "21-5052300123033151-203500031"
+var Phase5TalentsSpellfrost = "250025001002--05350203100351051"
 
 var PlayerOptionsArcane = &proto.Player_Mage{
 	Mage: &proto.Mage{
@@ -253,7 +268,20 @@ var Phase3Consumes = core.ConsumesCombo{
 }
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "Phase 4 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  proto.Potions_MajorManaPotion,
+		Flask:          proto.Flask_FlaskOfSupremePower,
+		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		FrostPowerBuff: proto.FrostPowerBuff_ElixirOfFrostPower,
+		Food:           proto.Food_FoodRunnTumTuberSurprise,
+		MainHandImbue:  proto.WeaponImbue_WizardOil,
+		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
+	},
+}
+
+var Phase5Consumes = core.ConsumesCombo{
+	Label: "Phase 5 Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_MajorManaPotion,
 		Flask:          proto.Flask_FlaskOfSupremePower,

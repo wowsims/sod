@@ -83,10 +83,16 @@ func TestFeral(t *testing.T) {
 			Race:       proto.Race_RaceTauren,
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
-			Talents:     Phase4Talents,
-			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_4"),
-			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "phase_4"),
-			Buffs:       core.FullBuffsPhase4,
+			Talents: Phase4Talents,
+			GearSet: core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_4"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_5"),
+			},
+			Rotation: core.GetAplRotation("../../../ui/feral_druid/apls", "phase_4"),
+			OtherRotations: []core.RotationCombo{
+				core.GetAplRotation("../../../ui/feral_druid/apls", "phase_5"),
+			},
+			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsMonoCat},
 			OtherSpecOptions: []core.SpecOptionsCombo{
@@ -185,7 +191,7 @@ var Phase4Consumes = core.ConsumesCombo{
 		DragonBreathChili: true,
 		Flask:             proto.Flask_FlaskOfDistilledWisdom,
 		Food:              proto.Food_FoodSmokedDesertDumpling,
-		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		MainHandImbue:     proto.WeaponImbue_ElementalSharpeningStone,
 		MiscConsumes: &proto.MiscConsumes{
 			Catnip: true,
 		},

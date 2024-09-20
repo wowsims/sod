@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFury-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.25162
-  weights: 1.87362
+  weights: 3.3462
+  weights: 1.83747
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.03457
-  weights: 6.7376
-  weights: 27.97096
+  weights: 1.43034
+  weights: 7.62268
+  weights: 28.58845
   weights: 0
   weights: 0
   weights: 0
@@ -344,98 +344,1274 @@ dps_results: {
 dps_results: {
  key: "TestFury-Lvl60-Average-Default"
  value: {
-  dps: 3042.45219
-  tps: 2396.63402
+  dps: 3320.94865
+  tps: 2609.37089
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 1189.16879
-  tps: 1107.65294
+  dps: 1307.44179
+  tps: 1209.08441
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 388.95142
-  tps: 359.44309
+  dps: 430.98213
+  tps: 393.46828
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 479.02385
-  tps: 434.43371
+  dps: 520.53512
+  tps: 468.39082
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 531.22433
-  tps: 540.44972
+  dps: 588.30713
+  tps: 589.55588
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 196.93008
-  tps: 208.78504
+  dps: 219.88593
+  tps: 227.53063
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 246.80336
-  tps: 248.66784
+  dps: 270.99013
+  tps: 268.78332
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 53.00266
+  tps: 76.81719
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 53.00266
+  tps: 40.40052
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 88.5788
+  tps: 66.97486
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 19.62337
+  tps: 52.91222
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 19.62337
+  tps: 16.49555
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 33.68419
+  tps: 27.6511
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1139.09331
+  tps: 1089.65753
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 333.17256
+  tps: 309.41054
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 430.08836
+  tps: 392.21763
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 481.24831
+  tps: 512.42152
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 144.82111
+  tps: 166.53156
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_4_dw-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 194.74658
+  tps: 206.48176
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1591.44227
+  tps: 1353.0427
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 888.55842
+  tps: 674.45688
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 898.64516
+  tps: 693.3865
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 784.63266
+  tps: 706.00166
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 462.80788
+  tps: 375.61555
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 482.32306
+  tps: 398.47979
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 720.41505
+  tps: 497.4823
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 720.41505
+  tps: 461.06563
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 855.55393
+  tps: 556.10081
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 356.2183
+  tps: 266.82278
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 356.2183
+  tps: 230.42195
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 433.65454
+  tps: 284.15536
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1627.27722
+  tps: 1361.92528
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 876.55652
+  tps: 633.71919
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 937.40295
+  tps: 659.12459
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 776.39298
+  tps: 691.07026
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 425.91803
+  tps: 333.10138
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 482.17324
+  tps: 363.46045
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1676.97975
+  tps: 1440.74805
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 812.37631
+  tps: 597.54647
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 879.70323
+  tps: 657.57309
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 807.59262
+  tps: 731.59869
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 411.8886
+  tps: 327.02418
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 472.58379
+  tps: 373.36973
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 465.99891
+  tps: 339.29829
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 465.99891
+  tps: 302.94495
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 608.84565
+  tps: 401.93844
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 231.21365
+  tps: 187.81948
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 231.21365
+  tps: 151.45031
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 300.93549
+  tps: 200.49861
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1546.81195
+  tps: 1285.48903
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 825.81284
+  tps: 577.06877
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 897.62691
+  tps: 622.43927
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 726.75399
+  tps: 644.94314
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 403.31349
+  tps: 307.1084
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_2h_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 457.50805
+  tps: 342.11217
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1467.32501
+  tps: 1345.52684
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 464.65366
+  tps: 418.33924
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 560.71386
+  tps: 498.57521
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 681.7645
+  tps: 669.19927
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 241.50942
+  tps: 243.5198
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 298.94982
+  tps: 290.4533
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 60.01445
+  tps: 81.80938
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 60.01445
+  tps: 45.39271
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 96.12068
+  tps: 72.38257
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 23.64962
+  tps: 55.7968
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 23.64962
+  tps: 19.38014
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 40.98902
+  tps: 32.90512
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1289.25625
+  tps: 1220.84502
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 369.08317
+  tps: 336.09533
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 476.76583
+  tps: 428.84967
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 573.41091
+  tps: 592.869
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 167.64002
+  tps: 183.58466
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 224.38816
+  tps: 229.83053
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1295.47405
+  tps: 1196.268
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 400.54718
+  tps: 361.93151
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 487.76812
+  tps: 434.37854
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 588.93512
+  tps: 588.65993
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 201.14653
+  tps: 208.24899
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 253.27955
+  tps: 249.2994
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 51.11928
+  tps: 77.39207
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 51.11928
+  tps: 40.9754
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 92.16924
+  tps: 73.86656
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 19.6822
+  tps: 53.5241
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 19.6822
+  tps: 17.10744
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 37.37157
+  tps: 31.5707
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1138.92893
+  tps: 1100.45542
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 315.10198
+  tps: 291.15456
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 419.65887
+  tps: 377.23997
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 497.43098
+  tps: 532.16328
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 137.31338
+  tps: 158.77683
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 191.69439
+  tps: 201.36958
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 1331.63595
-  tps: 1248.80145
+  dps: 1460.31638
+  tps: 1360.86168
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 407.53399
-  tps: 376.1806
+  dps: 447.04549
+  tps: 408.58058
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 495.26271
-  tps: 446.20931
+  dps: 536.15435
+  tps: 479.19224
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
  value: {
-  dps: 572.17074
-  tps: 582.86852
+  dps: 635.51384
+  tps: 638.04772
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
  value: {
-  dps: 194.79105
-  tps: 207.0943
+  dps: 219.50688
+  tps: 227.62794
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
  value: {
-  dps: 247.0739
-  tps: 246.85095
+  dps: 273.7697
+  tps: 269.02052
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 59.2981
+  tps: 81.31918
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 59.2981
+  tps: 44.90251
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 100.7367
+  tps: 75.6735
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 21.70729
+  tps: 54.40035
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 21.70729
+  tps: 17.98368
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 40.32475
+  tps: 32.41371
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1218.26763
+  tps: 1130.35701
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 350.70103
+  tps: 319.54848
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 447.31144
+  tps: 384.87558
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 502.71821
+  tps: 518.96969
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 146.87316
+  tps: 166.13435
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 198.68115
+  tps: 200.36937
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1593.46177
+  tps: 1360.53135
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 918.22928
+  tps: 699.72605
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 926.90932
+  tps: 711.35468
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 773.02495
+  tps: 696.64332
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 466.85218
+  tps: 379.45944
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 490.40026
+  tps: 401.21967
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 743.50177
+  tps: 513.70373
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 743.50177
+  tps: 477.28706
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 902.49026
+  tps: 588.23521
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 364.61727
+  tps: 272.28292
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 364.61727
+  tps: 235.88209
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 458.45142
+  tps: 300.83126
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1497.60813
+  tps: 1242.77715
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 925.32973
+  tps: 671.25632
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 1001.23131
+  tps: 739.64114
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 696.54517
+  tps: 617.24289
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 444.02087
+  tps: 345.66575
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 499.23133
+  tps: 387.52258
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1708.44716
+  tps: 1464.01251
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 850.01233
+  tps: 625.11979
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 882.26876
+  tps: 656.4268
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 793.79132
+  tps: 717.48372
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 411.75528
+  tps: 325.05525
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 451.71392
+  tps: 355.38093
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 473.69872
+  tps: 346.17499
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 473.69872
+  tps: 309.80583
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 617.5544
+  tps: 410.90124
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 230.67007
+  tps: 188.24035
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 230.67007
+  tps: 151.90285
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 297.63189
+  tps: 199.81531
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1515.09359
+  tps: 1263.36716
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 873.18708
+  tps: 610.32015
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 987.34752
+  tps: 688.08981
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 703.23865
+  tps: 629.47111
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 410.41724
+  tps: 310.14567
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_2h_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 485.26293
+  tps: 358.29408
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1634.41085
+  tps: 1512.55016
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 479.29991
+  tps: 432.97169
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 571.45523
+  tps: 505.88306
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 739.07814
+  tps: 728.01069
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 240.37555
+  tps: 243.36686
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 297.68416
+  tps: 287.24194
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 65.62683
+  tps: 85.86511
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 65.62683
+  tps: 49.44845
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 109.21476
+  tps: 81.74527
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 26.0134
+  tps: 57.48347
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 26.0134
+  tps: 21.0668
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 48.64086
+  tps: 38.38661
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1374.49097
+  tps: 1263.44502
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 385.28998
+  tps: 345.14452
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 494.16355
+  tps: 419.11157
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 594.23524
+  tps: 596.65894
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 169.10518
+  tps: 182.62937
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 228.86472
+  tps: 222.5575
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1397.94657
+  tps: 1296.4229
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 414.796
+  tps: 375.47011
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_4_fury-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 505.39925
+  tps: 448.70668
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 611.82756
+  tps: 613.63215
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 199.46066
+  tps: 207.22636
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_4_fury-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 252.73005
+  tps: 247.64649
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 55.61005
+  tps: 80.45938
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 55.61005
+  tps: 44.04272
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_2h-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 106.30178
+  tps: 84.84424
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 21.43474
+  tps: 54.77265
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 21.43474
+  tps: 18.35599
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_2h-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 43.67302
+  tps: 36.44085
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 1220.81443
+  tps: 1144.68187
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 333.07997
+  tps: 302.01186
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 443.79048
+  tps: 377.73839
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ value: {
+  dps: 518.21258
+  tps: 537.33203
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ value: {
+  dps: 139.92697
+  tps: 158.86946
+ }
+}
+dps_results: {
+ key: "TestFury-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ value: {
+  dps: 197.64748
+  tps: 197.17924
  }
 }
 dps_results: {
  key: "TestFury-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2418.54005
-  tps: 1905.80169
+  dps: 2632.86894
+  tps: 2075.92252
  }
 }

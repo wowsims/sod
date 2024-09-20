@@ -10,12 +10,14 @@ import (
 
 func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 	spellId := [4]int32{0, 458436, 458481, 458482}[rank]
-	bleedAttackPowerCoefficient := [4]float64{0, 3, 4, 6}[rank] / 100 * 8
 	manaCost := [4]float64{0, 55, 75, 100}[rank]
 	level := [4]int{0, 1, 50, 60}[rank]
 
+	// The spell tooltips list 3/4/6 on the respective ranks, but Zirene confirmed it's actually 10%.
+	bleedCoeff := 0.15
+
 	spellConfig := core.SpellConfig{
-		SpellCode: 	   SpellCode_HunterWyvernStrike,
+		SpellCode:     SpellCode_HunterWyvernStrike,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
@@ -55,7 +57,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 1,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				tickDamage := (bleedAttackPowerCoefficient * hunter.WyvernStrike.MeleeAttackPower()) / float64(dot.NumberOfTicks)
+				tickDamage := bleedCoeff * hunter.WyvernStrike.MeleeAttackPower()
 				dot.Snapshot(target, tickDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -64,8 +66,9 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			weaponDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			weaponDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 1.40
 			result := spell.CalcAndDealDamage(sim, target, weaponDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
 			}

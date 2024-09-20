@@ -37,9 +37,19 @@ func TestFury(t *testing.T) {
 			Race:       proto.Race_RaceOrc,
 			OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
-			Talents:     P4FuryTalents,
-			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_4_dw"),
-			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_4_fury"),
+			Talents: P4FuryTalents,
+			GearSet: core.GetGearSet("../../../ui/warrior/gear_sets", "phase_4_dw"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_dw_t1"),
+				core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_2h_t1"),
+				core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_dw_t2"),
+				core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_2h_t2"),
+			},
+			Rotation: core.GetAplRotation("../../../ui/warrior/apls", "phase_4_fury"),
+			OtherRotations: []core.RotationCombo{
+				core.GetAplRotation("../../../ui/warrior/apls", "phase_5_dw"),
+				core.GetAplRotation("../../../ui/warrior/apls", "phase_5_2h"),
+			},
 			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase1Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},

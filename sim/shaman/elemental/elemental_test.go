@@ -71,10 +71,16 @@ func TestElemental(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-			Talents:     Phase4Talents,
-			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_4"),
-			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_4"),
-			Buffs:       core.FullBuffsPhase4,
+			Talents: Phase4Talents,
+			GearSet: core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_4"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_5"),
+			},
+			Rotation: core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_4"),
+			OtherRotations: []core.RotationCombo{
+				core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_5"),
+			},
+			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 

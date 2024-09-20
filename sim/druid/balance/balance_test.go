@@ -71,11 +71,17 @@ func TestBalance(t *testing.T) {
 			Race:       proto.Race_RaceTauren,
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
-			Talents:     Phase4Talents,
-			GearSet:     core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_4"),
-			Rotation:    core.GetAplRotation("../../../ui/balance_druid/apls", "phase_4"),
-			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase4Consumes,
+			Talents: Phase4Talents,
+			GearSet: core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_4"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_5"),
+			},
+			Rotation: core.GetAplRotation("../../../ui/balance_druid/apls", "phase_4"),
+			OtherRotations: []core.RotationCombo{
+				core.GetAplRotation("../../../ui/balance_druid/apls", "phase_5"),
+			},
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},
 
 			ItemFilter:      ItemFilters,
@@ -127,6 +133,17 @@ var Phase4Consumes = core.ConsumesCombo{
 		Flask:          proto.Flask_FlaskOfSupremePower,
 		Food:           proto.Food_FoodNightfinSoup,
 		MainHandImbue:  proto.WeaponImbue_WizardOil,
+		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
+	},
+}
+
+var Phase5Consumes = core.ConsumesCombo{
+	Label: "Phase 5 Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  proto.Potions_MajorManaPotion,
+		Flask:          proto.Flask_FlaskOfSupremePower,
+		Food:           proto.Food_FoodNightfinSoup,
+		MainHandImbue:  proto.WeaponImbue_BrillianWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }

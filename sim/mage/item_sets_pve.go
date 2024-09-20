@@ -222,11 +222,11 @@ var ItemSetNetherwindInsight = core.NewItemSet(core.ItemSet{
 			mage := agent.(MageAgent).GetMage()
 			mage.MaintainFireballDoT = true
 			core.MakePermanent(mage.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Mage - Damage 6P Bonus",
+				ActionID: core.ActionID{SpellID: 467399},
+				Label:    "S03 - Item - T2 - Mage - Damage 6P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell.SpellCode == SpellCode_MageFireball && result.Landed() {
-						dot := spell.Dot(result.Target)
-						mage.BonusFireballDoTAmount += result.Damage * 0.40 / float64(dot.NumberOfTicks)
+						mage.BonusFireballDoTAmount += result.Damage * 1.00 / float64(spell.Dot(result.Target).NumberOfTicks)
 					}
 				},
 			}))
@@ -295,6 +295,10 @@ var ItemSetIllusionistsAttire = core.NewItemSet(core.ItemSet{
 						if spell != nil {
 							spell.DamageMultiplier *= 1.75
 						}
+					}
+
+					if mage.SpellfrostBolt != nil {
+						mage.SpellfrostBolt.DamageMultiplier *= 1.75
 					}
 				},
 			})

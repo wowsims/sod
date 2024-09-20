@@ -30,10 +30,10 @@ func (mage *Mage) registerBalefireBoltSpell() {
 		Label:     "Balefire Bolt (Stacks)",
 		ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneBracersBalefireBolt)}.WithTag(1),
 		Duration:  buffDuration,
-		MaxStacks: 10,
+		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			mage.BalefireBolt.DamageMultiplierAdditive -= .1 * float64(oldStacks)
-			mage.BalefireBolt.DamageMultiplierAdditive += .1 * float64(newStacks)
+			mage.BalefireBolt.DamageMultiplierAdditive -= .2 * float64(oldStacks)
+			mage.BalefireBolt.DamageMultiplierAdditive += .2 * float64(newStacks)
 
 			if oldStacks != 0 {
 				aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
