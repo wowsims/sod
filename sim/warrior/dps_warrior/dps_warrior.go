@@ -28,37 +28,30 @@ type DpsWarrior struct {
 }
 
 func NewDpsWarrior(character *core.Character, options *proto.Player) *DpsWarrior {
-	warOptions := options.GetWarrior()
+	warOptions := options.GetWarrior().Options
 
-	war := &DpsWarrior{
-		Warrior: warrior.NewWarrior(character, options, warrior.WarriorInputs{
-			StanceSnapshot: warOptions.Options.StanceSnapshot,
-		}),
+	war := warrior.NewWarrior(character, options, warOptions, warrior.WarriorInputs{
+		StanceSnapshot: warOptions.StanceSnapshot,
+	})
+
+	dpsWar := &DpsWarrior{
+		Warrior: war,
 	}
 
-	war.IsUsingRendStopAttack = warOptions.Options.IsUsingRendStopAttack
-	war.IsUsingBloodthirstStopAttack = warOptions.Options.IsUsingBloodthirstStopAttack
-	war.IsUsingQuickStrikeStopAttack = warOptions.Options.IsUsingQuickStrikeStopAttack
-	war.IsUsingHamstringStopAttack = warOptions.Options.IsUsingHamstringStopAttack
-	war.IsUsingWhirlwindStopAttack = warOptions.Options.IsUsingWhirlwindStopAttack
-	war.IsUsingExecuteStopAttack = warOptions.Options.IsUsingExecuteStopAttack
-	war.IsUsingOverpowerStopAttack = warOptions.Options.IsUsingOverpowerStopAttack
-	war.IsUsingHeroicStrikeStopAttack = warOptions.Options.IsUsingHeroicStrikeStopAttack
-
-	war.EnableRageBar(core.RageBarOptions{
-		StartingRage:          warOptions.Options.StartingRage,
+	dpsWar.EnableRageBar(core.RageBarOptions{
+		StartingRage:          warOptions.StartingRage,
 		DamageDealtMultiplier: 1,
 		DamageTakenMultiplier: 1,
 	})
 
-	war.EnableAutoAttacks(war, core.AutoAttackOptions{
-		MainHand:       war.WeaponFromMainHand(),
-		OffHand:        war.WeaponFromOffHand(),
+	dpsWar.EnableAutoAttacks(dpsWar, core.AutoAttackOptions{
+		MainHand:       dpsWar.WeaponFromMainHand(),
+		OffHand:        dpsWar.WeaponFromOffHand(),
 		AutoSwingMelee: true,
-		ReplaceMHSwing: war.TryHSOrCleave,
+		ReplaceMHSwing: dpsWar.TryHSOrCleave,
 	})
 
-	return war
+	return dpsWar
 }
 
 func (war *DpsWarrior) OnGCDReady(sim *core.Simulation) {

@@ -58,6 +58,7 @@ type Warrior struct {
 
 	Talents *proto.WarriorTalents
 
+	Options *proto.WarriorBaseOptions
 	WarriorInputs
 
 	// Current state
@@ -279,35 +280,47 @@ func (warrior *Warrior) Initialize() {
 
 func (warrior *Warrior) registerStopAttackMacros() {
 
-	if warrior.Rend != nil && warrior.IsUsingRendStopAttack {
+	if warrior.Rend != nil && warrior.Options.IsUsingRendStopAttack {
 		warrior.Rend.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
 
-	if warrior.Bloodthirst != nil && warrior.IsUsingBloodthirstStopAttack {
+	if warrior.Bloodthirst != nil && warrior.Options.IsUsingBloodthirstStopAttack {
 		warrior.Bloodthirst.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
 
-	if warrior.QuickStrike != nil && warrior.IsUsingQuickStrikeStopAttack {
+	if warrior.QuickStrike != nil && warrior.Options.IsUsingQuickStrikeStopAttack {
 		warrior.Bloodthirst.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
 
-	if warrior.Hamstring != nil && warrior.IsUsingHamstringStopAttack {
+	if warrior.Hamstring != nil && warrior.Options.IsUsingHamstringStopAttack {
 		warrior.Hamstring.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
 
-	if warrior.Whirlwind != nil && warrior.IsUsingWhirlwindStopAttack {
+	if warrior.Whirlwind != nil && warrior.Options.IsUsingWhirlwindStopAttack {
 		warrior.Whirlwind.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
 
-	if warrior.Execute != nil && warrior.IsUsingExecuteStopAttack {
+	if warrior.Whirlwind != nil && warrior.Options.IsUsingWhirlwindStopAttack {
+		warrior.Whirlwind.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	if warrior.WhirlwindMH != nil && warrior.Options.IsUsingWhirlwindStopAttack {
+		warrior.WhirlwindMH.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	if warrior.WhirlwindOH != nil && warrior.Options.IsUsingWhirlwindStopAttack {
+		warrior.WhirlwindOH.Flags |= core.SpellFlagBatchStopAttackMacro
+	}
+
+	if warrior.Execute != nil && warrior.Options.IsUsingExecuteStopAttack {
 		warrior.Execute.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
 
-	if warrior.Overpower != nil && warrior.IsUsingOverpowerStopAttack {
+	if warrior.Overpower != nil && warrior.Options.IsUsingOverpowerStopAttack {
 		warrior.Overpower.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
 
-	if warrior.HeroicStrike != nil && warrior.IsUsingHeroicStrikeStopAttack {
+	if warrior.HeroicStrike != nil && warrior.Options.IsUsingHeroicStrikeStopAttack {
 		warrior.HeroicStrike.Flags |= core.SpellFlagBatchStopAttackMacro
 	}
 
@@ -349,10 +362,11 @@ func (warrior *Warrior) Reset(sim *core.Simulation) {
 	}
 }
 
-func NewWarrior(character *core.Character, options *proto.Player, inputs WarriorInputs) *Warrior {
+func NewWarrior(character *core.Character, options *proto.Player, warOptions *proto.WarriorBaseOptions, inputs WarriorInputs) *Warrior {
 	warrior := &Warrior{
 		Character:     *character,
 		Talents:       &proto.WarriorTalents{},
+		Options:       warOptions,
 		WarriorInputs: inputs,
 	}
 	core.FillTalentsProto(warrior.Talents.ProtoReflect(), options.TalentsString, TalentTreeSizes)

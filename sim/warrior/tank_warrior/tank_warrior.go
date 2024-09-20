@@ -28,28 +28,30 @@ type TankWarrior struct {
 }
 
 func NewTankWarrior(character *core.Character, options *proto.Player) *TankWarrior {
-	warOptions := options.GetTankWarrior()
+	warOptions := options.GetTankWarrior().Options
 
-	war := &TankWarrior{
-		Warrior: warrior.NewWarrior(character, options, warrior.WarriorInputs{
-			StanceSnapshot: warOptions.Options.StanceSnapshot,
-		}),
+	war := warrior.NewWarrior(character, options, warOptions, warrior.WarriorInputs{
+		StanceSnapshot: warOptions.StanceSnapshot,
+	})
+
+	tankWar := &TankWarrior{
+		Warrior: war,
 	}
 
-	war.EnableRageBar(core.RageBarOptions{
-		StartingRage:          warOptions.Options.StartingRage,
+	tankWar.EnableRageBar(core.RageBarOptions{
+		StartingRage:          warOptions.StartingRage,
 		DamageDealtMultiplier: 1,
 		DamageTakenMultiplier: 1,
 	})
 
-	war.EnableAutoAttacks(war, core.AutoAttackOptions{
-		MainHand:       war.WeaponFromMainHand(),
-		OffHand:        war.WeaponFromOffHand(),
+	tankWar.EnableAutoAttacks(tankWar, core.AutoAttackOptions{
+		MainHand:       tankWar.WeaponFromMainHand(),
+		OffHand:        tankWar.WeaponFromOffHand(),
 		AutoSwingMelee: true,
-		ReplaceMHSwing: war.TryHSOrCleave,
+		ReplaceMHSwing: tankWar.TryHSOrCleave,
 	})
 
-	return war
+	return tankWar
 }
 
 func (war *TankWarrior) GetWarrior() *warrior.Warrior {
