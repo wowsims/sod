@@ -33,6 +33,7 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(shaman.Level)]*core.DodgeRatingPerDodgeChance)
 	shaman.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(shaman.Level)]*core.SpellCritRatingPerCritChance)
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
+	shaman.PseudoStats.BlockValuePerStrength = .05 // 20 str = 1 block
 
 	shaman.ApplyRockbiterImbue(shaman.getImbueProcMask(proto.WeaponImbue_RockbiterWeapon))
 	shaman.ApplyFlametongueImbue(shaman.getImbueProcMask(proto.WeaponImbue_FlametongueWeapon))
