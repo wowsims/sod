@@ -108,6 +108,7 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
+	paladin.registerRighteousFury()
 	// Judgement and Seals
 	paladin.registerJudgement()
 
