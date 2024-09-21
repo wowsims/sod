@@ -134,6 +134,7 @@ message PaladinOptions {
 	bool IsUsingDivineStormStopAttack = 4;
 	bool IsUsingJudgementStopAttack = 5;
 	bool IsUsingCrusaderStrikeStopAttack = 6;
+    bool righteousFury = 8;
 }
 
 message RetributionPaladin {
