@@ -98,8 +98,8 @@ func (paladin *Paladin) registerSealOfCommand() {
 			ActionID:    core.ActionID{SpellID: rank.proc.spellID},
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMelee,
-			ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskProc,
-			Flags:       core.SpellFlagMeleeMetrics | SpellFlag_RV, // RV Worked on PTR
+			ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeProc | core.ProcMaskMeleeDamageProc,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNotAProc | SpellFlag_RV, // RV Worked on PTR
 
 			DamageMultiplier: 0.7 * paladin.getWeaponSpecializationModifier(),
 			ThreatMultiplier: 1,
@@ -108,7 +108,15 @@ func (paladin *Paladin) registerSealOfCommand() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
+					OnAction: func(s *core.Simulation) {
+						spell.DealDamage(sim, result)
+					},
+				})
+
 			},
 		})
 

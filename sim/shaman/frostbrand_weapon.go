@@ -40,7 +40,7 @@ func (shaman *Shaman) newFrostbrandImbueSpell() *core.Spell {
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFrost,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskWeaponProc,
+		ProcMask:    core.ProcMaskSpellDamageProc,
 
 		DamageMultiplier: []float64{1, 1.05, 1.1, 1.15}[shaman.Talents.ElementalWeapons],
 		ThreatMultiplier: 1,

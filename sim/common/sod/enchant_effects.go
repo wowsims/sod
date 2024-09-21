@@ -48,7 +48,7 @@ func init() {
 				}
 
 				// Dismantle only procs on direct attacks, not proc effects or DoT ticks
-				if spell.ProcMask.Matches(core.ProcMaskEmpty | core.ProcMaskProc | core.ProcMaskWeaponProc) {
+				if !spell.Flags.Matches(core.SpellFlagNotAProc) && spell.ProcMask.Matches(core.ProcMaskProc|core.ProcMaskSpellDamageProc) {
 					return
 				}
 

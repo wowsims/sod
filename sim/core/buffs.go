@@ -2204,7 +2204,7 @@ func ApplyWildStrikes(character *Character) *Aura {
 	MakePermanent(character.GetOrRegisterAura(Aura{
 		Label: "Wild Strikes",
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSupressExtraAttack) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
 				return
 			}
 
@@ -2279,7 +2279,7 @@ func ApplyWindfury(character *Character) *Aura {
 				windfuryBuffAura.RemoveStack(sim)
 			}
 
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSupressExtraAttack) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
 				return
 			}
 
@@ -2292,7 +2292,8 @@ func ApplyWindfury(character *Character) *Aura {
 				} else {
 					windfuryBuffAura.SetStacks(sim, 2)
 				}
-				aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, ActionID{SpellID: 10610}, spell.ActionID)
+
+				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, ActionID{SpellID: spellId}, spell)
 			}
 		},
 	}))
