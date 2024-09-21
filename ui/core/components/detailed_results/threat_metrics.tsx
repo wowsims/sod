@@ -122,6 +122,7 @@ export class ThreatMetricsTable extends MetricsTable<ActionMetrics> {
 					const relativeResistedCritTickPercent = (metric.resistedCritTicks / metric.landedTicks) * 100;
 					const relativeGlancePercent = (metric.glances / metric.landedHits) * 100;
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
+					const relativeBlockedCritPercent = (metric.blockedCrits / metric.landedHits) * 100;
 
 					cellElem.appendChild(
 						<MetricsCombinedTooltipTable
@@ -148,6 +149,11 @@ export class ThreatMetricsTable extends MetricsTable<ActionMetrics> {
 											percentage: relativeCritPercent,
 										},
 										{
+											name: 'Blocked Critical Hit',
+											value: metric.blockedCrits,
+											percentage: relativeBlockedCritPercent,
+										},
+										{
 											name: `Resisted Critical Hit`,
 											value: metric.resistedCrits,
 											percentage: relativeResistedCritPercent,
@@ -161,7 +167,7 @@ export class ThreatMetricsTable extends MetricsTable<ActionMetrics> {
 											name: 'Blocked Hit',
 											value: metric.blocks,
 											percentage: relativeBlockPercent,
-										}
+										},
 									],
 								},
 								{
@@ -206,10 +212,12 @@ export class ThreatMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Crit %',
-				getValue: (metric: ActionMetrics) => metric.critPercent || metric.critTickPercent,
+				getValue: (metric: ActionMetrics) => metric.critPercent + metric.blockedCritPercent || metric.critTickPercent,
 				getDisplayString: (metric: ActionMetrics) =>
-					`${formatToPercent(metric.critPercent || metric.critTickPercent, { fallbackString: '-' })}${
-						metric.critPercent && metric.critTickPercent ? ` (${formatToPercent(metric.critTickPercent, { fallbackString: '-' })})` : ''
+					`${formatToPercent(metric.critPercent + metric.blockedCritPercent || metric.critTickPercent, { fallbackString: '-' })}${
+						metric.critPercent + metric.blockedCritPercent && metric.critTickPercent
+							? ` (${formatToPercent(metric.critTickPercent, { fallbackString: '-' })})`
+							: ''
 					}`,
 			},
 			{

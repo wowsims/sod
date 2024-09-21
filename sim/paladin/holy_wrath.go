@@ -26,17 +26,6 @@ func (paladin *Paladin) registerHolyWrath() {
 	hasPurifyingPower := paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower)
 	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
-	cdTime := time.Duration(60)
-	if hasPurifyingPower {
-		cdTime = cdTime / 2
-	}
-	cd := core.Cooldown{
-		Timer:    paladin.NewTimer(),
-		Duration: time.Second * cdTime,
-	}
-
-	paladin.holyWrath = make([]*core.Spell, len(ranks))
-
 	var results []*core.SpellResult
 
 	for i, rank := range ranks {
@@ -67,8 +56,11 @@ func (paladin *Paladin) registerHolyWrath() {
 					GCD:      core.GCDDefault,
 					CastTime: time.Second * 2,
 				},
-				
-				CD:          cd,
+
+				CD: core.Cooldown{
+					Timer:    paladin.NewTimer(),
+					Duration: time.Second * 60,
+				},
 			},
 
 			DamageMultiplier: 1.0,
@@ -78,7 +70,7 @@ func (paladin *Paladin) registerHolyWrath() {
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 				bonusCrit := core.TernaryFloat64(hasWrath, paladin.GetStat(stats.MeleeCrit), 0)
 				spell.BonusCritRating += bonusCrit
-				
+
 				results = results[:0]
 				for _, target := range paladin.Env.Encounter.TargetUnits {
 					if hasPurifyingPower || (target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead) {
@@ -91,7 +83,7 @@ func (paladin *Paladin) registerHolyWrath() {
 				for _, result := range results {
 					spell.DealDamage(sim, result)
 				}
-				
+
 				spell.BonusCritRating -= bonusCrit
 			},
 		})

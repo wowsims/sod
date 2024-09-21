@@ -98,7 +98,7 @@ func (unit *Unit) applySpellPushback() {
 				return
 			}
 
-			if hc := aura.Unit.Hardcast; hc.Expires > sim.CurrentTime {
+			if hc := aura.Unit.Hardcast; aura.Unit.IsCasting(sim) {
 				// Do spell pushback
 				pushback := DurationFromSeconds(max(0.2, hc.Pushback))
 				aura.Unit.Hardcast.Pushback -= 0.2
@@ -191,7 +191,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			return spell.castFailureHelper(sim, "GCD on cooldown for %s, curTime = %s", spell.Unit.GCD.TimeToReady(sim), sim.CurrentTime)
 		}
 
-		if hc := spell.Unit.Hardcast; hc.Expires > sim.CurrentTime {
+		if hc := spell.Unit.Hardcast; spell.Unit.IsCasting(sim) {
 			// Attempt to use a queued cast-while-casting spell mid-hard cast
 			if cwc := spell.Unit.castWhileCastingAction; cwc != nil {
 				cwc.OnAction(sim)
@@ -228,6 +228,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			pa := &PendingAction{
 				NextActionAt: sim.CurrentTime + GCDDefault/2,
 				OnAction: func(sim *Simulation) {
+					spell.LastCastAt = sim.CurrentTime
+
 					if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 						spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s, Effective Time = %s)",
 							spell.ActionID, max(0, spell.CurCast.Cost), spell.CurCast.CastTime, spell.CurCast.EffectiveTime())
@@ -262,6 +264,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 				ActionID: spell.ActionID,
 				Pushback: 1.0,
 				OnComplete: func(sim *Simulation, target *Unit) {
+					spell.LastCastAt = sim.CurrentTime
+
 					if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 						spell.Unit.Log(sim, "Completed cast %s", spell.ActionID)
 					}
@@ -293,6 +297,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 
 			return true
 		}
+
+		spell.LastCastAt = sim.CurrentTime
 
 		if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 			spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s, Effective Time = %s)",

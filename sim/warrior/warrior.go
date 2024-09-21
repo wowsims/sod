@@ -157,13 +157,14 @@ func (warrior *Warrior) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (warrior *Warrior) RegisterSpell(stanceMask Stance, config core.SpellConfig) *WarriorSpell {
-	ws := &WarriorSpell{StanceMask: stanceMask}
+	ws := &WarriorSpell{
+		StanceMask: stanceMask,
+	}
 
 	castConditionOld := config.ExtraCastCondition
 	config.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-		// Check if we're in allowed form to cast
-		// Allow 'humanoid' auto unshift casts
-		if stance := ws.GetStanceMask(); stance != AnyStance && !warrior.StanceMatches(stance) {
+		// Check if we're in a correct stance to cast the spell
+		if stance := ws.GetStanceMask(); !ws.stanceOverride && stance != AnyStance && !warrior.StanceMatches(stance) {
 			if sim.Log != nil {
 				sim.Log("Failed cast to spell %s, wrong stance", ws.ActionID)
 			}
@@ -189,7 +190,7 @@ func (warrior *Warrior) RegisterSpell(stanceMask Stance, config core.SpellConfig
 
 func (warrior *Warrior) newStanceOverrideExclusiveEffect(stance Stance, aura *core.Aura) *core.ExclusiveEffect {
 	return aura.NewExclusiveEffect("stance-override", false, core.ExclusiveEffect{
-		Priority: float64(stance),
+		Priority: core.TernaryFloat64(stance == AnyStance, 2, 1),
 		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			if stance.Matches(BattleStance) {
 				for _, spell := range warrior.BattleStanceSpells {
@@ -253,7 +254,7 @@ func (warrior *Warrior) Initialize() {
 	// This can cause an unrealistic immediate double-hit around wild strikes procs
 	queuedRealismICD := &core.Cooldown{
 		Timer:    warrior.NewTimer(),
-		Duration: core.SpellBatchWindow * 5,
+		Duration: core.SpellBatchWindow * 10,
 	}
 	warrior.registerHeroicStrikeSpell(queuedRealismICD)
 	warrior.registerCleaveSpell(queuedRealismICD)

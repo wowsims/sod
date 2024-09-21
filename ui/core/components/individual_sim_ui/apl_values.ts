@@ -759,6 +759,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueSpellTravelTime.create,
 		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', '')],
 	}),
+	spellInFlight: inputBuilder({
+		label: 'In Flight',
+		submenu: ['Spell'],
+		shortDescription: '<b>True</b> if the spell has a missile in flight, otherwise <b>False</b>.',
+		newValue: APLValueSpellCPM.create,
+		fields: [AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', '')],
+	}),
 	spellCpm: inputBuilder({
 		label: 'CPM',
 		submenu: ['Spell'],

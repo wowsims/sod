@@ -492,20 +492,26 @@ func (warlock *Warlock) applyDemonicPact() {
 
 			icd.Use(sim)
 
+			lastBonus := 0.0
 			currentSP := warlock.getHighestSP()
+			warlockAura := demonicPactAuras.Get(&warlock.Unit)
 
 			// Remove DP bonus from SP bonus if active
-			if demonicPactAuras.Get(&warlock.Unit).IsActive() {
-				currentSP -= demonicPactAuras.Get(&warlock.Unit).ExclusiveEffects[0].Priority
+			if warlockAura.IsActive() {
+				lastBonus = demonicPactAuras.Get(&warlock.Unit).ExclusiveEffects[0].Priority
 			}
-			spBonus := max(math.Round(currentSP*0.1), math.Round(float64(warlock.Level)/2))
-			for _, dpAura := range demonicPactAuras {
-				if dpAura != nil {
-					// Force expire/gain because of new sp bonus
-					dpAura.Deactivate(sim)
+			newSPBonus := max(math.Round(0.10*(currentSP-lastBonus)), math.Round(float64(warlock.Level)/2))
 
-					dpAura.ExclusiveEffects[0].SetPriority(sim, spBonus)
-					dpAura.Activate(sim)
+			if warlockAura.RemainingDuration(sim) < 10*time.Second || newSPBonus >= lastBonus {
+				for _, dpAura := range demonicPactAuras {
+					if dpAura != nil {
+						// Force expire/gain because of new sp bonus
+						dpAura.Deactivate(sim)
+
+						dpAura.ExclusiveEffects[0].SetPriority(sim, newSPBonus)
+						dpAura.Activate(sim)
+						dpAura.SetStacks(sim, int32(newSPBonus))
+					}
 				}
 			}
 		},

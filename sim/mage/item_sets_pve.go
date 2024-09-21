@@ -220,6 +220,7 @@ var ItemSetNetherwindInsight = core.NewItemSet(core.ItemSet{
 		// Your Fireball's periodic effect gains increased damage over its duration equal to 20% of its impact damage.
 		6: func(agent core.Agent) {
 			mage := agent.(MageAgent).GetMage()
+			mage.MaintainFireballDoT = true
 			core.MakePermanent(mage.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Mage - Damage 6P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

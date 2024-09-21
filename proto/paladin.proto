@@ -68,7 +68,7 @@ enum PaladinRune {
 	RuneCloakRighteousVengeance		= 440672;
 
 	RuneChestDivineStorm			= 407778;
-	RuneChestAegis					= 425619;
+	RuneChestAegis					= 425589;
 	RuneChestHallowedGround			= 458287;
 	RuneChestDivineLight			= 458856;
 
@@ -134,6 +134,7 @@ message PaladinOptions {
 	bool IsUsingDivineStormStopAttack = 4;
 	bool IsUsingJudgementStopAttack = 5;
 	bool IsUsingCrusaderStrikeStopAttack = 6;
+    bool righteousFury = 8;
 }
 
 message RetributionPaladin {

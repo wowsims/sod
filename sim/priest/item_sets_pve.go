@@ -207,7 +207,7 @@ var ItemSetTwilightOfTranscendence = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		// Your Shadow Word: Pain has a 0.5% chance per talent point in Spirit Tap to trigger your Spirit Tap talent when it deals damage,
+		// Your Shadow Word: Pain has a 1% chance per talent point in Spirit Tap to trigger your Spirit Tap talent when it deals damage,
 		// or a 20% chance per talent point when a target dies with your Shadow Word: Pain active.
 		4: func(agent core.Agent) {
 			priest := agent.(PriestAgent).GetPriest()
@@ -215,7 +215,7 @@ var ItemSetTwilightOfTranscendence = core.NewItemSet(core.ItemSet{
 				return
 			}
 
-			procChance := .005 * float64(priest.Talents.SpiritTap)
+			procChance := 0.01 * float64(priest.Talents.SpiritTap)
 
 			core.MakePermanent(priest.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Priest - Shadow 4P Bonus",
@@ -226,59 +226,25 @@ var ItemSetTwilightOfTranscendence = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// While Spirit Tap is active, your Periodic damage spells deal 20% more damage.
+		// While Spirit Tap is active, you deal 10% more shadow damage.
 		6: func(agent core.Agent) {
 			priest := agent.(PriestAgent).GetPriest()
 			if priest.Talents.SpiritTap == 0 {
 				return
 			}
 
-			priestDots := []*core.Dot{}
-			// Mind sear ticks are separate spells, not a DoT
-			mindSearticks := []*core.Spell{}
-
 			priest.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Priest - Shadow 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range priest.Spellbook {
-						if !spell.Flags.Matches(SpellFlagPriest) {
-							continue
-						}
-
-						if dots := spell.Dots(); len(dots) > 0 || spell.Flags.Matches(core.SpellFlagPureDot|core.SpellFlagChanneled) {
-							priestDots = append(
-								priestDots,
-								core.FilterSlice(dots, func(dot *core.Dot) bool { return dot != nil })...,
-							)
-						}
-					}
-
-					mindSearticks = core.FilterSlice(priest.MindSearTicks, func(spell *core.Spell) bool { return spell != nil })
-
 					oldOnGain := priest.SpiritTapAura.OnGain
 					priest.SpiritTapAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnGain(aura, sim)
-
-						for _, dot := range priestDots {
-							dot.DamageMultiplier *= 1.20
-						}
-
-						for _, spell := range mindSearticks {
-							spell.DamageMultiplier *= 1.20
-						}
+						priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.10
 					}
-
 					oldOnExpire := priest.SpiritTapAura.OnExpire
 					priest.SpiritTapAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnExpire(aura, sim)
-
-						for _, dot := range priestDots {
-							dot.DamageMultiplier /= 1.20
-						}
-
-						for _, spell := range mindSearticks {
-							spell.DamageMultiplier /= 1.20
-						}
+						priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.10
 					}
 				},
 			})

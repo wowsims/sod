@@ -82,7 +82,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 73
+// NextIndex: 75
 message APLValue {
     oneof value {
         // Operators
@@ -129,6 +129,7 @@ message APLValue {
         APLValueSpellTimeToReady spell_time_to_ready = 21;
         APLValueSpellCastTime spell_cast_time = 35;
         APLValueSpellTravelTime spell_travel_time = 37;
+        APLValueSpellInFlight spell_in_flight = 74;
         APLValueSpellCPM spell_cpm = 42;
         APLValueSpellIsChanneling spell_is_channeling = 56;
         APLValueSpellChanneledTicks spell_channeled_ticks = 57;
@@ -436,6 +437,9 @@ message APLValueFrontOfTarget {
 }
 
 message APLValueSpellTravelTime {
+    ActionID spell_id = 1;
+}
+message APLValueSpellInFlight {
     ActionID spell_id = 1;
 }
 message APLValueSpellCPM {

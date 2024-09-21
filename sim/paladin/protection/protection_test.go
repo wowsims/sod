@@ -12,7 +12,7 @@ func init() {
 
 func TestProtection(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
+		{ // Phase 4 Gear
 			Class:      proto.Class_ClassPaladin,
 			Level:      60,
 			Race:       proto.Race_RaceHuman,
@@ -99,15 +99,18 @@ var PlayerOptionsSealofRighteousness = &proto.Player_ProtectionPaladin{
 }
 
 var optionsSealOfCommand = &proto.PaladinOptions{
-	PrimarySeal: proto.PaladinSeal_Command,
+	PrimarySeal:   proto.PaladinSeal_Command,
+	RighteousFury: true,
 }
 
 var optionsSealOfMartyrdom = &proto.PaladinOptions{
-	PrimarySeal: proto.PaladinSeal_Martyrdom,
+	PrimarySeal:   proto.PaladinSeal_Martyrdom,
+	RighteousFury: true,
 }
 
 var optionsSealOfRighteousness = &proto.PaladinOptions{
-	PrimarySeal: proto.PaladinSeal_Righteousness,
+	PrimarySeal:   proto.PaladinSeal_Righteousness,
+	RighteousFury: true,
 }
 
 var ItemFilters = core.ItemFilter{
