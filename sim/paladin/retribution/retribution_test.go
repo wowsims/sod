@@ -49,6 +49,7 @@ func TestRetribution(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassPaladin,
+			Phase:      4,
 			Level:      50,
 			Race:       proto.Race_RaceHuman,
 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
@@ -59,6 +60,87 @@ func TestRetribution(t *testing.T) {
 			Buffs:       core.FullBuffsPhase3,
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "P3 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      4,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:  Phase45RetTalents,
+			GearSet:  core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p4ret-twisting-6pcT1"),
+			Rotation: core.GetAplRotation("../../../ui/retribution_paladin/apls", "p4ret-twisting-6pcT1"),
+
+			OtherGearSets:  []core.GearSetCombo{core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p4rettwist")},
+			OtherRotations: []core.RotationCombo{core.GetAplRotation("../../../ui/retribution_paladin/apls", "p4ret")},
+			Buffs:          core.FullBuffsPhase5,
+			Consumes:       Phase4Consumes,
+			SpecOptions:    core.SpecOptionsCombo{Label: "P4 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:        Phase45RetTalents,
+			GearSet:        core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5twisting"),
+			Rotation:       core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5ret-twist-4DR-3.5-3.6"),
+			OtherRotations: []core.RotationCombo{core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5ret-twist-4DR-3.7-4.0")},
+			Buffs:          core.FullBuffsPhase5,
+			Consumes:       Phase4Consumes,
+			SpecOptions:    core.SpecOptionsCombo{Label: "P5 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+	}))
+}
+
+func TestExodin(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      4,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase45RetTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p4ret-exodin-6pcT1"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p4ret-exodin-6pcT1"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "P4 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase45RetTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5exodin"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5ret-exodin-6CF2DR"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "P5 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
@@ -93,7 +175,7 @@ func TestShockadin(t *testing.T) {
 			Race:       proto.Race_RaceHuman,
 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-			Talents:     Phase2ShockadinTalents,
+			Talents:     Phase45ShockadinTalents,
 			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5shockadin"),
 			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5Shockadin"),
 			Buffs:       core.FullBuffsPhase4,
@@ -111,6 +193,8 @@ var Phase1RetTalents = "--05230051"
 var Phase2RetTalents = "--532300512003151"
 var Phase2ShockadinTalents = "55050100521151--"
 var Phase3RetTalents = "500501--53230051200315"
+var Phase45RetTalents = "500501-503-52230351200315"
+var Phase45ShockadinTalents = "55053100501051--052303511"
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "P1-Consumes",
@@ -163,10 +247,12 @@ var Phase4Consumes = core.ConsumesCombo{
 		Flask:             proto.Flask_FlaskOfSupremePower,
 		SpellPowerBuff:    proto.SpellPowerBuff_GreaterArcaneElixir,
 		DragonBreathChili: true,
+		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
 		Food:              proto.Food_FoodSmokedDesertDumpling,
 		MainHandImbue:     proto.WeaponImbue_WildStrikes,
 		OffHandImbue:      proto.WeaponImbue_ConductiveShieldCoating,
 		StrengthBuff:      proto.StrengthBuff_JujuPower,
+		EnchantedSigil:    proto.EnchantedSigil_FlowingWatersSigil,
 	},
 }
 
