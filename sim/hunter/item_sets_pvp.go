@@ -136,25 +136,19 @@ var ItemSetLieutenantCommandersProwess = core.NewItemSet(core.ItemSet{
 var ItemSetWarlordsPursuit = core.NewItemSet(core.ItemSet{
 	Name: "Warlord's Pursuit",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +20 Agility, 20 Stamina
+		// 20 Stamina
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.Agility: 20,
-				stats.Stamina: 20,
-			})
+			c.AddStat(stats.Stamina, 20)
 		},
 		// Reduces the cooldown of your Concussive Shot by 1 sec.
 		4: func(agent core.Agent) {
 			// Nothing to do
 		},
-		// +20 Agi, 23 Spellpower.
+		// +20 Agi
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.Agility:    20,
-				stats.SpellPower: 23,
-			})
+			c.AddStat(stats.Agility, 20)
 		},
 	},
 })
@@ -162,13 +156,10 @@ var ItemSetWarlordsPursuit = core.NewItemSet(core.ItemSet{
 var ItemSetWarlordsProwess = core.NewItemSet(core.ItemSet{
 	Name: "Warlord's Prowess",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +20 Agility, 20 stamina
+		// +20 stamina
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.Agility: 20,
-				stats.Stamina: 20,
-			})
+			c.AddStat(stats.Stamina, 20)
 		},
 		// Increases the duration of your Wing Clip by 2 sec.
 		4: func(agent core.Agent) {
@@ -188,25 +179,19 @@ var ItemSetWarlordsProwess = core.NewItemSet(core.ItemSet{
 var ItemSetFieldMarshalsPursuit = core.NewItemSet(core.ItemSet{
 	Name: "Field Marshal's Pursuit",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +20 Agility, 20 stamina
+		// 20 stamina
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.Agility: 20,
-				stats.Stamina: 20,
-			})
+			c.AddStat(stats.Stamina, 20)
 		},
 		// Reduces the cooldown of your Concussive Shot by 1 sec.
 		4: func(agent core.Agent) {
 			// Nothing to do
 		},
-		// +20 Agi, 23 Spellpower.
+		// +20 Agi
 		6: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.Agility:    20,
-				stats.SpellPower: 23,
-			})
+			c.AddStat(stats.Agility, 20)
 		},
 	},
 })
@@ -214,13 +199,10 @@ var ItemSetFieldMarshalsPursuit = core.NewItemSet(core.ItemSet{
 var ItemSetFieldMarshalsProwess = core.NewItemSet(core.ItemSet{
 	Name: "Field Marshal's Prowess",
 	Bonuses: map[int32]core.ApplyEffect{
-		// +20 Agility, 20 stamina
+		//20 stamina
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.Agility: 20,
-				stats.Stamina: 20,
-			})
+			c.AddStat(stats.Stamina, 20)
 		},
 		// Increases the duration of your Wing Clip by 2 sec.
 		4: func(agent core.Agent) {

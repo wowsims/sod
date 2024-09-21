@@ -98,6 +98,7 @@ export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 export const DefaultOptions = ProtectionPaladinOptions.create({
 	aura: PaladinAura.SanctityAura,
 	primarySeal: PaladinSeal.Martyrdom,
+    righteousFury: true,
 });
 
 export const DefaultConsumes = Consumes.create({
