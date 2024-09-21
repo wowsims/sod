@@ -12,6 +12,7 @@ func init() {
 	addGnomereganMechanical("SoD")
 	addLevel50("SoD")
 	addSunkenTempleDragonkin("SoD")
+	addVaelastraszTheCorrupt("SoD")
 	addLevel60("SoD")
 }
 
