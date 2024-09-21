@@ -27,6 +27,7 @@ const (
 	SpellCode_PaladinAvengersShield
 	SpellCode_PaladinHolyShield
 	SpellCode_PaladinHolyShieldProc
+	SpellCode_PaladinLayOnHands
 )
 
 type SealJudgeCode uint8
@@ -140,6 +141,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerAuraMastery()
 	paladin.registerHolyShield()
 	paladin.registerShieldOfRighteousness()
+	paladin.registerLayOnHands()
 
 	paladin.enableMultiJudge = true // change this to baseline false when P5 launches
 	paladin.lingerDuration = time.Millisecond * 400
