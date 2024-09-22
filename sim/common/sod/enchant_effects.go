@@ -3,7 +3,6 @@ package sod
 import (
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/shaman"
 )
 
 const (
@@ -48,13 +47,8 @@ func init() {
 					return
 				}
 
-				// Dismantle only procs on attacks from the player character (not pet attacks or totems)
-				if spell.Unit != &character.Unit || shaman.SpellFlagTotem.Matches(spell.Flags) {
-					return
-				}
-
 				// Dismantle only procs on direct attacks, not proc effects or DoT ticks
-				if core.ProcMaskProc.Matches(spell.ProcMask) || core.ProcMaskWeaponProc.Matches(spell.ProcMask) {
+				if spell.ProcMask.Matches(core.ProcMaskEmpty | core.ProcMaskProc | core.ProcMaskWeaponProc) {
 					return
 				}
 

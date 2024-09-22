@@ -26,8 +26,8 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		Duration:  time.Second * 10,
 
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			hunter.PseudoStats.DamageDealtMultiplier /= 1 + (0.05 * float64(oldStacks))
-			hunter.PseudoStats.DamageDealtMultiplier *= 1 + (0.05 * float64(newStacks))
+			hunter.PseudoStats.DamageDealtMultiplier /= 1 + (0.08 * float64(oldStacks))
+			hunter.PseudoStats.DamageDealtMultiplier *= 1 + (0.08 * float64(newStacks))
 		},
 	})
 

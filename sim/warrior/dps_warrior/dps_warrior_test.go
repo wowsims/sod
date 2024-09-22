@@ -12,7 +12,7 @@ func init() {
 	RegisterDpsWarrior()
 }
 
-func TestFury(t *testing.T) {
+func TestDualWieldWarrior(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class:      proto.Class_ClassWarrior,
@@ -24,7 +24,7 @@ func TestFury(t *testing.T) {
 			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2_dw"),
 			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_2_fury"),
 			Buffs:       core.FullBuffsPhase2,
-			Consumes:    Phase1Consumes,
+			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},
 
 			ItemFilter:      ItemFilters,
@@ -33,6 +33,7 @@ func TestFury(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassWarrior,
+			Phase:      4,
 			Level:      60,
 			Race:       proto.Race_RaceOrc,
 			OtherRaces: []proto.Race{proto.Race_RaceHuman},
@@ -41,7 +42,28 @@ func TestFury(t *testing.T) {
 			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_4_dw"),
 			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_4_fury"),
 			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase1Consumes,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassWarrior,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceOrc,
+			OtherRaces: []proto.Race{proto.Race_RaceHuman},
+
+			Talents: P4FuryTalents,
+			GearSet: core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_dw_t1"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_dw_t2"),
+			},
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_5_dw"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},
 
 			ItemFilter:      ItemFilters,
@@ -51,7 +73,7 @@ func TestFury(t *testing.T) {
 	}))
 }
 
-func TestArms(t *testing.T) {
+func TestTwoHandedWarrior(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class:      proto.Class_ClassWarrior,
@@ -70,6 +92,27 @@ func TestArms(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassWarrior,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceOrc,
+			OtherRaces: []proto.Race{proto.Race_RaceHuman},
+
+			Talents: P4FuryTalents,
+			GearSet: core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_2h_t1"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_2h_t2"),
+			},
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_5_2h"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -79,7 +122,7 @@ var P3ArmsTalents = "303050213520105001-0505"
 var P4FuryTalents = "20305020302-05050005525010051"
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
 		MainHandImbue: proto.WeaponImbue_WildStrikes,
@@ -89,7 +132,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DragonBreathChili: true,
@@ -101,7 +144,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase3Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "P3-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
 		DragonBreathChili: true,
@@ -114,7 +157,7 @@ var Phase3Consumes = core.ConsumesCombo{
 }
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,

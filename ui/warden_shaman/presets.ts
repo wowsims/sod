@@ -115,9 +115,6 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.RockbiterWeapon,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
-	miscConsumes: {
-		jujuEmber: true,
-	},
 	offHandImbue: WeaponImbue.ConductiveShieldCoating,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
@@ -129,7 +126,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	commandingShout: true,
-	demonicPact: 80,
+	demonicPact: 110,
 	divineSpirit: true,
 	fireResistanceAura: true,
 	fireResistanceTotem: true,
@@ -149,6 +146,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	spiritOfZandalar: true,
 	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });

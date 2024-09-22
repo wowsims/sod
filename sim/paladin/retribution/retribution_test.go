@@ -88,6 +88,7 @@ func TestShockadin(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassPaladin,
+			Phase:      5,
 			Level:      60,
 			Race:       proto.Race_RaceHuman,
 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
@@ -106,93 +107,13 @@ func TestShockadin(t *testing.T) {
 	}))
 }
 
-func BenchmarkSimulate(b *testing.B) {
-	core.Each([]*proto.RaidSimRequest{
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceHuman,
-					Class:         proto.Class_ClassPaladin,
-					Level:         25,
-					TalentsString: Phase1RetTalents,
-					Equipment:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p1ret").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/retribution_paladin/apls", "p1ret").Rotation,
-					Consumes:      Phase1Consumes.Consumes,
-					Spec:          PlayerOptionsSealofCommand,
-					Buffs:         core.FullIndividualBuffsPhase1,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase1,
-				core.FullDebuffsPhase1,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(25),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceHuman,
-					Class:         proto.Class_ClassPaladin,
-					Level:         40,
-					TalentsString: Phase2RetTalents,
-					Equipment:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p2ret").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/retribution_paladin/apls", "p2ret").Rotation,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          PlayerOptionsSealofCommand,
-					Buffs:         core.FullIndividualBuffsPhase2,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceHuman,
-					Class:         proto.Class_ClassPaladin,
-					Level:         50,
-					TalentsString: Phase3RetTalents,
-					Equipment:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p3ret").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/retribution_paladin/apls", "p3ret").Rotation,
-					Consumes:      Phase3Consumes.Consumes,
-					Spec:          PlayerOptionsSealofMartyrdom,
-					Buffs:         core.FullIndividualBuffsPhase3,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase3,
-				core.FullDebuffsPhase3,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(50),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
-}
-
 var Phase1RetTalents = "--05230051"
 var Phase2RetTalents = "--532300512003151"
 var Phase2ShockadinTalents = "55050100521151--"
 var Phase3RetTalents = "500501--53230051200315"
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
 		DefaultPotion: proto.Potions_ManaPotion,
@@ -203,7 +124,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -217,7 +138,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase3Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "P3-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
 		DefaultPotion:     proto.Potions_MajorManaPotion,
@@ -234,7 +155,7 @@ var Phase3Consumes = core.ConsumesCombo{
 	},
 }
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:     proto.Potions_MajorManaPotion,
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
@@ -260,7 +181,6 @@ var PlayerOptionsSealofMartyrdom = &proto.Player_RetributionPaladin{
 		Options: optionsSealOfMartyrdom,
 	},
 }
-
 
 var PlayerOptionsSealofRighteousness = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{

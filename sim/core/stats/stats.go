@@ -437,6 +437,9 @@ type PseudoStats struct {
 	// Important when unit is attacker or target
 	BlockValueMultiplier float64
 
+	// BlockValue per Strength has to be calculated independently.
+	BlockValuePerStrength float64
+
 	// Only used for NPCs, governs variance in enemy auto-attack damage
 	DamageSpread float64
 
@@ -514,7 +517,8 @@ func NewPseudoStats() PseudoStats {
 		DamageDealtMultiplier:       1,
 		SchoolDamageDealtMultiplier: NewSchoolValueArray(1.0),
 
-		BlockValueMultiplier: 1,
+		BlockValueMultiplier:  1,
+		BlockValuePerStrength: 0,
 
 		DamageSpread: 0.3333,
 
