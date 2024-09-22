@@ -43,8 +43,8 @@ func addVaelastraszTheCorrupt(bossPrefix string) {
 		},
 		AI: NewVaelastraszTheCorruptAI(),
 	})
-	core.AddPresetEncounter("Blackwing Lair Vaelastrasz The Corrupt", []string{
-		bossPrefix + "/Blackwing Lair Vaelastrasz The Corrupt",
+	core.AddPresetEncounter("Blackwing Lair Vaelastrasz the Corrupt", []string{
+		bossPrefix + "/Blackwing Lair Vaelastrasz the Corrupt",
 	})
 }
 
