@@ -200,7 +200,8 @@ func init() {
 		}
 
 		core.MakePermanent(mage.RegisterAura(core.Aura{
-			Label: "Staff of Inferno",
+			ActionID: core.ActionID{SpellID: 469237},
+			Label:    "Staff of Inferno",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.SpellCode == SpellCode_MageBlastWave && result.Landed() {
 					aura := mage.ImprovedScorchAuras.Get(result.Target)
@@ -233,8 +234,20 @@ func init() {
 			return
 		}
 
-		mage.RegisterAura(core.Aura{
-			Label: "Staff of Rime",
+		statsAura := mage.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 469238},
+			Label:    "Staff of Rime",
+			Duration: time.Minute,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				mage.AddStatDynamic(sim, stats.FrostPower, 100)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				mage.AddStatDynamic(sim, stats.FrostPower, -100)
+			},
+		})
+
+		core.MakePermanent(mage.RegisterAura(core.Aura{
+			Label: "Staff of Rime Dummy",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				for _, aura := range mage.IceBarrierAuras {
 					if aura == nil {
@@ -244,17 +257,17 @@ func init() {
 					oldOnGain := aura.OnGain
 					aura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnGain(aura, sim)
-						mage.AddStatDynamic(sim, stats.FrostPower, 100)
+						statsAura.Activate(sim)
 					}
 
 					oldOnExpire := aura.OnExpire
 					aura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnExpire(aura, sim)
-						mage.AddStatDynamic(sim, stats.FrostPower, -100)
+						statsAura.Deactivate(sim)
 					}
 				}
 			},
-		})
+		}))
 	})
 
 	core.AddEffectsToTest = true
