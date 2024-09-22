@@ -12,8 +12,8 @@ func addVaelastraszTheCorrupt(bossPrefix string) {
 	core.AddPresetTarget(&core.PresetTarget{
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
-			Id:        13020, // Vanilla Vaelastrasz The Corrupt - no ID for SoD yet?
-			Name:      "Blackwing Lair Vaelastrasz The Corrupt",
+			Id:        13020, // Vanilla Vaelastrasz the Corrupt - no ID for SoD yet?
+			Name:      "Blackwing Lair Vaelastrasz the Corrupt",
 			Level:     63,
 			MobType:   proto.MobType_MobTypeDragonkin,
 			TankIndex: 0,
