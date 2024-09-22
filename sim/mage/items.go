@@ -246,7 +246,7 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(mage.RegisterAura(core.Aura{
+		mage.RegisterAura(core.Aura{
 			Label: "Staff of Rime Dummy",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				for _, aura := range mage.IceBarrierAuras {
@@ -267,7 +267,7 @@ func init() {
 					}
 				}
 			},
-		}))
+		})
 	})
 
 	core.AddEffectsToTest = true
