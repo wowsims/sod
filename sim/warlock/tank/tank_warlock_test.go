@@ -32,6 +32,7 @@ func TestAffliction(t *testing.T) {
 		},
 		{
 			Class: proto.Class_ClassWarlock,
+			Phase: 4,
 			Level: 60,
 			Race:  proto.Race_RaceOrc,
 
@@ -69,6 +70,7 @@ func TestDemonology(t *testing.T) {
 		},
 		{
 			Class: proto.Class_ClassWarlock,
+			Phase: 4,
 			Level: 60,
 			Race:  proto.Race_RaceOrc,
 
@@ -138,6 +140,7 @@ func TestDestruction(t *testing.T) {
 		},
 		{
 			Class: proto.Class_ClassWarlock,
+			Phase: 4,
 			Level: 60,
 			Race:  proto.Race_RaceOrc,
 

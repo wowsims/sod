@@ -79,19 +79,36 @@ func TestFeral(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassDruid,
+			Phase:      4,
 			Level:      60,
 			Race:       proto.Race_RaceTauren,
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
-			Talents: Phase4Talents,
-			GearSet: core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_4"),
-			OtherGearSets: []core.GearSetCombo{
-				core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_5"),
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_4"),
+			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "phase_4"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsMonoCat},
+			OtherSpecOptions: []core.SpecOptionsCombo{
+				{Label: "Default-NoBleed", SpecOptions: PlayerOptionsMonoCatNoBleed},
+				{Label: "Flower-Aoe", SpecOptions: PlayerOptionsFlowerCatAoe},
 			},
-			Rotation: core.GetAplRotation("../../../ui/feral_druid/apls", "phase_4"),
-			OtherRotations: []core.RotationCombo{
-				core.GetAplRotation("../../../ui/feral_druid/apls", "phase_5"),
-			},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassDruid,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceTauren,
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_5"),
+			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "phase_5"),
 			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsMonoCat},

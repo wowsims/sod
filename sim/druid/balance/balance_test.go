@@ -67,19 +67,32 @@ func TestBalance(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassDruid,
+			Phase:      4,
 			Level:      60,
 			Race:       proto.Race_RaceTauren,
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
-			Talents: Phase4Talents,
-			GearSet: core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_4"),
-			OtherGearSets: []core.GearSetCombo{
-				core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_5"),
-			},
-			Rotation: core.GetAplRotation("../../../ui/balance_druid/apls", "phase_4"),
-			OtherRotations: []core.RotationCombo{
-				core.GetAplRotation("../../../ui/balance_druid/apls", "phase_5"),
-			},
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_4"),
+			Rotation:    core.GetAplRotation("../../../ui/balance_druid/apls", "phase_4"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassDruid,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceTauren,
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_5"),
+			Rotation:    core.GetAplRotation("../../../ui/balance_druid/apls", "phase_5"),
 			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},

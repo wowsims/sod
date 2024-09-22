@@ -92,6 +92,7 @@ func TestMM(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassHunter,
+			Phase:      4,
 			Level:      60,
 			Race:       proto.Race_RaceOrc,
 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
@@ -148,6 +149,7 @@ func TestSV(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassHunter,
+			Phase:      4,
 			Level:      60,
 			Race:       proto.Race_RaceOrc,
 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},

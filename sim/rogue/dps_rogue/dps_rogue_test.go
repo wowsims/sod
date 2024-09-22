@@ -89,61 +89,6 @@ func TestAssassination(t *testing.T) {
 	}))
 }
 
-func BenchmarkSimulate(b *testing.B) {
-	core.Each([]*proto.RaidSimRequest{
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceHuman,
-					Class:         proto.Class_ClassRogue,
-					Level:         25,
-					TalentsString: CombatDagger25Talents,
-					Equipment:     core.GetGearSet("../../../ui/rogue/gear_sets", "p1_sword").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/rogue/apls", "basic_strike").Rotation,
-					Buffs:         core.FullIndividualBuffsPhase1,
-					Consumes:      Phase1Consumes.Consumes,
-					Spec:          DefaultCombatRogue,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase1,
-				core.FullDebuffsPhase1,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(25),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceHuman,
-					Class:         proto.Class_ClassRogue,
-					Level:         40,
-					TalentsString: CombatDagger40Talents,
-					Equipment:     core.GetGearSet("../../../ui/rogue/gear_sets", "p1_sword").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/rogue/apls", "basic_strike").Rotation,
-					Buffs:         core.FullIndividualBuffsPhase1,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          DefaultCombatRogue,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase1,
-				core.FullDebuffsPhase1,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
-}
-
 var CombatDagger25Talents = "-025305000001"
 var CombatDagger40Talents = "-0053052020550100201"
 var Assassination25Talents = "0053021--05"

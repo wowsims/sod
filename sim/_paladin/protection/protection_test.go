@@ -68,32 +68,6 @@ func TestProtection(t *testing.T) {
 	}))
 }
 
-func BenchmarkSimulate(b *testing.B) {
-	rsr := &proto.RaidSimRequest{
-		Raid: core.SinglePlayerRaidProto(
-			&proto.Player{
-				Race:      proto.Race_RaceHuman,
-				Class:     proto.Class_ClassPaladin,
-				Equipment: core.GetGearSet("../../../ui/protection_paladin/gear_sets", "p1").GearSet,
-				Consumes:  FullConsumes,
-				Spec:      DefaultOptions,
-				Buffs:     core.FullIndividualBuffs,
-			},
-			core.FullPartyBuffs,
-			core.FullRaidBuffs,
-			core.FullDebuffs),
-		Encounter: &proto.Encounter{
-			Duration: 300,
-			Targets: []*proto.Target{
-				core.NewDefaultTarget(),
-			},
-		},
-		SimOptions: core.AverageDefaultSimTestOptions,
-	}
-
-	core.RaidBenchmark(b, rsr)
-}
-
 var StandardTalents = "-05005135200132311333312321-511302012003"
 
 var defaultProtOptions = &proto.ProtectionPaladin_Options{

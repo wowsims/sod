@@ -77,33 +77,6 @@ func TestRetribution(t *testing.T) {
 	}))
 }
 
-func BenchmarkSimulate(b *testing.B) {
-	rsr := &proto.RaidSimRequest{
-		Raid: core.SinglePlayerRaidProto(
-			&proto.Player{
-				Race:          proto.Race_RaceHuman,
-				Class:         proto.Class_ClassPaladin,
-				TalentsString: StandardTalents,
-				Equipment:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p1").GearSet,
-				Consumes:      FullConsumes,
-				Spec:          DefaultOptions,
-				Buffs:         core.FullIndividualBuffs,
-			},
-			core.FullPartyBuffs,
-			core.FullRaidBuffs,
-			core.FullDebuffs),
-		Encounter: &proto.Encounter{
-			Duration: 300,
-			Targets: []*proto.Target{
-				core.NewDefaultTarget(),
-			},
-		},
-		SimOptions: core.AverageDefaultSimTestOptions,
-	}
-
-	core.RaidBenchmark(b, rsr)
-}
-
 var StandardTalents = "050501-05-05232051203331302133231331"
 
 var DefaultOptions = &proto.Player_RetributionPaladin{

@@ -244,13 +244,13 @@ func init() {
 					oldOnGain := aura.OnGain
 					aura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnGain(aura, sim)
-						mage.AddStatDynamic(sim, stats.FrostPower, 80)
+						mage.AddStatDynamic(sim, stats.FrostPower, 100)
 					}
 
 					oldOnExpire := aura.OnExpire
 					aura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnExpire(aura, sim)
-						mage.AddStatDynamic(sim, stats.FrostPower, -80)
+						mage.AddStatDynamic(sim, stats.FrostPower, -100)
 					}
 				}
 			},

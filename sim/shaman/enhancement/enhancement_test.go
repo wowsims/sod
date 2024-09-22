@@ -82,6 +82,7 @@ func TestEnhancement(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassShaman,
+			Phase:      4,
 			Level:      60,
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
@@ -90,13 +91,32 @@ func TestEnhancement(t *testing.T) {
 			GearSet: core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_4_dw"),
 			OtherGearSets: []core.GearSetCombo{
 				core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_4_2h"),
-				core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_5_dw"),
+			},
+			Rotation:    core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_4"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4ConsumesWFWF,
+			SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},
+			OtherSpecOptions: []core.SpecOptionsCombo{
+				{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
+			},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassShaman,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceOrc},
+
+			Talents: Phase4Talents,
+			GearSet: core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_5_dw"),
+			OtherGearSets: []core.GearSetCombo{
 				core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_5_2h"),
 			},
-			Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_4"),
-			OtherRotations: []core.RotationCombo{
-				core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_5"),
-			},
+			Rotation:    core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_5"),
 			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase4ConsumesWFWF,
 			SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},

@@ -12,7 +12,7 @@ func init() {
 	RegisterDpsWarrior()
 }
 
-func TestFury(t *testing.T) {
+func TestDualWieldWarrior(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class:      proto.Class_ClassWarrior,
@@ -24,7 +24,7 @@ func TestFury(t *testing.T) {
 			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_2_dw"),
 			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_2_fury"),
 			Buffs:       core.FullBuffsPhase2,
-			Consumes:    Phase1Consumes,
+			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},
 
 			ItemFilter:      ItemFilters,
@@ -33,25 +33,37 @@ func TestFury(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassWarrior,
+			Phase:      4,
+			Level:      60,
+			Race:       proto.Race_RaceOrc,
+			OtherRaces: []proto.Race{proto.Race_RaceHuman},
+
+			Talents:     P4FuryTalents,
+			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_4_dw"),
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_4_fury"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassWarrior,
+			Phase:      5,
 			Level:      60,
 			Race:       proto.Race_RaceOrc,
 			OtherRaces: []proto.Race{proto.Race_RaceHuman},
 
 			Talents: P4FuryTalents,
-			GearSet: core.GetGearSet("../../../ui/warrior/gear_sets", "phase_4_dw"),
+			GearSet: core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_dw_t1"),
 			OtherGearSets: []core.GearSetCombo{
-				core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_dw_t1"),
-				core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_2h_t1"),
 				core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_dw_t2"),
-				core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_2h_t2"),
 			},
-			Rotation: core.GetAplRotation("../../../ui/warrior/apls", "phase_4_fury"),
-			OtherRotations: []core.RotationCombo{
-				core.GetAplRotation("../../../ui/warrior/apls", "phase_5_dw"),
-				core.GetAplRotation("../../../ui/warrior/apls", "phase_5_2h"),
-			},
-			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase1Consumes,
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_5_dw"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},
 
 			ItemFilter:      ItemFilters,
@@ -61,7 +73,7 @@ func TestFury(t *testing.T) {
 	}))
 }
 
-func TestArms(t *testing.T) {
+func TestTwoHandedWarrior(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class:      proto.Class_ClassWarrior,
@@ -74,6 +86,27 @@ func TestArms(t *testing.T) {
 			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_3_arms"),
 			Buffs:       core.FullBuffsPhase3,
 			Consumes:    Phase3Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassWarrior,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceOrc,
+			OtherRaces: []proto.Race{proto.Race_RaceHuman},
+
+			Talents: P4FuryTalents,
+			GearSet: core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_2h_t1"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/warrior/gear_sets", "phase_5_2h_t2"),
+			},
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_5_2h"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
 
 			ItemFilter:      ItemFilters,

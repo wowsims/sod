@@ -285,7 +285,7 @@ var ItemSetIllusionistsAttire = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		// Increases damage done by your Frostbolt spell by 75%.
+		// Increases damage done by your Frostbolt spell by 65%.
 		5: func(agent core.Agent) {
 			mage := agent.(MageAgent).GetMage()
 			mage.RegisterAura(core.Aura{
@@ -293,12 +293,12 @@ var ItemSetIllusionistsAttire = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range mage.Frostbolt {
 						if spell != nil {
-							spell.DamageMultiplier *= 1.75
+							spell.DamageMultiplier *= 1.65
 						}
 					}
 
 					if mage.SpellfrostBolt != nil {
-						mage.SpellfrostBolt.DamageMultiplier *= 1.75
+						mage.SpellfrostBolt.DamageMultiplier *= 1.65
 					}
 				},
 			})

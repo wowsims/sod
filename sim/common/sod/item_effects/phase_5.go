@@ -12,6 +12,7 @@ import (
 const (
 	Heartstriker               = 230253
 	DrakeTalonCleaver          = 230271 // 19353
+	ClawOfChromaggus           = 230794
 	JekliksCrusher             = 230911
 	WillOfArlokk               = 230939
 	HaldberdOfSmiting          = 230991
@@ -38,6 +39,51 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+
+	core.NewItemEffect(ClawOfChromaggus, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		var arcaneChance, fireChance, frostChance, natureChance, shadowChance float64
+
+		switch character.Class {
+		case proto.Class_ClassDruid:
+			// Assuming 25% Arcane, 25% Nature, 50% divided among the other 3
+			arcaneChance, natureChance = 0.25, 0.25
+			fireChance, frostChance, shadowChance = 0.50/3, 0.50/3, 0.50/3
+		case proto.Class_ClassMage:
+			// The weapon's effect for mage is specialized, based off of selected runes
+			if character.HasRuneById(int32(proto.MageRune_RuneBeltSpellfrostBolt)) {
+				arcaneChance, frostChance = 0.25, 0.25
+				fireChance, natureChance, shadowChance = 0.50/3, 0.50/3, 0.50/3
+			} else if character.HasRuneById(int32(proto.MageRune_RuneBeltFrostfireBolt)) {
+				fireChance, frostChance = 0.25, 0.25
+				arcaneChance, natureChance, shadowChance = 0.50/3, 0.50/3, 0.50/3
+			} else if character.HasRuneById(int32(proto.MageRune_RuneCloakArcaneBarrage)) {
+				arcaneChance = 0.50
+				fireChance, frostChance, natureChance, shadowChance = 0.125, 0.125, 0.125, 0.125
+			}
+		case proto.Class_ClassPriest:
+			// Confirmed 50% proc chance for Shadow and the other 50% divided among the other 4 schools
+			shadowChance = 0.50
+			arcaneChance, fireChance, frostChance, natureChance = 0.125, 0.125, 0.125, 0.125
+		case proto.Class_ClassShaman:
+			// Assuming 25% Fire, 25% Nature, 50% divided among the other 3
+			fireChance, natureChance = 0.25, 0.25
+			arcaneChance, frostChance, shadowChance = 0.50/3, 0.50/3, 0.50/3
+		case proto.Class_ClassWarlock:
+			// Assuming 25% Fire, 25% Shadow, 50% divided among the other 3
+			fireChance, shadowChance = 0.25, 0.25
+			arcaneChance, frostChance, natureChance = 0.50/3, 0.50/3, 0.50/3
+		}
+
+		ClawOfChromaggusEffect(&agent.GetCharacter().Unit, map[stats.SchoolIndex]float64{
+			stats.SchoolIndexArcane: arcaneChance,
+			stats.SchoolIndexFire:   fireChance,
+			stats.SchoolIndexFrost:  frostChance,
+			stats.SchoolIndexNature: natureChance,
+			stats.SchoolIndexShadow: shadowChance,
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=230271/drake-talon-cleaver
 	// Chance on hit: Delivers a fatal wound for 300 damage.
@@ -302,5 +348,110 @@ func makeWillOfWarlookOnUseEffect(character *core.Character, itemID int32) {
 	character.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
+	})
+}
+
+/*
+Your offensive spellcasts increase the spell damage of a random school of magic by 50 for 10 sec.
+(9.5s cooldown)
+The in-game implementation is different for every class based on what schools are considered useful.
+Each class has a set of "good" schools based on certain parameters. These "good" schools have a higher chance to be procced.
+For each proc the game rolls to determine which school buff will be given.
+There's no buff for the Holy school, so there are 5 total schools that can be procced.
+
+schoolChances should be a map of school indexes with the relative proc chance of that school for the given class
+*/
+func ClawOfChromaggusEffect(unit *core.Unit, schoolChances map[stats.SchoolIndex]float64) {
+	duration := time.Second * 10
+
+	arcaneAura := unit.GetOrRegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 467410},
+		Label:    "Brood Boon: Bronze",
+		Duration: duration,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.ArcanePower, 50)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.ArcanePower, -50)
+		},
+	})
+
+	fireAura := unit.GetOrRegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 467414},
+		Label:    "Brood Boon: Red",
+		Duration: duration,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.FirePower, 50)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.FirePower, -50)
+		},
+	})
+
+	frostAura := unit.GetOrRegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 467412},
+		Label:    "Brood Boon: Blue",
+		Duration: duration,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.FrostPower, 50)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.FrostPower, -50)
+		},
+	})
+
+	natureAura := unit.GetOrRegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 467413},
+		Label:    "Brood Boon: Green",
+		Duration: duration,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.NaturePower, 50)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.NaturePower, -50)
+		},
+	})
+
+	shadowAura := unit.GetOrRegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 467411},
+		Label:    "Brood Boon: Black",
+		Duration: duration,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.ShadowPower, 50)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.ShadowPower, -50)
+		},
+	})
+
+	arcaneRangeMax := 0.0 + schoolChances[stats.SchoolIndexArcane]
+	fireRangeMax := arcaneRangeMax + schoolChances[stats.SchoolIndexFire]
+	frostRangeMax := fireRangeMax + schoolChances[stats.SchoolIndexFrost]
+	natureRangeMax := frostRangeMax + schoolChances[stats.SchoolIndexNature]
+	shadowRangeMax := natureRangeMax + schoolChances[stats.SchoolIndexShadow]
+
+	if shadowRangeMax > 1.0 {
+		panic("Invalid school chances provided to Claw of Chromaggus effect.")
+	}
+
+	core.MakeProcTriggerAura(unit, core.ProcTrigger{
+		Name:     "Claw of the Chromatic Trigger",
+		Callback: core.CallbackOnCastComplete,
+		ProcMask: core.ProcMaskSpellDamage,
+		ICD:      time.Millisecond * 9500,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			roll := sim.RandomFloat("Claw of Chromaggus")
+			if roll < arcaneRangeMax {
+				arcaneAura.Activate(sim)
+			} else if roll < fireRangeMax {
+				fireAura.Activate(sim)
+			} else if roll < frostRangeMax {
+				frostAura.Activate(sim)
+			} else if roll < natureRangeMax {
+				natureAura.Activate(sim)
+			} else if roll < shadowRangeMax {
+				shadowAura.Activate(sim)
+			}
+		},
 	})
 }
