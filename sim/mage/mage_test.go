@@ -206,8 +206,8 @@ func TestFrost(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:     Phase5TalentsSpellfrost,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p5_frost"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p5_frost"),
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p5_spellfrost"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p5_spellfrost"),
 			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
