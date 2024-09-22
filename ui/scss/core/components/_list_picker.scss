@@ -21,6 +21,7 @@
 		width: 100%;
 
 		.list-picker-item-container {
+			width: 100%;
 			margin-bottom: var(--spacer-3);
 
 			&.inline {
@@ -62,6 +63,10 @@
 					margin-left: var(--spacer-2);
 				}
 			}
+
+			.target-input-picker-root {
+				margin-bottom: 0;
+			}
 		}
 	}
 
@@ -80,5 +85,9 @@
 		display: flex;
 		flex-wrap: wrap;
 		align-items: center;
+
+		.list-picker-item-container {
+			margin-bottom: 0;
+		}
 	}
 }

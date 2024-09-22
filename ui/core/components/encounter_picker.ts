@@ -713,7 +713,7 @@ function makeTargetInputsPicker(parent: HTMLElement, encounter: Encounter, targe
 	return new ListPicker<Encounter, TargetInput>(parent, encounter, {
 		allowedActions: [],
 		itemLabel: 'Target Input',
-		extraCssClasses: ['mt-2'],
+		extraCssClasses: ['mb-0', 'w-100'],
 		isCompact: true,
 		horizontalLayout: true,
 		changedEvent: (encounter: Encounter) => encounter.targetsChangeEmitter,
