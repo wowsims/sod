@@ -325,7 +325,7 @@ export const DefaultConsumes = {
 export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
-	demonicPact: 80,
+	demonicPact: 110,
 	fireResistanceAura: true,
 	fireResistanceTotem: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
@@ -343,6 +343,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	spiritOfZandalar: true,
 	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 	spiritOfZandalar: true,

@@ -12,7 +12,7 @@ import * as Presets from './presets.js';
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	cssClass: 'protection-paladin-sim-ui',
 	cssScheme: 'paladin',
-    // List any known bugs / issues here and they'll be shown on the site.
+	// List any known bugs / issues here and they'll be shown on the site.
 	knownIssues: [
 		`Judgement of the Crusader is currently not implemented; users can manually award themselves the relevant spellpower amount
 		for a dps gain that will be slightly inflated given JotC does not benefit from source damage modifiers.`,
@@ -37,24 +37,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	// All stats for which EP should be calculated.
 	epStats: [
 		Stat.StatHealth,
-        Stat.StatMana,
-        // Primary Attributes
+		Stat.StatMana,
+		// Primary Attributes
 		Stat.StatStrength,
 		Stat.StatStamina,
 		Stat.StatAgility,
-        Stat.StatIntellect,
-        // Melee Offensive
+		Stat.StatIntellect,
+		// Melee Offensive
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-        Stat.StatMeleeHaste,
-        // Magic offensive/healing
+		Stat.StatMeleeHaste,
+		// Magic offensive/healing
 		Stat.StatSpellHit,
-        Stat.StatSpellCrit,
+		Stat.StatSpellCrit,
 		Stat.StatSpellPower,
-        Stat.StatHolyPower,
-        Stat.StatHealingPower,
-        // Defensive
+		Stat.StatHolyPower,
+		Stat.StatHealingPower,
+		// Defensive
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
@@ -62,12 +62,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatParry,
 		Stat.StatBlock,
 		Stat.StatBlockValue,
-        // Resistances
-        Stat.StatFireResistance,
+		// Resistances
+		Stat.StatFireResistance,
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
-        Stat.StatArcaneResistance,
+		Stat.StatArcaneResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -75,24 +75,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		Stat.StatHealth,
-        Stat.StatMana,
-        // Primary Attributes
+		Stat.StatMana,
+		// Primary Attributes
 		Stat.StatStrength,
 		Stat.StatStamina,
 		Stat.StatAgility,
-        Stat.StatIntellect,
-        // Melee Offensive
+		Stat.StatIntellect,
+		// Melee Offensive
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-        Stat.StatMeleeHaste,
-        // Magic offensive/healing
+		Stat.StatMeleeHaste,
+		// Magic offensive/healing
 		Stat.StatSpellHit,
-        Stat.StatSpellCrit,
+		Stat.StatSpellCrit,
 		Stat.StatSpellPower,
-        Stat.StatHolyPower,
-        Stat.StatHealingPower,
-        // Defensive
+		Stat.StatHolyPower,
+		Stat.StatHealingPower,
+		// Defensive
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
@@ -100,12 +100,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatParry,
 		Stat.StatBlock,
 		Stat.StatBlockValue,
-        // Resistances
-        Stat.StatFireResistance,
+		// Resistances
+		Stat.StatFireResistance,
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
-        Stat.StatArcaneResistance,
+		Stat.StatArcaneResistance,
 	],
 
 	defaults: {
@@ -114,37 +114,37 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-		        [Stat.StatStrength]: 2.31,
-		        [Stat.StatAgility]: 14.7,
-		        [Stat.StatStamina]: 0.0,
-                [Stat.StatIntellect]: 0.02,
-		        [Stat.StatSpellPower]: 0.4,
-                [Stat.StatHolyPower]: 0.22,
-		        [Stat.StatSpellHit]: 4.92,
-                [Stat.StatSpellCrit]: 1.81,
-		        [Stat.StatAttackPower]: 1.0,
-		        [Stat.StatMeleeHit]: 0.0,
-		        [Stat.StatMeleeCrit]: 27.78,
-                [Stat.StatMeleeHaste]: 22.60,
-                [Stat.StatMana]: 0.0,
-		        [Stat.StatArmor]: 1.0,
-		        [Stat.StatDefense]: 25.89,
-		        [Stat.StatBlock]: 13.64,
-		        [Stat.StatBlockValue]: 1.93,
-		        [Stat.StatDodge]: 213.30,
-		        [Stat.StatParry]: 212.61,
-		        [Stat.StatHealth]: 0.0,
-                [Stat.StatArcaneResistance]: 0.0,
-                [Stat.StatFireResistance]: 0.0,
-		        [Stat.StatFrostResistance]: 0.0,
-		        [Stat.StatNatureResistance]: 0.0,
-		        [Stat.StatShadowResistance]: 0.0,
-		        [Stat.StatBonusArmor]: 0.96,
-                [Stat.StatHealingPower]: 0.0,
+				[Stat.StatStrength]: 2.31,
+				[Stat.StatAgility]: 14.7,
+				[Stat.StatStamina]: 0.0,
+				[Stat.StatIntellect]: 0.02,
+				[Stat.StatSpellPower]: 0.4,
+				[Stat.StatHolyPower]: 0.22,
+				[Stat.StatSpellHit]: 4.92,
+				[Stat.StatSpellCrit]: 1.81,
+				[Stat.StatAttackPower]: 1.0,
+				[Stat.StatMeleeHit]: 0.0,
+				[Stat.StatMeleeCrit]: 27.78,
+				[Stat.StatMeleeHaste]: 22.6,
+				[Stat.StatMana]: 0.0,
+				[Stat.StatArmor]: 1.0,
+				[Stat.StatDefense]: 25.89,
+				[Stat.StatBlock]: 13.64,
+				[Stat.StatBlockValue]: 1.93,
+				[Stat.StatDodge]: 213.3,
+				[Stat.StatParry]: 212.61,
+				[Stat.StatHealth]: 0.0,
+				[Stat.StatArcaneResistance]: 0.0,
+				[Stat.StatFireResistance]: 0.0,
+				[Stat.StatFrostResistance]: 0.0,
+				[Stat.StatNatureResistance]: 0.0,
+				[Stat.StatShadowResistance]: 0.0,
+				[Stat.StatBonusArmor]: 0.96,
+				[Stat.StatHealingPower]: 0.0,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 3.33,
-                [PseudoStat.PseudoStatMeleeSpeedMultiplier]: 3.33,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 3.33,
 			},
 		),
 		// Default consumes settings.
@@ -153,17 +153,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
 		specOptions: Presets.DefaultOptions,
-        other: Presets.OtherDefaults,
+		other: Presets.OtherDefaults,
 		// Default raid/party buffs settings.
 		raidBuffs: Presets.DefaultRaidBuffs,
 		partyBuffs: PartyBuffs.create({}),
 		individualBuffs: Presets.DefaultIndividualBuffs,
 		debuffs: Presets.DefaultDebuffs,
-        race: Race.RaceHuman,
+		race: Race.RaceHuman,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [ProtectionPaladinInputs.PrimarySealSelection, ProtectionPaladinInputs.AuraSelection],
+	playerIconInputs: [ProtectionPaladinInputs.PrimarySealSelection, ProtectionPaladinInputs.RighteousFuryToggle, ProtectionPaladinInputs.AuraSelection],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [BuffDebuffInputs.SpellScorchDebuff],
 	excludeBuffDebuffInputs: [],
@@ -178,7 +178,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
-            //OtherInputs.DistanceFromTarget,
+			//OtherInputs.DistanceFromTarget,
 		],
 	},
 	encounterPicker: {
@@ -187,47 +187,41 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	},
 
 	presets: {
-		rotations: [
-			...Presets.APLPresets[Phase.Phase4],
-		],
+		rotations: [...Presets.APLPresets[Phase.Phase4]],
 		// Preset talents that the user can quickly select.
-		talents: [
-			...Presets.TalentPresets[Phase.Phase4],
-		],
+		talents: [...Presets.TalentPresets[Phase.Phase5], ...Presets.TalentPresets[Phase.Phase4]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			...Presets.GearPresets[Phase.Phase4],
-		],
+		gear: [...Presets.GearPresets[Phase.Phase4]],
 	},
 
 	autoRotation: player => {
 		return Presets.DefaultAPLs[player.getLevel()].rotation.rotation!;
 	},
 
-   raidSimPresets: [
-   	{
-   		spec: Spec.SpecProtectionPaladin,
-   		tooltip: 'Protection Paladin',
-   		defaultName: 'Protection',
-   		iconUrl: getSpecIcon(Class.ClassPaladin, 1),
+	raidSimPresets: [
+		{
+			spec: Spec.SpecProtectionPaladin,
+			tooltip: 'Protection Paladin',
+			defaultName: 'Protection',
+			iconUrl: getSpecIcon(Class.ClassPaladin, 1),
 
-   		talents: Presets.DefaultTalents.data,
-   		specOptions: Presets.DefaultOptions,
-   		consumes: Presets.DefaultConsumes,
-   		defaultFactionRaces: {
-   			[Faction.Unknown]: Race.RaceUnknown,
-   			[Faction.Alliance]: Race.RaceHuman,
-   			[Faction.Horde]: Race.RaceUnknown,
-   		},
-   		defaultGear: {
-   			[Faction.Unknown]: {},
-   			[Faction.Alliance]: {
-   				1: Presets.GearPresets[Phase.Phase4][0].gear,
-   			},
-   			[Faction.Horde]: {},
-   		},
-   	},
-   ],
+			talents: Presets.DefaultTalents.data,
+			specOptions: Presets.DefaultOptions,
+			consumes: Presets.DefaultConsumes,
+			defaultFactionRaces: {
+				[Faction.Unknown]: Race.RaceUnknown,
+				[Faction.Alliance]: Race.RaceHuman,
+				[Faction.Horde]: Race.RaceUnknown,
+			},
+			defaultGear: {
+				[Faction.Unknown]: {},
+				[Faction.Alliance]: {
+					1: Presets.GearPresets[Phase.Phase4][0].gear,
+				},
+				[Faction.Horde]: {},
+			},
+		},
+	],
 });
 
 export class ProtectionPaladinSimUI extends IndividualSimUI<Spec.SpecProtectionPaladin> {

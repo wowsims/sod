@@ -119,9 +119,6 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheTitans,
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.WildStrikes,
-	miscConsumes: {
-		jujuEmber: true,
-	},
 	offHandImbue: WeaponImbue.ElementalSharpeningStone,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
@@ -151,6 +148,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	rallyingCryOfTheDragonslayer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
+	spiritOfZandalar: true,
 	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });

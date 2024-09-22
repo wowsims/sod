@@ -156,10 +156,12 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 
 	healthMetrics := character.NewHealthMetrics(ActionID{OtherID: proto.OtherAction_OtherActionHealingModel})
 
+	// Dummy spell for healing callback
+	healingModelSpell := character.RegisterSpell(SpellConfig{
+		ActionID: ActionID{OtherID: proto.OtherAction_OtherActionHealingModel},
+	})
+
 	character.RegisterResetEffect(func(sim *Simulation) {
-		// Hack since we don't have OnHealingReceived aura handlers yet.
-		//ardentDefenderAura := character.GetAura("Ardent Defender")
-		willOfTheNecropolisAura := character.GetAura("Will of The Necropolis")
 
 		// Initialize randomized cadence model
 		timeToNextHeal := DurationFromSeconds(0.0)
@@ -171,18 +173,15 @@ func (character *Character) applyHealingModel(healingModel *proto.HealingModel) 
 		pa.OnAction = func(sim *Simulation) {
 			// Use modeled HPS to scale heal per tick based on random cadence
 			healPerTick = healingModel.Hps * (float64(timeToNextHeal) / float64(time.Second))
-
+			totalHeal := healPerTick * character.PseudoStats.HealingTakenMultiplier
 			// Execute the heal
-			character.GainHealth(sim, healPerTick*character.PseudoStats.HealingTakenMultiplier, healthMetrics)
+			character.GainHealth(sim, totalHeal, healthMetrics)
 
-			// Might use this again in the future to track "absorb" metrics but currently disabled
-			//if ardentDefenderAura != nil && character.CurrentHealthPercent() >= 0.35 {
-			//	ardentDefenderAura.Deactivate(sim)
-			//}
-
-			if willOfTheNecropolisAura != nil && character.CurrentHealthPercent() > 0.35 {
-				willOfTheNecropolisAura.Deactivate(sim)
-			}
+			// Callback that can be used by tank specs
+			result := healingModelSpell.NewResult(&character.Unit)
+			result.Damage = totalHeal
+			character.OnHealTaken(sim, healingModelSpell, result)
+			healingModelSpell.DisposeResult(result)
 
 			// Random roll for time to next heal. In the case where CadenceVariation exceeds CadenceSeconds, then
 			// CadenceSeconds is treated as the median, with two separate uniform distributions to the left and right
