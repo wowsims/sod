@@ -33,6 +33,7 @@ func (druid *Druid) applyBerserk() {
 				// druid.Sunfire, // If it would exist
 				// druid.Skullbash, // If it would exist
 				druid.SavageRoar,
+				druid.SwipeCat,
 			}, func(spell *DruidSpell) bool { return spell != nil })
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
