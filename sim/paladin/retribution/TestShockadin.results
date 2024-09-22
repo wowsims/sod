@@ -55,9 +55,9 @@ character_stats_results: {
   final_stats: 570.515
   final_stats: 494.89
   final_stats: 179.025
-  final_stats: 522
+  final_stats: 552
   final_stats: 0
-  final_stats: 0
+  final_stats: 10
   final_stats: 0
   final_stats: 98
   final_stats: 0
@@ -67,9 +67,9 @@ character_stats_results: {
   final_stats: 40.76466
   final_stats: 0
   final_stats: 0
-  final_stats: 1626.8
+  final_stats: 1656.8
   final_stats: 4
-  final_stats: 31.04712
+  final_stats: 36.04712
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -77,7 +77,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 8296.4
-  final_stats: 780
+  final_stats: 810
   final_stats: 0
   final_stats: 5
   final_stats: 51
@@ -148,12 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestShockadin-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.35754
-  weights: 1.09796
+  weights: 0.4241
+  weights: 1.57469
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.02445
+  weights: 1.07272
   weights: 0
   weights: 0
   weights: 0
@@ -161,13 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 14.16089
-  weights: 16.85312
+  weights: 12.58423
+  weights: 14.22253
   weights: 0
   weights: 0
-  weights: 0.14774
-  weights: 14.53473
-  weights: 25.49266
+  weights: 0.17525
+  weights: 17.15848
+  weights: 21.91252
   weights: 0
   weights: 0
   weights: 0
@@ -323,147 +323,147 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1239.18017
-  tps: 1283.45375
+  dps: 1312.22092
+  tps: 1356.55569
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1265.08091
-  tps: 1310.16605
+  dps: 1330.39776
+  tps: 1374.85307
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1252.44187
-  tps: 1295.80574
+  dps: 1349.15086
+  tps: 1392.99932
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-LibramofDraconicDestruction-221457"
  value: {
-  dps: 2340.57132
-  tps: 2409.58739
+  dps: 2687.15304
+  tps: 2764.02885
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2075.02377
-  tps: 2149.76927
+  dps: 2303.99098
+  tps: 2384.27195
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 2792.88859
-  tps: 2873.61847
+  dps: 2992.05483
+  tps: 3075.69004
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1126.73489
-  tps: 1161.05886
+  dps: 1155.53695
+  tps: 1188.247
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 2914.80563
-  tps: 2996.21912
+  dps: 3117.77744
+  tps: 3202.65689
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 4561.91866
-  tps: 5287.24716
+  dps: 4896.59276
+  tps: 5680.02125
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1187.64308
-  tps: 1224.30294
+  dps: 1303.09587
+  tps: 1343.54213
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1954.14958
-  tps: 2016.1647
+  dps: 2031.15665
+  tps: 2095.91666
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1561.84478
-  tps: 1844.96661
+  dps: 1688.85526
+  tps: 1985.51875
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 432.43634
-  tps: 446.4841
+  dps: 469.07549
+  tps: 484.47741
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1046.65467
-  tps: 1076.86968
+  dps: 1146.82909
+  tps: 1180.97118
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 4515.12119
-  tps: 5235.13301
+  dps: 4963.75404
+  tps: 5744.5242
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1186.51749
-  tps: 1223.07152
+  dps: 1295.42684
+  tps: 1335.41768
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1949.02215
-  tps: 2010.71727
+  dps: 2032.93432
+  tps: 2097.69432
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1566.84856
-  tps: 1852.13706
+  dps: 1686.51847
+  tps: 1985.34863
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 434.00667
-  tps: 448.10859
+  dps: 463.33901
+  tps: 478.4701
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1044.32335
-  tps: 1074.67377
+  dps: 1150.00048
+  tps: 1184.27799
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2713.1579
-  tps: 2792.45111
+  dps: 2938.59784
+  tps: 3021.93274
  }
 }
