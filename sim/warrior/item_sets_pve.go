@@ -278,8 +278,11 @@ var ItemSetUnstoppableWrath = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					warrior.HeroicStrike.DamageMultiplier *= 1.30
 					warrior.Overpower.DamageMultiplier *= 1.30
-					if warrior.Slam != nil {
-						warrior.Slam.DamageMultiplier *= 1.30
+					if warrior.SlamMH != nil {
+						warrior.SlamMH.DamageMultiplier *= 1.30
+					}
+					if warrior.SlamOH != nil {
+						warrior.SlamMH.DamageMultiplier *= 1.30
 					}
 					if warrior.QuickStrike != nil {
 						warrior.QuickStrike.DamageMultiplier *= 1.30
