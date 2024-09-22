@@ -49,7 +49,6 @@ func TestRetribution(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassPaladin,
-			Phase:      4,
 			Level:      50,
 			Race:       proto.Race_RaceHuman,
 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
