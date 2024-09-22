@@ -398,6 +398,7 @@ type CharacterSuiteConfig struct {
 
 	Race        proto.Race
 	Level       int32
+	Phase       int32
 	GearSet     GearSetCombo
 	SpecOptions SpecOptionsCombo
 	Talents     string
@@ -427,6 +428,19 @@ type CharacterSuiteConfig struct {
 func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGenerator {
 	return MapSlice(configs, func(config CharacterSuiteConfig) TestGenerator {
 		config.Level = max(config.Level, 25)
+		if config.Phase == 0 {
+			switch config.Level {
+			case 25:
+				config.Phase = 1
+			case 40:
+				config.Phase = 2
+			case 50:
+				config.Phase = 3
+			case 60:
+				panic("You must provide a Phase for level 60 tests")
+			}
+		}
+
 		allRaces := append(config.OtherRaces, config.Race)
 		allGearSets := append(config.OtherGearSets, config.GearSet)
 		allTalentSets := []TalentsCombo{{
@@ -471,7 +485,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 		generator := &CombinedTestGenerator{
 			subgenerators: []SubGenerator{
 				{
-					name: makeGeneratorName("CharacterStats", config.Level),
+					name: makeGeneratorName("CharacterStats", config.Phase, config.Level),
 					generator: &SingleCharacterStatsTestGenerator{
 						Name: "Default",
 						Request: &proto.ComputeStatsRequest{
@@ -480,7 +494,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 					},
 				},
 				{
-					name: makeGeneratorName("Settings", config.Level),
+					name: makeGeneratorName("Settings", config.Phase, config.Level),
 					generator: &SettingsCombos{
 						Class:       config.Class,
 						Races:       allRaces,
@@ -509,7 +523,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 					},
 				},
 				{
-					name: makeGeneratorName("AllItems", config.Level),
+					name: makeGeneratorName("AllItems", config.Phase, config.Level),
 					generator: &ItemsTestGenerator{
 						Player:     defaultPlayer,
 						RaidBuffs:  config.Buffs.Raid,
@@ -528,7 +542,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 		newRaid.Parties[0].Players[0].InFrontOfTarget = !newRaid.Parties[0].Players[0].InFrontOfTarget
 
 		generator.subgenerators = append(generator.subgenerators, SubGenerator{
-			name: makeGeneratorName("SwitchInFrontOfTarget", config.Level),
+			name: makeGeneratorName("SwitchInFrontOfTarget", config.Phase, config.Level),
 			generator: &SingleDpsTestGenerator{
 				Name: "Default",
 				Request: &proto.RaidSimRequest{
@@ -545,7 +559,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 			testOptionsPtr := &testOptions
 
 			generator.subgenerators = append(generator.subgenerators, SubGenerator{
-				name: makeGeneratorName("StatWeights", config.Level),
+				name: makeGeneratorName("StatWeights", config.Phase, config.Level),
 				generator: &SingleStatWeightsTestGenerator{
 					Name: "Default",
 					Request: &proto.StatWeightsRequest{
@@ -567,7 +581,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 		// Add this separately, so it's always last, which makes it easy to find in the
 		// displayed test results.
 		generator.subgenerators = append(generator.subgenerators, SubGenerator{
-			name: makeGeneratorName("Average", config.Level),
+			name: makeGeneratorName("Average", config.Phase, config.Level),
 			generator: &SingleDpsTestGenerator{
 				Name: "Default",
 				Request: &proto.RaidSimRequest{
@@ -582,6 +596,6 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 	})
 }
 
-func makeGeneratorName(base string, level int32) string {
-	return fmt.Sprintf("Lvl%d-%s", level, base)
+func makeGeneratorName(base string, phase int32, level int32) string {
+	return fmt.Sprintf("Phase%d-Lvl%d-%s", phase, level, base)
 }

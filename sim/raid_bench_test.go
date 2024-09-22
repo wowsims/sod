@@ -1,11 +1,7 @@
 package sim
 
 import (
-	"testing"
-
-	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 // 1 moonkin, 1 ele shaman, 1 spriest, 2x arcane
@@ -149,62 +145,6 @@ var castersWithResto = &proto.Party{
 	Buffs: &proto.PartyBuffs{
 		ManaTideTotems: 1,
 	},
-}
-
-func BenchmarkSimulate(b *testing.B) {
-	rsr := &proto.RaidSimRequest{
-		Raid: &proto.Raid{
-			Parties: []*proto.Party{
-				castersWithElemental,
-				castersWithResto,
-				{
-					Players: []*proto.Player{
-						{
-							Name:      "Enhancement Shaman 1",
-							Race:      proto.Race_RaceTroll,
-							Class:     proto.Class_ClassShaman,
-							Equipment: EnhancementEquipment,
-							Spec: &proto.Player_EnhancementShaman{
-								EnhancementShaman: &proto.EnhancementShaman{
-									Options: &proto.EnhancementShaman_Options{
-										SyncType: proto.ShamanSyncType_SyncMainhandOffhandSwings,
-									},
-								},
-							},
-							Consumes: &proto.Consumes{},
-							Buffs: &proto.IndividualBuffs{
-								BlessingOfKings:  true,
-								BlessingOfWisdom: proto.TristateEffect_TristateEffectImproved,
-							},
-						},
-					},
-				},
-			},
-			Buffs: &proto.RaidBuffs{
-				GiftOfTheWild:    proto.TristateEffect_TristateEffectImproved,
-				ArcaneBrilliance: true,
-				ManaSpringTotem:  proto.TristateEffect_TristateEffectImproved,
-			},
-			Debuffs: &proto.Debuffs{
-				JudgementOfWisdom:      true,
-				JudgementOfTheCrusader: proto.TristateEffect_TristateEffectImproved,
-				CurseOfElements:        true,
-			},
-		},
-		Encounter: &proto.Encounter{
-			Duration:             180,
-			ExecuteProportion_20: 0.1,
-			Targets: []*proto.Target{
-				{
-					Stats:   stats.Stats{stats.Armor: 7684}.ToFloatArray(),
-					MobType: proto.MobType_MobTypeDemon,
-				},
-			},
-		},
-		SimOptions: core.AverageDefaultSimTestOptions,
-	}
-
-	core.RaidBenchmark(b, rsr)
 }
 
 // P3 gear for each class

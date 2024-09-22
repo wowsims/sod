@@ -183,6 +183,33 @@ var FullRaidBuffsPhase4 = &proto.RaidBuffs{
 	SanctityAura:          true,
 }
 
+var FullRaidBuffsPhase5 = &proto.RaidBuffs{
+	ArcaneBrilliance:      true,
+	AspectOfTheLion:       true,
+	BattleShout:           proto.TristateEffect_TristateEffectImproved,
+	BloodPact:             proto.TristateEffect_TristateEffectImproved,
+	DevotionAura:          proto.TristateEffect_TristateEffectImproved,
+	DivineSpirit:          true,
+	FireResistanceAura:    true,
+	FireResistanceTotem:   true,
+	FrostResistanceAura:   true,
+	FrostResistanceTotem:  true,
+	GiftOfTheWild:         proto.TristateEffect_TristateEffectImproved,
+	GraceOfAirTotem:       proto.TristateEffect_TristateEffectImproved,
+	HornOfLordaeron:       true,
+	LeaderOfThePack:       true,
+	ManaSpringTotem:       proto.TristateEffect_TristateEffectImproved,
+	MoonkinAura:           true,
+	NatureResistanceTotem: true,
+	PowerWordFortitude:    proto.TristateEffect_TristateEffectImproved,
+	RetributionAura:       proto.TristateEffect_TristateEffectImproved,
+	ShadowProtection:      true,
+	StrengthOfEarthTotem:  proto.TristateEffect_TristateEffectImproved,
+	Thorns:                proto.TristateEffect_TristateEffectImproved,
+	TrueshotAura:          true,
+	SanctityAura:          true,
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 Party Buffs
 ///////////////////////////////////////////////////////////////////////////
@@ -233,6 +260,23 @@ var FullIndividualBuffsPhase4 = &proto.IndividualBuffs{
 	SaygesFortune:                proto.SaygesFortune_SaygesDamage,
 	SlipkiksSavvy:                true,
 	SongflowerSerenade:           true,
+	ValorOfAzeroth:               true,
+	WarchiefsBlessing:            true,
+}
+
+var FullIndividualBuffsPhase5 = &proto.IndividualBuffs{
+	BlessingOfKings:              true,
+	BlessingOfMight:              proto.TristateEffect_TristateEffectImproved,
+	BlessingOfSanctuary:          true,
+	BlessingOfWisdom:             proto.TristateEffect_TristateEffectImproved,
+	FengusFerocity:               true,
+	MightOfStormwind:             true,
+	MoldarsMoxie:                 true,
+	RallyingCryOfTheDragonslayer: true,
+	SaygesFortune:                proto.SaygesFortune_SaygesDamage,
+	SlipkiksSavvy:                true,
+	SongflowerSerenade:           true,
+	SpiritOfZandalar:             true,
 	ValorOfAzeroth:               true,
 	WarchiefsBlessing:            true,
 }
@@ -373,6 +417,15 @@ var FullBuffsPhase4 = BuffsCombo{
 	Party:   FullPartyBuffs,
 	Player:  FullIndividualBuffsPhase4,
 	Raid:    FullRaidBuffsPhase4,
+}
+
+var FullBuffsPhase5 = BuffsCombo{
+	Label: "Phase 5 Buffs",
+
+	Debuffs: FullDebuffsPhase4,
+	Party:   FullPartyBuffs,
+	Player:  FullIndividualBuffsPhase5,
+	Raid:    FullRaidBuffsPhase5,
 }
 
 func NewDefaultTarget(playerLevel int32) *proto.Target {

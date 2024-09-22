@@ -83,7 +83,7 @@ func init() {
 			Duration: duration,
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				affectedSpells = core.FilterSlice(
-					core.Flatten([][]*core.Spell{mage.Frostbolt}), func(spell *core.Spell) bool { return spell != nil },
+					core.Flatten([][]*core.Spell{mage.Frostbolt, {mage.SpellfrostBolt}}), func(spell *core.Spell) bool { return spell != nil },
 				)
 
 				if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
@@ -244,13 +244,13 @@ func init() {
 					oldOnGain := aura.OnGain
 					aura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnGain(aura, sim)
-						mage.AddStatDynamic(sim, stats.FrostPower, 80)
+						mage.AddStatDynamic(sim, stats.FrostPower, 100)
 					}
 
 					oldOnExpire := aura.OnExpire
 					aura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnExpire(aura, sim)
-						mage.AddStatDynamic(sim, stats.FrostPower, -80)
+						mage.AddStatDynamic(sim, stats.FrostPower, -100)
 					}
 				}
 			},

@@ -4,8 +4,8 @@ import * as OtherInputs from '../core/components/other_inputs';
 import { Phase } from '../core/constants/other';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui';
 import { Player } from '../core/player';
-import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common';
-import { WarriorRune, WarriorStance } from '../core/proto/warrior';
+import { Class, Faction, HandType, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common';
+import { WarriorStance } from '../core/proto/warrior';
 import { Stats } from '../core/proto_utils/stats';
 import { getSpecIcon } from '../core/proto_utils/utils';
 import * as Presets from './presets';
@@ -97,6 +97,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase5],
 			...Presets.TalentPresets[Phase.Phase4],
 			...Presets.TalentPresets[Phase.Phase3],
 			...Presets.TalentPresets[Phase.Phase2],
@@ -104,6 +105,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase5],
 			...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
@@ -111,13 +113,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase5],
 			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
 		// Preset builds that the user can quickly select.
-		builds: [Presets.PresetBuildFury, Presets.PresetBuildGlad],
+		builds: [Presets.PresetBuild2H, Presets.PresetBuildDW],
 	},
 
 	autoRotation: player => {
@@ -128,11 +131,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			return Presets.DefaultAPLs[level][talentTree].rotation.rotation!;
 		}
 
-		if (talentTree === 0) {
-			throw new Error('Automatic level 60 Arms rotation is not supported at this time. Please select an APL in the Rotation tab.');
+		if (player.getEquippedItem(ItemSlot.ItemSlotMainHand)?._item.handType === HandType.HandTypeTwoHand) {
+			return Presets.DefaultAPLs[level][0].rotation.rotation!;
 		}
 
-		return Presets.DefaultAPLs[level][talentTree].rotation.rotation!;
+		return Presets.DefaultAPLs[level][1].rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -142,7 +145,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			defaultName: 'Arms',
 			iconUrl: getSpecIcon(Class.ClassWarrior, 0),
 
-			talents: Presets.DefaultTalentsArms.data,
+			talents: Presets.DefaultTalents2H.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {
@@ -170,7 +173,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 			defaultName: 'Fury',
 			iconUrl: getSpecIcon(Class.ClassWarrior, 1),
 
-			talents: Presets.DefaultTalentsFury.data,
+			talents: Presets.DefaultTalentsDW.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			defaultFactionRaces: {

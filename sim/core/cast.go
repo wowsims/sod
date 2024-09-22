@@ -82,10 +82,10 @@ func (unit *Unit) applySpellPushback() {
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			//No pushback for bosses/NPCs
-			if (unit.Type == EnemyUnit){
+			if unit.Type == EnemyUnit {
 				return
 			}
-			
+
 			if !result.Landed() {
 				return
 			}
