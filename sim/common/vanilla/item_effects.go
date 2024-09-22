@@ -381,19 +381,10 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			//PPM:               100.0,
+			PPM:               1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				i := 0
-				for i < 5 {
-					if int32(sim.Roll(0, 10000)) < 633 {
-						spellIdx := int32(sim.Roll(0, 6))
-						castableSpells[spellIdx].Cast(sim, result.Target)
-					}
-					i++
-				}
-
-				//spellIdx := int32(sim.Roll(0, 6))
-				//castableSpells[spellIdx].Cast(sim, result.Target)
+				spellIdx := int32(sim.Roll(0, 6))
+				castableSpells[spellIdx].Cast(sim, result.Target)
 			},
 		})
 	})
