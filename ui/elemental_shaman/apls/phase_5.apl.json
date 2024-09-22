@@ -12,6 +12,7 @@
   "priorityList": [
     {"action":{"castSpell":{"spellId":{"spellId":440580}}}},
     {"action":{"autocastOtherCooldowns":{}}},
+    {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":10432,"rank":7}}},"rhs":{"const":{"val":"8"}}}},"castSpell":{"spellId":{"itemId":231281}}}},
     {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"65%"}}}},"castSpell":{"spellId":{"spellId":425336}}}},
     {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":29228,"rank":6}}}}},"castSpell":{"spellId":{"spellId":29228,"rank":6}}}},
     {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"dotRemainingTime":{"spellId":{"spellId":29228,"rank":6}}},"rhs":{"spellCastTime":{"spellId":{"spellId":408490}}}}},"castSpell":{"spellId":{"spellId":408490}}}},
