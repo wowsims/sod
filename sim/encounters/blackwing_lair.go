@@ -1,10 +1,11 @@
 package encounters
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
-	"time"
 )
 
 func addVaelastraszTheCorrupt(bossPrefix string) {
@@ -33,8 +34,8 @@ func addVaelastraszTheCorrupt(bossPrefix string) {
 			DualWieldPenalty: false,
 			TargetInputs: []*proto.TargetInput{
 				{
-					Label:       "Time Burning Adrenaline Recieved",
-					Tooltip:     "How long into the fight you recieve Burning Adrenaline? First cast is 20s (Select 0 to never recieve)",
+					Label:       "Time Burning Adrenaline Received",
+					Tooltip:     "How long into the fight Burning Adrenaline is cast on the player. First cast is 20s (Select 0 to never receive)",
 					InputType:   proto.InputType_Number,
 					NumberValue: 0,
 				},
