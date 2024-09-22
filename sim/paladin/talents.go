@@ -41,6 +41,7 @@ func (paladin *Paladin) ApplyTalents() {
 
 	paladin.applyRedoubt()
 	paladin.applyReckoning()
+	paladin.applyImprovedLayOnHands()
 }
 
 func (paladin *Paladin) improvedSoR() float64 {
@@ -206,4 +207,30 @@ func (paladin *Paladin) applyVindication() {
 			}
 		},
 	})
+}
+
+func (paladin *Paladin) applyImprovedLayOnHands() {
+
+	if paladin.Talents.ImprovedLayOnHands > 0 {
+
+		armorMultiplier := []float64{1, 1.15, 1.3}[paladin.Talents.ImprovedLayOnHands]
+		auraID := []int32{0, 20233, 20236}[paladin.Talents.ImprovedLayOnHands]
+
+		paladin.RegisterAura(core.Aura{
+			Label:    "Lay on Hands",
+			ActionID: core.ActionID{SpellID: auraID},
+			Duration: time.Minute * 2,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				paladin.ApplyDynamicEquipScaling(sim, stats.Armor, armorMultiplier)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				paladin.RemoveDynamicEquipScaling(sim, stats.Armor, armorMultiplier)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinLayOnHands {
+					aura.Activate(sim)
+				}
+			},
+		})
+	}
 }
