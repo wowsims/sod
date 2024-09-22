@@ -35,6 +35,7 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 		IsUsingDivineStormStopAttack:    protOptions.IsUsingDivineStormStopAttack,
 		IsUsingJudgementStopAttack:      protOptions.IsUsingJudgementStopAttack,
 		IsUsingCrusaderStrikeStopAttack: protOptions.IsUsingCrusaderStrikeStopAttack,
+		personalBlessing:                protOptions.PersonalBlessing,
 	}
 
 	prot.EnableAutoAttacks(prot, core.AutoAttackOptions{
@@ -53,6 +54,7 @@ type ProtectionPaladin struct {
 	IsUsingDivineStormStopAttack    bool
 	IsUsingJudgementStopAttack      bool
 	IsUsingCrusaderStrikeStopAttack bool
+	personalBlessing                proto.Blessings
 }
 
 func (prot *ProtectionPaladin) GetPaladin() *paladin.Paladin {

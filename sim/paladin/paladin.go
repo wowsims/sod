@@ -142,6 +142,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerAuraMastery()
 	paladin.registerHolyShield()
 	paladin.registerShieldOfRighteousness()
+	paladin.registerBlessingOfSanctuary()
 	paladin.registerLayOnHands()
 
 	paladin.enableMultiJudge = true // change this to baseline false when P5 launches
