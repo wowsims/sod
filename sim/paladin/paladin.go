@@ -27,6 +27,7 @@ const (
 	SpellCode_PaladinAvengersShield
 	SpellCode_PaladinHolyShield
 	SpellCode_PaladinHolyShieldProc
+	SpellCode_PaladinLayOnHands
 )
 
 type SealJudgeCode uint8
@@ -108,6 +109,7 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
+	paladin.registerRighteousFury()
 	// Judgement and Seals
 	paladin.registerJudgement()
 
@@ -141,6 +143,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerHolyShield()
 	paladin.registerShieldOfRighteousness()
 	paladin.registerBlessingOfSanctuary()
+	paladin.registerLayOnHands()
 
 	paladin.enableMultiJudge = true // change this to baseline false when P5 launches
 	paladin.lingerDuration = time.Millisecond * 400
@@ -175,7 +178,7 @@ func NewPaladin(character *core.Character, options *proto.Player, paladinOptions
 	paladin.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(paladin.Level)]*core.SpellCritRatingPerCritChance)
 
 	// Paladins get 1 block value per 20 str
-	paladin.AddStatDependency(stats.Strength, stats.BlockValue, .05)
+	paladin.PseudoStats.BlockValuePerStrength = 0.05
 
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)

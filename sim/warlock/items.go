@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -278,14 +277,14 @@ func init() {
 	// Reduces the cooldown of your Felguard's Cleave spell by 2 sec.
 	core.NewItemEffect(KezansUnstoppableTaint, func(agent core.Agent) {
 		warlock := agent.(WarlockAgent).GetWarlock()
-		if !warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
-			return
-		}
 
 		warlock.RegisterAura(core.Aura{
 			Label: "Reduced Cleave Cooldown",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.Felguard.primaryAbility.CD.Duration -= time.Second * 2
+				warlock.Succubus.primaryAbility.CD.Duration -= time.Second * 2
+				if warlock.Felguard != nil {
+					warlock.Felguard.primaryAbility.CD.Duration -= time.Second * 2
+				}
 			},
 		})
 	})

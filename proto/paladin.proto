@@ -135,13 +135,14 @@ message PaladinOptions {
 	bool IsUsingJudgementStopAttack = 5;
 	bool IsUsingCrusaderStrikeStopAttack = 6;
 
+    bool righteousFury = 8;
     Blessings personalBlessing = 9;
 }
 
 message RetributionPaladin {
 	message Rotation {
 	}
-	
+
 	PaladinOptions options = 3;
 }
 

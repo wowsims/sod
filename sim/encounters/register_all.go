@@ -13,6 +13,7 @@ func init() {
 	addLevel50("SoD")
 	addSunkenTempleDragonkin("SoD")
 	addLevel60("SoD")
+	addVaelastraszTheCorrupt("SoD")
 }
 
 func AddSingleTargetBossEncounter(presetTarget *core.PresetTarget) {

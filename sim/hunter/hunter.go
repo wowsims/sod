@@ -144,8 +144,8 @@ func (hunter *Hunter) GetHunter() *Hunter {
 }
 
 func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if hunter.Talents.TrueshotAura {
-		raidBuffs.TrueshotAura = true
+	if raidBuffs.TrueshotAura && hunter.Talents.TrueshotAura {
+		hunter.AddStat(stats.RangedAttackPower, 100)
 	}
 
 	raidBuffs.AspectOfTheLion = true

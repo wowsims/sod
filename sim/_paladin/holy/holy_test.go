@@ -42,33 +42,6 @@ func TestHoly(t *testing.T) {
 	}))
 }
 
-func BenchmarkSimulate(b *testing.B) {
-	rsr := &proto.RaidSimRequest{
-		Raid: core.SinglePlayerRaidProto(
-			&proto.Player{
-				Race:          proto.Race_RaceHuman,
-				Class:         proto.Class_ClassPaladin,
-				Equipment:     core.GetGearSet("../../../ui/holy_paladin/gear_sets", "p1").GearSet,
-				Consumes:      FullConsumes,
-				Spec:          BasicOptions,
-				TalentsString: StandardTalents,
-				Buffs:         core.FullIndividualBuffs,
-			},
-			core.FullPartyBuffs,
-			core.FullRaidBuffs,
-			core.FullDebuffs),
-		Encounter: &proto.Encounter{
-			Duration: 300,
-			Targets: []*proto.Target{
-				core.NewDefaultTarget(),
-			},
-		},
-		SimOptions: core.AverageDefaultSimTestOptions,
-	}
-
-	core.RaidBenchmark(b, rsr)
-}
-
 var StandardTalents = "50350151020013053100515221-50023131203"
 
 var defaultProtOptions = &proto.HolyPaladin_Options{

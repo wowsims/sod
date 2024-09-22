@@ -185,7 +185,6 @@ export const P5ShockadinTalents = PresetUtils.makePresetTalents('P5 Shockadin', 
 	customCondition: player => player.getLevel() === 60,
 });
 
-
 export const TalentPresets = {
 	[Phase.Phase1]: [P1RetTalents],
 	[Phase.Phase2]: [P2RetTalents, P2ShockadinTalents],
@@ -193,7 +192,6 @@ export const TalentPresets = {
 	[Phase.Phase4]: [P4RetTalents],
 	[Phase.Phase5]: [P4RetTalents, P5ShockadinTalents],
 };
-
 
 export const DefaultTalents = TalentPresets[Phase.Phase5][0];
 
@@ -217,9 +215,7 @@ export const DefaultConsumes = Consumes.create({
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	fillerExplosive: Explosive.ExplosiveUnknown,
 	mainHandImbue: WeaponImbue.WildStrikes,
-	miscConsumes: {
-		jujuEmber: true,
-	},
+
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
@@ -238,6 +234,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	spiritOfZandalar: true,
 	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });
@@ -251,7 +248,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	sanctityAura: true,
 	leaderOfThePack: true,
-	demonicPact: 80,
+	demonicPact: 110,
 	aspectOfTheLion: true,
 	moonkinAura: true,
 	vampiricTouch: 300,

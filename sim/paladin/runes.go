@@ -89,14 +89,11 @@ func (paladin *Paladin) registerSheathOfLight() {
 }
 
 func (paladin *Paladin) registerShockAndAwe() {
-
 	if !paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe) {
 		return
 	}
 
-	dep := paladin.NewDynamicStatDependency(
-		stats.Intellect, stats.SpellDamage, 1.0,
-	)
+	dep := paladin.NewDynamicStatDependency(stats.Intellect, stats.SpellDamage, 2.0)
 
 	shockAndAweAura := paladin.RegisterAura(core.Aura{
 		Label:    "Shock and Awe",

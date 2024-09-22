@@ -547,6 +547,17 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 		return this.encounter.targets[this.targetIndex].targetInputs[this.targetInputIndex] || TargetInput.create();
 	}
 
+	private clearPickers() {
+		if (this.boolPicker) {
+			this.boolPicker.rootElem.remove();
+			this.boolPicker = null;
+		}
+		if (this.numberPicker) {
+			this.numberPicker.rootElem.remove();
+			this.numberPicker = null;
+		}
+	}
+
 	constructor(
 		parent: HTMLElement,
 		encounter: Encounter,
@@ -582,6 +593,8 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 				this.boolPicker.rootElem.remove();
 				this.boolPicker = null;
 			}
+
+			this.clearPickers();
 			this.numberPicker = new NumberPicker(this.rootElem, null, {
 				id: randomUUID(),
 				label: newValue.label,
@@ -598,6 +611,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 				this.numberPicker.rootElem.remove();
 				this.numberPicker = null;
 			}
+			this.clearPickers();
 			this.boolPicker = new BooleanPicker(this.rootElem, null, {
 				id: randomUUID(),
 				label: newValue.label,
@@ -695,9 +709,13 @@ function addEncounterFieldPickers(rootElem: HTMLElement, encounter: Encounter, s
 	}
 }
 
-function makeTargetInputsPicker(parent: HTMLElement, encounter: Encounter, targetIndex: number): ListPicker<Encounter, TargetInput> {
+function makeTargetInputsPicker(parent: HTMLElement, encounter: Encounter, targetIndex: number) {
 	return new ListPicker<Encounter, TargetInput>(parent, encounter, {
+		allowedActions: [],
 		itemLabel: 'Target Input',
+		extraCssClasses: ['mb-0', 'w-100'],
+		isCompact: true,
+		horizontalLayout: true,
 		changedEvent: (encounter: Encounter) => encounter.targetsChangeEmitter,
 		getValue: (encounter: Encounter) => encounter.targets[targetIndex].targetInputs,
 		setValue: (eventID: EventID, encounter: Encounter, newValue: Array<TargetInput>) => {
@@ -712,7 +730,6 @@ function makeTargetInputsPicker(parent: HTMLElement, encounter: Encounter, targe
 			index: number,
 			config: ListItemPickerConfig<Encounter, TargetInput>,
 		) => new TargetInputPicker(parent, encounter, targetIndex, index, config),
-		hideUi: true,
 	});
 }
 

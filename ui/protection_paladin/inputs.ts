@@ -1,43 +1,49 @@
 import * as InputHelpers from '../core/components/input_helpers.js';
 import { Player } from '../core/player.js';
-import { Spec } from '../core/proto/common.js';
-import { PaladinSeal, PaladinAura, Blessings } from '../core/proto/paladin.js';
+import { ItemSlot, Spec } from '../core/proto/common.js';
+import { PaladinRune, PaladinSeal, PaladinAura, Blessings } from '../core/proto/paladin.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { TypedEvent } from '../core/typed_event.js';
-
 // Configuration for spec-specific UI elements on the settings tab.
 // These don't need to be in a separate file but it keeps things cleaner.
 
 export const AuraSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecProtectionPaladin, PaladinAura>({
- 	fieldName: 'aura',
- 	values: [
- 		{ value: PaladinAura.NoPaladinAura, tooltip: 'No Aura' },
- 		{ actionId: () => ActionId.fromSpellId(20218), value: PaladinAura.SanctityAura },
- 		//{ actionId: () => ActionId.fromSpellId(10299), value: PaladinAura.DevotionAura },
- 		//{ actionId: () => ActionId.fromSpellId(10299), value: PaladinAura.RetributionAura },
- 		//{ actionId: () => ActionId.fromSpellId(19746), value: PaladinAura.ConcentrationAura },
- 		//{ actionId: () => ActionId.fromSpellId(19888), value: PaladinAura.FrostResistanceAura },
- 		//{ actionId: () => ActionId.fromSpellId(19892), value: PaladinAura.ShadowResistanceAura },
- 		//{ actionId: () => ActionId.fromSpellId(19891), value: PaladinAura.FireResistanceAura },
- 	],
+	fieldName: 'aura',
+	values: [
+		{ value: PaladinAura.NoPaladinAura, tooltip: 'No Aura' },
+		{ actionId: () => ActionId.fromSpellId(20218), value: PaladinAura.SanctityAura },
+		//{ actionId: () => ActionId.fromSpellId(10299), value: PaladinAura.DevotionAura },
+		//{ actionId: () => ActionId.fromSpellId(10299), value: PaladinAura.RetributionAura },
+		//{ actionId: () => ActionId.fromSpellId(19746), value: PaladinAura.ConcentrationAura },
+		//{ actionId: () => ActionId.fromSpellId(19888), value: PaladinAura.FrostResistanceAura },
+		//{ actionId: () => ActionId.fromSpellId(19892), value: PaladinAura.ShadowResistanceAura },
+		//{ actionId: () => ActionId.fromSpellId(19891), value: PaladinAura.FireResistanceAura },
+	],
 });
 
 export const BlessingSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecProtectionPaladin, Blessings>({
- 	fieldName: 'personalBlessing',
- 	values: [
- 		{ value: Blessings.BlessingUnknown, tooltip: 'No Blessing' },
- 		{
-            actionId: 
-                player => player.getMatchingSpellActionId([
-                    { id: 20911, minLevel: 1,  maxLevel: 39 },
-                    { id: 20912, minLevel: 40, maxLevel: 49 },
-                    { id: 20913, minLevel: 50, maxLevel: 59 },
-                    { id: 20914, minLevel: 60 },
-                ]),
-            value: Blessings.BlessingOfSanctuary,
-        },
- 	],
-    changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.levelChangeEmitter]),
+	fieldName: 'personalBlessing',
+	values: [
+		{ value: Blessings.BlessingUnknown, tooltip: 'No Blessing' },
+		{
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 20911, minLevel: 1, maxLevel: 39 },
+					{ id: 20912, minLevel: 40, maxLevel: 49 },
+					{ id: 20913, minLevel: 50, maxLevel: 59 },
+					{ id: 20914, minLevel: 60 },
+				]),
+			value: Blessings.BlessingOfSanctuary,
+		},
+	],
+	changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.specOptionsChangeEmitter, player.levelChangeEmitter]),
+});
+
+export const RighteousFuryToggle = InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecProtectionPaladin>({
+	fieldName: 'righteousFury',
+	actionId: (player: Player<Spec.SpecProtectionPaladin>) =>
+		player.hasRune(ItemSlot.ItemSlotHands, PaladinRune.RuneHandsHandOfReckoning) ? ActionId.fromSpellId(407627) : ActionId.fromSpellId(25780),
+	changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
 });
 
 // The below is used in the custom APL action "Cast Primary Seal".
@@ -79,5 +85,3 @@ export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Sp
 	changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) =>
 		TypedEvent.onAny([player.gearChangeEmitter, player.talentsChangeEmitter, player.specOptionsChangeEmitter, player.levelChangeEmitter]),
 });
-
-
