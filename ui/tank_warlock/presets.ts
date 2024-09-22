@@ -224,9 +224,7 @@ export const DefaultConsumes = Consumes.create({
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.ShadowOil,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
-	miscConsumes: {
-		jujuEmber: true,
-	},
+
 	sapper: true,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
@@ -237,7 +235,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	bloodPact: TristateEffect.TristateEffectImproved,
-	demonicPact: 80,
+	demonicPact: 110,
 	devotionAura: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
 	fireResistanceAura: true,
@@ -265,6 +263,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	spiritOfZandalar: true,
 	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });

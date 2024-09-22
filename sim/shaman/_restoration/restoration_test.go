@@ -41,33 +41,6 @@ func TestRestoration(t *testing.T) {
 	}))
 }
 
-func BenchmarkSimulate(b *testing.B) {
-	rsr := &proto.RaidSimRequest{
-		Raid: core.SinglePlayerRaidProto(
-			&proto.Player{
-				Race:          proto.Race_RaceOrc,
-				Class:         proto.Class_ClassShaman,
-				Equipment:     core.GetGearSet("../../../ui/restoration_shaman/gear_sets", "p1").GearSet,
-				Consumes:      FullConsumes,
-				Spec:          PlayerOptionsStandard,
-				Buffs:         core.FullIndividualBuffs,
-				TalentsString: StandardTalents,
-			},
-			core.FullPartyBuffs,
-			core.FullRaidBuffs,
-			core.FullDebuffs),
-		Encounter: &proto.Encounter{
-			Duration: 300,
-			Targets: []*proto.Target{
-				core.NewDefaultTarget(),
-			},
-		},
-		SimOptions: core.AverageDefaultSimTestOptions,
-	}
-
-	core.RaidBenchmark(b, rsr)
-}
-
 var StandardTalents = "-3020503-50005331335310501122331251"
 
 var BasicTotems = &proto.ShamanTotems{

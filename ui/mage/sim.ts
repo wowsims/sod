@@ -108,24 +108,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 
 	presets: {
 		rotations: [
+			...Presets.APLPresets[Phase.Phase5],
 			...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
 		],
 		talents: [
+			...Presets.TalentPresets[Phase.Phase5],
 			...Presets.TalentPresets[Phase.Phase4],
 			...Presets.TalentPresets[Phase.Phase3],
 			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		gear: [
+			...Presets.GearPresets[Phase.Phase5],
 			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [Presets.PresetBuildArcane, Presets.PresetBuildFire, Presets.PresetBuildFrost],
+		builds: [Presets.PresetBuildFire, Presets.PresetBuildSpellfrost],
 	},
 
 	autoRotation: player => {
@@ -192,7 +195,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			defaultName: 'Frost',
 			iconUrl: getSpecIcon(Class.ClassMage, 2),
 
-			talents: Presets.DefaultTalentsFrost.data,
+			talents: Presets.DefaultTalentsFrostfire.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			otherDefaults: Presets.OtherDefaults,

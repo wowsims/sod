@@ -186,9 +186,6 @@ export const DefaultConsumes = Consumes.create({
 	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
 	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
 	mainHandImbue: WeaponImbue.WildStrikes,
-	miscConsumes: {
-		jujuEmber: true,
-	},
 	offHandImbue: WeaponImbue.DeadlyPoison,
 });
 

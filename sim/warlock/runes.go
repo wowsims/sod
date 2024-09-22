@@ -459,11 +459,7 @@ func (warlock *Warlock) applyDemonicPact() {
 		return
 	}
 
-	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagWarlock) {
-			spell.DamageMultiplier *= 1.10
-		}
-	})
+	warlock.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.10)
 
 	if warlock.Options.Summon == proto.WarlockOptions_NoSummon {
 		return

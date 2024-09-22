@@ -240,16 +240,9 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// OLD: Increases main hand weapon damage by 5%.
-		// NEW: Increases damage dealt by your main hand weapon with Raptor Strike and Wyvern Strike by 20%.
+		// Increases damage dealt by your main hand weapon with Raptor Strike and Wyvern Strike by 20%.
 		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-
-			// hunter.OnSpellRegistered(func(spell *core.Spell) {
-			// 	if spell.ProcMask.Matches(core.ProcMaskMeleeMH) {
-			// 		spell.DamageMultiplier *= 1.05
-			// 	}
-			// })
 
 			hunter.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_HunterWyvernStrike || (spell.SpellCode == SpellCode_HunterRaptorStrikeHit && spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial)) {

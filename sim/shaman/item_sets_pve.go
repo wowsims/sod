@@ -338,7 +338,7 @@ var ItemSetEruptionOfTheTenStorms = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// While Clearcasting is active, you deal 10% more non-Physical damage.
+		// While Clearcasting is active, you deal 15% more non-Physical damage.
 		6: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			if !shaman.Talents.ElementalFocus {
@@ -351,13 +351,13 @@ var ItemSetEruptionOfTheTenStorms = core.NewItemSet(core.ItemSet{
 					oldOnGain := shaman.ClearcastingAura.OnGain
 					shaman.ClearcastingAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnGain(aura, sim)
-						shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.10)
+						shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.15)
 					}
 
 					oldOnExpire := shaman.ClearcastingAura.OnExpire
 					shaman.ClearcastingAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnExpire(aura, sim)
-						shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.10)
+						shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.15)
 					}
 				},
 			}))
@@ -472,46 +472,19 @@ var ItemSetImpactOfTheTenStorms = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// Critical strikes with Stormstrike grant 100% increased critical strike chance with your next Lightning Bolt, Chain Lightning, or Shock spell.
+		// Main-hand Stormstrike now deals 50% more damage.
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
+			if !shaman.Talents.Stormstrike {
+				return
+			}
 
-			var affectedSpells []*core.Spell
-			affectedSpellcodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning, SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
-			stormfuryAura := shaman.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 467880},
-				Label:    "Stormfury",
-				Duration: time.Second * 10,
+			shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Shaman - Enhancement 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					affectedSpells = core.FilterSlice(shaman.Spellbook, func(spell *core.Spell) bool {
-						return slices.Contains(affectedSpellcodes, spell.SpellCode)
-					})
-				},
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					core.Each(affectedSpells, func(spell *core.Spell) {
-						spell.BonusCritRating += 100 * core.SpellCritRatingPerCritChance
-					})
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					core.Each(affectedSpells, func(spell *core.Spell) {
-						spell.BonusCritRating -= 100 * core.SpellCritRatingPerCritChance
-					})
-				},
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if slices.Contains(affectedSpellcodes, spell.SpellCode) {
-						aura.Deactivate(sim)
-					}
+					shaman.StormstrikeMH.DamageMultiplier *= 1.50
 				},
 			})
-
-			core.MakePermanent(shaman.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Shaman - Enhancement 4P Bonus",
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellCode == SpellCode_ShamanStormstrike && result.DidCrit() {
-						stormfuryAura.Activate(sim)
-					}
-				},
-			}))
 		},
 		// Your Lightning Shield now gains a charge each time you hit a target with Lightning Bolt or Chain Lightning, up to a maximum of 9 charges.
 		// In addition, your Lightning Shield can now deal critical damage.

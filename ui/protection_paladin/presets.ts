@@ -112,9 +112,7 @@ export const DefaultConsumes = Consumes.create({
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	fillerExplosive: Explosive.ExplosiveUnknown,
 	mainHandImbue: WeaponImbue.WildStrikes,
-	miscConsumes: {
-		jujuEmber: true,
-	},
+
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
@@ -133,6 +131,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	spiritOfZandalar: true,
 	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });
@@ -146,7 +145,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	sanctityAura: true,
 	leaderOfThePack: true,
-	demonicPact: 80,
+	demonicPact: 110,
 	aspectOfTheLion: true,
 	moonkinAura: true,
 	vampiricTouch: 300,
@@ -168,7 +167,7 @@ export const DefaultDebuffs = Debuffs.create({
 });
 
 export const OtherDefaults = {
-    distanceFromTarget: 5, // Max melee range
+	distanceFromTarget: 5, // Max melee range
 	profession1: Profession.Blacksmithing,
 	profession2: Profession.Engineering,
 };
