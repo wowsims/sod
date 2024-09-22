@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.27675
+  weights: 1.27654
   weights: 0
-  weights: 1.81923
-  weights: 0
-  weights: 0
+  weights: 1.82338
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 8.91539
-  weights: 11.47804
+  weights: 0
+  weights: 0
+  weights: 8.91568
+  weights: 11.47888
   weights: 0
   weights: 0
   weights: 0
@@ -372,64 +372,64 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 1531.91298
-  tps: 1331.64535
+  dps: 1536.23506
+  tps: 1335.96743
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1538.0635
-  tps: 1337.39756
+  dps: 1542.33025
+  tps: 1341.66431
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 2228.30779
-  tps: 3035.27983
+  dps: 2303.37175
+  tps: 3110.34378
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 1524.8829
-  tps: 1324.17513
+  dps: 1529.18439
+  tps: 1328.47662
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 1573.03603
-  tps: 1359.38131
+  dps: 1577.43275
+  tps: 1363.77803
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1383.17081
-  tps: 2338.74874
+  dps: 1438.89039
+  tps: 2394.46833
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 853.17108
-  tps: 748.70285
+  dps: 855.96591
+  tps: 751.49768
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 851.56251
-  tps: 747.75313
+  dps: 854.42534
+  tps: 750.61597
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1522.57754
-  tps: 1322.00316
+  dps: 1526.8694
+  tps: 1326.29501
  }
 }
 dps_results: {

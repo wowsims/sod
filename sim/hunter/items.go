@@ -386,7 +386,7 @@ func init() {
 			Label:     "Locked In",
 			ActionID:  core.ActionID{SpellID: 468388},
 			Duration:  time.Second * 20,
-			MaxStacks: 3,
+			MaxStacks: 2,
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell.Flags.Matches(SpellFlagShot) || spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) && spell.CD.Timer != nil {
 					spell.CD.Reset()
@@ -407,7 +407,7 @@ func init() {
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				lockedIn.Activate(sim)
-				lockedIn.SetStacks(sim, 3)
+				lockedIn.SetStacks(sim, lockedIn.MaxStacks)
 			},
 		})
 

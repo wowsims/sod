@@ -624,7 +624,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 3504.94023
+  dps: 3505.07633
   tps: 3154.27123
  }
 }
