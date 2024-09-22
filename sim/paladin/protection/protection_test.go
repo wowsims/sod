@@ -37,7 +37,7 @@ func TestProtection(t *testing.T) {
 var Phase4ProtTalents = "-053020335001551-0500535"
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:     proto.Potions_MajorManaPotion,
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
@@ -71,15 +71,18 @@ var PlayerOptionsSealofRighteousness = &proto.Player_ProtectionPaladin{
 }
 
 var optionsSealOfCommand = &proto.PaladinOptions{
-	PrimarySeal: proto.PaladinSeal_Command,
+	PrimarySeal:   proto.PaladinSeal_Command,
+	RighteousFury: true,
 }
 
 var optionsSealOfMartyrdom = &proto.PaladinOptions{
-	PrimarySeal: proto.PaladinSeal_Martyrdom,
+	PrimarySeal:   proto.PaladinSeal_Martyrdom,
+	RighteousFury: true,
 }
 
 var optionsSealOfRighteousness = &proto.PaladinOptions{
-	PrimarySeal: proto.PaladinSeal_Righteousness,
+	PrimarySeal:   proto.PaladinSeal_Righteousness,
+	RighteousFury: true,
 }
 
 var ItemFilters = core.ItemFilter{

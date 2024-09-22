@@ -314,42 +314,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
   dps: 629.73748
   tps: 1287.75153
  }
 }
 dps_results: {
- key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
   dps: 629.73748
   tps: 606.55102
  }
 }
 dps_results: {
- key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
   dps: 614.47287
   tps: 579.55902
  }
 }
 dps_results: {
- key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
   dps: 413.59782
   tps: 1091.8038
  }
 }
 dps_results: {
- key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
   dps: 413.59782
   tps: 404.96636
  }
 }
 dps_results: {
- key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ key: "TestAffliction-Phase2-Lvl40-Settings-Orc-shadow-Affliction Warlock-affliction-NoBuffs-P2-Consumes-ShortSingleTarget"
  value: {
   dps: 416.49254
   tps: 391.95981
@@ -384,42 +384,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongMultiTarget"
+ key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
   dps: 2228.30779
   tps: 3035.27983
  }
 }
 dps_results: {
- key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-LongSingleTarget"
+ key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
   dps: 1524.8829
   tps: 1324.17513
  }
 }
 dps_results: {
- key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
+ key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-P3-Consumes-ShortSingleTarget"
  value: {
   dps: 1573.03603
   tps: 1359.38131
  }
 }
 dps_results: {
- key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongMultiTarget"
+ key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-P3-Consumes-LongMultiTarget"
  value: {
   dps: 1383.17081
   tps: 2338.74874
  }
 }
 dps_results: {
- key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-LongSingleTarget"
+ key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-P3-Consumes-LongSingleTarget"
  value: {
   dps: 853.17108
   tps: 748.70285
  }
 }
 dps_results: {
- key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
+ key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-P3-Consumes-ShortSingleTarget"
  value: {
   dps: 851.56251
   tps: 747.75313
@@ -503,42 +503,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-Phase 4 Consumes-LongMultiTarget"
+ key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 3114.48502
   tps: 4358.54053
  }
 }
 dps_results: {
- key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-Phase 4 Consumes-LongSingleTarget"
+ key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 3114.48502
   tps: 2940.75763
  }
 }
 dps_results: {
- key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
+ key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 2964.58041
   tps: 2759.32354
  }
 }
 dps_results: {
- key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-LongMultiTarget"
+ key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 1488.60692
   tps: 2936.62077
  }
 }
 dps_results: {
- key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-LongSingleTarget"
+ key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 1488.60692
   tps: 1432.58659
  }
 }
 dps_results: {
- key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
+ key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 1426.19451
   tps: 1343.28725

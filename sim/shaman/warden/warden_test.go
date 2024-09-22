@@ -43,7 +43,7 @@ var PlayerOptionsBasic = &proto.Player_WardenShaman{
 var Phase4Talents = "05033150003-0505032015003151"
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,

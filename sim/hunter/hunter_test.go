@@ -181,7 +181,7 @@ var Phase4RangedMMTalents = "-05451002503051-33400023023"
 var Phase4RangedSVTalents = "1-054510005-334000250230305"
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
 		DefaultPotion: proto.Potions_ManaPotion,
@@ -193,7 +193,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -207,7 +207,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,

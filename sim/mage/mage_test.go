@@ -261,7 +261,7 @@ var PlayerOptionsFrost = &proto.Player_Mage{
 }
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion: proto.Potions_ManaPotion,
 		FirePowerBuff: proto.FirePowerBuff_ElixirOfFirepower,
@@ -271,7 +271,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_GreaterManaPotion,
 		FirePowerBuff:  proto.FirePowerBuff_ElixirOfFirepower,
@@ -283,7 +283,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase3Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "P3-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_MajorManaPotion,
 		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
@@ -295,7 +295,7 @@ var Phase3Consumes = core.ConsumesCombo{
 }
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_MajorManaPotion,
 		Flask:          proto.Flask_FlaskOfSupremePower,
@@ -308,7 +308,7 @@ var Phase4Consumes = core.ConsumesCombo{
 }
 
 var Phase5Consumes = core.ConsumesCombo{
-	Label: "Phase 5 Consumes",
+	Label: "P5-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_MajorManaPotion,
 		Flask:          proto.Flask_FlaskOfSupremePower,

@@ -216,42 +216,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
   dps: 342.16567
   tps: 1974.47725
  }
 }
 dps_results: {
- key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
   dps: 342.16567
   tps: 1040.57251
  }
 }
 dps_results: {
- key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
   dps: 363.95488
   tps: 1083.44192
  }
 }
 dps_results: {
- key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
   dps: 225.69364
   tps: 1695.45014
  }
 }
 dps_results: {
- key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
   dps: 225.69364
   tps: 708.29213
  }
 }
 dps_results: {
- key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ key: "TestDemonology-Phase2-Lvl40-Settings-Orc-p2.demo.tank-Demonology Warlock-p2.demo.tank-NoBuffs-P2-Consumes-ShortSingleTarget"
  value: {
   dps: 244.74552
   tps: 737.42382
@@ -342,42 +342,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-Phase 4 Consumes-LongMultiTarget"
+ key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 2802.7323
   tps: 8636.29423
  }
 }
 dps_results: {
- key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-Phase 4 Consumes-LongSingleTarget"
+ key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 2161.97755
   tps: 4421.3263
  }
 }
 dps_results: {
- key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
+ key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 2138.59165
   tps: 4401.05935
  }
 }
 dps_results: {
- key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-Phase 4 Consumes-LongMultiTarget"
+ key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 1197.32184
   tps: 5398.49904
  }
 }
 dps_results: {
- key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-Phase 4 Consumes-LongSingleTarget"
+ key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 901.78358
   tps: 2060.23075
  }
 }
 dps_results: {
- key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
+ key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 902.53661
   tps: 2093.08757

@@ -122,7 +122,7 @@ var P3ArmsTalents = "303050213520105001-0505"
 var P4FuryTalents = "20305020302-05050005525010051"
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
 		MainHandImbue: proto.WeaponImbue_WildStrikes,
@@ -132,7 +132,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DragonBreathChili: true,
@@ -144,7 +144,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase3Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "P3-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
 		DragonBreathChili: true,
@@ -157,7 +157,7 @@ var Phase3Consumes = core.ConsumesCombo{
 }
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,

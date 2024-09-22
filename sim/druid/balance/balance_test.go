@@ -110,7 +110,7 @@ var Phase3Talents = "5000550012551351--3"
 var Phase4Talents = "5000550012551251--5005031"
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion: proto.Potions_ManaPotion,
 		Food:          proto.Food_FoodSmokedSagefish,
@@ -119,7 +119,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_GreaterManaPotion,
 		Food:           proto.Food_FoodSagefishDelight,
@@ -129,7 +129,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase3Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "P3-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultConjured: proto.Conjured_ConjuredDruidCatnip,
 		DefaultPotion:   proto.Potions_MajorManaPotion,
@@ -140,7 +140,7 @@ var Phase3Consumes = core.ConsumesCombo{
 }
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_MajorManaPotion,
 		Flask:          proto.Flask_FlaskOfSupremePower,
@@ -151,7 +151,7 @@ var Phase4Consumes = core.ConsumesCombo{
 }
 
 var Phase5Consumes = core.ConsumesCombo{
-	Label: "Phase 5 Consumes",
+	Label: "P5-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_MajorManaPotion,
 		Flask:          proto.Flask_FlaskOfSupremePower,

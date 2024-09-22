@@ -157,7 +157,7 @@ var optionsSyncAuto = &proto.EnhancementShaman_Options{
 }
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
 		DefaultPotion: proto.Potions_ManaPotion,
@@ -169,7 +169,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2ConsumesWFWF = core.ConsumesCombo{
-	Label: "Phase 2 Consumes WF/WF",
+	Label: "P2-Consumes WF/WF",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -184,7 +184,7 @@ var Phase2ConsumesWFWF = core.ConsumesCombo{
 }
 
 var Phase2ConsumesWFFT = core.ConsumesCombo{
-	Label: "Phase 2 Consumes WF/FT",
+	Label: "P2-Consumes WF/FT",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -199,7 +199,7 @@ var Phase2ConsumesWFFT = core.ConsumesCombo{
 }
 
 var Phase3ConsumesWFWF = core.ConsumesCombo{
-	Label: "Phase 3 Consumes WF/WF",
+	Label: "P3-Consumes WF/WF",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -214,7 +214,7 @@ var Phase3ConsumesWFWF = core.ConsumesCombo{
 }
 
 var Phase3ConsumesWFFT = core.ConsumesCombo{
-	Label: "Phase 3 Consumes WF/FT",
+	Label: "P3-Consumes WF/FT",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -229,7 +229,7 @@ var Phase3ConsumesWFFT = core.ConsumesCombo{
 }
 
 var Phase4ConsumesWFWF = core.ConsumesCombo{
-	Label: "Phase 4 Consumes WF/WF",
+	Label: "P4-Consumes WF/WF",
 	Consumes: &proto.Consumes{
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
@@ -246,7 +246,7 @@ var Phase4ConsumesWFWF = core.ConsumesCombo{
 }
 
 var Phase4ConsumesWFFT = core.ConsumesCombo{
-	Label: "Phase 4 Consumes WF/FT",
+	Label: "P4-Consumes WF/FT",
 	Consumes: &proto.Consumes{
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,

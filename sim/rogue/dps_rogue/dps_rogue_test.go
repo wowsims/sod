@@ -132,7 +132,7 @@ var DefaultCombatRogue = &proto.Player_Rogue{
 var DefaultDeadlyBrewOptions = &proto.RogueOptions{}
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
 		MainHandImbue: proto.WeaponImbue_WildStrikes,
@@ -142,7 +142,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfAgility,
 		MainHandImbue: proto.WeaponImbue_WildStrikes,

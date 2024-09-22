@@ -113,7 +113,7 @@ var Phase2ShockadinTalents = "55050100521151--"
 var Phase3RetTalents = "500501--53230051200315"
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
 		DefaultPotion: proto.Potions_ManaPotion,
@@ -124,7 +124,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -138,7 +138,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase3Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "P3-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
 		DefaultPotion:     proto.Potions_MajorManaPotion,
@@ -155,7 +155,7 @@ var Phase3Consumes = core.ConsumesCombo{
 	},
 }
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:     proto.Potions_MajorManaPotion,
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
