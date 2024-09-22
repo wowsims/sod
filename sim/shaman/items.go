@@ -60,16 +60,12 @@ func init() {
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range affectedSpells {
-					if spell != nil {
-						spell.DamageMultiplierAdditive += 1
-					}
+					spell.DamageMultiplier *= 2
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range affectedSpells {
-					if spell != nil {
-						spell.DamageMultiplierAdditive -= 1
-					}
+					spell.DamageMultiplier /= 2
 				}
 			},
 		})

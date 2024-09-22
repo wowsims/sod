@@ -24,7 +24,7 @@ func (shaman *Shaman) ApplyRunes() {
 
 	// Bracers
 	shaman.applyStaticShocks()
-	shaman.applyRollingThunder()
+	shaman.registerRollingThunder()
 	shaman.registerRiptideSpell()
 
 	// Hands
@@ -286,50 +286,6 @@ func (shaman *Shaman) applyStaticShocks() {
 			staticShockProcChance := core.TernaryFloat64(shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand, shaman.staticSHocksProcChance*2, shaman.staticSHocksProcChance)
 			if sim.RandomFloat("Static Shock") < staticShockProcChance {
 				shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
-			}
-		},
-	}))
-}
-
-var RollingThunderProcChance = .50
-
-func (shaman *Shaman) applyRollingThunder() {
-	if !shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder) {
-		return
-	}
-
-	impLightningShieldBonus := 1 + []float64{0, .05, .10, .15}[shaman.Talents.ImprovedLightningShield]
-
-	// Casts handled in lightning_shield.go
-	shaman.RollingThunder = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 432129},
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagShaman | SpellFlagLightning,
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if shaman.ActiveShield == nil || shaman.ActiveShield.SpellCode != SpellCode_ShamanLightningShield {
-				return
-			}
-
-			rank := shaman.ActiveShield.Rank
-			chargeDamage := LightningShieldBaseDamage[rank]*impLightningShieldBonus + LightningShieldSpellCoef[rank]*shaman.LightningShieldProcs[rank].GetBonusDamage()
-			spell.CalcAndDealDamage(sim, target, chargeDamage, spell.OutcomeMagicCrit)
-		},
-	})
-
-	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning}
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: "Rolling Thunder Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if slices.Contains(affectedSpellCodes, spell.SpellCode) {
-				if shaman.ActiveShield != nil && shaman.ActiveShield.SpellCode == SpellCode_ShamanLightningShield && shaman.ActiveShieldAura.IsActive() && sim.Proc(RollingThunderProcChance, "Rolling Thunder") {
-					shaman.ActiveShieldAura.AddStack(sim)
-				}
 			}
 		},
 	}))
