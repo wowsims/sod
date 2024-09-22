@@ -43,21 +43,32 @@ func init() {
 		duration := time.Second * 20
 		actionID := core.ActionID{ItemID: WushoolaysCharmOfSpirits}
 
+		var affectedSpells []*core.Spell
+
 		aura := shaman.RegisterAura(core.Aura{
 			ActionID: actionID,
 			Label:    "Wushoolay's Charm of Spirits",
 			Duration: time.Second * 20,
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				affectedSpells = core.FilterSlice(
+					core.Flatten([][]*core.Spell{
+						shaman.LightningShieldProcs,
+						{shaman.RollingThunder},
+					}),
+					func(spell *core.Spell) bool { return spell != nil },
+				)
+			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range shaman.LightningShieldProcs {
+				for _, spell := range affectedSpells {
 					if spell != nil {
-						spell.DamageMultiplier *= 2
+						spell.DamageMultiplierAdditive += 1
 					}
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range shaman.LightningShieldProcs {
+				for _, spell := range affectedSpells {
 					if spell != nil {
-						spell.DamageMultiplier /= 2
+						spell.DamageMultiplierAdditive -= 1
 					}
 				}
 			},
