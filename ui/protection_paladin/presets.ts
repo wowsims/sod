@@ -22,7 +22,7 @@ import {
 	WeaponImbue,
 	ZanzaBuff,
 } from '../core/proto/common.js';
-import { PaladinAura, PaladinSeal, PaladinOptions as ProtectionPaladinOptions } from '../core/proto/paladin.js';
+import { PaladinAura, PaladinSeal, Blessings, PaladinOptions as ProtectionPaladinOptions } from '../core/proto/paladin.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import APLP4ProtJson from './apls/p4prot.apl.json';
 import Phase4ProtGearJson from './gear_sets/p4prot.gear.json';
@@ -98,7 +98,8 @@ export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 export const DefaultOptions = ProtectionPaladinOptions.create({
 	aura: PaladinAura.SanctityAura,
 	primarySeal: PaladinSeal.Martyrdom,
-    righteousFury: true,
+	personalBlessing: Blessings.BlessingOfSanctuary,
+	righteousFury: true,
 });
 
 export const DefaultConsumes = Consumes.create({
