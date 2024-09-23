@@ -123,7 +123,7 @@ func (priest *Priest) applySurgeOfLight() {
 	})
 
 	handler := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if spell.ProcMask.Matches(core.ProcMaskSpellOrProc) && result.Outcome.Matches(core.OutcomeCrit) {
+		if spell.ProcMask.Matches(core.ProcMaskSpellOrSpellProc) && result.Outcome.Matches(core.OutcomeCrit) {
 			priest.SurgeOfLightAura.Activate(sim)
 		}
 	}

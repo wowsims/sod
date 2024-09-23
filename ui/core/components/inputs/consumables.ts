@@ -962,28 +962,40 @@ export const BrillianWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponI
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 20749, minLevel: 45 }]),
 		value: WeaponImbue.BrillianWizardOil,
-		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 export const WizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 20750, minLevel: 40 }]),
 		value: WeaponImbue.WizardOil,
-		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 export const LesserWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 20746, minLevel: 30 }]),
 		value: WeaponImbue.LesserWizardOil,
-		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 export const MinorWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 20744, minLevel: 5 }]),
 		value: WeaponImbue.MinorWizardOil,
-		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 
@@ -993,28 +1005,40 @@ export const BrilliantManaOil = (slot: ItemSlot): ConsumableInputConfig<WeaponIm
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 20748, minLevel: 45 }]),
 		value: WeaponImbue.BrilliantManaOil,
-		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 export const LesserManaOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 20747, minLevel: 40 }]),
 		value: WeaponImbue.LesserManaOil,
-		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 export const MinorManaOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 20745, minLevel: 20 }]),
 		value: WeaponImbue.MinorManaOil,
-		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 export const BlackfathomManaOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 211848, minLevel: 25 }]),
 		value: WeaponImbue.BlackfathomManaOil,
-		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 
@@ -1023,28 +1047,40 @@ export const ElementalSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 18262, minLevel: 50 }]),
 		value: WeaponImbue.ElementalSharpeningStone,
-		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 export const DenseSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 12404, minLevel: 35 }]),
 		value: WeaponImbue.DenseSharpeningStone,
-		showWhen: player => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isSharpWeaponType(weapon.item.weaponType);
+		},
 	};
 };
 export const SolidSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 7964, minLevel: 35 }]),
 		value: WeaponImbue.SolidSharpeningStone,
-		showWhen: player => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isSharpWeaponType(weapon.item.weaponType);
+		},
 	};
 };
 export const BlackfathomSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: () => ActionId.fromItemId(211845),
 		value: WeaponImbue.BlackfathomSharpeningStone,
-		showWhen: player => isSharpWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isSharpWeaponType(weapon.item.weaponType);
+		},
 	};
 };
 
@@ -1053,14 +1089,20 @@ export const DenseWeightstone = (slot: ItemSlot): ConsumableInputConfig<WeaponIm
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 12643, minLevel: 35 }]),
 		value: WeaponImbue.DenseWeightstone,
-		showWhen: player => isBluntWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isBluntWeaponType(weapon.item.weaponType);
+		},
 	};
 };
 export const SolidWeightstone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 7965, minLevel: 35 }]),
 		value: WeaponImbue.SolidWeightstone,
-		showWhen: player => isBluntWeaponType(player.getEquippedItem(slot)?.item.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isBluntWeaponType(weapon.item.weaponType);
+		},
 	};
 };
 
@@ -1069,14 +1111,20 @@ export const ShadowOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> =>
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 3824, minLevel: 25 }]),
 		value: WeaponImbue.ShadowOil,
-		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 export const FrostOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 3829, minLevel: 40 }]),
 		value: WeaponImbue.FrostOil,
-		showWhen: player => isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 
@@ -1085,7 +1133,7 @@ export const ConductiveShieldCoating = (slot: ItemSlot): ConsumableInputConfig<W
 		actionId: player => player.getMatchingItemActionId([{ id: 228980, minLevel: 40 }]),
 		value: WeaponImbue.ConductiveShieldCoating,
 		showWhen: player =>
-			slot === ItemSlot.ItemSlotOffHand && player.getEquippedItem(ItemSlot.ItemSlotOffHand)?._item?.weaponType === WeaponType.WeaponTypeShield,
+			slot === ItemSlot.ItemSlotOffHand && player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.item?.weaponType === WeaponType.WeaponTypeShield,
 	};
 };
 

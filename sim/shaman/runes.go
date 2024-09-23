@@ -24,7 +24,7 @@ func (shaman *Shaman) ApplyRunes() {
 
 	// Bracers
 	shaman.applyStaticShocks()
-	shaman.applyRollingThunder()
+	shaman.registerRollingThunder()
 	shaman.registerRiptideSpell()
 
 	// Hands
@@ -291,50 +291,6 @@ func (shaman *Shaman) applyStaticShocks() {
 	}))
 }
 
-var RollingThunderProcChance = .50
-
-func (shaman *Shaman) applyRollingThunder() {
-	if !shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder) {
-		return
-	}
-
-	impLightningShieldBonus := 1 + []float64{0, .05, .10, .15}[shaman.Talents.ImprovedLightningShield]
-
-	// Casts handled in lightning_shield.go
-	shaman.RollingThunder = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 432129},
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagShaman | SpellFlagLightning,
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if shaman.ActiveShield == nil || shaman.ActiveShield.SpellCode != SpellCode_ShamanLightningShield {
-				return
-			}
-
-			rank := shaman.ActiveShield.Rank
-			chargeDamage := LightningShieldBaseDamage[rank]*impLightningShieldBonus + LightningShieldSpellCoef[rank]*shaman.LightningShieldProcs[rank].GetBonusDamage()
-			spell.CalcAndDealDamage(sim, target, chargeDamage, spell.OutcomeMagicCrit)
-		},
-	})
-
-	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning}
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: "Rolling Thunder Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if slices.Contains(affectedSpellCodes, spell.SpellCode) {
-				if shaman.ActiveShield != nil && shaman.ActiveShield.SpellCode == SpellCode_ShamanLightningShield && shaman.ActiveShieldAura.IsActive() && sim.Proc(RollingThunderProcChance, "Rolling Thunder") {
-					shaman.ActiveShieldAura.AddStack(sim)
-				}
-			}
-		},
-	}))
-}
-
 func (shaman *Shaman) applyMaelstromWeapon() {
 	if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
 		return
@@ -381,13 +337,9 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 
 	// This aura is hidden, just applies stacks of the proc aura.
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: "MaelstromWeapon",
+		Label: "Maelstrom Weapon Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			if shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
 				shaman.MaelstromWeaponAura.Activate(sim)
 				shaman.MaelstromWeaponAura.AddStack(sim)
 			}
