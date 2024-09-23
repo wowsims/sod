@@ -12,7 +12,8 @@ func (paladin *Paladin) registerAvengersShield() {
 	}
 
 	// Avenger's Shield hits up to 3 targets. It cannot miss or be resisted.
-	results := make([]*core.SpellResult, min(3, paladin.Env.GetNumTargets()))
+	numTargets := min(3, paladin.Env.GetNumTargets())
+
 	lowDamage := 366 * paladin.baseRuneAbilityDamage() / 100
 	highDamage := 448 * paladin.baseRuneAbilityDamage() / 100
 
@@ -45,28 +46,32 @@ func (paladin *Paladin) registerAvengersShield() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			apBonus := 0.091 * spell.MeleeAttackPower()
-			for idx := range results {
-				baseDamage := sim.Roll(lowDamage, highDamage) + apBonus
-				// Avenger's Shield cannot miss and uses magic critical _chance_.
-				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
-				target = sim.Environment.NextTargetUnit(target)
-			}
-			// Avenger's Shield bounces from target 1 > target 2 > target 3 at MissileSpeed.
-			// We approximate it by assuming targets are standing ~3 yds apart from each other.
-			// The damage for each target is therefore scheduled to arrive at:
-			// T1 = (TravelTime from player; by default 5 yard max melee range)
-			// T2 = T1 + (3 yd TravelTime)
-			// T3 = T2 + (3 yd TravelTime)
 			baseTravelTime := spell.TravelTime()
+
 			interTargetTravelTime := int(float64(time.Second) * 3.0 / spell.MissileSpeed)
-			for i, result := range results {
+
+			for i := 0; i < int(numTargets); i++ {
+
+				// Avenger's Shield bounces from target 1 > target 2 > target 3 at MissileSpeed.
+				// We approximate it by assuming targets are standing ~3 yds apart from each other.
+				// The damage for each target is therefore scheduled to arrive at:
+				// T1 = (TravelTime from player; by default 5 yard max melee range)
+				// T2 = T1 + (3 yd TravelTime)
+				// T3 = T2 + (3 yd TravelTime)
+				baseDamage := sim.Roll(lowDamage, highDamage) + apBonus
 				delay := time.Duration(interTargetTravelTime * i)
+				nextTarget := target // make new ref for delayed action evaluation
+				result := spell.CalcDamage(sim, nextTarget, baseDamage, spell.OutcomeMagicCrit)
+
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + baseTravelTime + delay,
 					OnAction: func(s *core.Simulation) {
+						// Avenger's Shield cannot miss and uses magic critical _chance_.
 						spell.DealDamage(sim, result)
+
 					},
 				})
+				target = sim.NextTargetUnit(target)
 			}
 		},
 	})
