@@ -66,6 +66,24 @@ func TestArcane(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassMage,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceGnome},
+
+			Talents:     Phase5TalentsArcane,
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p5_arcane"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p5_spellfrost"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase5Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -169,7 +187,7 @@ func TestFrost(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase4TalentsFrost,
+			Talents:     Phase3TalentsFrost,
 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_frost_ffb"),
 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p3_frost"),
 			Buffs:       core.FullBuffsPhase3,
@@ -187,7 +205,7 @@ func TestFrost(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase5TalentsSpellfrost,
+			Talents:     Phase4TalentsFrost,
 			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p4_frost"),
 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_frost"),
 			Buffs:       core.FullBuffsPhase4,
@@ -205,8 +223,8 @@ func TestFrost(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase5TalentsSpellfrost,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p5_spellfrost"),
+			Talents:     phase5talentsfrost,
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p5_frost"),
 			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p5_spellfrost"),
 			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase5Consumes,
@@ -233,8 +251,9 @@ var Phase4TalentsArcane = "0550050210031531-054-203500001"
 var Phase4TalentsFire = "21-5052300123033151-203500031"
 var Phase4TalentsFrost = "-0550320003021-2035020310035105"
 
+var Phase5TalentsArcane = "2500550010031531--2035020310004"
 var Phase5TalentsFire = "21-5052300123033151-203500031"
-var Phase5TalentsSpellfrost = "250025001002--05350203100351051"
+var phase5talentsfrost = "250025001002--05350203100351051"
 
 var PlayerOptionsArcane = &proto.Player_Mage{
 	Mage: &proto.Mage{

@@ -2666,7 +2666,7 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 		ActionID:         core.ActionID{SpellID: spellID},
 		SpellSchool:      spellSchool,
 		DefenseType:      core.DefenseTypeMagic,
-		ProcMask:         core.ProcMaskTriggerInstant,
+		ProcMask:         core.ProcMaskMeleeDamageProc,
 		Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -2685,7 +2685,7 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
 				procSpell.ProcMask = core.ProcMaskEmpty
 			} else {
-				procSpell.ProcMask = core.ProcMaskTriggerInstant
+				procSpell.ProcMask = core.ProcMaskDamageProc // Both spell and melee procs
 			}
 			procSpell.Cast(sim, result.Target)
 		},

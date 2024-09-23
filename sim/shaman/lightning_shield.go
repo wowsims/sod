@@ -36,7 +36,6 @@ func (shaman *Shaman) registerLightningShieldSpell() {
 
 func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 	hasOverchargedRune := shaman.HasRune(proto.ShamanRune_RuneBracersOvercharged)
-	hasRollingThunderRune := shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder)
 	hasStaticShockRune := shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock)
 
 	impLightningShieldBonus := 1 + []float64{0, .05, .10, .15}[shaman.Talents.ImprovedLightningShield]
@@ -50,9 +49,7 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 
 	baseCharges := int32(3)
 	maxCharges := int32(3)
-	if hasRollingThunderRune {
-		maxCharges = 9
-	} else if hasStaticShockRune {
+	if hasStaticShockRune {
 		baseCharges = 9
 		maxCharges = 9
 	}
@@ -84,8 +81,6 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 		Duration: core.Ternary(hasOverchargedRune, time.Second*3, time.Millisecond*3500),
 	}
 
-	manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: procSpellId})
-
 	shaman.LightningShieldAuras[rank] = shaman.RegisterAura(core.Aura{
 		Label:     fmt.Sprintf("Lightning Shield (Rank %d)", rank),
 		ActionID:  core.ActionID{SpellID: spellId},
@@ -107,19 +102,6 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 						spell.CD.Reset()
 					}
 				}
-			}
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			if hasRollingThunderRune && spell.SpellCode == SpellCode_ShamanEarthShock && aura.GetStacks() > 3 {
-				multiplier := float64(aura.GetStacks() - baseCharges)
-				shaman.RollingThunder.DamageMultiplier = multiplier
-				shaman.RollingThunder.Cast(sim, result.Target)
-				shaman.AddMana(sim, .02*multiplier*shaman.MaxMana(), manaMetrics)
-				aura.SetStacks(sim, baseCharges)
 			}
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

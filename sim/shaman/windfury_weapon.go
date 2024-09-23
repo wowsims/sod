@@ -40,7 +40,7 @@ func (shaman *Shaman) newWindfuryImbueSpell(isMH bool) *core.Spell {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    procMask | core.ProcMaskWeaponProc,
+		ProcMask:    procMask,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: damageMultiplier,
@@ -94,7 +94,7 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
+			if !result.Landed() || !spell.ProcMask.Matches(procMask) || spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
 				return
 			}
 

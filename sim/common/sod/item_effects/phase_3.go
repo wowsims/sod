@@ -62,7 +62,7 @@ func init() {
 			ActionID:   core.ActionID{SpellID: 446705},
 			Name:       "Roar of the Dream Trigger",
 			Callback:   core.CallbackOnCastComplete,
-			ProcMask:   core.ProcMaskSpellOrProc,
+			ProcMask:   core.ProcMaskSpellOrSpellProc,
 			ProcChance: 0.05,
 			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 				procAura.Activate(sim)
