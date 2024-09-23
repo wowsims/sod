@@ -795,7 +795,7 @@ message Debuffs {
 	bool mekkatorque_fist_debuff = 29;
 	bool serpents_striker_fist_debuff = 30;
 	bool improved_faerie_fire = 36; // Provided by Tier 1 Feral set bonus
-	bool melee_hunter_bonus = 40; // Provided by Tier 1 Melee Hunter set bonus
+	bool melee_hunter_bonus = 41; // Provided by Tier 1 Melee Hunter set bonus
 
 	TristateEffect curse_of_elements_new = 31 [deprecated=true];
 	TristateEffect curse_of_shadow_new = 32  [deprecated=true];
