@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestShockadin-Phase5-Lvl60-StatWeights-Default"
  value: {
   weights: 0.4241
-  weights: 1.78808
+  weights: 1.80125
   weights: 0
   weights: 0
   weights: 0
@@ -161,13 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 13.00317
-  weights: 13.35753
+  weights: 13.01248
+  weights: 13.36099
   weights: 0
   weights: 0
   weights: 0.17525
-  weights: 16.415
-  weights: 21.2483
+  weights: 16.84955
+  weights: 21.58333
   weights: 0
   weights: 0
   weights: 0
@@ -323,57 +323,57 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1345.50439
-  tps: 1391.17566
+  dps: 1381.89292
+  tps: 1427.5642
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1335.57778
-  tps: 1380.18259
+  dps: 1371.96643
+  tps: 1416.57125
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1367.49421
-  tps: 1412.12664
+  dps: 1403.88895
+  tps: 1448.52138
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-LibramofDraconicDestruction-221457"
  value: {
-  dps: 2762.26407
-  tps: 2841.32855
+  dps: 2799.7017
+  tps: 2878.76618
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2360.32109
-  tps: 2442.5516
+  dps: 2399.61714
+  tps: 2481.84765
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 2991.68571
-  tps: 3075.992
+  dps: 3030.21508
+  tps: 3114.52137
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1226.89818
-  tps: 1261.96927
+  dps: 1263.68978
+  tps: 1298.76087
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 3118.18223
-  tps: 3203.77093
+  dps: 3157.51974
+  tps: 3243.10845
  }
 }
 dps_results: {
@@ -463,7 +463,7 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2939.70538
-  tps: 3023.9946
+  dps: 2973.51829
+  tps: 3057.80751
  }
 }
