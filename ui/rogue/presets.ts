@@ -346,7 +346,6 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	spiritOfZandalar: true,
 	valorOfAzeroth: true,
 	warchiefsBlessing: true,
-	spiritOfZandalar: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
