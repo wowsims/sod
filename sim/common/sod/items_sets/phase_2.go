@@ -137,7 +137,12 @@ var ItemSetElectromanticDevastator = core.NewItemSet(core.ItemSet{
 				},
 				// Modeled after WotLK JoW https://github.com/wowsims/wotlk/blob/master/sim/core/debuffs.go#L202
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.ProcMask.Matches(core.ProcMaskEmpty | core.ProcMaskProc | core.ProcMaskWeaponProc) {
+
+					if spell.ProcMask == core.ProcMaskEmpty {
+						return // Can't use Matches for ProcMaskEmpty
+					}
+
+					if spell.ProcMask.Matches(core.ProcMaskProc|core.ProcMaskSpellDamageProc) && !spell.Flags.Matches(core.SpellFlagNotAProc) {
 						return // Phantom spells don't proc
 					}
 

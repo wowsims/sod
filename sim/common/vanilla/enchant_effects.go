@@ -98,7 +98,7 @@ func init() {
 		procMask := character.GetProcMaskForEnchant(803)
 		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
 
-		procMaskOnAuto := core.ProcMaskSpellDamage | core.ProcMaskTriggerInstant
+		procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee proc combo
 		procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
 
 		procSpell := character.RegisterSpell(core.SpellConfig{

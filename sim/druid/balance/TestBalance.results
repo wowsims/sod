@@ -701,8 +701,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Phase3-Lvl50-AllItems-FeralheartRaiment"
  value: {
-  dps: 517.99813
-  tps: 532.95114
+  dps: 516.29889
+  tps: 530.99873
  }
 }
 dps_results: {

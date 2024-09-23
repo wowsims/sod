@@ -41,7 +41,7 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 			// Can proc itself (Only for CoH proc), can't proc equip effects (in SoD at least - Tested), Weapon Enchants (confirmed - procs fiery), can proc imbues (oils),
 			// WildStrikes/Windfury (Wound/ Phantom Strike can't proc WF/WS in SoD, Tested for both, Appear to behave like equip affects in SoD)
 			sc.ProcMask = core.ProcMaskMeleeSpecial
-			sc.Flags = core.SpellFlagSuppressEquipProcs | core.SpellFlagSupressExtraAttack
+			sc.Flags = core.SpellFlagSuppressEquipProcs
 
 			sc.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				dmg := dmgMin + core.TernaryFloat64(dmgRange > 0, sim.RandomFloat(itemName)*dmgRange, 0)
