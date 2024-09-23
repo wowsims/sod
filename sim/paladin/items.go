@@ -17,6 +17,8 @@ const (
 	LibramDiscardedTenetsOfTheSilverHand = 209574
 	LibramOfBenediction                  = 215435
 	LibramOfDraconicDestruction          = 221457
+	LibramOfTheDevoted                   = 228174
+	LibramOfAvenging                     = 232421
 	Truthbearer2H                        = 229749
 	Truthbearer1H                        = 229806
 	HammerOfTheLightbringer              = 230003
@@ -237,6 +239,23 @@ func init() {
 				}
 			},
 		})
+	})
+
+	core.NewItemEffect(LibramOfTheDevoted, func(agent core.Agent) {
+		paladin := agent.(PaladinAgent).GetPaladin()
+
+		actionID := core.ActionID{SpellID: 461309}
+		devotedMetrics := paladin.NewManaMetrics(actionID)
+
+		core.MakePermanent(paladin.RegisterAura(core.Aura{
+			Label: "Libram of the Devoted Trigger",
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.DidBlock() {
+					amount := paladin.MaxMana() * 0.03
+					paladin.AddMana(sim, amount, devotedMetrics)
+				}
+			},
+		}))
 	})
 }
 
