@@ -339,7 +339,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Maelstrom Weapon Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskMeleeDamageProc) && shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
 				shaman.MaelstromWeaponAura.Activate(sim)
 				shaman.MaelstromWeaponAura.AddStack(sim)
 			}
