@@ -35,15 +35,13 @@ func (warrior *Warrior) applyDeepWounds() {
 			TickLength:    time.Second * 3,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				attackTable := warrior.AttackTables[target.UnitIndex][proto.CastType_CastTypeMainHand]
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).ApplyOrRefresh(sim)
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
 		},
 	})
 

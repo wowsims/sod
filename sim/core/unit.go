@@ -325,6 +325,14 @@ func (unit *Unit) HasTemporaryRangedSwingSpeedIncrease() bool {
 	return unit.RangedSwingSpeed() != unit.initialRangedSwingSpeed
 }
 
+func (unit *Unit) IsCasting(sim *Simulation) bool {
+	return unit.Hardcast.Expires > sim.CurrentTime
+}
+
+func (unit *Unit) IsChanneling(sim *Simulation) bool {
+	return unit.ChanneledDot != nil
+}
+
 func (unit *Unit) InitialCastSpeed() float64 {
 	return unit.initialCastSpeed
 }
@@ -357,7 +365,9 @@ func (unit *Unit) Armor() float64 {
 }
 
 func (unit *Unit) BlockValue() float64 {
-	return unit.PseudoStats.BlockValueMultiplier * unit.stats[stats.BlockValue]
+	// Shield block value gained from strength is offset by 1 and independent of the BlockValueMultiplier.
+	strengthComponent := max(0., (unit.stats[stats.Strength]*unit.PseudoStats.BlockValuePerStrength)-1.)
+	return strengthComponent + unit.PseudoStats.BlockValueMultiplier*unit.stats[stats.BlockValue]
 }
 
 func (unit *Unit) ArmorPenetrationPercentage(armorPenRating float64) float64 {
@@ -411,7 +421,7 @@ func (unit *Unit) initMovement() {
 		MaxStacks: 30,
 
 		OnGain: func(aura *Aura, sim *Simulation) {
-			if unit.ChanneledDot != nil {
+			if unit.IsChanneling(sim) {
 				unit.ChanneledDot.Cancel(sim)
 			}
 			unit.AutoAttacks.CancelAutoSwing(sim)

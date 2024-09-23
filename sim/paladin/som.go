@@ -44,11 +44,19 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			// damages the paladin for 10% of rawDamage, then adds 133% of that for everyone in the raid
-			paladin.AddMana(sim, result.RawDamage()*0.1*1.33, manaMetrics)
+			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt: sim.CurrentTime + core.SpellBatchWindow,
+				OnAction: func(s *core.Simulation) {
+					spell.DealDamage(sim, result)
+
+					// damages the paladin for 10% of rawDamage, then adds 133% of that for everyone in the raid
+					paladin.AddMana(sim, result.RawDamage()*0.1*1.33, manaMetrics)
+				},
+			})
 		},
 	})
 
@@ -62,7 +70,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 				return
 			}
 
-			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit | core.ProcMaskProc) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) || (spell.ProcMask.Matches(core.ProcMaskMeleeProc) && spell.Flags.Matches(core.SpellFlagNotAProc)) {
 				procSpell.Cast(sim, result.Target)
 			}
 		},

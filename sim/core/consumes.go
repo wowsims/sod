@@ -393,7 +393,7 @@ func DragonBreathChiliAura(character *Character) *Aura {
 		ActionID:    ActionID{SpellID: 15851},
 		SpellSchool: SpellSchoolFire,
 		DefenseType: DefenseTypeMagic,
-		ProcMask:    ProcMaskEmpty,
+		ProcMask:    ProcMaskSpellDamageProc | ProcMaskSpellProc,
 		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
@@ -475,7 +475,8 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.AttackPowerBuff {
 		case proto.AttackPowerBuff_JujuMight:
 			character.AddStats(stats.Stats{
-				stats.AttackPower: 40,
+				stats.AttackPower:       40,
+				stats.RangedAttackPower: 40,
 			})
 		case proto.AttackPowerBuff_WinterfallFirewater:
 			character.AddStats(stats.Stats{

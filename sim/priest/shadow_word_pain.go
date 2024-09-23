@@ -42,6 +42,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
 	return core.SpellConfig{
+		SpellCode:   SpellCode_PriestShadowWordPain,
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
@@ -96,7 +97,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
-				results[idx] = spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+				results[idx] = spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 				target = sim.Environment.NextTargetUnit(target)
 			}
 			for _, result := range results {

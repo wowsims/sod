@@ -40,10 +40,8 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerBlunderbussSpell()
 	rogue.registerFanOfKnives()
 	rogue.registerCrimsonTempestSpell()
+	rogue.applySlaughterfromtheShadows()
 }
-
-const SlaughterFromTheShadowsDamageMultiplier = 1.60
-const SlaughterFromTheShadowsCostReduction = 30.0
 
 func (rogue *Rogue) applyCombatPotency() {
 	if !rogue.HasRune(proto.RogueRune_RuneCombatPotency) {
@@ -98,7 +96,7 @@ func (rogue *Rogue) applyFocusedAttacks() {
 				isFoKOH = true
 			}
 
-			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged|core.ProcMaskTriggerInstant) || !result.DidCrit() || isFoKOH {
+			if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged|core.ProcMaskMeleeDamageProc) || !result.DidCrit() || isFoKOH {
 				return
 			}
 			rogue.AddEnergy(sim, 2, energyMetrics)
@@ -349,5 +347,18 @@ func (rogue *Rogue) registerCutthroat() {
 		Label:    "Cutthroat",
 		ActionID: core.ActionID{SpellID: 462707},
 		Duration: time.Second * 10,
+	})
+}
+
+func (rogue *Rogue) applySlaughterfromtheShadows() {
+	if !rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows) {
+		return
+	}
+
+	rogue.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_RogueAmbush || spell.SpellCode == SpellCode_RogueBackstab {
+			spell.DamageMultiplier *= 1.5
+			spell.Cost.FlatModifier -= 30
+		}
 	})
 }

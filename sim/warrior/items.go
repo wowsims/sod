@@ -33,6 +33,10 @@ func init() {
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 6,
 				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: time.Second * 60,
+				},
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

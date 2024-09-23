@@ -67,6 +67,7 @@ func TestElemental(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassShaman,
+			Phase:      4,
 			Level:      60,
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
@@ -75,6 +76,24 @@ func TestElemental(t *testing.T) {
 			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_4"),
 			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_4"),
 			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassShaman,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceOrc},
+
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_5"),
+			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_5"),
+			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 
@@ -97,7 +116,7 @@ var PlayerOptionsAdaptive = &proto.Player_ElementalShaman{
 }
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion: proto.Potions_ManaPotion,
 		FirePowerBuff: proto.FirePowerBuff_ElixirOfFirepower,
@@ -107,7 +126,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_GreaterManaPotion,
 		FirePowerBuff:  proto.FirePowerBuff_ElixirOfFirepower,
@@ -119,7 +138,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase3Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "P3-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_GreaterManaPotion,
 		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
@@ -132,7 +151,7 @@ var Phase3Consumes = core.ConsumesCombo{
 }
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_MajorManaPotion,
 		Flask:          proto.Flask_FlaskOfSupremePower,

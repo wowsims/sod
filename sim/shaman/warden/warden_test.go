@@ -15,6 +15,7 @@ func TestWardenShaman(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class:      proto.Class_ClassShaman,
+			Phase:      4,
 			Level:      60,
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
@@ -42,7 +43,7 @@ var PlayerOptionsBasic = &proto.Player_WardenShaman{
 var Phase4Talents = "05033150003-0505032015003151"
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,

@@ -31,10 +31,10 @@ func (warrior *Warrior) registerHamstringSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   10 - warrior.FocusedRageDiscount,
+			Cost:   10,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

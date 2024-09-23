@@ -96,9 +96,11 @@ func init() {
 		rogue := agent.(RogueAgent).GetRogue()
 
 		cpMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 451439})
-		rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
-			if sim.Proc(0.2*float64(comboPoints), "Dream Eater") {
-				rogue.AddEnergy(sim, 10, cpMetrics)
+		rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {		
+			if spell.SpellCode == SpellCode_RogueBetweentheEyes || spell.SpellCode == SpellCode_RogueCrimsonTempest || spell.SpellCode == SpellCode_RogueEnvenom || spell.SpellCode == SpellCode_RogueEviscerate || spell.SpellCode == SpellCode_RogueRupture {
+				if sim.Proc(0.2*float64(comboPoints), "Dream Eater") {
+					rogue.AddEnergy(sim, 10, cpMetrics)
+				}		
 			}
 		})
 	})

@@ -68,6 +68,7 @@ func TestShadow(t *testing.T) {
 		{
 			Class:      proto.Class_ClassPriest,
 			Level:      60,
+			Phase:      4,
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
 
@@ -75,6 +76,27 @@ func TestShadow(t *testing.T) {
 			GearSet:     core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_4"),
 			Rotation:    core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_4"),
 			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassPriest,
+			Level:      60,
+			Phase:      5,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+
+			Talents: Phase4Talents,
+			GearSet: core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_5_t1"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_5_t2"),
+			},
+			Rotation:    core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_5"),
+			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
 
@@ -91,7 +113,7 @@ var Phase3Talents = "-0055-5022204002501251"
 var Phase4Talents = "0512301302--5002504103501251"
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion: proto.Potions_ManaPotion,
 		Food:          proto.Food_FoodSmokedSagefish,
@@ -100,7 +122,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_GreaterManaPotion,
 		Food:           proto.Food_FoodSagefishDelight,
@@ -110,7 +132,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase3Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "P3-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:   proto.Potions_GreaterManaPotion,
 		Food:            proto.Food_FoodNightfinSoup,
@@ -121,7 +143,7 @@ var Phase3Consumes = core.ConsumesCombo{
 }
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:   proto.Potions_MajorManaPotion,
 		Flask:           proto.Flask_FlaskOfSupremePower,

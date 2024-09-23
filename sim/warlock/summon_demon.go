@@ -6,18 +6,6 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (warlock *Warlock) changeActivePet(sim *core.Simulation, newPet *WarlockPet) {
-	if warlock.ActivePet != nil {
-		warlock.ActivePet.Disable(sim)
-	}
-
-	warlock.ActivePet = newPet
-
-	if newPet != nil {
-		newPet.Enable(sim, newPet)
-	}
-}
-
 func (warlock *Warlock) registerSummonDemon() {
 	// All except for Summon Felguard have a cost of 100% of the Warlock's base mana
 	manaCost := core.ManaCostOptions{
@@ -30,7 +18,7 @@ func (warlock *Warlock) registerSummonDemon() {
 			CastTime: time.Second * 10,
 		},
 		ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-			warlock.changeActivePet(sim, nil)
+			warlock.changeActivePet(sim, nil, false)
 		},
 	}
 
@@ -48,7 +36,7 @@ func (warlock *Warlock) registerSummonDemon() {
 			Cast: cast,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				warlock.changeActivePet(sim, warlock.Felguard)
+				warlock.changeActivePet(sim, warlock.Felguard, false)
 			},
 		}))
 	}
@@ -64,7 +52,7 @@ func (warlock *Warlock) registerSummonDemon() {
 		Cast:     cast,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			warlock.changeActivePet(sim, warlock.Felhunter)
+			warlock.changeActivePet(sim, warlock.Felhunter, false)
 		},
 	}))
 
@@ -79,7 +67,7 @@ func (warlock *Warlock) registerSummonDemon() {
 		Cast:     cast,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			warlock.changeActivePet(sim, warlock.Imp)
+			warlock.changeActivePet(sim, warlock.Imp, false)
 		},
 	}))
 
@@ -94,7 +82,7 @@ func (warlock *Warlock) registerSummonDemon() {
 		Cast:     cast,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			warlock.changeActivePet(sim, warlock.Succubus)
+			warlock.changeActivePet(sim, warlock.Succubus, false)
 		},
 	}))
 
@@ -109,7 +97,7 @@ func (warlock *Warlock) registerSummonDemon() {
 		Cast:     cast,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			warlock.changeActivePet(sim, warlock.Voidwalker)
+			warlock.changeActivePet(sim, warlock.Voidwalker, false)
 		},
 	}))
 }

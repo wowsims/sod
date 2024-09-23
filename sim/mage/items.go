@@ -13,6 +13,7 @@ const (
 	StaffOfOrder                 = 229909
 	StaffOfInferno               = 229971
 	StaffOfRime                  = 229972
+	MindQuickeningGem            = 230243
 	HazzarahsCharmOfChilledMagic = 231282
 	JewelOfKajaro                = 231324
 )
@@ -82,12 +83,12 @@ func init() {
 			Duration: duration,
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				affectedSpells = core.FilterSlice(
-					core.Flatten([][]*core.Spell{
-						mage.Frostbolt,
-						{mage.FrozenOrb},
-					}),
-					func(spell *core.Spell) bool { return spell != nil },
+					core.Flatten([][]*core.Spell{mage.Frostbolt, {mage.SpellfrostBolt}}), func(spell *core.Spell) bool { return spell != nil },
 				)
+
+				if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+					affectedSpells = append(affectedSpells, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Spell { return orb.FrozenOrbTick })...)
+				}
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range affectedSpells {
@@ -145,6 +146,51 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=230243/mind-quickening-gem
+	// Use: Quickens the mind, increasing the Mage's casting speed of non-channeled spells by 33% for 20 sec. (2 Min Cooldown)
+	core.NewItemEffect(MindQuickeningGem, func(agent core.Agent) {
+		mage := agent.(MageAgent).GetMage()
+
+		actionID := core.ActionID{ItemID: MindQuickeningGem}
+		duration := time.Second * 20
+
+		buffAura := mage.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Mind Quickening",
+			Duration: duration,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				mage.MultiplyCastSpeed(1.33)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				mage.MultiplyCastSpeed(1 / 1.33)
+			},
+		})
+
+		spell := mage.RegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    mage.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    mage.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		mage.AddMajorCooldown(core.MajorCooldown{
+			Spell:    spell,
+			Priority: core.CooldownPriorityBloodlust,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=229971/staff-of-inferno
 	// Equip: When Improved Scorch is talented, targets hit by your Blast Wave will also have 5 stacks of Fire Vulnerability applied to them.
 	core.NewItemEffect(StaffOfInferno, func(agent core.Agent) {
@@ -154,7 +200,8 @@ func init() {
 		}
 
 		core.MakePermanent(mage.RegisterAura(core.Aura{
-			Label: "Staff of Inferno",
+			ActionID: core.ActionID{SpellID: 469237},
+			Label:    "Staff of Inferno",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.SpellCode == SpellCode_MageBlastWave && result.Landed() {
 					aura := mage.ImprovedScorchAuras.Get(result.Target)
@@ -187,8 +234,20 @@ func init() {
 			return
 		}
 
+		statsAura := mage.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 469238},
+			Label:    "Staff of Rime",
+			Duration: time.Minute,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				mage.AddStatDynamic(sim, stats.FrostPower, 100)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				mage.AddStatDynamic(sim, stats.FrostPower, -100)
+			},
+		})
+
 		mage.RegisterAura(core.Aura{
-			Label: "Staff of Rime",
+			Label: "Staff of Rime Dummy",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				for _, aura := range mage.IceBarrierAuras {
 					if aura == nil {
@@ -198,13 +257,13 @@ func init() {
 					oldOnGain := aura.OnGain
 					aura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnGain(aura, sim)
-						mage.AddStatDynamic(sim, stats.FrostPower, 80)
+						statsAura.Activate(sim)
 					}
 
 					oldOnExpire := aura.OnExpire
 					aura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnExpire(aura, sim)
-						mage.AddStatDynamic(sim, stats.FrostPower, -80)
+						statsAura.Deactivate(sim)
 					}
 				}
 			},

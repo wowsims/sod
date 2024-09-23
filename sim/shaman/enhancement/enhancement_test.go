@@ -80,29 +80,54 @@ func TestEnhancement(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-		// {
-		// 	Class:      proto.Class_ClassShaman,
-		// 	Level:      60,
-		// 	Race:       proto.Race_RaceTroll,
-		// 	OtherRaces: []proto.Race{proto.Race_RaceOrc},
+		{
+			Class:      proto.Class_ClassShaman,
+			Phase:      4,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
-		// 	Talents:  Phase4Talents,
-		// 	GearSet:  core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_4_dw"),
-		// 	Rotation: core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_4"),
-		// 	Buffs:    core.FullBuffsPhase4,
-		// 	Consumes: Phase4ConsumesWFWF,
-		// 	OtherConsumes: []core.ConsumesCombo{
-		// 		Phase3ConsumesWFFT,
-		// 	},
-		// 	SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},
-		// 	OtherSpecOptions: []core.SpecOptionsCombo{
-		// 		{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
-		// 	},
+			Talents: Phase4Talents,
+			GearSet: core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_4_dw"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_4_2h"),
+			},
+			Rotation:    core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_4"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4ConsumesWFWF,
+			SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},
+			OtherSpecOptions: []core.SpecOptionsCombo{
+				{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
+			},
 
-		// 	ItemFilter:      ItemFilters,
-		// 	EPReferenceStat: proto.Stat_StatAttackPower,
-		// 	StatsToWeigh:    Stats,
-		// },
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassShaman,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceOrc},
+
+			Talents: Phase4Talents,
+			GearSet: core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_5_dw"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_5_2h"),
+			},
+			Rotation:    core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_5"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase4ConsumesWFWF,
+			SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},
+			OtherSpecOptions: []core.SpecOptionsCombo{
+				{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
+			},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -132,7 +157,7 @@ var optionsSyncAuto = &proto.EnhancementShaman_Options{
 }
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
 		DefaultPotion: proto.Potions_ManaPotion,
@@ -144,7 +169,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2ConsumesWFWF = core.ConsumesCombo{
-	Label: "Phase 2 Consumes WF/WF",
+	Label: "P2-Consumes WF/WF",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -159,7 +184,7 @@ var Phase2ConsumesWFWF = core.ConsumesCombo{
 }
 
 var Phase2ConsumesWFFT = core.ConsumesCombo{
-	Label: "Phase 2 Consumes WF/FT",
+	Label: "P2-Consumes WF/FT",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -174,7 +199,7 @@ var Phase2ConsumesWFFT = core.ConsumesCombo{
 }
 
 var Phase3ConsumesWFWF = core.ConsumesCombo{
-	Label: "Phase 3 Consumes WF/WF",
+	Label: "P3-Consumes WF/WF",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -189,7 +214,7 @@ var Phase3ConsumesWFWF = core.ConsumesCombo{
 }
 
 var Phase3ConsumesWFFT = core.ConsumesCombo{
-	Label: "Phase 3 Consumes WF/FT",
+	Label: "P3-Consumes WF/FT",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -204,7 +229,7 @@ var Phase3ConsumesWFFT = core.ConsumesCombo{
 }
 
 var Phase4ConsumesWFWF = core.ConsumesCombo{
-	Label: "Phase 4 Consumes WF/WF",
+	Label: "P4-Consumes WF/WF",
 	Consumes: &proto.Consumes{
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
@@ -221,7 +246,7 @@ var Phase4ConsumesWFWF = core.ConsumesCombo{
 }
 
 var Phase4ConsumesWFFT = core.ConsumesCombo{
-	Label: "Phase 4 Consumes WF/FT",
+	Label: "P4-Consumes WF/FT",
 	Consumes: &proto.Consumes{
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,

@@ -36,10 +36,10 @@ func (warrior *Warrior) registerExecuteSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagPassiveSpell | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - []float64{0, 2, 5}[warrior.Talents.ImprovedExecute] - warrior.FocusedRageDiscount,
+			Cost:   15 - []float64{0, 2, 5}[warrior.Talents.ImprovedExecute],
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

@@ -26,13 +26,14 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		Duration:  time.Second * 10,
 
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			hunter.PseudoStats.DamageDealtMultiplier /= 1 + (0.05 * float64(oldStacks))
-			hunter.PseudoStats.DamageDealtMultiplier *= 1 + (0.05 * float64(newStacks))
+			hunter.PseudoStats.DamageDealtMultiplier /= 1 + (0.08 * float64(oldStacks))
+			hunter.PseudoStats.DamageDealtMultiplier *= 1 + (0.08 * float64(newStacks))
 		},
 	})
 
 	if hunter.pet != nil {
 		hunter.pet.flankingStrike = hunter.pet.GetOrRegisterSpell(core.SpellConfig{
+			SpellCode:   SpellCode_HunterPetFlankingStrike,
 			ActionID:    core.ActionID{SpellID: 415320},
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
@@ -57,7 +58,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			},
 
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial | core.ProcMaskSpellDamage) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial|core.ProcMaskSpellDamage) && spell.SpellCode != SpellCode_HunterPetFlankingStrike {
 					if sim.RandomFloat("Flanking Strike Refresh") < 0.50 {
 						hunter.FlankingStrike.CD.Set(sim.CurrentTime)
 					}

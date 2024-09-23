@@ -15,11 +15,12 @@ func (rogue *Rogue) registerRupture() {
 	}[rogue.Level]
 
 	rogue.Rupture = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_RogueRupture,
 		ActionID:     core.ActionID{SpellID: spellID},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,
 		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        core.SpellFlagPassiveSpell | rogue.finisherFlags(),
+		Flags:        rogue.finisherFlags(),
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
@@ -60,7 +61,7 @@ func (rogue *Rogue) registerRupture() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHitNoHitCounter)
 			if result.Landed() {
 				dot := spell.Dot(target)
 				dot.Spell = spell

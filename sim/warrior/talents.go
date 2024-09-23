@@ -307,12 +307,8 @@ func (warrior *Warrior) applyFlurry() {
 	// 2 => 3
 	warrior.makeFlurryConsumptionTrigger(talentAura)
 
-	warrior.RegisterAura(core.Aura{
-		Label:    "Flurry Proc Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Flurry Proc Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeCrit) {
 				talentAura.Activate(sim)
@@ -322,7 +318,7 @@ func (warrior *Warrior) applyFlurry() {
 				return
 			}
 		},
-	})
+	}))
 }
 
 // These are separated out because of the T1 Shaman Tank 2P that can proc Flurry separately from the talent.

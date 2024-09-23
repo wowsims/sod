@@ -75,13 +75,15 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				if hasInvocationRune && spell.Dot(target).IsActive() {
-					warlock.InvocationRefresh(sim, spell.Dot(target))
+				dot := spell.Dot(target)
+
+				if hasInvocationRune && dot.IsActive() {
+					warlock.InvocationRefresh(sim, dot)
 				}
 
-				spell.Dot(target).Apply(sim)
+				dot.Apply(sim)
 			}
 			spell.DealOutcome(sim, result)
 		},

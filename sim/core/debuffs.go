@@ -244,6 +244,9 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.Waylay {
 		MakePermanent(WaylayAura(target))
 	}
+	if debuffs.Thunderfury {
+		MakePermanent(ThunderfuryASAura(target, level))
+	}
 
 	// Miss
 	if debuffs.InsectSwarm && targetIdx == 0 {
@@ -413,8 +416,10 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32, stackCount int32) *Aura {
 	return aura
 }
 
+var ShadowWeavingSpellIDs = [6]int32{0, 15257, 15331, 15332, 15333, 15334}
+
 func ShadowWeavingAura(unit *Unit, rank int) *Aura {
-	spellId := [6]int32{0, 15257, 15331, 15332, 15333, 15334}[rank]
+	spellId := ShadowWeavingSpellIDs[rank]
 	return unit.GetOrRegisterAura(Aura{
 		Label:     "Shadow Weaving",
 		ActionID:  ActionID{SpellID: spellId},
@@ -467,7 +472,7 @@ func JudgementOfWisdomAura(target *Unit, level int32) *Aura {
 				return
 			}
 
-			if spell.ProcMask.Matches(ProcMaskEmpty | ProcMaskProc | ProcMaskWeaponProc) {
+			if spell.ProcMask.Matches(ProcMaskEmpty|ProcMaskProc|ProcMaskSpellDamageProc) && !spell.Flags.Matches(SpellFlagNotAProc) {
 				return // Phantom spells (Romulo's, Lightning Capacitor, etc.) don't proc JoW.
 			}
 
@@ -552,8 +557,6 @@ func JudgementOfTheCrusaderAura(caster *Unit, target *Unit, level int32, mult fl
 	})
 }
 
-// TODO: We don't know if this is intended to stack with other effects like Warlocks curses or not.
-// For now it IS stacking on PTR so we'll make it stack here.
 func OccultPoisonDebuffAura(target *Unit, playerLevel int32) *Aura {
 	if playerLevel < 54 {
 		panic("Occult Poison requires level 54+")
@@ -565,8 +568,14 @@ func OccultPoisonDebuffAura(target *Unit, playerLevel int32) *Aura {
 		Duration:  time.Second * 12,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 / (1 + 0.03*float64(oldStacks)))
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 + 0.03*float64(newStacks))
+			multiplier := (1 + .04*float64(newStacks)) / (1 + .04*float64(oldStacks))
+
+			// Applies too all except Holy
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= multiplier
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= multiplier
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= multiplier
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= multiplier
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= multiplier
 		},
 	})
 
@@ -618,18 +627,17 @@ func MarkOfChaosDebuffAura(target *Unit) *Aura {
 		Duration: time.Second, // Duration is set by the applying curse
 	})
 
+	// Applies too all except Holy
 	// 0.01 priority as this overwrites the other spells of this category and does not allow them to be recast
 	spellSchoolDamageEffect(aura, stats.SchoolIndexArcane, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFire, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFrost, dmgMod, 0.01, true)
-	spellSchoolDamageEffect(aura, stats.SchoolIndexHoly, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexNature, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexShadow, dmgMod, 0.01, true)
 
 	spellSchoolResistanceEffect(aura, stats.SchoolIndexArcane, resistance, 0.01, true)
 	spellSchoolResistanceEffect(aura, stats.SchoolIndexFire, resistance, 0.01, true)
 	spellSchoolResistanceEffect(aura, stats.SchoolIndexFrost, resistance, 0.01, true)
-	spellSchoolResistanceEffect(aura, stats.SchoolIndexHoly, resistance, 0.01, true)
 	spellSchoolResistanceEffect(aura, stats.SchoolIndexNature, resistance, 0.01, true)
 	spellSchoolResistanceEffect(aura, stats.SchoolIndexShadow, resistance, 0.01, true)
 
@@ -1301,6 +1309,16 @@ func WaylayAura(target *Unit) *Aura {
 		Duration: time.Second * 8,
 	})
 	AtkSpeedReductionEffect(aura, 1.1)
+	return aura
+}
+
+func ThunderfuryASAura(target *Unit, _ int32) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Thunderfury",
+		ActionID: ActionID{SpellID: 21992},
+		Duration: time.Second * 12,
+	})
+	AtkSpeedReductionEffect(aura, 1.2)
 	return aura
 }
 

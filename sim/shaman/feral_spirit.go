@@ -39,7 +39,7 @@ func (shaman *Shaman) registerFeralSpiritCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			shaman.SpiritWolves.EnableWithTimeout(sim)
+			shaman.SpiritWolves.EnableWithTimeout(sim, shaman.SpiritWolves, time.Second*45)
 			shaman.SpiritWolves.CancelGCDTimer(sim)
 
 			// Add a dummy aura to show in metrics

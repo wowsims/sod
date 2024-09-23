@@ -32,6 +32,7 @@ func TestAffliction(t *testing.T) {
 		},
 		{
 			Class: proto.Class_ClassWarlock,
+			Phase: 4,
 			Level: 60,
 			Race:  proto.Race_RaceOrc,
 
@@ -69,6 +70,7 @@ func TestDemonology(t *testing.T) {
 		},
 		{
 			Class: proto.Class_ClassWarlock,
+			Phase: 4,
 			Level: 60,
 			Race:  proto.Race_RaceOrc,
 
@@ -138,6 +140,7 @@ func TestDestruction(t *testing.T) {
 		},
 		{
 			Class: proto.Class_ClassWarlock,
+			Phase: 4,
 			Level: 60,
 			Race:  proto.Race_RaceOrc,
 
@@ -198,7 +201,7 @@ var DefaultDemonologyWarlock = &proto.Player_TankWarlock{
 }
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
 		DefaultPotion: proto.Potions_ManaPotion,
@@ -210,7 +213,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:  proto.Potions_ManaPotion,
 		FirePowerBuff:  proto.FirePowerBuff_ElixirOfFirepower,
@@ -221,7 +224,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase3Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "P3-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:   proto.Potions_SuperiorManaPotion,
 		FirePowerBuff:   proto.FirePowerBuff_ElixirOfFirepower,
@@ -233,7 +236,7 @@ var Phase3Consumes = core.ConsumesCombo{
 }
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:   proto.Potions_MajorManaPotion,
 		Flask:           proto.Flask_FlaskOfSupremePower,

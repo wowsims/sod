@@ -781,9 +781,13 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.DemonicPact > 0 {
-		power := float64(raidBuffs.DemonicPact)
-		dpAura := DemonicPactAura(&character.Unit, power, CharacterBuildPhaseBuffs)
+		power := raidBuffs.DemonicPact
+		dpAura := DemonicPactAura(&character.Unit, float64(power), CharacterBuildPhaseBuffs)
 		dpAura.ExclusiveEffects[0].Priority = float64(power)
+		dpAura.OnReset = func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+			aura.SetStacks(sim, power)
+		}
 		MakePermanent(dpAura)
 	}
 
@@ -885,7 +889,8 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 // Applies buffs to pets.
 func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
 	// Summoned pets, like Mage Water Elemental, aren't around to receive raid buffs.
-	if petAgent.GetPet().IsGuardian() {
+	// Also assume that applicable world buffs are applied to the starting pet only
+	if petAgent.GetPet().IsGuardian() || !petAgent.GetPet().enabledOnStart {
 		return
 	}
 
@@ -897,15 +902,6 @@ func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuf
 	// the owner during combat or don't make sense for a pet.
 	individualBuffs.Innervates = 0
 	individualBuffs.PowerInfusions = 0
-
-	if !petAgent.GetPet().enabledOnStart {
-		raidBuffs.ScrollOfProtection = false
-		raidBuffs.ScrollOfStamina = false
-		raidBuffs.ScrollOfStrength = false
-		raidBuffs.ScrollOfAgility = false
-		raidBuffs.ScrollOfIntellect = false
-		raidBuffs.ScrollOfSpirit = false
-	}
 
 	// Pets only receive Onyxia, Rend, and ZG buffs because they're globally applied in their respective zones
 	// SoD versions were removed from pets though
@@ -1923,6 +1919,7 @@ func DemonicPactAura(unit *Unit, spellpower float64, buildPhase CharacterBuildPh
 		Label:      "Demonic Pact",
 		ActionID:   ActionID{SpellID: 425464},
 		Duration:   time.Second * 45,
+		MaxStacks:  10000,
 		BuildPhase: buildPhase,
 	})
 	spellPowerBonusEffect(aura, spellpower)
@@ -2207,7 +2204,7 @@ func ApplyWildStrikes(character *Character) *Aura {
 	MakePermanent(character.GetOrRegisterAura(Aura{
 		Label: "Wild Strikes",
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSupressExtraAttack) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
 				return
 			}
 
@@ -2282,7 +2279,7 @@ func ApplyWindfury(character *Character) *Aura {
 				windfuryBuffAura.RemoveStack(sim)
 			}
 
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSupressExtraAttack) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
 				return
 			}
 
@@ -2295,7 +2292,8 @@ func ApplyWindfury(character *Character) *Aura {
 				} else {
 					windfuryBuffAura.SetStacks(sim, 2)
 				}
-				aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, ActionID{SpellID: 10610}, spell.ActionID)
+
+				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, ActionID{SpellID: spellId}, spell)
 			}
 		},
 	}))

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -129,60 +130,16 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				stats.SpellCrit: 2 * core.CritRatingPerCritChance,
 			})
 		},
-		// Your Nightfall talent has a 4% increased chance to trigger. Your Immolate periodic damage has a 4% chance to grant Fire Trance, reducing the cast time of your next Incinerate or Immolate by 100%.
+		// Your Nightfall talent has a 4% increased chance to trigger.
+		// Incinerate has a 4% chance to trigger the Warlock’s Decimation.
 		6: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			// Store these so that we can have the default cast time after modifiers
-			immolateCastTime := ImmolateCastTime
-			shadowflameCastTime := ShadowflameCastTime
-			incinerateCastTime := IncinerateCastTime
-			affectedSpellCodes := []int32{SpellCode_WarlockImmolate, SpellCode_WarlockShadowflame, SpellCode_WarlockIncinerate}
-			fireTranceAura := warlock.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 457558},
-				Label:    "Fire Trance",
-				Duration: time.Second * 10,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range warlock.Immolate {
-						spell.DefaultCast.CastTime = 0
-					}
-					if warlock.Shadowflame != nil {
-						warlock.Shadowflame.DefaultCast.CastTime = 0
-					}
-					if warlock.Incinerate != nil {
-						warlock.Incinerate.DefaultCast.CastTime = 0
-					}
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range warlock.Immolate {
-						spell.DefaultCast.CastTime = immolateCastTime
-					}
-					if warlock.Shadowflame != nil {
-						warlock.Shadowflame.DefaultCast.CastTime = shadowflameCastTime
-					}
-					if warlock.Incinerate != nil {
-						warlock.Incinerate.DefaultCast.CastTime = incinerateCastTime
-					}
-				},
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if slices.Contains(affectedSpellCodes, spell.SpellCode) && spell.CurCast.CastTime == 0 {
-						aura.Deactivate(sim)
-					}
-				},
-			})
-
-			warlock.RegisterAura(core.Aura{
+			warlock6pt1Aura := warlock.RegisterAura(core.Aura{
 				Label:    "S03 - Item - T1 - Warlock - Damage 6P Bonus",
 				Duration: core.NeverExpires,
 				OnReset: func(aura *core.Aura, sim *core.Simulation) {
 					aura.Activate(sim)
-					immolateCastTime = warlock.Immolate[0].DefaultCast.CastTime
-					if warlock.Shadowflame != nil {
-						shadowflameCastTime = warlock.Shadowflame.DefaultCast.CastTime
-					}
-					if warlock.Incinerate != nil {
-						incinerateCastTime = warlock.Incinerate.DefaultCast.CastTime
-					}
 				},
 				OnGain: func(_ *core.Aura, _ *core.Simulation) {
 					warlock.nightfallProcChance += 0.04
@@ -190,12 +147,17 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				OnExpire: func(_ *core.Aura, _ *core.Simulation) {
 					warlock.nightfallProcChance -= 0.04
 				},
-				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if (spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame) && sim.Proc(.04, "Fire Trance") {
-						fireTranceAura.Activate(sim)
-					}
-				},
 			})
+
+			if !warlock.HasRune(proto.WarlockRune_RuneBracerIncinerate) || !warlock.HasRune(proto.WarlockRune_RuneBootsDecimation) {
+				return
+			}
+
+			warlock6pt1Aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.SpellCode == SpellCode_WarlockIncinerate && result.Landed() && sim.Proc(.04, "T1 6P Incinerate Proc") {
+					warlock.DecimationAura.Activate(sim)
+				}
+			}
 		},
 	},
 })
@@ -281,6 +243,108 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 					}
 				},
 			})
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 5 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetCorruptedNemesis = core.NewItemSet(core.ItemSet{
+	Name: "Corrupted Nemesis",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases the damage of your periodic spells and Felguard pet by 10%
+		2: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			warlock.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Warlock - Damage 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range warlock.Spellbook {
+						if spell.Flags.Matches(SpellFlagWarlock) && len(spell.Dots()) > 0 {
+							spell.DamageMultiplier *= 1.10
+						}
+					}
+
+					if warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
+						warlock.Felguard.PseudoStats.DamageDealtMultiplier *= 1.10
+					}
+				},
+			})
+		},
+		// Periodic damage from your Shadowflame, Unstable Affliction, and Curse of Agony spells and damage done by your Felguard have a 4% chance to grant the Shadow Trance effect.
+		4: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			procChance := 0.04
+
+			affectedSpellCodes := []int32{SpellCode_WarlockCurseOfAgony, SpellCode_WarlockShadowflame, SpellCode_WarlockUnstableAffliction}
+			core.MakePermanent(warlock.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Warlock - Damage 4P Bonus",
+				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if slices.Contains(affectedSpellCodes, spell.SpellCode) && sim.Proc(procChance, "Proc Shadow Trance") {
+						warlock.ShadowTranceAura.Activate(sim)
+					}
+				},
+			}))
+
+			if !warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
+				return
+			}
+
+			core.MakePermanent(warlock.Felguard.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Warlock - Damage 4P Bonus - Felguard Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && sim.Proc(procChance, "Proc Shadow Trance") {
+						warlock.ShadowTranceAura.Activate(sim)
+					}
+				},
+			}))
+		},
+		// Shadowbolt deals 10% increased damage for each of your effects afflicting the target, up to a maximum of 30%.
+		6: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			warlock.shadowBoltActiveEffectMultiplierPer = .10
+			warlock.shadowBoltActiveEffectMultiplierMax = 1.30
+		},
+	},
+})
+
+var ItemSetDemoniacsThreads = core.NewItemSet(core.ItemSet{
+	Name: "Demoniac's Threads",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases damage and healing done by magical spells and effects by up to 12.
+		2: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.AddStat(stats.SpellPower, 12)
+		},
+		// Increases the Attack Power and Spell Damage your Demon pet gains from your attributes by 20%.
+		3: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			core.MakePermanent(warlock.RegisterAura(core.Aura{
+				Label: "S03 - Item - ZG - Warlock - Demonology 3P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, pet := range warlock.BasePets {
+						oldStatInheritance := pet.GetStatInheritance()
+						pet.UpdateStatInheritance(
+							func(ownerStats stats.Stats) stats.Stats {
+								s := oldStatInheritance(ownerStats)
+								s[stats.AttackPower] *= 1.20
+								s[stats.SpellPower] *= 1.20
+								return s
+							},
+						)
+					}
+				},
+			}))
+		},
+		// Increases the benefits of your Master Demonologist talent by 50%.
+		5: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.masterDemonologistBonus += .50
 		},
 	},
 })

@@ -216,11 +216,8 @@ func (pet *Pet) Disable(sim *Simulation) {
 		return
 	}
 
-	// Remove inherited stats on dismiss if not permanent
-	if pet.isGuardian || pet.timeoutAction != nil {
-		pet.AddStatsDynamic(sim, pet.inheritedStats.Invert())
-		pet.inheritedStats = stats.Stats{}
-	}
+	pet.AddStatsDynamic(sim, pet.inheritedStats.Invert())
+	pet.inheritedStats = stats.Stats{}
 
 	if pet.dynamicStatInheritance != nil {
 		if idx := slices.Index(pet.Owner.DynamicStatsPets, pet); idx != -1 {
@@ -237,8 +234,8 @@ func (pet *Pet) Disable(sim *Simulation) {
 	}
 
 	pet.CancelGCDTimer(sim)
-	pet.focusBar.disable(sim)
 	pet.AutoAttacks.CancelAutoSwing(sim)
+	pet.focusBar.disable(sim)
 	pet.enabled = false
 
 	// If a pet is immediately re-summoned it might try to use GCD, so we need to clear it.

@@ -39,10 +39,18 @@ const (
 	// Stings
 
 	// Traps
+	SpellCode_HunterExplosiveTrap
+	SpellCode_HunterFreezingTrap
+	SpellCode_HunterImmolationTrap
 
 	// Other
+	SpellCode_HunterCarve
+	SpellCode_HunterCarveHit
 	SpellCode_HunterMongooseBite
+	SpellCode_HunterWingClip
 	SpellCode_HunterVolley
+
+	SpellCode_HunterPetFlankingStrike
 )
 
 func RegisterHunter() {
@@ -136,8 +144,8 @@ func (hunter *Hunter) GetHunter() *Hunter {
 }
 
 func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	if hunter.Talents.TrueshotAura {
-		raidBuffs.TrueshotAura = true
+	if raidBuffs.TrueshotAura && hunter.Talents.TrueshotAura {
+		hunter.AddStat(stats.RangedAttackPower, 100)
 	}
 
 	raidBuffs.AspectOfTheLion = true
@@ -304,12 +312,12 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 		},
 	}
 	hunter.AutoAttacks.RangedConfig().ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-		return hunter.Hardcast.Expires < sim.CurrentTime
+		return !hunter.IsCasting(sim)
 	}
 	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
 	hunter.AutoAttacks.RangedConfig().BonusCoefficient = 1
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target)) +
+		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +
 			hunter.AmmoDamageBonus
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 

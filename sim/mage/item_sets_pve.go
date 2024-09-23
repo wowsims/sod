@@ -220,12 +220,13 @@ var ItemSetNetherwindInsight = core.NewItemSet(core.ItemSet{
 		// Your Fireball's periodic effect gains increased damage over its duration equal to 20% of its impact damage.
 		6: func(agent core.Agent) {
 			mage := agent.(MageAgent).GetMage()
+			mage.MaintainFireballDoT = true
 			core.MakePermanent(mage.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Mage - Damage 6P Bonus",
+				ActionID: core.ActionID{SpellID: 467399},
+				Label:    "S03 - Item - T2 - Mage - Damage 6P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell.SpellCode == SpellCode_MageFireball && result.Landed() {
-						dot := spell.Dot(result.Target)
-						mage.BonusFireballDoTAmount += result.Damage * 0.40 / float64(dot.NumberOfTicks)
+						mage.BonusFireballDoTAmount += result.Damage * 1.00 / float64(spell.Dot(result.Target).NumberOfTicks)
 					}
 				},
 			}))
@@ -284,7 +285,7 @@ var ItemSetIllusionistsAttire = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		// Increases damage done by your Frostbolt spell by 75%.
+		// Increases damage done by your Frostbolt spell by 65%.
 		5: func(agent core.Agent) {
 			mage := agent.(MageAgent).GetMage()
 			mage.RegisterAura(core.Aura{
@@ -292,8 +293,12 @@ var ItemSetIllusionistsAttire = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range mage.Frostbolt {
 						if spell != nil {
-							spell.DamageMultiplier *= 1.75
+							spell.DamageMultiplier *= 1.65
 						}
+					}
+
+					if mage.SpellfrostBolt != nil {
+						mage.SpellfrostBolt.DamageMultiplier *= 1.65
 					}
 				},
 			})
