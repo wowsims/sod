@@ -14,6 +14,7 @@ const (
 	DrakeTalonCleaver          = 230271 // 19353
 	ClawOfChromaggus           = 230794
 	JekliksCrusher             = 230911
+	ZulianSlicer               = 230930
 	WillOfArlokk               = 230939
 	HaldberdOfSmiting          = 230991
 	TigulesHarpoon             = 231272
@@ -31,6 +32,7 @@ const (
 	JekliksCrusherBloodied     = 231861
 	PitchforkOfMadnessBloodied = 231864
 	HaldberdOfSmitingBloodied  = 231870
+	ZulianSlicerBloodied       = 231876
 )
 
 func init() {
@@ -235,6 +237,11 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=230930/zulian-slicer
+	// Chance on hit: Slices the enemy for 72 to 96 Nature damage.
+	itemhelpers.CreateWeaponCoHProcDamage(ZulianSlicer, "Zulian Slicer", 1.2, 467738, core.SpellSchoolNature, 72, 24, 0.35, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(ZulianSlicerBloodied, "Zulian Slicer", 1.2, 467738, core.SpellSchoolNature, 72, 24, 0.35, core.DefenseTypeMelee)
+
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
@@ -278,7 +285,7 @@ func init() {
 			Name:     "Lightning's Cell Trigger",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeCrit,
-			ProcMask: core.ProcMaskSpellDamage,
+			ProcMask: core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc, // Procs on procs
 			ICD:      time.Millisecond * 2000,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				chargeAura.Activate(sim)

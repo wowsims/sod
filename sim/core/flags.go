@@ -48,12 +48,11 @@ const (
 	ProcMaskRangedSpecial
 	ProcMaskSpellDamage
 	ProcMaskSpellHealing
-	// Special mask for procs that can trigger things
-	ProcMaskProc
-	// Mask for FT weapon and rogue poisons, seems to be spell procs from a weapon imbue
-	ProcMaskWeaponProc
-	// Mask for Fiery Weapon and Blazefury Medalion that trigger melee procs like Art of War Rune or Vengeance Talent
-	ProcMaskTriggerInstant
+	ProcMaskSpellProc       // Special mask for Spell procs that can trigger things (Can be used together with damage proc mask or alone)
+	ProcMaskMeleeProc       // Special mask for Melee procs that can trigger things (Can be used together with damage proc mask or alone)
+	ProcMaskSpellDamageProc // Mask for procs triggering from spell damage procs like FT weapon and rogue poisons
+	ProcMaskMeleeDamageProc // Mask for procs (e.g.  War Rune / Focuessed Attacks) triggering from melee damage procs
+
 )
 
 const (
@@ -78,8 +77,11 @@ const (
 
 	ProcMaskSpecial = ProcMaskMeleeOrRangedSpecial | ProcMaskSpellDamage
 
-	ProcMaskMeleeOrProc = ProcMaskMelee | ProcMaskProc
-	ProcMaskSpellOrProc = ProcMaskSpellDamage | ProcMaskProc
+	ProcMaskMeleeOrMeleeProc = ProcMaskMelee | ProcMaskMeleeProc
+	ProcMaskSpellOrSpellProc = ProcMaskSpellDamage | ProcMaskSpellProc
+
+	ProcMaskProc       = ProcMaskSpellProc | ProcMaskMeleeProc
+	ProcMaskDamageProc = ProcMaskSpellDamageProc | ProcMaskMeleeDamageProc // Mask for Fiery Weapon and Blazefury Medalion that trigger melee and spell procs
 )
 
 // Possible outcomes of any hit/damage roll.
@@ -187,10 +189,10 @@ const (
 	SpellFlagCastWhileCasting                              // Indicates this spell can be cast while another spell is being cast (e.g. mage's Fire Blast with Overheat rune)
 	SpellFlagPureDot                                       // Indicates this spell is a dot with no initial damage component
 	SpellFlagPassiveSpell                                  // Indicates this spell is applied/cast as a result of another spell
-	SpellFlagSupressExtraAttack                            // Mask for Seal of Righteousness, it does not proc Wild Strikes
 	SpellFlagSuppressWeaponProcs                           // Indicates this spell cannot proc weapon chance on hits or enchants
 	SpellFlagSuppressEquipProcs                            // Indicates this spell cannot proc Equip procs
 	SpellFlagBatchStopAttackMacro                          // Indicates this spell is being cast in a Macro with a stopattack following it
+	SpellFlagNotAProc                                      // Indicates the proc is not treated as a proc (Seal of Command)
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1
