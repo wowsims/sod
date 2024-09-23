@@ -45,7 +45,7 @@ func init() {
 	core.NewItemEffect(ClawOfChromaggus, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		var arcaneChance, fireChance, frostChance, natureChance, shadowChance float64
+		arcaneChance, fireChance, frostChance, natureChance, shadowChance := 0.20, 0.20, 0.20, 0.20, 0.20
 
 		switch character.Class {
 		case proto.Class_ClassDruid:
