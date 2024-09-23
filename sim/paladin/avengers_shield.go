@@ -11,8 +11,10 @@ func (paladin *Paladin) registerAvengersShield() {
 		return
 	}
 
+	hasLibramOfAvenging := paladin.Ranged().ID == LibramOfAvenging
+
 	// Avenger's Shield hits up to 3 targets. It cannot miss or be resisted.
-	numTargets := min(3, paladin.Env.GetNumTargets())
+	numTargets := min(3, int(paladin.Env.GetNumTargets()))
 
 	lowDamage := 366 * paladin.baseRuneAbilityDamage() / 100
 	highDamage := 448 * paladin.baseRuneAbilityDamage() / 100
@@ -48,30 +50,47 @@ func (paladin *Paladin) registerAvengersShield() {
 			apBonus := 0.091 * spell.MeleeAttackPower()
 			baseTravelTime := spell.TravelTime()
 
-			interTargetTravelTime := int(float64(time.Second) * 3.0 / spell.MissileSpeed)
+			if hasLibramOfAvenging {
+				// Libram of Avenging causes Avenger's Shield to be single target, but it
+				// hits the target twice. The second projectile fires after a fixed 1.5s delay.
+				firstHit := spell.CalcDamage(sim, target, sim.Roll(lowDamage, highDamage)+apBonus, spell.OutcomeMagicCrit)
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.DealDamage(sim, firstHit)
+				})
 
-			for i := 0; i < int(numTargets); i++ {
-
-				// Avenger's Shield bounces from target 1 > target 2 > target 3 at MissileSpeed.
-				// We approximate it by assuming targets are standing ~3 yds apart from each other.
-				// The damage for each target is therefore scheduled to arrive at:
-				// T1 = (TravelTime from player; by default 5 yard max melee range)
-				// T2 = T1 + (3 yd TravelTime)
-				// T3 = T2 + (3 yd TravelTime)
-				baseDamage := sim.Roll(lowDamage, highDamage) + apBonus
-				delay := time.Duration(interTargetTravelTime * i)
-				nextTarget := target // make new ref for delayed action evaluation
-				result := spell.CalcDamage(sim, nextTarget, baseDamage, spell.OutcomeMagicCrit)
-
+				secondHit := spell.CalcDamage(sim, target, sim.Roll(lowDamage, highDamage)+apBonus, spell.OutcomeMagicCrit)
+				timeToSecondHit := baseTravelTime + time.Millisecond*1500
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + baseTravelTime + delay,
+					DoAt: sim.CurrentTime + timeToSecondHit,
 					OnAction: func(s *core.Simulation) {
-						// Avenger's Shield cannot miss and uses magic critical _chance_.
-						spell.DealDamage(sim, result)
-
+						spell.DealDamage(sim, secondHit)
 					},
 				})
-				target = sim.NextTargetUnit(target)
+
+			} else {
+				interTargetTravelTime := int(float64(time.Second) * 3.0 / spell.MissileSpeed)
+				for i := 0; i < numTargets; i++ {
+					// Avenger's Shield bounces from target 1 > target 2 > target 3 at MissileSpeed.
+					// We approximate it by assuming targets are standing ~3 yds apart from each other.
+					// The damage for each target is therefore scheduled to arrive at:
+					// T1 = (TravelTime from player; by default 5 yard max melee range)
+					// T2 = T1 + (3 yd TravelTime)
+					// T3 = T2 + (3 yd TravelTime)
+					baseDamage := sim.Roll(lowDamage, highDamage) + apBonus
+					delay := time.Duration(interTargetTravelTime * i)
+					nextTarget := target // create new ref for delayed action evaluation
+					result := spell.CalcDamage(sim, nextTarget, baseDamage, spell.OutcomeMagicCrit)
+
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt: sim.CurrentTime + baseTravelTime + delay,
+						OnAction: func(s *core.Simulation) {
+							// Avenger's Shield cannot miss and uses magic critical _chance_.
+							spell.DealDamage(sim, result)
+
+						},
+					})
+					target = sim.NextTargetUnit(target)
+				}
 			}
 		},
 	})
