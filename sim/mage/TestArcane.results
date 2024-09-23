@@ -778,8 +778,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Phase5-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 921.75031
-  tps: 802.09295
+  dps: 927.13868
+  tps: 807.48132
  }
 }
 dps_results: {
@@ -806,8 +806,8 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Phase5-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 959.81777
-  tps: 836.30861
+  dps: 965.48214
+  tps: 841.97298
  }
 }
 dps_results: {
