@@ -53,10 +53,7 @@ func (warrior *Warrior) applyAngerManagement() {
 }
 
 func (warrior *Warrior) applyTwoHandedWeaponSpecialization() {
-	if warrior.Talents.TwoHandedWeaponSpecialization == 0 {
-		return
-	}
-	if warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
+	if warrior.Talents.TwoHandedWeaponSpecialization == 0 || warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
 		return
 	}
 
@@ -64,10 +61,7 @@ func (warrior *Warrior) applyTwoHandedWeaponSpecialization() {
 }
 
 func (warrior *Warrior) applyOneHandedWeaponSpecialization() {
-	if warrior.Talents.OneHandedWeaponSpecialization == 0 {
-		return
-	}
-	if warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+	if warrior.Talents.OneHandedWeaponSpecialization == 0 || warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
 		return
 	}
 
