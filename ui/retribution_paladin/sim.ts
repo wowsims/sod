@@ -119,7 +119,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget, RetributionPaladinInputs.CrusaderStrikeStopAttack, RetributionPaladinInputs.JudgementStopAttack, RetributionPaladinInputs.DivineStormStopAttack],
+		inputs: [OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget], //, RetributionPaladinInputs.CrusaderStrikeStopAttack, RetributionPaladinInputs.JudgementStopAttack, RetributionPaladinInputs.DivineStormStopAttack],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
