@@ -478,7 +478,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Name:    "Wolf",
 		MobType: proto.MobType_MobTypeBeast,
 
-		SpecialAbility: FuriousHowl,
+		// SpecialAbility: FuriousHowl,
 		FocusDump:      Bite,
 
 		Health: 1.00,
