@@ -148,8 +148,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.93492
-  weights: 1.01251
+  weights: 0.93321
+  weights: 1.01504
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.58205
-  weights: 7.14439
-  weights: 8.49235
+  weights: 0.58276
+  weights: 7.15458
+  weights: 8.49753
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.08592
-  weights: 1.08039
+  weights: 2.08587
+  weights: 1.08012
   weights: 0
   weights: 0
   weights: 0
@@ -214,9 +214,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.8844
-  weights: 2.66556
-  weights: 24.4012
+  weights: 0.88457
+  weights: 2.66701
+  weights: 24.41142
   weights: 0
   weights: 0
   weights: 0
@@ -246,8 +246,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.69152
-  weights: 1.00369
+  weights: 1.69161
+  weights: 1.00464
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.32294
-  weights: 35.84911
-  weights: 24.7809
+  weights: 0.32298
+  weights: 35.85842
+  weights: 24.79024
   weights: 0
   weights: 0
   weights: 0
@@ -302,106 +302,106 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 603.156
-  tps: 532.61005
+  dps: 603.95554
+  tps: 533.24968
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 50.59861
-  tps: 84.58958
+  dps: 50.69666
+  tps: 84.66802
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 11.94685
-  tps: 12.42963
+  dps: 12.08641
+  tps: 12.54128
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 23.71149
-  tps: 22.76436
+  dps: 23.94558
+  tps: 22.95162
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 26.71983
-  tps: 62.26731
+  dps: 26.76168
+  tps: 62.30079
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 6.11595
-  tps: 7.60684
+  dps: 6.17213
+  tps: 7.65178
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 10.9032
-  tps: 12.36258
+  dps: 10.99425
+  tps: 12.43542
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 54.8768
-  tps: 88.77325
+  dps: 54.97573
+  tps: 88.8524
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 12.71598
-  tps: 13.25072
+  dps: 12.83434
+  tps: 13.34541
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 29.13663
-  tps: 28.54919
+  dps: 29.27797
+  tps: 28.66226
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 29.25451
-  tps: 64.74669
+  dps: 29.29674
+  tps: 64.78048
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 6.39362
-  tps: 7.84301
+  dps: 6.44205
+  tps: 7.88175
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 13.61211
-  tps: 14.96809
+  dps: 13.67022
+  tps: 15.01458
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 565.14412
-  tps: 499.80749
+  dps: 565.86315
+  tps: 500.38272
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 2623.83024
-  tps: 2271.47611
+  dps: 2625.00331
+  tps: 2272.41456
  }
 }
 dps_results: {
@@ -414,57 +414,57 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 2367.89003
-  tps: 2048.0325
+  dps: 2368.94303
+  tps: 2048.8749
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 2321.23836
-  tps: 2010.10728
+  dps: 2322.26383
+  tps: 2010.92765
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 2367.89003
-  tps: 2048.0325
+  dps: 2368.94303
+  tps: 2048.8749
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 2781.45683
-  tps: 2397.46073
+  dps: 2782.67503
+  tps: 2398.43529
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3599.87104
-  tps: 2824.70675
+  dps: 3601.41883
+  tps: 2825.86038
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1507.55831
-  tps: 1448.37177
+  dps: 1507.66644
+  tps: 1448.45337
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 521.168
-  tps: 472.17319
+  dps: 521.2866
+  tps: 472.26344
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 711.22066
-  tps: 620.93927
+  dps: 711.44999
+  tps: 621.10417
  }
 }
 dps_results: {
@@ -491,22 +491,22 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1611.27961
-  tps: 1569.17688
+  dps: 1611.37594
+  tps: 1569.24943
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 539.74166
-  tps: 486.49891
+  dps: 539.85239
+  tps: 486.58136
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 743.80909
-  tps: 644.89059
+  dps: 744.04975
+  tps: 645.06435
  }
 }
 dps_results: {
@@ -533,15 +533,15 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2825.15923
-  tps: 2224.09231
+  dps: 2826.2829
+  tps: 2224.9265
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 2961.01463
-  tps: 2543.09001
+  dps: 2962.1371
+  tps: 2543.98799
  }
 }
 dps_results: {
@@ -554,57 +554,57 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 2503.11117
-  tps: 2153.18178
+  dps: 2504.08597
+  tps: 2153.96162
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 2469.6636
-  tps: 2125.76483
+  dps: 2470.62974
+  tps: 2126.53773
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 2503.11117
-  tps: 2153.18178
+  dps: 2504.08597
+  tps: 2153.96162
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 3174.52552
-  tps: 2721.0397
+  dps: 3175.67165
+  tps: 2721.9566
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4188.19619
-  tps: 3256.29465
+  dps: 4189.56345
+  tps: 3257.31282
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1799.17868
-  tps: 1660.04096
+  dps: 1799.35361
+  tps: 1660.17192
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 522.74043
-  tps: 450.86791
+  dps: 522.92223
+  tps: 451.00326
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 728.51592
-  tps: 604.5705
+  dps: 728.78625
+  tps: 604.76516
  }
 }
 dps_results: {
@@ -631,22 +631,22 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1372.46559
-  tps: 1332.40601
+  dps: 1372.62145
+  tps: 1332.52345
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 420.59459
-  tps: 372.33912
+  dps: 420.75512
+  tps: 372.46025
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 543.73864
-  tps: 475.43709
+  dps: 543.96797
+  tps: 475.60639
  }
 }
 dps_results: {
@@ -673,22 +673,22 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1881.0041
-  tps: 1738.78487
+  dps: 1881.17043
+  tps: 1738.90871
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 528.84777
-  tps: 454.98837
+  dps: 529.02617
+  tps: 455.12088
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 772.20734
-  tps: 630.02453
+  dps: 772.46901
+  tps: 630.21863
  }
 }
 dps_results: {
@@ -715,22 +715,22 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1181.27781
-  tps: 1158.25768
+  dps: 1181.44407
+  tps: 1158.3829
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 423.62264
-  tps: 370.39549
+  dps: 423.78731
+  tps: 370.51925
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 569.22514
-  tps: 462.2385
+  dps: 569.47681
+  tps: 462.42157
  }
 }
 dps_results: {
@@ -757,7 +757,7 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3327.52256
-  tps: 2579.84709
+  dps: 3328.60496
+  tps: 2580.65
  }
 }
