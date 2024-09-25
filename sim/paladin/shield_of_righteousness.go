@@ -1,9 +1,10 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"time"
 )
 
 func (paladin *Paladin) registerShieldOfRighteousness() {
@@ -40,7 +41,7 @@ func (paladin *Paladin) registerShieldOfRighteousness() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := damage + paladin.BlockValue()
+			baseDamage := damage + paladin.BlockValue()*2.2
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
