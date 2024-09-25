@@ -137,6 +137,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl,
 	}
 
+	hp.Pet.MobType = petConfig.MobType
+
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin: baseMinDamage,
