@@ -396,18 +396,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.55614
+  weights: 3.40147
   weights: 0
-  weights: 2.06133
+  weights: 1.98432
   weights: 0
-  weights: 2.06133
-  weights: 0
-  weights: 0
+  weights: 1.98432
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 28.37501
+  weights: 0
+  weights: 0
+  weights: 21.26948
   weights: 0
   weights: 0
   weights: 0
@@ -445,18 +445,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.3624
+  weights: 0.64024
   weights: 0
-  weights: 2.41782
+  weights: 2.39253
   weights: 0
-  weights: 2.41782
-  weights: 0
-  weights: 0
+  weights: 2.39253
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 31.43369
+  weights: 0
+  weights: 0
+  weights: 33.06184
   weights: 0
   weights: 0
   weights: 0
@@ -785,29 +785,29 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 2052.8836
-  tps: 1343.87287
+  dps: 1978.13588
+  tps: 1295.26232
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 1865.47138
-  tps: 1226.73077
+  dps: 1840.53503
+  tps: 1209.90291
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 2027.04391
-  tps: 1327.91674
+  dps: 1930.02845
+  tps: 1266.50107
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 1854.99813
-  tps: 1215.65549
+  dps: 1768.03779
+  tps: 1158.05177
  }
 }
 dps_results: {
@@ -820,22 +820,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 2052.8836
-  tps: 1343.87287
+  dps: 1978.13588
+  tps: 1295.26232
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 1865.47138
-  tps: 1226.73077
+  dps: 1840.53503
+  tps: 1209.90291
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 2214.79775
-  tps: 1453.99198
+  dps: 2170.06198
+  tps: 1425.62099
  }
 }
 dps_results: {
@@ -848,22 +848,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3102.63722
-  tps: 2039.63008
+  dps: 3001.35682
+  tps: 1972.31589
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 3171.08389
-  tps: 2643.77325
+  dps: 3047.60889
+  tps: 2549.63272
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3171.08389
-  tps: 2080.47927
+  dps: 3047.60889
+  tps: 1998.57808
  }
 }
 dps_results: {
@@ -876,15 +876,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 877.65663
-  tps: 919.30497
+  dps: 834.74694
+  tps: 884.25808
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 877.65663
-  tps: 573.87449
+  dps: 834.74694
+  tps: 543.80302
  }
 }
 dps_results: {
@@ -897,15 +897,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 3145.66314
-  tps: 2627.24677
+  dps: 3011.23011
+  tps: 2525.06781
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3145.66314
-  tps: 2068.73883
+  dps: 3011.23011
+  tps: 1980.07046
  }
 }
 dps_results: {
@@ -918,15 +918,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 822.94629
-  tps: 876.09527
+  dps: 763.26259
+  tps: 830.3161
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 822.94629
-  tps: 536.43548
+  dps: 763.26259
+  tps: 495.25131
  }
 }
 dps_results: {
@@ -939,36 +939,36 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3158.31838
-  tps: 2077.66059
+  dps: 3022.39287
+  tps: 1987.29295
  }
 }
 dps_results: {
  key: "TestFire-Phase5-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 2318.19604
-  tps: 1525.05723
+  dps: 2295.68875
+  tps: 1509.21895
  }
 }
 dps_results: {
  key: "TestFire-Phase5-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 2085.66316
-  tps: 1373.02513
+  dps: 2085.42728
+  tps: 1372.47773
  }
 }
 dps_results: {
  key: "TestFire-Phase5-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 2294.67861
-  tps: 1510.41697
+  dps: 2264.64873
+  tps: 1489.62535
  }
 }
 dps_results: {
  key: "TestFire-Phase5-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 2082.00722
-  tps: 1369.81781
+  dps: 2060.57681
+  tps: 1354.97988
  }
 }
 dps_results: {
@@ -981,15 +981,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase5-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 2318.19604
-  tps: 1525.05723
+  dps: 2295.68875
+  tps: 1509.21895
  }
 }
 dps_results: {
  key: "TestFire-Phase5-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 2085.66316
-  tps: 1373.02513
+  dps: 2085.42728
+  tps: 1372.47773
  }
 }
 dps_results: {
@@ -1009,22 +1009,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 3745.69287
-  tps: 2159.18464
+  dps: 3703.34736
+  tps: 2134.47055
  }
 }
 dps_results: {
  key: "TestFire-Phase5-Lvl60-Settings-Gnome-p5_fire-Fire-p5_fire-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 16442.20747
-  tps: 9734.60024
+  dps: 16389.24084
+  tps: 9703.17079
  }
 }
 dps_results: {
  key: "TestFire-Phase5-Lvl60-Settings-Gnome-p5_fire-Fire-p5_fire-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 3717.28333
-  tps: 2146.68227
+  dps: 3702.12666
+  tps: 2138.63682
  }
 }
 dps_results: {
@@ -1037,15 +1037,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase5-Lvl60-Settings-Gnome-p5_fire-Fire-p5_fire-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 5170.85241
-  tps: 3170.44887
+  dps: 5163.17202
+  tps: 3165.74673
  }
 }
 dps_results: {
  key: "TestFire-Phase5-Lvl60-Settings-Gnome-p5_fire-Fire-p5_fire-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1044.54842
-  tps: 616.99944
+  dps: 1012.24735
+  tps: 597.54798
  }
 }
 dps_results: {
@@ -1058,15 +1058,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase5-Lvl60-Settings-Troll-p5_fire-Fire-p5_fire-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 15846.03607
-  tps: 9385.2093
+  dps: 15853.19775
+  tps: 9391.6087
  }
 }
 dps_results: {
  key: "TestFire-Phase5-Lvl60-Settings-Troll-p5_fire-Fire-p5_fire-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 3689.08823
-  tps: 2133.40899
+  dps: 3672.47039
+  tps: 2122.22097
  }
 }
 dps_results: {
@@ -1079,15 +1079,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase5-Lvl60-Settings-Troll-p5_fire-Fire-p5_fire-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 5239.54571
-  tps: 3200.12025
+  dps: 5220.12261
+  tps: 3188.56792
  }
 }
 dps_results: {
  key: "TestFire-Phase5-Lvl60-Settings-Troll-p5_fire-Fire-p5_fire-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1018.65681
-  tps: 600.66592
+  dps: 992.95873
+  tps: 584.45098
  }
 }
 dps_results: {
@@ -1100,7 +1100,7 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3768.4147
-  tps: 2173.96669
+  dps: 3750.62217
+  tps: 2163.14984
  }
 }
