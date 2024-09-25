@@ -211,13 +211,49 @@ export const P4TalentsSlaughter = PresetUtils.makePresetTalents('P4 Backstab', S
 	customCondition: player => player.getLevel() === 60,
 });
 
-export const P5TalentBackstab = PresetUtils.makePresetTalents('P5 Backstab', SavedTalents.create({ talentsString: '005323105551051-023302-05' }), {
-	customCondition: player => player.getLevel() === 60,
-});
+export const P5TalentBackstabAssassination = PresetUtils.makePresetTalents(
+	'P5 Backstab Assassination',
+	SavedTalents.create({ talentsString: '005323105551051-023302-05' }),
+	{
+		customCondition: player => player.getLevel() === 60,
+	},
+);
 
-export const P5TalentMutilateSaberslash = PresetUtils.makePresetTalents(
-	'P5 Mutilate/Saber',
+export const P5TalentBackstabCombat = PresetUtils.makePresetTalents(
+	'P5 Backstab Combat',
+	SavedTalents.create({ talentsString: '005023104-0233050020550100221-05' }),
+	{
+		customCondition: player => player.getLevel() === 60,
+	},
+);
+
+export const P5TalentMutilateSaberslashCarnage = PresetUtils.makePresetTalents(
+	'P5 Mutilate/Saber Carnage',
 	SavedTalents.create({ talentsString: '00532310155104-02330520000501' }),
+	{
+		customCondition: player => player.getLevel() === 60,
+	},
+);
+
+export const P5TalentMutilateSaberslashCTTC = PresetUtils.makePresetTalents(
+	'P5 Mutilate/Saber CTTC',
+	SavedTalents.create({ talentsString: '00532010455104-02330520000501' }),
+	{
+		customCondition: player => player.getLevel() === 60,
+	},
+);
+
+export const P5TalentBackstabAssassinationIEA = PresetUtils.makePresetTalents(
+	'P5 Backstab IEA',
+	SavedTalents.create({ talentsString: '005323125501051-023305-05' }),
+	{
+		customCondition: player => player.getLevel() === 60,
+	},
+);
+
+export const P5TalentMutilateSaberslashCTTCIEA = PresetUtils.makePresetTalents(
+	'P5 Mutilate/Saber CTTC IEA',
+	SavedTalents.create({ talentsString: '00532012255104-02400520200501' }),
 	{
 		customCondition: player => player.getLevel() === 60,
 	},
@@ -227,8 +263,15 @@ export const TalentPresets = {
 	[Phase.Phase1]: [CombatDagger25Talents],
 	[Phase.Phase2]: [ColdBloodMutilate40Talents, IEAMutilate40Talents, CombatMutilate40Talents],
 	[Phase.Phase3]: [P3TalentsMuti, P3TalentsMutiHat, P3TalentsSaber],
-	[Phase.Phase4]: [P4TalentsMutiSaber, P4TalentsSlaughter],
-	[Phase.Phase5]: [P5TalentBackstab, P5TalentMutilateSaberslash],
+	//	[Phase.Phase4]: [P4TalentsMutiSaber, P4TalentsSlaughter],
+	[Phase.Phase5]: [
+		P5TalentBackstabAssassination,
+		P5TalentBackstabCombat,
+		P5TalentMutilateSaberslashCarnage,
+		P5TalentMutilateSaberslashCTTC,
+		P5TalentBackstabAssassinationIEA,
+		P5TalentMutilateSaberslashCTTCIEA,
+	],
 };
 
 export const DefaultTalentsAssassin = TalentPresets[Phase.Phase5][0];
@@ -236,14 +279,26 @@ export const DefaultTalentsCombat = TalentPresets[Phase.Phase5][0];
 export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase5][0];
 
 export const DefaultTalentsBackstab = TalentPresets[Phase.Phase5][0];
-export const DefaultTalentsMutilate = TalentPresets[Phase.Phase5][1];
-export const DefaultTalentsSaber = TalentPresets[Phase.Phase5][1];
+export const DefaultTalentsMutilate = TalentPresets[Phase.Phase5][3];
+export const DefaultTalentsSaber = TalentPresets[Phase.Phase5][2];
 
 export const DefaultTalents = DefaultTalentsAssassin;
 
-export const PresetBuildBackstab = PresetUtils.makePresetBuild('Backstab', DefaultGearBackstab, DefaultTalentsBackstab, DefaultAPLBackstab);
+export const PresetBuildBackstab = PresetUtils.makePresetBuild('Backstab', DefaultGearBackstab, P5TalentBackstabAssassination, DefaultAPLBackstab);
 export const PresetBuildMutilate = PresetUtils.makePresetBuild('Mutilate', DefaultGearMutilate, DefaultTalentsMutilate, DefaultAPLMutilate);
 export const PresetBuildSaber = PresetUtils.makePresetBuild('Saber Slash', DefaultGearSaber, DefaultTalentsSaber, DefaultAPLSaber);
+export const PresetBuildMutilateIEA = PresetUtils.makePresetBuild(
+	'Mutilate IEA',
+	DefaultGearMutilate,
+	P5TalentMutilateSaberslashCTTCIEA,
+	ROTATION_PRESET_MUTILATE_IEA_P5,
+);
+export const PresetBuildSaberIEA = PresetUtils.makePresetBuild(
+	'Saber Slash IEA',
+	DefaultGearSaber,
+	P5TalentMutilateSaberslashCTTCIEA,
+	ROTATION_PRESET_SABER_IEA_P5,
+);
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
@@ -362,5 +417,5 @@ export const DefaultDebuffs = Debuffs.create({
 
 export const OtherDefaults = {
 	profession1: Profession.Engineering,
-	profession2: Profession.Leatherworking,
+	profession2: Profession.Alchemy,
 };

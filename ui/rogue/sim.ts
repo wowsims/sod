@@ -145,7 +145,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		// Preset talents that the user can quickly select.
 		talents: [
 			...Presets.TalentPresets[Phase.Phase5],
-			...Presets.TalentPresets[Phase.Phase4],
+			//...Presets.TalentPresets[Phase.Phase4], Removed due to duplication with P5
 			...Presets.TalentPresets[Phase.Phase3],
 			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
@@ -153,7 +153,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		// Preset rotations that the user can quickly select.
 		rotations: [
 			...Presets.APLPresets[Phase.Phase5],
-			...Presets.APLPresets[Phase.Phase4],
+			//...Presets.APLPresets[Phase.Phase4], Removed due to duplication with P5
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
@@ -166,7 +166,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [Presets.PresetBuildBackstab, Presets.PresetBuildMutilate, Presets.PresetBuildSaber],
+		builds: [
+			Presets.PresetBuildBackstab,
+			Presets.PresetBuildMutilate,
+			Presets.PresetBuildSaber,
+			Presets.PresetBuildMutilateIEA,
+			Presets.PresetBuildSaberIEA,
+		],
 	},
 
 	autoRotation: player => {
