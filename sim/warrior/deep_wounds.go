@@ -26,6 +26,7 @@ func (warrior *Warrior) applyDeepWounds() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -35,24 +36,18 @@ func (warrior *Warrior) applyDeepWounds() {
 			TickLength:    time.Second * 3,
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				attackTable := warrior.AttackTables[target.UnitIndex][proto.CastType_CastTypeMainHand]
-				dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).ApplyOrRefresh(sim)
-			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
 		},
 	})
 
-	warrior.RegisterAura(core.Aura{
-		Label:    "Deep Wounds Talent",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Deep Wounds Talent",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskEmpty) || !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
 				return
@@ -67,7 +62,7 @@ func (warrior *Warrior) applyDeepWounds() {
 				warrior.procDeepWounds(sim, result.Target, spell.IsOH())
 			}
 		},
-	})
+	}))
 }
 
 func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, isOh bool) {

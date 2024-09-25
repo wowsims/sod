@@ -165,6 +165,7 @@ enum PseudoStat {
 
 	PseudoStatMeleeSpeedMultiplier = 27;
 	PseudoStatRangedSpeedMultiplier = 28;
+	PseudoStatBlockValuePerStrength = 29;
 }
 
 message UnitStats {
@@ -320,18 +321,18 @@ enum Explosive {
 // NextIndex: 28
 enum Potions {
 	UnknownPotion = 0;
-	
+
 	// Mana Pots
 	ManaPotion = 2;
 	GreaterManaPotion = 3;
 	SuperiorManaPotion = 4;
 	MajorManaPotion = 5;
-	
+
 	// Rage Pots
 	RagePotion = 6;
 	GreatRagePotion = 7;
 	MightyRagePotion = 8;
-	
+
 	// Armor Pots
 	LesserStoneshieldPotion = 9;
 	GreaterStoneshieldPotion = 10;
@@ -584,9 +585,6 @@ enum SaygesFortune {
 // Buffs that affect the entire raid.
 // NextIndex: 43
 message RaidBuffs {
-	//reserved 33;
-	//reserved "horn_of_lordaeron";
-
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
 
@@ -754,7 +752,7 @@ message Debuffs {
 	bool occult_poison = 38;
 
 	bool winters_chill = 6;
-	
+
 	bool improved_shadow_bolt = 7;
 
 	bool improved_scorch = 8;

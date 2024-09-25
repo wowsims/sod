@@ -102,7 +102,7 @@ var ItemSetWarlordsRaiment = core.NewItemSet(core.ItemSet{
 			c.AddStat(stats.Stamina, 20)
 		},
 		// Increases the duration of your Psychic Scream spell by 1 sec.
-		4: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			// Nothing to do
 		},
 		// Increases damage and healing done by magical spells and effects by up to 23.
@@ -122,7 +122,7 @@ var ItemSetFieldMarshalsRaiment = core.NewItemSet(core.ItemSet{
 			c.AddStat(stats.Stamina, 20)
 		},
 		// Increases the duration of your Psychic Scream spell by 1 sec.
-		4: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			// Nothing to do
 		},
 		// Increases damage and healing done by magical spells and effects by up to 23.
@@ -142,7 +142,7 @@ var ItemSetWarlordsInvestiture = core.NewItemSet(core.ItemSet{
 			c.AddStat(stats.Stamina, 20)
 		},
 		// Increases the duration of your Psychic Scream spell by 1 sec.
-		4: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			// Nothing to do
 		},
 		// Increases healing done by up to 44 and damage done by up to 15 for all magical spells and effects.
@@ -165,7 +165,7 @@ var ItemSetFieldMarshalsInvestiture = core.NewItemSet(core.ItemSet{
 			c.AddStat(stats.Stamina, 20)
 		},
 		// Increases the duration of your Psychic Scream spell by 1 sec.
-		4: func(agent core.Agent) {
+		3: func(agent core.Agent) {
 			// Nothing to do
 		},
 		// Increases healing done by up to 44 and damage done by up to 15 for all magical spells and effects.

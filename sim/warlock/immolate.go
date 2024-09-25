@@ -93,6 +93,8 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
+				dot := spell.Dot(target)
+
 				// UA, Immo, Shadowflame exclusivity
 				if hasUnstableAffliction && warlock.UnstableAffliction.Dot(target).IsActive() {
 					warlock.UnstableAffliction.Dot(target).Deactivate(sim)
@@ -101,11 +103,11 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 					warlock.Shadowflame.Dot(target).Deactivate(sim)
 				}
 
-				if hasInvocationRune && spell.Dot(target).IsActive() {
-					warlock.InvocationRefresh(sim, spell.Dot(target))
+				if hasInvocationRune && dot.IsActive() {
+					warlock.InvocationRefresh(sim, dot)
 				}
 
-				spell.Dot(target).Apply(sim)
+				dot.Apply(sim)
 			}
 
 			spell.DealDamage(sim, result)

@@ -82,7 +82,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 72
+// NextIndex: 75
 message APLValue {
     oneof value {
         // Operators
@@ -129,6 +129,7 @@ message APLValue {
         APLValueSpellTimeToReady spell_time_to_ready = 21;
         APLValueSpellCastTime spell_cast_time = 35;
         APLValueSpellTravelTime spell_travel_time = 37;
+        APLValueSpellInFlight spell_in_flight = 74;
         APLValueSpellCPM spell_cpm = 42;
         APLValueSpellIsChanneling spell_is_channeling = 56;
         APLValueSpellChanneledTicks spell_channeled_ticks = 57;
@@ -161,13 +162,18 @@ message APLValue {
         APLValueFrontOfTarget front_of_target = 63;
 
         // Class or Spec-specific values
+        // Shaman
         APLValueTotemRemainingTime totem_remaining_time = 49;
+        // Druid
         APLValueCatExcessEnergy cat_excess_energy = 52;
         APLValueCatNewSavageRoarDuration cat_new_savage_roar_duration = 61;
+        // Warlock
         APLValueWarlockShouldRecastDrainSoul warlock_should_recast_drain_soul = 59;
         APLValueWarlockShouldRefreshCorruption warlock_should_refresh_corruption = 60;
         APLValueWarlockCurrentPetMana warlock_current_pet_mana = 70;
         APLValueWarlockCurrentPetManaPercent warlock_current_pet_mana_percent = 71;
+        APLValueWarlockPetIsActive warlock_pet_is_active = 72;
+        // Paladin
         APLValueCurrentSealRemainingTime current_seal_remaining_time = 65;
     }
 }
@@ -433,6 +439,9 @@ message APLValueFrontOfTarget {
 message APLValueSpellTravelTime {
     ActionID spell_id = 1;
 }
+message APLValueSpellInFlight {
+    ActionID spell_id = 1;
+}
 message APLValueSpellCPM {
     ActionID spell_id = 1;
 }
@@ -518,6 +527,8 @@ message APLValueWarlockShouldRefreshCorruption {
 message APLValueWarlockCurrentPetMana {
 }
 message APLValueWarlockCurrentPetManaPercent {
+}
+message APLValueWarlockPetIsActive {
 }
 message APLValueCurrentSealRemainingTime {
 }

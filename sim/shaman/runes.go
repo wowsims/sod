@@ -23,7 +23,8 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyTwoHandedMastery()
 
 	// Bracers
-	shaman.applyRollingThunder()
+	shaman.applyStaticShocks()
+	shaman.registerRollingThunder()
 	shaman.registerRiptideSpell()
 
 	// Hands
@@ -56,8 +57,8 @@ func (shaman *Shaman) applyBurn() {
 		return
 	}
 
-	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_FlametongueWeapon || shaman.Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon {
-		shaman.AddStat(stats.SpellDamage, float64(BurnSpellPowerPerLevel*shaman.Level))
+	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_FlametongueWeapon {
+		shaman.AddStatDependency(stats.Intellect, stats.SpellDamage, 1)
 	}
 
 	// Other parts of burn are handled in flame_shock.go
@@ -72,8 +73,8 @@ func (shaman *Shaman) applyMentalDexterity() {
 		return
 	}
 
-	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, .65)
-	apToSpStatDep := shaman.NewDynamicStatDependency(stats.AttackPower, stats.SpellDamage, .20)
+	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, 1.0)
+	apToSpStatDep := shaman.NewDynamicStatDependency(stats.AttackPower, stats.SpellDamage, .35)
 
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Mental Dexterity Proc",
@@ -97,7 +98,7 @@ func (shaman *Shaman) applyMentalDexterity() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && (spell == shaman.LavaLash || spell == shaman.StormstrikeMH) {
+			if result.Landed() && spell == shaman.StormstrikeMH {
 				procAura.Activate(sim)
 			}
 		},
@@ -206,9 +207,9 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 
 	procSpellId := int32(436365)
 
-	// Two-handed mastery gives +10% AP, +30% attack speed, and +10% spell hit
+	// Two-handed mastery gives +15% AP, +30% attack speed, and +10% spell hit
 	attackSpeedMultiplier := 1.5
-	apMultiplier := 1.1
+	apMultiplier := 1.15
 	spellHitIncrease := core.SpellHitRatingPerHitChance * 10.0
 
 	statDep := shaman.NewDynamicMultiplyStat(stats.AttackPower, apMultiplier)
@@ -248,45 +249,43 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 	})
 }
 
-var RollingThunderProcChance = .50
-
-func (shaman *Shaman) applyRollingThunder() {
-	if !shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder) {
+func (shaman *Shaman) applyStaticShocks() {
+	if !shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock) {
 		return
 	}
 
-	impLightningShieldBonus := 1 + []float64{0, .05, .10, .15}[shaman.Talents.ImprovedLightningShield]
+	// DW chance base doubled by using a 2-handed weapon
+	shaman.staticSHocksProcChance = .06
 
-	// Casts handled in lightning_shield.go
-	shaman.RollingThunder = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 432129},
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagShaman | SpellFlagLightning,
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: "Static Shocks",
+		OnInit: func(staticShockAura *core.Aura, sim *core.Simulation) {
+			for _, aura := range shaman.LightningShieldAuras {
+				if aura == nil {
+					continue
+				}
 
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
+				oldOnGain := aura.OnGain
+				aura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+					oldOnGain(aura, sim)
+					staticShockAura.Activate(sim)
+				}
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if shaman.ActiveShield == nil || shaman.ActiveShield.SpellCode != SpellCode_ShamanLightningShield {
+				oldOnExpire := aura.OnExpire
+				aura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+					oldOnExpire(aura, sim)
+					staticShockAura.Deactivate(sim)
+				}
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if shaman.ActiveShieldAura == nil || !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Landed() {
 				return
 			}
 
-			rank := shaman.ActiveShield.Rank
-			chargeDamage := LightningShieldBaseDamage[rank]*impLightningShieldBonus + LightningShieldSpellCoef[rank]*shaman.LightningShieldProcs[rank].GetBonusDamage()
-			spell.CalcAndDealDamage(sim, target, chargeDamage, spell.OutcomeMagicCrit)
-		},
-	})
-
-	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning}
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: "Rolling Thunder Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if slices.Contains(affectedSpellCodes, spell.SpellCode) {
-				if shaman.ActiveShield != nil && shaman.ActiveShield.SpellCode == SpellCode_ShamanLightningShield && shaman.ActiveShieldAura.IsActive() && sim.Proc(RollingThunderProcChance, "Rolling Thunder") {
-					shaman.ActiveShieldAura.AddStack(sim)
-				}
+			staticShockProcChance := core.TernaryFloat64(shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand, shaman.staticSHocksProcChance*2, shaman.staticSHocksProcChance)
+			if sim.RandomFloat("Static Shock") < staticShockProcChance {
+				shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
 			}
 		},
 	}))
@@ -338,13 +337,9 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 
 	// This aura is hidden, just applies stacks of the proc aura.
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: "MaelstromWeapon",
+		Label: "Maelstrom Weapon Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			if shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskMeleeDamageProc) && shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
 				shaman.MaelstromWeaponAura.Activate(sim)
 				shaman.MaelstromWeaponAura.AddStack(sim)
 			}

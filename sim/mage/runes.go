@@ -354,6 +354,7 @@ func (mage *Mage) applyBrainFreeze() {
 					mage.Fireball,
 					{mage.FrostfireBolt},
 					{mage.SpellfrostBolt},
+					{mage.BalefireBolt},
 				}),
 				func(spell *core.Spell) bool { return spell != nil },
 			)
@@ -382,22 +383,22 @@ func (mage *Mage) applyBrainFreeze() {
 		},
 	})
 
-	mage.RegisterAura(core.Aura{
-		Label:    "Brain Freeze Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.Flags.Matches(SpellFlagChillSpell) {
-				return
-			}
+	units := []*core.Unit{&mage.Unit}
+	// Can also proc from Frozen Orb hits
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
+	}
 
-			if sim.RandomFloat("Brain Freeze") < procChance {
-				procAura.Activate(sim)
-			}
-		},
-	})
+	for _, unit := range units {
+		core.MakePermanent(unit.RegisterAura(core.Aura{
+			Label: "Brain Freeze Trigger",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.Flags.Matches(SpellFlagChillSpell) && result.Landed() && sim.Proc(procChance, "Brain Freeze") {
+					procAura.Activate(sim)
+				}
+			},
+		}))
+	}
 }
 
 func (mage *Mage) applySpellPower() {
@@ -405,9 +406,17 @@ func (mage *Mage) applySpellPower() {
 		return
 	}
 
-	mage.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagMage) {
-			spell.CritDamageBonus += 0.5
-		}
-	})
+	units := []*core.Unit{&mage.Unit}
+	// Can also proc from Frozen Orb hits
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
+	}
+
+	for _, unit := range units {
+		unit.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagMage) {
+				spell.CritDamageBonus += 0.5
+			}
+		})
+	}
 }

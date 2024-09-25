@@ -347,9 +347,24 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=231755/peregrine
 	// Chance on hit: Instantly gain 1 extra attack with both weapons.
-	// TODO: Proc rate assumed and needs testing
+	// Main-hand attack is treated like a normal extra-attack, Off-hand attack is a spell that uses your off-hand damage but won't glance
 	core.NewItemEffect(Peregrine, func(agent core.Agent) {
 		character := agent.GetCharacter()
+		peregrineOHAttack := character.RegisterSpell(core.SpellConfig{
+			ActionID:      core.ActionID{SpellID: 469140},
+			SpellSchool:   core.SpellSchoolPhysical,
+			DefenseType:   core.DefenseTypeMelee,
+			ProcMask:      core.ProcMaskMeleeOHSpecial,
+			Flags:         core.SpellFlagMeleeMetrics,
+	
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+	
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				damage := character.OHWeaponDamage(sim, spell.MeleeAttackPower()) * character.AutoAttacks.OHConfig().DamageMultiplier
+				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			},
+		})
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Peregrine Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
@@ -359,7 +374,7 @@ func init() {
 			PPM:               1.0,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 469140}, spell)
-				character.AutoAttacks.ExtraOHAttack(sim, 1, core.ActionID{SpellID: 469140}, spell.ActionID)
+				peregrineOHAttack.Cast(sim, result.Target)
 			},
 		})
 	})
@@ -386,9 +401,9 @@ func init() {
 			Label:     "Locked In",
 			ActionID:  core.ActionID{SpellID: 468388},
 			Duration:  time.Second * 20,
-			MaxStacks: 3,
+			MaxStacks: 2,
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.SpellCode == SpellCode_HunterCarve || spell.SpellCode == SpellCode_HunterMultiShot {
+				if spell.Flags.Matches(SpellFlagShot) || spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) && spell.CD.Timer != nil {
 					spell.CD.Reset()
 					aura.RemoveStack(sim)
 				}
@@ -407,7 +422,7 @@ func init() {
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				lockedIn.Activate(sim)
-				lockedIn.SetStacks(sim, 3)
+				lockedIn.SetStacks(sim, lockedIn.MaxStacks)
 			},
 		})
 

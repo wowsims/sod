@@ -114,7 +114,6 @@ const (
 	GutgoreRipperMolten            = 229372
 	EskhandarsRightClawMolten      = 229379
 	TheUntamedBlade                = 230242 // 19334
-	Windstriker                    = 231817
 )
 
 func init() {
@@ -319,12 +318,15 @@ func init() {
 			},
 		})
 
-		willOfShahramAura := character.RegisterAura(core.Aura{
-			ActionID:  core.ActionID{SpellID: 16598},
-			Label:     "Will of Shahram",
-			Duration:  time.Second * 20,
-			MaxStacks: 5,
-			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+		willOfShahram := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 16598},
+			SpellSchool: core.SpellSchoolArcane,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				counter := 0
+
 				stats := stats.Stats{
 					stats.Agility:   50,
 					stats.Intellect: 50,
@@ -332,18 +334,28 @@ func init() {
 					stats.Spirit:    50,
 					stats.Strength:  50,
 				}
-				character.AddStatsDynamic(sim, stats.Multiply(float64(-1*oldStacks)))
-				character.AddStatsDynamic(sim, stats.Multiply(float64(newStacks)))
-			},
-		})
-		willOfShahram := character.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 16598},
-			SpellSchool: core.SpellSchoolArcane,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskEmpty,
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				willOfShahramAura.Activate(sim)
-				willOfShahramAura.AddStack(sim)
+
+				for counter < 10 {
+					willOfShahram := character.GetOrRegisterAura(core.Aura{
+						ActionID: core.ActionID{SpellID: 16598},
+						Label:    fmt.Sprintf("Will of Shahram (%d)", counter),
+						Duration: time.Second * 20,
+						OnGain: func(aura *core.Aura, sim *core.Simulation) {
+							character.AddStatsDynamic(sim, stats)
+						},
+						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+							character.AddStatsDynamic(sim, stats.Multiply(-1.0))
+						},
+					})
+
+					if !willOfShahram.IsActive() {
+						willOfShahram.Activate(sim)
+						break
+					}
+
+					counter += 1
+
+				}
 			},
 		})
 
@@ -1914,6 +1926,7 @@ func init() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			FlatThreatBonus:  126,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.CalcAndDealDamage(sim, target, 300, spell.OutcomeMagicHitAndCrit)
@@ -2055,26 +2068,6 @@ func init() {
 	itemhelpers.CreateWeaponCoHProcDamage(VilerendSlicer, "Vilerend Slicer", 1.0, 16405, core.SpellSchoolPhysical, 75, 0, 0, core.DefenseTypeMelee)
 
 	itemhelpers.CreateWeaponCoHProcDamage(ViskagTheBloodletter, "Vis'kag the Bloodletter", 0.6, 21140, core.SpellSchoolPhysical, 240, 0, 0, core.DefenseTypeMelee)
-
-	// https://www.wowhead.com/classic/item=231817/windstriker
-	// Chance on hit: All attacks are guaranteed to land and will be critical strikes for the next 3 sec.
-	core.NewItemEffect(Windstriker, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
-		procMask := character.GetProcMaskForItem(Windstriker)
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Felstriker Trigger",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			ProcMask:          procMask,
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               0.6,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				effectAura.Activate(sim)
-			},
-		})
-	})
 
 	// https://www.wowhead.com/classic/item=227941/wraith-scythe
 	// Chance on hit: Steals 45 life from target enemy.
@@ -2305,7 +2298,7 @@ func init() {
 				}
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskRanged) && icd.IsReady(sim) && sim.Proc(0.02, "HandOfInjustice") {
 					icd.Use(sim)
-					aura.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164})
+					aura.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164}, spell.ActionID)
 				}
 			},
 		})
@@ -2674,7 +2667,7 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 		ActionID:         core.ActionID{SpellID: spellID},
 		SpellSchool:      spellSchool,
 		DefenseType:      core.DefenseTypeMagic,
-		ProcMask:         core.ProcMaskTriggerInstant,
+		ProcMask:         core.ProcMaskMeleeDamageProc,
 		Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -2693,7 +2686,7 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
 				procSpell.ProcMask = core.ProcMaskEmpty
 			} else {
-				procSpell.ProcMask = core.ProcMaskTriggerInstant
+				procSpell.ProcMask = core.ProcMaskDamageProc // Both spell and melee procs
 			}
 			procSpell.Cast(sim, result.Target)
 		},
@@ -2711,8 +2704,8 @@ func bonereaversEdgeEffect(character *core.Character) *core.Spell {
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			for _, target := range sim.Encounter.TargetUnits {
-				target.AddStatDynamic(sim, stats.Armor, -700*float64(oldStacks))
-				target.AddStatDynamic(sim, stats.Armor, 700*float64(newStacks))
+				target.AddStatDynamic(sim, stats.Armor, 700*float64(oldStacks))
+				target.AddStatDynamic(sim, stats.Armor, -700*float64(newStacks))
 			}
 		},
 	})

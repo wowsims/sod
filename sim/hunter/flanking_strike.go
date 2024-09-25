@@ -18,16 +18,22 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 	if hasCatlikeReflexes {
 		cooldownModifier *= 0.5
 	}
+	var affectedSpells []*core.Spell
 
 	hunter.FlankingStrikeAura = hunter.GetOrRegisterAura(core.Aura{
 		Label:     "Flanking Strike Buff",
 		ActionID:  core.ActionID{SpellID: 415320},
 		MaxStacks: 3,
 		Duration:  time.Second * 10,
-
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(hunter.Spellbook, func(spell *core.Spell) bool {
+				return spell.ProcMask.Matches(core.ProcMaskMelee)
+			})
+		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			hunter.PseudoStats.DamageDealtMultiplier /= 1 + (0.05 * float64(oldStacks))
-			hunter.PseudoStats.DamageDealtMultiplier *= 1 + (0.05 * float64(newStacks))
+			for _, spell := range affectedSpells {
+				spell.DamageMultiplier *= (1 + 0.08*float64(newStacks)) / (1 + 0.08*float64(oldStacks))
+			}
 		},
 	})
 

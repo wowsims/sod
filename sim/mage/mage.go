@@ -61,7 +61,7 @@ type Mage struct {
 	Options *proto.Mage_Options
 
 	activeBarrier *core.Aura
-	frozenOrb     *FrozenOrb
+	frozenOrbPets []*FrozenOrb
 
 	ArcaneBarrage           *core.Spell
 	ArcaneBlast             *core.Spell
@@ -109,6 +109,10 @@ type Mage struct {
 	ArcaneBlastMissileBarrageChance float64
 	BonusFireballDoTAmount          float64
 	FingersOfFrostProcChance        float64
+
+	// Variables for telling the mage to try to maintain the Fireball DoT with T2 Fire 6pc
+	FireballMissileActive bool // Whether Fireball has been cast but has not hit to avoid chain-casting
+	MaintainFireballDoT   bool
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.
@@ -195,7 +199,7 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 	}
 
 	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
-		mage.frozenOrb = mage.NewFrozenOrb()
+		mage.frozenOrbPets = mage.NewFrozenOrbPets()
 	}
 
 	guardians.ConstructGuardians(&mage.Character)

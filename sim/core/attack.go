@@ -107,7 +107,7 @@ func (weapon *Weapon) EnemyWeaponDamage(sim *Simulation, attackPower float64, da
 }
 
 func (weapon *Weapon) BaseDamage(sim *Simulation) float64 {
-	return weapon.BaseDamageMin + (weapon.BaseDamageMax-weapon.BaseDamageMin)*sim.RandomFloat("Weapon Base Damage") 
+	return weapon.BaseDamageMin + (weapon.BaseDamageMax-weapon.BaseDamageMin)*sim.RandomFloat("Weapon Base Damage")
 }
 
 func (weapon *Weapon) AverageDamage() float64 {
@@ -499,7 +499,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		BonusCoefficient: TernaryFloat64(options.Ranged.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target))
+			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target, false))
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(sim *Simulation) {
@@ -725,7 +725,8 @@ func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID Ac
 		return
 	}
 	if sim.Log != nil {
-		aa.mh.unit.Log(sim, "gains %d extra main-hand attacks from %s triggered by %s", attacks, actionID, triggerAction)
+		attacksText := Ternary(attacks == 1, "attack", "attacks")
+		aa.mh.unit.Log(sim, "gained %d extra main-hand %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
 	}
 	aa.mh.swingAt = sim.CurrentTime + SpellBatchWindow
 	aa.mh.spell.SetMetricsSplit(1)
@@ -766,7 +767,8 @@ func (aa *AutoAttacks) ExtraOHAttack(sim *Simulation, attacks int32, actionID Ac
 		return
 	}
 	if sim.Log != nil {
-		aa.oh.unit.Log(sim, "gains %d extra off-hand attacks from %s triggered by %s", attacks, actionID, triggerAction)
+		attacksText := Ternary(attacks == 1, "attack", "attacks")
+		aa.oh.unit.Log(sim, "gained %d extra off-hand %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
 	}
 	aa.oh.swingAt = sim.CurrentTime + SpellBatchWindow
 	aa.oh.spell.SetMetricsSplit(1)
@@ -776,9 +778,10 @@ func (aa *AutoAttacks) ExtraOHAttack(sim *Simulation, attacks int32, actionID Ac
 
 // ExtraRangedAttack should be used for all "extra ranged attack" procs in Classic Era versions, including Hand of Injustice. In vanilla, these procs don't actually grant a full extra attack, but instead just advance the Ranged swing timer.
 // Note that Hand of Injustice doesn't seem to reset the swing timer however.
-func (aa *AutoAttacks) ExtraRangedAttack(sim *Simulation, attacks int32, actionID ActionID) {
+func (aa *AutoAttacks) ExtraRangedAttack(sim *Simulation, attacks int32, actionID ActionID, triggerAction ActionID) {
 	if sim.Log != nil {
-		aa.mh.unit.Log(sim, "gains %d extra attacks from %s", attacks, actionID)
+		attacksText := Ternary(attacks == 1, "attack", "attacks")
+		aa.mh.unit.Log(sim, "gained %d extra ranged %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
 	}
 	aa.ranged.swingAt = sim.CurrentTime + SpellBatchWindow
 	aa.ranged.spell.SetMetricsSplit(1)

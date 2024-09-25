@@ -12,7 +12,8 @@ import (
 var TalentTreeSizes = [3]int{14, 15, 15}
 
 const (
-	SpellFlag_RV = core.SpellFlagAgentReserved1
+	SpellFlag_RV          = core.SpellFlagAgentReserved1
+	SpellFlag_Forbearance = core.SpellFlagAgentReserved2
 )
 
 const (
@@ -23,8 +24,10 @@ const (
 	SpellCode_PaladinHolyWrath
 	SpellCode_PaladinJudgementOfCommand
 	SpellCode_PaladinConsecration
+	SpellCode_PaladinAvengersShield
 	SpellCode_PaladinHolyShield
 	SpellCode_PaladinHolyShieldProc
+	SpellCode_PaladinLayOnHands
 )
 
 type SealJudgeCode uint8
@@ -62,8 +65,6 @@ type Paladin struct {
 	spellsJoC        []*core.Spell
 	spellsJotC       []*core.Spell
 
-	rollDummyJudgeHit [4]bool
-
 	// Active abilities and shared cooldowns that are externally manipulated.
 	holyShockCooldown *core.Cooldown
 	exorcismCooldown  *core.Cooldown
@@ -73,7 +74,9 @@ type Paladin struct {
 	judgement         *core.Spell
 	rv                *core.Spell
 	holyShieldAura    [3]*core.Aura
+	holyShieldProc    [3]*core.Spell
 	redoubtAura       *core.Aura
+	holyWrath         []*core.Spell
 
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
@@ -106,6 +109,7 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
+	paladin.registerRighteousFury()
 	// Judgement and Seals
 	paladin.registerJudgement()
 
@@ -124,9 +128,8 @@ func (paladin *Paladin) Initialize() {
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoC)
 	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSotC)
 
-	paladin.rollDummyJudgeHit = [4]bool{false, false, true, false}
-
 	// Active abilities
+	paladin.registerForbearance()
 	paladin.registerCrusaderStrike()
 	paladin.registerDivineStorm()
 	paladin.registerConsecration()
@@ -139,8 +142,10 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerAuraMastery()
 	paladin.registerHolyShield()
 	paladin.registerShieldOfRighteousness()
+	paladin.registerBlessingOfSanctuary()
+	paladin.registerLayOnHands()
 
-	paladin.enableMultiJudge = true // change this to baseline false when P5 launches
+	paladin.enableMultiJudge = false // Was previously true in Phase 4 but disabled in Phase 5
 	paladin.lingerDuration = time.Millisecond * 400
 	paladin.consumeSealsOnJudge = true
 
@@ -173,7 +178,7 @@ func NewPaladin(character *core.Character, options *proto.Player, paladinOptions
 	paladin.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(paladin.Level)]*core.SpellCritRatingPerCritChance)
 
 	// Paladins get 1 block value per 20 str
-	paladin.AddStatDependency(stats.Strength, stats.BlockValue, .05)
+	paladin.PseudoStats.BlockValuePerStrength = 0.05
 
 	// Bonus Armor and Armor are treated identically for Paladins
 	paladin.AddStatDependency(stats.BonusArmor, stats.Armor, 1)

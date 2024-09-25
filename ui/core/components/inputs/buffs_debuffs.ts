@@ -93,20 +93,20 @@ export const PhysDamReductionBuff = withLabel(
 	'Stoneskin',
 );
 
-export const DamageReductionPercentBuff = withLabel(
-	makeBooleanIndividualBuffInput({
-		actionId: player =>
-			player.getMatchingSpellActionId([
-				{ id: 20911, minLevel: 30, maxLevel: 39 },
-				{ id: 20912, minLevel: 40, maxLevel: 49 },
-				{ id: 20913, minLevel: 50, maxLevel: 59 },
-				{ id: 20914, minLevel: 60 },
-			]),
-		showWhen: player => player.getFaction() === Faction.Alliance,
-		fieldName: 'blessingOfSanctuary',
-	}),
-	'Blessing of Sanctuary',
-);
+//export const DamageReductionPercentBuff = withLabel(
+//	makeBooleanIndividualBuffInput({
+//		actionId: player =>
+//			player.getMatchingSpellActionId([
+//				{ id: 20911, minLevel: 30, maxLevel: 39 },
+//				{ id: 20912, minLevel: 40, maxLevel: 49 },
+//				{ id: 20913, minLevel: 50, maxLevel: 59 },
+//				{ id: 20914, minLevel: 60 },
+//			]),
+//		showWhen: player => player.getFaction() === Faction.Alliance,
+//		fieldName: 'blessingOfSanctuary',
+//	}),
+//	'Blessing of Sanctuary',
+//);
 
 export const ResistanceBuff = InputHelpers.makeMultiIconInput({
 	values: [
@@ -1012,11 +1012,11 @@ export const RAID_BUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatArmor],
 	},
-	{
-		config: DamageReductionPercentBuff,
-		picker: IconPicker,
-		stats: [Stat.StatArmor],
-	},
+   // {
+   // 	config: DamageReductionPercentBuff,
+   // 	picker: IconPicker,
+   // 	stats: [Stat.StatArmor],
+   // },
 	{
 		config: ResistanceBuff,
 		picker: MultiIconPicker,
@@ -1269,7 +1269,7 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: NatureSpellDamageDebuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatNaturePower],
+		stats: [Stat.StatNaturePower, Stat.StatArcanePower],
 	},
 	{
 		config: SpellShadowWeavingDebuff,

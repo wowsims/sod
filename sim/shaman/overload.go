@@ -8,11 +8,10 @@ import (
 // 1 to 5 are used by MaelstromWeapon Stacks
 const CastTagOverload = 6
 
-const ShamanOverloadChance = .50
+const ShamanOverloadChance = .60
 
 func (shaman *Shaman) applyOverloadModifiers(spell *core.SpellConfig) {
 	spell.ActionID.Tag = int32(CastTagOverload)
-	spell.ProcMask = core.ProcMaskProc
 	spell.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
 	spell.Cast.DefaultCast.CastTime = 0
 	spell.Cast.DefaultCast.GCD = 0

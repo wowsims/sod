@@ -18,6 +18,7 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 	baseDamage := warlock.baseRuneAbilityDamage() * 1.1
 
 	warlock.UnstableAffliction = warlock.GetOrRegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_WarlockUnstableAffliction,
 		ActionID:    core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerUnstableAffliction)},
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellDamage,
@@ -61,23 +62,21 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
+				dot := spell.Dot(target)
 
-				if hasInvocationRune && spell.Dot(target).IsActive() {
-					warlock.InvocationRefresh(sim, spell.Dot(target))
-				}
-
+				// UA is mutually exclusive with Immolate
 				immoDot := warlock.getActiveImmolateSpell(target)
 				if immoDot != nil {
 					immoDot.Dot(target).Deactivate(sim)
 				}
 
-				if hasInvocationRune && spell.Dot(target).IsActive() {
-					warlock.InvocationRefresh(sim, spell.Dot(target))
+				if hasInvocationRune && dot.IsActive() {
+					warlock.InvocationRefresh(sim, dot)
 				}
 
-				spell.Dot(target).Apply(sim)
+				dot.Apply(sim)
 			}
 			spell.DealOutcome(sim, result)
 		},

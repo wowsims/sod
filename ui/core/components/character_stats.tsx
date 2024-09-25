@@ -184,7 +184,7 @@ export class CharacterStats extends Component {
 						{player.spec === Spec.SpecFeralDruid && (
 							<div className="character-stats-tooltip-row">
 								<span>Feral Combat</span>
-								<span>{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatFeralCombatSkill)} / </span>
+								<span>{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatFeralCombatSkill)}</span>
 							</div>
 						)}
 						<div className="character-stats-tooltip-row">
@@ -323,6 +323,7 @@ export class CharacterStats extends Component {
 
 		if (stat === Stat.StatBlockValue) {
 			rawValue *= stats.getPseudoStat(PseudoStat.PseudoStatBlockValueMultiplier) || 1;
+			rawValue += Math.max(0, stats.getPseudoStat(PseudoStat.PseudoStatBlockValuePerStrength) * deltaStats.getStat(Stat.StatStrength) - 1);
 		}
 
 		let displayStr = String(Math.round(rawValue));

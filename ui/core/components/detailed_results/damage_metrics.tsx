@@ -52,6 +52,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					const resistedCritTickValues = metric.damageDone.resistedCritTick;
 					const glanceValues = metric.damageDone.glance;
 					const blockValues = metric.damageDone.block;
+					const blockedCritValues = metric.damageDone.blockedCrit;
 
 					cellElem.appendChild(
 						<MetricsCombinedTooltipTable
@@ -102,6 +103,10 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 										{
 											name: 'Blocked Hit',
 											...blockValues,
+										},
+										{
+											name: 'Blocked Critical Hit',
+											...blockedCritValues,
 										},
 									],
 								},
@@ -201,6 +206,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 					const relativeResistedCritTickPercent = (metric.resistedCritTicks / metric.landedTicks) * 100;
 					const relativeGlancePercent = (metric.glances / metric.landedHits) * 100;
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
+					const relativeBlockedCritPercent = (metric.blockedCrits / metric.landedHits) * 100;
 
 					cellElem.appendChild(
 						<MetricsCombinedTooltipTable
@@ -225,6 +231,11 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 											name: `Critical Hit`,
 											value: metric.crits - metric.resistedCrits,
 											percentage: relativeCritPercent,
+										},
+										{
+											name: 'Blocked Critical Hit',
+											value: metric.blockedCrits,
+											percentage: relativeBlockedCritPercent,
 										},
 										{
 											name: `Resisted Critical Hit`,
@@ -289,10 +300,12 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 			},
 			{
 				name: 'Crit %',
-				getValue: (metric: ActionMetrics) => metric.critPercent || metric.critTickPercent,
+				getValue: (metric: ActionMetrics) => metric.critPercent + metric.blockedCritPercent || metric.critTickPercent,
 				getDisplayString: (metric: ActionMetrics) =>
-					`${formatToPercent(metric.critPercent || metric.critTickPercent, { fallbackString: '-' })}${
-						metric.critPercent && metric.critTickPercent ? ` (${formatToPercent(metric.critTickPercent, { fallbackString: '-' })})` : ''
+					`${formatToPercent(metric.critPercent + metric.blockedCritPercent || metric.critTickPercent, { fallbackString: '-' })}${
+						metric.critPercent + metric.blockedCritPercent && metric.critTickPercent
+							? ` (${formatToPercent(metric.critTickPercent, { fallbackString: '-' })})`
+							: ''
 					}`,
 			},
 			{

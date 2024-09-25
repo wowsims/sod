@@ -56,9 +56,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatSpellDamage,
 		Stat.StatSpellPower,
-		Stat.StatNaturePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatDefense,
@@ -74,7 +72,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatAgility,
 		Stat.StatStrength,
 		Stat.StatAttackPower,
-		Stat.StatSpellDamage,
 		Stat.StatMeleeHit,
 		Stat.StatSpellHit,
 		Stat.StatMeleeCrit,
@@ -90,26 +87,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatAgility]: 1.23,
-				[Stat.StatStrength]: 1.64,
+				[Stat.StatAgility]: 2.51,
+				[Stat.StatStrength]: 1.31,
 				[Stat.StatAttackPower]: 1.0,
-				[Stat.StatSpellDamage]: 1.09,
-				[Stat.StatNaturePower]: 0.81,
-				[Stat.StatSpellCrit]: 4.93,
+				[Stat.StatSpellCrit]: 0.12,
 				[Stat.StatSpellHit]: 11.94,
-				[Stat.StatMeleeHit]: 14.11,
-				[Stat.StatMeleeCrit]: 25.97,
+				[Stat.StatMeleeHit]: 19.43,
+				[Stat.StatMeleeCrit]: 26.72,
 				[Stat.StatFireResistance]: 0.5,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 4.05,
-				[PseudoStat.PseudoStatOffHandDps]: 2.74,
-				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 2.74,
+				[PseudoStat.PseudoStatMainHandDps]: 9.86,
+				[PseudoStat.PseudoStatOffHandDps]: 1.02,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 5.0,
 			},
 		),
 
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes[Phase.Phase4],
+		consumes: Presets.DefaultConsumes[Phase.Phase5],
 		// Default talents.
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
@@ -149,24 +144,34 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			...Presets.TalentPresets[Phase.Phase4],
+			...Presets.TalentPresets[Phase.Phase5],
+			//...Presets.TalentPresets[Phase.Phase4], Removed due to duplication with P5
 			...Presets.TalentPresets[Phase.Phase3],
 			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			...Presets.APLPresets[Phase.Phase4],
+			...Presets.APLPresets[Phase.Phase5],
+			//...Presets.APLPresets[Phase.Phase4], Removed due to duplication with P5
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase5],
 			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
+		],
+		builds: [
+			Presets.PresetBuildBackstab,
+			Presets.PresetBuildMutilate,
+			Presets.PresetBuildSaber,
+			Presets.PresetBuildMutilateIEA,
+			Presets.PresetBuildSaberIEA,
 		],
 	},
 

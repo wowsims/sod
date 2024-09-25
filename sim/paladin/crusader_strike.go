@@ -23,7 +23,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlag_RV,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlag_RV | core.SpellFlagIgnoreResists,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -51,6 +51,6 @@ func (paladin *Paladin) registerCrusaderStrike() {
 			}
 		},
 	})
-	
+
 	paladin.crusaderStrike = crusaderStrikeSpell
 }

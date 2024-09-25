@@ -1,9 +1,11 @@
 package paladin
 
 import (
+	"slices"
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"time"
 )
 
 func (paladin *Paladin) registerHammerOfTheRighteous() {
@@ -20,7 +22,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
@@ -36,14 +38,14 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return paladin.MainHand().HandType == proto.HandType_HandTypeOneHand
+			return slices.Contains([]proto.HandType{proto.HandType_HandTypeMainHand, proto.HandType_HandTypeOneHand}, paladin.MainHand().HandType)
 		},
-		DamageMultiplier: 3,
-		ThreatMultiplier: 2,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 2, // verified with TinyThreat in game
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			weapon := paladin.AutoAttacks.MH()
-			baseDamage := weapon.CalculateAverageWeaponDamage(spell.MeleeAttackPower()) / weapon.SwingSpeed
+			baseDamage := 3.0 * (weapon.CalculateAverageWeaponDamage(spell.MeleeAttackPower()) / weapon.SwingSpeed)
 
 			for idx := range results {
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

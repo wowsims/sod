@@ -1,9 +1,10 @@
 package protection
 
 import (
+	"testing"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"testing"
 )
 
 func init() {
@@ -14,6 +15,7 @@ func TestProtection(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class:      proto.Class_ClassPaladin,
+			Phase:      4,
 			Level:      60,
 			Race:       proto.Race_RaceHuman,
 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
@@ -32,40 +34,10 @@ func TestProtection(t *testing.T) {
 	}))
 }
 
-func BenchmarkSimulate(b *testing.B) {
-	core.Each([]*proto.RaidSimRequest{
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceHuman,
-					Class:         proto.Class_ClassPaladin,
-					Level:         60,
-					TalentsString: Phase4ProtTalents,
-					Equipment:     core.GetGearSet("../../../ui/protection_paladin/gear_sets", "p4prot").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/protection_paladin/apls", "p4prot").Rotation,
-					Consumes:      Phase4Consumes.Consumes,
-					Spec:          PlayerOptionsSealofMartyrdom,
-					Buffs:         core.FullIndividualBuffsPhase4,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase4,
-				core.FullDebuffsPhase4,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(60),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
-}
-
 var Phase4ProtTalents = "-053020335001551-0500535"
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:     proto.Potions_MajorManaPotion,
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
@@ -99,15 +71,18 @@ var PlayerOptionsSealofRighteousness = &proto.Player_ProtectionPaladin{
 }
 
 var optionsSealOfCommand = &proto.PaladinOptions{
-	PrimarySeal: proto.PaladinSeal_Command,
+	PrimarySeal:   proto.PaladinSeal_Command,
+	RighteousFury: true,
 }
 
 var optionsSealOfMartyrdom = &proto.PaladinOptions{
-	PrimarySeal: proto.PaladinSeal_Martyrdom,
+	PrimarySeal:   proto.PaladinSeal_Martyrdom,
+	RighteousFury: true,
 }
 
 var optionsSealOfRighteousness = &proto.PaladinOptions{
-	PrimarySeal: proto.PaladinSeal_Righteousness,
+	PrimarySeal:   proto.PaladinSeal_Righteousness,
+	RighteousFury: true,
 }
 
 var ItemFilters = core.ItemFilter{

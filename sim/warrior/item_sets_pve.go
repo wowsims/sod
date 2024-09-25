@@ -88,7 +88,7 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 						spell.Cost.FlatModifier += 10
 					}
 				},
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if slices.Contains(affectedSpells, spell) {
 						aura.Deactivate(sim)
 					}
@@ -104,29 +104,31 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// For 5 sec after leaving a stance, you can use abilities requiring that stance as if you were still in that stance.
+		// For 15 sec after leaving a stance, you can use abilities requiring that stance as if you were still in that stance.
 		4: func(agent core.Agent) {
 			warrior := agent.(WarriorAgent).GetWarrior()
+
+			duration := time.Second * 15
 
 			battleStanceAura := warrior.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 457706},
 				Label:    "Echoes of Battle Stance",
-				Duration: time.Second * 5,
+				Duration: duration,
 			})
 			defStanceAura := warrior.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 457699},
 				Label:    "Echoes of Defensive Stance",
-				Duration: time.Second * 5,
+				Duration: duration,
 			})
 			berserkStanceAura := warrior.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 457708},
 				Label:    "Echoes of Berserker Stance",
-				Duration: time.Second * 5,
+				Duration: duration,
 			})
 			gladStanceAura := warrior.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 457819},
 				Label:    "Echoes of Gladiator Stance",
-				Duration: time.Second * 5,
+				Duration: duration,
 			})
 
 			// We're assuming these will be exclusive but TBD
@@ -160,10 +162,12 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			warrior := agent.(WarriorAgent).GetWarrior()
 
+			duration := time.Second * 15
+
 			battleAura := warrior.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 457816},
 				Label:    "Battle Forecast",
-				Duration: time.Second * 10,
+				Duration: duration,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.10
 				},
@@ -174,7 +178,7 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 			defenseAura := warrior.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 457814},
 				Label:    "Defense Forecast",
-				Duration: time.Second * 10,
+				Duration: duration,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					warrior.PseudoStats.DamageTakenMultiplier *= 0.90
 				},
@@ -185,7 +189,7 @@ var ItemSetUnstoppableMight = core.NewItemSet(core.ItemSet{
 			berserkAura := warrior.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 457817},
 				Label:    "Berserker Forecast",
-				Duration: time.Second * 10,
+				Duration: duration,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					warrior.AddStatDynamic(sim, stats.MeleeCrit, 10*core.CritRatingPerCritChance)
 				},
@@ -266,15 +270,22 @@ var ItemSetUnstoppableWrath = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// Your Whirlwind deals 10% more damage and can be used in all stances.
+		// Increases the damage of Heroic Strike, Overpower, and Slam by 25%
 		4: func(agent core.Agent) {
 			warrior := agent.(WarriorAgent).GetWarrior()
 			warrior.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Warrior - Damage 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					if warrior.Whirlwind != nil {
-						warrior.Whirlwind.DamageMultiplier *= 1.10
-						warrior.Whirlwind.StanceMask = AnyStance
+					warrior.HeroicStrike.DamageMultiplier *= 1.25
+					warrior.Overpower.DamageMultiplier *= 1.25
+					if warrior.SlamMH != nil {
+						warrior.SlamMH.DamageMultiplier *= 1.25
+					}
+					if warrior.SlamOH != nil {
+						warrior.SlamMH.DamageMultiplier *= 1.25
+					}
+					if warrior.QuickStrike != nil {
+						warrior.QuickStrike.DamageMultiplier *= 1.25
 					}
 				},
 			})
@@ -358,8 +369,10 @@ var ItemSetImmoveableWrath = core.NewItemSet(core.ItemSet{
 				ProcMask:    core.ProcMaskMeleeMHSpecial, // Retaliate and Retaliation count as normal yellow hits that can proc things
 				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
+				CritDamageBonus:  warrior.impale(),
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
+				BonusCoefficient: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					spell.CalcAndDealDamage(sim, target, warrior.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()), spell.OutcomeMeleeSpecialNoBlockDodgeParry)

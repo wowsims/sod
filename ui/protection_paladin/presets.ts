@@ -22,10 +22,11 @@ import {
 	WeaponImbue,
 	ZanzaBuff,
 } from '../core/proto/common.js';
-import { PaladinAura, PaladinSeal, PaladinOptions as ProtectionPaladinOptions } from '../core/proto/paladin.js';
+import { PaladinAura, PaladinSeal, Blessings, PaladinOptions as ProtectionPaladinOptions } from '../core/proto/paladin.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import APLP4ProtJson from './apls/p4prot.apl.json';
 import Phase4ProtGearJson from './gear_sets/p4prot.gear.json';
+import Phase5ProtGearJson from './gear_sets/p5prot.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -36,13 +37,14 @@ import Phase4ProtGearJson from './gear_sets/p4prot.gear.json';
 ///////////////////////////////////////////////////////////////////////////
 
 export const Phase4ProtGear = PresetUtils.makePresetGear('P4 Prot', Phase4ProtGearJson);
+export const Phase5ProtGear = PresetUtils.makePresetGear('P5 Prot', Phase5ProtGearJson);
 
 export const GearPresets = {
 	[Phase.Phase1]: [],
 	[Phase.Phase2]: [],
 	[Phase.Phase3]: [],
-	[Phase.Phase4]: [Phase4ProtGear],
-	[Phase.Phase5]: [],
+	[Phase.Phase4]: [Phase4ProtGear, Phase5ProtGear],
+	[Phase.Phase5]: [Phase4ProtGear, Phase5ProtGear],
 };
 
 export const DefaultGear = GearPresets[Phase.Phase4][0];
@@ -96,6 +98,8 @@ export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 export const DefaultOptions = ProtectionPaladinOptions.create({
 	aura: PaladinAura.SanctityAura,
 	primarySeal: PaladinSeal.Martyrdom,
+	personalBlessing: Blessings.BlessingOfSanctuary,
+	righteousFury: true,
 });
 
 export const DefaultConsumes = Consumes.create({
@@ -109,9 +113,7 @@ export const DefaultConsumes = Consumes.create({
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	fillerExplosive: Explosive.ExplosiveUnknown,
 	mainHandImbue: WeaponImbue.WildStrikes,
-	miscConsumes: {
-		jujuEmber: true,
-	},
+
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
@@ -130,6 +132,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	spiritOfZandalar: true,
 	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });
@@ -143,7 +146,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	sanctityAura: true,
 	leaderOfThePack: true,
-	demonicPact: 80,
+	demonicPact: 110,
 	aspectOfTheLion: true,
 	moonkinAura: true,
 	vampiricTouch: 300,
@@ -165,6 +168,7 @@ export const DefaultDebuffs = Debuffs.create({
 });
 
 export const OtherDefaults = {
+	distanceFromTarget: 5, // Max melee range
 	profession1: Profession.Blacksmithing,
 	profession2: Profession.Engineering,
 };

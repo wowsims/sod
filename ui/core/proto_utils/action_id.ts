@@ -700,6 +700,7 @@ const spellIDsToShowBuffs = new Set([
 	20301, // https://www.wowhead.com/classic/spell=20301/judgement-of-the-crusader
 	20302, // https://www.wowhead.com/classic/spell=20302/judgement-of-the-crusader
 	20303, // https://www.wowhead.com/classic/spell=20303/judgement-of-the-crusader
+	23060, // https://www.wowhead.com/classic/spell=23060/battle-squawk
 	23736, // https://www.wowhead.com/classic/spell=23736/sayges-dark-fortune-of-agility
 	23737, // https://www.wowhead.com/classic/spell=23737/sayges-dark-fortune-of-stamina
 	23738, // https://www.wowhead.com/classic/spell=23738/sayges-dark-fortune-of-spirit
@@ -728,7 +729,8 @@ export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/
 
 const petNameToActionId: Record<string, ActionId> = {
 	'Eye of the Void': ActionId.fromSpellId(402789),
-	'Frozen Orb': ActionId.fromSpellId(440802),
+	'Frozen Orb 1': ActionId.fromSpellId(440802),
+	'Frozen Orb 2': ActionId.fromSpellId(440802),
 	Homunculi: ActionId.fromSpellId(402799),
 	Shadowfiend: ActionId.fromSpellId(401977),
 };
@@ -751,8 +753,7 @@ const petNameToIcon: Record<string, string> = {
 	Eskhandar: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_tiger_01.jpg',
 	Felguard: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
 	Felhunter: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
-	'Spirit Wolf 1': 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg',
-	'Spirit Wolf 2': 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg',
+	'Spirit Wolves': 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg',
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',

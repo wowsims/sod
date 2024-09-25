@@ -40,7 +40,7 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHitNoHitCounter)
 			if result.Landed() {
 				dot := spell.Dot(target)
 				dot.Spell = spell
@@ -63,6 +63,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2) && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 
 	rogue.CrimsonTempest = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_RogueCrimsonTempest,
 		ActionID:     core.ActionID{SpellID: 412096},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,

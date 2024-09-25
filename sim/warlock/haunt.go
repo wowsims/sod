@@ -18,7 +18,7 @@ func (warlock *Warlock) registerHauntSpell() {
 
 	actionID := core.ActionID{SpellID: 403501}
 
-	spellCoeff := 0.714
+	spellCoeff := 0.429
 	baseLowDamage := warlock.baseRuneAbilityDamage() * 2.51
 	baseHighDamage := warlock.baseRuneAbilityDamage() * 2.95
 
@@ -72,5 +72,6 @@ func (warlock *Warlock) registerHauntSpell() {
 				}
 			})
 		},
+		RelatedAuras: []core.AuraArray{warlock.HauntDebuffAuras},
 	})
 }

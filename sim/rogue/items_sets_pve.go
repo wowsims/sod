@@ -157,9 +157,8 @@ var ItemSetNightSlayerThrill = core.NewItemSet(core.ItemSet{
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					core.Each(affectedSpells, func(spell *core.Spell) { spell.Cost.Multiplier += 100 })
 				},
-				//Poisoned Knife is ignored
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if aura.RemainingDuration(sim) == aura.Duration || spell.DefaultCast.Cost == 0 || spell.SpellCode == SpellCode_RoguePoisonedKnife {
+					if aura.RemainingDuration(sim) == aura.Duration || spell.DefaultCast.Cost == 0 {
 						return
 					}
 					aura.Deactivate(sim)

@@ -40,7 +40,8 @@ func (paladin *Paladin) ApplyTalents() {
 	paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += core.SpellCritRatingPerCritChance * float64(paladin.Talents.HolyPower)
 
 	paladin.applyRedoubt()
-	// paladin.applyReckoning()
+	paladin.applyReckoning()
+	paladin.applyImprovedLayOnHands()
 }
 
 func (paladin *Paladin) improvedSoR() float64 {
@@ -92,47 +93,26 @@ func (paladin *Paladin) applyRedoubt() {
 	})
 }
 
-// func (paladin *Paladin) applyReckoning() {
-// 	if paladin.Talents.Reckoning == 0 {
-// 		return
-// 	}
+func (paladin *Paladin) applyReckoning() {
 
-// 	actionID := core.ActionID{SpellID: 20182}
-// 	procChance := 0.02 * float64(paladin.Talents.Reckoning)
+	if paladin.Talents.Reckoning == 0 {
+		return
+	}
 
-// 	var reckoningSpell *core.Spell
+	procID := core.ActionID{SpellID: 20178} // Reckoning Proc ID
+	procChance := 0.2 * float64(paladin.Talents.Reckoning)
 
-// 	procAura := paladin.RegisterAura(core.Aura{
-// 		Label:     "Reckoning Proc",
-// 		ActionID:  actionID,
-// 		Duration:  time.Second * 8,
-// 		MaxStacks: 4,
-// 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-// 			config := *paladin.AutoAttacks.MHConfig()
-// 			config.ActionID = actionID
-// 			reckoningSpell = paladin.GetOrRegisterSpell(config)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if spell == paladin.AutoAttacks.MHAuto() {
-// 				reckoningSpell.Cast(sim, result.Target)
-// 			}
-// 		},
-// 	})
-
-// 	paladin.RegisterAura(core.Aura{
-// 		Label:    "Reckoning",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.Landed() && sim.RandomFloat("Reckoning") < procChance {
-// 				procAura.Activate(sim)
-// 				procAura.SetStacks(sim, 4)
-// 			}
-// 		},
-// 	})
-// }
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:       "Reckoning Crit Trigger",
+		Callback:   core.CallbackOnSpellHitTaken,
+		Outcome:    core.OutcomeCrit,
+		ProcMask:   core.ProcMaskMeleeOrRanged,
+		ProcChance: procChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
+		},
+	})
+}
 
 func (paladin *Paladin) getWeaponSpecializationModifier() float64 {
 	switch paladin.MainHand().HandType {
@@ -227,4 +207,30 @@ func (paladin *Paladin) applyVindication() {
 			}
 		},
 	})
+}
+
+func (paladin *Paladin) applyImprovedLayOnHands() {
+
+	if paladin.Talents.ImprovedLayOnHands > 0 {
+
+		armorMultiplier := []float64{1, 1.15, 1.3}[paladin.Talents.ImprovedLayOnHands]
+		auraID := []int32{0, 20233, 20236}[paladin.Talents.ImprovedLayOnHands]
+
+		paladin.RegisterAura(core.Aura{
+			Label:    "Lay on Hands",
+			ActionID: core.ActionID{SpellID: auraID},
+			Duration: time.Minute * 2,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				paladin.ApplyDynamicEquipScaling(sim, stats.Armor, armorMultiplier)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				paladin.RemoveDynamicEquipScaling(sim, stats.Armor, armorMultiplier)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinLayOnHands {
+					aura.Activate(sim)
+				}
+			},
+		})
+	}
 }

@@ -20,6 +20,13 @@ func (mage *Mage) applyArcaneTalents() {
 	mage.registerPresenceOfMindCD()
 	mage.registerArcanePowerCD()
 
+	// For talents that benefit both the mage and frozen orbs
+	units := []*core.Unit{&mage.Unit}
+	// Frozen Orb also benefits
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
+	}
+
 	// Arcane Subtlety
 	if mage.Talents.ArcaneSubtlety > 0 {
 		threatMultiplier := 1 - .20*float64(mage.Talents.ArcaneSubtlety)
@@ -58,12 +65,14 @@ func (mage *Mage) applyArcaneTalents() {
 		bonusDamageMultiplierAdditive := .01 * float64(mage.Talents.ArcaneInstability)
 		bonusCritRating := 1 * float64(mage.Talents.ArcaneInstability) * core.SpellCritRatingPerCritChance
 
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagMage) {
-				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
-				spell.BonusCritRating += bonusCritRating
-			}
-		})
+		for _, unit := range units {
+			unit.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.Flags.Matches(SpellFlagMage) {
+					spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
+					spell.BonusCritRating += bonusCritRating
+				}
+			})
+		}
 	}
 }
 
@@ -111,34 +120,50 @@ func (mage *Mage) applyFrostTalents() {
 	mage.registerIceBarrierSpell()
 	mage.applyWintersChill()
 
+	// For talents that benefit both the mage and frozen orbs
+	units := []*core.Unit{&mage.Unit}
+	// Frozen Orb also benefits
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
+	}
+
 	// Elemental Precision
 	if mage.Talents.ElementalPrecision > 0 {
 		bonusHit := 2 * float64(mage.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagMage) && (spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost)) {
-				spell.BonusHitRating += bonusHit
-			}
-		})
+
+		for _, unit := range units {
+			unit.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.Flags.Matches(SpellFlagMage) && (spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost)) {
+					spell.BonusHitRating += bonusHit
+				}
+			})
+		}
 	}
 
 	// Ice Shards
 	if mage.Talents.IceShards > 0 {
 		critBonus := .20 * float64(mage.Talents.IceShards)
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				spell.CritDamageBonus += critBonus
-			}
-		})
+
+		for _, unit := range units {
+			unit.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
+					spell.CritDamageBonus += critBonus
+				}
+			})
+		}
 	}
 
 	// Piercing Ice
 	if mage.Talents.PiercingIce > 0 {
 		bonusDamageMultiplierAdditive := 0.02 * float64(mage.Talents.PiercingIce)
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
-			}
-		})
+
+		for _, unit := range units {
+			unit.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
+					spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
+				}
+			})
+		}
 	}
 
 	// Frost Channeling
@@ -280,14 +305,25 @@ func (mage *Mage) registerArcanePowerCD() {
 	if !mage.Talents.ArcanePower {
 		return
 	}
+
+	// For talents that benefit both the mage and frozen orbs
+	units := []*core.Unit{&mage.Unit}
+	// Frozen Orb also benefits
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
+	}
+
 	actionID := core.ActionID{SpellID: 12042}
 
-	var affectedSpells []*core.Spell
-	mage.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagMage) {
-			affectedSpells = append(affectedSpells, spell)
-		}
-	})
+	affectedSpells := []*core.Spell{}
+
+	for _, unit := range units {
+		unit.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagMage) {
+				affectedSpells = append(affectedSpells, spell)
+			}
+		})
+	}
 
 	mage.ArcanePowerAura = mage.RegisterAura(core.Aura{
 		Label:    "Arcane Power",

@@ -114,7 +114,7 @@ func (druid *Druid) registerSwipeCatSpell() {
 				if i == 0 && result.Landed() {
 					druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 				}
-				aoeTarget = sim.Environment.NextTargetUnit(target)
+				aoeTarget = sim.Environment.NextTargetUnit(aoeTarget)
 			}
 		},
 	})

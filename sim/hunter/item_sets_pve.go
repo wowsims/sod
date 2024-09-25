@@ -199,26 +199,31 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
 
+			affectedSpells := make(map[*core.Spell]bool)
+
 			procAura := hunter.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 467331},
 				Label:    "Clever Strikes",
 				Duration: time.Second * 5,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.MeleeSpells {
-						if spell.SpellCode != SpellCode_HunterRaptorStrikeHit {
-							spell.DamageMultiplier *= 1.20
+						if spell.SpellCode != SpellCode_HunterRaptorStrikeHit && spell.SpellCode != SpellCode_HunterRaptorStrike && spell.SpellCode != SpellCode_HunterWingClip {
+							affectedSpells[spell] = true
 						}
+					}
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					for spell := range affectedSpells {
+						spell.DamageMultiplier *= 1.20
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range hunter.MeleeSpells {
-						if spell.SpellCode != SpellCode_HunterRaptorStrikeHit {
-							spell.DamageMultiplier /= 1.20
-						}
+					for spell := range affectedSpells {
+						spell.DamageMultiplier /= 1.20
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if !spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) || spell.SpellCode == SpellCode_HunterRaptorStrike {
+					if !affectedSpells[spell] {
 						return
 					}
 
@@ -228,23 +233,16 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Hunter - Melee 2P Bonus Trigger",
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell.SpellCode == SpellCode_HunterRaptorStrike {
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
 						procAura.Activate(sim)
 					}
 				},
 			}))
 		},
-		// OLD: Increases main hand weapon damage by 5%.
-		// NEW: Increases damage dealt by your main hand weapon with Raptor Strike and Wyvern Strike by 20%.
+		// Increases damage dealt by your main hand weapon with Raptor Strike and Wyvern Strike by 20%.
 		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-
-			// hunter.OnSpellRegistered(func(spell *core.Spell) {
-			// 	if spell.ProcMask.Matches(core.ProcMaskMeleeMH) {
-			// 		spell.DamageMultiplier *= 1.05
-			// 	}
-			// })
 
 			hunter.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_HunterWyvernStrike || (spell.SpellCode == SpellCode_HunterRaptorStrikeHit && spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial)) {
@@ -343,6 +341,7 @@ var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.AddStat(stats.AttackPower, 20)
+			c.AddStat(stats.RangedAttackPower, 20)
 		},
 		// Increases the Attack Power your Beast pet gains from your attributes by 20%.
 		3: func(agent core.Agent) {

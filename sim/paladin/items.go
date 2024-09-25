@@ -17,6 +17,8 @@ const (
 	LibramDiscardedTenetsOfTheSilverHand = 209574
 	LibramOfBenediction                  = 215435
 	LibramOfDraconicDestruction          = 221457
+	LibramOfTheDevoted                   = 228174
+	LibramOfAvenging                     = 232421
 	Truthbearer2H                        = 229749
 	Truthbearer1H                        = 229806
 	HammerOfTheLightbringer              = 230003
@@ -25,6 +27,7 @@ const (
 	HerosBrand                           = 231328
 	ZandalarFreethinkersBreastplate      = 231329
 	ZandalarFreethinkersBelt             = 231330
+	LibramOfWrath                        = 232420
 )
 
 func init() {
@@ -187,6 +190,72 @@ func init() {
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})
+	})
+
+	//https://www.wowhead.com/classic/item=232420/libram-of-wrath
+	//Equip: Your Holy Shock spell reduces the cast time and mana cost of your next Holy Wrath spell cast within 15 sec by 20%, and increases its damage by 20%. Stacking up to 5 times.
+	core.NewItemEffect(LibramOfWrath, func(agent core.Agent) {
+		paladin := agent.(PaladinAgent).GetPaladin()
+		holyWrathSpells := []*core.Spell{}
+
+		buffAura := paladin.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 470246},
+			Label:     "Libram Of Wrath Buff",
+			Duration:  time.Second * 15,
+			MaxStacks: 5,
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				holyWrathSpells = core.FilterSlice(paladin.holyWrath, func(spell *core.Spell) bool { return spell != nil })
+			},
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+				core.Each(holyWrathSpells, func(spell *core.Spell) {
+					spell.CastTimeMultiplier += (0.2 * float64(oldStacks))
+					spell.Cost.Multiplier += int32(100.0 * (0.2 * float64(oldStacks)))
+					spell.DamageMultiplier -= (0.2 * float64(oldStacks))
+
+					spell.CastTimeMultiplier -= (0.2 * float64(newStacks))
+					spell.Cost.Multiplier -= int32(100.0 * (0.2 * float64(newStacks)))
+					spell.DamageMultiplier += (0.2 * float64(newStacks))
+
+				})
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinHolyWrath {
+					aura.Deactivate(sim)
+				}
+			},
+		})
+
+		paladin.RegisterAura(core.Aura{
+			Label:    "Libram Of Wrath Trigger",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+
+				aura.Activate(sim)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinHolyShock {
+					buffAura.Activate(sim)
+					buffAura.AddStack(sim)
+				}
+			},
+		})
+	})
+
+	core.NewItemEffect(LibramOfTheDevoted, func(agent core.Agent) {
+		paladin := agent.(PaladinAgent).GetPaladin()
+
+		actionID := core.ActionID{SpellID: 461309}
+		devotedMetrics := paladin.NewManaMetrics(actionID)
+
+		core.MakePermanent(paladin.RegisterAura(core.Aura{
+			Label: "Libram of the Devoted Trigger",
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.DidBlock() {
+					amount := paladin.MaxMana() * 0.03
+					paladin.AddMana(sim, amount, devotedMetrics)
+				}
+			},
+		}))
 	})
 }
 

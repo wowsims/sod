@@ -53,25 +53,29 @@ func (warrior *Warrior) applyAngerManagement() {
 }
 
 func (warrior *Warrior) applyTwoHandedWeaponSpecialization() {
-	if warrior.Talents.TwoHandedWeaponSpecialization == 0 {
-		return
-	}
-	if warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
+	if warrior.Talents.TwoHandedWeaponSpecialization == 0 || warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
 		return
 	}
 
-	warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.01*float64(warrior.Talents.TwoHandedWeaponSpecialization)
+	multiplier := 1 + 0.01*float64(warrior.Talents.TwoHandedWeaponSpecialization)
+	warrior.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.BonusCoefficient > 0 {
+			spell.DamageMultiplier *= multiplier
+		}
+	})
 }
 
 func (warrior *Warrior) applyOneHandedWeaponSpecialization() {
-	if warrior.Talents.OneHandedWeaponSpecialization == 0 {
-		return
-	}
-	if warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+	if warrior.Talents.OneHandedWeaponSpecialization == 0 || warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
 		return
 	}
 
-	warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(warrior.Talents.OneHandedWeaponSpecialization)
+	multiplier := 1 + 0.02*float64(warrior.Talents.OneHandedWeaponSpecialization)
+	warrior.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.BonusCoefficient > 0 {
+			spell.DamageMultiplier *= multiplier
+		}
+	})
 }
 
 func (warrior *Warrior) applyWeaponSpecializations() {
@@ -189,9 +193,8 @@ func (warrior *Warrior) applyDualWieldSpecialization() {
 	}
 
 	multiplier := 1 + 0.05*float64(warrior.Talents.DualWieldSpecialization)
-	warrior.AutoAttacks.OHConfig().DamageMultiplier *= multiplier
 	warrior.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_WarriorSlamOH || spell.SpellCode == SpellCode_WarriorWhirlwindOH {
+		if spell.ProcMask.Matches(core.ProcMaskMeleeOH) && spell.BonusCoefficient > 0 {
 			spell.DamageMultiplier *= multiplier
 		}
 	})
@@ -307,12 +310,8 @@ func (warrior *Warrior) applyFlurry() {
 	// 2 => 3
 	warrior.makeFlurryConsumptionTrigger(talentAura)
 
-	warrior.RegisterAura(core.Aura{
-		Label:    "Flurry Proc Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Flurry Proc Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeCrit) {
 				talentAura.Activate(sim)
@@ -322,7 +321,7 @@ func (warrior *Warrior) applyFlurry() {
 				return
 			}
 		},
-	})
+	}))
 }
 
 // These are separated out because of the T1 Shaman Tank 2P that can proc Flurry separately from the talent.

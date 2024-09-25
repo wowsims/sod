@@ -30,6 +30,8 @@ const (
 	KnightLieutenantsDragonhideGrips = 227183
 	WushoolaysCharmOfNature          = 231280
 	PristineEnchantedSouthSeasKelp   = 231316
+	IdolOfCelestialFocus             = 232390
+	IdolOfFelineFocus                = 232391
 )
 
 func init() {
@@ -66,6 +68,7 @@ func init() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			BonusCoefficient: 0.10,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for idx := range damageResults {
@@ -88,6 +91,7 @@ func init() {
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+			BonusCoefficient: 0.10,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for idx := range healResults {
@@ -101,27 +105,63 @@ func init() {
 			},
 		})
 
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Second * 15,
-		}
-
 		core.MakePermanent(character.RegisterAura(core.Aura{
 			Label: "Gla'sir Damage Trigger",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && icd.IsReady(sim) && sim.Proc(.15, "Gla'sir Damage") {
+			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Damage") {
 					damageSpell.Cast(sim, result.Target)
-					icd.Use(sim)
+				}
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Damage") {
+					damageSpell.Cast(sim, result.Target)
 				}
 			},
 		}))
 
 		core.MakePermanent(character.RegisterAura(core.Aura{
 			Label: "Gla'sir Heal Trigger",
-			OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && icd.IsReady(sim) && sim.Proc(.15, "Gla'sir Heal") {
+			OnPeriodicHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Heal") {
 					healSpell.Cast(sim, result.Target)
-					icd.Use(sim)
+				}
+			},
+			OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Heal") {
+					healSpell.Cast(sim, result.Target)
+				}
+			},
+		}))
+	})
+
+	// https://www.wowhead.com/classic/item=232390/idol-of-celestial-focus
+	// Equip: Increases the damage done by Starfall by 10%, but decreases its radius by 50%.
+	core.NewItemEffect(IdolOfCelestialFocus, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+
+		druid.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_DruidStarfallTick || spell.SpellCode == SpellCode_DruidStarfallSplash {
+				spell.DamageMultiplier *= 1.10
+			}
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=232391/idol-of-feline-focus
+	// Equip: Your Ferocious Bite ability no longer converts additional energy into damage, and refunds 30 energy on a Dodge, Miss, or Parry.
+	core.NewItemEffect(IdolOfFelineFocus, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+		druid.FerociousBiteExcessEnergyOverride = true
+
+		actionID := core.ActionID{SpellID: 470270}
+
+		energyMetrics := druid.NewEnergyMetrics(actionID)
+
+		core.MakePermanent(druid.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Idol of Feline Focus",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.SpellCode == SpellCode_DruidFerociousBite && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeMiss|core.OutcomeParry) {
+					druid.AddEnergy(sim, 30, energyMetrics)
 				}
 			},
 		}))
@@ -278,7 +318,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=231280/wushoolays-charm-of-nature
-	// Use: Aligns the Druid with nature, increasing the damage done by spells by 15%, improving heal effects by 15%, and increasing the critical strike chance of spells by 10% for 20 sec.
+	// Use: Aligns the Druid with nature, increasing the damage done by spells by 10%, improving heal effects by 10%, and increasing the critical strike chance of spells by 10% for 20 sec.
 	// (2 Min Cooldown)
 	core.NewItemEffect(WushoolaysCharmOfNature, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -290,12 +330,12 @@ func init() {
 			Label:    "Aligned with Nature",
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.15)
+				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.10)
 				// TODO: healing dealt multiplier?
 				character.AddStatDynamic(sim, stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.15)
+				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.10)
 				// TODO: healing dealt multiplier?
 				character.AddStatDynamic(sim, stats.SpellCrit, -10*core.SpellCritRatingPerCritChance)
 			},

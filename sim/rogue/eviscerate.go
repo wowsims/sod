@@ -39,6 +39,7 @@ func (rogue *Rogue) registerEviscerate() {
 	cutToTheChase := rogue.HasRune(proto.RogueRune_RuneCutToTheChase)
 
 	rogue.Eviscerate = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_RogueEviscerate,
 		ActionID:     core.ActionID{SpellID: spellID},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeMelee,

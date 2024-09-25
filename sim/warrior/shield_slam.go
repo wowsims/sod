@@ -33,10 +33,10 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial, // TODO really?
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   20 - warrior.FocusedRageDiscount,
+			Cost:   20,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

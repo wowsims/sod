@@ -1,4 +1,4 @@
-import { Class, ItemSlot, WeaponImbue, WeaponType } from '../../proto/common.js';
+import { Class, ItemSlot, WeaponImbue } from '../../proto/common.js';
 import { isWeapon } from '../../proto_utils/utils';
 import { ConsumableInputConfig } from './consumables';
 
@@ -16,7 +16,12 @@ export const RockbiterWeaponImbue = (slot: ItemSlot): ConsumableInputConfig<Weap
 				{ id: 16316, minLevel: 54 },
 			]),
 		value: WeaponImbue.RockbiterWeapon,
-		showWhen: player => player.isClass(Class.ClassShaman) && isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			if (!player.isClass(Class.ClassShaman)) return false;
+
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 
@@ -32,7 +37,11 @@ export const FlametongueWeaponImbue = (slot: ItemSlot): ConsumableInputConfig<We
 				{ id: 16342, minLevel: 56 },
 			]),
 		value: WeaponImbue.FlametongueWeapon,
-		showWhen: player => player.isClass(Class.ClassShaman) && isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			if (!player.isClass(Class.ClassShaman)) return false;
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 
@@ -47,7 +56,11 @@ export const FrostbrandWeaponImbue = (slot: ItemSlot): ConsumableInputConfig<Wea
 				{ id: 16356, minLevel: 58 },
 			]),
 		value: WeaponImbue.FrostbrandWeapon,
-		showWhen: player => player.isClass(Class.ClassShaman) && isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			if (!player.isClass(Class.ClassShaman)) return false;
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };
 
@@ -61,6 +74,10 @@ export const WindfuryWeaponImbue = (slot: ItemSlot): ConsumableInputConfig<Weapo
 				{ id: 16362, minLevel: 60 },
 			]),
 		value: WeaponImbue.WindfuryWeapon,
-		showWhen: player => player.isClass(Class.ClassShaman) && isWeapon(player.getEquippedItem(slot)?._item?.weaponType ?? WeaponType.WeaponTypeUnknown),
+		showWhen: player => {
+			if (!player.isClass(Class.ClassShaman)) return false;
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
 	};
 };

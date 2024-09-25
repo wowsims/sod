@@ -277,7 +277,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskWeaponProc,
+		ProcMask:    core.ProcMaskSpellDamageProc,
 		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagRoguePoison | SpellFlagCarnage,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
@@ -363,7 +363,7 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 	// 	ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
 	// 	SpellSchool: core.SpellSchoolNature,
 	// 	DefenseType: core.DefenseTypeMagic,
-	// 	ProcMask:    core.ProcMaskWeaponProc,
+	// 	ProcMask:    core.ProcMaskSpellDamageProc,
 	// 	Flags:       SpellFlagCarnage | core.SpellFlagPoison | SpellFlagRoguePoison,
 
 	// 	DamageMultiplier: rogue.getPoisonDamageMultiplier(),
@@ -443,7 +443,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskWeaponProc,
+		ProcMask:    core.ProcMaskSpellDamageProc,
 		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagCarnage | SpellFlagRoguePoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
@@ -490,7 +490,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		ActionID:    core.ActionID{SpellID: 13219, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskWeaponProc,
+		ProcMask:    core.ProcMaskSpellDamageProc,
 		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagRoguePoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
