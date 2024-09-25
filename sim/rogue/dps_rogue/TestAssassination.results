@@ -99,8 +99,13 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestAssassination-Phase1-Lvl25-StatWeights-Default"
  value: {
+<<<<<<< HEAD
   weights: 0.30636
   weights: 0.51894
+=======
+  weights: 0.30671
+  weights: 0.51635
+>>>>>>> 4b5b2b329... WIP
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +121,15 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+<<<<<<< HEAD
   weights: 0.27851
   weights: 2.52031
   weights: 2.19659
+=======
+  weights: 0.27882
+  weights: 2.44347
+  weights: 2.20513
+>>>>>>> 4b5b2b329... WIP
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +159,13 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestAssassination-Phase2-Lvl40-StatWeights-Default"
  value: {
+<<<<<<< HEAD
   weights: 0.37853
   weights: 0.62929
+=======
+  weights: 0.37642
+  weights: 0.63155
+>>>>>>> 4b5b2b329... WIP
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +181,15 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+<<<<<<< HEAD
   weights: 0.34412
   weights: 5.18188
   weights: 4.2533
+=======
+  weights: 0.3422
+  weights: 5.13646
+  weights: 4.25831
+>>>>>>> 4b5b2b329... WIP
   weights: 0
   weights: 0
   weights: 0
@@ -197,15 +219,20 @@ stat_weights_results: {
 dps_results: {
  key: "TestAssassination-Phase1-Lvl25-AllItems-DarkmantleArmor"
  value: {
-  dps: 145.02684
-  tps: 102.96905
+  dps: 144.79724
+  tps: 102.80604
  }
 }
 dps_results: {
  key: "TestAssassination-Phase1-Lvl25-Average-Default"
  value: {
+<<<<<<< HEAD
   dps: 273.75018
   tps: 194.36263
+=======
+  dps: 273.93883
+  tps: 194.49657
+>>>>>>> 4b5b2b329... WIP
  }
 }
 dps_results: {
@@ -295,22 +322,32 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
+<<<<<<< HEAD
   dps: 261.66137
   tps: 185.77957
+=======
+  dps: 262.42642
+  tps: 186.32276
+>>>>>>> 4b5b2b329... WIP
  }
 }
 dps_results: {
  key: "TestAssassination-Phase2-Lvl40-AllItems-DarkmantleArmor"
  value: {
-  dps: 207.55559
-  tps: 147.36447
+  dps: 207.17383
+  tps: 147.09342
  }
 }
 dps_results: {
  key: "TestAssassination-Phase2-Lvl40-Average-Default"
  value: {
+<<<<<<< HEAD
   dps: 570.02535
   tps: 404.718
+=======
+  dps: 568.22362
+  tps: 403.43877
+>>>>>>> 4b5b2b329... WIP
  }
 }
 dps_results: {
@@ -400,7 +437,7 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 548.88284
-  tps: 389.70681
+  dps: 548.13568
+  tps: 389.17633
  }
 }

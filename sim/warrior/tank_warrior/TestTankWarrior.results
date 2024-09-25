@@ -50,7 +50,11 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestTankWarrior-Phase4-Lvl60-StatWeights-Default"
  value: {
+<<<<<<< HEAD
   weights: 0.67457
+=======
+  weights: 0.85377
+>>>>>>> 4b5b2b329... WIP
   weights: 0
   weights: 0
   weights: 0
@@ -67,7 +71,11 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+<<<<<<< HEAD
   weights: 0.33114
+=======
+  weights: 0.82621
+>>>>>>> 4b5b2b329... WIP
   weights: 0
   weights: 0
   weights: 0
@@ -78,9 +86,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+<<<<<<< HEAD
   weights: 0.98529
+=======
+  weights: 1.13171
+>>>>>>> 4b5b2b329... WIP
   weights: 0
-  weights: 0.52203
+  weights: 0.52154
   weights: 0
   weights: 0
   weights: 0
@@ -99,50 +111,85 @@ stat_weights_results: {
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
+<<<<<<< HEAD
   dps: 1569.66853
   tps: 3500.40882
+=======
+  dps: 1586.07904
+  tps: 3525.15935
+>>>>>>> 4b5b2b329... WIP
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-BattlegearofHeroism"
  value: {
+<<<<<<< HEAD
   dps: 892.14386
   tps: 1833.87664
+=======
+  dps: 902.35455
+  tps: 1845.64
+>>>>>>> 4b5b2b329... WIP
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
+<<<<<<< HEAD
   dps: 894.06096
   tps: 1873.17485
+=======
+  dps: 904.44731
+  tps: 1890.60573
+>>>>>>> 4b5b2b329... WIP
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
+<<<<<<< HEAD
   dps: 885.04529
   tps: 1854.793
+=======
+  dps: 894.47463
+  tps: 1870.5812
+>>>>>>> 4b5b2b329... WIP
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
+<<<<<<< HEAD
   dps: 894.06096
   tps: 1873.17485
+=======
+  dps: 904.44731
+  tps: 1890.60573
+>>>>>>> 4b5b2b329... WIP
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
+<<<<<<< HEAD
   dps: 1653.52702
   tps: 3604.66287
+=======
+  dps: 1668.33762
+  tps: 3628.69782
+>>>>>>> 4b5b2b329... WIP
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Average-Default"
  value: {
+<<<<<<< HEAD
   dps: 1489.19615
   tps: 3861.70571
+=======
+  dps: 1511.07433
+  tps: 3944.29896
+>>>>>>> 4b5b2b329... WIP
  }
 }
 dps_results: {
@@ -232,7 +279,12 @@ dps_results: {
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
+<<<<<<< HEAD
   dps: 1268.18215
   tps: 3318.34203
+=======
+  dps: 1287.29087
+  tps: 3394.30304
+>>>>>>> 4b5b2b329... WIP
  }
 }

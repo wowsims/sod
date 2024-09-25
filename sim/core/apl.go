@@ -202,6 +202,7 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 
 	if sim.Log != nil && i == 0 {
 		apl.unit.Log(sim, "No available actions!")
+		apl.unit.Log(sim, "GCD ready at : %f ", apl.unit.GCD.ReadyAt())
 	}
 
 	gcdReady := apl.unit.GCD.IsReady(sim)
