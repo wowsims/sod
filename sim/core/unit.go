@@ -1,8 +1,6 @@
 package core
 
 import (
-	"container/heap"
-	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -28,61 +26,6 @@ const (
 
 type DynamicDamageTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult)
 
-type MoveModifier struct {
-	ActionId *ActionID
-	Modifier float64
-}
-type MoveHeap []MoveModifier
-
-func (h MoveHeap) Len() int           { return len(h) }
-func (h MoveHeap) Less(i, j int) bool { return h[i].Modifier > h[j].Modifier }
-func (h MoveHeap) Swap(i, j int)      { h[i], h[j] = h[j], h[i] }
-
-func (h *MoveHeap) Push(x any) {
-	*h = append(*h, x.(MoveModifier))
-}
-
-func (h *MoveHeap) Pop() any {
-	old := *h
-	n := len(old)
-	x := old[n-1]
-	*h = old[0 : n-1]
-	return x
-}
-
-func (h *MoveHeap) ActiveModifier() float64 {
-	heap := *h
-	if len(heap) < 1 {
-		return 1
-	}
-	n := heap[0]
-	return n.Modifier
-}
-
-func (h *MoveHeap) Find(actionId *ActionID) int {
-	for i, mod := range *h {
-		if mod.ActionId == actionId {
-			return i
-		}
-	}
-	return -1
-}
-
-func (unit *Unit) AddMoveSpeedModifier(actionId *ActionID, modifier float64) {
-	moveSpeedMod := MoveModifier{
-		ActionId: actionId,
-		Modifier: modifier,
-	}
-	heap.Push(unit.moveSpeedModifiers, moveSpeedMod)
-}
-
-func (unit *Unit) RemoveMoveSpeedModifier(actionID *ActionID) {
-	index := unit.moveSpeedModifiers.Find(actionID)
-	if index == -1 {
-		return
-	}
-	heap.Remove(unit.moveSpeedModifiers, index)
-}
 
 // Unit is an abstraction of a Character/Boss/Pet/etc, containing functionality
 // shared by all of them.
@@ -117,11 +60,8 @@ type Unit struct {
 	// for calculating spell travel time for certain spells.
 	StartDistanceFromTarget float64
 	DistanceFromTarget      float64
-	Moving                  bool
-	moveAura                *Aura
-	moveSpell               *Spell
-	moveSpeedModifiers      *MoveHeap
-	MoveSpeed               float64
+
+	MovementHandler *MovementHandler
 
 	// Environment in which this Unit exists. This will be nil until after the
 	// construction phase.
@@ -470,68 +410,6 @@ func (unit *Unit) AddBonusRangedHitRating(amount float64) {
 	})
 }
 
-func (unit *Unit) initMovement() {
-	unit.MoveSpeed = 7.0
-	unit.moveAura = unit.GetOrRegisterAura(Aura{
-		Label:     "Movement",
-		ActionID:  ActionID{OtherID: proto.OtherAction_OtherActionMove},
-		Duration:  NeverExpires,
-		MaxStacks: 30,
-
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if unit.IsChanneling(sim) {
-				unit.ChanneledDot.Cancel(sim)
-			}
-			unit.AutoAttacks.CancelAutoSwing(sim)
-			unit.Moving = true
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			unit.Moving = false
-			unit.AutoAttacks.EnableAutoSwing(sim)
-
-			// Simulate the delay from starting attack
-			unit.AutoAttacks.DelayMeleeBy(sim, time.Millisecond*50)
-		},
-	})
-
-	unit.moveSpell = unit.GetOrRegisterSpell(SpellConfig{
-		ActionID: ActionID{OtherID: proto.OtherAction_OtherActionMove},
-		Flags:    SpellFlagMeleeMetrics,
-
-		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			unit.moveAura.Activate(sim)
-			unit.moveAura.SetStacks(sim, int32(unit.DistanceFromTarget))
-		},
-	})
-}
-
-func (unit *Unit) MoveTo(moveRange float64, sim *Simulation) {
-	if moveRange == unit.DistanceFromTarget {
-		return
-	}
-
-	moveDistance := moveRange - unit.DistanceFromTarget
-	moveTicks := math.Abs(moveDistance)
-	moveInterval := moveDistance / float64(moveTicks)
-
-	unit.moveSpell.Cast(sim, unit.CurrentTarget)
-
-	sim.AddPendingAction(NewPeriodicAction(sim, PeriodicActionOptions{
-		Period:          time.Millisecond * time.Duration(1000/(unit.MoveSpeed*unit.moveSpeedModifiers.ActiveModifier())),
-		NumTicks:        int(moveTicks),
-		TickImmediately: false,
-
-		OnAction: func(sim *Simulation) {
-			unit.DistanceFromTarget += moveInterval
-			unit.moveAura.SetStacks(sim, int32(unit.DistanceFromTarget))
-
-			if unit.DistanceFromTarget == moveRange {
-				unit.moveAura.Deactivate(sim)
-			}
-		},
-	}))
-}
-
 func (unit *Unit) SetCurrentPowerBar(bar PowerBarType) {
 	unit.currentPowerBar = bar
 }
@@ -567,8 +445,6 @@ func (unit *Unit) finalize() {
 	unit.initialStats = unit.ApplyStatDependencies(unit.initialStatsWithoutDeps)
 	unit.statsWithoutDeps = unit.initialStatsWithoutDeps
 	unit.stats = unit.initialStats
-
-	unit.moveSpeedModifiers = &MoveHeap{}
 
 	unit.AutoAttacks.finalize()
 
