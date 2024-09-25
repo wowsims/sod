@@ -14,7 +14,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 	level := [4]int{0, 1, 50, 60}[rank]
 
 	// The spell tooltips list 3/4/6 on the respective ranks, but Zirene confirmed it's actually 10%.
-	bleedCoeff := 0.15
+	bleedCoeff := 0.10
 
 	spellConfig := core.SpellConfig{
 		SpellCode:     SpellCode_HunterWyvernStrike,
@@ -40,7 +40,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
+			return hunter.MainHand().HandType == proto.HandType_HandTypeTwoHand && hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
 		CritDamageBonus:  hunter.mortalShots(),

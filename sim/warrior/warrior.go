@@ -10,10 +10,7 @@ import (
 )
 
 const (
-	SpellFlagBattleStance    = core.SpellFlagAgentReserved1
-	SpellFlagDefensiveStance = core.SpellFlagAgentReserved2
-	SpellFlagBerserkerStance = core.SpellFlagAgentReserved3
-	SpellFlagOffensive       = core.SpellFlagAgentReserved4
+	SpellFlagOffensive = core.SpellFlagAgentReserved1
 )
 
 const (

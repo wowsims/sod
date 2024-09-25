@@ -45,7 +45,7 @@ func init() {
 	core.NewItemEffect(ClawOfChromaggus, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		var arcaneChance, fireChance, frostChance, natureChance, shadowChance float64
+		arcaneChance, fireChance, frostChance, natureChance, shadowChance := 0.20, 0.20, 0.20, 0.20, 0.20
 
 		switch character.Class {
 		case proto.Class_ClassDruid:
@@ -54,13 +54,14 @@ func init() {
 			fireChance, frostChance, shadowChance = 0.50/3, 0.50/3, 0.50/3
 		case proto.Class_ClassMage:
 			// The weapon's effect for mage is specialized, based off of selected runes
-			if character.HasRuneById(int32(proto.MageRune_RuneBeltSpellfrostBolt)) {
-				arcaneChance, frostChance = 0.25, 0.25
-				fireChance, natureChance, shadowChance = 0.50/3, 0.50/3, 0.50/3
-			} else if character.HasRuneById(int32(proto.MageRune_RuneBeltFrostfireBolt)) {
+			if character.HasRuneById(int32(proto.MageRune_RuneBeltFrostfireBolt)) {
 				fireChance, frostChance = 0.25, 0.25
 				arcaneChance, natureChance, shadowChance = 0.50/3, 0.50/3, 0.50/3
-			} else if character.HasRuneById(int32(proto.MageRune_RuneCloakArcaneBarrage)) {
+				// Never implemented differently for Spellfrost Bolt
+				// } else if character.HasRuneById(int32(proto.MageRune_RuneBeltSpellfrostBolt)) {
+				// 		arcaneChance, frostChance = 0.25, 0.25
+				// 		fireChance, natureChance, shadowChance = 0.50/3, 0.50/3, 0.50/3
+			} else if character.HasRuneById(int32(proto.MageRune_RuneBeltMissileBarrage)) {
 				arcaneChance = 0.50
 				fireChance, frostChance, natureChance, shadowChance = 0.125, 0.125, 0.125, 0.125
 			}
@@ -73,9 +74,15 @@ func init() {
 			fireChance, natureChance = 0.25, 0.25
 			arcaneChance, frostChance, shadowChance = 0.50/3, 0.50/3, 0.50/3
 		case proto.Class_ClassWarlock:
-			// Assuming 25% Fire, 25% Shadow, 50% divided among the other 3
-			fireChance, shadowChance = 0.25, 0.25
-			arcaneChance, frostChance, natureChance = 0.50/3, 0.50/3, 0.50/3
+			if character.HasRuneById(int32(proto.WarlockRune_RuneBracerIncinerate)) {
+				// Confirmed 50% Fire, 50% divided among the other 4
+				fireChance = 0.50
+				arcaneChance, frostChance, natureChance, shadowChance = 0.125, 0.125, 0.125, 0.125
+			} else {
+				// Confirmed 50% Shadow, 50% divided among the other 4
+				shadowChance = 0.50
+				arcaneChance, fireChance, frostChance, natureChance = 0.125, 0.125, 0.125, 0.125
+			}
 		}
 
 		ClawOfChromaggusEffect(&agent.GetCharacter().Unit, map[stats.SchoolIndex]float64{

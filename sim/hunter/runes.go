@@ -334,7 +334,7 @@ func (hunter *Hunter) applyCobraSlayer() {
 				return
 			}
 
-			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && result.Outcome.Matches(core.OutcomeLanded) && sim.Proc((float64(aura.GetStacks())*0.05), "Cobra Slayer") {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && result.Outcome.Matches(core.OutcomeLanded) && sim.Proc((float64(aura.GetStacks())*0.10), "Cobra Slayer") {
 				aura.SetStacks(sim, 1)
 				hunter.DefensiveState.Activate(sim)
 				return
