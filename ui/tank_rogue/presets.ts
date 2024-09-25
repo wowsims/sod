@@ -3,15 +3,22 @@ import * as PresetUtils from '../core/preset_utils.js';
 import { Player } from '../core/proto/api';
 import {
 	AgilityElixir,
+	AttackPowerBuff,
+	Conjured,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
+	Flask,
+	Food,
 	IndividualBuffs,
 	Profession,
 	RaidBuffs,
+	SaygesFortune,
+	SpellPowerBuff,
 	StrengthBuff,
 	TristateEffect,
 	WeaponImbue,
+	ZanzaBuff,
 } from '../core/proto/common.js';
 import { RogueOptions } from '../core/proto/rogue.js';
 import { SavedTalents } from '../core/proto/ui.js';
@@ -20,6 +27,7 @@ import MutilateApl from './apls/mutilate.apl.json';
 import P3MutilateApl from './apls/Mutilate_DPS_50.apl.json';
 import MutilateIEAApl from './apls/mutilate_IEA.apl.json';
 import P3ExposeMutilateApl from './apls/Mutilate_IEA_50.apl.json';
+import P5SaberAPL from './apls/P5_Saber.apl.json';
 import P3SaberApl from './apls/Saber_DPS_50.apl.json';
 import P3SaberIEAApl from './apls/Saber_IEA_50.apl.json';
 import P4SaberWeaveApl from './apls/Saber_Weave_60.apl.json';
@@ -30,6 +38,7 @@ import P2DaggersGear from './gear_sets/p2_daggers.gear.json';
 import P3DaggersGear from './gear_sets/p3_daggers.gear.json';
 import P3SaberGear from './gear_sets/p3_saber.gear.json';
 import P4SaberGear from './gear_sets/p4_saber.gear.json';
+import P5SaberGear from './gear_sets/p5_saber.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -47,16 +56,17 @@ export const GearCombatP1 = PresetUtils.makePresetGear('P1 Combat', P1CombatGear
 export const GearDaggersP3 = PresetUtils.makePresetGear('P3 Daggers', P3DaggersGear, { customCondition: player => player.getLevel() == 50 });
 export const GearSaberP3 = PresetUtils.makePresetGear('P3 Saber', P3SaberGear, { customCondition: player => player.getLevel() == 50 });
 export const GearSaberP4 = PresetUtils.makePresetGear('P4 Saber', P4SaberGear, { customCondition: player => player.getLevel() == 60 });
+export const GearSaberP5 = PresetUtils.makePresetGear('P5 Saber', P5SaberGear, { customCondition: player => player.getLevel() == 60 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearDaggersP1, GearCombatP1],
 	[Phase.Phase2]: [GearDaggersP2],
 	[Phase.Phase3]: [GearDaggersP3, GearSaberP3],
 	[Phase.Phase4]: [GearSaberP4],
-	[Phase.Phase5]: [],
+	[Phase.Phase5]: [GearSaberP5],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase4][0];
+export const DefaultGear = GearPresets[Phase.Phase5][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -79,13 +89,16 @@ export const ROTATION_PRESET_SABER_IEA_P3 = PresetUtils.makePresetAPLRotation('P
 export const ROTATION_PRESET_SABER_WEAVE_P4 = PresetUtils.makePresetAPLRotation('P4 Saber Weave', P4SaberWeaveApl, {
 	customCondition: player => player.getLevel() === 60,
 });
+export const ROTATION_PRESET_SABER_P5 = PresetUtils.makePresetAPLRotation('P5 Saber', P5SaberAPL, {
+	customCondition: player => player.getLevel() === 60,
+});
 
 export const APLPresets = {
 	[Phase.Phase1]: [ROTATION_PRESET_MUTILATE],
 	[Phase.Phase2]: [ROTATION_PRESET_MUTILATE, ROTATION_PRESET_MUTILATE_IEA],
 	[Phase.Phase3]: [ROTATION_PRESET_MUTILATE_P3, ROTATION_PRESET_MUTILATE_IEA_P3, ROTATION_PRESET_SABER_P3, ROTATION_PRESET_SABER_IEA_P3],
 	[Phase.Phase4]: [ROTATION_PRESET_SABER_WEAVE_P4],
-	[Phase.Phase5]: [],
+	[Phase.Phase5]: [ROTATION_PRESET_SABER_P5],
 };
 
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
@@ -105,9 +118,9 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		2: APLPresets[Phase.Phase3][0],
 	},
 	60: {
-		0: APLPresets[Phase.Phase4][0],
-		1: APLPresets[Phase.Phase4][0],
-		2: APLPresets[Phase.Phase4][0],
+		0: APLPresets[Phase.Phase5][0],
+		1: APLPresets[Phase.Phase5][0],
+		2: APLPresets[Phase.Phase5][0],
 	},
 };
 
@@ -154,17 +167,21 @@ export const TankSaber60Talents = PresetUtils.makePresetTalents('P4 Saber', Save
 	customCondition: player => player.getLevel() === 60,
 });
 
+export const P5TankSaberTalents = PresetUtils.makePresetTalents('P5 Saber', SavedTalents.create({ talentsString: '30532312-0230550100050140231' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+
 export const TalentPresets = {
 	[Phase.Phase1]: [CombatDagger25Talents],
 	[Phase.Phase2]: [ColdBloodMutilate40Talents, IEAMutilate40Talents, CombatMutilate40Talents],
 	[Phase.Phase3]: [TankMutilate50Talents, TankSaber50Talents, TankBladeFlurry50Talents],
 	[Phase.Phase4]: [TankSaber60Talents],
-	[Phase.Phase5]: [],
+	[Phase.Phase5]: [P5TankSaberTalents],
 };
 
-export const DefaultTalentsAssassin = TalentPresets[Phase.Phase4][0];
-export const DefaultTalentsCombat = TalentPresets[Phase.Phase4][0];
-export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase4][0];
+export const DefaultTalentsAssassin = TalentPresets[Phase.Phase5][0];
+export const DefaultTalentsCombat = TalentPresets[Phase.Phase5][0];
+export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase5][0];
 
 export const DefaultTalents = DefaultTalentsCombat;
 
@@ -181,33 +198,54 @@ export const DefaultOptions = RogueOptions.create({
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfAgility,
-	dragonBreathChili: false,
+	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	attackPowerBuff: AttackPowerBuff.JujuMight,
+	defaultConjured: Conjured.ConjuredRogueThistleTea,
 	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
-	strengthBuff: StrengthBuff.ElixirOfOgresStrength,
+	flask: Flask.FlaskOfTheTitans,
+	food: Food.FoodGrilledSquid,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.DeadlyPoison,
+	strengthBuff: StrengthBuff.JujuPower,
+	zanzaBuff: ZanzaBuff.GroundScorpokAssay,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
-	battleShout: TristateEffect.TristateEffectRegular,
+	battleShout: TristateEffect.TristateEffectImproved,
+	demonicPact: 80,
 	fireResistanceAura: true,
 	fireResistanceTotem: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	strengthOfEarthTotem: TristateEffect.TristateEffectImproved,
+	graceOfAirTotem: TristateEffect.TristateEffectImproved,
+	leaderOfThePack: true,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfMight: TristateEffect.TristateEffectRegular,
+	blessingOfKings: true,
+	blessingOfMight: TristateEffect.TristateEffectImproved,
+	fengusFerocity: true,
+	mightOfStormwind: true,
+	rallyingCryOfTheDragonslayer: true,
+	saygesFortune: SaygesFortune.SaygesDamage,
+	slipkiksSavvy: true,
+	songflowerSerenade: true,
+	valorOfAzeroth: true,
+	warchiefsBlessing: true,
+	spiritOfZandalar: true,
 });
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
 	dreamstate: true,
 	faerieFire: true,
-	sunderArmor: true,
+	homunculi: 100,
+	improvedFaerieFire: true,
+	improvedScorch: true,
 	mangle: true,
+	markOfChaos: true,
+	sunderArmor: true,
 });
 
 export const OtherDefaults = {

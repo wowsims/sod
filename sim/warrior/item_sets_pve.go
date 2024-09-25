@@ -270,22 +270,22 @@ var ItemSetUnstoppableWrath = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// Increases the damage of Heroic Strike, Overpower, and Slam by 30%
+		// Increases the damage of Heroic Strike, Overpower, and Slam by 25%
 		4: func(agent core.Agent) {
 			warrior := agent.(WarriorAgent).GetWarrior()
 			warrior.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Warrior - Damage 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.HeroicStrike.DamageMultiplier *= 1.30
-					warrior.Overpower.DamageMultiplier *= 1.30
+					warrior.HeroicStrike.DamageMultiplier *= 1.25
+					warrior.Overpower.DamageMultiplier *= 1.25
 					if warrior.SlamMH != nil {
-						warrior.SlamMH.DamageMultiplier *= 1.30
+						warrior.SlamMH.DamageMultiplier *= 1.25
 					}
 					if warrior.SlamOH != nil {
-						warrior.SlamMH.DamageMultiplier *= 1.30
+						warrior.SlamMH.DamageMultiplier *= 1.25
 					}
 					if warrior.QuickStrike != nil {
-						warrior.QuickStrike.DamageMultiplier *= 1.30
+						warrior.QuickStrike.DamageMultiplier *= 1.25
 					}
 				},
 			})
@@ -369,8 +369,10 @@ var ItemSetImmoveableWrath = core.NewItemSet(core.ItemSet{
 				ProcMask:    core.ProcMaskMeleeMHSpecial, // Retaliate and Retaliation count as normal yellow hits that can proc things
 				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
+				CritDamageBonus:  warrior.impale(),
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
+				BonusCoefficient: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					spell.CalcAndDealDamage(sim, target, warrior.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()), spell.OutcomeMeleeSpecialNoBlockDodgeParry)
