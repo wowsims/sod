@@ -50,7 +50,7 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestTankWarrior-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.67517
+  weights: 0.67457
   weights: 0
   weights: 0
   weights: 0
@@ -67,7 +67,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.33154
+  weights: 0.33114
   weights: 0
   weights: 0
   weights: 0
@@ -78,7 +78,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.98741
+  weights: 0.98529
   weights: 0
   weights: 0.52203
   weights: 0
@@ -99,140 +99,140 @@ stat_weights_results: {
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 1569.2881
-  tps: 3499.84007
+  dps: 1569.66853
+  tps: 3500.40882
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 891.93402
-  tps: 1833.56292
+  dps: 892.14386
+  tps: 1833.87664
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 893.83272
-  tps: 1872.83363
+  dps: 894.06096
+  tps: 1873.17485
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 884.81855
-  tps: 1854.45403
+  dps: 885.04529
+  tps: 1854.793
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 893.83272
-  tps: 1872.83363
+  dps: 894.06096
+  tps: 1873.17485
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 1653.14323
-  tps: 3604.08911
+  dps: 1653.52702
+  tps: 3604.66287
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1488.86309
-  tps: 3861.15799
+  dps: 1489.19615
+  tps: 3861.70571
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 429.50251
-  tps: 1230.04513
+  dps: 430.00424
+  tps: 1230.87024
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 112.73334
-  tps: 373.5234
+  dps: 112.75603
+  tps: 373.56071
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 167.90235
-  tps: 538.4828
+  dps: 167.93874
+  tps: 538.54264
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 144.19903
-  tps: 567.77451
+  dps: 144.50986
+  tps: 568.28568
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 49.69583
-  tps: 200.48114
+  dps: 49.70933
+  tps: 200.50334
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Human-phase_4_tanky-Arms-phase_4-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 70.78281
-  tps: 281.65565
+  dps: 70.80419
+  tps: 281.6908
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 445.94578
-  tps: 1260.48421
+  dps: 446.44752
+  tps: 1261.30931
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 116.91043
-  tps: 383.5701
+  dps: 116.93311
+  tps: 383.60741
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 175.95925
-  tps: 555.83371
+  dps: 175.99565
+  tps: 555.89356
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 144.46257
-  tps: 568.56763
+  dps: 144.77341
+  tps: 569.0788
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 49.72467
-  tps: 200.61642
+  dps: 49.73817
+  tps: 200.63862
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Settings-Orc-phase_4_tanky-Arms-phase_4-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 70.53045
-  tps: 281.23359
+  dps: 70.55182
+  tps: 281.26874
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1267.88709
-  tps: 3317.85681
+  dps: 1268.18215
+  tps: 3318.34203
  }
 }
