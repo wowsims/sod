@@ -193,7 +193,6 @@ func (warrior *Warrior) applyDualWieldSpecialization() {
 	}
 
 	multiplier := 1 + 0.05*float64(warrior.Talents.DualWieldSpecialization)
-	warrior.AutoAttacks.OHConfig().DamageMultiplier *= multiplier
 	warrior.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.ProcMask.Matches(core.ProcMaskMeleeOH) && spell.BonusCoefficient > 0 {
 			spell.DamageMultiplier *= multiplier
