@@ -40,16 +40,15 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return slices.Contains([]proto.HandType{proto.HandType_HandTypeMainHand, proto.HandType_HandTypeOneHand}, paladin.MainHand().HandType)
 		},
-		DamageMultiplier: 3,
+		DamageMultiplier: 1,
 		ThreatMultiplier: 2, // verified with TinyThreat in game
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			weapon := paladin.AutoAttacks.MH()
-			baseDamage := weapon.CalculateAverageWeaponDamage(spell.MeleeAttackPower()) / weapon.SwingSpeed
+			baseDamage := 3.0 * (weapon.CalculateAverageWeaponDamage(spell.MeleeAttackPower()) / weapon.SwingSpeed)
 
 			for idx := range results {
-				// Hammer of the Righteous does not miss, but can crit and be blocked.
-				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedCritOnly)
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}
 
