@@ -20,9 +20,9 @@
     {"action":{"castSpell":{"spellId":{"spellId":402789}}}},
     {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"numberTargets":{}},"rhs":{"const":{"val":"4"}}}},"castSpell":{"spellId":{"spellId":413259}}}},
     {"hide":true,"action":{"castSpell":{"spellId":{"spellId":26297}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":401955}}}},
     {"action":{"castSpell":{"spellId":{"spellId":10947,"rank":9}}}},
     {"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":456549}}},{"auraIsActiveWithReactionTime":{"auraId":{"spellId":456549}}}]}},"castSpell":{"spellId":{"spellId":18807,"rank":6}}}},
-    {"action":{"castSpell":{"spellId":{"spellId":401955}}}},
     {"action":{"castSpell":{"spellId":{"spellId":431681}}}},
     {"hide":true,"action":{"castSpell":{"spellId":{"spellId":19279,"rank":5}}}},
     {"action":{"castSpell":{"spellId":{"spellId":431655}}}}

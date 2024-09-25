@@ -37,6 +37,7 @@ func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 			CritDamageBonus:  warrior.impale(),
 			DamageMultiplier: 1.5,
 			ThreatMultiplier: 1,
+			BonusCoefficient: 1,
 
 			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 				return warrior.PseudoStats.CanBlock

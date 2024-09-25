@@ -177,7 +177,7 @@ func TestShockadin(t *testing.T) {
 			Talents:     Phase45ShockadinTalents,
 			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5shockadin"),
 			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5Shockadin"),
-			Buffs:       core.FullBuffsPhase4,
+			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "P5 Seal of Righteousness Shockadin", SpecOptions: PlayerOptionsSealofRighteousness},
 

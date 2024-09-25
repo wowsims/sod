@@ -65,7 +65,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 
 			damage := baseDamage
 			if hasCobraSlayer {
-				damage += spell.MeleeAttackPower() * 0.4
+				damage += spell.MeleeAttackPower() * 0.45
 			}
 			damage *= multiplier
 

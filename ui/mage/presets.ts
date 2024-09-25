@@ -246,14 +246,14 @@ export const TalentPresets = {
 	[Phase.Phase1]: [TalentsArcanePhase1, TalentsFirePhase1, TalentsFirePhase1],
 	[Phase.Phase2]: [TalentsArcanePhase2, TalentsFirePhase2, TalentsFirePhase2],
 	[Phase.Phase3]: [TalentsArcanePhase3, TalentsFirePhase3, TalentsFrostPhase3],
-	[Phase.Phase4]: [TalentsArcanePhase4, TalentsFirePhase4, TalentsFrostfirePhase4],
-	[Phase.Phase5]: [TalentsArcanePhase5, TalentsFrostPhase5],
+	[Phase.Phase4]: [TalentsFrostfirePhase4],
+	[Phase.Phase5]: [TalentsArcanePhase5, TalentsFirePhase4, TalentsFrostPhase5],
 };
 
 export const DefaultTalentsArcane = TalentPresets[Phase.Phase5][0];
-export const DefaultTalentsFire = TalentPresets[Phase.Phase4][1];
-export const DefaultTalentsFrostfire = TalentPresets[Phase.Phase4][2];
-export const DefaultTalentsFrost = TalentPresets[Phase.Phase5][1];
+export const DefaultTalentsFire = TalentPresets[Phase.Phase5][1];
+export const DefaultTalentsFrostfire = TalentPresets[Phase.Phase4][0];
+export const DefaultTalentsFrost = TalentPresets[Phase.Phase5][2];
 
 export const DefaultTalents = DefaultTalentsFire;
 
