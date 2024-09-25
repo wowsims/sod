@@ -259,7 +259,7 @@ func (spell *Spell) outcomeMeleeWhite(sim *Simulation, result *SpellResult, atta
 
 	if unit.PseudoStats.InFrontOfTarget {
 		if !result.applyAttackTableMiss(spell, attackTable, roll, &chance, countHits) &&
-			!result.applyAttackTableDodge(spell, unit, attackTable, roll, &chance, countHits) &&
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance, countHits) &&
 			!result.applyAttackTableParry(spell, attackTable, roll, &chance, countHits) &&
 			!result.applyAttackTableGlance(spell, attackTable, roll, &chance, glanceRoll, countHits) &&
 			!result.applyAttackTableBlock(spell, attackTable, roll, &chance, countHits) &&
@@ -268,7 +268,7 @@ func (spell *Spell) outcomeMeleeWhite(sim *Simulation, result *SpellResult, atta
 		}
 	} else {
 		if !result.applyAttackTableMiss(spell, attackTable, roll, &chance, countHits) &&
-			!result.applyAttackTableDodge(spell, unit, attackTable, roll, &chance, countHits) &&
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance, countHits) &&
 			!result.applyAttackTableGlance(spell, attackTable, roll, &chance, glanceRoll, countHits) &&
 			!result.applyAttackTableCrit(spell, attackTable, roll, &chance, countHits) {
 			result.applyAttackTableHit(spell, countHits)
@@ -289,13 +289,13 @@ func (spell *Spell) outcomeMeleeSpecialHit(sim *Simulation, result *SpellResult,
 
 	if unit.PseudoStats.InFrontOfTarget {
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance, countHits) &&
-			!result.applyAttackTableDodge(spell, unit, attackTable, roll, &chance, countHits) &&
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance, countHits) &&
 			!result.applyAttackTableParry(spell, attackTable, roll, &chance, countHits) {
 			result.applyAttackTableHit(spell, countHits)
 		}
 	} else {
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance, countHits) &&
-			!result.applyAttackTableDodge(spell, unit, attackTable, roll, &chance, countHits) {
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance, countHits) {
 			result.applyAttackTableHit(spell, countHits)
 		}
 	}
@@ -314,7 +314,7 @@ func (spell *Spell) outcomeMeleeSpecialHitAndCrit(sim *Simulation, result *Spell
 
 	if unit.PseudoStats.InFrontOfTarget {
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance, countHits) &&
-			!result.applyAttackTableDodge(spell, unit, attackTable, roll, &chance, countHits) &&
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance, countHits) &&
 			!result.applyAttackTableParry(spell, attackTable, roll, &chance, countHits) {
 			if result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
 				result.applyAttackTableBlock(spell, attackTable, roll, &chance, countHits)
@@ -326,7 +326,7 @@ func (spell *Spell) outcomeMeleeSpecialHitAndCrit(sim *Simulation, result *Spell
 		}
 	} else {
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance, countHits) &&
-			!result.applyAttackTableDodge(spell, unit, attackTable, roll, &chance, countHits) &&
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance, countHits) &&
 			!result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
 			result.applyAttackTableHit(spell, countHits)
 		}
@@ -345,10 +345,9 @@ func (spell *Spell) outcomeMeleeWeaponSpecialHitAndCrit(sim *Simulation, result 
 	if spell.Unit.PseudoStats.InFrontOfTarget {
 		roll := sim.RandomFloat("White Hit Table")
 		chance := 0.0
-		unit := spell.Unit
 
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance, countHits) &&
-			!result.applyAttackTableDodge(spell, unit, attackTable, roll, &chance, countHits) &&
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance, countHits) &&
 			!result.applyAttackTableParry(spell, attackTable, roll, &chance, countHits) &&
 			!result.applyAttackTableBlock(spell, attackTable, roll, &chance, countHits) &&
 			!result.applyAttackTableCritSeparateRoll(sim, spell, attackTable, countHits) {
@@ -385,14 +384,14 @@ func (spell *Spell) outcomeMeleeWeaponSpecialNoCrit(sim *Simulation, result *Spe
 
 	if unit.PseudoStats.InFrontOfTarget {
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance, countHits) &&
-			!result.applyAttackTableDodge(spell, unit, attackTable, roll, &chance, countHits) &&
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance, countHits) &&
 			!result.applyAttackTableParry(spell, attackTable, roll, &chance, countHits) &&
 			!result.applyAttackTableBlock(spell, attackTable, roll, &chance, countHits) {
 			result.applyAttackTableHit(spell, countHits)
 		}
 	} else {
 		if !result.applyAttackTableMissNoDWPenalty(spell, attackTable, roll, &chance, countHits) &&
-			!result.applyAttackTableDodge(spell, unit, attackTable, roll, &chance, countHits) {
+			!result.applyAttackTableDodge(spell, attackTable, roll, &chance, countHits) {
 			result.applyAttackTableHit(spell, countHits)
 		}
 	}
@@ -711,8 +710,8 @@ func (result *SpellResult) applyAttackTableBlock(spell *Spell, attackTable *Atta
 	return false
 }
 
-func (result *SpellResult) applyAttackTableDodge(spell *Spell, unit *Unit, attackTable *AttackTable, roll float64, chance *float64, countHits bool) bool {
-	*chance += max(0, attackTable.BaseDodgeChance-unit.PseudoStats.DodgeReduction)
+func (result *SpellResult) applyAttackTableDodge(spell *Spell, attackTable *AttackTable, roll float64, chance *float64, countHits bool) bool {
+	*chance += max(0, attackTable.BaseDodgeChance-attackTable.Defender.PseudoStats.DodgeReduction)
 
 	if roll < *chance {
 		result.Outcome = OutcomeDodge
