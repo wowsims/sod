@@ -219,8 +219,8 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(ImprovedFaerieFireAura(target))
 	}
 
-	if debuffs.MeleeHunterBonus {
-		MakePermanent(MeleeHunterBonusAura(target))
+	if debuffs.MeleeHunterDodgeDebuff {
+		MakePermanent(MeleeHunterDodgeReductionAura(target, level))
 	}
 
 	if debuffs.CurseOfWeakness != proto.TristateEffect_TristateEffectMissing {
@@ -1140,18 +1140,16 @@ func ImprovedFaerieFireAura(target *Unit) *Aura {
 	})
 }
 
-func MeleeHunterBonusAura(target *Unit) *Aura {
+func MeleeHunterDodgeReductionAura(target *Unit, _ int32) *Aura {
 	return target.GetOrRegisterAura(Aura{
 		Label:    "S03 - Item - T1 - Hunter - Melee 2P Bonus",
 		ActionID: ActionID{SpellID: 456389},
 		Duration: time.Second * 30,
 		OnGain: func(aura *Aura, sim *Simulation) {
-		//	target.BaseDodgeChance -= 1
-	//		target.AttackTables[target.CurrentTarget.UnitIndex][proto.CastType_CastTypeMainHand].BaseDodgeChance -= 1
+			aura.Unit.PseudoStats.DodgeReduction += 0.01
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-		//	target.BaseDodgeChance += 1
-	//	target.AttackTables[target.CurrentTarget.UnitIndex][proto.CastType_CastTypeMainHand].BaseDodgeChance += 1
+			aura.Unit.PseudoStats.DodgeReduction -= 0.01
 		},
 	})
 }
