@@ -13,7 +13,7 @@ func (rogue *Rogue) registerEnvenom() {
 	}
 
 	baseAbilityDamage := rogue.baseRuneAbilityDamage()
-
+	consumed := int32(0)
 	cutToTheChase := rogue.HasRune(proto.RogueRune_RuneCutToTheChase)
 
 	rogue.EnvenomAura = rogue.RegisterAura(core.Aura{
@@ -50,7 +50,7 @@ func (rogue *Rogue) registerEnvenom() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.ComboPoints() > 0 && rogue.deadlyPoisonTick.Dot(target).IsActive()
+			return rogue.ComboPoints() > 0 && (rogue.deadlyPoisonTick.Dot(target).IsActive() || rogue.occultPoisonTick.Dot(target).IsActive())
 		},
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
@@ -68,9 +68,16 @@ func (rogue *Rogue) registerEnvenom() {
 			rogue.EnvenomAura.Activate(sim)
 
 			dp := rogue.deadlyPoisonTick.Dot(target)
+			op := rogue.occultPoisonTick.Dot(target)
 			// - base damage is scaled by consumed doses (<= comboPoints)
 			// - apRatio is scaled of lowest of cp or dp (== comboPoints)
-			consumed := min(dp.GetStacks(), comboPoints)
+		
+			if op.GetStacks() >= dp.GetStacks() {
+				consumed = min(op.GetStacks(), comboPoints)
+			} else{
+				consumed = min(dp.GetStacks(), comboPoints)
+			}
+			
 			baseDamage := baseAbilityDamage*float64(consumed)*0.8 + 0.072*float64(consumed)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

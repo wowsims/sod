@@ -97,7 +97,7 @@ type Rogue struct {
 	deadlyPoisonTick *core.Spell
 	InstantPoison    [3]*core.Spell
 	WoundPoison      [2]*core.Spell
-	OccultPoison     *core.Spell
+	OccultPoison     [3]*core.Spell
 	occultPoisonTick *core.Spell
 
 	instantPoisonProcChanceBonus float64
