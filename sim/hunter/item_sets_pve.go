@@ -233,8 +233,8 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Hunter - Melee 2P Bonus Trigger",
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell.SpellCode == SpellCode_HunterRaptorStrike {
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
 						procAura.Activate(sim)
 					}
 				},
