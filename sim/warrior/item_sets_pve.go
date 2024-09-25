@@ -369,8 +369,10 @@ var ItemSetImmoveableWrath = core.NewItemSet(core.ItemSet{
 				ProcMask:    core.ProcMaskMeleeMHSpecial, // Retaliate and Retaliation count as normal yellow hits that can proc things
 				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
+				CritDamageBonus:  warrior.impale(),
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
+				BonusCoefficient: 1,
 
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					spell.CalcAndDealDamage(sim, target, warrior.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()), spell.OutcomeMeleeSpecialNoBlockDodgeParry)

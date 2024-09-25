@@ -26,6 +26,7 @@ func (warrior *Warrior) applyDeepWounds() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -45,12 +46,8 @@ func (warrior *Warrior) applyDeepWounds() {
 		},
 	})
 
-	warrior.RegisterAura(core.Aura{
-		Label:    "Deep Wounds Talent",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Deep Wounds Talent",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskEmpty) || !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
 				return
@@ -65,7 +62,7 @@ func (warrior *Warrior) applyDeepWounds() {
 				warrior.procDeepWounds(sim, result.Target, spell.IsOH())
 			}
 		},
-	})
+	}))
 }
 
 func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, isOh bool) {

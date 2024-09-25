@@ -123,6 +123,7 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatDamageBonus + damageFunc(sim, spell.MeleeAttackPower())
