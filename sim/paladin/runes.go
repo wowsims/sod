@@ -168,10 +168,17 @@ func (paladin *Paladin) applyPurifyingPower() {
 		return
 	}
 
-	paladin.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_PaladinExorcism || spell.SpellCode == SpellCode_PaladinHolyWrath {
-			spell.CD.Duration /= 2
-		}
+	paladin.RegisterAura(core.Aura{
+		Label: "Purifying Power",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range paladin.exorcism {
+				spell.CD.Duration /= 2
+			}
+
+			for _, spell := range paladin.holyWrath {
+				spell.CD.Duration /= 2
+			}
+		},
 	})
 }
 
