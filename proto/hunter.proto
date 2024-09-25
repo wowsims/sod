@@ -206,21 +206,14 @@ message Hunter {
 			BirdOfPrey = 6;
 			Boar = 7;
 			CarrionBird = 8;
-			Chimaera = 9;
 			CoreHound = 10;
 			Crab = 11;
 			Crocolisk = 12;
-			Devilsaur = 13;
-			Dragonhawk = 14;
 			Gorilla = 15;
 			Hyena = 16;
 			Raptor = 17;
 			Scorpid = 18;
-			Serpent = 19;
-			Silithid = 20;
 			Spider = 21;
-			SpiritBeast = 22;
-			SporeBat = 23;
 			Tallstrider = 24;
 			Turtle = 25;
 		}
