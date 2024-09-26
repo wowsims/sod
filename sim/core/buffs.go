@@ -2487,7 +2487,6 @@ func ApplySlipkiksSavvy(unit *Unit) {
 func ApplySaygesFortunes(character *Character, fortune proto.SaygesFortune) {
 	var label string
 	var spellID int32
-//	unit := character.Unit
 
 	config := BuffConfig{
 		Category: "SaygesFortune",
