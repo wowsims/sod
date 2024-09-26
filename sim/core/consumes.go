@@ -766,7 +766,7 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.03)
 				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier *= 1.03
-				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier /= 1.03
+				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier *= 1.03
 			},
 		})
 		jujuFlurrySpell := character.RegisterSpell(SpellConfig{
