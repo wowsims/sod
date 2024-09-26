@@ -1071,7 +1071,7 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: HordeThreatBuff,
 		picker: IconPicker,
-		stats: [Stat.StatDefense],
+		stats: [Stat.StatArmor],
 	},
 	// Spell Damage Buffs
 	{
