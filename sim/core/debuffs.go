@@ -219,6 +219,10 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(ImprovedFaerieFireAura(target))
 	}
 
+	if debuffs.MeleeHunterDodgeDebuff {
+		MakePermanent(MeleeHunterDodgeReductionAura(target, level))
+	}
+
 	if debuffs.CurseOfWeakness != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(CurseOfWeaknessAura(target, GetTristateValueInt32(debuffs.CurseOfWeakness, 0, 3), level))
 	}
@@ -1132,6 +1136,20 @@ func ImprovedFaerieFireAura(target *Unit) *Aura {
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.BonusMeleeHitRatingTaken -= 1 * MeleeHitRatingPerHitChance
 			aura.Unit.PseudoStats.BonusSpellHitRatingTaken -= 1 * SpellHitRatingPerHitChance
+		},
+	})
+}
+
+func MeleeHunterDodgeReductionAura(target *Unit, _ int32) *Aura {
+	return target.GetOrRegisterAura(Aura{
+		Label:    "Stalked",
+		ActionID: ActionID{SpellID: 456393},
+		Duration: time.Second * 30,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.DodgeReduction += 0.01
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.DodgeReduction -= 0.01
 		},
 	})
 }
