@@ -458,8 +458,18 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		BonusCoefficient: TernaryFloat64(options.MainHand.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
+
+			autoInProgress := *spell
+
+			baseDamage := autoInProgress.Unit.MHWeaponDamage(sim, autoInProgress.MeleeAttackPower())
+			result := autoInProgress.CalcDamage(sim, target, baseDamage, autoInProgress.OutcomeMeleeWhite)
+
+			StartDelayedAction(sim, DelayedActionOptions{
+				DoAt: sim.CurrentTime + SpellBatchWindow,
+				OnAction: func(s *Simulation) {
+					autoInProgress.DealDamage(sim, result)
+				},
+			})
 		},
 	}
 
@@ -478,8 +488,17 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		BonusCoefficient: TernaryFloat64(options.OffHand.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
+
+			autoInProgress := *spell
+			baseDamage := autoInProgress.Unit.OHWeaponDamage(sim, autoInProgress.MeleeAttackPower())
+			result := autoInProgress.CalcDamage(sim, target, baseDamage, autoInProgress.OutcomeMeleeWhite)
+
+			StartDelayedAction(sim, DelayedActionOptions{
+				DoAt: sim.CurrentTime + SpellBatchWindow,
+				OnAction: func(s *Simulation) {
+					autoInProgress.DealDamage(sim, result)
+				},
+			})
 		},
 	}
 
@@ -728,7 +747,8 @@ func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID Ac
 		attacksText := Ternary(attacks == 1, "attack", "attacks")
 		aa.mh.unit.Log(sim, "gained %d extra main-hand %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
 	}
-	aa.mh.swingAt = sim.CurrentTime + SpellBatchWindow
+
+	aa.mh.swingAt = sim.CurrentTime
 	aa.mh.spell.SetMetricsSplit(1)
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
 	aa.mh.extraAttacksPending += attacks

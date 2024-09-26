@@ -2191,18 +2191,16 @@ func BattleSquawkAura(character *Unit, stackcount int32) *Aura {
 // 	})
 // }
 
-func ApplyWildStrikes(character *Character) *Aura {
-	buffActionID := ActionID{SpellID: 407975}
-
+func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, auraLabel string, rank int32, getBonusAP func(aura *Aura, rank int32) float64) *Aura {
 	var bonusAP float64
 
-	wsBuffAura := character.GetOrRegisterAura(Aura{
-		Label:     "Wild Strikes Buff",
+	apBuffAura := character.GetOrRegisterAura(Aura{
+		Label:     auraLabel + " Buff",
 		ActionID:  buffActionID,
 		Duration:  time.Millisecond * 1500,
 		MaxStacks: 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			bonusAP = 0.2 * aura.Unit.GetStat(stats.AttackPower)
+			bonusAP = getBonusAP(aura, rank)
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: bonusAP})
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
@@ -2215,37 +2213,48 @@ func ApplyWildStrikes(character *Character) *Aura {
 		Duration: time.Millisecond * 1500,
 	}
 
-	wsBuffAura.Icd = &icd
+	apBuffAura.Icd = &icd
 
 	MakePermanent(character.GetOrRegisterAura(Aura{
-		Label: "Wild Strikes",
+		Label: auraLabel,
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			// charges are removed by every auto or next melee, whether it lands or not
+			//  this directly contradicts https://github.com/magey/classic-warrior/wiki/Windfury-Totem#triggered-by-melee-spell-while-an-on-next-swing-attack-is-queued
+			//  but can be seen in both "vanilla" and "sod" era logs
+			if apBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
+				apBuffAura.RemoveStack(sim)
+			}
+
 			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
 				return
 			}
 
-			// charges are removed by every auto or next melee, whether it lands or not
-			if wsBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
-				if wsBuffAura.GetStacks() == 2 {
-					wsBuffAura.SetStacks(sim, 1)
-					wsBuffAura.Duration = time.Millisecond * 100 // 100 ms might be generous - could anywhere from 50-150 ms potentially
-					wsBuffAura.Refresh(sim)                      // Apply New Duration
-				}
-			}
-
-			if icd.IsReady(sim) && sim.RandomFloat("Wild Strikes") < 0.2 {
+			if icd.IsReady(sim) && sim.RandomFloat(auraLabel) < 0.2 {
 				icd.Use(sim)
-				wsBuffAura.Activate(sim)
-				// aura is up _after_ the triggering swing lands, the extra attack only has 1500ms for the AP bonus but the extra attack does not expire
-				wsBuffAura.SetStacks(sim, 2)
-				wsBuffAura.Duration = time.Millisecond * 1500
-				wsBuffAura.Refresh(sim) // Apply New Duration
+				apBuffAura.Activate(sim)
+				// aura is up _before_ the triggering swing lands, so if triggered by an auto attack, the aura fades right after the extra attack lands.
+				if spell.ProcMask == ProcMaskMeleeMHAuto {
+					apBuffAura.SetStacks(sim, 1)
+				} else {
+					apBuffAura.SetStacks(sim, 2)
+				}
+
 				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, buffActionID, spell)
 			}
 		},
 	}))
 
-	return wsBuffAura
+	return apBuffAura
+}
+
+func GetWildStrikesAP(aura *Aura, rank int32) float64 {
+	return 0.2 * aura.Unit.GetStat(stats.AttackPower)
+}
+
+func ApplyWildStrikes(character *Character) *Aura {
+	buffActionID := ActionID{SpellID: 407975}
+
+	return CreateExtraAttackAuraCommon(character, buffActionID, "Wild Strikes", 1, GetWildStrikesAP)
 }
 
 const WindfuryRanks = 3
@@ -2255,6 +2264,10 @@ var (
 	WindfuryBuffBonusAP = [WindfuryRanks + 1]float64{0, 122, 229, 315}
 )
 
+func GetWindfuryAP(aura *Aura, rank int32) float64 {
+	return WindfuryBuffBonusAP[rank]
+}
+
 func ApplyWindfury(character *Character) *Aura {
 	level := character.Level
 	if level < 32 {
@@ -2263,58 +2276,10 @@ func ApplyWindfury(character *Character) *Aura {
 
 	rank := LevelToBuffRank[Windfury][level]
 	spellId := WindfuryBuffSpellId[rank]
-	bonusAP := WindfuryBuffBonusAP[rank]
+	buffActionID := ActionID{SpellID: spellId}
 
-	windfuryBuffAura := character.GetOrRegisterAura(Aura{
-		Label:     "Windfury Buff",
-		ActionID:  ActionID{SpellID: spellId},
-		Duration:  time.Millisecond * 1500,
-		MaxStacks: 2,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: bonusAP})
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: -bonusAP})
-		},
-	})
+	return CreateExtraAttackAuraCommon(character, buffActionID, "Windfury", rank, GetWindfuryAP)
 
-	icd := Cooldown{
-		Timer:    character.NewTimer(),
-		Duration: time.Millisecond * 1500,
-	}
-
-	windfuryBuffAura.Icd = &icd
-
-	MakePermanent(character.GetOrRegisterAura(Aura{
-		Label: "Windfury",
-		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			// charges are removed by every auto or next melee, whether it lands or not
-			//  this directly contradicts https://github.com/magey/classic-warrior/wiki/Windfury-Totem#triggered-by-melee-spell-while-an-on-next-swing-attack-is-queued
-			//  but can be seen in both "vanilla" and "sod" era logs
-			if windfuryBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
-				windfuryBuffAura.RemoveStack(sim)
-			}
-
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
-				return
-			}
-
-			if icd.IsReady(sim) && sim.RandomFloat("Windfury") < 0.2 {
-				icd.Use(sim)
-				windfuryBuffAura.Activate(sim)
-				// aura is up _before_ the triggering swing lands, so if triggered by an auto attack, the aura fades right after the extra attack lands.
-				if spell.ProcMask == ProcMaskMeleeMHAuto {
-					windfuryBuffAura.SetStacks(sim, 1)
-				} else {
-					windfuryBuffAura.SetStacks(sim, 2)
-				}
-
-				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, ActionID{SpellID: spellId}, spell)
-			}
-		},
-	}))
-
-	return windfuryBuffAura
 }
 
 ///////////////////////////////////////////////////////////////////////////

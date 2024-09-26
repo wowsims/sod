@@ -50,7 +50,7 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestTankWarrior-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.67457
+  weights: 0.8209
   weights: 0
   weights: 0
   weights: 0
@@ -67,7 +67,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.33114
+  weights: 0.81875
   weights: 0
   weights: 0
   weights: 0
@@ -78,9 +78,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.98529
+  weights: 1.08872
   weights: 0
-  weights: 0.52203
+  weights: 0.52154
   weights: 0
   weights: 0
   weights: 0
@@ -99,50 +99,50 @@ stat_weights_results: {
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 1569.66853
-  tps: 3500.40882
+  dps: 1578.6191
+  tps: 3514.79604
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 892.14386
-  tps: 1833.87664
+  dps: 894.07226
+  tps: 1833.25799
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 894.06096
-  tps: 1873.17485
+  dps: 896.47086
+  tps: 1878.68094
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 885.04529
-  tps: 1854.793
+  dps: 887.05895
+  tps: 1859.49476
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 894.06096
-  tps: 1873.17485
+  dps: 896.47086
+  tps: 1878.68094
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 1653.52702
-  tps: 3604.66287
+  dps: 1660.38468
+  tps: 3617.59261
  }
 }
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1489.19615
-  tps: 3861.70571
+  dps: 1493.58665
+  tps: 3875.08542
  }
 }
 dps_results: {
@@ -232,7 +232,7 @@ dps_results: {
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1268.18215
-  tps: 3318.34203
+  dps: 1269.68994
+  tps: 3325.92185
  }
 }
