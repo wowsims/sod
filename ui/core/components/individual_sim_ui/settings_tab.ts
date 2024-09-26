@@ -25,7 +25,7 @@ import { SimTab } from '../sim_tab';
 import { IsbConfig } from './../other_inputs';
 import { ConsumesPicker } from './consumes_picker';
 import { ItemSwapPicker } from './item_swap_picker';
-import { PresetBuildsPicker } from './preset_builds_picker';
+import { PresetConfigurationPicker } from './preset_configuration_picker';
 
 export class SettingsTab extends SimTab {
 	protected simUI: IndividualSimUI<Spec>;
@@ -80,6 +80,7 @@ export class SettingsTab extends SimTab {
 				this.buildBuffsSettings();
 				this.buildWorldBuffsSettings();
 				this.buildDebuffsSettings();
+				this.buildPresetConfigurationPicker();
 				this.buildSavedDataPickers();
 			}
 		});
@@ -107,8 +108,6 @@ export class SettingsTab extends SimTab {
 			this.simUI.individualConfig.playerIconInputs.map(iconInput => IconInputs.buildIconInput(playerIconGroup, this.simUI.player, iconInput)),
 			true,
 		);
-
-		new PresetBuildsPicker(contentBlock.bodyElement, this.simUI);
 
 		new EnumPicker(contentBlock.bodyElement, this.simUI.player, {
 			id: 'player-level',
@@ -311,6 +310,10 @@ export class SettingsTab extends SimTab {
 
 		// In case no debuffs are active, this will fire a change event to update the pickers
 		this.simUI.player.getRaid()?.debuffsChangeEmitter.emit(TypedEvent.nextEventID());
+	}
+
+	private buildPresetConfigurationPicker() {
+		new PresetConfigurationPicker(this.rightPanel, this.simUI, 'encounter');
 	}
 
 	private buildSavedDataPickers() {

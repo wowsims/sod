@@ -186,6 +186,23 @@ export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase5][0];
 export const DefaultTalents = DefaultTalentsCombat;
 
 ///////////////////////////////////////////////////////////////////////////
+//                                Encounters
+///////////////////////////////////////////////////////////////////////////
+export const PresetBuildEncounterDefault = PresetUtils.makePresetBuild('Default', {
+	encounter: PresetUtils.makePresetEncounter(
+		'Default',
+		'http://localhost:5173/sod/tank_rogue/?i=ce#eJyTklFgM5LgYBRg1GC0YHRgrGBvYJSYwMi8gJH5BiOr0gFmTgYwiHMQhDD0HCRnzQSBk/aWEJEL9oppYHDN3mgCM8eNJl4hDp/UstQcBTMDCXutB0wMgwlodDpQxRy1tRSZIyD1nzruAAJDMFmw3MEyM/9D68mQq/aOUBmHCEYAjL4g7A==',
+	),
+});
+
+export const PresetBuildEncounterVael = PresetUtils.makePresetBuild('Vael', {
+	encounter: PresetUtils.makePresetEncounter(
+		'Vael',
+		'http://localhost:5173/sod/tank_rogue/?i=ce#eJyTkldgM5LmYBRg1GC0YHRgrGBvYGSZwMi8gJH5EiPDDUZWpe8snAxgEOcgCGHoOUjOmgkCJ+0tISIX7BXTwOCavdFxFo47qUJqTjmJydnlmXnpCj6JmUUKYYmpOYnFJUWJxVUKJRmpCs75RUWlBSUS9grMWg+YGAYT0Oh0oIo5amspMiejyd+RKu4AAkMw2bHZwVI2KsX6vv9Ve5jRDhGMRVMZORiFFEIyc1MVnEqL8kBx5phSlJqXmJOZl6oQlJqcmlmWmqKV75FfrpCTD5TNzCvJB8diWmZ6Rgk2TZnFCsnA6FbIzwOrK8hJrEwt0lNwyywCCoJlgCqMDIoVNIJTc1KTSxQMFIBG5qWWpRYpFEEs1AQAp5dhnw==',
+	),
+});
+
+///////////////////////////////////////////////////////////////////////////
 //                                 Options
 ///////////////////////////////////////////////////////////////////////////
 
