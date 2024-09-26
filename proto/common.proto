@@ -583,7 +583,7 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
-// NextIndex: 43
+// NextIndex: 44
 message RaidBuffs {
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
@@ -653,6 +653,7 @@ message RaidBuffs {
 	int32 battle_squawk = 37;
 	bool improved_stoneskin_windwall = 40;
 	bool flowing_waters_sigil = 42;
+	bool spirit_of_the_alpha = 43;
 }
 
 // Buffs that affect a single party.
