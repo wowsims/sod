@@ -1923,6 +1923,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagIgnoreAttackerModifiers,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
