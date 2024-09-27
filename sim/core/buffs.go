@@ -4,9 +4,9 @@ import (
 	"math"
 	"time"
 
-	googleProto "google.golang.org/protobuf/proto"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
+	googleProto "google.golang.org/protobuf/proto"
 )
 
 type BuffName int32
@@ -694,7 +694,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.SpiritOfTheAlpha {
-		character.PseudoStats.ThreatMultiplier *= 1.45
+		SpiritOfTheAlphaAura(&character.Unit)
 	}
 
 	if raidBuffs.TrueshotAura {
@@ -2016,6 +2016,19 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 	})
 }
 
+func SpiritOfTheAlphaAura(unit *Unit) *Aura {
+	return MakePermanent(unit.RegisterAura(Aura{
+		Label:    "Spirit of the Alpha",
+		ActionID: ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.ThreatMultiplier *= 1.45
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.ThreatMultiplier /= 1.45
+		},
+	}))
+}
+
 func TrueshotAura(unit *Unit) *Aura {
 	if unit.Level < 40 {
 		return nil
@@ -2509,28 +2522,28 @@ func ApplySaygesFortunes(character *Character, fortune proto.SaygesFortune) {
 	case proto.SaygesFortune_SaygesAgility:
 		label = "Sayge's Dark Fortune of Agility"
 		spellID = 23736
-		addAgility := character.GetBaseStats()[stats.Agility]*0.1
+		addAgility := character.GetBaseStats()[stats.Agility] * 0.1
 		config.Stats = []StatConfig{
 			{stats.Agility, addAgility, false},
-		}	
+		}
 	case proto.SaygesFortune_SaygesIntellect:
 		label = "Sayge's Dark Fortune of Intellect"
 		spellID = 23766
-		addIntellect := character.GetBaseStats()[stats.Intellect]*0.1
+		addIntellect := character.GetBaseStats()[stats.Intellect] * 0.1
 		config.Stats = []StatConfig{
 			{stats.Intellect, addIntellect, false},
 		}
 	case proto.SaygesFortune_SaygesSpirit:
 		label = "Sayge's Dark Fortune of Spirit"
 		spellID = 23738
-		addSpirit := character.GetBaseStats()[stats.Spirit]*0.1
+		addSpirit := character.GetBaseStats()[stats.Spirit] * 0.1
 		config.Stats = []StatConfig{
 			{stats.Spirit, addSpirit, false},
 		}
 	case proto.SaygesFortune_SaygesStamina:
 		label = "Sayge's Dark Fortune of Stamina"
 		spellID = 23737
-		addStamina := character.GetBaseStats()[stats.Stamina]*0.1
+		addStamina := character.GetBaseStats()[stats.Stamina] * 0.1
 		config.Stats = []StatConfig{
 			{stats.Stamina, addStamina, false},
 		}
