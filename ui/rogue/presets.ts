@@ -27,7 +27,8 @@ import MutilateDPSAPL60 from './apls/Mutilate_60.apl.json';
 import MutilateDPSApl50 from './apls/Mutilate_DPS_50.apl.json';
 import MutilateIEAApl40 from './apls/mutilate_IEA.apl.json';
 import MutilateIEAApl50 from './apls/Mutilate_IEA_50.apl.json';
-import P5BackstabAPL from './apls/P5_Assassination_Backstab.apl.json';
+import P5AssassinationBackstabAPL from './apls/P5_Assassination_Backstab.apl.json';
+import P5CombatBackstabAPL from './apls/P5_Combat_Backstab.apl.json';
 import P5MutilateAPL from './apls/P5_Mutilate.apl.json';
 import P5MutilateIEAAPL from './apls/P5_Mutilate_IEA.apl.json';
 import P5SaberAPL from './apls/P5_Saber.apl.json';
@@ -117,7 +118,10 @@ export const ROTATION_PRESET_MUTILATE_DPS_60 = PresetUtils.makePresetAPLRotation
 export const ROTATION_PRESET_SLAUGHTER_CUTTHROAT_DPS_60 = PresetUtils.makePresetAPLRotation('P4 Backstab', SlaughterCutthroatDPSAPL60, {
 	customCondition: player => player.getLevel() === 60,
 });
-export const ROTATION_PRESET_BACKSTAB_DPS_P5 = PresetUtils.makePresetAPLRotation('P5 Backstab', P5BackstabAPL, {
+export const ROTATION_PRESET_ASSASSINATION_BACKSTAB_DPS_P5 = PresetUtils.makePresetAPLRotation('P5 Assassination Backstab', P5AssassinationBackstabAPL, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const ROTATION_PRESET_COMBAT_BACKSTAB_DPS_P5 = PresetUtils.makePresetAPLRotation('P5 Combat Backstab', P5CombatBackstabAPL, {
 	customCondition: player => player.getLevel() === 60,
 });
 export const ROTATION_PRESET_MUTILATE_DPS_P5 = PresetUtils.makePresetAPLRotation('P5 Mutilate', P5MutilateAPL, {
@@ -139,7 +143,8 @@ export const APLPresets = {
 	[Phase.Phase3]: [ROTATION_PRESET_MUTILATE_DPS_50, ROTATION_PRESET_SABER_SLASH_DPS_50, ROTATION_PRESET_MUTILATE_IEA_50, ROTATION_PRESET_SABER_SLASH_IEA_50],
 	[Phase.Phase4]: [ROTATION_PRESET_MUTILATE_DPS_60, ROTATION_PRESET_SLAUGHTER_CUTTHROAT_DPS_60, ROTATION_PRESET_SABER_SLASH_DPS_60],
 	[Phase.Phase5]: [
-		ROTATION_PRESET_BACKSTAB_DPS_P5,
+		ROTATION_PRESET_ASSASSINATION_BACKSTAB_DPS_P5,
+		ROTATION_PRESET_COMBAT_BACKSTAB_DPS_P5,
 		ROTATION_PRESET_MUTILATE_DPS_P5,
 		ROTATION_PRESET_SABER_DPS_P5,
 		ROTATION_PRESET_MUTILATE_IEA_P5,
@@ -159,13 +164,13 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 	60: {
 		[RogueRune.RuneMutilate]: ROTATION_PRESET_MUTILATE_DPS_P5,
 		[RogueRune.RuneSaberSlash]: ROTATION_PRESET_SABER_DPS_P5,
-		[RogueRune.RuneCutthroat]: ROTATION_PRESET_BACKSTAB_DPS_P5,
+		[RogueRune.RuneCutthroat]: ROTATION_PRESET_ASSASSINATION_BACKSTAB_DPS_P5,
 	},
 };
 
 export const DefaultAPLBackstab = APLPresets[Phase.Phase5][0];
-export const DefaultAPLMutilate = APLPresets[Phase.Phase5][1];
-export const DefaultAPLSaber = APLPresets[Phase.Phase5][2];
+export const DefaultAPLMutilate = APLPresets[Phase.Phase5][2];
+export const DefaultAPLSaber = APLPresets[Phase.Phase5][3];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Talent Presets
