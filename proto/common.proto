@@ -506,7 +506,7 @@ enum MageScroll {
 	MageScrollFrostProtection = 5;
 }
 
-// NextIndex: 29
+// NextIndex: 30
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
@@ -555,6 +555,7 @@ enum WeaponImbue {
 
 	// Shield Oil
 	ConductiveShieldCoating = 26;
+	MagnificentTrollshine = 29;
 }
 
 // NextIndex: 13
