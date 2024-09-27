@@ -155,6 +155,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
+		builds: [Presets.PresetBuildEncounterDefault, Presets.PresetBuildEncounterVael],
 	},
 
 	autoRotation: player => {

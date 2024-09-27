@@ -195,9 +195,13 @@ export const DefaultTalentsDestro = TalentPresets[Phase.Phase4][2];
 
 export const DefaultTalents = DefaultTalentsDestro;
 
-export const PresetBuildAff = PresetUtils.makePresetBuild('Aff', DefaultGearAff, DefaultTalentsAff, DefaultAPLs[60][0]);
-export const PresetBuildDemo = PresetUtils.makePresetBuild('Demo', DefaultGearDemo, DefaultTalentsDemo, DefaultAPLs[60][1]);
-export const PresetBuildDestro = PresetUtils.makePresetBuild('Destro', DefaultGearDestro, DefaultTalentsDestro, DefaultAPLs[60][2]);
+export const PresetBuildAff = PresetUtils.makePresetBuild('Aff', { gear: DefaultGearAff, talents: DefaultTalentsAff, rotation: DefaultAPLs[60][0] });
+export const PresetBuildDemo = PresetUtils.makePresetBuild('Demo', { gear: DefaultGearDemo, talents: DefaultTalentsDemo, rotation: DefaultAPLs[60][1] });
+export const PresetBuildDestro = PresetUtils.makePresetBuild('Destro', {
+	gear: DefaultGearDestro,
+	talents: DefaultTalentsDestro,
+	rotation: DefaultAPLs[60][2],
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
