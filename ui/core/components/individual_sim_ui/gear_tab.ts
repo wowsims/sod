@@ -7,6 +7,7 @@ import { EventID, TypedEvent } from '../../typed_event';
 import GearPicker from '../gear_picker/gear_picker';
 import { SavedDataManager } from '../saved_data_manager';
 import { SimTab } from '../sim_tab';
+import { PresetConfigurationPicker } from './preset_configuration_picker';
 
 export class GearTab extends SimTab {
 	protected simUI: IndividualSimUI<Spec>;
@@ -32,12 +33,16 @@ export class GearTab extends SimTab {
 
 	protected buildTabContent() {
 		this.buildGearPickers();
-
+		this.buildPresetConfigurationPicker();
 		this.buildSavedGearsetPicker();
 	}
 
 	private buildGearPickers() {
 		new GearPicker(this.leftPanel, this.simUI, this.simUI.player);
+	}
+
+	private buildPresetConfigurationPicker() {
+		new PresetConfigurationPicker(this.rightPanel, this.simUI, 'gear');
 	}
 
 	private buildSavedGearsetPicker() {

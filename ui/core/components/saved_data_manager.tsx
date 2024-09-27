@@ -26,14 +26,15 @@ export type SavedDataConfig<ModObject, T> = {
 
 	// If set, will automatically hide the saved data when this evaluates to false.
 	enableWhen?: (obj: ModObject) => boolean;
+	// Will execute when the saved data is loaded.
+	onLoad?: (obj: ModObject) => void;
 };
 
 type SavedData<ModObject, T> = {
 	name: string;
 	data: T;
 	elem: HTMLElement;
-	enableWhen?: (obj: ModObject) => boolean;
-};
+} & Pick<SavedDataConfig<ModObject, T>, 'enableWhen' | 'onLoad'>;
 
 export class SavedDataManager<ModObject, T> extends Component {
 	private readonly modObject: ModObject;
@@ -117,6 +118,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 		dataElem.addEventListener('click', () => {
 			this.config.setData(TypedEvent.nextEventID(), this.modObject, config.data);
 
+			config.onLoad?.(this.modObject);
 			if (this.saveInput) this.saveInput.value = config.name;
 		});
 
@@ -146,6 +148,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 		const checkActive = () => {
 			if (this.config.equals(config.data, this.config.getData(this.modObject))) {
 				dataElem.classList.add('active');
+				if (this.saveInput) this.saveInput.value = config.name;
 			} else {
 				dataElem.classList.remove('active');
 			}
@@ -165,6 +168,7 @@ export class SavedDataManager<ModObject, T> extends Component {
 			data: config.data,
 			elem: dataElem,
 			enableWhen: config.enableWhen,
+			onLoad: config.onLoad,
 		};
 	}
 

@@ -172,13 +172,13 @@ func (ai *VaelastraszTheCorruptAI) registerSpells() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    ai.Target.NewTimer(),
-				Duration: time.Second * 70,
+				Duration: time.Minute * 4,
 			},
 		},
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label:     "Burning Adrenaline (Tank)",
-				MaxStacks: 16,
+				MaxStacks: 100,
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 					inverseMultiplierBonus = 1 / (1.0 + float64(oldStacks)*0.1)
 					target.MultiplyMeleeSpeed(sim, inverseMultiplierBonus)
@@ -188,16 +188,9 @@ func (ai *VaelastraszTheCorruptAI) registerSpells() {
 					target.MultiplyMeleeSpeed(sim, multiplierBonus)
 					target.MultiplyCastSpeed(multiplierBonus)
 					target.PseudoStats.DamageDealtMultiplier *= multiplierBonus
-					if newStacks == 16 {
-						target.RemoveHealth(sim, target.CurrentHealth())
-						if sim.Log != nil {
-							target.Log(sim, "Burning Adrenaline (Tank) Death")
-						}
-						sim.Cleanup()
-					}
 				},
 			},
-			NumberOfTicks: 16,
+			NumberOfTicks: 240,
 			TickLength:    time.Second * 2,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				burningAdrenalineTickDamage := target.MaxHealth() * 0.01 * float64(dot.GetStacks())

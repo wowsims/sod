@@ -172,9 +172,17 @@ export const DefaultTalentsRangedSV = TalentPresets[Phase.Phase4][2];
 
 export const DefaultTalents = DefaultTalentsWeave;
 
-export const PresetBuildWeave = PresetUtils.makePresetBuild('Weave', DefaultGearWeave, DefaultTalentsWeave, DefaultAPLWeave);
-export const PresetBuildRangedMM = PresetUtils.makePresetBuild('Ranged MM', DefaultGearRangedMM, DefaultTalentsRangedMM, DefaultAPLRanged);
-export const PresetBuildRangedSV = PresetUtils.makePresetBuild('Ranged SV', DefaultGearRangedSV, DefaultTalentsRangedSV, DefaultAPLRanged);
+export const PresetBuildWeave = PresetUtils.makePresetBuild('Weave', { gear: DefaultGearWeave, talents: DefaultTalentsWeave, rotation: DefaultAPLWeave });
+export const PresetBuildRangedMM = PresetUtils.makePresetBuild('Ranged MM', {
+	gear: DefaultGearRangedMM,
+	talents: DefaultTalentsRangedMM,
+	rotation: DefaultAPLRanged,
+});
+export const PresetBuildRangedSV = PresetUtils.makePresetBuild('Ranged SV', {
+	gear: DefaultGearRangedSV,
+	talents: DefaultTalentsRangedSV,
+	rotation: DefaultAPLRanged,
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
