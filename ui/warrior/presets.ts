@@ -205,9 +205,9 @@ export const DefaultTalentsDW = TalentPresets[Phase.Phase5][1];
 
 export const DefaultTalents = DefaultTalents2H;
 
-export const PresetBuild2H = PresetUtils.makePresetBuild('Two-Handed', DefaultGear2H, DefaultTalents2H, DefaultAPLs[60][0]);
-export const PresetBuildDW = PresetUtils.makePresetBuild('Dual-Wield', DefaultGearDW, DefaultTalentsDW, DefaultAPLs[60][1]);
-// export const PresetBuildGlad = PresetUtils.makePresetBuild('Glad', DefaultGearGlad, DefaultTalentsGlad, DefaultAPLs[60][3]);
+export const PresetBuild2H = PresetUtils.makePresetBuild('Two-Handed', { gear: DefaultGear2H, talents: DefaultTalents2H, rotation: DefaultAPLs[60][0] });
+export const PresetBuildDW = PresetUtils.makePresetBuild('Dual-Wield', { gear: DefaultGearDW, talents: DefaultTalentsDW, rotation: DefaultAPLs[60][1] });
+// export const PresetBuildGlad = PresetUtils.makePresetBuild('Glad', { gear: DefaultGearGlad, talents: DefaultTalentsGlad, rotation: DefaultAPLs[60][3] });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options Presets

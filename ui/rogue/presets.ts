@@ -289,21 +289,27 @@ export const DefaultTalentsSaber = TalentPresets[Phase.Phase5][2];
 
 export const DefaultTalents = DefaultTalentsAssassin;
 
-export const PresetBuildBackstab = PresetUtils.makePresetBuild('Backstab', DefaultGearBackstab, P5TalentBackstabAssassination, DefaultAPLBackstab);
-export const PresetBuildMutilate = PresetUtils.makePresetBuild('Mutilate', DefaultGearMutilate, DefaultTalentsMutilate, DefaultAPLMutilate);
-export const PresetBuildSaber = PresetUtils.makePresetBuild('Saber Slash', DefaultGearSaber, DefaultTalentsSaber, DefaultAPLSaber);
-export const PresetBuildMutilateIEA = PresetUtils.makePresetBuild(
-	'Mutilate IEA',
-	DefaultGearMutilate,
-	P5TalentMutilateSaberslashCTTCIEA,
-	ROTATION_PRESET_MUTILATE_IEA_P5,
-);
-export const PresetBuildSaberIEA = PresetUtils.makePresetBuild(
-	'Saber Slash IEA',
-	DefaultGearSaber,
-	P5TalentMutilateSaberslashCTTCIEA,
-	ROTATION_PRESET_SABER_IEA_P5,
-);
+export const PresetBuildBackstab = PresetUtils.makePresetBuild('Backstab', {
+	gear: DefaultGearBackstab,
+	talents: P5TalentBackstabAssassination,
+	rotation: DefaultAPLBackstab,
+});
+export const PresetBuildMutilate = PresetUtils.makePresetBuild('Mutilate', {
+	gear: DefaultGearMutilate,
+	talents: DefaultTalentsMutilate,
+	rotation: DefaultAPLMutilate,
+});
+export const PresetBuildSaber = PresetUtils.makePresetBuild('Saber Slash', { gear: DefaultGearSaber, talents: DefaultTalentsSaber, rotation: DefaultAPLSaber });
+export const PresetBuildMutilateIEA = PresetUtils.makePresetBuild('Mutilate IEA', {
+	gear: DefaultGearMutilate,
+	talents: P5TalentMutilateSaberslashCTTCIEA,
+	rotation: ROTATION_PRESET_MUTILATE_IEA_P5,
+});
+export const PresetBuildSaberIEA = PresetUtils.makePresetBuild('Saber Slash IEA', {
+	gear: DefaultGearSaber,
+	talents: P5TalentMutilateSaberslashCTTCIEA,
+	rotation: ROTATION_PRESET_SABER_IEA_P5,
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
