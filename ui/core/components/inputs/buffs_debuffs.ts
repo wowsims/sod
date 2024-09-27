@@ -439,6 +439,15 @@ export const MeleeCritBuff = withLabel(
 	'Leader of the Pack',
 );
 
+export const HordeThreatBuff = withLabel(
+	makeBooleanRaidBuffInput({
+		actionId: player => player.getMatchingSpellActionId([{ id: 408696, minLevel: 40 }]),
+		fieldName: 'spiritOfTheAlpha',
+		showWhen: player => player.getFaction() === Faction.Horde,
+	}),
+	'Spirit of The Alpha',
+);
+
 export const SpellCritBuff = withLabel(
 	makeBooleanRaidBuffInput({ actionId: player => player.getMatchingSpellActionId([{ id: 24907, minLevel: 40 }]), fieldName: 'moonkinAura' }),
 	'Moonkin Aura',
@@ -1058,7 +1067,12 @@ export const RAID_BUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatMeleeCrit],
 	},
-
+	// Threat Buffs
+	{
+		config: HordeThreatBuff,
+		picker: IconPicker,
+		stats: [Stat.StatArmor],
+	},
 	// Spell Damage Buffs
 	{
 		config: SpellIncreaseBuff,

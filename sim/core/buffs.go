@@ -693,6 +693,10 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		})
 	}
 
+	if raidBuffs.SpiritOfTheAlpha {
+		character.PseudoStats.ThreatMultiplier *= 1.45
+	}
+
 	if raidBuffs.TrueshotAura {
 		TrueshotAura(&character.Unit)
 	}
