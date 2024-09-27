@@ -89,7 +89,7 @@ func (warrior *Warrior) applyShieldMastery() {
 				Period:          time.Second * 2,
 				TickImmediately: true,
 				OnAction: func(sim *core.Simulation) {
-					if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
+					if !warrior.PseudoStats.CanBlock {
 						buffAura.Deactivate(sim)
 						return
 					}

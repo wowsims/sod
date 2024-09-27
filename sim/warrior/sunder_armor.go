@@ -26,7 +26,7 @@ func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 	var canApplySunder bool
 
 	if warrior.HasRune(proto.WarriorRune_RuneDevastate) {
-		warrior.Devastate = warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		warrior.Devastate = warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
 			SpellCode:   SpellCode_WarriorDevastate,
 			ActionID:    core.ActionID{SpellID: int32(proto.WarriorRune_RuneDevastate)},
 			SpellSchool: core.SpellSchoolPhysical,
