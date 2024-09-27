@@ -2017,7 +2017,7 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 }
 
 func SpiritOfTheAlphaAura(unit *Unit) *Aura {
-	return MakePermanent(unit.RegisterAura(Aura{
+	return MakePermanent(unit.GetOrRegisterAura(Aura{
 		Label:    "Spirit of the Alpha",
 		ActionID: ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
 		OnGain: func(aura *Aura, sim *Simulation) {
