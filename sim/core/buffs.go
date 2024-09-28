@@ -4,10 +4,9 @@ import (
 	"math"
 	"time"
 
-	googleProto "google.golang.org/protobuf/proto"
-
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
+	googleProto "google.golang.org/protobuf/proto"
 )
 
 type BuffName int32
@@ -694,6 +693,10 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		})
 	}
 
+	if raidBuffs.SpiritOfTheAlpha {
+		SpiritOfTheAlphaAura(&character.Unit)
+	}
+
 	if raidBuffs.TrueshotAura {
 		TrueshotAura(&character.Unit)
 	}
@@ -833,7 +836,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if individualBuffs.SongflowerSerenade {
-		ApplySongflowerSerenate(&character.Unit)
+		ApplySongflowerSerenade(&character.Unit)
 	}
 
 	ApplyWarchiefsBuffs(&character.Unit, individualBuffs, isAlliance, isHorde)
@@ -853,7 +856,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 
 	// Darkmoon Faire Buffs
 	if individualBuffs.SaygesFortune != proto.SaygesFortune_SaygesUnknown {
-		ApplySaygesFortunes(&character.Unit, individualBuffs.SaygesFortune)
+		ApplySaygesFortunes(character, individualBuffs.SaygesFortune)
 	}
 
 	// SoD World Buffs
@@ -2013,6 +2016,19 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 	})
 }
 
+func SpiritOfTheAlphaAura(unit *Unit) *Aura {
+	return MakePermanent(unit.GetOrRegisterAura(Aura{
+		Label:    "Spirit of the Alpha",
+		ActionID: ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.ThreatMultiplier *= 1.45
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.ThreatMultiplier /= 1.45
+		},
+	}))
+}
+
 func TrueshotAura(unit *Unit) *Aura {
 	if unit.Level < 40 {
 		return nil
@@ -2370,7 +2386,7 @@ func ApplySpiritOfZandalar(unit *Unit) {
 	})
 }
 
-func ApplySongflowerSerenate(unit *Unit) {
+func ApplySongflowerSerenade(unit *Unit) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Songflower Serenade",
 		ActionID: ActionID{SpellID: 15366},
@@ -2485,7 +2501,7 @@ func ApplySlipkiksSavvy(unit *Unit) {
 	})
 }
 
-func ApplySaygesFortunes(unit *Unit, fortune proto.SaygesFortune) {
+func ApplySaygesFortunes(character *Character, fortune proto.SaygesFortune) {
 	var label string
 	var spellID int32
 
@@ -2506,30 +2522,34 @@ func ApplySaygesFortunes(unit *Unit, fortune proto.SaygesFortune) {
 	case proto.SaygesFortune_SaygesAgility:
 		label = "Sayge's Dark Fortune of Agility"
 		spellID = 23736
+		addAgility := character.GetBaseStats()[stats.Agility] * 0.1
 		config.Stats = []StatConfig{
-			{stats.Agility, 1.10, true},
+			{stats.Agility, addAgility, false},
 		}
 	case proto.SaygesFortune_SaygesIntellect:
 		label = "Sayge's Dark Fortune of Intellect"
 		spellID = 23766
+		addIntellect := character.GetBaseStats()[stats.Intellect] * 0.1
 		config.Stats = []StatConfig{
-			{stats.Intellect, 1.10, true},
+			{stats.Intellect, addIntellect, false},
 		}
 	case proto.SaygesFortune_SaygesSpirit:
 		label = "Sayge's Dark Fortune of Spirit"
 		spellID = 23738
+		addSpirit := character.GetBaseStats()[stats.Spirit] * 0.1
 		config.Stats = []StatConfig{
-			{stats.Spirit, 1.10, true},
+			{stats.Spirit, addSpirit, false},
 		}
 	case proto.SaygesFortune_SaygesStamina:
 		label = "Sayge's Dark Fortune of Stamina"
 		spellID = 23737
+		addStamina := character.GetBaseStats()[stats.Stamina] * 0.1
 		config.Stats = []StatConfig{
-			{stats.Stamina, 1.10, true},
+			{stats.Stamina, addStamina, false},
 		}
 	}
 
-	aura := MakePermanent(unit.RegisterAura(Aura{
+	aura := MakePermanent(character.RegisterAura(Aura{
 		Label:    label,
 		ActionID: ActionID{SpellID: spellID},
 	}))

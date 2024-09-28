@@ -22,7 +22,7 @@ import {
 	WeaponImbue,
 	ZanzaBuff,
 } from '../core/proto/common.js';
-import { PaladinAura, PaladinSeal, PaladinOptions as RetributionPaladinOptions } from '../core/proto/paladin.js';
+import { PaladinAura, PaladinOptions as RetributionPaladinOptions, PaladinSeal } from '../core/proto/paladin.js';
 import { SavedTalents } from '../core/proto/ui.js';
 import APLP1RetJson from './apls/p1ret.apl.json';
 import APLP2RetJson from './apls/p2ret.apl.json';
@@ -31,12 +31,10 @@ import APLP4RetJson from './apls/p4ret.apl.json';
 import APLP4RetExodinJson from './apls/p4ret-exodin.apl.json';
 import APLP4RetExodin6PcT1Json from './apls/p4ret-exodin-6pcT1.apl.json';
 import APLP4RetTwisting6PcT1Json from './apls/p4ret-twisting-6pcT1.apl.json';
-import APLPP5ShockadinJson from './apls/p5Shockadin.apl.json';
-
 import APLPP5ExodinJson from './apls/p5ret-exodin-6CF2DR.apl.json';
 import APLPP5TwistingSlowJson from './apls/p5ret-twist-4DR-3.5-3.6.apl.json';
 import APLPP5TwistingSlowerJson from './apls/p5ret-twist-4DR-3.7-4.0.apl.json';
-
+import APLPP5ShockadinJson from './apls/p5Shockadin.apl.json';
 import Phase1RetGearJson from './gear_sets/p1ret.gear.json';
 import Phase2RetSoCGearJson from './gear_sets/p2retsoc.gear.json';
 import Phase2RetSoMGearJson from './gear_sets/p2retsom.gear.json';
@@ -45,9 +43,9 @@ import Phase4RetExodinGearJson from './gear_sets/p4ret-exodin.gear.json';
 import Phase4RetExodin6PcT1GearJson from './gear_sets/p4ret-exodin-6pcT1.gear.json';
 import Phase4RetTwisting6PcT1GearJson from './gear_sets/p4ret-twisting-6pcT1.gear.json';
 import Phase4RetGearJson from './gear_sets/p4rettwist.gear.json';
-import Phase5TwistingGearJson from './gear_sets/p5twisting.gear.json';
 import Phase5ExodinGearJson from './gear_sets/p5exodin.gear.json';
 import Phase5ShockadinGearJson from './gear_sets/p5shockadin.gear.json';
+import Phase5TwistingGearJson from './gear_sets/p5twisting.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -206,21 +204,21 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	attackPowerBuff: AttackPowerBuff.JujuMight,
 	boglingRoot: false,
+	defaultConjured: Conjured.ConjuredDemonicRune,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	fillerExplosive: Explosive.ExplosiveUnknown,
+	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	food: Food.FoodBlessSunfruit,
 	flask: Flask.FlaskOfSupremePower,
-	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
-	fillerExplosive: Explosive.ExplosiveUnknown,
 	mainHandImbue: WeaponImbue.WildStrikes,
-
+	offHandImbue: WeaponImbue.MagnificentTrollshine,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
-	attackPowerBuff: AttackPowerBuff.JujuMight,
-	defaultConjured: Conjured.ConjuredDemonicRune,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({

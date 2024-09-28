@@ -137,6 +137,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl,
 	}
 
+	hp.Pet.MobType = petConfig.MobType
+
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
 		MainHand: core.Weapon{
 			BaseDamageMin: baseMinDamage,
@@ -286,7 +288,8 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 }
 
 type PetConfig struct {
-	Name string
+	Name    string
+	MobType proto.MobType
 
 	SpecialAbility PetAbilityType
 	FocusDump      PetAbilityType
@@ -303,70 +306,75 @@ type PetConfig struct {
 // https://wotlk.wowhead.com/guides/hunter-dps-best-pets-taming-loyalty-burning-crusade-classic
 var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 	proto.Hunter_Options_Cat: {
-		Name:           "Cat",
+		Name:    "Cat",
+		MobType: proto.MobType_MobTypeBeast,
+
 		SpecialAbility: Bite,
 		FocusDump:      Claw,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.1,
+		Health: 0.98,
+		Armor:  1.00,
+		Damage: 1.10,
 	},
 	proto.Hunter_Options_WindSerpent: {
-		Name:           "Wind Serpent",
-		SpecialAbility: Unknown,
+		Name:    "Wind Serpent",
+		MobType: proto.MobType_MobTypeBeast,
+
+		SpecialAbility: Bite,
 		FocusDump:      LightningBreath,
 
-		Health: 1.0,
-		Armor:  1.0,
+		Health: 1.00,
+		Armor:  1.00,
 		Damage: 1.07,
 	},
 	proto.Hunter_Options_Bat: {
-		Name: "Bat",
+		Name:    "Bat",
+		MobType: proto.MobType_MobTypeBeast,
+
 		//SpecialAbility: SonicBlast,
 		FocusDump: Claw,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		Health: 1.00,
+		Armor:  1.00,
+		Damage: 1.07,
 	},
 	proto.Hunter_Options_Bear: {
-		Name:           "Bear",
-		SpecialAbility: Swipe,
+		Name:    "Bear",
+		MobType: proto.MobType_MobTypeBeast,
+
+		SpecialAbility: Bite,
 		FocusDump:      Claw,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		Health: 1.08,
+		Armor:  1.05,
+		Damage: 0.91,
 	},
 	proto.Hunter_Options_Boar: {
-		Name: "Boar",
+		Name:    "Boar",
+		MobType: proto.MobType_MobTypeBeast,
+
 		//SpecialAbility: Gore,
 		FocusDump: Bite,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		Health: 1.04,
+		Armor:  1.09,
+		Damage: 0.90,
 	},
 	proto.Hunter_Options_CarrionBird: {
-		Name:           "Carrion Bird",
-		SpecialAbility: DemoralizingScreech,
-		FocusDump:      Bite,
+		Name:    "Carrion Bird",
+		MobType: proto.MobType_MobTypeBeast,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
-	},
-	proto.Hunter_Options_Chimaera: {
-		Name: "Chimaera",
-		//SpecialAbility: FroststormBreath,
-		FocusDump: Bite,
+		SpecialAbility: Bite, // Screec
+		FocusDump:      Claw,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		Health: 1.00,
+		Armor:  1.05,
+		Damage: 1.00,
 	},
 	proto.Hunter_Options_CoreHound: {
-		Name: "Core Hound",
+		Name:    "Core Hound",
+		MobType: proto.MobType_MobTypeBeast,
+
 		//SpecialAbility: LavaBreath,
 		FocusDump: Bite,
 
@@ -375,147 +383,108 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Damage: 1.0,
 	},
 	proto.Hunter_Options_Crab: {
-		Name: "Crab",
-		//SpecialAbility: Pin,
+		Name:    "Crab",
+		MobType: proto.MobType_MobTypeBeast,
+
 		FocusDump: Claw,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		Health: 0.96,
+		Armor:  1.13,
+		Damage: 0.95,
 	},
 	proto.Hunter_Options_Crocolisk: {
-		Name: "Crocolisk",
-		//SpecialAbility: BadAttitude,
+		Name:    "Crocolisk",
+		MobType: proto.MobType_MobTypeBeast,
+
 		FocusDump: Bite,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
-	},
-	proto.Hunter_Options_Devilsaur: {
-		Name: "Devilsaur",
-		//SpecialAbility: MonstrousBite,
-		FocusDump: Bite,
-
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
-	},
-	proto.Hunter_Options_Dragonhawk: {
-		Name: "Dragonhawk",
-		//SpecialAbility: FireBreath,
-		FocusDump: Bite,
-
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		Health: 0.95,
+		Armor:  1.10,
+		Damage: 1.00,
 	},
 	proto.Hunter_Options_Gorilla: {
-		Name: "Gorilla",
-		//SpecialAbility: Pummel,
-		//FocusDump: Smack,
+		Name:    "Gorilla",
+		MobType: proto.MobType_MobTypeBeast,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
-	},
-	proto.Hunter_Options_Hyena: {
-		Name: "Hyena",
-		//SpecialAbility: TendonRip,
+		// SpecialAbility: Thunderstomp,
 		FocusDump: Bite,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		Health: 1.04,
+		Armor:  1.00,
+		Damage: 1.02,
+	},
+	proto.Hunter_Options_Hyena: {
+		Name:    "Hyena",
+		MobType: proto.MobType_MobTypeBeast,
+
+		FocusDump: Bite,
+
+		Health: 1.00,
+		Armor:  1.05,
+		Damage: 1.00,
 	},
 	proto.Hunter_Options_Raptor: {
-		Name: "Raptor",
-		//SpecialAbility: SavageRend,
-		FocusDump: Claw,
+		Name:    "Raptor",
+		MobType: proto.MobType_MobTypeBeast,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		SpecialAbility: Bite,
+		FocusDump:      Claw,
+
+		Health: 0.95,
+		Armor:  1.03,
+		Damage: 1.10,
 	},
 	proto.Hunter_Options_Scorpid: {
-		Name:           "Scorpid",
+		Name:    "Scorpid",
+		MobType: proto.MobType_MobTypeBeast,
+
 		SpecialAbility: ScorpidPoison,
 		FocusDump:      Bite,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
-	},
-	proto.Hunter_Options_Serpent: {
-		Name: "Serpent",
-		//SpecialAbility: PoisonSpit,
-		FocusDump: Bite,
-
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
-	},
-	proto.Hunter_Options_Silithid: {
-		Name: "Silithid",
-		//SpecialAbility: VenomWebSpray,
-		FocusDump: Claw,
-
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		Health: 1.00,
+		Armor:  1.10,
+		Damage: 0.94,
 	},
 	proto.Hunter_Options_Spider: {
-		Name: "Spider",
-		//SpecialAbility:   Web,
+		Name:    "Spider",
+		MobType: proto.MobType_MobTypeBeast,
+
 		FocusDump: Bite,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
-	},
-	proto.Hunter_Options_SpiritBeast: {
-		Name: "Spirit Beast",
-		//SpecialAbility: SpiritStrike,
-		FocusDump: Claw,
-
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
-	},
-	proto.Hunter_Options_SporeBat: {
-		Name: "Spore Bat",
-		//SpecialAbility: SporeCloud,
-		//FocusDump:      Smack,
-
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		Health: 1.00,
+		Armor:  1.00,
+		Damage: 1.07,
 	},
 	proto.Hunter_Options_Tallstrider: {
-		Name: "Tallstrider",
-		//SpecialAbility:   DustCloud,
-		FocusDump: Claw,
+		Name:    "Tallstrider",
+		MobType: proto.MobType_MobTypeBeast,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
-	},
-	proto.Hunter_Options_Turtle: {
-		Name: "Turtle",
-		//SpecialAbility: ShellShield,
 		FocusDump: Bite,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		Health: 1.05,
+		Armor:  1.00,
+		Damage: 1.00,
+	},
+	proto.Hunter_Options_Turtle: {
+		Name:    "Turtle",
+		MobType: proto.MobType_MobTypeBeast,
+
+		// SpecialAbility: ShellShield,
+		FocusDump: Bite,
+
+		Health: 1.00,
+		Armor:  1.13,
+		Damage: 0.90,
 	},
 	proto.Hunter_Options_Wolf: {
-		Name:           "Wolf",
-		SpecialAbility: FuriousHowl,
-		FocusDump:      Bite,
+		Name:    "Wolf",
+		MobType: proto.MobType_MobTypeBeast,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		// SpecialAbility: FuriousHowl,
+		FocusDump: Bite,
+
+		Health: 1.00,
+		Armor:  1.05,
+		Damage: 1.00,
 	},
 }

@@ -451,32 +451,11 @@ func (shaman *Shaman) applySpiritOfTheAlpha() {
 		return
 	}
 
-	shaman.SpiritOfTheAlphaAura = shaman.RegisterAura(core.Aura{
-		Label:    "Spirit of the Alpha",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			if shaman.IsTanking() {
-				aura.Activate(sim)
-			}
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.PseudoStats.ThreatMultiplier *= 1.45
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.PseudoStats.ThreatMultiplier /= 1.45
-		},
-	})
-
+	shaman.SpiritOfTheAlphaAura = core.SpiritOfTheAlphaAura(&shaman.Unit)
 	shaman.LoyalBetaAura = shaman.RegisterAura(core.Aura{
 		Label:    "Loyal Beta",
-		ActionID: core.ActionID{SpellID: 443320},
 		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			if !shaman.IsTanking() {
-				aura.Activate(sim)
-			}
-		},
+		ActionID: core.ActionID{SpellID: 443320},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
 			shaman.PseudoStats.ThreatMultiplier *= .70
@@ -486,4 +465,11 @@ func (shaman *Shaman) applySpiritOfTheAlpha() {
 			shaman.PseudoStats.ThreatMultiplier /= .70
 		},
 	})
+
+	if !shaman.IsTanking() {
+		shaman.SpiritOfTheAlphaAura.OnReset = func(aura *core.Aura, sim *core.Simulation) {}
+		shaman.LoyalBetaAura.OnReset = func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		}
+	}
 }
