@@ -80,30 +80,31 @@ var ItemSetGiantstalkerProwess = core.NewItemSet(core.ItemSet{
 		// Your Mongoose Bite also reduces its target's chance to Dodge by 1% and increases your chance to hit by 1% for 30 sec.
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
+			
+			procBonus := stats.Stats{
+				stats.SpellHit:		1,
+				stats.MeleeHit:     1,
+			}
 
-			debuffAuras := hunter.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-				return target.RegisterAura(core.Aura{
-					Label:    "S03 - Item - T1 - Hunter - Melee 2P Bonus",
-					ActionID: core.ActionID{SpellID: 456389},
-					Duration: time.Second * 30,
-					OnGain: func(aura *core.Aura, sim *core.Simulation) {
-						aura.Unit.AddStatDynamic(sim, stats.Dodge, -1)
-						aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * core.MeleeHitRatingPerHitChance
-						aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * core.SpellHitRatingPerHitChance
-					},
-					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-						aura.Unit.AddStatDynamic(sim, stats.Dodge, 1)
-						aura.Unit.PseudoStats.BonusMeleeHitRatingTaken += 1 * core.MeleeHitRatingPerHitChance
-						aura.Unit.PseudoStats.BonusSpellHitRatingTaken += 1 * core.SpellHitRatingPerHitChance
-					},
-				})
+			stalkerAura := hunter.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 458403},
+				Label:    "Stalker",
+				Duration: time.Second * 30,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.AddStatsDynamic(sim, procBonus)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.AddStatsDynamic(sim, procBonus.Invert())
+				},
 			})
 
+			debuffAuras := hunter.NewEnemyAuraArray(core.MeleeHunterDodgeReductionAura)
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "S03 - Item - T1 - Hunter - Melee 2P Bonus Trigger",
 				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell.SpellCode == SpellCode_HunterMongooseBite && result.Landed() {
 						debuffAuras.Get(result.Target).Activate(sim)
+						stalkerAura.Activate(sim)
 					}
 				},
 			}))
@@ -233,8 +234,8 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Hunter - Melee 2P Bonus Trigger",
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell.SpellCode == SpellCode_HunterRaptorStrike {
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
 						procAura.Activate(sim)
 					}
 				},

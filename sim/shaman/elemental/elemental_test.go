@@ -94,7 +94,7 @@ func TestElemental(t *testing.T) {
 			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_5"),
 			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_5"),
 			Buffs:       core.FullBuffsPhase5,
-			Consumes:    Phase4Consumes,
+			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 
 			ItemFilter:      ItemFilters,
@@ -159,6 +159,19 @@ var Phase4Consumes = core.ConsumesCombo{
 		Food:           proto.Food_FoodRunnTumTuberSurprise,
 		MainHandImbue:  proto.WeaponImbue_FlametongueWeapon,
 		OffHandImbue:   proto.WeaponImbue_ConductiveShieldCoating,
+		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
+	},
+}
+
+var Phase5Consumes = core.ConsumesCombo{
+	Label: "P5-Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  proto.Potions_MajorManaPotion,
+		Flask:          proto.Flask_FlaskOfSupremePower,
+		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		Food:           proto.Food_FoodRunnTumTuberSurprise,
+		MainHandImbue:  proto.WeaponImbue_FlametongueWeapon,
+		OffHandImbue:   proto.WeaponImbue_MagnificentTrollshine,
 		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }

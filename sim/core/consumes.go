@@ -142,6 +142,11 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 		// Shield Oil
 		case proto.WeaponImbue_ConductiveShieldCoating:
 			character.AddStat(stats.SpellPower, 24)
+		case proto.WeaponImbue_MagnificentTrollshine:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 36,
+				stats.SpellCrit:  1 * CritRatingPerCritChance,
+			})
 
 		// Sharpening Stones
 		case proto.WeaponImbue_SolidSharpeningStone:
@@ -766,7 +771,7 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.03)
 				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier *= 1.03
-				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier /= 1.03
+				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier *= 1.03
 			},
 		})
 		jujuFlurrySpell := character.RegisterSpell(SpellConfig{

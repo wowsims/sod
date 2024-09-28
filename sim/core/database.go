@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"slices"
 	"sync"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -96,6 +97,10 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		SetID:            pData.SetId,
 		WeaponSkills:     stats.WeaponSkillsFloatArray(pData.WeaponSkills),
 	}
+}
+
+func (item *Item) IsWeapon() bool {
+	return !slices.Contains([]proto.WeaponType{proto.WeaponType_WeaponTypeUnknown, proto.WeaponType_WeaponTypeShield, proto.WeaponType_WeaponTypeOffHand}, item.WeaponType)
 }
 
 func (item *Item) ToItemSpecProto() *proto.ItemSpec {

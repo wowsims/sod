@@ -117,7 +117,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.FlametongueWeapon,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
-	offHandImbue: WeaponImbue.ConductiveShieldCoating,
+	offHandImbue: WeaponImbue.MagnificentTrollshine,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.CerebralCortexCompound,

@@ -439,6 +439,15 @@ export const MeleeCritBuff = withLabel(
 	'Leader of the Pack',
 );
 
+export const HordeThreatBuff = withLabel(
+	makeBooleanRaidBuffInput({
+		actionId: player => player.getMatchingSpellActionId([{ id: 408696, minLevel: 40 }]),
+		fieldName: 'spiritOfTheAlpha',
+		showWhen: player => player.getFaction() === Faction.Horde,
+	}),
+	'Spirit of The Alpha',
+);
+
 export const SpellCritBuff = withLabel(
 	makeBooleanRaidBuffInput({ actionId: player => player.getMatchingSpellActionId([{ id: 24907, minLevel: 40 }]), fieldName: 'moonkinAura' }),
 	'Moonkin Aura',
@@ -921,6 +930,10 @@ export const ImprovedFaerieFire = makeBooleanDebuffInput({
 	actionId: player => player.getMatchingSpellActionId([{ id: 455864, minLevel: 60 }]),
 	fieldName: 'improvedFaerieFire',
 });
+export const MeleeHunter2pcT1Bonus = makeBooleanDebuffInput({
+	actionId: player => player.getMatchingSpellActionId([{ id: 456393, minLevel: 60 }]),
+	fieldName: 'meleeHunterDodgeDebuff',
+});
 export const MekkatorqueFistDebuff = makeBooleanDebuffInput({
 	actionId: player => player.getMatchingItemActionId([{ id: 213409, minLevel: 40, maxLevel: 45 }]),
 	fieldName: 'mekkatorqueFistDebuff',
@@ -1012,11 +1025,11 @@ export const RAID_BUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatArmor],
 	},
-   // {
-   // 	config: DamageReductionPercentBuff,
-   // 	picker: IconPicker,
-   // 	stats: [Stat.StatArmor],
-   // },
+	// {
+	// 	config: DamageReductionPercentBuff,
+	// 	picker: IconPicker,
+	// 	stats: [Stat.StatArmor],
+	// },
 	{
 		config: ResistanceBuff,
 		picker: MultiIconPicker,
@@ -1054,7 +1067,12 @@ export const RAID_BUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatMeleeCrit],
 	},
-
+	// Threat Buffs
+	{
+		config: HordeThreatBuff,
+		picker: IconPicker,
+		stats: [Stat.StatArmor],
+	},
 	// Spell Damage Buffs
 	{
 		config: SpellIncreaseBuff,
@@ -1328,6 +1346,11 @@ export const MISC_DEBUFFS_CONFIG = [
 		config: ImprovedFaerieFire,
 		picker: IconPicker,
 		stats: [],
+	},
+	{
+		config: MeleeHunter2pcT1Bonus,
+		picker: IconPicker,
+		stats: [Stat.StatMeleeHit],
 	},
 	{
 		config: MekkatorqueFistDebuff,
