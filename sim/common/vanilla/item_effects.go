@@ -1922,7 +1922,7 @@ func init() {
 			ActionID:    procActionID.WithTag(1),
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskEmpty,
+			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
 			Flags:       core.SpellFlagIgnoreAttackerModifiers,
 
 			DamageMultiplier: 1,
