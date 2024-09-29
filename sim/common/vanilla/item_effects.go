@@ -2641,7 +2641,7 @@ func init() {
 	core.NewItemEffect(ZandalariHeroCharm, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		actionID := core.ActionID{ItemID: TalismanOfEphemeralPower}
+		actionID := core.ActionID{ItemID: ZandalariHeroCharm}
 		bonusPerStack := stats.Stats{
 			stats.SpellDamage:  17,
 			stats.HealingPower: 34,
