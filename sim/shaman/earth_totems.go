@@ -40,11 +40,10 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 
 	hasFeralSpirit := shaman.HasRune(proto.ShamanRune_RuneCloakFeralSpirit)
 
-	strengthOfEarthTotemAuras := make([]*core.Aura, core.TernaryInt32(hasFeralSpirit, 3, 1))
+	strengthOfEarthTotemAuras := make([]*core.Aura, core.TernaryInt32(hasFeralSpirit, 2, 1))
 	strengthOfEarthTotemAuras[0] = core.StrengthOfEarthTotemAura(&shaman.Unit, shaman.Level, multiplier)
 	if hasFeralSpirit {
-		strengthOfEarthTotemAuras[1] = core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf1.Unit, shaman.Level, multiplier)
-		strengthOfEarthTotemAuras[2] = core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.SpiritWolf2.Unit, shaman.Level, multiplier)
+		strengthOfEarthTotemAuras[1] = core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.Unit, shaman.Level, multiplier)
 	}
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)

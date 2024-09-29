@@ -83,11 +83,10 @@ func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 
 	hasFeralSpirit := shaman.HasRune(proto.ShamanRune_RuneCloakFeralSpirit)
 
-	graceOfAirTotemAuras := make([]*core.Aura, core.TernaryInt32(hasFeralSpirit, 3, 1))
+	graceOfAirTotemAuras := make([]*core.Aura, core.TernaryInt32(hasFeralSpirit, 2, 1))
 	graceOfAirTotemAuras[0] = core.GraceOfAirTotemAura(&shaman.Unit, shaman.Level, multiplier)
 	if hasFeralSpirit {
-		graceOfAirTotemAuras[1] = core.GraceOfAirTotemAura(&shaman.SpiritWolves.SpiritWolf1.Unit, shaman.Level, multiplier)
-		graceOfAirTotemAuras[2] = core.GraceOfAirTotemAura(&shaman.SpiritWolves.SpiritWolf2.Unit, shaman.Level, multiplier)
+		graceOfAirTotemAuras[1] = core.GraceOfAirTotemAura(&shaman.SpiritWolves.Unit, shaman.Level, multiplier)
 	}
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
