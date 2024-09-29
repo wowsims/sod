@@ -550,9 +550,12 @@ func (aa *AutoAttacks) reset(sim *Simulation) {
 
 	// Make sure extra attacks are reset
 	aa.mh.extraAttacks = 0
+	aa.mh.extraAttacksPending = 0
 	aa.mh.spell.SetMetricsSplit(0)
+
 	if aa.ranged.spell != nil {
 		aa.ranged.extraAttacks = 0
+		aa.ranged.extraAttacksPending = 0
 		aa.ranged.spell.SetMetricsSplit(0)
 	}
 
@@ -562,6 +565,7 @@ func (aa *AutoAttacks) reset(sim *Simulation) {
 
 		if aa.IsDualWielding {
 			aa.oh.extraAttacks = 0
+			aa.oh.extraAttacksPending = 0
 			aa.oh.spell.SetMetricsSplit(0)
 			aa.oh.updateSwingDuration(aa.mh.curSwingSpeed)
 			aa.oh.swingAt = 0
