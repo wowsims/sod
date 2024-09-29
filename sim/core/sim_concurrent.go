@@ -152,9 +152,11 @@ func (rsrc *raidSimResultCombiner) addActionMetrics(unit *proto.UnitMetrics, add
 
 	if am == nil {
 		am = &proto.ActionMetrics{
-			Id:      add.Id,
-			IsMelee: add.IsMelee,
-			Targets: make([]*proto.TargetedActionMetrics, len(add.Targets)),
+			Id:          add.Id,
+			IsMelee:     add.IsMelee,
+			IsPassive:   add.IsPassive,
+			Targets:     make([]*proto.TargetedActionMetrics, len(add.Targets)),
+			SpellSchool: add.SpellSchool,
 		}
 		for i, addTgt := range add.Targets {
 			am.Targets[i] = &proto.TargetedActionMetrics{
@@ -171,15 +173,33 @@ func (rsrc *raidSimResultCombiner) addActionMetrics(unit *proto.UnitMetrics, add
 		}
 		baseTgt.Casts += addTgt.Casts
 		baseTgt.Hits += addTgt.Hits
+		baseTgt.ResistedHits += addTgt.ResistedHits
 		baseTgt.Crits += addTgt.Crits
+		baseTgt.ResistedCrits += addTgt.ResistedCrits
+		baseTgt.Ticks += addTgt.Ticks
+		baseTgt.ResistedTicks += addTgt.ResistedTicks
+		baseTgt.CritTicks += addTgt.CritTicks
+		baseTgt.ResistedCritTicks += addTgt.ResistedCritTicks
 		baseTgt.Misses += addTgt.Misses
 		baseTgt.Dodges += addTgt.Dodges
 		baseTgt.Parries += addTgt.Parries
 		baseTgt.Blocks += addTgt.Blocks
+		baseTgt.BlockedCrits += addTgt.BlockedCrits
 		baseTgt.Glances += addTgt.Glances
 		baseTgt.Damage += addTgt.Damage
+		baseTgt.ResistedDamage += addTgt.ResistedDamage
+		baseTgt.CritDamage += addTgt.CritDamage
+		baseTgt.ResistedCritDamage += addTgt.ResistedCritDamage
+		baseTgt.TickDamage += addTgt.TickDamage
+		baseTgt.ResistedTickDamage += addTgt.ResistedTickDamage
+		baseTgt.CritTickDamage += addTgt.CritTickDamage
+		baseTgt.ResistedCritTickDamage += addTgt.ResistedCritTickDamage
+		baseTgt.GlanceDamage += addTgt.GlanceDamage
+		baseTgt.BlockDamage += addTgt.BlockDamage
+		baseTgt.BlockedCritDamage += addTgt.BlockedCritDamage
 		baseTgt.Threat += addTgt.Threat
 		baseTgt.Healing += addTgt.Healing
+		baseTgt.CritHealing += addTgt.CritHealing
 		baseTgt.Shielding += addTgt.Shielding
 		baseTgt.CastTimeMs += addTgt.CastTimeMs
 	}
