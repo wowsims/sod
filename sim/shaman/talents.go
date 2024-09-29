@@ -28,9 +28,10 @@ func (shaman *Shaman) ApplyTalents() {
 
 	shaman.AddStat(stats.Dodge, 1*float64(shaman.Talents.Anticipation))
 
+	shaman.ApplyEquipScaling(stats.Armor, 1+.02*float64(shaman.Talents.Toughness))
+
 	if shaman.Talents.Parry {
 		shaman.PseudoStats.CanParry = true
-		shaman.AddStat(stats.Parry, 5)
 	}
 
 	// TODO: Check whether this does what it should.
@@ -47,7 +48,7 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.TidalFocus > 0 {
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
+			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) && spell.Cost != nil {
 				spell.Cost.Multiplier -= shaman.Talents.TidalFocus
 			}
 		})
@@ -57,9 +58,20 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.SpellHit, float64(shaman.Talents.NaturesGuidance))
 
 	if shaman.Talents.HealingGrace > 0 {
+		threatMultiplier := 1 - .05*float64(shaman.Talents.HealingGrace)
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
-				spell.ThreatMultiplier *= 1 - .05*float64(shaman.Talents.HealingGrace)
+				spell.ThreatMultiplier *= threatMultiplier
+			}
+		})
+	}
+
+	if shaman.Talents.TidalMastery > 0 {
+		critBonus := float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagShaman) && (spell.ProcMask.Matches(core.ProcMaskSpellHealing) ||
+				spell.Flags.Matches(SpellFlagLightning)) {
+				spell.BonusCritRating += critBonus
 			}
 		})
 	}
@@ -78,15 +90,13 @@ func (shaman *Shaman) applyElementalFocus() {
 
 	var affectedSpells []*core.Spell
 
-	clearcastingAura := shaman.RegisterAura(core.Aura{
-		Label:    "Clearcasting",
-		ActionID: core.ActionID{SpellID: 16246},
-		Duration: time.Second * 15,
+	shaman.ClearcastingAura = shaman.RegisterAura(core.Aura{
+		Label:     "Clearcasting",
+		ActionID:  core.ActionID{SpellID: 16246},
+		Duration:  time.Second * 15,
+		MaxStacks: 1,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
-				shaman.Spellbook,
-				func(spell *core.Spell) bool { return spell != nil && spell.Flags.Matches(SpellFlagFocusable) },
-			)
+			affectedSpells = shaman.getClearcastingSpells()
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedSpells, func(spell *core.Spell) {
@@ -102,30 +112,45 @@ func (shaman *Shaman) applyElementalFocus() {
 				}
 			})
 		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			if newStacks == 0 {
+				aura.Deactivate(sim)
+			}
+		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
 			if aura.RemainingDuration(sim) == aura.Duration {
 				return
 			}
 
-			if spell.Flags.Matches(SpellFlagFocusable) && spell.ActionID.Tag != CastTagOverload {
-				aura.Deactivate(sim)
+			if aura.GetStacks() > 0 && shaman.isShamanDamagingSpell(spell) {
+				aura.RemoveStack(sim)
 			}
 		},
 	})
 
-	shaman.RegisterAura(core.Aura{
-		Label:    "Elemental Focus",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: "Elemental Focus Trigger",
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagFocusable) && spell.ActionID.Tag != CastTagOverload && sim.RandomFloat("Elemental Focus") < procChance {
-				clearcastingAura.Activate(sim)
+			if shaman.isShamanDamagingSpell(spell) && sim.Proc(procChance, "Elemental Focus") {
+				shaman.ClearcastingAura.Activate(sim)
+				shaman.ClearcastingAura.SetStacks(sim, shaman.ClearcastingAura.MaxStacks)
 			}
 		},
-	})
+	}))
+}
+
+func (shaman *Shaman) isShamanDamagingSpell(spell *core.Spell) bool {
+	return spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellDamage)
+}
+
+func (shaman *Shaman) getClearcastingSpells() []*core.Spell {
+	return core.FilterSlice(
+		shaman.Spellbook,
+		func(spell *core.Spell) bool {
+			return spell != nil && shaman.isShamanDamagingSpell(spell)
+		},
+	)
 }
 
 func (shaman *Shaman) applyElementalDevastation() {
@@ -181,7 +206,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(
 				shaman.Spellbook,
-				func(spell *core.Spell) bool { return spell != nil && spell.Flags.Matches(SpellFlagFocusable) },
+				func(spell *core.Spell) bool { return spell != nil && shaman.isShamanDamagingSpell(spell) },
 			)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -199,12 +224,13 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 					spell.Cost.Multiplier += 100
 				}
 			})
+			shaman.ElementalMastery.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagFocusable) && spell.ActionID.Tag != CastTagOverload {
+			if shaman.isShamanDamagingSpell(spell) {
 				// Elemental mastery can be batched
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + time.Millisecond*1,
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {
 						if aura.IsActive() {
 							// Remove the buff and put skill on CD
@@ -218,7 +244,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		},
 	})
 
-	eleMastSpell := shaman.RegisterSpell(core.SpellConfig{
+	shaman.ElementalMastery = shaman.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
@@ -233,7 +259,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	})
 
 	shaman.AddMajorCooldown(core.MajorCooldown{
-		Spell: eleMastSpell,
+		Spell: shaman.ElementalMastery,
 		Type:  core.CooldownTypeDPS,
 	})
 }
@@ -306,13 +332,13 @@ func (shaman *Shaman) applyFlurry() {
 		return
 	}
 
-	shaman.FlurryAura = shaman.makeFlurryAura(shaman.Talents.Flurry)
+	talentAura := shaman.makeFlurryAura(shaman.Talents.Flurry)
 
 	// This must be registered before the below trigger because in-game a crit weapon swing consumes a stack before the refresh, so you end up with:
 	// 3 => 2
 	// refresh
 	// 2 => 3
-	shaman.makeFlurryConsumptionTrigger(shaman.FlurryAura)
+	shaman.makeFlurryConsumptionTrigger(talentAura)
 
 	shaman.RegisterAura(core.Aura{
 		Label:    "Flurry Proc Trigger",
@@ -322,9 +348,9 @@ func (shaman *Shaman) applyFlurry() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeCrit) {
-				shaman.FlurryAura.Activate(sim)
-				if shaman.FlurryAura.IsActive() {
-					shaman.FlurryAura.SetStacks(sim, 3)
+				talentAura.Activate(sim)
+				if talentAura.IsActive() {
+					talentAura.SetStacks(sim, 3)
 				}
 				return
 			}
@@ -339,13 +365,8 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 		return nil
 	}
 
-	has6PEarthfuryImpact := shaman.HasSetBonus(ItemSetEarthfuryImpact, 6)
-
 	spellID := []int32{16257, 16277, 16278, 16279, 16280}[points-1]
 	attackSpeed := []float64{1.1, 1.15, 1.2, 1.25, 1.3}[points-1]
-	if has6PEarthfuryImpact {
-		attackSpeed += .10
-	}
 
 	aura := shaman.GetOrRegisterAura(core.Aura{
 		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),
@@ -357,10 +378,10 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 	aura.NewExclusiveEffect("Flurry", true, core.ExclusiveEffect{
 		Priority: attackSpeed,
 		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, attackSpeed)
+			shaman.MultiplyMeleeSpeed(sim, attackSpeed+shaman.bonusFlurrySpeed)
 		},
 		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, 1/attackSpeed)
+			shaman.MultiplyMeleeSpeed(sim, 1/(attackSpeed+shaman.bonusFlurrySpeed))
 		},
 	})
 

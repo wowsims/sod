@@ -4,10 +4,9 @@ import (
 	"math"
 	"time"
 
-	googleProto "google.golang.org/protobuf/proto"
-
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
+	googleProto "google.golang.org/protobuf/proto"
 )
 
 type BuffName int32
@@ -18,6 +17,7 @@ const (
 	BattleShout
 	BlessingOfMight
 	BlessingOfWisdom
+	HornOfLordaeron
 	BloodPact
 	CommandingShout
 	DevotionAura
@@ -176,6 +176,30 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		},
 		// 60: stats.Stats{
 		// 	stats.MP5: 33,
+		// },
+	},
+	HornOfLordaeron: {
+		25: stats.Stats{
+			stats.Strength: 17,
+			stats.Agility:  17,
+		},
+		40: stats.Stats{
+			stats.Strength: 26,
+			stats.Agility:  26,
+		},
+		50: stats.Stats{
+			stats.Strength: 45,
+			stats.Agility:  45,
+		},
+		// TODO: AQ
+		// Horn provides the same stats as talented SoE and GoA and uses the pre-AQ values in phase 5
+		60: stats.Stats{
+			stats.Strength: 61 * 1.15,
+			stats.Agility:  61 * 1.15,
+		},
+		// 60: stats.Stats{
+		// 	stats.Strength: 89,
+		// 	stats.Agility:  89,
 		// },
 	},
 	BloodPact: {
@@ -539,92 +563,75 @@ type StatConfig struct {
 	IsMultiplicative bool
 }
 
-func makeExclusiveFlatStatBuff(aura *Aura, category string, config StatConfig) {
-	aura.NewExclusiveEffect(category+config.Stat.StatName()+"Buff", false, ExclusiveEffect{
-		Priority: config.Amount,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(config.Stat, config.Amount)
-			} else {
-				aura.Unit.AddStatDynamic(sim, config.Stat, config.Amount)
-			}
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(config.Stat, -config.Amount)
-			} else {
-				aura.Unit.AddStatDynamic(sim, config.Stat, -config.Amount)
-			}
-		},
-	})
-}
-
-func makeExclusiveMultiplierBuff(aura *Aura, category string, config StatConfig) {
-	dep := aura.Unit.NewDynamicMultiplyStat(config.Stat, config.Amount)
-	aura.NewExclusiveEffect(category+config.Stat.StatName()+"%Buff", false, ExclusiveEffect{
-		Priority: config.Amount,
-		OnGain: func(ee *ExclusiveEffect, s *Simulation) {
-			if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
-				aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
-			} else {
-				ee.Aura.Unit.EnableDynamicStatDep(s, dep)
-			}
-		},
-		OnExpire: func(ee *ExclusiveEffect, s *Simulation) {
-			if ee.Aura.Unit.Env.MeasuringStats {
-				aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
-			} else {
-				ee.Aura.Unit.DisableDynamicStatDep(s, dep)
-			}
-		},
-	})
-}
-
-func makeExclusivePseudostatsBuff(aura *Aura, config BuffConfig) {
-	hasOnGain := config.ExtraOnGain != nil
-	hasOnExpire := config.ExtraOnExpire != nil
-
-	if !hasOnGain && !hasOnExpire {
-		return
-	}
-	if hasOnGain && !hasOnExpire {
-		panic("Missing ExtraOnExpire for" + config.Category)
-	}
-	if hasOnExpire && !hasOnGain {
-		panic("Missing ExtraOnGain for " + config.Category)
-	}
-
-	aura.NewExclusiveEffect(config.Category+"PseudostatsBuff", false, ExclusiveEffect{
-		Priority: 1, // TODO: May need a way to add priority to these in the future
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			config.ExtraOnGain(ee.Aura, sim)
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			config.ExtraOnExpire(ee.Aura, sim)
-		},
-	})
-}
-
+// Create an exclusive effect that tries to determine within-category priority based on the value of stats provided.
 func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 	aura.BuildPhase = CharacterBuildPhaseBuffs
 
+	startingStats := aura.Unit.GetStats()
+	bonusStats := stats.Stats{}
+	statDeps := []*stats.StatDependency{}
 	for _, statConfig := range config.Stats {
 		if statConfig.IsMultiplicative {
-			makeExclusiveMultiplierBuff(aura, config.Category, statConfig)
+			startingStats[statConfig.Stat] *= statConfig.Amount
+			statDeps = append(statDeps, aura.Unit.NewDynamicMultiplyStat(statConfig.Stat, statConfig.Amount))
 		} else {
-			makeExclusiveFlatStatBuff(aura, config.Category, statConfig)
+			startingStats[statConfig.Stat] += statConfig.Amount
+			bonusStats[statConfig.Stat] += statConfig.Amount
 		}
 	}
 
-	makeExclusivePseudostatsBuff(aura, config)
+	totalStats := 0.0
+	for _, amount := range startingStats {
+		totalStats += amount
+	}
+
+	aura.NewExclusiveEffect(config.Category, false, ExclusiveEffect{
+		Priority: totalStats,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStats(bonusStats)
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats)
+				if config.ExtraOnGain != nil {
+					config.ExtraOnGain(ee.Aura, sim)
+				}
+			}
+
+			for _, dep := range statDeps {
+				if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
+				} else {
+					ee.Aura.Unit.EnableDynamicStatDep(sim, dep)
+				}
+			}
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStats(bonusStats.Multiply(-1))
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats.Multiply(-1))
+				if config.ExtraOnExpire != nil {
+					config.ExtraOnExpire(ee.Aura, sim)
+				}
+			}
+
+			for _, dep := range statDeps {
+				if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
+				} else {
+					ee.Aura.Unit.DisableDynamicStatDep(sim, dep)
+				}
+			}
+		},
+	})
 }
 
 // Applies buffs that affect individual players.
-func applyBuffEffects(agent Agent, isCharacter bool, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
+func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
 	character := agent.GetCharacter()
 	level := character.Level
-	useAllianceBuffs := !isCharacter || character.IsAlliance()
-	useHordeBuffs := !isCharacter || !useAllianceBuffs
+	isAlliance := playerFaction == proto.Faction_Alliance
+	isHorde := playerFaction == proto.Faction_Horde
 	bonusResist := float64(0)
 
 	if raidBuffs.ArcaneBrilliance {
@@ -686,6 +693,10 @@ func applyBuffEffects(agent Agent, isCharacter bool, raidBuffs *proto.RaidBuffs,
 		})
 	}
 
+	if raidBuffs.SpiritOfTheAlpha {
+		SpiritOfTheAlphaAura(&character.Unit)
+	}
+
 	if raidBuffs.TrueshotAura {
 		TrueshotAura(&character.Unit)
 	}
@@ -730,11 +741,11 @@ func applyBuffEffects(agent Agent, isCharacter bool, raidBuffs *proto.RaidBuffs,
 	// Heart of the Lion grants bonus Melee AP as well so give it priority over kings
 	if raidBuffs.AspectOfTheLion {
 		HeartOfTheLionAura(character)
-	} else if individualBuffs.BlessingOfKings && useAllianceBuffs {
+	} else if individualBuffs.BlessingOfKings && isAlliance {
 		MakePermanent(BlessingOfKingsAura(character))
 	}
 
-	if raidBuffs.SanctityAura && useAllianceBuffs {
+	if raidBuffs.SanctityAura && isAlliance {
 		MakePermanent(SanctityAuraAura(character))
 	}
 
@@ -745,54 +756,61 @@ func applyBuffEffects(agent Agent, isCharacter bool, raidBuffs *proto.RaidBuffs,
 		}
 	*/
 
-	if raidBuffs.DevotionAura != proto.TristateEffect_TristateEffectMissing && useAllianceBuffs {
+	if raidBuffs.DevotionAura != proto.TristateEffect_TristateEffectMissing && isAlliance {
 		MakePermanent(DevotionAuraAura(&character.Unit, GetTristateValueInt32(raidBuffs.DevotionAura, 0, 2)))
 	}
 
-	if raidBuffs.StoneskinTotem != proto.TristateEffect_TristateEffectMissing && useHordeBuffs {
+	if raidBuffs.StoneskinTotem != proto.TristateEffect_TristateEffectMissing && isHorde {
 		MakePermanent(StoneskinTotemAura(&character.Unit, GetTristateValueInt32(raidBuffs.StoneskinTotem, 0, 2)))
 	}
 
-	if raidBuffs.ImprovedStoneskinWindwall && useHordeBuffs {
+	if raidBuffs.ImprovedStoneskinWindwall && isHorde {
 		MakePermanent(ImprovedStoneskinTotemAura(&character.Unit))
 		MakePermanent(ImprovedWindwallTotemAura(&character.Unit))
 	}
 
-	if raidBuffs.RetributionAura != proto.TristateEffect_TristateEffectMissing && useAllianceBuffs {
+	if raidBuffs.RetributionAura != proto.TristateEffect_TristateEffectMissing && isAlliance {
 		RetributionAura(character, GetTristateValueInt32(raidBuffs.RetributionAura, 0, 2))
 	}
 
 	if raidBuffs.BattleShout != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(BattleShoutAura(&character.Unit, GetTristateValueInt32(raidBuffs.BattleShout, 0, 5), 0))
 	}
-	if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing && useAllianceBuffs {
+
+	if raidBuffs.HornOfLordaeron && isAlliance {
+		MakePermanent(HornOfLordaeronAura(&character.Unit, level))
+	} else if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing && isAlliance {
 		MakePermanent(BlessingOfMightAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfMight, 0, 5), level))
 	}
 
 	if raidBuffs.DemonicPact > 0 {
-		power := float64(raidBuffs.DemonicPact)
-		dpAura := DemonicPactAura(&character.Unit, power, CharacterBuildPhaseBuffs)
+		power := raidBuffs.DemonicPact
+		dpAura := DemonicPactAura(&character.Unit, float64(power), CharacterBuildPhaseBuffs)
 		dpAura.ExclusiveEffects[0].Priority = float64(power)
+		dpAura.OnReset = func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+			aura.SetStacks(sim, power)
+		}
 		MakePermanent(dpAura)
 	}
 
-	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing && useHordeBuffs {
+	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing && isHorde {
 		multiplier := GetTristateValueFloat(raidBuffs.StrengthOfEarthTotem, 1, 1.15)
 		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, level, multiplier))
 	}
 
-	if raidBuffs.GraceOfAirTotem > 0 && useHordeBuffs {
+	if raidBuffs.GraceOfAirTotem > 0 && isHorde {
 		multiplier := GetTristateValueFloat(raidBuffs.GraceOfAirTotem, 1, 1.15)
 		MakePermanent(GraceOfAirTotemAura(&character.Unit, level, multiplier))
 	}
 
-	if individualBuffs.BlessingOfWisdom > 0 && useAllianceBuffs {
+	if individualBuffs.BlessingOfWisdom > 0 && isAlliance {
 		updateStats := BuffSpellByLevel[BlessingOfWisdom][level]
 		if individualBuffs.BlessingOfWisdom == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.2)
 		}
 		character.AddStats(updateStats)
-	} else if raidBuffs.ManaSpringTotem > 0 && useHordeBuffs {
+	} else if raidBuffs.ManaSpringTotem > 0 && isHorde {
 		updateStats := BuffSpellByLevel[ManaSpring][level]
 		if raidBuffs.ManaSpringTotem == proto.TristateEffect_TristateEffectImproved {
 			updateStats = updateStats.Multiply(1.25)
@@ -818,10 +836,10 @@ func applyBuffEffects(agent Agent, isCharacter bool, raidBuffs *proto.RaidBuffs,
 	}
 
 	if individualBuffs.SongflowerSerenade {
-		ApplySongflowerSerenate(&character.Unit)
+		ApplySongflowerSerenade(&character.Unit)
 	}
 
-	ApplyWarchiefsBuffs(&character.Unit, individualBuffs, useAllianceBuffs)
+	ApplyWarchiefsBuffs(&character.Unit, individualBuffs, isAlliance, isHorde)
 
 	// Dire Maul Buffs
 	if individualBuffs.FengusFerocity {
@@ -838,7 +856,7 @@ func applyBuffEffects(agent Agent, isCharacter bool, raidBuffs *proto.RaidBuffs,
 
 	// Darkmoon Faire Buffs
 	if individualBuffs.SaygesFortune != proto.SaygesFortune_SaygesUnknown {
-		ApplySaygesFortunes(&character.Unit, individualBuffs.SaygesFortune)
+		ApplySaygesFortunes(character, individualBuffs.SaygesFortune)
 	}
 
 	// SoD World Buffs
@@ -872,9 +890,10 @@ func applyBuffEffects(agent Agent, isCharacter bool, raidBuffs *proto.RaidBuffs,
 }
 
 // Applies buffs to pets.
-func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
+func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuffs *proto.RaidBuffs, partyBuffs *proto.PartyBuffs, individualBuffs *proto.IndividualBuffs) {
 	// Summoned pets, like Mage Water Elemental, aren't around to receive raid buffs.
-	if petAgent.GetPet().IsGuardian() {
+	// Also assume that applicable world buffs are applied to the starting pet only
+	if petAgent.GetPet().IsGuardian() || !petAgent.GetPet().enabledOnStart {
 		return
 	}
 
@@ -886,15 +905,6 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	// the owner during combat or don't make sense for a pet.
 	individualBuffs.Innervates = 0
 	individualBuffs.PowerInfusions = 0
-
-	if !petAgent.GetPet().enabledOnStart {
-		raidBuffs.ScrollOfProtection = false
-		raidBuffs.ScrollOfStamina = false
-		raidBuffs.ScrollOfStrength = false
-		raidBuffs.ScrollOfAgility = false
-		raidBuffs.ScrollOfIntellect = false
-		raidBuffs.ScrollOfSpirit = false
-	}
 
 	// Pets only receive Onyxia, Rend, and ZG buffs because they're globally applied in their respective zones
 	// SoD versions were removed from pets though
@@ -908,7 +918,7 @@ func applyPetBuffEffects(petAgent PetAgent, raidBuffs *proto.RaidBuffs, partyBuf
 	individualBuffs.SlipkiksSavvy = false
 	individualBuffs.SparkOfInspiration = false
 
-	applyBuffEffects(petAgent, false, raidBuffs, partyBuffs, individualBuffs)
+	applyBuffEffects(petAgent, playerFaction, raidBuffs, partyBuffs, individualBuffs)
 }
 
 func SanctityAuraAura(character *Character) *Aura {
@@ -1151,7 +1161,7 @@ func RetributionAura(character *Character, points int32) *Aura {
 		ActionID:    actionID,
 		SpellSchool: SpellSchoolHoly,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagBinary,
+		Flags:       SpellFlagBinary | SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -1199,7 +1209,7 @@ func ThornsAura(character *Character, points int32) *Aura {
 		ActionID:    actionID,
 		SpellSchool: SpellSchoolNature,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagBinary,
+		Flags:       SpellFlagBinary | SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -1912,6 +1922,7 @@ func DemonicPactAura(unit *Unit, spellpower float64, buildPhase CharacterBuildPh
 		Label:      "Demonic Pact",
 		ActionID:   ActionID{SpellID: 425464},
 		Duration:   time.Second * 45,
+		MaxStacks:  10000,
 		BuildPhase: buildPhase,
 	})
 	spellPowerBonusEffect(aura, spellpower)
@@ -2005,6 +2016,19 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 	})
 }
 
+func SpiritOfTheAlphaAura(unit *Unit) *Aura {
+	return MakePermanent(unit.GetOrRegisterAura(Aura{
+		Label:    "Spirit of the Alpha",
+		ActionID: ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.ThreatMultiplier *= 1.45
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.ThreatMultiplier /= 1.45
+		},
+	}))
+}
+
 func TrueshotAura(unit *Unit) *Aura {
 	if unit.Level < 40 {
 		return nil
@@ -2047,25 +2071,41 @@ func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
 		// 60: 25291,
 	}[level]
 
-	aura := unit.GetOrRegisterAura(Aura{
+	bonusAP := math.Floor(BuffSpellByLevel[BlessingOfMight][level][stats.AttackPower] * (1 + 0.04*float64(impBomPts)))
+
+	aura := MakePermanent(unit.GetOrRegisterAura(Aura{
 		Label:      "Blessing of Might",
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: math.Floor(BuffSpellByLevel[BlessingOfMight][level][stats.AttackPower] * (1 + 0.04*float64(impBomPts))),
-			})
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: -1 * math.Floor(BuffSpellByLevel[BlessingOfMight][level][stats.AttackPower]*(1+0.04*float64(impBomPts))),
-			})
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "Paladin Physical Buffs",
+		Stats: []StatConfig{
+			{stats.AttackPower, bonusAP, false},
 		},
 	})
+
+	return aura
+}
+
+func HornOfLordaeronAura(unit *Unit, level int32) *Aura {
+	updateStats := BuffSpellByLevel[HornOfLordaeron][level]
+
+	aura := MakePermanent(unit.RegisterAura(Aura{
+		Label:    "Horn Of Lordaeron",
+		ActionID: ActionID{SpellID: 425600},
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "Paladin Physical Buffs",
+		Stats: []StatConfig{
+			{stats.Agility, updateStats[stats.Agility], false},
+			{stats.Strength, updateStats[stats.Strength], false},
+		},
+	})
+
 	return aura
 }
 
@@ -2180,21 +2220,27 @@ func ApplyWildStrikes(character *Character) *Aura {
 	MakePermanent(character.GetOrRegisterAura(Aura{
 		Label: "Wild Strikes",
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			// charges are removed by every auto or next melee, whether it lands or not
-			if wsBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
-				wsBuffAura.RemoveStack(sim)
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
+				return
 			}
 
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSupressExtraAttack) {
-				return
+			// charges are removed by every auto or next melee, whether it lands or not
+			if wsBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
+				if wsBuffAura.GetStacks() == 2 {
+					wsBuffAura.SetStacks(sim, 1)
+					wsBuffAura.Duration = time.Millisecond * 100 // 100 ms might be generous - could anywhere from 50-150 ms potentially
+					wsBuffAura.Refresh(sim)                      // Apply New Duration
+				}
 			}
 
 			if icd.IsReady(sim) && sim.RandomFloat("Wild Strikes") < 0.2 {
 				icd.Use(sim)
 				wsBuffAura.Activate(sim)
-				// aura is up _after_ the triggering swing lands, so the aura always stays up after the extra attack
+				// aura is up _after_ the triggering swing lands, the extra attack only has 1500ms for the AP bonus but the extra attack does not expire
 				wsBuffAura.SetStacks(sim, 2)
-				aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, buffActionID)
+				wsBuffAura.Duration = time.Millisecond * 1500
+				wsBuffAura.Refresh(sim) // Apply New Duration
+				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, buffActionID, spell)
 			}
 		},
 	}))
@@ -2249,7 +2295,7 @@ func ApplyWindfury(character *Character) *Aura {
 				windfuryBuffAura.RemoveStack(sim)
 			}
 
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSupressExtraAttack) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
 				return
 			}
 
@@ -2262,7 +2308,8 @@ func ApplyWindfury(character *Character) *Aura {
 				} else {
 					windfuryBuffAura.SetStacks(sim, 2)
 				}
-				aura.Unit.AutoAttacks.ExtraMHAttack(sim, 1, ActionID{SpellID: 10610})
+
+				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, ActionID{SpellID: spellId}, spell)
 			}
 		},
 	}))
@@ -2339,7 +2386,7 @@ func ApplySpiritOfZandalar(unit *Unit) {
 	})
 }
 
-func ApplySongflowerSerenate(unit *Unit) {
+func ApplySongflowerSerenade(unit *Unit) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Songflower Serenade",
 		ActionID: ActionID{SpellID: 15366},
@@ -2360,11 +2407,11 @@ func ApplySongflowerSerenate(unit *Unit) {
 	})
 }
 
-func ApplyWarchiefsBuffs(unit *Unit, buffs *proto.IndividualBuffs, useAllianceBuffs bool) {
-	if buffs.WarchiefsBlessing && !useAllianceBuffs {
+func ApplyWarchiefsBuffs(unit *Unit, buffs *proto.IndividualBuffs, isAlliance bool, isHorde bool) {
+	if buffs.WarchiefsBlessing && isHorde {
 		ApplyWarchiefsBlessing(unit, "WarchiefsBuff")
 	}
-	if buffs.MightOfStormwind && useAllianceBuffs {
+	if buffs.MightOfStormwind && isAlliance {
 		ApplyMightOfStormwind(unit, "WarchiefsBuff")
 	}
 }
@@ -2372,7 +2419,7 @@ func ApplyWarchiefsBuffs(unit *Unit, buffs *proto.IndividualBuffs, useAllianceBu
 func ApplyWarchiefsBlessing(unit *Unit, category string) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Warchief's Blessing",
-		ActionID: ActionID{SpellID: 461475},
+		ActionID: ActionID{SpellID: 16609},
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2454,7 +2501,7 @@ func ApplySlipkiksSavvy(unit *Unit) {
 	})
 }
 
-func ApplySaygesFortunes(unit *Unit, fortune proto.SaygesFortune) {
+func ApplySaygesFortunes(character *Character, fortune proto.SaygesFortune) {
 	var label string
 	var spellID int32
 
@@ -2475,30 +2522,34 @@ func ApplySaygesFortunes(unit *Unit, fortune proto.SaygesFortune) {
 	case proto.SaygesFortune_SaygesAgility:
 		label = "Sayge's Dark Fortune of Agility"
 		spellID = 23736
+		addAgility := character.GetBaseStats()[stats.Agility] * 0.1
 		config.Stats = []StatConfig{
-			{stats.Agility, 1.10, true},
+			{stats.Agility, addAgility, false},
 		}
 	case proto.SaygesFortune_SaygesIntellect:
 		label = "Sayge's Dark Fortune of Intellect"
 		spellID = 23766
+		addIntellect := character.GetBaseStats()[stats.Intellect] * 0.1
 		config.Stats = []StatConfig{
-			{stats.Intellect, 1.10, true},
+			{stats.Intellect, addIntellect, false},
 		}
 	case proto.SaygesFortune_SaygesSpirit:
 		label = "Sayge's Dark Fortune of Spirit"
 		spellID = 23738
+		addSpirit := character.GetBaseStats()[stats.Spirit] * 0.1
 		config.Stats = []StatConfig{
-			{stats.Spirit, 1.10, true},
+			{stats.Spirit, addSpirit, false},
 		}
 	case proto.SaygesFortune_SaygesStamina:
 		label = "Sayge's Dark Fortune of Stamina"
 		spellID = 23737
+		addStamina := character.GetBaseStats()[stats.Stamina] * 0.1
 		config.Stats = []StatConfig{
-			{stats.Stamina, 1.10, true},
+			{stats.Stamina, addStamina, false},
 		}
 	}
 
-	aura := MakePermanent(unit.RegisterAura(Aura{
+	aura := MakePermanent(character.RegisterAura(Aura{
 		Label:    label,
 		ActionID: ActionID{SpellID: spellID},
 	}))

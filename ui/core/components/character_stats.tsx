@@ -101,7 +101,7 @@ export class CharacterStats extends Component {
 		this.stats.forEach((stat, idx) => {
 			const bonusStatValue = bonusStats.getStat(stat);
 			let contextualClass: string;
-			if (bonusStatValue == 0) {
+			if (bonusStatValue === 0) {
 				contextualClass = 'text-white';
 			} else if (bonusStatValue > 0) {
 				contextualClass = 'text-success';
@@ -114,7 +114,7 @@ export class CharacterStats extends Component {
 			const valueElem = (
 				<div className="stat-value-link-container">
 					<a href="javascript:void(0)" className={`stat-value-link ${contextualClass}`} attributes={{ role: 'button' }} ref={statLinkElemRef}>
-						{`${this.statDisplayString(finalStats, finalStats, stat)} `}
+						{`${this.statDisplayString(player, finalStats, finalStats, stat)} `}
 					</a>
 				</div>
 			);
@@ -129,39 +129,39 @@ export class CharacterStats extends Component {
 					<div>
 						<div className="character-stats-tooltip-row">
 							<span>Base:</span>
-							<span>{this.statDisplayString(baseStats, baseDelta, stat)}</span>
+							<span>{this.statDisplayString(player, baseStats, baseDelta, stat)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Gear:</span>
-							<span>{this.statDisplayString(gearStats, gearDelta, stat)}</span>
+							<span>{this.statDisplayString(player, gearStats, gearDelta, stat)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Talents:</span>
-							<span>{this.statDisplayString(talentsStats, talentsDelta, stat)}</span>
+							<span>{this.statDisplayString(player, talentsStats, talentsDelta, stat)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Buffs:</span>
-							<span>{this.statDisplayString(buffsStats, buffsDelta, stat)}</span>
+							<span>{this.statDisplayString(player, buffsStats, buffsDelta, stat)}</span>
 						</div>
 						<div className="character-stats-tooltip-row">
 							<span>Consumes:</span>
-							<span>{this.statDisplayString(consumesStats, consumesDelta, stat)}</span>
+							<span>{this.statDisplayString(player, consumesStats, consumesDelta, stat)}</span>
 						</div>
 						{debuffStats.getStat(stat) != 0 && (
 							<div className="character-stats-tooltip-row">
 								<span>Debuffs:</span>
-								<span>{this.statDisplayString(debuffStats, debuffStats, stat)}</span>
+								<span>{this.statDisplayString(player, debuffStats, debuffStats, stat)}</span>
 							</div>
 						)}
 						{bonusStatValue != 0 && (
 							<div className="character-stats-tooltip-row">
 								<span>Bonus:</span>
-								<span>{this.statDisplayString(bonusStats, bonusStats, stat)}</span>
+								<span>{this.statDisplayString(player, bonusStats, bonusStats, stat)}</span>
 							</div>
 						)}
 						<div className="character-stats-tooltip-row">
 							<span>Total:</span>
-							<span>{this.statDisplayString(finalStats, finalStats, stat)}</span>
+							<span>{this.statDisplayString(player, finalStats, finalStats, stat)}</span>
 						</div>
 					</div>
 				</div>
@@ -184,7 +184,7 @@ export class CharacterStats extends Component {
 						{player.spec === Spec.SpecFeralDruid && (
 							<div className="character-stats-tooltip-row">
 								<span>Feral Combat</span>
-								<span>{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatFeralCombatSkill)} / </span>
+								<span>{this.weaponSkillDisplayString(gearStats, PseudoStat.PseudoStatFeralCombatSkill)}</span>
 							</div>
 						)}
 						<div className="character-stats-tooltip-row">
@@ -261,7 +261,7 @@ export class CharacterStats extends Component {
 			);
 
 			const capDelta = meleeCritCapInfo.playerCritCapDelta;
-			if (capDelta == 0) {
+			if (capDelta === 0) {
 				valueElem.classList.add('text-white');
 			} else if (capDelta > 0) {
 				valueElem.classList.add('text-danger');
@@ -318,55 +318,56 @@ export class CharacterStats extends Component {
 		}
 	}
 
-	private statDisplayString(stats: Stats, deltaStats: Stats, stat: Stat): string {
+	private statDisplayString(player: Player<any>, stats: Stats, deltaStats: Stats, stat: Stat): string {
 		let rawValue = deltaStats.getStat(stat);
 
-		if (stat == Stat.StatBlockValue) {
+		if (stat === Stat.StatBlockValue) {
 			rawValue *= stats.getPseudoStat(PseudoStat.PseudoStatBlockValueMultiplier) || 1;
+			rawValue += Math.max(0, stats.getPseudoStat(PseudoStat.PseudoStatBlockValuePerStrength) * deltaStats.getStat(Stat.StatStrength) - 1);
 		}
 
 		let displayStr = String(Math.round(rawValue));
 
-		if (stat == Stat.StatMeleeHit) {
+		if (stat === Stat.StatMeleeHit) {
 			displayStr = `${(rawValue / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
-		} else if (stat == Stat.StatSpellHit) {
+		} else if (stat === Stat.StatSpellHit) {
 			displayStr = `${(rawValue / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
-		} else if (stat == Stat.StatSpellDamage) {
+		} else if (stat === Stat.StatSpellDamage) {
 			const spDmg = Math.round(rawValue);
 			const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower));
 			displayStr = baseSp + spDmg + ` (+${spDmg})`;
 		} else if (
-			stat == Stat.StatArcanePower ||
-			stat == Stat.StatFirePower ||
-			stat == Stat.StatFrostPower ||
-			stat == Stat.StatHolyPower ||
-			stat == Stat.StatNaturePower ||
-			stat == Stat.StatShadowPower
+			stat === Stat.StatArcanePower ||
+			stat === Stat.StatFirePower ||
+			stat === Stat.StatFrostPower ||
+			stat === Stat.StatHolyPower ||
+			stat === Stat.StatNaturePower ||
+			stat === Stat.StatShadowPower
 		) {
 			const spDmg = Math.round(rawValue);
 			const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower) + deltaStats.getStat(Stat.StatSpellDamage));
 			displayStr = baseSp + spDmg + ` (+${spDmg})`;
-		} else if (stat == Stat.StatMeleeCrit || stat == Stat.StatSpellCrit) {
+		} else if (stat === Stat.StatMeleeCrit || stat === Stat.StatSpellCrit) {
 			displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
-		} else if (stat == Stat.StatMeleeHaste) {
+		} else if (stat === Stat.StatMeleeHaste) {
 			// Melee Haste doesn't actually exist in vanilla so use the melee speed pseudostat
 			displayStr = `${(deltaStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier) * 100).toFixed(2)}%`;
-		} else if (stat == Stat.StatSpellHaste) {
+		} else if (stat === Stat.StatSpellHaste) {
 			displayStr = `${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%`;
-		} else if (stat == Stat.StatArmorPenetration) {
+		} else if (stat === Stat.StatArmorPenetration) {
 			displayStr += ` (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
-		} else if (stat == Stat.StatExpertise) {
+		} else if (stat === Stat.StatExpertise) {
 			// Expertise is not used in SoD and replaced by weapon skill
 			displayStr += ` (${(rawValue / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4).toFixed(2)}%)`;
-		} else if (stat == Stat.StatDefense) {
-			displayStr += ` (${(Mechanics.MAX_CHARACTER_LEVEL * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)})`;
-		} else if (stat == Stat.StatBlock) {
-			displayStr = `${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE + 5.0).toFixed(2)}%`;
-		} else if (stat == Stat.StatDodge) {
+		} else if (stat === Stat.StatDefense) {
+			displayStr = `${(player.getLevel() * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)}`;
+		} else if (stat === Stat.StatBlock) {
+			displayStr = `${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%`;
+		} else if (stat === Stat.StatDodge) {
 			displayStr = `${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%`;
-		} else if (stat == Stat.StatParry) {
+		} else if (stat === Stat.StatParry) {
 			displayStr = `${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%`;
-		} else if (stat == Stat.StatResilience) {
+		} else if (stat === Stat.StatResilience) {
 			displayStr += ` (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
 		}
 

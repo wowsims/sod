@@ -18,7 +18,7 @@ func (rogue *Rogue) applyUnfairAdvantage() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -46,7 +46,7 @@ func (rogue *Rogue) applyUnfairAdvantage() {
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// need to add parry
-			if result.Outcome.Matches(core.OutcomeDodge | core.OutcomeParry) && icd.IsReady(sim) {
+			if result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry) && icd.IsReady(sim) {
 				unfairAdvantage.Cast(sim, spell.Unit)
 				rogue.AddComboPoints(sim, 1, comboMetrics)
 				icd.Use(sim)

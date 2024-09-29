@@ -79,6 +79,7 @@ func TestFeral(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassDruid,
+			Phase:      4,
 			Level:      60,
 			Race:       proto.Race_RaceTauren,
 			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
@@ -87,6 +88,28 @@ func TestFeral(t *testing.T) {
 			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_4"),
 			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "phase_4"),
 			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsMonoCat},
+			OtherSpecOptions: []core.SpecOptionsCombo{
+				{Label: "Default-NoBleed", SpecOptions: PlayerOptionsMonoCatNoBleed},
+				{Label: "Flower-Aoe", SpecOptions: PlayerOptionsFlowerCatAoe},
+			},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassDruid,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceTauren,
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/feral_druid/gear_sets", "phase_5"),
+			Rotation:    core.GetAplRotation("../../../ui/feral_druid/apls", "phase_5"),
+			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsMonoCat},
 			OtherSpecOptions: []core.SpecOptionsCombo{
@@ -137,7 +160,7 @@ var PlayerOptionsFlowerCatAoe = &proto.Player_FeralDruid{
 }
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:   proto.AgilityElixir_ElixirOfLesserAgility,
 		DefaultConjured: proto.Conjured_ConjuredMinorRecombobulator,
@@ -149,7 +172,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_GreaterManaPotion,
@@ -161,7 +184,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase3Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "P3-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
 		DefaultPotion:     proto.Potions_MajorManaPotion,
@@ -176,7 +199,7 @@ var Phase3Consumes = core.ConsumesCombo{
 }
 
 var Phase4Consumes = core.ConsumesCombo{
-	Label: "Phase 4 Consumes",
+	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
@@ -185,7 +208,7 @@ var Phase4Consumes = core.ConsumesCombo{
 		DragonBreathChili: true,
 		Flask:             proto.Flask_FlaskOfDistilledWisdom,
 		Food:              proto.Food_FoodSmokedDesertDumpling,
-		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		MainHandImbue:     proto.WeaponImbue_ElementalSharpeningStone,
 		MiscConsumes: &proto.MiscConsumes{
 			Catnip: true,
 		},

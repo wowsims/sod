@@ -27,18 +27,11 @@ func (paladin *Paladin) registerExorcism() {
 		{level: 60, spellID: 415073, manaCost: 345, scaleLevel: 60, minDamage: 505, maxDamage: 563, scale: 3.2},
 	}
 
-	// TODO: 2024-06-13 - Should this become a permanent effect or toggleable?
-	// hasExorcist := paladin.hasRune(proto.PaladinRune_RuneUtilityExorcist)
-	hasExorcist := true
 	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
 
 	paladin.exorcismCooldown = &core.Cooldown{
 		Timer:    paladin.NewTimer(),
 		Duration: time.Second * 15,
-	}
-
-	if paladin.hasRune(proto.PaladinRune_RuneWristPurifyingPower) {
-		paladin.exorcismCooldown.Duration /= 2
 	}
 
 	for i, rank := range ranks {
@@ -50,18 +43,19 @@ func (paladin *Paladin) registerExorcism() {
 		minDamage := rank.minDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
 		maxDamage := rank.maxDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
 
-		paladin.RegisterSpell(core.SpellConfig{
+		spell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: rank.spellID},
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary, //Logs show it never has partial resists, No clue why, still misses
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,
 
+			SpellCode: SpellCode_PaladinExorcism,
 			ManaCost: core.ManaCostOptions{
-				FlatCost: rank.manaCost,
+				FlatCost:   rank.manaCost,
 				Multiplier: core.TernaryInt32(paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar), 20, 100),
 			},
 
@@ -72,22 +66,14 @@ func (paladin *Paladin) registerExorcism() {
 				CD: *paladin.exorcismCooldown,
 			},
 
-			BonusCritRating: paladin.holyCrit(),
-
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 
 			BonusCoefficient: 0.429,
 
-			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-				return hasExorcist || target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead
-			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				baseDamage := sim.Roll(minDamage, maxDamage)
-
-				var bonusCrit float64
-				if hasExorcist && (target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead) {
+				bonusCrit := 0.0
+				if target.MobType == proto.MobType_MobTypeDemon || target.MobType == proto.MobType_MobTypeUndead {
 					bonusCrit += 100 * core.CritRatingPerCritChance
 				}
 				if hasWrath {
@@ -95,9 +81,11 @@ func (paladin *Paladin) registerExorcism() {
 				}
 
 				spell.BonusCritRating += bonusCrit
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, sim.Roll(minDamage, maxDamage), spell.OutcomeMagicHitAndCrit)
 				spell.BonusCritRating -= bonusCrit
 			},
 		})
+
+		paladin.exorcism = append(paladin.exorcism, spell)
 	}
 }

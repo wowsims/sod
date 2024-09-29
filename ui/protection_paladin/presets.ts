@@ -1,17 +1,32 @@
 import { Phase } from '../core/constants/other.js';
-import {
-	Consumes,
-	Flask,
-	Food
-} from '../core/proto/common.js';
-import { SavedTalents } from '../core/proto/ui.js';
-
-import {
-	PaladinAura,
-	ProtectionPaladin_Options as ProtectionPaladinOptions,
-} from '../core/proto/paladin.js';
-
 import * as PresetUtils from '../core/preset_utils.js';
+import {
+	AgilityElixir,
+	AttackPowerBuff,
+	Conjured,
+	Consumes,
+	Debuffs,
+	EnchantedSigil,
+	Explosive,
+	FirePowerBuff,
+	Flask,
+	Food,
+	IndividualBuffs,
+	Potions,
+	Profession,
+	RaidBuffs,
+	SaygesFortune,
+	SpellPowerBuff,
+	StrengthBuff,
+	TristateEffect,
+	WeaponImbue,
+	ZanzaBuff,
+} from '../core/proto/common.js';
+import { PaladinAura, PaladinSeal, Blessings, PaladinOptions as ProtectionPaladinOptions } from '../core/proto/paladin.js';
+import { SavedTalents } from '../core/proto/ui.js';
+import APLP4ProtJson from './apls/p4prot.apl.json';
+import Phase4ProtGearJson from './gear_sets/p4prot.gear.json';
+import Phase5ProtGearJson from './gear_sets/p5prot.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -21,76 +36,139 @@ import * as PresetUtils from '../core/preset_utils.js';
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-import BlankGear from './gear_sets/blank.gear.json';
-
-export const GearBlank = PresetUtils.makePresetGear('Blank', BlankGear);
+export const Phase4ProtGear = PresetUtils.makePresetGear('P4 Prot', Phase4ProtGearJson);
+export const Phase5ProtGear = PresetUtils.makePresetGear('P5 Prot', Phase5ProtGearJson);
 
 export const GearPresets = {
-  [Phase.Phase1]: [
-    GearBlank,
-  ],
-  [Phase.Phase2]: [
-  ]
+	[Phase.Phase1]: [],
+	[Phase.Phase2]: [],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [Phase4ProtGear, Phase5ProtGear],
+	[Phase.Phase5]: [Phase4ProtGear, Phase5ProtGear],
 };
 
-// TODO: Add Phase 2 preset and pull from map
-export const DefaultGear = GearPresets[Phase.Phase1][0];
+export const DefaultGear = GearPresets[Phase.Phase4][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-import DefaultApl from './apls/default.apl.json';
-
-export const DefaultAPL = PresetUtils.makePresetAPLRotation('Default (969)', DefaultApl);
+export const APLP4Prot = PresetUtils.makePresetAPLRotation('P4 Prot', APLP4ProtJson);
 
 export const APLPresets = {
-  [Phase.Phase1]: [
-    DefaultAPL,
-  ],
-  [Phase.Phase2]: [
-  ]
+	[Phase.Phase1]: [],
+	[Phase.Phase2]: [],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [APLP4Prot],
+	[Phase.Phase5]: [],
 };
 
-// TODO: Add Phase 2 preset and pull from map
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
-  25: APLPresets[Phase.Phase1][0],
-  40: APLPresets[Phase.Phase1][0],
+	60: APLPresets[Phase.Phase4][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
-//                                 Talent Presets
+//                                 Talent presets
 ///////////////////////////////////////////////////////////////////////////
 
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-export const GenericAoeTalents = {
-	name: 'Baseline Example',
+export const P4ProtTalents = {
+	name: 'P4 Prot',
 	data: SavedTalents.create({
-		talentsString: '-05005135200132311333312321-511302012003',
+		talentsString: '-053020335001551-0500535',
 	}),
 };
 
 export const TalentPresets = {
-  [Phase.Phase1]: [
-    GenericAoeTalents,
-  ],
-  [Phase.Phase2]: [
-  ]
+	[Phase.Phase1]: [],
+	[Phase.Phase2]: [],
+	[Phase.Phase3]: [],
+	[Phase.Phase4]: [P4ProtTalents],
+	[Phase.Phase5]: [],
 };
 
-export const DefaultTalents = TalentPresets[Phase.Phase1][0];
+export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = ProtectionPaladinOptions.create({
-	aura: PaladinAura.RetributionAura,
+	aura: PaladinAura.SanctityAura,
+	primarySeal: PaladinSeal.Martyrdom,
+	personalBlessing: Blessings.BlessingOfSanctuary,
+	righteousFury: true,
 });
 
 export const DefaultConsumes = Consumes.create({
-	flask: Flask.FlaskUnknown,
-	food: Food.FoodUnknown,
+	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	boglingRoot: false,
+	defaultPotion: Potions.MajorManaPotion,
+	dragonBreathChili: true,
+	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	food: Food.FoodBlessSunfruit,
+	flask: Flask.FlaskOfSupremePower,
+	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
+	fillerExplosive: Explosive.ExplosiveUnknown,
+	mainHandImbue: WeaponImbue.WildStrikes,
+
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	strengthBuff: StrengthBuff.JujuPower,
+	zanzaBuff: ZanzaBuff.ROIDS,
+	attackPowerBuff: AttackPowerBuff.JujuMight,
+	defaultConjured: Conjured.ConjuredDemonicRune,
 });
+
+export const DefaultIndividualBuffs = IndividualBuffs.create({
+	blessingOfMight: TristateEffect.TristateEffectImproved,
+	blessingOfKings: true,
+	blessingOfWisdom: TristateEffect.TristateEffectImproved,
+	fengusFerocity: true,
+	mightOfStormwind: true,
+	moldarsMoxie: true,
+	rallyingCryOfTheDragonslayer: true,
+	saygesFortune: SaygesFortune.SaygesDamage,
+	slipkiksSavvy: true,
+	songflowerSerenade: true,
+	spiritOfZandalar: true,
+	valorOfAzeroth: true,
+	warchiefsBlessing: true,
+});
+
+export const DefaultRaidBuffs = RaidBuffs.create({
+	arcaneBrilliance: true,
+	battleShout: TristateEffect.TristateEffectImproved,
+	divineSpirit: true,
+	fireResistanceAura: true,
+	fireResistanceTotem: true,
+	giftOfTheWild: TristateEffect.TristateEffectImproved,
+	sanctityAura: true,
+	leaderOfThePack: true,
+	demonicPact: 110,
+	aspectOfTheLion: true,
+	moonkinAura: true,
+	vampiricTouch: 300,
+});
+
+export const DefaultDebuffs = Debuffs.create({
+	curseOfRecklessness: true,
+	homunculi: 70, // 70% average uptime default
+	faerieFire: true,
+	giftOfArthas: true,
+	sunderArmor: true,
+	judgementOfWisdom: true,
+	judgementOfTheCrusader: TristateEffect.TristateEffectImproved,
+	improvedFaerieFire: true,
+	improvedScorch: true,
+	markOfChaos: true,
+	occultPoison: true,
+	mangle: true,
+});
+
+export const OtherDefaults = {
+	distanceFromTarget: 5, // Max melee range
+	profession1: Profession.Blacksmithing,
+	profession2: Profession.Engineering,
+};

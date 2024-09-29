@@ -67,7 +67,7 @@ func (paladin *Paladin) registerHolyShock() {
 			SpellCode: SpellCode_PaladinHolyShock,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost: rank.manaCost,
+				FlatCost:   rank.manaCost,
 				Multiplier: manaCostMultiplier,
 			},
 
@@ -77,8 +77,6 @@ func (paladin *Paladin) registerHolyShock() {
 				},
 				CD: *paladin.holyShockCooldown,
 			},
-
-			BonusCritRating: paladin.holyCrit(),
 
 			DamageMultiplier: damageMultiplier,
 			ThreatMultiplier: 1,
@@ -92,11 +90,11 @@ func (paladin *Paladin) registerHolyShock() {
 				result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 				spell.BonusCritRating -= bonusCrit
 
-				// If we crit, Infusion of Light refunds base mana cost and resets Holy Shock/Exorcism.
+				// If we crit, Infusion of Light refunds base mana cost and reduces next Holy Shock Cooldown by 3 seconds
 				if hasInfusionOfLight && result.Outcome.Matches(core.OutcomeCrit) {
 					paladin.AddMana(sim, rank.manaCost, manaMetrics)
-					paladin.holyShockCooldown.Reset()
-					//paladin.exorcismCooldown.Reset()
+					paladin.holyShockCooldown.Set(sim.CurrentTime + max(0, paladin.holyShockCooldown.TimeToReady(sim)-(time.Second*3)))
+
 				}
 			},
 		})

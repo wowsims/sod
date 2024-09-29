@@ -12,6 +12,29 @@ const (
 	SpellFlagChillSpell = core.SpellFlagAgentReserved2
 )
 
+const (
+	SpellCode_MageNone int32 = iota
+	SpellCode_MageArcaneBarrage
+	SpellCode_MageArcaneBlast
+	SpellCode_MageArcaneExplosion
+	SpellCode_MageArcaneMissiles
+	SpellCode_MageArcaneMissilesTick
+	SpellCode_MageArcaneSurge
+	SpellCode_MageBalefireBolt
+	SpellCode_MageBlastWave
+	SpellCode_MageFireball
+	SpellCode_MageFireBlast
+	SpellCode_MageFrostbolt
+	SpellCode_MageFrostfireBolt
+	SpellCode_MageFrozenOrb
+	SpellCode_MageIgnite
+	SpellCode_MageLivingBomb
+	SpellCode_MageLivingBombExplosion
+	SpellCode_MageLivingFlame
+	SpellCode_MageScorch
+	SpellCode_MageSpellfrostBolt
+)
+
 var TalentTreeSizes = [3]int{16, 16, 17}
 
 func RegisterMage() {
@@ -31,33 +54,14 @@ func RegisterMage() {
 	)
 }
 
-const (
-	SpellCode_MageNone int32 = iota
-	SpellCode_MageArcaneBarrage
-	SpellCode_MageArcaneBlast
-	SpellCode_MageArcaneExplosion
-	SpellCode_MageArcaneMissiles
-	SpellCode_MageArcaneSurge
-	SpellCode_MageBalefireBolt
-	SpellCode_MageFireball
-	SpellCode_MageFireBlast
-	SpellCode_MageFrostbolt
-	SpellCode_MageFrostfireBolt
-	SpellCode_MageFrozenOrb
-	SpellCode_MageLivingBomb
-	SpellCode_MageLivingBombExplosion
-	SpellCode_MageLivingFlame
-	SpellCode_MageScorch
-	SpellCode_MageSpellfrostBolt
-)
-
 type Mage struct {
 	core.Character
 
 	Talents *proto.MageTalents
 	Options *proto.Mage_Options
 
-	frozenOrb *FrozenOrb
+	activeBarrier *core.Aura
+	frozenOrbPets []*FrozenOrb
 
 	ArcaneBarrage           *core.Spell
 	ArcaneBlast             *core.Spell
@@ -75,11 +79,13 @@ type Mage struct {
 	Frostbolt               []*core.Spell
 	FrostfireBolt           *core.Spell
 	FrozenOrb               *core.Spell
+	IceBarrier              []*core.Spell
 	IceLance                *core.Spell
 	Ignite                  *core.Spell
 	LivingBomb              *core.Spell
 	LivingFlame             *core.Spell
 	ManaGem                 []*core.Spell
+	PresenceOfMind          *core.Spell
 	Pyroblast               []*core.Spell
 	Scorch                  []*core.Spell
 	SpellfrostBolt          *core.Spell
@@ -94,12 +100,19 @@ type Mage struct {
 	FingersOfFrostAura  *core.Aura
 	HotStreakAura       *core.Aura
 	IceArmorAura        *core.Aura
+	IceBarrierAuras     []*core.Aura
 	ImprovedScorchAuras core.AuraArray
 	MageArmorAura       *core.Aura
 	MissileBarrageAura  *core.Aura
 	MoltenArmorAura     *core.Aura
 
-	FingersOfFrostProcChance float64
+	ArcaneBlastMissileBarrageChance float64
+	BonusFireballDoTAmount          float64
+	FingersOfFrostProcChance        float64
+
+	// Variables for telling the mage to try to maintain the Fireball DoT with T2 Fire 6pc
+	FireballMissileActive bool // Whether Fireball has been cast but has not hit to avoid chain-casting
+	MaintainFireballDoT   bool
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.
@@ -140,6 +153,7 @@ func (mage *Mage) Initialize() {
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
+	mage.BonusFireballDoTAmount = 0
 }
 
 func NewMage(character *core.Character, options *proto.Player) *Mage {
@@ -185,7 +199,7 @@ func NewMage(character *core.Character, options *proto.Player) *Mage {
 	}
 
 	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
-		mage.frozenOrb = mage.NewFrozenOrb()
+		mage.frozenOrbPets = mage.NewFrozenOrbPets()
 	}
 
 	guardians.ConstructGuardians(&mage.Character)

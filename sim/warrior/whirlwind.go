@@ -15,7 +15,8 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 	hasConsumedByRageRune := warrior.HasRune(proto.WarriorRune_RuneConsumedByRage)
 
 	warrior.WhirlwindMH = warrior.newWhirlwindHitSpell(true)
-	if hasConsumedByRageRune {
+	canHitOffhand := hasConsumedByRageRune && warrior.AutoAttacks.IsDualWielding
+	if canHitOffhand {
 		warrior.WhirlwindOH = warrior.newWhirlwindHitSpell(false)
 	}
 
@@ -25,10 +26,10 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagAPL | SpellFlagBloodSurge,
+		Flags:       core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost: 25 - warrior.FocusedRageDiscount,
+			Cost: 25,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -44,7 +45,7 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				warrior.WhirlwindMH.Cast(sim, aoeTarget)
-				if warrior.AutoAttacks.IsDualWielding && warrior.WhirlwindOH != nil && warrior.IsEnraged() {
+				if canHitOffhand && warrior.IsEnraged() {
 					warrior.WhirlwindOH.Cast(sim, aoeTarget)
 				}
 			}
@@ -66,7 +67,7 @@ func (warrior *Warrior) newWhirlwindHitSpell(isMH bool) *WarriorSpell {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		CritDamageBonus: warrior.impale(),
 

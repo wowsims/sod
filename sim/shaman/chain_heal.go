@@ -42,16 +42,18 @@ func (shaman *Shaman) registerChainHealSpell() {
 func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.SpellConfig {
 	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 	hasCoherenceRune := shaman.HasRune(proto.ShamanRune_RuneCloakCoherence)
+	hasRiptideRune := shaman.HasRune(proto.ShamanRune_RuneBracersRiptide)
 
 	spellId := ChainHealSpellId[rank]
-	baseHealingLow := ChainHealBaseHealing[rank][0] * (1 + shaman.purificationHealingModifier())
-	baseHealingHigh := ChainHealBaseHealing[rank][1] * (1 + shaman.purificationHealingModifier())
+	baseHealingMultiplier := 1 + shaman.purificationHealingModifier()
+	baseHealingLow := ChainHealBaseHealing[rank][0] * baseHealingMultiplier
+	baseHealingHigh := ChainHealBaseHealing[rank][1] * baseHealingMultiplier
 	spellCoeff := ChainHealSpellCoef[rank]
 	castTime := ChainHealCastTime[rank]
 	manaCost := ChainHealManaCost[rank]
 	level := ChainHealLevel[rank]
 
-	flags := core.SpellFlagHelpful
+	flags := core.SpellFlagHelpful | SpellFlagShaman
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}
@@ -87,8 +89,6 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 			},
 		},
 
-		BonusCritRating: float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance,
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
@@ -99,11 +99,15 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 			origMult := spell.DamageMultiplier
 			// TODO: This bounces to most hurt friendly...
 			for hitIndex := 0; hitIndex < len(targets); hitIndex++ {
-				baseHealing := sim.Roll(baseHealingLow, baseHealingHigh)
+				originalDamageMultiplier := spell.DamageMultiplier
+				if hasRiptideRune && !isOverload && shaman.Riptide.Hot(curTarget).IsActive() {
+					spell.DamageMultiplier *= 1.25
+					shaman.Riptide.Hot(curTarget).Deactivate(sim)
+				}
+				spell.CalcAndDealHealing(sim, curTarget, sim.Roll(baseHealingLow, baseHealingHigh), spell.OutcomeHealingCrit)
+				spell.DamageMultiplier = originalDamageMultiplier
 
-				result := spell.CalcAndDealHealing(sim, curTarget, baseHealing, spell.OutcomeHealingCrit)
-
-				if canOverload && result.Landed() && sim.RandomFloat("CH Overload") < ShamanOverloadChance {
+				if canOverload && sim.RandomFloat("CH Overload") < ShamanOverloadChance {
 					shaman.ChainHealOverload[rank].Cast(sim, target)
 				}
 

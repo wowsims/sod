@@ -10,19 +10,24 @@ import (
 
 func (paladin *Paladin) ApplyTalents() {
 	paladin.AddStat(stats.MeleeHit, float64(paladin.Talents.Precision)*core.MeleeHitRatingPerHitChance)
-	paladin.AddStat(stats.Defense, float64(paladin.Talents.Anticipation)*core.CritRatingPerCritChance)
-	paladin.AddStat(stats.MeleeCrit, float64(paladin.Talents.Conviction)*core.CritRatingPerCritChance)
-	paladin.ApplyEquipScaling(stats.Armor, 1.0+0.02*float64(paladin.Talents.Toughness))
+	// TODO: paladin.AddStat(stats.RangedHit, float64(paladin.Talents.Precision)*core.MeleeHitRatingPerHitChance)
 
-	if paladin.Talents.DivineStrength > 0 {
-		paladin.MultiplyStat(stats.Strength, 1.0+0.02*float64(paladin.Talents.DivineStrength))
+	paladin.AddStat(stats.MeleeCrit, float64(paladin.Talents.Conviction)*core.CritRatingPerCritChance)
+	// TODO: paladin.AddStat(stats.RangedCrit, float64(paladin.Talents.Conviction)*core.CritRatingPerCritChance)
+
+	if paladin.Talents.Toughness > 0 {
+		paladin.ApplyEquipScaling(stats.Armor, 1.0+0.02*float64(paladin.Talents.Toughness))
 	}
-	if paladin.Talents.DivineIntellect > 0 {
-		paladin.MultiplyStat(stats.Intellect, 1.0+0.02*float64(paladin.Talents.DivineIntellect))
-	}
-	if paladin.Talents.ShieldSpecialization > 0 {
-		paladin.MultiplyStat(stats.BlockValue, 1.0+0.1*float64(paladin.Talents.ShieldSpecialization))
-	}
+
+	// These are no-op if untalented.
+	paladin.MultiplyStat(stats.Strength, 1.0+0.02*float64(paladin.Talents.DivineStrength))
+	paladin.MultiplyStat(stats.Intellect, 1.0+0.02*float64(paladin.Talents.DivineIntellect))
+	paladin.AddStat(stats.Defense, 2*float64(paladin.Talents.Anticipation))
+
+	// Shield Specialization bonus is additive. NOTE: Total SBV will be inflated until
+	// https://github.com/wowsims/sod/issues/1025 gets resolved.
+	paladin.PseudoStats.BlockValueMultiplier += 0.1 * float64(paladin.Talents.ShieldSpecialization)
+
 	paladin.AddStat(stats.Parry, 1*float64(paladin.Talents.Deflection))
 
 	paladin.applyWeaponSpecialization()
@@ -32,14 +37,11 @@ func (paladin *Paladin) ApplyTalents() {
 	if paladin.Talents.Vindication > 0 {
 		paladin.applyVindication()
 	}
-	// paladin.applyRighteousVengeance()
-	// paladin.applyRedoubt()
-	// paladin.applyReckoning()
-	// paladin.applyArdentDefender()
-}
+	paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += core.SpellCritRatingPerCritChance * float64(paladin.Talents.HolyPower)
 
-func (paladin *Paladin) holyPower() float64 {
-	return core.SpellCritRatingPerCritChance * float64(paladin.Talents.HolyPower)
+	paladin.applyRedoubt()
+	paladin.applyReckoning()
+	paladin.applyImprovedLayOnHands()
 }
 
 func (paladin *Paladin) improvedSoR() float64 {
@@ -50,93 +52,67 @@ func (paladin *Paladin) benediction() int32 {
 	return []int32{100, 97, 94, 91, 88, 85}[paladin.Talents.Benediction]
 }
 
-// func (paladin *Paladin) applyRedoubt() {
-// 	if paladin.Talents.Redoubt == 0 {
-// 		return
-// 	}
+func (paladin *Paladin) applyRedoubt() {
+	if paladin.Talents.Redoubt == 0 {
+		return
+	}
 
-// 	actionID := core.ActionID{SpellID: 20132}
+	// Redoubt grants 6% block chance per point.
+	blockBonus := 6.0 * float64(paladin.Talents.Redoubt) * core.BlockRatingPerBlockChance
 
-// 	paladin.PseudoStats.BlockValueMultiplier += 0.10 * float64(paladin.Talents.Redoubt)
+	paladin.redoubtAura = paladin.RegisterAura(core.Aura{
+		Label:     "Redoubt",
+		ActionID:  core.ActionID{SpellID: 20134},
+		Duration:  time.Second * 10,
+		MaxStacks: 5,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.AddStatDynamic(sim, stats.Block, blockBonus)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.AddStatDynamic(sim, stats.Block, -blockBonus)
+		},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.DidBlock() {
+				aura.RemoveStack(sim)
+			}
+		},
+	})
 
-// 	bonusBlockRating := 10 * core.BlockRatingPerBlockChance * float64(paladin.Talents.Redoubt)
+	paladin.RegisterAura(core.Aura{
+		Label:    "Redoubt Crit Trigger",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.DidCrit() && spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
+				paladin.redoubtAura.Activate(sim)
+				paladin.redoubtAura.SetStacks(sim, 5)
+			}
+		},
+	})
+}
 
-// 	procAura := paladin.RegisterAura(core.Aura{
-// 		Label:     "Redoubt Proc",
-// 		ActionID:  actionID,
-// 		Duration:  time.Second * 10,
-// 		MaxStacks: 5,
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			paladin.AddStatDynamic(sim, stats.Block, bonusBlockRating)
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			paladin.AddStatDynamic(sim, stats.Block, -bonusBlockRating)
-// 		},
-// 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.Outcome.Matches(core.OutcomeBlock) {
-// 				aura.RemoveStack(sim)
-// 			}
-// 		},
-// 	})
+func (paladin *Paladin) applyReckoning() {
 
-// 	paladin.RegisterAura(core.Aura{
-// 		Label:    "Redoubt",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
-// 				if sim.RandomFloat("Redoubt") < 0.1 {
-// 					procAura.Activate(sim)
-// 					procAura.SetStacks(sim, 5)
-// 				}
-// 			}
-// 		},
-// 	})
-// }
+	if paladin.Talents.Reckoning == 0 {
+		return
+	}
 
-// func (paladin *Paladin) applyReckoning() {
-// 	if paladin.Talents.Reckoning == 0 {
-// 		return
-// 	}
+	procID := core.ActionID{SpellID: 20178} // Reckoning Proc ID
+	procChance := 0.2 * float64(paladin.Talents.Reckoning)
 
-// 	actionID := core.ActionID{SpellID: 20182}
-// 	procChance := 0.02 * float64(paladin.Talents.Reckoning)
-
-// 	var reckoningSpell *core.Spell
-
-// 	procAura := paladin.RegisterAura(core.Aura{
-// 		Label:     "Reckoning Proc",
-// 		ActionID:  actionID,
-// 		Duration:  time.Second * 8,
-// 		MaxStacks: 4,
-// 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-// 			config := *paladin.AutoAttacks.MHConfig()
-// 			config.ActionID = actionID
-// 			reckoningSpell = paladin.GetOrRegisterSpell(config)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if spell == paladin.AutoAttacks.MHAuto() {
-// 				reckoningSpell.Cast(sim, result.Target)
-// 			}
-// 		},
-// 	})
-
-// 	paladin.RegisterAura(core.Aura{
-// 		Label:    "Reckoning",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.Landed() && sim.RandomFloat("Reckoning") < procChance {
-// 				procAura.Activate(sim)
-// 				procAura.SetStacks(sim, 4)
-// 			}
-// 		},
-// 	})
-// }
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:       "Reckoning Crit Trigger",
+		Callback:   core.CallbackOnSpellHitTaken,
+		Outcome:    core.OutcomeCrit,
+		ProcMask:   core.ProcMaskMeleeOrRanged,
+		ProcChance: procChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
+		},
+	})
+}
 
 func (paladin *Paladin) getWeaponSpecializationModifier() float64 {
 	switch paladin.MainHand().HandType {
@@ -231,4 +207,30 @@ func (paladin *Paladin) applyVindication() {
 			}
 		},
 	})
+}
+
+func (paladin *Paladin) applyImprovedLayOnHands() {
+
+	if paladin.Talents.ImprovedLayOnHands > 0 {
+
+		armorMultiplier := []float64{1, 1.15, 1.3}[paladin.Talents.ImprovedLayOnHands]
+		auraID := []int32{0, 20233, 20236}[paladin.Talents.ImprovedLayOnHands]
+
+		paladin.RegisterAura(core.Aura{
+			Label:    "Lay on Hands",
+			ActionID: core.ActionID{SpellID: auraID},
+			Duration: time.Minute * 2,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				paladin.ApplyDynamicEquipScaling(sim, stats.Armor, armorMultiplier)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				paladin.RemoveDynamicEquipScaling(sim, stats.Armor, armorMultiplier)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell.SpellCode == SpellCode_PaladinLayOnHands {
+					aura.Activate(sim)
+				}
+			},
+		})
+	}
 }

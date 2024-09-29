@@ -10,23 +10,24 @@ import (
 
 func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 	spellId := [4]int32{0, 458436, 458481, 458482}[rank]
-	bleedAttackPowerCoefficient := [4]float64{0, 3, 4, 6}[rank] / 100 * 8
 	manaCost := [4]float64{0, 55, 75, 100}[rank]
 	level := [4]int{0, 1, 50, 60}[rank]
 
-	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
+	// The spell tooltips list 3/4/6 on the respective ranks, but Zirene confirmed it's actually 10%.
+	bleedCoeff := 0.10
 
 	spellConfig := core.SpellConfig{
+		SpellCode:     SpellCode_HunterWyvernStrike,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
 		ProcMask:      core.ProcMaskMeleeMHSpecial,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagStrike,
 		Rank:          rank,
 		RequiredLevel: level,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost * (1 - 0.02*float64(hunter.Talents.Efficiency)),
+			FlatCost: manaCost,
 		},
 
 		Cast: core.CastConfig{
@@ -39,7 +40,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
+			return hunter.MainHand().HandType == proto.HandType_HandTypeTwoHand && hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
 		CritDamageBonus:  hunter.mortalShots(),
@@ -56,23 +57,20 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 1,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				tickDamage := (bleedAttackPowerCoefficient * hunter.WyvernStrike.MeleeAttackPower()) / float64(dot.NumberOfTicks)
+				tickDamage := bleedCoeff * hunter.WyvernStrike.MeleeAttackPower()
 				dot.Snapshot(target, tickDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			weaponDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			weaponDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 1.40
 			result := spell.CalcAndDealDamage(sim, target, weaponDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
-			}
-			if hasCobraStrikes && result.DidCrit() {
-				hunter.CobraStrikesAura.Activate(sim)
-				hunter.CobraStrikesAura.SetStacks(sim, 2)
 			}
 		},
 	}
@@ -85,12 +83,12 @@ func (hunter *Hunter) registerWyvernStrikeSpell() {
 		return
 	}
 
-	maxRank := 3
-	for i := 1; i <= maxRank; i++ {
-		config := hunter.getWyvernStrikeConfig(i)
+	rank := map[int32]int{
+		1:  1,
+		50: 2,
+		60: 3,
+	}[hunter.Level]
 
-		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.WyvernStrike = hunter.GetOrRegisterSpell(config)
-		}
-	}
+	config := hunter.getWyvernStrikeConfig(rank)
+	hunter.WyvernStrike = hunter.GetOrRegisterSpell(config)
 }

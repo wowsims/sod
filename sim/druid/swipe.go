@@ -109,12 +109,12 @@ func (druid *Druid) registerSwipeCatSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			aoeTarget := target
-			for i := 1; i < len(sim.Encounter.TargetUnits); i++ {
+			for i := 0; i < len(sim.Encounter.TargetUnits); i++ {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				if i == 1 && result.Landed() {
+				if i == 0 && result.Landed() {
 					druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
 				}
-				aoeTarget = sim.Environment.NextTargetUnit(target)
+				aoeTarget = sim.Environment.NextTargetUnit(aoeTarget)
 			}
 		},
 	})

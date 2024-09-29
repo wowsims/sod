@@ -24,13 +24,16 @@ func RegisterRetributionPaladin() {
 }
 
 func NewRetributionPaladin(character *core.Character, options *proto.Player) *RetributionPaladin {
-	retOptions := options.GetRetributionPaladin()
+	retOptions := options.GetRetributionPaladin().Options
 
-	pal := paladin.NewPaladin(character, options, retOptions.Options.Aura)
+	pal := paladin.NewPaladin(character, options, retOptions)
 
 	ret := &RetributionPaladin{
-		Paladin:     pal,
-		primarySeal: retOptions.Options.PrimarySeal,
+		Paladin:                         pal,
+		primarySeal:                     retOptions.PrimarySeal,
+		IsUsingDivineStormStopAttack:    retOptions.IsUsingDivineStormStopAttack,
+		IsUsingJudgementStopAttack:      retOptions.IsUsingJudgementStopAttack,
+		IsUsingCrusaderStrikeStopAttack: retOptions.IsUsingCrusaderStrikeStopAttack,
 	}
 
 	ret.EnableAutoAttacks(ret, core.AutoAttackOptions{
@@ -44,7 +47,10 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 type RetributionPaladin struct {
 	*paladin.Paladin
 
-	primarySeal proto.PaladinSeal
+	primarySeal                     proto.PaladinSeal
+	IsUsingDivineStormStopAttack    bool
+	IsUsingJudgementStopAttack      bool
+	IsUsingCrusaderStrikeStopAttack bool
 }
 
 func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {
@@ -55,7 +61,6 @@ func (ret *RetributionPaladin) Initialize() {
 	ret.Paladin.Initialize()
 }
 
-func (ret *RetributionPaladin) Reset(_ *core.Simulation) {
-	ret.Paladin.ResetCurrentPaladinAura()
-	ret.Paladin.ResetPrimarySeal(ret.primarySeal)
+func (ret *RetributionPaladin) Reset(sim *core.Simulation) {
+	ret.Paladin.Reset(sim)
 }

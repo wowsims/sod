@@ -65,9 +65,13 @@ func applyRaceEffects(agent Agent) {
 	case proto.Race_RaceOrc:
 		character.AxeSpecializationAura()
 
-		// Command (Pet damage +5%)
-		for _, pet := range character.Pets {
-			pet.PseudoStats.DamageDealtMultiplier *= 1.05
+		if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
+			// Command Damage dealt by Hunter and Warlock pets increased by 5%
+			for _, pet := range character.Pets {
+				if !pet.IsGuardian() {
+					pet.PseudoStats.DamageDealtMultiplier *= 1.05
+				}
+			}
 		}
 
 		// Blood Fury
@@ -244,10 +248,12 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 	})
 }
 
-func (character *Character) IsAlliance() bool {
-	return slices.Contains([]proto.Race{proto.Race_RaceHuman, proto.Race_RaceDwarf, proto.Race_RaceGnome, proto.Race_RaceNightElf}, character.Race)
-}
-
-func (character *Character) IsHorde() bool {
-	return slices.Contains([]proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll, proto.Race_RaceTauren, proto.Race_RaceUndead}, character.Race)
+func (character *Character) GetFaction() proto.Faction {
+	if slices.Contains([]proto.Race{proto.Race_RaceHuman, proto.Race_RaceDwarf, proto.Race_RaceGnome, proto.Race_RaceNightElf}, character.Race) {
+		return proto.Faction_Alliance
+	} else if slices.Contains([]proto.Race{proto.Race_RaceOrc, proto.Race_RaceTroll, proto.Race_RaceTauren, proto.Race_RaceUndead}, character.Race) {
+		return proto.Faction_Horde
+	} else {
+		return proto.Faction_Unknown
+	}
 }

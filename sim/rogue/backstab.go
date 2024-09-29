@@ -28,17 +28,11 @@ func (rogue *Rogue) registerBackstabSpell() {
 
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
 	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
-	hasSlaughterRune := rogue.HasRune(proto.RogueRune_RuneSlaughterFromTheShadows)
 
 	damageMultiplier := 1.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity]
-	energyCost := 60.0
-
-	if hasSlaughterRune {
-		damageMultiplier *= SlaughterFromTheShadowsDamageMultiplier
-		energyCost -= SlaughterFromTheShadowsCostReduction
-	}
 
 	rogue.Backstab = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueBackstab,
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -46,7 +40,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 		Flags:       rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   energyCost,
+			Cost:   60,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

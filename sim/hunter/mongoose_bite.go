@@ -13,7 +13,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 	manaCost := [5]float64{0, 30, 40, 50, 65}[rank]
 	level := [5]int{0, 16, 30, 44, 58}[rank]
 
-	hasCobraSlayer := hunter.HasRune(proto.HunterRune_RuneChestCobraSlayer)
+	hasCobraSlayer := hunter.HasRune(proto.HunterRune_RuneHandsCobraSlayer)
 	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
@@ -22,7 +22,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
-		ProcMask:      core.ProcMaskMeleeMHSpecial,
+		ProcMask:      core.ProcMaskMeleeSpecial,
 		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 		Rank:          rank,
 		RequiredLevel: level,
@@ -65,7 +65,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 
 			damage := baseDamage
 			if hasCobraSlayer {
-				damage += spell.MeleeAttackPower() * 0.4
+				damage += spell.MeleeAttackPower() * 0.45
 			}
 			damage *= multiplier
 
@@ -84,17 +84,19 @@ func (hunter *Hunter) registerMongooseBiteSpell() {
 		Duration: time.Second * 5,
 
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeDodge) {
+			if result.DidDodge() {
 				aura.Activate(sim)
 			}
 		},
 	})
 
-	maxRank := 4
-	for i := 1; i <= maxRank; i++ {
-		config := hunter.getMongooseBiteConfig(i)
-		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.MongooseBite = hunter.GetOrRegisterSpell(config)
-		}
-	}
+	rank := map[int32]int{
+		25: 1,
+		40: 2,
+		50: 3,
+		60: 4,
+	}[hunter.Level]
+
+	config := hunter.getMongooseBiteConfig(rank)
+	hunter.MongooseBite = hunter.GetOrRegisterSpell(config)
 }

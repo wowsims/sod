@@ -14,15 +14,8 @@ func (hunter *Hunter) registerKillShotSpell() {
 
 	baseDamage := 113 / 100 * hunter.baseRuneAbilityDamage()
 
-	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
-
-	// Efficiency talent doesn't apply to this spell even though it has 'shot' in the name
-	manaCostMultiplier := int32(100)
-	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 25
-	}
-
 	hunter.KillShot = hunter.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_HunterKillShot,
 		ActionID:     core.ActionID{SpellID: int32(proto.HunterRune_RuneLegsKillShot)},
 		SpellSchool:  core.SpellSchoolPhysical,
 		DefenseType:  core.DefenseTypeRanged,
@@ -33,7 +26,6 @@ func (hunter *Hunter) registerKillShotSpell() {
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.03,
-			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -57,21 +49,12 @@ func (hunter *Hunter) registerKillShotSpell() {
 				spell.CD.Reset()
 			}
 
-			damage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target)) + hunter.AmmoDamageBonus + baseDamage
+			damage := hunter.AutoAttacks.Ranged().CalculateWeaponDamage(sim, spell.RangedAttackPower(target, false)) + hunter.AmmoDamageBonus + baseDamage
 			result := spell.CalcDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealDamage(sim, result)
-
-				// For some reason it doesn't count as a 'shot' ability for efficiency talent but it does count for the 'cobra strikes' rune
-				if result.Landed() {
-					if hasCobraStrikes && result.DidCrit() {
-						hunter.CobraStrikesAura.Activate(sim)
-						hunter.CobraStrikesAura.SetStacks(sim, 2)
-					}
-				}
 			})
 		},
 	})
-	hunter.Shots = append(hunter.Shots, hunter.KillShot)
 }

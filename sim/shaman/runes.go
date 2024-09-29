@@ -23,7 +23,9 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyTwoHandedMastery()
 
 	// Bracers
-	shaman.applyRollingThunder()
+	shaman.applyStaticShocks()
+	shaman.registerRollingThunder()
+	shaman.registerRiptideSpell()
 
 	// Hands
 	shaman.registerWaterShieldSpell()
@@ -55,8 +57,8 @@ func (shaman *Shaman) applyBurn() {
 		return
 	}
 
-	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_FlametongueWeapon || shaman.Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon {
-		shaman.AddStat(stats.SpellDamage, float64(BurnSpellPowerPerLevel*shaman.Level))
+	if shaman.Consumes.MainHandImbue == proto.WeaponImbue_FlametongueWeapon {
+		shaman.AddStatDependency(stats.Intellect, stats.SpellDamage, 1)
 	}
 
 	// Other parts of burn are handled in flame_shock.go
@@ -71,8 +73,8 @@ func (shaman *Shaman) applyMentalDexterity() {
 		return
 	}
 
-	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, .65)
-	apToSpStatDep := shaman.NewDynamicStatDependency(stats.AttackPower, stats.SpellDamage, .20)
+	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, 1.0)
+	apToSpStatDep := shaman.NewDynamicStatDependency(stats.AttackPower, stats.SpellDamage, .35)
 
 	procAura := shaman.RegisterAura(core.Aura{
 		Label:    "Mental Dexterity Proc",
@@ -96,7 +98,7 @@ func (shaman *Shaman) applyMentalDexterity() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && (spell == shaman.LavaLash || spell == shaman.StormstrikeMH) {
+			if result.Landed() && spell == shaman.StormstrikeMH {
 				procAura.Activate(sim)
 			}
 		},
@@ -178,7 +180,7 @@ func (shaman *Shaman) applyShieldMastery() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Shield Mastery Trigger",
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock) || (has4PEarthfuryResolve && (result.Outcome.Matches(core.OutcomeParry) || result.Outcome.Matches(core.OutcomeDodge))) {
+			if result.DidBlock() || (has4PEarthfuryResolve && (result.DidParry() || result.DidDodge())) {
 				shaman.AddMana(sim, shaman.MaxMana()*procManaReturn, manaMetrics)
 				blockProcAura.Activate(sim)
 				blockProcAura.AddStack(sim)
@@ -205,9 +207,9 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 
 	procSpellId := int32(436365)
 
-	// Two-handed mastery gives +10% AP, +30% attack speed, and +10% spell hit
+	// Two-handed mastery gives +15% AP, +30% attack speed, and +10% spell hit
 	attackSpeedMultiplier := 1.5
-	apMultiplier := 1.1
+	apMultiplier := 1.15
 	spellHitIncrease := core.SpellHitRatingPerHitChance * 10.0
 
 	statDep := shaman.NewDynamicMultiplyStat(stats.AttackPower, apMultiplier)
@@ -247,44 +249,46 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 	})
 }
 
-var RollingThunderProcChance = .50
-
-func (shaman *Shaman) applyRollingThunder() {
-	if !shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder) {
+func (shaman *Shaman) applyStaticShocks() {
+	if !shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock) {
 		return
 	}
 
-	impLightningShieldBonus := 1 + []float64{0, .05, .10, .15}[shaman.Talents.ImprovedLightningShield]
+	// DW chance base doubled by using a 2-handed weapon
+	shaman.staticSHocksProcChance = .06
 
-	// Casts handled in lightning_shield.go
-	shaman.RollingThunder = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 432129},
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagShaman,
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: "Static Shocks",
+		OnInit: func(staticShockAura *core.Aura, sim *core.Simulation) {
+			for _, aura := range shaman.LightningShieldAuras {
+				if aura == nil {
+					continue
+				}
 
-		BonusCritRating: float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance,
+				oldOnGain := aura.OnGain
+				aura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+					oldOnGain(aura, sim)
+					staticShockAura.Activate(sim)
+				}
 
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if shaman.ActiveShield == nil || shaman.ActiveShield.SpellCode != SpellCode_ShamanLightningShield {
+				oldOnExpire := aura.OnExpire
+				aura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+					oldOnExpire(aura, sim)
+					staticShockAura.Deactivate(sim)
+				}
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if shaman.ActiveShieldAura == nil || !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Landed() {
 				return
 			}
 
-			rank := shaman.ActiveShield.Rank
-			chargeDamage := LightningShieldBaseDamage[rank]*impLightningShieldBonus + LightningShieldSpellCoef[rank]*shaman.LightningShieldProcs[rank].GetBonusDamage()
-			spell.CalcAndDealDamage(sim, target, chargeDamage, spell.OutcomeMagicCrit)
+			staticShockProcChance := core.TernaryFloat64(shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand, shaman.staticSHocksProcChance*2, shaman.staticSHocksProcChance)
+			if sim.RandomFloat("Static Shock") < staticShockProcChance {
+				shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
+			}
 		},
-	})
-}
-
-func (shaman *Shaman) rollRollingThunderCharge(sim *core.Simulation) {
-	if shaman.ActiveShield != nil && shaman.ActiveShield.SpellCode == SpellCode_ShamanLightningShield && shaman.ActiveShieldAura.IsActive() && sim.Proc(RollingThunderProcChance, "Rolling Thunder") {
-		shaman.ActiveShieldAura.AddStack(sim)
-	}
+	}))
 }
 
 func (shaman *Shaman) applyMaelstromWeapon() {
@@ -321,7 +325,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 				spell.Cost.Multiplier -= multDiff
 			}
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagMaelstrom) {
 				shaman.MaelstromWeaponAura.Deactivate(sim)
 			}
@@ -329,59 +333,38 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 
 	ppmm := shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
+	shaman.maelstromWeaponPPMM = &ppmm
 
 	// This aura is hidden, just applies stacks of the proc aura.
-	shaman.RegisterAura(core.Aura{
-		Label:    "MaelstromWeapon",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: "Maelstrom Weapon Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			if ppmm.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskMeleeDamageProc) && shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
 				shaman.MaelstromWeaponAura.Activate(sim)
 				shaman.MaelstromWeaponAura.AddStack(sim)
 			}
 		},
-	})
+	}))
 }
 
-const ShamanPowerSurgeProcChance = .05
-
 func (shaman *Shaman) applyPowerSurge() {
-	// TODO: Figure out how this actually works because the 2024-02-27 tuning notes make it sound like
-	// this is not just a fully passive stat boost
-	if shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) {
-		shaman.AddStat(stats.MP5, shaman.GetStat(stats.Intellect)*.15)
-	}
+	shaman.powerSurgeProcChance = 0.05
 
-	// We want to create the power surge aura all the time because it's used by the T1 Ele 4P and can be triggered without the rune
-
-	var affectedSpells []*core.Spell
-	var affectedSpellCodes = []int32{
-		SpellCode_ShamanChainLightning,
-		SpellCode_ShamanChainHeal,
-		SpellCode_ShamanLavaBurst,
-	}
-
-	shaman.PowerSurgeAura = shaman.RegisterAura(core.Aura{
-		Label:    "Power Surge Proc",
-		ActionID: core.ActionID{SpellID: 440285},
+	// We want to create the power surge damage aura all the time because it's used by the T1 Ele 4P and can be triggered without the rune
+	var affectedDamageSpells []*core.Spell
+	shaman.PowerSurgeDamageAura = shaman.RegisterAura(core.Aura{
+		Label:    "Power Surge Proc (Damage)",
+		ActionID: core.ActionID{SpellID: 415105},
 		Duration: time.Second * 10,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
+			affectedDamageSpells = core.FilterSlice(
 				core.Flatten([][]*core.Spell{
 					shaman.ChainLightning,
-					shaman.ChainHeal,
 					{shaman.LavaBurst},
 				}), func(spell *core.Spell) bool { return spell != nil })
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) {
+			core.Each(affectedDamageSpells, func(spell *core.Spell) {
 				spell.CastTimeMultiplier -= 1
 				if spell.CD.Timer != nil {
 					spell.CD.Reset()
@@ -389,15 +372,47 @@ func (shaman *Shaman) applyPowerSurge() {
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
+			core.Each(affectedDamageSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
-				return
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.SpellCode == SpellCode_ShamanLavaBurst || spell.SpellCode == SpellCode_ShamanChainLightning {
+				aura.Deactivate(sim)
 			}
-			aura.Deactivate(sim)
 		},
 	})
+
+	if !shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge) {
+		return
+	}
+
+	var affectedHealSpells []*core.Spell
+	shaman.PowerSurgeHealAura = shaman.RegisterAura(core.Aura{
+		Label:    "Power Surge Proc (Heal)",
+		ActionID: core.ActionID{SpellID: 468526},
+		Duration: time.Second * 10,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedHealSpells = core.FilterSlice(shaman.ChainHeal, func(spell *core.Spell) bool { return spell != nil })
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedHealSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			core.Each(affectedHealSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.SpellCode == SpellCode_ShamanChainHeal {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	statDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.MP5, .15)
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: "Power Surge",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.EnableDynamicStatDep(sim, statDep)
+		},
+	}))
 }
 
 func (shaman *Shaman) applyWayOfEarth() {
@@ -412,13 +427,9 @@ func (shaman *Shaman) applyWayOfEarth() {
 
 	healthDep := shaman.NewDynamicMultiplyStat(stats.Health, 1.3)
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label:    "Way of Earth",
 		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsWayOfEarth)},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.EnableDynamicStatDep(sim, healthDep)
 			shaman.PseudoStats.DamageTakenMultiplier *= .9
@@ -431,7 +442,7 @@ func (shaman *Shaman) applyWayOfEarth() {
 			shaman.PseudoStats.ReducedCritTakenChance -= 6
 			shaman.PseudoStats.ThreatMultiplier /= 1.65
 		},
-	})
+	}))
 }
 
 // https://www.wowhead.com/classic/spell=408696/spirit-of-the-alpha
@@ -440,37 +451,25 @@ func (shaman *Shaman) applySpiritOfTheAlpha() {
 		return
 	}
 
-	if shaman.IsTanking() {
-		shaman.RegisterAura(core.Aura{
-			Label:    "Spirit of the Alpha",
-			ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.ThreatMultiplier *= 1.45
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.ThreatMultiplier /= 1.45
-			},
-		})
-	} else {
-		shaman.RegisterAura(core.Aura{
-			Label:    "Loyal Beta",
-			ActionID: core.ActionID{SpellID: 443320},
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
-				shaman.PseudoStats.ThreatMultiplier *= .70
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.05
-				shaman.PseudoStats.ThreatMultiplier /= .70
-			},
-		})
+	shaman.SpiritOfTheAlphaAura = core.SpiritOfTheAlphaAura(&shaman.Unit)
+	shaman.LoyalBetaAura = shaman.RegisterAura(core.Aura{
+		Label:    "Loyal Beta",
+		Duration: core.NeverExpires,
+		ActionID: core.ActionID{SpellID: 443320},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
+			shaman.PseudoStats.ThreatMultiplier *= .70
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.05
+			shaman.PseudoStats.ThreatMultiplier /= .70
+		},
+	})
+
+	if !shaman.IsTanking() {
+		shaman.SpiritOfTheAlphaAura.OnReset = func(aura *core.Aura, sim *core.Simulation) {}
+		shaman.LoyalBetaAura.OnReset = func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		}
 	}
 }

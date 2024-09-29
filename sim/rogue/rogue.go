@@ -20,7 +20,24 @@ const (
 const (
 	SpellCode_RogueNone int32 = iota
 
+	SpellCode_RogueAmbush
+	SpellCode_RogueBackstab
+	SpellCode_RogueBetweentheEyes
 	SpellCode_RogueBladeFlurry
+	SpellCode_RogueCrimsonTempest
+	SpellCode_RogueEnvenom
+	SpellCode_RogueEviscerate
+	SpellCode_RogueGarrote
+	SpellCode_RogueGhostlyStrike
+	SpellCode_RogueHemorrhage
+	SpellCode_RogueMainGauche
+	SpellCode_RogueMutilate
+	SpellCode_RoguePoisonedKnife
+	SpellCode_RogueRupture
+	SpellCode_RogueSaberSlash
+	SpellCode_RogueSaberSlashDoT
+	SpellCode_RogueShadowStrike
+	SpellCode_RogueSinisterStrike
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}
@@ -84,6 +101,8 @@ type Rogue struct {
 	occultPoisonTick *core.Spell
 
 	instantPoisonProcChanceBonus float64
+	additivePoisonBonusChance    float64
+	cutthroatBonusChance         float64
 
 	AdrenalineRushAura            *core.Aura
 	BladeFlurryAura               *core.Aura
@@ -191,6 +210,8 @@ func NewRogue(character *core.Character, options *proto.Player, rogueOptions *pr
 	rogue.AddStatDependency(stats.Agility, stats.AttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.RangedAttackPower, 1)
 	rogue.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(rogue.Level)]*core.CritRatingPerCritChance)
+	rogue.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(rogue.Level)]*core.DodgeRatingPerDodgeChance)
+	rogue.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	guardians.ConstructGuardians(&rogue.Character)
 

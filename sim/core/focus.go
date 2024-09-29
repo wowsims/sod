@@ -19,6 +19,7 @@ type focusBar struct {
 	unit *Unit
 
 	focusPerTick float64
+	focusRegenMultiplier float64
 
 	currentFocus float64
 
@@ -33,7 +34,8 @@ type focusBar struct {
 func (unit *Unit) EnableFocusBar(regenMultiplier float64, onFocusGain OnFocusGain) {
 	unit.focusBar = focusBar{
 		unit:          unit,
-		focusPerTick:  BaseFocusPerTick * regenMultiplier,
+		focusPerTick:  BaseFocusPerTick,
+		focusRegenMultiplier: regenMultiplier,
 		onFocusGain:   onFocusGain,
 		regenMetrics:  unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionFocusRegen}),
 		refundMetrics: unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
@@ -50,6 +52,10 @@ func (fb *focusBar) CurrentFocus() float64 {
 
 func (fb *focusBar) CurrentFocusPerTick() float64 {
 	return fb.focusPerTick
+}
+
+func (fb *focusBar) AddFocusRegenMultiplier (multiplier float64) {
+	fb.focusRegenMultiplier *= multiplier
 }
 
 func (fb *focusBar) AddFocus(sim *Simulation, amount float64, metrics *ResourceMetrics) {
@@ -113,8 +119,8 @@ func (fb *focusBar) RunTask(sim *Simulation) time.Duration {
 	if sim.CurrentTime < fb.nextFocusTick {
 		return fb.nextFocusTick
 	}
-
-	fb.AddFocus(sim, fb.focusPerTick, fb.regenMetrics)
+	focus := fb.focusPerTick * fb.focusRegenMultiplier
+	fb.AddFocus(sim, focus, fb.regenMetrics)
 
 	fb.nextFocusTick = sim.CurrentTime + tickDuration
 	return fb.nextFocusTick

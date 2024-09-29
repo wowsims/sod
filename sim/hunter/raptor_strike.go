@@ -36,16 +36,17 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hunter.RaptorStrikeOH = hunter.newRaptorStrikeHitSpell(rank, false)
 
 	spellConfig := core.SpellConfig{
+		SpellCode:     SpellCode_HunterRaptorStrike,
 		ActionID:      core.ActionID{SpellID: spellID},
 		SpellSchool:   core.SpellSchoolPhysical,
 		DefenseType:   core.DefenseTypeMelee,
 		ProcMask:      core.ProcMaskMeleeMHSpecial,
-		Flags:         core.SpellFlagMeleeMetrics,
+		Flags:         core.SpellFlagMeleeMetrics | SpellFlagStrike,
 		Rank:          rank,
 		RequiredLevel: level,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost * (1 - 0.02*float64(hunter.Talents.Efficiency)),
+			FlatCost: manaCost,
 		},
 
 		Cast: core.CastConfig{
@@ -95,7 +96,6 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 }
 
 func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
-	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
 	hasHitAndRun := hunter.HasRune(proto.HunterRune_RuneCloakHitAndRun)
@@ -115,7 +115,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 	}
 
 	return hunter.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_HunterRaptorStrike,
+		SpellCode:   SpellCode_HunterRaptorStrikeHit,
 		ActionID:    core.ActionID{SpellID: spellID}.WithTag(core.TernaryInt32(isMH, 1, 2)),
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -139,11 +139,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 
 			weaponDamage := damageFunc(sim, spell.MeleeAttackPower())
 			damage := multiplier * (weaponDamage + baseDamage)
-			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-			if hasCobraStrikes && result.DidCrit() {
-				hunter.CobraStrikesAura.Activate(sim)
-				hunter.CobraStrikesAura.SetStacks(sim, 2)
-			}
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	})
 }
@@ -176,7 +172,7 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.curQueueAura != queueAura &&
 				hunter.CurrentMana() >= hunter.RaptorStrike.Cost.GetCurrentCost() &&
-				sim.CurrentTime >= hunter.Hardcast.Expires &&
+				!hunter.IsCasting(sim) &&
 				hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance &&
 				hunter.RaptorStrike.IsReady(sim)
 		},

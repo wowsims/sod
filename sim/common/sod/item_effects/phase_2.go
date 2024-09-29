@@ -38,7 +38,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -147,7 +147,7 @@ func init() {
 
 		regChannel := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagChanneled,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagChanneled,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -254,9 +254,9 @@ func init() {
 		sod.RegisterFiftyPercentHasteBuffCD(character, core.ActionID{ItemID: AutomaticCrowdPummeler})
 	})
 
-	itemhelpers.CreateWeaponProcDamage(ElectrocutionersNeedle, "Electrocutioner's Needle", 6.5, 434839, core.SpellSchoolNature, 25, 10, 0.05, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(ElectrocutionersNeedle, "Electrocutioner's Needle", 6.5, 434839, core.SpellSchoolNature, 25, 10, 0.05, core.DefenseTypeMagic)
 
-	itemhelpers.CreateWeaponProcDamage(SuperchargedHeadchopper, "Supercharged Headchopper", 1.5, 434842, core.SpellSchoolNature, 80, 20, 0.1, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(SuperchargedHeadchopper, "Supercharged Headchopper", 1.5, 434842, core.SpellSchoolNature, 80, 20, 0.1, core.DefenseTypeMagic)
 
 	itemhelpers.CreateWeaponProcSpell(ToxicRevengerTwo, "Toxic Revenger II", 3.0, func(character *core.Character) *core.Spell {
 		return character.RegisterSpell(core.SpellConfig{

@@ -25,7 +25,7 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 			warrior.AddStatDynamic(sim, stats.Block, -75*core.BlockRatingPerBlockChance)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock) {
+			if result.DidBlock() {
 				aura.RemoveStack(sim)
 			}
 		},

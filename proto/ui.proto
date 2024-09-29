@@ -151,6 +151,7 @@ message RepSource {
 	Faction player_faction = 3;
 }
 
+// NextIndex: 15
 message UIEnchant {
 	// All enchants have an effect ID. Some also have an item ID, others have a spell ID,
 	// and yet others have both item and spell IDs. No single ID alone is enough to
@@ -175,6 +176,7 @@ message UIEnchant {
 	// Classes that are allowed to use the enchant. Empty indicates no special class restrictions.
 	repeated Class class_allowlist = 11;
 	Profession required_profession = 12;
+	int32 requires_level = 14;
 }
 
 message UIRune {
@@ -233,18 +235,18 @@ enum DungeonFilterOption {
 }
 
 enum RaidFilterOption {
-	RaidUnknown = 0;
-	RaidBlackfathomDeeps = 719;
-	RaidGnomeregan = 721;
-	RaidSunkenTemple = 1477;
-	RaidMoltenCore = 2717;
+	RaidUnknown						= 0;
+	RaidBlackfathomDeeps	= 719;
+	RaidGnomeregan				= 721;
+	RaidSunkenTemple			= 1477;
+	RaidMoltenCore				= 2717;
+	RaidBlackwingLair			= 2677;
+	RaidZulGurub					= 1977;
 }
 
 // Zones not yet available to players
 enum ExcludedZones {
 	ZoneUnknown = 0;
-	ZoneZulGurub = 1977;
-	ZoneBlackwingLair = 2677;
 	ZoneRuinsOfAQ = 3428;
 	ZoneTempleOfAQ = 3429;
 	ZoneNaxxramas = 3456;
@@ -334,6 +336,7 @@ message SavedSettings {
 	bool in_front_of_target = 13;
 	double distance_from_target = 14;
 	HealingModel healing_model = 15;
+
 }
 
 message SavedTalents {

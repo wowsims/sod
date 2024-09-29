@@ -10,18 +10,21 @@ import (
 )
 
 func (hunter *Hunter) ApplyRunes() {
-	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		hunter.AddStat(stats.MeleeCrit, 5*core.CritRatingPerCritChance)
-		hunter.AddStat(stats.SpellCrit, 5*core.SpellCritRatingPerCritChance)
-	}
-
 	if hunter.HasRune(proto.HunterRune_RuneChestLoneWolf) && hunter.pet == nil {
-		hunter.PseudoStats.DamageDealtMultiplier *= 1.35
+		hunter.PseudoStats.DamageDealtMultiplier *= 1.30
 	}
 
-	if hunter.HasRune(proto.HunterRune_RuneHandsBeastmastery) && hunter.pet != nil {
+	if hunter.HasRune(proto.HunterRune_RuneChestBeastmastery) && hunter.pet != nil {
 		// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
 		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.1
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			Label: "Beastmastery Rune Focus",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				if hunter.pet != nil {
+					hunter.pet.AddFocusRegenMultiplier(1.50)
+				}
+			},
+		}))
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization) {
@@ -43,6 +46,10 @@ func (hunter *Hunter) ApplyRunes() {
 	hunter.applyRaptorFury()
 	hunter.applyCobraSlayer()
 	hunter.applyHitAndRun()
+	hunter.applyMasterMarksman()
+	hunter.applyImprovedVolley()
+	hunter.applyTNT()
+	hunter.applyResourcefulness()
 }
 
 // TODO: 2024-06-13 - Rune seemingly replaced with Wyvern Strike
@@ -76,6 +83,19 @@ func (hunter *Hunter) ApplyRunes() {
 // 		},
 // 	}))
 // }
+
+func (hunter *Hunter) applyMasterMarksman() {
+	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
+		hunter.AddStat(stats.MeleeCrit, 5*core.CritRatingPerCritChance)
+		hunter.AddStat(stats.SpellCrit, 5*core.SpellCritRatingPerCritChance)
+
+		hunter.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagShot) {
+				spell.Cost.Multiplier -= 25
+			}
+		})
+	}
+}
 
 func (hunter *Hunter) applyExposeWeakness() {
 	if !hunter.HasRune(proto.HunterRune_RuneBeltExposeWeakness) {
@@ -212,6 +232,16 @@ func (hunter *Hunter) applyCobraStrikes() {
 			}
 		},
 	})
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Cobra Strikes Trigger",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.DidCrit() && (spell.Flags.Matches(SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite) {
+				hunter.CobraStrikesAura.Activate(sim)
+				hunter.CobraStrikesAura.SetStacks(sim, 2)
+			}
+		},
+	}))
 }
 
 func (hunter *Hunter) applyLockAndLoad() {
@@ -221,12 +251,17 @@ func (hunter *Hunter) applyLockAndLoad() {
 
 	lockAndLoadMetrics := hunter.Metrics.NewResourceMetrics(core.ActionID{SpellID: 415413}, proto.ResourceType_ResourceTypeMana)
 
+	// icd := core.Cooldown{
+	// 	Timer:    hunter.NewTimer(),
+	// 	Duration: time.Second * 8,
+	// }
+
 	hunter.LockAndLoadAura = hunter.GetOrRegisterAura(core.Aura{
 		Label:    "Lock And Load",
 		ActionID: core.ActionID{SpellID: 415413},
 		Duration: time.Second * 20,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) && spell.Flags.Matches(core.SpellFlagMeleeMetrics) {
+			if spell.Flags.Matches(SpellFlagShot) {
 				aura.Deactivate(sim)
 				hunter.AddMana(sim, spell.CurCast.Cost, lockAndLoadMetrics)
 
@@ -236,6 +271,20 @@ func (hunter *Hunter) applyLockAndLoad() {
 			}
 		},
 	})
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Lock And Load Trigger",
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagTrap) {
+				spell.WaitTravelTime(sim, func(s *core.Simulation) {
+					// if icd.IsReady(sim) {
+					// 	icd.Use(sim)
+					hunter.LockAndLoadAura.Activate(sim)
+					// }
+				})
+			}
+		},
+	}))
 }
 
 const RaptorFuryPerStackDamageMultiplier = 0.15
@@ -263,7 +312,7 @@ func (hunter *Hunter) applyRaptorFury() {
 }
 
 func (hunter *Hunter) applyCobraSlayer() {
-	if !hunter.HasRune(proto.HunterRune_RuneChestCobraSlayer) {
+	if !hunter.HasRune(proto.HunterRune_RuneHandsCobraSlayer) {
 		return
 	}
 
@@ -279,13 +328,13 @@ func (hunter *Hunter) applyCobraSlayer() {
 				return
 			}
 
-			if result.Outcome.Matches(core.OutcomeDodge) {
+			if result.DidDodge() {
 				aura.SetStacks(sim, 1)
 				hunter.DefensiveState.Activate(sim)
 				return
 			}
 
-			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && result.Outcome.Matches(core.OutcomeLanded) && sim.Proc((float64(aura.GetStacks())*0.05), "Cobra Slayer") {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && result.Outcome.Matches(core.OutcomeLanded) && sim.Proc((float64(aura.GetStacks())*0.10), "Cobra Slayer") {
 				aura.SetStacks(sim, 1)
 				hunter.DefensiveState.Activate(sim)
 				return
@@ -296,11 +345,16 @@ func (hunter *Hunter) applyCobraSlayer() {
 	})
 }
 
-func (hunter *Hunter) tntDamageMultiplier() float64 {
-	if hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
-		return 1.1
+func (hunter *Hunter) applyTNT() {
+	if !hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
+		return
 	}
-	return 1.0
+
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagTrap) || spell.SpellCode == SpellCode_HunterExplosiveShot {
+			spell.DamageMultiplier *= 1.10
+		}
+	})
 }
 
 func (hunter *Hunter) tntDamageFlatBonus() float64 {
@@ -317,18 +371,17 @@ func (hunter *Hunter) trapRange() float64 {
 	return 5
 }
 
-func (hunter *Hunter) resourcefulnessManacostModifier() float64 {
-	if hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
-		return 0.0
+func (hunter *Hunter) applyResourcefulness() {
+	if !hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
+		return
 	}
-	return 1.0
-}
 
-func (hunter *Hunter) resourcefulnessCooldownModifier() float64 {
-	if hunter.HasRune(proto.HunterRune_RuneCloakResourcefulness) {
-		return 0.6
-	}
-	return 1.0
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagTrap) {
+			spell.Cost.BaseCost = 0
+			spell.CD.Duration = spell.CD.Duration / 100 * 60
+		}
+	})
 }
 
 func (hunter *Hunter) applyHitAndRun() {
@@ -336,16 +389,31 @@ func (hunter *Hunter) applyHitAndRun() {
 		hunter.HitAndRunAura = hunter.RegisterAura(core.Aura{
 			Label:    "Hit And Run",
 			ActionID: core.ActionID{SpellID: 440533},
-			Duration: time.Second * 8,
+			Duration: time.Second * 15,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
 				aura.Activate(sim)
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.Unit.MoveSpeed *= 1.15
+				hunter.Unit.MoveSpeed *= 1.30
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.Unit.MoveSpeed *= 1 / 1.15
+				hunter.Unit.MoveSpeed *= 1 / 1.30
 			},
 		})
 	}
+}
+
+func (hunter *Hunter) applyImprovedVolley() {
+	if !hunter.HasRune(proto.HunterRune_RuneCloakImprovedVolley) && hunter.Volley != nil {
+		return
+	}
+
+	hunter.RegisterAura(core.Aura{
+		Label:    "Improved Volley",
+		ActionID: core.ActionID{SpellID: 440520},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			// The 3% rAP scaling and manacost reduction is applied inside the volley spell config itself
+			hunter.Volley.DamageMultiplier *= 2
+		},
+	})
 }

@@ -18,7 +18,6 @@ export function makeShow1hWeaponsSelector(parent: HTMLElement, sim: Sim): Boolea
 		changedEvent: (sim: Sim) => sim.filtersChangeEmitter,
 		getValue: (sim: Sim) => sim.getFilters().oneHandedWeapons,
 		setValue: (eventID: EventID, sim: Sim, newValue: boolean) => {
-			console.log('test');
 			const filters = sim.getFilters();
 			filters.oneHandedWeapons = newValue;
 			sim.setFilters(eventID, filters);
@@ -261,7 +260,7 @@ export const HealingCadence = {
 	label: 'Healing Cadence',
 	labelTooltip: `
 		<p>How often the incoming heal 'ticks', in seconds. Generally, longer durations favor Effective Hit Points (EHP) for minimizing Chance of Death, while shorter durations favor avoidance.</p>
-		<p>Example: if Incoming HPS is set to 1000 and this is set to 1s, then every 1s a heal will be received for 1000. If this is instead set to 2s, then every 2s a heal will be recieved for 2000.</p>
+		<p>Example: if Incoming HPS is set to 1000 and this is set to 1s, then every 1s a heal will be received for 1000. If this is instead set to 2s, then every 2s a heal will be received for 2000.</p>
 		<p class="mb-0">If set to 0, defaults to 1.5 times the primary target's base swing timer, and half that for dual wielding targets.</p>
 	`,
 	changedEvent: (player: Player<any>) => player.getRaid()!.changeEmitter,

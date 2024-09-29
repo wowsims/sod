@@ -305,8 +305,8 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.AddStatDependency(stats.Defense, stats.Parry, MissDodgeParryBlockCritChancePerDefense)
 	character.AddStatDependency(stats.Defense, stats.Block, MissDodgeParryBlockCritChancePerDefense)
 
-	character.AddStat(stats.Parry, 5)
-	character.AddStat(stats.Block, 5)
+	character.AddStat(stats.Parry, 5*ParryRatingPerParryChance)
+	character.AddStat(stats.Block, 5*BlockRatingPerBlockChance)
 
 	applyRaceEffects(agent)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBase)
@@ -325,7 +325,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.applyBuildPhaseAuras(CharacterBuildPhaseTalents)
 	playerStats.TalentsStats = measureStats()
 
-	applyBuffEffects(agent, true, raidBuffs, partyBuffs, individualBuffs)
+	applyBuffEffects(agent, agent.GetCharacter().GetFaction(), raidBuffs, partyBuffs, individualBuffs)
 	character.applyBuildPhaseAuras(CharacterBuildPhaseBuffs)
 	playerStats.BuffsStats = measureStats()
 
@@ -335,7 +335,7 @@ func (character *Character) applyAllEffects(agent Agent, raidBuffs *proto.RaidBu
 	character.clearBuildPhaseAuras(CharacterBuildPhaseAll)
 
 	for _, petAgent := range character.PetAgents {
-		applyPetBuffEffects(petAgent, raidBuffs, partyBuffs, individualBuffs)
+		applyPetBuffEffects(petAgent, character.GetFaction(), raidBuffs, partyBuffs, individualBuffs)
 	}
 
 	return playerStats
@@ -423,7 +423,7 @@ func (character *Character) initialize(agent Agent) {
 	character.gcdAction = &PendingAction{
 		Priority: ActionPriorityGCD,
 		OnAction: func(sim *Simulation) {
-			if hc := &character.Hardcast; hc.Expires != startingCDTime && hc.Expires <= sim.CurrentTime {
+			if hc := &character.Hardcast; hc.Expires != startingCDTime && !character.IsCasting(sim) {
 				hc.Expires = startingCDTime
 				if hc.OnComplete != nil {
 					hc.OnComplete(sim, hc.Target)
@@ -629,6 +629,7 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 
 		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  float64(character.PseudoStats.MeleeSpeedMultiplier),
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: float64(character.PseudoStats.RangedSpeedMultiplier),
+		proto.PseudoStat_PseudoStatBlockValuePerStrength: float64(character.PseudoStats.BlockValuePerStrength),
 	}
 }
 
@@ -731,6 +732,14 @@ func (c *Character) ApplyRingRunes() {
 		c.BowSpecializationAura()
 		c.CrossbowSpecializationAura()
 		c.ThrownSpecializationAura()
+
+		// Also increases chance for Beast pets to hit by 2%
+		for _, pet := range c.Pets {
+			if !pet.IsGuardian() && pet.Unit.MobType == proto.MobType_MobTypeBeast {
+				pet.AddStat(stats.MeleeHit, 2*MeleeHitRatingPerHitChance)
+				pet.AddStat(stats.SpellHit, 2*SpellHitRatingPerHitChance)
+			}
+		}
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingSwordSpecialization)) {

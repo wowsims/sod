@@ -174,26 +174,24 @@ func (warrior *Warrior) registerGladiatorStanceAura() {
 			gladStanceValidationPA = nil
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if sim.Log != nil {
-				gladStanceValidationPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-					Period:          time.Second * 2,
-					TickImmediately: true,
-					OnAction: func(sim *core.Simulation) {
-						if warrior.GladiatorStanceAura.IsActive() && warrior.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield {
-							if !gladStanceDamageAura.IsActive() {
-								gladStanceDamageAura.Activate(sim)
-							}
-							if !gladStanceStanceOverrideEE.IsActive() {
-								gladStanceStanceOverrideEE.Activate(sim)
-							}
-						} else {
-							gladStanceDamageAura.Deactivate(sim)
-							gladStanceStanceOverrideEE.Deactivate(sim)
-							return
+			gladStanceValidationPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period:          time.Second * 2,
+				TickImmediately: true,
+				OnAction: func(sim *core.Simulation) {
+					if warrior.GladiatorStanceAura.IsActive() && warrior.PseudoStats.CanBlock {
+						if !gladStanceDamageAura.IsActive() {
+							gladStanceDamageAura.Activate(sim)
 						}
-					},
-				})
-			}
+						if !gladStanceStanceOverrideEE.IsActive() {
+							gladStanceStanceOverrideEE.Activate(sim)
+						}
+					} else {
+						gladStanceDamageAura.Deactivate(sim)
+						gladStanceStanceOverrideEE.Deactivate(sim)
+						return
+					}
+				},
+			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if gladStanceValidationPA != nil {

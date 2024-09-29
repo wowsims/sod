@@ -42,8 +42,7 @@ func (druid *Druid) registerHurricaneSpell() {
 		}
 
 		damage := rank.damage + float64(min(druid.Level, rank.scaleLevel)-rank.level)*rank.scale
-
-		druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+		spell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: rank.spellID},
 			SpellSchool: core.SpellSchoolNature,
 			ProcMask:    core.ProcMaskSpellDamage,
@@ -53,7 +52,7 @@ func (druid *Druid) registerHurricaneSpell() {
 			Rank:          i + 1,
 
 			ManaCost: core.ManaCostOptions{
-				FlatCost: rank.manaCost,
+				FlatCost:   rank.manaCost,
 				Multiplier: costMultiplier,
 			},
 			Cast: core.CastConfig{
@@ -81,7 +80,7 @@ func (druid *Druid) registerHurricaneSpell() {
 				},
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					for _, aoeTarget := range sim.Encounter.TargetUnits {
-						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTickCounted)
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
 					}
 				},
 			},
@@ -91,5 +90,7 @@ func (druid *Druid) registerHurricaneSpell() {
 				spell.AOEDot().Apply(sim)
 			},
 		})
+
+		druid.Hurricane = append(druid.Hurricane, spell)
 	}
 }

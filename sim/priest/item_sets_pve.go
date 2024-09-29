@@ -1,9 +1,11 @@
 package priest
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -180,6 +182,180 @@ var ItemSetTwilightProphecy = core.NewItemSet(core.ItemSet{
 					}
 				},
 			})
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 5 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetTwilightOfTranscendence = core.NewItemSet(core.ItemSet{
+	Name: "Twilight of Transcendence",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Reduces the cooldown of your Shadow Word: Death spell by 6 sec.
+		2: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+			if !priest.HasRune(proto.PriestRune_RuneHandsShadowWordDeath) {
+				return
+			}
+
+			priest.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Priest - Shadow 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					priest.ShadowWordDeath.CD.Duration -= time.Second * 6
+				},
+			})
+		},
+		// Your Shadow Word: Pain has a 2% chance per talent point in Spirit Tap to trigger your Spirit Tap talent when it deals damage,
+		// or a 20% chance per talent point when a target dies with your Shadow Word: Pain active.
+		4: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+			if priest.Talents.SpiritTap == 0 {
+				return
+			}
+
+			procChance := 0.02 * float64(priest.Talents.SpiritTap)
+
+			core.MakePermanent(priest.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Priest - Shadow 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					if priest.Talents.InnerFocus {
+						oldApplyEffects := priest.InnerFocus.ApplyEffects
+						priest.InnerFocus.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+							oldApplyEffects(sim, target, spell)
+							priest.SpiritTapAura.Activate(sim)
+						}
+					}
+				},
+				OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_PriestShadowWordPain && sim.Proc(procChance, "Proc Spirit Tap") {
+						priest.SpiritTapAura.Activate(sim)
+					}
+				},
+			}))
+		},
+		// While Spirit Tap is active, you deal 25% more shadow damage.
+		6: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+			if priest.Talents.SpiritTap == 0 {
+				return
+			}
+
+			priest.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Priest - Shadow 6P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					oldOnGain := priest.SpiritTapAura.OnGain
+					priest.SpiritTapAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+						oldOnGain(aura, sim)
+						priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.25
+					}
+					oldOnExpire := priest.SpiritTapAura.OnExpire
+					priest.SpiritTapAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+						oldOnExpire(aura, sim)
+						priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.25
+					}
+				},
+			})
+		},
+	},
+})
+
+var ItemSetDawnOfTranscendence = core.NewItemSet(core.ItemSet{
+	Name: "Dawn of Transcendence",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Allows 15% of your Mana regeneration to continue while casting.
+		2: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+			priest.PseudoStats.SpiritRegenRateCasting += .15
+		},
+		// Your periodic healing has a 2% chance to make your next spell with a casting time less than 10 seconds an instant cast spell.
+		4: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+
+			affectedSpells := []*core.Spell{}
+
+			buffAura := priest.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 467543},
+				Label:    "Deliverance",
+				Duration: core.NeverExpires, // TODO: Verify duration
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					affectedSpells = core.FilterSlice(priest.Spellbook, func(spell *core.Spell) bool {
+						return spell.Flags.Matches(SpellFlagPriest) && spell.DefaultCast.CastTime < time.Second*10
+					})
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range affectedSpells {
+						spell.CastTimeMultiplier -= 1
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range affectedSpells {
+						spell.CastTimeMultiplier += 1
+					}
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if slices.Contains(affectedSpells, spell) {
+						aura.Deactivate(sim)
+					}
+				},
+			})
+
+			core.MakePermanent(priest.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Priest - Healer 4P Bonus",
+				OnPeriodicHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.ProcMask.Matches(core.ProcMaskSpellHealing) && sim.Proc(.02, "Proc Deliverance") {
+						buffAura.Activate(sim)
+					}
+				},
+			}))
+		},
+		// Circle of Healing and Penance also place a heal over time effect on their targets that heals for 25% as much over 15 sec.
+		6: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+
+			hasCoHRune := priest.HasRune(proto.PriestRune_RuneHandsCircleOfHealing)
+			hasPenanceRune := priest.HasRune(proto.PriestRune_RuneHandsPenance)
+			if !hasCoHRune && !hasPenanceRune {
+				return
+			}
+
+			priest.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Priest - Healer 6P Bonus",
+				// TODO: How is this implemented in-game?
+			})
+		},
+	},
+})
+
+var ItemSetConfessorsRaiment = core.NewItemSet(core.ItemSet{
+	Name: "Confessor's Raiment",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases healing done by up to 22 and damage done by up to 7 for all magical spells and effects.
+		2: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+			priest.AddStats(stats.Stats{
+				stats.HealingPower: 22,
+				stats.SpellDamage:  7,
+			})
+		},
+		// Reduces the cooldown of your Penance spell by 6 sec.
+		3: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+			if !priest.HasRune(proto.PriestRune_RuneHandsPenance) {
+				return
+			}
+
+			priest.RegisterAura(core.Aura{
+				Label: "S03 - Item - ZG - Priest - Discipline 3P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					priest.Penance.CD.Duration -= time.Second * 6
+					priest.PenanceHeal.CD.Duration -= time.Second * 6
+				},
+			})
+		},
+		// Increases the damage absorbed by your Power Word: Shield spell by 20%.
+		5: func(agent core.Agent) {
 		},
 	},
 })

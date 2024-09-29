@@ -1,0 +1,763 @@
+character_stats_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-CharacterStats-Default"
+ value: {
+  final_stats: 292.71
+  final_stats: 195.8
+  final_stats: 281.6
+  final_stats: 60.5
+  final_stats: 79.2
+  final_stats: 42
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 24.75
+  final_stats: 3
+  final_stats: 9
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1023.42
+  final_stats: 3
+  final_stats: 24.84164
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2143.6
+  final_stats: 322
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 14.84164
+  final_stats: 5
+  final_stats: 0
+  final_stats: 3285
+  final_stats: 18
+  final_stats: 30
+  final_stats: 40
+  final_stats: 35
+  final_stats: 40
+  final_stats: 263
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+character_stats_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 597.3
+  final_stats: 343.97
+  final_stats: 511.06
+  final_stats: 102.3
+  final_stats: 135.3
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 41.25
+  final_stats: 6
+  final_stats: 30
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2267.6
+  final_stats: 6
+  final_stats: 48.1985
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5316.94
+  final_stats: 872
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 17.1985
+  final_stats: 5
+  final_stats: 0
+  final_stats: 6919.6
+  final_stats: 27
+  final_stats: 209
+  final_stats: 60
+  final_stats: 60
+  final_stats: 60
+  final_stats: 384
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+character_stats_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 743.1875
+  final_stats: 509.98475
+  final_stats: 680.823
+  final_stats: 117.645
+  final_stats: 155.595
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 41.25
+  final_stats: 5
+  final_stats: 26
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2624.375
+  final_stats: 5
+  final_stats: 51.92174
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 6278.8695
+  final_stats: 958
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 24.92174
+  final_stats: 5
+  final_stats: 0
+  final_stats: 8617.23
+  final_stats: 27
+  final_stats: 70
+  final_stats: 90
+  final_stats: 90
+  final_stats: 60
+  final_stats: 384
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+ }
+}
+stat_weights_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-StatWeights-Default"
+ value: {
+  weights: 0.94302
+  weights: 1.01776
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.58982
+  weights: 7.17749
+  weights: 8.54288
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-StatWeights-Default"
+ value: {
+  weights: 2.08894
+  weights: 1.0931
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.88147
+  weights: 2.81365
+  weights: 24.54815
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-StatWeights-Default"
+ value: {
+  weights: 1.70501
+  weights: 1.00876
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.29549
+  weights: 36.03048
+  weights: 24.87437
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-AllItems-BattlegearofHeroism"
+ value: {
+  dps: 548.19856
+  tps: 487.19115
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Average-Default"
+ value: {
+  dps: 608.16526
+  tps: 537.4594
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-LongMultiTarget"
+ value: {
+  dps: 54.80721
+  tps: 88.77857
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-LongSingleTarget"
+ value: {
+  dps: 12.12947
+  tps: 12.58434
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-ShortSingleTarget"
+ value: {
+  dps: 24.11627
+  tps: 23.12231
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-LongMultiTarget"
+ value: {
+  dps: 28.97784
+  tps: 64.51695
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-LongSingleTarget"
+ value: {
+  dps: 6.19357
+  tps: 7.67322
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Human-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-ShortSingleTarget"
+ value: {
+  dps: 11.07892
+  tps: 12.5201
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-LongMultiTarget"
+ value: {
+  dps: 59.5683
+  tps: 93.44496
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-LongSingleTarget"
+ value: {
+  dps: 13.10321
+  tps: 13.61427
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-FullBuffs-P2-Consumes-ShortSingleTarget"
+ value: {
+  dps: 30.57219
+  tps: 29.95649
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-LongMultiTarget"
+ value: {
+  dps: 31.77809
+  tps: 67.26183
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-LongSingleTarget"
+ value: {
+  dps: 6.55846
+  tps: 7.99816
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-Settings-Orc-phase_2_dw-Fury-phase_2_fury-NoBuffs-P2-Consumes-ShortSingleTarget"
+ value: {
+  dps: 14.22676
+  tps: 15.57112
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 569.57811
+  tps: 504.09767
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BanishedMartyr'sFullPlate"
+ value: {
+  dps: 2639.76655
+  tps: 2287.1778
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BattlegearofHeroism"
+ value: {
+  dps: 1989.92848
+  tps: 1756.64517
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BloodGuard'sPlate"
+ value: {
+  dps: 2383.14096
+  tps: 2063.07283
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-EmeraldDreamPlate"
+ value: {
+  dps: 2336.87499
+  tps: 2025.53882
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-Knight-Lieutenant'sPlate"
+ value: {
+  dps: 2383.14096
+  tps: 2063.07283
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-WailingBerserker'sPlateArmor"
+ value: {
+  dps: 2797.62709
+  tps: 2413.38735
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Average-Default"
+ value: {
+  dps: 3617.97964
+  tps: 2841.24899
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 1665.94355
+  tps: 1596.17137
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 527.2622
+  tps: 477.94961
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 721.71303
+  tps: 631.12714
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 771.47964
+  tps: 814.26555
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 267.89319
+  tps: 270.69185
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 370.22181
+  tps: 349.65945
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 1782.44796
+  tps: 1734.88847
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 546.02403
+  tps: 492.49924
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 754.98822
+  tps: 655.68534
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 808.0255
+  tps: 861.77431
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 268.87524
+  tps: 270.42504
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 384.58615
+  tps: 359.50764
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 2840.1998
+  tps: 2237.93399
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-BanishedMartyr'sFullPlate"
+ value: {
+  dps: 2983.8361
+  tps: 2565.68699
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-BattlegearofHeroism"
+ value: {
+  dps: 2065.16729
+  tps: 1812.30237
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-BloodGuard'sPlate"
+ value: {
+  dps: 2525.35944
+  tps: 2175.23509
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-EmeraldDreamPlate"
+ value: {
+  dps: 2491.20194
+  tps: 2147.10994
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-Knight-Lieutenant'sPlate"
+ value: {
+  dps: 2525.35944
+  tps: 2175.23509
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-WailingBerserker'sPlateArmor"
+ value: {
+  dps: 3198.42156
+  tps: 2744.70651
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Average-Default"
+ value: {
+  dps: 4210.88702
+  tps: 3277.22592
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 1984.37927
+  tps: 1830.49648
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 531.65729
+  tps: 459.07254
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 744.12193
+  tps: 618.50168
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 859.51547
+  tps: 875.43201
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 224.96729
+  tps: 226.39952
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 334.39933
+  tps: 307.68423
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 1519.99206
+  tps: 1474.72736
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 427.63699
+  tps: 379.10516
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 554.2826
+  tps: 485.8646
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 631.33409
+  tps: 701.06045
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 171.2215
+  tps: 185.13149
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 227.19188
+  tps: 230.97275
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 2077.36151
+  tps: 1920.06936
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 537.46016
+  tps: 462.80481
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 789.56162
+  tps: 645.46675
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 931.88481
+  tps: 941.90068
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 232.93777
+  tps: 230.95747
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 359.93651
+  tps: 323.04532
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 1297.32354
+  tps: 1270.68014
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 428.93704
+  tps: 375.57527
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 572.14908
+  tps: 465.05196
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 536.97642
+  tps: 615.03614
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 174.93958
+  tps: 186.41504
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 241.4118
+  tps: 230.39304
+ }
+}
+dps_results: {
+ key: "TestDualWieldWarrior-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 3349.17822
+  tps: 2599.69152
+ }
+}

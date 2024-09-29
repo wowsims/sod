@@ -64,6 +64,87 @@ func TestRetribution(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      4,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:  Phase45RetTalents,
+			GearSet:  core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p4ret-twisting-6pcT1"),
+			Rotation: core.GetAplRotation("../../../ui/retribution_paladin/apls", "p4ret-twisting-6pcT1"),
+
+			OtherGearSets:  []core.GearSetCombo{core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p4rettwist")},
+			OtherRotations: []core.RotationCombo{core.GetAplRotation("../../../ui/retribution_paladin/apls", "p4ret")},
+			Buffs:          core.FullBuffsPhase5,
+			Consumes:       Phase4Consumes,
+			SpecOptions:    core.SpecOptionsCombo{Label: "P4 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:        Phase45RetTalents,
+			GearSet:        core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5twisting"),
+			Rotation:       core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5ret-twist-4DR-3.5-3.6"),
+			OtherRotations: []core.RotationCombo{core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5ret-twist-4DR-3.7-4.0")},
+			Buffs:          core.FullBuffsPhase5,
+			Consumes:       Phase5Consumes,
+			SpecOptions:    core.SpecOptionsCombo{Label: "P5 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+	}))
+}
+
+func TestExodin(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      4,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase45RetTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p4ret-exodin-6pcT1"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p4ret-exodin-6pcT1"),
+			Buffs:       core.FullBuffsPhase4,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "P4 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase45RetTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5exodin"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5ret-exodin-6CF2DR"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase5Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "P5 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -86,96 +167,36 @@ func TestShockadin(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-	}))
-}
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-func BenchmarkSimulate(b *testing.B) {
-	core.Each([]*proto.RaidSimRequest{
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceHuman,
-					Class:         proto.Class_ClassPaladin,
-					Level:         25,
-					TalentsString: Phase1RetTalents,
-					Equipment:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p1ret").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/retribution_paladin/apls", "p1ret").Rotation,
-					Consumes:      Phase1Consumes.Consumes,
-					Spec:          PlayerOptionsSealofCommand,
-					Buffs:         core.FullIndividualBuffsPhase1,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase1,
-				core.FullDebuffsPhase1,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(25),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
+			Talents:     Phase45ShockadinTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5shockadin"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5Shockadin"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase5Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "P5 Seal of Righteousness Shockadin", SpecOptions: PlayerOptionsSealofRighteousness},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
 		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceHuman,
-					Class:         proto.Class_ClassPaladin,
-					Level:         40,
-					TalentsString: Phase2RetTalents,
-					Equipment:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p2ret").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/retribution_paladin/apls", "p2ret").Rotation,
-					Consumes:      Phase2Consumes.Consumes,
-					Spec:          PlayerOptionsSealofCommand,
-					Buffs:         core.FullIndividualBuffsPhase2,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase2,
-				core.FullDebuffsPhase2,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(40),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-		{
-			Raid: core.SinglePlayerRaidProto(
-				&proto.Player{
-					Race:          proto.Race_RaceHuman,
-					Class:         proto.Class_ClassPaladin,
-					Level:         50,
-					TalentsString: Phase3RetTalents,
-					Equipment:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p3ret").GearSet,
-					Rotation:      core.GetAplRotation("../../../ui/retribution_paladin/apls", "p3ret").Rotation,
-					Consumes:      Phase3Consumes.Consumes,
-					Spec:          PlayerOptionsSealofMartyrdom,
-					Buffs:         core.FullIndividualBuffsPhase3,
-				},
-				core.FullPartyBuffs,
-				core.FullRaidBuffsPhase3,
-				core.FullDebuffsPhase3,
-			),
-			Encounter: &proto.Encounter{
-				Duration: 120,
-				Targets: []*proto.Target{
-					core.NewDefaultTarget(50),
-				},
-			},
-			SimOptions: core.AverageDefaultSimTestOptions,
-		},
-	}, func(rsr *proto.RaidSimRequest) { core.RaidBenchmark(b, rsr) })
+	}))
 }
 
 var Phase1RetTalents = "--05230051"
 var Phase2RetTalents = "--532300512003151"
 var Phase2ShockadinTalents = "55050100521151--"
 var Phase3RetTalents = "500501--53230051200315"
+var Phase45RetTalents = "500501-503-52230351200315"
+var Phase45ShockadinTalents = "55053100501051--052303511"
 
 var Phase1Consumes = core.ConsumesCombo{
-	Label: "Phase 1 Consumes",
+	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
 		DefaultPotion: proto.Potions_ManaPotion,
@@ -186,7 +207,7 @@ var Phase1Consumes = core.ConsumesCombo{
 }
 
 var Phase2Consumes = core.ConsumesCombo{
-	Label: "Phase 2 Consumes",
+	Label: "P2-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfAgility,
 		DefaultPotion:     proto.Potions_ManaPotion,
@@ -200,7 +221,7 @@ var Phase2Consumes = core.ConsumesCombo{
 }
 
 var Phase3Consumes = core.ConsumesCombo{
-	Label: "Phase 3 Consumes",
+	Label: "P3-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
 		DefaultPotion:     proto.Potions_MajorManaPotion,
@@ -216,6 +237,41 @@ var Phase3Consumes = core.ConsumesCombo{
 		ZanzaBuff:         proto.ZanzaBuff_AtalaiMojoOfWar,
 	},
 }
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "P4-Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:     proto.Potions_MajorManaPotion,
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
+		Flask:             proto.Flask_FlaskOfSupremePower,
+		SpellPowerBuff:    proto.SpellPowerBuff_GreaterArcaneElixir,
+		DragonBreathChili: true,
+		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
+		Food:              proto.Food_FoodSmokedDesertDumpling,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_ConductiveShieldCoating,
+		StrengthBuff:      proto.StrengthBuff_JujuPower,
+		EnchantedSigil:    proto.EnchantedSigil_FlowingWatersSigil,
+	},
+}
+
+var Phase5Consumes = core.ConsumesCombo{
+	Label: "P5-Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
+		DefaultPotion:     proto.Potions_MajorManaPotion,
+		DragonBreathChili: true,
+		EnchantedSigil:    proto.EnchantedSigil_FlowingWatersSigil,
+		Flask:             proto.Flask_FlaskOfSupremePower,
+		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
+		Food:              proto.Food_FoodSmokedDesertDumpling,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_MagnificentTrollshine,
+		SpellPowerBuff:    proto.SpellPowerBuff_GreaterArcaneElixir,
+		StrengthBuff:      proto.StrengthBuff_JujuPower,
+	},
+}
 
 var PlayerOptionsSealofCommand = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{
@@ -229,12 +285,22 @@ var PlayerOptionsSealofMartyrdom = &proto.Player_RetributionPaladin{
 	},
 }
 
-var optionsSealOfCommand = &proto.RetributionPaladin_Options{
+var PlayerOptionsSealofRighteousness = &proto.Player_RetributionPaladin{
+	RetributionPaladin: &proto.RetributionPaladin{
+		Options: optionsSealOfRighteousness,
+	},
+}
+
+var optionsSealOfCommand = &proto.PaladinOptions{
 	PrimarySeal: proto.PaladinSeal_Command,
 }
 
-var optionsSealOfMartyrdom = &proto.RetributionPaladin_Options{
+var optionsSealOfMartyrdom = &proto.PaladinOptions{
 	PrimarySeal: proto.PaladinSeal_Martyrdom,
+}
+
+var optionsSealOfRighteousness = &proto.PaladinOptions{
+	PrimarySeal: proto.PaladinSeal_Righteousness,
 }
 
 var ItemFilters = core.ItemFilter{

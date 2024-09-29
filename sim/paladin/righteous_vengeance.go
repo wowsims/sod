@@ -33,7 +33,7 @@ func (paladin *Paladin) registerRV() {
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagPureDot | core.SpellFlagIgnoreAttackerModifiers,
+		Flags:       core.SpellFlagPureDot | core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagNoOnCastComplete,
 
 		// SpellFlagIgnoreTargetModifiers was thought to be used based on wowhead flags
 		// WCL parses show that this is not the case
@@ -52,12 +52,11 @@ func (paladin *Paladin) registerRV() {
 			NumberOfTicks: RVTicks,
 			TickLength:    time.Second * 2,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.SpellMetrics[target.UnitIndex].Hits++
 			spell.Dot(target).ApplyOrReset(sim)
 		},
 	})

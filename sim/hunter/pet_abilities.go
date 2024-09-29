@@ -15,11 +15,10 @@ const (
 	Unknown PetAbilityType = iota
 	Bite
 	Claw
-	DemoralizingScreech
+	//DemoralizingScreech
 	FuriousHowl
 	LightningBreath
 	ScorpidPoison
-	Swipe
 )
 
 func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *core.Spell {

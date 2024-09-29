@@ -20,20 +20,22 @@ func (mage *Mage) registerBalefireBoltSpell() {
 	castTime := time.Millisecond * 2500
 	buffDuration := time.Second * 30
 	manaCost := .20
+	maxStacks := 5
+	stackMultiplier := 0.20
 
-	statDeps := make([]*stats.StatDependency, 11) // 10 stacks + zero conditions
-	for i := 1; i < 11; i++ {
-		statDeps[i] = mage.NewDynamicMultiplyStat(stats.Spirit, 1.0-.1*float64(i))
+	statDeps := make([]*stats.StatDependency, maxStacks+1) // 5 stacks + zero conditions
+	for i := 1; i < maxStacks+1; i++ {
+		statDeps[i] = mage.NewDynamicMultiplyStat(stats.Spirit, 1.0-stackMultiplier*float64(i))
 	}
 
 	balefireAura := mage.RegisterAura(core.Aura{
 		Label:     "Balefire Bolt (Stacks)",
 		ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneBracersBalefireBolt)}.WithTag(1),
 		Duration:  buffDuration,
-		MaxStacks: 10,
+		MaxStacks: int32(maxStacks),
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			mage.BalefireBolt.DamageMultiplierAdditive -= .1 * float64(oldStacks)
-			mage.BalefireBolt.DamageMultiplierAdditive += .1 * float64(newStacks)
+			mage.BalefireBolt.DamageMultiplierAdditive -= stackMultiplier * float64(oldStacks)
+			mage.BalefireBolt.DamageMultiplierAdditive += stackMultiplier * float64(newStacks)
 
 			if oldStacks != 0 {
 				aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
@@ -42,7 +44,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 				aura.Unit.EnableDynamicStatDep(sim, statDeps[newStacks])
 			}
 
-			if newStacks == 10 {
+			if newStacks == aura.MaxStacks {
 				mage.RemoveHealth(sim, mage.CurrentHealth())
 
 				if sim.Log != nil {

@@ -25,20 +25,22 @@ func (warrior *Warrior) registerRendSpell() {
 		60: {spellID: 11574, damage: 21, ticks: 7},
 	}[warrior.Level]
 
-	damageMultiplier := []float64{1, 1.15, 1.25, 1.35}[warrior.Talents.ImprovedRend]
+	baseDamage := rend.damage
 	if hasBloodFrenzyRune {
-		damageMultiplier *= 2
+		baseDamage *= 2
 	}
+
+	damageMultiplier := []float64{1, 1.15, 1.25, 1.35}[warrior.Talents.ImprovedRend]
 
 	warrior.Rend = warrior.RegisterSpell(BattleStance|DefensiveStance, core.SpellConfig{
 		SpellCode:   SpellCode_WarriorRend,
 		ActionID:    core.ActionID{SpellID: rend.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   10 - warrior.FocusedRageDiscount,
+			Cost:   10,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -58,7 +60,7 @@ func (warrior *Warrior) registerRendSpell() {
 			NumberOfTicks: rend.ticks,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				damage := rend.damage
+				damage := baseDamage
 				if hasBloodFrenzyRune {
 					damage += .03 * dot.Spell.MeleeAttackPower()
 				}
@@ -71,7 +73,7 @@ func (warrior *Warrior) registerRendSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHitNoHitCounter)
 			if result.Landed() {
 				spell.Dot(target).Apply(sim)
 			} else {

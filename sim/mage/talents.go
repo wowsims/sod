@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -18,6 +19,13 @@ func (mage *Mage) applyArcaneTalents() {
 	mage.applyArcaneConcentration()
 	mage.registerPresenceOfMindCD()
 	mage.registerArcanePowerCD()
+
+	// For talents that benefit both the mage and frozen orbs
+	units := []*core.Unit{&mage.Unit}
+	// Frozen Orb also benefits
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
+	}
 
 	// Arcane Subtlety
 	if mage.Talents.ArcaneSubtlety > 0 {
@@ -57,12 +65,14 @@ func (mage *Mage) applyArcaneTalents() {
 		bonusDamageMultiplierAdditive := .01 * float64(mage.Talents.ArcaneInstability)
 		bonusCritRating := 1 * float64(mage.Talents.ArcaneInstability) * core.SpellCritRatingPerCritChance
 
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagMage) {
-				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
-				spell.BonusCritRating += bonusCritRating
-			}
-		})
+		for _, unit := range units {
+			unit.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.Flags.Matches(SpellFlagMage) {
+					spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
+					spell.BonusCritRating += bonusCritRating
+				}
+			})
+		}
 	}
 }
 
@@ -106,38 +116,54 @@ func (mage *Mage) applyFireTalents() {
 }
 
 func (mage *Mage) applyFrostTalents() {
+	mage.registerColdSnapCD()
+	mage.registerIceBarrierSpell()
 	mage.applyWintersChill()
 
-	mage.registerColdSnapCD()
+	// For talents that benefit both the mage and frozen orbs
+	units := []*core.Unit{&mage.Unit}
+	// Frozen Orb also benefits
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
+	}
 
 	// Elemental Precision
 	if mage.Talents.ElementalPrecision > 0 {
 		bonusHit := 2 * float64(mage.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagMage) && (spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost)) {
-				spell.BonusHitRating += bonusHit
-			}
-		})
+
+		for _, unit := range units {
+			unit.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.Flags.Matches(SpellFlagMage) && (spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost)) {
+					spell.BonusHitRating += bonusHit
+				}
+			})
+		}
 	}
 
 	// Ice Shards
 	if mage.Talents.IceShards > 0 {
 		critBonus := .20 * float64(mage.Talents.IceShards)
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				spell.CritDamageBonus += critBonus
-			}
-		})
+
+		for _, unit := range units {
+			unit.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
+					spell.CritDamageBonus += critBonus
+				}
+			})
+		}
 	}
 
 	// Piercing Ice
 	if mage.Talents.PiercingIce > 0 {
 		bonusDamageMultiplierAdditive := 0.02 * float64(mage.Talents.PiercingIce)
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
-			}
-		})
+
+		for _, unit := range units {
+			unit.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
+					spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
+				}
+			})
+		}
 	}
 
 	// Frost Channeling
@@ -241,6 +267,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			core.Each(affectedSpells, func(spell *core.Spell) {
 				spell.CastTimeMultiplier += 1
 			})
+			mage.PresenceOfMind.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !slices.Contains(affectedSpells, spell) {
@@ -251,7 +278,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 		},
 	})
 
-	spell := mage.RegisterSpell(core.SpellConfig{
+	mage.PresenceOfMind = mage.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
@@ -269,7 +296,7 @@ func (mage *Mage) registerPresenceOfMindCD() {
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: spell,
+		Spell: mage.PresenceOfMind,
 		Type:  core.CooldownTypeDPS,
 	})
 }
@@ -278,14 +305,25 @@ func (mage *Mage) registerArcanePowerCD() {
 	if !mage.Talents.ArcanePower {
 		return
 	}
+
+	// For talents that benefit both the mage and frozen orbs
+	units := []*core.Unit{&mage.Unit}
+	// Frozen Orb also benefits
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
+	}
+
 	actionID := core.ActionID{SpellID: 12042}
 
-	var affectedSpells []*core.Spell
-	mage.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagMage) {
-			affectedSpells = append(affectedSpells, spell)
-		}
-	})
+	affectedSpells := []*core.Spell{}
+
+	for _, unit := range units {
+		unit.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagMage) {
+				affectedSpells = append(affectedSpells, spell)
+			}
+		})
+	}
 
 	mage.ArcanePowerAura = mage.RegisterAura(core.Aura{
 		Label:    "Arcane Power",
@@ -368,6 +406,9 @@ func (mage *Mage) registerCombustionCD() {
 	if !mage.Talents.Combustion {
 		return
 	}
+
+	hasOverheatRune := mage.HasRune(proto.MageRune_RuneCloakOverheat)
+
 	actionID := core.ActionID{SpellID: 11129}
 	cd := core.Cooldown{
 		Timer:    mage.NewTimer(),
@@ -382,7 +423,7 @@ func (mage *Mage) registerCombustionCD() {
 	})
 
 	numCrits := 0
-	const critPerStack = 10 * core.SpellCritRatingPerCritChance
+	critPerStack := 10.0 * core.SpellCritRatingPerCritChance
 
 	mage.CombustionAura = mage.RegisterAura(core.Aura{
 		Label:     "Combustion",
@@ -403,16 +444,13 @@ func (mage *Mage) registerCombustionCD() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.SpellSchool.Matches(core.SpellSchoolFire) || !spell.Flags.Matches(SpellFlagMage) {
+			if !result.Landed() || numCrits >= 3 || !spell.SpellSchool.Matches(core.SpellSchoolFire) || !spell.Flags.Matches(SpellFlagMage) {
 				return
 			}
-			if spell == mage.Ignite || spell == mage.LivingBomb { //LB dot action should be ignored
-				return
-			}
-			if !result.Landed() {
-				return
-			}
-			if numCrits >= 3 {
+
+			// Ignite, Living Bomb explosions, and Fire Blast with Overheart don't consume crit stacks
+			if spell.SpellCode == SpellCode_MageIgnite ||
+				spell.SpellCode == SpellCode_MageLivingBombExplosion || (hasOverheatRune && spell.SpellCode == SpellCode_MageFireBlast) {
 				return
 			}
 

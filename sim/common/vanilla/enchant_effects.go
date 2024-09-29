@@ -43,7 +43,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(procMask) || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs){
+				if !result.Landed() || !spell.ProcMask.Matches(procMask) || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
 				}
 
@@ -98,11 +98,14 @@ func init() {
 		procMask := character.GetProcMaskForEnchant(803)
 		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
 
+		procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee proc combo
+		procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
+
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 13897},
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskSpellDamage | core.ProcMaskTriggerInstant,
+			ProcMask:    procMaskOnAuto,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -119,10 +122,15 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs){
+				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
 				}
 				if ppmm.Proc(sim, spell.ProcMask, "Fiery Weapon") {
+					if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
+						procSpell.ProcMask = procMaskOnSpecial
+					} else {
+						procSpell.ProcMask = procMaskOnAuto
+					}
 					procSpell.Cast(sim, result.Target)
 				}
 			},

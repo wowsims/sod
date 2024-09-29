@@ -58,8 +58,6 @@ func (priest *Priest) registerVampiricTouchSpell() {
 			},
 		},
 
-		CritDamageBonus: priest.periodicCritBonus(),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
@@ -86,17 +84,16 @@ func (priest *Priest) registerVampiricTouchSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasDespairRune {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
 				priest.AddShadowWeavingStack(sim, target)
 				spell.Dot(target).Apply(sim)
 			}

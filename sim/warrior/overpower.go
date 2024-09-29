@@ -31,7 +31,7 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeDodge) {
+			if result.DidDodge() {
 				warrior.OverpowerAura.Activate(sim)
 			}
 		},
@@ -44,14 +44,15 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 	})
 
 	warrior.Overpower = warrior.RegisterSpell(BattleStance, core.SpellConfig{
+		SpellCode:   SpellCode_WarriorOverpower,
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   5 - warrior.FocusedRageDiscount,
+			Cost:   5,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -77,11 +78,10 @@ func (warrior *Warrior) registerOverpowerSpell(cdTimer *core.Timer) {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			warrior.OverpowerAura.Deactivate(sim)
-
 			baseDamage := bonusDamage + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
+
+			warrior.OverpowerAura.Deactivate(sim)
 			if !result.Landed() {
 				spell.IssueRefund(sim)
 			}

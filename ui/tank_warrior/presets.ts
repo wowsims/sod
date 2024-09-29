@@ -94,8 +94,8 @@ export const TalentPresets = {
 
 export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 
-export const PresetBuildTanky = PresetUtils.makePresetBuild('Tanky', DefaultGearTanky, TalentsPhase4Prot, DefaultAPLs[60]);
-export const PresetBuildDamage = PresetUtils.makePresetBuild('Damage', DefaultGearDamage, TalentsPhase4Fury, DefaultAPLs[60]);
+export const PresetBuildTanky = PresetUtils.makePresetBuild('Tanky', { gear: DefaultGearTanky, talents: TalentsPhase4Prot, rotation: DefaultAPLs[60] });
+export const PresetBuildDamage = PresetUtils.makePresetBuild('Damage', { gear: DefaultGearDamage, talents: TalentsPhase4Fury, rotation: DefaultAPLs[60] });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options Presets
@@ -119,9 +119,6 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfTheTitans,
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.WildStrikes,
-	miscConsumes: {
-		jujuEmber: true,
-	},
 	offHandImbue: WeaponImbue.ElementalSharpeningStone,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
@@ -151,6 +148,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	rallyingCryOfTheDragonslayer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
 	songflowerSerenade: true,
+	spiritOfZandalar: true,
 	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });

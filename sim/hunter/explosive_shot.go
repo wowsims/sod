@@ -19,11 +19,8 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 	baseLowDamage := hunter.baseRuneAbilityDamage() * 0.36 * 1.15 * 1.5  // 15% Buff from 1/3/2024 - verify with new build and update numbers
 	baseHighDamage := hunter.baseRuneAbilityDamage() * 0.54 * 1.15 * 1.5 // Second 50% buff from 23/4/2024
 
-	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
-	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 25
-	}
 	hunter.ExplosiveShot = hunter.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_HunterExplosiveShot,
 		ActionID:     actionID,
 		SpellSchool:  core.SpellSchoolFire,
 		DefenseType:  core.DefenseTypeRanged,
@@ -33,8 +30,7 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.035,
-			Multiplier: manaCostMultiplier,
+			BaseCost: 0.035,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -52,7 +48,7 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 
 		CritDamageBonus: hunter.mortalShots(),
 
-		DamageMultiplier: hunter.tntDamageMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -62,16 +58,16 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 			NumberOfTicks: 2,
 			TickLength:    time.Second * 1,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.039*dot.Spell.RangedAttackPower(target)
+				baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.039*dot.Spell.RangedAttackPower(target, false)
 				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(target)
+			baseDamage := sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(target, false)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
@@ -81,7 +77,7 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 					curTarget := target
 					for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 						if curTarget != target {
-							baseDamage = sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(curTarget)
+							baseDamage = sim.Roll(baseLowDamage, baseHighDamage) + 0.039*spell.RangedAttackPower(curTarget, false)
 							spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeRangedCritOnly)
 						}
 
@@ -94,5 +90,4 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 			})
 		},
 	})
-	hunter.Shots = append(hunter.Shots, hunter.ExplosiveShot)
 }

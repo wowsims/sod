@@ -36,14 +36,14 @@ import { Mage, Mage_Options as MageOptions, Mage_Rotation as MageRotation, MageT
 import {
 	Blessings,
 	HolyPaladin,
-	HolyPaladin_Options as HolyPaladinOptions,
 	HolyPaladin_Rotation as HolyPaladinRotation,
+	PaladinOptions as HolyPaladinOptions,
+	PaladinOptions as ProtectionPaladinOptions,
+	PaladinOptions as RetributionPaladinOptions,
 	PaladinTalents,
 	ProtectionPaladin,
-	ProtectionPaladin_Options as ProtectionPaladinOptions,
 	ProtectionPaladin_Rotation as ProtectionPaladinRotation,
 	RetributionPaladin,
-	RetributionPaladin_Options as RetributionPaladinOptions,
 	RetributionPaladin_Rotation as RetributionPaladinRotation,
 } from '../proto/paladin.js';
 import {
@@ -1687,9 +1687,8 @@ export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 	return true;
 }
 
-export function canEquipEnchant(enchant: Enchant, spec: Spec): boolean {
-	const playerClass = specToClass[spec];
-	if (enchant.classAllowlist.length > 0 && !enchant.classAllowlist.includes(playerClass)) {
+export function canEquipEnchant(enchant: Enchant, player: Player<any>): boolean {
+	if (player.getLevel() < enchant.requiresLevel || (enchant.classAllowlist.length > 0 && !enchant.classAllowlist.includes(player.getClass()))) {
 		return false;
 	}
 

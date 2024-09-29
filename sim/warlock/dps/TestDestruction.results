@@ -1,5 +1,5 @@
 character_stats_results: {
- key: "TestDestruction-Lvl25-CharacterStats-Default"
+ key: "TestDestruction-Phase1-Lvl25-CharacterStats-Default"
  value: {
   final_stats: 68.53
   final_stats: 36.3
@@ -32,7 +32,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 2
+  final_stats: 5.29967
   final_stats: 5
   final_stats: 0
   final_stats: 1221
@@ -48,7 +48,7 @@ character_stats_results: {
  }
 }
 character_stats_results: {
- key: "TestDestruction-Lvl40-CharacterStats-Default"
+ key: "TestDestruction-Phase2-Lvl40-CharacterStats-Default"
  value: {
   final_stats: 98.01
   final_stats: 39.6
@@ -81,7 +81,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 2
+  final_stats: 4.76408
   final_stats: 5
   final_stats: 0
   final_stats: 2192
@@ -97,7 +97,7 @@ character_stats_results: {
  }
 }
 character_stats_results: {
- key: "TestDestruction-Lvl50-CharacterStats-Default"
+ key: "TestDestruction-Phase3-Lvl50-CharacterStats-Default"
  value: {
   final_stats: 136.40616
   final_stats: 143.72424
@@ -130,7 +130,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 2
+  final_stats: 10.22049
   final_stats: 5
   final_stats: 0
   final_stats: 4224.2416
@@ -146,7 +146,7 @@ character_stats_results: {
  }
 }
 character_stats_results: {
- key: "TestDestruction-Lvl60-CharacterStats-Default"
+ key: "TestDestruction-Phase4-Lvl60-CharacterStats-Default"
  value: {
   final_stats: 176
   final_stats: 183.37
@@ -179,7 +179,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 2
+  final_stats: 11.1685
   final_stats: 5
   final_stats: 0
   final_stats: 6421.96
@@ -195,23 +195,23 @@ character_stats_results: {
  }
 }
 stat_weights_results: {
- key: "TestDestruction-Lvl25-StatWeights-Default"
+ key: "TestDestruction-Phase1-Lvl25-StatWeights-Default"
  value: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.01789
+  weights: 0.09278
   weights: 0
-  weights: 0.4917
-  weights: 0
-  weights: 0
+  weights: 0.52213
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.26753
+  weights: 0
+  weights: 0
+  weights: 1.42466
   weights: 0
   weights: 0
   weights: 0
@@ -244,23 +244,23 @@ stat_weights_results: {
  }
 }
 stat_weights_results: {
- key: "TestDestruction-Lvl40-StatWeights-Default"
+ key: "TestDestruction-Phase2-Lvl40-StatWeights-Default"
  value: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.00803
+  weights: -0.78458
   weights: 0
-  weights: 1.07801
-  weights: 0
-  weights: 0
+  weights: 0.74933
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 7.38123
-  weights: 5.14684
+  weights: 0
+  weights: 0
+  weights: 6.93874
+  weights: 5.43348
   weights: 0
   weights: 0
   weights: 0
@@ -293,23 +293,23 @@ stat_weights_results: {
  }
 }
 stat_weights_results: {
- key: "TestDestruction-Lvl50-StatWeights-Default"
+ key: "TestDestruction-Phase3-Lvl50-StatWeights-Default"
  value: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.30677
+  weights: 0.35989
   weights: 0
-  weights: 0.89306
-  weights: 0
-  weights: 0
+  weights: 2.06494
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 12.25691
-  weights: 10.28066
+  weights: 0
+  weights: 0
+  weights: 13.08138
+  weights: 10.9915
   weights: 0
   weights: 0
   weights: 0
@@ -342,27 +342,23 @@ stat_weights_results: {
  }
 }
 stat_weights_results: {
- key: "TestDestruction-Lvl60-StatWeights-Default"
+ key: "TestDestruction-Phase4-Lvl60-StatWeights-Default"
  value: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.62125
+  weights: -0.33558
   weights: 0
-  weights: 2.74569
-  weights: 0
-  weights: 0
+  weights: 2.09695
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 7.73274
-  weights: 15.88201
   weights: 0
   weights: 0
-  weights: 0
-  weights: 0
+  weights: 7.39797
+  weights: 23.38671
   weights: 0
   weights: 0
   weights: 0
@@ -388,313 +384,345 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl25-AllItems-DeathmistRaiment"
+ key: "TestDestruction-Phase1-Lvl25-AllItems-DeathmistRaiment"
  value: {
-  dps: 87.9277
-  tps: 46.26482
+  dps: 86.64944
+  tps: 45.73222
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl25-Average-Default"
+ key: "TestDestruction-Phase1-Lvl25-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 255.69276
-  tps: 213.70908
+  dps: 289.26316
+  tps: 246.96664
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-LongMultiTarget"
+ key: "TestDestruction-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 255.0127
-  tps: 355.99316
+  dps: 281.22237
+  tps: 240.16966
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-LongSingleTarget"
+ key: "TestDestruction-Phase1-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 255.0127
-  tps: 212.97707
+  dps: 279.33682
+  tps: 382.32599
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 1 Consumes-ShortSingleTarget"
+ key: "TestDestruction-Phase1-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 267.34324
-  tps: 218.51744
+  dps: 279.33682
+  tps: 238.16314
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 1 Consumes-LongMultiTarget"
+ key: "TestDestruction-Phase1-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 198.56477
-  tps: 309.03227
+  dps: 289.3672
+  tps: 243.75284
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 1 Consumes-LongSingleTarget"
+ key: "TestDestruction-Phase1-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 198.56477
-  tps: 164.29511
+  dps: 220.76182
+  tps: 333.85362
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 1 Consumes-ShortSingleTarget"
+ key: "TestDestruction-Phase1-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 207.13405
-  tps: 172.24116
+  dps: 220.76182
+  tps: 185.19714
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl25-SwitchInFrontOfTarget-Default"
+ key: "TestDestruction-Phase1-Lvl25-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 255.55124
-  tps: 213.51562
+  dps: 227.21248
+  tps: 192.31958
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl40-AllItems-DeathmistRaiment"
+ key: "TestDestruction-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 110.84007
-  tps: 62.21732
+  dps: 279.98395
+  tps: 238.81026
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl40-Average-Default"
+ key: "TestDestruction-Phase2-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 697.05946
-  tps: 600.71124
+  dps: 111.26979
+  tps: 64.39072
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongMultiTarget"
+ key: "TestDestruction-Phase2-Lvl40-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 696.28561
-  tps: 933.2356
+  dps: 772.1836
+  tps: 676.34044
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-LongSingleTarget"
+ key: "TestDestruction-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 696.28561
-  tps: 599.04666
+  dps: 768.08772
+  tps: 673.54006
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-Phase 2 Consumes-ShortSingleTarget"
+ key: "TestDestruction-Phase2-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 739.67545
-  tps: 638.36052
+  dps: 761.0822
+  tps: 1009.36864
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-LongMultiTarget"
+ key: "TestDestruction-Phase2-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 457.49071
-  tps: 756.36335
+  dps: 761.0822
+  tps: 666.35421
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-LongSingleTarget"
+ key: "TestDestruction-Phase2-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 457.49071
-  tps: 394.15745
+  dps: 810.59974
+  tps: 710.98848
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-Phase 2 Consumes-ShortSingleTarget"
+ key: "TestDestruction-Phase2-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 493.37528
-  tps: 431.67446
+  dps: 501.85663
+  tps: 807.20924
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl40-SwitchInFrontOfTarget-Default"
+ key: "TestDestruction-Phase2-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 698.01945
-  tps: 601.52693
+  dps: 501.85663
+  tps: 438.83799
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl50-AllItems-DeathmistRaiment"
+ key: "TestDestruction-Phase2-Lvl40-Settings-Orc-fire.imp-Destruction Warlock-fire.imp-NoBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 384.47912
-  tps: 254.73105
+  dps: 541.53767
+  tps: 480.97586
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl50-Average-Default"
+ key: "TestDestruction-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1564.29575
-  tps: 1388.28327
+  dps: 765.2339
+  tps: 671.36056
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongMultiTarget"
+ key: "TestDestruction-Phase3-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 2413.9508
-  tps: 2888.06216
+  dps: 375.63621
+  tps: 250.70076
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-LongSingleTarget"
+ key: "TestDestruction-Phase3-Lvl50-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 1561.91381
-  tps: 1388.3119
+  dps: 1718.25875
+  tps: 1545.97325
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-Phase 3 Consumes-ShortSingleTarget"
+ key: "TestDestruction-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1678.27829
-  tps: 1500.49249
+  dps: 1733.28554
+  tps: 1558.99888
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-LongMultiTarget"
+ key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1511.87724
-  tps: 2109.45397
+  dps: 2681.43845
+  tps: 3160.92955
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-LongSingleTarget"
+ key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 882.80086
-  tps: 787.92302
+  dps: 1728.68364
+  tps: 1556.63607
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-Phase 3 Consumes-ShortSingleTarget"
+ key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 938.56835
-  tps: 851.53372
+  dps: 1846.83709
+  tps: 1671.22647
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl50-SwitchInFrontOfTarget-Default"
+ key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1547.336
-  tps: 1372.72716
+  dps: 1687.22031
+  tps: 2289.86954
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-AllItems-BloodGuard'sDreadweave"
+ key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 1673.79576
-  tps: 1466.17405
+  dps: 979.66566
+  tps: 885.5042
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-AllItems-DeathmistRaiment"
+ key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 463.53982
-  tps: 229.01217
+  dps: 1033.82709
+  tps: 948.44145
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-AllItems-EmeraldEnchantedVestments"
+ key: "TestDestruction-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1668.12324
-  tps: 1461.07764
+  dps: 1719.76373
+  tps: 1547.54005
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-AllItems-InfernalPactEssence-216509"
+ key: "TestDestruction-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 2721.23269
-  tps: 2401.66902
+  dps: 2003.91632
+  tps: 1777.11019
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-AllItems-IronweaveBattlesuit"
+ key: "TestDestruction-Phase4-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 452.65921
-  tps: 230.1883
+  dps: 499.25445
+  tps: 246.15379
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
+ key: "TestDestruction-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1673.79576
-  tps: 1466.17405
+  dps: 1965.68417
+  tps: 1737.71048
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-AllItems-MalevolentProphet'sVestments"
+ key: "TestDestruction-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2238.02556
-  tps: 2022.8752
+  dps: 3505.07633
+  tps: 3154.27123
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-AllItems-NightmareProphet'sGarb"
+ key: "TestDestruction-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 2200.90876
-  tps: 1986.99308
+  dps: 490.66946
+  tps: 248.84084
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-AllItems-ZilaGular-223214"
+ key: "TestDestruction-Phase4-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 2694.77755
-  tps: 2376.5523
+  dps: 3560.56192
+  tps: 3202.07775
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-Average-Default"
+ key: "TestDestruction-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 2785.09375
-  tps: 2458.16562
+  dps: 2003.91632
+  tps: 1777.11019
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-LongMultiTarget"
+ key: "TestDestruction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 2766.12599
-  tps: 3469.92355
+  dps: 2700.83434
+  tps: 2465.67871
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-LongSingleTarget"
+ key: "TestDestruction-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 2766.12599
-  tps: 2439.68214
+  dps: 2623.91418
+  tps: 2388.59107
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-Phase 4 Consumes-ShortSingleTarget"
+ key: "TestDestruction-Phase4-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2850.21481
-  tps: 2518.08566
+  dps: 3502.84758
+  tps: 3158.00963
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 4 Consumes-LongMultiTarget"
+ key: "TestDestruction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1613.7411
-  tps: 2549.69229
+  dps: 3629.38199
+  tps: 3267.7066
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 4 Consumes-LongSingleTarget"
+ key: "TestDestruction-Phase4-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1613.7411
-  tps: 1424.48108
+  dps: 3609.90822
+  tps: 4318.14783
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-Phase 4 Consumes-ShortSingleTarget"
+ key: "TestDestruction-Phase4-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1623.92282
-  tps: 1421.79106
+  dps: 3609.90822
+  tps: 3248.17012
  }
 }
 dps_results: {
- key: "TestDestruction-Lvl60-SwitchInFrontOfTarget-Default"
+ key: "TestDestruction-Phase4-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 2756.37806
-  tps: 2429.99416
+  dps: 3694.33537
+  tps: 3327.15173
+ }
+}
+dps_results: {
+ key: "TestDestruction-Phase4-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-P4-Consumes-LongMultiTarget"
+ value: {
+  dps: 1925.29823
+  tps: 2891.29108
+ }
+}
+dps_results: {
+ key: "TestDestruction-Phase4-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-P4-Consumes-LongSingleTarget"
+ value: {
+  dps: 1925.29823
+  tps: 1738.14499
+ }
+}
+dps_results: {
+ key: "TestDestruction-Phase4-Lvl60-Settings-Orc-destruction-Destruction Warlock-destruction-NoBuffs-P4-Consumes-ShortSingleTarget"
+ value: {
+  dps: 1920.79964
+  tps: 1716.55472
+ }
+}
+dps_results: {
+ key: "TestDestruction-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 3597.33119
+  tps: 3233.55396
  }
 }

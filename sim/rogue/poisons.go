@@ -46,15 +46,15 @@ const (
 )
 
 func (rogue *Rogue) GetInstantPoisonProcChance() float64 {
-	return (0.2 + rogue.improvedPoisons()) * (1 + rogue.instantPoisonProcChanceBonus)
+	return (0.2 + rogue.improvedPoisons() + rogue.additivePoisonBonusChance) * (1 + rogue.instantPoisonProcChanceBonus)
 }
 
 func (rogue *Rogue) GetDeadlyPoisonProcChance() float64 {
-	return 0.3 + rogue.improvedPoisons()
+	return 0.3 + rogue.improvedPoisons() + rogue.additivePoisonBonusChance
 }
 
 func (rogue *Rogue) GetWoundPoisonProcChance() float64 {
-	return 0.3 + rogue.improvedPoisons()
+	return 0.3 + rogue.improvedPoisons() + rogue.additivePoisonBonusChance
 }
 
 func (rogue *Rogue) improvedPoisons() float64 {
@@ -277,8 +277,8 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       SpellFlagCarnage | core.SpellFlagPoison | SpellFlagRoguePoison,
+		ProcMask:    core.ProcMaskSpellDamageProc,
+		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagRoguePoison | SpellFlagCarnage,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
@@ -310,7 +310,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 			},
 
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 	})
@@ -363,7 +363,7 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 	// 	ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
 	// 	SpellSchool: core.SpellSchoolNature,
 	// 	DefenseType: core.DefenseTypeMagic,
-	// 	ProcMask:    core.ProcMaskWeaponProc,
+	// 	ProcMask:    core.ProcMaskSpellDamageProc,
 	// 	Flags:       SpellFlagCarnage | core.SpellFlagPoison | SpellFlagRoguePoison,
 
 	// 	DamageMultiplier: rogue.getPoisonDamageMultiplier(),
@@ -396,7 +396,7 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 	// 		},
 
 	// 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-	// 			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+	// 			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 	// 		},
 	// 	},
 	// })
@@ -443,8 +443,8 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       SpellFlagDeadlyBrewed | SpellFlagCarnage | core.SpellFlagPoison | SpellFlagRoguePoison,
+		ProcMask:    core.ProcMaskSpellDamageProc,
+		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagCarnage | SpellFlagRoguePoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,
@@ -490,8 +490,8 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		ActionID:    core.ActionID{SpellID: 13219, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskWeaponProc,
-		Flags:       SpellFlagDeadlyBrewed | core.SpellFlagPoison | SpellFlagRoguePoison,
+		ProcMask:    core.ProcMaskSpellDamageProc,
+		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagRoguePoison,
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
 		ThreatMultiplier: 1,

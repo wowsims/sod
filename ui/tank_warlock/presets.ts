@@ -195,9 +195,13 @@ export const DefaultTalentsDestro = TalentPresets[Phase.Phase4][2];
 
 export const DefaultTalents = DefaultTalentsDestro;
 
-export const PresetBuildAff = PresetUtils.makePresetBuild('Aff', DefaultGearAff, DefaultTalentsAff, DefaultAPLs[60][0]);
-export const PresetBuildDemo = PresetUtils.makePresetBuild('Demo', DefaultGearDemo, DefaultTalentsDemo, DefaultAPLs[60][1]);
-export const PresetBuildDestro = PresetUtils.makePresetBuild('Destro', DefaultGearDestro, DefaultTalentsDestro, DefaultAPLs[60][2]);
+export const PresetBuildAff = PresetUtils.makePresetBuild('Aff', { gear: DefaultGearAff, talents: DefaultTalentsAff, rotation: DefaultAPLs[60][0] });
+export const PresetBuildDemo = PresetUtils.makePresetBuild('Demo', { gear: DefaultGearDemo, talents: DefaultTalentsDemo, rotation: DefaultAPLs[60][1] });
+export const PresetBuildDestro = PresetUtils.makePresetBuild('Destro', {
+	gear: DefaultGearDestro,
+	talents: DefaultTalentsDestro,
+	rotation: DefaultAPLs[60][2],
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
@@ -224,9 +228,7 @@ export const DefaultConsumes = Consumes.create({
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.ShadowOil,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
-	miscConsumes: {
-		jujuEmber: true,
-	},
+
 	sapper: true,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
@@ -237,7 +239,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	bloodPact: TristateEffect.TristateEffectImproved,
-	demonicPact: 80,
+	demonicPact: 110,
 	devotionAura: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
 	fireResistanceAura: true,
@@ -265,6 +267,7 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	saygesFortune: SaygesFortune.SaygesDamage,
 	slipkiksSavvy: true,
 	songflowerSerenade: true,
+	spiritOfZandalar: true,
 	valorOfAzeroth: true,
 	warchiefsBlessing: true,
 });

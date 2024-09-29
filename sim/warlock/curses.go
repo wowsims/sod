@@ -22,7 +22,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
-	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneBootsMarkOfChaos)
+	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
 
 	baseDamage *= 1 + warlock.shadowMasteryBonus()
 	snapshotBaseDmgNoBonus := 0.0
@@ -83,9 +83,9 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasPandemicRune {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				}
 				if dot.TickCount%4 == 0 { // CoA ramp up
 					dot.SnapshotBaseDamage += snapshotBaseDmgNoBonus
@@ -94,29 +94,26 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				spell.SpellMetrics[target.UnitIndex].Hits--
+				dot := spell.Dot(target)
 
-				// If the spell's DoT is already applied, do a refresh if the Invocation rune is also being used
-				// Else deactivate the existing curse and apply this one instead
-				if spell.Dot(target).IsActive() {
-					if hasInvocationRune {
-						warlock.InvocationRefresh(sim, spell.Dot(target))
-					}
-				} else {
-					if warlock.ActiveCurseAura.Get(target) != nil {
-						warlock.ActiveCurseAura.Get(target).Deactivate(sim)
-					}
-					dot := spell.Dot(target)
-					dot.Apply(sim)
-					warlock.ActiveCurseAura[target.UnitIndex] = dot.Aura
+				if activeCurse := warlock.ActiveCurseAura.Get(target); activeCurse != nil && activeCurse != dot.Aura {
+					activeCurse.Deactivate(sim)
+				}
 
-					if hasMarkOfChaosRune {
-						warlock.applyMarkOfChaosDebuff(sim, target, dot.Duration)
-					}
+				if hasInvocationRune && dot.IsActive() {
+					warlock.InvocationRefresh(sim, dot)
+				}
+
+				dot.Apply(sim)
+				warlock.ActiveCurseAura[target.UnitIndex] = dot.Aura
+
+				if hasMarkOfChaosRune {
+					warlock.applyMarkOfChaosDebuff(sim, target, dot.Duration)
 				}
 			}
+			spell.DealOutcome(sim, result)
 		},
 	}
 }
@@ -133,7 +130,7 @@ func (warlock *Warlock) registerCurseOfAgonySpell() {
 }
 
 func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
-	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneBootsMarkOfChaos)
+	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
 
 	playerLevel := warlock.Level
 
@@ -180,12 +177,14 @@ func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
 		FlatThreatBonus:  156,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				if warlock.ActiveCurseAura.Get(target) != nil {
-					warlock.ActiveCurseAura.Get(target).Deactivate(sim)
+				aura := warlock.CurseOfRecklessnessAuras.Get(target)
+				if activeCurse := warlock.ActiveCurseAura.Get(target); activeCurse != nil && activeCurse != aura {
+					activeCurse.Deactivate(sim)
 				}
-				warlock.ActiveCurseAura[target.UnitIndex] = warlock.CurseOfRecklessnessAuras.Get(target)
+
+				warlock.ActiveCurseAura[target.UnitIndex] = aura
 				warlock.ActiveCurseAura.Get(target).Activate(sim)
 
 				if hasMarkOfChaosRune {
@@ -244,12 +243,14 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 		FlatThreatBonus:  156,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				if warlock.ActiveCurseAura.Get(target) != nil {
-					warlock.ActiveCurseAura.Get(target).Deactivate(sim)
+				aura := warlock.CurseOfElementsAuras.Get(target)
+				if activeCurse := warlock.ActiveCurseAura.Get(target); activeCurse != nil && activeCurse != aura {
+					activeCurse.Deactivate(sim)
 				}
-				warlock.ActiveCurseAura[target.UnitIndex] = warlock.CurseOfElementsAuras.Get(target)
+
+				warlock.ActiveCurseAura[target.UnitIndex] = aura
 				warlock.ActiveCurseAura.Get(target).Activate(sim)
 			}
 		},
@@ -301,12 +302,14 @@ func (warlock *Warlock) registerCurseOfShadowSpell() {
 		FlatThreatBonus:  156,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				if warlock.ActiveCurseAura.Get(target) != nil {
-					warlock.ActiveCurseAura.Get(target).Deactivate(sim)
+				aura := warlock.CurseOfShadowAuras.Get(target)
+				if activeCurse := warlock.ActiveCurseAura.Get(target); activeCurse != nil && activeCurse != aura {
+					activeCurse.Deactivate(sim)
 				}
-				warlock.ActiveCurseAura[target.UnitIndex] = warlock.CurseOfShadowAuras.Get(target)
+
+				warlock.ActiveCurseAura[target.UnitIndex] = aura
 				warlock.ActiveCurseAura.Get(target).Activate(sim)
 			}
 		},
@@ -352,7 +355,7 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 	}
 
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
-	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneBootsMarkOfChaos)
+	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
 
 	warlock.CurseOfDoom = warlock.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_WarlockCurseOfDoom,
@@ -394,20 +397,21 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				if hasPandemicRune {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCritCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickCounted)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
+			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				if warlock.ActiveCurseAura.Get(target) != nil {
-					warlock.ActiveCurseAura.Get(target).Deactivate(sim)
-				}
 				dot := spell.Dot(target)
+				if activeCurse := warlock.ActiveCurseAura.Get(target); activeCurse != nil && activeCurse != dot.Aura {
+					activeCurse.Deactivate(sim)
+				}
+
 				dot.Apply(sim)
 				warlock.ActiveCurseAura[target.UnitIndex] = dot.Aura
 

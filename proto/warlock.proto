@@ -68,7 +68,7 @@ enum WarlockRune {
 	RuneHelmPandemic							= 427712;
 	RuneHelmBackdraft							= 427713;
 
-	RuneCloakDecimation						= 440870;
+	RuneCloakMarkOfChaos					= 440892;
 	RuneCloakInfernalArmor				= 440882;
 	RuneCloakSoulSiphon						= 403511;
 
@@ -97,7 +97,8 @@ enum WarlockRune {
 	RuneBootsDemonicKnowledge			= 412732;
 	RuneBootsDanceOfTheWicked			= 412798;
 	RuneBootsShadowflame					= 426320;
-	RuneBootsMarkOfChaos					= 440892;
+	RuneBootsDecimation						= 440870;
+	
 }
 
 message WarlockRotation {

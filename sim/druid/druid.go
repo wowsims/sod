@@ -41,7 +41,10 @@ const (
 type Druid struct {
 	core.Character
 	SelfBuffs
+
 	Talents *proto.DruidTalents
+
+	DruidSpells []*DruidSpell
 
 	StartingForm DruidForm
 
@@ -77,6 +80,8 @@ type Druid struct {
 	Shred                *DruidSpell
 	Starfire             []*DruidSpell
 	Starfall             *DruidSpell
+	StarfallTick         *DruidSpell
+	StarfallSplash       *DruidSpell
 	Starsurge            *DruidSpell
 	Sunfire              *DruidSpell
 	SunfireCat           *DruidSpell
@@ -117,14 +122,14 @@ type Druid struct {
 	LunarEclipseProcAura     *core.Aura
 	WildStrikesBuffAura      *core.Aura
 
-	BleedCategories core.ExclusiveCategoryArray
+	BleedCategories         core.ExclusiveCategoryArray
+	SavageRoarDurationTable [6]time.Duration
 
-	PrimalPrecisionRecoveryMetrics *core.ResourceMetrics
-	SavageRoarDurationTable        [6]time.Duration
-
+	FerociousBiteExcessEnergyOverride bool // When true, disables the excess energy consumption of Ferocious bite
 	// Sunfire/Moonfire modifiers applied when in Moonkin form
 	MoonfireDotMultiplier float64
 	SunfireDotMultiplier  float64
+	t26pcTreants          *T2Treants
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
@@ -139,8 +144,6 @@ func (druid *Druid) GetCharacter() *core.Character {
 }
 
 func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
-	raidBuffs.GiftOfTheWild = max(raidBuffs.GiftOfTheWild, proto.TristateEffect_TristateEffectRegular)
-
 	if (raidBuffs.GiftOfTheWild == proto.TristateEffect_TristateEffectRegular) && (druid.Talents.ImprovedMarkOfTheWild > 0) {
 		druid.AddStats(core.BuffSpellByLevel[core.MarkOfTheWild][druid.Level].Multiply(0.07 * float64(druid.Talents.ImprovedMarkOfTheWild)))
 	}
@@ -152,16 +155,6 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
 	if druid.InForm(Cat|Bear) && druid.Talents.LeaderOfThePack {
 		raidBuffs.LeaderOfThePack = true
-	}
-}
-
-func (druid *Druid) NaturesGraceCastTime() func(spell *core.Spell) time.Duration {
-	return func(spell *core.Spell) time.Duration {
-		baseTime := core.TernaryDuration(druid.NaturesGraceProcAura.IsActive(),
-			spell.DefaultCast.CastTime-(time.Millisecond*500),
-			spell.DefaultCast.CastTime,
-		)
-		return spell.Unit.ApplyCastSpeedForSpell(baseTime, spell)
 	}
 }
 
@@ -195,6 +188,7 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 	}
 
 	ds.Spell = druid.Unit.RegisterSpell(config)
+	druid.DruidSpells = append(druid.DruidSpells, ds)
 
 	return ds
 }
@@ -265,21 +259,17 @@ func New(character *core.Character, form DruidForm, selfBuffs SelfBuffs, talents
 	core.FillTalentsProto(druid.Talents.ProtoReflect(), talents, TalentTreeSizes)
 	druid.EnableManaBar()
 
-	// TODO: Class druid physical stats
 	druid.AddStatDependency(stats.Strength, stats.AttackPower, core.APPerStrength[character.Class])
-	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 	druid.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[character.Class][int(druid.Level)]*core.CritRatingPerCritChance)
+	druid.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(druid.Level)]*core.DodgeRatingPerDodgeChance)
 	druid.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(druid.Level)]*core.SpellCritRatingPerCritChance)
-	// TODO: Update DodgePerAgiAtLevel with the appropriate value for each level
-	druid.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(druid.Level)])
+	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
 	// Druids get extra melee haste
 	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
 
-	// Switch to using AddStat as PseudoStat is being removed
-	// druid.PseudoStats.BaseDodge += 0.056097
-
 	guardians.ConstructGuardians(&druid.Character)
+	druid.t26pcTreants = druid.NewT2Treants()
 
 	return druid
 }

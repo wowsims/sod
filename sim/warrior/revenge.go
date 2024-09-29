@@ -25,6 +25,8 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 	actionID := core.ActionID{SpellID: RevengeSpellId[rank]}
 	basedamageLow := RevengeBaseDamage[rank][0]
 	basedamageHigh := RevengeBaseDamage[rank][1]
+	// Added in SoD phase 5
+	apCoeff := 0.15
 	cooldown := time.Second * 5
 
 	warrior.revengeProcAura = warrior.RegisterAura(core.Aura{
@@ -52,7 +54,7 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
 			Cost:   5,
@@ -80,7 +82,7 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(basedamageLow, basedamageHigh)
+			baseDamage := sim.Roll(basedamageLow, basedamageHigh) + apCoeff*spell.MeleeAttackPower()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {

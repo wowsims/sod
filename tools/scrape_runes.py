@@ -15,13 +15,20 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.chrome.options import Options
 
 if len(sys.argv) < 2:
 	raise Exception("Missing arguments, expected output_file_path")
 
 output_file_path = sys.argv[1]
 
-driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()))
+# Added these options so that chrome would run in a docker container
+chrome_options = Options()
+chrome_options.add_argument("--headless")
+chrome_options.add_argument("--no-sandbox")
+chrome_options.add_argument("--disable-dev-shm-usage")
+
+driver = webdriver.Chrome(service=Service(ChromeDriverManager().install()), options=chrome_options)
 wait = WebDriverWait(driver, 10)
 element_locator = (By.ID, "data-tree-switcher")
 

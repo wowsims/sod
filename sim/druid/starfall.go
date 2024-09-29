@@ -13,8 +13,6 @@ func (druid *Druid) registerStarfallCD() {
 		return
 	}
 
-	has6pCenarionEclipse := druid.HasSetBonus(ItemSetCenarionEclipse, 6)
-
 	actionID := core.ActionID{SpellID: int32(proto.DruidRune_RuneCloakStarfall)}
 
 	// Moonfury and Improved Moonfire only seem to be applying the crit bonus to starfall at the moment in-game
@@ -29,11 +27,8 @@ func (druid *Druid) registerStarfallCD() {
 	numberOfTicks := core.TernaryInt32(druid.Env.GetNumTargets() > 1, 20, 10)
 	tickLength := time.Second
 	cooldown := time.Second * 90
-	if has6pCenarionEclipse {
-		cooldown /= 2
-	}
 
-	starfallSplashSpell := druid.RegisterSpell(Any, core.SpellConfig{
+	druid.StarfallSplash = druid.RegisterSpell(Any, core.SpellConfig{
 		SpellCode:   SpellCode_DruidStarfallSplash,
 		ActionID:    actionID.WithTag(2),
 		SpellSchool: core.SpellSchoolArcane,
@@ -52,7 +47,7 @@ func (druid *Druid) registerStarfallCD() {
 		},
 	})
 
-	starfallTickSpell := druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
+	druid.StarfallTick = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
 		SpellCode:   SpellCode_DruidStarfallTick,
 		ActionID:    actionID.WithTag(1),
 		SpellSchool: core.SpellSchoolArcane,
@@ -68,7 +63,7 @@ func (druid *Druid) registerStarfallCD() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			starfallSplashSpell.Cast(sim, target)
+			druid.StarfallSplash.Cast(sim, target)
 		},
 	})
 
@@ -76,11 +71,11 @@ func (druid *Druid) registerStarfallCD() {
 		SpellCode:   SpellCode_DruidStarfall,
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskSpellDamage,
+		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagAPL | SpellFlagOmen,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost: 0.39,
+			BaseCost:   0.39,
 			Multiplier: druid.MoonglowManaCostMultiplier(),
 		},
 
@@ -101,7 +96,7 @@ func (druid *Druid) registerStarfallCD() {
 			NumberOfTicks: numberOfTicks,
 			TickLength:    tickLength,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				starfallTickSpell.Cast(sim, target)
+				druid.StarfallTick.Cast(sim, target)
 			},
 		},
 

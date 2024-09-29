@@ -20,12 +20,12 @@ type DotConfig struct {
 	NumberOfTicks int32         // number of ticks over the whole duration
 	TickLength    time.Duration // time between each tick
 
-	// If true, tick length will be shortened based on casting speed.
-	AffectedByCastSpeed bool
+	AffectedByCastSpeed bool // If true, tick length will be shortened based on casting speed.
 
 	OnSnapshot OnSnapshot
 	OnTick     OnTick
 
+	DamageMultiplier float64 // periodic damage multiplier
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 }
 
@@ -58,6 +58,7 @@ type Dot struct {
 	lastTickTime time.Duration
 	isChanneled  bool
 
+	DamageMultiplier float64 // periodic damage multiplier
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 }
 
@@ -285,6 +286,8 @@ func newDot(config Dot) *Dot {
 			dot.Spell.Unit.ChanneledDot = nil
 			dot.Spell.Unit.Rotation.interruptChannelIf = nil
 			dot.Spell.Unit.Rotation.allowChannelRecastOnInterrupt = false
+			// track time metrics for channels
+			dot.Spell.SpellMetrics[aura.Unit.UnitIndex].TotalCastTime += dot.fadeTime - dot.StartedAt()
 		}
 	})
 
@@ -305,6 +308,11 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 	if config.Spell == nil {
 		config.Spell = spell
 	}
+
+	if config.DamageMultiplier == 0 {
+		config.DamageMultiplier = 1
+	}
+
 	dot := Dot{
 		Spell: config.Spell,
 
@@ -318,6 +326,7 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 
 		isChanneled: config.Spell.Flags.Matches(SpellFlagChanneled),
 
+		DamageMultiplier: config.DamageMultiplier,
 		BonusCoefficient: config.BonusCoefficient,
 	}
 

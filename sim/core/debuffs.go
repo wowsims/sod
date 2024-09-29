@@ -219,6 +219,10 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(ImprovedFaerieFireAura(target))
 	}
 
+	if debuffs.MeleeHunterDodgeDebuff {
+		MakePermanent(MeleeHunterDodgeReductionAura(target, level))
+	}
+
 	if debuffs.CurseOfWeakness != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(CurseOfWeaknessAura(target, GetTristateValueInt32(debuffs.CurseOfWeakness, 0, 3), level))
 	}
@@ -240,6 +244,9 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.Waylay {
 		MakePermanent(WaylayAura(target))
 	}
+	if debuffs.Thunderfury {
+		MakePermanent(ThunderfuryASAura(target, level))
+	}
 
 	// Miss
 	if debuffs.InsectSwarm && targetIdx == 0 {
@@ -255,7 +262,17 @@ func StormstrikeAura(unit *Unit) *Aura {
 }
 
 func DreamstateAura(unit *Unit) *Aura {
-	return exclusiveNatureDamageTakenAura(unit, "Dreamstate", ActionID{SpellID: 408258})
+	aura := exclusiveNatureDamageTakenAura(unit, "Dreamstate", ActionID{SpellID: 408258})
+	aura.NewExclusiveEffect("ArcaneDamageTaken", false, ExclusiveEffect{
+		Priority: 20,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= 1.2
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] /= 1.2
+		},
+	})
+	return aura
 }
 
 func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID) *Aura {
@@ -265,7 +282,7 @@ func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID)
 		Duration: time.Second * 12,
 	})
 
-	aura.NewExclusiveEffect("NatureDamageTaken", true, ExclusiveEffect{
+	aura.NewExclusiveEffect("NatureDamageTaken", false, ExclusiveEffect{
 		Priority: 20,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 1.2
@@ -399,8 +416,10 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32, stackCount int32) *Aura {
 	return aura
 }
 
+var ShadowWeavingSpellIDs = [6]int32{0, 15257, 15331, 15332, 15333, 15334}
+
 func ShadowWeavingAura(unit *Unit, rank int) *Aura {
-	spellId := [6]int32{0, 15257, 15331, 15332, 15333, 15334}[rank]
+	spellId := ShadowWeavingSpellIDs[rank]
 	return unit.GetOrRegisterAura(Aura{
 		Label:     "Shadow Weaving",
 		ActionID:  ActionID{SpellID: spellId},
@@ -453,7 +472,7 @@ func JudgementOfWisdomAura(target *Unit, level int32) *Aura {
 				return
 			}
 
-			if spell.ProcMask.Matches(ProcMaskEmpty | ProcMaskProc | ProcMaskWeaponProc) {
+			if spell.ProcMask.Matches(ProcMaskEmpty|ProcMaskProc|ProcMaskSpellDamageProc) && !spell.Flags.Matches(SpellFlagNotAProc) {
 				return // Phantom spells (Romulo's, Lightning Capacitor, etc.) don't proc JoW.
 			}
 
@@ -538,8 +557,6 @@ func JudgementOfTheCrusaderAura(caster *Unit, target *Unit, level int32, mult fl
 	})
 }
 
-// TODO: We don't know if this is intended to stack with other effects like Warlocks curses or not.
-// For now it IS stacking on PTR so we'll make it stack here.
 func OccultPoisonDebuffAura(target *Unit, playerLevel int32) *Aura {
 	if playerLevel < 54 {
 		panic("Occult Poison requires level 54+")
@@ -551,8 +568,14 @@ func OccultPoisonDebuffAura(target *Unit, playerLevel int32) *Aura {
 		Duration:  time.Second * 12,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 / (1 + 0.02*float64(oldStacks)))
-			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 + 0.02*float64(newStacks))
+			multiplier := (1 + .04*float64(newStacks)) / (1 + .04*float64(oldStacks))
+
+			// Applies too all except Holy
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= multiplier
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= multiplier
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= multiplier
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= multiplier
+			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= multiplier
 		},
 	})
 
@@ -594,8 +617,9 @@ func MekkatorqueFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 
 // Mark of Chaos does not stack with Curse of Shadows and Elements
 func MarkOfChaosDebuffAura(target *Unit) *Aura {
-	dmgMod := 1.11
-	resistance := 75.0
+	// That's right, 10.01%. Sneaky enough to override lock curses without being much stronger
+	dmgMod := 1.1001
+	resistance := 75.01
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Mark of Chaos",
@@ -603,18 +627,17 @@ func MarkOfChaosDebuffAura(target *Unit) *Aura {
 		Duration: time.Second, // Duration is set by the applying curse
 	})
 
+	// Applies too all except Holy
 	// 0.01 priority as this overwrites the other spells of this category and does not allow them to be recast
 	spellSchoolDamageEffect(aura, stats.SchoolIndexArcane, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFire, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFrost, dmgMod, 0.01, true)
-	spellSchoolDamageEffect(aura, stats.SchoolIndexHoly, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexNature, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexShadow, dmgMod, 0.01, true)
 
 	spellSchoolResistanceEffect(aura, stats.SchoolIndexArcane, resistance, 0.01, true)
 	spellSchoolResistanceEffect(aura, stats.SchoolIndexFire, resistance, 0.01, true)
 	spellSchoolResistanceEffect(aura, stats.SchoolIndexFrost, resistance, 0.01, true)
-	spellSchoolResistanceEffect(aura, stats.SchoolIndexHoly, resistance, 0.01, true)
 	spellSchoolResistanceEffect(aura, stats.SchoolIndexNature, resistance, 0.01, true)
 	spellSchoolResistanceEffect(aura, stats.SchoolIndexShadow, resistance, 0.01, true)
 
@@ -1117,6 +1140,20 @@ func ImprovedFaerieFireAura(target *Unit) *Aura {
 	})
 }
 
+func MeleeHunterDodgeReductionAura(target *Unit, _ int32) *Aura {
+	return target.GetOrRegisterAura(Aura{
+		Label:    "Stalked",
+		ActionID: ActionID{SpellID: 456393},
+		Duration: time.Second * 30,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.DodgeReduction += 0.01
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.PseudoStats.DodgeReduction -= 0.01
+		},
+	})
+}
+
 func CurseOfWeaknessAura(target *Unit, points int32, playerLevel int32) *Aura {
 	spellID := map[int32]int32{
 		25: 6205,
@@ -1270,6 +1307,16 @@ func WaylayAura(target *Unit) *Aura {
 		Duration: time.Second * 8,
 	})
 	AtkSpeedReductionEffect(aura, 1.1)
+	return aura
+}
+
+func ThunderfuryASAura(target *Unit, _ int32) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Thunderfury",
+		ActionID: ActionID{SpellID: 21992},
+		Duration: time.Second * 12,
+	})
+	AtkSpeedReductionEffect(aura, 1.2)
 	return aura
 }
 

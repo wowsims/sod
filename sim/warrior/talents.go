@@ -1,6 +1,7 @@
 package warrior
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -17,7 +18,6 @@ func (warrior *Warrior) ApplyTalents() {
 	warrior.ApplyEquipScaling(stats.Armor, warrior.ToughnessArmorMultiplier())
 	warrior.AddStat(stats.Defense, 2*float64(warrior.Talents.Anticipation))
 	warrior.AddStat(stats.Parry, 1*float64(warrior.Talents.Deflection))
-	warrior.AutoAttacks.OHConfig().DamageMultiplier *= 1 + 0.05*float64(warrior.Talents.DualWieldSpecialization)
 
 	warrior.applyAngerManagement()
 	warrior.applyDeepWounds()
@@ -25,6 +25,7 @@ func (warrior *Warrior) ApplyTalents() {
 	warrior.applyTwoHandedWeaponSpecialization()
 	warrior.applyWeaponSpecializations()
 	warrior.applyUnbridledWrath()
+	warrior.applyDualWieldSpecialization()
 	warrior.applyEnrage()
 	warrior.applyFlurry()
 	warrior.applyShieldSpecialization()
@@ -52,25 +53,29 @@ func (warrior *Warrior) applyAngerManagement() {
 }
 
 func (warrior *Warrior) applyTwoHandedWeaponSpecialization() {
-	if warrior.Talents.TwoHandedWeaponSpecialization == 0 {
-		return
-	}
-	if warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
+	if warrior.Talents.TwoHandedWeaponSpecialization == 0 || warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
 		return
 	}
 
-	warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.01*float64(warrior.Talents.TwoHandedWeaponSpecialization)
+	multiplier := 1 + 0.01*float64(warrior.Talents.TwoHandedWeaponSpecialization)
+	warrior.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.BonusCoefficient > 0 {
+			spell.DamageMultiplier *= multiplier
+		}
+	})
 }
 
 func (warrior *Warrior) applyOneHandedWeaponSpecialization() {
-	if warrior.Talents.OneHandedWeaponSpecialization == 0 {
-		return
-	}
-	if warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+	if warrior.Talents.OneHandedWeaponSpecialization == 0 || warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
 		return
 	}
 
-	warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1 + 0.02*float64(warrior.Talents.OneHandedWeaponSpecialization)
+	multiplier := 1 + 0.02*float64(warrior.Talents.OneHandedWeaponSpecialization)
+	warrior.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.BonusCoefficient > 0 {
+			spell.DamageMultiplier *= multiplier
+		}
+	})
 }
 
 func (warrior *Warrior) applyWeaponSpecializations() {
@@ -149,7 +154,7 @@ func (warrior *Warrior) registerSwordSpecialization(procMask core.ProcMask) {
 			}
 			if sim.RandomFloat("Sword Specialization") < procChance {
 				icd.Use(sim)
-				warrior.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 12815})
+				warrior.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{SpellID: 12815}, spell.ActionID)
 			}
 		},
 	})
@@ -179,6 +184,19 @@ func (warrior *Warrior) applyUnbridledWrath() {
 				warrior.AddRage(sim, 1, rageMetrics)
 			}
 		},
+	})
+}
+
+func (warrior *Warrior) applyDualWieldSpecialization() {
+	if warrior.Talents.DualWieldSpecialization == 0 {
+		return
+	}
+
+	multiplier := 1 + 0.05*float64(warrior.Talents.DualWieldSpecialization)
+	warrior.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.ProcMask.Matches(core.ProcMaskMeleeOH) && spell.BonusCoefficient > 0 {
+			spell.DamageMultiplier *= multiplier
+		}
 	})
 }
 
@@ -234,49 +252,125 @@ func (warrior *Warrior) applyEnrage() {
 	})
 }
 
+// func (warrior *Warrior) applyFlurry() {
+// 	if warrior.Talents.Flurry == 0 {
+// 		return
+// 	}
+
+// 	haste := []float64{1, 1.1, 1.15, 1.2, 1.25, 1.3}[warrior.Talents.Flurry]
+
+// 	procAura := warrior.RegisterAura(core.Aura{
+// 		Label:     "Flurry Proc",
+// 		ActionID:  core.ActionID{SpellID: 12974},
+// 		Duration:  core.NeverExpires,
+// 		MaxStacks: 3,
+// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+// 			warrior.MultiplyMeleeSpeed(sim, haste)
+// 		},
+// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+// 			warrior.MultiplyMeleeSpeed(sim, 1/haste)
+// 		},
+// 	})
+
+// 	warrior.RegisterAura(core.Aura{
+// 		Label:    "Flurry",
+// 		Duration: core.NeverExpires,
+// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+// 			aura.Activate(sim)
+// 		},
+// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+// 			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+// 				return
+// 			}
+
+// 			if result.Outcome.Matches(core.OutcomeCrit) {
+// 				procAura.Activate(sim)
+// 				procAura.SetStacks(sim, 3)
+// 				return
+// 			}
+
+// 			// Remove a stack.
+// 			if procAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+// 				procAura.RemoveStack(sim)
+// 			}
+// 		},
+// 	})
+// }
+
 func (warrior *Warrior) applyFlurry() {
 	if warrior.Talents.Flurry == 0 {
 		return
 	}
 
-	haste := []float64{1, 1.1, 1.15, 1.2, 1.25, 1.3}[warrior.Talents.Flurry]
+	talentAura := warrior.makeFlurryAura(warrior.Talents.Flurry)
 
-	procAura := warrior.RegisterAura(core.Aura{
-		Label:     "Flurry Proc",
-		ActionID:  core.ActionID{SpellID: 12974},
+	// This must be registered before the below trigger because in-game a crit weapon swing consumes a stack before the refresh, so you end up with:
+	// 3 => 2
+	// refresh
+	// 2 => 3
+	warrior.makeFlurryConsumptionTrigger(talentAura)
+
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Flurry Proc Trigger",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeCrit) {
+				talentAura.Activate(sim)
+				if talentAura.IsActive() {
+					talentAura.SetStacks(sim, 3)
+				}
+				return
+			}
+		},
+	}))
+}
+
+// These are separated out because of the T1 Shaman Tank 2P that can proc Flurry separately from the talent.
+// It triggers the max-rank Flurry aura but with dodge, parry, or block.
+func (warrior *Warrior) makeFlurryAura(points int32) *core.Aura {
+	if points == 0 {
+		return nil
+	}
+
+	spellID := []int32{12319, 12971, 12972, 12973, 12974}[points-1]
+	attackSpeed := []float64{1.1, 1.15, 1.2, 1.25, 1.3}[points-1]
+
+	aura := warrior.GetOrRegisterAura(core.Aura{
+		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),
+		ActionID:  core.ActionID{SpellID: spellID},
 		Duration:  core.NeverExpires,
 		MaxStacks: 3,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, haste)
+	})
+
+	aura.NewExclusiveEffect("Flurry", true, core.ExclusiveEffect{
+		Priority: attackSpeed,
+		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+			warrior.MultiplyMeleeSpeed(sim, attackSpeed)
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, 1/haste)
+		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
+			warrior.MultiplyMeleeSpeed(sim, 1/attackSpeed)
 		},
 	})
 
-	warrior.RegisterAura(core.Aura{
-		Label:    "Flurry",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
-			}
+	return aura
+}
 
-			if result.Outcome.Matches(core.OutcomeCrit) {
-				procAura.Activate(sim)
-				procAura.SetStacks(sim, 3)
-				return
-			}
-
+// With the Protection T2 4pc it's possible to have 2 different Flurry auras if using less than 5/5 points in Flurry.
+// The two different buffs don't stack whatsoever. Instead the stronger aura takes precedence and each one is only refreshed by the corresponding triggers.
+func (warrior *Warrior) makeFlurryConsumptionTrigger(flurryAura *core.Aura) *core.Aura {
+	icd := core.Cooldown{
+		Timer:    warrior.NewTimer(),
+		Duration: time.Millisecond * 500,
+	}
+	return core.MakePermanent(warrior.GetOrRegisterAura(core.Aura{
+		Label: fmt.Sprintf("Flurry Consume Trigger - %d", flurryAura.ActionID.SpellID),
+		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Remove a stack.
-			if procAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
-				procAura.RemoveStack(sim)
+			if flurryAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
+				icd.Use(sim)
+				flurryAura.RemoveStack(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (warrior *Warrior) applyShieldSpecialization() {
@@ -296,7 +390,7 @@ func (warrior *Warrior) applyShieldSpecialization() {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeBlock) {
+			if result.DidBlock() {
 				if sim.Proc(procChance, "Shield Specialization") {
 					warrior.AddRage(sim, 1.0, rageMetrics)
 				}

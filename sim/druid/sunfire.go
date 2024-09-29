@@ -119,12 +119,12 @@ func (druid *Druid) getSunfireBaseSpellConfig(
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickSnapshotCrit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
 
 		BonusCritRating: druid.ImprovedMoonfireCritBonus(),
-		CritDamageBonus: druid.vengeance(),
+		CritDamageBonus: druid.vengeanceBonusCritDamage(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -135,8 +135,6 @@ func (druid *Druid) getSunfireBaseSpellConfig(
 
 			if result.Landed() {
 				dot := spell.Dot(target)
-				dot.NumberOfTicks = SunfireTicks
-				dot.RecomputeAuraDuration()
 				dot.Apply(sim)
 				onResultLanded(sim, spell)
 			}

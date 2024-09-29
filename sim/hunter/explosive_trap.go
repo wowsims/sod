@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.SpellConfig {
@@ -17,25 +17,25 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 	level := [4]int{0, 34, 44, 54}[rank]
 
 	numHits := hunter.Env.GetNumTargets()
-	hasLockAndLoad := hunter.HasRune(proto.HunterRune_RuneHelmLockAndLoad)
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_HunterExplosiveTrap,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL,
+		Flags:         core.SpellFlagAPL | SpellFlagTrap,
 		Rank:          rank,
 		RequiredLevel: level,
 		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost * hunter.resourcefulnessManacostModifier(),
+			FlatCost: manaCost,
 		},
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second * time.Duration(15*hunter.resourcefulnessCooldownModifier()),
+				Duration: time.Second * 15,
 			},
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -46,9 +46,7 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 			return hunter.DistanceFromTarget <= hunter.trapRange()
 		},
 
-		BonusHitRating: hunter.trapMastery(),
-
-		DamageMultiplier: (1 + 0.15*float64(hunter.Talents.CleverTraps)) * hunter.tntDamageMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -76,6 +74,9 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				curTarget := target
+				// Traps gain no benefit from hit bonuses except for the Trap Mastery talent, since this is a unique interaction this is my workaround
+				spellHit := spell.Unit.GetStat(stats.SpellHit) + target.PseudoStats.BonusSpellHitRatingTaken
+				spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit*-1)
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					baseDamage := sim.Roll(minDamage, maxDamage)
 					baseDamage += hunter.tntDamageFlatBonus()
@@ -83,11 +84,8 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 					spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
+				spell.Unit.AddStatDynamic(sim, stats.SpellHit, spellHit)
 				spell.AOEDot().ApplyOrReset(sim)
-
-				if hasLockAndLoad {
-					hunter.LockAndLoadAura.Activate(sim)
-				}
 			})
 		},
 	}

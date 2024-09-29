@@ -124,19 +124,16 @@ func (warlock *Warlock) applyBackdraft() {
 }
 
 func (warlock *Warlock) applyDecimation() {
-	if !warlock.HasRune(proto.WarlockRune_RuneCloakDecimation) {
+	if !warlock.HasRune(proto.WarlockRune_RuneBootsDecimation) {
 		return
 	}
 
 	affectedSpellCodes := []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockIncinerate, SpellCode_WarlockSoulFire}
 
-	decimationAura := warlock.RegisterAura(core.Aura{
+	warlock.DecimationAura = warlock.RegisterAura(core.Aura{
 		Label:    "Decimation",
 		ActionID: core.ActionID{SpellID: 440873},
 		Duration: time.Second * 10,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.SoulFire {
 				spell.CastTimeMultiplier *= .6
@@ -150,22 +147,18 @@ func (warlock *Warlock) applyDecimation() {
 	})
 
 	// Hidden trigger aura
-	warlock.RegisterAura(core.Aura{
-		Label:    "Decimation Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Decimation Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && sim.IsExecutePhase35() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
-				decimationAura.Activate(sim)
+				warlock.DecimationAura.Activate(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (warlock *Warlock) applyMarkOfChaos() {
-	if !warlock.HasRune(proto.WarlockRune_RuneBootsMarkOfChaos) {
+	if !warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos) {
 		return
 	}
 
@@ -436,6 +429,10 @@ func (warlock *Warlock) calcSoulSiphonMultiplier(target *core.Unit, executeBonus
 		multiplier += perDoTMultiplier
 	}
 
+	if warlock.Shadowflame != nil && warlock.Shadowflame.Dot(target).IsActive() {
+		multiplier += perDoTMultiplier
+	}
+
 	if warlock.Haunt != nil && warlock.HauntDebuffAuras.Get(target).IsActive() {
 		multiplier += perDoTMultiplier
 	}
@@ -462,6 +459,8 @@ func (warlock *Warlock) applyDemonicPact() {
 		return
 	}
 
+	warlock.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.10)
+
 	if warlock.Options.Summon == proto.WarlockOptions_NoSummon {
 		return
 	}
@@ -480,10 +479,7 @@ func (warlock *Warlock) applyDemonicPact() {
 		Label:    "Demonic Pact Trigger",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.PreviousTime = 0
 			aura.Activate(sim)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.DidCrit() || !icd.IsReady(sim) {
@@ -492,20 +488,26 @@ func (warlock *Warlock) applyDemonicPact() {
 
 			icd.Use(sim)
 
+			lastBonus := 0.0
 			currentSP := warlock.getHighestSP()
+			warlockAura := demonicPactAuras.Get(&warlock.Unit)
 
 			// Remove DP bonus from SP bonus if active
-			if demonicPactAuras.Get(&warlock.Unit).IsActive() {
-				currentSP -= demonicPactAuras.Get(&warlock.Unit).ExclusiveEffects[0].Priority
+			if warlockAura.IsActive() {
+				lastBonus = demonicPactAuras.Get(&warlock.Unit).ExclusiveEffects[0].Priority
 			}
-			spBonus := max(math.Round(currentSP*0.1), math.Round(float64(warlock.Level)/2))
-			for _, dpAura := range demonicPactAuras {
-				if dpAura != nil {
-					// Force expire/gain because of new sp bonus
-					dpAura.Deactivate(sim)
+			newSPBonus := max(math.Round(0.10*(currentSP-lastBonus)), math.Round(float64(warlock.Level)/2))
 
-					dpAura.ExclusiveEffects[0].SetPriority(sim, spBonus)
-					dpAura.Activate(sim)
+			if warlockAura.RemainingDuration(sim) < 10*time.Second || newSPBonus >= lastBonus {
+				for _, dpAura := range demonicPactAuras {
+					if dpAura != nil {
+						// Force expire/gain because of new sp bonus
+						dpAura.Deactivate(sim)
+
+						dpAura.ExclusiveEffects[0].SetPriority(sim, newSPBonus)
+						dpAura.Activate(sim)
+						dpAura.SetStacks(sim, int32(newSPBonus))
+					}
 				}
 			}
 		},

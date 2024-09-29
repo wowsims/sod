@@ -39,7 +39,8 @@ func (warrior *Warrior) registerSlamSpell() {
 	}[warrior.Level]
 
 	warrior.SlamMH = warrior.newSlamHitSpell(true)
-	if hasBloodSurgeRune {
+	canHitOffhand := hasBloodSurgeRune && warrior.AutoAttacks.IsDualWielding
+	if canHitOffhand {
 		warrior.SlamOH = warrior.newSlamHitSpell(false)
 	}
 
@@ -49,12 +50,12 @@ func (warrior *Warrior) registerSlamSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RequiredLevel: requiredLevel,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - warrior.FocusedRageDiscount,
+			Cost:   15,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -64,15 +65,16 @@ func (warrior *Warrior) registerSlamSpell() {
 			},
 			CD: cooldown,
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				if cast.CastTime > 0 {
+				if spell.CastTime() > 0 {
 					warrior.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, true)
 				}
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			doOffhandHit := canHitOffhand && warrior.BloodSurgeAura.IsActive()
 			warrior.SlamMH.Cast(sim, target)
-			if hasBloodSurgeRune && warrior.AutoAttacks.IsDualWielding && warrior.BloodSurgeAura.IsActive() {
+			if doOffhandHit {
 				warrior.SlamOH.Cast(sim, target)
 			}
 		},
@@ -99,10 +101,12 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 	}[warrior.Level]
 
 	procMask := core.ProcMaskMeleeMHSpecial
+	flags := core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete
 	damageFunc := warrior.MHWeaponDamage
 	if !isMH {
 		flatDamageBonus /= 2
 		procMask = core.ProcMaskMeleeOHSpecial
+		flags |= core.SpellFlagPassiveSpell
 		damageFunc = warrior.OHWeaponDamage
 	}
 
@@ -112,13 +116,14 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+		Flags:       flags,
 
 		CritDamageBonus: warrior.impale(),
 		FlatThreatBonus: 1 * requiredLevel,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := flatDamageBonus + damageFunc(sim, spell.MeleeAttackPower())

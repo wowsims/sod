@@ -40,6 +40,7 @@ func (paladin *Paladin) registerHammerOfWrath() {
 			DefenseType: core.DefenseTypeRanged,
 			ProcMask:    core.ProcMaskRangedSpecial, // TODO to be tested
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+			CastType:    proto.CastType_CastTypeRanged,
 
 			Rank:          i + 1,
 			RequiredLevel: int(rank.level),
@@ -59,6 +60,7 @@ func (paladin *Paladin) registerHammerOfWrath() {
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 			BonusCoefficient: 0.429,
+			BonusHitRating:   -float64(paladin.Talents.Precision) * core.MeleeHitRatingPerHitChance,
 
 			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 				return sim.IsExecutePhase20()
@@ -66,10 +68,10 @@ func (paladin *Paladin) registerHammerOfWrath() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				damage := sim.Roll(rank.minDamage, rank.maxDamage)
-				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
 
 				// should be based on target.CurrentHealthPercent(), which is not available
-				if hasImprovedHammerOfWrath && sim.CurrentTime >= time.Duration(0.9*float64(sim.Duration)) {
+				if hasImprovedHammerOfWrath && result.Landed() && sim.CurrentTime >= time.Duration(0.9*float64(sim.Duration)) {
 					cd.Reset()
 				}
 			},

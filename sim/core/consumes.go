@@ -142,6 +142,11 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 		// Shield Oil
 		case proto.WeaponImbue_ConductiveShieldCoating:
 			character.AddStat(stats.SpellPower, 24)
+		case proto.WeaponImbue_MagnificentTrollshine:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 36,
+				stats.SpellCrit:  1 * CritRatingPerCritChance,
+			})
 
 		// Sharpening Stones
 		case proto.WeaponImbue_SolidSharpeningStone:
@@ -206,7 +211,8 @@ func registerShadowOil(character *Character, isMh bool, icd Cooldown) {
 		ActionID:    ActionID{SpellID: 1382},
 		SpellSchool: SpellSchoolShadow,
 		DefenseType: DefenseTypeMagic,
-		ProcMask:    ProcMaskSpellDamage,
+		ProcMask:    ProcMaskEmpty,
+		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -255,7 +261,8 @@ func registerFrostOil(character *Character, isMh bool) {
 		ActionID:    ActionID{SpellID: 1191},
 		SpellSchool: SpellSchoolFrost,
 		DefenseType: DefenseTypeMagic,
-		ProcMask:    ProcMaskSpellDamage,
+		ProcMask:    ProcMaskEmpty,
+		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -391,8 +398,8 @@ func DragonBreathChiliAura(character *Character) *Aura {
 		ActionID:    ActionID{SpellID: 15851},
 		SpellSchool: SpellSchoolFire,
 		DefenseType: DefenseTypeMagic,
-		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagNone,
+		ProcMask:    ProcMaskSpellDamageProc | ProcMaskSpellProc,
+		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -473,7 +480,8 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.AttackPowerBuff {
 		case proto.AttackPowerBuff_JujuMight:
 			character.AddStats(stats.Stats{
-				stats.AttackPower: 40,
+				stats.AttackPower:       40,
+				stats.RangedAttackPower: 40,
 			})
 		case proto.AttackPowerBuff_WinterfallFirewater:
 			character.AddStats(stats.Stats{
@@ -763,7 +771,7 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.03)
 				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier *= 1.03
-				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier /= 1.03
+				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier *= 1.03
 			},
 		})
 		jujuFlurrySpell := character.RegisterSpell(SpellConfig{

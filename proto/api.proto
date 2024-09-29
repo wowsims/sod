@@ -139,10 +139,18 @@ message ActionMetrics {
 	// Note that some spells are untargeted, these will always have a single
 	// element in this array.
 	repeated TargetedActionMetrics targets = 3;
+
+	int32 spell_school = 4;
+
+	// True if action is applied/cast as a result of another action
+	bool is_passive = 5;
 }
 
 // Metrics for a specific action, when cast at a particular target.
 message TargetedActionMetrics {
+	reserved 19, 20;
+	reserved "crit_block_damage", "crit_blocks";
+
 	// Raid/Target Index of the unit these metrics are targeted at.
 	int32 unit_index = 12;
 
@@ -152,8 +160,26 @@ message TargetedActionMetrics {
 	// # of times this action hit a target. For cleave spells this can be larger than casts.
 	int32 hits = 2;
 
+	// # of times this action resisted hit a target.
+	int32 resisted_hits = 25;
+
 	// # of times this action was a critical strike.
 	int32 crits = 3;
+
+	// # of times this action resisted crit a target.
+	int32 resisted_crits = 26;
+
+	// # of times this action ticked on a target.
+	int32 ticks = 21;
+
+	// # of times this action resisted ticked a target.
+	int32 resisted_ticks = 27;
+
+	// # of times this action was a critical tick on a target.
+	int32 crit_ticks = 22;
+
+	// # of times this action was a resisted tick on a target.
+	int32 resisted_crit_ticks = 28;
 
 	// # of times this action was a Miss or Resist.
 	int32 misses = 4;
@@ -167,17 +193,53 @@ message TargetedActionMetrics {
 	// # of times this action was a Block.
 	int32 blocks = 7;
 
+	// # of times this action was a Blocked critical strike.
+	int32 blocked_crits = 33;
+
 	// # of times this action was a Glance.
 	int32 glances = 8;
 
 	// Total damage done to this target by this action.
 	double damage = 9;
 
+	// Total resisted damage done to this target by this action.
+	double resisted_damage = 29;
+
+	// Total critical damage done to this target by this action.
+	double crit_damage = 15;
+
+	// Total resisted critical damage done to this target by this action.
+	double resisted_crit_damage = 30;
+
+	// Total tick damage done to this target by this action.
+	double tick_damage = 23;
+
+	// Total resisted tick damage done to this target by this action.
+	double resisted_tick_damage = 31;
+
+	// Total critical tick damage done to this target by this action.
+	double crit_tick_damage = 24;
+
+	// Total resisted critical tick damage done to this target by this action.
+	double resisted_crit_tick_damage = 32;
+
+	// Total glancing damage done to this target by this action.
+	double glance_damage = 17;
+
+	// Total block damage done to this target by this action.
+	double block_damage = 18;
+
+	// Total blocked critical strike damage done to this target by this action.
+	double blocked_crit_damage = 34;
+
 	// Total threat done to this target by this action.
 	double threat = 10;
 
 	// Total healing done to this target by this action.
 	double healing = 11;
+
+	// Total critical healing done to this target by this action.
+	double crit_healing = 16;
 
 	// Total shielding done to this target by this action.
 	double shielding = 13;

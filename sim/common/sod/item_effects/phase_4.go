@@ -18,6 +18,7 @@ const (
 	WoodcarvedMoonstalker    = 228089
 	TheMoltenCore            = 228122
 	FistOfTheFiresworn       = 228139
+	BroodmothersBrooch       = 228163
 	TreantsBane              = 228486
 	FistOfTheFireswornMolten = 229374
 	StuddedTimbermawBrawlers = 227809
@@ -33,8 +34,8 @@ func init() {
 	// https://www.wowhead.com/classic/item=228139/fist-of-the-firesworn
 	// Chance on hit: Blasts the enemy for 70 Fire damage.
 	// TODO: Proc rate assumed and needs testing
-	itemhelpers.CreateWeaponProcDamage(FistOfTheFiresworn, "Fist of the Firesworn", 1.0, 461896, core.SpellSchoolFire, 70, 0, 0.15, core.DefenseTypeMagic)
-	itemhelpers.CreateWeaponProcDamage(FistOfTheFireswornMolten, "Fist of the Firesworn", 1.0, 461896, core.SpellSchoolFire, 70, 0, 0.15, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(FistOfTheFiresworn, "Fist of the Firesworn", 1.0, 461896, core.SpellSchoolFire, 70, 0, 0.15, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(FistOfTheFireswornMolten, "Fist of the Firesworn", 1.0, 461896, core.SpellSchoolFire, 70, 0, 0.15, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228486/treants-bane
 	// Equip: +75 Attack Power when fighting Elementals.
@@ -49,14 +50,18 @@ func init() {
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
 
-	// https://www.wowhead.com/classic/item=227915/dukes-domain
-	// Use: Expand the Duke's Domain, increasing the Fire Resistance of those who reside within by 50. Lasts for 15 sec. (1 Min, 30 Sec Cooldown)
-	// TODO: Raid-wide effect if we ever do raid sim
-	core.NewSimpleStatDefensiveTrinketEffect(DukesDomain, stats.Stats{stats.FireResistance: 50}, time.Second*15, time.Second*90)
-
 	// https://www.wowhead.com/classic/item=228078/accursed-chalice
 	// Use: Increases your Strength by 80.  Effect lasts for 20 sec. (2 Min Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(AccursedChalice, stats.Stats{stats.Strength: 80}, time.Second*20, time.Minute*2)
+
+	// https://www.wowhead.com/classic/item=228163/broodmothers-brooch
+	// Use: Increases the block value of your shield by 128 for 20 sec. (2 Min Cooldown)
+	core.NewSimpleStatDefensiveTrinketEffect(BroodmothersBrooch, stats.Stats{stats.BlockValue: 128}, time.Second*20, time.Minute*2)
+
+	// https://www.wowhead.com/classic/item=227915/dukes-domain
+	// Use: Expand the Duke's Domain, increasing the Fire Resistance of those who reside within by 50. Lasts for 15 sec. (1 Min, 30 Sec Cooldown)
+	// TODO: Raid-wide effect if we ever do raid sim
+	core.NewSimpleStatOffensiveTrinketEffect(DukesDomain, stats.Stats{stats.BlockValue: 128}, time.Second*20, time.Second*90)
 
 	// https://www.wowhead.com/classic/item=228081/germinating-poisonseed
 	// Use: Increases your Nature Damage by up to 115.  Effect lasts for 20 sec. (2 Min Cooldown)

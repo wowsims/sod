@@ -26,28 +26,35 @@ func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 	var canApplySunder bool
 
 	if warrior.HasRune(proto.WarriorRune_RuneDevastate) {
-		warrior.Devastate = warrior.RegisterSpell(AnyStance, core.SpellConfig{
+		warrior.Devastate = warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
 			SpellCode:   SpellCode_WarriorDevastate,
 			ActionID:    core.ActionID{SpellID: int32(proto.WarriorRune_RuneDevastate)},
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial, // TODO check whether this can actually proc stuff or not
-			Flags:       core.SpellFlagMeleeMetrics,
+			Flags:       core.SpellFlagMeleeMetrics | SpellFlagOffensive,
 
 			CritDamageBonus:  warrior.impale(),
 			DamageMultiplier: 1.5,
-
 			ThreatMultiplier: 1,
+			BonusCoefficient: 1,
 
 			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 				return warrior.PseudoStats.CanBlock
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				threatMultiplier := 1.0
+				if warrior.Stance == DefensiveStance {
+					threatMultiplier = 1.50
+				}
+				spell.ThreatMultiplier *= threatMultiplier
+
 				weapon := warrior.AutoAttacks.MH()
 				baseDamage := weapon.CalculateAverageWeaponDamage(spell.MeleeAttackPower()) / weapon.SwingSpeed
 				multiplier := 1 + 0.1*float64(effectiveStacks)
 				spell.CalcAndDealDamage(sim, target, baseDamage*multiplier, spell.OutcomeMeleeSpecialCritOnly)
+				spell.ThreatMultiplier /= threatMultiplier
 			},
 		})
 	}
@@ -56,10 +63,10 @@ func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - warrior.FocusedRageDiscount - float64(warrior.Talents.ImprovedSunderArmor),
+			Cost:   15 - float64(warrior.Talents.ImprovedSunderArmor),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{

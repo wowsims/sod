@@ -62,7 +62,7 @@ func init() {
 			ActionID:   core.ActionID{SpellID: 446705},
 			Name:       "Roar of the Dream Trigger",
 			Callback:   core.CallbackOnCastComplete,
-			ProcMask:   core.ProcMaskSpellOrProc,
+			ProcMask:   core.ProcMaskSpellOrSpellProc,
 			ProcChance: 0.05,
 			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 				procAura.Activate(sim)
@@ -242,6 +242,7 @@ func init() {
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -256,7 +257,7 @@ func init() {
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagBinary,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagBinary,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -320,6 +321,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -468,7 +470,7 @@ func init() {
 				}
 
 				if ppmm.Proc(sim, procMask, "Cobra Fang Claw Extra Attack") {
-					character.AutoAttacks.ExtraMHAttack(sim, 1, core.ActionID{ItemID: 220588})
+					character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 220588}, spell)
 				}
 			},
 		})
@@ -482,7 +484,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagPoison,
+			Flags:       core.SpellFlagPoison | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,

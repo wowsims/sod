@@ -26,6 +26,11 @@ func (shaman *Shaman) registerHealingStreamTotemSpell() {
 			shaman.HealingStreamTotem[rank] = shaman.RegisterSpell(config)
 		}
 	}
+
+	shaman.WaterTotems = append(
+		shaman.WaterTotems,
+		core.FilterSlice(shaman.HealingStreamTotem, func(spell *core.Spell) bool { return spell != nil })...,
+	)
 }
 
 func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfig {
@@ -50,7 +55,7 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 1 - (float64(shaman.Talents.HealingGrace) * 0.05),
+		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -98,6 +103,11 @@ func (shaman *Shaman) registerManaSpringTotemSpell() {
 			shaman.ManaSpringTotem[rank] = shaman.RegisterSpell(config)
 		}
 	}
+
+	shaman.WaterTotems = append(
+		shaman.WaterTotems,
+		core.FilterSlice(shaman.ManaSpringTotem, func(spell *core.Spell) bool { return spell != nil })...,
+	)
 }
 
 func (shaman *Shaman) newManaSpringTotemSpellConfig(rank int) core.SpellConfig {

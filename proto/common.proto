@@ -165,6 +165,7 @@ enum PseudoStat {
 
 	PseudoStatMeleeSpeedMultiplier = 27;
 	PseudoStatRangedSpeedMultiplier = 28;
+	PseudoStatBlockValuePerStrength = 29;
 }
 
 message UnitStats {
@@ -320,18 +321,18 @@ enum Explosive {
 // NextIndex: 28
 enum Potions {
 	UnknownPotion = 0;
-	
+
 	// Mana Pots
 	ManaPotion = 2;
 	GreaterManaPotion = 3;
 	SuperiorManaPotion = 4;
 	MajorManaPotion = 5;
-	
+
 	// Rage Pots
 	RagePotion = 6;
 	GreatRagePotion = 7;
 	MightyRagePotion = 8;
-	
+
 	// Armor Pots
 	LesserStoneshieldPotion = 9;
 	GreaterStoneshieldPotion = 10;
@@ -505,7 +506,7 @@ enum MageScroll {
 	MageScrollFrostProtection = 5;
 }
 
-// NextIndex: 29
+// NextIndex: 30
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
@@ -554,6 +555,7 @@ enum WeaponImbue {
 
 	// Shield Oil
 	ConductiveShieldCoating = 26;
+	MagnificentTrollshine = 29;
 }
 
 // NextIndex: 13
@@ -582,11 +584,8 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
-// NextIndex: 43
+// NextIndex: 44
 message RaidBuffs {
-	reserved 33;
-	reserved "horn_of_lordaeron";
-
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
 
@@ -642,6 +641,7 @@ message RaidBuffs {
 
 	// SoD Runes
 	int32 demonic_pact = 32;
+	bool horn_of_lordaeron = 33;
 	bool aspect_of_the_lion = 34;
 	bool commanding_shout = 38;
 
@@ -654,6 +654,7 @@ message RaidBuffs {
 	int32 battle_squawk = 37;
 	bool improved_stoneskin_windwall = 40;
 	bool flowing_waters_sigil = 42;
+	bool spirit_of_the_alpha = 43;
 }
 
 // Buffs that affect a single party.
@@ -737,7 +738,7 @@ message Consumes {
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 40
+// NextIndex: 41
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -753,7 +754,7 @@ message Debuffs {
 	bool occult_poison = 38;
 
 	bool winters_chill = 6;
-	
+
 	bool improved_shadow_bolt = 7;
 
 	bool improved_scorch = 8;
@@ -775,6 +776,7 @@ message Debuffs {
 
 	TristateEffect thunder_clap = 16;
 	bool waylay = 34;
+	bool thunderfury = 40;
 
 	bool insect_swarm = 17;
 	bool scorpid_sting = 18;
@@ -794,7 +796,8 @@ message Debuffs {
 	int32 ancient_corrosive_poison = 24; // between 0 and 100, represents average uptime percentage
 	bool mekkatorque_fist_debuff = 29;
 	bool serpents_striker_fist_debuff = 30;
-	bool improved_faerie_fire = 36; // Provided by Tier 1 Balance set bonus
+	bool improved_faerie_fire = 36; // Provided by Tier 1 Feral set bonus
+	bool melee_hunter_dodge_debuff = 41; // Provided by Tier 1 Melee Hunter set bonus
 
 	TristateEffect curse_of_elements_new = 31 [deprecated=true];
 	TristateEffect curse_of_shadow_new = 32  [deprecated=true];

@@ -424,7 +424,7 @@ type PseudoStats struct {
 
 	DisableDWMissPenalty bool    // Used by Heroic Strike and Cleave
 	IncreasedMissChance  float64 // Insect Swarm and Scorpid Sting
-	DodgeReduction       float64 // Used by Warrior talent 'Weapon Mastery' and SWP boss auras.
+	DodgeReduction       float64 // Target dodge reduction effects e.g. "reduces its target's chance to Dodge by X%"
 
 	MobTypeAttackPower float64 // Bonus AP against mobs of the current type.
 	MobTypeSpellPower  float64 // Bonus SP against mobs of the current type.
@@ -436,6 +436,9 @@ type PseudoStats struct {
 
 	// Important when unit is attacker or target
 	BlockValueMultiplier float64
+
+	// BlockValue per Strength has to be calculated independently.
+	BlockValuePerStrength float64
 
 	// Only used for NPCs, governs variance in enemy auto-attack damage
 	DamageSpread float64
@@ -488,6 +491,7 @@ type PseudoStats struct {
 	SchoolCritTakenChance       SchoolValueArray[float64] // For spell school crit. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolBonusDamageTaken      SchoolValueArray[float64] // For spell school bonus damage taken. DO NOT use with multi school index! See helper functions on Unit!
 	SchoolBonusHitChance        SchoolValueArray[float64] // Spell school-specific hit bonuses such as ring runes
+	SchoolBonusCritChance       SchoolValueArray[float64] // Spell school-specific cit bonuses such as Holy Paladin talent - Holy Power
 
 	BleedDamageTakenMultiplier  float64 // Modifies damage taken from bleed effects
 	PoisonDamageTakenMultiplier float64 // Modifies damage taken from poison effects
@@ -513,7 +517,8 @@ func NewPseudoStats() PseudoStats {
 		DamageDealtMultiplier:       1,
 		SchoolDamageDealtMultiplier: NewSchoolValueArray(1.0),
 
-		BlockValueMultiplier: 1,
+		BlockValueMultiplier:  1,
+		BlockValuePerStrength: 0,
 
 		DamageSpread: 0.3333,
 

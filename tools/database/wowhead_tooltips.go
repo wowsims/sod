@@ -169,13 +169,16 @@ var staminaRegex = regexp.MustCompile(`<!--stat7-->([+-][0-9]+) Stamina`)
 var spellHealingRegex = regexp.MustCompile(`Increases healing done by spells and effects by up to ([0-9]+)\.`)
 var spellPowerRegex = regexp.MustCompile(`Increases damage and healing done by magical spells and effects by up to ([0-9]+)\.`)
 var spellPowerRegex2 = regexp.MustCompile(`Increases damage and healing done by magical spells and effects by up to <!--rtg45-->([0-9]+)\.`)
+var spellPowerRegex3 = regexp.MustCompile(`Increases healing done by up to [0-9]+ and damage done by up to ([0-9]+) for all magical spells and effects\.`)
 
-var arcaneSpellPowerRegex = regexp.MustCompile(`Increases damage done by Arcane spells and effects by up to ([0-9]+)\.`)
-var fireSpellPowerRegex = regexp.MustCompile(`Increases damage done by Fire spells and effects by up to ([0-9]+)\.`)
-var frostSpellPowerRegex = regexp.MustCompile(`Increases damage done by Frost spells and effects by up to ([0-9]+)\.`)
-var holySpellPowerRegex = regexp.MustCompile(`Increases damage done by Holy spells and effects by up to ([0-9]+)\.`)
-var natureSpellPowerRegex = regexp.MustCompile(`Increases damage done by Nature spells and effects by up to ([0-9]+)\.`)
-var shadowSpellPowerRegex = regexp.MustCompile(`Increases damage done by Shadow spells and effects by up to ([0-9]+)\.`)
+// Patch 1.15.4 added the first item with a comgined multi-school power equip effect https://www.wowhead.com/classic/item=231785/echoes-of-betrayal
+// so these have to check for other schools before and after the one we're looking for.
+var arcaneSpellPowerRegex = regexp.MustCompile(`Increases damage done by (?:\w*? and )*?Arcane(?: and \w*?)* spells and effects by up to ([0-9]+)\.`)
+var fireSpellPowerRegex = regexp.MustCompile(`Increases damage done by (?:\w*? and )*?Fire(?: and \w*?)* spells and effects by up to ([0-9]+)\.`)
+var frostSpellPowerRegex = regexp.MustCompile(`Increases damage done by (?:\w*? and )*?Frost(?: and \w*?)* spells and effects by up to ([0-9]+)\.`)
+var holySpellPowerRegex = regexp.MustCompile(`Increases damage done by (?:\w*? and )*?Holy(?: and \w*?)* spells and effects by up to ([0-9]+)\.`)
+var natureSpellPowerRegex = regexp.MustCompile(`Increases damage done by (?:\w*? and )*?Nature(?: and \w*?)* spells and effects by up to ([0-9]+)\.`)
+var shadowSpellPowerRegex = regexp.MustCompile(`Increases damage done by (?:\w*? and )*?Shadow(?: and \w*?)* spells and effects by up to ([0-9]+)\.`)
 
 var hitRegex = regexp.MustCompile(`Improves your chance to hit with spells and with melee and ranged attacks by ([0-9]+)%\.`)
 var hitRegex2 = regexp.MustCompile(`Improves your chance to hit with all spells and attacks by ([0-9]+)%\.`)
@@ -249,7 +252,7 @@ var leatherworkingRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Leatherwor
 var tailoringRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Tailoring<\/a> \([0-9]+\)`)
 
 func (item WowheadItemResponse) GetStats() Stats {
-	sp := float64(item.GetIntValue(spellPowerRegex)) + float64(item.GetIntValue(spellPowerRegex2))
+	sp := float64(item.GetIntValue(spellPowerRegex)) + float64(item.GetIntValue(spellPowerRegex2)) + float64(item.GetIntValue(spellPowerRegex3))
 	baseAP := float64(item.GetIntValue(attackPowerRegex)) + float64(item.GetIntValue(attackPowerRegex2))
 	armor, bonusArmor := item.GetArmorValues()
 	return Stats{

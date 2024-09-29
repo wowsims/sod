@@ -1,6 +1,7 @@
 package warrior
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -85,9 +86,10 @@ func (warrior *Warrior) applyShieldMastery() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 2,
+				Period:          time.Second * 2,
+				TickImmediately: true,
 				OnAction: func(sim *core.Simulation) {
-					if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
+					if !warrior.PseudoStats.CanBlock {
 						buffAura.Deactivate(sim)
 						return
 					}
@@ -115,7 +117,7 @@ func (warrior *Warrior) applyBloodFrenzy() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "Blood Frenzy Dummy",
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.Rend.StanceMask |= BerserkerStance
 		},
 	}))
@@ -126,32 +128,43 @@ func (warrior *Warrior) applyFrenziedAssault() {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: 431046}
+	rageMetrics := warrior.NewRageMetrics(actionID)
+
 	buffAura := warrior.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 431046},
+		ActionID: actionID,
 		Label:    "Frenzied Assault",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, 1.2)
+			warrior.MultiplyMeleeSpeed(sim, 1.3)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, 1/1.2)
+			warrior.MultiplyMeleeSpeed(sim, 1/1.3)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskWhiteHit) && result.Landed() {
+				warrior.AddRage(sim, core.Ternary(result.DidCrit(), 4.0, 2.0), rageMetrics)
+			}
 		},
 	})
 
 	// Use a dummy aura to periodically verify that the player is still using a 2H weapon mid-sim, for example if Item Swapping
 	warrior.RegisterAura(core.Aura{
-		Label:    "Frenzied Assault Trigger",
+		Label:    "Frenzied Assault Dummy",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period: time.Second * 2,
+				Period:          time.Second * 2,
+				TickImmediately: true,
 				OnAction: func(sim *core.Simulation) {
 					if warrior.MainHand().HandType != proto.HandType_HandTypeTwoHand {
 						buffAura.Deactivate(sim)
 						return
 					}
 
-					buffAura.Activate(sim)
+					if !buffAura.IsActive() {
+						buffAura.Activate(sim)
+					}
 				},
 			})
 		},
@@ -191,7 +204,15 @@ func (warrior *Warrior) applyConsumedByRage() {
 }
 
 func (warrior *Warrior) applyFocusedRage() {
-	warrior.FocusedRageDiscount = core.TernaryFloat64(warrior.HasRune(proto.WarriorRune_RuneFocusedRage), 3.0, 0)
+	if !warrior.HasRune(proto.WarriorRune_RuneFocusedRage) {
+		return
+	}
+
+	warrior.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagOffensive) && spell.Cost != nil {
+			spell.Cost.FlatModifier -= 3
+		}
+	})
 }
 
 func (warrior *Warrior) applyBloodSurge() {
@@ -204,44 +225,48 @@ func (warrior *Warrior) applyBloodSurge() {
 		ActionID: core.ActionID{SpellID: 413399},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.Slam != nil {
-				warrior.Slam.DefaultCast.CastTime = 0
-				warrior.Slam.Cost.Multiplier -= 100
-			}
+			warrior.Slam.CastTimeMultiplier -= 1
+			warrior.Slam.Cost.Multiplier -= 100
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.Slam != nil {
-				warrior.Slam.DefaultCast.CastTime = 1500 * time.Millisecond
-				warrior.Slam.Cost.Multiplier += 100
-			}
+			warrior.Slam.CastTimeMultiplier += 1
+			warrior.Slam.Cost.Multiplier += 100
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if warrior.Slam != nil && spell.SpellCode == SpellCode_WarriorSlamOH { // removed even if slam doesn't land
+			// removed even if slam doesn't land
+			if spell.SpellCode == SpellCode_WarriorSlamMH {
 				aura.Deactivate(sim)
 			}
 		},
 	})
 
-	warrior.RegisterAura(core.Aura{
-		Label:    "Blood Surge",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	affectedSpells := make(map[*core.Spell]bool)
+
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Blood Surge Trigger",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			if warrior.Slam == nil {
+				aura.Deactivate(sim)
+				return
+			}
+
+			affectedSpells[warrior.HeroicStrike.Spell] = true
+			affectedSpells[warrior.Whirlwind.Spell] = true
+
+			if warrior.Bloodthirst != nil {
+				affectedSpells[warrior.Bloodthirst.Spell] = true
+			}
+
+			if warrior.HasRune(proto.WarriorRune_RuneQuickStrike) {
+				affectedSpells[warrior.QuickStrike.Spell] = true
+			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			if !spell.Flags.Matches(SpellFlagBloodSurge) {
-				return
-			}
-
-			if sim.Proc(0.3, "Blood Surge") {
+			if result.Landed() && affectedSpells[spell] && sim.Proc(0.3, "Blood Surge") {
 				warrior.BloodSurgeAura.Activate(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (warrior *Warrior) applyTasteForBlood() {
@@ -325,10 +350,6 @@ func (warrior *Warrior) applyFreshMeat() {
 		return
 	}
 
-	hasBloodthirstTalent := warrior.Talents.Bloodthirst
-
-	damagedUnits := make(map[int32]bool)
-
 	warrior.FreshMeatEnrageAura = warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 14201},
 		Label:    "Enrage (Fresh Meat)",
@@ -341,6 +362,9 @@ func (warrior *Warrior) applyFreshMeat() {
 		},
 	})
 
+	var damagedUnits map[int32]bool
+	affectedSpellCodes := []int32{SpellCode_WarriorBloodthirst, SpellCode_WarriorMortalStrike, SpellCode_WarriorShieldSlam}
+
 	warrior.RegisterAura(core.Aura{
 		Label:    "Fresh Meat Trigger",
 		Duration: core.NeverExpires,
@@ -349,7 +373,7 @@ func (warrior *Warrior) applyFreshMeat() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !hasBloodthirstTalent || spell.SpellCode != SpellCode_WarriorBloodthirst {
+			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
 				return
 			}
 
@@ -372,15 +396,17 @@ func (warrior *Warrior) applyWreckingCrew() {
 		return
 	}
 
-	affectedSpells := core.FilterSlice(
-		[]*WarriorSpell{warrior.MortalStrike, warrior.Bloodthirst, warrior.ShieldSlam},
-		func(spell *WarriorSpell) bool { return spell != nil },
-	)
-
+	var affectedSpells []*WarriorSpell
 	warrior.WreckingCrewEnrageAura = warrior.RegisterAura(core.Aura{
 		Label:    "Enrage (Wrecking Crew)",
 		ActionID: core.ActionID{SpellID: 427066},
 		Duration: time.Second * 6,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(
+				[]*WarriorSpell{warrior.MortalStrike, warrior.Bloodthirst, warrior.ShieldSlam},
+				func(spell *WarriorSpell) bool { return spell != nil },
+			)
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplier *= 1.1
@@ -400,11 +426,9 @@ func (warrior *Warrior) applyWreckingCrew() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Outcome.Matches(core.OutcomeCrit) {
-				return
+			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeCrit) {
+				warrior.WreckingCrewEnrageAura.Activate(sim)
 			}
-
-			warrior.WreckingCrewEnrageAura.Activate(sim)
 		},
 	})
 }

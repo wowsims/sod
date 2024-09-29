@@ -219,6 +219,35 @@ export function getClassStatName(stat: Stat, playerClass: Class): string {
 	}
 }
 
+// TODO: Make sure BE exports the spell schools properly
+export enum SpellSchool {
+	None = 0,
+	Physical = 1 << 1,
+	Arcane = 1 << 2,
+	Fire = 1 << 3,
+	Frost = 1 << 4,
+	Holy = 1 << 5,
+	Nature = 1 << 6,
+	Shadow = 1 << 7,
+}
+
+export const spellSchoolNames: Map<number, string> = new Map([
+	[SpellSchool.Physical, 'Physical'],
+	[SpellSchool.Arcane, 'Arcane'],
+	[SpellSchool.Fire, 'Fire'],
+	[SpellSchool.Frost, 'Frost'],
+	[SpellSchool.Holy, 'Holy'],
+	[SpellSchool.Nature, 'Nature'],
+	[SpellSchool.Shadow, 'Shadow'],
+	[SpellSchool.Nature + SpellSchool.Arcane, 'Astral'],
+	[SpellSchool.Shadow + SpellSchool.Fire, 'Shadowflame'],
+	[SpellSchool.Fire + SpellSchool.Arcane, 'Spellfire'],
+	[SpellSchool.Arcane + SpellSchool.Frost, 'Spellfrost'],
+	[SpellSchool.Frost + SpellSchool.Fire, 'Frostfire'],
+	[SpellSchool.Shadow + SpellSchool.Frost, 'Shadowfrost'],
+	[SpellSchool.Arcane + SpellSchool.Fire + SpellSchool.Frost, 'Chimeric'],
+]);
+
 export const itemTypeNames: Map<ItemType, string> = new Map([
 	[ItemType.ItemTypeHead, 'Helm'],
 	[ItemType.ItemTypeNeck, 'Neck'],

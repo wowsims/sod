@@ -25,6 +25,7 @@ export class ActionId {
 	readonly baseName: string; // The name without any tag additions.
 	readonly name: string;
 	readonly iconUrl: string;
+	readonly spellIdTooltipOverride: number | null;
 
 	private constructor(
 		itemId: number,
@@ -135,6 +136,7 @@ export class ActionId {
 		this.baseName = baseName;
 		this.name = name || baseName;
 		this.iconUrl = iconUrl;
+		this.spellIdTooltipOverride = this.spellTooltipOverride?.spellId || null;
 		if (this.name) this.name += rank ? ` (Rank ${rank})` : '';
 	}
 
@@ -195,12 +197,15 @@ export class ActionId {
 		if (this.itemId) {
 			elem.href = ActionId.makeItemUrl(this.itemId, this.randomSuffixId);
 		} else if (this.spellId) {
-			elem.href = ActionId.makeSpellUrl(this.spellId);
+			elem.href = ActionId.makeSpellUrl(this.spellIdTooltipOverride || this.spellId);
 		}
 	}
 
 	async setWowheadDataset(elem: HTMLElement, params?: Omit<WowheadTooltipItemParams, 'itemId'> | Omit<WowheadTooltipSpellParams, 'spellId'>) {
-		(this.itemId ? ActionId.makeItemTooltipData(this.itemId, params) : ActionId.makeSpellTooltipData(this.spellId, params)).then(url => {
+		(this.itemId
+			? ActionId.makeItemTooltipData(this.itemId, params)
+			: ActionId.makeSpellTooltipData(this.spellIdTooltipOverride || this.spellId, params)
+		).then(url => {
 			if (elem) elem.dataset.wowhead = url;
 		});
 	}
@@ -342,7 +347,7 @@ export class ActionId {
 			case 'Lesser Healing Wave':
 			case 'Chain Heal':
 				if (this.tag === 6) {
-					name = `${name} (Overload)`;
+					name = `${name} OL`;
 				} else if (this.tag) {
 					name = `${name} (${this.tag} MSW)`;
 				}
@@ -463,8 +468,7 @@ export class ActionId {
 				break;
 		}
 
-		const idString = this.toProtoString();
-		let iconOverrideId = idOverrides[idString] || null;
+		let iconOverrideId = this.spellIconOverride;
 
 		// Icon Overrides based on tags
 		switch (this.spellId) {
@@ -482,7 +486,7 @@ export class ActionId {
 			iconUrl = ActionId.makeIconUrl(overrideTooltipData['icon']);
 		}
 
-		return new ActionId(this.itemId, this.spellId, this.otherId, this.tag, baseName, name, iconUrl, this.rank || tooltipData['rank'], this.randomSuffixId);
+		return new ActionId(this.itemId, this.spellId, this.otherId, this.tag, baseName, name, iconUrl, this.rank || tooltipData.rank, this.randomSuffixId);
 	}
 
 	toString(): string {
@@ -636,13 +640,29 @@ export class ActionId {
 			return await Database.getSpellIconData(actionId.spellId);
 		}
 	}
+	get spellIconOverride(): ActionId | null {
+		const override = spellIdIconOverrides.get(JSON.stringify({ spellId: this.spellId }));
+		if (!override) return null;
+		return override.itemId ? ActionId.fromItemId(override.itemId) : ActionId.fromItemId(override.spellId!);
+	}
+
+	get spellTooltipOverride(): ActionId | null {
+		const override = spellIdTooltipOverrides.get(JSON.stringify({ spellId: this.spellId, tag: this.tag }));
+		if (!override) return null;
+		return override.itemId ? ActionId.fromItemId(override.itemId) : ActionId.fromSpellId(override.spellId!);
+	}
 }
 
+type ActionIdOverride = { itemId?: number; spellId?: number };
+
 // Some items/spells have weird icons, so use this to show a different icon instead.
-const idOverrides: Record<string, ActionId> = {};
-idOverrides[ActionId.fromSpellId(449288).toProtoString()] = ActionId.fromItemId(221309); // Darkmoon Card: Sandstorm
-idOverrides[ActionId.fromSpellId(455864).toProtoString()] = ActionId.fromSpellId(9907); // Tier 1 Balance Druid "Improved Faerie Fire"
-idOverrides[ActionId.fromSpellId(457544).toProtoString()] = ActionId.fromSpellId(10408); // Tier 1 Shaman Tank "Improved Stoneskin / Windwall Totem"
+const spellIdIconOverrides: Map<string, ActionIdOverride> = new Map([
+	[JSON.stringify({ spellId: 449288 }), { itemId: 221309 }], // Darkmoon Card: Sandstorm
+	[JSON.stringify({ spellId: 455864 }), { spellId: 9907 }], // Tier 1 Balance Druid "Improved Faerie Fire"
+	[JSON.stringify({ spellId: 457544 }), { spellId: 10408 }], // Tier 1 Shaman Tank "Improved Stoneskin / Windwall Totem"
+]);
+
+const spellIdTooltipOverrides: Map<string, ActionIdOverride> = new Map([]);
 
 const spellIDsToShowBuffs = new Set([
 	702, // https://www.wowhead.com/classic/spell=702/curse-of-weakness
@@ -680,6 +700,7 @@ const spellIDsToShowBuffs = new Set([
 	20301, // https://www.wowhead.com/classic/spell=20301/judgement-of-the-crusader
 	20302, // https://www.wowhead.com/classic/spell=20302/judgement-of-the-crusader
 	20303, // https://www.wowhead.com/classic/spell=20303/judgement-of-the-crusader
+	23060, // https://www.wowhead.com/classic/spell=23060/battle-squawk
 	23736, // https://www.wowhead.com/classic/spell=23736/sayges-dark-fortune-of-agility
 	23737, // https://www.wowhead.com/classic/spell=23737/sayges-dark-fortune-of-stamina
 	23738, // https://www.wowhead.com/classic/spell=23738/sayges-dark-fortune-of-spirit
@@ -699,16 +720,19 @@ const spellIDsToShowBuffs = new Set([
 	457816, // https://www.wowhead.com/classic/spell=457816/battle-forecast
 	457817, // https://www.wowhead.com/classic/spell=457817/berserker-forecast
 	457819, // https://www.wowhead.com/classic/spell=457819/echoes-of-gladiator-stance
+	458403, // https://www.wowhead.com/classic/spell=458403/stalker
 	461252, // https://www.wowhead.com/classic/spell=461252/shadowflame-fury
 	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
 	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos
+	456393, // https://www.wowhead.com/classic/spell=456393/stalked
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
 
 const petNameToActionId: Record<string, ActionId> = {
 	'Eye of the Void': ActionId.fromSpellId(402789),
-	'Frozen Orb': ActionId.fromSpellId(440802),
+	'Frozen Orb 1': ActionId.fromSpellId(440802),
+	'Frozen Orb 2': ActionId.fromSpellId(440802),
 	Homunculi: ActionId.fromSpellId(402799),
 	Shadowfiend: ActionId.fromSpellId(401977),
 };
@@ -731,8 +755,7 @@ const petNameToIcon: Record<string, string> = {
 	Eskhandar: 'https://wow.zamimg.com/images/wow/icons/large/inv_misc_head_tiger_01.jpg',
 	Felguard: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelguard.jpg',
 	Felhunter: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonfelhunter.jpg',
-	'Spirit Wolf 1': 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg',
-	'Spirit Wolf 2': 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg',
+	'Spirit Wolves': 'https://wow.zamimg.com/images/wow/icons/large/spell_shaman_feralspirit.jpg',
 	Infernal: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summoninfernal.jpg',
 	Gorilla: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_gorilla.jpg',
 	Hyena: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_hyena.jpg',
@@ -752,6 +775,7 @@ const petNameToIcon: Record<string, string> = {
 	'Spore Bat': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_sporebat.jpg',
 	Succubus: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonsuccubus.jpg',
 	Tallstrider: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_tallstrider.jpg',
+	Treants: 'https://wow.zamimg.com/images/wow/icons/medium/ability_druid_forceofnature.jpg',
 	Turtle: 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_turtle.jpg',
 	Voidwalker: 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_summonvoidwalker.jpg',
 	'Warp Stalker': 'https://wow.zamimg.com/images/wow/icons/medium/ability_hunter_pet_warpstalker.jpg',

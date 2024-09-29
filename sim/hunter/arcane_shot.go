@@ -13,14 +13,9 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 	spellCoeff := [9]float64{0, .204, .3, .429, .429, .429, .429, .429, .429}[rank]
 	manaCost := [9]float64{0, 25, 35, 50, 80, 105, 135, 160, 190}[rank]
 	level := [9]int{0, 6, 12, 20, 28, 36, 44, 52, 60}[rank]
-
-	hasCobraStrikes := hunter.pet != nil && hunter.HasRune(proto.HunterRune_RuneChestCobraStrikes)
-
-	manaCostMultiplier := 100 - 2*hunter.Talents.Efficiency
-	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
-		manaCostMultiplier -= 25
-	}
+	
 	return core.SpellConfig{
+		SpellCode:     SpellCode_HunterArcaneShot,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolArcane,
 		DefenseType:   core.DefenseTypeRanged,
@@ -33,7 +28,6 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
-			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -60,11 +54,6 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
-
-				if hasCobraStrikes && result.DidCrit() {
-					hunter.CobraStrikesAura.Activate(sim)
-					hunter.CobraStrikesAura.SetStacks(sim, 2)
-				}
 			})
 		},
 	}
@@ -78,7 +67,6 @@ func (hunter *Hunter) registerArcaneShotSpell(timer *core.Timer) {
 
 		if config.RequiredLevel <= int(hunter.Level) {
 			hunter.ArcaneShot = hunter.GetOrRegisterSpell(config)
-			hunter.Shots = append(hunter.Shots, hunter.ArcaneShot)
 		}
 	}
 }

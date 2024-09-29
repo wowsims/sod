@@ -99,11 +99,11 @@ func (mage *Mage) applyEnlightenment() {
 		ActionID: core.ActionID{SpellID: 412325},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SpiritRegenRateCasting *= 1.1
+			aura.Unit.PseudoStats.SpiritRegenRateCasting += 0.10
 			mage.UpdateManaRegenRates()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SpiritRegenRateCasting /= 1.1
+			aura.Unit.PseudoStats.SpiritRegenRateCasting -= .10
 			mage.UpdateManaRegenRates()
 		},
 	})
@@ -165,7 +165,7 @@ func (mage *Mage) applyFingersOfFrost() {
 			if aura.GetStacks() == 1 {
 				// Brain freeze can be batched with 2x FFBs into Deep Freeze
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + time.Millisecond*1,
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {
 						if aura.IsActive() {
 							aura.RemoveStack(sim)
@@ -256,7 +256,7 @@ func (mage *Mage) applyHotStreak() {
 				// When batching a Scorch crit into an instant Pyro, the Pyro consumes Hot Streak before the Scorch hits, so the Scorch re-applies Heating Up
 				// We can replicate this by adding a 1ms delay then checking the state of the auras again.
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + time.Millisecond*1,
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {
 						if heatingUpAura.IsActive() {
 							heatingUpAura.Deactivate(sim)
@@ -279,7 +279,7 @@ func (mage *Mage) applyMissileBarrage() {
 	}
 
 	procChance := .20
-	procChanceArcaneBlast := .40
+	mage.ArcaneBlastMissileBarrageChance = .40
 	buffDuration := time.Second * 15
 
 	arcaneMissilesSpells := []*core.Spell{}
@@ -323,7 +323,7 @@ func (mage *Mage) applyMissileBarrage() {
 
 			procChance := procChance
 			if spell.SpellCode == SpellCode_MageArcaneBlast {
-				procChance = procChanceArcaneBlast
+				procChance = mage.ArcaneBlastMissileBarrageChance
 			}
 
 			if sim.RandomFloat("Missile Barrage") < procChance {
@@ -354,6 +354,7 @@ func (mage *Mage) applyBrainFreeze() {
 					mage.Fireball,
 					{mage.FrostfireBolt},
 					{mage.SpellfrostBolt},
+					{mage.BalefireBolt},
 				}),
 				func(spell *core.Spell) bool { return spell != nil },
 			)
@@ -382,22 +383,22 @@ func (mage *Mage) applyBrainFreeze() {
 		},
 	})
 
-	mage.RegisterAura(core.Aura{
-		Label:    "Brain Freeze Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.Flags.Matches(SpellFlagChillSpell) {
-				return
-			}
+	units := []*core.Unit{&mage.Unit}
+	// Can also proc from Frozen Orb hits
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
+	}
 
-			if sim.RandomFloat("Brain Freeze") < procChance {
-				procAura.Activate(sim)
-			}
-		},
-	})
+	for _, unit := range units {
+		core.MakePermanent(unit.RegisterAura(core.Aura{
+			Label: "Brain Freeze Trigger",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.Flags.Matches(SpellFlagChillSpell) && result.Landed() && sim.Proc(procChance, "Brain Freeze") {
+					procAura.Activate(sim)
+				}
+			},
+		}))
+	}
 }
 
 func (mage *Mage) applySpellPower() {
@@ -405,9 +406,17 @@ func (mage *Mage) applySpellPower() {
 		return
 	}
 
-	mage.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagMage) {
-			spell.CritDamageBonus += 0.5
-		}
-	})
+	units := []*core.Unit{&mage.Unit}
+	// Can also proc from Frozen Orb hits
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
+	}
+
+	for _, unit := range units {
+		unit.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagMage) {
+				spell.CritDamageBonus += 0.5
+			}
+		})
+	}
 }

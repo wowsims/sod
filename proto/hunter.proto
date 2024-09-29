@@ -113,7 +113,7 @@ enum HunterRune {
 	RuneCloakResourcefulness			= 440529;
 	RuneCloakHitAndRun					= 440533;
 
-	RuneChestCobraSlayer				= 458393;
+	RuneChestBeastmastery   			= 409368;
 	RuneChestMasterMarksman 			= 409428;
 	RuneChestLoneWolf					= 415370;
 	RuneChestCobraStrikes   			= 425713;
@@ -122,7 +122,7 @@ enum HunterRune {
 	RuneBracersFocusFire				= 428726;
 	RuneBracersTNT						= 428717;
 
-	RuneHandsBeastmastery   			= 409368;
+	RuneHandsCobraSlayer				= 458393;
 	RuneHandsChimeraShot    			= 409433;
 	RuneHandsExplosiveShot  			= 409552;
 	RuneHandsCarve						= 425711;
@@ -206,21 +206,14 @@ message Hunter {
 			BirdOfPrey = 6;
 			Boar = 7;
 			CarrionBird = 8;
-			Chimaera = 9;
 			CoreHound = 10;
 			Crab = 11;
 			Crocolisk = 12;
-			Devilsaur = 13;
-			Dragonhawk = 14;
 			Gorilla = 15;
 			Hyena = 16;
 			Raptor = 17;
 			Scorpid = 18;
-			Serpent = 19;
-			Silithid = 20;
 			Spider = 21;
-			SpiritBeast = 22;
-			SporeBat = 23;
 			Tallstrider = 24;
 			Turtle = 25;
 		}

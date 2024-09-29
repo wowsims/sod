@@ -21,19 +21,30 @@ func (shaman *Shaman) registerWaterShieldSpell() {
 	manaMetrics := shaman.NewManaMetrics(actionID)
 	mp5StatDep := shaman.NewDynamicStatDependency(stats.Mana, stats.MP5, passiveMP5Pct)
 
-	aura := shaman.RegisterAura(core.Aura{
-		Label:    "Water Shield",
-		ActionID: actionID,
-		Duration: time.Minute * 10,
+	shaman.WaterShieldAura = shaman.RegisterAura(core.Aura{
+		Label:     "Water Shield",
+		ActionID:  actionID,
+		Duration:  time.Minute * 10,
+		MaxStacks: 3,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.EnableDynamicStatDep(sim, mp5StatDep)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.DisableDynamicStatDep(sim, mp5StatDep)
+
+			if shaman.ActiveShieldAura == aura {
+				shaman.ActiveShieldAura = nil
+				shaman.ActiveShield = nil
+			}
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskDirect) {
-				shaman.AddMana(sim, shaman.MaxMana()*onHitManaGainedPct, manaMetrics)
+				shaman.WaterShieldRestore.Cast(sim, aura.Unit)
+				aura.RemoveStack(sim)
+
+				if aura.GetStacks() == 0 {
+					aura.Deactivate(sim)
+				}
 			}
 		},
 	})
@@ -54,8 +65,19 @@ func (shaman *Shaman) registerWaterShieldSpell() {
 				shaman.ActiveShieldAura.Deactivate(sim)
 			}
 			shaman.ActiveShield = spell
-			shaman.ActiveShieldAura = aura
-			shaman.ActiveShieldAura.Activate(sim)
+			shaman.ActiveShieldAura = shaman.WaterShieldAura
+			shaman.WaterShieldAura.Activate(sim)
+			shaman.WaterShieldAura.SetStacks(sim, shaman.WaterShieldAura.MaxStacks)
+		},
+	})
+
+	shaman.WaterShieldRestore = shaman.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 408511},
+		SpellSchool: core.SpellSchoolNature,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagNoMetrics,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
+			shaman.AddMana(sim, shaman.MaxMana()*onHitManaGainedPct, manaMetrics)
 		},
 	})
 }
