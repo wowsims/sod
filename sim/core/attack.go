@@ -165,6 +165,10 @@ func (aa *AutoAttacks) MH() *Weapon {
 
 func (aa *AutoAttacks) SetMH(weapon Weapon) {
 	aa.mh.setWeapon(weapon)
+
+	if aa.mh.extraAttacksAura == nil {
+		aa.mh.extraAttacksAura = aa.mh.unit.GetAuraByID(ActionID{SpellID: 21919})
+	}
 }
 
 func (aa *AutoAttacks) OH() *Weapon {
@@ -269,12 +273,14 @@ func (wa *WeaponAttack) trySwing(sim *Simulation) time.Duration {
 }
 
 func (wa *WeaponAttack) castExtraAttacksStored(sim *Simulation) {
+	if wa.extraAttacksAura != nil {
+		wa.extraAttacksStored = wa.extraAttacksAura.GetStacks()
+		wa.extraAttacksAura.SetStacks(sim, 0)
+	}
+
 	wa.castExtraAttacks(sim, wa.extraAttacksStored, 0)
 	wa.extraAttacksStored = 0
 
-	if wa.extraAttacksAura != nil {
-		wa.extraAttacksAura.SetStacks(sim, 0)
-	}
 }
 
 func (wa *WeaponAttack) castExtraAttacksTriggered(sim *Simulation, moreAttacks bool) {
@@ -608,6 +614,7 @@ func (aa *AutoAttacks) reset(sim *Simulation) {
 }
 
 func (aa *AutoAttacks) startPull(sim *Simulation) {
+
 	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
 		return
 	}
@@ -760,21 +767,23 @@ func (aa *AutoAttacks) StoreExtraMHAttack(sim *Simulation, attacks int32, action
 	}
 
 	if aa.mh.extraAttacksAura == nil {
-		aa.mh.extraAttacksAura = aa.mh.unit.GetOrRegisterAura(Aura{
-			Label:     "Extra Attacks",          // Tracks Stored Extra Attacks from all sources
-			ActionID:  ActionID{SpellID: 21919}, // Thrash ID
+		aa.mh.extraAttacksAura = aa.mh.unit.GetAuraByID(ActionID{SpellID: 21919})
+	}
+
+	if aa.mh.extraAttacksAura == nil {
+		aa.mh.extraAttacksAura = MakePermanent(aa.mh.unit.GetOrRegisterAura(Aura{
+			Label:     "Extra Attacks (Main Hand)", // Tracks Stored Extra Attacks from all sources
+			ActionID:  ActionID{SpellID: 21919},    // Thrash ID
 			Duration:  NeverExpires,
 			MaxStacks: 4, // Max is 4 extra attacks stored - more can proc after
-		})
+		}))
 	}
 
 	if !aa.mh.extraAttacksAura.IsActive() {
 		aa.mh.extraAttacksAura.Activate(sim)
 	}
 
-	aa.mh.extraAttacksStored = min(aa.mh.extraAttacksStored+attacks, 4) // Max is 4 stored extra attacks
-
-	aa.mh.extraAttacksAura.SetStacks(sim, aa.mh.extraAttacksStored)
+	aa.mh.extraAttacksAura.AddStacks(sim, attacks)
 
 	if sim.Log != nil {
 		aa.mh.unit.Log(sim, "stored %d extra main-hand attacks from %s triggered by %s, total is %d", attacks, actionID, triggerAction, aa.mh.extraAttacksStored)

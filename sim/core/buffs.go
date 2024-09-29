@@ -2208,6 +2208,16 @@ func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, au
 		},
 	})
 
+	MakePermanent(character.GetOrRegisterAura(Aura{
+		Label:     "Extra Attacks  (Main Hand)", // Tracks Stored Extra Attacks from all sources
+		ActionID:  ActionID{SpellID: 21919},     // Thrash ID
+		Duration:  NeverExpires,
+		MaxStacks: 4, // Max is 4 extra attacks stored - more can proc after
+		OnInit: func(aura *Aura, sim *Simulation) {
+			aura.Unit.AutoAttacks.mh.extraAttacksAura = aura
+		},
+	}))
+
 	icd := Cooldown{
 		Timer:    character.NewTimer(),
 		Duration: time.Millisecond * 1500,
