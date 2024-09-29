@@ -72,6 +72,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 
 		judgeSpell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: rank.judge.spellID},
+			SpellCode:   SpellCode_PaladinJudgementOfRighteousness,
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,

@@ -227,7 +227,7 @@ func (paladin *Paladin) registerStopAttackMacros() {
 
 func (paladin *Paladin) getStopAttackMacroMask() int32 {
 	options := paladin.Options
-	if options.IsUsingAllAbilitiesStopAttack {
+	if options.IsManuallyTriggeringAutoAttacks {
 		return SpellCode_PaladinTriggersExtraAttack
 	}
 

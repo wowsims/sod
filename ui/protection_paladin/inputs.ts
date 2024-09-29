@@ -46,38 +46,10 @@ export const RighteousFuryToggle = InputHelpers.makeSpecOptionsBooleanIconInput<
 	changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
 });
 
-export const StopAttackAbilitySelection = InputHelpers.makeMultiIconInput({
-	values: [
-		InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecProtectionPaladin>({
-			fieldName: 'isUsingJudgementStopAttack',
-			actionId: () => ActionId.fromSpellId(20271),
-		}),
-		InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecProtectionPaladin>({
-			fieldName: 'isUsingDivineStormStopAttack',
-			actionId: () => ActionId.fromSpellId(407778),
-			showWhen: (player: Player<Spec.SpecProtectionPaladin>) => player.hasRune(ItemSlot.ItemSlotChest, PaladinRune.RuneChestDivineStorm),
-			changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
-		}),
-		InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecProtectionPaladin>({
-			fieldName: 'isUsingCrusaderStrikeStopAttack',
-			actionId: () => ActionId.fromSpellId(407676),
-			showWhen: (player: Player<Spec.SpecProtectionPaladin>) => player.hasRune(ItemSlot.ItemSlotHands, PaladinRune.RuneHandsCrusaderStrike),
-			changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
-		}),
-		InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecProtectionPaladin>({
-			fieldName: 'isUsingHammerOfTheRighteousStopAttack',
-			actionId: () => ActionId.fromSpellId(407632),
-			showWhen: (player: Player<Spec.SpecProtectionPaladin>) => player.hasRune(ItemSlot.ItemSlotWrist, PaladinRune.RuneWristHammerOfTheRighteous),
-			changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
-		}),
-		InputHelpers.makeSpecOptionsBooleanIconInput<Spec.SpecProtectionPaladin>({
-			fieldName: 'isUsingShieldOfRighteousnessStopAttack',
-			actionId: () => ActionId.fromSpellId(440658),
-			showWhen: (player: Player<Spec.SpecProtectionPaladin>) => player.hasRune(ItemSlot.ItemSlotBack, PaladinRune.RuneCloakShieldOfRighteousness),
-			changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
-		}),
-	],
-	label: 'Stop Attack Macro Abilities',
+export const ManualAutoAttacksToggle = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecProtectionPaladin>({
+	fieldName: 'isManuallyTriggeringAutoAttacks',
+	label: 'Manually Triggered Autoattacks',
+	labelTooltip: 'Allows saving of extra attacks',
 });
 
 // The below is used in the custom APL action "Cast Primary Seal".

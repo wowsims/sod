@@ -1,9 +1,10 @@
 package paladin
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"time"
 )
 
 func (paladin *Paladin) registerShieldOfRighteousness() {
@@ -17,6 +18,7 @@ func (paladin *Paladin) registerShieldOfRighteousness() {
 
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PaladinRune_RuneCloakShieldOfRighteousness)},
+		SpellCode:   SpellCode_PaladinShieldOfRighteousness,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,

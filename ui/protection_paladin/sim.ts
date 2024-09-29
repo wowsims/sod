@@ -170,7 +170,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		ProtectionPaladinInputs.AuraSelection,
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellScorchDebuff, ProtectionPaladinInputs.StopAttackAbilitySelection],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellScorchDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
@@ -183,6 +183,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			OtherInputs.HpPercentForDefensives,
 			OtherInputs.InspirationUptime,
 			OtherInputs.InFrontOfTarget,
+			ProtectionPaladinInputs.ManualAutoAttacksToggle,
 			//OtherInputs.DistanceFromTarget,
 		],
 	},

@@ -20,6 +20,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 
 	crusaderStrikeSpell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    manaMetrics.ActionID,
+		SpellCode:   SpellCode_PaladinCrusaderStrike,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
