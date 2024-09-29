@@ -14,7 +14,8 @@ func (paladin *Paladin) registerShieldOfRighteousness() {
 
 	// Base damage formula from wowhead tooltip:
 	// https://www.wowhead.com/classic/spell=440658/shield-of-righteousness
-	damage := 179.0 * paladin.baseRuneAbilityDamage() / 100.0
+	// Testing shows there is an additional 20 base damage included.
+	damage := (179.0 * paladin.baseRuneAbilityDamage() / 100.0) + 20.0
 
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PaladinRune_RuneCloakShieldOfRighteousness)},
@@ -42,7 +43,8 @@ func (paladin *Paladin) registerShieldOfRighteousness() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := damage + paladin.BlockValue()
+			// Shield of Righteousness has a hidden scaling coefficient of 2.2x SBV (derived from testing)
+			baseDamage := damage + paladin.BlockValue()*2.2
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
