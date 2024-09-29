@@ -204,8 +204,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 273.75018
-  tps: 194.36263
+  dps: 273.74682
+  tps: 194.36024
  }
 }
 dps_results: {
@@ -309,8 +309,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 570.02535
-  tps: 404.718
+  dps: 570.0294
+  tps: 404.72088
  }
 }
 dps_results: {

@@ -246,8 +246,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase2-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 2256.50968
-  tps: 2138.04009
+  dps: 2255.73176
+  tps: 2136.91021
  }
 }
 dps_results: {
@@ -260,8 +260,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase2-Lvl40-Settings-Dwarf-p2_melee-Basic-p2_melee-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 847.6918
-  tps: 427.82441
+  dps: 846.28019
+  tps: 426.85626
  }
 }
 dps_results: {

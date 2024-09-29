@@ -939,8 +939,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3686.03323
-  tps: 3735.41389
+  dps: 3685.97196
+  tps: 3735.35157
  }
 }
 dps_results: {
