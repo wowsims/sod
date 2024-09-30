@@ -2840,8 +2840,12 @@ func enrageAura446327(character *core.Character) *core.Aura {
 	})
 }
 
-func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool core.SpellSchool, damage float64) *core.Aura {
-	procSpell := character.GetOrRegisterSpell(core.SpellConfig{
+func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool core.SpellSchool, damage float64) {
+	if character.GetSpell(core.ActionID{SpellID: spellID}) != nil {
+		return
+	}
+
+	procSpell := character.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: spellID},
 		SpellSchool:      spellSchool,
 		DefenseType:      core.DefenseTypeMagic,
@@ -2854,8 +2858,8 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 		},
 	})
 
-	return core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:              "Blazefury Trigger",
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:              fmt.Sprintf("Blazefury Trigger (%d)", spellID),
 		Callback:          core.CallbackOnSpellHitDealt,
 		Outcome:           core.OutcomeLanded,
 		ProcMask:          core.ProcMaskMelee,

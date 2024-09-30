@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/common/itemhelpers"
+	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -21,6 +22,7 @@ const (
 	TigulesHarpoon                  = 231272
 	GrileksCarver                   = 231273
 	GrileksGrinder                  = 231274
+	BlazefuryRetributer             = 231275
 	PitchforkOfMadness              = 231277
 	Stormwrath                      = 231387
 	WrathOfWray                     = 231779
@@ -32,6 +34,7 @@ const (
 	TigulesHarpoonBloodied          = 231849
 	WillOfArlokkBloodied            = 231850
 	JekliksCrusherBloodied          = 231861
+	BlazefuryRetributerBloodied     = 231862
 	PitchforkOfMadnessBloodied      = 231864
 	HaldberdOfSmitingBloodied       = 231870
 	ZulianSlicerBloodied            = 231876
@@ -45,6 +48,16 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+
+	// https://www.wowhead.com/classic/item=231275/blazefury-retributer
+	// Adds 2 fire damage to your melee attacks.
+	core.NewItemEffect(BlazefuryRetributer, func(agent core.Agent) {
+		vanilla.BlazefuryTriggerAura(agent.GetCharacter(), 468169, core.SpellSchoolFire, 2)
+	})
+	// https://www.wowhead.com/classic/item=231862/blazefury-retributer
+	core.NewItemEffect(BlazefuryRetributerBloodied, func(agent core.Agent) {
+		vanilla.BlazefuryTriggerAura(agent.GetCharacter(), 468169, core.SpellSchoolFire, 2)
+	})
 
 	// https://www.wowhead.com/classic/item=230794/claw-of-chromaggus
 	// Your offensive spellcasts increase the spell damage of a random school of magic by 50 for 10 sec. (9.5s cooldown)
