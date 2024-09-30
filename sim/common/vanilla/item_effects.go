@@ -118,6 +118,7 @@ const (
 	Thunderfury                    = 230224 // 19019
 	TheUntamedBlade                = 230242 // 19334
 	NatPaglesBrokenReel            = 231271 // 19947
+	TheUntamedBladeShadowflame     = 232566
 )
 
 func init() {
@@ -1895,6 +1896,20 @@ func init() {
 			},
 		})
 	})
+	// https://www.wowhead.com/classic/item=232566/the-untamed-blade
+	itemhelpers.CreateWeaponProcAura(TheUntamedBladeShadowflame, "The Untamed Blade", 0.55, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 23719},
+			Label:    "Untamed Fury",
+			Duration: time.Second * 8,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Strength: 300})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Strength: -300})
+			},
+		})
+	})
 
 	itemhelpers.CreateWeaponProcSpell(ThrashBlade, "Thrash Blade", 1.0, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
@@ -2825,8 +2840,12 @@ func enrageAura446327(character *core.Character) *core.Aura {
 	})
 }
 
-func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool core.SpellSchool, damage float64) *core.Aura {
-	procSpell := character.GetOrRegisterSpell(core.SpellConfig{
+func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool core.SpellSchool, damage float64) {
+	if character.GetSpell(core.ActionID{SpellID: spellID}) != nil {
+		return
+	}
+
+	procSpell := character.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: spellID},
 		SpellSchool:      spellSchool,
 		DefenseType:      core.DefenseTypeMagic,
@@ -2839,8 +2858,8 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 		},
 	})
 
-	return core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:              "Blazefury Trigger",
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:              fmt.Sprintf("Blazefury Trigger (%d)", spellID),
 		Callback:          core.CallbackOnSpellHitDealt,
 		Outcome:           core.OutcomeLanded,
 		ProcMask:          core.ProcMaskMelee,
