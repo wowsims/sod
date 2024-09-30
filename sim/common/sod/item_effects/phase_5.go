@@ -371,7 +371,6 @@ func ClawOfChromaggusEffect(character *core.Character) {
 		if character.HasRuneById(int32(proto.MageRune_RuneBeltFrostfireBolt)) {
 			fireChance, frostChance = 0.25, 0.25
 			arcaneChance, natureChance, shadowChance = 0.50/3, 0.50/3, 0.50/3
-			// Never implemented differently for Spellfrost Bolt
 		} else if character.HasRuneById(int32(proto.MageRune_RuneBeltSpellfrostBolt)) {
 			arcaneChance, frostChance = 0.25, 0.25
 			fireChance, natureChance, shadowChance = 0.50/3, 0.50/3, 0.50/3
