@@ -33,6 +33,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 				},
 			};
 		},
+		(simUI: IndividualSimUI<Spec.SpecProtectionPaladin>) => {
+			return {
+				updateOn: simUI.player.changeEmitter,
+				getContent: () => {
+					if (simUI.player.getSpecOptions().isManuallyTriggeringAutoAttacks == true) {
+						return `You have enabled Manually Triggered Autoattacks, an experimental feature.
+						  This feature simulates perfect execution of storing extra attacks gained through Rekconing,
+							as well as Wildstrike/HoJ/etc. This is an advanced technique that will difficult to execute in practice,
+							and any DPS gains with this feature enabled should be treated as a best-case scenario that may not be realized in a real raid encounter.`;
+					} else {
+						return '';
+					}
+				},
+			};
+		},
 	],
 	// All stats for which EP should be calculated.
 	epStats: [
