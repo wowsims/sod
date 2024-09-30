@@ -118,6 +118,7 @@ const (
 	Thunderfury                    = 230224 // 19019
 	TheUntamedBlade                = 230242 // 19334
 	NatPaglesBrokenReel            = 231271 // 19947
+	TheUntamedBladeShadowflame     = 232566
 )
 
 func init() {
@@ -1883,6 +1884,20 @@ func init() {
 	// Estimated based on data from WoW Armaments Discord
 	// Original proc rate 1.0 lowered to approximately 0.55 in SoD phase 5
 	itemhelpers.CreateWeaponProcAura(TheUntamedBlade, "The Untamed Blade", 0.55, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 23719},
+			Label:    "Untamed Fury",
+			Duration: time.Second * 8,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Strength: 300})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Strength: -300})
+			},
+		})
+	})
+	// https://www.wowhead.com/classic/item=232566/the-untamed-blade
+	itemhelpers.CreateWeaponProcAura(TheUntamedBladeShadowflame, "The Untamed Blade", 0.55, func(character *core.Character) *core.Aura {
 		return character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 23719},
 			Label:    "Untamed Fury",
