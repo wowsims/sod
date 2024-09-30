@@ -10,31 +10,33 @@ import (
 )
 
 const (
-	Heartstriker                 = 230253
-	DrakeTalonCleaver            = 230271 // 19353
-	ClawOfChromaggus             = 230794
-	JekliksCrusher               = 230911
-	ZulianSlicer                 = 230930
-	WillOfArlokk                 = 230939
-	HaldberdOfSmiting            = 230991
-	TigulesHarpoon               = 231272
-	GrileksCarver                = 231273
-	GrileksGrinder               = 231274
-	PitchforkOfMadness           = 231277
-	Stormwrath                   = 231387
-	WrathOfWray                  = 231779
-	LightningsCell               = 231784
-	Windstriker                  = 231817
-	GrileksCarverBloodied        = 231846
-	GrileksGrinderBloodied       = 231847
-	TigulesHarpoonBloodied       = 231849
-	WillOfArlokkBloodied         = 231850
-	JekliksCrusherBloodied       = 231861
-	PitchforkOfMadnessBloodied   = 231864
-	HaldberdOfSmitingBloodied    = 231870
-	ZulianSlicerBloodied         = 231876
-	ClawOfChromaggusShadowflame  = 232557
-	DrakeTalonCleaverShadowflame = 232562
+	Heartstriker                    = 230253
+	DrakeTalonCleaver               = 230271 // 19353
+	ClawOfChromaggus                = 230794
+	JekliksCrusher                  = 230911
+	ZulianSlicer                    = 230930
+	WillOfArlokk                    = 230939
+	HaldberdOfSmiting               = 230991
+	NatPaglesFishTerminator         = 231016
+	TigulesHarpoon                  = 231272
+	GrileksCarver                   = 231273
+	GrileksGrinder                  = 231274
+	PitchforkOfMadness              = 231277
+	Stormwrath                      = 231387
+	WrathOfWray                     = 231779
+	LightningsCell                  = 231784
+	Windstriker                     = 231817
+	GrileksCarverBloodied           = 231846
+	GrileksGrinderBloodied          = 231847
+	NatPaglesFishTerminatorBloodied = 231848
+	TigulesHarpoonBloodied          = 231849
+	WillOfArlokkBloodied            = 231850
+	JekliksCrusherBloodied          = 231861
+	PitchforkOfMadnessBloodied      = 231864
+	HaldberdOfSmitingBloodied       = 231870
+	ZulianSlicerBloodied            = 231876
+	ClawOfChromaggusShadowflame     = 232557
+	DrakeTalonCleaverShadowflame    = 232562
 )
 
 func init() {
@@ -101,6 +103,12 @@ func init() {
 	// Original proc rate 4.0 lowered to 1.5 in SoD phase 5
 	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 1.5, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
 	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusherBloodied, "Jeklik's Crusher", 1.5, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
+
+	// https://www.wowhead.com/classic/item=231016/nat-pagles-fish-terminator
+	// Chance on hit: Zap nearby enemies dealing 175 to 225 damage to them. Will affect up to 4 targets.
+	core.NewItemEffect(NatPaglesFishTerminator, fishTerminatorEffect)
+	// https://www.wowhead.com/classic/item=231848/nat-pagles-fish-terminator
+	core.NewItemEffect(NatPaglesFishTerminatorBloodied, fishTerminatorEffect)
 
 	// https://www.wowhead.com/classic/item=231277/pitchfork-of-madness
 	// +141 Attack Power when fighting Demons.
@@ -468,6 +476,44 @@ func ClawOfChromaggusEffect(character *core.Character) {
 			} else if roll < shadowRangeMax {
 				shadowAura.Activate(sim)
 			}
+		},
+	})
+}
+
+func fishTerminatorEffect(agent core.Agent) {
+	character := agent.GetCharacter()
+
+	results := make([]*core.SpellResult, min(4, character.Env.GetNumTargets()))
+
+	procSpell := character.RegisterSpell(core.SpellConfig{
+		ActionID: core.ActionID{SpellID: 467836},
+		// Same school and defense type as Thunder Clap
+		SpellSchool:      core.SpellSchoolPhysical,
+		DefenseType:      core.DefenseTypeMagic,
+		ProcMask:         core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			for idx := range results {
+				results[idx] = spell.CalcDamage(sim, target, sim.Roll(175, 225), spell.OutcomeMagicHitAndCrit)
+				target = character.Env.NextTargetUnit(target)
+			}
+
+			for _, result := range results {
+				spell.DealDamage(sim, result)
+			}
+		},
+	})
+
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:              "Fish Terminator Trigger",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMeleeMH,
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+		PPM:               1.50, // 1.50 PPM tested on PTR
+		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+			procSpell.Cast(sim, result.Target)
 		},
 	})
 }
