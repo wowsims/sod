@@ -99,63 +99,63 @@ stat_weights_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1130.37677
+  dps: 1130.56408
   tps: 1171.93995
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1178.21861
+  dps: 1178.40592
   tps: 1218.20431
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1169.52495
+  dps: 1169.71361
   tps: 1212.63273
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1157.93481
+  dps: 1158.12212
   tps: 1199.37725
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1130.20952
+  dps: 1130.39682
   tps: 1171.32503
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1162.94275
+  dps: 1163.13005
   tps: 1203.1976
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 1734.01986
+  dps: 1734.20715
   tps: 1924.86118
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 1032.16452
+  dps: 1032.34379
   tps: 1064.34119
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1945.40033
+  dps: 1945.5948
   tps: 1558.35717
  }
 }
@@ -246,7 +246,7 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1678.84637
+  dps: 1679.03841
   tps: 1366.52146
  }
 }

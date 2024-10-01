@@ -394,7 +394,7 @@ stat_weights_results: {
  key: "TestEnhancement-Phase4-Lvl60-StatWeights-Default"
  value: {
   weights: 2.07157
-  weights: 0.20361
+  weights: 0.20369
   weights: 0
   weights: 0
   weights: 0
@@ -411,8 +411,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.94162
-  weights: 26.60824
-  weights: 9.6735
+  weights: 26.60791
+  weights: 9.67513
   weights: 0
   weights: 0
   weights: 0
@@ -443,7 +443,7 @@ stat_weights_results: {
  key: "TestEnhancement-Phase5-Lvl60-StatWeights-Default"
  value: {
   weights: 2.52146
-  weights: 0.98864
+  weights: 0.98876
   weights: 0
   weights: 0
   weights: 0
@@ -460,8 +460,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.99662
-  weights: 26.56841
-  weights: 13.04911
+  weights: 26.56847
+  weights: 13.05048
   weights: 0
   weights: 0
   weights: 0
@@ -1037,70 +1037,70 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1849.47794
+  dps: 1849.67471
   tps: 1875.79395
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1918.07366
+  dps: 1918.27043
   tps: 1943.13934
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1956.08072
+  dps: 1956.2745
   tps: 1982.90661
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1894.62572
+  dps: 1894.82249
   tps: 1921.1968
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1848.4291
+  dps: 1848.62588
   tps: 1875.01903
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1895.23608
+  dps: 1895.43285
   tps: 1920.91075
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 2810.13676
+  dps: 2810.33725
   tps: 2870.68055
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 2755.81179
+  dps: 2756.01393
   tps: 2818.85444
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 1521.68227
+  dps: 1521.86911
   tps: 1555.65418
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3721.81576
+  dps: 3722.01932
   tps: 2657.21696
  }
 }
@@ -1443,77 +1443,77 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3014.34786
+  dps: 3014.55066
   tps: 2149.12888
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1945.13433
+  dps: 1945.33031
   tps: 1961.04784
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 2021.34564
+  dps: 2021.54162
   tps: 2035.95824
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 2072.22355
+  dps: 2072.41791
   tps: 2088.2461
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1993.99775
+  dps: 1994.19373
   tps: 2009.56583
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1944.78047
+  dps: 1944.97645
   tps: 1960.87422
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1991.10622
+  dps: 1991.3022
   tps: 2006.27953
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 3195.99393
+  dps: 3196.20401
   tps: 3243.88992
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 3133.53913
+  dps: 3133.751
   tps: 3183.88531
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 1591.50943
+  dps: 1591.70059
   tps: 1620.21196
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4346.95992
+  dps: 4347.16603
   tps: 3097.73429
  }
 }
@@ -1856,7 +1856,7 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3586.45636
+  dps: 3586.66544
   tps: 2555.03835
  }
 }
