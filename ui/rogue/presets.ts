@@ -289,12 +289,6 @@ export const DefaultTalentsSaber = TalentPresets[Phase.Phase5][2];
 
 export const DefaultTalents = DefaultTalentsAssassin;
 
-export const PresetBuildSaberIEA = PresetUtils.makePresetBuild('Saber Slash IEA', {
-	gear: DefaultGearSaber,
-	talents: P5TalentMutilateSaberslashCTTCIEA,
-	rotation: ROTATION_PRESET_SABER_IEA_P5,
-});
-
 ///////////////////////////////////////////////////////////////////////////
 //                                Encounters
 ///////////////////////////////////////////////////////////////////////////
