@@ -80,10 +80,10 @@ var ItemSetGiantstalkerProwess = core.NewItemSet(core.ItemSet{
 		// Your Mongoose Bite also reduces its target's chance to Dodge by 1% and increases your chance to hit by 1% for 30 sec.
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			
+
 			procBonus := stats.Stats{
-				stats.SpellHit:		1,
-				stats.MeleeHit:     1,
+				stats.SpellHit: 1,
+				stats.MeleeHit: 1,
 			}
 
 			stalkerAura := hunter.RegisterAura(core.Aura{

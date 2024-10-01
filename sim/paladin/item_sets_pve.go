@@ -315,21 +315,22 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
 			paladin := agent.(PaladinAgent).GetPaladin()
+
+			t2Judgement6pcAura := paladin.GetOrRegisterAura(core.Aura{
+				Label:     "Swift Judgement",
+				ActionID:  core.ActionID{SpellID: 467530},
+				Duration:  time.Second * 8,
+				MaxStacks: 5,
+
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+					aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.0 + (float64(oldStacks) * 0.01))
+					aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.0 + (float64(newStacks) * 0.01))
+				},
+			})
+
 			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Retribution 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					t2Judgement6pcAura := paladin.GetOrRegisterAura(core.Aura{
-						Label:     "Swift Judgement",
-						ActionID:  core.ActionID{SpellID: 467530},
-						Duration:  time.Second * 8,
-						MaxStacks: 5,
-
-						OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-							aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.0 + (float64(oldStacks) * 0.01))
-							aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.0 + (float64(newStacks) * 0.01))
-						},
-					})
-
 					originalApplyEffects := paladin.judgement.ApplyEffects
 
 					// Wrap the apply Judgement ApplyEffects with more Effects

@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -1.35323
+  weights: -2.23037
   weights: 0
-  weights: 1.21386
-  weights: 0
-  weights: 0
+  weights: 0.82749
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 13.02962
-  weights: 10.2224
+  weights: 0
+  weights: 0
+  weights: 12.68882
+  weights: 10.58563
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestAffliction-Phase1-Lvl25-AllItems-DeathmistRaiment"
  value: {
-  dps: 127.14306
-  tps: 104.02001
+  dps: 127.14277
+  tps: 104.02084
  }
 }
 dps_results: {
@@ -267,78 +267,78 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1466.14183
-  tps: 1700.27973
+  dps: 1468.46347
+  tps: 1704.48836
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 1290.64359
-  tps: 1466.41987
+  dps: 1287.45869
+  tps: 1463.26225
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1455.19224
-  tps: 1685.58911
+  dps: 1452.05859
+  tps: 1677.9522
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 1994.08044
-  tps: 3968.83875
+  dps: 1995.79641
+  tps: 3961.39606
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 1238.32529
-  tps: 1393.08421
+  dps: 1237.50858
+  tps: 1395.06028
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 1976.71094
-  tps: 3940.1778
+  dps: 1976.7724
+  tps: 3928.99779
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1466.14183
-  tps: 1700.27973
+  dps: 1468.46347
+  tps: 1704.48836
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1638.79406
-  tps: 3278.1879
+  dps: 1643.14514
+  tps: 3290.60963
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1616.44151
-  tps: 3225.40016
+  dps: 1619.30817
+  tps: 3229.97996
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 1992.14926
-  tps: 3968.83875
+  dps: 1993.91348
+  tps: 3961.39606
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 2016.49578
-  tps: 4011.9689
+  dps: 2016.3894
+  tps: 4011.14971
  }
 }
 dps_results: {
@@ -386,7 +386,7 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1967.58015
-  tps: 3905.17213
+  dps: 1973.05036
+  tps: 3918.19344
  }
 }

@@ -40,7 +40,14 @@ func (paladin *Paladin) registerCrusaderStrike() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt: sim.CurrentTime + core.SpellBatchWindow,
+				OnAction: func(s *core.Simulation) {
+					spell.DealDamage(sim, result)
+				},
+			})
 
 			paladin.AddMana(sim, 0.05*paladin.MaxMana(), manaMetrics)
 

@@ -168,10 +168,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		],
 		builds: [
 			Presets.PresetBuildBackstab,
+			Presets.PresetBuildBackstabIEA,
 			Presets.PresetBuildMutilate,
-			Presets.PresetBuildSaber,
 			Presets.PresetBuildMutilateIEA,
-			Presets.PresetBuildSaberIEA,
+			Presets.PresetBuildSaberSlash,
+			Presets.PresetBuildSaberSlashIEA,
 		],
 	},
 
