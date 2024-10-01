@@ -298,18 +298,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.0974
+  weights: 1.0995
   weights: 0
-  weights: 0.837
+  weights: 0.87591
   weights: 0
-  weights: 0.25475
-  weights: 0
-  weights: 0
-  weights: 0.58225
+  weights: 0.26526
   weights: 0
   weights: 0
-  weights: 6.95667
-  weights: 3.28275
+  weights: 0.61065
+  weights: 0
+  weights: 0
+  weights: 7.52003
+  weights: 3.32702
   weights: 0
   weights: 0
   weights: 0
@@ -396,7 +396,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.19734
+  weights: 2.19784
   weights: 0
   weights: 1.731
   weights: 0
@@ -406,8 +406,8 @@ stat_weights_results: {
   weights: 1.1863
   weights: 0
   weights: 0
-  weights: 30.70618
-  weights: 16.1169
+  weights: 30.70512
+  weights: 16.11665
   weights: 0
   weights: 0
   weights: 0
@@ -589,8 +589,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 601.437
-  tps: 505.88737
+  dps: 625.31624
+  tps: 525.02289
  }
 }
 dps_results: {
@@ -680,15 +680,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 596.75114
-  tps: 504.33358
+  dps: 624.30514
+  tps: 527.08711
  }
 }
 dps_results: {
  key: "TestElemental-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1515.21218
-  tps: 1315.48894
+  dps: 1515.21228
+  tps: 1312.20494
  }
 }
 dps_results: {
@@ -848,8 +848,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3226.24581
-  tps: 1972.83162
+  dps: 3226.246
+  tps: 1969.15217
  }
 }
 dps_results: {
@@ -1010,7 +1010,7 @@ dps_results: {
  key: "TestElemental-Phase5-Lvl60-Average-Default"
  value: {
   dps: 4222.71645
-  tps: 2550.60123
+  tps: 2549.82077
  }
 }
 dps_results: {
