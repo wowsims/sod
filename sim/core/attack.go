@@ -165,6 +165,10 @@ func (aa *AutoAttacks) MH() *Weapon {
 
 func (aa *AutoAttacks) SetMH(weapon Weapon) {
 	aa.mh.setWeapon(weapon)
+
+	if aa.mh.extraAttacksAura == nil {
+		aa.mh.extraAttacksAura = aa.mh.unit.GetAuraByID(ActionID{SpellID: 21919})
+	}
 }
 
 func (aa *AutoAttacks) OH() *Weapon {
@@ -269,12 +273,14 @@ func (wa *WeaponAttack) trySwing(sim *Simulation) time.Duration {
 }
 
 func (wa *WeaponAttack) castExtraAttacksStored(sim *Simulation) {
+	if wa.extraAttacksAura != nil {
+		wa.extraAttacksStored = wa.extraAttacksAura.GetStacks()
+		wa.extraAttacksAura.SetStacks(sim, 0)
+	}
+
 	wa.castExtraAttacks(sim, wa.extraAttacksStored, 0)
 	wa.extraAttacksStored = 0
 
-	if wa.extraAttacksAura != nil {
-		wa.extraAttacksAura.SetStacks(sim, 0)
-	}
 }
 
 func (wa *WeaponAttack) castExtraAttacksTriggered(sim *Simulation, moreAttacks bool) {
@@ -458,8 +464,18 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		BonusCoefficient: TernaryFloat64(options.MainHand.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
+
+			autoInProgress := *spell
+
+			baseDamage := autoInProgress.Unit.MHWeaponDamage(sim, autoInProgress.MeleeAttackPower())
+			result := autoInProgress.CalcDamage(sim, target, baseDamage, autoInProgress.OutcomeMeleeWhite)
+
+			StartDelayedAction(sim, DelayedActionOptions{
+				DoAt: sim.CurrentTime + SpellBatchWindow,
+				OnAction: func(s *Simulation) {
+					autoInProgress.DealDamage(sim, result)
+				},
+			})
 		},
 	}
 
@@ -478,8 +494,17 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		BonusCoefficient: TernaryFloat64(options.OffHand.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWhite)
+
+			autoInProgress := *spell
+			baseDamage := autoInProgress.Unit.OHWeaponDamage(sim, autoInProgress.MeleeAttackPower())
+			result := autoInProgress.CalcDamage(sim, target, baseDamage, autoInProgress.OutcomeMeleeWhite)
+
+			StartDelayedAction(sim, DelayedActionOptions{
+				DoAt: sim.CurrentTime + SpellBatchWindow,
+				OnAction: func(s *Simulation) {
+					autoInProgress.DealDamage(sim, result)
+				},
+			})
 		},
 	}
 
@@ -593,6 +618,7 @@ func (aa *AutoAttacks) reset(sim *Simulation) {
 }
 
 func (aa *AutoAttacks) startPull(sim *Simulation) {
+
 	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
 		return
 	}
@@ -732,7 +758,8 @@ func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID Ac
 		attacksText := Ternary(attacks == 1, "attack", "attacks")
 		aa.mh.unit.Log(sim, "gained %d extra main-hand %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
 	}
-	aa.mh.swingAt = sim.CurrentTime + SpellBatchWindow
+
+	aa.mh.swingAt = sim.CurrentTime
 	aa.mh.spell.SetMetricsSplit(1)
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
 	aa.mh.extraAttacksPending += attacks
@@ -744,21 +771,23 @@ func (aa *AutoAttacks) StoreExtraMHAttack(sim *Simulation, attacks int32, action
 	}
 
 	if aa.mh.extraAttacksAura == nil {
-		aa.mh.extraAttacksAura = aa.mh.unit.GetOrRegisterAura(Aura{
-			Label:     "Extra Attacks",          // Tracks Stored Extra Attacks from all sources
-			ActionID:  ActionID{SpellID: 21919}, // Thrash ID
+		aa.mh.extraAttacksAura = aa.mh.unit.GetAuraByID(ActionID{SpellID: 21919})
+	}
+
+	if aa.mh.extraAttacksAura == nil {
+		aa.mh.extraAttacksAura = MakePermanent(aa.mh.unit.GetOrRegisterAura(Aura{
+			Label:     "Extra Attacks (Main Hand)", // Tracks Stored Extra Attacks from all sources
+			ActionID:  ActionID{SpellID: 21919},    // Thrash ID
 			Duration:  NeverExpires,
 			MaxStacks: 4, // Max is 4 extra attacks stored - more can proc after
-		})
+		}))
 	}
 
 	if !aa.mh.extraAttacksAura.IsActive() {
 		aa.mh.extraAttacksAura.Activate(sim)
 	}
 
-	aa.mh.extraAttacksStored = min(aa.mh.extraAttacksStored+attacks, 4) // Max is 4 stored extra attacks
-
-	aa.mh.extraAttacksAura.SetStacks(sim, aa.mh.extraAttacksStored)
+	aa.mh.extraAttacksAura.AddStacks(sim, attacks)
 
 	if sim.Log != nil {
 		aa.mh.unit.Log(sim, "stored %d extra main-hand attacks from %s triggered by %s, total is %d", attacks, actionID, triggerAction, aa.mh.extraAttacksStored)

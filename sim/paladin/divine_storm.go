@@ -46,19 +46,25 @@ func (paladin *Paladin) registerDivineStorm() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			var totalDamageDealt float64
+
 			for idx := range results {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				totalDamageDealt += results[idx].Damage
 				target = sim.Environment.NextTargetUnit(target)
 			}
+
 			for _, result := range results {
-				spell.DealDamage(sim, result)
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
+					OnAction: func(s *core.Simulation) {
+						spell.DealDamage(sim, result)
+						paladin.GainHealth(sim, result.Damage*0.25, healthMetrics)
+					},
+				})
 			}
-			paladin.GainHealth(sim, totalDamageDealt*0.25, healthMetrics)
+
 		},
 	})
-	
+
 	paladin.divineStorm = divineStormSpell
 }

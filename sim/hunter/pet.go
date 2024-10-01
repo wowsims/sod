@@ -428,7 +428,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		MobType: proto.MobType_MobTypeBeast,
 
 		SpecialAbility: Bite,
-		FocusDump: Claw,
+		FocusDump:      Claw,
 
 		Health: 0.95,
 		Armor:  1.03,
@@ -481,7 +481,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		MobType: proto.MobType_MobTypeBeast,
 
 		// SpecialAbility: FuriousHowl,
-		FocusDump:      Bite,
+		FocusDump: Bite,
 
 		Health: 1.00,
 		Armor:  1.05,

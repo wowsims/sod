@@ -298,18 +298,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.06172
+  weights: 1.0974
   weights: 0
-  weights: 0.8759
+  weights: 0.837
   weights: 0
-  weights: 0.26528
-  weights: 0
-  weights: 0
-  weights: 0.61062
+  weights: 0.25475
   weights: 0
   weights: 0
-  weights: 7.50947
-  weights: 3.32738
+  weights: 0.58225
+  weights: 0
+  weights: 0
+  weights: 6.95667
+  weights: 3.28275
   weights: 0
   weights: 0
   weights: 0
@@ -396,9 +396,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.19784
+  weights: 2.19734
   weights: 0
-  weights: 1.73101
+  weights: 1.731
   weights: 0
   weights: 0.54471
   weights: 0
@@ -406,8 +406,8 @@ stat_weights_results: {
   weights: 1.1863
   weights: 0
   weights: 0
-  weights: 30.70512
-  weights: 16.11809
+  weights: 30.70618
+  weights: 16.1169
   weights: 0
   weights: 0
   weights: 0
@@ -491,8 +491,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestElemental-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 197.03751
-  tps: 157.08273
+  dps: 197.0368
+  tps: 157.08202
  }
 }
 dps_results: {
@@ -589,8 +589,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 625.34446
-  tps: 525.04046
+  dps: 601.437
+  tps: 505.88737
  }
 }
 dps_results: {
@@ -680,15 +680,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 624.27409
-  tps: 527.09069
+  dps: 596.75114
+  tps: 504.33358
  }
 }
 dps_results: {
  key: "TestElemental-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1515.2123
-  tps: 1312.20503
+  dps: 1515.21218
+  tps: 1315.48894
  }
 }
 dps_results: {
@@ -848,8 +848,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3226.24562
-  tps: 1969.15207
+  dps: 3226.24581
+  tps: 1972.83162
  }
 }
 dps_results: {
@@ -1009,8 +1009,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4222.71714
-  tps: 2549.82125
+  dps: 4222.71645
+  tps: 2550.60123
  }
 }
 dps_results: {

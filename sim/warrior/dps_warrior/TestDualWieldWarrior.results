@@ -148,8 +148,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.94302
-  weights: 1.01776
+  weights: 0.1642
+  weights: 0.07715
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.58982
-  weights: 7.17749
-  weights: 8.54288
+  weights: 0.71965
+  weights: 8.44477
+  weights: 8.35111
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.08883
-  weights: 1.07902
+  weights: 2.06213
+  weights: 1.4984
   weights: 0
   weights: 0
   weights: 0
@@ -214,9 +214,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.88143
-  weights: 2.92782
-  weights: 24.57755
+  weights: 1.17945
+  weights: 5.54724
+  weights: 24.85866
   weights: 0
   weights: 0
   weights: 0
@@ -246,8 +246,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.70455
-  weights: 1.00876
+  weights: 2.36943
+  weights: 1.67032
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.29532
-  weights: 36.39154
-  weights: 24.80863
+  weights: 0.45228
+  weights: 38.08932
+  weights: 25.51098
   weights: 0
   weights: 0
   weights: 0
@@ -295,15 +295,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-AllItems-BattlegearofHeroism"
  value: {
-  dps: 548.19856
-  tps: 487.19115
+  dps: 549.93761
+  tps: 488.71629
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 608.16526
-  tps: 537.4594
+  dps: 607.36853
+  tps: 536.6699
  }
 }
 dps_results: {
@@ -393,57 +393,57 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 569.57811
-  tps: 504.09767
+  dps: 562.85785
+  tps: 498.46466
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 2639.76655
-  tps: 2287.1778
+  dps: 2640.40383
+  tps: 2285.16758
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 1989.92848
-  tps: 1756.64517
+  dps: 2006.20591
+  tps: 1771.85472
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 2383.14096
-  tps: 2063.07283
+  dps: 2380.76863
+  tps: 2062.39792
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 2336.87499
-  tps: 2025.53882
+  dps: 2343.79433
+  tps: 2030.92792
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 2383.14096
-  tps: 2063.07283
+  dps: 2380.76863
+  tps: 2062.39792
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 2797.62709
-  tps: 2413.38735
+  dps: 2809.42001
+  tps: 2424.62313
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3617.97964
-  tps: 2841.24899
+  dps: 3650.52686
+  tps: 2864.96759
  }
 }
 dps_results: {
@@ -533,57 +533,57 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2840.1998
-  tps: 2237.93399
+  dps: 2860.91955
+  tps: 2251.81103
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 2983.8361
-  tps: 2565.68699
+  dps: 3018.44087
+  tps: 2594.68586
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 2065.16729
-  tps: 1812.30237
+  dps: 2083.31057
+  tps: 1826.4189
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 2525.35944
-  tps: 2175.23509
+  dps: 2528.78496
+  tps: 2176.47446
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 2491.20194
-  tps: 2147.10994
+  dps: 2497.57838
+  tps: 2150.89473
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 2525.35944
-  tps: 2175.23509
+  dps: 2528.78496
+  tps: 2176.47446
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 3198.42156
-  tps: 2744.70651
+  dps: 3219.55159
+  tps: 2763.33934
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4210.88247
-  tps: 3277.233
+  dps: 4247.68499
+  tps: 3309.32956
  }
 }
 dps_results: {
@@ -757,7 +757,7 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3349.01955
-  tps: 2597.91517
+  dps: 3355.53135
+  tps: 2609.97597
  }
 }

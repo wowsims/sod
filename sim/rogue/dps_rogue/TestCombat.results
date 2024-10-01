@@ -99,8 +99,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestCombat-Phase1-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.24298
-  weights: 0.45889
+  weights: 0.24272
+  weights: 0.45075
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.22089
-  weights: 1.66493
-  weights: 1.81572
+  weights: 0.22065
+  weights: 1.85171
+  weights: 1.82161
   weights: 0
   weights: 0
   weights: 0
@@ -148,8 +148,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestCombat-Phase2-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.36319
-  weights: 0.58576
+  weights: 0.36156
+  weights: 0.58814
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.33018
-  weights: 3.66536
-  weights: 3.68081
+  weights: 0.32869
+  weights: 3.8469
+  weights: 3.65987
   weights: 0
   weights: 0
   weights: 0
@@ -197,15 +197,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-AllItems-DarkmantleArmor"
  value: {
-  dps: 259.43493
-  tps: 184.1988
+  dps: 258.17768
+  tps: 183.30616
  }
 }
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 214.78021
-  tps: 152.49395
+  dps: 214.72666
+  tps: 152.45593
  }
 }
 dps_results: {
@@ -295,22 +295,22 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 202.00453
-  tps: 143.42322
+  dps: 202.00594
+  tps: 143.42422
  }
 }
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-AllItems-DarkmantleArmor"
  value: {
-  dps: 265.13611
-  tps: 188.24664
+  dps: 264.57647
+  tps: 187.8493
  }
 }
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 522.66673
-  tps: 371.09338
+  dps: 521.54556
+  tps: 370.29735
  }
 }
 dps_results: {
@@ -400,7 +400,7 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 500.5303
-  tps: 355.37652
+  dps: 497.77303
+  tps: 353.41885
  }
 }
