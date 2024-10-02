@@ -826,7 +826,7 @@ export class Timeline extends ResultComponent {
 			const totalDamage = castLog.totalDamage();
 
 			if (index > 0) {
-				let timeDelta = 0.0;
+				let timeDelta = null;
 
 				for (let i = index - 1; i >= 0; i--) {
 					if (castLog.timestamp != castLogs[i].timestamp) {
@@ -834,7 +834,7 @@ export class Timeline extends ResultComponent {
 						break;
 					}
 				}
-				if (timeDelta < 0.21) {
+				if (timeDelta != null && timeDelta < 0.21) {
 					stackedDamageCount = stackedDamageCount + castLog.damageDealtLogs.length;
 					stackedIconCount = stackedIconCount + 1;
 				} else {
