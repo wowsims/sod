@@ -859,10 +859,10 @@ func init() {
 				Label:    "Chilled (Frostguard)",
 				Duration: time.Second * 5,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed *= .70
+					aura.Unit.AddMoveSpeedModifier(&aura.ActionID, 0.30)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed /= .70
+					aura.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 				},
 			})
 			core.AtkSpeedReductionEffect(aura, 1.25)
@@ -1031,10 +1031,10 @@ func init() {
 				Label:    "Chilled (Hardened Frostguard)",
 				Duration: time.Second * 5,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed *= .70
+					aura.Unit.AddMoveSpeedModifier(&aura.ActionID, 0.30)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed /= .70
+					aura.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 				},
 			})
 			core.AtkSpeedReductionEffect(aura, 1.25)

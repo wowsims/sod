@@ -266,7 +266,7 @@ func (rot *APLRotation) newActionMove(config *proto.APLActionMove) APLActionImpl
 }
 func (action *APLActionMove) IsReady(sim *Simulation) bool {
 	isPrepull := sim.CurrentTime < 0
-	return !action.unit.Moving && (action.moveRange.GetFloat(sim) != action.unit.DistanceFromTarget || isPrepull) && !action.unit.IsCasting(sim)
+	return !action.unit.IsMoving() && (action.moveRange.GetFloat(sim) != action.unit.DistanceFromTarget || isPrepull) && !action.unit.IsCasting(sim)
 }
 func (action *APLActionMove) Execute(sim *Simulation) {
 	moveRange := action.moveRange.GetFloat(sim)

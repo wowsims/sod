@@ -385,10 +385,10 @@ func init() {
 			ActionID: core.ActionID{SpellID: 469148},
 			Duration: time.Second * 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MoveSpeed *= 1.40
+				character.AddMoveSpeedModifier(&aura.ActionID, 1.40)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MoveSpeed /= 1.40
+				character.RemoveMoveSpeedModifier(&aura.ActionID)
 			},
 		})
 	})
