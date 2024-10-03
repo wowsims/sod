@@ -138,9 +138,7 @@ func (wp *WarlockPet) registerFelguardCleaveSpell() {
 				target = sim.Environment.NextTargetUnit(target)
 			}
 			for _, result := range results {
-				if result.Landed() {
-					spell.DealDamage(sim, result)
-				}
+				spell.DealDamage(sim, result)
 			}
 		},
 	})

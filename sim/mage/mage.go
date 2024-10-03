@@ -154,6 +154,9 @@ func (mage *Mage) Initialize() {
 
 func (mage *Mage) Reset(sim *core.Simulation) {
 	mage.BonusFireballDoTAmount = 0
+	for _, orb := range mage.frozenOrbPets {
+		orb.TickCount = 0
+	}
 }
 
 func NewMage(character *core.Character, options *proto.Player) *Mage {
