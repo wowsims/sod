@@ -246,8 +246,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestFeral-Phase1-Lvl25-StatWeights-Default"
  value: {
-  weights: 0.57599
-  weights: 0.51714
+  weights: 0.57675
+  weights: 0.52797
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.26181
-  weights: 2.01408
-  weights: 2.19334
+  weights: 0.26216
+  weights: 2.3139
+  weights: 2.24627
   weights: 0
   weights: 0
   weights: 0
@@ -295,8 +295,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFeral-Phase2-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.94603
-  weights: 0.83019
+  weights: 0.94445
+  weights: 1.02691
   weights: 0
   weights: 0
   weights: 0
@@ -312,9 +312,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.4135
-  weights: 3.97162
-  weights: 5.41439
+  weights: 0.41281
+  weights: 4.83242
+  weights: 5.45266
   weights: 0
   weights: 0
   weights: 0
@@ -344,8 +344,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFeral-Phase3-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.51843
-  weights: 1.61996
+  weights: 1.51638
+  weights: 1.61816
   weights: 0
   weights: 0
   weights: 0
@@ -361,9 +361,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.63907
-  weights: 18.42436
-  weights: 11.77852
+  weights: 0.63821
+  weights: 16.71662
+  weights: 11.8052
   weights: 0
   weights: 0
   weights: 0
@@ -393,8 +393,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFeral-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.10484
-  weights: 2.54993
+  weights: 2.10198
+  weights: 2.29903
   weights: 0
   weights: 0
   weights: 0
@@ -410,9 +410,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.79729
+  weights: 0.79621
   weights: 0
-  weights: 25.01944
+  weights: 24.06366
   weights: 0
   weights: 0
   weights: 0
@@ -442,8 +442,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFeral-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.79044
-  weights: 2.44667
+  weights: 2.78722
+  weights: 2.42429
   weights: 0
   weights: 0
   weights: 0
@@ -459,9 +459,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.91912
+  weights: 0.91806
   weights: 0
-  weights: 22.35809
+  weights: 22.26447
   weights: 0
   weights: 0
   weights: 0
@@ -491,15 +491,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestFeral-Phase1-Lvl25-AllItems-FeralheartRaiment"
  value: {
-  dps: 261.46339
-  tps: 188.16902
+  dps: 261.04499
+  tps: 187.87395
  }
 }
 dps_results: {
  key: "TestFeral-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 264.6443
-  tps: 191.91162
+  dps: 265.05073
+  tps: 192.2046
  }
 }
 dps_results: {
@@ -757,22 +757,22 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 190.09472
-  tps: 138.06188
+  dps: 189.00238
+  tps: 137.07387
  }
 }
 dps_results: {
  key: "TestFeral-Phase2-Lvl40-AllItems-FeralheartRaiment"
  value: {
-  dps: 525.27048
-  tps: 383.60682
+  dps: 523.94947
+  tps: 382.53083
  }
 }
 dps_results: {
  key: "TestFeral-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 803.97821
-  tps: 586.43536
+  dps: 803.37838
+  tps: 586.00606
  }
 }
 dps_results: {
@@ -1030,24 +1030,24 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 464.27842
-  tps: 332.51271
+  dps: 462.78275
+  tps: 331.45192
  }
 }
 dps_results: {
  key: "TestFeral-Phase3-Lvl50-AllItems-FeralheartRaiment"
  value: {
-  dps: 904.82231
-  tps: 656.5816
-  hps: 9.17246
+  dps: 903.59128
+  tps: 655.80994
+  hps: 9.05555
  }
 }
 dps_results: {
  key: "TestFeral-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1885.20208
-  tps: 1348.90915
-  hps: 10.23716
+  dps: 1883.19205
+  tps: 1347.46916
+  hps: 10.23573
  }
 }
 dps_results: {
@@ -1341,107 +1341,107 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1243.51501
-  tps: 886.61256
-  hps: 9.39953
+  dps: 1241.5312
+  tps: 885.22962
+  hps: 9.35676
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-BloodGuard'sCracklingLeather"
  value: {
-  dps: 1315.64511
-  tps: 960.85808
+  dps: 1314.6924
+  tps: 960.21936
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-BloodGuard'sLeather"
  value: {
-  dps: 1363.07144
-  tps: 994.46331
+  dps: 1363.69219
+  tps: 994.99603
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-BloodGuard'sRestoredLeather"
  value: {
-  dps: 1285.05513
-  tps: 939.25444
+  dps: 1285.22161
+  tps: 939.32495
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
  value: {
-  dps: 2038.06723
-  tps: 1464.61022
+  dps: 2039.40306
+  tps: 1465.68663
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-EmeraldDreamkeeperGarb"
  value: {
-  dps: 1291.45587
-  tps: 943.49176
+  dps: 1289.30737
+  tps: 942.03505
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-EmeraldLeathers"
  value: {
-  dps: 1355.7175
-  tps: 989.23257
+  dps: 1356.32766
+  tps: 989.75726
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-EmeraldWatcherVestments"
  value: {
-  dps: 1297.25727
-  tps: 947.67165
+  dps: 1295.93285
+  tps: 946.77113
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-ExiledProphet'sRaiment"
  value: {
-  dps: 1900.92339
-  tps: 1375.55357
+  dps: 1900.20315
+  tps: 1375.01524
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-FeralheartRaiment"
  value: {
-  dps: 1392.18876
-  tps: 1015.0521
+  dps: 1394.39894
+  tps: 1016.7611
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-Knight-Lieutenant'sCracklingLeather"
  value: {
-  dps: 1315.64511
-  tps: 960.85808
+  dps: 1314.6924
+  tps: 960.21936
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-Knight-Lieutenant'sLeather"
  value: {
-  dps: 1363.07144
-  tps: 994.46331
+  dps: 1363.69219
+  tps: 994.99603
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-Knight-Lieutenant'sRestoredLeather"
  value: {
-  dps: 1285.05513
-  tps: 939.25444
+  dps: 1285.22161
+  tps: 939.32495
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-LostWorshipper'sArmor"
  value: {
-  dps: 1955.59533
-  tps: 1415.37833
+  dps: 1954.88611
+  tps: 1415.12921
  }
 }
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3675.28392
-  tps: 2633.04063
+  dps: 3673.23248
+  tps: 2631.56809
  }
 }
 dps_results: {
@@ -1699,106 +1699,106 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2735.24031
-  tps: 1953.65377
+  dps: 2734.27196
+  tps: 1953.02028
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-BloodGuard'sCracklingLeather"
  value: {
-  dps: 1379.92231
-  tps: 1005.73383
+  dps: 1377.59081
+  tps: 1004.04158
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-BloodGuard'sLeather"
  value: {
-  dps: 1435.97847
-  tps: 1045.9299
+  dps: 1431.66558
+  tps: 1042.87063
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-BloodGuard'sRestoredLeather"
  value: {
-  dps: 1349.44556
-  tps: 984.04391
+  dps: 1348.96712
+  tps: 983.6285
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
  value: {
-  dps: 2313.02777
-  tps: 1659.71551
+  dps: 2312.61299
+  tps: 1659.4112
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-EmeraldDreamkeeperGarb"
  value: {
-  dps: 1355.93621
-  tps: 988.90556
+  dps: 1354.75271
+  tps: 987.97939
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-EmeraldLeathers"
  value: {
-  dps: 1428.61663
-  tps: 1040.69367
+  dps: 1424.3206
+  tps: 1037.64572
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-EmeraldWatcherVestments"
  value: {
-  dps: 1362.63793
-  tps: 993.53914
+  dps: 1361.09757
+  tps: 992.41287
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-ExiledProphet'sRaiment"
  value: {
-  dps: 2158.32555
-  tps: 1557.41457
+  dps: 2157.17379
+  tps: 1556.59203
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-FeralheartRaiment"
  value: {
-  dps: 1456.88246
-  tps: 1059.21193
+  dps: 1456.27775
+  tps: 1058.74733
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-Knight-Lieutenant'sCracklingLeather"
  value: {
-  dps: 1379.92231
-  tps: 1005.73383
+  dps: 1377.59081
+  tps: 1004.04158
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLeather"
  value: {
-  dps: 1435.97847
-  tps: 1045.9299
+  dps: 1431.66558
+  tps: 1042.87063
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-Knight-Lieutenant'sRestoredLeather"
  value: {
-  dps: 1349.44556
-  tps: 984.04391
+  dps: 1348.96712
+  tps: 983.6285
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-LostWorshipper'sArmor"
  value: {
-  dps: 2201.49418
-  tps: 1588.89126
+  dps: 2200.18992
+  tps: 1587.84763
  }
 }
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4570.12222
-  tps: 3267.57527
+  dps: 4563.57393
+  tps: 3262.9485
  }
 }
 dps_results: {
@@ -2056,7 +2056,7 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3310.28646
-  tps: 2360.69579
+  dps: 3304.53819
+  tps: 2356.45457
  }
 }

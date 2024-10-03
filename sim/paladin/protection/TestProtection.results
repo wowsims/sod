@@ -50,37 +50,37 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestProtection-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.89252
-  weights: 0.62257
+  weights: 0.89585
+  weights: 0.82124
   weights: 0
-  weights: 0.06713
+  weights: 0.17843
   weights: 0
-  weights: 0.18182
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0.10013
+  weights: 0.18238
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.73392
-  weights: 2.20341
+  weights: 0.10038
   weights: 0
   weights: 0
-  weights: 0.39421
   weights: 0
-  weights: 14.65841
-  weights: 11.6138
+  weights: 2.03945
+  weights: 0.70241
   weights: 0
   weights: 0
+  weights: 0.39576
+  weights: 0
+  weights: 14.59032
+  weights: 10.44954
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.94046
   weights: 0
-  weights: 0.73519
+  weights: 0
+  weights: 1.94782
+  weights: 0
+  weights: 0.73221
   weights: 0
   weights: 0
   weights: 0
@@ -99,78 +99,78 @@ stat_weights_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1291.10358
-  tps: 2320.24642
+  dps: 1293.2581
+  tps: 2321.05645
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-Hero'sBrand-231328"
  value: {
-  dps: 1640.00105
-  tps: 3299.24306
+  dps: 1646.42476
+  tps: 3303.37419
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1291.18323
-  tps: 2320.96396
+  dps: 1293.33781
+  tps: 2321.7822
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1363.67769
-  tps: 2446.16735
+  dps: 1365.9742
+  tps: 2447.00181
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-LibramofDraconicDestruction-221457"
  value: {
-  dps: 1692.17075
-  tps: 3417.95275
+  dps: 1681.7127
+  tps: 3383.66288
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 1481.97522
-  tps: 2973.61396
+  dps: 1482.10265
+  tps: 2971.33009
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 1696.986
-  tps: 3427.32983
+  dps: 1690.86196
+  tps: 3397.83278
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1050.24147
-  tps: 1582.95519
+  dps: 1049.98715
+  tps: 1575.95396
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
  value: {
-  dps: 1407.15495
-  tps: 2847.20644
+  dps: 1402.09168
+  tps: 2825.91897
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-ZandalarFreethinker'sBreastplate-231329"
  value: {
-  dps: 1636.48364
-  tps: 3300.65883
+  dps: 1634.11852
+  tps: 3284.10847
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1672.8074
-  tps: 3364.0018
+  dps: 1676.11789
+  tps: 3362.30779
  }
 }
 dps_results: {
@@ -260,7 +260,7 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1368.26875
-  tps: 2740.98705
+  dps: 1364.6969
+  tps: 2724.91558
  }
 }

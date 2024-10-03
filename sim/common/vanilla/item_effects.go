@@ -859,10 +859,10 @@ func init() {
 				Label:    "Chilled (Frostguard)",
 				Duration: time.Second * 5,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed *= .70
+					aura.Unit.AddMoveSpeedModifier(&aura.ActionID, 0.30)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed /= .70
+					aura.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 				},
 			})
 			core.AtkSpeedReductionEffect(aura, 1.25)
@@ -1031,10 +1031,10 @@ func init() {
 				Label:    "Chilled (Hardened Frostguard)",
 				Duration: time.Second * 5,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed *= .70
+					aura.Unit.AddMoveSpeedModifier(&aura.ActionID, 0.30)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed /= .70
+					aura.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 				},
 			})
 			core.AtkSpeedReductionEffect(aura, 1.25)
@@ -2603,6 +2603,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		actionID := core.ActionID{ItemID: ZandalariHeroBadge}
+		duration := time.Second * 20
 		bonusPerStack := stats.Stats{
 			stats.Armor:   200,
 			stats.Defense: 3,
@@ -2611,7 +2612,7 @@ func init() {
 		buffAura := character.GetOrRegisterAura(core.Aura{
 			Label:     "Fragile Armor",
 			ActionID:  actionID,
-			Duration:  time.Second * 20,
+			Duration:  duration,
 			MaxStacks: 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				aura.SetStacks(sim, aura.MaxStacks)
@@ -2636,6 +2637,10 @@ func init() {
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
 				},
 			},
 
@@ -2708,11 +2713,12 @@ func init() {
 		character := agent.GetCharacter()
 
 		actionID := core.ActionID{ItemID: ZandalariHeroMedallion}
+		duration := time.Second * 20
 
 		buffAura := character.GetOrRegisterAura(core.Aura{
 			ActionID:  actionID,
 			Label:     "Restless Strength",
-			Duration:  time.Second * 20,
+			Duration:  duration,
 			MaxStacks: 20,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				aura.SetStacks(sim, aura.MaxStacks)
@@ -2735,6 +2741,10 @@ func init() {
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
 				},
 			},
 

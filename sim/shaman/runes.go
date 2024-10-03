@@ -409,8 +409,11 @@ func (shaman *Shaman) applyPowerSurge() {
 	statDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.MP5, .15)
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Power Surge",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.EnableDynamicStatDep(sim, statDep)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.DisableDynamicStatDep(sim, statDep)
 		},
 	}))
 }
