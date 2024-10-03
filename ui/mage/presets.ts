@@ -257,9 +257,13 @@ export const DefaultTalentsFrost = TalentPresets[Phase.Phase5][2];
 
 export const DefaultTalents = DefaultTalentsFire;
 
-export const PresetBuildArcane = PresetUtils.makePresetBuild('Arcane', DefaultGearArcane, DefaultTalentsArcane, DefaultAPLs[60][0]);
-export const PresetBuildFire = PresetUtils.makePresetBuild('Fire', DefaultGearFire, DefaultTalentsFire, DefaultAPLs[60][1]);
-export const PresetBuildFrost = PresetUtils.makePresetBuild('Frost', DefaultGearFrost, DefaultTalentsFrost, DefaultAPLs[60][2]);
+export const PresetBuildArcane = PresetUtils.makePresetBuild('Arcane', {
+	gear: DefaultGearArcane,
+	talents: DefaultTalentsArcane,
+	rotation: DefaultAPLs[60][0],
+});
+export const PresetBuildFire = PresetUtils.makePresetBuild('Fire', { gear: DefaultGearFire, talents: DefaultTalentsFire, rotation: DefaultAPLs[60][1] });
+export const PresetBuildFrost = PresetUtils.makePresetBuild('Frost', { gear: DefaultGearFrost, talents: DefaultTalentsFrost, rotation: DefaultAPLs[60][2] });
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options

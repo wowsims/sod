@@ -97,7 +97,7 @@ func TestRetribution(t *testing.T) {
 			Rotation:       core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5ret-twist-4DR-3.5-3.6"),
 			OtherRotations: []core.RotationCombo{core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5ret-twist-4DR-3.7-4.0")},
 			Buffs:          core.FullBuffsPhase5,
-			Consumes:       Phase4Consumes,
+			Consumes:       Phase5Consumes,
 			SpecOptions:    core.SpecOptionsCombo{Label: "P5 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
 
 			ItemFilter:      ItemFilters,
@@ -138,7 +138,7 @@ func TestExodin(t *testing.T) {
 			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5exodin"),
 			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5ret-exodin-6CF2DR"),
 			Buffs:       core.FullBuffsPhase5,
-			Consumes:    Phase4Consumes,
+			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "P5 Seal of Martyrdom Ret", SpecOptions: PlayerOptionsSealofMartyrdom},
 
 			ItemFilter:      ItemFilters,
@@ -178,7 +178,7 @@ func TestShockadin(t *testing.T) {
 			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5shockadin"),
 			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5Shockadin"),
 			Buffs:       core.FullBuffsPhase5,
-			Consumes:    Phase4Consumes,
+			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "P5 Seal of Righteousness Shockadin", SpecOptions: PlayerOptionsSealofRighteousness},
 
 			ItemFilter:      ItemFilters,
@@ -252,6 +252,24 @@ var Phase4Consumes = core.ConsumesCombo{
 		OffHandImbue:      proto.WeaponImbue_ConductiveShieldCoating,
 		StrengthBuff:      proto.StrengthBuff_JujuPower,
 		EnchantedSigil:    proto.EnchantedSigil_FlowingWatersSigil,
+	},
+}
+
+var Phase5Consumes = core.ConsumesCombo{
+	Label: "P5-Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
+		DefaultPotion:     proto.Potions_MajorManaPotion,
+		DragonBreathChili: true,
+		EnchantedSigil:    proto.EnchantedSigil_FlowingWatersSigil,
+		Flask:             proto.Flask_FlaskOfSupremePower,
+		FirePowerBuff:     proto.FirePowerBuff_ElixirOfFirepower,
+		Food:              proto.Food_FoodSmokedDesertDumpling,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_MagnificentTrollshine,
+		SpellPowerBuff:    proto.SpellPowerBuff_GreaterArcaneElixir,
+		StrengthBuff:      proto.StrengthBuff_JujuPower,
 	},
 }
 

@@ -178,7 +178,7 @@ func (warrior *Warrior) registerGladiatorStanceAura() {
 				Period:          time.Second * 2,
 				TickImmediately: true,
 				OnAction: func(sim *core.Simulation) {
-					if warrior.GladiatorStanceAura.IsActive() && warrior.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield {
+					if warrior.GladiatorStanceAura.IsActive() && warrior.PseudoStats.CanBlock {
 						if !gladStanceDamageAura.IsActive() {
 							gladStanceDamageAura.Activate(sim)
 						}

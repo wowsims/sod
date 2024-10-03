@@ -344,13 +344,13 @@ var ItemSetImmoveableWrath = core.NewItemSet(core.ItemSet{
 			warrior := agent.(WarriorAgent).GetWarrior()
 
 			flurryAura := warrior.makeFlurryAura(5)
-			// The consumption trigger may not exist if the Shaman doesn't talent into Flurry
+			// The consumption trigger may not exist if the Warrior doesn't talent into Flurry
 			warrior.makeFlurryConsumptionTrigger(flurryAura)
 
 			core.MakePermanent(warrior.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Warrior - Protection 4P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellCode == SpellCode_WarriorRevenge && result.Landed() {
+					if spell.SpellCode == SpellCode_WarriorRevenge {
 						flurryAura.Activate(sim)
 						flurryAura.SetStacks(sim, 3)
 					}

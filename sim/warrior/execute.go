@@ -60,7 +60,11 @@ func (warrior *Warrior) registerExecuteSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			extraRage := spell.Unit.CurrentRage()
 			warrior.SpendRage(sim, extraRage, rageMetrics)
-			rageMetrics.Events--
+			// We must count this rage event if the spell itself cost 0,
+			// otherwise we could end up with 0 events even though rage was spent.
+			if spell.Cost.GetCurrentCost() > 0 {
+				rageMetrics.Events--
+			}
 
 			baseDamage := flatDamage + convertedRageDamage*(extraRage)
 

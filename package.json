@@ -1,25 +1,25 @@
 {
-    "name": "sod",
-    "version": "0.1.0",
-    "private": true,
-    "scripts": {
-        "build": "bazel build //...",
-        "test": "bazel test //...",
-        "format": "npm run lint:fix && npm run prettier:fix",
-        "lint": "npm run lint:js && npm run lint:css",
-        "lint:fix": "npm run lint:js:fix && npm run lint:css:fix",
-        "lint:js": "npx eslint \"./ui/**/*.{js,jsx,ts,tsx}\"",
-        "lint:js:fix": "npm run lint:js -- --fix",
-        "lint:css": "stylelint \"./ui/**/*.scss\"",
-        "lint:css:fix": "npm run lint:css -- --fix",
-        "lint:json": "npx eslint \"./{ui,jsonschema}/**/*.json\"",
-        "lint:json:fix": "npm run lint:json -- --fix",
-        "prettier": "npx prettier \"./ui/**/*.{js,jsx,ts,tsx,scss,css,json}\" --check",
-        "prettier:fix": "npm run prettier -- --write",
-        "type-check": "tsc --noEmit"
-    },
-    "dependencies": {
-        "@popperjs/core": "^2.11.6",
+	"name": "sod",
+	"version": "0.1.0",
+	"private": true,
+	"scripts": {
+		"build": "bazel build //...",
+		"test": "bazel test //...",
+		"format": "npm run lint:fix && npm run prettier:fix",
+		"lint": "npm run lint:js && npm run lint:css",
+		"lint:fix": "npm run lint:js:fix && npm run lint:css:fix",
+		"lint:js": "npx eslint \"./ui/**/*.{js,jsx,ts,tsx}\"",
+		"lint:js:fix": "npm run lint:js -- --fix",
+		"lint:css": "stylelint \"./ui/**/*.scss\"",
+		"lint:css:fix": "npm run lint:css -- --fix",
+		"lint:json": "npx eslint \"./{ui,jsonschema}/**/*.json\"",
+		"lint:json:fix": "npm run lint:json -- --fix",
+		"prettier": "npx prettier \"./ui/**/*.{js,jsx,ts,tsx,scss,css,json}\" --check",
+		"prettier:fix": "npm run prettier -- --write",
+		"type-check": "tsc --noEmit"
+	},
+	"dependencies": {
+		"@popperjs/core": "^2.11.6",
 		"@types/golang-wasm-exec": "^1.15.2",
 		"@types/pako": "^2.0.0",
 		"bootstrap": "^5.3.0",
@@ -28,13 +28,13 @@
 		"tippy.js": "^6.3.7",
 		"tsx-vanilla": "^1.0.0",
 		"uuid": "^9.0.1"
-    },
-    "devDependencies": {
-        "@protobuf-ts/plugin": "2.9.1",
-        "@protobuf-ts/plugin-framework": "2.9.1",
-        "@protobuf-ts/protoc": "2.9.1",
-        "@protobuf-ts/runtime": "2.9.1",
-        "@types/bootstrap": "^5.2.0",
+	},
+	"devDependencies": {
+		"@protobuf-ts/plugin": "2.9.1",
+		"@protobuf-ts/plugin-framework": "2.9.1",
+		"@protobuf-ts/protoc": "2.9.1",
+		"@protobuf-ts/runtime": "2.9.1",
+		"@types/bootstrap": "^5.2.0",
 		"@types/eslint": "^8.56.10",
 		"@types/glob": "^8.0.3",
 		"@types/node": "^18.16.1",
@@ -61,5 +61,5 @@
 		"typescript-formatter": "^7.2.2",
 		"vite": "^5.0.0",
 		"vite-plugin-checker": "^0.6.4"
-    }
+	}
 }
