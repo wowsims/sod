@@ -2347,6 +2347,9 @@ func ApplySpiritOfZandalar(unit *Unit) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Spirit of Zandalar",
 		ActionID: ActionID{SpellID: 24425},
+		OnInit: func(aura *Aura, sim *Simulation) {
+			unit.AddMoveSpeedModifier(&aura.ActionID, 1.10)
+		},
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
