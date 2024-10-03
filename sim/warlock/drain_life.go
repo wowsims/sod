@@ -29,7 +29,16 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 	baseDamage *= 1 + warlock.shadowMasteryBonus() + 0.02*float64(warlock.Talents.ImprovedDrainLife)
 
 	actionID := core.ActionID{SpellID: spellId}
-	healthMetrics := warlock.NewHealthMetrics(actionID)
+
+	healingSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    actionID.WithTag(1),
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskSpellHealing,
+		Flags:       core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 0,
+	})
 
 	spellConfig := core.SpellConfig{
 		ActionID:    actionID,
@@ -81,7 +90,8 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 				if hasMasterChannelerRune {
 					health *= 1.5
 				}
-				warlock.GainHealth(sim, health, healthMetrics)
+
+				healingSpell.CalcAndDealHealing(sim, healingSpell.Unit, health, healingSpell.OutcomeHealing)
 			},
 		},
 

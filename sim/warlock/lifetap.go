@@ -6,10 +6,15 @@ import (
 
 const LifeTapRanks = 6
 
+var LifeTapSpellId = [LifeTapRanks + 1]int32{0, 1454, 1455, 1456, 11687, 11688, 11689}
+
+var LifeTapBaseDamage = [LifeTapRanks + 1]float64{0, 30, 75, 140, 220, 310, 424}
+
 func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
-	spellId := [LifeTapRanks + 1]int32{0, 1454, 1455, 1456, 11687, 11688, 11689}[rank]
-	baseDamage := [LifeTapRanks + 1]float64{0, 30, 75, 140, 220, 310, 424}[rank]
+	spellId := LifeTapSpellId[rank]
+	baseDamage := LifeTapBaseDamage[rank]
 	spellCoef := [LifeTapRanks + 1]float64{0, 0.68, 0.8, 0.8, 0.8, 0.8, 0.8}[rank]
+
 	level := [LifeTapRanks + 1]int{0, 6, 16, 26, 36, 46, 56}[rank]
 
 	actionID := core.ActionID{SpellID: spellId}
@@ -22,9 +27,10 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 	return core.SpellConfig{
 		ActionID:      actionID,
 		SpellSchool:   core.SpellSchoolShadow,
+		SpellCode:     SpellCode_WarlockLifeTap,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagAffliction,
+		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagAffliction,
 		RequiredLevel: level,
 		Rank:          rank,
 
@@ -40,17 +46,17 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			var result *core.SpellResult
-			if warlock.IsTanking() {
-				result = spell.CalcAndDealDamage(sim, spell.Unit, baseDamage, spell.OutcomeMagicCrit)
-			} else {
-				result = spell.CalcDamage(sim, spell.Unit, baseDamage, spell.OutcomeMagicCrit)
-			}
+			result := spell.CalcDamage(sim, spell.Unit, baseDamage, spell.OutcomeAlwaysHit)
 			restore := result.Damage
+
+			if warlock.IsTanking() {
+				spell.DealDamage(sim, result)
+			}
 
 			if warlock.MetamorphosisAura != nil && warlock.MetamorphosisAura.IsActive() {
 				restore *= 2
 			}
+
 			warlock.AddMana(sim, restore, manaMetrics)
 			if warlock.ActivePet != nil {
 				warlock.ActivePet.AddMana(sim, restore, warlock.ActivePet.LifeTapManaMetrics)
