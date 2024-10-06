@@ -17,6 +17,16 @@ func (warlock *Warlock) getDeathCoilBaseConfig(rank int) core.SpellConfig {
 
 	baseDamage *= 1 + warlock.shadowMasteryBonus()
 
+	healingSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellId}.WithTag(1),
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskSpellHealing,
+		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 0,
+	})
+
 	return core.SpellConfig{
 		SpellCode:     SpellCode_WarlockDeathCoil,
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -51,6 +61,9 @@ func (warlock *Warlock) getDeathCoilBaseConfig(rank int) core.SpellConfig {
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealDamage(sim, results)
+				if results.Landed() {
+					healingSpell.CalcAndDealHealing(sim, healingSpell.Unit, results.Damage, healingSpell.OutcomeHealing)
+				}
 			})
 		},
 	}
