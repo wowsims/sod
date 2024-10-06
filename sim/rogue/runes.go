@@ -160,7 +160,7 @@ func (rogue *Rogue) registerHonorAmongThieves() {
 
 func (rogue *Rogue) tryHonorAmongThievesProc(sim *core.Simulation, icd core.Cooldown, metrics *core.ResourceMetrics) {
 	if icd.IsReady(sim) {
-		rogue.AddComboPoints(sim, 1, metrics)
+		rogue.AddComboPointsIgnoreTarget(sim, 1, metrics)
 		icd.Use(sim)
 	}
 }

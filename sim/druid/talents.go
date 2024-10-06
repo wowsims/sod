@@ -221,7 +221,7 @@ func (druid *Druid) applyBloodFrenzy() {
 				spell.Flags.Matches(SpellFlagBuilder) &&
 				result.Outcome.Matches(core.OutcomeCrit) &&
 				sim.Proc(procChance, "Blood Frenzy") {
-				druid.AddComboPoints(sim, 1, cpMetrics)
+				druid.AddComboPoints(sim, 1, result.Target, cpMetrics)
 			}
 		},
 	}))

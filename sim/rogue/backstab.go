@@ -70,7 +70,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 				if hasCutthroatRune {
 					rogue.rollCutthroat(sim)
 				}

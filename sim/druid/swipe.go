@@ -112,7 +112,7 @@ func (druid *Druid) registerSwipeCatSpell() {
 			for i := 0; i < len(sim.Encounter.TargetUnits); i++ {
 				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				if i == 0 && result.Landed() {
-					druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+					druid.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 				}
 				aoeTarget = sim.Environment.NextTargetUnit(aoeTarget)
 			}
