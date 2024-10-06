@@ -2638,10 +2638,6 @@ func init() {
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
 				},
-				SharedCD: core.Cooldown{
-					Timer:    character.GetOffensiveTrinketCD(),
-					Duration: duration,
-				},
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -2662,6 +2658,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		actionID := core.ActionID{ItemID: ZandalariHeroCharm}
+		duration := time.Second * 20
 		bonusPerStack := stats.Stats{
 			stats.SpellDamage:  17,
 			stats.HealingPower: 34,
@@ -2670,7 +2667,7 @@ func init() {
 		buffAura := character.GetOrRegisterAura(core.Aura{
 			ActionID:  actionID,
 			Label:     "Unstable Power",
-			Duration:  time.Second * 20,
+			Duration:  duration,
 			MaxStacks: 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				aura.SetStacks(sim, aura.MaxStacks)
@@ -2695,6 +2692,10 @@ func init() {
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
 				},
 			},
 

@@ -129,25 +129,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatStrength]: 2.31,
-				[Stat.StatAgility]: 14.7,
+				[Stat.StatStrength]: 3.23,
+				[Stat.StatAgility]: 18.57,
 				[Stat.StatStamina]: 0.0,
-				[Stat.StatIntellect]: 0.02,
-				[Stat.StatSpellPower]: 0.4,
-				[Stat.StatHolyPower]: 0.22,
-				[Stat.StatSpellHit]: 4.92,
-				[Stat.StatSpellCrit]: 1.81,
+				[Stat.StatIntellect]: 0.05,
+				[Stat.StatSpellPower]: 0.38,
+				[Stat.StatHolyPower]: 0.29,
+				[Stat.StatSpellHit]: 8.2,
+				[Stat.StatSpellCrit]: 3.35,
 				[Stat.StatAttackPower]: 1.0,
 				[Stat.StatMeleeHit]: 0.0,
-				[Stat.StatMeleeCrit]: 27.78,
-				[Stat.StatMeleeHaste]: 22.6,
+				[Stat.StatMeleeCrit]: 39.75,
+				[Stat.StatMeleeHaste]: -10.92,
 				[Stat.StatMana]: 0.0,
 				[Stat.StatArmor]: 1.0,
-				[Stat.StatDefense]: 25.89,
-				[Stat.StatBlock]: 13.64,
-				[Stat.StatBlockValue]: 1.93,
-				[Stat.StatDodge]: 213.3,
-				[Stat.StatParry]: 212.61,
+				[Stat.StatDefense]: 29.97,
+				[Stat.StatBlock]: 0.0,
+				[Stat.StatBlockValue]: 17.72,
+				[Stat.StatDodge]: 219.45,
+				[Stat.StatParry]: 217.72,
 				[Stat.StatHealth]: 0.0,
 				[Stat.StatArcaneResistance]: 0.0,
 				[Stat.StatFireResistance]: 0.0,
@@ -158,8 +158,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 				[Stat.StatHealingPower]: 0.0,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.33,
-				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 3.33,
+				[PseudoStat.PseudoStatMainHandDps]: 10.12,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 0.0,
 			},
 		),
 		// Default consumes settings.
@@ -212,7 +212,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Preset talents that the user can quickly select.
 		talents: [...Presets.TalentPresets[Phase.Phase5], ...Presets.TalentPresets[Phase.Phase4]],
 		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase4]],
+		gear: [...Presets.GearPresets[Phase.Phase4], ...Presets.GearPresets[Phase.Phase5]],
 	},
 
 	autoRotation: player => {
@@ -237,7 +237,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 			defaultGear: {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase4][0].gear,
+					1: Presets.GearPresets[Phase.Phase5][0].gear,
 				},
 				[Faction.Horde]: {},
 			},

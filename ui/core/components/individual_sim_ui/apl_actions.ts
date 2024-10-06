@@ -657,7 +657,7 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		label: 'Cast Primary Seal',
 		submenu: ['Paladin'],
 		shortDescription: "Casts the Paladin's designated primary seal spell.",
-		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec == Spec.SpecRetributionPaladin,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec == Spec.SpecRetributionPaladin || player.spec == Spec.SpecProtectionPaladin,
 		newValue: () => APLActionCastPaladinPrimarySeal.create({}),
 		fields: [],
 	}),
