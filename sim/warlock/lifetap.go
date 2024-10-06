@@ -41,12 +41,25 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			var result *core.SpellResult
-			if warlock.IsTanking() {
-				result = spell.CalcAndDealDamage(sim, spell.Unit, baseDamage, spell.OutcomeMagicCrit)
-			} else {
+
+			hasWickedNemesis2P := warlock.hasWickedNemesis2P
+			restore := 0.0
+			if hasWickedNemesis2P && warlock.CurrentTarget != nil {
+				// Calculate restore before calculating damage to the target
 				result = spell.CalcDamage(sim, spell.Unit, baseDamage, spell.OutcomeMagicCrit)
+				restore = result.Damage
+				// Deal 50% of Life Tap's normal damage to the target
+				damage := (baseDamage * spell.DamageMultiplier) * 0.5
+				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			} else if !hasWickedNemesis2P && warlock.IsTanking() {
+				// Original behavior for when the Warlock is tanking
+				result = spell.CalcAndDealDamage(sim, spell.Unit, baseDamage, spell.OutcomeMagicCrit)
+				restore = result.Damage
+			} else {
+				// Calculate damage without dealing it (for mana restoration)
+				result = spell.CalcDamage(sim, spell.Unit, baseDamage, spell.OutcomeMagicCrit)
+				restore = result.Damage
 			}
-			restore := result.Damage
 
 			if warlock.MetamorphosisAura != nil && warlock.MetamorphosisAura.IsActive() {
 				restore *= 2
