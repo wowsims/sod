@@ -302,7 +302,7 @@ var ItemSetWickedNemesis = core.NewItemSet(core.ItemSet{
 				ActionID:    core.ActionID{SpellID: 468062},
 				SpellSchool: core.SpellSchoolPhysical,
 				ProcMask:    core.ProcMaskSpellHealing,
-				Flags:       core.SpellFlagPassiveSpell,
+				Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
 
 				DamageMultiplier: 1,
 				ThreatMultiplier: 0,

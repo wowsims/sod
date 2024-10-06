@@ -21,7 +21,7 @@ func (warlock *Warlock) getDeathCoilBaseConfig(rank int) core.SpellConfig {
 		ActionID:    core.ActionID{SpellID: spellId}.WithTag(1),
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 0,

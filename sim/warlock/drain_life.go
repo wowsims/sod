@@ -34,7 +34,7 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 		ActionID:    actionID.WithTag(1),
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 0,
