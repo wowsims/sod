@@ -39,6 +39,12 @@
 		},
 		{
 			"action": {
+				"condition": { "cmp": { "op": "OpGt", "lhs": { "currentSealRemainingTime": {} }, "rhs": { "const": { "val": "0s" } } } },
+				"castSpell": { "spellId": { "spellId": 20271 } }
+			}
+		},
+		{
+			"action": {
 				"condition": { "cmp": { "op": "OpLe", "lhs": { "currentSealRemainingTime": {} }, "rhs": { "const": { "val": "1.5s" } } } },
 				"castPaladinPrimarySeal": {}
 			}
@@ -46,8 +52,7 @@
 		{ "action": { "castSpell": { "spellId": { "spellId": 20928, "rank": 3 } } } },
 		{ "action": { "castSpell": { "spellId": { "spellId": 407669 } } } },
 		{ "action": { "castSpell": { "spellId": { "spellId": 407632 } } } },
-		{ "action": { "castSpell": { "spellId": { "spellId": 440658 } } } },
 		{ "action": { "castSpell": { "spellId": { "spellId": 415073 } } } },
-		{ "action": { "strictSequence": { "actions": [{ "castSpell": { "spellId": { "spellId": 20271 } } }, { "castPaladinPrimarySeal": {} }] } } }
+		{ "action": { "castSpell": { "spellId": { "spellId": 440658 } } } }
 	]
 }
