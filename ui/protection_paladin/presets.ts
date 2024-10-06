@@ -2,6 +2,8 @@ import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
+	Alcohol,
+	ArmorElixir,
 	AttackPowerBuff,
 	Conjured,
 	Consumes,
@@ -11,6 +13,7 @@ import {
 	FirePowerBuff,
 	Flask,
 	Food,
+	HealthElixir,
 	IndividualBuffs,
 	Potions,
 	Profession,
@@ -24,6 +27,7 @@ import {
 } from '../core/proto/common.js';
 import { PaladinAura, PaladinSeal, Blessings, PaladinOptions as ProtectionPaladinOptions } from '../core/proto/paladin.js';
 import { SavedTalents } from '../core/proto/ui.js';
+import APLP5ProtJson from './apls/p5prot.apl.json';
 import APLP4ProtJson from './apls/p4prot.apl.json';
 import Phase4ProtGearJson from './gear_sets/p4prot.gear.json';
 import Phase5ProtGearJson from './gear_sets/p5prot.gear.json';
@@ -47,24 +51,25 @@ export const GearPresets = {
 	[Phase.Phase5]: [Phase4ProtGear, Phase5ProtGear],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase4][0];
+export const DefaultGear = GearPresets[Phase.Phase5][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
+export const APLP5Prot = PresetUtils.makePresetAPLRotation('P5 Prot', APLP5ProtJson);
 export const APLP4Prot = PresetUtils.makePresetAPLRotation('P4 Prot', APLP4ProtJson);
 
 export const APLPresets = {
 	[Phase.Phase1]: [],
 	[Phase.Phase2]: [],
 	[Phase.Phase3]: [],
-	[Phase.Phase4]: [APLP4Prot],
-	[Phase.Phase5]: [],
+	[Phase.Phase4]: [APLP4Prot, APLP5Prot],
+	[Phase.Phase5]: [APLP4Prot, APLP5Prot],
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
-	60: APLPresets[Phase.Phase4][0],
+	60: APLPresets[Phase.Phase5][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -81,15 +86,22 @@ export const P4ProtTalents = {
 	}),
 };
 
+export const P5ProtTalents = {
+	name: 'P5 Prot',
+	data: SavedTalents.create({
+		talentsString: '-053020335001551-0520335',
+	}),
+};
+
 export const TalentPresets = {
 	[Phase.Phase1]: [],
 	[Phase.Phase2]: [],
 	[Phase.Phase3]: [],
 	[Phase.Phase4]: [P4ProtTalents],
-	[Phase.Phase5]: [],
+	[Phase.Phase5]: [P5ProtTalents],
 };
 
-export const DefaultTalents = TalentPresets[Phase.Phase4][0];
+export const DefaultTalents = TalentPresets[Phase.Phase5][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
@@ -104,29 +116,28 @@ export const DefaultOptions = ProtectionPaladinOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
-	boglingRoot: false,
-	defaultPotion: Potions.MajorManaPotion,
+	healthElixir: HealthElixir.ElixirOfFortitude,
+	armorElixir: ArmorElixir.ElixirOfSuperiorDefense,
+	defaultPotion: Potions.GreaterStoneshieldPotion,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
-	food: Food.FoodBlessSunfruit,
-	flask: Flask.FlaskOfSupremePower,
+	food: Food.FoodTenderWolfSteak,
+	flask: Flask.FlaskOfTheTitans,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
-	fillerExplosive: Explosive.ExplosiveUnknown,
+	fillerExplosive: Explosive.ExplosiveDenseDynamite,
 	mainHandImbue: WeaponImbue.WildStrikes,
+	offHandImbue: WeaponImbue.MagnificentTrollshine,
 
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultConjured: Conjured.ConjuredDemonicRune,
+	alcohol: Alcohol.AlcoholRumseyRumBlackLabel,
 });
 
 export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfMight: TristateEffect.TristateEffectImproved,
-	blessingOfKings: true,
 	blessingOfWisdom: TristateEffect.TristateEffectImproved,
 	fengusFerocity: true,
-	mightOfStormwind: true,
 	moldarsMoxie: true,
 	rallyingCryOfTheDragonslayer: true,
 	saygesFortune: SaygesFortune.SaygesDamage,
@@ -134,21 +145,19 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 	songflowerSerenade: true,
 	spiritOfZandalar: true,
 	valorOfAzeroth: true,
-	warchiefsBlessing: true,
+	mightOfStormwind: true,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
+	hornOfLordaeron: true,
+	powerWordFortitude: TristateEffect.TristateEffectImproved,
 	arcaneBrilliance: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
-	fireResistanceAura: true,
-	fireResistanceTotem: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	sanctityAura: true,
-	leaderOfThePack: true,
 	demonicPact: 110,
 	aspectOfTheLion: true,
-	moonkinAura: true,
 	vampiricTouch: 300,
 });
 
@@ -157,7 +166,7 @@ export const DefaultDebuffs = Debuffs.create({
 	homunculi: 70, // 70% average uptime default
 	faerieFire: true,
 	giftOfArthas: true,
-	sunderArmor: true,
+	exposeArmor: TristateEffect.TristateEffectImproved,
 	judgementOfWisdom: true,
 	judgementOfTheCrusader: TristateEffect.TristateEffectImproved,
 	improvedFaerieFire: true,
