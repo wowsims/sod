@@ -210,7 +210,7 @@ func (eb *energyBar) AddComboPointsIgnoreTarget(sim *Simulation, pointsToAdd int
 	metrics.AddEvent(float64(pointsToAdd), float64(newComboPoints-eb.comboPoints))
 
 	if sim.Log != nil {
-		eb.unit.Log(sim, "Gained %d combo points from %s on target %s (%d --> %d)", pointsToAdd, metrics.ActionID, eb.comboPoints, eb.comboPointTarget.Label, newComboPoints)
+		eb.unit.Log(sim, "Gained %d combo points on %s from %s (%d --> %d)", pointsToAdd, eb.comboPointTarget.LogLabel(), metrics.ActionID, eb.comboPoints, newComboPoints)
 	}
 
 	eb.comboPoints = newComboPoints
@@ -237,15 +237,16 @@ func (eb *energyBar) AddComboPoints(sim *Simulation, pointsToAdd int32, target *
 		metrics.AddEvent(float64(pointsToAdd), float64(newComboPoints))
 
 		if sim.Log != nil {
-			eb.unit.Log(sim, "Lost %d combo points swapping off target %s (%d --> %d)", pointsToAdd, eb.comboPointTarget.Label, eb.comboPoints, 0)
-			eb.unit.Log(sim, "Gained %d combo points from %s on target %s (%d --> %d)", pointsToAdd, metrics.ActionID, target.Label, 0, newComboPoints)
+			// TODO there should probably be some separate combo point metric to capture loss
+			eb.unit.Log(sim, "Spent %d combo points on %s from %s (%d --> %d) (target swap)", pointsToAdd, eb.comboPointTarget.LogLabel(), metrics.ActionID, eb.comboPoints, 0)
+			eb.unit.Log(sim, "Gained %d combo points on %s from %s (%d --> %d)", pointsToAdd, target.LogLabel(), metrics.ActionID, 0, newComboPoints)
 		}
 	} else {
 		newComboPoints = min(eb.comboPoints+pointsToAdd, 5)
 		metrics.AddEvent(float64(pointsToAdd), float64(newComboPoints-eb.comboPoints))
 
 		if sim.Log != nil {
-			eb.unit.Log(sim, "Gained %d combo points from %s on target %s (%d --> %d)", pointsToAdd, metrics.ActionID, target.Label, eb.comboPoints, newComboPoints)
+			eb.unit.Log(sim, "Gained %d combo points on %s from %s (%d --> %d)", pointsToAdd, target.LogLabel(), metrics.ActionID, eb.comboPoints, newComboPoints)
 		}
 	}
 
