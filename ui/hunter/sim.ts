@@ -159,7 +159,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [Presets.PresetBuildWeave, Presets.PresetBuildRangedMM, Presets.PresetBuildRangedSV],
+		builds: [Presets.PresetBuildRangedMM, Presets.PresetBuildRangedSV, Presets.PresetBuildMeleeBM, Presets.PresetBuildMeleeSV, Presets.PresetBuildWeave],
 	},
 
 	autoRotation: player => {
