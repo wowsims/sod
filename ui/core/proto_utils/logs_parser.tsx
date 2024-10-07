@@ -762,11 +762,7 @@ export class ResourceChangedLog extends SimLog {
 			const verb = isHealth ? (this.isSpend ? 'Lost' : 'Recovered') : this.isSpend ? 'Spent' : 'Gained';
 			const resourceName = resourceNames.get(this.resourceType)!;
 			const resourceClass = `resource-${resourceName.replace(/\s/g, '-').toLowerCase()}`;
-
-			if (this.resourceType == ResourceType.ResourceTypeComboPoints) {
-				console.log(this) 
-			}
-
+			
 			return (
 				<>
 					{this.toPrefix(includeTimestamp)} {verb}{' '}
