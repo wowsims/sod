@@ -69,7 +69,7 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 				spell.DealDamage(sim, result)
 
 				if result.Landed() {
-					rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+					rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 				} else {
 					spell.IssueRefund(sim)
 				}

@@ -52,7 +52,7 @@ func (rogue *Rogue) applyRuthlessness() {
 	cpMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 14161})
 	rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
 		if sim.Proc(procChance, "Ruthlessness") {
-			rogue.AddComboPoints(sim, 1, cpMetrics)
+			rogue.AddComboPointsIgnoreTarget(sim, 1, cpMetrics)
 		}
 	})
 }
@@ -176,7 +176,7 @@ func (rogue *Rogue) applySealFate() {
 			}
 
 			if icd.IsReady(sim) && sim.Proc(procChance, "Seal Fate") {
-				rogue.AddComboPoints(sim, 1, cpMetrics)
+				rogue.AddComboPoints(sim, 1, result.Target, cpMetrics)
 				icd.Use(sim)
 			}
 		},
@@ -202,7 +202,7 @@ func (rogue *Rogue) applyInitiative() {
 			if spell == rogue.Garrote || spell == rogue.Ambush {
 				if result.Landed() {
 					if sim.Proc(procChance, "Initiative") {
-						rogue.AddComboPoints(sim, 1, cpMetrics)
+						rogue.AddComboPoints(sim, 1, result.Target, cpMetrics)
 					}
 				}
 			}
@@ -314,15 +314,15 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			isFoKOH := false
-			
+
 			if spell.ActionID.SpellID == 409240 && spell.ActionID.Tag == 2 {
 				isFoKOH = true
 			}
-			
+
 			if sim.GetNumTargets() < 2 {
 				return
 			}
-						
+
 			if result.Damage == 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) || isFoKOH {
 				return
 			}

@@ -65,7 +65,7 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)
 			}

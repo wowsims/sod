@@ -32,8 +32,8 @@ func (rogue *Rogue) registerPremeditation() {
 			return rogue.IsStealthed()
 		},
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			rogue.AddComboPoints(sim, 2, comboMetrics)
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			rogue.AddComboPoints(sim, 2, target, comboMetrics)
 		},
 	})
 
