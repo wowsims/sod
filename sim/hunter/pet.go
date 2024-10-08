@@ -331,8 +331,8 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Name:    "Bat",
 		MobType: proto.MobType_MobTypeBeast,
 
-		//SpecialAbility: SonicBlast,
-		FocusDump: Claw,
+		SpecialAbility: Bite,
+		FocusDump: Screech,
 
 		Health: 1.00,
 		Armor:  1.00,
@@ -370,6 +370,17 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Health: 1.00,
 		Armor:  1.05,
 		Damage: 1.00,
+	},
+	proto.Hunter_Options_Owl: {
+		Name:    "Owl",
+		MobType: proto.MobType_MobTypeBeast,
+
+		SpecialAbility: Screech,
+		FocusDump:      Claw,
+
+		Health: 1.00,
+		Armor:  1.00,
+		Damage: 1.07,
 	},
 	proto.Hunter_Options_CoreHound: {
 		Name:    "Core Hound",

@@ -15,7 +15,7 @@ const (
 	Unknown PetAbilityType = iota
 	Bite
 	Claw
-	//DemoralizingScreech
+	Screech
 	FuriousHowl
 	LightningBreath
 	ScorpidPoison
@@ -27,8 +27,8 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 		return hp.newBite()
 	case Claw:
 		return hp.newClaw()
-	// case DemoralizingScreech:
-	// 	return hp.newDemoralizingScreech()
+	case Screech:
+		return hp.newScreech()
 	// case FuriousHowl:
 	// 	return hp.newFuriousHowl()
 	case LightningBreath:
@@ -201,28 +201,55 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 	})
 }
 
-// func (hp *HunterPet) newDemoralizingScreech() *core.Spell {
-// 	//debuffs := hp.NewEnemyAuraArray(core.DemoralizingScreechAura)
+func (hp *HunterPet) newScreech() *core.Spell {
+	baseDamageMin := map[int32]float64{
+		25: 12,
+		40: 12,
+		50: 19,
+		60: 26,
+	}[hp.Owner.Level]
 
-// 	return hp.newSpecialAbility(PetSpecialAbilityConfig{
-// 		Type:    DemoralizingScreech,
-// 		Cost:    20,
-// 		GCD:     PetGCD,
-// 		CD:      time.Second * 10,
-// 		SpellID: 55487,
-// 		School:  core.SpellSchoolPhysical,
-// 		MinDmg:  85,
-// 		MaxDmg:  129,
-// 		APRatio: 0.07,
-// 		OnSpellHitDealt: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.Landed() {
-// 				//for _, aoeTarget := range sim.Encounter.TargetUnits {
-// 				//debuffs.Get(aoeTarget).Activate(sim)
-// 				//}
-// 			}
-// 		},
-// 	})
-// }
+	baseDamageMax := map[int32]float64{
+		25: 16,
+		40: 16,
+		50: 25,
+		60: 46,
+	}[hp.Owner.Level]
+
+	spellID := map[int32]int32{
+		15: 24580,
+		40: 24580,
+		50: 24581,
+		60: 24582,
+	}[hp.Owner.Level]
+
+	return hp.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    core.ProcMaskMeleeSpecial,
+		Flags:       core.SpellFlagMeleeMetrics,
+
+		FocusCost: core.FocusCostOptions{
+			Cost: 20,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: PetGCD,
+			},
+			IgnoreHaste: true,
+		},
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 1.15 / 14)
+			// This ability also applies a melee attack power reduction similar to demoralizing shout - left it out for now
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+		},
+	})
+}
 
 // func (hp *HunterPet) newFuriousHowl() *core.Spell {
 // 	actionID := core.ActionID{SpellID: 64495}
