@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -24,6 +25,10 @@ func (action *APLAction) IsReady(sim *Simulation) bool {
 
 func (action *APLAction) Execute(sim *Simulation) {
 	action.impl.Execute(sim)
+}
+
+func (action *APLAction) ExecuteOffGCD(sim *Simulation, offGCDTime time.Duration) {
+	action.impl.ExecuteOffGCD(sim, offGCDTime)
 }
 
 // Returns this Action, along with all inner Actions.
@@ -90,8 +95,14 @@ type APLActionImpl interface {
 	// Whether this action is available to be used right now.
 	IsReady(*Simulation) bool
 
+	// Whether this action is available Even during GCD
+	IsOffGCDAction() bool
+
 	// Performs the action.
 	Execute(*Simulation)
+
+	// Performs the action off GCD at the given time
+	ExecuteOffGCD(*Simulation, time.Duration)
 
 	// Called only while this action is controlling the rotation.
 	GetNextAction(sim *Simulation) *APLAction
@@ -109,6 +120,7 @@ func (impl defaultAPLActionImpl) GetAPLValues() []APLValue             { return 
 func (impl defaultAPLActionImpl) Finalize(*APLRotation)                {}
 func (impl defaultAPLActionImpl) Reset(*Simulation)                    {}
 func (impl defaultAPLActionImpl) GetNextAction(*Simulation) *APLAction { return nil }
+func (impl defaultAPLActionImpl) IsOffGCDAction() bool                 { return false }
 
 func (rot *APLRotation) newAPLAction(config *proto.APLAction) *APLAction {
 	if config == nil {
@@ -155,8 +167,12 @@ func (rot *APLRotation) newAPLActionImpl(config *proto.APLAction) APLActionImpl 
 		return rot.newActionWait(config.GetWait())
 	case *proto.APLAction_WaitUntil:
 		return rot.newActionWaitUntil(config.GetWaitUntil())
+	case *proto.APLAction_RelativeSchedule:
+		return rot.newActionRelativeSchedule(config.GetRelativeSchedule())
 	case *proto.APLAction_Schedule:
 		return rot.newActionSchedule(config.GetSchedule())
+	case *proto.APLAction_PeriodicSchedule:
+		return rot.newActionPeriodicSchedule(config.GetPeriodicSchedule())
 
 	// Sequences
 	case *proto.APLAction_Sequence:

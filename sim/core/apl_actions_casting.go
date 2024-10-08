@@ -2,14 +2,18 @@ package core
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
 type APLActionCastSpell struct {
 	defaultAPLActionImpl
-	spell  *Spell
-	target UnitReference
+	spell         *Spell
+	target        UnitReference
+	offGCD        bool
+	offGCDTime    time.Duration
+	offGCDTimeExe time.Duration
 }
 
 func (rot *APLRotation) newActionCastSpell(config *proto.APLActionCastSpell) APLActionImpl {
@@ -27,11 +31,53 @@ func (rot *APLRotation) newActionCastSpell(config *proto.APLActionCastSpell) APL
 	}
 }
 func (action *APLActionCastSpell) IsReady(sim *Simulation) bool {
-	return action.spell.CanCast(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim) || action.spell.DefaultCast.GCD == 0)
+	action.offGCD = false
+	ready := action.spell.CanCast(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim) || action.spell.DefaultCast.GCD == 0)
+
+	if !ready && (action.spell.DefaultCast.GCD == 0) && action.spell.CD.Timer != nil && (action.spell.CD.Timer.TimeToReady(sim) < 1500*time.Millisecond) && action.offGCDTimeExe != action.spell.CD.Timer.ReadyAt() {
+		//if sim.Log != nil {
+		//	sim.Log("APLActionCastSpell IsReady offGCD")
+		//}
+		ready = true
+		action.offGCD = true
+		action.offGCDTime = action.spell.CD.Timer.ReadyAt()
+	}
+	return ready
+}
+func (action *APLActionCastSpell) IsOffGCDAction() bool {
+	return action.spell.DefaultCast.GCD == 0
 }
 func (action *APLActionCastSpell) Execute(sim *Simulation) {
-	action.spell.Cast(sim, action.target.Get())
+	if action.offGCD {
+		// Used when using APLActionCastSpell as an unnested action
+		action.offGCDTimeExe = action.offGCDTime
+		offGCDTimeExe := action.offGCDTimeExe
+		//if sim.Log != nil {
+		//	sim.Log("APLActionCastSpell Execute Scheduling delayed off GCD action for %f", offGCDTimeExe)
+		//}
+		StartDelayedAction(sim, DelayedActionOptions{
+			DoAt: offGCDTimeExe,
+			OnAction: func(s *Simulation) {
+				if action.spell.CanCast(sim, action.target.Get()) {
+					action.spell.Cast(sim, action.target.Get())
+				}
+			},
+		})
+	} else {
+		action.spell.Cast(sim, action.target.Get())
+	}
 }
+
+func (action *APLActionCastSpell) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	//if sim.Log != nil {
+	//	sim.Log("APLActionCastSpell ExecuteOffGCD Scheduling delayed off GCD action for %f", time)
+	//}
+	// Used when using APLActionCastSpell as a nested action (e.g. within a sequence)
+	action.offGCD = true
+	action.offGCDTime = time
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
+}
+
 func (action *APLActionCastSpell) String() string {
 	return fmt.Sprintf("Cast Spell(%s)", action.spell.ActionID)
 }
@@ -82,6 +128,9 @@ func (action *APLActionChannelSpell) GetAPLValues() []APLValue {
 func (action *APLActionChannelSpell) IsReady(sim *Simulation) bool {
 	return action.spell.CanCast(sim, action.target.Get())
 }
+func (action *APLActionChannelSpell) IsOffGCDAction() bool {
+	return false
+}
 func (action *APLActionChannelSpell) Execute(sim *Simulation) {
 	action.spell.Cast(sim, action.target.Get())
 
@@ -94,6 +143,9 @@ func (action *APLActionChannelSpell) Execute(sim *Simulation) {
 		action.spell.Unit.Rotation.interruptChannelIf = action.interruptIf
 		action.spell.Unit.Rotation.allowChannelRecastOnInterrupt = action.allowRecast
 	}
+}
+func (action *APLActionChannelSpell) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 func (action *APLActionChannelSpell) String() string {
 	return fmt.Sprintf("Channel Spell(%s, interruptIf=%s)", action.spell.ActionID, action.interruptIf)
@@ -167,8 +219,14 @@ func (action *APLActionMultidot) IsReady(sim *Simulation) bool {
 	}
 	return false
 }
+func (action *APLActionMultidot) IsOffGCDAction() bool {
+	return false
+}
 func (action *APLActionMultidot) Execute(sim *Simulation) {
 	action.spell.Cast(sim, action.nextTarget)
+}
+func (action *APLActionMultidot) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 func (action *APLActionMultidot) String() string {
 	return fmt.Sprintf("Multidot(%s)", action.spell.ActionID)
@@ -228,8 +286,14 @@ func (action *APLActionMultishield) IsReady(sim *Simulation) bool {
 	}
 	return false
 }
+func (action *APLActionMultishield) IsOffGCDAction() bool {
+	return false
+}
 func (action *APLActionMultishield) Execute(sim *Simulation) {
 	action.spell.Cast(sim, action.nextTarget)
+}
+func (action *APLActionMultishield) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 func (action *APLActionMultishield) String() string {
 	return fmt.Sprintf("Multishield(%s)", action.spell.ActionID)
@@ -259,9 +323,15 @@ func (action *APLActionAutocastOtherCooldowns) IsReady(sim *Simulation) bool {
 	// true even for MCDs which do not require the GCD.
 	return action.nextReadyMCD != nil && action.character.GCD.IsReady(sim)
 }
+func (action *APLActionAutocastOtherCooldowns) IsOffGCDAction() bool {
+	return false
+}
 func (action *APLActionAutocastOtherCooldowns) Execute(sim *Simulation) {
 	action.nextReadyMCD.tryActivateHelper(sim, action.character)
 	action.character.UpdateMajorCooldowns()
+}
+func (action *APLActionAutocastOtherCooldowns) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 func (action *APLActionAutocastOtherCooldowns) String() string {
 	return "Autocast Other Cooldowns"

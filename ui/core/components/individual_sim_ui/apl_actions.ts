@@ -19,7 +19,9 @@ import {
 	APLActionMultidot,
 	APLActionMultishield,
 	APLActionResetSequence,
+	APLActionRelativeSchedule,
 	APLActionSchedule,
+	APLActionPeriodicSchedule,
 	APLActionSequence,
 	APLActionStrictSequence,
 	APLActionTriggerICD,
@@ -476,6 +478,26 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		newValue: () => APLActionWaitUntil.create(),
 		fields: [AplValues.valueFieldConfig('condition')],
 	}),
+	['relativeSchedule']: inputBuilder({
+		label: 'Scheduled Relative Action',
+		submenu: ['Timing'],
+		shortDescription: 'Executes the inner action once at each specified relative timing (Compared to current sim time).',
+		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
+		newValue: () =>
+			APLActionSchedule.create({
+				schedule: '1s',
+				innerAction: {
+					action: { oneofKind: 'castSpell', castSpell: {} },
+				},
+			}),
+		fields: [
+			AplHelpers.stringFieldConfig('schedule', {
+				label: 'Do At',
+				labelTooltip: 'Comma-separated list of timings. The inner action will be performed once at each timing.',
+			}),
+			actionFieldConfig('innerAction'),
+		],
+	}),
 	['schedule']: inputBuilder({
 		label: 'Scheduled Action',
 		submenu: ['Timing'],
@@ -492,6 +514,26 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 			AplHelpers.stringFieldConfig('schedule', {
 				label: 'Do At',
 				labelTooltip: 'Comma-separated list of timings. The inner action will be performed once at each timing.',
+			}),
+			actionFieldConfig('innerAction'),
+		],
+	}),
+	['periodicSchedule']: inputBuilder({
+		label: 'Scheduled Periodic Action',
+		submenu: ['Timing'],
+		shortDescription: 'Executes the inner action once at each periodic timing starting at the start time.',
+		includeIf: (player: Player<any>, isPrepull: boolean) => !isPrepull,
+		newValue: () =>
+			APLActionSchedule.create({
+				schedule: '0s, 60s',
+				innerAction: {
+					action: { oneofKind: 'castSpell', castSpell: {} },
+				},
+			}),
+		fields: [
+			AplHelpers.stringFieldConfig('schedule', {
+				label: 'Do At',
+				labelTooltip: 'Comma-separated list of Start time followed by period. The inner action will be performed once at each timing.',
 			}),
 			actionFieldConfig('innerAction'),
 		],
