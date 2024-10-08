@@ -450,7 +450,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		MobType: proto.MobType_MobTypeBeast,
 
 		SpecialAbility: ScorpidPoison,
-		FocusDump:      Bite,
+		FocusDump:      Claw,
 
 		Health: 1.00,
 		Armor:  1.10,

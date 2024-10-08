@@ -298,14 +298,28 @@ func (hp *HunterPet) newScreech() *core.Spell {
 // }
 
 func (hp *HunterPet) newScorpidPoison() *core.Spell {
+	baseDamageTick := map[int32]float64{
+		25: 3,
+		40: 6,
+		50: 6,
+		60: 8,
+	}[hp.Owner.Level]
+	spellID := map[int32]int32{
+		25: 24583,
+		40: 24586,
+		50: 24586,
+		60: 24587,
+	}[hp.Owner.Level]
+
 	return hp.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 55728},
+		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskEmpty,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagPoison,
 
 		FocusCost: core.FocusCostOptions{
-			Cost: 20,
+			Cost: 30,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -314,7 +328,7 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    hp.NewTimer(),
-				Duration: time.Second * 10,
+				Duration: time.Second * 4,
 			},
 		},
 
@@ -323,15 +337,26 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "ScorpidPoison",
+				Label:     "ScorpidPoison",
+				MaxStacks: 5,
+				Duration:  time.Second * 10,
 			},
 			NumberOfTicks:    5,
 			TickLength:       time.Second * 2,
-			BonusCoefficient: 1,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				damage := sim.Roll(100/5, 130/5) + (0.07/5)*dot.Spell.MeleeAttackPower()
-				dot.Snapshot(target, damage, isRollover)
-				dot.SnapshotAttackerMultiplier *= hp.killCommandMult()
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, applyStack bool) {
+				if !applyStack {
+					return
+				}
+
+				// only the first stack snapshots the multiplier
+				if dot.GetStacks() == 1 {
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.SnapshotBaseDamage = 0
+				}
+
+				dot.SnapshotBaseDamage += baseDamageTick + (0.07/5)*dot.Spell.MeleeAttackPower()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -340,8 +365,15 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
-			if result.Landed() {
-				spell.Dot(target).Apply(sim)
+			if !result.Landed() {
+				return
+			}
+
+			dot := spell.Dot(target)
+			dot.ApplyOrRefresh(sim)
+			if dot.GetStacks() < dot.MaxStacks {
+				dot.AddStack(sim)
+				dot.TakeSnapshot(sim, true)
 			}
 		},
 	})
