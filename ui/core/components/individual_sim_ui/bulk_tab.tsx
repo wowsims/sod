@@ -3,10 +3,11 @@ import { ref } from 'tsx-vanilla';
 
 import { setItemQualityCssClass } from '../../css_utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
-import { BulkSettings, ProgressMetrics, TalentLoadout } from '../../proto/api';
+import { BulkSettings, ErrorOutcomeType, ProgressMetrics, TalentLoadout } from '../../proto/api';
 import { ItemSpec, SimDatabase, SimEnchant, SimItem } from '../../proto/common';
 import { SavedTalents, UIEnchant, UIItem, UIItem_FactionRestriction } from '../../proto/ui';
 import { canEquipItem } from '../../proto_utils/utils';
+import { RequestTypes } from '../../sim_signal_manager';
 import { TypedEvent } from '../../typed_event';
 import { cloneChildren } from '../../utils';
 import { WorkerProgressCallback } from '../../worker_pool';
@@ -198,7 +199,13 @@ export class BulkTab extends SimTab {
 		this.pendingResults.setPending();
 
 		try {
-			await this.simUI.sim.runBulkSim(this.createBulkSettings(), this.createBulkItemsDatabase(), onProgress);
+			const result = await this.simUI.sim.runBulkSim(this.createBulkSettings(), this.createBulkItemsDatabase(), onProgress);
+			if (result.error?.type == ErrorOutcomeType.ErrorOutcomeAborted) {
+				new Toast({
+					variant: 'info',
+					body: 'Bulk sim cancelled.',
+				});
+			}
 		} catch (e) {
 			this.simUI.handleCrash(e);
 		}
@@ -275,7 +282,13 @@ export class BulkTab extends SimTab {
 		});
 
 		const bulkSimButton = (<button className="btn btn-primary w-100 bulk-settings-button">Simulate Batch</button>) as HTMLButtonElement;
-		bulkSimButton.addEventListener('click', () => {
+
+		let isRunning = false;
+		bulkSimButton.addEventListener('click', async () => {
+			if (isRunning) return;
+			isRunning = true;
+			bulkSimButton.disabled = true;
+
 			this.pendingDiv.classList.remove('hide');
 			this.leftPanel.classList.add('blurred');
 			this.rightPanel.classList.add('blurred');
@@ -289,45 +302,66 @@ export class BulkTab extends SimTab {
 				</>,
 			);
 
-			let simStart = new Date().getTime();
-			let lastTotal = 0;
-			let rounds = 0;
-			let currentRound = 0;
-			let combinations = 0;
 
-			this.runBulkSim((progressMetrics: ProgressMetrics) => {
-				const msSinceStart = new Date().getTime() - simStart;
-				const iterPerSecond = progressMetrics.completedIterations / (msSinceStart / 1000);
+			let waitAbort = false;
+			try {
+				await this.simUI.sim.signalManager.abortType(RequestTypes.All);
 
-				if (combinations === 0) {
-					combinations = progressMetrics.totalSims;
-				}
-				if (this.fastMode) {
-					if (rounds === 0 && progressMetrics.totalSims > 0) {
-						rounds = Math.ceil(Math.log(progressMetrics.totalSims / 20) / Math.log(2)) + 1;
-						currentRound = 1;
+				this.pendingResults.addAbortButton(async () => {
+					if (waitAbort) return;
+					try {
+						waitAbort = true;
+						await this.simUI.sim.signalManager.abortType(RequestTypes.BulkSim);
+					} catch (error) {
+						console.error('Error on bulk sim abort!');
+						console.error(error);
+					} finally {
+						waitAbort = false;
+						if (!isRunning) bulkSimButton.disabled = false;
 					}
-					if (progressMetrics.totalSims < lastTotal) {
-						currentRound += 1;
-						simStart = new Date().getTime();
+				});
+
+				let simStart = new Date().getTime();
+				let lastTotal = 0;
+				let rounds = 0;
+				let currentRound = 0;
+				let combinations = 0;
+
+				await this.runBulkSim((progressMetrics: ProgressMetrics) => {
+					const msSinceStart = new Date().getTime() - simStart;
+					const iterPerSecond = progressMetrics.completedIterations / (msSinceStart / 1000);
+
+					if (combinations === 0) {
+						combinations = progressMetrics.totalSims;
 					}
-				}
+					if (this.fastMode) {
+						if (rounds === 0 && progressMetrics.totalSims > 0) {
+							rounds = Math.ceil(Math.log(progressMetrics.totalSims / 20) / Math.log(2)) + 1;
+							currentRound = 1;
+						}
+						if (progressMetrics.totalSims < lastTotal) {
+							currentRound += 1;
+							simStart = new Date().getTime();
+						}
+					}
 
-				this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
-				lastTotal = progressMetrics.totalSims;
+					this.setSimProgress(progressMetrics, iterPerSecond, currentRound, rounds, combinations);
+					lastTotal = progressMetrics.totalSims;
+				});
+			} catch (error) {
+				console.error(error);
+			} finally {
+				isRunning = false;
+				if (!waitAbort) bulkSimButton.disabled = false;
+				// reset state
+				this.pendingDiv.classList.add('hide');
+				this.leftPanel.classList.remove('blurred');
+				this.rightPanel.classList.remove('blurred');
 
-				if (!!progressMetrics.finalBulkResult) {
-					// reset state
-					this.pendingDiv.classList.add('hide');
-					this.leftPanel.classList.remove('blurred');
-					this.rightPanel.classList.remove('blurred');
-
-					this.pendingResults.hideAll();
-					bulkSimButton.disabled = false;
-					bulkSimButton.classList.remove('disabled');
-					bulkSimButton.replaceChildren(...defaultState);
-				}
-			});
+				this.pendingResults.hideAll();
+				bulkSimButton.classList.remove('disabled');
+				bulkSimButton.replaceChildren(...defaultState);
+			}
 		});
 
 		const importButton = (
