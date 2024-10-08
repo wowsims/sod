@@ -239,12 +239,8 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 		return
 	}
 
-	if hp.config.RandomSelection {
-		if sim.RandomFloat("Hunter Pet Ability") < 0.5 {
-			_ = tryCast(hp.specialAbility) || tryCast(hp.focusDump)
-		} else {
-			_ = tryCast(hp.focusDump) || tryCast(hp.specialAbility)
-		}
+	if hp.config.CustomRotation != nil {
+		hp.config.CustomRotation(sim, hp, tryCast)
 	} else {
 		if hp.specialAbility.IsReady(sim) && hp.flankingStrike == nil {
 			if !tryCast(hp.specialAbility) && hp.GCD.IsReady(sim) {
@@ -298,8 +294,7 @@ type PetConfig struct {
 	Armor  float64
 	Damage float64
 
-	// Randomly select between abilities instead of using a prio.
-	RandomSelection bool
+	CustomRotation func(*core.Simulation, *HunterPet, func(*core.Spell) bool)
 }
 
 // Abilities reference: https://wotlk.wowhead.com/hunter-pets
@@ -337,6 +332,18 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Health: 1.00,
 		Armor:  1.00,
 		Damage: 1.07,
+
+		CustomRotation: func(sim *core.Simulation, hp *HunterPet, tryCast func(*core.Spell) bool) {
+			if hp.specialAbility.CD.IsReady(sim) {
+				if !tryCast(hp.specialAbility) && hp.GCD.IsReady(sim) {
+					hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
+				}
+			} else {
+				if !tryCast(hp.focusDump) && hp.GCD.IsReady(sim) {
+					hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
+				}
+			}
+		},
 	},
 	proto.Hunter_Options_Bear: {
 		Name:    "Bear",
@@ -364,7 +371,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Name:    "Carrion Bird",
 		MobType: proto.MobType_MobTypeBeast,
 
-		SpecialAbility: Bite, // Screec
+		SpecialAbility: Bite, // Screech
 		FocusDump:      Claw,
 
 		Health: 1.00,
@@ -375,7 +382,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Name:    "Owl",
 		MobType: proto.MobType_MobTypeBeast,
 
-		SpecialAbility: Screech,
+		//SpecialAbility: Screech,
 		FocusDump:      Claw,
 
 		Health: 1.00,
@@ -386,7 +393,6 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Name:    "Core Hound",
 		MobType: proto.MobType_MobTypeBeast,
 
-		SpecialAbility: LavaBreath,
 		FocusDump: LavaBreath,
 
 		Health: 1.00,
@@ -455,6 +461,20 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Health: 1.00,
 		Armor:  1.10,
 		Damage: 0.94,
+
+		CustomRotation: func(sim *core.Simulation, hp *HunterPet, tryCast func(*core.Spell) bool) {
+			target := hp.CurrentTarget
+			
+			if (hp.specialAbility.Dot(target).GetStacks() < hp.specialAbility.Dot(target).MaxStacks || hp.specialAbility.Dot(target).RemainingDuration(sim) < time.Second * 3) && hp.CurrentFocus() < 90 {
+				if !tryCast(hp.specialAbility) && hp.GCD.IsReady(sim) {
+					hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
+				}
+			} else {
+				if !tryCast(hp.focusDump) && hp.GCD.IsReady(sim) {
+					hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
+				}
+			}
+		},
 	},
 	proto.Hunter_Options_Spider: {
 		Name:    "Spider",
