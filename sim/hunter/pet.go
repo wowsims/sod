@@ -386,12 +386,12 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Name:    "Core Hound",
 		MobType: proto.MobType_MobTypeBeast,
 
-		//SpecialAbility: LavaBreath,
-		FocusDump: Bite,
+		SpecialAbility: LavaBreath,
+		FocusDump: LavaBreath,
 
-		Health: 1.0,
-		Armor:  1.0,
-		Damage: 1.0,
+		Health: 1.00,
+		Armor:  1.00,
+		Damage: 1.02,
 	},
 	proto.Hunter_Options_Crab: {
 		Name:    "Crab",

@@ -19,6 +19,7 @@ const (
 	FuriousHowl
 	LightningBreath
 	ScorpidPoison
+	LavaBreath
 )
 
 func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *core.Spell {
@@ -37,6 +38,8 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 		return hp.newScorpidPoison()
 	// case Swipe:
 	// 	return hp.newSwipe()
+	case LavaBreath:
+		return hp.newLavaBreath()
 	case Unknown:
 		return nil
 	default:
@@ -341,8 +344,8 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 				MaxStacks: 5,
 				Duration:  time.Second * 10,
 			},
-			NumberOfTicks:    5,
-			TickLength:       time.Second * 2,
+			NumberOfTicks: 5,
+			TickLength:    time.Second * 2,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, applyStack bool) {
 				if !applyStack {
@@ -375,6 +378,56 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 				dot.AddStack(sim)
 				dot.TakeSnapshot(sim, true)
 			}
+		},
+	})
+}
+
+func (hp *HunterPet) newLavaBreath() *core.Spell {
+	baseDamageMin := map[int32]float64{
+		50: 78,
+		60: 101,
+	}[hp.Owner.Level]
+	baseDamageMax := map[int32]float64{
+		50: 91,
+		60: 116,
+	}[hp.Owner.Level]
+	spellID := map[int32]int32{
+		50: 444678,
+		60: 444681,
+	}[hp.Owner.Level]
+
+	ApCoeff := 0.285
+	SpCoeff := 0.429
+
+	return hp.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagMeleeMetrics,
+
+		FocusCost: core.FocusCostOptions{
+			Cost: 50,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: PetGCD,
+			},
+			IgnoreHaste: true,
+		},
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: SpCoeff,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			damage := sim.Roll(baseDamageMin, baseDamageMax) + ApCoeff*spell.MeleeAttackPower()
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			if sim.Environment.GetNumTargets() > 1 {
+				target = sim.Environment.NextTargetUnit(target)
+				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			}
+
 		},
 	})
 }
