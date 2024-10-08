@@ -71,6 +71,7 @@ func (hp *HunterPet) newClaw() *core.Spell {
 
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetClaw,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -123,6 +124,7 @@ func (hp *HunterPet) newBite() *core.Spell {
 
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetBite,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -179,6 +181,7 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetLightningBreath,
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
@@ -228,6 +231,7 @@ func (hp *HunterPet) newScreech() *core.Spell {
 
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetScreech,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeSpecial,
@@ -316,6 +320,7 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetScorpidPoison,
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -401,6 +406,7 @@ func (hp *HunterPet) newLavaBreath() *core.Spell {
 
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetLavaBreath,
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
