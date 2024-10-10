@@ -395,8 +395,8 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 
 		FocusDump: LavaBreath,
 
-		Health: 1.00,
-		Armor:  1.00,
+		Health: 1.06,
+		Armor:  1.01,
 		Damage: 1.02,
 	},
 	proto.Hunter_Options_Crab: {
