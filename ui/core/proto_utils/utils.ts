@@ -75,10 +75,10 @@ import { BlessingsAssignment, BlessingsAssignments, UIEnchant as Enchant, UIItem
 import { TankWarlock, Warlock, WarlockOptions, WarlockRotation, WarlockTalents } from '../proto/warlock.js';
 import {
 	TankWarrior,
-	TankWarrior_Options as TankWarriorOptions,
+	WarriorBaseOptions as TankWarriorOptions,
 	TankWarrior_Rotation as TankWarriorRotation,
 	Warrior,
-	Warrior_Options as WarriorOptions,
+	WarriorBaseOptions as WarriorOptions,
 	Warrior_Rotation as WarriorRotation,
 	WarriorTalents,
 } from '../proto/warrior.js';

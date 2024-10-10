@@ -25,34 +25,33 @@ func RegisterDpsWarrior() {
 
 type DpsWarrior struct {
 	*warrior.Warrior
-
-	Options *proto.Warrior_Options
 }
 
 func NewDpsWarrior(character *core.Character, options *proto.Player) *DpsWarrior {
-	warOptions := options.GetWarrior()
+	warOptions := options.GetWarrior().Options
 
-	war := &DpsWarrior{
-		Warrior: warrior.NewWarrior(character, options.TalentsString, warrior.WarriorInputs{
-			StanceSnapshot: warOptions.Options.StanceSnapshot,
-		}),
-		Options: warOptions.Options,
+	war := warrior.NewWarrior(character, options, warOptions, warrior.WarriorInputs{
+		StanceSnapshot: warOptions.StanceSnapshot,
+	})
+
+	dpsWar := &DpsWarrior{
+		Warrior: war,
 	}
 
-	war.EnableRageBar(core.RageBarOptions{
-		StartingRage:          warOptions.Options.StartingRage,
+	dpsWar.EnableRageBar(core.RageBarOptions{
+		StartingRage:          warOptions.StartingRage,
 		DamageDealtMultiplier: 1,
 		DamageTakenMultiplier: 1,
 	})
 
-	war.EnableAutoAttacks(war, core.AutoAttackOptions{
-		MainHand:       war.WeaponFromMainHand(),
-		OffHand:        war.WeaponFromOffHand(),
+	dpsWar.EnableAutoAttacks(dpsWar, core.AutoAttackOptions{
+		MainHand:       dpsWar.WeaponFromMainHand(),
+		OffHand:        dpsWar.WeaponFromOffHand(),
 		AutoSwingMelee: true,
-		ReplaceMHSwing: war.TryHSOrCleave,
+		ReplaceMHSwing: dpsWar.TryHSOrCleave,
 	})
 
-	return war
+	return dpsWar
 }
 
 func (war *DpsWarrior) OnGCDReady(sim *core.Simulation) {

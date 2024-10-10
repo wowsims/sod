@@ -43,7 +43,7 @@ var PlayerOptionsBasic = &proto.Player_TankWarrior{
 	},
 }
 
-var warriorOptions = &proto.TankWarrior_Options{
+var warriorOptions = &proto.WarriorBaseOptions{
 	Shout:        proto.WarriorShout_WarriorShoutCommanding,
 	StartingRage: 0,
 }

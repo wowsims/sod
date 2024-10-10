@@ -22,7 +22,7 @@ import {
 	ZanzaBuff,
 } from '../core/proto/common.js';
 import { SavedTalents } from '../core/proto/ui.js';
-import { Warrior_Options as WarriorOptions, WarriorShout, WarriorStance } from '../core/proto/warrior.js';
+import { WarriorBaseOptions, WarriorShout, WarriorStance as Warrior_Options } from '../core/proto/warrior.js';
 import Phase1APLArms from './apls/phase_1_arms.apl.json';
 import Phase2APLArms from './apls/phase_2_arms.apl.json';
 import Phase2APLFury from './apls/phase_2_fury.apl.json';
@@ -213,10 +213,10 @@ export const PresetBuildDW = PresetUtils.makePresetBuild('Dual-Wield', { gear: D
 //                                 Options Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const DefaultOptions = WarriorOptions.create({
+export const DefaultOptions = WarriorBaseOptions.create({
 	startingRage: 0,
 	shout: WarriorShout.WarriorShoutBattle,
-	stance: WarriorStance.WarriorStanceBerserker,
+	stance: Warrior_Options.WarriorStanceBerserker,
 });
 
 export const DefaultConsumes = Consumes.create({
