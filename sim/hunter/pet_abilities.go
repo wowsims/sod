@@ -401,7 +401,7 @@ func (hp *HunterPet) newLavaBreath() *core.Spell {
 		60: 444681,
 	}[hp.Owner.Level]
 
-	ApCoeff := 0.285
+	ApCoeff := 3.65/14
 	SpCoeff := 0.429
 
 	return hp.RegisterSpell(core.SpellConfig{
