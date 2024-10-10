@@ -482,7 +482,7 @@ dps_results: {
  key: "TestSV-Phase4-Lvl60-Settings-Dwarf-p4_weave-Weave-p4_weave-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 1659.50096
-  tps: 1493.65804
+  tps: 1493.62941
   hps: 10.32722
  }
 }

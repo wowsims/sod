@@ -155,8 +155,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
  value: {
-  dps: 1460.63499
-  tps: 2970.027
+  dps: 1460.60731
+  tps: 2969.83338
  }
 }
 dps_results: {
@@ -176,22 +176,22 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 670.93693
-  tps: 2024.76379
+  dps: 658.0379
+  tps: 1976.56426
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 265.2898
-  tps: 810.49878
+  dps: 257.36941
+  tps: 779.54723
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-Settings-Dwarf-p4prot-P4 Prot-p4prot-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 517.05451
-  tps: 1479.44849
+  dps: 517.06854
+  tps: 1476.73615
  }
 }
 dps_results: {
@@ -218,22 +218,22 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 680.95739
-  tps: 2056.07981
+  dps: 666.36227
+  tps: 2005.2703
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 272.5193
-  tps: 826.376
+  dps: 263.89722
+  tps: 801.54875
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 522.30619
-  tps: 1492.70417
+  dps: 521.38021
+  tps: 1492.00351
  }
 }
 dps_results: {

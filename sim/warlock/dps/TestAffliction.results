@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.27654
+  weights: 1.1202
   weights: 0
-  weights: 1.82338
-  weights: 0
-  weights: 0
+  weights: 1.70226
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 8.91568
-  weights: 11.47888
+  weights: 0
+  weights: 0
+  weights: 8.88476
+  weights: 11.34705
   weights: 0
   weights: 0
   weights: 0
@@ -249,17 +249,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.88121
+  weights: 0.75243
   weights: 0
-  weights: 2.36869
-  weights: 0
-  weights: 0
+  weights: 2.34735
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 13.52554
+  weights: 0
+  weights: 0
+  weights: 13.43579
   weights: 20.34587
   weights: 0
   weights: 0
@@ -365,29 +365,29 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 364.27988
-  tps: 242.02735
+  dps: 364.48305
+  tps: 242.34651
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 1536.23506
-  tps: 1335.96743
+  dps: 1535.95199
+  tps: 1335.2413
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1542.33025
-  tps: 1341.66431
+  dps: 1542.3321
+  tps: 1341.68039
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 2303.37175
-  tps: 3110.34378
+  dps: 2303.66701
+  tps: 3111.58124
  }
 }
 dps_results: {
@@ -428,29 +428,29 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1526.8694
-  tps: 1326.29501
+  dps: 1525.78117
+  tps: 1325.29798
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
   dps: 841.95051
-  tps: 646.75401
+  tps: 646.69877
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-DeathmistRaiment"
  value: {
   dps: 641.81367
-  tps: 449.23255
+  tps: 449.40754
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
   dps: 843.9855
-  tps: 648.24089
+  tps: 648.19113
  }
 }
 dps_results: {
@@ -464,7 +464,7 @@ dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
   dps: 631.87947
-  tps: 449.61526
+  tps: 449.62901
  }
 }
 dps_results: {
@@ -478,28 +478,28 @@ dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
   dps: 841.95051
-  tps: 646.75401
+  tps: 646.69877
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
   dps: 1341.30618
-  tps: 1133.79295
+  tps: 1133.78872
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
   dps: 1329.96423
-  tps: 1120.25494
+  tps: 1120.07352
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3154.98055
-  tps: 2979.90618
+  dps: 3155.04244
+  tps: 2979.97778
  }
 }
 dps_results: {
