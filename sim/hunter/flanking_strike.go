@@ -68,7 +68,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 				aura.Activate(sim)
 			},
 
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if slices.Contains(FlankingStrikeResetCodes, spell.SpellCode) {
 					if sim.RandomFloat("Flanking Strike Refresh") < 0.50 {
 						hunter.FlankingStrike.CD.Set(sim.CurrentTime)
