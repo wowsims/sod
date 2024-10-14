@@ -2624,8 +2624,9 @@ func init() {
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
 					return
-				}
-				aura.RemoveStack(sim)
+				} else if result.Landed() {
+					aura.RemoveStack(sim)
+				}				
 			},
 		})
 
