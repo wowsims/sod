@@ -298,17 +298,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.35989
+  weights: 0.32962
   weights: 0
-  weights: 2.06494
-  weights: 0
-  weights: 0
+  weights: 2.05556
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 13.08138
+  weights: 0
+  weights: 0
+  weights: 13.02995
   weights: 10.9915
   weights: 0
   weights: 0
@@ -533,35 +533,35 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 375.63621
+  dps: 375.67036
   tps: 250.70076
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 1718.25875
+  dps: 1718.31661
   tps: 1545.97325
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1733.28554
-  tps: 1558.99888
+  dps: 1733.24508
+  tps: 1558.95882
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 2681.43845
+  dps: 2682.70411
   tps: 3160.92955
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 1728.68364
+  dps: 1728.7415
   tps: 1556.63607
  }
 }
@@ -575,15 +575,15 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1687.22031
-  tps: 2289.86954
+  dps: 1689.4618
+  tps: 2292.23727
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 979.66566
-  tps: 885.5042
+  dps: 979.90538
+  tps: 885.76044
  }
 }
 dps_results: {
@@ -596,7 +596,7 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1719.76373
+  dps: 1719.82159
   tps: 1547.54005
  }
 }

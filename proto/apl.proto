@@ -41,7 +41,7 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 24
+// NextIndex: 26
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
@@ -56,7 +56,9 @@ message APLAction {
         // Timing
         APLActionWait wait = 4;
         APLActionWaitUntil wait_until = 14;
+        APLActionRelativeSchedule relative_schedule = 24;
         APLActionSchedule schedule = 15;
+        APLActionPeriodicSchedule periodic_schedule = 25;
 
         // Sequences
         APLActionSequence sequence = 2;
@@ -219,8 +221,22 @@ message APLActionWaitUntil {
     APLValue condition = 1;
 }
 
+message APLActionRelativeSchedule {
+    // relative time compared to current time, e.g. '1s'
+    string schedule = 1;
+
+    APLAction inner_action = 2;
+}
+
 message APLActionSchedule {
     // Comma-separated list of times, e.g. '0s, 30s, 60s'
+    string schedule = 1;
+
+    APLAction inner_action = 2;
+}
+
+message APLActionPeriodicSchedule {
+    // Comma-separated list of starttime and period e.g. '1s, 3s' for every 3 seconds starting at 1 seconds
     string schedule = 1;
 
     APLAction inner_action = 2;
