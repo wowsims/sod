@@ -29,11 +29,8 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 	pal := paladin.NewPaladin(character, options, retOptions)
 
 	ret := &RetributionPaladin{
-		Paladin:                         pal,
-		primarySeal:                     retOptions.PrimarySeal,
-		IsUsingDivineStormStopAttack:    retOptions.IsUsingDivineStormStopAttack,
-		IsUsingJudgementStopAttack:      retOptions.IsUsingJudgementStopAttack,
-		IsUsingCrusaderStrikeStopAttack: retOptions.IsUsingCrusaderStrikeStopAttack,
+		Paladin:     pal,
+		primarySeal: retOptions.PrimarySeal,
 	}
 
 	ret.EnableAutoAttacks(ret, core.AutoAttackOptions{
@@ -47,10 +44,7 @@ func NewRetributionPaladin(character *core.Character, options *proto.Player) *Re
 type RetributionPaladin struct {
 	*paladin.Paladin
 
-	primarySeal                     proto.PaladinSeal
-	IsUsingDivineStormStopAttack    bool
-	IsUsingJudgementStopAttack      bool
-	IsUsingCrusaderStrikeStopAttack bool
+	primarySeal proto.PaladinSeal
 }
 
 func (ret *RetributionPaladin) GetPaladin() *paladin.Paladin {

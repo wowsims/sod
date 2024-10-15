@@ -9,17 +9,17 @@ import { TypedEvent } from '../core/typed_event.js';
 // These don't need to be in a separate file but it keeps things cleaner.
 
 export const AuraSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecRetributionPaladin, PaladinAura>({
- 	fieldName: 'aura',
- 	values: [
- 		{ value: PaladinAura.NoPaladinAura, tooltip: 'No Aura' },
- 		{ actionId: () => ActionId.fromSpellId(20218), value: PaladinAura.SanctityAura },
- 		//{ actionId: () => ActionId.fromSpellId(10299), value: PaladinAura.DevotionAura },
- 		//{ actionId: () => ActionId.fromSpellId(10299), value: PaladinAura.RetributionAura },
- 		//{ actionId: () => ActionId.fromSpellId(19746), value: PaladinAura.ConcentrationAura },
- 		//{ actionId: () => ActionId.fromSpellId(19888), value: PaladinAura.FrostResistanceAura },
- 		//{ actionId: () => ActionId.fromSpellId(19892), value: PaladinAura.ShadowResistanceAura },
- 		//{ actionId: () => ActionId.fromSpellId(19891), value: PaladinAura.FireResistanceAura },
- 	],
+	fieldName: 'aura',
+	values: [
+		{ value: PaladinAura.NoPaladinAura, tooltip: 'No Aura' },
+		{ actionId: () => ActionId.fromSpellId(20218), value: PaladinAura.SanctityAura },
+		//{ actionId: () => ActionId.fromSpellId(10299), value: PaladinAura.DevotionAura },
+		//{ actionId: () => ActionId.fromSpellId(10299), value: PaladinAura.RetributionAura },
+		//{ actionId: () => ActionId.fromSpellId(19746), value: PaladinAura.ConcentrationAura },
+		//{ actionId: () => ActionId.fromSpellId(19888), value: PaladinAura.FrostResistanceAura },
+		//{ actionId: () => ActionId.fromSpellId(19892), value: PaladinAura.ShadowResistanceAura },
+		//{ actionId: () => ActionId.fromSpellId(19891), value: PaladinAura.FireResistanceAura },
+	],
 });
 
 // The below is used in the custom APL action "Cast Primary Seal".

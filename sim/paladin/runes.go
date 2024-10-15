@@ -226,7 +226,11 @@ func (paladin *Paladin) registerAegis() {
 		Outcome:    core.OutcomeLanded,
 		ProcChance: procChance,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
+			if paladin.Options.IsManuallyTriggeringAutoAttacks {
+				paladin.AutoAttacks.StoreExtraMHAttack(sim, 1, procID, spell.ActionID)
+			} else {
+				paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
+			}
 		},
 	})
 }
