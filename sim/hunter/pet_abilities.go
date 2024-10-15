@@ -179,6 +179,9 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 		60: 25012,
 	}[hp.Owner.Level]
 
+	ApCoeff := 3.65/14
+	SpCoeff := 0.429
+
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellCode:   SpellCode_HunterPetLightningBreath,
@@ -198,9 +201,10 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: SpCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 3.65 / 14)
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * ApCoeff)
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
