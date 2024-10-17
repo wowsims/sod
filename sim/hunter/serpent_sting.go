@@ -11,7 +11,8 @@ import (
 func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	spellId := [10]int32{0, 1978, 13549, 13550, 13551, 13552, 13553, 13554, 13555, 25295}[rank]
 	baseDamage := [10]float64{0, 20, 40, 80, 140, 210, 290, 385, 490, 555}[rank] / 5
-	spellCoeff := [10]float64{0, .08, .125, .185, .2, .2, .2, .2, .2, .2}[rank]
+	baseDamage *= 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting)
+	spellCoeff := [10]float64{0, .4, .625, .925, 1, 1, 1, 1, 1, 1}[rank] / 5
 	manaCost := [10]float64{0, 15, 30, 50, 80, 115, 150, 190, 230, 250}[rank]
 	level := [10]int{0, 4, 10, 18, 26, 34, 42, 50, 58, 60}[rank]
 
@@ -39,7 +40,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -77,6 +78,8 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 
 func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 	baseDamage := [10]float64{0, 20, 40, 80, 140, 210, 290, 385, 490, 555}[rank]
+	baseDamage *= 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting)
+	spellCoeff := [10]float64{0, .4, .625, .925, 1, 1, 1, 1, 1, 1}[rank]
 	return hunter.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 409493},
 		SpellSchool: core.SpellSchoolNature,
@@ -90,9 +93,8 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		CritDamageBonus: hunter.mortalShots(),
 
 		DamageMultiplier:         0.48,
-		DamageMultiplierAdditive: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
 		ThreatMultiplier:         1,
-		BonusCoefficient:         0.4,
+		BonusCoefficient:         spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// As of phase 5 the only time serpent sting scales with AP is using the Dragonstalker's Pursuit 6P - this AP scaling doesn't benefit from target AP modifiers
