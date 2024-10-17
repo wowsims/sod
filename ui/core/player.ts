@@ -1,3 +1,4 @@
+import Toast from './components/toast';
 import { getLanguageCode } from './constants/lang.js';
 import * as Mechanics from './constants/mechanics.js';
 import { LEVEL_THRESHOLDS } from './constants/other.js';
@@ -5,6 +6,7 @@ import { simLaunchStatuses } from './launched_sims.js';
 import { MAX_PARTY_SIZE, Party } from './party.js';
 import {
 	AuraStats as AuraStatsProto,
+	ErrorOutcomeType,
 	Player as PlayerProto,
 	PlayerStats,
 	SpellStats as SpellStatsProto,
@@ -73,6 +75,7 @@ import { Sim, SimSettingCategories } from './sim.js';
 import { playerTalentStringToProto } from './talents/factory.js';
 import { EventID, TypedEvent } from './typed_event.js';
 import { stringComparator } from './utils.js';
+import { WorkerProgressCallback } from './worker_pool';
 
 export interface AuraStats {
 	data: AuraStatsProto;
@@ -478,10 +481,29 @@ export class Player<SpecType extends Spec> {
 		epStats: Array<Stat>,
 		epPseudoStats: Array<PseudoStat>,
 		epReferenceStat: Stat,
-		onProgress: (_?: any) => void,
-	): Promise<StatWeightsResult> {
-		const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
-		return result;
+		onProgress: WorkerProgressCallback,
+	): Promise<StatWeightsResult | null> {
+		try {
+			const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
+			if (result.error) {
+				if (result.error.type == ErrorOutcomeType.ErrorOutcomeAborted) {
+					new Toast({
+						variant: 'info',
+						body: 'Statweight sim cancelled.',
+					});
+				}
+				return null;
+			}
+			return result;
+		} catch (error: any) {
+			// TODO: Show crash report like for raid sim?
+			console.error(error);
+			new Toast({
+				variant: 'error',
+				body: error?.message || 'Something went wrong calculating your stat weights. Reload the page and try again.',
+			});
+			return null;
+		}
 	}
 
 	getCurrentStats(): PlayerStats {
