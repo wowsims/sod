@@ -19,6 +19,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 
 	paladin.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PaladinRune_RuneWristHammerOfTheRighteous)},
+		SpellCode:   SpellCode_PaladinHammerOfTheRighteous,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,

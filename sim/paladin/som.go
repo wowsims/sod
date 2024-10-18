@@ -18,6 +18,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 
 	judgeSpell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 407803},
+		SpellCode:   SpellCode_PaladinJudgementOfMartyrdom,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
