@@ -119,13 +119,13 @@ func (paladin *Paladin) applyReckoning() {
 }
 
 func (paladin *Paladin) getWeaponSpecializationModifier() float64 {
-	switch paladin.MainHand().HandType {
-	case proto.HandType_HandTypeOneHand:
-		return 1 + 0.02*float64(paladin.Talents.OneHandedWeaponSpecialization)
-	case proto.HandType_HandTypeTwoHand:
-		return 1 + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
-	default:
-		return 1
+	handType := paladin.MainHand().HandType
+	if handType == proto.HandType_HandTypeMainHand || handType == proto.HandType_HandTypeOneHand {
+		return 1. + 0.02*float64(paladin.Talents.OneHandedWeaponSpecialization)
+	} else if handType == proto.HandType_HandTypeTwoHand {
+		return 1. + 0.02*float64(paladin.Talents.TwoHandedWeaponSpecialization)
+	} else {
+		return 1.
 	}
 }
 
