@@ -57,7 +57,7 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 			}
 
 			if results[0].Landed() {
-				rogue.AddComboPoints(sim, combopoints, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, combopoints, target, spell.ComboPointMetrics())
 			}
 		},
 	})

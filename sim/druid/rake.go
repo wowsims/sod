@@ -118,7 +118,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				druid.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 				spell.Dot(target).Apply(sim)
 			} else {
 				spell.IssueRefund(sim)

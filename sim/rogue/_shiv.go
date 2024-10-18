@@ -51,7 +51,7 @@ func (rogue *Rogue) registerShivSpell() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialNoBlockDodgeParry)
 
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 
 				switch rogue.Consumes.OffHandImbue {
 				case proto.WeaponImbue_InstantPoison:
