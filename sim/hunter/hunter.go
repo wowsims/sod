@@ -50,7 +50,14 @@ const (
 	SpellCode_HunterWingClip
 	SpellCode_HunterVolley
 
+	// Pet Spells
 	SpellCode_HunterPetFlankingStrike
+	SpellCode_HunterPetClaw
+	SpellCode_HunterPetBite
+	SpellCode_HunterPetLightningBreath
+	SpellCode_HunterPetLavaBreath
+	SpellCode_HunterPetScreech
+	SpellCode_HunterPetScorpidPoison
 )
 
 func RegisterHunter() {
