@@ -1,7 +1,6 @@
 package hunter
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -38,8 +37,8 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		},
 	})
 
-	FlankingStrikeResetCodes := []int32{
-		SpellCode_HunterPetBite, SpellCode_HunterPetClaw, SpellCode_HunterPetLightningBreath, SpellCode_HunterPetLavaBreath, SpellCode_HunterPetScorpidPoison,
+	FlankingStrikeResetCodes := map[int32]bool{
+		SpellCode_HunterPetBite: true, SpellCode_HunterPetClaw: true, SpellCode_HunterPetLightningBreath: true, SpellCode_HunterPetLavaBreath: true, SpellCode_HunterPetScorpidPoison: true,
 	}
 
 	if hunter.pet != nil {
@@ -69,7 +68,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			},
 
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if slices.Contains(FlankingStrikeResetCodes, spell.SpellCode) {
+				if FlankingStrikeResetCodes[spell.SpellCode] {
 					if sim.RandomFloat("Flanking Strike Refresh") < 0.50 {
 						hunter.FlankingStrike.CD.Set(sim.CurrentTime)
 					}
