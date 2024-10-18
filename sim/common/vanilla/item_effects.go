@@ -2622,11 +2622,9 @@ func init() {
 				character.AddStatsDynamic(sim, bonusStats)
 			},
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
-					return
-				} else if result.Landed() {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && result.Landed() {
 					aura.RemoveStack(sim)
-				}				
+				}
 			},
 		})
 
