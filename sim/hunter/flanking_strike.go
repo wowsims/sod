@@ -37,6 +37,10 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		},
 	})
 
+	FlankingStrikeResetCodes := map[int32]bool{
+		SpellCode_HunterPetBite: true, SpellCode_HunterPetClaw: true, SpellCode_HunterPetLightningBreath: true, SpellCode_HunterPetLavaBreath: true, SpellCode_HunterPetScorpidPoison: true,
+	}
+
 	if hunter.pet != nil {
 		hunter.pet.flankingStrike = hunter.pet.GetOrRegisterSpell(core.SpellConfig{
 			SpellCode:   SpellCode_HunterPetFlankingStrike,
@@ -63,8 +67,8 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 				aura.Activate(sim)
 			},
 
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial|core.ProcMaskSpellDamage) && spell.SpellCode != SpellCode_HunterPetFlankingStrike {
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if FlankingStrikeResetCodes[spell.SpellCode] {
 					if sim.RandomFloat("Flanking Strike Refresh") < 0.50 {
 						hunter.FlankingStrike.CD.Set(sim.CurrentTime)
 					}
