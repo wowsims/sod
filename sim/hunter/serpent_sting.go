@@ -16,10 +16,11 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	level := [10]int{0, 4, 10, 18, 26, 34, 42, 50, 58, 60}[rank]
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_HunterSerpentSting,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolNature,
 		DefenseType:   core.DefenseTypeRanged,
-		ProcMask:      core.ProcMaskEmpty,
+		ProcMask:      core.ProcMaskRangedSpecial,
 		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot | core.SpellFlagPoison | SpellFlagSting,
 		CastType:      proto.CastType_CastTypeRanged,
 		Rank:          rank,
@@ -97,7 +98,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// As of phase 5 the only time serpent sting scales with AP is using the Dragonstalker's Pursuit 6P - this AP scaling doesn't benefit from target AP modifiers
-			damage := baseDamage + (hunter.SerpentStingAPCoeff*spell.RangedAttackPower(target, true))
+			damage := baseDamage + (hunter.SerpentStingAPCoeff * spell.RangedAttackPower(target, true))
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
 		},
 	})
