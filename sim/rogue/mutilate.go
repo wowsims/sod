@@ -91,7 +91,7 @@ func (rogue *Rogue) registerMutilateSpell() {
 			rogue.BreakStealth(sim)
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 2, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 2, target, spell.ComboPointMetrics())
 
 				/** Disable until it works on bosses
 				if waylay {

@@ -22,7 +22,8 @@ type energyBar struct {
 	maxEnergy     float64
 	currentEnergy float64
 
-	comboPoints int32
+	comboPoints      int32
+	comboPointTarget *Unit
 
 	// Lifecycle Callbacks
 	onComboPointsSpentCallbacks  []OnComboPointsSpent  // Triggered when the energy user successfully spends combo points on a spell
@@ -204,15 +205,55 @@ func (eb *energyBar) ResetEnergyTick(sim *Simulation) {
 	sim.RescheduleTask(eb.nextEnergyTick)
 }
 
-func (eb *energyBar) AddComboPoints(sim *Simulation, pointsToAdd int32, metrics *ResourceMetrics) {
+func (eb *energyBar) AddComboPointsIgnoreTarget(sim *Simulation, pointsToAdd int32, metrics *ResourceMetrics) {
 	newComboPoints := min(eb.comboPoints+pointsToAdd, 5)
 	metrics.AddEvent(float64(pointsToAdd), float64(newComboPoints-eb.comboPoints))
 
 	if sim.Log != nil {
-		eb.unit.Log(sim, "Gained %d combo points from %s (%d --> %d)", pointsToAdd, metrics.ActionID, eb.comboPoints, newComboPoints)
+		eb.unit.Log(sim, "Gained %d combo points on %s from %s (%d --> %d)", pointsToAdd, eb.comboPointTarget.LogLabel(), metrics.ActionID, eb.comboPoints, newComboPoints)
 	}
 
 	eb.comboPoints = newComboPoints
+
+	for _, callback := range eb.onComboPointsGainedCallbacks {
+		callback(sim)
+	}
+}
+
+func (eb *energyBar) AddComboPoints(sim *Simulation, pointsToAdd int32, target *Unit, metrics *ResourceMetrics) {
+	newComboPoints := int32(0)
+	if eb.comboPointTarget != nil && eb.comboPointTarget != target {
+		// we've detected that our target from our last combo point gain and the current target are different! do not pass go, lose all your combo points
+
+		// metric for combo point loss after a "target swap"
+		// note that this isn't actually in target swap logic, so we're only triggering combo point loss on an attempted combo point gain
+		// on a new target
+		metrics.AddEvent(-float64(eb.comboPoints), -float64(eb.comboPoints))
+
+		// handle someone trying to add more than 5??
+		newComboPoints = min(pointsToAdd, 5)
+
+		// add new combo point gain
+		metrics.AddEvent(float64(pointsToAdd), float64(newComboPoints))
+
+		if sim.Log != nil {
+			// TODO there should probably be some separate combo point metric to capture loss
+			eb.unit.Log(sim, "Spent %d combo points on %s from %s (%d --> %d) (target swap)", pointsToAdd, eb.comboPointTarget.LogLabel(), metrics.ActionID, eb.comboPoints, 0)
+			eb.unit.Log(sim, "Gained %d combo points on %s from %s (%d --> %d)", pointsToAdd, target.LogLabel(), metrics.ActionID, 0, newComboPoints)
+		}
+	} else {
+		newComboPoints = min(eb.comboPoints+pointsToAdd, 5)
+		metrics.AddEvent(float64(pointsToAdd), float64(newComboPoints-eb.comboPoints))
+
+		if sim.Log != nil {
+			eb.unit.Log(sim, "Gained %d combo points on %s from %s (%d --> %d)", pointsToAdd, target.LogLabel(), metrics.ActionID, eb.comboPoints, newComboPoints)
+		}
+	}
+
+	eb.comboPoints = newComboPoints
+
+	// overwrite old comboPointTarget to accurately track
+	eb.comboPointTarget = target
 
 	for _, callback := range eb.onComboPointsGainedCallbacks {
 		callback(sim)
@@ -260,6 +301,7 @@ func (eb *energyBar) reset(sim *Simulation) {
 
 	eb.currentEnergy = eb.maxEnergy
 	eb.comboPoints = 0
+	eb.comboPointTarget = sim.GetTargetUnit(0)
 
 	if eb.unit.Type != PetUnit {
 		eb.enable(sim, sim.Environment.PrepullStartTime())
