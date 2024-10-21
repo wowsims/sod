@@ -37,6 +37,7 @@ const (
 	SpellCode_HunterWyvernStrike
 
 	// Stings
+	SpellCode_HunterSerpentSting
 
 	// Traps
 	SpellCode_HunterExplosiveTrap
