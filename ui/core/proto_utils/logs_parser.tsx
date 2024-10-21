@@ -305,12 +305,12 @@ export class DamageDealtLog extends SimLog {
 	readonly miss: boolean;
 	readonly hit: boolean;
 	readonly crit: boolean;
-	readonly crush: boolean;
 	readonly glance: boolean;
 	readonly dodge: boolean;
 	readonly parry: boolean;
 	readonly block: boolean;
 	readonly blockedCrit: boolean;
+	readonly crush: boolean;
 	readonly tick: boolean;
 	readonly partialResist1_4: boolean;
 	readonly partialResist2_4: boolean;
@@ -322,12 +322,12 @@ export class DamageDealtLog extends SimLog {
 		type: string,
 		miss: boolean,
 		crit: boolean,
-		crush: boolean,
 		glance: boolean,
 		dodge: boolean,
 		parry: boolean,
 		block: boolean,
 		blockedCrit: boolean,
+		crush: boolean,
 		tick: boolean,
 		partialResist1_4: boolean,
 		partialResist2_4: boolean,
