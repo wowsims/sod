@@ -228,7 +228,7 @@ message TargetedActionMetrics {
 	// Total glancing damage done to this target by this action.
 	double glance_damage = 17;
 
-	// Total crushing damage done to this target by thi action.
+	// Total crushing damage done to this target by this action.
 	double crush_damage = 36;
 
 	// Total block damage done to this target by this action.
