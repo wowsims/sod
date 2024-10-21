@@ -17,17 +17,31 @@ const (
 )
 
 const (
-	SpellCode_PaladinNone = iota
-
+	SpellCode_PaladinNone int32 = 0
+	// Judgements
+	SpellCode_PaladinJudgementOfCommand = 1 << iota
+	SpellCode_PaladinJudgementOfMartyrdom
+	SpellCode_PaladinJudgementOfRighteousness
+	SpellCode_PaladinJudgementOfTheCrusader
+	// Special attacks that enable autoattacks/trigger extra attacks
+	SpellCode_PaladinCrusaderStrike
+	SpellCode_PaladinDivineStorm
+	SpellCode_PaladinHammerOfTheRighteous
+	SpellCode_PaladinShieldOfRighteousness
+	// Other spells
 	SpellCode_PaladinExorcism
 	SpellCode_PaladinHolyShock
 	SpellCode_PaladinHolyWrath
-	SpellCode_PaladinJudgementOfCommand
 	SpellCode_PaladinConsecration
 	SpellCode_PaladinAvengersShield
 	SpellCode_PaladinHolyShield
 	SpellCode_PaladinHolyShieldProc
 	SpellCode_PaladinLayOnHands
+)
+
+const (
+	SpellCode_PaladinJudgements          int32 = SpellCode_PaladinJudgementOfCommand | SpellCode_PaladinJudgementOfMartyrdom | SpellCode_PaladinJudgementOfRighteousness | SpellCode_PaladinJudgementOfTheCrusader
+	SpellCode_PaladinTriggersExtraAttack       = SpellCode_PaladinJudgements | SpellCode_PaladinCrusaderStrike | SpellCode_PaladinDivineStorm | SpellCode_PaladinHammerOfTheRighteous | SpellCode_PaladinShieldOfRighteousness
 )
 
 type SealJudgeCode uint8
@@ -86,6 +100,7 @@ type Paladin struct {
 	enableMultiJudge    bool
 	lingerDuration      time.Duration
 	consumeSealsOnJudge bool
+	stopAttackMacroMask int32
 }
 
 // Implemented by each Paladin spec.
@@ -109,6 +124,8 @@ func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
 func (paladin *Paladin) Initialize() {
+	paladin.stopAttackMacroMask = paladin.getStopAttackMacroMask()
+	paladin.registerStopAttackMacros()
 	paladin.registerRighteousFury()
 	// Judgement and Seals
 	paladin.registerJudgement()
@@ -149,7 +166,6 @@ func (paladin *Paladin) Initialize() {
 	paladin.lingerDuration = time.Millisecond * 400
 	paladin.consumeSealsOnJudge = true
 
-	paladin.registerStopAttackMacros()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
@@ -202,22 +218,34 @@ func (paladin *Paladin) ResetPrimarySeal(primarySeal proto.PaladinSeal) {
 }
 
 func (paladin *Paladin) registerStopAttackMacros() {
-
-	if paladin.divineStorm != nil && paladin.Options.IsUsingDivineStormStopAttack {
-		paladin.divineStorm.Flags |= core.SpellFlagBatchStopAttackMacro
-	}
-
-	if paladin.crusaderStrike != nil && paladin.Options.IsUsingCrusaderStrikeStopAttack {
-		paladin.crusaderStrike.Flags |= core.SpellFlagBatchStopAttackMacro
-	}
-
-	for _, spellsJoX := range paladin.allJudgeSpells {
-		for _, v := range spellsJoX {
-			if v != nil && paladin.Options.IsUsingJudgementStopAttack {
-				v.Flags |= core.SpellFlagBatchStopAttackMacro
-			}
+	paladin.OnSpellRegistered(func(spell *core.Spell) {
+		if paladin.stopAttackMacroMask&spell.SpellCode != 0 {
+			spell.Flags |= core.SpellFlagBatchStopAttackMacro
 		}
+	})
+}
+
+func (paladin *Paladin) getStopAttackMacroMask() int32 {
+	options := paladin.Options
+	if options.IsManuallyTriggeringAutoAttacks {
+		return SpellCode_PaladinTriggersExtraAttack
 	}
+
+	bitMask := SpellCode_PaladinNone
+
+	spellCodes := []int32{
+		core.TernaryInt32(options.IsUsingJudgementStopAttack, SpellCode_PaladinJudgements, SpellCode_PaladinNone),
+		core.TernaryInt32(options.IsUsingCrusaderStrikeStopAttack, SpellCode_PaladinCrusaderStrike, SpellCode_PaladinNone),
+		core.TernaryInt32(options.IsUsingDivineStormStopAttack, SpellCode_PaladinDivineStorm, SpellCode_PaladinNone),
+		core.TernaryInt32(options.IsUsingHammerOfTheRighteousStopAttack, SpellCode_PaladinHammerOfTheRighteous, SpellCode_PaladinNone),
+		core.TernaryInt32(options.IsUsingShieldOfRighteousnessStopAttack, SpellCode_PaladinShieldOfRighteousness, SpellCode_PaladinNone),
+	}
+
+	for _, spellCode := range spellCodes {
+		bitMask |= spellCode
+	}
+
+	return bitMask
 }
 
 func (paladin *Paladin) ResetCurrentPaladinAura() {
