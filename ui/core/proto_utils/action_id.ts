@@ -461,6 +461,11 @@ export class ActionId {
 				if (this.tag === 1) name = `${name} (1H)`;
 				else if (this.tag === 2) name = `${name} (2H)`;
 				break;
+			// Warlock T2 6 Piece Needs Heals to trigger for the player
+			case 'Drain Life':
+			case 'Death Coil':
+				if (this.tag === 1) name += ` (Heal)`
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';

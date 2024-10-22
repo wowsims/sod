@@ -18,6 +18,7 @@ func (warlock *Warlock) registerShadowBurnBaseConfig(rank int) core.SpellConfig 
 
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellId},
+		SpellCode:     SpellCode_WarlockShadowburn,
 		SpellSchool:   core.SpellSchoolShadow,
 		DefenseType:   core.DefenseTypeMagic,
 		ProcMask:      core.ProcMaskSpellDamage,

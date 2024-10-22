@@ -30,10 +30,12 @@ const (
 	SpellCode_WarlockHaunt
 	SpellCode_WarlockImmolate
 	SpellCode_WarlockIncinerate
+	SpellCode_WarlockLifeTap
 	SpellCode_WarlockSearingPain
 	SpellCode_WarlockShadowflame
 	SpellCode_WarlockShadowCleave
 	SpellCode_WarlockShadowBolt
+	SpellCode_WarlockShadowburn
 	SpellCode_WarlockSoulFire
 	SpellCode_WarlockUnstableAffliction
 )
