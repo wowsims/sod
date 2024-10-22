@@ -35,6 +35,7 @@ import APLPP5ExodinJson from './apls/p5ret-exodin-6CF2DR.apl.json';
 import APLPP5TwistingSlowJson from './apls/p5ret-twist-4DR-3.5-3.6.apl.json';
 import APLPP5TwistingSlowerJson from './apls/p5ret-twist-4DR-3.7-4.0.apl.json';
 import APLPP5TwistingCancelAuraJson from './apls/p5ret-twist-4DR-CancelAura.apl.json';
+import APLPP5StackingJson from './apls/p5ret-stacking-6CF2DR.apl.json';
 import APLPP5ShockadinJson from './apls/p5Shockadin.apl.json';
 import Phase1RetGearJson from './gear_sets/p1ret.gear.json';
 import Phase2RetSoCGearJson from './gear_sets/p2retsoc.gear.json';
@@ -47,6 +48,8 @@ import Phase4RetGearJson from './gear_sets/p4rettwist.gear.json';
 import Phase5ExodinGearJson from './gear_sets/p5exodin.gear.json';
 import Phase5ShockadinGearJson from './gear_sets/p5shockadin.gear.json';
 import Phase5TwistingGearJson from './gear_sets/p5twisting.gear.json';
+import Phase5TwistingSlowerGearJson from './gear_sets/p5twistingSlower.gear.json';
+import Phase5StackingGearJson from './gear_sets/p5stacking.gear.json';
 import Phase5TwistingHasteGearJson from './gear_sets/p5twistingHaste.gear.json';
 
 // Preset options for this spec.
@@ -84,6 +87,12 @@ export const Phase4RetExodin6pT1Gear = PresetUtils.makePresetGear('P4 Ret Exodin
 export const Phase5TwistingGear = PresetUtils.makePresetGear('P5 Twisting', Phase5TwistingGearJson, {
 	customCondition: player => player.getLevel() == 60,
 });
+export const Phase5TwistingSlowerGear = PresetUtils.makePresetGear('P5 Twisting Slower', Phase5TwistingSlowerGearJson, {
+	customCondition: player => player.getLevel() == 60,
+});
+export const Phase5StackingGear = PresetUtils.makePresetGear('P5 Stacking', Phase5StackingGearJson, {
+	customCondition: player => player.getLevel() == 60,
+});
 export const Phase5TwistingHasteGear = PresetUtils.makePresetGear('P5 Twisting Haste', Phase5TwistingHasteGearJson, {
 	customCondition: player => player.getLevel() == 60,
 });
@@ -99,7 +108,7 @@ export const GearPresets = {
 	[Phase.Phase2]: [Phase2RetSoCGear, Phase2RetSoMGear],
 	[Phase.Phase3]: [Phase3RetSoMGear],
 	[Phase.Phase4]: [Phase4RetTwistGear, Phase4RetTwist6pT1Gear, Phase4RetExodinGear, Phase4RetExodin6pT1Gear],
-	[Phase.Phase5]: [Phase5TwistingGear, Phase5TwistingHasteGear, Phase5ExodinGear, Phase5ShockadinGear],
+	[Phase.Phase5]: [Phase5TwistingGear, Phase5TwistingSlowerGear, Phase5StackingGear, Phase5TwistingHasteGear, Phase5ExodinGear, Phase5ShockadinGear],
 };
 
 export const DefaultGear = GearPresets[Phase.Phase5][0];
@@ -138,6 +147,9 @@ export const APLPP5Twisting4DRSlower = PresetUtils.makePresetAPLRotation('P5 Twi
 export const APLPP5Twisting4DRCancelAura = PresetUtils.makePresetAPLRotation('P5 Twist 4DR CancelAura', APLPP5TwistingCancelAuraJson, {
 	customCondition: player => player.getLevel() === 60,
 });
+export const APLPP5Stacking6CF2DR = PresetUtils.makePresetAPLRotation('P5 Twist 4DR CancelAura', APLPP5StackingJson, {
+	customCondition: player => player.getLevel() === 60,
+});
 export const APLPP5Exodin = PresetUtils.makePresetAPLRotation('P5 Exodin', APLPP5ExodinJson, {
 	customCondition: player => player.getLevel() === 60,
 });
@@ -150,7 +162,7 @@ export const APLPresets = {
 	[Phase.Phase2]: [APLP2Ret],
 	[Phase.Phase3]: [APLP3Ret],
 	[Phase.Phase4]: [APLP4RetTwist, APLP4RetTwist6pT1, APLP4RetExodin, APLP4RetExodin6pT1],
-	[Phase.Phase5]: [APLPP5Twisting4DRCancelAura, APLPP5Twisting4DRSlow, APLPP5Twisting4DRSlower, APLPP5Exodin, APLPP5Shockadin],
+	[Phase.Phase5]: [APLPP5Twisting4DRCancelAura, APLPP5Stacking6CF2DR, APLPP5Twisting4DRSlow, APLPP5Twisting4DRSlower, APLPP5Exodin, APLPP5Shockadin],
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
@@ -201,7 +213,8 @@ export const TalentPresets = {
 
 export const PresetBuildTwistingCancelAura = PresetUtils.makePresetBuild('TwistingCancelAura', { gear: Phase5TwistingHasteGear, talents: P4RetTalents, rotation: APLPP5Twisting4DRCancelAura });
 export const PresetBuildTwistingSlow = PresetUtils.makePresetBuild('TwistingSlow', { gear: Phase5TwistingGear, talents: P4RetTalents, rotation: APLPP5Twisting4DRSlow });
-export const PresetBuildTwistingSlower = PresetUtils.makePresetBuild('TwistingSlower', { gear: Phase5TwistingHasteGear, talents: P4RetTalents, rotation: APLPP5Twisting4DRSlower });
+export const PresetBuildTwistingSlower = PresetUtils.makePresetBuild('TwistingSlower', { gear: Phase5TwistingSlowerGear, talents: P4RetTalents, rotation: APLPP5Twisting4DRSlower });
+export const PresetBuildSealStacking = PresetUtils.makePresetBuild('SealStacking', { gear: Phase5StackingGear, talents: P4RetTalents, rotation: APLPP5Stacking6CF2DR });
 export const PresetBuildExodin = PresetUtils.makePresetBuild('Exodin', { gear: Phase5ExodinGear, talents: P4RetTalents, rotation: APLPP5Exodin });
 export const PresetBuildShockadin = PresetUtils.makePresetBuild('Shockadin', { gear: Phase5ShockadinGear, talents: P5ShockadinTalents, rotation: APLPP5Shockadin });
 
@@ -260,6 +273,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	fireResistanceTotem: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	sanctityAura: true,
+	hornOfLordaeron: true,
 	leaderOfThePack: true,
 	demonicPact: 110,
 	aspectOfTheLion: true,
@@ -269,6 +283,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
+	exposeArmor: TristateEffect.TristateEffectImproved,
 	homunculi: 70, // 70% average uptime default
 	faerieFire: true,
 	giftOfArthas: true,

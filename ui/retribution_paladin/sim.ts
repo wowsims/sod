@@ -152,6 +152,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		],
 		builds: [
 			Presets.PresetBuildTwistingCancelAura,
+			Presets.PresetBuildSealStacking,
 			Presets.PresetBuildTwistingSlow,
 			Presets.PresetBuildTwistingSlower,
 			Presets.PresetBuildExodin,
