@@ -641,7 +641,9 @@ func (spell *Spell) outcomeEnemyMeleeWhite(sim *Simulation, result *SpellResult,
 	}
 
 	if didHit && !result.applyEnemyAttackTableCrit(spell, attackTable, roll, &chance, countHits) {
-		result.applyAttackTableHit(spell, countHits)
+		if didHit && !result.applyEnemyAttackTableCrush(spell, attackTable, roll, &chance, countHits){
+			result.applyAttackTableHit(spell, countHits)
+		}
 	}
 }
 
@@ -911,6 +913,25 @@ func (result *SpellResult) applyEnemyAttackTableCrit(spell *Spell, at *AttackTab
 			}
 		}
 		result.Damage *= 2
+		return true
+	}
+	return false
+}
+
+func (result *SpellResult) applyEnemyAttackTableCrush(spell *Spell, at *AttackTable, roll float64, chance *float64, countHits bool) bool {
+	if 	!at.Attacker.PseudoStats.CanCrush {
+		return false
+	}
+
+	crushChance := at.BaseCrushChance
+	*chance += max(0, crushChance)
+
+	if roll < *chance {
+		result.Outcome = OutcomeCrush
+		if countHits {
+			spell.SpellMetrics[result.Target.UnitIndex].Crushes++
+		}
+		result.Damage *= 1.5
 		return true
 	}
 	return false

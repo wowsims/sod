@@ -3,7 +3,6 @@ package core
 import (
 	"strconv"
 	"time"
-
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -143,6 +142,7 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 
 	target.PseudoStats.CanBlock = true
 	target.PseudoStats.CanParry = true
+	target.PseudoStats.CanCrush = true
 	target.PseudoStats.ParryHaste = options.ParryHaste
 	target.PseudoStats.InFrontOfTarget = true
 	target.PseudoStats.DamageSpread = options.DamageSpread
@@ -264,6 +264,7 @@ type AttackTable struct {
 	BaseParryChance     float64
 	BaseGlanceChance    float64
 	BaseCritChance      float64
+	BaseCrushChance		float64
 
 	GlanceMultiplierMin  float64
 	GlanceMultiplierMax  float64
@@ -359,7 +360,8 @@ func NewAttackTable(attacker *Unit, defender *Unit, weapon *Item) *AttackTable {
 		} else {
 			table.BaseBlockChance = 0
 		}
-
+		
+		table.BaseCrushChance = UnitLevelFloat64(attacker.Level-defender.Level, 0.0, 0.0, 0.0, 0.15)
 		table.BaseMissChance = 0.05 + levelDelta
 		table.BaseDodgeChance = levelDelta // base dodge applied with class base stats
 		table.BaseCritChance = 0.05 - levelDelta
