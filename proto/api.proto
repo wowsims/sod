@@ -146,7 +146,7 @@ message ActionMetrics {
 	bool is_passive = 5;
 }
 
-// Metrics for a specific action, when cast at a particular target.
+// Metrics for a specific action, when cast at a particular target.  Next = 37
 message TargetedActionMetrics {
 	reserved 19, 20;
 	reserved "crit_block_damage", "crit_blocks";
@@ -196,6 +196,9 @@ message TargetedActionMetrics {
 	// # of times this action was a Blocked critical strike.
 	int32 blocked_crits = 33;
 
+	// # of times this action was a Crush.
+	int32 crushes = 35;
+
 	// # of times this action was a Glance.
 	int32 glances = 8;
 
@@ -225,6 +228,9 @@ message TargetedActionMetrics {
 
 	// Total glancing damage done to this target by this action.
 	double glance_damage = 17;
+
+	// Total crushing damage done to this target by this action.
+	double crush_damage = 36;
 
 	// Total block damage done to this target by this action.
 	double block_damage = 18;

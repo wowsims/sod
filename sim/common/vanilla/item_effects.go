@@ -859,10 +859,10 @@ func init() {
 				Label:    "Chilled (Frostguard)",
 				Duration: time.Second * 5,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed *= .70
+					aura.Unit.AddMoveSpeedModifier(&aura.ActionID, 0.30)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed /= .70
+					aura.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 				},
 			})
 			core.AtkSpeedReductionEffect(aura, 1.25)
@@ -1031,10 +1031,10 @@ func init() {
 				Label:    "Chilled (Hardened Frostguard)",
 				Duration: time.Second * 5,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed *= .70
+					aura.Unit.AddMoveSpeedModifier(&aura.ActionID, 0.30)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed /= .70
+					aura.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 				},
 			})
 			core.AtkSpeedReductionEffect(aura, 1.25)
@@ -2603,6 +2603,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		actionID := core.ActionID{ItemID: ZandalariHeroBadge}
+		duration := time.Second * 20
 		bonusPerStack := stats.Stats{
 			stats.Armor:   200,
 			stats.Defense: 3,
@@ -2611,7 +2612,7 @@ func init() {
 		buffAura := character.GetOrRegisterAura(core.Aura{
 			Label:     "Fragile Armor",
 			ActionID:  actionID,
-			Duration:  time.Second * 20,
+			Duration:  duration,
 			MaxStacks: 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				aura.SetStacks(sim, aura.MaxStacks)
@@ -2621,10 +2622,9 @@ func init() {
 				character.AddStatsDynamic(sim, bonusStats)
 			},
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
-					return
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && result.Landed() {
+					aura.RemoveStack(sim)
 				}
-				aura.RemoveStack(sim)
 			},
 		})
 
@@ -2657,6 +2657,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		actionID := core.ActionID{ItemID: ZandalariHeroCharm}
+		duration := time.Second * 20
 		bonusPerStack := stats.Stats{
 			stats.SpellDamage:  17,
 			stats.HealingPower: 34,
@@ -2665,7 +2666,7 @@ func init() {
 		buffAura := character.GetOrRegisterAura(core.Aura{
 			ActionID:  actionID,
 			Label:     "Unstable Power",
-			Duration:  time.Second * 20,
+			Duration:  duration,
 			MaxStacks: 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				aura.SetStacks(sim, aura.MaxStacks)
@@ -2691,6 +2692,10 @@ func init() {
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
 				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -2708,11 +2713,12 @@ func init() {
 		character := agent.GetCharacter()
 
 		actionID := core.ActionID{ItemID: ZandalariHeroMedallion}
+		duration := time.Second * 20
 
 		buffAura := character.GetOrRegisterAura(core.Aura{
 			ActionID:  actionID,
 			Label:     "Restless Strength",
-			Duration:  time.Second * 20,
+			Duration:  duration,
 			MaxStacks: 20,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				aura.SetStacks(sim, aura.MaxStacks)
@@ -2735,6 +2741,10 @@ func init() {
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
 				},
 			},
 

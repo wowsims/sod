@@ -258,7 +258,11 @@ var ItemSetCorruptedNemesis = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			warlock.RegisterAura(core.Aura{
+			if warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
+				warlock.Felguard.PseudoStats.DamageDealtMultiplier *= 1.10
+			}
+
+			core.MakePermanent(warlock.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Warlock - Damage 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Spellbook {
@@ -266,12 +270,8 @@ var ItemSetCorruptedNemesis = core.NewItemSet(core.ItemSet{
 							spell.DamageMultiplier *= 1.10
 						}
 					}
-
-					if warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
-						warlock.Felguard.PseudoStats.DamageDealtMultiplier *= 1.10
-					}
 				},
-			})
+			}))
 		},
 		// Periodic damage from your Shadowflame, Unstable Affliction, and Curse of Agony spells and damage done by your Felguard have a 4% chance to grant the Shadow Trance effect.
 		4: func(agent core.Agent) {

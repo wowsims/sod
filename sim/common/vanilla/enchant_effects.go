@@ -300,5 +300,17 @@ func init() {
 		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 	})
 
+	// Boots - Minor Speed
+	core.NewEnchantEffect(911, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		character.RegisterAura(core.Aura{
+			Label: "Minor Speed",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddMoveSpeedModifier(&core.ActionID{SpellID: 13889}, 1.08)
+			},
+		})
+	})
+
 	core.AddEffectsToTest = true
 }
