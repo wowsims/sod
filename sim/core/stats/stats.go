@@ -471,6 +471,7 @@ type PseudoStats struct {
 
 	CanBlock bool
 	CanParry bool
+	CanCrush bool
 	Stunned  bool // prevents blocks, dodges, and parries
 
 	ParryHaste bool
