@@ -23,7 +23,7 @@ func (priest *Priest) registerVoidZoneSpell() {
 
 	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
-	priest.GetOrRegisterSpell(core.SpellConfig{
+	priest.VoidZone = priest.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneBracersVoidZone)},
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,
@@ -43,7 +43,7 @@ func (priest *Priest) registerVoidZoneSpell() {
 			},
 		},
 
-		DamageMultiplier: priest.darknessDamageModifier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

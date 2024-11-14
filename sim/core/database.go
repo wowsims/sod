@@ -41,10 +41,6 @@ func addToDatabase(newDB *proto.SimDatabase) {
 		}
 		rwMutex.Unlock()
 	}
-
-	for _, v := range newDB.Runes {
-		fmt.Println(RuneFromProto(v))
-	}
 }
 
 type Item struct {

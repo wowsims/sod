@@ -46,10 +46,7 @@ func (priest *Priest) ApplyTalents() {
 	priest.applyShadowAffinity()
 	priest.applyShadowFocus()
 	priest.applyShadowWeaving()
-}
-
-func (priest *Priest) darknessDamageModifier() float64 {
-	return 1 + .02*float64(priest.Talents.Darkness)
+	priest.applyDarkness()
 }
 
 func (priest *Priest) applyMentalAgility() {
@@ -212,6 +209,58 @@ func (priest *Priest) AddShadowWeavingStack(sim *core.Simulation, target *core.U
 	}
 
 	priest.ShadowWeavingProc.Cast(sim, target)
+}
+
+func (priest *Priest) applyDarkness() {
+	if priest.Talents.Darkness == 0 {
+		return
+	}
+
+	multiplier := 0.02 * float64(priest.Talents.Darkness)
+
+	priest.RegisterAura(core.Aura{
+		Label: "Darkness",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			baseDamageAffectedSpells := core.FilterSlice(
+				core.Flatten(
+					[][]*core.Spell{
+						priest.MindBlast,
+						priest.DevouringPlague,
+						priest.MindSearTicks,
+						{priest.ShadowWordDeath},
+					},
+				),
+				func(spell *core.Spell) bool { return spell != nil },
+			)
+
+			fullDamageAffectedSpells := core.FilterSlice(
+				core.Flatten(
+					[][]*core.Spell{
+						priest.ShadowWordPain,
+						{priest.VoidPlague},
+						{priest.MindSpike},
+						{priest.VoidZone},
+					},
+				),
+				func(spell *core.Spell) bool { return spell != nil },
+			)
+
+			for _, spells := range priest.MindFlay {
+				fullDamageAffectedSpells = append(
+					fullDamageAffectedSpells,
+					core.FilterSlice(spells, func(spell *core.Spell) bool { return spell != nil })...,
+				)
+			}
+
+			for _, spell := range baseDamageAffectedSpells {
+				spell.BaseDamageMultiplierAdditive += multiplier
+			}
+
+			for _, spell := range fullDamageAffectedSpells {
+				spell.DamageMultiplier *= 1 + multiplier
+			}
+		},
+	})
 }
 
 func (priest *Priest) registerInnerFocus() {

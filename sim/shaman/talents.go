@@ -86,7 +86,7 @@ func (shaman *Shaman) applyElementalFocus() {
 		return
 	}
 
-	procChance := 0.1
+	shaman.elementalFocusProcChance = 0.1
 
 	var affectedSpells []*core.Spell
 
@@ -132,7 +132,7 @@ func (shaman *Shaman) applyElementalFocus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Elemental Focus Trigger",
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if shaman.isShamanDamagingSpell(spell) && sim.Proc(procChance, "Elemental Focus") {
+			if shaman.isShamanDamagingSpell(spell) && sim.Proc(shaman.elementalFocusProcChance, "Elemental Focus") {
 				shaman.ClearcastingAura.Activate(sim)
 				shaman.ClearcastingAura.SetStacks(sim, shaman.ClearcastingAura.MaxStacks)
 			}
