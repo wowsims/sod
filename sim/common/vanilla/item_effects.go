@@ -51,14 +51,10 @@ const (
 	MarkOfTheChosen                = 17774
 	Nightfall                      = 19169
 	EbonHand                       = 19170
-	DarkmoonCardHeroism            = 19287
-	DarkmoonCardBlueDragon         = 19288
-	DarkmoonCardMaelstrom          = 19289
 	RuneOfTheDawn                  = 19812
 	ZandalariHeroBadge             = 19948
 	ZandalariHeroMedallion         = 19949
 	ZandalariHeroCharm             = 19950
-	ScarabBrooch                   = 21625
 	MarkOfTheChampionPhys          = 23206
 	MarkOfTheChampionSpell         = 23207
 	BlisteringRagehammer           = 220569 // 10626
@@ -119,6 +115,10 @@ const (
 	TheUntamedBlade                = 230242 // 19334
 	NatPaglesBrokenReel            = 231271 // 19947
 	TheUntamedBladeShadowflame     = 232566
+	ScarabBrooch                   = 233601 // 21625
+	DarkmoonCardHeroism            = 234176 // 19287
+	DarkmoonCardBlueDragon         = 234177 // 19288
+	DarkmoonCardMaelstrom          = 234178 // 19289
 )
 
 func init() {
@@ -2167,11 +2167,11 @@ func init() {
 	core.NewSimpleStatOffensiveTrinketEffect(DraconicInfusedEmblem, stats.Stats{stats.SpellDamage: 128, stats.HealingPower: 236}, time.Second*15, time.Second*90)
 
 	// https://www.wowhead.com/classic/item=19288/darkmoon-card-blue-dragon
-	// Equip: 2% chance on successful spellcast to allow 100% of your Mana regeneration to continue while casting for 15 sec. (Proc chance: 2%)
+	// Equip: 5% chance on successful spellcast to allow 100% of your Mana regeneration to continue while casting for 15 sec.
 	core.NewItemEffect(DarkmoonCardBlueDragon, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		actionID := core.ActionID{SpellID: 23684}
+		actionID := core.ActionID{SpellID: 1213421}
 
 		procAura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Aura of the Blue Dragon",
@@ -2189,7 +2189,7 @@ func init() {
 			Name:       "Aura of the Blue Dragon Trigger",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			ProcChance: .02,
+			ProcChance: .05,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procAura.Activate(sim)
 			},
@@ -2197,11 +2197,11 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=19287/darkmoon-card-heroism
-	// Equip: Sometimes heals bearer of 120 to 180 damage when damaging an enemy in melee.
+	// Equip: Sometimes heals bearer of 170 to 230 damage when damaging an enemy in melee.
 	core.NewItemEffect(DarkmoonCardHeroism, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		actionID := core.ActionID{SpellID: 23689}
+		actionID := core.ActionID{SpellID: 1213419}
 		healthMetrics := character.NewHealthMetrics(actionID)
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
@@ -2210,7 +2210,7 @@ func init() {
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				character.GainHealth(sim, sim.Roll(120, 180), healthMetrics)
+				character.GainHealth(sim, sim.Roll(170, 230), healthMetrics)
 			},
 		})
 
@@ -2228,11 +2228,11 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=19289/darkmoon-card-maelstrom
-	// Equip: Chance to strike your melee target with lightning for 200 to 300 Nature damage.
+	// Equip: Chance to strike your melee target with lightning for 317 to 517 Nature damage.
 	core.NewItemEffect(DarkmoonCardMaelstrom, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		actionID := core.ActionID{SpellID: 23687}
+		actionID := core.ActionID{SpellID: 1213417}
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
@@ -2245,7 +2245,7 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, sim.Roll(200, 300), spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, sim.Roll(317, 517), spell.OutcomeMagicHitAndCrit)
 			},
 		})
 

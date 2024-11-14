@@ -38,7 +38,7 @@ func (druid *Druid) registerSunfireHumanoidSpell(baseDamageLow float64, baseDama
 		func(_ *core.Spell) float64 {
 			return baseDotDamage
 		},
-		func(_ *core.Simulation, _ *core.Spell) {},
+		func(_ *core.Simulation, _ *core.Unit, _ *core.Spell) {},
 	)
 
 	config.SpellCode = SpellCode_DruidSunfire
@@ -71,8 +71,8 @@ func (druid *Druid) registerSunfireCatSpell(baseDamageLow float64, baseDamageHig
 			// Sunfire (Cat) uses a different scaling formula based on the Druid's AP
 			return baseDotDamage + dotAPCoeff*spell.MeleeAttackPower()
 		},
-		func(sim *core.Simulation, spell *core.Spell) {
-			druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+		func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			druid.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 		},
 	)
 
@@ -89,7 +89,7 @@ func (druid *Druid) getSunfireBaseSpellConfig(
 	getBaseDamage func(sim *core.Simulation, spell *core.Spell) float64,
 	getBaseDotDamage func(spell *core.Spell) float64,
 	// Callback for additional logic after a cast lands like adding a combo point for the Feral spell
-	onResultLanded func(sim *core.Simulation, spell *core.Spell),
+	onResultLanded func(sim *core.Simulation, target *core.Unit, spell *core.Spell),
 ) *core.SpellConfig {
 	return &core.SpellConfig{
 		ActionID:    actionID,
@@ -136,7 +136,7 @@ func (druid *Druid) getSunfireBaseSpellConfig(
 			if result.Landed() {
 				dot := spell.Dot(target)
 				dot.Apply(sim)
-				onResultLanded(sim, spell)
+				onResultLanded(sim, target, spell)
 			}
 		},
 

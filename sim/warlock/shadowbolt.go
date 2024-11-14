@@ -92,8 +92,8 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 func (warlock *Warlock) registerShadowBoltSpell() {
 	warlock.ShadowBolt = make([]*core.Spell, 0)
 
-	// TODO: AQ <=
-	for rank := 1; rank < ShadowBoltRanks; rank++ {
+	maxRank := core.TernaryInt(core.IncludeAQ, ShadowBoltRanks, ShadowBoltRanks-1)
+	for rank := 1; rank <= maxRank; rank++ {
 		config := warlock.getShadowBoltBaseConfig(rank)
 
 		if config.RequiredLevel <= int(warlock.Level) {

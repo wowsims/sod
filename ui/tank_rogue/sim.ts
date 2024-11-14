@@ -23,6 +23,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		Stat.StatMeleeCrit,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
+		Stat.StatSpellPower,
 
 		// Tank stats
 		Stat.StatDefense,

@@ -53,18 +53,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.02639
+  weights: 0.14223
   weights: 0
-  weights: 0.61706
-  weights: 0
-  weights: 0
+  weights: 0.64339
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.24932
-  weights: 2.04275
+  weights: 0
+  weights: 0
+  weights: 4.00301
+  weights: 1.90131
   weights: 0
   weights: 0
   weights: 0
@@ -104,31 +104,24 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDemonology-Phase2-Lvl40-AllItems-Kezan'sUnstoppableTaint-231346"
- value: {
-  dps: 496.4934
-  tps: 516.66521
- }
-}
-dps_results: {
  key: "TestDemonology-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 491.65653
-  tps: 511.57512
+  dps: 492.95536
+  tps: 513.00693
  }
 }
 dps_results: {
  key: "TestDemonology-Phase2-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 490.83438
-  tps: 849.14758
+  dps: 492.05034
+  tps: 852.88511
  }
 }
 dps_results: {
  key: "TestDemonology-Phase2-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 490.83438
-  tps: 510.81123
+  dps: 492.05034
+  tps: 512.50795
  }
 }
 dps_results: {
@@ -141,15 +134,15 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase2-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 329.93182
-  tps: 710.78398
+  dps: 328.42181
+  tps: 712.72423
  }
 }
 dps_results: {
  key: "TestDemonology-Phase2-Lvl40-Settings-Orc-fire.succubus-Demonology Warlock-demonology-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 329.93182
-  tps: 350.1307
+  dps: 328.42181
+  tps: 349.8027
  }
 }
 dps_results: {
@@ -162,7 +155,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 490.83438
-  tps: 510.81123
+  dps: 492.05034
+  tps: 512.50795
  }
 }

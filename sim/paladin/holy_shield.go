@@ -21,7 +21,6 @@ var HolyShieldValues = []struct {
 }
 
 func (paladin *Paladin) registerHolyShield() {
-
 	if !paladin.Talents.HolyShield {
 		return
 	}
@@ -31,7 +30,6 @@ func (paladin *Paladin) registerHolyShield() {
 	blockBonus := 30.0 * core.BlockRatingPerBlockChance
 
 	for i, values := range HolyShieldValues {
-
 		rank := i + 1
 		level := values.level
 		spellID := values.spellID
