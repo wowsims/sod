@@ -315,21 +315,22 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
 			paladin := agent.(PaladinAgent).GetPaladin()
+
+			t2Judgement6pcAura := paladin.GetOrRegisterAura(core.Aura{
+				Label:     "Swift Judgement",
+				ActionID:  core.ActionID{SpellID: 467530},
+				Duration:  time.Second * 8,
+				MaxStacks: 5,
+
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+					aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.0 + (float64(oldStacks) * 0.01))
+					aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.0 + (float64(newStacks) * 0.01))
+				},
+			})
+
 			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Retribution 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					t2Judgement6pcAura := paladin.GetOrRegisterAura(core.Aura{
-						Label:     "Swift Judgement",
-						ActionID:  core.ActionID{SpellID: 467530},
-						Duration:  time.Second * 8,
-						MaxStacks: 5,
-
-						OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-							aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.0 + (float64(oldStacks) * 0.01))
-							aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.0 + (float64(newStacks) * 0.01))
-						},
-					})
-
 					originalApplyEffects := paladin.judgement.ApplyEffects
 
 					// Wrap the apply Judgement ApplyEffects with more Effects
@@ -351,12 +352,16 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			//Increases the bonus chance to block from Holy Shield by 10%
 			paladin := agent.(PaladinAgent).GetPaladin()
+			if !paladin.Talents.HolyShield {
+				return
+			}
+
 			blockBonus := 40.0 * core.BlockRatingPerBlockChance
 			numCharges := int32(4)
 
 			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Protection 2P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				OnInit: func(_ *core.Aura, _ *core.Simulation) {
 					for i, hsAura := range paladin.holyShieldAura {
 						if paladin.Level < HolyShieldValues[i].level {
 							break
@@ -375,12 +380,15 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent) {
 			//You take 10% reduced damage while Holy Shield is active.
 			paladin := agent.(PaladinAgent).GetPaladin()
+			if !paladin.Talents.HolyShield {
+				return
+			}
 
 			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Protection 4P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				OnInit: func(_ *core.Aura, _ *core.Simulation) {
 					for i, hsAura := range paladin.holyShieldAura {
-						if paladin.Level < HolyShieldValues[i].level {
+						if hsAura == nil || paladin.Level < HolyShieldValues[i].level {
 							break
 						}
 						oldOnGain := hsAura.OnGain
@@ -401,16 +409,19 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			// Your Reckoning Talent now has a 20% chance per talent point to trigger when
 			// you block.
-			c := agent.GetCharacter()
-			actionID := core.ActionID{SpellID: 20178} // Reckoning proc ID
 			paladin := agent.(PaladinAgent).GetPaladin()
+			if paladin.Talents.Reckoning == 0 {
+				return
+			}
+
+			actionID := core.ActionID{SpellID: 20178} // Reckoning proc ID
 			procChance := 0.2 * float64(paladin.Talents.Reckoning)
 
 			handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				paladin.AutoAttacks.ExtraMHAttack(sim, 1, actionID, spell.ActionID)
 			}
 
-			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
+			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
 				Name:       "Item - T2 - Paladin - Protection 6P Bonus",
 				Callback:   core.CallbackOnSpellHitTaken,
 				Outcome:    core.OutcomeBlock,

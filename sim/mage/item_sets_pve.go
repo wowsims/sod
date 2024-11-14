@@ -150,13 +150,22 @@ var ItemSetArcanistInsight = core.NewItemSet(core.ItemSet{
 			mage.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 456402},
 				Label:    "S03 - Item - T1 - Mage - Damage 6P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					if mage.IceArmorAura != nil {
 						mage.FingersOfFrostProcChance += bonusFoFProcChance
 					} else if mage.MageArmorAura != nil {
 						mage.PseudoStats.SpiritRegenRateCasting += bonusSpiritRegenRateCasting
 					} else if mage.MoltenArmorAura != nil {
 						mage.AddStatDynamic(sim, stats.SpellPower, bonusSpellPower)
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					if mage.IceArmorAura != nil {
+						mage.FingersOfFrostProcChance -= bonusFoFProcChance
+					} else if mage.MageArmorAura != nil {
+						mage.PseudoStats.SpiritRegenRateCasting -= bonusSpiritRegenRateCasting
+					} else if mage.MoltenArmorAura != nil {
+						mage.AddStatDynamic(sim, stats.SpellPower, -bonusSpellPower)
 					}
 				},
 			})

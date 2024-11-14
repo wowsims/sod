@@ -251,6 +251,144 @@ var ItemSetWickedFelheart = core.NewItemSet(core.ItemSet{
 //                            SoD Phase 5 Item Sets
 ///////////////////////////////////////////////////////////////////////////
 
+var ItemSetWickedNemesis = core.NewItemSet(core.ItemSet{
+	Name: "Wicked Nemesis",
+	Bonuses: map[int32]core.ApplyEffect{
+
+		// While you are targeting an enemy within 30 yards,
+		// Life Tap grants you mana at the expense of your target's health
+		// but deals 50% reduced damage to them. Mana gained remains unchanged
+		// Bluepost: Tier 2 tank warlock 2 set can no longer crit
+		2: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			var healthMetrics [LifeTapRanks + 1]*core.ResourceMetrics
+
+			for i, spellId := range LifeTapSpellId {
+				healthMetrics[i] = warlock.NewHealthMetrics(core.ActionID{SpellID: spellId})
+			}
+
+			warlock.RegisterAura(core.Aura{
+				Label:    "S03 - Item - T2 - Warlock - Tank 2P Bonus",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_WarlockLifeTap {
+						warlock.GainHealth(sim, result.Damage, healthMetrics[spell.Rank])
+					}
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.SpellCode == SpellCode_WarlockLifeTap && warlock.CurrentTarget != nil {
+						// Enemy hit can partially resist and cannot crit
+						spell.Flags &= ^core.SpellFlagBinary
+						spell.DamageMultiplier /= 2
+						var damageResult = spell.CalcDamage(sim, warlock.CurrentTarget, LifeTapBaseDamage[spell.Rank], spell.OutcomeMagicHit)
+						spell.DealDamage(sim, damageResult)
+						spell.DamageMultiplier *= 2
+						spell.Flags |= core.SpellFlagBinary
+					}
+				},
+			},
+			)
+		},
+		// While Metamorphosis is active, your offensive abilities and Demon summons cost no Soul Shards.
+		// In addition, you heal for 15% of your maximum health when you damage a target with Shadowburn
+		4: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			healingSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 468062},
+				SpellSchool: core.SpellSchoolPhysical,
+				ProcMask:    core.ProcMaskSpellHealing,
+				Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 0,
+			})
+
+			warlock.RegisterAura(core.Aura{
+				Label:    "S03 - Item - T2 - Warlock - Tank 4P Bonus",
+				Duration: core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_WarlockShadowburn && result.Landed() {
+						healAmount := warlock.MaxHealth() * 0.15
+						healingSpell.CalcAndDealHealing(sim, healingSpell.Unit, healAmount, healingSpell.OutcomeHealing)
+					}
+				},
+			})
+		},
+		// Any excess healing you deal to yourself is converted into a shield that absorbs damage.
+		// This shield can absorb uf to 30% of your maximum health, and stacks from multiple heals.
+		6: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+
+			shieldIncreaseAmount := 0.0
+			currentShieldAmount := 0.0
+
+			shieldSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 470279},
+				ProcMask:    core.ProcMaskSpellHealing,
+				SpellSchool: core.SpellSchoolShadow,
+				Flags:       core.SpellFlagPassiveSpell,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+
+				Shield: core.ShieldConfig{
+					SelfOnly: true,
+					Aura: core.Aura{
+						Label:    "Demonic Aegis",
+						Duration: 12 * time.Second,
+					},
+				},
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.SelfShield().Apply(sim, currentShieldAmount)
+				},
+			})
+
+			warlock.RegisterAura(core.Aura{
+				Duration: core.NeverExpires,
+				Label:    "S03 - Item - T2 - Warlock - Tank 6P Bonus",
+
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					shieldIncreaseAmount = 0.0
+					currentShieldAmount = 0.0
+					aura.Activate(sim)
+				},
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if currentShieldAmount <= 0 || result.Damage <= 0 || spell.SpellCode == SpellCode_WarlockLifeTap {
+						return
+					}
+
+					damageAbsorbed := min(result.Damage, currentShieldAmount)
+					currentShieldAmount -= damageAbsorbed
+
+					warlock.GainHealth(sim, damageAbsorbed, shieldSpell.HealthMetrics(result.Target))
+
+					if currentShieldAmount <= 0 {
+						currentShieldAmount = 0
+						shieldSpell.SelfShield().Deactivate(sim)
+					}
+				},
+				OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					shieldIncreaseAmount = result.Damage + warlock.CurrentHealth() - warlock.MaxHealth()
+					if shieldIncreaseAmount > 0 {
+						currentShieldAmount += shieldIncreaseAmount
+						currentShieldAmount = min(warlock.MaxHealth()*0.30, currentShieldAmount)
+						shieldSpell.Cast(sim, result.Target)
+					}
+				},
+			})
+		},
+	},
+})
+
 var ItemSetCorruptedNemesis = core.NewItemSet(core.ItemSet{
 	Name: "Corrupted Nemesis",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -258,7 +396,11 @@ var ItemSetCorruptedNemesis = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			warlock.RegisterAura(core.Aura{
+			if warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
+				warlock.Felguard.PseudoStats.DamageDealtMultiplier *= 1.10
+			}
+
+			core.MakePermanent(warlock.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Warlock - Damage 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Spellbook {
@@ -266,12 +408,8 @@ var ItemSetCorruptedNemesis = core.NewItemSet(core.ItemSet{
 							spell.DamageMultiplier *= 1.10
 						}
 					}
-
-					if warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
-						warlock.Felguard.PseudoStats.DamageDealtMultiplier *= 1.10
-					}
 				},
-			})
+			}))
 		},
 		// Periodic damage from your Shadowflame, Unstable Affliction, and Curse of Agony spells and damage done by your Felguard have a 4% chance to grant the Shadow Trance effect.
 		4: func(agent core.Agent) {

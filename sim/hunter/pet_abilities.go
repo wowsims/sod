@@ -15,10 +15,11 @@ const (
 	Unknown PetAbilityType = iota
 	Bite
 	Claw
-	//DemoralizingScreech
+	Screech
 	FuriousHowl
 	LightningBreath
 	ScorpidPoison
+	LavaBreath
 )
 
 func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *core.Spell {
@@ -27,8 +28,8 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 		return hp.newBite()
 	case Claw:
 		return hp.newClaw()
-	// case DemoralizingScreech:
-	// 	return hp.newDemoralizingScreech()
+	case Screech:
+		return hp.newScreech()
 	// case FuriousHowl:
 	// 	return hp.newFuriousHowl()
 	case LightningBreath:
@@ -37,6 +38,8 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 		return hp.newScorpidPoison()
 	// case Swipe:
 	// 	return hp.newSwipe()
+	case LavaBreath:
+		return hp.newLavaBreath()
 	case Unknown:
 		return nil
 	default:
@@ -66,8 +69,11 @@ func (hp *HunterPet) newClaw() *core.Spell {
 		60: 3009,
 	}[hp.Owner.Level]
 
+	ApCoeff := 1.5 / 14
+
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetClaw,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -88,7 +94,7 @@ func (hp *HunterPet) newClaw() *core.Spell {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 1.5 / 14)
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * ApCoeff)
 			baseDamage *= hp.killCommandMult()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -118,8 +124,11 @@ func (hp *HunterPet) newBite() *core.Spell {
 		60: 17261,
 	}[hp.Owner.Level]
 
+	ApCoeff := 2.15/14
+
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetBite,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -144,7 +153,7 @@ func (hp *HunterPet) newBite() *core.Spell {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 2.15 / 14)
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * ApCoeff)
 			baseDamage *= hp.killCommandMult()
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -174,8 +183,12 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 		60: 25012,
 	}[hp.Owner.Level]
 
+	ApCoeff := 3.65/14
+	SpCoeff := 0.429
+
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetLightningBreath,
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
@@ -192,37 +205,68 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: SpCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * 3.65 / 14)
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * ApCoeff)
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 }
 
-// func (hp *HunterPet) newDemoralizingScreech() *core.Spell {
-// 	//debuffs := hp.NewEnemyAuraArray(core.DemoralizingScreechAura)
+func (hp *HunterPet) newScreech() *core.Spell {
+	baseDamageMin := map[int32]float64{
+		25: 12,
+		40: 12,
+		50: 19,
+		60: 26,
+	}[hp.Owner.Level]
 
-// 	return hp.newSpecialAbility(PetSpecialAbilityConfig{
-// 		Type:    DemoralizingScreech,
-// 		Cost:    20,
-// 		GCD:     PetGCD,
-// 		CD:      time.Second * 10,
-// 		SpellID: 55487,
-// 		School:  core.SpellSchoolPhysical,
-// 		MinDmg:  85,
-// 		MaxDmg:  129,
-// 		APRatio: 0.07,
-// 		OnSpellHitDealt: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if result.Landed() {
-// 				//for _, aoeTarget := range sim.Encounter.TargetUnits {
-// 				//debuffs.Get(aoeTarget).Activate(sim)
-// 				//}
-// 			}
-// 		},
-// 	})
-// }
+	baseDamageMax := map[int32]float64{
+		25: 16,
+		40: 16,
+		50: 25,
+		60: 46,
+	}[hp.Owner.Level]
+
+	spellID := map[int32]int32{
+		15: 24580,
+		40: 24580,
+		50: 24581,
+		60: 24582,
+	}[hp.Owner.Level]
+
+	ApCoeff := 1.15/14
+
+	return hp.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetScreech,
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    core.ProcMaskMeleeSpecial,
+		Flags:       core.SpellFlagMeleeMetrics,
+
+		FocusCost: core.FocusCostOptions{
+			Cost: 20,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: PetGCD,
+			},
+			IgnoreHaste: true,
+		},
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * ApCoeff)
+			// This ability also applies a melee attack power reduction similar to demoralizing shout - left it out for now
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+		},
+	})
+}
 
 // func (hp *HunterPet) newFuriousHowl() *core.Spell {
 // 	actionID := core.ActionID{SpellID: 64495}
@@ -271,14 +315,31 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 // }
 
 func (hp *HunterPet) newScorpidPoison() *core.Spell {
+	baseDamageTick := map[int32]float64{
+		25: 3,
+		40: 6,
+		50: 6,
+		60: 8,
+	}[hp.Owner.Level]
+	spellID := map[int32]int32{
+		25: 24583,
+		40: 24586,
+		50: 24586,
+		60: 24587,
+	}[hp.Owner.Level]
+
+	ApCoeff := 0.07/5
+
 	return hp.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 55728},
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetScorpidPoison,
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskEmpty,
+		ProcMask:    core.ProcMaskMeleeMHSpecial,
+		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagPoison,
 
 		FocusCost: core.FocusCostOptions{
-			Cost: 20,
+			Cost: 30,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -287,7 +348,7 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    hp.NewTimer(),
-				Duration: time.Second * 10,
+				Duration: time.Second * 4,
 			},
 		},
 
@@ -296,15 +357,26 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "ScorpidPoison",
+				Label:     "ScorpidPoison",
+				MaxStacks: 5,
+				Duration:  time.Second * 10,
 			},
-			NumberOfTicks:    5,
-			TickLength:       time.Second * 2,
-			BonusCoefficient: 1,
-			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				damage := sim.Roll(100/5, 130/5) + (0.07/5)*dot.Spell.MeleeAttackPower()
-				dot.Snapshot(target, damage, isRollover)
-				dot.SnapshotAttackerMultiplier *= hp.killCommandMult()
+			NumberOfTicks: 5,
+			TickLength:    time.Second * 2,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, applyStack bool) {
+				if !applyStack {
+					return
+				}
+
+				// only the first stack snapshots the multiplier
+				if dot.GetStacks() == 1 {
+					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.SnapshotBaseDamage = 0
+				}
+
+				dot.SnapshotBaseDamage += baseDamageTick + ApCoeff*dot.Spell.MeleeAttackPower()
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -313,9 +385,67 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMeleeSpecialHit)
-			if result.Landed() {
-				spell.Dot(target).Apply(sim)
+			if !result.Landed() {
+				return
 			}
+
+			dot := spell.Dot(target)
+			dot.ApplyOrRefresh(sim)
+			if dot.GetStacks() < dot.MaxStacks {
+				dot.AddStack(sim)
+				dot.TakeSnapshot(sim, true)
+			}
+		},
+	})
+}
+
+func (hp *HunterPet) newLavaBreath() *core.Spell {
+	baseDamageMin := map[int32]float64{
+		50: 78,
+		60: 101,
+	}[hp.Owner.Level]
+	baseDamageMax := map[int32]float64{
+		50: 91,
+		60: 116,
+	}[hp.Owner.Level]
+	spellID := map[int32]int32{
+		50: 444678,
+		60: 444681,
+	}[hp.Owner.Level]
+
+	ApCoeff := 3.65/14
+	SpCoeff := 0.429
+
+	return hp.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellCode:   SpellCode_HunterPetLavaBreath,
+		SpellSchool: core.SpellSchoolFire,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       core.SpellFlagMeleeMetrics,
+
+		FocusCost: core.FocusCostOptions{
+			Cost: 50,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: PetGCD,
+			},
+			IgnoreHaste: true,
+		},
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: SpCoeff,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			damage := sim.Roll(baseDamageMin, baseDamageMax) + ApCoeff*spell.MeleeAttackPower()
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			if sim.Environment.GetNumTargets() > 1 {
+				target = sim.Environment.NextTargetUnit(target)
+				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			}
+
 		},
 	})
 }

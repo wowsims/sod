@@ -12,18 +12,14 @@ func (rogue *Rogue) registerBackstabSpell() {
 		25: 32,
 		40: 60,
 		50: 90,
-		// TODO: AQ
-		60: 140,
-		// 60: 150,
+		60: core.TernaryFloat64(core.IncludeAQ, 150, 140),
 	}[rogue.Level]
 
 	spellID := map[int32]int32{
 		25: 2590,
 		40: 8721,
 		50: 11279,
-		// TODO: AQ
-		60: 11281,
-		// 60: 25300
+		60: core.TernaryInt32(core.IncludeAQ, 25300, 11281),
 	}[rogue.Level]
 
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
@@ -70,7 +66,7 @@ func (rogue *Rogue) registerBackstabSpell() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 				if hasCutthroatRune {
 					rogue.rollCutthroat(sim)
 				}

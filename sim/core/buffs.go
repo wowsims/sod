@@ -55,23 +55,17 @@ var LevelToBuffRank = map[BuffName]map[int32]int32{
 		25: 3,
 		40: 4,
 		50: 5,
-		// TODO: AQ
-		60: 6,
-		// 60: 7,
+		60: TernaryInt32(IncludeAQ, 7, 6),
 	},
 	GraceOfAir: {
 		50: 1,
-		// TODO: AQ
-		60: 2,
-		// 60: 3,
+		60: TernaryInt32(IncludeAQ, 3, 2),
 	},
 	StrengthOfEarth: {
 		25: 2,
 		40: 3,
 		50: 3,
-		// TODO: AQ
-		60: 4,
-		// 60: 5,
+		60: TernaryInt32(IncludeAQ, 5, 4),
 	},
 	Windfury: {
 		40: 1,
@@ -134,13 +128,9 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		50: stats.Stats{
 			stats.AttackPower: 138,
 		},
-		// TODO: AQ
 		60: stats.Stats{
-			stats.AttackPower: 193,
+			stats.AttackPower: TernaryFloat64(IncludeAQ, 232, 193),
 		},
-		// 60: stats.Stats{
-		// 	stats.AttackPower: 232,
-		// },
 	},
 	BlessingOfMight: {
 		25: stats.Stats{
@@ -152,13 +142,9 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		50: stats.Stats{
 			stats.AttackPower: 115,
 		},
-		// TODO: AQ
 		60: stats.Stats{
-			stats.AttackPower: 155,
+			stats.AttackPower: TernaryFloat64(IncludeAQ, 185, 155),
 		},
-		// 60: stats.Stats{
-		// 	stats.AttackPower: 185,
-		// },
 	},
 	BlessingOfWisdom: {
 		25: stats.Stats{
@@ -168,15 +154,11 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.MP5: 20,
 		},
 		50: stats.Stats{
-			stats.MP5: 30,
+			stats.MP5: 25,
 		},
-		// TODO: AQ
 		60: stats.Stats{
-			stats.MP5: 33,
+			stats.MP5: TernaryFloat64(IncludeAQ, 33, 30),
 		},
-		// 60: stats.Stats{
-		// 	stats.MP5: 33,
-		// },
 	},
 	HornOfLordaeron: {
 		25: stats.Stats{
@@ -191,16 +173,10 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.Strength: 45,
 			stats.Agility:  45,
 		},
-		// TODO: AQ
-		// Horn provides the same stats as talented SoE and GoA and uses the pre-AQ values in phase 5
 		60: stats.Stats{
-			stats.Strength: 61 * 1.15,
-			stats.Agility:  61 * 1.15,
+			stats.Strength: TernaryFloat64(IncludeAQ, 89, 70.15),
+			stats.Agility:  TernaryFloat64(IncludeAQ, 89, 70.15),
 		},
-		// 60: stats.Stats{
-		// 	stats.Strength: 89,
-		// 	stats.Agility:  89,
-		// },
 	},
 	BloodPact: {
 		25: stats.Stats{
@@ -254,13 +230,9 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		50: stats.Stats{
 			stats.Agility: 43,
 		},
-		// TODO: AQ
 		60: stats.Stats{
-			stats.Agility: 67,
+			stats.Agility: TernaryFloat64(IncludeAQ, 77, 67),
 		},
-		// 60: stats.Stats{
-		// 	stats.Agility: 77,
-		// },
 	},
 	FireResistanceAura: {
 		25: stats.Stats{
@@ -452,13 +424,9 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		50: stats.Stats{
 			stats.Strength: 36,
 		},
-		// TODO: AQ
 		60: stats.Stats{
-			stats.Strength: 61,
+			stats.Strength: TernaryFloat64(IncludeAQ, 77, 61),
 		},
-		// 60: stats.Stats{
-		// 	stats.Strength: 77,
-		// },
 	},
 	ScrollOfAgility: {
 		25: stats.Stats{
@@ -2017,7 +1985,7 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 }
 
 func SpiritOfTheAlphaAura(unit *Unit) *Aura {
-	return MakePermanent(unit.RegisterAura(Aura{
+	return MakePermanent(unit.GetOrRegisterAura(Aura{
 		Label:    "Spirit of the Alpha",
 		ActionID: ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
 		OnGain: func(aura *Aura, sim *Simulation) {
@@ -2066,9 +2034,7 @@ func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
 		25: 19835,
 		40: 19836,
 		50: 19837,
-		// TODO: AQ
-		60: 19838,
-		// 60: 25291,
+		60: TernaryInt32(IncludeAQ, 25291, 19838),
 	}[level]
 
 	bonusAP := math.Floor(BuffSpellByLevel[BlessingOfMight][level][stats.AttackPower] * (1 + 0.04*float64(impBomPts)))
@@ -2191,18 +2157,16 @@ func BattleSquawkAura(character *Unit, stackcount int32) *Aura {
 // 	})
 // }
 
-func ApplyWildStrikes(character *Character) *Aura {
-	buffActionID := ActionID{SpellID: 407975}
-
+func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, auraLabel string, rank int32, getBonusAP func(aura *Aura, rank int32) float64) *Aura {
 	var bonusAP float64
 
-	wsBuffAura := character.GetOrRegisterAura(Aura{
-		Label:     "Wild Strikes Buff",
+	apBuffAura := character.GetOrRegisterAura(Aura{
+		Label:     auraLabel + " Buff",
 		ActionID:  buffActionID,
 		Duration:  time.Millisecond * 1500,
 		MaxStacks: 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			bonusAP = 0.2 * aura.Unit.GetStat(stats.AttackPower)
+			bonusAP = getBonusAP(aura, rank)
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: bonusAP})
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
@@ -2210,42 +2174,63 @@ func ApplyWildStrikes(character *Character) *Aura {
 		},
 	})
 
+	MakePermanent(character.GetOrRegisterAura(Aura{
+		Label:     "Extra Attacks  (Main Hand)", // Tracks Stored Extra Attacks from all sources
+		ActionID:  ActionID{SpellID: 21919},     // Thrash ID
+		Duration:  NeverExpires,
+		MaxStacks: 4, // Max is 4 extra attacks stored - more can proc after
+		OnInit: func(aura *Aura, sim *Simulation) {
+			aura.Unit.AutoAttacks.mh.extraAttacksAura = aura
+		},
+	}))
+
 	icd := Cooldown{
 		Timer:    character.NewTimer(),
 		Duration: time.Millisecond * 1500,
 	}
 
-	wsBuffAura.Icd = &icd
+	apBuffAura.Icd = &icd
 
 	MakePermanent(character.GetOrRegisterAura(Aura{
-		Label: "Wild Strikes",
+		Label: auraLabel,
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			// charges are removed by every auto or next melee, whether it lands or not
+			//  this directly contradicts https://github.com/magey/classic-warrior/wiki/Windfury-Totem#triggered-by-melee-spell-while-an-on-next-swing-attack-is-queued
+			//  but can be seen in both "vanilla" and "sod" era logs
+			if apBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
+				apBuffAura.RemoveStack(sim)
+			}
+
 			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
 				return
 			}
 
-			// charges are removed by every auto or next melee, whether it lands or not
-			if wsBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
-				if wsBuffAura.GetStacks() == 2 {
-					wsBuffAura.SetStacks(sim, 1)
-					wsBuffAura.Duration = time.Millisecond * 100 // 100 ms might be generous - could anywhere from 50-150 ms potentially
-					wsBuffAura.Refresh(sim)                      // Apply New Duration
-				}
-			}
-
-			if icd.IsReady(sim) && sim.RandomFloat("Wild Strikes") < 0.2 {
+			if icd.IsReady(sim) && sim.RandomFloat(auraLabel) < 0.2 {
 				icd.Use(sim)
-				wsBuffAura.Activate(sim)
-				// aura is up _after_ the triggering swing lands, the extra attack only has 1500ms for the AP bonus but the extra attack does not expire
-				wsBuffAura.SetStacks(sim, 2)
-				wsBuffAura.Duration = time.Millisecond * 1500
-				wsBuffAura.Refresh(sim) // Apply New Duration
+				apBuffAura.Activate(sim)
+				// aura is up _before_ the triggering swing lands, so if triggered by an auto attack, the aura fades right after the extra attack lands.
+				if spell.ProcMask == ProcMaskMeleeMHAuto {
+					apBuffAura.SetStacks(sim, 1)
+				} else {
+					apBuffAura.SetStacks(sim, 2)
+				}
+
 				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, buffActionID, spell)
 			}
 		},
 	}))
 
-	return wsBuffAura
+	return apBuffAura
+}
+
+func GetWildStrikesAP(aura *Aura, rank int32) float64 {
+	return 0.2 * aura.Unit.GetStat(stats.AttackPower)
+}
+
+func ApplyWildStrikes(character *Character) *Aura {
+	buffActionID := ActionID{SpellID: 407975}
+
+	return CreateExtraAttackAuraCommon(character, buffActionID, "Wild Strikes", 1, GetWildStrikesAP)
 }
 
 const WindfuryRanks = 3
@@ -2255,6 +2240,10 @@ var (
 	WindfuryBuffBonusAP = [WindfuryRanks + 1]float64{0, 122, 229, 315}
 )
 
+func GetWindfuryAP(aura *Aura, rank int32) float64 {
+	return WindfuryBuffBonusAP[rank]
+}
+
 func ApplyWindfury(character *Character) *Aura {
 	level := character.Level
 	if level < 32 {
@@ -2263,58 +2252,10 @@ func ApplyWindfury(character *Character) *Aura {
 
 	rank := LevelToBuffRank[Windfury][level]
 	spellId := WindfuryBuffSpellId[rank]
-	bonusAP := WindfuryBuffBonusAP[rank]
+	buffActionID := ActionID{SpellID: spellId}
 
-	windfuryBuffAura := character.GetOrRegisterAura(Aura{
-		Label:     "Windfury Buff",
-		ActionID:  ActionID{SpellID: spellId},
-		Duration:  time.Millisecond * 1500,
-		MaxStacks: 2,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: bonusAP})
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: -bonusAP})
-		},
-	})
+	return CreateExtraAttackAuraCommon(character, buffActionID, "Windfury", rank, GetWindfuryAP)
 
-	icd := Cooldown{
-		Timer:    character.NewTimer(),
-		Duration: time.Millisecond * 1500,
-	}
-
-	windfuryBuffAura.Icd = &icd
-
-	MakePermanent(character.GetOrRegisterAura(Aura{
-		Label: "Windfury",
-		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			// charges are removed by every auto or next melee, whether it lands or not
-			//  this directly contradicts https://github.com/magey/classic-warrior/wiki/Windfury-Totem#triggered-by-melee-spell-while-an-on-next-swing-attack-is-queued
-			//  but can be seen in both "vanilla" and "sod" era logs
-			if windfuryBuffAura.IsActive() && spell.ProcMask.Matches(ProcMaskMeleeWhiteHit) {
-				windfuryBuffAura.RemoveStack(sim)
-			}
-
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMeleeMH) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
-				return
-			}
-
-			if icd.IsReady(sim) && sim.RandomFloat("Windfury") < 0.2 {
-				icd.Use(sim)
-				windfuryBuffAura.Activate(sim)
-				// aura is up _before_ the triggering swing lands, so if triggered by an auto attack, the aura fades right after the extra attack lands.
-				if spell.ProcMask == ProcMaskMeleeMHAuto {
-					windfuryBuffAura.SetStacks(sim, 1)
-				} else {
-					windfuryBuffAura.SetStacks(sim, 2)
-				}
-
-				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, ActionID{SpellID: spellId}, spell)
-			}
-		},
-	}))
-
-	return windfuryBuffAura
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -2372,6 +2313,9 @@ func ApplySpiritOfZandalar(unit *Unit) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Spirit of Zandalar",
 		ActionID: ActionID{SpellID: 24425},
+		OnInit: func(aura *Aura, sim *Simulation) {
+			unit.AddMoveSpeedModifier(&aura.ActionID, 1.10)
+		},
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{

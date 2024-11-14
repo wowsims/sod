@@ -49,14 +49,12 @@ const (
 	ThrashBlade                    = 17705
 	SatyrsLash                     = 17752
 	MarkOfTheChosen                = 17774
-	Thunderfury                    = 230224 // 19019
-	EbonHand                       = 19170
-	DarkmoonCardHeroism            = 19287
-	DarkmoonCardBlueDragon         = 19288
-	DarkmoonCardMaelstrom          = 19289
 	Nightfall                      = 19169
+	EbonHand                       = 19170
 	RuneOfTheDawn                  = 19812
-	ScarabBrooch                   = 21625
+	ZandalariHeroBadge             = 19948
+	ZandalariHeroMedallion         = 19949
+	ZandalariHeroCharm             = 19950
 	MarkOfTheChampionPhys          = 23206
 	MarkOfTheChampionSpell         = 23207
 	BlisteringRagehammer           = 220569 // 10626
@@ -113,7 +111,14 @@ const (
 	Felstriker                     = 228757 // 12590
 	GutgoreRipperMolten            = 229372
 	EskhandarsRightClawMolten      = 229379
+	Thunderfury                    = 230224 // 19019
 	TheUntamedBlade                = 230242 // 19334
+	NatPaglesBrokenReel            = 231271 // 19947
+	TheUntamedBladeShadowflame     = 232566
+	ScarabBrooch                   = 233601 // 21625
+	DarkmoonCardHeroism            = 234176 // 19287
+	DarkmoonCardBlueDragon         = 234177 // 19288
+	DarkmoonCardMaelstrom          = 234178 // 19289
 )
 
 func init() {
@@ -854,10 +859,10 @@ func init() {
 				Label:    "Chilled (Frostguard)",
 				Duration: time.Second * 5,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed *= .70
+					aura.Unit.AddMoveSpeedModifier(&aura.ActionID, 0.30)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed /= .70
+					aura.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 				},
 			})
 			core.AtkSpeedReductionEffect(aura, 1.25)
@@ -1026,10 +1031,10 @@ func init() {
 				Label:    "Chilled (Hardened Frostguard)",
 				Duration: time.Second * 5,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed *= .70
+					aura.Unit.AddMoveSpeedModifier(&aura.ActionID, 0.30)
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Unit.MoveSpeed /= .70
+					aura.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 				},
 			})
 			core.AtkSpeedReductionEffect(aura, 1.25)
@@ -1891,6 +1896,20 @@ func init() {
 			},
 		})
 	})
+	// https://www.wowhead.com/classic/item=232566/the-untamed-blade
+	itemhelpers.CreateWeaponProcAura(TheUntamedBladeShadowflame, "The Untamed Blade", 0.55, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 23719},
+			Label:    "Untamed Fury",
+			Duration: time.Second * 8,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Strength: 300})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.Strength: -300})
+			},
+		})
+	})
 
 	itemhelpers.CreateWeaponProcSpell(ThrashBlade, "Thrash Blade", 1.0, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
@@ -1922,7 +1941,7 @@ func init() {
 			ActionID:    procActionID.WithTag(1),
 			SpellSchool: core.SpellSchoolNature,
 			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskEmpty,
+			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
 			Flags:       core.SpellFlagIgnoreAttackerModifiers,
 
 			DamageMultiplier: 1,
@@ -2148,11 +2167,11 @@ func init() {
 	core.NewSimpleStatOffensiveTrinketEffect(DraconicInfusedEmblem, stats.Stats{stats.SpellDamage: 128, stats.HealingPower: 236}, time.Second*15, time.Second*90)
 
 	// https://www.wowhead.com/classic/item=19288/darkmoon-card-blue-dragon
-	// Equip: 2% chance on successful spellcast to allow 100% of your Mana regeneration to continue while casting for 15 sec. (Proc chance: 2%)
+	// Equip: 5% chance on successful spellcast to allow 100% of your Mana regeneration to continue while casting for 15 sec.
 	core.NewItemEffect(DarkmoonCardBlueDragon, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		actionID := core.ActionID{SpellID: 23684}
+		actionID := core.ActionID{SpellID: 1213421}
 
 		procAura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Aura of the Blue Dragon",
@@ -2170,7 +2189,7 @@ func init() {
 			Name:       "Aura of the Blue Dragon Trigger",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
-			ProcChance: .02,
+			ProcChance: .05,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procAura.Activate(sim)
 			},
@@ -2178,11 +2197,11 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=19287/darkmoon-card-heroism
-	// Equip: Sometimes heals bearer of 120 to 180 damage when damaging an enemy in melee.
+	// Equip: Sometimes heals bearer of 170 to 230 damage when damaging an enemy in melee.
 	core.NewItemEffect(DarkmoonCardHeroism, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		actionID := core.ActionID{SpellID: 23689}
+		actionID := core.ActionID{SpellID: 1213419}
 		healthMetrics := character.NewHealthMetrics(actionID)
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
@@ -2191,7 +2210,7 @@ func init() {
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				character.GainHealth(sim, sim.Roll(120, 180), healthMetrics)
+				character.GainHealth(sim, sim.Roll(170, 230), healthMetrics)
 			},
 		})
 
@@ -2209,11 +2228,11 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=19289/darkmoon-card-maelstrom
-	// Equip: Chance to strike your melee target with lightning for 200 to 300 Nature damage.
+	// Equip: Chance to strike your melee target with lightning for 317 to 517 Nature damage.
 	core.NewItemEffect(DarkmoonCardMaelstrom, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		actionID := core.ActionID{SpellID: 23687}
+		actionID := core.ActionID{SpellID: 1213417}
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
@@ -2226,7 +2245,7 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, sim.Roll(200, 300), spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, sim.Roll(317, 517), spell.OutcomeMagicHitAndCrit)
 			},
 		})
 
@@ -2419,6 +2438,12 @@ func init() {
 		}))
 	})
 
+	// https://www.wowhead.com/classic/item=231271/nat-pagles-broken-reel
+	core.NewSimpleStatOffensiveTrinketEffect(NatPaglesBrokenReel, stats.Stats{
+		stats.SpellHit: 10 * core.SpellHitRatingPerHitChance,
+		stats.MeleeHit: 10 * core.MeleeHitRatingPerHitChance,
+	}, time.Second*15, time.Second*90)
+
 	// https://www.wowhead.com/classic/item=19812/rune-of-the-dawn
 	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
 	core.NewItemEffect(RuneOfTheDawn, func(agent core.Agent) {
@@ -2571,6 +2596,169 @@ func init() {
 	// Use: Increases damage and healing done by magical spells and effects by up to 184 for 15 sec. (1 Min, 30 Sec Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(TalismanOfEphemeralPower, stats.Stats{stats.SpellPower: 184}, time.Second*15, time.Second*90)
 
+	// https://www.wowhead.com/classic/item=19948/zandalarian-hero-badge
+	// Increases your armor by 2000 and defense skill by 30 for 20 sec.
+	// Every time you take melee or ranged damage, this bonus is reduced by 200 armor and 3 defense.
+	core.NewItemEffect(ZandalariHeroBadge, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{ItemID: ZandalariHeroBadge}
+		duration := time.Second * 20
+		bonusPerStack := stats.Stats{
+			stats.Armor:   200,
+			stats.Defense: 3,
+		}
+
+		buffAura := character.GetOrRegisterAura(core.Aura{
+			Label:     "Fragile Armor",
+			ActionID:  actionID,
+			Duration:  duration,
+			MaxStacks: 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.SetStacks(sim, aura.MaxStacks)
+			},
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				bonusStats := bonusPerStack.Multiply(float64(newStacks - oldStacks))
+				character.AddStatsDynamic(sim, bonusStats)
+			},
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && result.Landed() {
+					aura.RemoveStack(sim)
+				}
+			},
+		})
+
+		cdSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: cdSpell,
+			Type:  core.CooldownTypeSurvival,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=19950/zandalarian-hero-charm
+	// Increases your spell damage by up to 204 and your healing by up to 408 for 20 sec.
+	// Every time you cast a spell, the bonus is reduced by 17 spell damage and 34 healing.
+	core.NewItemEffect(ZandalariHeroCharm, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{ItemID: ZandalariHeroCharm}
+		duration := time.Second * 20
+		bonusPerStack := stats.Stats{
+			stats.SpellDamage:  17,
+			stats.HealingPower: 34,
+		}
+
+		buffAura := character.GetOrRegisterAura(core.Aura{
+			ActionID:  actionID,
+			Label:     "Unstable Power",
+			Duration:  duration,
+			MaxStacks: 12,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.SetStacks(sim, aura.MaxStacks)
+			},
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				bonusStats := bonusPerStack.Multiply(float64(newStacks - oldStacks))
+				character.AddStatsDynamic(sim, bonusStats)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+					return
+				}
+				aura.RemoveStack(sim)
+			},
+		})
+
+		cdSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: cdSpell,
+			Type:  core.CooldownTypeDPS,
+		})
+	})
+
+	core.NewItemEffect(ZandalariHeroMedallion, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{ItemID: ZandalariHeroMedallion}
+		duration := time.Second * 20
+
+		buffAura := character.GetOrRegisterAura(core.Aura{
+			ActionID:  actionID,
+			Label:     "Restless Strength",
+			Duration:  duration,
+			MaxStacks: 20,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.SetStacks(sim, aura.MaxStacks)
+			},
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				character.PseudoStats.BonusDamage += 2 * float64(newStacks-oldStacks)
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
+					aura.RemoveStack(sim)
+				}
+			},
+		})
+
+		cdSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: cdSpell,
+			Type:  core.CooldownTypeDPS,
+		})
+	})
+
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Other
 	///////////////////////////////////////////////////////////////////////////
@@ -2662,9 +2850,12 @@ func enrageAura446327(character *core.Character) *core.Aura {
 	})
 }
 
-func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool core.SpellSchool, damage float64) *core.Aura {
+func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool core.SpellSchool, damage float64) {
+	if character.GetSpell(core.ActionID{SpellID: spellID}) != nil {
+		return
+	}
 
-	procSpell := character.GetOrRegisterSpell(core.SpellConfig{
+	procSpell := character.RegisterSpell(core.SpellConfig{
 		ActionID:         core.ActionID{SpellID: spellID},
 		SpellSchool:      spellSchool,
 		DefenseType:      core.DefenseTypeMagic,
@@ -2677,8 +2868,8 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 		},
 	})
 
-	return core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:              "Blazefury Trigger",
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:              fmt.Sprintf("Blazefury Trigger (%d)", spellID),
 		Callback:          core.CallbackOnSpellHitDealt,
 		Outcome:           core.OutcomeLanded,
 		ProcMask:          core.ProcMaskMelee,

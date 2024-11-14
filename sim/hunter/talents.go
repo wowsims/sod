@@ -67,7 +67,7 @@ func (hunter *Hunter) ApplyTalents() {
 	if hunter.Talents.RangedWeaponSpecialization > 0 {
 		mult := 1 + 0.01*float64(hunter.Talents.RangedWeaponSpecialization)
 		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.ProcMask.Matches(core.ProcMaskRanged) {
+			if spell.ProcMask.Matches(core.ProcMaskRanged) && spell.SpellCode != SpellCode_HunterSerpentSting {
 				spell.DamageMultiplier *= mult
 			}
 		})
@@ -199,7 +199,7 @@ func (hunter *Hunter) applyCleverTraps() {
 func (hunter *Hunter) applyEfficiency() {
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		// applies to Stings, Shots, Strikes and Volley
-		if spell.Flags.Matches(SpellFlagSting|SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterVolley {
+		if spell.Cost != nil && spell.Flags.Matches(SpellFlagSting|SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterVolley {
 			spell.Cost.Multiplier -= 2 * hunter.Talents.Efficiency
 		}
 	})

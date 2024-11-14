@@ -12,15 +12,12 @@ var RevengeSpellId = [RevengeRanks + 1]int32{0, 6572, 6574, 7379, 11600, 11601, 
 var RevengeBaseDamage = [RevengeRanks + 1][]float64{{0, 0}, {12, 14}, {18, 22}, {25, 31}, {43, 53}, {64, 78}, {81, 99}}
 var RevengeLevel = [RevengeRanks + 1]int{0, 14, 24, 34, 44, 54, 60}
 
-// TODO: Classic Update
 func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 	rank := []int{
 		25: 2,
 		40: 3,
 		50: 4,
-		// TODO: AQ
-		60: 5,
-		// 60: 6,
+		60: core.TernaryInt(core.IncludeAQ, 6, 5),
 	}[warrior.Level]
 	actionID := core.ActionID{SpellID: RevengeSpellId[rank]}
 	basedamageLow := RevengeBaseDamage[rank][0]

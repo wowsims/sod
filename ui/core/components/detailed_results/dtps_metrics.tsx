@@ -48,6 +48,7 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 					const critTickValues = metric.damageDone.critTick;
 					const glanceValues = metric.damageDone.glance;
 					const blockValues = metric.damageDone.block;
+					const crushValues = metric.damageDone.crush;
 
 					cellElem.appendChild(
 						<MetricsCombinedTooltipTable
@@ -82,6 +83,10 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 										{
 											name: 'Blocked Hit',
 											...blockValues,
+										},
+										{
+											name: 'Crushing Blow',
+											...crushValues,
 										},
 									],
 								},
@@ -127,6 +132,11 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 											value: metric.dodges,
 											percentage: metric.dodgePercent,
 										},
+										{
+											name: 'Crushing Blow',
+											value: metric.crushes,
+											percentage: metric.crushPercent,
+										},
 									],
 								},
 							]}
@@ -168,6 +178,7 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 					const relativeCritTickPercent = (metric.critTicks / metric.landedTicks) * 100;
 					const relativeGlancePercent = (metric.glances / metric.landedHits) * 100;
 					const relativeBlockPercent = (metric.blocks / metric.landedHits) * 100;
+					const relativeCrushPercent = (metric.crushes / metric.landedHits) * 100;
 
 					cellElem.appendChild(
 						<MetricsCombinedTooltipTable
@@ -192,6 +203,11 @@ export class DtpsMetricsTable extends MetricsTable<ActionMetrics> {
 											name: 'Glancing Blow',
 											value: metric.glances,
 											percentage: relativeGlancePercent,
+										},
+										{
+											name: 'Crushing Blow',
+											value: metric.crushes,
+											percentage: relativeCrushPercent,
 										},
 										{
 											name: 'Blocked Hit',

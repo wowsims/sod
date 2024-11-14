@@ -203,7 +203,7 @@ message Hunter {
 			Wolf = 3;
 			Bat = 4;
 			Bear = 5;
-			BirdOfPrey = 6;
+			Owl = 6;
 			Boar = 7;
 			CarrionBird = 8;
 			CoreHound = 10;
