@@ -20,6 +20,7 @@ import {
 	ManaRegenElixir,
 	Potions,
 	Profession,
+	Sapper,
 	ShadowPowerBuff,
 	Spec,
 	SpellPowerBuff,
@@ -175,11 +176,16 @@ export const EnchantedSigilFlowingWaters: ConsumableInputConfig<EnchantedSigil> 
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 228978, minLevel: 50 }]),
 	value: EnchantedSigil.FlowingWatersSigil,
 };
+export const EnchantedSigilWrathOfTheStorm: ConsumableInputConfig<EnchantedSigil> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 233995, minLevel: 50 }]),
+	value: EnchantedSigil.WrathOfTheStormSigil,
+};
 
 export const ENCHANTED_SIGIL_CONFIG: ConsumableStatOption<EnchantedSigil>[] = [
 	{ config: EnchantedSigilFlowingWaters, stats: [] },
 	{ config: EnchantedSigilLivingDreams, stats: [] },
 	{ config: EnchantedSigilInnovation, stats: [] },
+	{ config: EnchantedSigilWrathOfTheStorm, stats: [] },
 ];
 
 export const makeEncanthedSigilInput = makeConsumeInputFactory({ consumesFieldName: 'enchantedSigil' });
@@ -187,6 +193,17 @@ export const makeEncanthedSigilInput = makeConsumeInputFactory({ consumesFieldNa
 ///////////////////////////////////////////////////////////////////////////
 //                                 EXPLOSIVES
 ///////////////////////////////////////////////////////////////////////////
+
+export const SapperGoblinSapper: ConsumableInputConfig<Sapper> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 10646, minLevel: 50 }]),
+	showWhen: player => player.hasProfession(Profession.Engineering),
+	value: Sapper.SapperGoblinSapper,
+};
+
+export const SapperFumigator: ConsumableInputConfig<Sapper> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 233985, minLevel: 60 }]),
+	value: Sapper.SapperFumigator,
+};
 
 export const ExplosiveSolidDynamite: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 10507, minLevel: 40 }]),
@@ -232,15 +249,18 @@ export const EXPLOSIVES_CONFIG: ConsumableStatOption<Explosive>[] = [
 	{ config: ExplosiveGoblinLandMine, stats: [] },
 ];
 
+export const SAPPER_CONFIG: ConsumableStatOption<Sapper>[] = [
+	{ config: SapperGoblinSapper, stats: [] },
+	{ config: SapperFumigator, stats: [] },
+];
+
 export const makeExplosivesInput = makeConsumeInputFactory({
 	consumesFieldName: 'fillerExplosive',
 	//showWhen: (player) => !!player.getProfessions().find(p => p == Profession.Engineering),
 });
 
-export const Sapper = makeBooleanConsumeInput({
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 10646, minLevel: 50 }]),
-	fieldName: 'sapper',
-	showWhen: player => player.hasProfession(Profession.Engineering),
+export const makeSappersInput = makeConsumeInputFactory({
+	consumesFieldName: 'sapperExplosive',
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -256,6 +276,10 @@ export const FlaskOfTheTitans: ConsumableInputConfig<Flask> = {
 export const FlaskOfDistilledWisdom: ConsumableInputConfig<Flask> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13511, minLevel: 51 }]),
 	value: Flask.FlaskOfDistilledWisdom,
+};
+export const FlaskOfMadness: ConsumableInputConfig<Flask> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 233962, minLevel: 60 }]),
+	value: Flask.FlaskOfMadness,
 };
 // Original lvl 50 not obtainable in Phase 3
 export const FlaskOfSupremePower: ConsumableInputConfig<Flask> = {
@@ -280,6 +304,7 @@ export const FlaskOfEverlastingNightmares: ConsumableInputConfig<Flask> = {
 
 export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
 	{ config: FlaskOfTheTitans, stats: [Stat.StatStamina] },
+	{ config: FlaskOfMadness, stats: [Stat.StatAttackPower] },
 	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatIntellect] },
 	{ config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower] },
 	{ config: FlaskOfChromaticResistance, stats: [] },
@@ -472,6 +497,10 @@ export const ATTACK_POWER_CONSUMES_CONFIG: ConsumableStatOption<AttackPowerBuff>
 export const makeAttackPowerConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'attackPowerBuff' });
 
 // Agility
+export const ElixirOfTheHoneyBadger: ConsumableInputConfig<AgilityElixir> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 233967, minLevel: 60 }]),
+	value: AgilityElixir.ElixirOfTheHoneyBadger,
+};
 export const ElixirOfTheMongoose: ConsumableInputConfig<AgilityElixir> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13452, minLevel: 46 }]),
 	value: AgilityElixir.ElixirOfTheMongoose,
@@ -500,6 +529,7 @@ export const ScrollOfAgility: ConsumableInputConfig<AgilityElixir> = {
 };
 
 export const AGILITY_CONSUMES_CONFIG: ConsumableStatOption<AgilityElixir>[] = [
+	{ config: ElixirOfTheHoneyBadger, stats: [Stat.StatAgility, Stat.StatMeleeCrit] },
 	{ config: ElixirOfTheMongoose, stats: [Stat.StatAgility, Stat.StatMeleeCrit] },
 	{ config: ElixirOfGreaterAgility, stats: [Stat.StatAgility] },
 	{ config: ElixirOfAgility, stats: [Stat.StatAgility] },

@@ -232,7 +232,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.WildStrikes,
 	mildlyIrradiatedRejuvPot: true,
 	offHandImbue: WeaponImbue.ElementalSharpeningStone,
-	sapper: true,
+	//sapper: true, Needs updated to new picker
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
 });

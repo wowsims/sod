@@ -229,7 +229,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.ShadowOil,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 
-	sapper: true,
+	//sapper: true, Needs updated to new picker
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });
