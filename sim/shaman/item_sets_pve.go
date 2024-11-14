@@ -538,7 +538,7 @@ var ItemSetReliefOfTheTenStorms = core.NewItemSet(core.ItemSet{
 			shaman := agent.(ShamanAgent).GetShaman()
 
 			core.MakePermanent(shaman.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Shaman - Restoration 6P Bonus",
+				Label: "S03 - Item - T2 - Shaman - Restoration 2P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() {
 						shaman.WaterShieldRestore.Cast(sim, aura.Unit)

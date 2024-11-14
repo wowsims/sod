@@ -260,10 +260,8 @@ export const PaladinPhysicalBuff = InputHelpers.makeMultiIconInput({
 					{ id: 19835, minLevel: 22, maxLevel: 31 },
 					{ id: 19836, minLevel: 32, maxLevel: 41 },
 					{ id: 19837, minLevel: 42, maxLevel: 51 },
-					// TODO: AQ
-					{ id: 19838, minLevel: 52 },
-					// { id: 19838, minLevel: 52, maxLevel: 59 },
-					// { id: 25291, minLevel: 60 },
+					{ id: 19838, minLevel: 52, maxLevel: 59 },
+					{ id: 25291, minLevel: 60 },
 				]),
 			impId: ActionId.fromSpellId(20048),
 			fieldName: 'blessingOfMight',
@@ -280,10 +278,8 @@ export const StrengthBuffHorde = withLabel(
 				{ id: 8075, minLevel: 10, maxLevel: 23 },
 				{ id: 8160, minLevel: 24, maxLevel: 37 },
 				{ id: 8161, minLevel: 38, maxLevel: 51 },
-				// TODO: AQ
-				{ id: 10442, minLevel: 52 },
-				// { id: 10442, minLevel: 52, maxLevel: 59 },
-				// { id: 25361, minLevel: 60 },
+				{ id: 10442, minLevel: 52, maxLevel: 59 },
+				{ id: 25361, minLevel: 60 },
 			]),
 		impId: ActionId.fromSpellId(16295),
 		fieldName: 'strengthOfEarthTotem',
@@ -297,10 +293,8 @@ export const GraceOfAir = withLabel(
 		actionId: player =>
 			player.getMatchingSpellActionId([
 				{ id: 8835, minLevel: 42, maxLevel: 55 },
-				// TODO: AQ
-				{ id: 10627, minLevel: 56 },
-				// { id: 10627, minLevel: 56, maxLevel: 59 },
-				// { id: 25359, minLevel: 60 },
+				{ id: 10627, minLevel: 56, maxLevel: 59 },
+				{ id: 25359, minLevel: 60 },
 			]),
 		impId: ActionId.fromSpellId(16295),
 		fieldName: 'graceOfAirTotem',
@@ -371,10 +365,8 @@ export const BattleShoutBuff = withLabel(
 				{ id: 6192, minLevel: 22, maxLevel: 31 },
 				{ id: 11549, minLevel: 32, maxLevel: 41 },
 				{ id: 11550, minLevel: 42, maxLevel: 51 },
-				// TODO: AQ
-				{ id: 11551, minLevel: 52 },
-				// { id: 11551, minLevel: 52, maxLevel: 59 },
-				// { id: 25289, minLevel: 60 },
+				{ id: 11551, minLevel: 52, maxLevel: 59 },
+				{ id: 25289, minLevel: 60 },
 			]),
 		impId: ActionId.fromSpellId(12861),
 		fieldName: 'battleShout',
@@ -403,10 +395,8 @@ export const BlessingOfWisdom = withLabel(
 				{ id: 19850, minLevel: 24, maxLevel: 33 },
 				{ id: 19852, minLevel: 34, maxLevel: 43 },
 				{ id: 19853, minLevel: 44, maxLevel: 53 },
-				// TODO: AQ
-				{ id: 19854, minLevel: 54 },
-				// { id: 19854, minLevel: 54, maxLevel: 59 },
-				// { id: 25290, minLevel: 60 },
+				{ id: 19854, minLevel: 54, maxLevel: 59 },
+				{ id: 25290, minLevel: 60 },
 			]),
 		impId: ActionId.fromSpellId(20245),
 		fieldName: 'blessingOfWisdom',
@@ -437,6 +427,15 @@ export const VampiricTouchReplenishment = withLabel(
 export const MeleeCritBuff = withLabel(
 	makeBooleanRaidBuffInput({ actionId: player => player.getMatchingSpellActionId([{ id: 24932, minLevel: 40 }]), fieldName: 'leaderOfThePack' }),
 	'Leader of the Pack',
+);
+
+export const HordeThreatBuff = withLabel(
+	makeBooleanRaidBuffInput({
+		actionId: player => player.getMatchingSpellActionId([{ id: 408696, minLevel: 40 }]),
+		fieldName: 'spiritOfTheAlpha',
+		showWhen: player => player.getFaction() === Faction.Horde,
+	}),
+	'Spirit of The Alpha',
 );
 
 export const SpellCritBuff = withLabel(
@@ -921,6 +920,10 @@ export const ImprovedFaerieFire = makeBooleanDebuffInput({
 	actionId: player => player.getMatchingSpellActionId([{ id: 455864, minLevel: 60 }]),
 	fieldName: 'improvedFaerieFire',
 });
+export const MeleeHunter2pcT1Bonus = makeBooleanDebuffInput({
+	actionId: player => player.getMatchingSpellActionId([{ id: 456393, minLevel: 60 }]),
+	fieldName: 'meleeHunterDodgeDebuff',
+});
 export const MekkatorqueFistDebuff = makeBooleanDebuffInput({
 	actionId: player => player.getMatchingItemActionId([{ id: 213409, minLevel: 40, maxLevel: 45 }]),
 	fieldName: 'mekkatorqueFistDebuff',
@@ -1012,11 +1015,11 @@ export const RAID_BUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatArmor],
 	},
-   // {
-   // 	config: DamageReductionPercentBuff,
-   // 	picker: IconPicker,
-   // 	stats: [Stat.StatArmor],
-   // },
+	// {
+	// 	config: DamageReductionPercentBuff,
+	// 	picker: IconPicker,
+	// 	stats: [Stat.StatArmor],
+	// },
 	{
 		config: ResistanceBuff,
 		picker: MultiIconPicker,
@@ -1054,7 +1057,12 @@ export const RAID_BUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatMeleeCrit],
 	},
-
+	// Threat Buffs
+	{
+		config: HordeThreatBuff,
+		picker: IconPicker,
+		stats: [Stat.StatArmor],
+	},
 	// Spell Damage Buffs
 	{
 		config: SpellIncreaseBuff,
@@ -1328,6 +1336,11 @@ export const MISC_DEBUFFS_CONFIG = [
 		config: ImprovedFaerieFire,
 		picker: IconPicker,
 		stats: [],
+	},
+	{
+		config: MeleeHunter2pcT1Bonus,
+		picker: IconPicker,
+		stats: [Stat.StatMeleeHit],
 	},
 	{
 		config: MekkatorqueFistDebuff,

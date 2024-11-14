@@ -74,6 +74,8 @@ func init() {
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
 
+	// https://www.wowhead.com/classic/item=220632/atalai-blood-ritual-medallion
+	// Increases your melee and ranged damage by 20 for 20 sec. Every time you hit a target, this bonus is reduced by 1.
 	core.NewItemEffect(AtalaiBloodRitualMedallion, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -115,12 +117,14 @@ func init() {
 		})
 
 		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    triggerSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
+			Spell: triggerSpell,
+			Type:  core.CooldownTypeDPS,
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=220633/atalai-blood-ritual-badge
+	// Increases your armor by 1000 and defense skill by 20 for 20 sec.
+	// Every time you take melee or ranged damage, this bonus is reduced by 100 armor and 2 defense.
 	core.NewItemEffect(AtalaiBloodRitualBadge, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -168,12 +172,14 @@ func init() {
 		})
 
 		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    triggerSpell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeSurvival,
+			Spell: triggerSpell,
+			Type:  core.CooldownTypeSurvival,
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=220634/atalai-blood-ritual-charm
+	// Increases your spell damage by up to 96 and your healing by up to 192 for 20 sec.
+	// Every time you cast a spell, the bonus is reduced by 8 spell damage and 16 healing.
 	core.NewItemEffect(AtalaiBloodRitualCharm, func(agent core.Agent) {
 		character := agent.GetCharacter()
 

@@ -39,6 +39,10 @@ import MeleeBmP3 from './apls/p3_melee_bm.apl.json';
 import RangedMmP3 from './apls/p3_ranged_mm.apl.json';
 import RangedP4 from './apls/p4_ranged.apl.json';
 import WeaveP4 from './apls/p4_weave.apl.json';
+import Phase5AplMeleeBm from './apls/p5_melee_bm.apl.json';
+import Phase5AplMeleeSv from './apls/p5_melee_sv.apl.json';
+import Phase5AplWeave from './apls/p5_weave.apl.json';
+import Phase5AplRanged from './apls/p5_ranged.apl.json';
 import Phase2GearMelee from './gear_sets/p2_melee.gear.json';
 import Phase2GearRangedBm from './gear_sets/p2_ranged_bm.gear.json';
 import Phase2GearRangedMm from './gear_sets/p2_ranged_mm.gear.json';
@@ -46,6 +50,10 @@ import Phase3GearMeleeBm from './gear_sets/p3_melee_bm.gear.json';
 import Phase3GearRangedMm from './gear_sets/p3_ranged_mm.gear.json';
 import Phase4GearRanged from './gear_sets/p4_ranged.gear.json';
 import Phase4GearWeave from './gear_sets/p4_weave.gear.json';
+import Phase5GearMeleeBm from './gear_sets/p5_melee_bm.gear.json';
+import Phase5GearMeleeSv from './gear_sets/p5_melee_sv.gear.json';
+import Phase5GearRangedSv from './gear_sets/p5_ranged_sv.gear.json';
+import Phase5GearWeave from './gear_sets/p5_weave.gear.json';
 import Phase1Gear from './gear_sets/phase1.gear.json';
 
 // Preset options for this spec.
@@ -69,19 +77,27 @@ export const GearRangedMmPhase3 = PresetUtils.makePresetGear('P3 Ranged MM', Pha
 export const GearWeavePhase4 = PresetUtils.makePresetGear('P4 Weave', Phase4GearWeave, { customCondition: player => player.getLevel() === 60 });
 export const GearRangedSVPhase4 = PresetUtils.makePresetGear('P4 Ranged', Phase4GearRanged, { customCondition: player => player.getLevel() === 60 });
 
+export const GearWeavePhase5 = PresetUtils.makePresetGear('P5 Weave', Phase5GearWeave, { customCondition: player => player.getLevel() === 60 });
+export const GearRangedMMPhase5 = PresetUtils.makePresetGear('P5 Ranged MM', Phase5GearRangedSv, { customCondition: player => player.getLevel() === 60 });
+export const GearRangedSVPhase5 = PresetUtils.makePresetGear('P5 Ranged SV', Phase5GearRangedSv, { customCondition: player => player.getLevel() === 60 });
+export const GearMeleeBMPhase5 = PresetUtils.makePresetGear('P5 Melee BM', Phase5GearMeleeBm, { customCondition: player => player.getLevel() === 60 });
+export const GearMeleeSVPhase5 = PresetUtils.makePresetGear('P5 Melee SV', Phase5GearMeleeSv, { customCondition: player => player.getLevel() === 60 });
+
 export const GearPresets = {
 	[Phase.Phase1]: [GearBeastMasteryPhase1, GearMarksmanPhase1, GearSurvivalPhase1],
 	[Phase.Phase2]: [GearRangedBmPhase2, GearRangedMmPhase2, GearMeleePhase2],
 	[Phase.Phase3]: [GearRangedMmPhase3, GearMeleeBmPhase3],
-	[Phase.Phase4]: [GearWeavePhase4, GearRangedSVPhase4],
-	[Phase.Phase5]: [],
+	[Phase.Phase4]: [],//[GearWeavePhase4, GearRangedSVPhase4],
+	[Phase.Phase5]: [GearWeavePhase5, GearRangedMMPhase5, GearRangedSVPhase5, GearMeleeBMPhase5, GearMeleeSVPhase5],
 };
 
-export const DefaultGearWeave = GearPresets[Phase.Phase4][0];
-export const DefaultGearRangedMM = GearPresets[Phase.Phase4][1];
-export const DefaultGearRangedSV = GearPresets[Phase.Phase4][1];
+export const DefaultGearWeave = GearPresets[Phase.Phase5][0];
+export const DefaultGearRangedMM = GearPresets[Phase.Phase5][1];
+export const DefaultGearRangedSV = GearPresets[Phase.Phase5][2];
+export const DefaultGearMeleeBM = GearPresets[Phase.Phase5][3];
+export const DefaultGearMeleeSV = GearPresets[Phase.Phase5][4];
 
-export const DefaultGear = DefaultGearWeave;
+export const DefaultGear = DefaultGearRangedSV;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -99,16 +115,24 @@ export const APLRangedMmPhase3 = PresetUtils.makePresetAPLRotation('P3 Ranged MM
 export const APLWeavePhase4 = PresetUtils.makePresetAPLRotation('P4 Weave', WeaveP4, { customCondition: player => player.getLevel() === 60 });
 export const APLRangedPhase4 = PresetUtils.makePresetAPLRotation('P4 Ranged', RangedP4, { customCondition: player => player.getLevel() === 60 });
 
+export const APLWeavePhase5 = PresetUtils.makePresetAPLRotation('P5 Weave', Phase5AplWeave, { customCondition: player => player.getLevel() === 60 });
+export const APLRanged31Phase5 = PresetUtils.makePresetAPLRotation('P5 Ranged 3-1-1', Phase5AplRanged, { customCondition: player => player.getLevel() === 60 });
+export const APLRanged22Phase5 = PresetUtils.makePresetAPLRotation('P5 Ranged 2-2', RangedP4, { customCondition: player => player.getLevel() === 60 });
+export const APLMeleeBMPhase5 = PresetUtils.makePresetAPLRotation('P5 Melee BM', Phase5AplMeleeBm, { customCondition: player => player.getLevel() === 60 });
+export const APLMeleeSVPhase5 = PresetUtils.makePresetAPLRotation('P5 Melee SV', Phase5AplMeleeSv, { customCondition: player => player.getLevel() === 60 });
+
 export const APLPresets = {
 	[Phase.Phase1]: [APLMeleeWeavePhase1],
 	[Phase.Phase2]: [APLRangedBmPhase2, APLRangedMmPhase2, APLMeleePhase2],
 	[Phase.Phase3]: [APLRangedMmPhase3, APLMeleeBmPhase3],
-	[Phase.Phase4]: [APLWeavePhase4, APLRangedPhase4],
-	[Phase.Phase5]: [],
+	[Phase.Phase4]: [],//[APLWeavePhase4, APLRangedPhase4],
+	[Phase.Phase5]: [APLWeavePhase5, APLRanged31Phase5, APLRanged22Phase5, APLMeleeBMPhase5, APLMeleeSVPhase5],
 };
 
-export const DefaultAPLWeave = APLPresets[Phase.Phase4][0];
-export const DefaultAPLRanged = APLPresets[Phase.Phase4][1];
+export const DefaultAPLWeave = APLPresets[Phase.Phase5][0];
+export const DefaultAPLRanged = APLPresets[Phase.Phase5][1];
+export const DefaultAPLMeleeBM = APLPresets[Phase.Phase5][3];
+export const DefaultAPLMeleeSV = APLPresets[Phase.Phase5][4];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Talent Presets
@@ -158,23 +182,63 @@ export const TalentsRangedSVPhase4 = PresetUtils.makePresetTalents('60 Ranged SV
 	customCondition: player => player.getLevel() === 60,
 });
 
+export const TalentsWeavePhase5 = PresetUtils.makePresetTalents('P5 Weave', SavedTalents.create({ talentsString: '-055500005-3305202202303051' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const TalentsRangedMMPhase5 = PresetUtils.makePresetTalents('P5 Ranged MM', SavedTalents.create({ talentsString: '5-05451005503051-3320202' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const TalentsRangedSVPhase5 = PresetUtils.makePresetTalents('P5 Ranged SV', SavedTalents.create({ talentsString: '1-054510005-334000250230305' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const TalentsMeleeBMPhase5 = PresetUtils.makePresetTalents('P5 Melee BM', SavedTalents.create({ talentsString: '5500020050521251-0505-33002' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const TalentsMeleeSVPhase5 = PresetUtils.makePresetTalents('P5 Melee SV', SavedTalents.create({ talentsString: '-055500005-3320202412303051' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsBeastMasteryPhase1, TalentsMarksmanPhase1, TalentsSurvivalPhase1],
 	[Phase.Phase2]: [TalentsBeastMasteryPhase2, TalentsMarksmanPhase2, TalentsSurvivalPhase2],
 	[Phase.Phase3]: [TalentsRangedMMPhase3, TalentsMeleeBMPhase3],
-	[Phase.Phase4]: [TalentsWeavePhase4, TalentsRangedMMPhase4, TalentsRangedSVPhase4],
-	[Phase.Phase5]: [],
+	[Phase.Phase4]: [],//[TalentsWeavePhase4, TalentsRangedMMPhase4, TalentsRangedSVPhase4],
+	[Phase.Phase5]: [TalentsWeavePhase5, TalentsRangedMMPhase5, TalentsRangedSVPhase5, TalentsMeleeBMPhase5, TalentsMeleeSVPhase5],
 };
 
-export const DefaultTalentsWeave = TalentPresets[Phase.Phase4][0];
-export const DefaultTalentsRangedMM = TalentPresets[Phase.Phase4][1];
-export const DefaultTalentsRangedSV = TalentPresets[Phase.Phase4][2];
+export const DefaultTalentsWeave = TalentPresets[Phase.Phase5][0];
+export const DefaultTalentsRangedMM = TalentPresets[Phase.Phase5][1];
+export const DefaultTalentsRangedSV = TalentPresets[Phase.Phase5][2];
+export const DefaultTalentsMeleeBM = TalentPresets[Phase.Phase5][3];
+export const DefaultTalentsMeleeSV = TalentPresets[Phase.Phase5][4];
 
 export const DefaultTalents = DefaultTalentsWeave;
 
-export const PresetBuildWeave = PresetUtils.makePresetBuild('Weave', DefaultGearWeave, DefaultTalentsWeave, DefaultAPLWeave);
-export const PresetBuildRangedMM = PresetUtils.makePresetBuild('Ranged MM', DefaultGearRangedMM, DefaultTalentsRangedMM, DefaultAPLRanged);
-export const PresetBuildRangedSV = PresetUtils.makePresetBuild('Ranged SV', DefaultGearRangedSV, DefaultTalentsRangedSV, DefaultAPLRanged);
+export const PresetBuildWeave = PresetUtils.makePresetBuild('Weave', { 
+	gear: DefaultGearWeave, 
+	talents: DefaultTalentsWeave, 
+	rotation: DefaultAPLWeave 
+});
+export const PresetBuildRangedMM = PresetUtils.makePresetBuild('Ranged MM', {
+	gear: DefaultGearRangedMM,
+	talents: DefaultTalentsRangedMM,
+	rotation: DefaultAPLRanged,
+});
+export const PresetBuildRangedSV = PresetUtils.makePresetBuild('Ranged SV', {
+	gear: DefaultGearRangedSV,
+	talents: DefaultTalentsRangedSV,
+	rotation: DefaultAPLRanged,
+});
+export const PresetBuildMeleeBM = PresetUtils.makePresetBuild('Melee BM', {
+	gear: DefaultGearMeleeBM,
+	talents: DefaultTalentsMeleeBM,
+	rotation: DefaultAPLMeleeBM,
+});
+export const PresetBuildMeleeSV = PresetUtils.makePresetBuild('Melee SV', {
+	gear: DefaultGearMeleeSV,
+	talents: DefaultTalentsMeleeSV,
+	rotation: DefaultAPLMeleeSV,
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options

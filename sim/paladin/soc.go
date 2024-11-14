@@ -116,7 +116,6 @@ func (paladin *Paladin) registerSealOfCommand() {
 						spell.DealDamage(sim, result)
 					},
 				})
-
 			},
 		})
 

@@ -461,6 +461,11 @@ export class ActionId {
 				if (this.tag === 1) name = `${name} (1H)`;
 				else if (this.tag === 2) name = `${name} (2H)`;
 				break;
+			// Warlock T2 6 Piece Needs Heals to trigger for the player
+			case 'Drain Life':
+			case 'Death Coil':
+				if (this.tag === 1) name += ` (Heal)`
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';
@@ -720,9 +725,11 @@ const spellIDsToShowBuffs = new Set([
 	457816, // https://www.wowhead.com/classic/spell=457816/battle-forecast
 	457817, // https://www.wowhead.com/classic/spell=457817/berserker-forecast
 	457819, // https://www.wowhead.com/classic/spell=457819/echoes-of-gladiator-stance
+	458403, // https://www.wowhead.com/classic/spell=458403/stalker
 	461252, // https://www.wowhead.com/classic/spell=461252/shadowflame-fury
 	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
 	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos
+	456393, // https://www.wowhead.com/classic/spell=456393/stalked
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';

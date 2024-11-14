@@ -104,7 +104,7 @@ func (druid *Druid) registerMangleCatSpell() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				druid.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 				mangleAuras.Get(target).Activate(sim)
 
 				if hasGoreRune {

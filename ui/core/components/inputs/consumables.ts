@@ -1136,6 +1136,14 @@ export const ConductiveShieldCoating = (slot: ItemSlot): ConsumableInputConfig<W
 			slot === ItemSlot.ItemSlotOffHand && player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.item?.weaponType === WeaponType.WeaponTypeShield,
 	};
 };
+export const MagnificentTrollshine = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 232611, minLevel: 45 }]),
+		value: WeaponImbue.MagnificentTrollshine,
+		showWhen: player =>
+			slot === ItemSlot.ItemSlotOffHand && player.getEquippedItem(ItemSlot.ItemSlotOffHand)?.item?.weaponType === WeaponType.WeaponTypeShield,
+	};
+};
 
 const SHAMAN_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [
 	{ config: RockbiterWeaponImbue(slot), stats: [] },
@@ -1154,6 +1162,7 @@ const ROGUE_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 ];
 
 const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [
+	{ config: MagnificentTrollshine(slot), stats: [Stat.StatSpellPower] },
 	{ config: ConductiveShieldCoating(slot), stats: [Stat.StatSpellPower] },
 	{ config: BrillianWizardOil(slot), stats: [Stat.StatSpellPower] },
 	{ config: WizardOil(slot), stats: [Stat.StatSpellPower] },

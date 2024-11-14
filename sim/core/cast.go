@@ -212,7 +212,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			spell.Unit.SetGCDTimer(sim, sim.CurrentTime+effectiveTime)
 		}
 
-		if (spell.CurCast.CastTime > 0) && spell.Unit.Moving {
+		if (spell.CurCast.CastTime > 0) && spell.Unit.IsMoving() {
 			return spell.castFailureHelper(sim, "casting/channeling while moving not allowed!")
 		}
 

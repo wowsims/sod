@@ -63,7 +63,7 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 			ghostlyStrikeAura.Activate(sim)
 
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)
 			}

@@ -145,7 +145,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerBlessingOfSanctuary()
 	paladin.registerLayOnHands()
 
-	paladin.enableMultiJudge = true // change this to baseline false when P5 launches
+	paladin.enableMultiJudge = false // Was previously true in Phase 4 but disabled in Phase 5
 	paladin.lingerDuration = time.Millisecond * 400
 	paladin.consumeSealsOnJudge = true
 
