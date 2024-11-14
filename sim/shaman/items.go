@@ -375,7 +375,7 @@ func init() {
 				)
 
 				for _, spell := range affectedSpells {
-					spell.BaseDamageMultiplierAdditive += 1.03
+					spell.BaseDamageMultiplierAdditive += 0.03
 				}
 			},
 		})
@@ -400,7 +400,7 @@ func init() {
 				)
 
 				for _, spell := range affectedSpells {
-					spell.BaseDamageMultiplierAdditive += 1.03
+					spell.BaseDamageMultiplierAdditive += 0.03
 				}
 			},
 		})
@@ -586,7 +586,7 @@ func init() {
 				)
 
 				for _, spell := range affectedSpells {
-					spell.BaseDamageMultiplierAdditive += 1.03
+					spell.BaseDamageMultiplierAdditive += 0.03
 				}
 			},
 		})
