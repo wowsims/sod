@@ -21,6 +21,7 @@ const (
 	SpellCode_RogueNone int32 = iota
 
 	SpellCode_RogueAmbush
+	SpellCode_RogueAdrenalineRush
 	SpellCode_RogueBackstab
 	SpellCode_RogueBetweentheEyes
 	SpellCode_RogueBladeDance
@@ -93,6 +94,7 @@ type Rogue struct {
 	ExposeArmor  *core.Spell
 	Rupture      *core.Spell
 	SliceAndDice *core.Spell
+	Finishers       []*core.Spell
 
 	Evasion    *core.Spell
 	BladeDance *core.Spell
@@ -150,6 +152,13 @@ func (rogue *Rogue) builderFlags() core.SpellFlag {
 }
 
 func (rogue *Rogue) Initialize() {
+	
+	rogue.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_RogueBetweentheEyes || spell.SpellCode == SpellCode_RogueBladeDance || spell.SpellCode == SpellCode_RogueCrimsonTempest || spell.SpellCode == SpellCode_RogueEnvenom || spell.SpellCode == SpellCode_RogueEviscerate || spell.SpellCode == SpellCode_RogueExposeArmor || spell.SpellCode == SpellCode_RogueRupture || spell.SpellCode == SpellCode_RogueSliceandDice {
+			rogue.Finishers = append(rogue.Finishers, spell)
+		}
+	})
+		
 	rogue.registerBackstabSpell()
 	rogue.registerEviscerate()
 	rogue.registerExposeArmorSpell()

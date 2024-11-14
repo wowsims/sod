@@ -398,9 +398,9 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 	})
 
 	rogue.AdrenalineRush = rogue.RegisterSpell(core.SpellConfig{
-		ActionID: AdrenalineRushActionID,
-
-		Cast: core.CastConfig{
+		SpellCode:   SpellCode_RogueAdrenalineRush,
+		ActionID: 	 AdrenalineRushActionID,
+		Cast: 		 core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
 			},

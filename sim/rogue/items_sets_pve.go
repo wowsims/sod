@@ -397,10 +397,13 @@ var ItemSetEmblemsofVeiledShadows = core.NewItemSet(core.ItemSet{
 		// 3 pieces: Your finishing moves cost 50% less Energy.
 		3: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
-			rogue.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_RogueBetweentheEyes || spell.SpellCode == SpellCode_RogueBladeDance || spell.SpellCode == SpellCode_RogueCrimsonTempest || spell.SpellCode == SpellCode_RogueEnvenom || spell.SpellCode == SpellCode_RogueEviscerate || spell.SpellCode == SpellCode_RogueExposeArmor || spell.SpellCode == SpellCode_RogueRupture || spell.SpellCode == SpellCode_RogueSliceandDice {
-					spell.Cost.Multiplier -= 50
-				}
+			rogue.RegisterAura(core.Aura{
+				Label: "S03 - Item - RAQ - Rogue - Damage 3P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, finisher := range rogue.Finishers {
+						finisher.Cost.Multiplier -= 50
+					}
+				},
 			})
 		},
 	},
@@ -422,7 +425,7 @@ var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
 			rogue.OnSpellRegistered(func(spell *core.Spell) {
-				if (spell.ActionID == core.ActionID{SpellID: 13750}) { 
+				if spell.SpellCode == SpellCode_RogueAdrenalineRush { 
 					spell.CD.Duration -= time.Second * 240
 				}
 			})
