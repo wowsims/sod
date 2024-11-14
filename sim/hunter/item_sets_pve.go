@@ -407,25 +407,16 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// Increases Wyvern Strike DoT by 50%
 		2: func(agent core.Agent) {
-
+			hunter := agent.(HunterAgent).GetHunter()
+			hunter.WyvernStrikeDoTMult = .50
 		},
 		// Increases the Impact Damage of Mongoose Bite and all Strikes by 10%
 		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			if hunter.pet == nil {
-				return
-			}
-
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Prowess 4P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, s := range hunter.Strikes {
-						// All strikes deal exclusively 'impact' damage except for Wyvern Strike
-						if s.SpellCode != SpellCode_HunterWyvernStrike {
-							s.DamageMultiplier *= 1.10
-						}
-					}
-					hunter.MongooseBite.DamageMultiplier *= 1.10
+					hunter.StrikersProwessImpactMult = .10
 				},
 			})
 		},

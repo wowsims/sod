@@ -13,14 +13,8 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 	manaCost := [4]float64{0, 55, 75, 100}[rank]
 	level := [4]int{0, 1, 50, 60}[rank]
 
-	// Striker's Prowess 2P - Wyvern Strike DoT damage +50%
-	dotMultiplier := core.Ternary(hunter.HasSetBonus(StrikersProwess, 2), 1.50, 1.0)
-
-	// Striker's Prowess 4P - Impact damage of strikes +10%
-	imapctMultiplier := core.Ternary(hunter.HasSetBonus(StrikersProwess, 2), 1.10, 1.0)
-
 	// The spell tooltips list 3/4/6 on the respective ranks, but Zirene confirmed it's actually 10%.
-	bleedCoeff := 0.10 * dotMultiplier
+	bleedCoeff := 0.10
 
 	spellConfig := core.SpellConfig{
 		SpellCode:     SpellCode_HunterWyvernStrike,
@@ -63,7 +57,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 1,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				tickDamage := bleedCoeff * hunter.WyvernStrike.MeleeAttackPower()
+				tickDamage := bleedCoeff * hunter.WyvernStrike.MeleeAttackPower() * (1 + hunter.WyvernStrikeDoTMult)
 				dot.Snapshot(target, tickDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -72,7 +66,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			weaponDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 1.40 * imapctMultiplier
+			weaponDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 1.40 * (1 + hunter.StrikersProwessImpactMult)
 			result := spell.CalcAndDealDamage(sim, target, weaponDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
