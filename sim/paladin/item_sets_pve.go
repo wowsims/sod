@@ -361,7 +361,7 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 
 			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Protection 2P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				OnInit: func(_ *core.Aura, _ *core.Simulation) {
 					for i, hsAura := range paladin.holyShieldAura {
 						if paladin.Level < HolyShieldValues[i].level {
 							break
@@ -386,7 +386,7 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 
 			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Protection 4P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				OnInit: func(_ *core.Aura, _ *core.Simulation) {
 					for i, hsAura := range paladin.holyShieldAura {
 						if hsAura == nil || paladin.Level < HolyShieldValues[i].level {
 							break
