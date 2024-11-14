@@ -64,6 +64,8 @@ func (paladin *Paladin) registerJudgement() {
 
 		},
 	})
+
+	paladin.judgement.DefaultCast.GCD = 0
 }
 
 // Helper Function For casting Judgement

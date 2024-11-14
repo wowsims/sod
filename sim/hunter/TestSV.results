@@ -501,8 +501,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase4-Lvl60-Settings-Orc-p4_weave-Weave-p4_weave-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1495.19005
-  tps: 1328.12385
+  dps: 1495.20225
+  tps: 1328.13605
   hps: 10.08173
  }
 }

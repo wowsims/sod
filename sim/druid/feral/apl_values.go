@@ -126,6 +126,10 @@ func (action *APLActionCatOptimalRotationAction) IsReady(sim *core.Simulation) b
 	return sim.CurrentTime > action.lastAction
 }
 
+func (action *APLActionCatOptimalRotationAction) IsOffGCDAction() bool {
+	return false
+}
+
 func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	cat := action.cat
 
@@ -143,6 +147,10 @@ func (action *APLActionCatOptimalRotationAction) Execute(sim *core.Simulation) {
 	}
 
 	action.lastAction = sim.CurrentTime
+}
+
+func (action *APLActionCatOptimalRotationAction) ExecuteOffGCD(sim *core.Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 
 func (action *APLActionCatOptimalRotationAction) Reset(*core.Simulation) {

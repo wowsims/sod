@@ -150,6 +150,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
+		builds: [
+			Presets.PresetBuildTwistingCancelAura,
+			Presets.PresetBuildSealStacking,
+			Presets.PresetBuildTwistingSlow,
+			Presets.PresetBuildTwistingSlower,
+			Presets.PresetBuildExodin,
+			Presets.PresetBuildShockadin,
+		],
 	},
 
 	autoRotation: player => {

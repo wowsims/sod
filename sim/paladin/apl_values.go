@@ -75,8 +75,16 @@ func (x *APLActionCastPaladinPrimarySeal) Execute(sim *core.Simulation) {
 	x.paladin.primarySeal.Cast(sim, x.paladin.CurrentTarget)
 }
 
+func (action *APLActionCastPaladinPrimarySeal) ExecuteOffGCD(sim *core.Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
+}
+
 func (x *APLActionCastPaladinPrimarySeal) IsReady(sim *core.Simulation) bool {
 	return sim.CurrentTime > x.lastAction && x.paladin.primarySeal.CanCast(sim, x.paladin.CurrentTarget)
+}
+
+func (action *APLActionCastPaladinPrimarySeal) IsOffGCDAction() bool {
+	return false
 }
 
 func (x *APLActionCastPaladinPrimarySeal) Reset(*core.Simulation) {

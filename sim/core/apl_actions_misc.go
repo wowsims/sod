@@ -30,11 +30,18 @@ func (rot *APLRotation) newActionChangeTarget(config *proto.APLActionChangeTarge
 func (action *APLActionChangeTarget) IsReady(sim *Simulation) bool {
 	return action.unit.CurrentTarget != action.newTarget.Get()
 }
+
+func (action *APLActionChangeTarget) IsOffGCDAction() bool {
+	return false
+}
 func (action *APLActionChangeTarget) Execute(sim *Simulation) {
 	if sim.Log != nil {
 		action.unit.Log(sim, "Changing target to %s", action.newTarget.Get().Label)
 	}
 	action.unit.CurrentTarget = action.newTarget.Get()
+}
+func (action *APLActionChangeTarget) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 func (action *APLActionChangeTarget) String() string {
 	return fmt.Sprintf("Change Target(%s)", action.newTarget.Get().Label)
@@ -58,11 +65,18 @@ func (rot *APLRotation) newActionCancelAura(config *proto.APLActionCancelAura) A
 func (action *APLActionCancelAura) IsReady(sim *Simulation) bool {
 	return action.aura.IsActive()
 }
+
+func (action *APLActionCancelAura) IsOffGCDAction() bool {
+	return true
+}
 func (action *APLActionCancelAura) Execute(sim *Simulation) {
 	if sim.Log != nil {
 		action.aura.Unit.Log(sim, "Cancelling aura %s", action.aura.ActionID)
 	}
 	action.aura.Deactivate(sim)
+}
+func (action *APLActionCancelAura) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 func (action *APLActionCancelAura) String() string {
 	return fmt.Sprintf("Cancel Aura(%s)", action.aura.ActionID)
@@ -87,11 +101,18 @@ func (action *APLActionActivateAura) IsReady(sim *Simulation) bool {
 	return true
 }
 
+func (action *APLActionActivateAura) IsOffGCDAction() bool {
+	return false
+}
 func (action *APLActionActivateAura) Execute(sim *Simulation) {
 	if sim.Log != nil {
 		action.aura.Unit.Log(sim, "Activating aura %s", action.aura.ActionID)
 	}
 	action.aura.Activate(sim)
+}
+
+func (action *APLActionActivateAura) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 
 func (action *APLActionActivateAura) String() string {
@@ -129,12 +150,20 @@ func (action *APLActionActivateAuraWithStacks) IsReady(sim *Simulation) bool {
 	return true
 }
 
+func (action *APLActionActivateAuraWithStacks) IsOffGCDAction() bool {
+	return false
+}
+
 func (action *APLActionActivateAuraWithStacks) Execute(sim *Simulation) {
 	if sim.Log != nil {
 		action.aura.Unit.Log(sim, "Activating aura %s (%d stacks)", action.aura.ActionID, action.numStacks)
 	}
 	action.aura.Activate(sim)
 	action.aura.SetStacks(sim, action.numStacks)
+}
+
+func (action *APLActionActivateAuraWithStacks) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 
 func (action *APLActionActivateAuraWithStacks) String() string {
@@ -167,6 +196,10 @@ func (action *APLActionAddComboPoints) IsReady(sim *Simulation) bool {
 	return true
 }
 
+func (action *APLActionAddComboPoints) IsOffGCDAction() bool {
+	return false
+}
+
 func (action *APLActionAddComboPoints) Execute(sim *Simulation) {
 	numPoints := strconv.Itoa(int(action.numPoints))
 
@@ -175,6 +208,10 @@ func (action *APLActionAddComboPoints) Execute(sim *Simulation) {
 	}
 
 	action.character.AddComboPointsIgnoreTarget(sim, action.numPoints, action.metrics)
+}
+
+func (action *APLActionAddComboPoints) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 
 func (action *APLActionAddComboPoints) String() string {
@@ -199,11 +236,18 @@ func (rot *APLRotation) newActionTriggerICD(config *proto.APLActionTriggerICD) A
 func (action *APLActionTriggerICD) IsReady(sim *Simulation) bool {
 	return action.aura.IsActive()
 }
+
+func (action *APLActionTriggerICD) IsOffGCDAction() bool {
+	return false
+}
 func (action *APLActionTriggerICD) Execute(sim *Simulation) {
 	if sim.Log != nil {
 		action.aura.Unit.Log(sim, "Triggering ICD %s", action.aura.ActionID)
 	}
 	action.aura.Icd.Use(sim)
+}
+func (action *APLActionTriggerICD) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 func (action *APLActionTriggerICD) String() string {
 	return fmt.Sprintf("Trigger ICD(%s)", action.aura.ActionID)
@@ -237,6 +281,10 @@ func (rot *APLRotation) newActionItemSwap(config *proto.APLActionItemSwap) APLAc
 func (action *APLActionItemSwap) IsReady(sim *Simulation) bool {
 	return (action.swapSet == proto.APLActionItemSwap_Main) == action.character.ItemSwap.IsSwapped()
 }
+
+func (action *APLActionItemSwap) IsOffGCDAction() bool {
+	return false
+}
 func (action *APLActionItemSwap) Execute(sim *Simulation) {
 	if sim.Log != nil {
 		action.character.Log(sim, "Item Swap to set %s", action.swapSet)
@@ -247,6 +295,9 @@ func (action *APLActionItemSwap) Execute(sim *Simulation) {
 	} else {
 		action.character.ItemSwap.SwapItems(sim, action.character.ItemSwap.slots)
 	}
+}
+func (action *APLActionItemSwap) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 func (action *APLActionItemSwap) String() string {
 	return fmt.Sprintf("Item Swap(%s)", action.swapSet)
@@ -268,6 +319,9 @@ func (action *APLActionMove) IsReady(sim *Simulation) bool {
 	isPrepull := sim.CurrentTime < 0
 	return !action.unit.IsMoving() && (action.moveRange.GetFloat(sim) != action.unit.DistanceFromTarget || isPrepull) && !action.unit.IsCasting(sim)
 }
+func (action *APLActionMove) IsOffGCDAction() bool {
+	return false
+}
 func (action *APLActionMove) Execute(sim *Simulation) {
 	moveRange := action.moveRange.GetFloat(sim)
 	if sim.Log != nil {
@@ -275,6 +329,9 @@ func (action *APLActionMove) Execute(sim *Simulation) {
 	}
 
 	action.unit.MoveTo(moveRange, sim)
+}
+func (action *APLActionMove) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 func (action *APLActionMove) String() string {
 	return fmt.Sprintf("Move(%s)", action.moveRange)
@@ -306,9 +363,15 @@ func (action *APLActionCustomRotation) IsReady(sim *Simulation) bool {
 	// Prevent infinite loops by only allowing this action to be performed once at each timestamp.
 	return action.lastExecutedAt != sim.CurrentTime
 }
+func (action *APLActionCustomRotation) IsOffGCDAction() bool {
+	return false
+}
 func (action *APLActionCustomRotation) Execute(sim *Simulation) {
 	action.lastExecutedAt = sim.CurrentTime
 	action.agent.ExecuteCustomRotation(sim)
+}
+func (action *APLActionCustomRotation) ExecuteOffGCD(sim *Simulation, time time.Duration) {
+	action.Execute(sim) // Default to Execute unless impletented for this APL Action
 }
 func (action *APLActionCustomRotation) String() string {
 	return "Custom Rotation()"
