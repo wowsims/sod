@@ -48,7 +48,7 @@ func (rogue *Rogue) applyUnfairAdvantage() {
 			// need to add parry
 			if result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry) && icd.IsReady(sim) {
 				unfairAdvantage.Cast(sim, spell.Unit)
-				rogue.AddComboPoints(sim, 1, comboMetrics)
+				rogue.AddComboPoints(sim, 1, result.Target, comboMetrics)
 				icd.Use(sim)
 			}
 		},

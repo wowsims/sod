@@ -174,7 +174,7 @@ func (action *APLActionAddComboPoints) Execute(sim *Simulation) {
 		action.character.Log(sim, "Adding combo points (%s points)", numPoints)
 	}
 
-	action.character.AddComboPoints(sim, action.numPoints, action.metrics)
+	action.character.AddComboPointsIgnoreTarget(sim, action.numPoints, action.metrics)
 }
 
 func (action *APLActionAddComboPoints) String() string {

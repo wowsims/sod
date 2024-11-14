@@ -69,7 +69,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 				rogue.CutthroatProcAura.Deactivate(sim)
 			}
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 				/** Currently does not apply to bosses due to being a slow
 				if waylay {
 					rogue.WaylayAuras.Get(target).Activate(sim)

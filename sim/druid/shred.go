@@ -77,7 +77,7 @@ func (druid *Druid) registerShredSpell() {
 			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
-				druid.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				druid.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 
 				if hasGoreRune {
 					druid.rollGoreCatReset(sim)
