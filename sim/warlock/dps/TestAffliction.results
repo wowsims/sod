@@ -99,8 +99,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestAffliction-Phase4-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 176
-  final_stats: 183.37
+  final_stats: 197.78
+  final_stats: 196.68
   final_stats: 433.895
   final_stats: 357.5
   final_stats: 235.4
@@ -116,21 +116,21 @@ character_stats_results: {
   final_stats: 37.59875
   final_stats: 0
   final_stats: 0
-  final_stats: 947
+  final_stats: 1017.78
   final_stats: 6
-  final_stats: 33.1685
+  final_stats: 33.834
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 6455.5
   final_stats: 0
   final_stats: 0
-  final_stats: 1371.74
+  final_stats: 1398.36
   final_stats: 740
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 11.1685
+  final_stats: 11.834
   final_stats: 5
   final_stats: 0
   final_stats: 5872.95
@@ -301,14 +301,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestAffliction-Phase2-Lvl40-AllItems-Kezan'sUnstoppableTaint-231346"
- value: {
-  dps: 644.34887
-  tps: 621.22983
-  hps: 218.93713
- }
-}
-dps_results: {
  key: "TestAffliction-Phase2-Lvl40-Average-Default"
  value: {
   dps: 637.78557
@@ -378,14 +370,6 @@ dps_results: {
   dps: 364.72877
   tps: 241.74446
   hps: 160.59939
- }
-}
-dps_results: {
- key: "TestAffliction-Phase3-Lvl50-AllItems-Kezan'sUnstoppableTaint-231346"
- value: {
-  dps: 1537.82159
-  tps: 1336.80415
-  hps: 364.8548
  }
 }
 dps_results: {
