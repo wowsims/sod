@@ -310,6 +310,18 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Health: 0.98,
 		Armor:  1.00,
 		Damage: 1.10,
+
+		CustomRotation: func(sim *core.Simulation, hp *HunterPet, tryCast func(*core.Spell) bool) {
+			if hp.specialAbility.CD.IsReady(sim) && hp.CurrentFocusPerTick() > hp.focusDump.Cost.BaseCost / 1.6  {
+				if !tryCast(hp.specialAbility) && hp.GCD.IsReady(sim) {
+					hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
+				}
+			} else {
+				if !tryCast(hp.focusDump) && hp.GCD.IsReady(sim) {
+					hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
+				}
+			}
+		},
 	},
 	proto.Hunter_Options_WindSerpent: {
 		Name:    "Wind Serpent",

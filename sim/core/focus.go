@@ -51,7 +51,7 @@ func (fb *focusBar) CurrentFocus() float64 {
 }
 
 func (fb *focusBar) CurrentFocusPerTick() float64 {
-	return fb.focusPerTick
+	return fb.focusPerTick * fb.focusRegenMultiplier
 }
 
 func (fb *focusBar) AddFocusRegenMultiplier (multiplier float64) {

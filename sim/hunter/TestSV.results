@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestSV-Phase2-Lvl40-AllItems-BeastmasterArmor"
  value: {
-  dps: 404.5068
-  tps: 254.19652
+  dps: 400.49246
+  tps: 253.19631
  }
 }
 dps_results: {
