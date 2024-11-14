@@ -104,8 +104,8 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 
 			if result.Landed() {
 				mainGaucheAura.Activate(sim)
-				mainGaucheSSAura.Activate(sim)	
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				mainGaucheSSAura.Activate(sim)
+				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)
 			}

@@ -762,15 +762,17 @@ export class ResourceChangedLog extends SimLog {
 			const verb = isHealth ? (this.isSpend ? 'Lost' : 'Recovered') : this.isSpend ? 'Spent' : 'Gained';
 			const resourceName = resourceNames.get(this.resourceType)!;
 			const resourceClass = `resource-${resourceName.replace(/\s/g, '-').toLowerCase()}`;
-
+			
 			return (
 				<>
 					{this.toPrefix(includeTimestamp)} {verb}{' '}
 					<strong className={resourceClass}>
 						{signedDiff.toFixed(1)} {resourceName}
 					</strong>
+					{this.target ? <>{` on `} {this.target?.toHTML()}</> : null}
 					{` from `}
-					{this.newActionIdLink(this.actionId!)}. ({this.valueBefore.toFixed(1)} &rarr; {this.valueAfter.toFixed(1)})
+					{this.newActionIdLink(this.actionId!)}. 
+					({this.valueBefore.toFixed(1)} &rarr; {this.valueAfter.toFixed(1)})
 				</>
 			);
 		});
@@ -786,16 +788,21 @@ export class ResourceChangedLog extends SimLog {
 	}
 
 	static parse(params: SimLogParams): Promise<ResourceChangedLog> | null {
+		// ((Gained)|(Spent)) \d+\.?\d* ((health)|(mana)|(energy)|(focus)|(rage)|(combo points)) from (\{.*?\}) (?:on (\[[\w ]+\]) )?\((\d+\.?\d*) --> (\d+\.?\d*)\)
+
 		const match = params.raw.match(
-			/((Gained)|(Spent)) \d+\.?\d* ((health)|(mana)|(energy)|(focus)|(rage)|(combo points)) from (.*) \((\d+\.?\d*) --> (\d+\.?\d*)\)/,
+			/((Gained)|(Spent)) \d+\.?\d* ((health)|(mana)|(energy)|(focus)|(rage)|(combo points)) (?:on (\[[\w ]+\]) )?from (\{.*?\}) \((\d+\.?\d*) --> (\d+\.?\d*)\)/,
 		);
 		if (match) {
 			const resourceType = stringToResourceType(match[4]);
-			return ActionId.fromLogString(match[11])
+			// combo points have an additional Target included in its log lines, adjust for that here
+			const valueBefore = match[13]
+			const valueAfter = match[14];
+			return ActionId.fromLogString(match[12])
 				.fill(params.source?.index)
 				.then(cause => {
 					params.actionId = cause;
-					return new ResourceChangedLog(params, resourceType, parseFloat(match[12]), parseFloat(match[13]), match[1] == 'Spent');
+					return new ResourceChangedLog(params, resourceType, parseFloat(valueBefore), parseFloat(valueAfter), match[1] == 'Spent');
 				});
 		} else {
 			return null;

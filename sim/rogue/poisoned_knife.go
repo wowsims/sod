@@ -57,7 +57,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 				dp := rogue.deadlyPoisonTick.Dot(target)
 				numDPStacks := float64(dp.GetStacks() * 5)
 				rogue.AddEnergy(sim, numDPStacks, poisonedKnifeMetrics)

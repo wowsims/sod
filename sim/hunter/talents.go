@@ -199,7 +199,7 @@ func (hunter *Hunter) applyCleverTraps() {
 func (hunter *Hunter) applyEfficiency() {
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		// applies to Stings, Shots, Strikes and Volley
-		if spell.Flags.Matches(SpellFlagSting|SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterVolley {
+		if spell.Cost != nil && spell.Flags.Matches(SpellFlagSting|SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterVolley {
 			spell.Cost.Multiplier -= 2 * hunter.Talents.Efficiency
 		}
 	})
