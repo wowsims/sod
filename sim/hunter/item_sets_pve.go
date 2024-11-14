@@ -381,3 +381,74 @@ var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+var TrappingsOfTheUnseenPath = core.NewItemSet(core.ItemSet{
+	Name: "Trappings of the Unseen Path",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases the Focus regeneration of your Beast pet by 100%.
+		3: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			if hunter.pet == nil {
+				return
+			}
+
+			hunter.RegisterAura(core.Aura{
+				Label: "Trappings of the Unseen Path 3P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.pet.AddFocusRegenMultiplier(2.0)
+				},
+			})
+		},
+	},
+})
+
+var StrikersProwess = core.NewItemSet(core.ItemSet{
+	Name: "Striker's Prowess",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases Wyvern Strike DoT by 50%
+		2: func(agent core.Agent) {
+
+		},
+		// Increases the Impact Damage of Mongoose Bite and all Strikes by 10%
+		4: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			if hunter.pet == nil {
+				return
+			}
+
+			hunter.RegisterAura(core.Aura{
+				Label: "Striker's Prowess 4P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, s := range hunter.Strikes {
+						// All strikes deal exclusively 'impact' damage except for Wyvern Strike
+						if s.SpellCode != SpellCode_HunterWyvernStrike {
+							s.DamageMultiplier *= 1.10
+						}
+					}
+					hunter.MongooseBite.DamageMultiplier *= 1.10
+				},
+			})
+		},
+	},
+})
+
+var StrikersPursuit = core.NewItemSet(core.ItemSet{
+	Name: "Striker's Pursuit",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Kill Shot's remaining cooldown is reduced by 50% when used on targets between 20% and 50% health, and has no cooldown while your Rapid Fire is active
+		2: func(agent core.Agent) {
+
+		},
+		// Increases Kill Shot damage by 50%
+		4: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+
+			hunter.RegisterAura(core.Aura{
+				Label: "Striker's Pursuit 4P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.KillShot.DamageMultiplier *= 1.50
+				},
+			})
+		},
+	},
+})
