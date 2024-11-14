@@ -736,16 +736,6 @@ var ItemSetStormcallersImpact = core.NewItemSet(core.ItemSet{
 			shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Shaman - Enhancement 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					// Just adding 30% damage for now
-					if shaman.StormstrikeMH != nil {
-						shaman.StormstrikeMH.DamageMultiplier *= 1.30
-					}
-					if shaman.StormstrikeOH != nil {
-						shaman.StormstrikeOH.DamageMultiplier *= 1.30
-					}
-					if shaman.LavaLash != nil {
-						shaman.LavaLash.DamageMultiplier *= 1.30
-					}
 				},
 			})
 		},
