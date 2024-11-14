@@ -215,6 +215,10 @@ var ItemSetNightSlayerBattlearmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 5 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
 var ItemSetBloodfangThrill = core.NewItemSet(core.ItemSet{
 	Name: "Bloodfang Thrill",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -377,6 +381,49 @@ var ItemSetMadCapsOutfit = core.NewItemSet(core.ItemSet{
 			rogue.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_RogueAmbush {
 					spell.BonusCritRating += 30 * core.CritRatingPerCritChance
+				}
+			})
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 6 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetEmblemsofVeiledShadows = core.NewItemSet(core.ItemSet{
+	Name: "Emblems of Veiled Shadows",
+	Bonuses: map[int32]core.ApplyEffect{
+		// 3 pieces: Your finishing moves cost 50% less Energy.
+		3: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			rogue.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_RogueBetweentheEyes || spell.SpellCode == SpellCode_RogueBladeDance || spell.SpellCode == SpellCode_RogueCrimsonTempest || spell.SpellCode == SpellCode_RogueEnvenom || spell.SpellCode == SpellCode_RogueEviscerate || spell.SpellCode == SpellCode_RogueExposeArmor || spell.SpellCode == SpellCode_RogueRupture || spell.SpellCode == SpellCode_RogueSliceandDice {
+					spell.Cost.Multiplier -= 50
+				}
+			})
+		},
+	},
+})
+
+var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
+	Name: "Deathdealer's Thrill",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases Saber Slash damage by 20%
+		2: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			rogue.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_RogueSaberSlash || spell.SpellCode == SpellCode_RogueSaberSlashDoT {
+					spell.DamageMultiplier *= 1.20
+				}
+			})
+		},
+		// Reduces the cooldown on Adrenaline Rush by 4 minutes.
+		4: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			rogue.OnSpellRegistered(func(spell *core.Spell) {
+				if (spell.ActionID == core.ActionID{SpellID: 13750}) { 
+					spell.CD.Duration -= time.Second * 240
 				}
 			})
 		},

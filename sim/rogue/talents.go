@@ -397,7 +397,7 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 		},
 	})
 
-	adrenalineRushSpell := rogue.RegisterSpell(core.SpellConfig{
+	rogue.AdrenalineRush = rogue.RegisterSpell(core.SpellConfig{
 		ActionID: AdrenalineRushActionID,
 
 		Cast: core.CastConfig{
@@ -418,7 +418,7 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 	})
 
 	rogue.AddMajorCooldown(core.MajorCooldown{
-		Spell:    adrenalineRushSpell,
+		Spell:    rogue.AdrenalineRush,
 		Type:     core.CooldownTypeDPS,
 		Priority: core.CooldownPriorityBloodlust,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {

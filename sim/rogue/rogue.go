@@ -23,10 +23,12 @@ const (
 	SpellCode_RogueAmbush
 	SpellCode_RogueBackstab
 	SpellCode_RogueBetweentheEyes
+	SpellCode_RogueBladeDance
 	SpellCode_RogueBladeFlurry
 	SpellCode_RogueCrimsonTempest
 	SpellCode_RogueEnvenom
 	SpellCode_RogueEviscerate
+	SpellCode_RogueExposeArmor
 	SpellCode_RogueGarrote
 	SpellCode_RogueGhostlyStrike
 	SpellCode_RogueHemorrhage
@@ -38,6 +40,7 @@ const (
 	SpellCode_RogueSaberSlashDoT
 	SpellCode_RogueShadowStrike
 	SpellCode_RogueSinisterStrike
+	SpellCode_RogueSliceandDice
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}
@@ -53,6 +56,7 @@ type Rogue struct {
 	sliceAndDiceDurations [6]time.Duration
 	bladeDanceDurations   [6]time.Duration
 
+	AdrenalineRush      *core.Spell
 	Backstab            *core.Spell
 	BladeFlurry         *core.Spell
 	Feint               *core.Spell
