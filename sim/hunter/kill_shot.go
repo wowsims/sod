@@ -47,8 +47,8 @@ func (hunter *Hunter) registerKillShotSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if hasStrikersPursuit2P && target.CurrentHealthPercent() < 0.50 && target.CurrentHealthPercent() > 0.20 {
-				spell.CD.Duration = spell.CD.Duration / 2
+			if hasStrikersPursuit2P &&  sim.CurrentTime > sim.Encounter.Duration / 2 {
+				spell.CD.Set(sim.CurrentTime + spell.CD.TimeToReady(sim)/2)
 			}
 			
 			if sim.IsExecutePhase20() || (hasStrikersPursuit2P && hunter.HasActiveAura("Rapid Fire")) {
