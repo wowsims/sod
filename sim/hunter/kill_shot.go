@@ -12,8 +12,6 @@ func (hunter *Hunter) registerKillShotSpell() {
 		return
 	}
 
-	hasStrikersPursuit2P := hunter.HasSetBonus(StrikersPursuit, 2)
-
 	baseDamage := 113 / 100 * hunter.baseRuneAbilityDamage()
 
 	hunter.KillShot = hunter.RegisterSpell(core.SpellConfig{
@@ -47,11 +45,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if hasStrikersPursuit2P &&  sim.CurrentTime > sim.Encounter.Duration / 2 {
-				spell.CD.Set(sim.CurrentTime + spell.CD.TimeToReady(sim)/2)
-			}
-			
-			if sim.IsExecutePhase20() || (hasStrikersPursuit2P && hunter.HasActiveAura("Rapid Fire")) {
+			if sim.IsExecutePhase20() {
 				spell.CD.Reset()
 			}
 
