@@ -46,6 +46,16 @@ export const RighteousFuryToggle = InputHelpers.makeSpecOptionsBooleanIconInput<
 	changeEmitter: (player: Player<Spec.SpecProtectionPaladin>) => TypedEvent.onAny([player.gearChangeEmitter, player.specOptionsChangeEmitter]),
 });
 
+export const ManualAutoAttacksToggle = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecProtectionPaladin>({
+	fieldName: 'isManuallyTriggeringAutoAttacks',
+	label: 'Manually Triggered Autoattacks',
+	labelTooltip: `\
+	Simulates combat where autoattacks are manually enabled only when the swing timer is ready and turned off again immediately after the melee swing occurs.
+	Enabling this feature also assumes that all rotational abilities that initiate autoattacks (e.g. Hammer of the Righteous) are cast with a stopattack/@target macro.`,
+	showWhen: player => player.sim.getShowExperimental(),
+	changeEmitter: player => TypedEvent.onAny([player.specOptionsChangeEmitter, player.sim.showExperimentalChangeEmitter]),
+});
+
 // The below is used in the custom APL action "Cast Primary Seal".
 // Only shows SoC if it's talented.
 export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecProtectionPaladin, PaladinSeal>({

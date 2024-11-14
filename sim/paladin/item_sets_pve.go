@@ -408,7 +408,11 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 			procChance := 0.2 * float64(paladin.Talents.Reckoning)
 
 			handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				paladin.AutoAttacks.ExtraMHAttack(sim, 1, actionID, spell.ActionID)
+				if paladin.Options.IsManuallyTriggeringAutoAttacks {
+					paladin.AutoAttacks.StoreExtraMHAttack(sim, 1, actionID, spell.ActionID)
+				} else {
+					paladin.AutoAttacks.ExtraMHAttack(sim, 1, actionID, spell.ActionID)
+				}
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{

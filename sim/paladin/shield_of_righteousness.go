@@ -19,6 +19,7 @@ func (paladin *Paladin) registerShieldOfRighteousness() {
 
 	paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: int32(proto.PaladinRune_RuneCloakShieldOfRighteousness)},
+		SpellCode:   SpellCode_PaladinShieldOfRighteousness,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,

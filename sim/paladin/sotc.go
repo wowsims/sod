@@ -51,6 +51,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 
 		judgeSpell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: rank.judge.spellID},
+			SpellCode:   SpellCode_PaladinJudgementOfTheCrusader,
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
