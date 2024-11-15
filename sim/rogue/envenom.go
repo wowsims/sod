@@ -87,6 +87,7 @@ func (rogue *Rogue) registerEnvenom() {
 			spell.DealDamage(sim, result)
 		},
 	})
+	rogue.Finishers = append(rogue.Finishers, rogue.Envenom)
 }
 
 func (rogue *Rogue) EnvenomDuration(comboPoints int32) time.Duration {
