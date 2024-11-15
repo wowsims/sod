@@ -78,4 +78,5 @@ func (rogue *Rogue) registerSliceAndDice() {
 			rogue.SpendComboPoints(sim, spell)
 		},
 	})
+	rogue.Finishers = append(rogue.Finishers, rogue.SliceAndDice)
 }

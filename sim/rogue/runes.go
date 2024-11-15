@@ -267,6 +267,7 @@ func (rogue *Rogue) registerBladeDance() {
 			rogue.SpendComboPoints(sim, spell)
 		},
 	})
+	rogue.Finishers = append(rogue.Finishers, rogue.BladeDance)
 }
 
 func (rogue *Rogue) applyJustAFleshWound() {

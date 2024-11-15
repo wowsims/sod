@@ -93,4 +93,5 @@ func (rogue *Rogue) registerEviscerate() {
 			spell.DealDamage(sim, result)
 		},
 	})
+	rogue.Finishers = append(rogue.Finishers, rogue.Eviscerate)
 }

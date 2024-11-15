@@ -85,4 +85,5 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 
 		RelatedAuras: []core.AuraArray{rogue.ExposeArmorAuras},
 	})
+	rogue.Finishers = append(rogue.Finishers, rogue.ExposeArmor)
 }

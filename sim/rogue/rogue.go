@@ -152,13 +152,6 @@ func (rogue *Rogue) builderFlags() core.SpellFlag {
 }
 
 func (rogue *Rogue) Initialize() {
-	
-	rogue.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_RogueBetweentheEyes || spell.SpellCode == SpellCode_RogueBladeDance || spell.SpellCode == SpellCode_RogueCrimsonTempest || spell.SpellCode == SpellCode_RogueEnvenom || spell.SpellCode == SpellCode_RogueEviscerate || spell.SpellCode == SpellCode_RogueExposeArmor || spell.SpellCode == SpellCode_RogueRupture || spell.SpellCode == SpellCode_RogueSliceandDice {
-			rogue.Finishers = append(rogue.Finishers, spell)
-		}
-	})
-		
 	rogue.registerBackstabSpell()
 	rogue.registerEviscerate()
 	rogue.registerExposeArmorSpell()
