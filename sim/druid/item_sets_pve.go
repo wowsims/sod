@@ -539,3 +539,18 @@ var ItemSetHaruspexsGarb = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 6 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetSymbolsOfUnendingLife = core.NewItemSet(core.ItemSet{
+	Name: "Symbols of Unending Life",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your melee attacks have 5% less chance to be Dodged or Parried.
+		3: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.AddStat(stats.Expertise, 5)
+		},
+	},
+})
