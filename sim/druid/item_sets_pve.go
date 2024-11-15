@@ -592,7 +592,7 @@ var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
 			druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Druid - Feral 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					druid.Shred.ExtraCastCondition = nil
+					druid.ShredPositionOverride = true
 					if !druid.PseudoStats.InFrontOfTarget {
 						// TODO: Check how this interacts with other multipliers, e.g. the idols.
 						druid.Shred.DamageMultiplier *= 1.2
