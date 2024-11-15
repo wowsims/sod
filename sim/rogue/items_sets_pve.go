@@ -415,10 +415,12 @@ var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
 		// Increases Saber Slash damage by 20%
 		2: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
-			rogue.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_RogueSaberSlash || spell.SpellCode == SpellCode_RogueSaberSlashDoT {
-					spell.DamageMultiplier *= 1.20
-				}
+			rogue.RegisterAura(core.Aura{
+			  Label: "S03 - Item - TAQ - Rogue - Damage 2P Bonus",
+			  OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			    rogue.SaberSlash.DamageMultiplier *= 1.20
+			    rogue.SaberSlashTick.DamageMultiplier *= 1.20
+			  })
 			})
 		},
 		// Reduces the cooldown on Adrenaline Rush by 4 minutes.
