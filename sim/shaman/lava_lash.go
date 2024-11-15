@@ -23,6 +23,7 @@ func (shaman *Shaman) applyLavaLash() {
 	}
 
 	shaman.LavaLash = shaman.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_ShamanLavaLash,
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaLash)},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMelee,
@@ -42,6 +43,18 @@ func (shaman *Shaman) applyLavaLash() {
 			CD: core.Cooldown{
 				Timer:    shaman.NewTimer(),
 				Duration: cooldown,
+			},
+		},
+
+		// Custom DoT can be procced by TAQ Enhancement 4p
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Lava Lash",
+			},
+			NumberOfTicks: 2,
+			TickLength:    time.Second * 2,
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
 		},
 

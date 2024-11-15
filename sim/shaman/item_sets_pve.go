@@ -622,20 +622,19 @@ var ItemSetStormcallersEruption = core.NewItemSet(core.ItemSet{
 			shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Shaman - Elemental 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range shaman.LightningBolt {
-						if spell != nil {
-							spell.PushbackReduction += .70
-						}
-					}
+					affectedPushbackSpells := core.FilterSlice(
+						core.Flatten(
+							[][]*core.Spell{
+								shaman.LightningBolt,
+								shaman.ChainLightning,
+								{shaman.LavaBurst},
+							},
+						),
+						func(spell *core.Spell) bool { return spell != nil },
+					)
 
-					for _, spell := range shaman.ChainLightning {
-						if spell != nil {
-							spell.PushbackReduction += .70
-						}
-					}
-
-					if shaman.LavaBurst != nil {
-						shaman.LavaBurst.PushbackReduction += .70
+					for _, spell := range affectedPushbackSpells {
+						spell.PushbackReduction += .70
 					}
 
 					shaman.elementalFocusProcChance += .10
@@ -647,7 +646,7 @@ var ItemSetStormcallersEruption = core.NewItemSet(core.ItemSet{
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.OnSpellRegistered(func(spell *core.Spell) {
 				if (spell.Flags.Matches(SpellFlagShaman) || spell.Flags.Matches(SpellFlagTotem)) && spell.DefenseType == core.DefenseTypeMagic {
-					spell.CritDamageBonus += .60
+					spell.CritDamageBonus += 0.60
 				}
 			})
 		},
@@ -732,12 +731,20 @@ var ItemSetStormcallersImpact = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
-			// TODO: How does this work? What spell(s) does it register as?
-			shaman.RegisterAura(core.Aura{
+			// TODO: This is a guess and needs to be verified
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Shaman - Enhancement 4P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if (spell.SpellCode == SpellCode_ShamanStormstrike || spell.SpellCode == SpellCode_ShamanLavaLash) && result.DidCrit() {
+						dot := spell.Dot(result.Target)
+
+						dot.SnapshotBaseDamage = result.Damage * 0.30
+						dot.SnapshotAttackerMultiplier = 1
+
+						dot.Apply(sim)
+					}
 				},
-			})
+			}))
 		},
 	},
 })
