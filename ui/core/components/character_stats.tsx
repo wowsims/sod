@@ -357,8 +357,8 @@ export class CharacterStats extends Component {
 		} else if (stat === Stat.StatArmorPenetration) {
 			displayStr += ` (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
 		} else if (stat === Stat.StatExpertise) {
-			// Expertise is not used in SoD and replaced by weapon skill
-			displayStr += ` (${(rawValue / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4).toFixed(2)}%)`;
+			// It's just like crit and hit in SoD.
+			displayStr += `%`;
 		} else if (stat === Stat.StatDefense) {
 			displayStr = `${(player.getLevel() * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)}`;
 		} else if (stat === Stat.StatBlock) {

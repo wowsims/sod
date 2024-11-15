@@ -595,47 +595,6 @@ var ItemSetGenesisBounty = core.NewItemSet(core.ItemSet{
 	},
 })
 
-var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
-	Name: "Genesis Cunning",
-	Bonuses: map[int32]core.ApplyEffect{
-		// Your Shred no longer has a positional requirement, but deals 20% more damage if you are behind the target.
-		2: func(agent core.Agent) {
-			druid := agent.(DruidAgent).GetDruid()
-			druid.RegisterAura(core.Aura{
-				Label: "S03 - Item - TAQ - Druid - Feral 2P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					druid.ShredPositionOverride = true
-
-					if !druid.PseudoStats.InFrontOfTarget {
-						druid.Shred.DamageMultiplier *= 1.20
-					}
-				},
-			})
-		},
-		// Your Mangle, Shred, and Ferocious Bite critical strikes cause your target to Bleed for 30% of the damage done over the next 4 sec.
-		4: func(agent core.Agent) {
-			druid := agent.(DruidAgent).GetDruid()
-
-			affectedSpellCodes := []int32{SpellCode_DruidMangleCat, SpellCode_DruidShred, SpellCode_DruidFerociousBite}
-
-			// TODO: Does this ignite?
-			core.MakePermanent(druid.RegisterAura(core.Aura{
-				Label: "S03 - Item - TAQ - Druid - Feral 4P Bonus",
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if slices.Contains(affectedSpellCodes, spell.SpellCode) && result.DidCrit() {
-						dot := spell.Dot(result.Target)
-
-						dot.SnapshotBaseDamage = result.Damage * 0.30
-						dot.SnapshotAttackerMultiplier = 1
-
-						dot.Apply(sim)
-					}
-				},
-			}))
-		},
-	},
-})
-
 var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 	Name: "Genesis Fury",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -646,6 +605,17 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 		// Reduces the cooldown on Mangle (Bear) by 1.5 sec.
 		4: func(agent core.Agent) {
 			// TODO
+		},
+	},
+})
+
+var ItemSetSymbolsOfUnendingLife = core.NewItemSet(core.ItemSet{
+	Name: "Symbols of Unending Life",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your melee attacks have 5% less chance to be Dodged or Parried.
+		3: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.AddStat(stats.Expertise, 5)
 		},
 	},
 })

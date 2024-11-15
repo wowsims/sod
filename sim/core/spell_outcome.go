@@ -641,7 +641,7 @@ func (spell *Spell) outcomeEnemyMeleeWhite(sim *Simulation, result *SpellResult,
 	}
 
 	if didHit && !result.applyEnemyAttackTableCrit(spell, attackTable, roll, &chance, countHits) {
-		if didHit && !result.applyEnemyAttackTableCrush(spell, attackTable, roll, &chance, countHits){
+		if didHit && !result.applyEnemyAttackTableCrush(spell, attackTable, roll, &chance, countHits) {
 			result.applyAttackTableHit(spell, countHits)
 		}
 	}
@@ -713,7 +713,10 @@ func (result *SpellResult) applyAttackTableBlock(spell *Spell, attackTable *Atta
 }
 
 func (result *SpellResult) applyAttackTableDodge(spell *Spell, attackTable *AttackTable, roll float64, chance *float64, countHits bool) bool {
-	*chance += max(0, attackTable.BaseDodgeChance-attackTable.Defender.PseudoStats.DodgeReduction)
+	// In SoD this works like crit or hit chance.
+	expertiseDodgeReduction := attackTable.Attacker.stats[stats.Expertise] / 100
+
+	*chance += max(0, attackTable.BaseDodgeChance-attackTable.Defender.PseudoStats.DodgeReduction-expertiseDodgeReduction)
 
 	if roll < *chance {
 		result.Outcome = OutcomeDodge
@@ -727,7 +730,10 @@ func (result *SpellResult) applyAttackTableDodge(spell *Spell, attackTable *Atta
 }
 
 func (result *SpellResult) applyAttackTableParry(spell *Spell, attackTable *AttackTable, roll float64, chance *float64, countHits bool) bool {
-	*chance += max(0, attackTable.BaseParryChance)
+	// In SoD this works like crit or hit chance.
+	expertiseParryReduction := attackTable.Attacker.stats[stats.Expertise] / 100
+
+	*chance += max(0, attackTable.BaseParryChance-expertiseParryReduction)
 
 	if roll < *chance {
 		result.Outcome = OutcomeParry
@@ -919,7 +925,7 @@ func (result *SpellResult) applyEnemyAttackTableCrit(spell *Spell, at *AttackTab
 }
 
 func (result *SpellResult) applyEnemyAttackTableCrush(spell *Spell, at *AttackTable, roll float64, chance *float64, countHits bool) bool {
-	if 	!at.Attacker.PseudoStats.CanCrush {
+	if !at.Attacker.PseudoStats.CanCrush {
 		return false
 	}
 
