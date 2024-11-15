@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -408,12 +409,14 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 		// Increases Wyvern Strike DoT by 50%
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
+			if !hunter.HasRune(proto.HunterRune_RuneBootsWyvernStrike) {
+				return
+			}
+
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Prowess 2P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					if hunter.WyvernStrike != nil {
-						hunter.WyvernStrike.DoTDamageMultiplier *= 1.50
-					}
+					hunter.WyvernStrike.DoTDamageMultiplier *= 1.50
 				},
 			})
 		},
@@ -441,6 +444,10 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 		// Kill Shot's remaining cooldown is reduced by 50% when used on targets between 20% and 50% health, and has no cooldown while your Rapid Fire is active
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
+			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
+				return
+			}
+
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "Striker's Pursuit 2P",
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -450,7 +457,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 
 					if hunter.HasActiveAura("Rapid Fire") {
 						spell.CD.Reset()
-					} else if sim.CurrentTime > sim.Encounter.Duration / 2 {
+					} else if sim.CurrentTime > sim.Encounter.Duration/2 {
 						spell.CD.Set(sim.CurrentTime + spell.CD.TimeToReady(sim)/2)
 					}
 				},
@@ -459,6 +466,10 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 		// Increases Kill Shot damage by 50%
 		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
+			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
+				return
+			}
+
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Pursuit 4P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
