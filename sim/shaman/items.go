@@ -447,7 +447,7 @@ func init() {
 		shaman.RegisterAura(core.Aura{
 			Label: "Totem of the Elements",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.ClearcastingAura.MaxStacks = 2
+				shaman.ClearcastingAura.MaxStacks += 1
 			},
 		})
 	})

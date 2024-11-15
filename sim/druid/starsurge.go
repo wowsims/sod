@@ -84,6 +84,7 @@ func (druid *Druid) applyStarsurge() {
 			// NG procs when the cast finishes
 			if result.DidCrit() && druid.NaturesGraceProcAura != nil {
 				druid.NaturesGraceProcAura.Activate(sim)
+				druid.NaturesGraceProcAura.SetStacks(sim, druid.NaturesGraceProcAura.MaxStacks)
 			}
 
 			// Aura applies on cast

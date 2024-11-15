@@ -445,7 +445,7 @@ var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
 			druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2- Druid - Feral 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					dotSpells := []*DruidSpell{druid.Rake, druid.Rip}
+					bleedSpells := []*DruidSpell{druid.Rake, druid.Rip}
 					for _, spell := range []*DruidSpell{druid.Shred, druid.MangleCat, druid.FerociousBite} {
 						if spell == nil {
 							continue
@@ -454,7 +454,7 @@ var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
 						oldApplyEffects := spell.ApplyEffects
 						spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 							bonusMultiplier := 1.0
-							for _, dotSpell := range dotSpells {
+							for _, dotSpell := range bleedSpells {
 								if dotSpell.Dot(target).IsActive() {
 									bonusMultiplier += .10
 								}
@@ -544,6 +544,45 @@ var ItemSetHaruspexsGarb = core.NewItemSet(core.ItemSet{
 //                            SoD Phase 6 Item Sets
 ///////////////////////////////////////////////////////////////////////////
 
+var ItemSetGenesisEclipse = core.NewItemSet(core.ItemSet{
+	Name: "Genesis Eclipse",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Nature's Grace talent gains 1 additional charge each time it triggers.
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Druid - Balance 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					druid.NaturesGraceProcAura.MaxStacks += 1
+				},
+			})
+		},
+		// Increases the critical strike damage bonus of your Starfire, Starsurge, and Wrath by 60%.
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Druid - Balance 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					affectedSpells := core.FilterSlice(
+						core.Flatten(
+							[][]*DruidSpell{
+								druid.Wrath,
+								druid.Starfire,
+								{druid.Starsurge},
+							},
+						),
+						func(spell *DruidSpell) bool { return spell != nil },
+					)
+
+					for _, spell := range affectedSpells {
+						spell.CritDamageBonus += 0.60
+					}
+				},
+			})
+		},
+	},
+})
+
 var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
 	Name: "Genesis Cunning",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -553,7 +592,7 @@ var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
 			druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Druid - Feral 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					druid.Shred.ExtraCastCondition = nil
+					druid.ShredPositionOverride = true
 					if !druid.PseudoStats.InFrontOfTarget {
 						// TODO: Check how this interacts with other multipliers, e.g. the idols.
 						druid.Shred.DamageMultiplier *= 1.2
@@ -616,7 +655,32 @@ var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
 	},
 })
 
-      
+var ItemSetGenesisBounty = core.NewItemSet(core.ItemSet{
+	Name: "Genesis Bounty",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Reduces the cooldown of your Rebirth and Innervate spells by 65%.
+		2: func(agent core.Agent) {
+		},
+		// Your critical heals with Healing Touch, Regrowth, and Nourish instantly heal the target for another 50% of the healing they dealt.
+		4: func(agent core.Agent) {
+		},
+	},
+})
+
+var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
+	Name: "Genesis Fury",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Each time you Dodge while in Dire Bear Form, you gain 10% increased damage on your next Mangle or Swipe, stacking up to 5 times.
+		2: func(agent core.Agent) {
+			// TODO Bear
+		},
+		// Reduces the cooldown on Mangle (Bear) by 1.5 sec.
+		4: func(agent core.Agent) {
+			// TODO Bear
+		},
+	},
+})
+
 var ItemSetSymbolsOfUnendingLife = core.NewItemSet(core.ItemSet{
 	Name: "Symbols of Unending Life",
 	Bonuses: map[int32]core.ApplyEffect{
