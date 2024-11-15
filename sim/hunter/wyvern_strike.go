@@ -45,6 +45,8 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 
 		CritDamageBonus:  hunter.mortalShots(),
 		DamageMultiplier: 1,
+		DoTDamageMultiplier: 1,
+		ImpactDamageMultiplier: 1,
 		BonusCoefficient: 1,
 		ThreatMultiplier: 1,
 
@@ -57,7 +59,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 			TickLength:    time.Second * 1,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				tickDamage := bleedCoeff * hunter.WyvernStrike.MeleeAttackPower() * (1 + hunter.WyvernStrikeDoTMult)
+				tickDamage := bleedCoeff * hunter.WyvernStrike.MeleeAttackPower()
 				dot.Snapshot(target, tickDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -66,7 +68,7 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			weaponDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 1.40 * (1 + hunter.StrikersProwessImpactMult)
+			weaponDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower()) * 1.40
 			result := spell.CalcAndDealDamage(sim, target, weaponDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {

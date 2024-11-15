@@ -132,7 +132,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 				hunter.HitAndRunAura.Activate(sim)
 			}
 
-			multiplier := (1 + hunter.StrikersProwessImpactMult)
+			multiplier := 1.0
 			if hasRaptorFury {
 				multiplier *= hunter.raptorFuryDamageMultiplier()
 			}

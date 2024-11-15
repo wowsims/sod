@@ -58,7 +58,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 				spell.CD.Reset()
 			}
 
-			multiplier := (1 + hunter.StrikersProwessImpactMult)
+			multiplier := 1.0
 			if hasRaptorFury {
 				multiplier *= hunter.raptorFuryDamageMultiplier()
 			}

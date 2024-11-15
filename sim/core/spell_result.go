@@ -333,14 +333,14 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 	return result
 }
 func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
-	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
+	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType]) * spell.ImpactDamageMultiplier
 	if spell.BonusCoefficient > 0 {
 		baseDamage += spell.BonusCoefficient * spell.GetBonusDamage()
 	}
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, false, outcomeApplier)
 }
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
-	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType])
+	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType]) * spell.DoTDamageMultiplier
 
 	dot := spell.DotOrAOEDot(target)
 	attackerMultiplier *= dot.DamageMultiplier
@@ -366,7 +366,7 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
 		if dot.Spell.Flags.Matches(SpellFlagHelpful) {
 			dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
 		} else {
-			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable) * dot.Spell.DoTDamageMultiplier
 		}
 
 		dot.SnapshotAttackerMultiplier *= dot.DamageMultiplier

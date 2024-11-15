@@ -408,7 +408,14 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 		// Increases Wyvern Strike DoT by 50%
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			hunter.WyvernStrikeDoTMult = .50
+			hunter.RegisterAura(core.Aura{
+				Label: "Striker's Prowess 2P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					if hunter.WyvernStrike != nil {
+						hunter.WyvernStrike.DoTDamageMultiplier *= 1.50
+					}
+				},
+			})
 		},
 		// Increases the Impact Damage of Mongoose Bite and all Strikes by 10%
 		4: func(agent core.Agent) {
@@ -416,7 +423,12 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Prowess 4P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.StrikersProwessImpactMult = .10
+					for _, spell := range hunter.Strikes {
+						spell.ImpactDamageMultiplier *= 1.10
+					}
+					hunter.RaptorStrikeMH.ImpactDamageMultiplier *= 1.10
+					hunter.RaptorStrikeOH.ImpactDamageMultiplier *= 1.10
+					hunter.MongooseBite.ImpactDamageMultiplier *= 1.10
 				},
 			})
 		},
@@ -429,7 +441,6 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 		// Kill Shot's remaining cooldown is reduced by 50% when used on targets between 20% and 50% health, and has no cooldown while your Rapid Fire is active
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "Striker's Pursuit 2P",
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -448,7 +459,6 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 		// Increases Kill Shot damage by 50%
 		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Pursuit 4P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
