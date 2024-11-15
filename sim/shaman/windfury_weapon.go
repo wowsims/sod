@@ -65,7 +65,6 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 	enchantId := WindfuryWeaponEnchantId[rank]
 
 	icdDuration := time.Millisecond * 1500
-	buffDuration := time.Minute * 5
 
 	if procMask.Matches(core.ProcMaskMeleeMH) {
 		shaman.MainHand().TempEnchant = enchantId
@@ -84,12 +83,12 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 		Duration: icdDuration,
 	}
 
-	mhSpell := shaman.newWindfuryImbueSpell(true)
-	ohSpell := shaman.newWindfuryImbueSpell(false)
+	shaman.WindfuryWeaponMH = shaman.newWindfuryImbueSpell(true)
+	shaman.WindfuryWeaponOH = shaman.newWindfuryImbueSpell(false)
 
 	aura := shaman.RegisterAura(core.Aura{
 		Label:    "Windfury Imbue",
-		Duration: buffDuration,
+		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
@@ -106,11 +105,11 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 				icd.Use(sim)
 
 				if spell.IsMH() {
-					mhSpell.Cast(sim, result.Target)
-					mhSpell.Cast(sim, result.Target)
+					shaman.WindfuryWeaponMH.Cast(sim, result.Target)
+					shaman.WindfuryWeaponMH.Cast(sim, result.Target)
 				} else {
-					ohSpell.Cast(sim, result.Target)
-					ohSpell.Cast(sim, result.Target)
+					shaman.WindfuryWeaponOH.Cast(sim, result.Target)
+					shaman.WindfuryWeaponOH.Cast(sim, result.Target)
 				}
 			}
 		},

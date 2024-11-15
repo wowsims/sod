@@ -494,16 +494,15 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`Test`),
 	regexp.MustCompile(`zOLD`),
 
-	// TODO: Possibly add these back later. These are later phase items
 	// PVP Gear
-	regexp.MustCompile(`Grand Marshal's [a-zA-z\s]+`),
-	regexp.MustCompile(`High Warlord's [a-zA-z\s]+`),
+	// regexp.MustCompile(`Grand Marshal's [a-zA-z\s]+`),
+	// regexp.MustCompile(`High Warlord's [a-zA-z\s]+`),
 
 	// AQ
-	regexp.MustCompile(`Qiraji`),
-	regexp.MustCompile(`[A-Za-z\s]+ of the Bronze Dragonflight`),
-	regexp.MustCompile(`[A-Za-z\s]+ of the Fallen God`),
-	regexp.MustCompile(`Belt of [A-Za-z]+ Heads`),
+	// regexp.MustCompile(`Qiraji`),
+	// regexp.MustCompile(`[A-Za-z\s]+ of the Bronze Dragonflight`),
+	// regexp.MustCompile(`[A-Za-z\s]+ of the Fallen God`),
+	// regexp.MustCompile(`Belt of [A-Za-z]+ Heads`),
 
 	// Naxx
 	regexp.MustCompile(`Icebane`),

@@ -148,8 +148,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestFire-Phase4-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 157.3
-  final_stats: 172.37
+  final_stats: 179.08
+  final_stats: 185.68
   final_stats: 371.91
   final_stats: 383.9
   final_stats: 215.6
@@ -165,7 +165,7 @@ character_stats_results: {
   final_stats: 49.64952
   final_stats: 0
   final_stats: 0
-  final_stats: 928.3
+  final_stats: 999.08
   final_stats: 3
   final_stats: 23.2
   final_stats: 0
@@ -174,7 +174,7 @@ character_stats_results: {
   final_stats: 6691.5
   final_stats: 0
   final_stats: 0
-  final_stats: 961.74
+  final_stats: 988.36
   final_stats: 740
   final_stats: 0
   final_stats: 5
@@ -197,8 +197,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestFire-Phase5-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 167.6125
-  final_stats: 183.61475
+  final_stats: 189.244
+  final_stats: 196.834
   final_stats: 548.44075
   final_stats: 499.675
   final_stats: 313.72
@@ -214,7 +214,7 @@ character_stats_results: {
   final_stats: 42.59454
   final_stats: 0
   final_stats: 0
-  final_stats: 928.1125
+  final_stats: 996.044
   final_stats: 3
   final_stats: 28.2
   final_stats: 0
@@ -223,7 +223,7 @@ character_stats_results: {
   final_stats: 8428.125
   final_stats: 0
   final_stats: 0
-  final_stats: 1077.1295
+  final_stats: 1100.268
   final_stats: 740
   final_stats: 0
   final_stats: 5
@@ -694,22 +694,22 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 2727.69715
-  tps: 2289.52284
+  dps: 2712.46709
+  tps: 2268.82071
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 1283.48436
-  tps: 916.95017
+  dps: 1277.4423
+  tps: 912.50569
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-P3-Consumes-ShortSingleTarget"
  value: {
   dps: 1315.58235
-  tps: 937.72532
+  tps: 938.59353
  }
 }
 dps_results: {
@@ -813,8 +813,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 677.2455
-  tps: 647.81838
+  dps: 676.42349
+  tps: 648.61787
  }
 }
 dps_results: {
@@ -841,8 +841,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 834.05546
-  tps: 797.51135
+  dps: 841.63931
+  tps: 804.92407
  }
 }
 dps_results: {

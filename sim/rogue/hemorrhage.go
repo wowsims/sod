@@ -66,7 +66,7 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 				if len(hemoAuras) > 0 {
 					hemoAura := hemoAuras.Get(target)
 					hemoAura.Activate(sim)

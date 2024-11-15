@@ -93,12 +93,21 @@ func main() {
 			continue
 		}
 
-		if otherId, ok := itemNameMap[item.Name]; !ok || otherId < id {
+		otherId, hasEntry := itemNameMap[item.Name]
+		if !hasEntry {
+			itemNameMap[item.Name] = id
+			continue
+		}
+
+		idInt, _ := strconv.Atoi(id)
+		otherIdInt, _ := strconv.Atoi(otherId)
+		if otherIdInt < idInt {
 			itemNameMap[item.Name] = id
 		}
 	}
 	filteredWHDBItems := core.FilterMap(wowheadDB.Items, func(_ string, item database.WowheadItem) bool {
 		id := itemNameMap[item.Name]
+
 		otherItem := wowheadDB.Items[id]
 
 		if _, ok := database.ItemAllowList[item.ID]; ok {

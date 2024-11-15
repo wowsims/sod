@@ -135,6 +135,8 @@ type Shaman struct {
 	WaterShield            *core.Spell
 	WaterShieldRestore     *core.Spell
 	WindfuryTotem          []*core.Spell
+	WindfuryWeaponMH       *core.Spell
+	WindfuryWeaponOH       *core.Spell
 	WindwallTotem          []*core.Spell
 
 	// Auras
@@ -164,14 +166,15 @@ type Shaman struct {
 	SpiritWolves *SpiritWolves
 
 	// Other data
-	ancestralHealingAmount float64 // Used by Ancestral Awakening
-	bonusFlurrySpeed       float64 // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
-	bonusWindfuryWeaponAP  float64
-	lastFlameShockTarget   *core.Unit // Used by Ancestral Guidance rune
-	lightningShieldCanCrit bool
-	maelstromWeaponPPMM    *core.PPMManager
-	powerSurgeProcChance   float64
-	staticSHocksProcChance float64
+	ancestralHealingAmount   float64 // Used by Ancestral Awakening
+	bonusFlurrySpeed         float64 // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
+	bonusWindfuryWeaponAP    float64
+	elementalFocusProcChance float64
+	lastFlameShockTarget     *core.Unit // Used by Ancestral Guidance rune
+	lightningShieldCanCrit   bool
+	maelstromWeaponPPMM      *core.PPMManager
+	powerSurgeProcChance     float64
+	staticSHocksProcChance   float64
 }
 
 // Implemented by each Shaman spec.

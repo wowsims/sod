@@ -55,23 +55,17 @@ var LevelToBuffRank = map[BuffName]map[int32]int32{
 		25: 3,
 		40: 4,
 		50: 5,
-		// TODO: AQ
-		60: 6,
-		// 60: 7,
+		60: TernaryInt32(IncludeAQ, 7, 6),
 	},
 	GraceOfAir: {
 		50: 1,
-		// TODO: AQ
-		60: 2,
-		// 60: 3,
+		60: TernaryInt32(IncludeAQ, 3, 2),
 	},
 	StrengthOfEarth: {
 		25: 2,
 		40: 3,
 		50: 3,
-		// TODO: AQ
-		60: 4,
-		// 60: 5,
+		60: TernaryInt32(IncludeAQ, 5, 4),
 	},
 	Windfury: {
 		40: 1,
@@ -134,13 +128,9 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		50: stats.Stats{
 			stats.AttackPower: 138,
 		},
-		// TODO: AQ
 		60: stats.Stats{
-			stats.AttackPower: 193,
+			stats.AttackPower: TernaryFloat64(IncludeAQ, 232, 193),
 		},
-		// 60: stats.Stats{
-		// 	stats.AttackPower: 232,
-		// },
 	},
 	BlessingOfMight: {
 		25: stats.Stats{
@@ -152,13 +142,9 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		50: stats.Stats{
 			stats.AttackPower: 115,
 		},
-		// TODO: AQ
 		60: stats.Stats{
-			stats.AttackPower: 155,
+			stats.AttackPower: TernaryFloat64(IncludeAQ, 185, 155),
 		},
-		// 60: stats.Stats{
-		// 	stats.AttackPower: 185,
-		// },
 	},
 	BlessingOfWisdom: {
 		25: stats.Stats{
@@ -168,15 +154,11 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.MP5: 20,
 		},
 		50: stats.Stats{
-			stats.MP5: 30,
+			stats.MP5: 25,
 		},
-		// TODO: AQ
 		60: stats.Stats{
-			stats.MP5: 33,
+			stats.MP5: TernaryFloat64(IncludeAQ, 33, 30),
 		},
-		// 60: stats.Stats{
-		// 	stats.MP5: 33,
-		// },
 	},
 	HornOfLordaeron: {
 		25: stats.Stats{
@@ -191,16 +173,10 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.Strength: 45,
 			stats.Agility:  45,
 		},
-		// TODO: AQ
-		// Horn provides the same stats as talented SoE and GoA and uses the pre-AQ values in phase 5
 		60: stats.Stats{
-			stats.Strength: 61 * 1.15,
-			stats.Agility:  61 * 1.15,
+			stats.Strength: TernaryFloat64(IncludeAQ, 89, 70.15),
+			stats.Agility:  TernaryFloat64(IncludeAQ, 89, 70.15),
 		},
-		// 60: stats.Stats{
-		// 	stats.Strength: 89,
-		// 	stats.Agility:  89,
-		// },
 	},
 	BloodPact: {
 		25: stats.Stats{
@@ -254,13 +230,9 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		50: stats.Stats{
 			stats.Agility: 43,
 		},
-		// TODO: AQ
 		60: stats.Stats{
-			stats.Agility: 67,
+			stats.Agility: TernaryFloat64(IncludeAQ, 77, 67),
 		},
-		// 60: stats.Stats{
-		// 	stats.Agility: 77,
-		// },
 	},
 	FireResistanceAura: {
 		25: stats.Stats{
@@ -452,13 +424,9 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		50: stats.Stats{
 			stats.Strength: 36,
 		},
-		// TODO: AQ
 		60: stats.Stats{
-			stats.Strength: 61,
+			stats.Strength: TernaryFloat64(IncludeAQ, 77, 61),
 		},
-		// 60: stats.Stats{
-		// 	stats.Strength: 77,
-		// },
 	},
 	ScrollOfAgility: {
 		25: stats.Stats{
@@ -2066,9 +2034,7 @@ func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
 		25: 19835,
 		40: 19836,
 		50: 19837,
-		// TODO: AQ
-		60: 19838,
-		// 60: 25291,
+		60: TernaryInt32(IncludeAQ, 25291, 19838),
 	}[level]
 
 	bonusAP := math.Floor(BuffSpellByLevel[BlessingOfMight][level][stats.AttackPower] * (1 + 0.04*float64(impBomPts)))

@@ -96,7 +96,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
-				rogue.AddComboPoints(sim, 1, spell.ComboPointMetrics())
+				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 
 				dot.ApplyOrRefresh(sim)
 				if dot.GetStacks() < dot.MaxStacks {

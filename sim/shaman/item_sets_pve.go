@@ -295,7 +295,7 @@ var ItemSetEarthfuryResolve = core.NewItemSet(core.ItemSet{
 })
 
 ///////////////////////////////////////////////////////////////////////////
-//                            SoD Phase 4 Item Sets
+//                            SoD Phase 5 Item Sets
 ///////////////////////////////////////////////////////////////////////////
 
 var ItemSetEruptionOfTheTenStorms = core.NewItemSet(core.ItemSet{
@@ -602,6 +602,140 @@ var ItemSetAugursRegalia = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - ZG - Shaman - Tank 5P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					shaman.powerSurgeProcChance += .05
+				},
+			})
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 6 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetStormcallersEruption = core.NewItemSet(core.ItemSet{
+	Name: "Stormcaller's Eruption",
+	Bonuses: map[int32]core.ApplyEffect{
+		// You have a 70% chance to avoid interruption caused by damage while casting Lightning Bolt, Chain Lightning, or Lava Burst, and a 10% increased chance to trigger your Elemental Focus talent.
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Shaman - Elemental 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range shaman.LightningBolt {
+						if spell != nil {
+							spell.PushbackReduction += .70
+						}
+					}
+
+					for _, spell := range shaman.ChainLightning {
+						if spell != nil {
+							spell.PushbackReduction += .70
+						}
+					}
+
+					if shaman.LavaBurst != nil {
+						shaman.LavaBurst.PushbackReduction += .70
+					}
+
+					shaman.elementalFocusProcChance += .10
+				},
+			})
+		},
+		// Increases the critical strike damage bonus of your Fire, Frost, and Nature spells by 60%.
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.OnSpellRegistered(func(spell *core.Spell) {
+				if (spell.Flags.Matches(SpellFlagShaman) || spell.Flags.Matches(SpellFlagTotem)) && spell.DefenseType == core.DefenseTypeMagic {
+					spell.CritDamageBonus += .60
+				}
+			})
+		},
+	},
+})
+
+var ItemSetStormcallersResolve = core.NewItemSet(core.ItemSet{
+	Name: "Stormcaller's Resolve",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Damaging a target with Stormstrike also reduces all damage you take by 10% for 10 sec.
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			buffAura := shaman.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 1213934},
+				Label:    "Stormbraced",
+				Duration: time.Second * 10,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.90
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.90
+				},
+			})
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Shaman - Elemental 2P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_ShamanStormstrike && result.Landed() {
+						buffAura.Activate(sim)
+					}
+				},
+			}))
+		},
+		// Your Spirit of the Alpha also increases your health by 10% when cast on self.
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			// Do a simple multiply stat because we assume that a tank shaman is using Alpha on theirself
+			if shaman.HasRune(proto.ShamanRune_RuneFeetSpiritOfTheAlpha) && shaman.IsTanking() {
+				shaman.MultiplyStat(stats.Health, 1.10)
+			}
+		},
+	},
+})
+
+var ItemSetStormcallersRelief = core.NewItemSet(core.ItemSet{
+	Name: "Stormcaller's Relief",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Riptide increases the amount healed by Chain Heal by an additional 25%.
+		2: func(agent core.Agent) {
+		},
+		// Reduces the cast time of Chain Heal by 0.5 sec.
+		4: func(agent core.Agent) {
+		},
+	},
+})
+
+var ItemSetStormcallersImpact = core.NewItemSet(core.ItemSet{
+	Name: "Stormcaller's Impact",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases Stormstrike and Lava Lash damage by 50%.
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Shaman - Enhancement 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					if shaman.StormstrikeMH != nil {
+						shaman.StormstrikeMH.DamageMultiplier *= 1.50
+					}
+
+					if shaman.StormstrikeOH != nil {
+						shaman.StormstrikeOH.DamageMultiplier *= 1.50
+					}
+
+					if shaman.LavaLash != nil {
+						shaman.LavaLash.DamageMultiplier *= 1.50
+					}
+				},
+			})
+		},
+		// Your Stormstrike and Lava Lash critical strikes cause your target to burn for 30% of the damage done over 4 sec.
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+
+			// TODO: How does this work? What spell(s) does it register as?
+			shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Shaman - Enhancement 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				},
 			})
 		},

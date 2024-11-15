@@ -9,9 +9,7 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 		25: 44,
 		40: 80,
 		50: 111,
-		// TODO: AQ
-		60: 138,
-		// 60: 157
+		60: core.TernaryFloat64(core.IncludeAQ, 157, 138),
 	}[warrior.Level]
 
 	spellID := map[int32]int32{

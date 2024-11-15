@@ -80,12 +80,14 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 	baseDamage := [10]float64{0, 20, 40, 80, 140, 210, 290, 385, 490, 555}[rank]
 	spellCoeff := [10]float64{0, .4, .625, .925, 1, 1, 1, 1, 1, 1}[rank]
 	return hunter.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 409493},
-		SpellSchool: core.SpellSchoolNature,
-		CastType:    proto.CastType_CastTypeRanged,
-		DefenseType: core.DefenseTypeRanged,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
+		SpellCode:    SpellCode_HunterChimeraSerpent,
+		ActionID:     core.ActionID{SpellID: 409493},
+		SpellSchool:  core.SpellSchoolNature,
+		CastType:     proto.CastType_CastTypeRanged,
+		DefenseType:  core.DefenseTypeRanged,
+		ProcMask:     core.ProcMaskEmpty,
+		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
+		MissileSpeed: 24,
 
 		BonusCritRating: 1,
 
@@ -99,18 +101,20 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// As of phase 5 the only time serpent sting scales with AP is using the Dragonstalker's Pursuit 6P - this AP scaling doesn't benefit from target AP modifiers
 			damage := baseDamage + (hunter.SerpentStingAPCoeff * spell.RangedAttackPower(target, true))
-			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
+			result := spell.CalcDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
+			spell.WaitTravelTime(sim, func(s *core.Simulation) {
+				spell.DealDamage(sim, result)
+			})
 		},
 	})
 }
 
 func (hunter *Hunter) registerSerpentStingSpell() {
-	// TODO: AQ ranks := 9
-	ranks := 8
 	hunter.SerpentStingAPCoeff = 0
 
-	for i := ranks; i >= 0; i-- {
-		config := hunter.getSerpentStingConfig(i)
+	maxRank := core.TernaryInt(core.IncludeAQ, 9, 8)
+	for rank := maxRank; rank >= 0; rank-- {
+		config := hunter.getSerpentStingConfig(rank)
 
 		if config.RequiredLevel <= int(hunter.Level) {
 			hunter.SerpentSting = hunter.GetOrRegisterSpell(config)

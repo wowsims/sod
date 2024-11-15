@@ -66,6 +66,7 @@ type Priest struct {
 	VampiricEmbrace   *core.Spell
 	VampiricTouch     *core.Spell
 	VoidPlague        *core.Spell
+	VoidZone          *core.Spell
 
 	DispersionAura   *core.Aura
 	EyeOfTheVoidAura *core.Aura
