@@ -46,7 +46,7 @@ func (priest *Priest) registerVoidPlagueSpell() {
 			},
 		},
 
-		DamageMultiplier: priest.darknessDamageModifier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

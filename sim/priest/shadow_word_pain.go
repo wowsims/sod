@@ -61,7 +61,7 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		DamageMultiplier: priest.darknessDamageModifier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

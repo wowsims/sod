@@ -98,7 +98,7 @@ func (unit *Unit) applySpellPushback() {
 				return
 			}
 
-			if hc := aura.Unit.Hardcast; aura.Unit.IsCasting(sim) {
+			if hc := aura.Unit.Hardcast; aura.Unit.IsCasting(sim) && sim.Roll(0, 1.0) > spell.PushbackReduction {
 				// Do spell pushback
 				pushback := DurationFromSeconds(max(0.2, hc.Pushback))
 				aura.Unit.Hardcast.Pushback -= 0.2
@@ -175,6 +175,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			if !spell.CD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on cooldown for %s, curTime = %s", spell.CD.TimeToReady(sim), sim.CurrentTime)
 			}
+
 			spell.CD.Set(sim.CurrentTime + spell.CurCast.CastTime + spell.CD.Duration)
 		}
 
@@ -183,6 +184,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			if !spell.SharedCD.IsReady(sim) {
 				return spell.castFailureHelper(sim, "still on shared cooldown for %s, curTime = %s", spell.SharedCD.TimeToReady(sim), sim.CurrentTime)
 			}
+
 			spell.SharedCD.Set(sim.CurrentTime + spell.CurCast.CastTime + spell.SharedCD.Duration)
 		}
 

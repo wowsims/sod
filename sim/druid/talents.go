@@ -10,8 +10,12 @@ import (
 func (druid *Druid) ApplyTalents() {
 	// Balance
 	druid.registerMoonkinFormSpell()
-	druid.applyNaturesGrace()
 	druid.applyOmenOfClarity()
+	druid.applyImprovedMoonfire()
+	druid.applyVengeance()
+	druid.applyNaturesGrace()
+	druid.applyMoonglow()
+	druid.applyMoonfury()
 
 	// SoD tuning made this all damage, not just physical damage
 	druid.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(druid.Talents.NaturalWeapons)
@@ -306,22 +310,139 @@ func (druid *Druid) applyOmenOfClarity() {
 	})
 }
 
-func (druid *Druid) ImprovedMoonfireDamageMultiplier() float64 {
-	return .02 * float64(druid.Talents.ImprovedMoonfire)
+func (druid *Druid) applyMoonfury() {
+	if druid.Talents.Moonfury == 0 {
+		return
+	}
+
+	multiplier := 0.02 * float64(druid.Talents.Moonfury)
+
+	druid.RegisterAura(core.Aura{
+		Label: "Moonfury",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells := core.FilterSlice(
+				core.Flatten(
+					[][]*DruidSpell{
+						druid.Wrath,
+						druid.Starfire,
+						druid.Moonfire,
+						{druid.Starsurge},
+						{druid.Sunfire},
+					},
+				),
+				func(spell *DruidSpell) bool { return spell != nil },
+			)
+
+			for _, spell := range affectedSpells {
+				spell.BaseDamageMultiplierAdditive += multiplier
+			}
+		},
+	})
 }
 
-func (druid *Druid) ImprovedMoonfireCritBonus() float64 {
-	return 2 * float64(druid.Talents.ImprovedMoonfire) * core.SpellCritRatingPerCritChance
+func (druid *Druid) applyImprovedMoonfire() {
+	if druid.Talents.ImprovedMoonfire == 0 {
+		return
+	}
+
+	damageMultiplier := 0.02 * float64(druid.Talents.ImprovedMoonfire)
+	bonusCrit := 2 * float64(druid.Talents.ImprovedMoonfire) * core.SpellCritRatingPerCritChance
+
+	druid.RegisterAura(core.Aura{
+		Label: "Improved moonfire",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			damageAffectedSpells := core.FilterSlice(
+				core.Flatten(
+					[][]*DruidSpell{
+						druid.Moonfire,
+						{druid.Sunfire},
+					},
+				),
+				func(spell *DruidSpell) bool { return spell != nil },
+			)
+
+			critAffectedSpells := core.FilterSlice(
+				core.Flatten(
+					[][]*DruidSpell{
+						druid.Moonfire,
+						{druid.Sunfire},
+						// Starfall only receives the bonus crit, not damage
+						{druid.StarfallTick},
+						{druid.StarfallSplash},
+					},
+				),
+				func(spell *DruidSpell) bool { return spell != nil },
+			)
+
+			for _, spell := range damageAffectedSpells {
+				spell.BaseDamageMultiplierAdditive += damageMultiplier
+			}
+
+			for _, spell := range critAffectedSpells {
+				spell.BonusCritRating += bonusCrit
+			}
+		},
+	})
 }
 
-func (druid *Druid) MoonfuryDamageMultiplier() float64 {
-	return 0.02 * float64(druid.Talents.Moonfury)
+func (druid *Druid) applyVengeance() {
+	if druid.Talents.Vengeance == 0 {
+		return
+	}
+
+	critDamageBonus := 0.20 * float64(druid.Talents.Vengeance)
+
+	druid.RegisterAura(core.Aura{
+		Label: "Vengeance",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells := core.FilterSlice(
+				core.Flatten(
+					[][]*DruidSpell{
+						druid.Wrath,
+						druid.Starfire,
+						druid.Moonfire,
+						{druid.Starsurge},
+						{druid.Sunfire},
+						{druid.StarfallTick},
+						{druid.StarfallSplash},
+					},
+				),
+				func(spell *DruidSpell) bool { return spell != nil },
+			)
+
+			for _, spell := range affectedSpells {
+				spell.CritDamageBonus += critDamageBonus
+			}
+		},
+	})
 }
 
-func (druid *Druid) MoonglowManaCostMultiplier() int32 {
-	return 100 - 3*druid.Talents.Moonglow
-}
+func (druid *Druid) applyMoonglow() {
+	if druid.Talents.Moonglow == 0 {
+		return
+	}
 
-func (druid *Druid) vengeanceBonusCritDamage() float64 {
-	return 0.2 * float64(druid.Talents.Vengeance)
+	multiplier := 3 * druid.Talents.Moonglow
+
+	druid.RegisterAura(core.Aura{
+		Label: "Moonglow",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells := core.FilterSlice(
+				core.Flatten(
+					[][]*DruidSpell{
+						druid.Wrath,
+						druid.Starfire,
+						druid.Moonfire,
+						{druid.Starsurge},
+						{druid.Starfall},
+					},
+				),
+				func(spell *DruidSpell) bool { return spell != nil },
+			)
+
+			for _, spell := range affectedSpells {
+				spell.Cost.Multiplier -= multiplier
+			}
+		},
+	})
 }

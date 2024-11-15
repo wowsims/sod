@@ -30,8 +30,8 @@ func (priest *Priest) registerMindBlast() {
 
 func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
 	spellId := MindBlastSpellId[rank]
-	baseDamageLow := MindBlastBaseDamage[rank][0] * priest.darknessDamageModifier()
-	baseDamageHigh := MindBlastBaseDamage[rank][1] * priest.darknessDamageModifier()
+	baseDamageLow := MindBlastBaseDamage[rank][0]
+	baseDamageHigh := MindBlastBaseDamage[rank][1]
 	spellCoeff := MindBlastSpellCoef[rank]
 	castTime := time.Millisecond * 1500
 	manaCost := MindBlastManaCost[rank]
@@ -70,8 +70,6 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
-
 			var mindSpikeAura *core.Aura
 			if hasMindSpike {
 				mindSpikeAura = priest.MindSpikeAuras.Get(target)
@@ -82,7 +80,7 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 			spell.BonusCritRating += float64(mindSpikeAura.GetStacks()) * 30 * core.CritRatingPerCritChance
 			spell.DamageMultiplier *= priest.MindBlastModifier
 
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			result := spell.CalcDamage(sim, target, sim.Roll(baseDamageLow, baseDamageHigh), spell.OutcomeMagicHitAndCrit)
 
 			spell.BonusCritRating = oldBonusCrit
 			spell.DamageMultiplier = oldMultiplier

@@ -50,6 +50,7 @@ const (
 	SpellCode_HunterMongooseBite
 	SpellCode_HunterWingClip
 	SpellCode_HunterVolley
+	SpellCode_HunterChimeraSerpent
 
 	// Pet Spells
 	SpellCode_HunterPetFlankingStrike

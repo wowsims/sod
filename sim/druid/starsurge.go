@@ -14,9 +14,8 @@ func (druid *Druid) applyStarsurge() {
 
 	actionID := core.ActionID{SpellID: 417157}
 
-	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier()
-	baseLowDamage := druid.baseRuneAbilityDamage() * 2.48 * talentBaseMultiplier
-	baseHighDamage := druid.baseRuneAbilityDamage() * 3.04 * talentBaseMultiplier
+	baseLowDamage := druid.baseRuneAbilityDamage() * 2.48
+	baseHighDamage := druid.baseRuneAbilityDamage() * 3.04
 	spellCoeff := .429
 
 	starfireAuraMultiplier := 1 + .80
@@ -73,8 +72,6 @@ func (druid *Druid) applyStarsurge() {
 				Duration: time.Second * 6,
 			},
 		},
-
-		CritDamageBonus: druid.vengeanceBonusCritDamage(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

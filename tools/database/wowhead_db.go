@@ -254,17 +254,8 @@ func (wi WowheadItem) getPhase() int32 {
 		return wi.Phase
 	}
 
-	switch wi.Version {
-	case 11500:
-		return 1
-	case 11501:
-		return 2
-	case 11502:
-		return 3
-	case 11503:
-		return 4
-	case 11504:
-		return 5
+	if wi.Version >= 11500 && wi.Version < 11600 {
+		return wi.Version - 11500 + 1
 	}
 
 	return 1

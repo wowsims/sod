@@ -50,8 +50,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestExodin-Phase5-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 825.1595
-  final_stats: 360.525
+  final_stats: 826.551
+  final_stats: 361.79
   final_stats: 619.7235
   final_stats: 172.04
   final_stats: 199.2375
@@ -67,21 +67,21 @@ character_stats_results: {
   final_stats: 41.37307
   final_stats: 0
   final_stats: 0
-  final_stats: 2789.319
+  final_stats: 2792.102
   final_stats: 7
-  final_stats: 51.94257
+  final_stats: 52.00657
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 3812.6
   final_stats: 0
   final_stats: 0
-  final_stats: 6084.05
+  final_stats: 6089.58
   final_stats: 889
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 18.94256
+  final_stats: 19.00657
   final_stats: 5
   final_stats: 0
   final_stats: 7698.235
@@ -148,12 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestExodin-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.91928
-  weights: 1.41503
+  weights: 2.92004
+  weights: 1.28357
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.93371
+  weights: 0.9338
   weights: 0
   weights: 0
   weights: 0
@@ -161,13 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 18.51082
-  weights: 2.98444
+  weights: 17.1092
+  weights: 2.70635
   weights: 0
   weights: 0
-  weights: 1.04897
+  weights: 1.04924
   weights: 0
-  weights: 30.46736
+  weights: 31.44168
   weights: 0
   weights: 0
   weights: 0
@@ -365,168 +365,168 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1697.86655
-  tps: 1733.64279
+  dps: 1700.55388
+  tps: 1736.33205
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-Hero'sBrand-231328"
  value: {
-  dps: 4595.32032
-  tps: 4634.36653
+  dps: 4600.24241
+  tps: 4639.28899
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1698.15062
-  tps: 1734.74612
+  dps: 1700.83818
+  tps: 1737.43554
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1818.87001
-  tps: 1856.6883
+  dps: 1821.63546
+  tps: 1859.45513
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-LibramofDraconicDestruction-221457"
  value: {
-  dps: 4681.91122
-  tps: 4720.43473
+  dps: 4685.83167
+  tps: 4724.35554
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 1986.90874
-  tps: 2024.80325
+  dps: 1988.83998
+  tps: 2026.73597
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-SanctifiedOrb-20512"
  value: {
-  dps: 4553.46499
-  tps: 4591.34801
+  dps: 4554.95191
+  tps: 4592.91136
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1537.15189
-  tps: 1574.1303
+  dps: 1538.71107
+  tps: 1575.69119
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
  value: {
-  dps: 1836.26242
-  tps: 1874.34604
+  dps: 1838.29441
+  tps: 1876.37952
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-ZandalarFreethinker'sBreastplate-231329"
  value: {
-  dps: 2114.11987
-  tps: 2152.19591
+  dps: 2116.26236
+  tps: 2154.33996
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4668.94965
-  tps: 4706.99785
+  dps: 4673.58072
+  tps: 4711.62448
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 2524.27843
-  tps: 3138.88004
+  dps: 2524.64357
+  tps: 3139.63852
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1083.31315
-  tps: 1115.68165
+  dps: 1084.29782
+  tps: 1116.68705
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 1171.30535
-  tps: 1210.12189
+  dps: 1171.83821
+  tps: 1210.65475
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 805.55478
-  tps: 1173.54922
+  dps: 805.89881
+  tps: 1173.89325
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 357.36301
-  tps: 375.80405
+  dps: 357.55888
+  tps: 375.99991
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 509.70939
-  tps: 533.95244
+  dps: 509.95279
+  tps: 534.19584
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 2573.19103
-  tps: 3195.23871
+  dps: 2574.53614
+  tps: 3196.90154
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1087.81021
-  tps: 1120.36624
+  dps: 1088.33163
+  tps: 1120.88766
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 1179.7699
-  tps: 1218.81196
+  dps: 1180.31137
+  tps: 1219.35343
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 816.83445
-  tps: 1185.63731
+  dps: 817.31141
+  tps: 1186.11427
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 366.13194
-  tps: 384.54559
+  dps: 366.40482
+  tps: 384.81847
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5exodin-P5 Seal of Martyrdom Ret-p5ret-exodin-6CF2DR-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 507.05313
-  tps: 531.30489
+  dps: 507.29631
+  tps: 531.54807
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3842.98794
-  tps: 3884.73856
+  dps: 3845.56477
+  tps: 3887.31597
  }
 }
