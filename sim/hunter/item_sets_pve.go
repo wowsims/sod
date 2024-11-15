@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -408,7 +409,7 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 		// Increases Wyvern Strike DoT by 50%
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			if hunter.WyvernStrike == nil {
+			if !hunter.HasRune(proto.HunterRune_RuneBootsWyvernStrike) {
 				return
 			}
 
@@ -443,7 +444,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 		// Kill Shot's remaining cooldown is reduced by 50% when used on targets between 20% and 50% health, and has no cooldown while your Rapid Fire is active
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			if hunter.KillShot == nil {
+			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
 				return
 			}
 
@@ -456,7 +457,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 
 					if hunter.HasActiveAura("Rapid Fire") {
 						spell.CD.Reset()
-					} else if sim.CurrentTime > sim.Encounter.Duration / 2 {
+					} else if sim.CurrentTime > sim.Encounter.Duration/2 {
 						spell.CD.Set(sim.CurrentTime + spell.CD.TimeToReady(sim)/2)
 					}
 				},
@@ -465,10 +466,10 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 		// Increases Kill Shot damage by 50%
 		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			if hunter.KillShot == nil {
+			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
 				return
 			}
-			
+
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Pursuit 4P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
