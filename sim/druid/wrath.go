@@ -29,11 +29,9 @@ func (druid *Druid) registerWrathSpell() {
 }
 
 func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
-	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier()
-
 	spellId := WrathSpellId[rank]
-	baseDamageLow := WrathBaseDamage[rank][0] * talentBaseMultiplier
-	baseDamageHigh := WrathBaseDamage[rank][1] * talentBaseMultiplier
+	baseDamageLow := WrathBaseDamage[rank][0]
+	baseDamageHigh := WrathBaseDamage[rank][1]
 	spellCoeff := WrathSpellCoeff[rank]
 	manaCost := WrathManaCost[rank]
 	castTime := WrathCastTime[rank]
@@ -63,8 +61,6 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 		},
 
 		BonusCritRating: core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
-
-		CritDamageBonus: druid.vengeanceBonusCritDamage(),
 
 		DamageMultiplier: 1 + core.Ternary(druid.Ranged().ID == IdolOfWrath, .02, 0),
 		ThreatMultiplier: 1,

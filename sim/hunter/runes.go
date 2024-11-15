@@ -149,13 +149,10 @@ func (hunter *Hunter) applySniperTraining() {
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			statDelta := float64(newStacks - oldStacks)
 			for _, spell := range aura.Unit.Spellbook {
-				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) {
+				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) || spell.SpellCode == SpellCode_HunterChimeraSerpent {
 					spell.BonusCritRating += statDelta * 2 * core.CritRatingPerCritChance
 				}
-				// Chimera - Serpent double dips this bonus and has ProcMaskEmpty so just add 20 here
-				if spell.ActionID.SpellID == 409493 {
-					spell.BonusCritRating += statDelta * 4 * core.CritRatingPerCritChance
-				}
+				
 			}
 		},
 	})

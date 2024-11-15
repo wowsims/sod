@@ -50,7 +50,7 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestWardenShaman-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.11021
+  weights: 1.1103
   weights: 0
   weights: 0
   weights: 0
@@ -67,7 +67,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.50464
+  weights: 0.50468
   weights: 0
   weights: 0
   weights: 0
@@ -141,8 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 1781.04458
-  tps: 1972.46112
+  dps: 1781.49391
+  tps: 1972.91045
  }
 }
 dps_results: {
@@ -155,8 +155,8 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1998.81756
-  tps: 1597.71166
+  dps: 1999.98074
+  tps: 1598.53253
  }
 }
 dps_results: {
@@ -169,8 +169,8 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-Settings-Orc-phase_4_enh_tank-Default-phase_4_enh_tank-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 937.15736
-  tps: 814.10179
+  dps: 937.31374
+  tps: 814.21126
  }
 }
 dps_results: {
@@ -183,15 +183,15 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-Settings-Orc-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 657.85054
-  tps: 1180.63199
+  dps: 658.33025
+  tps: 1180.96779
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-Settings-Orc-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 327.90015
-  tps: 270.50923
+  dps: 328.06906
+  tps: 270.62747
  }
 }
 dps_results: {
@@ -211,8 +211,8 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 935.241
-  tps: 811.39671
+  dps: 935.73923
+  tps: 811.74892
  }
 }
 dps_results: {
@@ -232,8 +232,8 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 321.43647
-  tps: 264.7763
+  dps: 321.79332
+  tps: 265.02609
  }
 }
 dps_results: {

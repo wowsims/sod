@@ -48,7 +48,7 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 			},
 		},
 
-		DamageMultiplier: priest.darknessDamageModifier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 

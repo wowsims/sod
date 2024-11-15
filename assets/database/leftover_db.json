@@ -1460,7 +1460,7 @@
 {"id":226546,"name":"Desert Sonar","icon":"inv_misc_enggizmos_20","type":12,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":4,"quality":1,"unique":true},
 {"id":227688,"name":"Gorehowl","icon":"inv_axe_116","type":13,"weaponType":1,"handType":4,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":4,"quality":1},
 {"id":231015,"name":"Twill Mask","icon":"inv_misc_bandana_01","type":1,"armorType":1,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":10,"phase":5},
-{"id":233728,"name":"Blood-Caked Insignia","icon":"spell_deathknight_runetap","type":12,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":1,"quality":4,"unique":true}
+{"id":233728,"name":"Blood-Caked Insignia","icon":"spell_deathknight_runetap","type":12,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":6,"quality":4,"unique":true}
 ],
 "randomSuffixes":[
 ],

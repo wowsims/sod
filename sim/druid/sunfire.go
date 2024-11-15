@@ -15,10 +15,9 @@ func (druid *Druid) registerSunfireSpell() {
 		return
 	}
 
-	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier() + druid.ImprovedMoonfireDamageMultiplier()
-	baseDamageLow := druid.baseRuneAbilityDamage() * 1.3 * talentBaseMultiplier
-	baseDamageHigh := druid.baseRuneAbilityDamage() * 1.52 * talentBaseMultiplier
-	baseDotDamage := druid.baseRuneAbilityDamage() * 0.65 * talentBaseMultiplier
+	baseDamageLow := druid.baseRuneAbilityDamage() * 1.3
+	baseDamageHigh := druid.baseRuneAbilityDamage() * 1.52
+	baseDotDamage := druid.baseRuneAbilityDamage() * 0.65
 
 	druid.registerSunfireHumanoidSpell(baseDamageLow, baseDamageHigh, baseDotDamage)
 	druid.registerSunfireCatSpell(baseDamageLow, baseDamageHigh, baseDotDamage)
@@ -122,9 +121,6 @@ func (druid *Druid) getSunfireBaseSpellConfig(
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 			},
 		},
-
-		BonusCritRating: druid.ImprovedMoonfireCritBonus(),
-		CritDamageBonus: druid.vengeanceBonusCritDamage(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
