@@ -43,6 +43,8 @@ type SpellConfig struct {
 
 	BaseDamageMultiplierAdditive float64
 	DamageMultiplier             float64
+	DoTDamageMultiplier      float64
+	ImpactDamageMultiplier   float64
 	DamageMultiplierAdditive     float64
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
@@ -139,6 +141,8 @@ type Spell struct {
 
 	BaseDamageMultiplierAdditive float64
 	DamageMultiplier             float64
+	DoTDamageMultiplier      float64
+	ImpactDamageMultiplier   float64
 	DamageMultiplierAdditive     float64
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
@@ -194,6 +198,12 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		config.DamageMultiplierAdditive = 1
 	} else if config.DamageMultiplierAdditive != 0 && config.DamageMultiplier == 0 {
 		config.DamageMultiplier = 1
+	}
+	if config.DoTDamageMultiplier == 0 {
+		config.DoTDamageMultiplier = 1
+	}
+	if config.ImpactDamageMultiplier == 0 {
+		config.ImpactDamageMultiplier = 1
 	}
 
 	// Default CastSlot to mainhand
@@ -257,6 +267,8 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		BaseDamageMultiplierAdditive: config.BaseDamageMultiplierAdditive,
 		DamageMultiplier:             config.DamageMultiplier,
+		DoTDamageMultiplier:      config.DoTDamageMultiplier,
+		ImpactDamageMultiplier:   config.ImpactDamageMultiplier,
 		DamageMultiplierAdditive:     config.DamageMultiplierAdditive,
 
 		BonusCoefficient: config.BonusCoefficient,

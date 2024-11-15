@@ -31,6 +31,9 @@ const (
 	MarshalChainVices        = 231578
 	Kestrel                  = 231754
 	Peregrine                = 231755
+	CloakOfTheUnseenPath     = 233420
+	ScytheOfTheUnseenPath    = 233421
+	SignetOfTheUnseenPath    = 233422
 )
 
 func applyRaptorStrikeDamageEffect(agent core.Agent, multiplier float64) {
@@ -351,15 +354,15 @@ func init() {
 	core.NewItemEffect(Peregrine, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		peregrineOHAttack := character.RegisterSpell(core.SpellConfig{
-			ActionID:      core.ActionID{SpellID: 469140},
-			SpellSchool:   core.SpellSchoolPhysical,
-			DefenseType:   core.DefenseTypeMelee,
-			ProcMask:      core.ProcMaskMeleeOHSpecial,
-			Flags:         core.SpellFlagMeleeMetrics,
-	
+			ActionID:    core.ActionID{SpellID: 469140},
+			SpellSchool: core.SpellSchoolPhysical,
+			DefenseType: core.DefenseTypeMelee,
+			ProcMask:    core.ProcMaskMeleeOHSpecial,
+			Flags:       core.SpellFlagMeleeMetrics,
+
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
-	
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				damage := character.OHWeaponDamage(sim, spell.MeleeAttackPower()) * character.AutoAttacks.OHConfig().DamageMultiplier
 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
@@ -508,6 +511,33 @@ func init() {
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 		})
+	})
+
+	core.NewItemEffect(CloakOfTheUnseenPath, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.02
+	})
+
+	core.NewItemEffect(ScytheOfTheUnseenPath, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.03
+	})
+
+	core.NewItemEffect(SignetOfTheUnseenPath, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+		if hunter.pet == nil {
+			return
+		}
+
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.02
 	})
 }
 
