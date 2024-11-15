@@ -6,16 +6,45 @@ import { DistributionMetrics as DistributionMetricsProto, ProgressMetrics, Raid 
 import { Encounter as EncounterProto } from '../proto/common';
 import { SimRunData } from '../proto/ui';
 import { ActionMetrics, SimResult, SimResultFilter } from '../proto_utils/sim_result';
+import { RequestTypes } from '../sim_signal_manager';
 import { SimUI } from '../sim_ui';
 import { EventID, TypedEvent } from '../typed_event';
 import { formatDeltaTextElem, formatToNumber, formatToPercent, sum } from '../utils';
 
 export function addRaidSimAction(simUI: SimUI): RaidSimResultsManager {
-	simUI.addAction('Simulate', 'dps-action', async () =>
-		simUI.runSim((progress: ProgressMetrics) => {
-			resultsManager.setSimProgress(progress);
-		}),
-	);
+	const resultsViewer = simUI.resultsViewer
+	let isRunning = false;
+	let waitAbort = false;
+
+	simUI.addAction('Simulate', 'dps-action', async ev => {
+		const button = ev.target as HTMLButtonElement;
+		button.disabled = true;
+		if (!isRunning) {
+			isRunning = true;
+
+			resultsViewer.addAbortButton(async () => {
+				if (waitAbort) return;
+				try {
+					waitAbort = true;
+					await simUI.sim.signalManager.abortType(RequestTypes.RaidSim);
+				} catch (error) {
+					console.error('Error on sim abort!');
+					console.error(error);
+				} finally {
+					waitAbort = false;
+					if (!isRunning) button.disabled = false;
+				}
+			});
+
+			await simUI.runSim((progress: ProgressMetrics) => {
+				resultsManager.setSimProgress(progress);
+			});
+
+			resultsViewer.removeAbortButton();
+			if (!waitAbort) button.disabled = false;
+			isRunning = false;
+		}
+	});
 
 	const resultsManager = new RaidSimResultsManager(simUI);
 	simUI.sim.simResultEmitter.on((eventID, simResult) => {
@@ -106,6 +135,10 @@ export class RaidSimResultsManager {
 	}
 
 	setSimProgress(progress: ProgressMetrics) {
+		if (progress.finalRaidResult && progress.finalRaidResult.error) {
+			this.simUI.resultsViewer.hideAll();
+			return;
+		}
 		this.simUI.resultsViewer.setContent(
 			<div className="results-sim">
 				<div className="results-sim-dps damage-metrics">
