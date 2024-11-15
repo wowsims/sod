@@ -426,10 +426,11 @@ var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
 		// Reduces the cooldown on Adrenaline Rush by 4 minutes.
 		4: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
-			rogue.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_RogueAdrenalineRush { 
-					spell.CD.Duration -= time.Second * 240
-				}
+			rogue.RegisterAura(core.Aura{
+			  Label: "S03 - Item - TAQ - Rogue - Damage 4P Bonus",
+			  OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			    rogue.AdrenalineRush.CD.Duration -= time.Second * 240
+			  })
 			})
 		},
 	},
