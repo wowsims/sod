@@ -46,18 +46,6 @@ func (shaman *Shaman) applyLavaLash() {
 			},
 		},
 
-		// Custom DoT can be procced by TAQ Enhancement 4p
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Lava Lash",
-			},
-			NumberOfTicks: 2,
-			TickLength:    time.Second * 2,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-			},
-		},
-
 		DamageMultiplier: damageMultiplier * (1 + (.02 * float64(shaman.Talents.WeaponMastery))),
 		ThreatMultiplier: 1,
 

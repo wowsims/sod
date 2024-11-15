@@ -65,7 +65,7 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 
 	stormStrikeAuras := shaman.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
 		return core.StormstrikeAura(target)
-	}) 
+	})
 
 	return shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 17364}.WithTag(int32(core.Ternary(isMH, 1, 2))),
@@ -73,18 +73,6 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
 		Flags:       flags,
-
-		// Custom DoT can be procced by TAQ Enhancement 4p
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Stormstrike-" + core.Ternary(isMH, "1", "2"),
-			},
-			NumberOfTicks: 2,
-			TickLength:    time.Second * 2,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-			},
-		},
 
 		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,

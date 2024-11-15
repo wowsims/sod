@@ -92,18 +92,6 @@ func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core
 			return druid.ComboPoints() > 0
 		},
 
-		// Custom DoT can be procced by TAQ Feral 4p
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Ferocious Bite",
-			},
-			NumberOfTicks: 2,
-			TickLength:    time.Second * 2,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-			},
-		},
-
 		DamageMultiplier: 1 + 0.03*float64(druid.Talents.FeralAggression),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,

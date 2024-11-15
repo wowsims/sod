@@ -731,18 +731,52 @@ var ItemSetStormcallersImpact = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
-			// TODO: This is a guess and needs to be verified
+			// This is the spell used for the burn proc.
+			// https://www.wowhead.com/classic/spell=1213915/burning
+			burnSpell := shaman.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 1213915},
+				SpellSchool: core.SpellSchoolFire,
+				DefenseType: core.DefenseTypeMagic,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+				BonusCoefficient: 1,
+
+				Dot: core.DotConfig{
+					Aura: core.Aura{
+						Label: "Burning",
+					},
+					NumberOfTicks: 2,
+					TickLength:    time.Second * 2,
+					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+					},
+				},
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.Dot(target).ApplyOrRefresh(sim)
+					spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
+				},
+			})
+
 			core.MakePermanent(shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Shaman - Enhancement 4P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if (spell.SpellCode == SpellCode_ShamanStormstrike || spell.SpellCode == SpellCode_ShamanLavaLash) && result.DidCrit() {
-						dot := spell.Dot(result.Target)
-
-						dot.SnapshotBaseDamage = result.Damage * 0.30
-						dot.SnapshotAttackerMultiplier = 1
-
-						dot.Apply(sim)
+					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == shaman.StormstrikeMH || spell == shaman.LavaLash) {
+						return
 					}
+
+					dot := burnSpell.Dot(result.Target)
+					dotDamage := result.Damage * 0.3
+					if dot.IsActive() {
+						dotDamage += dot.SnapshotBaseDamage * float64(dot.MaxTicksRemaining())
+					}
+					dot.SnapshotBaseDamage = dotDamage / float64(dot.NumberOfTicks)
+					dot.SnapshotAttackerMultiplier = 1
+
+					burnSpell.Cast(sim, result.Target)
 				},
 			}))
 		},

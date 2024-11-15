@@ -445,7 +445,7 @@ var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
 			druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2- Druid - Feral 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					bleedSpells := []*DruidSpell{druid.Rake, druid.Rip, druid.MangleCat, druid.Shred, druid.FerociousBite}
+					bleedSpells := []*DruidSpell{druid.Rake, druid.Rip}
 					for _, spell := range []*DruidSpell{druid.Shred, druid.MangleCat, druid.FerociousBite} {
 						if spell == nil {
 							continue
@@ -583,6 +583,78 @@ var ItemSetGenesisEclipse = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
+	Name: "Genesis Cunning",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Shred no longer has a positional requirement, but deals 20% more damage if you are behind the target.
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Druid - Feral 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					druid.Shred.ExtraCastCondition = nil
+					if !druid.PseudoStats.InFrontOfTarget {
+						// TODO: Check how this interacts with other multipliers, e.g. the idols.
+						druid.Shred.DamageMultiplier *= 1.2
+					}
+				},
+			})
+		},
+		// Your Mangle, Shred, and Ferocious Bite critical strikes cause your target to Bleed for 30% of the damage done over the next 4 sec sec.
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			// This is the spell used for the bleed proc.
+			// https://www.wowhead.com/classic/spell=1213176/tooth-and-claw
+			toothAndClawSpell := druid.RegisterSpell(Any, core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 1213176},
+				SpellSchool: core.SpellSchoolPhysical,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+				BonusCoefficient: 1,
+
+				Dot: core.DotConfig{
+					Aura: core.Aura{
+						Label: "Tooth and Claw",
+					},
+					NumberOfTicks: 2,
+					TickLength:    time.Second * 2,
+					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+					},
+				},
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.Dot(target).ApplyOrRefresh(sim)
+					spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
+				},
+			})
+
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Druid - Feral 4P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
+						return
+					}
+
+					dot := toothAndClawSpell.Dot(result.Target)
+					dotDamage := result.Damage * 0.3
+					if dot.IsActive() {
+						dotDamage += dot.SnapshotBaseDamage * float64(dot.MaxTicksRemaining())
+					}
+					dot.SnapshotBaseDamage = dotDamage / float64(dot.NumberOfTicks)
+					dot.SnapshotAttackerMultiplier = 1
+
+					toothAndClawSpell.Cast(sim, result.Target)
+				},
+			}))
+		},
+	},
+})
+
 var ItemSetGenesisBounty = core.NewItemSet(core.ItemSet{
 	Name: "Genesis Bounty",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -600,11 +672,11 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// Each time you Dodge while in Dire Bear Form, you gain 10% increased damage on your next Mangle or Swipe, stacking up to 5 times.
 		2: func(agent core.Agent) {
-			// TODO
+			// TODO Bear
 		},
 		// Reduces the cooldown on Mangle (Bear) by 1.5 sec.
 		4: func(agent core.Agent) {
-			// TODO
+			// TODO Bear
 		},
 	},
 })

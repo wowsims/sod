@@ -61,18 +61,6 @@ func (druid *Druid) registerShredSpell() {
 			return druid.ShredPositionOverride || !druid.PseudoStats.InFrontOfTarget
 		},
 
-		// Custom DoT can be procced by TAQ Feral 4p
-		Dot: core.DotConfig{
-			Aura: core.Aura{
-				Label: "Shred",
-			},
-			NumberOfTicks: 2,
-			TickLength:    time.Second * 2,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-			},
-		},
-
 		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
