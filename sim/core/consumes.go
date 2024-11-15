@@ -1222,7 +1222,9 @@ func makeManaConsumableMCD(itemId int32, character *Character, cdTimer *Timer) M
 func makeArmorConsumableMCD(itemId int32, character *Character, cdTimer *Timer) MajorCooldown {
 	actionID := ActionID{ItemID: itemId}
 	cdDuration := time.Minute * 2
-
+	lesserStoneshieldAura := character.NewTemporaryStatsAura("Lesser Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 1000}, time.Second*90)
+	greaterStoneshieldAura := character.NewTemporaryStatsAura("Greater Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 2000}, time.Second*120)
+	
 	return MajorCooldown{
 		Type: CooldownTypeSurvival,
 		Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -1240,10 +1242,9 @@ func makeArmorConsumableMCD(itemId int32, character *Character, cdTimer *Timer) 
 			ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
 				switch itemId {
 				case 4623:
-					lesserStoneshieldAura := character.NewTemporaryStatsAura("Lesser Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 1000}, time.Second*90)
 					lesserStoneshieldAura.Activate(sim)
 				case 13455:
-					greaterStoneshieldAura := character.NewTemporaryStatsAura("Greater Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 2000}, time.Second*120)
+					
 					greaterStoneshieldAura.Activate(sim)
 				}
 			},
