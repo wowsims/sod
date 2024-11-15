@@ -445,7 +445,7 @@ var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
 			druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2- Druid - Feral 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					dotSpells := []*DruidSpell{druid.Rake, druid.Rip}
+					bleedSpells := []*DruidSpell{druid.Rake, druid.Rip}
 					for _, spell := range []*DruidSpell{druid.Shred, druid.MangleCat, druid.FerociousBite} {
 						if spell == nil {
 							continue
@@ -454,7 +454,7 @@ var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
 						oldApplyEffects := spell.ApplyEffects
 						spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 							bonusMultiplier := 1.0
-							for _, dotSpell := range dotSpells {
+							for _, dotSpell := range bleedSpells {
 								if dotSpell.Dot(target).IsActive() {
 									bonusMultiplier += .10
 								}
@@ -536,6 +536,158 @@ var ItemSetHaruspexsGarb = core.NewItemSet(core.ItemSet{
 					}
 				},
 			})
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 6 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetGenesisEclipse = core.NewItemSet(core.ItemSet{
+	Name: "Genesis Eclipse",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Nature's Grace talent gains 1 additional charge each time it triggers.
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Druid - Balance 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					druid.NaturesGraceProcAura.MaxStacks += 1
+				},
+			})
+		},
+		// Increases the critical strike damage bonus of your Starfire, Starsurge, and Wrath by 60%.
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Druid - Balance 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					affectedSpells := core.FilterSlice(
+						core.Flatten(
+							[][]*DruidSpell{
+								druid.Wrath,
+								druid.Starfire,
+								{druid.Starsurge},
+							},
+						),
+						func(spell *DruidSpell) bool { return spell != nil },
+					)
+
+					for _, spell := range affectedSpells {
+						spell.CritDamageBonus += 0.60
+					}
+				},
+			})
+		},
+	},
+})
+
+var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
+	Name: "Genesis Cunning",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Shred no longer has a positional requirement, but deals 20% more damage if you are behind the target.
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Druid - Feral 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					druid.ShredPositionOverride = true
+					if !druid.PseudoStats.InFrontOfTarget {
+						// TODO: Check how this interacts with other multipliers, e.g. the idols.
+						druid.Shred.DamageMultiplier *= 1.2
+					}
+				},
+			})
+		},
+		// Your Mangle, Shred, and Ferocious Bite critical strikes cause your target to Bleed for 30% of the damage done over the next 4 sec sec.
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			// This is the spell used for the bleed proc.
+			// https://www.wowhead.com/classic/spell=1213176/tooth-and-claw
+			toothAndClawSpell := druid.RegisterSpell(Any, core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 1213176},
+				SpellSchool: core.SpellSchoolPhysical,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+				BonusCoefficient: 1,
+
+				Dot: core.DotConfig{
+					Aura: core.Aura{
+						Label: "Tooth and Claw",
+					},
+					NumberOfTicks: 2,
+					TickLength:    time.Second * 2,
+					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+					},
+				},
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.Dot(target).ApplyOrRefresh(sim)
+					spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
+				},
+			})
+
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Druid - Feral 4P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
+						return
+					}
+
+					dot := toothAndClawSpell.Dot(result.Target)
+					dotDamage := result.Damage * 0.3
+					if dot.IsActive() {
+						dotDamage += dot.SnapshotBaseDamage * float64(dot.MaxTicksRemaining())
+					}
+					dot.SnapshotBaseDamage = dotDamage / float64(dot.NumberOfTicks)
+					dot.SnapshotAttackerMultiplier = 1
+
+					toothAndClawSpell.Cast(sim, result.Target)
+				},
+			}))
+		},
+	},
+})
+
+var ItemSetGenesisBounty = core.NewItemSet(core.ItemSet{
+	Name: "Genesis Bounty",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Reduces the cooldown of your Rebirth and Innervate spells by 65%.
+		2: func(agent core.Agent) {
+		},
+		// Your critical heals with Healing Touch, Regrowth, and Nourish instantly heal the target for another 50% of the healing they dealt.
+		4: func(agent core.Agent) {
+		},
+	},
+})
+
+var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
+	Name: "Genesis Fury",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Each time you Dodge while in Dire Bear Form, you gain 10% increased damage on your next Mangle or Swipe, stacking up to 5 times.
+		2: func(agent core.Agent) {
+			// TODO Bear
+		},
+		// Reduces the cooldown on Mangle (Bear) by 1.5 sec.
+		4: func(agent core.Agent) {
+			// TODO Bear
+		},
+	},
+})
+
+var ItemSetSymbolsOfUnendingLife = core.NewItemSet(core.ItemSet{
+	Name: "Symbols of Unending Life",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your melee attacks have 5% less chance to be Dodged or Parried.
+		3: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.AddStat(stats.Expertise, 5)
 		},
 	},
 })

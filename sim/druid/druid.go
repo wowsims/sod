@@ -125,9 +125,11 @@ type Druid struct {
 	BleedCategories         core.ExclusiveCategoryArray
 	SavageRoarDurationTable [6]time.Duration
 
+	// Extra data used for various calculations and overrides
 	FerociousBiteExcessEnergyOverride bool // When true, disables the excess energy consumption of Ferocious bite
 	// Sunfire/Moonfire modifiers applied when in Moonkin form
 	MoonfireDotMultiplier float64
+	ShredPositionOverride bool
 	SunfireDotMultiplier  float64
 	t26pcTreants          *T2Treants
 

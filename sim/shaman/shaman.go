@@ -79,6 +79,7 @@ const (
 	SpellCode_ShamanFlameShock
 	SpellCode_ShamanFrostShock
 	SpellCode_ShamanHealingWave
+	SpellCode_ShamanLavaLash
 	SpellCode_ShamanLesserHealingWave
 	SpellCode_ShamanLightningBolt
 	SpellCode_ShamanLightningShield
