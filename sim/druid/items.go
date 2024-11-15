@@ -32,6 +32,9 @@ const (
 	PristineEnchantedSouthSeasKelp   = 231316
 	IdolOfCelestialFocus             = 232390
 	IdolOfFelineFocus                = 232391
+	IdolOfUrsinPower                 = 234468
+	IdolOfFelineFerocity             = 234469
+	IdolOfSiderealWrath              = 234474
 )
 
 func init() {
@@ -220,6 +223,52 @@ func init() {
 		// TODO: Not yet implemented
 	})
 
+	// https://www.wowhead.com/classic/item=234469/idol-of-feline-ferocity
+	// Increases the damage of Ferocious Bite and Shred by 3%.
+	core.NewItemEffect(IdolOfFelineFerocity, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+		druid.RegisterAura(core.Aura{
+			Label: "Improved Wrath/Moonfire",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				affectedSpells := core.FilterSlice(
+					[]*DruidSpell{
+						druid.FerociousBite,
+						druid.Shred,
+					},
+					func(spell *DruidSpell) bool { return spell != nil },
+				)
+
+				for _, spell := range affectedSpells {
+					spell.BaseDamageMultiplierAdditive += 0.03
+				}
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=234474/idol-of-sidereal-wrath
+	// Increases the damage of Moonfire and Wrath by 3%.
+	core.NewItemEffect(IdolOfSiderealWrath, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+		druid.RegisterAura(core.Aura{
+			Label: "Improved Wrath/Moonfire",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				affectedSpells := core.FilterSlice(
+					core.Flatten(
+						[][]*DruidSpell{
+							druid.Wrath,
+							druid.Moonfire,
+						},
+					),
+					func(spell *DruidSpell) bool { return spell != nil },
+				)
+
+				for _, spell := range affectedSpells {
+					spell.BaseDamageMultiplierAdditive += 0.03
+				}
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=228180/idol-of-the-swarm
 	// Equip: The duration of your Insect Swarm spell is increased by 12 sec.
 	core.NewItemEffect(IdolOfTheSwarm, func(agent core.Agent) {
@@ -245,6 +294,30 @@ func init() {
 					if aura != nil && !aura.IsPermanent() {
 						aura.Duration += bonusDuration
 					}
+				}
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=234468/idol-of-ursin-power
+	// Increases the damage of Swipe and Mangle by 3%.
+	core.NewItemEffect(IdolOfUrsinPower, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+		druid.RegisterAura(core.Aura{
+			Label: "Improved Wrath/Moonfire",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				affectedSpells := core.FilterSlice(
+					[]*DruidSpell{
+						druid.SwipeBear,
+						druid.SwipeCat,
+						druid.MangleBear,
+						druid.MangleCat,
+					},
+					func(spell *DruidSpell) bool { return spell != nil },
+				)
+
+				for _, spell := range affectedSpells {
+					spell.BaseDamageMultiplierAdditive += 0.03
 				}
 			},
 		})

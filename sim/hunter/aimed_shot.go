@@ -44,7 +44,7 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CastTime: func(spell *core.Spell) time.Duration {
-				if hunter.SniperTrainingAura.GetStacks() == 5 {
+				if hunter.SniperTrainingAura.GetStacks() >= 2 {
 					return 0
 				}
 				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())

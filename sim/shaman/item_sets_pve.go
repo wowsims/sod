@@ -622,20 +622,19 @@ var ItemSetStormcallersEruption = core.NewItemSet(core.ItemSet{
 			shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Shaman - Elemental 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range shaman.LightningBolt {
-						if spell != nil {
-							spell.PushbackReduction += .70
-						}
-					}
+					affectedPushbackSpells := core.FilterSlice(
+						core.Flatten(
+							[][]*core.Spell{
+								shaman.LightningBolt,
+								shaman.ChainLightning,
+								{shaman.LavaBurst},
+							},
+						),
+						func(spell *core.Spell) bool { return spell != nil },
+					)
 
-					for _, spell := range shaman.ChainLightning {
-						if spell != nil {
-							spell.PushbackReduction += .70
-						}
-					}
-
-					if shaman.LavaBurst != nil {
-						shaman.LavaBurst.PushbackReduction += .70
+					for _, spell := range affectedPushbackSpells {
+						spell.PushbackReduction += .70
 					}
 
 					shaman.elementalFocusProcChance += .10
@@ -647,7 +646,7 @@ var ItemSetStormcallersEruption = core.NewItemSet(core.ItemSet{
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.OnSpellRegistered(func(spell *core.Spell) {
 				if (spell.Flags.Matches(SpellFlagShaman) || spell.Flags.Matches(SpellFlagTotem)) && spell.DefenseType == core.DefenseTypeMagic {
-					spell.CritDamageBonus += .60
+					spell.CritDamageBonus += 0.60
 				}
 			})
 		},
@@ -732,12 +731,54 @@ var ItemSetStormcallersImpact = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
-			// TODO: How does this work? What spell(s) does it register as?
-			shaman.RegisterAura(core.Aura{
-				Label: "S03 - Item - TAQ - Shaman - Enhancement 4P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			// This is the spell used for the burn proc.
+			// https://www.wowhead.com/classic/spell=1213915/burning
+			burnSpell := shaman.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 1213915},
+				SpellSchool: core.SpellSchoolFire,
+				DefenseType: core.DefenseTypeMagic,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+				BonusCoefficient: 1,
+
+				Dot: core.DotConfig{
+					Aura: core.Aura{
+						Label: "Burning",
+					},
+					NumberOfTicks: 2,
+					TickLength:    time.Second * 2,
+					OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+					},
+				},
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.Dot(target).ApplyOrRefresh(sim)
+					spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHitNoHitCounter)
 				},
 			})
+
+			core.MakePermanent(shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Shaman - Enhancement 4P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == shaman.StormstrikeMH || spell == shaman.LavaLash) {
+						return
+					}
+
+					dot := burnSpell.Dot(result.Target)
+					dotDamage := result.Damage * 0.3
+					if dot.IsActive() {
+						dotDamage += dot.SnapshotBaseDamage * float64(dot.MaxTicksRemaining())
+					}
+					dot.SnapshotBaseDamage = dotDamage / float64(dot.NumberOfTicks)
+					dot.SnapshotAttackerMultiplier = 1
+
+					burnSpell.Cast(sim, result.Target)
+				},
+			}))
 		},
 	},
 })

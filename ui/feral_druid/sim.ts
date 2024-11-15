@@ -33,6 +33,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatSpirit,
 		Stat.StatMP5,
 		Stat.StatFireResistance,
+		Stat.StatExpertise,
 	],
 	epPseudoStats: [],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -46,6 +47,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatFeralAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
+		Stat.StatExpertise,
 		Stat.StatMana,
 		Stat.StatIntellect,
 		Stat.StatSpirit,

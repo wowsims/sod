@@ -58,9 +58,10 @@ func (druid *Druid) applyNaturesGrace() {
 
 	affectedSpells := []*DruidSpell{}
 	druid.NaturesGraceProcAura = druid.RegisterAura(core.Aura{
-		Label:    "Natures Grace Proc",
-		ActionID: core.ActionID{SpellID: 16886},
-		Duration: time.Second * 15,
+		Label:     "Natures Grace Proc",
+		ActionID:  core.ActionID{SpellID: 16886},
+		Duration:  time.Second * 15,
+		MaxStacks: 1,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(druid.DruidSpells, func(ds *DruidSpell) bool {
 				return ds.DefaultCast.CastTime > 0
@@ -103,6 +104,7 @@ func (druid *Druid) applyNaturesGrace() {
 			// Spells with travel times have their own implementation because the proc occurs as the cast finishes
 			if spell.MissileSpeed == 0 && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() {
 				druid.NaturesGraceProcAura.Activate(sim)
+				druid.NaturesGraceProcAura.SetStacks(sim, druid.NaturesGraceProcAura.MaxStacks)
 			}
 		},
 	}))

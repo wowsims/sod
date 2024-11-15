@@ -58,7 +58,7 @@ func (druid *Druid) registerShredSpell() {
 			IgnoreHaste: true,
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !druid.PseudoStats.InFrontOfTarget
+			return druid.ShredPositionOverride || !druid.PseudoStats.InFrontOfTarget
 		},
 
 		DamageMultiplier: damageMultiplier,
