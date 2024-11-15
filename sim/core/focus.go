@@ -9,8 +9,8 @@ import (
 
 // Time between focus ticks.
 const MaxFocus = 100.0
-const tickDuration = time.Second * 1
-const BaseFocusPerTick = 5.0
+const tickDuration = time.Millisecond * 5250 
+const BaseFocusPerTick = 26.25
 
 // OnFocusGain is called any time focus is increased.
 type OnFocusGain func(sim *Simulation)
@@ -54,8 +54,12 @@ func (fb *focusBar) CurrentFocusPerTick() float64 {
 	return fb.focusPerTick * fb.focusRegenMultiplier
 }
 
+func (fb *focusBar) CurrentFocusPerSecond() float64 {
+	return fb.CurrentFocusPerTick() / tickDuration.Seconds()
+}
+
 func (fb *focusBar) AddFocusRegenMultiplier (multiplier float64) {
-	fb.focusRegenMultiplier *= multiplier
+	fb.focusRegenMultiplier += multiplier
 }
 
 func (fb *focusBar) AddFocus(sim *Simulation, amount float64, metrics *ResourceMetrics) {

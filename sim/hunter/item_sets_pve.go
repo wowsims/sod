@@ -375,7 +375,7 @@ var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
 			hunter.RegisterAura(core.Aura{
 				Label: "Predator's Armor 5P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.pet.AddFocusRegenMultiplier(1.20)
+					hunter.pet.AddFocusRegenMultiplier(0.20)
 				},
 			})
 		},
@@ -395,7 +395,7 @@ var TrappingsOfTheUnseenPath = core.NewItemSet(core.ItemSet{
 			hunter.RegisterAura(core.Aura{
 				Label: "Trappings of the Unseen Path 3P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.pet.AddFocusRegenMultiplier(2.0)
+					hunter.pet.AddFocusRegenMultiplier(1.00)
 				},
 			})
 		},

@@ -21,7 +21,7 @@ func (hunter *Hunter) ApplyRunes() {
 			Label: "Beastmastery Rune Focus",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				if hunter.pet != nil {
-					hunter.pet.AddFocusRegenMultiplier(1.50)
+					hunter.pet.AddFocusRegenMultiplier(0.50)
 				}
 			},
 		}))
