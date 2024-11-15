@@ -23,6 +23,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
+		Stat.StatExpertise,
 		Stat.StatFireResistance,
 
 		// Tank Stats
@@ -51,6 +52,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
+		Stat.StatExpertise,
 		Stat.StatDefense,
 		Stat.StatBlock,
 		Stat.StatBlockValue,

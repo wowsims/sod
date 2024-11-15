@@ -63,6 +63,10 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 		damageFunc = shaman.OHWeaponDamage
 	}
 
+	stormStrikeAuras := shaman.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
+		return core.StormstrikeAura(target)
+	}) 
+
 	return shaman.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 17364}.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool: core.SpellSchoolPhysical,
@@ -78,7 +82,7 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 
 			if isMH && result.Landed() {
-				core.StormstrikeAura(target).Activate(sim)
+				stormStrikeAuras.Get(target).Activate(sim)
 			}
 		},
 	})
