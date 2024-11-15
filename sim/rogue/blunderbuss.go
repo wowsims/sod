@@ -40,7 +40,7 @@ func (rogue *Rogue) registerBlunderbussSpell() {
 		},
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: core.TernaryFloat64(activate2PcBonuses, 2, 1),
+		ThreatMultiplier: core.TernaryFloat64(activate2PcBonuses, 4, 2), //2x base modifier up to 4x with 2pc
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
