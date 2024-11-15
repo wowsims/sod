@@ -6,11 +6,16 @@ import { SimHeader } from './components/sim_header.jsx';
 import { SimTab } from './components/sim_tab.js';
 import { SimTitleDropdown } from './components/sim_title_dropdown.js';
 import { SocialLinks } from './components/social_links.jsx';
+import Toast from './components/toast';
 import { LaunchStatus, SimStatus } from './launched_sims.js';
+import { ErrorOutcomeType } from './proto/api';
 import { Spec } from './proto/common.js';
 import { ActionId } from './proto_utils/action_id.js';
+import { SimResult } from './proto_utils/sim_result';
 import { Sim, SimError } from './sim.js';
+import { RequestTypes } from './sim_signal_manager';
 import { EventID, TypedEvent } from './typed_event.js';
+import { WorkerProgressCallback } from './worker_pool';
 
 const URLMAXLEN = 2048;
 const globalKnownIssues: Array<string> = [];
@@ -185,11 +190,11 @@ export abstract class SimUI extends Component {
 		}
 	}
 
-	addAction(name: string, cssClass: string, actFn: () => void) {
+	addAction(name: string, cssClass: string, onClick: (event: MouseEvent) => void) {
 		const button = document.createElement('button');
 		button.classList.add('btn', 'btn-primary', 'w-100', cssClass);
 		button.textContent = name;
-		button.addEventListener('click', actFn);
+		button.addEventListener('click', onClick);
 		this.simActionsContainer.appendChild(button);
 	}
 
@@ -252,10 +257,17 @@ export abstract class SimUI extends Component {
 		return this.rootElem.classList.contains('individual-sim-ui');
 	}
 
-	async runSim(onProgress: (_?: any) => void) {
+	async runSim(onProgress: WorkerProgressCallback) {
 		this.resultsViewer.setPending();
 		try {
-			await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
+			await this.sim.signalManager.abortType(RequestTypes.All);
+			const result = await this.sim.runRaidSim(TypedEvent.nextEventID(), onProgress);
+			if (!(result instanceof SimResult) && result.type == ErrorOutcomeType.ErrorOutcomeAborted) {
+				new Toast({
+					variant: 'info',
+					body: 'Raid sim cancelled.',
+				});
+			}
 		} catch (e) {
 			this.resultsViewer.hideAll();
 			this.handleCrash(e);
