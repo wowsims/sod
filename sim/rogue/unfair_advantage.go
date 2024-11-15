@@ -45,10 +45,9 @@ func (rogue *Rogue) applyUnfairAdvantage() {
 			aura.Activate(sim)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// need to add parry
 			if result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry) && icd.IsReady(sim) {
-				unfairAdvantage.Cast(sim, spell.Unit)
-				rogue.AddComboPoints(sim, 1, result.Target, comboMetrics)
+				unfairAdvantage.Cast(sim, rogue.CurrentTarget)
+				rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboMetrics)
 				icd.Use(sim)
 			}
 		},
