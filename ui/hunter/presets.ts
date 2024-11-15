@@ -17,6 +17,7 @@ import {
 	Profession,
 	Race,
 	RaidBuffs,
+	SapperExplosive,
 	SaygesFortune,
 	SpellPowerBuff,
 	StrengthBuff,
@@ -271,7 +272,7 @@ export const DefaultConsumes = Consumes.create({
 	petAttackPowerConsumable: 1,
 	petAgilityConsumable: 1,
 	petStrengthConsumable: 1,
-	//sapper: true, Needs updated to new picker
+	sapperExplosive: SapperExplosive.SapperGoblinSapper,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.GroundScorpokAssay,

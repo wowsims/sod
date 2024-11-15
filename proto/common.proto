@@ -308,7 +308,7 @@ enum TristateEffect {
 	TristateEffectImproved = 2;
 }
 
-enum Sapper {
+enum SapperExplosive {
 	SapperUnknown = 0;
 	SapperGoblinSapper = 1;
 	SapperFumigator = 2;
@@ -723,7 +723,7 @@ message Consumes {
 	ShadowPowerBuff shadow_power_buff = 10;
 	FirePowerBuff fire_power_buff = 11;
 	FrostPowerBuff frost_power_buff = 12;
-	Sapper sapper_explosive = 34;
+	SapperExplosive sapper_explosive = 34;
 	Explosive filler_explosive = 14;
 	WeaponImbue main_hand_imbue = 15;
 	WeaponImbue off_hand_imbue = 16;

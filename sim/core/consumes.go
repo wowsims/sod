@@ -896,7 +896,7 @@ var GoblinLandMineActionID = ActionID{ItemID: 4395}
 func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	character := agent.GetCharacter()
 	hasFiller := consumes.FillerExplosive != proto.Explosive_ExplosiveUnknown
-	hasSapper := consumes.SapperExplosive != proto.Sapper_SapperUnknown
+	hasSapper := consumes.SapperExplosive != proto.SapperExplosive_SapperUnknown
 
 	if !hasSapper && !hasFiller {
 		return
@@ -904,14 +904,14 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	sharedTimer := character.NewTimer()
 
 	if hasSapper {
-		if consumes.SapperExplosive != proto.Sapper_SapperFumigator && !character.HasProfession(proto.Profession_Engineering) {
+		if consumes.SapperExplosive != proto.SapperExplosive_SapperFumigator && !character.HasProfession(proto.Profession_Engineering) {
 			return
 		}
 		var filler *Spell
 		switch consumes.SapperExplosive {
-		case proto.Sapper_SapperGoblinSapper:
+		case proto.SapperExplosive_SapperGoblinSapper:
 			filler = character.newSapperSpell(sharedTimer)
-		case proto.Sapper_SapperFumigator:
+		case proto.SapperExplosive_SapperFumigator:
 			filler = character.newFumigatorSpell(sharedTimer)
 		}
 		character.AddMajorCooldown(MajorCooldown{

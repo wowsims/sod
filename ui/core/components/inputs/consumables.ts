@@ -20,7 +20,7 @@ import {
 	ManaRegenElixir,
 	Potions,
 	Profession,
-	Sapper,
+	SapperExplosive,
 	ShadowPowerBuff,
 	Spec,
 	SpellPowerBuff,
@@ -194,15 +194,15 @@ export const makeEncanthedSigilInput = makeConsumeInputFactory({ consumesFieldNa
 //                                 EXPLOSIVES
 ///////////////////////////////////////////////////////////////////////////
 
-export const SapperGoblinSapper: ConsumableInputConfig<Sapper> = {
+export const SapperGoblinSapper: ConsumableInputConfig<SapperExplosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 10646, minLevel: 50 }]),
 	showWhen: player => player.hasProfession(Profession.Engineering),
-	value: Sapper.SapperGoblinSapper,
+	value: SapperExplosive.SapperGoblinSapper,
 };
 
-export const SapperFumigator: ConsumableInputConfig<Sapper> = {
+export const SapperFumigator: ConsumableInputConfig<SapperExplosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 233985, minLevel: 60 }]),
-	value: Sapper.SapperFumigator,
+	value: SapperExplosive.SapperFumigator,
 };
 
 export const ExplosiveSolidDynamite: ConsumableInputConfig<Explosive> = {
@@ -249,7 +249,7 @@ export const EXPLOSIVES_CONFIG: ConsumableStatOption<Explosive>[] = [
 	{ config: ExplosiveGoblinLandMine, stats: [] },
 ];
 
-export const SAPPER_CONFIG: ConsumableStatOption<Sapper>[] = [
+export const SAPPER_CONFIG: ConsumableStatOption<SapperExplosive>[] = [
 	{ config: SapperGoblinSapper, stats: [] },
 	{ config: SapperFumigator, stats: [] },
 ];
