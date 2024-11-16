@@ -388,6 +388,7 @@ export class Individual60UEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatBonusArmor]: 'armorBonus',
 		[Stat.StatHealingPower]: 'Healing',
 		[Stat.StatFeralAttackPower]: 'feralAttackPower',
+		[Stat.StatTimeworn]: 'timeworn',
 	};
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
 		[PseudoStat.PseudoStatMainHandDps]: 'dps',
@@ -491,6 +492,7 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatBonusArmor]: 'Armor2',
 		[Stat.StatHealingPower]: 'Healing',
 		[Stat.StatFeralAttackPower]: 'FeralAttackPower',
+		[Stat.StatTimeworn]: 'timeworn',
 	};
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
 		[PseudoStat.PseudoStatMainHandDps]: 'MeleeDps',

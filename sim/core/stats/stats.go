@@ -62,6 +62,7 @@ const (
 	HealingPower
 	SpellDamage
 	FeralAttackPower
+	Timeworn
 
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
@@ -269,6 +270,8 @@ func (s Stat) StatName() string {
 		return "ArcaneResistance"
 	case FeralAttackPower:
 		return "FeralAttackPower"
+	case Timeworn:
+		return "Timeworn"
 	}
 
 	return "none"

@@ -205,6 +205,7 @@ var armorPenetrationRegex = regexp.MustCompile(`Increases armor penetration rati
 var armorPenetrationRegex2 = regexp.MustCompile(`Increases your armor penetration by <!--rtg44-->([0-9]+)\.`)
 
 var expertiseRegex = regexp.MustCompile(`Reduces the chance for your attacks to be dodged or parried by ([0-9]+)%\.`)
+var timewornRegex = regexp.MustCompile(`<span style=\"color: #CD7F32\">Timeworn<\/span>`)
 var weaponDamageRegex = regexp.MustCompile(`<!--dmg-->([0-9]+) - ([0-9]+)`)
 var weaponDamageRegex2 = regexp.MustCompile(`<!--dmg-->([0-9]+) Damage`)
 var weaponDamageBonusSchoolRegex = regexp.MustCompile(`\+ ([0-9]+) - ([0-9]+) [a-zA-Z]+ Damage`)
@@ -255,6 +256,10 @@ func (item WowheadItemResponse) GetStats() Stats {
 	sp := float64(item.GetIntValue(spellPowerRegex)) + float64(item.GetIntValue(spellPowerRegex2)) + float64(item.GetIntValue(spellPowerRegex3))
 	baseAP := float64(item.GetIntValue(attackPowerRegex)) + float64(item.GetIntValue(attackPowerRegex2))
 	armor, bonusArmor := item.GetArmorValues()
+	timeworn := 0
+	if item.GetTooltipRegexString(timewornRegex, 0) != "" {
+		timeworn = 1
+	}
 	return Stats{
 		proto.Stat_StatArmor:             float64(armor),
 		proto.Stat_StatBonusArmor:        float64(bonusArmor),
@@ -282,6 +287,7 @@ func (item WowheadItemResponse) GetStats() Stats {
 		proto.Stat_StatRangedAttackPower: baseAP + float64(item.GetIntValue(rangedAttackPowerRegex)) + float64(item.GetIntValue(rangedAttackPowerRegex2)) + float64(item.GetIntValue(rangedAttackPowerRegex3)),
 		proto.Stat_StatArmorPenetration:  float64(item.GetIntValue(armorPenetrationRegex) + item.GetIntValue(armorPenetrationRegex2)),
 		proto.Stat_StatExpertise:         float64(item.GetIntValue(expertiseRegex)),
+		proto.Stat_StatTimeworn:          float64(timeworn),
 		proto.Stat_StatDefense:           float64(item.GetIntValue(defenseRegex)),
 		proto.Stat_StatBlock:             float64(item.GetIntValue(blockRegex)),
 		proto.Stat_StatBlockValue:        float64(item.GetIntValue(blockValueRegex) + item.GetIntValue(blockValueRegex2)),
