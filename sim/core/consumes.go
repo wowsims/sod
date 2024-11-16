@@ -53,6 +53,21 @@ func applyFlaskConsumes(character *Character, consumes *proto.Consumes) {
 		character.AddStats(stats.Stats{
 			stats.Mana: 2000,
 		})
+	case proto.Flask_FlaskOfUnyieldingSorrow:
+		character.AddStats(stats.Stats{
+			stats.SpellDamage:  27,
+			stats.HealingPower: 80,
+			stats.MP5:          12,
+		})
+	case proto.Flask_FlaskOfAncientKnowledge:
+		character.AddStats(stats.Stats{
+			stats.SpellPower: 180,
+		})
+	case proto.Flask_FlaskOfTheOldGods:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 100,
+			stats.Defense: 10,
+		})
 	case proto.Flask_FlaskOfSupremePower:
 		character.AddStats(stats.Stats{
 			stats.SpellPower: 150,
@@ -74,6 +89,11 @@ func applyFlaskConsumes(character *Character, consumes *proto.Consumes) {
 		character.AddStats(stats.Stats{
 			stats.AttackPower:       45,
 			stats.RangedAttackPower: 45,
+		})
+	case proto.Flask_FlaskOfMadness:
+		character.AddStats(stats.Stats{
+			stats.AttackPower:       50,
+			stats.RangedAttackPower: 50,
 		})
 	}
 }
@@ -436,6 +456,12 @@ func DragonBreathChiliAura(character *Character) *Aura {
 func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) {
 	if consumes.ArmorElixir != proto.ArmorElixir_ArmorElixirUnknown {
 		switch consumes.ArmorElixir {
+		case proto.ArmorElixir_ElixirOfTheIronside:
+			character.AddStats(stats.Stats{
+				stats.BonusArmor: 350,
+				stats.Defense: 5,
+				stats.NatureResistance: 15,
+			})
 		case proto.ArmorElixir_ElixirOfSuperiorDefense:
 			character.AddStats(stats.Stats{
 				stats.BonusArmor: 450,
@@ -492,6 +518,12 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 
 	if consumes.AgilityElixir != proto.AgilityElixir_AgilityElixirUnknown {
 		switch consumes.AgilityElixir {
+		case proto.AgilityElixir_ElixirOfTheHoneyBadger:
+			character.AddStats(stats.Stats{
+				stats.Agility:   30,
+				stats.MeleeCrit: 2 * CritRatingPerCritChance,
+				stats.NatureResistance: 15,
+			})
 		case proto.AgilityElixir_ElixirOfTheMongoose:
 			character.AddStats(stats.Stats{
 				stats.Agility:   25,
@@ -552,6 +584,11 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 		case proto.SpellPowerBuff_GreaterArcaneElixir:
 			character.AddStats(stats.Stats{
 				stats.SpellDamage: 35,
+			})
+		case proto.SpellPowerBuff_ElixirOfTheMageLord:
+			character.AddStats(stats.Stats{
+				stats.SpellDamage: 40,
+				stats.NatureResistance: 15,
 			})
 		}
 	}
@@ -858,7 +895,15 @@ func applyEnchantingConsumes(character *Character, consumes *proto.Consumes) {
 				stats.SpellPower:        30,
 			})
 		}
-	}
+	case proto.EnchantedSigil_WrathOfTheStormSigil:
+		for _, player := range character.Env.Raid.AllPlayerUnits {
+			player.AddStats(stats.Stats{
+				stats.AttackPower:       40,
+				stats.RangedAttackPower: 40,
+				stats.SpellPower:        40,
+			})
+		}
+	}	
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -866,25 +911,38 @@ func applyEnchantingConsumes(character *Character, consumes *proto.Consumes) {
 ///////////////////////////////////////////////////////////////////////////
 
 var SapperActionID = ActionID{ItemID: 10646}
+var FumigatorActionID = ActionID{ItemID: 233985}
 var SolidDynamiteActionID = ActionID{ItemID: 10507}
 var DenseDynamiteActionID = ActionID{ItemID: 18641}
 var ThoriumGrenadeActionID = ActionID{ItemID: 15993}
 var EzThroRadiationBombActionID = ActionID{ItemID: 215168}
 var HighYieldRadiationBombActionID = ActionID{ItemID: 215127}
 var GoblinLandMineActionID = ActionID{ItemID: 4395}
+var ObsidianBombActionID = ActionID{ItemID: 233986}
 
 func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	character := agent.GetCharacter()
 	hasFiller := consumes.FillerExplosive != proto.Explosive_ExplosiveUnknown
+	hasSapper := consumes.SapperExplosive != proto.SapperExplosive_SapperUnknown
 
-	if !consumes.Sapper && !hasFiller {
+	if !hasSapper && !hasFiller {
 		return
 	}
 	sharedTimer := character.NewTimer()
 
-	if consumes.Sapper && character.HasProfession(proto.Profession_Engineering) {
+	if hasSapper {
+		if consumes.SapperExplosive != proto.SapperExplosive_SapperFumigator && !character.HasProfession(proto.Profession_Engineering) {
+			return
+		}
+		var filler *Spell
+		switch consumes.SapperExplosive {
+		case proto.SapperExplosive_SapperGoblinSapper:
+			filler = character.newSapperSpell(sharedTimer)
+		case proto.SapperExplosive_SapperFumigator:
+			filler = character.newFumigatorSpell(sharedTimer)
+		}
 		character.AddMajorCooldown(MajorCooldown{
-			Spell:    character.newSapperSpell(sharedTimer),
+			Spell:    filler,
 			Type:     CooldownTypeDPS | CooldownTypeExplosive,
 			Priority: CooldownPriorityLow + 30,
 			ShouldActivate: func(s *Simulation, c *Character) bool {
@@ -900,6 +958,8 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 
 		var filler *Spell
 		switch consumes.FillerExplosive {
+		case proto.Explosive_ExplosiveObsidianBomb:
+			filler = character.newObisidianBombSpell(sharedTimer)
 		case proto.Explosive_ExplosiveSolidDynamite:
 			filler = character.newSolidDynamiteSpell(sharedTimer)
 		case proto.Explosive_ExplosiveDenseDynamite:
@@ -928,7 +988,7 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 // Creates a spell object for the common explosive case.
 // TODO: create 10s delay on Goblin Landmine cast to damage
 func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, actionID ActionID, school SpellSchool, minDamage float64, maxDamage float64, cooldown Cooldown, selfMinDamage float64, selfMaxDamage float64) SpellConfig {
-	isSapper := actionID.SameAction(SapperActionID)
+	isSapper := actionID.SameAction(SapperActionID) || actionID.SameAction(FumigatorActionID)
 
 	var defaultCast Cast
 	if !isSapper {
@@ -978,6 +1038,13 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 }
 func (character *Character) newSapperSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, SapperActionID, SpellSchoolFire, 450, 750, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 375, 625))
+}
+// Needs testing for Silithid interaction if in raid
+func (character *Character) newFumigatorSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, FumigatorActionID, SpellSchoolFire, 650, 950, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 475, 725))
+}
+func (character *Character) newObisidianBombSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, ObsidianBombActionID, SpellSchoolFire, 530, 670, Cooldown{}, 0, 0))
 }
 func (character *Character) newSolidDynamiteSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, SolidDynamiteActionID, SpellSchoolFire, 213, 287, Cooldown{}, 0, 0))

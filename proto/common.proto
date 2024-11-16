@@ -308,6 +308,12 @@ enum TristateEffect {
 	TristateEffectImproved = 2;
 }
 
+enum SapperExplosive {
+	SapperUnknown = 0;
+	SapperGoblinSapper = 1;
+	SapperFumigator = 2;
+}
+
 enum Explosive {
 	ExplosiveUnknown = 0;
 	ExplosiveSolidDynamite = 1;
@@ -316,6 +322,7 @@ enum Explosive {
 	ExplosiveEzThroRadiationBomb = 4;
 	ExplosiveHighYieldRadiationBomb = 5;
 	ExplosiveGoblinLandMine = 6;
+	ExplosiveObsidianBomb = 7;
 }
 
 // NextIndex: 28
@@ -374,6 +381,7 @@ enum EnchantedSigil {
 	InnovationSigil = 1;
 	LivingDreamsSigil = 2;
 	FlowingWatersSigil = 3;
+	WrathOfTheStormSigil = 4;
 }
 
 enum Flask {
@@ -384,6 +392,10 @@ enum Flask {
 	FlaskOfChromaticResistance = 4;
 	FlaskOfRestlessDreams = 5;
 	FlaskOfEverlastingNightmares = 6;
+	FlaskOfMadness = 7;
+	FlaskOfUnyieldingSorrow = 8;
+	FlaskOfAncientKnowledge = 9;
+	FlaskOfTheOldGods = 10;
 }
 
 enum Alcohol {
@@ -402,6 +414,7 @@ enum AgilityElixir {
 	ElixirOfLesserAgility = 3;
 	ScrollOfAgility = 4;
 	ElixirOfAgility = 5;
+	ElixirOfTheHoneyBadger = 6;
 }
 
 enum ArmorElixir {
@@ -411,6 +424,7 @@ enum ArmorElixir {
 	ElixirOfDefense = 3;
 	ElixirOfMinorDefense = 4;
 	ScrollOfProtection = 5;
+	ElixirOfTheIronside = 6;
 }
 
 enum HealthElixir {
@@ -443,6 +457,7 @@ enum SpellPowerBuff {
 	ArcaneElixir = 1;
 	GreaterArcaneElixir = 2;
 	LesserArcaneElixir = 3;
+	ElixirOfTheMageLord = 4;
 }
 
 enum ShadowPowerBuff {
@@ -714,7 +729,7 @@ message Consumes {
 	ShadowPowerBuff shadow_power_buff = 10;
 	FirePowerBuff fire_power_buff = 11;
 	FrostPowerBuff frost_power_buff = 12;
-	bool sapper = 13;
+	SapperExplosive sapper_explosive = 34;
 	Explosive filler_explosive = 14;
 	WeaponImbue main_hand_imbue = 15;
 	WeaponImbue off_hand_imbue = 16;
