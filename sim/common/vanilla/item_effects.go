@@ -2337,7 +2337,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=234462/earthstrike
 	// Use: Increases your melee and ranged attack power by 328.  Effect lasts for 20 sec. (2 Min Cooldown)
 
-	core.NewSimpleStatOffensiveTrinketEffect(Earthstrike, stats.Stats{stats.AttackPower: 328}, time.Second*20, time.Second*120)
+	core.NewSimpleStatOffensiveTrinketEffect(Earthstrike, stats.Stats{stats.AttackPower: 328, stats.RangedAttackPower: 328,}, time.Second*20, time.Second*120)
 
 	// https://www.wowhead.com/classic/item=228293/essence-of-the-pure-flame
 	// Equip: When struck in combat inflicts 50 Fire damage to the attacker.
