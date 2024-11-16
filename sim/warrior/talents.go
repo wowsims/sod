@@ -421,7 +421,7 @@ func (warrior *Warrior) registerDeathWishCD() {
 	})
 	core.RegisterPercentDamageModifierEffect(deathWishAura, 1.2)
 
-	DeathWish := warrior.RegisterSpell(AnyStance, core.SpellConfig{
+	warrior.DeathWish = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagHelpful,
 		RageCost: core.RageCostOptions{
@@ -444,7 +444,7 @@ func (warrior *Warrior) registerDeathWishCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: DeathWish.Spell,
+		Spell: warrior.DeathWish.Spell,
 		Type:  core.CooldownTypeDPS,
 	})
 }

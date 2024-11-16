@@ -138,7 +138,7 @@ func (mage *Mage) applyFingersOfFrost() {
 		return
 	}
 
-	mage.FingersOfFrostProcChance = 0.15
+	mage.FingersOfFrostProcChance += 0.15
 	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
 
 	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
