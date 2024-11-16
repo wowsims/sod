@@ -322,6 +322,7 @@ enum Explosive {
 	ExplosiveEzThroRadiationBomb = 4;
 	ExplosiveHighYieldRadiationBomb = 5;
 	ExplosiveGoblinLandMine = 6;
+	ExplosiveObsidianBomb = 7;
 }
 
 // NextIndex: 28
@@ -392,6 +393,9 @@ enum Flask {
 	FlaskOfRestlessDreams = 5;
 	FlaskOfEverlastingNightmares = 6;
 	FlaskOfMadness = 7;
+	FlaskOfUnyieldingSorrow = 8;
+	FlaskOfAncientKnowledge = 9;
+	FlaskOfTheOldGods = 10;
 }
 
 enum Alcohol {
@@ -420,6 +424,7 @@ enum ArmorElixir {
 	ElixirOfDefense = 3;
 	ElixirOfMinorDefense = 4;
 	ScrollOfProtection = 5;
+	ElixirOfTheIronside = 6;
 }
 
 enum HealthElixir {
@@ -452,6 +457,7 @@ enum SpellPowerBuff {
 	ArcaneElixir = 1;
 	GreaterArcaneElixir = 2;
 	LesserArcaneElixir = 3;
+	ElixirOfTheMageLord = 4;
 }
 
 enum ShadowPowerBuff {

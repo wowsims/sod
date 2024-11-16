@@ -53,6 +53,21 @@ func applyFlaskConsumes(character *Character, consumes *proto.Consumes) {
 		character.AddStats(stats.Stats{
 			stats.Mana: 2000,
 		})
+	case proto.Flask_FlaskOfUnyieldingSorrow:
+		character.AddStats(stats.Stats{
+			stats.SpellDamage:  27,
+			stats.HealingPower: 80,
+			stats.MP5:          12,
+		})
+	case proto.Flask_FlaskOfAncientKnowledge:
+		character.AddStats(stats.Stats{
+			stats.SpellPower: 180,
+		})
+	case proto.Flask_FlaskOfTheOldGods:
+		character.AddStats(stats.Stats{
+			stats.Stamina: 100,
+			stats.Defense: 10,
+		})
 	case proto.Flask_FlaskOfSupremePower:
 		character.AddStats(stats.Stats{
 			stats.SpellPower: 150,
@@ -441,6 +456,12 @@ func DragonBreathChiliAura(character *Character) *Aura {
 func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) {
 	if consumes.ArmorElixir != proto.ArmorElixir_ArmorElixirUnknown {
 		switch consumes.ArmorElixir {
+		case proto.ArmorElixir_ElixirOfTheIronside:
+			character.AddStats(stats.Stats{
+				stats.BonusArmor: 350,
+				stats.Defense: 5,
+				stats.NatureResistance: 15,
+			})
 		case proto.ArmorElixir_ElixirOfSuperiorDefense:
 			character.AddStats(stats.Stats{
 				stats.BonusArmor: 450,
@@ -563,6 +584,11 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 		case proto.SpellPowerBuff_GreaterArcaneElixir:
 			character.AddStats(stats.Stats{
 				stats.SpellDamage: 35,
+			})
+		case proto.SpellPowerBuff_ElixirOfTheMageLord:
+			character.AddStats(stats.Stats{
+				stats.SpellDamage: 40,
+				stats.NatureResistance: 15,
 			})
 		}
 	}
@@ -892,6 +918,7 @@ var ThoriumGrenadeActionID = ActionID{ItemID: 15993}
 var EzThroRadiationBombActionID = ActionID{ItemID: 215168}
 var HighYieldRadiationBombActionID = ActionID{ItemID: 215127}
 var GoblinLandMineActionID = ActionID{ItemID: 4395}
+var ObsidianBombActionID = ActionID{ItemID: 233986}
 
 func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	character := agent.GetCharacter()
@@ -931,6 +958,8 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 
 		var filler *Spell
 		switch consumes.FillerExplosive {
+		case proto.Explosive_ExplosiveObsidianBomb:
+			filler = character.newObisidianBombSpell(sharedTimer)
 		case proto.Explosive_ExplosiveSolidDynamite:
 			filler = character.newSolidDynamiteSpell(sharedTimer)
 		case proto.Explosive_ExplosiveDenseDynamite:
@@ -1013,6 +1042,9 @@ func (character *Character) newSapperSpell(sharedTimer *Timer) *Spell {
 // Needs testing for Silithid interaction if in raid
 func (character *Character) newFumigatorSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, FumigatorActionID, SpellSchoolFire, 650, 950, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 475, 725))
+}
+func (character *Character) newObisidianBombSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, ObsidianBombActionID, SpellSchoolFire, 530, 670, Cooldown{}, 0, 0))
 }
 func (character *Character) newSolidDynamiteSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, SolidDynamiteActionID, SpellSchoolFire, 213, 287, Cooldown{}, 0, 0))

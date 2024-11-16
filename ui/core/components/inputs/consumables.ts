@@ -205,6 +205,11 @@ export const SapperFumigator: ConsumableInputConfig<SapperExplosive> = {
 	value: SapperExplosive.SapperFumigator,
 };
 
+export const ExplosiveObsidianBomb: ConsumableInputConfig<Explosive> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 233986, minLevel: 60 }]),
+	value: Explosive.ExplosiveObsidianBomb,
+};
+
 export const ExplosiveSolidDynamite: ConsumableInputConfig<Explosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 10507, minLevel: 40 }]),
 	showWhen: player => player.hasProfession(Profession.Engineering),
@@ -241,6 +246,7 @@ export const ExplosiveHighYieldRadiationBomb: ConsumableInputConfig<Explosive> =
 };
 
 export const EXPLOSIVES_CONFIG: ConsumableStatOption<Explosive>[] = [
+	{ config: ExplosiveObsidianBomb, stats: [] },
 	{ config: ExplosiveEzThroRadiationBomb, stats: [] },
 	{ config: ExplosiveHighYieldRadiationBomb, stats: [] },
 	{ config: ExplosiveSolidDynamite, stats: [] },
@@ -271,6 +277,18 @@ export const makeSappersInput = makeConsumeInputFactory({
 export const FlaskOfTheTitans: ConsumableInputConfig<Flask> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13510, minLevel: 51 }]),
 	value: Flask.FlaskOfTheTitans,
+};
+export const FlaskOfTheOldGods: ConsumableInputConfig<Flask> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 233965, minLevel: 60 }]),
+	value: Flask.FlaskOfTheOldGods,
+};
+export const FlaskOfUnyieldingSorrow: ConsumableInputConfig<Flask> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 233966, minLevel: 60 }]),
+	value: Flask.FlaskOfUnyieldingSorrow,
+};
+export const FlaskOfAncientKnowledge: ConsumableInputConfig<Flask> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 233964, minLevel: 60 }]),
+	value: Flask.FlaskOfAncientKnowledge,
 };
 // Original lvl 50 not obtainable in Phase 3
 export const FlaskOfDistilledWisdom: ConsumableInputConfig<Flask> = {
@@ -304,9 +322,12 @@ export const FlaskOfEverlastingNightmares: ConsumableInputConfig<Flask> = {
 
 export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
 	{ config: FlaskOfTheTitans, stats: [Stat.StatStamina] },
+	{ config: FlaskOfTheOldGods, stats: [Stat.StatStamina] },
 	{ config: FlaskOfMadness, stats: [Stat.StatAttackPower] },
 	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatIntellect] },
+	{ config: FlaskOfUnyieldingSorrow, stats: [Stat.StatIntellect] },
 	{ config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower] },
+	{ config: FlaskOfAncientKnowledge, stats: [Stat.StatMP5, Stat.StatSpellPower] },
 	{ config: FlaskOfChromaticResistance, stats: [] },
 	{ config: FlaskOfRestlessDreams, stats: [Stat.StatSpellPower] },
 	{ config: FlaskOfEverlastingNightmares, stats: [Stat.StatAttackPower] },
@@ -423,6 +444,10 @@ export const makeAlcoholInput = makeConsumeInputFactory({ consumesFieldName: 'al
 ///////////////////////////////////////////////////////////////////////////
 
 // Armor
+export const ElixirOfTheIronside: ConsumableInputConfig<ArmorElixir> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 233969, minLevel: 60 }]),
+	value: ArmorElixir.ElixirOfTheIronside,
+};
 export const ElixirOfSuperiorDefense: ConsumableInputConfig<ArmorElixir> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13445, minLevel: 43 }]),
 	value: ArmorElixir.ElixirOfSuperiorDefense,
@@ -450,6 +475,7 @@ export const ScrollOfProtection: ConsumableInputConfig<ArmorElixir> = {
 	value: ArmorElixir.ScrollOfProtection,
 };
 export const ARMOR_CONSUMES_CONFIG: ConsumableStatOption<ArmorElixir>[] = [
+	{ config: ElixirOfTheIronside, stats: [Stat.StatArmor] },
 	{ config: ElixirOfSuperiorDefense, stats: [Stat.StatArmor] },
 	{ config: ElixirOfGreaterDefense, stats: [Stat.StatArmor] },
 	{ config: ElixirOfDefense, stats: [Stat.StatArmor] },
@@ -895,6 +921,10 @@ export const MildlyIrradiatedRejuvPotion = makeBooleanConsumeInput({
 ///////////////////////////////////////////////////////////////////////////
 
 // Arcane
+export const ElixirOfTheMageLord: ConsumableInputConfig<SpellPowerBuff> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 233968, minLevel: 60 }]),
+	value: SpellPowerBuff.ElixirOfTheMageLord,
+};
 export const GreaterArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 	actionId: player => player.getMatchingItemActionId([{ id: 13454, minLevel: 46 }]),
 	value: SpellPowerBuff.GreaterArcaneElixir,
@@ -909,6 +939,7 @@ export const LesserArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 };
 
 export const SPELL_POWER_CONFIG: ConsumableStatOption<SpellPowerBuff>[] = [
+	{ config: ElixirOfTheMageLord, stats: [Stat.StatSpellPower] },
 	{ config: GreaterArcaneElixir, stats: [Stat.StatSpellPower] },
 	{ config: ArcaneElixir, stats: [Stat.StatSpellPower] },
 	{ config: LesserArcaneElixir, stats: [Stat.StatSpellPower] },
