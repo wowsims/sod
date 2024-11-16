@@ -409,7 +409,7 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 		// Increases Wyvern Strike DoT by 50%
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			if !hunter.HasRune(proto.HunterRune_RuneBootsWyvernStrike) {
+			if !hunter.Talents.WyvernSting || !hunter.HasRune(proto.HunterRune_RuneBootsWyvernStrike) {
 				return
 			}
 
