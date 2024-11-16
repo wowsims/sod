@@ -274,9 +274,10 @@ export class ConsumesPicker extends Component {
 		const engiConsumesElem = this.rootElem.querySelector('.consumes-engi') as HTMLElement;
 
 		const explosiveOptions = ConsumablesInputs.makeExplosivesInput(relevantStatOptions(ConsumablesInputs.EXPLOSIVES_CONFIG, this.simUI), 'Explosives');
+		const sapperOptions = ConsumablesInputs.makeSappersInput(relevantStatOptions(ConsumablesInputs.SAPPER_CONFIG, this.simUI), 'Sappers');
 
 		const pickers = [
-			buildIconInput(engiConsumesElem, this.simUI.player, ConsumablesInputs.Sapper),
+			buildIconInput(engiConsumesElem, this.simUI.player, sapperOptions),
 			buildIconInput(engiConsumesElem, this.simUI.player, explosiveOptions),
 		];
 
