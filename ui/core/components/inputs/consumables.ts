@@ -182,10 +182,10 @@ export const EnchantedSigilWrathOfTheStorm: ConsumableInputConfig<EnchantedSigil
 };
 
 export const ENCHANTED_SIGIL_CONFIG: ConsumableStatOption<EnchantedSigil>[] = [
+	{ config: EnchantedSigilWrathOfTheStorm, stats: [] },
 	{ config: EnchantedSigilFlowingWaters, stats: [] },
 	{ config: EnchantedSigilLivingDreams, stats: [] },
 	{ config: EnchantedSigilInnovation, stats: [] },
-	{ config: EnchantedSigilWrathOfTheStorm, stats: [] },
 ];
 
 export const makeEncanthedSigilInput = makeConsumeInputFactory({ consumesFieldName: 'enchantedSigil' });
@@ -256,8 +256,8 @@ export const EXPLOSIVES_CONFIG: ConsumableStatOption<Explosive>[] = [
 ];
 
 export const SAPPER_CONFIG: ConsumableStatOption<SapperExplosive>[] = [
-	{ config: SapperGoblinSapper, stats: [] },
 	{ config: SapperFumigator, stats: [] },
+	{ config: SapperGoblinSapper, stats: [] },
 ];
 
 export const makeExplosivesInput = makeConsumeInputFactory({

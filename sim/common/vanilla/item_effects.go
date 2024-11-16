@@ -2464,10 +2464,17 @@ func init() {
 	core.NewItemEffect(JomGabbar, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 1213366}
+		duration := time.Second * 20
+		bonusPerStack := stats.Stats{
+			stats.AttackPower:   70,
+			stats.RangedAttackPower: 70,
+		}
+		
 		jomGabbarAura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Jom Gabbar",
 			ActionID: actionID,
-			Duration: time.Second*20,
+			Duration: duration,
+			MaxStacks: 10,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 					Period:   time.Second * 2,
@@ -2475,19 +2482,18 @@ func init() {
 					Priority: core.ActionPriorityAuto,
 					TickImmediately: true,
 					OnAction: func(sim *core.Simulation) {
-						character.AddStatDynamic(sim, stats.AttackPower, 70)
-						character.AddStatDynamic(sim, stats.RangedAttackPower, 70)
+						aura.AddStack(sim)
 					},
 				})
 			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.AttackPower, -700)
-				character.AddStatDynamic(sim, stats.RangedAttackPower, -700)
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				bonusStats := bonusPerStack.Multiply(float64(newStacks - oldStacks))
+				character.AddStatsDynamic(sim, bonusStats)
 			},
 		})		
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			ProcMask: core.ProcMaskEmpty,
+			ProcMask: core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -2495,7 +2501,7 @@ func init() {
 				},
 				SharedCD: core.Cooldown{
 					Timer:    character.GetOffensiveTrinketCD(),
-					Duration: time.Second*20,
+					Duration: duration,
 				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
