@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -1919,16 +1920,26 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 	duration := time.Minute * 2
 	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier).Floor()
 
+	fmt.Println(updateStats)
+
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Strength of Earth Totem",
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			unit.AddStatsDynamic(sim, updateStats)
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				unit.AddStats(updateStats)
+			} else {
+				unit.AddStatsDynamic(sim, updateStats)
+			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				unit.AddStats(updateStats.Multiply(-1))
+			} else {
+				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+			}
 		},
 	})
 	return aura
@@ -1946,10 +1957,18 @@ func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			unit.AddStatsDynamic(sim, updateStats)
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				unit.AddStats(updateStats)
+			} else {
+				unit.AddStatsDynamic(sim, updateStats)
+			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				unit.AddStats(updateStats.Multiply(-1))
+			} else {
+				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+			}
 		},
 	})
 	return aura
