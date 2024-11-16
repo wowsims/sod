@@ -12,113 +12,121 @@ import (
 
 // Ordered by ID
 const (
-	ShortswordOfVengeance          = 754
-	FieryWarAxe                    = 870
-	Bloodrazor                     = 809
-	HammerOfTheNorthernWind        = 810
-	FlurryAxe                      = 871
-	SkullflameShield               = 1168
-	Nightblade                     = 1982
-	Shadowblade                    = 2163
-	GutRipper                      = 2164
-	HandOfEdwardTheOdd             = 2243
-	BowOfSearingArrows             = 2825
-	Gutwrencher                    = 5616
-	Ravager                        = 7717
-	HanzoSword                     = 8190
-	TheJackhammer                  = 9423
-	PendulumOfDoom                 = 9425
-	BloodletterScalpel             = 9511
-	TheHandOfAntusul               = 9639
-	GryphonRidersStormhammer       = 9651
-	Firebreather                   = 10797
-	VilerendSlicer                 = 11603
-	HookfangShanker                = 11635
-	LinkensSwordOfMastery          = 11902
-	SearingNeedle                  = 12531
-	PipsSkinner                    = 12709
-	ArcaniteChampion               = 12790
-	MasterworkStormhammer          = 12794
-	Frostguard                     = 12797
-	SerpentSlicer                  = 13035
-	TheNeedler                     = 13060
-	SealOfTheDawn                  = 13209
-	JoonhosMercy                   = 17054
-	Deathbringer                   = 17068
-	ViskagTheBloodletter           = 17075
-	ThrashBlade                    = 17705
-	SatyrsLash                     = 17752
-	MarkOfTheChosen                = 17774
-	Nightfall                      = 19169
-	EbonHand                       = 19170
-	RuneOfTheDawn                  = 19812
-	ZandalariHeroBadge             = 19948
-	ZandalariHeroMedallion         = 19949
-	ZandalariHeroCharm             = 19950
-	MarkOfTheChampionPhys          = 23206
-	MarkOfTheChampionSpell         = 23207
-	BlisteringRagehammer           = 220569 // 10626
-	SulfurasHandOfRagnaros         = 227683 // 17182
-	SulfuronHammer                 = 227684 // 17193
-	TemperedBlackAmnesty           = 227832 // 19166
-	EbonFist                       = 227842
-	ReavingNightfall               = 227843
-	SkyridersMasterworkStormhammer = 227886
-	HardenedFrostguard             = 227887
-	FlameWrath                     = 227934 // 11809
-	LordGeneralsSword              = 227940 // 11817
-	WraithScythe                   = 227941
-	SecondWind                     = 227967 // 11819
-	BurstOfKnowledge               = 227972
-	HandOfInjustice                = 227990
-	Ironfoe                        = 227991 // 11684
-	EbonHiltOfMarduk               = 227993 // 14576
-	FrightskullShaft               = 227994 // 14531
-	BarovianFamilySword            = 227997 // 14541
-	Frightalon                     = 228015 // 14024
-	HeadmastersCharge              = 228022 // 13937
-	GravestoneWarAxe               = 228029 // 13983
-	FiendishMachete                = 228056 // 18310
-	RefinedArcaniteChampion        = 228125
-	TalismanOfEphemeralPower       = 228255 // 18820
-	GutgoreRipper                  = 228267 // 17071
-	Shadowstrike                   = 228272 // 17074
-	Thunderstrike                  = 228273 // 17223
-	BonereaversEdge                = 228288 // 17076
-	BonereaversEdgeMolten          = 228461
-	EssenceOfThePureFlame          = 228293 // 18815
-	PerditionsBlade                = 228296 // 18816
-	Typhoon                        = 228347 // 18542
-	EskhandarsLeftClaw             = 228349 // 18202
-	EskhandarsRightClaw            = 228350 // 18203
-	BlazefuryMedallion             = 228354 // 17111
-	EmpyreanDemolisher             = 228397 // 17112
-	DreadbladeOfTheDestructor      = 228410
-	PerditionsBladeMolten          = 228511
-	SkullforgeReaver               = 228542 // 13361
-	RunebladeOfBaronRivendare      = 228543 // 13505
-	HeartOfWyrmthalak              = 228599 // 22321
-	Venomspitter                   = 228573 // 13183
-	SmolderwebsEye                 = 228576 // 13213
-	Chillpike                      = 228586 // 13148
-	FangOfTheCrystalSpider         = 228592 // 13218
-	BlackhandDoomsaw               = 228603 // 12583
-	BlackbladeOfShahram            = 228606 // 12592
-	SeepingWillow                  = 228666 // 12969
-	DraconicInfusedEmblem          = 228678 // 22268
-	QuelSerrar                     = 228679 // 18348
-	HandOfJustice                  = 228722 // 11815
-	Felstriker                     = 228757 // 12590
-	GutgoreRipperMolten            = 229372
-	EskhandarsRightClawMolten      = 229379
-	Thunderfury                    = 230224 // 19019
-	TheUntamedBlade                = 230242 // 19334
-	NatPaglesBrokenReel            = 231271 // 19947
-	TheUntamedBladeShadowflame     = 232566
-	ScarabBrooch                   = 233601 // 21625
-	DarkmoonCardHeroism            = 234176 // 19287
-	DarkmoonCardBlueDragon         = 234177 // 19288
-	DarkmoonCardMaelstrom          = 234178 // 19289
+	ShortswordOfVengeance           = 754
+	FieryWarAxe                     = 870
+	Bloodrazor                      = 809
+	HammerOfTheNorthernWind         = 810
+	FlurryAxe                       = 871
+	SkullflameShield                = 1168
+	Nightblade                      = 1982
+	Shadowblade                     = 2163
+	GutRipper                       = 2164
+	HandOfEdwardTheOdd              = 2243
+	BowOfSearingArrows              = 2825
+	Gutwrencher                     = 5616
+	Ravager                         = 7717
+	HanzoSword                      = 8190
+	TheJackhammer                   = 9423
+	PendulumOfDoom                  = 9425
+	BloodletterScalpel              = 9511
+	TheHandOfAntusul                = 9639
+	GryphonRidersStormhammer        = 9651
+	Firebreather                    = 10797
+	VilerendSlicer                  = 11603
+	HookfangShanker                 = 11635
+	LinkensSwordOfMastery           = 11902
+	SearingNeedle                   = 12531
+	PipsSkinner                     = 12709
+	ArcaniteChampion                = 12790
+	MasterworkStormhammer           = 12794
+	Frostguard                      = 12797
+	SerpentSlicer                   = 13035
+	TheNeedler                      = 13060
+	SealOfTheDawn                   = 13209
+	JoonhosMercy                    = 17054
+	Deathbringer                    = 17068
+	ViskagTheBloodletter            = 17075
+	ThrashBlade                     = 17705
+	SatyrsLash                      = 17752
+	MarkOfTheChosen                 = 17774
+	Nightfall                       = 19169
+	EbonHand                        = 19170
+	RuneOfTheDawn                   = 19812
+	ZandalariHeroBadge              = 19948
+	ZandalariHeroMedallion          = 19949
+	ZandalariHeroCharm              = 19950
+	MarkOfTheChampionPhys           = 23206
+	MarkOfTheChampionSpell          = 23207
+	BlisteringRagehammer            = 220569 // 10626
+	SulfurasHandOfRagnaros          = 227683 // 17182
+	SulfuronHammer                  = 227684 // 17193
+	TemperedBlackAmnesty            = 227832 // 19166
+	EbonFist                        = 227842
+	ReavingNightfall                = 227843
+	SkyridersMasterworkStormhammer  = 227886
+	HardenedFrostguard              = 227887
+	FlameWrath                      = 227934 // 11809
+	LordGeneralsSword               = 227940 // 11817
+	WraithScythe                    = 227941
+	SecondWind                      = 227967 // 11819
+	BurstOfKnowledge                = 227972
+	HandOfInjustice                 = 227990
+	Ironfoe                         = 227991 // 11684
+	EbonHiltOfMarduk                = 227993 // 14576
+	FrightskullShaft                = 227994 // 14531
+	BarovianFamilySword             = 227997 // 14541
+	Frightalon                      = 228015 // 14024
+	HeadmastersCharge               = 228022 // 13937
+	GravestoneWarAxe                = 228029 // 13983
+	FiendishMachete                 = 228056 // 18310
+	RefinedArcaniteChampion         = 228125
+	TalismanOfEphemeralPower        = 228255 // 18820
+	GutgoreRipper                   = 228267 // 17071
+	Shadowstrike                    = 228272 // 17074
+	Thunderstrike                   = 228273 // 17223
+	BonereaversEdge                 = 228288 // 17076
+	BonereaversEdgeMolten           = 228461
+	EssenceOfThePureFlame           = 228293 // 18815
+	PerditionsBlade                 = 228296 // 18816
+	Typhoon                         = 228347 // 18542
+	EskhandarsLeftClaw              = 228349 // 18202
+	EskhandarsRightClaw             = 228350 // 18203
+	BlazefuryMedallion              = 228354 // 17111
+	EmpyreanDemolisher              = 228397 // 17112
+	DreadbladeOfTheDestructor       = 228410
+	PerditionsBladeMolten           = 228511
+	SkullforgeReaver                = 228542 // 13361
+	RunebladeOfBaronRivendare       = 228543 // 13505
+	HeartOfWyrmthalak               = 228599 // 22321
+	Venomspitter                    = 228573 // 13183
+	SmolderwebsEye                  = 228576 // 13213
+	Chillpike                       = 228586 // 13148
+	FangOfTheCrystalSpider          = 228592 // 13218
+	BlackhandDoomsaw                = 228603 // 12583
+	BlackbladeOfShahram             = 228606 // 12592
+	SeepingWillow                   = 228666 // 12969
+	DraconicInfusedEmblem           = 228678 // 22268
+	QuelSerrar                      = 228679 // 18348
+	HandOfJustice                   = 228722 // 11815
+	Felstriker                      = 228757 // 12590
+	GutgoreRipperMolten             = 229372
+	EskhandarsRightClawMolten       = 229379
+	Thunderfury                     = 230224 // 19019
+	TheUntamedBlade                 = 230242 // 19334
+	NatPaglesBrokenReel             = 231271 // 19947
+	TheUntamedBladeShadowflame      = 232566
+	ScarabBrooch                    = 233601 // 21625
+	KalimdorsRevenge                = 233621
+	NeretzekBloodDrinker            = 233647
+	Speedstone                      = 233990
+	ManslayerOfTheQiraji            = 234067
+	DarkmoonCardHeroism             = 234176 // 19287
+	DarkmoonCardBlueDragon          = 234177 // 19288
+	DarkmoonCardMaelstrom           = 234178 // 19289
+	Earthstrike                     = 234462
+	KalimdorsRevengeVoidTouched     = 234981
+	NeretzekBloodDrinkerVoidTouched = 234987
+	ManslayerOfTheQirajiVoidTouched = 234990
 )
 
 func init() {
@@ -1135,6 +1143,9 @@ func init() {
 
 	itemhelpers.CreateWeaponCoHProcDamage(JoonhosMercy, "Joonho's Mercy", 1.0, 20883, core.SpellSchoolArcane, 70, 0, 0, core.DefenseTypeMagic)
 
+	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevenge, "Kalimdor's Revenge", 1.25, 1213355, core.SpellSchoolNature, 339, 138, 0, core.DefenseTypeMagic)            // TODO Update PPM/scaling from PTR
+	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevengeVoidTouched, "Kalimdor's Revenge", 1.25, 1213355, core.SpellSchoolNature, 339, 138, 0, core.DefenseTypeMagic) // TODO Update PPM/scaling from PTR
+
 	itemhelpers.CreateWeaponCoHProcDamage(LinkensSwordOfMastery, "Linken's Sword of Mastery", 1.0, 18089, core.SpellSchoolNature, 45, 30, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=227940/lord-generals-sword
@@ -1160,6 +1171,26 @@ func init() {
 		})
 	})
 
+	core.NewItemEffect(ManslayerOfTheQiraji, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		if !character.AutoAttacks.AutoSwingMelee {
+			return
+		}
+
+		manslayerOfTheQirajiAura(character)
+	})
+
+	core.NewItemEffect(ManslayerOfTheQirajiVoidTouched, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		if !character.AutoAttacks.AutoSwingMelee {
+			return
+		}
+
+		manslayerOfTheQirajiAura(character)
+	})
+
 	// https://www.wowhead.com/classic/item=12794/masterwork-stormhammer
 	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
 	// Estimated based on data from WoW Armaments Discord
@@ -1177,6 +1208,46 @@ func init() {
 					spell.CalcAndDealDamage(sim, target, sim.Roll(105, 145), spell.OutcomeMagicHitAndCrit)
 					target = character.Env.NextTargetUnit(target)
 				}
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=234987/neretzek-the-blood-drinker
+	// Chance on hit: Steals 171 to 193 life from target enemy.
+	itemhelpers.CreateWeaponProcSpell(NeretzekBloodDrinker, "Neretzek, The Blood Drinker", 0.8, func(character *core.Character) *core.Spell { // PPM based on old ppm from Armamaments discord
+		actionID := core.ActionID{SpellID: 1214208}
+		healthMetrics := character.NewHealthMetrics(actionID)
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         actionID,
+			SpellSchool:      core.SpellSchoolShadow,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			BonusCoefficient: 1.0, /// TBD - Best guess based on similarity to shadowstrike
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealDamage(sim, target, sim.Roll(180, 220), spell.OutcomeMagicHit)
+				character.GainHealth(sim, result.Damage, healthMetrics)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=233647/neretzek-the-blood-drinker
+	// Chance on hit: Steals 171 to 193 life from target enemy.
+	itemhelpers.CreateWeaponProcSpell(NeretzekBloodDrinkerVoidTouched, "Neretzek, The Blood Drinker", 0.8, func(character *core.Character) *core.Spell { // PPM based on old ppm from Armamaments discord
+		actionID := core.ActionID{SpellID: 1214208}
+		healthMetrics := character.NewHealthMetrics(actionID)
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         actionID,
+			SpellSchool:      core.SpellSchoolShadow,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			BonusCoefficient: 1.0, // TBD - Best guess based on similarity to shadowstrike
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealDamage(sim, target, sim.Roll(180, 220), spell.OutcomeMagicHit)
+				character.GainHealth(sim, result.Damage, healthMetrics)
 			},
 		})
 	})
@@ -2262,6 +2333,10 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=234462/earthstrike
+	// Use: Increases your melee and ranged attack power by 328.  Effect lasts for 20 sec. (2 Min Cooldown)
+	core.NewSimpleStatOffensiveTrinketEffect(Earthstrike, stats.Stats{stats.AttackPower: 328}, time.Second*20, time.Minute*2)
+
 	// https://www.wowhead.com/classic/item=228293/essence-of-the-pure-flame
 	// Equip: When struck in combat inflicts 50 Fire damage to the attacker.
 	core.NewItemEffect(EssenceOfThePureFlame, func(agent core.Agent) {
@@ -2590,6 +2665,14 @@ func init() {
 			character.AddStat(stats.AttackPower, 81)
 			character.AddStat(stats.AttackPower, 81)
 		}
+	})
+
+	// https://www.wowhead.com/classic/item=233990/speedstone
+	// Increases your attack speed by 2%.
+	core.NewItemEffect(Speedstone, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.PseudoStats.MeleeSpeedMultiplier *= 1.02
+		character.PseudoStats.RangedSpeedMultiplier *= 1.02
 	})
 
 	// https://www.wowhead.com/classic/item=228255/talisman-of-ephemeral-power
@@ -3067,6 +3150,30 @@ func strengthOfTheChampionAura(character *core.Character) *core.Aura {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			character.AddStatDynamic(sim, stats.Strength, -120)
+		},
+	})
+}
+
+func manslayerOfTheQirajiAura(character *core.Character) *core.Aura {
+	icd := core.Cooldown{
+		Timer:    character.NewTimer(),
+		Duration: time.Millisecond * 200,
+	}
+
+	return character.GetOrRegisterAura(core.Aura{
+		Label:    "Manslayer Of The Qiraji",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
+				return
+			}
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && icd.IsReady(sim) && sim.Proc(0.01, "ManslayerOfTheQiraji") {
+				icd.Use(sim)
+				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1214927}, spell)
+			}
 		},
 	})
 }

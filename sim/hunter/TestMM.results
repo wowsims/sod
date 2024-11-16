@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestMM-Phase4-Lvl60-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.5578
+  weights: 0.56071
   weights: 0
   weights: 0
   weights: 0
@@ -167,7 +167,7 @@ stat_weights_results: {
   weights: 0
   weights: 0.19929
   weights: 0
-  weights: 4.92355
+  weights: 4.91485
   weights: 0
   weights: 0
   weights: 0
@@ -175,7 +175,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.04142
+  weights: 0.0416
   weights: 0
   weights: 0
   weights: 0
@@ -325,41 +325,41 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-BloodlashBow-216516"
  value: {
-  dps: 883.16066
-  tps: 883.26743
-  hps: 12.98671
+  dps: 882.86792
+  tps: 882.97468
+  hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-DevilsaurEye-19991"
  value: {
-  dps: 881.83734
-  tps: 881.94411
-  hps: 12.98671
+  dps: 881.52041
+  tps: 881.62717
+  hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-DevilsaurTooth-19992"
  value: {
-  dps: 874.8801
-  tps: 874.98686
-  hps: 12.98671
+  dps: 874.59814
+  tps: 874.7049
+  hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-DreadHunter'sChain"
  value: {
-  dps: 649.97155
-  tps: 650.082
-  hps: 9.5936
+  dps: 649.6826
+  tps: 649.79305
+  hps: 9.63591
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-GurubashiPitFighter'sBow-221450"
  value: {
-  dps: 884.64938
-  tps: 884.75614
-  hps: 12.98671
+  dps: 884.35663
+  tps: 884.4634
+  hps: 13.05826
  }
 }
 dps_results: {
@@ -373,49 +373,49 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-Maelstrom'sWrath-231320"
  value: {
-  dps: 882.79632
-  tps: 882.90309
-  hps: 12.81677
+  dps: 883.53127
+  tps: 883.63803
+  hps: 12.90919
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 871.0379
-  tps: 871.14467
-  hps: 12.98671
+  dps: 870.75085
+  tps: 870.85761
+  hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-ZandalarPredator'sBelt-231322"
  value: {
-  dps: 830.17486
-  tps: 830.28163
-  hps: 12.98671
+  dps: 829.64064
+  tps: 829.74741
+  hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-ZandalarPredator'sBracers-231323"
  value: {
-  dps: 753.54921
-  tps: 753.65598
-  hps: 12.98671
+  dps: 753.74121
+  tps: 753.84798
+  hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-ZandalarPredator'sMantle-231321"
  value: {
-  dps: 867.37004
-  tps: 867.47681
-  hps: 12.98671
+  dps: 867.17621
+  tps: 867.28297
+  hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 886.58041
-  tps: 886.68136
-  hps: 13.05262
+  dps: 890.51203
+  tps: 890.62612
+  hps: 13.07849
  }
 }
 dps_results: {
@@ -517,8 +517,8 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 734.31858
-  tps: 734.42404
-  hps: 11.10659
+  dps: 736.7815
+  tps: 736.88696
+  hps: 11.07677
  }
 }

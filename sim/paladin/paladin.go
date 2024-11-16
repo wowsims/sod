@@ -28,6 +28,8 @@ const (
 	SpellCode_PaladinHolyShield
 	SpellCode_PaladinHolyShieldProc
 	SpellCode_PaladinLayOnHands
+	SpellCode_PaladinHammerOfWrath
+	SpellCode_PaladinCrusaderStrike
 )
 
 type SealJudgeCode uint8

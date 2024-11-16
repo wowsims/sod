@@ -17,6 +17,7 @@ const (
 	SpellCode_WarriorNone int32 = iota
 
 	SpellCode_WarriorBloodthirst
+	SpellCode_WarriorDeepWounds
 	SpellCode_WarriorDevastate
 	SpellCode_WarriorExecute
 	SpellCode_WarriorMortalStrike
@@ -96,6 +97,7 @@ type Warrior struct {
 	Bloodrage         *WarriorSpell
 	BerserkerRage     *WarriorSpell
 	Bloodthirst       *WarriorSpell
+	DeathWish         *WarriorSpell
 	DemoralizingShout *WarriorSpell
 	Execute           *WarriorSpell
 	MortalStrike      *WarriorSpell
