@@ -215,6 +215,10 @@ var ItemSetNightSlayerBattlearmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 5 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
 var ItemSetBloodfangThrill = core.NewItemSet(core.ItemSet{
 	Name: "Bloodfang Thrill",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -378,6 +382,61 @@ var ItemSetMadCapsOutfit = core.NewItemSet(core.ItemSet{
 				if spell.SpellCode == SpellCode_RogueAmbush {
 					spell.BonusCritRating += 30 * core.CritRatingPerCritChance
 				}
+			})
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 6 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetEmblemsofVeiledShadows = core.NewItemSet(core.ItemSet{
+	Name: "Emblems of Veiled Shadows",
+	Bonuses: map[int32]core.ApplyEffect{
+		// 3 pieces: Your finishing moves cost 50% less Energy.
+		3: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			rogue.RegisterAura(core.Aura{
+				Label: "S03 - Item - RAQ - Rogue - Damage 3P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, finisher := range rogue.Finishers {
+						finisher.Cost.Multiplier -= 50
+					}
+				},
+			})
+		},
+	},
+})
+
+var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
+	Name: "Deathdealer's Thrill",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases Saber Slash damage by 20%
+		2: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			if !rogue.HasRune(proto.RogueRune_RuneSaberSlash) {
+				return
+			}
+			rogue.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Rogue - Damage 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.SaberSlash.DamageMultiplier *= 1.20
+					rogue.saberSlashTick.DamageMultiplier *= 1.20
+				},
+			})	
+		},
+		// Reduces the cooldown on Adrenaline Rush by 4 minutes.
+		4: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			if !rogue.Talents.AdrenalineRush {
+				return
+			}
+			rogue.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Rogue - Damage 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.AdrenalineRush.CD.Duration -= time.Second * 240
+			  	},
 			})
 		},
 	},

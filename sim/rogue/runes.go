@@ -238,6 +238,7 @@ func (rogue *Rogue) registerBladeDance() {
 	})
 
 	rogue.BladeDance = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:    SpellCode_RogueBladeDance,
 		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneBladeDance)},
 		SpellSchool:  core.SpellSchoolPhysical,
 		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -266,6 +267,7 @@ func (rogue *Rogue) registerBladeDance() {
 			rogue.SpendComboPoints(sim, spell)
 		},
 	})
+	rogue.Finishers = append(rogue.Finishers, rogue.BladeDance)
 }
 
 func (rogue *Rogue) applyJustAFleshWound() {

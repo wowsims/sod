@@ -71,4 +71,5 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 			spell.DealDamage(sim, result)
 		},
 	})
+	rogue.Finishers = append(rogue.Finishers, rogue.BetweenTheEyes)
 }
