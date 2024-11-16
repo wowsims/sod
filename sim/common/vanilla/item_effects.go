@@ -2493,7 +2493,7 @@ func init() {
 		})		
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			ProcMask: core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment
+			Flags: core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
