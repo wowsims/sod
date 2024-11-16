@@ -251,10 +251,10 @@ stat_weights_results: {
   weights: 0
   weights: 0.30982
   weights: 0
-  weights: 2.01631
+  weights: 2.01646
   weights: 0
   weights: 0
-  weights: 1.91246
+  weights: 1.91256
   weights: 0
   weights: 0
   weights: 0
@@ -393,29 +393,29 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1720.33096
-  tps: 1415.07179
+  dps: 1731.81262
+  tps: 1425.19388
  }
 }
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 1575.03273
-  tps: 1296.01771
+  dps: 1571.2564
+  tps: 1292.74182
  }
 }
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1729.44428
-  tps: 1424.104
+  dps: 1715.12617
+  tps: 1412.51503
  }
 }
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 1550.78274
-  tps: 1274.69348
+  dps: 1560.18077
+  tps: 1282.72466
  }
 }
 dps_results: {
@@ -428,15 +428,15 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1720.33096
-  tps: 1415.07179
+  dps: 1731.81262
+  tps: 1425.19388
  }
 }
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 1575.03273
-  tps: 1296.01771
+  dps: 1571.2564
+  tps: 1292.74182
  }
 }
 dps_results: {
@@ -498,8 +498,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-Settings-Gnome-p4_frost-Frost-p4_frost-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1309.96482
-  tps: 1070.36679
+  dps: 1304.24182
+  tps: 1065.48288
  }
 }
 dps_results: {
@@ -540,8 +540,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-Settings-Troll-p4_frost-Frost-p4_frost-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1363.01202
-  tps: 1108.74767
+  dps: 1363.43575
+  tps: 1109.35945
  }
 }
 dps_results: {
@@ -582,8 +582,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 1037.78195
-  tps: 647.97953
+  dps: 1038.37248
+  tps: 648.26412
  }
 }
 dps_results: {
@@ -617,8 +617,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 3193.52792
-  tps: 1358.63291
+  dps: 3193.52688
+  tps: 1358.59578
  }
 }
 dps_results: {

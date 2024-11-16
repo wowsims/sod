@@ -1029,15 +1029,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4rettwist-P4 Seal of Martyrdom Ret-p4ret-twisting-6pcT1-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 240.41179
-  tps: 575.7042
+  dps: 240.58877
+  tps: 575.88118
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4rettwist-P4 Seal of Martyrdom Ret-p4ret-twisting-6pcT1-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 184.0067
-  tps: 200.77132
+  dps: 184.15196
+  tps: 200.91658
  }
 }
 dps_results: {

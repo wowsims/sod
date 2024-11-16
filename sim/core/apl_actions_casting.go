@@ -30,6 +30,13 @@ func (rot *APLRotation) newActionCastSpell(config *proto.APLActionCastSpell) APL
 		target: target,
 	}
 }
+
+func (action *APLActionCastSpell) Reset(sim *Simulation) {
+	action.offGCD = false
+	action.offGCDTime = -1 * time.Minute
+	action.offGCDTimeExe = -1 * time.Minute
+}
+
 func (action *APLActionCastSpell) IsReady(sim *Simulation) bool {
 	action.offGCD = false
 	ready := action.spell.CanCast(sim, action.target.Get()) && (!action.spell.Flags.Matches(SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim) || action.spell.DefaultCast.GCD == 0)

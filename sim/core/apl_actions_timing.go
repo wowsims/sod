@@ -149,10 +149,11 @@ func (rot *APLRotation) newActionRelativeSchedule(config *proto.APLActionRelativ
 	return &APLActionRelativeSchedule{
 		innerAction: innerAction,
 		timing:      timing,
-		prevTime:    -1 * time.Second,
+		prevTime:    -1 * time.Minute,
 	}
 }
 func (action *APLActionRelativeSchedule) Reset(*Simulation) {
+	action.prevTime = -1 * time.Minute
 }
 func (action *APLActionRelativeSchedule) GetInnerActions() []*APLAction {
 	return []*APLAction{action.innerAction}

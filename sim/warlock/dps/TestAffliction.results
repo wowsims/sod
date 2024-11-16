@@ -210,7 +210,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 9.46717
+  weights: 9.47167
   weights: 9.9404
   weights: 0
   weights: 0
@@ -375,9 +375,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1545.49109
-  tps: 1345.08993
-  hps: 370.77621
+  dps: 1545.49385
+  tps: 1345.08415
+  hps: 370.7762
  }
 }
 dps_results: {
@@ -440,7 +440,7 @@ dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
   dps: 844.45204
-  tps: 649.20746
+  tps: 649.21021
   hps: 261.53768
  }
 }
@@ -472,7 +472,7 @@ dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
   dps: 630.33445
-  tps: 447.29209
+  tps: 447.19009
   hps: 271.7413
  }
 }
@@ -488,7 +488,7 @@ dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
   dps: 844.45204
-  tps: 649.20746
+  tps: 649.21021
   hps: 261.53768
  }
 }
@@ -511,9 +511,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3155.6598
-  tps: 2980.12292
-  hps: 642.4584
+  dps: 3155.574
+  tps: 2980.03239
+  hps: 642.45794
  }
 }
 dps_results: {

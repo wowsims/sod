@@ -197,8 +197,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-AllItems-SoulforgeArmor"
  value: {
-  dps: 384.35163
-  tps: 404.06511
+  dps: 385.38135
+  tps: 405.15734
  }
 }
 dps_results: {
@@ -260,8 +260,8 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 150.84753
-  tps: 164.91624
+  dps: 151.11363
+  tps: 165.17602
  }
 }
 dps_results: {
@@ -288,8 +288,8 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 107.59894
-  tps: 118.58967
+  dps: 107.85767
+  tps: 118.8484
  }
 }
 dps_results: {

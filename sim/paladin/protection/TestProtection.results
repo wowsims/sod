@@ -155,8 +155,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
  value: {
-  dps: 1496.05806
-  tps: 3040.328
+  dps: 1496.0575
+  tps: 3040.28595
  }
 }
 dps_results: {
@@ -232,8 +232,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-Settings-Human-p4prot-P4 Prot-p4prot-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 527.4117
-  tps: 1515.01855
+  dps: 527.37338
+  tps: 1515.56797
  }
 }
 dps_results: {

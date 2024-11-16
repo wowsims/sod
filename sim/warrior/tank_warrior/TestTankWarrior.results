@@ -141,8 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestTankWarrior-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1553.10772
-  tps: 3998.77971
+  dps: 1553.10976
+  tps: 3998.79566
  }
 }
 dps_results: {
