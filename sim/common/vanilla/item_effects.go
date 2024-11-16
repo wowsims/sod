@@ -117,7 +117,7 @@ const (
 	TheUntamedBladeShadowflame      = 232566
 	ScarabBrooch                    = 233601 // 21625
 	KalimdorsRevenge                = 233621
-  JomGabbar                       = 233627 // 23570
+  	JomGabbar                       = 233627 // 23570
 	NeretzekBloodDrinker            = 233647
 	Speedstone                      = 233990
 	ManslayerOfTheQiraji            = 234067
@@ -2493,6 +2493,10 @@ func init() {
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
 				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: time.Second*20,
+				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				jomGabbarAura.Activate(sim)
@@ -2503,9 +2507,6 @@ func init() {
 			Spell: spell,
 		})
 	})
-
-	
-
 
 	// Not yet in SoD
 	// core.NewItemEffect(MarkOfTheChampionPhys, func(agent core.Agent) {
