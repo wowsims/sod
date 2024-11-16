@@ -1,7 +1,7 @@
 character_stats_results: {
  key: "TestDemonology-Phase2-Lvl40-CharacterStats-Default"
  value: {
-  final_stats: 98.01
+  final_stats: 93.5
   final_stats: 39.6
   final_stats: 203.665
   final_stats: 221.1
@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 26.49282
   final_stats: 0
   final_stats: 0
-  final_stats: 324.01
+  final_stats: 319.5
   final_stats: 2
   final_stats: 19.76408
   final_stats: 0

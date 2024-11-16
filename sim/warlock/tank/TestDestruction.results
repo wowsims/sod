@@ -1,7 +1,7 @@
 character_stats_results: {
  key: "TestDestruction-Phase1-Lvl25-CharacterStats-Default"
  value: {
-  final_stats: 77.33
+  final_stats: 74.8
   final_stats: 45.1
   final_stats: 136.4
   final_stats: 144.1
@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 7.88189
   final_stats: 0
   final_stats: 10
-  final_stats: 218.33
+  final_stats: 215.8
   final_stats: 1
   final_stats: 8.09959
   final_stats: 0
@@ -50,7 +50,7 @@ character_stats_results: {
 character_stats_results: {
  key: "TestDestruction-Phase2-Lvl40-CharacterStats-Default"
  value: {
-  final_stats: 101.31
+  final_stats: 96.8
   final_stats: 53.9
   final_stats: 290.95
   final_stats: 217.8
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 14.40636
   final_stats: 0
   final_stats: 0
-  final_stats: 327.31
+  final_stats: 322.8
   final_stats: 2
   final_stats: 8.76222
   final_stats: 0
@@ -99,8 +99,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestDestruction-Phase3-Lvl50-CharacterStats-Default"
  value: {
-  final_stats: 136.40616
-  final_stats: 143.72424
+  final_stats: 135.432
+  final_stats: 142.56
   final_stats: 401.544
   final_stats: 261.36
   final_stats: 230.472
@@ -116,21 +116,21 @@ character_stats_results: {
   final_stats: 20.03174
   final_stats: 0
   final_stats: 0
-  final_stats: 455.12616
+  final_stats: 457.432
   final_stats: 5
-  final_stats: 23.22049
+  final_stats: 23.38253
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 4803.4
   final_stats: 0
   final_stats: 0
-  final_stats: 1603.60848
+  final_stats: 1609.12
   final_stats: 310
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 10.22049
+  final_stats: 10.38253
   final_stats: 5
   final_stats: 0
   final_stats: 4814.44
@@ -148,8 +148,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestDestruction-Phase4-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 193.38
-  final_stats: 192.28
+  final_stats: 183.7
+  final_stats: 182.6
   final_stats: 629.97
   final_stats: 254.1
   final_stats: 221.1
@@ -165,21 +165,21 @@ character_stats_results: {
   final_stats: 28.89265
   final_stats: 0
   final_stats: 0
-  final_stats: 1013.38
+  final_stats: 1003.7
   final_stats: 8
-  final_stats: 26.614
+  final_stats: 26.13
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 4904.5
   final_stats: 0
   final_stats: 0
-  final_stats: 2134.56
+  final_stats: 2115.2
   final_stats: 740
   final_stats: 121
   final_stats: 9.84
   final_stats: 0
-  final_stats: 16.454
+  final_stats: 15.97
   final_stats: 9.84
   final_stats: 0
   final_stats: 7833.7
@@ -249,7 +249,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.13838
+  weights: 0.1384
   weights: 0
   weights: 0.58844
   weights: 0
@@ -259,7 +259,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.68258
+  weights: 5.68254
   weights: 3.23199
   weights: 0
   weights: 0
@@ -298,7 +298,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.67081
+  weights: 0.67078
   weights: 0
   weights: 0.75835
   weights: 0
@@ -347,7 +347,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.79105
+  weights: 0.79094
   weights: 0
   weights: 0.77668
   weights: 0
@@ -357,8 +357,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 15.66842
-  weights: 11.39564
+  weights: 15.66822
+  weights: 11.3956
   weights: 0
   weights: 0
   weights: 0
@@ -393,15 +393,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Phase1-Lvl25-AllItems-DeathmistRaiment"
  value: {
-  dps: 105.70546
-  tps: 69.06328
+  dps: 105.62966
+  tps: 68.98748
  }
 }
 dps_results: {
  key: "TestDestruction-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 197.49959
-  tps: 475.65367
+  dps: 197.4992
+  tps: 475.65298
  }
 }
 dps_results: {
@@ -449,22 +449,22 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 197.12911
-  tps: 475.74051
+  dps: 197.12883
+  tps: 475.74001
  }
 }
 dps_results: {
  key: "TestDestruction-Phase2-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 143.71864
-  tps: 90.89054
+  dps: 143.55913
+  tps: 90.73104
  }
 }
 dps_results: {
  key: "TestDestruction-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 467.79916
-  tps: 1314.94049
+  dps: 467.69761
+  tps: 1314.76074
  }
 }
 dps_results: {
@@ -512,23 +512,23 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 459.88602
-  tps: 1297.06028
+  dps: 459.81402
+  tps: 1296.93285
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 344.27526
-  tps: 228.46012
+  dps: 344.34488
+  tps: 228.52974
   hps: 162.73233
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1318.23219
-  tps: 2687.31764
+  dps: 1318.31203
+  tps: 2687.45895
   hps: 270.45762
  }
 }
@@ -583,89 +583,89 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1299.72982
-  tps: 2643.41815
+  dps: 1299.78442
+  tps: 2643.5148
   hps: 268.60893
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1528.8565
-  tps: 1878.05026
+  dps: 1528.75925
+  tps: 1877.95301
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 1329.94075
-  tps: 1590.58837
+  dps: 1329.85818
+  tps: 1590.50579
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1521.58809
-  tps: 1869.57341
+  dps: 1521.49027
+  tps: 1869.47559
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2027.03823
-  tps: 4207.79263
+  dps: 2026.77276
+  tps: 4207.32274
   hps: 425.86314
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 1283.97731
-  tps: 1528.86038
+  dps: 1283.88934
+  tps: 1528.77242
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 2013.91313
-  tps: 4193.62967
+  dps: 2013.64777
+  tps: 4193.16
   hps: 413.07278
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1528.8565
-  tps: 1878.05026
+  dps: 1528.75925
+  tps: 1877.95301
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1682.95248
-  tps: 3541.25323
+  dps: 1682.71767
+  tps: 3540.83761
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1664.95344
-  tps: 3487.27028
+  dps: 1664.70649
+  tps: 3486.83317
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2024.87184
-  tps: 4207.79263
+  dps: 2024.60636
+  tps: 4207.32274
   hps: 425.86314
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 2038.12021
-  tps: 4226.45068
+  dps: 2037.85148
+  tps: 4225.97503
   hps: 417.42547
  }
 }
@@ -720,8 +720,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1987.54081
-  tps: 4131.37615
+  dps: 1987.43397
+  tps: 4131.18703
   hps: 408.2506
  }
 }
