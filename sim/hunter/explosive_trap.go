@@ -42,9 +42,6 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= hunter.trapRange()
-		},
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -72,6 +69,10 @@ func (hunter *Hunter) getExplosiveTrapConfig(rank int, timer *core.Timer) core.S
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if hunter.DistanceFromTarget > hunter.trapRange() {
+				return
+			}
+
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				curTarget := target
 				// Traps gain no benefit from hit bonuses except for the Trap Mastery talent, since this is a unique interaction this is my workaround
