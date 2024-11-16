@@ -431,3 +431,62 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 6 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetAvengersRadiance = core.NewItemSet(core.ItemSet{
+	Name: "Avenger's Radiance",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.OnSpellRegistered(func(spell *core.Spell) {
+				//"S03 - Item - TAQ - Paladin - Retribution 2P Bonus",
+				if spell.SpellCode == SpellCode_PaladinCrusaderStrike {
+					// 2 Set: Increases Crusader Strike Damage by 50%
+					spell.DamageMultiplier *= 1.5
+				}
+			})
+		},
+		4: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.OnSpellRegistered(func(spell *core.Spell) {
+				//"S03 - Item - TAQ - Paladin - Retribution 4P Bonus",
+				if spell.SpellCode == SpellCode_PaladinHolyWrath || spell.SpellCode == SpellCode_PaladinConsecration || spell.SpellCode == SpellCode_PaladinExorcism || spell.SpellCode == SpellCode_PaladinHolyShock || spell.SpellCode == SpellCode_PaladinHammerOfWrath {
+					// 4 Set: Increases the critical strike damage bonus of your Exorcism, Holy Wrath, Holy Shock, Hammer of Wrath, and Consecration by 60%.
+					spell.CritDamageBonus += 0.6
+				}
+			})
+		},
+	},
+})
+
+var ItemSetBattlegearOfEternalJustice = core.NewItemSet(core.ItemSet{
+	Name: "Battlegear of Eternal Justice",
+	Bonuses: map[int32]core.ApplyEffect{
+		3: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+
+			paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - RAQ - Paladin - Retribution 3P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					originalApplyEffects := paladin.crusaderStrike.ApplyEffects
+					extraApplyEffects := paladin.judgement.ApplyEffects
+
+					// Wrap the apply Crusader Strike ApplyEffects with more Effects
+					paladin.crusaderStrike.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						originalApplyEffects(sim, target, spell)
+						// 3 pieces: Crusader Strike now unleashes the judgement effect of your seals, but does not consume the seal
+						consumeSealsOnJudgeSaved := paladin.consumeSealsOnJudge // Save current value
+						paladin.consumeSealsOnJudge = false                     // Set to not consume seals
+						if paladin.currentSeal.IsActive() {
+							extraApplyEffects(sim, target, paladin.judgement)
+						}
+						paladin.consumeSealsOnJudge = consumeSealsOnJudgeSaved // Restore saved value
+					}
+				},
+			})
+		},
+	},
+})
