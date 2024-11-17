@@ -66,7 +66,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatBlockValue,
 		// Resistances
 		Stat.StatShadowResistance,
-		Stat.StatArcaneResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.

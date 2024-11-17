@@ -64,10 +64,12 @@ const statGroups = new Map<string, Array<Stat>>([
 		'Defense',
 		[
 			Stat.StatArmor,
+			Stat.StatBonusArmor,
 			Stat.StatDefense,
 			Stat.StatDodge,
 			Stat.StatParry,
 			Stat.StatBlock,
+			Stat.StatBlockValue,
 		]
 	],
 	[

@@ -60,6 +60,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		Stat.StatParry,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
+		// Resistances
+		Stat.StatShadowResistance,
 	],
 
 	defaults: {
