@@ -10,18 +10,19 @@ import (
 )
 
 const (
-	CraftOfTheShadows        = 227280
-	DukesDomain              = 227915
-	AccursedChalice          = 228078
-	GerminatingPoisonseed    = 228081
-	GloamingTreeheart        = 228083
-	WoodcarvedMoonstalker    = 228089
-	TheMoltenCore            = 228122
-	FistOfTheFiresworn       = 228139
-	BroodmothersBrooch       = 228163
-	TreantsBane              = 228486
-	FistOfTheFireswornMolten = 229374
-	StuddedTimbermawBrawlers = 227809
+	CraftOfTheShadows              = 227280
+	SkyridersMasterworkStormhammer = 227886
+	DukesDomain                    = 227915
+	AccursedChalice                = 228078
+	GerminatingPoisonseed          = 228081
+	GloamingTreeheart              = 228083
+	WoodcarvedMoonstalker          = 228089
+	TheMoltenCore                  = 228122
+	FistOfTheFiresworn             = 228139
+	BroodmothersBrooch             = 228163
+	TreantsBane                    = 228486
+	FistOfTheFireswornMolten       = 229374
+	StuddedTimbermawBrawlers       = 227809
 )
 
 func init() {
@@ -36,6 +37,62 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponCoHProcDamage(FistOfTheFiresworn, "Fist of the Firesworn", 1.0, 461896, core.SpellSchoolFire, 70, 0, 0.15, core.DefenseTypeMagic)
 	itemhelpers.CreateWeaponCoHProcDamage(FistOfTheFireswornMolten, "Fist of the Firesworn", 1.0, 461896, core.SpellSchoolFire, 70, 0, 0.15, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=227886/skyriders-masterwork-stormhammer
+	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
+	// Estimated based on data from WoW Armaments Discord
+	core.NewItemEffect(SkyridersMasterworkStormhammer, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		maxHits := int(min(3, character.Env.GetNumTargets()))
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 463946},
+			SpellSchool:      core.SpellSchoolNature,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			BonusCoefficient: 0.1,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for numHits := 0; numHits < maxHits; numHits++ {
+					spell.CalcAndDealDamage(sim, target, sim.Roll(105, 145), spell.OutcomeMagicHitAndCrit)
+					target = character.Env.NextTargetUnit(target)
+				}
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Chain Lightning (Skyrider's Masterwork Stormhammer Melee)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               4, // Someone in the armemnts Discord tested it out to 4 PPM
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, result.Target)
+			},
+		})
+
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Millisecond * 100,
+		}
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Chain Lightning (Skyrider's Masterwork Stormhammer Spell)",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: .1,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				if !icd.IsReady(sim) {
+					return
+				}
+				procSpell.Cast(sim, result.Target)
+				icd.Use(sim)
+			},
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=228486/treants-bane
 	// Equip: +75 Attack Power when fighting Elementals.
