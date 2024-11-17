@@ -3,7 +3,7 @@ import * as OtherInputs from '../core/components/other_inputs';
 import { Phase } from '../core/constants/other';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui';
 import { Player } from '../core/player';
-import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../core/proto/common';
+import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common';
 import { Stats } from '../core/proto_utils/stats';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils';
 import * as Presets from './presets';
@@ -17,7 +17,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
+		// Attributes
 		Stat.StatIntellect,
+		Stat.StatSpirit,
+		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatFirePower,
@@ -25,32 +28,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatTimeworn,
 		Stat.StatMP5,
-		// For Mental Dexterity support
-		Stat.StatStrength,
-		Stat.StatAttackPower,
-		Stat.StatFireResistance,
+	],
+	epPseudoStats: [
+		PseudoStat.TimewornBonus,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
+		// Primary
 		Stat.StatMana,
+		// Attributes
 		Stat.StatStamina,
 		Stat.StatIntellect,
+		Stat.StatSpirit,
+		// Spell
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
 		Stat.StatFirePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatTimeworn,
 		Stat.StatMP5,
-		Stat.StatStrength,
-		Stat.StatAttackPower,
-		Stat.StatFireResistance,
 	],
 
 	defaults: {

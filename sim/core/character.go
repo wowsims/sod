@@ -262,6 +262,12 @@ func (character *Character) applyEquipment() {
 	}
 	character.AddStats(character.EquipStats())
 	character.equipStatsApplied = true
+
+	for _, item := range character.Equipment {
+		if item.Timeworn {
+			character.PseudoStats.TimewornBonus += 1
+		}
+	}
 }
 
 func (character *Character) addUniversalStatDependencies() {

@@ -135,7 +135,6 @@ export const statOrder: Array<Stat> = [
 	Stat.StatMeleeHaste,
 	Stat.StatArmorPenetration,
 	Stat.StatExpertise,
-	Stat.StatTimeworn,
 	Stat.StatEnergy,
 	Stat.StatRage,
 	Stat.StatDefense,
@@ -165,7 +164,7 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatHolyPower, 'Holy Damage'],
 	[Stat.StatNaturePower, 'Nature Damage'],
 	[Stat.StatShadowPower, 'Shadow Damage'],
-	[Stat.StatMP5, 'MP5'],
+	[Stat.StatMP5, 'Mana Per 5 Sec'],
 	[Stat.StatSpellHit, 'Spell Hit'],
 	[Stat.StatSpellCrit, 'Spell Crit'],
 	[Stat.StatSpellHaste, 'Spell Haste'],
@@ -174,10 +173,9 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatFeralAttackPower, 'Feral AP'],
 	[Stat.StatMeleeHit, 'Melee Hit'],
 	[Stat.StatMeleeCrit, 'Melee Crit'],
-	[Stat.StatMeleeHaste, 'Melee Speed'],
+	[Stat.StatMeleeHaste, 'Attack Speed'],
 	[Stat.StatArmorPenetration, 'Armor Pen'],
 	[Stat.StatExpertise, 'Expertise'],
-	[Stat.StatTimeworn, 'Timeworn'],
 	[Stat.StatMana, 'Mana'],
 	[Stat.StatEnergy, 'Energy'],
 	[Stat.StatRage, 'Rage'],
@@ -209,16 +207,13 @@ export const pseudoStatNames: Map<PseudoStat, string> = new Map([
 	[PseudoStat.PseudoStatOffHandDps, 'Off Hand DPS'],
 	[PseudoStat.PseudoStatRangedDps, 'Ranged DPS'],
 	[PseudoStat.PseudoStatBlockValueMultiplier, 'Block Value Multiplier'],
+	[PseudoStat.TimewornBonus, 'Timeworn Pieces'],
 ]);
 
 export function getClassStatName(stat: Stat, playerClass: Class): string {
 	const statName = statNames.get(stat);
 	if (!statName) return 'UnknownStat';
-	if (playerClass == Class.ClassHunter) {
-		return statName.replace('Melee', 'Physical');
-	} else {
-		return statName;
-	}
+	return statName;
 }
 
 // TODO: Make sure BE exports the spell schools properly

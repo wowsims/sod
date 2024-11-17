@@ -109,7 +109,7 @@ func init() {
 // Increases the damage dealt by all of your damage over time spells by 2% per piece of Timeworn armor equipped.
 func TimewornDecayAura(agent core.Agent) {
 	character := agent.GetCharacter()
-	multiplier := 1 + 0.02*character.GetStat(stats.Timeworn)
+	multiplier := 1 + 0.02*float64(character.PseudoStats.TimewornBonus)
 
 	character.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode != 0 && len(spell.Dots()) > 0 {
@@ -122,7 +122,7 @@ func TimewornDecayAura(agent core.Agent) {
 // Reduces the chance for your attacks to be dodged or parried by 1% per piece of Timeworn armor equipped.
 func TimeswornExpertiseAura(agent core.Agent) {
 	character := agent.GetCharacter()
-	stats := stats.Stats{stats.Expertise: character.GetStat(stats.Timeworn) * core.ExpertiseRatingPerExpertiseChance}
+	stats := stats.Stats{stats.Expertise: float64(character.PseudoStats.TimewornBonus) * core.ExpertiseRatingPerExpertiseChance}
 
 	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 		ActionID:   core.ActionID{SpellID: 1214218},
@@ -149,7 +149,7 @@ func TimeswornExpertiseAura(agent core.Agent) {
 // Increases the effectiveness of your healing and shielding spells by 2% per piece of Timeworn armor equipped.
 func TimewornHealing(agent core.Agent) {
 	character := agent.GetCharacter()
-	healShieldMultiplier := 1 + 0.02*character.GetStat(stats.Timeworn)
+	healShieldMultiplier := 1 + 0.02*float64(character.PseudoStats.TimewornBonus)
 
 	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213405},
@@ -169,7 +169,7 @@ func TimewornHealing(agent core.Agent) {
 // Increases the effectiveness of your Fire damage spells by 3% per piece of Timeworn armor equipped.
 func TimeswornPyromancyAura(agent core.Agent) {
 	character := agent.GetCharacter()
-	fireMultiplier := 1 + 0.03*character.GetStat(stats.Timeworn)
+	fireMultiplier := 1 + 0.03*float64(character.PseudoStats.TimewornBonus)
 
 	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1215404},
@@ -187,7 +187,7 @@ func TimeswornPyromancyAura(agent core.Agent) {
 // Increases the casting speed of your spells by 2% per piece of Timeworn armor equipped.
 func TimeswornSpellAura(agent core.Agent) {
 	character := agent.GetCharacter()
-	castSpeedMultiplier := 1 / (1 - 0.02*character.GetStat(stats.Timeworn))
+	castSpeedMultiplier := 1 / (1 - 0.02*float64(character.PseudoStats.TimewornBonus))
 
 	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213398},
@@ -206,7 +206,7 @@ func TimeswornSpellAura(agent core.Agent) {
 // (100ms cooldown)
 func TimeswornStrikeAura(agent core.Agent) {
 	character := agent.GetCharacter()
-	procChance := character.Unit.GetStat(stats.Timeworn) * 0.01
+	procChance := float64(character.PseudoStats.TimewornBonus) * 0.01
 
 	timeStrikeSpell := character.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1213381},
