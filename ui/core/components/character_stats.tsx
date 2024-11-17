@@ -120,10 +120,6 @@ export class CharacterStats extends Component {
 
 			const body = <tbody></tbody>
 			filteredStats.forEach(stat => {
-				if (!statsSet.has(stat)) {
-					return
-				}
-
 				this.stats.push(stat)
 
 				const statName = getClassStatName(stat, player.getClass());
