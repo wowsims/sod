@@ -152,6 +152,8 @@ func (paladin *Paladin) Initialize() {
 	paladin.consumeSealsOnJudge = true
 
 	paladin.registerStopAttackMacros()
+
+	paladin.ResetCurrentPaladinAura()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {

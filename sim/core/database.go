@@ -65,6 +65,8 @@ type Item struct {
 	SetID        int32  // 0 if not part of a set.
 	WeaponSkills stats.WeaponSkills
 
+	Timeworn bool
+
 	// Modified for each instance of the item.
 	RandomSuffix RandomSuffix
 	Enchant      Enchant
@@ -92,6 +94,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		SetName:          pData.SetName,
 		SetID:            pData.SetId,
 		WeaponSkills:     stats.WeaponSkillsFloatArray(pData.WeaponSkills),
+		Timeworn:         pData.Timeworn,
 	}
 }
 

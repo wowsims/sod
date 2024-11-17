@@ -1,3 +1,5 @@
+import { PseudoStat, Stat } from "../proto/common";
+
 export enum Phase {
 	Phase1 = 1,
 	Phase2,
@@ -25,6 +27,19 @@ export const REPO_NAME = 'sod';
 const pathnameParts = window.location.pathname.split('/');
 const repoPartIdx = pathnameParts.findIndex(part => part == REPO_NAME);
 export const SPEC_DIRECTORY = repoPartIdx == -1 ? '' : pathnameParts[repoPartIdx + 1];
+
+export const GLOBAL_DISPLAY_STATS = [
+	Stat.StatHealth,
+	Stat.StatFireResistance,
+	Stat.StatFrostResistance,
+	Stat.StatNatureResistance,
+];
+
+export const GLOBAL_EP_STATS = [
+	Stat.StatFireResistance,
+	Stat.StatFrostResistance,
+	Stat.StatNatureResistance,
+];
 
 export enum SortDirection {
 	ASC,

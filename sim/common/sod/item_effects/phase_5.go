@@ -3,7 +3,6 @@ package item_effects
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
@@ -12,34 +11,18 @@ import (
 
 const (
 	Heartstriker                    = 230253
-	DrakeTalonCleaver               = 230271 // 19353
 	ClawOfChromaggus                = 230794
-	JekliksCrusher                  = 230911
-	ZulianSlicer                    = 230930
 	WillOfArlokk                    = 230939
-	HaldberdOfSmiting               = 230991
 	NatPaglesFishTerminator         = 231016
-	TigulesHarpoon                  = 231272
-	GrileksCarver                   = 231273
-	GrileksGrinder                  = 231274
 	BlazefuryRetributer             = 231275
-	PitchforkOfMadness              = 231277
 	Stormwrath                      = 231387
 	WrathOfWray                     = 231779
 	LightningsCell                  = 231784
 	Windstriker                     = 231817
-	GrileksCarverBloodied           = 231846
-	GrileksGrinderBloodied          = 231847
 	NatPaglesFishTerminatorBloodied = 231848
-	TigulesHarpoonBloodied          = 231849
 	WillOfArlokkBloodied            = 231850
-	JekliksCrusherBloodied          = 231861
 	BlazefuryRetributerBloodied     = 231862
-	PitchforkOfMadnessBloodied      = 231864
-	HaldberdOfSmitingBloodied       = 231870
-	ZulianSlicerBloodied            = 231876
 	ClawOfChromaggusShadowflame     = 232557
-	DrakeTalonCleaverShadowflame    = 232562
 )
 
 func init() {
@@ -69,74 +52,11 @@ func init() {
 		ClawOfChromaggusEffect(agent.GetCharacter())
 	})
 
-	// https://www.wowhead.com/classic/item=230271/drake-talon-cleaver
-	// Chance on hit: Delivers a fatal wound for 300 damage.
-	// Original proc rate 1.0 increased to approximately 1.60 in SoD phase 5
-	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
-	// https://www.wowhead.com/classic/item=232562/drake-talon-cleaver
-	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaverShadowflame, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
-
-	// https://www.wowhead.com/classic/item=231273/grileks-carver
-	// +141 Attack Power when fighting Dragonkin.
-	core.NewItemEffect(GrileksCarver, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.PseudoStats.MobTypeAttackPower += 141
-		}
-	})
-	core.NewItemEffect(GrileksCarverBloodied, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.PseudoStats.MobTypeAttackPower += 141
-		}
-	})
-
-	// https://www.wowhead.com/classic/item=231274/grileks-grinder
-	// +60 Attack Power when fighting Dragonkin.
-	core.NewItemEffect(GrileksGrinder, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.PseudoStats.MobTypeAttackPower += 60
-		}
-	})
-	core.NewItemEffect(GrileksGrinderBloodied, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.PseudoStats.MobTypeAttackPower += 60
-		}
-	})
-
-	// https://www.wowhead.com/classic/item=230991/halberd-of-smiting
-	// Equip: Chance to decapitate the target on a melee swing, causing 452 to 676 damage.
-	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmiting, "Halberd of Smiting", 2.1, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee)         // Works as phantom strike
-	itemhelpers.CreateWeaponEquipProcDamage(HaldberdOfSmitingBloodied, "Halberd of Smiting", 2.1, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee) // Works as phantom strike
-
-	// https://www.wowhead.com/classic/item=230911/jekliks-crusher
-	// Chance on hit: Wounds the target for 200 to 220 damage.
-	// Original proc rate 4.0 lowered to 1.5 in SoD phase 5
-	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 1.5, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
-	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusherBloodied, "Jeklik's Crusher", 1.5, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
-
 	// https://www.wowhead.com/classic/item=231016/nat-pagles-fish-terminator
 	// Chance on hit: Zap nearby enemies dealing 175 to 225 damage to them. Will affect up to 4 targets.
 	core.NewItemEffect(NatPaglesFishTerminator, fishTerminatorEffect)
 	// https://www.wowhead.com/classic/item=231848/nat-pagles-fish-terminator
 	core.NewItemEffect(NatPaglesFishTerminatorBloodied, fishTerminatorEffect)
-
-	// https://www.wowhead.com/classic/item=231277/pitchfork-of-madness
-	// +141 Attack Power when fighting Demons.
-	core.NewItemEffect(PitchforkOfMadness, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.PseudoStats.MobTypeAttackPower += 141
-		}
-	})
-	core.NewItemEffect(PitchforkOfMadnessBloodied, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.PseudoStats.MobTypeAttackPower += 141
-		}
-	})
 
 	// https://www.wowhead.com/classic/item=231387/stormwrath-sanctified-shortblade-of-the-galefinder
 	// Equip: Damaging non-periodic spells have a chance to blast up to 3 targets for 181 to 229.
@@ -181,21 +101,6 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic/item=231272/tigules-harpoon
-	// +99 Attack Power when fighting Beasts.
-	core.NewItemEffect(TigulesHarpoon, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
-			character.PseudoStats.MobTypeAttackPower += 99
-		}
-	})
-	core.NewItemEffect(TigulesHarpoonBloodied, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
-			character.PseudoStats.MobTypeAttackPower += 99
-		}
-	})
-
 	// https://www.wowhead.com/classic/item=230939/will-of-arlokk
 	// Use: Calls forth a charmed snake to worship you, increasing your Spirit by 200 for 20 sec. (2 Min Cooldown)
 	core.NewItemEffect(WillOfArlokk, func(agent core.Agent) {
@@ -226,11 +131,6 @@ func init() {
 			},
 		})
 	})
-
-	// https://www.wowhead.com/classic/item=230930/zulian-slicer
-	// Chance on hit: Slices the enemy for 72 to 96 Nature damage.
-	itemhelpers.CreateWeaponCoHProcDamage(ZulianSlicer, "Zulian Slicer", 1.2, 467738, core.SpellSchoolNature, 72, 24, 0.35, core.DefenseTypeMelee)
-	itemhelpers.CreateWeaponCoHProcDamage(ZulianSlicerBloodied, "Zulian Slicer", 1.2, 467738, core.SpellSchoolNature, 72, 24, 0.35, core.DefenseTypeMelee)
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets

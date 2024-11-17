@@ -409,14 +409,14 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 		// Increases Wyvern Strike DoT by 50%
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			if !hunter.HasRune(proto.HunterRune_RuneBootsWyvernStrike) {
+			if !hunter.Talents.WyvernSting || !hunter.HasRune(proto.HunterRune_RuneBootsWyvernStrike) {
 				return
 			}
 
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Prowess 2P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.WyvernStrike.DoTDamageMultiplier *= 1.50
+					hunter.WyvernStrike.PeriodicDamageMultiplier *= 1.50
 				},
 			})
 		},

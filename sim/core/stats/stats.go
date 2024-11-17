@@ -434,6 +434,9 @@ type PseudoStats struct {
 	DamageDealtMultiplier       float64                   // All damage
 	SchoolDamageDealtMultiplier SchoolValueArray[float64] // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
 
+	HealingDealtMultiplier float64 // All healing
+	ShieldDealtMultiplier  float64 // Increases the effectiveness of your shielding spells.
+
 	// Important when unit is attacker or target
 	BlockValueMultiplier float64
 
@@ -464,6 +467,9 @@ type PseudoStats struct {
 	// Special Feral Weapon Skill
 	FeralCombatEnabled bool
 	FeralCombatSkill   float64
+
+	// Tracks the number of Timeworn items equipped for Bronze Signet bonuses
+	TimewornBonus int32
 
 	///////////////////////////////////////////////////
 	// Effects that apply when this unit is the target.
@@ -517,6 +523,9 @@ func NewPseudoStats() PseudoStats {
 
 		DamageDealtMultiplier:       1,
 		SchoolDamageDealtMultiplier: NewSchoolValueArray(1.0),
+
+		HealingDealtMultiplier: 1,
+		ShieldDealtMultiplier:  1,
 
 		BlockValueMultiplier:  1,
 		BlockValuePerStrength: 0,

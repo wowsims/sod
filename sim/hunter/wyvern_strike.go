@@ -43,12 +43,12 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 			return hunter.MainHand().HandType == proto.HandType_HandTypeTwoHand && hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
-		CritDamageBonus:  hunter.mortalShots(),
-		DamageMultiplier: 1,
-		DoTDamageMultiplier: 1,
-		ImpactDamageMultiplier: 1,
-		BonusCoefficient: 1,
-		ThreatMultiplier: 1,
+		CritDamageBonus:          hunter.mortalShots(),
+		DamageMultiplier:         1,
+		PeriodicDamageMultiplier: 1,
+		ImpactDamageMultiplier:   1,
+		BonusCoefficient:         1,
+		ThreatMultiplier:         1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

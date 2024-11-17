@@ -255,6 +255,7 @@ func (item WowheadItemResponse) GetStats() Stats {
 	sp := float64(item.GetIntValue(spellPowerRegex)) + float64(item.GetIntValue(spellPowerRegex2)) + float64(item.GetIntValue(spellPowerRegex3))
 	baseAP := float64(item.GetIntValue(attackPowerRegex)) + float64(item.GetIntValue(attackPowerRegex2))
 	armor, bonusArmor := item.GetArmorValues()
+
 	return Stats{
 		proto.Stat_StatArmor:             float64(armor),
 		proto.Stat_StatBonusArmor:        float64(bonusArmor),
@@ -687,6 +688,7 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		Quality:       proto.ItemQuality(item.GetQuality()),
 		Unique:        item.GetUnique(),
 		Heroic:        item.IsHeroic(),
+		Timeworn:      item.IsTimeworn(),
 
 		RequiredProfession: item.GetRequiredProfession(),
 		SetName:            item.GetItemSetName(),
@@ -739,6 +741,12 @@ func (item WowheadItemResponse) GetItemSetName() string {
 
 func (item WowheadItemResponse) IsHeroic() bool {
 	return strings.Contains(item.Tooltip, "<span class=\"q2\">Heroic</span>")
+}
+
+var timewornRegexp = regexp.MustCompile(`<span style=\"color: #[0-9A-F]{6}\">Timeworn<\/span>`)
+
+func (item WowheadItemResponse) IsTimeworn() bool {
+	return timewornRegexp.MatchString(item.Tooltip)
 }
 
 func (item WowheadItemResponse) GetRequiredProfession() proto.Profession {

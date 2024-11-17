@@ -62,8 +62,6 @@ const (
 	SulfuronHammer                  = 227684 // 17193
 	TemperedBlackAmnesty            = 227832 // 19166
 	EbonFist                        = 227842
-	ReavingNightfall                = 227843
-	SkyridersMasterworkStormhammer  = 227886
 	HardenedFrostguard              = 227887
 	FlameWrath                      = 227934 // 11809
 	LordGeneralsSword               = 227940 // 11817
@@ -113,10 +111,27 @@ const (
 	EskhandarsRightClawMolten       = 229379
 	Thunderfury                     = 230224 // 19019
 	TheUntamedBlade                 = 230242 // 19334
+	DrakeTalonCleaver               = 230271 // 19353
+	JekliksCrusher                  = 230911 // 19918
+	ZulianSlicer                    = 230930 // 19901
+	HalberdOfSmiting                = 230991 // 19874
 	NatPaglesBrokenReel             = 231271 // 19947
+	TigulesHarpoon                  = 231272 // 19946
+	GrileksCarver                   = 231273 // 19962
+	GrileksGrinder                  = 231274 // 19961
+	PitchforkOfMadness              = 231277 // 19963
+	GrileksCarverBloodied           = 231846
+	GrileksGrinderBloodied          = 231847
+	TigulesHarpoonBloodied          = 231849
+	JekliksCrusherBloodied          = 231861
+	PitchforkOfMadnessBloodied      = 231864
+	HalberdOfSmitingBloodied        = 231870
+	ZulianSlicerBloodied            = 231876
+	DrakeTalonCleaverShadowflame    = 232562
 	TheUntamedBladeShadowflame      = 232566
 	ScarabBrooch                    = 233601 // 21625
 	KalimdorsRevenge                = 233621
+	JomGabbar                       = 233627 // 23570
 	NeretzekBloodDrinker            = 233647
 	Speedstone                      = 233990
 	ManslayerOfTheQiraji            = 234067
@@ -473,6 +488,13 @@ func init() {
 	// https://www.wowhead.com/classic/item=17068/deathbringer
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 110 to 140 Shadow damage.
 	itemhelpers.CreateWeaponCoHProcDamage(Deathbringer, "Deathbringer", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=230271/drake-talon-cleaver
+	// Chance on hit: Delivers a fatal wound for 300 damage.
+	// Original proc rate 1.0 increased to approximately 1.60 in SoD phase 5
+	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
+	// https://www.wowhead.com/classic/item=232562/drake-talon-cleaver
+	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaverShadowflame, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
 
 	// https://www.wowhead.com/classic/item=228410/dreadblade-of-the-destructor
 	// https://www.wowhead.com/classic/item=228498/dreadblade-of-the-destructor
@@ -924,6 +946,36 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=231273/grileks-carver
+	// +141 Attack Power when fighting Dragonkin.
+	core.NewItemEffect(GrileksCarver, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
+			character.PseudoStats.MobTypeAttackPower += 141
+		}
+	})
+	core.NewItemEffect(GrileksCarverBloodied, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
+			character.PseudoStats.MobTypeAttackPower += 141
+		}
+	})
+
+	// https://www.wowhead.com/classic/item=231274/grileks-grinder
+	// +60 Attack Power when fighting Dragonkin.
+	core.NewItemEffect(GrileksGrinder, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
+			character.PseudoStats.MobTypeAttackPower += 60
+		}
+	})
+	core.NewItemEffect(GrileksGrinderBloodied, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
+			character.PseudoStats.MobTypeAttackPower += 60
+		}
+	})
+
 	itemhelpers.CreateWeaponCoHProcDamage(GryphonRidersStormhammer, "Gryphon Rider's Stormhammer", 1.0, 18081, core.SpellSchoolNature, 91, 34, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=228267/gutgore-ripper
@@ -963,6 +1015,11 @@ func init() {
 	})
 
 	itemhelpers.CreateWeaponCoHProcDamage(GutRipper, "Gut Ripper", 1.0, 18107, core.SpellSchoolPhysical, 95, 26, 0, core.DefenseTypeMelee)
+
+	// https://www.wowhead.com/classic/item=230991/halberd-of-smiting
+	// Equip: Chance to decapitate the target on a melee swing, causing 452 to 676 damage.
+	itemhelpers.CreateWeaponEquipProcDamage(HalberdOfSmiting, "Halberd of Smiting", 2.1, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee)         // Works as phantom strike
+	itemhelpers.CreateWeaponEquipProcDamage(HalberdOfSmitingBloodied, "Halberd of Smiting", 2.1, 467819, core.SpellSchoolPhysical, 452, 224, 0.0, core.DefenseTypeMelee) // Works as phantom strike
 
 	itemhelpers.CreateWeaponCoHProcDamage(HammerOfTheNorthernWind, "Hammer of the Northern Wind", 3.5, 13439, core.SpellSchoolFrost, 20, 10, 0, core.DefenseTypeMagic)
 
@@ -1141,6 +1198,12 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=230911/jekliks-crusher
+	// Chance on hit: Wounds the target for 200 to 220 damage.
+	// Original proc rate 4.0 lowered to 1.5 in SoD phase 5
+	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusher, "Jeklik's Crusher", 1.5, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(JekliksCrusherBloodied, "Jeklik's Crusher", 1.5, 467642, core.SpellSchoolPhysical, 200, 20, 0.0, core.DefenseTypeMelee)
+
 	itemhelpers.CreateWeaponCoHProcDamage(JoonhosMercy, "Joonho's Mercy", 1.0, 20883, core.SpellSchoolArcane, 70, 0, 0, core.DefenseTypeMagic)
 
 	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevenge, "Kalimdor's Revenge", 1.25, 1213355, core.SpellSchoolNature, 339, 138, 0, core.DefenseTypeMagic)            // TODO Update PPM/scaling from PTR
@@ -1226,7 +1289,7 @@ func init() {
 			ThreatMultiplier: 1,
 			BonusCoefficient: 1.0, /// TBD - Best guess based on similarity to shadowstrike
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, sim.Roll(180, 220), spell.OutcomeMagicHit)
+				result := spell.CalcAndDealDamage(sim, target, sim.Roll(171, 193), spell.OutcomeMagicHit)
 				character.GainHealth(sim, result.Damage, healthMetrics)
 			},
 		})
@@ -1246,7 +1309,7 @@ func init() {
 			ThreatMultiplier: 1,
 			BonusCoefficient: 1.0, // TBD - Best guess based on similarity to shadowstrike
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, sim.Roll(180, 220), spell.OutcomeMagicHit)
+				result := spell.CalcAndDealDamage(sim, target, sim.Roll(171, 193), spell.OutcomeMagicHit)
 				character.GainHealth(sim, result.Damage, healthMetrics)
 			},
 		})
@@ -1274,6 +1337,21 @@ func init() {
 	// Chance on hit: Blasts a target for 98 to 122 Fire damage.
 	itemhelpers.CreateWeaponCoHProcDamage(PerditionsBlade, "Perdition's Blade", 2.8, 461695, core.SpellSchoolFire, 98, 24, 0, core.DefenseTypeMagic)
 	itemhelpers.CreateWeaponCoHProcDamage(PerditionsBladeMolten, "Perdition's Blade", 2.8, 461695, core.SpellSchoolFire, 98, 24, 0, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=231277/pitchfork-of-madness
+	// +141 Attack Power when fighting Demons.
+	core.NewItemEffect(PitchforkOfMadness, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+			character.PseudoStats.MobTypeAttackPower += 141
+		}
+	})
+	core.NewItemEffect(PitchforkOfMadnessBloodied, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
+			character.PseudoStats.MobTypeAttackPower += 141
+		}
+	})
 
 	// https://www.wowhead.com/classic/item=228679/quelserrar
 	// Chance on hit: When active, grants the wielder 25 defense and 300 armor for 10 sec.
@@ -1414,12 +1492,6 @@ func init() {
 			},
 		})
 	})
-
-	// https://www.wowhead.com/classic/item=227843/reaving-nightfall
-	// Removed from SoD
-	// core.NewItemEffect(ReavingNightfall, func(agent core.Agent) {
-	// 	makeNightfallProc(agent.GetCharacter(), "Reaving Nightfall")
-	// })
 
 	itemhelpers.CreateWeaponCoHProcDamage(SatyrsLash, "Satyr's Lash", 1.0, 18205, core.SpellSchoolShadow, 55, 30, 0, core.DefenseTypeMagic)
 
@@ -1571,62 +1643,6 @@ func init() {
 			ThreatMultiplier: 1,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.Dot(target).Apply(sim)
-			},
-		})
-	})
-
-	// https://www.wowhead.com/classic/item=227886/skyriders-masterwork-stormhammer
-	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
-	// Estimated based on data from WoW Armaments Discord
-	core.NewItemEffect(SkyridersMasterworkStormhammer, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		maxHits := int(min(3, character.Env.GetNumTargets()))
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: 463946},
-			SpellSchool:      core.SpellSchoolNature,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
-			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-			BonusCoefficient: 0.1,
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				for numHits := 0; numHits < maxHits; numHits++ {
-					spell.CalcAndDealDamage(sim, target, sim.Roll(105, 145), spell.OutcomeMagicHitAndCrit)
-					target = character.Env.NextTargetUnit(target)
-				}
-			},
-		})
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Chain Lightning (Skyrider's Masterwork Stormhammer Melee)",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			ProcMask:          core.ProcMaskMelee,
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               4, // Someone in the armemnts Discord tested it out to 4 PPM
-			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
-				procSpell.Cast(sim, result.Target)
-			},
-		})
-
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Millisecond * 100,
-		}
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Chain Lightning (Skyrider's Masterwork Stormhammer Spell)",
-			Callback:   core.CallbackOnSpellHitDealt,
-			Outcome:    core.OutcomeLanded,
-			ProcMask:   core.ProcMaskSpellDamage,
-			ProcChance: .1,
-			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
-				if !icd.IsReady(sim) {
-					return
-				}
-				procSpell.Cast(sim, result.Target)
-				icd.Use(sim)
 			},
 		})
 	})
@@ -2102,6 +2118,21 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=231272/tigules-harpoon
+	// +99 Attack Power when fighting Beasts.
+	core.NewItemEffect(TigulesHarpoon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
+			character.PseudoStats.MobTypeAttackPower += 99
+		}
+	})
+	core.NewItemEffect(TigulesHarpoonBloodied, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
+			character.PseudoStats.MobTypeAttackPower += 99
+		}
+	})
+
 	// https://www.wowhead.com/classic/item=228347/typhoon
 	// Chance on hit: Grants an extra attack on your next swing.
 	// TODO: Proc rate assumed and needs testing
@@ -2180,6 +2211,11 @@ func init() {
 			},
 		})
 	})
+
+	// https://www.wowhead.com/classic/item=230930/zulian-slicer
+	// Chance on hit: Slices the enemy for 72 to 96 Nature damage.
+	itemhelpers.CreateWeaponCoHProcDamage(ZulianSlicer, "Zulian Slicer", 1.2, 467738, core.SpellSchoolNature, 72, 24, 0.35, core.DefenseTypeMelee)
+	itemhelpers.CreateWeaponCoHProcDamage(ZulianSlicerBloodied, "Zulian Slicer", 1.2, 467738, core.SpellSchoolNature, 72, 24, 0.35, core.DefenseTypeMelee)
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
@@ -2335,7 +2371,8 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=234462/earthstrike
 	// Use: Increases your melee and ranged attack power by 328.  Effect lasts for 20 sec. (2 Min Cooldown)
-	core.NewSimpleStatOffensiveTrinketEffect(Earthstrike, stats.Stats{stats.AttackPower: 328}, time.Second*20, time.Minute*2)
+
+	core.NewSimpleStatOffensiveTrinketEffect(Earthstrike, stats.Stats{stats.AttackPower: 328, stats.RangedAttackPower: 328}, time.Second*20, time.Second*120)
 
 	// https://www.wowhead.com/classic/item=228293/essence-of-the-pure-flame
 	// Equip: When struck in combat inflicts 50 Fire damage to the attacker.
@@ -2454,6 +2491,61 @@ func init() {
 			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 				spell.Cast(sim, result.Target)
 			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=233627/jom-gabbar
+	// Use: Increases attack power by 70 and an additional 70 every 2 sec.  Lasts 20 sec. (2 Min Cooldown)
+	core.NewItemEffect(JomGabbar, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 1213366}
+		duration := time.Second * 20
+		bonusPerStack := stats.Stats{
+			stats.AttackPower:       70,
+			stats.RangedAttackPower: 70,
+		}
+
+		jomGabbarAura := character.GetOrRegisterAura(core.Aura{
+			Label:     "Jom Gabbar",
+			ActionID:  actionID,
+			Duration:  duration,
+			MaxStacks: 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:          time.Second * 2,
+					NumTicks:        10,
+					Priority:        core.ActionPriorityAuto,
+					TickImmediately: true,
+					OnAction: func(sim *core.Simulation) {
+						aura.AddStack(sim)
+					},
+				})
+			},
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				bonusStats := bonusPerStack.Multiply(float64(newStacks - oldStacks))
+				character.AddStatsDynamic(sim, bonusStats)
+			},
+		})
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				jomGabbarAura.Activate(sim)
+			},
+		})
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
 		})
 	})
 

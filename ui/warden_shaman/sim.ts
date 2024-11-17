@@ -18,13 +18,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
+		// Primary
+		Stat.StatHealth,
+		// Attributes
+		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatAgility,
 		Stat.StatStrength,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatExpertise,
+		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatFirePower,
@@ -33,10 +39,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 		Stat.StatSpellHit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
-
-		// Tank Stats
-		Stat.StatHealth,
-		Stat.StatStamina,
+		// Defense
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
@@ -50,24 +53,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
+		// Primary
 		Stat.StatMana,
+		// Attributes
+		Stat.StatStamina,
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatIntellect,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
+		// Spell
 		Stat.StatSpellDamage,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
-
-		// Tank Stats
-		Stat.StatHealth,
-		Stat.StatStamina,
+		// Defense
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
@@ -75,10 +80,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 		Stat.StatBlockValue,
 		Stat.StatParry,
 		Stat.StatDodge,
-		Stat.StatFireResistance,
-		Stat.StatNatureResistance,
+		// Resistances
 		Stat.StatShadowResistance,
-		Stat.StatFrostResistance,
 	],
 
 	defaults: {

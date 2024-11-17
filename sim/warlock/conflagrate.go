@@ -22,6 +22,7 @@ func (warlock *Warlock) getConflagrateConfig(rank int) core.SpellConfig {
 	spCoeff := 0.429
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_WarlockConflagrate,
 		ActionID:      core.ActionID{SpellID: spellId},
 		SpellSchool:   core.SpellSchoolFire,
 		DefenseType:   core.DefenseTypeMagic,
