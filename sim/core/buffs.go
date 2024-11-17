@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"math"
 	"time"
 
@@ -1919,8 +1918,6 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 	spellID := []int32{0, 8075, 8160, 8161, 10442, 25361}[rank]
 	duration := time.Minute * 2
 	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier).Floor()
-
-	fmt.Println(updateStats)
 
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Strength of Earth Totem",
