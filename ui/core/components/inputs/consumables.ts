@@ -1025,7 +1025,7 @@ export const EnchantedRepellent = (slot: ItemSlot): ConsumableInputConfig<Weapon
 		value: WeaponImbue.EnchantedRepellent,
 		showWhen: player => {
 			const weapon = player.getEquippedItem(slot);
-			return !weapon || isWeapon(weapon.item.weaponType);
+			return !weapon || weapon.item.weaponType != WeaponType.WeaponTypeOffHand;
 		},
 	};
 };

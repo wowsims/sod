@@ -1482,8 +1482,8 @@
 {"effectId":63,"spellId":13538,"name":"Enchant Chest - Lesser Absorption","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":66,"spellId":7457,"name":"Enchant Bracer - Minor Stamina","type":6,"stats":[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":66,"spellId":7863,"name":"Enchant Boots - Minor Stamina","type":10,"stats":[0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
-{"effectId":241,"spellId":13503,"name":"Enchant Weapon - Lesser Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":241,"spellId":7745,"name":"Enchant 2H Weapon - Minor Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":241,"spellId":13503,"name":"Enchant Weapon - Lesser Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":242,"spellId":7748,"name":"Enchant Chest - Lesser Health","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0,0,0,0,0],"quality":1},
 {"effectId":243,"spellId":7766,"name":"Enchant Bracer - Minor Spirit","type":6,"stats":[0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":246,"spellId":7776,"name":"Enchant Chest - Lesser Mana","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
@@ -1658,7 +1658,8 @@
 {"effectId":7645,"spellId":1213616,"name":"Enchant Chest - Living Stats","type":5,"stats":[4,4,4,4,4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,15,0,0,0,0,0],"quality":3},
 {"effectId":7646,"spellId":1213622,"name":"Enchant Gloves - Holy Power","type":7,"stats":[0,0,0,0,0,0,0,0,0,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
 {"effectId":7647,"spellId":1213626,"name":"Enchant Gloves - Arcane Power","type":7,"stats":[0,0,0,0,0,0,20,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
-{"effectId":7648,"itemId":233802,"spellId":1213829,"name":"Glowing Chitin Armor Kit","type":5,"extraTypes":[9,7,10],"enchantType":3,"stats":[0,0,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,10,0,0],"quality":3}
+{"effectId":7648,"itemId":233802,"spellId":1213829,"name":"Glowing Chitin Armor Kit","type":5,"extraTypes":[9,7,10],"enchantType":3,"stats":[0,0,0,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
+{"effectId":7649,"itemId":233803,"spellId":1213519,"name":"Sharpened Chitin Armor Kit","type":5,"extraTypes":[9,7,10],"enchantType":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3}
 ],
 "runes":[
 {"id":29787,"name":"Engrave Belt - Focused Rage","icon":"ability_warrior_focusedrage","type":8,"requiresLevel":1,"classAllowlist":[9]},
