@@ -19,28 +19,48 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
-		Stat.StatIntellect,
+		// Primary
+		Stat.StatHealth,
+		Stat.StatMana,
+		// Attributes
+		Stat.StatStrength,
 		Stat.StatStamina,
+		Stat.StatIntellect,
 		Stat.StatSpirit,
+		Stat.StatAgility,
+		// Physical
+		Stat.StatAttackPower,
+		Stat.StatMeleeCrit,
+		Stat.StatMeleeHit,
+		Stat.StatMeleeHaste,
+		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
-		Stat.StatFirePower,
-		Stat.StatShadowPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
+		Stat.StatFirePower,
+		Stat.StatShadowPower,
 		Stat.StatMP5,
-		Stat.StatFireResistance,
 	],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
+		// Primary
 		Stat.StatMana,
+		// Attributes
+		Stat.StatStrength,
+		Stat.StatAgility,
 		Stat.StatIntellect,
 		Stat.StatStamina,
 		Stat.StatSpirit,
+		// Physical
+		Stat.StatAttackPower,
+		Stat.StatMeleeCrit,
+		Stat.StatMeleeHit,
+		Stat.StatMeleeHaste,
+		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatFirePower,
@@ -49,7 +69,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
-		Stat.StatFireResistance,
 	],
 	// TODO: Figure out a way to get the stat but right now this comes out wrong
 	// due to pet scaling and player getting some dynamic buffs which we cant get here

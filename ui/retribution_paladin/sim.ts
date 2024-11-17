@@ -36,43 +36,51 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	],
 	// All stats for which EP should be calculated.
 	epStats: [
+		// Attributes
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatIntellect,
-		Stat.StatMP5,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatExpertise,
+		// Spell
 		Stat.StatSpellPower,
 		Stat.StatHolyPower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
 		Stat.StatSpellHaste,
-		Stat.StatFireResistance,
+		Stat.StatMP5,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier, PseudoStat.TimewornBonus],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+		PseudoStat.TimewornBonus
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
+		// Primary
+		Stat.StatMana,
+		// Attributes
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatIntellect,
-		Stat.StatMP5,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
+		// Spell
 		Stat.StatSpellHaste,
 		Stat.StatSpellPower,
 		Stat.StatHolyPower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
-		Stat.StatMana,
-		Stat.StatHealth,
-		Stat.StatFireResistance,
+		Stat.StatMP5,
 	],
 
 	defaults: {

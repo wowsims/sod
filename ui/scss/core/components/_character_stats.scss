@@ -10,15 +10,25 @@
 
 	.character-stats-table {
 		width: 100%;
+		border-bottom: $border-default;
 
 		.character-stats-table-row {
-			border-top: $border-default;
 			font-size: var(--content-font-size);
+
+			&:first-child {
+				border-top: $border-default;
+			}
+
+			&:last-child {
+				.character-stats-table-label,
+				.character-stats-table-value {
+					padding-bottom: var(--spacer-2);
+				}
+			}
 
 			.character-stats-table-label,
 			.character-stats-table-value {
 				padding-top: var(--spacer-2);
-				padding-bottom: var(--spacer-2);
 			}
 
 			.character-stats-table-label {

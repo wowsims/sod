@@ -17,7 +17,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
+		// Attributes
 		Stat.StatIntellect,
+		Stat.StatSpirit,
+		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatFirePower,
@@ -26,10 +29,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
-		// For Mental Dexterity support
-		Stat.StatStrength,
-		Stat.StatAttackPower,
-		Stat.StatFireResistance,
 	],
 	epPseudoStats: [
 		PseudoStat.TimewornBonus,
@@ -38,10 +37,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
+		// Primary
 		Stat.StatMana,
+		// Attributes
 		Stat.StatStamina,
 		Stat.StatIntellect,
+		Stat.StatSpirit,
+		// Spell
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
 		Stat.StatFirePower,
@@ -49,9 +51,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
-		Stat.StatStrength,
-		Stat.StatAttackPower,
-		Stat.StatFireResistance,
 	],
 
 	defaults: {
