@@ -369,6 +369,10 @@ func (mage *Mage) registerArcanePowerCD() {
 }
 
 func (mage *Mage) applyImprovedScorch() {
+	if mage.Talents.ImprovedScorch == 0 {
+		return
+	}
+
 	mage.ImprovedScorchAuras = mage.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		return core.ImprovedScorchAura(unit)
 	})

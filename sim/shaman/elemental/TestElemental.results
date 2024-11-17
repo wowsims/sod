@@ -1,7 +1,7 @@
 character_stats_results: {
  key: "TestElemental-Phase1-Lvl25-CharacterStats-Default"
  value: {
-  final_stats: 83.93
+  final_stats: 81.4
   final_stats: 44
   final_stats: 152.9
   final_stats: 136.4
@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 8.05608
   final_stats: 0
   final_stats: 10
-  final_stats: 348.86
+  final_stats: 343.8
   final_stats: 1
   final_stats: 7.9724
   final_stats: 0
@@ -50,7 +50,7 @@ character_stats_results: {
 character_stats_results: {
  key: "TestElemental-Phase2-Lvl40-CharacterStats-Default"
  value: {
-  final_stats: 133.21
+  final_stats: 128.7
   final_stats: 59.4
   final_stats: 244.2
   final_stats: 204.6
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 14.66052
   final_stats: 0
   final_stats: 0
-  final_stats: 562.42
+  final_stats: 553.4
   final_stats: 4
   final_stats: 8.95898
   final_stats: 0
@@ -99,8 +99,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestElemental-Phase3-Lvl50-CharacterStats-Default"
  value: {
-  final_stats: 200.55816
-  final_stats: 154.41624
+  final_stats: 199.584
+  final_stats: 153.252
   final_stats: 358.776
   final_stats: 313.632
   final_stats: 196.02
@@ -116,21 +116,21 @@ character_stats_results: {
   final_stats: 26.82355
   final_stats: 0
   final_stats: 0
-  final_stats: 806.55632
+  final_stats: 811.168
   final_stats: 4
-  final_stats: 30.72977
+  final_stats: 30.89512
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 5963.454
   final_stats: 0
   final_stats: 0
-  final_stats: 2041.99248
+  final_stats: 2047.504
   final_stats: 310
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 10.72977
+  final_stats: 10.89512
   final_stats: 5
   final_stats: 0
   final_stats: 4354.76
@@ -148,8 +148,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestElemental-Phase4-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 239.58
-  final_stats: 207.68
+  final_stats: 229.9
+  final_stats: 198
   final_stats: 495.88
   final_stats: 366.3
   final_stats: 193.6
@@ -165,21 +165,21 @@ character_stats_results: {
   final_stats: 35.49047
   final_stats: 0
   final_stats: 0
-  final_stats: 1409.16
+  final_stats: 1389.8
   final_stats: 8
-  final_stats: 31.25014
+  final_stats: 30.7584
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 6734.5
   final_stats: 0
   final_stats: 0
-  final_stats: 5530.36
+  final_stats: 5511
   final_stats: 740
   final_stats: 0
   final_stats: 5
   final_stats: 45
-  final_stats: 12.25014
+  final_stats: 11.7584
   final_stats: 5
   final_stats: 0
   final_stats: 6501.8
@@ -197,8 +197,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestElemental-Phase5-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 258.819
-  final_stats: 222.134
+  final_stats: 264.385
+  final_stats: 227.7
   final_stats: 640.09
   final_stats: 478.17
   final_stats: 246.675
@@ -214,21 +214,21 @@ character_stats_results: {
   final_stats: 40.38107
   final_stats: 0
   final_stats: 0
-  final_stats: 1421.238
+  final_stats: 1458.77
   final_stats: 9
-  final_stats: 33.31385
+  final_stats: 34.26716
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 8412.55
   final_stats: 0
   final_stats: 0
-  final_stats: 6306.868
+  final_stats: 6344.4
   final_stats: 740
   final_stats: 0
   final_stats: 5
   final_stats: 55
-  final_stats: 12.31385
+  final_stats: 13.26716
   final_stats: 5
   final_stats: 0
   final_stats: 7943.9
@@ -298,7 +298,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.0995
+  weights: 1.10038
   weights: 0
   weights: 0.87591
   weights: 0
@@ -308,7 +308,7 @@ stat_weights_results: {
   weights: 0.61065
   weights: 0
   weights: 0
-  weights: 7.52003
+  weights: 7.52092
   weights: 3.32702
   weights: 0
   weights: 0
@@ -357,7 +357,7 @@ stat_weights_results: {
   weights: 0.78342
   weights: 0
   weights: 0
-  weights: 12.23436
+  weights: 12.2343
   weights: 8.89473
   weights: 0
   weights: 0
@@ -396,7 +396,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.17513
+  weights: 3.17515
   weights: 0
   weights: 1.731
   weights: 0
@@ -406,8 +406,8 @@ stat_weights_results: {
   weights: 1.1863
   weights: 0
   weights: 0
-  weights: 33.64471
-  weights: 17.59619
+  weights: 33.64668
+  weights: 17.59018
   weights: 0
   weights: 0
   weights: 0
@@ -491,8 +491,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestElemental-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 197.0368
-  tps: 157.08202
+  dps: 196.97893
+  tps: 157.02415
  }
 }
 dps_results: {
@@ -582,15 +582,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 194.60071
-  tps: 155.58613
+  dps: 194.54578
+  tps: 155.53119
  }
 }
 dps_results: {
  key: "TestElemental-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 625.31624
-  tps: 525.02289
+  dps: 625.19519
+  tps: 524.90113
  }
 }
 dps_results: {
@@ -680,15 +680,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 624.30514
-  tps: 527.08711
+  dps: 624.19466
+  tps: 526.976
  }
 }
 dps_results: {
  key: "TestElemental-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1692.68942
-  tps: 1457.10111
+  dps: 1692.70188
+  tps: 1457.11365
  }
 }
 dps_results: {
@@ -778,78 +778,78 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1671.43769
-  tps: 1443.15279
+  dps: 1671.44553
+  tps: 1443.16068
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1424.11016
-  tps: 1489.28652
+  dps: 1424.0717
+  tps: 1489.24805
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1422.90038
-  tps: 1488.08509
+  dps: 1422.86192
+  tps: 1488.04662
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1550.51329
-  tps: 1613.24835
+  dps: 1550.47396
+  tps: 1613.20902
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1503.57227
-  tps: 1567.92579
+  dps: 1503.5338
+  tps: 1567.88733
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1422.56085
-  tps: 1488.05088
+  dps: 1422.52239
+  tps: 1488.01242
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1422.78339
-  tps: 1488.27342
+  dps: 1422.74492
+  tps: 1488.23495
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 2570.44031
-  tps: 2606.03227
+  dps: 2570.31193
+  tps: 2605.90389
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 2700.38941
-  tps: 2736.76025
+  dps: 2700.25892
+  tps: 2736.62976
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 1318.3191
-  tps: 1309.81159
+  dps: 1318.22964
+  tps: 1309.72213
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3544.33547
-  tps: 2156.29164
+  dps: 3544.18583
+  tps: 2156.18689
  }
 }
 dps_results: {
@@ -939,78 +939,78 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3511.84512
-  tps: 2133.09818
+  dps: 3511.70992
+  tps: 2133.00355
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1496.22247
-  tps: 1523.73292
+  dps: 1496.32472
+  tps: 1523.83518
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1495.47219
-  tps: 1522.79469
+  dps: 1495.57444
+  tps: 1522.89694
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1622.04908
-  tps: 1648.65652
+  dps: 1622.20155
+  tps: 1648.80899
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1578.23033
-  tps: 1604.52975
+  dps: 1578.33259
+  tps: 1604.632
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1493.61584
-  tps: 1520.95865
+  dps: 1493.71809
+  tps: 1521.06091
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1493.92097
-  tps: 1521.26379
+  dps: 1494.02323
+  tps: 1521.36604
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 2840.0058
-  tps: 2837.89879
+  dps: 2840.1574
+  tps: 2838.05039
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 2965.02515
-  tps: 2963.10593
+  dps: 2965.12843
+  tps: 2963.20921
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 1334.8054
-  tps: 1318.63864
+  dps: 1334.91629
+  tps: 1318.74953
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4734.33716
-  tps: 2852.27633
+  dps: 4734.52603
+  tps: 2852.40854
  }
 }
 dps_results: {
@@ -1100,7 +1100,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4676.09036
-  tps: 2829.90126
+  dps: 4676.25284
+  tps: 2830.015
  }
 }

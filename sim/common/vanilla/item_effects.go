@@ -117,6 +117,7 @@ const (
 	TheUntamedBladeShadowflame      = 232566
 	ScarabBrooch                    = 233601 // 21625
 	KalimdorsRevenge                = 233621
+  	JomGabbar                       = 233627 // 23570
 	NeretzekBloodDrinker            = 233647
 	Speedstone                      = 233990
 	ManslayerOfTheQiraji            = 234067
@@ -2335,7 +2336,8 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=234462/earthstrike
 	// Use: Increases your melee and ranged attack power by 328.  Effect lasts for 20 sec. (2 Min Cooldown)
-	core.NewSimpleStatOffensiveTrinketEffect(Earthstrike, stats.Stats{stats.AttackPower: 328}, time.Second*20, time.Minute*2)
+
+	core.NewSimpleStatOffensiveTrinketEffect(Earthstrike, stats.Stats{stats.AttackPower: 328, stats.RangedAttackPower: 328,}, time.Second*20, time.Second*120)
 
 	// https://www.wowhead.com/classic/item=228293/essence-of-the-pure-flame
 	// Equip: When struck in combat inflicts 50 Fire damage to the attacker.
@@ -2454,6 +2456,61 @@ func init() {
 			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 				spell.Cast(sim, result.Target)
 			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=233627/jom-gabbar
+	// Use: Increases attack power by 70 and an additional 70 every 2 sec.  Lasts 20 sec. (2 Min Cooldown)
+	core.NewItemEffect(JomGabbar, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 1213366}
+		duration := time.Second * 20
+		bonusPerStack := stats.Stats{
+			stats.AttackPower:   70,
+			stats.RangedAttackPower: 70,
+		}
+		
+		jomGabbarAura := character.GetOrRegisterAura(core.Aura{
+			Label:    "Jom Gabbar",
+			ActionID: actionID,
+			Duration: duration,
+			MaxStacks: 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:   time.Second * 2,
+					NumTicks: 10,
+					Priority: core.ActionPriorityAuto,
+					TickImmediately: true,
+					OnAction: func(sim *core.Simulation) {
+						aura.AddStack(sim)
+					},
+				})
+			},
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				bonusStats := bonusPerStack.Multiply(float64(newStacks - oldStacks))
+				character.AddStatsDynamic(sim, bonusStats)
+			},
+		})		
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags: core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				jomGabbarAura.Activate(sim)
+			},
+		})
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
 		})
 	})
 
