@@ -24,7 +24,7 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 		25: 68,  //guess
 		40: 103, //guess
 		50: 120,
-		60: core.TernaryFloat64(core.IncludeAQ, 196, 173),
+		60: core.TernaryFloat64(core.IncludeAQ, 173, 145),
 	}[warrior.Level]
 
 	warrior.HeroicStrike = warrior.RegisterSpell(AnyStance, core.SpellConfig{
