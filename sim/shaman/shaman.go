@@ -176,6 +176,7 @@ type Shaman struct {
 	maelstromWeaponPPMM      *core.PPMManager
 	powerSurgeProcChance     float64
 	staticSHocksProcChance   float64
+	useLavaBurstCritScaling  bool
 }
 
 // Implemented by each Shaman spec.

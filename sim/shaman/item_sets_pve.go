@@ -782,3 +782,19 @@ var ItemSetStormcallersImpact = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+var ItemSetGiftOfTheGatheringStorm = core.NewItemSet(core.ItemSet{
+	Name: "Gift of the Gathering Storm",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Lava Burst deals increased damage equal to its critical strike chance.
+		3: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.RegisterAura(core.Aura{
+				Label: "S03 - Item - RAQ - Shaman - Elemental 3P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					shaman.useLavaBurstCritScaling = true
+				},
+			})
+		},
+	},
+})
