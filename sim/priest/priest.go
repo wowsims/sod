@@ -15,6 +15,8 @@ const (
 
 const (
 	SpellCode_PriestNone int32 = iota
+
+	SpellCode_PriestDevouringPlague
 	SpellCode_PriestFlashHeal
 	SpellCode_PriestGreaterHeal
 	SpellCode_PriestHeal
@@ -85,6 +87,8 @@ type Priest struct {
 	EyeOfTheVoidPet *EyeOfTheVoid
 	HomunculiPets   []*Homunculus
 	ShadowfiendPet  *Shadowfiend
+
+	PainAndSufferingDoTSpells []*core.Spell
 
 	ProcPrayerOfMending core.ApplySpellResults
 }

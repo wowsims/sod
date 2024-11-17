@@ -1,6 +1,7 @@
 package core
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -25,7 +26,6 @@ const (
 )
 
 type DynamicDamageTakenModifier func(sim *Simulation, spell *Spell, result *SpellResult)
-
 
 // Unit is an abstraction of a Character/Boss/Pet/etc, containing functionality
 // shared by all of them.
@@ -351,7 +351,7 @@ func (unit *Unit) ApplyCastSpeed(dur time.Duration) time.Duration {
 	return time.Duration(float64(dur) * unit.CastSpeed)
 }
 func (unit *Unit) ApplyCastSpeedForSpell(dur time.Duration, spell *Spell) time.Duration {
-	return time.Duration(float64(dur) * unit.CastSpeed * spell.CastTimeMultiplier)
+	return time.Duration(float64(dur) * unit.CastSpeed * math.Max(spell.CastTimeMultiplier, 0))
 }
 
 func (unit *Unit) SwingSpeed() float64 {

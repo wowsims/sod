@@ -139,6 +139,7 @@ const (
 	DarkmoonCardBlueDragon          = 234177 // 19288
 	DarkmoonCardMaelstrom           = 234178 // 19289
 	Earthstrike                     = 234462
+	WrathOfCenarius                 = 234463 // 21190
 	KalimdorsRevengeVoidTouched     = 234981
 	NeretzekBloodDrinkerVoidTouched = 234987
 	ManslayerOfTheQirajiVoidTouched = 234990
@@ -156,7 +157,7 @@ func init() {
 	// https://www.wowhead.com/classic/spell=16916/strength-of-the-champion
 	// Chance on hit: Heal self for 270 to 450 and Increases Strength by 120 for 30 sec.
 	// TODO: Proc rate assumed and needs testing
-	itemhelpers.CreateWeaponProcAura(ArcaniteChampion, "Arcanite Champion", 1.0, strengthOfTheChampionAura)
+	itemhelpers.CreateWeaponProcAura(ArcaniteChampion, "Arcanite Champion", 1.0, StrengthOfTheChampionAura)
 
 	// https://www.wowhead.com/classic/item=227997/barovian-family-sword
 	// Chance on hit: Deals 30 Shadow damage every 3 sec for 15 sec. All damage done is then transferred to the caster.
@@ -425,7 +426,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=220569/blistering-ragehammer
 	// Chance on hit: Increases damage done by 20 and attack speed by 5% for 15 sec.
 	// TODO: Proc rate assumed and needs testing
-	itemhelpers.CreateWeaponProcAura(BlisteringRagehammer, "Blistering Ragehammer", 1.0, enrageAura446327)
+	itemhelpers.CreateWeaponProcAura(BlisteringRagehammer, "Blistering Ragehammer", 1.0, EnrageAura446327)
 
 	itemhelpers.CreateWeaponCoHProcDamage(BloodletterScalpel, "Bloodletter Scalpel", 1.0, 18081, core.SpellSchoolPhysical, 60, 10, 0, core.DefenseTypeMelee)
 
@@ -1442,9 +1443,9 @@ func init() {
 	core.NewItemEffect(RefinedArcaniteChampion, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		strengthAura := strengthOfTheChampionAura(character)
+		strengthAura := StrengthOfTheChampionAura(character)
 		procMask := character.GetProcMaskForItem(RefinedArcaniteChampion)
-		enrageAura := enrageAura446327(character)
+		enrageAura := EnrageAura446327(character)
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Refined Arcanite Champion (Strength)",
@@ -3002,6 +3003,35 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=234463/wrath-of-cenarius
+	// Gives a chance when your harmful spells land to increase the damage of your spells and effects by 193 for 10 sec.
+	// (Proc chance: 5%)
+	core.NewItemEffect(WrathOfCenarius, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1214279},
+			Label:    "Spell Blasting",
+			Duration: time.Second * 10,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.SpellDamage, 193)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddStatDynamic(sim, stats.SpellDamage, -193)
+			},
+		})
+
+		core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+			Name:       "Spell Blasting Trigger",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: 0.05,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				buffAura.Activate(sim)
+			},
+		})
+	})
+
 	core.AddEffectsToTest = true
 }
 
@@ -3009,7 +3039,7 @@ func init() {
 // Used by:
 // - https://www.wowhead.com/classic/item=220569/blistering-ragehammer and
 // - https://www.wowhead.com/classic/item=228125/refined-arcanite-champion
-func enrageAura446327(character *core.Character) *core.Aura {
+func EnrageAura446327(character *core.Character) *core.Aura {
 	return character.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 446327},
 		Label:    "Enrage (446327)",
@@ -3229,7 +3259,7 @@ func gutgoreRipperEffect(character *core.Character) *core.Spell {
 // 	})
 // }
 
-func strengthOfTheChampionAura(character *core.Character) *core.Aura {
+func StrengthOfTheChampionAura(character *core.Character) *core.Aura {
 	actionID := core.ActionID{SpellID: 16916}
 	healthMetrics := character.NewHealthMetrics(actionID)
 	return character.GetOrRegisterAura(core.Aura{
