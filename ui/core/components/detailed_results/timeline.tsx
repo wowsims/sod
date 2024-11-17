@@ -1364,6 +1364,7 @@ const idToCategoryMap: Record<number, number> = {
 	[11565]: 0.1, // Heroic Strike
 	[11566]: 0.1, // Heroic Strike
 	[11567]: 0.1, // Heroic Strike
+	[25286]: 0.1, // Heroic Strike
 	[8820]: MELEE_ACTION_CATEGORY + 0.05, // Slam
 	[11604]: MELEE_ACTION_CATEGORY + 0.05, // Slam
 	[11605]: MELEE_ACTION_CATEGORY + 0.05, // Slam
