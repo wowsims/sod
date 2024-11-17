@@ -287,6 +287,8 @@ func (warlock *Warlock) applyMasterDemonologist() {
 		return
 	}
 
+	warlock.disableMasterDemonologistOnSacrifice = true
+
 	hasMetaRune := warlock.HasRune(proto.WarlockRune_RuneHandsMetamorphosis)
 
 	points := float64(warlock.Talents.MasterDemonologist)
@@ -344,21 +346,20 @@ func (warlock *Warlock) applyMasterDemonologist() {
 		},
 	}
 
-	lockAura := warlock.RegisterAura(masterDemonologistConfig)
+	warlock.MasterDemonologistAura = warlock.RegisterAura(masterDemonologistConfig)
 	for _, pet := range warlock.BasePets {
 		petAura := pet.RegisterAura(masterDemonologistConfig)
 
 		oldOnPetEnable := pet.OnPetEnable
 		pet.OnPetEnable = func(sim *core.Simulation) {
 			oldOnPetEnable(sim)
-			lockAura.Activate(sim)
+			warlock.MasterDemonologistAura.Activate(sim)
 			petAura.Activate(sim)
 		}
 
 		oldOnPetDisable := pet.OnPetDisable
 		pet.OnPetDisable = func(sim *core.Simulation) {
 			oldOnPetDisable(sim)
-			lockAura.Deactivate(sim)
 			petAura.Deactivate(sim)
 		}
 	}
@@ -504,6 +505,7 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 	}
 
 	warlock.GetOrRegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_WarlockDemonicSacrifice,
 		ActionID:    core.ActionID{SpellID: 18788},
 		SpellSchool: core.SpellSchoolShadow,
 		Flags:       core.SpellFlagAPL,
