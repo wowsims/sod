@@ -25,6 +25,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
+		Stat.StatTimeworn,
 		Stat.StatMP5,
 		// For Mental Dexterity support
 		Stat.StatStrength,
@@ -45,6 +46,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
+		Stat.StatTimeworn,
 		Stat.StatMP5,
 		Stat.StatStrength,
 		Stat.StatAttackPower,
