@@ -17,7 +17,7 @@
     {"action":{"castSpell":{"spellId":{"spellId":12328}}}},
     {"action":{"autocastOtherCooldowns":{}}},
     {"action":{"castSpell":{"spellId":{"spellId":1719}}}},
-    {"action":{"castSpell":{"spellId":{"spellId":11567,"tag":1,"rank":8}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":25286,"tag":1,"rank":9}}}},
     {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":412507}}},{"cmp":{"op":"OpLe","lhs":{"dotRemainingTime":{"spellId":{"spellId":11574,"rank":7}}},"rhs":{"const":{"val":"0"}}}}]}},"castSpell":{"spellId":{"spellId":11574,"rank":7}}}},
     {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"currentRage":{}},"rhs":{"const":{"val":"75"}}}},{"cmp":{"op":"OpLe","lhs":{"autoTimeToNext":{"autoType":"Melee"}},"rhs":{"const":{"val":"2s"}}}}]}},"castSpell":{"spellId":{"spellId":20662,"rank":5}}}},
     {"action":{"castSpell":{"spellId":{"spellId":23894,"rank":4}}}},
