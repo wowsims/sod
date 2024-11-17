@@ -2607,11 +2607,11 @@ func ApplyAshenvaleRallyingCry(unit *Unit) {
 		Category: "AshenvaleRallyingCry",
 		ExtraOnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.05
-			// TODO: healing dealt multiplier?
+			aura.Unit.PseudoStats.HealingDealtMultiplier *= 1.05
 		},
 		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.05
-			// TODO: healing dealt multiplier?
+			aura.Unit.PseudoStats.HealingDealtMultiplier /= 1.05
 		},
 	})
 }

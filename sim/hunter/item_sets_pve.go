@@ -416,7 +416,7 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Prowess 2P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.WyvernStrike.DoTDamageMultiplier *= 1.50
+					hunter.WyvernStrike.PeriodicDamageMultiplier *= 1.50
 				},
 			})
 		},

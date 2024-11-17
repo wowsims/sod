@@ -41,11 +41,11 @@ type SpellConfig struct {
 
 	CritDamageBonus float64
 
-	BaseDamageMultiplierAdditive float64
-	DamageMultiplier             float64
-	DoTDamageMultiplier      float64
-	ImpactDamageMultiplier   float64
-	DamageMultiplierAdditive     float64
+	BaseDamageMultiplierAdditive float64 // Applies an additive multiplier to spell base damage
+	DamageMultiplier             float64 // Applies a multiplicative multiplier to full spell damage
+	DamageMultiplierAdditive     float64 // Applies an additive multiplier to full spell damage
+	ImpactDamageMultiplier       float64 // Applies a multiplicative multiplier to full non-periodic spell damage
+	PeriodicDamageMultiplier     float64 // Applies a multiplicative multiplier to full spell periodic damage
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -139,11 +139,11 @@ type Spell struct {
 	BonusCritRating    float64
 	CastTimeMultiplier float64
 
-	BaseDamageMultiplierAdditive float64
-	DamageMultiplier             float64
-	DoTDamageMultiplier      float64
-	ImpactDamageMultiplier   float64
-	DamageMultiplierAdditive     float64
+	BaseDamageMultiplierAdditive float64 // Applies an additive multiplier to spell base damage
+	DamageMultiplier             float64 // Applies a multiplicative multiplier to full spell damage
+	DamageMultiplierAdditive     float64 // Applies an additive multiplier to full spell damage
+	ImpactDamageMultiplier       float64 // Applies a multiplicative multiplier to full non-periodic spell damage
+	PeriodicDamageMultiplier     float64 // Applies a multiplicative multiplier to full spell periodic damage
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -199,11 +199,11 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	} else if config.DamageMultiplierAdditive != 0 && config.DamageMultiplier == 0 {
 		config.DamageMultiplier = 1
 	}
-	if config.DoTDamageMultiplier == 0 {
-		config.DoTDamageMultiplier = 1
-	}
 	if config.ImpactDamageMultiplier == 0 {
 		config.ImpactDamageMultiplier = 1
+	}
+	if config.PeriodicDamageMultiplier == 0 {
+		config.PeriodicDamageMultiplier = 1
 	}
 
 	// Default CastSlot to mainhand
@@ -267,9 +267,9 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		BaseDamageMultiplierAdditive: config.BaseDamageMultiplierAdditive,
 		DamageMultiplier:             config.DamageMultiplier,
-		DoTDamageMultiplier:      config.DoTDamageMultiplier,
-		ImpactDamageMultiplier:   config.ImpactDamageMultiplier,
 		DamageMultiplierAdditive:     config.DamageMultiplierAdditive,
+		ImpactDamageMultiplier:       config.ImpactDamageMultiplier,
+		PeriodicDamageMultiplier:     config.PeriodicDamageMultiplier,
 
 		BonusCoefficient: config.BonusCoefficient,
 

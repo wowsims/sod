@@ -13,6 +13,7 @@ const CritRatingPerCritChance = 1
 const SpellCritRatingPerCritChance = 1
 const MeleeHitRatingPerHitChance = 1
 const SpellHitRatingPerHitChance = 1
+const ExpertiseRatingPerExpertiseChance = 1
 const DefenseRatingPerDefense = 1
 const DodgeRatingPerDodgeChance = 1
 const ParryRatingPerParryChance = 1

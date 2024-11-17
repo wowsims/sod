@@ -38,7 +38,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
 		Stat.StatMana,
 		Stat.StatStamina,
 		Stat.StatIntellect,

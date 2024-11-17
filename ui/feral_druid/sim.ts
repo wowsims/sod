@@ -21,38 +21,43 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
+		// Primary
+		Stat.StatMana,
+		// Attributes
 		Stat.StatStrength,
 		Stat.StatAgility,
+		Stat.StatIntellect,
+		Stat.StatSpirit,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatFeralAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatMana,
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatMP5,
-		Stat.StatFireResistance,
 		Stat.StatExpertise,
+		// Spell
+		Stat.StatMP5,
 	],
 	epPseudoStats: [],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
+		// Primary
+		Stat.StatMana,
+		// Attributes
 		Stat.StatStrength,
 		Stat.StatAgility,
+		Stat.StatIntellect,
+		Stat.StatSpirit,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatFeralAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatExpertise,
-		Stat.StatMana,
-		Stat.StatIntellect,
-		Stat.StatSpirit,
+		// Spell
 		Stat.StatMP5,
-		Stat.StatFireResistance,
 	],
 
 	defaults: {
