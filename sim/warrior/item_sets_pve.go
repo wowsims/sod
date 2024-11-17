@@ -492,7 +492,7 @@ var ItemSetConquerorsAdvance = core.NewItemSet(core.ItemSet{
 					warrior.PseudoStats.DamageDealtMultiplier *= 1.10
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.PseudoStats.DamageDealtMultiplier *= 1.10
+					warrior.PseudoStats.DamageDealtMultiplier /= 1.10
 				},
 			})
 
