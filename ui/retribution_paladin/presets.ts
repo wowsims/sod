@@ -147,7 +147,7 @@ export const APLPP5Twisting4DRSlower = PresetUtils.makePresetAPLRotation('P5 Twi
 export const APLPP5Twisting4DRCancelAura = PresetUtils.makePresetAPLRotation('P5 Twist 4DR CancelAura', APLPP5TwistingCancelAuraJson, {
 	customCondition: player => player.getLevel() === 60,
 });
-export const APLPP5Stacking6CF2DR = PresetUtils.makePresetAPLRotation('P5 Twist 4DR CancelAura', APLPP5StackingJson, {
+export const APLPP5Stacking6CF2DR = PresetUtils.makePresetAPLRotation('P5 Stacking 6C2D', APLPP5StackingJson, {
 	customCondition: player => player.getLevel() === 60,
 });
 export const APLPP5Exodin = PresetUtils.makePresetAPLRotation('P5 Exodin', APLPP5ExodinJson, {
