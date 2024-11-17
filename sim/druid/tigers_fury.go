@@ -32,10 +32,10 @@ func (druid *Druid) registerTigersFurySpell() {
 		ActionID: actionID,
 		Duration: 6 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.BonusDamage += dmgBonus
+			druid.PseudoStats.BonusPhysicalDamage += dmgBonus
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.BonusDamage -= dmgBonus
+			druid.PseudoStats.BonusPhysicalDamage -= dmgBonus
 		},
 	})
 

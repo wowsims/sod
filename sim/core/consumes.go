@@ -458,8 +458,8 @@ func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) 
 		switch consumes.ArmorElixir {
 		case proto.ArmorElixir_ElixirOfTheIronside:
 			character.AddStats(stats.Stats{
-				stats.BonusArmor: 350,
-				stats.Defense: 5,
+				stats.BonusArmor:       350,
+				stats.Defense:          5,
 				stats.NatureResistance: 15,
 			})
 		case proto.ArmorElixir_ElixirOfSuperiorDefense:
@@ -520,8 +520,8 @@ func applyPhysicalBuffConsumes(character *Character, consumes *proto.Consumes) {
 		switch consumes.AgilityElixir {
 		case proto.AgilityElixir_ElixirOfTheHoneyBadger:
 			character.AddStats(stats.Stats{
-				stats.Agility:   30,
-				stats.MeleeCrit: 2 * CritRatingPerCritChance,
+				stats.Agility:          30,
+				stats.MeleeCrit:        2 * CritRatingPerCritChance,
 				stats.NatureResistance: 15,
 			})
 		case proto.AgilityElixir_ElixirOfTheMongoose:
@@ -587,7 +587,7 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 			})
 		case proto.SpellPowerBuff_ElixirOfTheMageLord:
 			character.AddStats(stats.Stats{
-				stats.SpellDamage: 40,
+				stats.SpellDamage:      40,
 				stats.NatureResistance: 15,
 			})
 		}
@@ -772,7 +772,7 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 	}
 
 	if miscConsumes.BoglingRoot {
-		character.PseudoStats.BonusDamage += 1
+		character.PseudoStats.BonusPhysicalDamage += 1
 	}
 
 	if miscConsumes.ElixirOfCoalescedRegret {
@@ -903,7 +903,7 @@ func applyEnchantingConsumes(character *Character, consumes *proto.Consumes) {
 				stats.SpellPower:        40,
 			})
 		}
-	}	
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1039,6 +1039,7 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 func (character *Character) newSapperSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, SapperActionID, SpellSchoolFire, 450, 750, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 375, 625))
 }
+
 // Needs testing for Silithid interaction if in raid
 func (character *Character) newFumigatorSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, FumigatorActionID, SpellSchoolFire, 650, 950, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 475, 725))
@@ -1291,7 +1292,7 @@ func makeArmorConsumableMCD(itemId int32, character *Character, cdTimer *Timer) 
 	cdDuration := time.Minute * 2
 	lesserStoneshieldAura := character.NewTemporaryStatsAura("Lesser Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 1000}, time.Second*90)
 	greaterStoneshieldAura := character.NewTemporaryStatsAura("Greater Stoneshield Potion", actionID, stats.Stats{stats.BonusArmor: 2000}, time.Second*120)
-	
+
 	return MajorCooldown{
 		Type: CooldownTypeSurvival,
 		Spell: character.GetOrRegisterSpell(SpellConfig{
@@ -1311,7 +1312,7 @@ func makeArmorConsumableMCD(itemId int32, character *Character, cdTimer *Timer) 
 				case 4623:
 					lesserStoneshieldAura.Activate(sim)
 				case 13455:
-					
+
 					greaterStoneshieldAura.Activate(sim)
 				}
 			},

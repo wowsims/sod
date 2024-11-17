@@ -268,7 +268,7 @@ func (character *Character) applyEquipment() {
 			character.PseudoStats.TimewornBonus += 1
 		}
 
-		character.PseudoStats.BonusDamage += item.BonusPhysicalDamage
+		character.PseudoStats.BonusPhysicalDamage += item.BonusPhysicalDamage
 	}
 
 }

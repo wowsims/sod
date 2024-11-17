@@ -1177,10 +1177,10 @@ func CurseOfWeaknessAura(target *Unit, points int32, playerLevel int32) *Aura {
 		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Minute * 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusDamage += modDmgReduction
+			aura.Unit.PseudoStats.BonusPhysicalDamage += modDmgReduction
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.BonusDamage -= modDmgReduction
+			aura.Unit.PseudoStats.BonusPhysicalDamage -= modDmgReduction
 		},
 	})
 	return aura
