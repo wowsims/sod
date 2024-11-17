@@ -448,19 +448,22 @@ var ItemSetDeathdealersBattlearmor = core.NewItemSet(core.ItemSet{
 		// Your Main Gauche now strikes 1 additional nearby target and also causes your Sinister Strike to strike 1 additional nearby target. 
 		// These additional strikes are not duplicated by Blade Flurry.
 		2: func(agent core.Agent) {
-			//Implemented in sinister_strike.go and main_gauche.go
 			rogue := agent.(RogueAgent).GetRogue()
 			if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
 				return
 			}
 			
+			if rogue.Env.GetNumTargets() == 1 {
+				return
+			}
+
 			var curDmg float64
 
 			cleaveHit := rogue.RegisterSpell(core.SpellConfig{
 				ActionID:    core.ActionID{SpellID: 1213754},
 				SpellSchool: core.SpellSchoolPhysical,
 				ProcMask:    core.ProcMaskEmpty,
-				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
@@ -474,7 +477,7 @@ var ItemSetDeathdealersBattlearmor = core.NewItemSet(core.ItemSet{
 				Label:    "2P Cleave Buff",
 				Duration: time.Second * 10,
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if rogue.Env.GetNumTargets() > 1 && result.Landed() && (spell.SpellCode == SpellCode_RogueSinisterStrike) {
+					if result.Landed() && (spell.SpellCode == SpellCode_RogueSinisterStrike) {
 						curDmg = result.Damage / result.ResistanceMultiplier
 						cleaveHit.Cast(sim, rogue.Env.NextTargetUnit(result.Target))
 						cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
@@ -487,11 +490,9 @@ var ItemSetDeathdealersBattlearmor = core.NewItemSet(core.ItemSet{
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if result.Landed() && spell.SpellCode == SpellCode_RogueMainGauche {
 						cleaveAura.Activate(sim)
-						if rogue.Env.GetNumTargets() > 1 {
 							curDmg = result.Damage / result.ResistanceMultiplier
 							cleaveHit.Cast(sim, rogue.Env.NextTargetUnit(result.Target))
 							cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
-						}
 					}
 				},
 			}))
