@@ -3,7 +3,7 @@ import * as OtherInputs from '../core/components/other_inputs';
 import { Phase } from '../core/constants/other';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui';
 import { Player } from '../core/player';
-import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../core/proto/common';
+import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common';
 import { Stats } from '../core/proto_utils/stats';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils';
 import * as Presets from './presets';
@@ -25,12 +25,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatTimeworn,
 		Stat.StatMP5,
 		// For Mental Dexterity support
 		Stat.StatStrength,
 		Stat.StatAttackPower,
 		Stat.StatFireResistance,
+	],
+	epPseudoStats: [
+		PseudoStat.TimewornBonus,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -46,7 +48,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
-		Stat.StatTimeworn,
 		Stat.StatMP5,
 		Stat.StatStrength,
 		Stat.StatAttackPower,

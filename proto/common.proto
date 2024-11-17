@@ -73,7 +73,7 @@ enum Profession {
 }
 
 // Keep in sync with sim/core/stats/stats.go.
-// NextIndex: 45
+// NextIndex: 44
 enum Stat {
 	StatStrength = 0;
 	StatAgility = 1;
@@ -119,7 +119,6 @@ enum Stat {
 	StatHealingPower = 41;
 	StatSpellDamage = 42;
 	StatFeralAttackPower = 43;
-	StatTimeworn = 44;
 	// DO NOT add new stats here without discussing it first; new stats come with
 	// a performance penalty.
 }
@@ -128,6 +127,7 @@ enum Stat {
 // between the UI and backend.
 //
 // It's also OK to include things here which aren't in the PseudoStats struct.
+// NextIndex: 31
 enum PseudoStat {
 	PseudoStatMainHandDps = 0;
 	PseudoStatOffHandDps = 1;
@@ -167,6 +167,9 @@ enum PseudoStat {
 	PseudoStatMeleeSpeedMultiplier = 27;
 	PseudoStatRangedSpeedMultiplier = 28;
 	PseudoStatBlockValuePerStrength = 29;
+
+	// Special Pseudostats
+	TimewornBonus = 30;
 }
 
 message UnitStats {
@@ -929,7 +932,7 @@ message SimDatabase {
 }
 
 // Contains only the Item info needed by the sim.
-// NextIndex: 19
+// NextIndex: 20
 message SimItem {
 	int32 id = 1;
 	int32 requires_level = 16;
@@ -951,6 +954,8 @@ message SimItem {
 	string set_name = 14;
 	int32 set_id = 18;
 	repeated double weapon_skills = 15;
+
+	bool timeworn = 19;
 }
 
 // Extra enum for describing which items are eligible for an enchant, when
