@@ -437,6 +437,9 @@ type PseudoStats struct {
 	DamageDealtMultiplier       float64                   // All damage
 	SchoolDamageDealtMultiplier SchoolValueArray[float64] // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
 
+	HealingDealtMultiplier float64 // All healing
+	ShieldDealtMultiplier  float64 // Increases the effectiveness of your shielding spells.
+
 	// Important when unit is attacker or target
 	BlockValueMultiplier float64
 
@@ -520,6 +523,9 @@ func NewPseudoStats() PseudoStats {
 
 		DamageDealtMultiplier:       1,
 		SchoolDamageDealtMultiplier: NewSchoolValueArray(1.0),
+
+		HealingDealtMultiplier: 1,
+		ShieldDealtMultiplier:  1,
 
 		BlockValueMultiplier:  1,
 		BlockValuePerStrength: 0,
