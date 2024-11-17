@@ -41,11 +41,11 @@ type SpellConfig struct {
 
 	CritDamageBonus float64
 
-	BaseDamageMultiplierAdditive float64 // Applies an additive multiplier to spell base damage
-	DamageMultiplier             float64 // Applies a multiplicative multiplier to full spell damage
-	DamageMultiplierAdditive     float64 // Applies an additive multiplier to full spell damage
-	ImpactDamageMultiplier       float64 // Applies a multiplicative multiplier to full non-periodic spell damage
-	PeriodicDamageMultiplier     float64 // Applies a multiplicative multiplier to full spell periodic damage
+	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage
+	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full spell damage
+	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full spell damage
+	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to full non-periodic spell damage
+	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to full spell periodic damage
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -139,11 +139,11 @@ type Spell struct {
 	BonusCritRating    float64
 	CastTimeMultiplier float64
 
-	BaseDamageMultiplierAdditive float64 // Applies an additive multiplier to spell base damage
-	DamageMultiplier             float64 // Applies a multiplicative multiplier to full spell damage
-	DamageMultiplierAdditive     float64 // Applies an additive multiplier to full spell damage
-	ImpactDamageMultiplier       float64 // Applies a multiplicative multiplier to full non-periodic spell damage
-	PeriodicDamageMultiplier     float64 // Applies a multiplicative multiplier to full spell periodic damage
+	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage
+	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full spell damage
+	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full spell damage
+	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to full non-periodic spell damage
+	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to full spell periodic damage
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -199,11 +199,11 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	} else if config.DamageMultiplierAdditive != 0 && config.DamageMultiplier == 0 {
 		config.DamageMultiplier = 1
 	}
-	if config.ImpactDamageMultiplier == 0 {
-		config.ImpactDamageMultiplier = 1
+	if config.ImpactDamageMultiplierAdditive == 0 {
+		config.ImpactDamageMultiplierAdditive = 1
 	}
-	if config.PeriodicDamageMultiplier == 0 {
-		config.PeriodicDamageMultiplier = 1
+	if config.PeriodicDamageMultiplierAdditive == 0 {
+		config.PeriodicDamageMultiplierAdditive = 1
 	}
 
 	// Default CastSlot to mainhand
@@ -265,11 +265,11 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		CritDamageBonus: 1 + config.CritDamageBonus,
 
-		BaseDamageMultiplierAdditive: config.BaseDamageMultiplierAdditive,
-		DamageMultiplier:             config.DamageMultiplier,
-		DamageMultiplierAdditive:     config.DamageMultiplierAdditive,
-		ImpactDamageMultiplier:       config.ImpactDamageMultiplier,
-		PeriodicDamageMultiplier:     config.PeriodicDamageMultiplier,
+		BaseDamageMultiplierAdditive:     config.BaseDamageMultiplierAdditive,
+		DamageMultiplier:                 config.DamageMultiplier,
+		DamageMultiplierAdditive:         config.DamageMultiplierAdditive,
+		ImpactDamageMultiplierAdditive:   config.ImpactDamageMultiplierAdditive,
+		PeriodicDamageMultiplierAdditive: config.PeriodicDamageMultiplierAdditive,
 
 		BonusCoefficient: config.BonusCoefficient,
 
@@ -520,10 +520,18 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 		return false
 	}
 
-	// While casting or channeling, no other action is possible except rare cast-while-casting spells
+	// While casting no other action is possible except rare cast-while-casting spells
 	if spell.Unit.IsCasting(sim) && !spell.Flags.Matches(SpellFlagCastWhileCasting) {
 		//if sim.Log != nil {
-		//	sim.Log("Cant cast because already casting/channeling")
+		//	sim.Log("Cant cast because already casting")
+		//}
+		return false
+	}
+
+	// While channeling no other action is possible except rare cast-while-channeling spells
+	if spell.Unit.IsChanneling(sim) && !spell.Flags.Matches(SpellFlagCastWhileChanneling) {
+		//if sim.Log != nil {
+		//	sim.Log("Cant cast because already channeling")
 		//}
 		return false
 	}

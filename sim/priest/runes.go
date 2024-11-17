@@ -47,24 +47,31 @@ func (priest *Priest) applyPainAndSuffering() {
 		return
 	}
 
+	priest.PainAndSufferingDoTSpells = []*core.Spell{}
+
 	affectedSpellcodes := []int32{SpellCode_PriestMindBlast, SpellCode_PriestMindFlay, SpellCode_PriestMindSpike}
-	priest.RegisterAura(core.Aura{
-		Label:    "Pain and Suffering Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	core.MakePermanent(priest.RegisterAura(core.Aura{
+		Label: "Pain and Suffering Trigger",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			priest.PainAndSufferingDoTSpells = append(
+				priest.PainAndSufferingDoTSpells,
+				core.FilterSlice(
+					core.Flatten(
+						[][]*core.Spell{
+							priest.ShadowWordPain,
+							{priest.VoidPlague, priest.VampiricTouch},
+						},
+					),
+					func(spell *core.Spell) bool { return spell != nil },
+				)...,
+			)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if slices.Contains(affectedSpellcodes, spell.SpellCode) && result.Landed() {
 				target := result.Target
 
 				var dotToRollover *core.Dot
-				dotSpells := core.FilterSlice(
-					core.Flatten([][]*core.Spell{priest.ShadowWordPain, {priest.VoidPlague, priest.VampiricTouch}}),
-					func(spell *core.Spell) bool {
-						return spell != nil && spell.Dot(target).IsActive()
-					},
-				)
+				dotSpells := core.FilterSlice(priest.PainAndSufferingDoTSpells, func(spell *core.Spell) bool { return spell.Dot(target).IsActive() })
 
 				if len(dotSpells) > 0 {
 					dotToRollover = dotSpells[0].Dot(target)
@@ -80,7 +87,7 @@ func (priest *Priest) applyPainAndSuffering() {
 				}
 			}
 		},
-	})
+	}))
 }
 
 func (priest *Priest) applySurgeOfLight() {

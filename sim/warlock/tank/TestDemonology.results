@@ -197,9 +197,9 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Phase2-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 129.6623
-  tps: 144.73308
-  hps: 107.23702
+  dps: 107.53626
+  tps: 115.28647
+  hps: 106.55339
  }
 }
 dps_results: {
@@ -269,25 +269,25 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1179.29768
-  tps: 433.61142
-  hps: 232.83312
+  dps: 1147.38615
+  tps: 416.74601
+  hps: 228.25902
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 110.24914
-  tps: 121.33879
+  dps: 109.79237
+  tps: 120.77467
   hps: 4.3855
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1166.37178
-  tps: 430.1719
-  hps: 232.49417
+  dps: 1150.20075
+  tps: 414.38849
+  hps: 227.46431
  }
 }
 dps_results: {
@@ -301,8 +301,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 108.20422
-  tps: 119.17866
+  dps: 107.76671
+  tps: 118.65756
   hps: 4.1892
  }
 }
@@ -317,25 +317,25 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1179.29768
-  tps: 433.61142
-  hps: 232.83312
+  dps: 1147.38615
+  tps: 416.74601
+  hps: 228.25902
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1253.43066
-  tps: 1376.93708
-  hps: 220.31534
+  dps: 1250.81307
+  tps: 1353.1845
+  hps: 217.82529
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1245.71217
-  tps: 1389.78133
-  hps: 219.05612
+  dps: 1223.38191
+  tps: 1337.13652
+  hps: 217.87458
  }
 }
 dps_results: {

@@ -202,6 +202,15 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			return spell.castFailureHelper(sim, "casting/channeling %v for %s, curTime = %s", hc.ActionID, hc.Expires-sim.CurrentTime, sim.CurrentTime)
 		}
 
+		if dot := spell.Unit.ChanneledDot; spell.Unit.IsChanneling(sim) && !spell.Flags.Matches(SpellFlagCastWhileChanneling) {
+			// Attempt to use a queued cast-while-casting spell mid-hard cast
+			if cwc := spell.Unit.castWhileCastingAction; cwc != nil {
+				cwc.OnAction(sim)
+			}
+
+			return spell.castFailureHelper(sim, "channeling %v for %s, curTime = %s", dot.ActionID, dot.expires-sim.CurrentTime, sim.CurrentTime)
+		}
+
 		if effectiveTime := spell.CurCast.EffectiveTime(); effectiveTime != 0 {
 			if spell.Flags.Matches(SpellFlagCastTimeNoGCD) {
 				effectiveTime = max(effectiveTime, spell.Unit.GCD.TimeToReady(sim))

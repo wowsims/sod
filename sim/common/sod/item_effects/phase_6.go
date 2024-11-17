@@ -113,11 +113,11 @@ func TimewornDecayAura(agent core.Agent) {
 		return
 	}
 
-	multiplier := 1 + 0.02*float64(character.PseudoStats.TimewornBonus)
+	multiplier := 0.02 * float64(character.PseudoStats.TimewornBonus)
 
 	character.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode != 0 && len(spell.Dots()) > 0 {
-			spell.PeriodicDamageMultiplier *= multiplier
+			spell.PeriodicDamageMultiplierAdditive += multiplier
 		}
 	})
 }
