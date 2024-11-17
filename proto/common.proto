@@ -950,6 +950,7 @@ message SimItem {
 	double weapon_damage_min = 11;
 	double weapon_damage_max = 12;
 	double weapon_speed = 13;
+	double bonus_physical_damage = 20;
 
 	string set_name = 14;
 	int32 set_id = 18;

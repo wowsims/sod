@@ -267,7 +267,10 @@ func (character *Character) applyEquipment() {
 		if item.Timeworn {
 			character.PseudoStats.TimewornBonus += 1
 		}
+
+		character.PseudoStats.BonusDamage += item.BonusPhysicalDamage
 	}
+
 }
 
 func (character *Character) addUniversalStatDependencies() {

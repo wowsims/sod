@@ -22,7 +22,6 @@ const (
 	BroodmothersBrooch             = 228163
 	TreantsBane                    = 228486
 	FistOfTheFireswornMolten       = 229374
-	StuddedTimbermawBrawlers       = 227809
 )
 
 func init() {
@@ -133,8 +132,6 @@ func init() {
 	core.NewItemEffect(WoodcarvedMoonstalker, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.PseudoStats.BonusDamage += 4
-
 		// Woodcarved Moonstalker isn't unique, but presumably the on-use has a shared CD
 		if character.HasAura("Woodcarved Moonstalker") {
 			return
@@ -232,13 +229,6 @@ func init() {
 		if character.HasEnergyBar() {
 			character.EnableEnergyBar(character.MaxEnergy() + 10)
 		}
-	})
-
-	// https://www.wowhead.com/classic/item=227809/studded-timbermaw-brawlers
-	// Equip: +3 Weapon Damage.
-	core.NewItemEffect(StuddedTimbermawBrawlers, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		character.PseudoStats.BonusDamage += 3
 	})
 
 	core.AddEffectsToTest = true

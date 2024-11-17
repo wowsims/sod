@@ -65,6 +65,7 @@ message UIItem {
 	double weapon_damage_max = 14;
 	double weapon_speed = 15;
 	repeated double weapon_skills = 28;
+	double bonus_physical_damage = 31;
 
 	int32 ilvl = 16;
 	int32 phase = 17;
