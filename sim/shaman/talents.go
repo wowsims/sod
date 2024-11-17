@@ -2,6 +2,7 @@ package shaman
 
 import (
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -10,6 +11,7 @@ import (
 
 func (shaman *Shaman) ApplyTalents() {
 	// Elemental Talents
+	shaman.applyConcussion()
 	shaman.applyElementalFocus()
 	shaman.applyElementalDevastation()
 	shaman.applyElementalFury()
@@ -77,6 +79,20 @@ func (shaman *Shaman) ApplyTalents() {
 	}
 }
 
+func (shaman *Shaman) applyConcussion() {
+	if shaman.Talents.Concussion == 0 {
+		return
+	}
+
+	additiveMultiplier := 0.01 * float64(shaman.Talents.Concussion)
+	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning, SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
+
+	shaman.OnSpellRegistered(func(spell *core.Spell) {
+		if slices.Contains(affectedSpellCodes, spell.SpellCode) {
+			spell.DamageMultiplierAdditive += additiveMultiplier
+		}
+	})
+}
 func (shaman *Shaman) callOfFlameMultiplier() float64 {
 	return 1 + .05*float64(shaman.Talents.CallOfFlame)
 }
@@ -405,10 +421,6 @@ func (shaman *Shaman) makeFlurryConsumptionTrigger(flurryAura *core.Aura) *core.
 			}
 		},
 	}))
-}
-
-func (shaman *Shaman) concussionMultiplier() float64 {
-	return 1 + 0.01*float64(shaman.Talents.Concussion)
 }
 
 func (shaman *Shaman) totemManaMultiplier() int32 {

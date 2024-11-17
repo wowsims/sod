@@ -61,11 +61,13 @@ func (shaman *Shaman) applyBurn() {
 		shaman.AddStatDependency(stats.Intellect, stats.SpellDamage, 1.50)
 	}
 
-	// Other parts of burn are handled in flame_shock.go
-}
+	shaman.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_ShamanFlameShock {
+			spell.DamageMultiplierAdditive += BurnFlameShockDamageBonus
+		}
+	})
 
-func (shaman *Shaman) burnFlameShockDamageMultiplier() float64 {
-	return core.TernaryFloat64(shaman.HasRune(proto.ShamanRune_RuneHelmBurn), BurnFlameShockDamageBonus, 0)
+	// Other parts of burn are handled in flame_shock.go
 }
 
 func (shaman *Shaman) applyMentalDexterity() {
