@@ -15,6 +15,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 	poisonedKnifeMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 425012})
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 	hasJustAFleshWound := rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
+	numStacks := 0.0
 
 	// Poisoned Knife /might/ scale with BonusWeaponDamage, if it's using https://www.wowhead.com/classic/spell=425013/poisoned-knife
 	rogue.PoisonedKnife = rogue.RegisterSpell(core.SpellConfig{
@@ -58,7 +59,13 @@ func (rogue *Rogue) registerPoisonedKnife() {
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
-				numStacks := float64(max(rogue.deadlyPoisonTick.Dot(target).GetStacks(), rogue.occultPoisonTick.Dot(target).GetStacks()))
+								
+				if rogue.usingOccult {
+					numStacks = float64(rogue.occultPoisonTick.Dot(target).GetStacks())
+				} else if rogue.usingDeadly {
+					numStacks = float64(rogue.deadlyPoisonTick.Dot(target).GetStacks())
+				}
+				
 				rogue.AddEnergy(sim, numStacks * 5, poisonedKnifeMetrics)
 
 				// 100% application of OH poison (except for 1%? It can resist extremely rarely)

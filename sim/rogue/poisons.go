@@ -89,6 +89,7 @@ func (rogue *Rogue) applyDeadlyBrewInstant() {
 	procMask := core.ProcMaskMelee
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_InstantPoison)
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_DeadlyPoison)
+	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_OccultPoison)
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_WoundPoison)
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_SebaciousPoison)
 
@@ -115,6 +116,13 @@ func (rogue *Rogue) applyDeadlyBrewInstant() {
 
 // Apply Deadly Brew Deadly Poison procs
 func (rogue *Rogue) applyDeadlyBrewDeadly() {
+	if rogue.Level == 60 {
+		rogue.usingOccult = true
+	} else {
+		rogue.usingDeadly = true
+	}
+
+
 	rogue.RegisterAura(core.Aura{
 		Label:    "Deadly Brew (Deadly)",
 		Duration: core.NeverExpires,
@@ -125,10 +133,11 @@ func (rogue *Rogue) applyDeadlyBrewDeadly() {
 			if !result.Landed() || !spell.Flags.Matches(SpellFlagDeadlyBrewed) {
 				return
 			}
-			if rogue.Level == 60 {
+			if rogue.usingOccult {
 				rogue.OccultPoison[DeadlyBrewProc].Cast(sim, result.Target)
+			} else {
+				rogue.DeadlyPoison[DeadlyBrewProc].Cast(sim, result.Target)	
 			}
-			rogue.DeadlyPoison[DeadlyBrewProc].Cast(sim, result.Target)	
 		},
 	})
 }
@@ -164,6 +173,8 @@ func (rogue *Rogue) applyDeadlyPoison() {
 	if procMask == core.ProcMaskUnknown {
 		return
 	}
+
+	rogue.usingDeadly = true
 
 	rogue.RegisterAura(core.Aura{
 		Label:    "Deadly Poison",
@@ -213,6 +224,8 @@ func (rogue *Rogue) applyOccultPoison() {
 	if procMask == core.ProcMaskUnknown {
 		return
 	}
+
+	rogue.usingOccult = true
 
 	rogue.RegisterAura(core.Aura{
 	 	Label:    "Occult Poison Trigger",
@@ -366,7 +379,7 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 
 	rogue.occultPoisonTick = rogue.RegisterSpell(core.SpellConfig{
-	 	ActionID:    core.ActionID{SpellID: spellID},
+	 	ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
 	 	SpellSchool: core.SpellSchoolNature, 
 	 	DefenseType: core.DefenseTypeMagic,
 	 	ProcMask:    core.ProcMaskSpellDamageProc,

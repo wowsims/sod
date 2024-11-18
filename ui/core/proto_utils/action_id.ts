@@ -311,7 +311,7 @@ export class ActionId {
 			case 'Instant Poison V':
 			case 'Instant Poison VI':
 			case 'Wound Poison':
-			case 'Occult Poison':
+			case 'Occult Poison II':
 				if (this.tag === 1) {
 					name += ' (Shiv)';
 				} else if (this.tag === 2) {
@@ -464,7 +464,7 @@ export class ActionId {
 			// Warlock T2 6 Piece Needs Heals to trigger for the player
 			case 'Drain Life':
 			case 'Death Coil':
-				if (this.tag === 1) name += ` (Heal)`
+				if (this.tag === 1) name += ` (Heal)`;
 				break;
 			default:
 				if (this.tag) {

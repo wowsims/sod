@@ -106,6 +106,8 @@ type Rogue struct {
 	OccultPoison     [3]*core.Spell
 	occultPoisonTick *core.Spell
 	SebaciousPoison  [2]*core.Spell
+	usingDeadly bool
+	usingOccult bool
 
 	instantPoisonProcChanceBonus float64
 	additivePoisonBonusChance    float64
