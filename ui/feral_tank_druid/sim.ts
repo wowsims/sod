@@ -24,6 +24,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
+		Stat.StatExpertise,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
@@ -37,7 +38,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatStamina,
@@ -46,13 +46,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
+		Stat.StatExpertise,
 		Stat.StatDefense,
 		Stat.StatDodge,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
-		Stat.StatFrostResistance,
 	],
 
 	defaults: {

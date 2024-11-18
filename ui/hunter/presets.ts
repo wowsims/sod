@@ -17,6 +17,7 @@ import {
 	Profession,
 	Race,
 	RaidBuffs,
+	SapperExplosive,
 	SaygesFortune,
 	SpellPowerBuff,
 	StrengthBuff,
@@ -41,8 +42,8 @@ import RangedP4 from './apls/p4_ranged.apl.json';
 import WeaveP4 from './apls/p4_weave.apl.json';
 import Phase5AplMeleeBm from './apls/p5_melee_bm.apl.json';
 import Phase5AplMeleeSv from './apls/p5_melee_sv.apl.json';
-import Phase5AplWeave from './apls/p5_weave.apl.json';
 import Phase5AplRanged from './apls/p5_ranged.apl.json';
+import Phase5AplWeave from './apls/p5_weave.apl.json';
 import Phase2GearMelee from './gear_sets/p2_melee.gear.json';
 import Phase2GearRangedBm from './gear_sets/p2_ranged_bm.gear.json';
 import Phase2GearRangedMm from './gear_sets/p2_ranged_mm.gear.json';
@@ -87,7 +88,7 @@ export const GearPresets = {
 	[Phase.Phase1]: [GearBeastMasteryPhase1, GearMarksmanPhase1, GearSurvivalPhase1],
 	[Phase.Phase2]: [GearRangedBmPhase2, GearRangedMmPhase2, GearMeleePhase2],
 	[Phase.Phase3]: [GearRangedMmPhase3, GearMeleeBmPhase3],
-	[Phase.Phase4]: [],//[GearWeavePhase4, GearRangedSVPhase4],
+	[Phase.Phase4]: [], //[GearWeavePhase4, GearRangedSVPhase4],
 	[Phase.Phase5]: [GearWeavePhase5, GearRangedMMPhase5, GearRangedSVPhase5, GearMeleeBMPhase5, GearMeleeSVPhase5],
 };
 
@@ -125,7 +126,7 @@ export const APLPresets = {
 	[Phase.Phase1]: [APLMeleeWeavePhase1],
 	[Phase.Phase2]: [APLRangedBmPhase2, APLRangedMmPhase2, APLMeleePhase2],
 	[Phase.Phase3]: [APLRangedMmPhase3, APLMeleeBmPhase3],
-	[Phase.Phase4]: [],//[APLWeavePhase4, APLRangedPhase4],
+	[Phase.Phase4]: [], //[APLWeavePhase4, APLRangedPhase4],
 	[Phase.Phase5]: [APLWeavePhase5, APLRanged31Phase5, APLRanged22Phase5, APLMeleeBMPhase5, APLMeleeSVPhase5],
 };
 
@@ -202,7 +203,7 @@ export const TalentPresets = {
 	[Phase.Phase1]: [TalentsBeastMasteryPhase1, TalentsMarksmanPhase1, TalentsSurvivalPhase1],
 	[Phase.Phase2]: [TalentsBeastMasteryPhase2, TalentsMarksmanPhase2, TalentsSurvivalPhase2],
 	[Phase.Phase3]: [TalentsRangedMMPhase3, TalentsMeleeBMPhase3],
-	[Phase.Phase4]: [],//[TalentsWeavePhase4, TalentsRangedMMPhase4, TalentsRangedSVPhase4],
+	[Phase.Phase4]: [], //[TalentsWeavePhase4, TalentsRangedMMPhase4, TalentsRangedSVPhase4],
 	[Phase.Phase5]: [TalentsWeavePhase5, TalentsRangedMMPhase5, TalentsRangedSVPhase5, TalentsMeleeBMPhase5, TalentsMeleeSVPhase5],
 };
 
@@ -214,10 +215,10 @@ export const DefaultTalentsMeleeSV = TalentPresets[Phase.Phase5][4];
 
 export const DefaultTalents = DefaultTalentsWeave;
 
-export const PresetBuildWeave = PresetUtils.makePresetBuild('Weave', { 
-	gear: DefaultGearWeave, 
-	talents: DefaultTalentsWeave, 
-	rotation: DefaultAPLWeave 
+export const PresetBuildWeave = PresetUtils.makePresetBuild('Weave', {
+	gear: DefaultGearWeave,
+	talents: DefaultTalentsWeave,
+	rotation: DefaultAPLWeave,
 });
 export const PresetBuildRangedMM = PresetUtils.makePresetBuild('Ranged MM', {
 	gear: DefaultGearRangedMM,
@@ -271,7 +272,7 @@ export const DefaultConsumes = Consumes.create({
 	petAttackPowerConsumable: 1,
 	petAgilityConsumable: 1,
 	petStrengthConsumable: 1,
-	sapper: true,
+	sapperExplosive: SapperExplosive.SapperGoblinSapper,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.GroundScorpokAssay,

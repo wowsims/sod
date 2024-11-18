@@ -16,13 +16,15 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		return
 	}
 
+	hasLivingFlameRune := mage.HasRune(proto.MageRune_RuneLegsLivingFlame)
+
 	baseLowDamage := mage.baseRuneAbilityDamage() * 4.53
 	baseHighDamage := mage.baseRuneAbilityDamage() * 5.27
 	spellCoeff := .714
 	castTime := time.Millisecond * 2500
 	manaCost := .07
 
-	hasLivingFlameRune := mage.HasRune(proto.MageRune_RuneLegsLivingFlame)
+	mage.ArcaneBlastDamageMultiplier = 0.15
 
 	additiveDamageAffectedSpells := []*core.Spell{}
 	// Purposefully excluded living flame and arcane missiles ticks because we manually disable the arcane blast aura after the final tick
@@ -51,8 +53,8 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			mage.ArcaneBlast.Cost.Multiplier -= 175 * oldStacks
 			mage.ArcaneBlast.Cost.Multiplier += 175 * newStacks
 
-			oldMultiplier := .15 * float64(oldStacks)
-			newMultiplier := .15 * float64(newStacks)
+			oldMultiplier := mage.ArcaneBlastDamageMultiplier * float64(oldStacks)
+			newMultiplier := mage.ArcaneBlastDamageMultiplier * float64(newStacks)
 			core.Each(additiveDamageAffectedSpells, func(spell *core.Spell) {
 				spell.DamageMultiplierAdditive -= oldMultiplier
 				spell.DamageMultiplierAdditive += newMultiplier

@@ -21,10 +21,12 @@ const (
 const (
 	SpellCode_WarlockNone int32 = iota
 
+	SpellCode_WarlockConflagrate
 	SpellCode_WarlockCorruption
 	SpellCode_WarlockCurseOfAgony
 	SpellCode_WarlockCurseOfDoom
 	SpellCode_WarlockDeathCoil
+	SpellCode_WarlockDemonicSacrifice
 	SpellCode_WarlockDrainLife
 	SpellCode_WarlockDrainSoul
 	SpellCode_WarlockHaunt
@@ -113,21 +115,22 @@ type Warlock struct {
 	MarkOfChaosAuras        core.AuraArray
 	SoulLinkAura            *core.Aura
 	DecimationAura          *core.Aura
+	MasterDemonologistAura  *core.Aura
+	zilaGularAura           *core.Aura
+	shadowSparkAura         *core.Aura
+	defendersResolveAura    *core.Aura
 
 	// The sum total of demonic pact spell power * seconds.
 	DPSPAggregate float64
 
 	// Extra state and logic variables
-	demonicKnowledgeSp      float64
-	masterDemonologistBonus float64 // Bonus multiplier applied to the Master Demonologist talent
-	nightfallProcChance     float64
+	demonicKnowledgeSp                   float64
+	masterDemonologistBonus              float64 // Bonus multiplier applied to the Master Demonologist talent
+	disableMasterDemonologistOnSacrifice bool    // Whether to disable the Master Demonologist buff after Sacrificing a pet. Used by TAQ 4pc
+	nightfallProcChance                  float64
 	// For effects that buff the damage of shadow bolt for each active Warlock effect on the target, e.g. 2pc DPS 6pc
 	shadowBoltActiveEffectMultiplierPer float64
 	shadowBoltActiveEffectMultiplierMax float64
-
-	zilaGularAura        *core.Aura
-	shadowSparkAura      *core.Aura
-	defendersResolveAura *core.Aura
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {

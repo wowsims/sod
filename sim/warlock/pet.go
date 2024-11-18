@@ -50,6 +50,8 @@ func (warlock *Warlock) setDefaultActivePet() {
 }
 
 func (warlock *Warlock) changeActivePet(sim *core.Simulation, newPet *WarlockPet, isSacrifice bool) {
+	hasMasterDemonologist := warlock.MasterDemonologistAura != nil
+
 	if warlock.ActivePet != nil {
 		warlock.ActivePet.Disable(sim)
 
@@ -58,6 +60,10 @@ func (warlock *Warlock) changeActivePet(sim *core.Simulation, newPet *WarlockPet
 			for _, aura := range warlock.ActivePet.GetAuras() {
 				aura.Deactivate(sim)
 			}
+		}
+
+		if hasMasterDemonologist && (!isSacrifice || warlock.disableMasterDemonologistOnSacrifice) {
+			warlock.MasterDemonologistAura.Deactivate(sim)
 		}
 	}
 

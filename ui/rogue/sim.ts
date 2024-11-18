@@ -51,34 +51,42 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
+		// Attributes
 		Stat.StatAgility,
 		Stat.StatStrength,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
+		Stat.StatMeleeHaste,
+		Stat.StatExpertise,
+		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatDefense,
-		Stat.StatFireResistance,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier
+	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
+		// Attributes
 		Stat.StatStamina,
 		Stat.StatAgility,
 		Stat.StatStrength,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
-		Stat.StatSpellHit,
 		Stat.StatMeleeCrit,
-		Stat.StatSpellCrit,
+		Stat.StatExpertise,
 		Stat.StatMeleeHaste,
-		Stat.StatDefense,
-		Stat.StatFireResistance,
+		// Spell
+		Stat.StatSpellHit,
+		Stat.StatSpellCrit,
 	],
 
 	defaults: {

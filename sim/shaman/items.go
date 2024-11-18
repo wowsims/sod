@@ -14,9 +14,9 @@ const (
 	TotemOfRage               = 22395
 	TotemOfTheStorm           = 23199
 	TotemOfSustaining         = 23200
-	TotemCarvedDriftwoodIcon  = 209575
-	TotemInvigoratingFlame    = 215436
-	TotemTormentedAncestry    = 220607
+	CarvedDriftwoodIcon       = 209575
+	TotemOfInvigoratingFlame  = 215436
+	TotemOfTormentedAncestry  = 220607
 	TerrestrisTank            = 224279
 	TotemOfThunder            = 228176
 	TotemOfRagingFire         = 228177
@@ -28,6 +28,9 @@ const (
 	TotemOfTheElements        = 232409
 	TotemOfAstralFlow         = 232416
 	TotemOfConductiveCurrents = 232419
+	TotemOfThunderousStrikes  = 234478
+	TotemOfFlowingMagma       = 234479
+	TotemOfPyroclasticThunder = 234480
 )
 
 func init() {
@@ -35,66 +38,9 @@ func init() {
 
 	// Keep these ordered by name
 
-	// https://www.wowhead.com/classic/item=231281/wushoolays-charm-of-spirits
-	// Use: Increases the damage dealt by your Lightning Shield spell by 100% for 20 sec. (2 Min Cooldown)
-	core.NewItemEffect(WushoolaysCharmOfSpirits, func(agent core.Agent) {
-		shaman := agent.(ShamanAgent).GetShaman()
-
-		duration := time.Second * 20
-		actionID := core.ActionID{ItemID: WushoolaysCharmOfSpirits}
-
-		var affectedSpells []*core.Spell
-
-		aura := shaman.RegisterAura(core.Aura{
-			ActionID: actionID,
-			Label:    "Wushoolay's Charm of Spirits",
-			Duration: time.Second * 20,
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells = core.FilterSlice(
-					core.Flatten([][]*core.Spell{
-						shaman.LightningShieldProcs,
-						{shaman.RollingThunder},
-					}),
-					func(spell *core.Spell) bool { return spell != nil },
-				)
-			},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range affectedSpells {
-					spell.DamageMultiplier *= 2
-				}
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range affectedSpells {
-					spell.DamageMultiplier /= 2
-				}
-			},
-		})
-
-		spell := shaman.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    shaman.NewTimer(),
-					Duration: time.Minute * 2,
-				},
-				SharedCD: core.Cooldown{
-					Timer:    shaman.GetOffensiveTrinketCD(),
-					Duration: duration,
-				},
-			},
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				aura.Activate(sim)
-			},
-		})
-
-		shaman.AddMajorCooldown(core.MajorCooldown{
-			Spell:    spell,
-			Priority: core.CooldownPriorityDefault,
-			Type:     core.CooldownTypeDPS,
-		})
+	core.NewItemEffect(CarvedDriftwoodIcon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.AddStat(stats.MP5, 2)
 	})
 
 	// https://www.wowhead.com/classic/item=230273/natural-alignment-crystal
@@ -111,12 +57,12 @@ func init() {
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.20)
-				// shaman.PseudoStats.HealingDealtMultiplier *= 1.20
+				shaman.PseudoStats.HealingDealtMultiplier *= 1.20
 				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(20)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.20)
-				// shaman.PseudoStats.HealingDealtMultiplier /= 1.20
+				shaman.PseudoStats.HealingDealtMultiplier /= 1.20
 				shaman.PseudoStats.SchoolCostMultiplier.AddToAllSchools(-20)
 			},
 		})
@@ -354,11 +300,6 @@ func init() {
 		}))
 	})
 
-	core.NewItemEffect(TotemCarvedDriftwoodIcon, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		character.AddStat(stats.MP5, 2)
-	})
-
 	// https://www.wowhead.com/classic/item=232416/totem-of-astral-flow
 	// Increases the attack power bonus on Windfury Weapon attacks by 68.
 	core.NewItemEffect(TotemOfAstralFlow, func(agent core.Agent) {
@@ -416,6 +357,55 @@ func init() {
 		}))
 	})
 
+	// https://www.wowhead.com/classic/item=234479/totem-of-flowing-magma
+	// Increases the damage of Flame Shock and Molten Blast by 3%.
+	core.NewItemEffect(TotemOfFlowingMagma, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.RegisterAura(core.Aura{
+			Label: "Improved Flame Shock/Molten Blast",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				affectedSpells := core.FilterSlice(
+					core.Flatten(
+						[][]*core.Spell{
+							shaman.FlameShock,
+							{shaman.MoltenBlast},
+						},
+					),
+					func(spell *core.Spell) bool { return spell != nil },
+				)
+
+				for _, spell := range affectedSpells {
+					spell.DamageMultiplierAdditive += 0.03
+				}
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=234480/totem-of-pyroclastic-thunder
+	// Increases the damage of Lightning Bolt, Chain Lightning, and Lava Burst by 3%.
+	core.NewItemEffect(TotemOfPyroclasticThunder, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.RegisterAura(core.Aura{
+			Label: "Improved Lightning Bolt/Lava Burst",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				affectedSpells := core.FilterSlice(
+					core.Flatten(
+						[][]*core.Spell{
+							shaman.LightningBolt,
+							shaman.ChainLightning,
+							{shaman.LavaBurst},
+						},
+					),
+					func(spell *core.Spell) bool { return spell != nil },
+				)
+
+				for _, spell := range affectedSpells {
+					spell.DamageMultiplierAdditive += 0.03
+				}
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=232392/totem-of-relentless-thunder
 	// While a Shield is equipped, your melee attacks with Rockbiter Weapon trigger your Maelstrom Weapon rune 100% more often.
 	core.NewItemEffect(TotemOfRelentlessThunder, func(agent core.Agent) {
@@ -457,7 +447,7 @@ func init() {
 		shaman.RegisterAura(core.Aura{
 			Label: "Totem of the Elements",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.ClearcastingAura.MaxStacks = 2
+				shaman.ClearcastingAura.MaxStacks += 1
 			},
 		})
 	})
@@ -484,7 +474,7 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(TotemInvigoratingFlame, func(agent core.Agent) {
+	core.NewItemEffect(TotemOfInvigoratingFlame, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
@@ -529,7 +519,7 @@ func init() {
 	})
 
 	// Totem of Tormented Ancestry
-	core.NewItemEffect(TotemTormentedAncestry, func(agent core.Agent) {
+	core.NewItemEffect(TotemOfTormentedAncestry, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 		procAura := shaman.NewTemporaryStatsAura(
 			"Totem of Tormented Ancestry Proc",
@@ -573,6 +563,32 @@ func init() {
 			if spell.SpellCode == SpellCode_ShamanLightningBolt {
 				spell.DefaultCast.CastTime -= time.Millisecond * 100
 			}
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=234478/totem-of-thunderous-strikes
+	// Increases the damage of Stormstrike and Windfury Weapon by 3%.
+	core.NewItemEffect(TotemOfThunderousStrikes, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.RegisterAura(core.Aura{
+			Label: "Improved Stormstrike/Windfury Weapon",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				affectedSpells := core.FilterSlice(
+					core.Flatten(
+						[][]*core.Spell{
+							{shaman.StormstrikeMH},
+							{shaman.StormstrikeOH},
+							{shaman.WindfuryWeaponMH},
+							{shaman.WindfuryWeaponOH},
+						},
+					),
+					func(spell *core.Spell) bool { return spell != nil },
+				)
+
+				for _, spell := range affectedSpells {
+					spell.DamageMultiplierAdditive += 0.03
+				}
+			},
 		})
 	})
 
@@ -642,6 +658,68 @@ func init() {
 				shaman.AddMana(sim, shaman.MaxMana()*.02, manaMetrics)
 			},
 		}))
+	})
+
+	// https://www.wowhead.com/classic/item=231281/wushoolays-charm-of-spirits
+	// Use: Increases the damage dealt by your Lightning Shield spell by 100% for 20 sec. (2 Min Cooldown)
+	core.NewItemEffect(WushoolaysCharmOfSpirits, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+
+		duration := time.Second * 20
+		actionID := core.ActionID{ItemID: WushoolaysCharmOfSpirits}
+
+		var affectedSpells []*core.Spell
+
+		aura := shaman.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Wushoolay's Charm of Spirits",
+			Duration: time.Second * 20,
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				affectedSpells = core.FilterSlice(
+					core.Flatten([][]*core.Spell{
+						shaman.LightningShieldProcs,
+						{shaman.RollingThunder},
+					}),
+					func(spell *core.Spell) bool { return spell != nil },
+				)
+			},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				for _, spell := range affectedSpells {
+					spell.DamageMultiplier *= 2
+				}
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				for _, spell := range affectedSpells {
+					spell.DamageMultiplier /= 2
+				}
+			},
+		})
+
+		spell := shaman.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    shaman.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    shaman.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				aura.Activate(sim)
+			},
+		})
+
+		shaman.AddMajorCooldown(core.MajorCooldown{
+			Spell:    spell,
+			Priority: core.CooldownPriorityDefault,
+			Type:     core.CooldownTypeDPS,
+		})
 	})
 
 	core.AddEffectsToTest = true

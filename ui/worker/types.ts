@@ -3,6 +3,7 @@
  */
 export enum SimRequest {
 	bulkSimAsync = 'bulkSimAsync',
+	//bulkSimCombos = 'bulkSimCombos',
 	computeStats = 'computeStats',
 	computeStatsJson = 'computeStatsJson',
 	raidSim = 'raidSim',
@@ -10,6 +11,11 @@ export enum SimRequest {
 	raidSimAsync = 'raidSimAsync',
 	statWeights = 'statWeights',
 	statWeightsAsync = 'statWeightsAsync',
+	statWeightRequests = 'statWeightRequests',
+	statWeightCompute = 'statWeightCompute',
+	raidSimRequestSplit = 'raidSimRequestSplit',
+	raidSimResultCombination = 'raidSimResultCombination',
+	abortById = 'abortById',
 }
 
 /**

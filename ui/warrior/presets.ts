@@ -15,6 +15,7 @@ import {
 	Profession,
 	Race,
 	RaidBuffs,
+	SapperExplosive,
 	SaygesFortune,
 	StrengthBuff,
 	TristateEffect,
@@ -232,7 +233,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.WildStrikes,
 	mildlyIrradiatedRejuvPot: true,
 	offHandImbue: WeaponImbue.ElementalSharpeningStone,
-	sapper: true,
+	sapperExplosive: SapperExplosive.SapperGoblinSapper,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
 });

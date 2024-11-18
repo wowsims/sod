@@ -111,8 +111,9 @@ type Mage struct {
 	FingersOfFrostProcChance        float64
 
 	// Variables for telling the mage to try to maintain the Fireball DoT with T2 Fire 6pc
-	FireballMissileActive bool // Whether Fireball has been cast but has not hit to avoid chain-casting
-	MaintainFireballDoT   bool
+	ArcaneBlastDamageMultiplier float64
+	FireballMissileActive       bool // Whether Fireball has been cast but has not hit to avoid chain-casting
+	MaintainFireballDoT         bool
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.

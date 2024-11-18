@@ -18,8 +18,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
+		// Attributes
 		Stat.StatIntellect,
 		Stat.StatSpirit,
+		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatShadowPower,
@@ -28,24 +30,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
-		Stat.StatFireResistance,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
+		// Primary
 		Stat.StatMana,
+		// Attributes
 		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
+		// Spell
 		Stat.StatSpellDamage,
 		Stat.StatShadowPower,
 		Stat.StatHolyPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
-		Stat.StatFireResistance,
 	],
 	modifyDisplayStats: (player: Player<Spec.SpecShadowPriest>) => {
 		let stats = new Stats();

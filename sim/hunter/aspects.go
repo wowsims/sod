@@ -44,7 +44,7 @@ func (hunter *Hunter) getMaxAspectOfTheHawkAttackPower(rank int) float64 {
 }
 
 func (hunter *Hunter) getMaxHawkRank() int {
-	maxRank := 6 // TODO AQ: 7
+	maxRank := core.TernaryInt(core.IncludeAQ, 7, 6)
 
 	for i := maxRank; i > 0; i-- {
 		config := hunter.getAspectOfTheHawkSpellConfig(i)

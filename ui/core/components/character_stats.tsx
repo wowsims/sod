@@ -12,6 +12,78 @@ import { NumberPicker } from './number_picker';
 
 export type StatMods = { talents?: Stats; buffs?: Stats };
 
+const statGroups = new Map<string, Array<Stat>>([
+	[
+		'Primary',
+		[
+			Stat.StatHealth,
+			Stat.StatMana,
+		],
+	],
+	[
+		'Attributes',
+		[
+			Stat.StatStrength,
+			Stat.StatAgility,
+			Stat.StatStamina,
+			Stat.StatIntellect,
+			Stat.StatSpirit,
+		]
+	],
+	[
+		'Physical',
+		[
+			Stat.StatAttackPower,
+			Stat.StatFeralAttackPower,
+			Stat.StatRangedAttackPower,
+			Stat.StatMeleeHit,
+			Stat.StatExpertise,
+			Stat.StatMeleeCrit,
+			Stat.StatMeleeHaste,
+		]
+	],
+	[
+		'Spell',
+		[
+			Stat.StatSpellPower,
+			Stat.StatSpellDamage,
+			Stat.StatArcanePower,
+			Stat.StatFirePower,
+			Stat.StatFrostPower,
+			Stat.StatHolyPower,
+			Stat.StatNaturePower,
+			Stat.StatShadowPower,
+			Stat.StatSpellHit,
+			Stat.StatSpellCrit,
+			Stat.StatSpellHaste,
+			Stat.StatSpellPenetration,
+			Stat.StatMP5,
+		]
+	],
+	[
+		'Defense',
+		[
+			Stat.StatArmor,
+			Stat.StatBonusArmor,
+			Stat.StatDefense,
+			Stat.StatDodge,
+			Stat.StatParry,
+			Stat.StatBlock,
+			Stat.StatBlockValue,
+		]
+	],
+	[
+		'Resistance',
+		[
+			Stat.StatArcaneResistance,
+			Stat.StatFireResistance,
+			Stat.StatFrostResistance,
+			Stat.StatNatureResistance,
+			Stat.StatShadowResistance,
+		]
+	],
+])
+
 export class CharacterStats extends Component {
 	readonly stats: Array<Stat>;
 	readonly valueElems: Array<HTMLTableCellElement>;
@@ -22,9 +94,11 @@ export class CharacterStats extends Component {
 
 	constructor(parent: HTMLElement, player: Player<any>, stats: Array<Stat>, modifyDisplayStats?: (player: Player<any>) => StatMods) {
 		super(parent, 'character-stats-root');
-		this.stats = statOrder.filter(stat => stats.includes(stat));
+		this.stats = []
 		this.player = player;
 		this.modifyDisplayStats = modifyDisplayStats;
+
+		const statsSet = new Set(stats);
 
 		const playerLevelRef = ref<HTMLSpanElement>();
 		this.player.levelChangeEmitter.on(() => (playerLevelRef.value!.textContent = `Level ${player.getLevel()}`));
@@ -42,20 +116,30 @@ export class CharacterStats extends Component {
 		this.rootElem.appendChild(table);
 
 		this.valueElems = [];
-		this.stats.forEach(stat => {
-			const statName = getClassStatName(stat, player.getClass());
+		statGroups.forEach((groupedStats, _) => {
+			const filteredStats = groupedStats.filter(stat => statsSet.has(stat))
+			if (!filteredStats.length) return
 
-			const row = (
-				<tr className="character-stats-table-row">
-					<td className="character-stats-table-label">{statName}</td>
-					<td className="character-stats-table-value">{this.bonusStatsLink(stat)}</td>
-				</tr>
-			);
-			table.appendChild(row);
+			const body = <tbody></tbody>
+			filteredStats.forEach(stat => {
+				this.stats.push(stat)
 
-			const valueElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
-			this.valueElems.push(valueElem);
-		});
+				const statName = getClassStatName(stat, player.getClass());
+
+				const row = (
+					<tr className="character-stats-table-row">
+						<td className="character-stats-table-label">{statName}</td>
+						<td className="character-stats-table-value">{this.bonusStatsLink(stat)}</td>
+					</tr>
+				);
+				body.appendChild(row);
+	
+				const valueElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
+				this.valueElems.push(valueElem);
+			})
+
+			table.appendChild(body)
+		})
 
 		if (this.shouldShowMeleeCritCap(player)) {
 			const row = (
@@ -357,8 +441,8 @@ export class CharacterStats extends Component {
 		} else if (stat === Stat.StatArmorPenetration) {
 			displayStr += ` (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
 		} else if (stat === Stat.StatExpertise) {
-			// Expertise is not used in SoD and replaced by weapon skill
-			displayStr += ` (${(rawValue / Mechanics.EXPERTISE_PER_QUARTER_PERCENT_REDUCTION / 4).toFixed(2)}%)`;
+			// It's just like crit and hit in SoD.
+			displayStr += `%`;
 		} else if (stat === Stat.StatDefense) {
 			displayStr = `${(player.getLevel() * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)}`;
 		} else if (stat === Stat.StatBlock) {

@@ -21,7 +21,7 @@ func (hunter *Hunter) ApplyRunes() {
 			Label: "Beastmastery Rune Focus",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				if hunter.pet != nil {
-					hunter.pet.AddFocusRegenMultiplier(1.50)
+					hunter.pet.AddFocusRegenMultiplier(0.50)
 				}
 			},
 		}))
@@ -149,13 +149,10 @@ func (hunter *Hunter) applySniperTraining() {
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			statDelta := float64(newStacks - oldStacks)
 			for _, spell := range aura.Unit.Spellbook {
-				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) {
+				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) || spell.SpellCode == SpellCode_HunterChimeraSerpent {
 					spell.BonusCritRating += statDelta * 2 * core.CritRatingPerCritChance
 				}
-				// Chimera - Serpent double dips this bonus and has ProcMaskEmpty so just add 20 here
-				if spell.ActionID.SpellID == 409493 {
-					spell.BonusCritRating += statDelta * 4 * core.CritRatingPerCritChance
-				}
+				
 			}
 		},
 	})
@@ -251,11 +248,6 @@ func (hunter *Hunter) applyLockAndLoad() {
 
 	lockAndLoadMetrics := hunter.Metrics.NewResourceMetrics(core.ActionID{SpellID: 415413}, proto.ResourceType_ResourceTypeMana)
 
-	// icd := core.Cooldown{
-	// 	Timer:    hunter.NewTimer(),
-	// 	Duration: time.Second * 8,
-	// }
-
 	hunter.LockAndLoadAura = hunter.GetOrRegisterAura(core.Aura{
 		Label:    "Lock And Load",
 		ActionID: core.ActionID{SpellID: 415413},
@@ -276,12 +268,7 @@ func (hunter *Hunter) applyLockAndLoad() {
 		Label: "Lock And Load Trigger",
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagTrap) {
-				spell.WaitTravelTime(sim, func(s *core.Simulation) {
-					// if icd.IsReady(sim) {
-					// 	icd.Use(sim)
 					hunter.LockAndLoadAura.Activate(sim)
-					// }
-				})
 			}
 		},
 	}))

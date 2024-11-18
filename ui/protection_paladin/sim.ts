@@ -36,25 +36,27 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	],
 	// All stats for which EP should be calculated.
 	epStats: [
+		// Primary
 		Stat.StatHealth,
 		Stat.StatMana,
-		// Primary Attributes
+		// Attributes
 		Stat.StatStrength,
 		Stat.StatStamina,
 		Stat.StatAgility,
 		Stat.StatIntellect,
-		// Melee Offensive
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		// Magic offensive/healing
+		Stat.StatExpertise,
+		// Spell
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellPower,
 		Stat.StatHolyPower,
 		Stat.StatHealingPower,
-		// Defensive
+		// Defense
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
@@ -63,36 +65,33 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatBlock,
 		Stat.StatBlockValue,
 		// Resistances
-		Stat.StatFireResistance,
-		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
-		Stat.StatFrostResistance,
-		Stat.StatArcaneResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
+		// Primary
 		Stat.StatMana,
-		// Primary Attributes
+		// Attributes
 		Stat.StatStrength,
 		Stat.StatStamina,
 		Stat.StatAgility,
 		Stat.StatIntellect,
-		// Melee Offensive
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		// Magic offensive/healing
+		Stat.StatExpertise,
+		// Spell
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatSpellPower,
 		Stat.StatHolyPower,
 		Stat.StatHealingPower,
-		// Defensive
+		// Defense
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
@@ -101,10 +100,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatBlock,
 		Stat.StatBlockValue,
 		// Resistances
-		Stat.StatFireResistance,
-		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
-		Stat.StatFrostResistance,
 		Stat.StatArcaneResistance,
 	],
 

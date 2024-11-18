@@ -1925,10 +1925,18 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			unit.AddStatsDynamic(sim, updateStats)
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				unit.AddStats(updateStats)
+			} else {
+				unit.AddStatsDynamic(sim, updateStats)
+			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				unit.AddStats(updateStats.Multiply(-1))
+			} else {
+				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+			}
 		},
 	})
 	return aura
@@ -1946,10 +1954,18 @@ func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			unit.AddStatsDynamic(sim, updateStats)
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				unit.AddStats(updateStats)
+			} else {
+				unit.AddStatsDynamic(sim, updateStats)
+			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				unit.AddStats(updateStats.Multiply(-1))
+			} else {
+				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+			}
 		},
 	})
 	return aura
@@ -2591,11 +2607,11 @@ func ApplyAshenvaleRallyingCry(unit *Unit) {
 		Category: "AshenvaleRallyingCry",
 		ExtraOnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.05
-			// TODO: healing dealt multiplier?
+			aura.Unit.PseudoStats.HealingDealtMultiplier *= 1.05
 		},
 		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.05
-			// TODO: healing dealt multiplier?
+			aura.Unit.PseudoStats.HealingDealtMultiplier /= 1.05
 		},
 	})
 }

@@ -8,6 +8,7 @@ import { ProgressMetrics, StatWeightsResult, StatWeightValues } from '../proto/a
 import { PseudoStat, Stat, UnitStats } from '../proto/common.js';
 import { getClassStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
+import { RequestTypes } from '../sim_signal_manager';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { stDevToConf90 } from '../utils.js';
 import { BaseModal } from './base_modal.js';
@@ -296,16 +297,47 @@ class EpWeightsMenu extends BaseModal {
 			}
 		});
 
-		const calcButton = this.rootElem.getElementsByClassName('calc-weights')[0] as HTMLElement;
+		const calcButton = this.rootElem.getElementsByClassName('calc-weights')[0] as HTMLButtonElement;
+		let isRunning = false;
 		calcButton.addEventListener('click', async _event => {
+			if (isRunning) return;
+			isRunning = true;
+
+			try {
+				await this.simUI.sim.signalManager.abortType(RequestTypes.All);
+			} catch (error) {
+				console.error(error);
+				return;
+			}
+
+			calcButton.disabled = true;
+
 			const previousContents = calcButton.innerHTML;
-			calcButton.classList.add('disabled');
 			calcButton.style.width = `${calcButton.getBoundingClientRect().width.toFixed(3)}px`;
 			calcButton.innerHTML = `<i class="fa fa-spinner fa-spin"></i>&nbsp;Running`;
 			this.container.scrollTo({ top: 0 });
 			this.container.classList.add('pending');
 			this.resultsViewer.setPending();
 			const iterations = this.simUI.sim.getIterations();
+
+			let waitAbort = false;
+			this.resultsViewer.addAbortButton(async () => {
+				if (waitAbort) return;
+				try {
+					waitAbort = true;
+					await simUI.sim.signalManager.abortType(RequestTypes.StatWeights);
+				} catch (error) {
+					console.error('Error on stat weight abort!');
+					console.error(error);
+				} finally {
+					waitAbort = false;
+					if (!isRunning) {
+						calcButton.disabled = false;
+						calcButton.innerHTML = previousContents;
+					}
+				}
+			});
+
 			const result = await this.simUI.player.computeStatWeights(
 				TypedEvent.nextEventID(),
 				this.epStats,
@@ -317,11 +349,21 @@ class EpWeightsMenu extends BaseModal {
 			);
 			this.container.classList.remove('pending');
 			this.resultsViewer.hideAll();
-			calcButton.innerHTML = previousContents;
-			calcButton.classList.remove('disabled');
+
+			isRunning = false;
+			if (!waitAbort) {
+				calcButton.disabled = false;
+				calcButton.innerHTML = previousContents;
+			}
+			if (!result) return;
+
 			this.simUI.prevEpIterations = iterations;
 			this.simUI.prevEpSimResult = this.calculateEp(result);
 			this.updateTable();
+		});
+
+		this.addOnHideCallback(() => {
+			this.simUI.sim.signalManager.abortType(RequestTypes.StatWeights).catch(console.error);
 		});
 
 		const colActionButtons = Array.from(this.rootElem.getElementsByClassName('col-action')) as Array<HTMLSelectElement>;

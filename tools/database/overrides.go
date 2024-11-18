@@ -494,7 +494,6 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	regexp.MustCompile(`Test`),
 	regexp.MustCompile(`zOLD`),
 
-	// TODO: Possibly add these back later. These are later phase items
 	// PVP Gear
 	// regexp.MustCompile(`Grand Marshal's [a-zA-z\s]+`),
 	// regexp.MustCompile(`High Warlord's [a-zA-z\s]+`),

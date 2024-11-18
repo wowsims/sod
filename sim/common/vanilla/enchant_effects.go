@@ -312,5 +312,60 @@ func init() {
 		})
 	})
 
+	core.NewEnchantEffect(2621, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		character.RegisterAura(core.Aura{
+			Label: "Subtlety",
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.ThreatMultiplier /= 1.02
+			},
+		})
+	})
+
+	core.NewEnchantEffect(2613, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		character.RegisterAura(core.Aura{
+			Label: "Threat +2%",
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.ThreatMultiplier *= 1.02
+			},
+		})
+	})
+
+	core.NewEnchantEffect(7649, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 1213833}
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+	
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+	
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 20, spell.OutcomeMagicHit)
+			},
+		})
+		
+		character.GetOrRegisterAura(core.Aura{
+			Label:    "Thorns +20",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+					procSpell.Cast(sim, spell.Unit)
+				}
+			},
+		})
+	})
+
+
 	core.AddEffectsToTest = true
 }

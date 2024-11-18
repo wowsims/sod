@@ -730,6 +730,7 @@ const spellIDsToShowBuffs = new Set([
 	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
 	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos
 	456393, // https://www.wowhead.com/classic/spell=456393/stalked
+	1214279, // https://www.wowhead.com/classic/spell=1214279/spell-blasting
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';

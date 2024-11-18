@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -375,7 +376,104 @@ var ItemSetPredatorArmor = core.NewItemSet(core.ItemSet{
 			hunter.RegisterAura(core.Aura{
 				Label: "Predator's Armor 5P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.pet.AddFocusRegenMultiplier(1.20)
+					hunter.pet.AddFocusRegenMultiplier(0.20)
+				},
+			})
+		},
+	},
+})
+
+var TrappingsOfTheUnseenPath = core.NewItemSet(core.ItemSet{
+	Name: "Trappings of the Unseen Path",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases the Focus regeneration of your Beast pet by 100%.
+		3: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			if hunter.pet == nil {
+				return
+			}
+
+			hunter.RegisterAura(core.Aura{
+				Label: "Trappings of the Unseen Path 3P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.pet.AddFocusRegenMultiplier(1.00)
+				},
+			})
+		},
+	},
+})
+
+var StrikersProwess = core.NewItemSet(core.ItemSet{
+	Name: "Striker's Prowess",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Increases Wyvern Strike DoT by 50%
+		2: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			if !hunter.Talents.WyvernSting || !hunter.HasRune(proto.HunterRune_RuneBootsWyvernStrike) {
+				return
+			}
+
+			hunter.RegisterAura(core.Aura{
+				Label: "Striker's Prowess 2P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.WyvernStrike.PeriodicDamageMultiplierAdditive += 0.50
+				},
+			})
+		},
+		// Increases the Impact Damage of Mongoose Bite and all Strikes by 10%
+		4: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			hunter.RegisterAura(core.Aura{
+				Label: "Striker's Prowess 4P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range hunter.Strikes {
+						spell.ImpactDamageMultiplierAdditive += 0.10
+					}
+					hunter.RaptorStrikeMH.ImpactDamageMultiplierAdditive += 0.10
+					hunter.RaptorStrikeOH.ImpactDamageMultiplierAdditive += 0.10
+					hunter.MongooseBite.ImpactDamageMultiplierAdditive += 0.10
+				},
+			})
+		},
+	},
+})
+
+var StrikersPursuit = core.NewItemSet(core.ItemSet{
+	Name: "Striker's Pursuit",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Kill Shot's remaining cooldown is reduced by 50% when used on targets between 20% and 50% health, and has no cooldown while your Rapid Fire is active
+		2: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
+				return
+			}
+
+			core.MakePermanent(hunter.RegisterAura(core.Aura{
+				Label: "Striker's Pursuit 2P",
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.SpellCode != SpellCode_HunterKillShot {
+						return
+					}
+
+					if hunter.HasActiveAura("Rapid Fire") {
+						spell.CD.Reset()
+					} else if sim.CurrentTime > sim.Encounter.Duration/2 {
+						spell.CD.Set(sim.CurrentTime + spell.CD.TimeToReady(sim)/2)
+					}
+				},
+			}))
+		},
+		// Increases Kill Shot damage by 50%
+		4: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
+				return
+			}
+
+			hunter.RegisterAura(core.Aura{
+				Label: "Striker's Pursuit 4P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.KillShot.DamageMultiplier *= 1.50
 				},
 			})
 		},

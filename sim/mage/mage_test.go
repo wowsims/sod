@@ -334,7 +334,7 @@ var Phase5Consumes = core.ConsumesCombo{
 		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
 		FrostPowerBuff: proto.FrostPowerBuff_ElixirOfFrostPower,
 		Food:           proto.Food_FoodRunnTumTuberSurprise,
-		MainHandImbue:  proto.WeaponImbue_BrillianWizardOil,
+		MainHandImbue:  proto.WeaponImbue_BrilliantWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }

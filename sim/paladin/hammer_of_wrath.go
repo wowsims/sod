@@ -44,6 +44,7 @@ func (paladin *Paladin) registerHammerOfWrath() {
 
 			Rank:          i + 1,
 			RequiredLevel: int(rank.level),
+			SpellCode:     SpellCode_PaladinHammerOfWrath,
 
 			ManaCost: core.ManaCostOptions{
 				FlatCost: rank.manaCost,

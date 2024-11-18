@@ -31,9 +31,6 @@ func (hunter *Hunter) getFreezingTrapConfig(timer *core.Timer) core.SpellConfig 
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= hunter.trapRange()
-		},
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
