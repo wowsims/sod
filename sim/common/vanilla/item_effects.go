@@ -135,6 +135,7 @@ const (
 	NeretzekBloodDrinker            = 233647
 	Speedstone                      = 233990
 	ManslayerOfTheQiraji            = 234067
+	EyeOfMoam                       = 234080 // 21473
 	DarkmoonCardHeroism             = 234176 // 19287
 	DarkmoonCardBlueDragon          = 234177 // 19288
 	DarkmoonCardMaelstrom           = 234178 // 19289
@@ -2372,7 +2373,6 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=234462/earthstrike
 	// Use: Increases your melee and ranged attack power by 328.  Effect lasts for 20 sec. (2 Min Cooldown)
-
 	core.NewSimpleStatOffensiveTrinketEffect(Earthstrike, stats.Stats{stats.AttackPower: 328, stats.RangedAttackPower: 328}, time.Second*20, time.Second*120)
 
 	// https://www.wowhead.com/classic/item=228293/essence-of-the-pure-flame
@@ -2405,6 +2405,10 @@ func init() {
 			},
 		})
 	})
+
+	// https://www.wowhead.com/classic/item=234080/eye-of-moam
+	// Use: Increases damage done by magical spells and effects by up to 150, and decreases the magical resistances of your spell targets by 100 for 30 sec. (3 Min Cooldown)
+	core.NewSimpleStatOffensiveTrinketEffect(EyeOfMoam, stats.Stats{stats.SpellDamage: 150, stats.SpellPenetration: 100}, time.Second*30, time.Minute*3)
 
 	// https://www.wowhead.com/classic/item=227990/hand-of-injustice
 	// Equip: 2% chance on ranged hit to gain 1 extra attack. (Proc chance: 2%, 2s cooldown)
