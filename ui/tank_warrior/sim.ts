@@ -62,7 +62,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 		Stat.StatDodge,
 		Stat.StatParry,
 	],
-
+	displayPseudoStats: [],
+	
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,

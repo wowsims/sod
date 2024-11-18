@@ -81,7 +81,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 		Stat.StatParry,
 		Stat.StatDodge,
 	],
-
+	displayPseudoStats: [],
+	
 	defaults: {
 		race: Race.RaceTroll,
 		// Default equipped gear.

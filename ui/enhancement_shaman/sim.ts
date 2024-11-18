@@ -66,7 +66,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-
+	displayPseudoStats: [],
+	
 	defaults: {
 		race: Race.RaceTroll,
 		// Default equipped gear.

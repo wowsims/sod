@@ -47,6 +47,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
+	displayPseudoStats: [],
 
 	defaults: {
 		// Default equipped gear.
