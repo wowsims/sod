@@ -15,6 +15,8 @@ func (rogue *Rogue) registerEnvenom() {
 	baseAbilityDamage := rogue.baseRuneAbilityDamage()
 	consumed := int32(0)
 	cutToTheChase := rogue.HasRune(proto.RogueRune_RuneCutToTheChase)
+	useOccultPoison := rogue.occultPoisonTick != nil
+
 
 	rogue.EnvenomAura = rogue.RegisterAura(core.Aura{
 		Label:    "Envenom",
@@ -50,7 +52,10 @@ func (rogue *Rogue) registerEnvenom() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.ComboPoints() > 0 && (rogue.deadlyPoisonTick.Dot(target).IsActive() || rogue.occultPoisonTick.Dot(target).IsActive())
+			if useOccultPoison {
+				return rogue.ComboPoints() > 0 && rogue.occultPoisonTick.Dot(target).IsActive()
+			}
+			return rogue.ComboPoints() > 0 && rogue.deadlyPoisonTick.Dot(target).IsActive()
 		},
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
@@ -66,18 +71,17 @@ func (rogue *Rogue) registerEnvenom() {
 			// Still true in SoD
 			rogue.EnvenomAura.Duration = rogue.EnvenomDuration(rogue.ComboPoints())
 			rogue.EnvenomAura.Activate(sim)
-
-			dp := rogue.deadlyPoisonTick.Dot(target)
-			op := rogue.occultPoisonTick.Dot(target)
-			// - base damage is scaled by consumed doses (<= comboPoints)
-			// - apRatio is scaled of lowest of cp or dp (== comboPoints)
-		
-			if op.GetStacks() >= dp.GetStacks() {
+			if useOccultPoison{
+				op := rogue.occultPoisonTick.Dot(target)
 				consumed = min(op.GetStacks(), comboPoints)
-			} else{
+			} else {
+				dp := rogue.deadlyPoisonTick.Dot(target)
 				consumed = min(dp.GetStacks(), comboPoints)
 			}
 			
+			// - base damage is scaled by consumed doses (<= comboPoints)
+			// - apRatio is scaled of lowest of cp or dp (== comboPoints)
+					
 			baseDamage := baseAbilityDamage*float64(consumed)*0.8 + 0.072*float64(consumed)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

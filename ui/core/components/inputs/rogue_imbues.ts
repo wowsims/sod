@@ -42,7 +42,7 @@ export const WoundPoisonWeaponImbue: ConsumableInputConfig<WeaponImbue> = {
 };
 
 export const OccultPoisonWeaponImbue: ConsumableInputConfig<WeaponImbue> = {
-	actionId: player => player.getMatchingItemActionId([{ id: 226374, minLevel: 56 }]),
+	actionId: player => player.getMatchingItemActionId([{ id: 234444, minLevel: 60 }]),
 	value: WeaponImbue.OccultPoison,
 	showWhen: player => player.getClass() == Class.ClassRogue,
 };

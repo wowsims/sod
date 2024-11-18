@@ -34,8 +34,10 @@ Benefits from all Deadly Poison effects
 56: 108 damage, 458821 ID, 30 minute duration (Rank 1)
 60: 136 damage, 1214168 ID, 30 minute duration (Rank 2)
 
-Sebacious Poison: 30% proc chance, 5 stacks
-60: 1700 armor for 15 sec, 105 charges
+Sebacious Poison: 30% proc chance
+60: 1700 armor for 15 sec
+
+
 */
 
 // TODO: Add charges to poisons (not deadly brew)
@@ -52,6 +54,7 @@ func (rogue *Rogue) GetInstantPoisonProcChance() float64 {
 	return (0.2 + rogue.improvedPoisons()) * (1 + rogue.instantPoisonProcChanceBonus) + rogue.additivePoisonBonusChance
 }
 
+//Used for all 30% proc poisons (Sebacious and others)
 func (rogue *Rogue) GetDeadlyPoisonProcChance() float64 {
 	return 0.3 + rogue.improvedPoisons() + rogue.additivePoisonBonusChance
 }
@@ -122,7 +125,10 @@ func (rogue *Rogue) applyDeadlyBrewDeadly() {
 			if !result.Landed() || !spell.Flags.Matches(SpellFlagDeadlyBrewed) {
 				return
 			}
-			rogue.OccultPoison[DeadlyBrewProc].Cast(sim, result.Target)
+			if rogue.Level == 60 {
+				rogue.OccultPoison[DeadlyBrewProc].Cast(sim, result.Target)
+			}
+			rogue.DeadlyPoison[DeadlyBrewProc].Cast(sim, result.Target)	
 		},
 	})
 }
@@ -361,7 +367,7 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 
 	rogue.occultPoisonTick = rogue.RegisterSpell(core.SpellConfig{
 	 	ActionID:    core.ActionID{SpellID: spellID},
-	 	SpellSchool: core.SpellSchoolNature,
+	 	SpellSchool: core.SpellSchoolNature, 
 	 	DefenseType: core.DefenseTypeMagic,
 	 	ProcMask:    core.ProcMaskSpellDamageProc,
 	 	Flags:       SpellFlagCarnage | core.SpellFlagPoison | SpellFlagRoguePoison,

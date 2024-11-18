@@ -58,9 +58,8 @@ func (rogue *Rogue) registerPoisonedKnife() {
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
-				dp := rogue.deadlyPoisonTick.Dot(target)
-				numDPStacks := float64(dp.GetStacks() * 5)
-				rogue.AddEnergy(sim, numDPStacks, poisonedKnifeMetrics)
+				numStacks := float64(max(rogue.deadlyPoisonTick.Dot(target).GetStacks(), rogue.occultPoisonTick.Dot(target).GetStacks()))
+				rogue.AddEnergy(sim, numStacks * 5, poisonedKnifeMetrics)
 
 				// 100% application of OH poison (except for 1%? It can resist extremely rarely)
 				switch rogue.Consumes.OffHandImbue {
@@ -70,6 +69,10 @@ func (rogue *Rogue) registerPoisonedKnife() {
 					rogue.DeadlyPoison[ShivProc].Cast(sim, target)
 				case proto.WeaponImbue_WoundPoison:
 					rogue.WoundPoison[ShivProc].Cast(sim, target)
+				case proto.WeaponImbue_OccultPoison:
+					rogue.OccultPoison[ShivProc].Cast(sim, target)
+				case proto.WeaponImbue_SebaciousPoison:
+					rogue.SebaciousPoison[ShivProc].Cast(sim, target)	
 				// Add new alternative poisons as they are implemented
 				default:
 					if hasDeadlyBrew {
