@@ -228,12 +228,13 @@ func init() {
 	core.NewItemEffect(IdolOfFelineFerocity, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 		druid.RegisterAura(core.Aura{
-			Label: "Improved Wrath/Moonfire",
+			Label: "Improved Shred/Ferocious Bite,
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				// Shred is handled inside Shred.go similaryly to Idol of the Dream
+				// due to interactions with the SoD shred buff aura.
 				affectedSpells := core.FilterSlice(
 					[]*DruidSpell{
 						druid.FerociousBite,
-						druid.Shred,
 					},
 					func(spell *DruidSpell) bool { return spell != nil },
 				)
