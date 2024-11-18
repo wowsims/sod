@@ -189,7 +189,8 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			character.PseudoStats.BowsSkill += ps[proto.PseudoStat_PseudoStatBowsSkill]
 			character.PseudoStats.CrossbowsSkill += ps[proto.PseudoStat_PseudoStatCrossbowsSkill]
 			character.PseudoStats.GunsSkill += ps[proto.PseudoStat_PseudoStatGunsSkill]
-
+			character.PseudoStats.BonusPhysicalDamage += ps[proto.PseudoStat_BonusPhysicalDamage]
+			character.PseudoStats.TimewornBonus += int32(ps[proto.PseudoStat_TimewornBonus])
 		}
 	}
 
@@ -267,7 +268,10 @@ func (character *Character) applyEquipment() {
 		if item.Timeworn {
 			character.PseudoStats.TimewornBonus += 1
 		}
+
+		character.PseudoStats.BonusPhysicalDamage += item.BonusPhysicalDamage
 	}
+
 }
 
 func (character *Character) addUniversalStatDependencies() {
@@ -636,6 +640,9 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  float64(character.PseudoStats.MeleeSpeedMultiplier),
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: float64(character.PseudoStats.RangedSpeedMultiplier),
 		proto.PseudoStat_PseudoStatBlockValuePerStrength: float64(character.PseudoStats.BlockValuePerStrength),
+
+		proto.PseudoStat_TimewornBonus:       float64(character.PseudoStats.TimewornBonus),
+		proto.PseudoStat_BonusPhysicalDamage: float64(character.PseudoStats.BonusPhysicalDamage),
 	}
 }
 

@@ -269,7 +269,7 @@ func crusadersZealAura465414(character *core.Character) *core.Aura {
 		Label:    "Crusader's Zeal",
 		Duration: time.Second * 8,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.PseudoStats.BonusDamage += 15
+			character.PseudoStats.BonusPhysicalDamage += 15
 			character.MultiplyAttackSpeed(sim, 1.30)
 
 			// Crusader's zeal proc overwrites scrolls regardless of time left
@@ -279,7 +279,7 @@ func crusadersZealAura465414(character *core.Character) *core.Aura {
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.PseudoStats.BonusDamage -= 15
+			character.PseudoStats.BonusPhysicalDamage -= 15
 			character.MultiplyAttackSpeed(sim, 1/1.30)
 		},
 	})

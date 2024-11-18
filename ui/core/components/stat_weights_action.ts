@@ -749,7 +749,12 @@ class EpWeightsMenu extends BaseModal {
 		if (stat.isStat()) {
 			return true;
 		} else {
-			return [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatRangedDps].includes(stat.getPseudoStat());
+			return [
+				PseudoStat.PseudoStatMainHandDps, 
+				PseudoStat.PseudoStatOffHandDps, 
+				PseudoStat.PseudoStatRangedDps, 
+				PseudoStat.BonusPhysicalDamage
+			].includes(stat.getPseudoStat());
 		}
 	});
 }

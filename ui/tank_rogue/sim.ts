@@ -63,7 +63,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		// Resistances
 		Stat.StatShadowResistance,
 	],
-
+	displayPseudoStats: [],
+	
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,

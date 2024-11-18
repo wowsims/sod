@@ -52,6 +52,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
+	displayPseudoStats: [],
 
 	defaults: {
 		race: Race.RaceTroll,

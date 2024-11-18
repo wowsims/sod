@@ -70,6 +70,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
+	displayPseudoStats: [],
+	
 	// TODO: Figure out a way to get the stat but right now this comes out wrong
 	// due to pet scaling and player getting some dynamic buffs which we cant get here
 	// modifyDisplayStats: (player: Player<Spec.SpecWarlock>) => {

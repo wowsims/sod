@@ -80,7 +80,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		// Resistances
 		Stat.StatShadowResistance,
 	],
-
+	displayPseudoStats: [],
+	
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,

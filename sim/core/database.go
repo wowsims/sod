@@ -58,12 +58,13 @@ type Item struct {
 	WeaponDamageMax  float64
 	SwingSpeed       float64
 
-	Name         string
-	Stats        stats.Stats // Stats applied to wearer
-	Quality      proto.ItemQuality
-	SetName      string // Empty string if not part of a set.
-	SetID        int32  // 0 if not part of a set.
-	WeaponSkills stats.WeaponSkills
+	Name                string
+	Stats               stats.Stats // Stats applied to wearer
+	BonusPhysicalDamage float64
+	Quality             proto.ItemQuality
+	SetName             string // Empty string if not part of a set.
+	SetID               int32  // 0 if not part of a set.
+	WeaponSkills        stats.WeaponSkills
 
 	Timeworn bool
 
@@ -78,23 +79,24 @@ type Item struct {
 
 func ItemFromProto(pData *proto.SimItem) Item {
 	return Item{
-		ID:               pData.Id,
-		RequiresLevel:    pData.RequiresLevel,
-		ClassAllowlist:   pData.ClassAllowlist,
-		Name:             pData.Name,
-		Type:             pData.Type,
-		ArmorType:        pData.ArmorType,
-		WeaponType:       pData.WeaponType,
-		HandType:         pData.HandType,
-		RangedWeaponType: pData.RangedWeaponType,
-		WeaponDamageMin:  pData.WeaponDamageMin,
-		WeaponDamageMax:  pData.WeaponDamageMax,
-		SwingSpeed:       pData.WeaponSpeed,
-		Stats:            stats.FromFloatArray(pData.Stats),
-		SetName:          pData.SetName,
-		SetID:            pData.SetId,
-		WeaponSkills:     stats.WeaponSkillsFloatArray(pData.WeaponSkills),
-		Timeworn:         pData.Timeworn,
+		ID:                  pData.Id,
+		RequiresLevel:       pData.RequiresLevel,
+		ClassAllowlist:      pData.ClassAllowlist,
+		Name:                pData.Name,
+		Type:                pData.Type,
+		ArmorType:           pData.ArmorType,
+		WeaponType:          pData.WeaponType,
+		HandType:            pData.HandType,
+		RangedWeaponType:    pData.RangedWeaponType,
+		WeaponDamageMin:     pData.WeaponDamageMin,
+		WeaponDamageMax:     pData.WeaponDamageMax,
+		SwingSpeed:          pData.WeaponSpeed,
+		Stats:               stats.FromFloatArray(pData.Stats),
+		BonusPhysicalDamage: pData.BonusPhysicalDamage,
+		SetName:             pData.SetName,
+		SetID:               pData.SetId,
+		WeaponSkills:        stats.WeaponSkillsFloatArray(pData.WeaponSkills),
+		Timeworn:            pData.Timeworn,
 	}
 }
 

@@ -1076,6 +1076,9 @@ export class Player<SpecType extends Spec> {
 			}
 		}
 
+		// Add pseudo stats that should be included in item EP.
+		itemStats = itemStats.addPseudoStat(PseudoStat.BonusPhysicalDamage, item.bonusPhysicalDamage);
+
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
 
