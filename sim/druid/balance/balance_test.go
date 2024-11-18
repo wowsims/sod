@@ -156,7 +156,7 @@ var Phase5Consumes = core.ConsumesCombo{
 		DefaultPotion:  proto.Potions_MajorManaPotion,
 		Flask:          proto.Flask_FlaskOfSupremePower,
 		Food:           proto.Food_FoodNightfinSoup,
-		MainHandImbue:  proto.WeaponImbue_BrillianWizardOil,
+		MainHandImbue:  proto.WeaponImbue_BrilliantWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }

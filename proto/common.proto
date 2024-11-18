@@ -525,7 +525,7 @@ enum MageScroll {
 	MageScrollFrostProtection = 5;
 }
 
-// NextIndex: 30
+// NextIndex: 31
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
@@ -534,7 +534,8 @@ enum WeaponImbue {
 	MinorWizardOil = 13;
 	LesserWizardOil = 14;
 	WizardOil = 20;
-	BrillianWizardOil = 2;
+	BrilliantWizardOil = 2;
+	EnchantedRepellent = 30;
 
 	MinorManaOil = 15;
 	LesserManaOil = 16;
