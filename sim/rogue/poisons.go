@@ -413,15 +413,10 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 		return
 	}
 	
-	sebaciousDebuffAura := core.Aura{
-		Label:     "Sebacious Poison-" + strconv.Itoa(int(rogue.Index)),
-		ActionID:  core.ActionID{SpellID: 439500},
-		Duration:  time.Second * 15,
-	}
-
-	rogue.sebaciousPoisonDebuffAura = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-		return target.RegisterAura(sebaciousDebuffAura)
+	rogue.sebaciousPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
+		return core.SebaciousPoisonAura(unit, rogue.Talents.ImprovedExposeArmor, rogue.Level)
 	})
+
 	rogue.SebaciousPoison = [2]*core.Spell{
 		rogue.makeSebaciousPoison(NormalProc),
 		rogue.makeSebaciousPoison(ShivProc),
@@ -575,10 +570,6 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 }
 
 func (rogue *Rogue) makeSebaciousPoison(procSource PoisonProcSource) *core.Spell {
-
-	rogue.sebaciousPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.SebaciousPoisonAura(unit, rogue.Talents.ImprovedExposeArmor, rogue.Level)
-	})
 	
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 439500, Tag: int32(procSource)},
