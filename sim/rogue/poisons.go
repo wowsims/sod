@@ -6,7 +6,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
+//	"github.com/wowsims/sod/sim/core/stats"
 )
 
 /**
@@ -20,7 +20,8 @@ Deadly Poison: 30% proc chance, 5 stacks
 25: 36 damage, 2823 ID, 60 charges (Deadly Brew only)
 40: 52 damage, 2824 ID, 75 charges
 50: 80 damage, 11355 ID, 90 charges
-60: 108 damage, 11356 ID, 105 charges (Rank 4, Rank 5 is by book)
+60 R4: 108 damage, 11356 ID, 105 charges 
+60 R5: 136 damage, 25351 ID, 120 charges
 
 Wound Poison: 30% proc chance, 5 stacks
 25: x damage, x ID (none, first rank is level 32)
@@ -30,7 +31,8 @@ Wound Poison: 30% proc chance, 5 stacks
 
 Occult Poison: 30% proc chance, 5 stacks
 Benefits from all Deadly Poison effects
-56: 108 damage, 458821 ID, 30 minute duration (rank 1)
+56: 108 damage, 458821 ID, 30 minute duration (Rank 1)
+60: 136 damage, 1214168 ID, 30 minute duration (Rank 2)
 
 Sebacious Poison: 30% proc chance, 5 stacks
 60: 1700 armor for 15 sec, 105 charges
@@ -80,11 +82,12 @@ func (rogue *Rogue) applyPoisons() {
 
 // Apply Deadly Brew Instant Poison procs
 func (rogue *Rogue) applyDeadlyBrewInstant() {
-	// apply IP from all weapons w/o IP, DP, or WP applied
+	// apply IP from all weapons w/o Poisons applied
 	procMask := core.ProcMaskMelee
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_InstantPoison)
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_DeadlyPoison)
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_WoundPoison)
+	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_SebaciousPoison)
 
 	if procMask == core.ProcMaskUnknown {
 		return
@@ -222,28 +225,28 @@ func (rogue *Rogue) applyOccultPoison() {
 	 })
 }
 
-// Apply Occult Poison to weapon and enable procs
+// Apply Sebacious Poison to weapon and enable procs
 func (rogue *Rogue) applySebaciousPoison() {
-	// procMask := rogue.getImbueProcMask(proto.WeaponImbue_SebaciousPoison)
-	// if procMask == core.ProcMaskUnknown {
-	// 	return
-	// }
+	procMask := rogue.getImbueProcMask(proto.WeaponImbue_SebaciousPoison)
+	if procMask == core.ProcMaskUnknown {
+		return
+	}
 
-	// rogue.RegisterAura(core.Aura{
-	// 	Label:    "Sebacious Poison Trigger",
-	// 	Duration: core.NeverExpires,
-	// 	OnReset: func(aura *core.Aura, sim *core.Simulation) {
-	// 		aura.Activate(sim)
-	// 	},
-	// 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 		if !result.Landed() || !spell.ProcMask.Matches(procMask) {
-	// 			return
-	// 		}
-	// 		if sim.RandomFloat("Sebacious Poison") < rogue.GetDeadlyPoisonProcChance() {
-	// 			rogue.OccultPoison.Cast(sim, result.Target)
-	// 		}
-	// 	},
-	// })
+	rogue.RegisterAura(core.Aura{
+		Label:    "Sebacious Poison Trigger",
+	 	Duration: core.NeverExpires,
+	 	OnReset: func(aura *core.Aura, sim *core.Simulation) {
+	 		aura.Activate(sim)
+	 	},
+	 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	 		if !result.Landed() || !spell.ProcMask.Matches(procMask) {
+	 			return
+	 		}
+	 		if sim.RandomFloat("Sebacious Poison") < rogue.GetDeadlyPoisonProcChance() {
+	 			rogue.SebaciousPoison[NormalProc].Cast(sim, result.Target)
+	 		}
+	 	},
+	})
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -263,13 +266,13 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		25: 9,
 		40: 13,
 		50: 20,
-		60: 27,
+		60: 34, //updated to Rank 5
 	}[rogue.Level]
 	spellID := map[int32]int32{
 		25: 2823,
 		40: 2824,
 		50: 11355,
-		60: 11356,
+		60: 25351,
 	}[rogue.Level]
 
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
@@ -351,13 +354,13 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 		return
 	}
 
-	baseDamageTick := float64(27) //check this?
-	spellID := int32(462286)
+	baseDamageTick := float64(34) //Updated to Rank 2
+	spellID := int32(1214170)
 
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 
 	rogue.occultPoisonTick = rogue.RegisterSpell(core.SpellConfig{
-	 	ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
+	 	ActionID:    core.ActionID{SpellID: spellID},
 	 	SpellSchool: core.SpellSchoolNature,
 	 	DefenseType: core.DefenseTypeMagic,
 	 	ProcMask:    core.ProcMaskSpellDamageProc,
@@ -371,16 +374,6 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 	 			Label:     "OccultPoison",
 	 			MaxStacks: 5,
 	 			Duration:  time.Second * 12,
-				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-					multiplier := (1 + .04*float64(newStacks)) / (1 + .04*float64(oldStacks))
-		
-					// Applies too all except Holy
-					aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexArcane] *= multiplier
-					aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFire] *= multiplier
-					aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexFrost] *= multiplier
-					aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= multiplier
-					aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= multiplier
-				},
 	 		},
 	 		NumberOfTicks: 4,
 	 		TickLength:    time.Second * 3,
@@ -419,6 +412,21 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 	if rogue.Level < 60 {
 		return
 	}
+	
+	sebaciousDebuffAura := core.Aura{
+		Label:     "Sebacious Poison-" + strconv.Itoa(int(rogue.Index)),
+		ActionID:  core.ActionID{SpellID: 439500},
+		Duration:  time.Second * 15,
+	}
+
+	rogue.sebaciousPoisonDebuffAura = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+		return target.RegisterAura(sebaciousDebuffAura)
+	})
+	rogue.SebaciousPoison = [2]*core.Spell{
+		rogue.makeSebaciousPoison(NormalProc),
+		rogue.makeSebaciousPoison(ShivProc),
+	}
+
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -496,6 +504,11 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 }
 
 func (rogue *Rogue) makeOccultPoison(procSource PoisonProcSource) *core.Spell {
+	
+	rogue.occultPoisonDebuffAuras = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
+		return core.OccultPoisonDebuffAura(unit, rogue.Level)
+	})
+	
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: rogue.occultPoisonTick.SpellID, Tag: int32(procSource)},
 		Flags:    core.Ternary(procSource == DeadlyBrewProc, core.SpellFlagNone, SpellFlagDeadlyBrewed),
@@ -508,6 +521,8 @@ func (rogue *Rogue) makeOccultPoison(procSource PoisonProcSource) *core.Spell {
 			if !result.Landed() {
 				return
 			}
+			rogue.occultPoisonDebuffAuras.Get(target).Activate(sim)
+			rogue.occultPoisonDebuffAuras.Get(target).AddStack(sim)
 
 			dot := rogue.occultPoisonTick.Dot(target)
 
@@ -555,6 +570,36 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 				return
 			}
 			aura.Refresh(sim)
+		},
+	})
+}
+
+func (rogue *Rogue) makeSebaciousPoison(procSource PoisonProcSource) *core.Spell {
+
+	rogue.sebaciousPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
+		return core.SebaciousPoisonAura(unit, rogue.Talents.ImprovedExposeArmor, rogue.Level)
+	})
+	
+	return rogue.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 439500, Tag: int32(procSource)},
+		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskSpellDamageProc,
+		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagRoguePoison,
+
+		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
+		ThreatMultiplier: 1,
+
+		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+
+			if !result.Landed() {
+				return
+			}
+
+			rogue.sebaciousPoisonDebuffAura.Get(target).Activate(sim)
 		},
 	})
 }

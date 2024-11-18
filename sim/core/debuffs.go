@@ -563,8 +563,8 @@ func OccultPoisonDebuffAura(target *Unit, playerLevel int32) *Aura {
 	}
 
 	aura := target.GetOrRegisterAura(Aura{
-		Label:     "Occult Poison I",
-		ActionID:  ActionID{SpellID: 462286},
+		Label:     "Occult Poison II",
+		ActionID:  ActionID{SpellID: 1214170},
 		Duration:  time.Second * 12,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {

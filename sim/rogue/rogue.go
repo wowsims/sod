@@ -105,6 +105,7 @@ type Rogue struct {
 	WoundPoison      [2]*core.Spell
 	OccultPoison     [3]*core.Spell
 	occultPoisonTick *core.Spell
+	SebaciousPoison  [2]*core.Spell
 
 	instantPoisonProcChanceBonus float64
 	additivePoisonBonusChance    float64
@@ -129,7 +130,9 @@ type Rogue struct {
 
 	HonorAmongThieves *core.Aura
 
-	woundPoisonDebuffAuras core.AuraArray
+	woundPoisonDebuffAuras         core.AuraArray
+	occultPoisonDebuffAuras        core.AuraArray
+	sebaciousPoisonDebuffAura      core.AuraArray
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
