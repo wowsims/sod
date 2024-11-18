@@ -603,8 +603,8 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 641.83441
-  tps: 545.42132
+  dps: 640.68327
+  tps: 544.49015
  }
 }
 dps_results: {
@@ -624,8 +624,8 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 278.22091
-  tps: 268.23013
+  dps: 278.197
+  tps: 268.28683
  }
 }
 dps_results: {
@@ -645,8 +645,8 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 573.29663
-  tps: 486.86079
+  dps: 572.25639
+  tps: 486.02656
  }
 }
 dps_results: {
@@ -666,8 +666,8 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Human-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 229.4978
-  tps: 227.95264
+  dps: 229.44282
+  tps: 227.9823
  }
 }
 dps_results: {
@@ -688,7 +688,7 @@ dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 645.86396
-  tps: 539.2074
+  tps: 539.28656
  }
 }
 dps_results: {
@@ -709,7 +709,7 @@ dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t1-Fury-phase_5_dw-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 286.91064
-  tps: 271.0869
+  tps: 271.16606
  }
 }
 dps_results: {
@@ -730,7 +730,7 @@ dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 574.89031
-  tps: 481.79286
+  tps: 481.87202
  }
 }
 dps_results: {
@@ -751,7 +751,7 @@ dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Settings-Orc-phase_5_dw_t2-Fury-phase_5_dw-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 233.37833
-  tps: 229.59805
+  tps: 229.67722
  }
 }
 dps_results: {

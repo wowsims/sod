@@ -445,18 +445,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.118
+  weights: -0.69498
   weights: 0
-  weights: 2.80217
-  weights: 0
-  weights: 0
+  weights: 2.80131
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 31.49433
+  weights: 0
+  weights: 0
+  weights: 30.96322
   weights: 0
   weights: 0
   weights: 0
@@ -1086,8 +1086,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4454.73498
-  tps: 4315.27639
+  dps: 4454.98784
+  tps: 4315.50939
  }
 }
 dps_results: {
@@ -1100,8 +1100,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Phase5-Lvl60-Settings-NightElf-phase_5-Default-phase_5-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 4391.54573
-  tps: 4241.06272
+  dps: 4396.67746
+  tps: 4246.71754
  }
 }
 dps_results: {
@@ -1114,8 +1114,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Phase5-Lvl60-Settings-NightElf-phase_5-Default-phase_5-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 2889.29892
-  tps: 3001.7044
+  dps: 2889.31332
+  tps: 3001.7188
  }
 }
 dps_results: {
@@ -1177,7 +1177,7 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4420.00111
-  tps: 4269.38407
+  dps: 4419.94272
+  tps: 4269.32568
  }
 }
