@@ -933,7 +933,7 @@ message SimDatabase {
 }
 
 // Contains only the Item info needed by the sim.
-// NextIndex: 20
+// NextIndex: 21
 message SimItem {
 	int32 id = 1;
 	int32 requires_level = 16;
