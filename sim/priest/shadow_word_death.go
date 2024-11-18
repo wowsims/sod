@@ -13,8 +13,8 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 	}
 
 	// 2024-02-22 In-game value is ~66% base damage after tuning
-	baseLowDamage := priest.baseRuneAbilityDamage() * 0.66 * 5.32 * priest.darknessDamageModifier()
-	baseHighDamage := priest.baseRuneAbilityDamage() * 0.66 * 6.2 * priest.darknessDamageModifier()
+	baseLowDamage := priest.baseRuneAbilityDamage() * 0.66 * 5.32
+	baseHighDamage := priest.baseRuneAbilityDamage() * 0.66 * 6.2
 	spellCoeff := 0.429
 	manaCost := .12
 	cooldown := time.Second * 12

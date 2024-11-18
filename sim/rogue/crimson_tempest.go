@@ -92,6 +92,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 			rogue.SpendComboPoints(sim, spell)
 		},
 	})
+	rogue.Finishers = append(rogue.Finishers, rogue.CrimsonTempest)
 }
 
 func (rogue *Rogue) CrimsonTempestDamage(comboPoints int32) float64 {

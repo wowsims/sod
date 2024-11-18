@@ -74,6 +74,7 @@ func (rogue *Rogue) registerRupture() {
 			spell.DealOutcome(sim, result)
 		},
 	})
+	rogue.Finishers = append(rogue.Finishers, rogue.Rupture)
 }
 
 func (rogue *Rogue) RuptureDamage(comboPoints int32) float64 {

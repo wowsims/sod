@@ -1,9 +1,12 @@
 package mage
 
 import (
+	"math"
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -147,28 +150,39 @@ var ItemSetArcanistInsight = core.NewItemSet(core.ItemSet{
 			bonusSpiritRegenRateCasting := .15
 			bonusSpellPower := 18.0
 
-			mage.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 456402},
-				Label:    "S03 - Item - T1 - Mage - Damage 6P Bonus",
+			core.MakePermanent(mage.RegisterAura(core.Aura{
+				ActionID:   core.ActionID{SpellID: 456402},
+				Label:      "S03 - Item - T1 - Mage - Damage 6P Bonus",
+				BuildPhase: core.CharacterBuildPhaseBuffs,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					if mage.IceArmorAura != nil {
+					switch mage.Options.Armor {
+					case proto.Mage_Options_IceArmor:
 						mage.FingersOfFrostProcChance += bonusFoFProcChance
-					} else if mage.MageArmorAura != nil {
+					case proto.Mage_Options_MageArmor:
 						mage.PseudoStats.SpiritRegenRateCasting += bonusSpiritRegenRateCasting
-					} else if mage.MoltenArmorAura != nil {
-						mage.AddStatDynamic(sim, stats.SpellPower, bonusSpellPower)
+					case proto.Mage_Options_MoltenArmor:
+						if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+							mage.AddStat(stats.SpellPower, bonusSpellPower)
+						} else {
+							mage.AddStatDynamic(sim, stats.SpellPower, bonusSpellPower)
+						}
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					if mage.IceArmorAura != nil {
+					switch mage.Options.Armor {
+					case proto.Mage_Options_IceArmor:
 						mage.FingersOfFrostProcChance -= bonusFoFProcChance
-					} else if mage.MageArmorAura != nil {
+					case proto.Mage_Options_MageArmor:
 						mage.PseudoStats.SpiritRegenRateCasting -= bonusSpiritRegenRateCasting
-					} else if mage.MoltenArmorAura != nil {
-						mage.AddStatDynamic(sim, stats.SpellPower, -bonusSpellPower)
+					case proto.Mage_Options_MoltenArmor:
+						if mage.Options.Armor == proto.Mage_Options_MoltenArmor && aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+							mage.AddStat(stats.SpellPower, -bonusSpellPower)
+						} else {
+							mage.AddStatDynamic(sim, stats.SpellPower, -bonusSpellPower)
+						}
 					}
 				},
-			})
+			}))
 		},
 	},
 })
@@ -308,6 +322,160 @@ var ItemSetIllusionistsAttire = core.NewItemSet(core.ItemSet{
 
 					if mage.SpellfrostBolt != nil {
 						mage.SpellfrostBolt.DamageMultiplier *= 1.65
+					}
+				},
+			})
+		},
+	},
+})
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 6 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetEnigmaInsight = core.NewItemSet(core.ItemSet{
+	Name: "Enigma Insight",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Fire Blast now also causes your next Fire spell to gain 50% increased critical strike chance for 10 sec.
+		2: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+
+			var affectedSpells []*core.Spell
+
+			buffAura := mage.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 1213317},
+				Label:    "Fire Blast",
+				Duration: time.Second * 10,
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					affectedSpells = core.FilterSlice(mage.Spellbook, func(spell *core.Spell) bool {
+						return spell.Flags.Matches(SpellFlagMage) && spell.SpellSchool.Matches(core.SpellSchoolFire) && !spell.Flags.Matches(core.SpellFlagPassiveSpell)
+					})
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range affectedSpells {
+						spell.BonusCritRating += 50 * core.SpellCritRatingPerCritChance
+					}
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spell := range affectedSpells {
+						spell.BonusCritRating -= 50 * core.SpellCritRatingPerCritChance
+					}
+				},
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
+					if aura.RemainingDuration(sim) == aura.Duration {
+						return
+					}
+
+					if !slices.Contains(affectedSpells, spell) {
+						return
+					}
+
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt: sim.CurrentTime + core.SpellBatchWindow,
+						OnAction: func(sim *core.Simulation) {
+							if aura.IsActive() {
+								aura.Deactivate(sim)
+							}
+						},
+					})
+				},
+			})
+
+			core.MakePermanent(mage.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Mage - Fire 2P Bonus",
+				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.SpellCode == SpellCode_MageFireBlast {
+						buffAura.Activate(sim)
+					}
+				},
+			}))
+		},
+		// Increases the damage done by your Ignite talent by 20%.
+		4: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+			if mage.Talents.Ignite == 0 {
+				return
+			}
+
+			mage.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Mage - Fire 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					mage.Ignite.DamageMultiplier *= 1.20
+				},
+			})
+		},
+	},
+})
+
+var ItemSetEnigmaMoment = core.NewItemSet(core.ItemSet{
+	Name: "Enigma Moment",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Arcane Blast increases damage and healing done by an additional 10% per stack.
+		2: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+			mage.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Mage - Arcane 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					mage.ArcaneBlastDamageMultiplier += 0.10
+				},
+			})
+		},
+		// Your Mana Shield, Fire Ward, and Frost Ward absorb 50% more damage and also place a Temporal Beacon on the target for 30 sec.
+		4: func(agent core.Agent) {
+			// Nothing to do
+		},
+	},
+})
+
+var ItemSetTrappingsOfVaultedSecrets = core.NewItemSet(core.ItemSet{
+	Name: "Trappings of Vaulted Secrets",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Fireball, Frostfire Bolt, and Balefire Bolt spells gain 5% increased damage for each of your Fire effects on your target, up to a maximum increased of 20%.
+		3: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+
+			hasImprovedScorch := mage.Talents.ImprovedScorch > 0
+
+			mage.RegisterAura(core.Aura{
+				Label: "S03 - Item - RAQ - Mage - Fire 3P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					dotSpells := core.FilterSlice(mage.Spellbook, func(spell *core.Spell) bool {
+						return spell.Flags.Matches(SpellFlagMage) && spell.SpellSchool.Matches(core.SpellSchoolFire) && len(spell.Dots()) > 0
+					})
+
+					affectedSpells := core.FilterSlice(
+						core.Flatten(
+							[][]*core.Spell{
+								mage.Fireball,
+								{mage.FrostfireBolt},
+								{mage.BalefireBolt},
+							},
+						), func(spell *core.Spell) bool { return spell != nil },
+					)
+
+					for _, spell := range affectedSpells {
+						oldApplyEffects := spell.ApplyEffects
+						spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+							multiplier := 1.0
+
+							for _, spell := range dotSpells {
+								if spell.Dot(target).IsActive() {
+									multiplier += 0.05
+								}
+							}
+
+							if hasImprovedScorch && mage.ImprovedScorchAuras.Get(target).IsActive() {
+								multiplier += 0.05
+							}
+
+							multiplier = math.Max(1.20, multiplier)
+
+							// TODO: Additive or Multiplicative?
+							spell.DamageMultiplier *= multiplier
+							oldApplyEffects(sim, target, spell)
+							spell.DamageMultiplier /= multiplier
+						}
 					}
 				},
 			})

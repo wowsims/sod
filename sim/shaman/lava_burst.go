@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (shaman *Shaman) registerLavaBurstSpell() {
@@ -83,7 +84,14 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
+
+			damageMultiplier := 0.0
+			if shaman.useLavaBurstCritScaling {
+				damageMultiplier = shaman.GetStat(stats.SpellCrit) * core.SpellCritRatingPerCritChance / 100
+			}
+			spell.DamageMultiplierAdditive += damageMultiplier
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.DamageMultiplierAdditive -= damageMultiplier
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

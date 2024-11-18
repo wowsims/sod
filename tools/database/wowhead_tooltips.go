@@ -204,7 +204,7 @@ var feralAttackPowerRegex = regexp.MustCompile(`\+([0-9]+) Attack Power in Cat, 
 var armorPenetrationRegex = regexp.MustCompile(`Increases armor penetration rating by ([0-9]+)`)
 var armorPenetrationRegex2 = regexp.MustCompile(`Increases your armor penetration by <!--rtg44-->([0-9]+)\.`)
 
-var expertiseRegex = regexp.MustCompile(`Increases your expertise rating by <!--rtg37-->([0-9]+)\.`)
+var expertiseRegex = regexp.MustCompile(`Reduces the chance for your attacks to be dodged or parried by ([0-9]+)%\.`)
 var weaponDamageRegex = regexp.MustCompile(`<!--dmg-->([0-9]+) - ([0-9]+)`)
 var weaponDamageRegex2 = regexp.MustCompile(`<!--dmg-->([0-9]+) Damage`)
 var weaponDamageBonusSchoolRegex = regexp.MustCompile(`\+ ([0-9]+) - ([0-9]+) [a-zA-Z]+ Damage`)
@@ -255,6 +255,7 @@ func (item WowheadItemResponse) GetStats() Stats {
 	sp := float64(item.GetIntValue(spellPowerRegex)) + float64(item.GetIntValue(spellPowerRegex2)) + float64(item.GetIntValue(spellPowerRegex3))
 	baseAP := float64(item.GetIntValue(attackPowerRegex)) + float64(item.GetIntValue(attackPowerRegex2))
 	armor, bonusArmor := item.GetArmorValues()
+
 	return Stats{
 		proto.Stat_StatArmor:             float64(armor),
 		proto.Stat_StatBonusArmor:        float64(bonusArmor),
@@ -687,6 +688,7 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		Quality:       proto.ItemQuality(item.GetQuality()),
 		Unique:        item.GetUnique(),
 		Heroic:        item.IsHeroic(),
+		Timeworn:      item.IsTimeworn(),
 
 		RequiredProfession: item.GetRequiredProfession(),
 		SetName:            item.GetItemSetName(),
@@ -739,6 +741,12 @@ func (item WowheadItemResponse) GetItemSetName() string {
 
 func (item WowheadItemResponse) IsHeroic() bool {
 	return strings.Contains(item.Tooltip, "<span class=\"q2\">Heroic</span>")
+}
+
+var timewornRegexp = regexp.MustCompile(`<span style=\"color: #[0-9A-F]{6}\">Timeworn<\/span>`)
+
+func (item WowheadItemResponse) IsTimeworn() bool {
+	return timewornRegexp.MatchString(item.Tooltip)
 }
 
 func (item WowheadItemResponse) GetRequiredProfession() proto.Profession {

@@ -49,7 +49,7 @@ func (hunter *Hunter) ApplyTalents() {
 			Label: "Bestial Discipline",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				if hunter.pet != nil {
-					hunter.pet.AddFocusRegenMultiplier(1 + 0.1*float64(hunter.Talents.BestialDiscipline))
+					hunter.pet.AddFocusRegenMultiplier(0.1*float64(hunter.Talents.BestialDiscipline))
 				}
 			},
 		}))

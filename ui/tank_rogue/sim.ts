@@ -16,46 +16,52 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 	knownIssues: ['Rotations are not fully optimized, especially for non-standard setups.'],
 	warnings: [],
 	epStats: [
+		// Attributes
 		Stat.StatAgility,
 		Stat.StatStrength,
+		Stat.StatStamina,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
+		Stat.StatExpertise,
+		// Spell
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-
-		// Tank stats
+		Stat.StatSpellPower,
+		// Defense
 		Stat.StatDefense,
 		Stat.StatDodge,
 		Stat.StatParry,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
-		Stat.StatStamina,
-		Stat.StatFireResistance,
 	],
 	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
 	// Reference stat against which to caluclate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats seciont, at the bottom of the lef-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
+		// Attributes
 		Stat.StatAgility,
 		Stat.StatStrength,
+		Stat.StatStamina,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatSpellHit,
 		Stat.StatMeleeCrit,
+		Stat.StatExpertise,
+		// Spell
 		Stat.StatSpellCrit,
 		Stat.StatMeleeHaste,
-
-		// Tank stats
-		Stat.StatStamina,
+		// Defense
 		Stat.StatDefense,
 		Stat.StatDodge,
 		Stat.StatParry,
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
-		Stat.StatFireResistance,
+		// Resistances
+		Stat.StatShadowResistance,
 	],
 
 	defaults: {

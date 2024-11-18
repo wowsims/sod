@@ -28,6 +28,8 @@ const (
 	SpellCode_PaladinHolyShield
 	SpellCode_PaladinHolyShieldProc
 	SpellCode_PaladinLayOnHands
+	SpellCode_PaladinHammerOfWrath
+	SpellCode_PaladinCrusaderStrike
 )
 
 type SealJudgeCode uint8
@@ -150,6 +152,8 @@ func (paladin *Paladin) Initialize() {
 	paladin.consumeSealsOnJudge = true
 
 	paladin.registerStopAttackMacros()
+
+	paladin.ResetCurrentPaladinAura()
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {

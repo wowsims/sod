@@ -68,6 +68,9 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 			},
 		},
 
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHit)
 			priest.MindSearTicks[tickIdx].SpellMetrics[target.UnitIndex].Casts += 1
@@ -81,8 +84,8 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 }
 
 func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
-	baseDamageLow := priest.baseRuneAbilityDamage() * .7 * priest.darknessDamageModifier()
-	baseDamageHigh := priest.baseRuneAbilityDamage() * .78 * priest.darknessDamageModifier()
+	baseDamageLow := priest.baseRuneAbilityDamage() * .7
+	baseDamageHigh := priest.baseRuneAbilityDamage() * .78
 	spellCoeff := 0.15 // classic penalty for mf having a slow effect
 
 	return priest.GetOrRegisterSpell(core.SpellConfig{
@@ -99,7 +102,11 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamageLow, baseDamageHigh)
+
+			// Apply the base spell's multipliers to pick up on effects that only affect spells with DoTs
+			spell.DamageMultiplierAdditive += priest.MindSear[numTicks].PeriodicDamageMultiplierAdditive - 1
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
+			spell.DamageMultiplierAdditive -= priest.MindSear[numTicks].PeriodicDamageMultiplierAdditive - 1
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)

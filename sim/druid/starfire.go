@@ -28,11 +28,9 @@ func (druid *Druid) registerStarfireSpell() {
 }
 
 func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
-	talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier()
-
 	spellId := StarfireSpellId[rank]
-	baseDamageLow := StarfireBaseDamage[rank][0] * talentBaseMultiplier
-	baseDamageHigh := StarfireBaseDamage[rank][1] * talentBaseMultiplier
+	baseDamageLow := StarfireBaseDamage[rank][0]
+	baseDamageHigh := StarfireBaseDamage[rank][1]
 	manaCost := StarfireManaCost[rank]
 	level := StarfireLevel[rank]
 
@@ -60,8 +58,6 @@ func (druid *Druid) newStarfireSpellConfig(rank int) core.SpellConfig {
 		},
 
 		BonusCritRating: core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
-
-		CritDamageBonus: druid.vengeanceBonusCritDamage(),
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

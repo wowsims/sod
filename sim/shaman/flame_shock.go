@@ -60,7 +60,6 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 
 	spell.Cast.IgnoreHaste = true
 
-	spell.DamageMultiplier += shaman.burnFlameShockDamageMultiplier()
 	spell.BonusCoefficient = baseSpellCoeff
 
 	spell.Dot = core.DotConfig{

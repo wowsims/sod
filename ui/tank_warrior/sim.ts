@@ -18,16 +18,18 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
+		// Primary
+		Stat.StatHealth,
+		// Attributes
 		Stat.StatStrength,
 		Stat.StatAgility,
+		Stat.StatStamina,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatFireResistance,
-
-		// Tank Stats
-		Stat.StatHealth,
-		Stat.StatStamina,
+		Stat.StatExpertise,
+		// Defense
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
@@ -41,25 +43,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
-		Stat.StatArmor,
-		Stat.StatBonusArmor,
+		// Attributes
 		Stat.StatStamina,
 		Stat.StatStrength,
 		Stat.StatAgility,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
+		Stat.StatExpertise,
+		// Defense
+		Stat.StatArmor,
+		Stat.StatBonusArmor,
 		Stat.StatDefense,
 		Stat.StatBlock,
 		Stat.StatBlockValue,
 		Stat.StatDodge,
 		Stat.StatParry,
-		Stat.StatFireResistance,
-		Stat.StatNatureResistance,
+		// Resistances
 		Stat.StatShadowResistance,
-		Stat.StatFrostResistance,
 	],
 
 	defaults: {

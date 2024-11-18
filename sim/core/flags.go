@@ -187,6 +187,7 @@ const (
 	SpellFlagResetAttackSwing                              // Indicates this spell resets the melee swing timer.
 	SpellFlagCastTimeNoGCD                                 // Indicates this spell is off the GCD (e.g. hunter's Auto Shot)
 	SpellFlagCastWhileCasting                              // Indicates this spell can be cast while another spell is being cast (e.g. mage's Fire Blast with Overheat rune)
+	SpellFlagCastWhileChanneling                           // Indicates this spell can be cast while another spell is being channeled (e.g. spriest's T2.5 4pc set bonus)
 	SpellFlagPureDot                                       // Indicates this spell is a dot with no initial damage component
 	SpellFlagPassiveSpell                                  // Indicates this spell is applied/cast as a result of another spell
 	SpellFlagSuppressWeaponProcs                           // Indicates this spell cannot proc weapon chance on hits or enchants

@@ -24,8 +24,8 @@ func (shield *Shield) Apply(sim *Simulation, shieldAmount float64) {
 	//attackTable := caster.AttackTables[target.UnitIndex][shield.Spell.CastType]
 
 	// Shields are not affected by healing pseudostats the same way heals are.
-	// So we only apply the spell-specific multiplier.
-	shieldAmount *= shield.Spell.DamageMultiplier
+	// So we only apply the spell-specific multiplier and shield-specific multiplier.
+	shieldAmount *= shield.Spell.DamageMultiplier * caster.PseudoStats.ShieldDealtMultiplier
 
 	shield.Aura.Deactivate(sim)
 	shield.Aura.Activate(sim)

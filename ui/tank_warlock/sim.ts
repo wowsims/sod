@@ -19,8 +19,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
+		// Primary
+		Stat.StatHealth,
+		Stat.StatMana,
+		// Attributes
+		Stat.StatStrength,
+		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
+		Stat.StatAgility,
+		// Physical
+		Stat.StatAttackPower,
+		Stat.StatMeleeCrit,
+		Stat.StatMeleeHit,
+		Stat.StatMeleeHaste,
+		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatSpellHit,
@@ -29,28 +42,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatFirePower,
 		Stat.StatShadowPower,
 		Stat.StatMP5,
-
-		// Tank stats
-		Stat.StatStrength,
-		Stat.StatStamina,
-		Stat.StatAttackPower,
-		Stat.StatAgility,
+		// Defense
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHit,
-		Stat.StatMeleeHaste,
-		Stat.StatFireResistance,
 	],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
+		// Primary
 		Stat.StatMana,
+		// Attributes
+		Stat.StatStrength,
+		Stat.StatStamina,
+		Stat.StatAgility,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
+		// Physical
+		Stat.StatAttackPower,
+		Stat.StatMeleeCrit,
+		Stat.StatMeleeHit,
+		Stat.StatMeleeHaste,
+		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatFirePower,
@@ -59,13 +73,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatSpellCrit,
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
-		// Tank stats
-		Stat.StatStamina,
-		Stat.StatAgility,
+		// Defense
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
-		Stat.StatFireResistance,
+		// Resistances
+		Stat.StatShadowResistance,
 	],
 
 	defaults: {

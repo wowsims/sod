@@ -19,6 +19,7 @@ import {
 	Potions,
 	Profession,
 	RaidBuffs,
+	SapperExplosive,
 	SaygesFortune,
 	ShadowPowerBuff,
 	SpellPowerBuff,
@@ -229,7 +230,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.ShadowOil,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 
-	sapper: true,
+	sapperExplosive: SapperExplosive.SapperGoblinSapper,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
 	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
 });

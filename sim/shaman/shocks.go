@@ -6,12 +6,10 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (shaman *Shaman) ShockCD() time.Duration {
-	return time.Second*6 - time.Millisecond*200*time.Duration(shaman.Talents.Reverberation)
-}
-
 // Shared logic for all shocks.
 func (shaman *Shaman) newShockSpellConfig(actionId core.ActionID, spellSchool core.SpellSchool, baseCost float64, shockTimer *core.Timer) core.SpellConfig {
+	cdDuration := time.Second*6 - time.Millisecond*200*time.Duration(shaman.Talents.Reverberation)
+
 	return core.SpellConfig{
 		ActionID:    actionId,
 		SpellSchool: spellSchool,
@@ -28,12 +26,16 @@ func (shaman *Shaman) newShockSpellConfig(actionId core.ActionID, spellSchool co
 				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
+				Timer:    shaman.NewTimer(),
+				Duration: cdDuration,
+			},
+			SharedCD: core.Cooldown{
 				Timer:    shockTimer,
-				Duration: shaman.ShockCD(),
+				Duration: cdDuration,
 			},
 		},
 
-		DamageMultiplier: shaman.concussionMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 	}
 }

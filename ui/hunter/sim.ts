@@ -20,22 +20,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 
 	// All stats for which EP should be calculated.
 	epStats: [
-		Stat.StatStamina,
+		// Attributes
 		Stat.StatIntellect,
 		Stat.StatStrength,
 		Stat.StatAgility,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatRangedAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatMP5,
+		Stat.StatExpertise,
+		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
 		Stat.StatArcanePower,
 		Stat.StatSpellCrit,
-		Stat.StatFireResistance,
+		Stat.StatMP5,
 	],
 	epPseudoStats: [
 		PseudoStat.PseudoStatMainHandDps,
@@ -47,23 +49,26 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	epReferenceStat: Stat.StatRangedAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
-		Stat.StatHealth,
-		Stat.StatStamina,
+		// Primary
+		Stat.StatMana,
+		// Attributes
 		Stat.StatStrength,
 		Stat.StatAgility,
+		Stat.StatStamina,
 		Stat.StatIntellect,
+		// Physical
 		Stat.StatAttackPower,
 		Stat.StatRangedAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHaste,
-		Stat.StatMP5,
-		Stat.StatSpellPower,
+		Stat.StatExpertise,
+		// Spell
 		Stat.StatSpellDamage,
 		Stat.StatNaturePower,
 		Stat.StatArcanePower,
 		Stat.StatSpellCrit,
-		Stat.StatFireResistance,
+		Stat.StatMP5,
 	],
 
 	defaults: {

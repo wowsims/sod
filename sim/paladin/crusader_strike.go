@@ -37,6 +37,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 
 		DamageMultiplier: 0.75 * paladin.getWeaponSpecializationModifier(),
 		ThreatMultiplier: 1,
+		SpellCode:        SpellCode_PaladinCrusaderStrike,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())

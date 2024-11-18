@@ -41,10 +41,6 @@ func addToDatabase(newDB *proto.SimDatabase) {
 		}
 		rwMutex.Unlock()
 	}
-
-	for _, v := range newDB.Runes {
-		fmt.Println(RuneFromProto(v))
-	}
 }
 
 type Item struct {
@@ -68,6 +64,8 @@ type Item struct {
 	SetName      string // Empty string if not part of a set.
 	SetID        int32  // 0 if not part of a set.
 	WeaponSkills stats.WeaponSkills
+
+	Timeworn bool
 
 	// Modified for each instance of the item.
 	RandomSuffix RandomSuffix
@@ -96,6 +94,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		SetName:          pData.SetName,
 		SetID:            pData.SetId,
 		WeaponSkills:     stats.WeaponSkillsFloatArray(pData.WeaponSkills),
+		Timeworn:         pData.Timeworn,
 	}
 }
 

@@ -15,14 +15,11 @@ func (druid *Druid) registerStarfallCD() {
 
 	actionID := core.ActionID{SpellID: int32(proto.DruidRune_RuneCloakStarfall)}
 
-	// Moonfury and Improved Moonfire only seem to be applying the crit bonus to starfall at the moment in-game
-	// talentBaseMultiplier := 1 + druid.MoonfuryDamageMultiplier() + druid.ImprovedMoonfireDamageMultiplier()
-
-	baseDamageLow := druid.baseRuneAbilityDamage() * 0.46   // * talentBaseMultiplier
-	baseDamageHigh := druid.baseRuneAbilityDamage() * .54   // * talentBaseMultiplier
-	baseDamageSplash := druid.baseRuneAbilityDamage() * .08 // * talentBaseMultiplier
-	spellCoefTick := .3
-	spellCoefSplash := .127
+	baseDamageLow := druid.baseRuneAbilityDamage() * 0.46
+	baseDamageHigh := druid.baseRuneAbilityDamage() * 0.54
+	baseDamageSplash := druid.baseRuneAbilityDamage() * 0.08
+	spellCoefTick := 0.3
+	spellCoefSplash := 0.127
 
 	numberOfTicks := core.TernaryInt32(druid.Env.GetNumTargets() > 1, 20, 10)
 	tickLength := time.Second
@@ -35,15 +32,19 @@ func (druid *Druid) registerStarfallCD() {
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
 
-		BonusCritRating:  druid.ImprovedMoonfireCritBonus(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoefSplash,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			// Apply the base spell's multipliers to pick up on effects that only affect spells with DoTs
+			spell.DamageMultiplierAdditive += druid.Starfall.PeriodicDamageMultiplierAdditive - 1
+
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamageSplash, spell.OutcomeMagicHitAndCrit)
 			}
+
+			spell.DamageMultiplierAdditive -= druid.Starfall.PeriodicDamageMultiplierAdditive - 1
 		},
 	})
 
@@ -55,14 +56,18 @@ func (druid *Druid) registerStarfallCD() {
 		ProcMask:    core.ProcMaskSpellDamage, // Shown to proc things in-game
 		Flags:       core.SpellFlagBinary,
 
-		BonusCritRating:  druid.ImprovedMoonfireCritBonus(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoefTick,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
+
+			// Apply the base spell's multipliers to pick up on effects that only affect spells with DoTs
+			spell.DamageMultiplierAdditive += druid.Starfall.PeriodicDamageMultiplierAdditive - 1
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.DamageMultiplierAdditive -= druid.Starfall.PeriodicDamageMultiplierAdditive - 1
+
 			druid.StarfallSplash.Cast(sim, target)
 		},
 	})
@@ -75,8 +80,7 @@ func (druid *Druid) registerStarfallCD() {
 		Flags:       core.SpellFlagAPL | SpellFlagOmen,
 
 		ManaCost: core.ManaCostOptions{
-			BaseCost:   0.39,
-			Multiplier: druid.MoonglowManaCostMultiplier(),
+			BaseCost: 0.39,
 		},
 
 		Cast: core.CastConfig{
@@ -99,6 +103,9 @@ func (druid *Druid) registerStarfallCD() {
 				druid.StarfallTick.Cast(sim, target)
 			},
 		},
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.Dot(target).Apply(sim)

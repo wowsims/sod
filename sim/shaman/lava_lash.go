@@ -23,6 +23,7 @@ func (shaman *Shaman) applyLavaLash() {
 	}
 
 	shaman.LavaLash = shaman.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_ShamanLavaLash,
 		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaLash)},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMelee,
