@@ -80,6 +80,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 		Stat.StatBlockValue,
 		Stat.StatParry,
 		Stat.StatDodge,
+		// Resistances
+		Stat.StatShadowResistance,
 	],
 	displayPseudoStats: [],
 	

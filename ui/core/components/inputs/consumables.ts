@@ -1019,10 +1019,20 @@ export const WildStrikes: ConsumableInputConfig<WeaponImbue> = {
 // Other Imbues
 
 // Wizard Oils
-export const BrillianWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+export const EnchantedRepellent = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 233996, minLevel: 60 }]),
+		value: WeaponImbue.EnchantedRepellent,
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || weapon.item.weaponType != WeaponType.WeaponTypeOffHand;
+		},
+	};
+};
+export const BrilliantWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 20749, minLevel: 45 }]),
-		value: WeaponImbue.BrillianWizardOil,
+		value: WeaponImbue.BrilliantWizardOil,
 		showWhen: player => {
 			const weapon = player.getEquippedItem(slot);
 			return !weapon || isWeapon(weapon.item.weaponType);
@@ -1223,9 +1233,10 @@ const ROGUE_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 ];
 
 const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [
+	{ config: EnchantedRepellent(slot), stats: [Stat.StatSpellPower] },
 	{ config: MagnificentTrollshine(slot), stats: [Stat.StatSpellPower] },
 	{ config: ConductiveShieldCoating(slot), stats: [Stat.StatSpellPower] },
-	{ config: BrillianWizardOil(slot), stats: [Stat.StatSpellPower] },
+	{ config: BrilliantWizardOil(slot), stats: [Stat.StatSpellPower] },
 	{ config: WizardOil(slot), stats: [Stat.StatSpellPower] },
 	{ config: LesserWizardOil(slot), stats: [Stat.StatSpellPower] },
 	{ config: MinorWizardOil(slot), stats: [Stat.StatSpellPower] },

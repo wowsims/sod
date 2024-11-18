@@ -61,6 +61,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 		Stat.StatBlockValue,
 		Stat.StatDodge,
 		Stat.StatParry,
+		// Resistances
+		Stat.StatShadowResistance,
 	],
 	displayPseudoStats: [],
 	

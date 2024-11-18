@@ -393,8 +393,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Phase1-Lvl25-AllItems-DeathmistRaiment"
  value: {
-  dps: 105.62966
-  tps: 68.98748
+  dps: 92.67207
+  tps: 49.71363
  }
 }
 dps_results: {
@@ -456,8 +456,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase2-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 143.55913
-  tps: 90.73104
+  dps: 119.82255
+  tps: 58.34481
  }
 }
 dps_results: {
@@ -519,9 +519,9 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 344.34488
-  tps: 228.52974
-  hps: 162.73233
+  dps: 321.19075
+  tps: 199.75076
+  hps: 161.55267
  }
 }
 dps_results: {

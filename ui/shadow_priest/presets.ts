@@ -129,7 +129,7 @@ export const DefaultConsumes = Consumes.create({
 	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
 	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodRunnTumTuberSurprise,
-	mainHandImbue: WeaponImbue.BrillianWizardOil,
+	mainHandImbue: WeaponImbue.BrilliantWizardOil,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
 

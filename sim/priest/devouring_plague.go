@@ -16,10 +16,6 @@ var DevouringPlagueManaCost = [DevouringPlagueRanks + 1]float64{0, 215, 350, 495
 var DevouringPlagueLevel = [DevouringPlagueRanks + 1]int{0, 20, 28, 36, 44, 52, 60}
 
 func (priest *Priest) registerDevouringPlagueSpell() {
-	if priest.Race != proto.Race_RaceUndead {
-		return
-	}
-
 	priest.DevouringPlague = make([]*core.Spell, DevouringPlagueRanks+1)
 	cdTimer := priest.NewTimer()
 
@@ -45,6 +41,7 @@ func (priest *Priest) getDevouringPlagueConfig(rank int, cdTimer *core.Timer) co
 	spellCoeff := 0.063
 
 	return core.SpellConfig{
+		SpellCode:   SpellCode_PriestDevouringPlague,
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolShadow,
 		DefenseType: core.DefenseTypeMagic,

@@ -416,7 +416,7 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Prowess 2P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.WyvernStrike.PeriodicDamageMultiplier *= 1.50
+					hunter.WyvernStrike.PeriodicDamageMultiplierAdditive += 0.50
 				},
 			})
 		},
@@ -427,11 +427,11 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 				Label: "Striker's Prowess 4P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.Strikes {
-						spell.ImpactDamageMultiplier *= 1.10
+						spell.ImpactDamageMultiplierAdditive += 0.10
 					}
-					hunter.RaptorStrikeMH.ImpactDamageMultiplier *= 1.10
-					hunter.RaptorStrikeOH.ImpactDamageMultiplier *= 1.10
-					hunter.MongooseBite.ImpactDamageMultiplier *= 1.10
+					hunter.RaptorStrikeMH.ImpactDamageMultiplierAdditive += 0.10
+					hunter.RaptorStrikeOH.ImpactDamageMultiplierAdditive += 0.10
+					hunter.MongooseBite.ImpactDamageMultiplierAdditive += 0.10
 				},
 			})
 		},

@@ -133,9 +133,14 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 			character.AddStats(stats.Stats{
 				stats.SpellPower: 24,
 			})
-		case proto.WeaponImbue_BrillianWizardOil:
+		case proto.WeaponImbue_BrilliantWizardOil:
 			character.AddStats(stats.Stats{
 				stats.SpellPower: 36,
+				stats.SpellCrit:  1 * SpellCritRatingPerCritChance,
+			})
+		case proto.WeaponImbue_EnchantedRepellent:
+			character.AddStats(stats.Stats{
+				stats.SpellPower: 45,
 				stats.SpellCrit:  1 * SpellCritRatingPerCritChance,
 			})
 

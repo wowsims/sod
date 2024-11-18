@@ -359,3 +359,95 @@ var ItemSetConfessorsRaiment = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+///////////////////////////////////////////////////////////////////////////
+//                            SoD Phase 6 Item Sets
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetTwilightOfTheOracle = core.NewItemSet(core.ItemSet{
+	Name: "Twilight of the Oracle",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Mind Flay no longer loses duration from taking damage and launches a free Mind Spike at the target on cast.
+		2: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+			if !priest.Talents.MindFlay || !priest.HasRune(proto.PriestRune_RuneWaistMindSpike) {
+				return
+			}
+
+			priest.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Priest - Shadow 2P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					for _, spells := range priest.MindFlay {
+						for _, spell := range spells {
+							if spell == nil {
+								continue
+							}
+
+							spell.PushbackReduction += 1
+
+							oldApplyEffects := spell.ApplyEffects
+							spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+								priest.MindSpike.DefaultCast.GCD = 0
+								priest.MindSpike.CastTimeMultiplier -= 1
+								priest.MindSpike.Cost.Multiplier -= 100
+								priest.MindSpike.Cast(sim, target)
+								priest.MindSpike.DefaultCast.GCD = core.GCDDefault
+								priest.MindSpike.CastTimeMultiplier += 1
+								priest.MindSpike.Cost.Multiplier += 100
+
+								oldApplyEffects(sim, target, spell)
+							}
+						}
+					}
+				},
+			})
+		},
+		// Your Mind Spike is now instant, deals 30% more damage, and can be cast while channeling another spell.
+		4: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+			if !priest.HasRune(proto.PriestRune_RuneWaistMindSpike) {
+				return
+			}
+
+			priest.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Priest - Shadow 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					priest.MindSpike.CastTimeMultiplier -= 1
+					priest.MindSpike.DamageMultiplier *= 1.30
+					priest.MindSpike.Flags |= core.SpellFlagCastWhileChanneling
+				},
+			})
+		},
+	},
+})
+
+var ItemSetDawnOfTheOracle = core.NewItemSet(core.ItemSet{
+	Name: "Dawn of the Oracle",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Prayer of Mending gains 2 additional charges.
+		2: func(agent core.Agent) {
+		},
+		// Your Circle of Healing now heals the most injured member of the target party for 100% more.
+		4: func(agent core.Agent) {
+		},
+	},
+})
+
+var ItemSetFineryOfInfiniteWisdom = core.NewItemSet(core.ItemSet{
+	Name: "Finery of Infinite Wisdom",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Pain and Suffering rune can now refresh the duration of Devouring Plague.
+		3: func(agent core.Agent) {
+			priest := agent.(PriestAgent).GetPriest()
+			priest.RegisterAura(core.Aura{
+				Label: "S03 - Item - RAQ - Priest - Shadow 3P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					priest.PainAndSufferingDoTSpells = append(
+						priest.PainAndSufferingDoTSpells,
+						core.FilterSlice(priest.DevouringPlague, func(spell *core.Spell) bool { return spell != nil })...,
+					)
+				},
+			})
+		},
+	},
+})

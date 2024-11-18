@@ -239,7 +239,7 @@ func init() {
 				)
 
 				for _, spell := range affectedSpells {
-					spell.BaseDamageMultiplierAdditive += 0.03
+					spell.DamageMultiplierAdditive += 0.03
 				}
 			},
 		})
@@ -257,13 +257,14 @@ func init() {
 						[][]*DruidSpell{
 							druid.Wrath,
 							druid.Moonfire,
+							{druid.Sunfire, druid.Starsurge, druid.StarfallSplash, druid.StarfallTick},
 						},
 					),
 					func(spell *DruidSpell) bool { return spell != nil },
 				)
 
 				for _, spell := range affectedSpells {
-					spell.BaseDamageMultiplierAdditive += 0.03
+					spell.DamageMultiplierAdditive += 0.03
 				}
 			},
 		})
@@ -317,7 +318,7 @@ func init() {
 				)
 
 				for _, spell := range affectedSpells {
-					spell.BaseDamageMultiplierAdditive += 0.03
+					spell.DamageMultiplierAdditive += 0.03
 				}
 			},
 		})
