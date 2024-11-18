@@ -257,6 +257,7 @@ func init() {
 						[][]*DruidSpell{
 							druid.Wrath,
 							druid.Moonfire,
+							{druid.Sunfire, druid.Starsurge, druid.StarfallSplash, druid.StarfallTick},
 						},
 					),
 					func(spell *DruidSpell) bool { return spell != nil },
