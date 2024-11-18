@@ -318,7 +318,7 @@ func Test_MultiSchoolSpellPower(t *testing.T) {
 					for i := indexLen - 1; i >= 0; i-- {
 						powerStat := stats.ArcanePower + stats.Stat(baseIndices[i]) - 2
 						if powerStat == stats.SpellPower {
-							caster.PseudoStats.BonusDamage = highestValue - 25.0*float64(indexLen-1-i)
+							caster.PseudoStats.BonusPhysicalDamage = highestValue - 25.0*float64(indexLen-1-i)
 						} else {
 							caster.stats[powerStat] = highestValue - 25.0*float64(indexLen-1-i)
 						}
@@ -328,7 +328,7 @@ func Test_MultiSchoolSpellPower(t *testing.T) {
 					for i, baseIndex := range baseIndices {
 						powerStat := stats.ArcanePower + stats.Stat(baseIndex) - 2
 						if powerStat == stats.SpellPower {
-							caster.PseudoStats.BonusDamage = highestValue - 25.0*float64(i)
+							caster.PseudoStats.BonusPhysicalDamage = highestValue - 25.0*float64(i)
 						} else {
 							caster.stats[powerStat] = highestValue - 25.0*float64(i)
 						}
@@ -341,8 +341,8 @@ func Test_MultiSchoolSpellPower(t *testing.T) {
 				for _, baseIndex := range baseIndices {
 					powerStat := stats.ArcanePower + stats.Stat(baseIndex) - 2
 					if powerStat == stats.SpellPower {
-						if caster.PseudoStats.BonusDamage > highestValFound {
-							highestValFound = caster.PseudoStats.BonusDamage
+						if caster.PseudoStats.BonusPhysicalDamage > highestValFound {
+							highestValFound = caster.PseudoStats.BonusPhysicalDamage
 							highestFound = powerStat
 						}
 					} else {

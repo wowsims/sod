@@ -4,101 +4,105 @@ import { ref } from 'tsx-vanilla';
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
 import { PseudoStat, Spec, Stat } from '../proto/common.js';
-import { getClassStatName, statOrder } from '../proto_utils/names.js';
-import { Stats } from '../proto_utils/stats.js';
+import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
 import { NumberPicker } from './number_picker';
 
 export type StatMods = { talents?: Stats; buffs?: Stats };
 
-const statGroups = new Map<string, Array<Stat>>([
+const statGroups = new Map<string, Array<UnitStat>>([
 	[
 		'Primary',
 		[
-			Stat.StatHealth,
-			Stat.StatMana,
+			UnitStat.fromStat(Stat.StatHealth),
+			UnitStat.fromStat(Stat.StatMana),
 		],
 	],
 	[
 		'Attributes',
 		[
-			Stat.StatStrength,
-			Stat.StatAgility,
-			Stat.StatStamina,
-			Stat.StatIntellect,
-			Stat.StatSpirit,
+			UnitStat.fromStat(Stat.StatStrength),
+			UnitStat.fromStat(Stat.StatAgility),
+			UnitStat.fromStat(Stat.StatStamina),
+			UnitStat.fromStat(Stat.StatIntellect),
+			UnitStat.fromStat(Stat.StatSpirit),
 		]
 	],
 	[
 		'Physical',
 		[
-			Stat.StatAttackPower,
-			Stat.StatFeralAttackPower,
-			Stat.StatRangedAttackPower,
-			Stat.StatMeleeHit,
-			Stat.StatExpertise,
-			Stat.StatMeleeCrit,
-			Stat.StatMeleeHaste,
+			UnitStat.fromStat(Stat.StatAttackPower),
+			UnitStat.fromStat(Stat.StatFeralAttackPower),
+			UnitStat.fromStat(Stat.StatRangedAttackPower),
+			UnitStat.fromStat(Stat.StatMeleeHit),
+			UnitStat.fromStat(Stat.StatExpertise),
+			UnitStat.fromStat(Stat.StatMeleeCrit),
+			UnitStat.fromStat(Stat.StatMeleeHaste),
+			UnitStat.fromPseudoStat(PseudoStat.BonusPhysicalDamage),
 		]
 	],
 	[
 		'Spell',
 		[
-			Stat.StatSpellPower,
-			Stat.StatSpellDamage,
-			Stat.StatArcanePower,
-			Stat.StatFirePower,
-			Stat.StatFrostPower,
-			Stat.StatHolyPower,
-			Stat.StatNaturePower,
-			Stat.StatShadowPower,
-			Stat.StatSpellHit,
-			Stat.StatSpellCrit,
-			Stat.StatSpellHaste,
-			Stat.StatSpellPenetration,
-			Stat.StatMP5,
+			UnitStat.fromStat(Stat.StatSpellPower),
+			UnitStat.fromStat(Stat.StatSpellDamage),
+			UnitStat.fromStat(Stat.StatArcanePower),
+			UnitStat.fromStat(Stat.StatFirePower),
+			UnitStat.fromStat(Stat.StatFrostPower),
+			UnitStat.fromStat(Stat.StatHolyPower),
+			UnitStat.fromStat(Stat.StatNaturePower),
+			UnitStat.fromStat(Stat.StatShadowPower),
+			UnitStat.fromStat(Stat.StatSpellHit),
+			UnitStat.fromStat(Stat.StatSpellCrit),
+			UnitStat.fromStat(Stat.StatSpellHaste),
+			UnitStat.fromStat(Stat.StatSpellPenetration),
+			UnitStat.fromStat(Stat.StatMP5),
 		]
 	],
 	[
 		'Defense',
 		[
-			Stat.StatArmor,
-			Stat.StatBonusArmor,
-			Stat.StatDefense,
-			Stat.StatDodge,
-			Stat.StatParry,
-			Stat.StatBlock,
-			Stat.StatBlockValue,
+			UnitStat.fromStat(Stat.StatArmor),
+			UnitStat.fromStat(Stat.StatBonusArmor),
+			UnitStat.fromStat(Stat.StatDefense),
+			UnitStat.fromStat(Stat.StatDodge),
+			UnitStat.fromStat(Stat.StatParry),
+			UnitStat.fromStat(Stat.StatBlock),
+			UnitStat.fromStat(Stat.StatBlockValue),
 		]
 	],
 	[
 		'Resistance',
 		[
-			Stat.StatArcaneResistance,
-			Stat.StatFireResistance,
-			Stat.StatFrostResistance,
-			Stat.StatNatureResistance,
-			Stat.StatShadowResistance,
+			UnitStat.fromStat(Stat.StatArcaneResistance),
+			UnitStat.fromStat(Stat.StatFireResistance),
+			UnitStat.fromStat(Stat.StatFrostResistance),
+			UnitStat.fromStat(Stat.StatNatureResistance),
+			UnitStat.fromStat(Stat.StatShadowResistance),
+		]
+	],
+	[
+		'Misc',
+		[
+			UnitStat.fromPseudoStat(PseudoStat.TimewornBonus),
 		]
 	],
 ])
 
 export class CharacterStats extends Component {
-	readonly stats: Array<Stat>;
+	readonly stats: Array<UnitStat>;
 	readonly valueElems: Array<HTMLTableCellElement>;
 	readonly meleeCritCapValueElem: HTMLTableCellElement | undefined;
 
 	private readonly player: Player<any>;
 	private readonly modifyDisplayStats?: (player: Player<any>) => StatMods;
 
-	constructor(parent: HTMLElement, player: Player<any>, stats: Array<Stat>, modifyDisplayStats?: (player: Player<any>) => StatMods) {
+	constructor(parent: HTMLElement, player: Player<any>, displayStats: Array<UnitStat>, modifyDisplayStats?: (player: Player<any>) => StatMods) {
 		super(parent, 'character-stats-root');
-		this.stats = []
+		this.stats = [];
 		this.player = player;
 		this.modifyDisplayStats = modifyDisplayStats;
-
-		const statsSet = new Set(stats);
 
 		const playerLevelRef = ref<HTMLSpanElement>();
 		this.player.levelChangeEmitter.on(() => (playerLevelRef.value!.textContent = `Level ${player.getLevel()}`));
@@ -117,14 +121,15 @@ export class CharacterStats extends Component {
 
 		this.valueElems = [];
 		statGroups.forEach((groupedStats, _) => {
-			const filteredStats = groupedStats.filter(stat => statsSet.has(stat))
-			if (!filteredStats.length) return
+			const filteredStats = groupedStats.filter(stat => displayStats.find(displayStat => displayStat.equals(stat)));
 
-			const body = <tbody></tbody>
+			if (!filteredStats.length) return;
+
+			const body = <tbody></tbody>;
 			filteredStats.forEach(stat => {
-				this.stats.push(stat)
+				this.stats.push(stat);
 
-				const statName = getClassStatName(stat, player.getClass());
+				const statName = stat.getName(player.getClass());
 
 				const row = (
 					<tr className="character-stats-table-row">
@@ -133,13 +138,13 @@ export class CharacterStats extends Component {
 					</tr>
 				);
 				body.appendChild(row);
-	
+
 				const valueElem = row.getElementsByClassName('character-stats-table-value')[0] as HTMLTableCellElement;
 				this.valueElems.push(valueElem);
-			})
+			});
 
-			table.appendChild(body)
-		})
+			table.appendChild(body);
+		});
 
 		if (this.shouldShowMeleeCritCap(player)) {
 			const row = (
@@ -183,7 +188,7 @@ export class CharacterStats extends Component {
 		const finalStats = Stats.fromProto(playerStats.finalStats).add(statMods.talents).add(statMods.buffs).add(debuffStats);
 
 		this.stats.forEach((stat, idx) => {
-			const bonusStatValue = bonusStats.getStat(stat);
+			const bonusStatValue = bonusStats.getUnitStat(stat);
 			let contextualClass: string;
 			if (bonusStatValue === 0) {
 				contextualClass = 'text-white';
@@ -231,7 +236,7 @@ export class CharacterStats extends Component {
 							<span>Consumes:</span>
 							<span>{this.statDisplayString(player, consumesStats, consumesDelta, stat)}</span>
 						</div>
-						{debuffStats.getStat(stat) != 0 && (
+						{stat.isStat() && debuffStats.getStat(stat.getStat()) != 0 && (
 							<div className="character-stats-tooltip-row">
 								<span>Debuffs:</span>
 								<span>{this.statDisplayString(player, debuffStats, debuffStats, stat)}</span>
@@ -251,7 +256,7 @@ export class CharacterStats extends Component {
 				</div>
 			);
 
-			if (stat === Stat.StatMeleeHit) {
+			if (stat.isStat() && stat.getStat() === Stat.StatMeleeHit) {
 				tooltipContent.appendChild(
 					<div className="ps-2">
 						<div className="character-stats-tooltip-row">
@@ -299,7 +304,7 @@ export class CharacterStats extends Component {
 						</div>
 					</div>,
 				);
-			} else if (stat === Stat.StatSpellHit) {
+			} else if (stat.isStat() && stat.getStat() === Stat.StatSpellHit) {
 				tooltipContent.appendChild(
 					<div className="ps-2">
 						<div className="character-stats-tooltip-row">
@@ -402,58 +407,62 @@ export class CharacterStats extends Component {
 		}
 	}
 
-	private statDisplayString(player: Player<any>, stats: Stats, deltaStats: Stats, stat: Stat): string {
-		let rawValue = deltaStats.getStat(stat);
+	private statDisplayString(player: Player<any>, stats: Stats, deltaStats: Stats, unitStat: UnitStat): string {
+		const rawValue = deltaStats.getUnitStat(unitStat);
+		let displayStr: string | undefined;
 
-		if (stat === Stat.StatBlockValue) {
-			rawValue *= stats.getPseudoStat(PseudoStat.PseudoStatBlockValueMultiplier) || 1;
-			rawValue += Math.max(0, stats.getPseudoStat(PseudoStat.PseudoStatBlockValuePerStrength) * deltaStats.getStat(Stat.StatStrength) - 1);
+		if (unitStat.isStat()) {
+			const stat = unitStat.getStat();
+
+			if (stat === Stat.StatBlockValue) {
+				const mult = stats.getPseudoStat(PseudoStat.PseudoStatBlockValueMultiplier) || 1;
+				const perStr = Math.max(0, stats.getPseudoStat(PseudoStat.PseudoStatBlockValuePerStrength) * deltaStats.getStat(Stat.StatStrength) - 1);
+				displayStr = String(Math.round((rawValue * mult) + perStr));
+			} else if (stat === Stat.StatMeleeHit) {
+				displayStr = `${(rawValue / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
+			} else if (stat === Stat.StatSpellHit) {
+				displayStr = `${(rawValue / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
+			} else if (stat === Stat.StatSpellDamage) {
+				const spDmg = Math.round(rawValue);
+				const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower));
+				displayStr = baseSp + spDmg + ` (+${spDmg})`;
+			} else if (
+				stat === Stat.StatArcanePower ||
+				stat === Stat.StatFirePower ||
+				stat === Stat.StatFrostPower ||
+				stat === Stat.StatHolyPower ||
+				stat === Stat.StatNaturePower ||
+				stat === Stat.StatShadowPower
+			) {
+				const spDmg = Math.round(rawValue);
+				const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower) + deltaStats.getStat(Stat.StatSpellDamage));
+				displayStr = baseSp + spDmg + ` (+${spDmg})`;
+			} else if (stat === Stat.StatMeleeCrit || stat === Stat.StatSpellCrit) {
+				displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
+			} else if (stat === Stat.StatMeleeHaste) {
+				// Melee Haste doesn't actually exist in vanilla so use the melee speed pseudostat
+				displayStr = `${(deltaStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier) * 100).toFixed(2)}%`;
+			} else if (stat === Stat.StatSpellHaste) {
+				displayStr = `${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%`;
+			} else if (stat === Stat.StatArmorPenetration) {
+				displayStr = `${rawValue} (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
+			} else if (stat === Stat.StatExpertise) {
+				// It's just like crit and hit in SoD.
+				displayStr = `${rawValue}%`;
+			} else if (stat === Stat.StatDefense) {
+				displayStr = `${(player.getLevel() * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)}`;
+			} else if (stat === Stat.StatBlock) {
+				displayStr = `${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%`;
+			} else if (stat === Stat.StatDodge) {
+				displayStr = `${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%`;
+			} else if (stat === Stat.StatParry) {
+				displayStr = `${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%`;
+			} else if (stat === Stat.StatResilience) {
+				displayStr = `${rawValue} (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
+			}
 		}
-
-		let displayStr = String(Math.round(rawValue));
-
-		if (stat === Stat.StatMeleeHit) {
-			displayStr = `${(rawValue / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
-		} else if (stat === Stat.StatSpellHit) {
-			displayStr = `${(rawValue / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
-		} else if (stat === Stat.StatSpellDamage) {
-			const spDmg = Math.round(rawValue);
-			const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower));
-			displayStr = baseSp + spDmg + ` (+${spDmg})`;
-		} else if (
-			stat === Stat.StatArcanePower ||
-			stat === Stat.StatFirePower ||
-			stat === Stat.StatFrostPower ||
-			stat === Stat.StatHolyPower ||
-			stat === Stat.StatNaturePower ||
-			stat === Stat.StatShadowPower
-		) {
-			const spDmg = Math.round(rawValue);
-			const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower) + deltaStats.getStat(Stat.StatSpellDamage));
-			displayStr = baseSp + spDmg + ` (+${spDmg})`;
-		} else if (stat === Stat.StatMeleeCrit || stat === Stat.StatSpellCrit) {
-			displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
-		} else if (stat === Stat.StatMeleeHaste) {
-			// Melee Haste doesn't actually exist in vanilla so use the melee speed pseudostat
-			displayStr = `${(deltaStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier) * 100).toFixed(2)}%`;
-		} else if (stat === Stat.StatSpellHaste) {
-			displayStr = `${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%`;
-		} else if (stat === Stat.StatArmorPenetration) {
-			displayStr += ` (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
-		} else if (stat === Stat.StatExpertise) {
-			// It's just like crit and hit in SoD.
-			displayStr += `%`;
-		} else if (stat === Stat.StatDefense) {
-			displayStr = `${(player.getLevel() * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)}`;
-		} else if (stat === Stat.StatBlock) {
-			displayStr = `${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%`;
-		} else if (stat === Stat.StatDodge) {
-			displayStr = `${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%`;
-		} else if (stat === Stat.StatParry) {
-			displayStr = `${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%`;
-		} else if (stat === Stat.StatResilience) {
-			displayStr += ` (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
-		}
+		
+		if (!displayStr) displayStr = String(Math.round(rawValue));
 
 		return displayStr;
 	}
@@ -478,8 +487,8 @@ export class CharacterStats extends Component {
 		return debuffStats;
 	}
 
-	private bonusStatsLink(stat: Stat): HTMLElement {
-		const statName = getClassStatName(stat, this.player.getClass());
+	private bonusStatsLink(stat: UnitStat): HTMLElement {
+		const statName = stat.getName(this.player.getClass());
 		const linkRef = ref<HTMLAnchorElement>();
 		const iconRef = ref<HTMLDivElement>();
 
@@ -502,13 +511,13 @@ export class CharacterStats extends Component {
 			placement: 'right',
 			onShow: instance => {
 				const picker = new NumberPicker(null, this.player, {
-					id: `character-bonus-stat-${stat}`,
+					id: `character-bonus-${stat.isStat() ? 'stat-' + stat.getStat() : 'pseudostat-' + stat.getPseudoStat()}`,
 					label: `Bonus ${statName}`,
 					extraCssClasses: ['mb-0'],
 					changedEvent: (player: Player<any>) => player.bonusStatsChangeEmitter,
-					getValue: (player: Player<any>) => player.getBonusStats().getStat(stat),
+					getValue: (player: Player<any>) => player.getBonusStats().getUnitStat(stat),
 					setValue: (eventID: EventID, player: Player<any>, newValue: number) => {
-						const bonusStats = player.getBonusStats().withStat(stat, newValue);
+						const bonusStats = player.getBonusStats().withUnitStat(stat, newValue);
 						player.setBonusStats(eventID, bonusStats);
 						instance?.hide();
 					},

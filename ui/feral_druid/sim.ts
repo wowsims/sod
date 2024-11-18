@@ -4,7 +4,7 @@ import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { APLRotation_Type as APLRotationType } from '../core/proto/apl.js';
-import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat, WeaponImbue } from '../core/proto/common.js';
+import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat, WeaponImbue } from '../core/proto/common.js';
 import { Gear } from '../core/proto_utils/gear.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
@@ -38,7 +38,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		// Spell
 		Stat.StatMP5,
 	],
-	epPseudoStats: [],
+	epPseudoStats: [
+		PseudoStat.BonusPhysicalDamage,
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -58,6 +60,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatExpertise,
 		// Spell
 		Stat.StatMP5,
+	],
+	displayPseudoStats: [
+		PseudoStat.BonusPhysicalDamage,
 	],
 
 	defaults: {

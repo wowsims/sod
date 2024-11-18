@@ -70,7 +70,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-
+	displayPseudoStats: [],
+	
 	defaults: {
 		race: Presets.OtherDefaults.race,
 		// Default equipped gear.

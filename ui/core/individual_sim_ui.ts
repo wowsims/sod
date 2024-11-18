@@ -15,7 +15,7 @@ import * as InputHelpers from './components/input_helpers';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
 import { addStatWeightsAction } from './components/stat_weights_action';
-import { GLOBAL_DISPLAY_STATS, GLOBAL_EP_STATS, LEVEL_THRESHOLDS } from './constants/other';
+import { GLOBAL_DISPLAY_PSEUDO_STATS, GLOBAL_DISPLAY_STATS, GLOBAL_EP_STATS, LEVEL_THRESHOLDS } from './constants/other';
 import * as Tooltips from './constants/tooltips';
 import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
@@ -42,7 +42,7 @@ import {
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
 import { ItemSwapGear } from './proto_utils/gear';
 import { professionNames } from './proto_utils/names';
-import { Stats } from './proto_utils/stats';
+import { Stats, UnitStat } from './proto_utils/stats';
 import { getTalentPoints, isHealingSpec, isTankSpec, SpecOptions, SpecRotation, specToEligibleRaces, specToLocalStorageKey } from './proto_utils/utils';
 import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
@@ -98,6 +98,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	epPseudoStats?: Array<PseudoStat>;
 	epReferenceStat: Stat;
 	displayStats: Array<Stat>;
+	displayPseudoStats: Array<PseudoStat>;
 	modifyDisplayStats?: (player: Player<SpecType>) => StatMods;
 
 	defaults: {
@@ -328,10 +329,18 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.raidSimResultsManager = addRaidSimAction(this);
 		addStatWeightsAction(this, this.individualConfig.epStats.concat(GLOBAL_EP_STATS), this.individualConfig.epPseudoStats, this.individualConfig.epReferenceStat);
 
+		const displayStats: UnitStat[] = [];
+
+		this.individualConfig.displayStats.forEach(s => displayStats.push(UnitStat.fromStat(s)));
+		GLOBAL_DISPLAY_STATS.forEach(s => displayStats.push(UnitStat.fromStat(s)));
+		
+		this.individualConfig.displayPseudoStats.forEach(ps => displayStats.push(UnitStat.fromPseudoStat(ps)));
+		GLOBAL_DISPLAY_PSEUDO_STATS.forEach(ps => displayStats.push(UnitStat.fromPseudoStat(ps)));
+
 		new CharacterStats(
 			this.rootElem.getElementsByClassName('sim-sidebar-stats')[0] as HTMLElement,
 			this.player,
-			this.individualConfig.displayStats.concat(GLOBAL_DISPLAY_STATS),
+			displayStats,
 			this.individualConfig.modifyDisplayStats,
 		);
 	}

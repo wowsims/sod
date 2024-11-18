@@ -209,6 +209,7 @@ var weaponDamageRegex = regexp.MustCompile(`<!--dmg-->([0-9]+) - ([0-9]+)`)
 var weaponDamageRegex2 = regexp.MustCompile(`<!--dmg-->([0-9]+) Damage`)
 var weaponDamageBonusSchoolRegex = regexp.MustCompile(`\+ ([0-9]+) - ([0-9]+) [a-zA-Z]+ Damage`)
 var weaponSpeedRegex = regexp.MustCompile(`<!--spd-->(([0-9]+).([0-9]+))`)
+var physicalBonusDamageRegex = regexp.MustCompile(`\+([0-9]+) Weapon Damage.`)
 
 var axesSkill = regexp.MustCompile(`Increased Axes \+([0-9]+)\.`)
 var swordsSkill = regexp.MustCompile(`Increased Swords \+([0-9]+)\.`)
@@ -660,6 +661,17 @@ func (item WowheadItemResponse) GetWeaponSpeed() float64 {
 	return 0
 }
 
+func (item WowheadItemResponse) GetPhysicalBonusDamage() float64 {
+	if matches := physicalBonusDamageRegex.FindStringSubmatch(item.Tooltip); len(matches) > 0 {
+		bonus, err := strconv.ParseFloat(matches[1], 64)
+		if err != nil {
+			log.Fatalf("Failed to parse weapon bonus damage: %s", err)
+		}
+		return bonus
+	}
+	return 0
+}
+
 func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 	weaponDamageMin, weaponDamageMax := item.GetWeaponDamage()
 
@@ -677,6 +689,8 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		Stats: toSlice(item.GetStats()),
 
 		WeaponSkills: weaponSkillsToSlice(item.GetWeaponSkills()),
+
+		BonusPhysicalDamage: item.GetPhysicalBonusDamage(),
 
 		WeaponDamageMin: weaponDamageMin,
 		WeaponDamageMax: weaponDamageMax,

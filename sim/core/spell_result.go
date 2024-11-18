@@ -139,7 +139,7 @@ func (spell *Spell) GetBonusDamage() float64 {
 		// PseudoStats.BonusDamage is physical "spell power", just return that here.
 		// TODO: Do "MobTypeSpellPower" effects for physical exist? E.g. something like "Do x extra weapon damage against y type"?
 		// If yes then it needs to be handled here and for the multi school case below.
-		return spell.Unit.PseudoStats.BonusDamage
+		return spell.Unit.PseudoStats.BonusPhysicalDamage
 	case stats.SchoolIndexArcane:
 		schoolBonusDamage = spell.Unit.GetStat(stats.ArcanePower)
 	case stats.SchoolIndexFire:
@@ -163,7 +163,7 @@ func (spell *Spell) GetBonusDamage() float64 {
 			// non-physical schools and would need to be considered against physical here and obviously not applied
 			// if physical is chosen.
 			if baseSchoolIndex == stats.SchoolIndexPhysical {
-				power = spell.Unit.PseudoStats.BonusDamage
+				power = spell.Unit.PseudoStats.BonusPhysicalDamage
 			} else {
 				// School and stat indices are ordered the same way.
 				power = spell.Unit.GetStat(stats.ArcanePower + stats.Stat(baseSchoolIndex) - 2)
