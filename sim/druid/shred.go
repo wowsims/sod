@@ -30,8 +30,14 @@ func (druid *Druid) registerShredSpell() {
 		flatDamageBonus *= 1.02
 	}
 
-	// In-game testing concluded that, unintuitively, Idol of the Drea's 1.02x damage applies to the original 2.25x
-	// Shred mod, and to the flat damage bonus, but that the .75x SoD buff happens additively after Idol
+	if druid.Ranged().ID == IdolOfFelineFerocity {
+		damageMultiplier *= 1.03
+		flatDamageBonus *= 1.03
+	}
+
+	// In-game testing concluded that, unintuitively, Idol of the Dream's 1.02x damage applies to the original 2.25x
+	// Shred mod, and to the flat damage bonus, but that the .75x SoD buff happens additively after Idol.
+	// Idol of Feline Ferocity uses the same spell effect as Dream.
 	damageMultiplier += ShredWeaponMultiplierBuff
 
 	druid.Shred = druid.RegisterSpell(Cat, core.SpellConfig{
