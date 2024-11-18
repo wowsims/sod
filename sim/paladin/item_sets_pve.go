@@ -442,6 +442,10 @@ var ItemSetAvengersRadiance = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			paladin := agent.(PaladinAgent).GetPaladin()
+			if !paladin.hasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
+				return
+			}
+
 			paladin.OnSpellRegistered(func(spell *core.Spell) {
 				//"S03 - Item - TAQ - Paladin - Retribution 2P Bonus",
 				if spell.SpellCode == SpellCode_PaladinCrusaderStrike {
