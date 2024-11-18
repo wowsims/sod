@@ -91,7 +91,7 @@ func init() {
 				aura.SetStacks(sim, aura.MaxStacks)
 			},
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				character.PseudoStats.BonusDamage += float64(newStacks - oldStacks)
+				character.PseudoStats.BonusPhysicalDamage += float64(newStacks - oldStacks)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {

@@ -114,8 +114,6 @@ func init() {
 	core.NewItemEffect(215166, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.PseudoStats.BonusDamage += 3
-
 		actionId := core.ActionID{SpellID: 437349}
 
 		buffAura := character.GetOrRegisterAura(core.Aura{

@@ -29,6 +29,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
+	displayPseudoStats: [],
+	
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,

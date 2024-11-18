@@ -208,6 +208,7 @@ export const pseudoStatNames: Map<PseudoStat, string> = new Map([
 	[PseudoStat.PseudoStatRangedDps, 'Ranged DPS'],
 	[PseudoStat.PseudoStatBlockValueMultiplier, 'Block Value Multiplier'],
 	[PseudoStat.TimewornBonus, 'Timeworn Pieces'],
+	[PseudoStat.BonusPhysicalDamage, 'Bonus Weapon Damage'],
 ]);
 
 export function getClassStatName(stat: Stat, playerClass: Class): string {

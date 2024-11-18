@@ -441,3 +441,108 @@ var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+var ItemSetDeathdealersBattlearmor = core.NewItemSet(core.ItemSet{
+	Name: "Deathdealer's Battlearmor",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Main Gauche now strikes 1 additional nearby target and also causes your Sinister Strike to strike 1 additional nearby target. 
+		// These additional strikes are not duplicated by Blade Flurry.
+		2: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
+				return
+			}
+			
+			if rogue.Env.GetNumTargets() == 1 {
+				return
+			}
+
+			var curDmg float64
+
+			cleaveHit := rogue.RegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 1213754},
+				SpellSchool: core.SpellSchoolPhysical,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+		
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.CalcAndDealDamage(sim, target, curDmg, spell.OutcomeAlwaysHit)
+				},
+			})	
+			
+			cleaveAura := rogue.RegisterAura(core.Aura{
+				Label:    "2P Cleave Buff",
+				Duration: time.Second * 10,
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && (spell.SpellCode == SpellCode_RogueSinisterStrike) {
+						curDmg = result.Damage / result.ResistanceMultiplier
+						cleaveHit.Cast(sim, rogue.Env.NextTargetUnit(result.Target))
+						cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
+					}
+				},
+			})			
+
+			core.MakePermanent(rogue.RegisterAura(core.Aura{
+				Label:     "S03 - Item - TAQ - Rogue - Tank 2P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && spell.SpellCode == SpellCode_RogueMainGauche {
+						cleaveAura.Activate(sim)
+							curDmg = result.Damage / result.ResistanceMultiplier
+							cleaveHit.Cast(sim, rogue.Env.NextTargetUnit(result.Target))
+							cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
+					}
+				},
+			}))
+
+		},
+		// While active, your Main Gauche also causes you to heal for 10% of all damage done by Sinister Strike. 
+		// Any excess healing becomes a Blood Barrier, absorbing damage up to 20% of your maximum health.
+		// Shield appear to not be fully implemented in SoD commenting out until fixed
+		4: func(agent core.Agent) {
+//			rogue := agent.(RogueAgent).GetRogue()
+//			if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
+//				return
+//			}
+//			shieldSpell := rogue.GetOrRegisterSpell(core.SpellConfig{
+//				ActionID:    core.ActionID{SpellID: 1213761},
+//				SpellSchool: core.SpellSchoolPhysical,
+//				ProcMask:    core.ProcMaskSpellHealing,
+//				Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
+//			
+//				DamageMultiplier: 1,
+//				ThreatMultiplier: 1,
+//			
+//				Shield: core.ShieldConfig{
+//					Aura: core.Aura{
+//						Label:    "Blood Barrier",
+//						Duration: time.Second * 15,
+//					},
+//				},
+//			})
+//
+//			activeAura := core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+//				Name:     "Main Gauche - Blood Barrier",
+//				ActionID: core.ActionID{SpellID: 1213762},
+//				Callback: core.CallbackOnSpellHitDealt,
+//				Duration: time.Second * 15,
+//				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+//					if result.Landed() && spell.SpellCode == SpellCode_RogueSinisterStrike{
+//						shieldSpell.Shield(&rogue.Unit).Apply(sim, result.Damage*0.10)
+//					}
+//				},
+//			})
+//
+//			core.MakePermanent(rogue.RegisterAura(core.Aura{
+//				Label:     "S03 - Item - TAQ - Rogue - Tank 4P Bonus",
+//				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+//					if result.Landed() && spell.SpellCode == SpellCode_RogueMainGauche {
+//						activeAura.Activate(sim)
+//					}
+//				},
+//			}))
+		},
+	},
+})

@@ -46,6 +46,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
 	],
+	displayPseudoStats: [],
 
 	defaults: {
 		race: Presets.OtherDefaults.race,

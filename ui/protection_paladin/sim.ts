@@ -103,7 +103,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatShadowResistance,
 		Stat.StatArcaneResistance,
 	],
-
+	displayPseudoStats: [],
+	
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,

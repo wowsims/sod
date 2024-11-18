@@ -88,6 +88,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 	],
+	displayPseudoStats: [],
 
 	defaults: {
 		// Default equipped gear.

@@ -416,7 +416,7 @@ type PseudoStats struct {
 
 	// "Apply Aura: Mod Damage Done (Physical)", applies to abilities with EffectSpellCoefficient > 0.
 	//  This includes almost all "(Normalized) Weapon Damage", but also some "School Damage (Physical)" abilities.
-	BonusDamage float64 // Comes from '+X Weapon Damage' effects
+	BonusPhysicalDamage float64 // Comes from '+X Weapon Damage' effects
 
 	BonusMHDps     float64
 	BonusOHDps     float64

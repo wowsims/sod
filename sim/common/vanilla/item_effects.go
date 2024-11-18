@@ -2904,7 +2904,7 @@ func init() {
 				aura.SetStacks(sim, aura.MaxStacks)
 			},
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				character.PseudoStats.BonusDamage += 2 * float64(newStacks-oldStacks)
+				character.PseudoStats.BonusPhysicalDamage += 2 * float64(newStacks-oldStacks)
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) {
@@ -3049,11 +3049,11 @@ func EnrageAura446327(character *core.Character) *core.Aura {
 		Label:    "Enrage (446327)",
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.PseudoStats.BonusDamage += 20
+			character.PseudoStats.BonusPhysicalDamage += 20
 			character.MultiplyAttackSpeed(sim, 1.05)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.PseudoStats.BonusDamage -= 20
+			character.PseudoStats.BonusPhysicalDamage -= 20
 			character.MultiplyAttackSpeed(sim, 1/1.05)
 		},
 	})
