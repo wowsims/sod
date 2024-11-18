@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -465,8 +466,12 @@ var ItemSetAvengersRadiance = core.NewItemSet(core.ItemSet{
 var ItemSetBattlegearOfEternalJustice = core.NewItemSet(core.ItemSet{
 	Name: "Battlegear of Eternal Justice",
 	Bonuses: map[int32]core.ApplyEffect{
+		// Crusader Strike now unleashes the judgement effect of your seals, but does not consume the seal
 		3: func(agent core.Agent) {
 			paladin := agent.(PaladinAgent).GetPaladin()
+			if !paladin.hasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
+				return
+			}
 
 			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - RAQ - Paladin - Retribution 3P Bonus",
@@ -477,7 +482,6 @@ var ItemSetBattlegearOfEternalJustice = core.NewItemSet(core.ItemSet{
 					// Wrap the apply Crusader Strike ApplyEffects with more Effects
 					paladin.crusaderStrike.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 						originalApplyEffects(sim, target, spell)
-						// 3 pieces: Crusader Strike now unleashes the judgement effect of your seals, but does not consume the seal
 						consumeSealsOnJudgeSaved := paladin.consumeSealsOnJudge // Save current value
 						paladin.consumeSealsOnJudge = false                     // Set to not consume seals
 						if paladin.currentSeal.IsActive() {
