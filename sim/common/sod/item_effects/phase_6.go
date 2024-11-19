@@ -314,23 +314,23 @@ func ObsidianEdgedAura(itemID int32, agent core.Agent) {
 	meleeProcMask := character.GetProcMaskForItem(itemID)
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:     "Obsidian Edged Proc Melee",
-		Callback: core.CallbackOnSpellHitDealt,
-		Outcome:  core.OutcomeLanded,
-		ProcMask: meleeProcMask,
-		PPM:      1.0, // TODO: Determine PPM
-		ICD:      time.Millisecond * 2100,
+		Name:       "Obsidian Edged Proc Melee",
+		Callback:   core.CallbackOnSpellHitDealt,
+		Outcome:    core.OutcomeLanded,
+		ProcMask:   meleeProcMask,
+		ProcChance: 0.05,
+		ICD:        time.Millisecond * 2100,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			damageSpell.Cast(sim, result.Target)
 		},
 	})
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:       "Obsidian Edged Proc Melee",
+		Name:       "Obsidian Edged Proc Spell",
 		Callback:   core.CallbackOnSpellHitDealt,
 		Outcome:    core.OutcomeLanded,
 		ProcMask:   core.ProcMaskSpellDamage,
-		ProcChance: 1.0, // Wowhead and Wago show 100% but this seems unlikely due to the tooltip. We'll see
+		ProcChance: 0.05,
 		ICD:        time.Millisecond * 2100,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			damageSpell.Cast(sim, result.Target)
