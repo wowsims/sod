@@ -224,14 +224,14 @@ func (rogue *Rogue) registerBladeDance() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.AddStatDynamic(sim, stats.Parry, 10*core.ParryRatingPerParryChance)
 			if justAFleshWound {
-				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= 0.8
+				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] -= 0.3
 			}
 			apProcAura.Activate(sim)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.AddStatDynamic(sim, stats.Parry, -10*core.ParryRatingPerParryChance)
 			if justAFleshWound {
-				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= 0.8
+				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] += 0.3
 			}
 			apProcAura.Deactivate(sim)
 		},
@@ -277,7 +277,7 @@ func (rogue *Rogue) applyJustAFleshWound() {
 	// Mod threat
 	rogue.PseudoStats.ThreatMultiplier *= 2.68
 
-	// Blade Dance 20% Physical DR - Added in registerBladeDance()
+	// Blade Dance 30% Physical DR - Added in registerBladeDance()
 
 	// -20% damage done mod
 	rogue.PseudoStats.DamageDealtMultiplier *= 0.80
@@ -290,6 +290,31 @@ func (rogue *Rogue) applyJustAFleshWound() {
 
 	// Shuriken Toss and Poisoned Knife gain 50% threat mod
 	// Implemented in the relevant files
+	
+	// -30% Dodge
+	rogue.AddStat(stats.Dodge, -30)
+
+	// 1% Physical DR gained for 8 defense over max
+	
+	rogue.RegisterAura(core.Aura{
+		Label:     "Just a Flesh Wound",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			drBonus := .125 * max(rogue.GetStat(stats.Defense), 0)
+			rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] -= drBonus/100
+
+			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+				Period:          time.Second * 1,
+				NumTicks:        0,
+				Priority:        core.ActionPriorityAuto,
+				TickImmediately: true,
+				OnAction: func(sim *core.Simulation) {
+					rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] += drBonus/100
+					drBonus = .125 * max(rogue.GetStat(stats.Defense), 0)
+					rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] -= drBonus/100
+				},
+			})
+		},
+	})
 }
 
 func (rogue *Rogue) applyRollingWithThePunches() {

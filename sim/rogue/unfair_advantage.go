@@ -20,7 +20,7 @@ func (rogue *Rogue) applyUnfairAdvantage() {
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1.5, //added in AQ patch
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 

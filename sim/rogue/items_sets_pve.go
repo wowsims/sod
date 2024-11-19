@@ -423,6 +423,7 @@ var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					rogue.SaberSlash.DamageMultiplier *= 1.20
 					rogue.saberSlashTick.DamageMultiplier *= 1.20
+					rogue.SinisterStrike.DamageMultiplier *= 1.20
 				},
 			})	
 		},
