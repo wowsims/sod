@@ -22,6 +22,7 @@ const (
 	ObsidianSageblade   = 233798
 	ObsidianDefender    = 233801
 	ObsidianHeartseeker = 234428
+	ObsidianShotgun     = 234434
 
 	// Brood of Nozdormu Reputations Rings
 	SignetRingBronzeDominatorR5   = 234034
@@ -120,6 +121,10 @@ func init() {
 	// 		  (2.1s cooldown)
 	core.NewItemEffect(ObsidianSageblade, func(agent core.Agent) {
 		ObsidianEdgedAura(ObsidianSageblade, agent)
+	})
+
+	core.NewItemEffect(ObsidianShotgun, func(agent core.Agent) {
+		ObsidianEdgedAura(ObsidianShotgun, agent)
 	})
 
 	// https://www.wowhead.com/classic/item=233797/obsidian-stormhammer
@@ -311,13 +316,13 @@ func ObsidianEdgedAura(itemID int32, agent core.Agent) {
 		},
 	})
 
-	meleeProcMask := character.GetProcMaskForItem(itemID)
+	procMask := character.GetProcMaskForItem(itemID)
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:       "Obsidian Edged Proc Melee",
+		Name:       "Obsidian Edged Proc Physical",
 		Callback:   core.CallbackOnSpellHitDealt,
 		Outcome:    core.OutcomeLanded,
-		ProcMask:   meleeProcMask,
+		ProcMask:   procMask,
 		ProcChance: 0.05,
 		ICD:        time.Millisecond * 2100,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
