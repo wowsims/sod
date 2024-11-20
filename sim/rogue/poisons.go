@@ -501,7 +501,7 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 
-			if !result.Landed() {
+			if !result.Landed() || rogue.occultPoisonTick.Dot(target).IsActive() {
 				return
 			}
 
@@ -535,6 +535,8 @@ func (rogue *Rogue) makeOccultPoison(procSource PoisonProcSource) *core.Spell {
 			if !result.Landed() {
 				return
 			}
+
+			rogue.deadlyPoisonTick.Dot(target).Deactivate(sim)
 			rogue.occultPoisonDebuffAuras.Get(target).Activate(sim)
 			rogue.occultPoisonDebuffAuras.Get(target).AddStack(sim)
 
