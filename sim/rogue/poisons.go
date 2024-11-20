@@ -585,7 +585,11 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 
-			if !result.Landed() || rogue.occultPoisonTick.Dot(target).IsActive() {
+			if !result.Landed() {
+				return
+			}
+
+			if rogue.Level == 60 && rogue.occultPoisonTick.Dot(target).IsActive() {
 				return
 			}
 
