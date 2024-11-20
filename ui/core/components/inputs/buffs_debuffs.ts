@@ -745,6 +745,10 @@ export const AttackPowerDebuff = InputHelpers.makeMultiIconInput({
 			reverse: true,
 			fieldName: 'homunculi',
 		}),
+		makeBooleanDebuffInput({
+			actionId: () => ActionId.fromSpellId(439473),
+			fieldName: 'atrophicPoison',
+		}),
 	],
 	label: 'Attack Power',
 });
@@ -773,6 +777,10 @@ export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput({
 		makeBooleanDebuffInput({
 			actionId: () => ActionId.fromSpellId(21992),
 			fieldName: 'thunderfury',
+		}),
+		makeBooleanDebuffInput({
+			actionId: () => ActionId.fromSpellId(439472),
+			fieldName: 'numbingPoison',
 		}),
 	],
 	label: 'Attack Speed',

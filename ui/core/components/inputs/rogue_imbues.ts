@@ -52,3 +52,15 @@ export const SebaciousPoisonWeaponImbue: ConsumableInputConfig<WeaponImbue> = {
 	value: WeaponImbue.SebaciousPoison,
 	showWhen: player => player.getClass() == Class.ClassRogue,
 };
+
+export const NumbingPoisonWeaponImbue: ConsumableInputConfig<WeaponImbue> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 217346, minLevel: 60 }]),
+	value: WeaponImbue.NumbingPoison,
+	showWhen: player => player.getClass() == Class.ClassRogue,
+};
+
+export const AtrophicPoisonWeaponImbue: ConsumableInputConfig<WeaponImbue> = {
+	actionId: player => player.getMatchingItemActionId([{ id: 217347, minLevel: 60 }]),
+	value: WeaponImbue.AtrophicPoison,
+	showWhen: player => player.getClass() == Class.ClassRogue,
+};

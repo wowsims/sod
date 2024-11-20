@@ -526,7 +526,7 @@ enum MageScroll {
 	MageScrollFrostProtection = 5;
 }
 
-// NextIndex: 31
+// NextIndex: 33
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
@@ -573,6 +573,8 @@ enum WeaponImbue {
 	WoundPoison = 25;
 	OccultPoison = 27;
 	SebaciousPoison = 28;
+	AtrophicPoison = 31;
+	NumbingPoison = 32;
 
 	// Shield Oil
 	ConductiveShieldCoating = 26;
@@ -759,7 +761,7 @@ message Consumes {
 	bool bogling_root = 19 [deprecated=true];
 }
 
-// NextIndex: 41
+// NextIndex: 44
 message Debuffs {
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
@@ -794,10 +796,12 @@ message Debuffs {
 
 	TristateEffect demoralizing_roar = 14;
 	TristateEffect demoralizing_shout = 15;
+	bool atrophic_poison = 42;
 
 	TristateEffect thunder_clap = 16;
 	bool waylay = 34;
 	bool thunderfury = 40;
+	bool numbing_poison = 43;
 
 	bool insect_swarm = 17;
 	bool scorpid_sting = 18;

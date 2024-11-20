@@ -731,6 +731,8 @@ const spellIDsToShowBuffs = new Set([
 	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos
 	456393, // https://www.wowhead.com/classic/spell=456393/stalked
 	1214279, // https://www.wowhead.com/classic/spell=1214279/spell-blasting
+	439473, // https://www.wowhead.com/classic/spell=439473/atrophic-poison
+	439472, // https://www.wowhead.com/classic/spell=439472/numbing-poison
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';

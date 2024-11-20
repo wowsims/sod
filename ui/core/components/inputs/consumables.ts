@@ -38,7 +38,15 @@ import { makeBooleanConsumeInput, makeBooleanMiscConsumeInput, makeBooleanPetMis
 import { IconPicker, IconPickerDirection } from '../icon_picker';
 import * as InputHelpers from '../input_helpers';
 import { MultiIconPicker, MultiIconPickerConfig, MultiIconPickerItemConfig } from '../multi_icon_picker';
-import { DeadlyPoisonWeaponImbue, InstantPoisonWeaponImbue, OccultPoisonWeaponImbue, SebaciousPoisonWeaponImbue, WoundPoisonWeaponImbue } from './rogue_imbues';
+import {
+	AtrophicPoisonWeaponImbue,
+	DeadlyPoisonWeaponImbue,
+	InstantPoisonWeaponImbue,
+	NumbingPoisonWeaponImbue,
+	OccultPoisonWeaponImbue,
+	SebaciousPoisonWeaponImbue,
+	WoundPoisonWeaponImbue,
+} from './rogue_imbues';
 import { FlametongueWeaponImbue, FrostbrandWeaponImbue, RockbiterWeaponImbue, WindfuryWeaponImbue } from './shaman_imbues';
 import { ActionInputConfig, ItemStatOption, PickerStatOptions, StatOptions } from './stat_options';
 
@@ -1229,6 +1237,8 @@ const ROGUE_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 	{ config: WoundPoisonWeaponImbue, stats: [] },
 	{ config: OccultPoisonWeaponImbue, stats: [] },
 	{ config: SebaciousPoisonWeaponImbue, stats: [] },
+	{ config: AtrophicPoisonWeaponImbue, stats: [] },
+	{ config: NumbingPoisonWeaponImbue, stats: [] },
 ];
 
 const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [

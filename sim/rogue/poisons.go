@@ -81,6 +81,8 @@ func (rogue *Rogue) applyPoisons() {
 	rogue.applyWoundPoison()
 	rogue.applyOccultPoison()
 	rogue.applySebaciousPoison()
+	rogue.applyAtrophicPoison()
+	rogue.applyNumbingPoison()
 }
 
 // Apply Deadly Brew Instant Poison procs
@@ -92,6 +94,8 @@ func (rogue *Rogue) applyDeadlyBrewInstant() {
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_OccultPoison)
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_WoundPoison)
 	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_SebaciousPoison)
+	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_AtrophicPoison)
+	procMask ^= rogue.getImbueProcMask(proto.WeaponImbue_NumbingPoison)
 
 	if procMask == core.ProcMaskUnknown {
 		return
@@ -263,6 +267,54 @@ func (rogue *Rogue) applySebaciousPoison() {
 	 		}
 	 		if sim.RandomFloat("Sebacious Poison") < rogue.GetDeadlyPoisonProcChance() {
 	 			rogue.SebaciousPoison[NormalProc].Cast(sim, result.Target)
+	 		}
+	 	},
+	})
+}
+
+// Apply Atrophic Poison to weapon and enable procs
+func (rogue *Rogue) applyAtrophicPoison() {
+	procMask := rogue.getImbueProcMask(proto.WeaponImbue_AtrophicPoison)
+	if procMask == core.ProcMaskUnknown {
+		return
+	}
+
+	rogue.RegisterAura(core.Aura{
+		Label:    "Atrophic Poison Trigger",
+	 	Duration: core.NeverExpires,
+	 	OnReset: func(aura *core.Aura, sim *core.Simulation) {
+	 		aura.Activate(sim)
+	 	},
+	 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	 		if !result.Landed() || !spell.ProcMask.Matches(procMask) {
+	 			return
+	 		}
+	 		if sim.RandomFloat("Atrophic Poison") < rogue.GetDeadlyPoisonProcChance() {
+	 			rogue.AtrophicPoison[NormalProc].Cast(sim, result.Target)
+	 		}
+	 	},
+	})
+}
+
+// Apply Numbing Poison to weapon and enable procs
+func (rogue *Rogue) applyNumbingPoison() {
+	procMask := rogue.getImbueProcMask(proto.WeaponImbue_NumbingPoison)
+	if procMask == core.ProcMaskUnknown {
+		return
+	}
+
+	rogue.RegisterAura(core.Aura{
+		Label:    "Numbing Poison Trigger",
+	 	Duration: core.NeverExpires,
+	 	OnReset: func(aura *core.Aura, sim *core.Simulation) {
+	 		aura.Activate(sim)
+	 	},
+	 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	 		if !result.Landed() || !spell.ProcMask.Matches(procMask) {
+	 			return
+	 		}
+	 		if sim.RandomFloat("Numbing Poison") < rogue.GetDeadlyPoisonProcChance() {
+	 			rogue.NumbingPoison[NormalProc].Cast(sim, result.Target)
 	 		}
 	 	},
 	})
@@ -443,6 +495,38 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 
 }
 
+func (rogue *Rogue) registerAtrophicPoisonSpell() {
+	if rogue.Level < 60 {
+		return
+	}
+	
+	rogue.atrophicPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
+		return core.AtrophicPoisonAura(unit)
+	})
+
+	rogue.AtrophicPoison = [2]*core.Spell{
+		rogue.makeAtrophicPoison(NormalProc),
+		rogue.makeAtrophicPoison(ShivProc),
+	}
+
+}
+
+func (rogue *Rogue) registerNumbingPoisonSpell() {
+	if rogue.Level < 60 {
+		return
+	}
+	
+	rogue.numbingPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
+		return core.NumbingPoisonAura(unit)
+	})
+
+	rogue.NumbingPoison = [2]*core.Spell{
+		rogue.makeNumbingPoison(NormalProc),
+		rogue.makeNumbingPoison(ShivProc),
+	}
+
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //                              Make Poisons
 ///////////////////////////////////////////////////////////////////////////
@@ -612,6 +696,58 @@ func (rogue *Rogue) makeSebaciousPoison(procSource PoisonProcSource) *core.Spell
 			}
 
 			rogue.sebaciousPoisonDebuffAura.Get(target).Activate(sim)
+		},
+	})
+}
+
+func (rogue *Rogue) makeAtrophicPoison(procSource PoisonProcSource) *core.Spell {
+	
+	return rogue.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 439473, Tag: int32(procSource)},
+		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskSpellDamageProc,
+		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagRoguePoison,
+
+		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
+		ThreatMultiplier: 1,
+
+		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+
+			if !result.Landed() {
+				return
+			}
+
+			rogue.atrophicPoisonDebuffAura.Get(target).Activate(sim)
+		},
+	})
+}
+
+func (rogue *Rogue) makeNumbingPoison(procSource PoisonProcSource) *core.Spell {
+	
+	return rogue.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 439472, Tag: int32(procSource)},
+		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskSpellDamageProc,
+		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagRoguePoison,
+
+		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
+		ThreatMultiplier: 1,
+
+		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+
+			if !result.Landed() {
+				return
+			}
+
+			rogue.numbingPoisonDebuffAura.Get(target).Activate(sim)
 		},
 	})
 }
