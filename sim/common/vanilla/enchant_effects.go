@@ -245,18 +245,6 @@ func init() {
 		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(1900, 1.0, &ppmm, aura)
 	})
 
-	// Gloves - Threat
-	// core.NewEnchantEffect(931, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
-	// 	character.PseudoStats.ThreatMultiplier *= 1.02
-	// })
-
-	// Cloak - Subtlety
-	// core.NewEnchantEffect(2621, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
-	// 	character.PseudoStats.ThreatMultiplier *= 0.98
-	// })
-
 	// Ranged Scopes
 	core.AddWeaponEffect(32, func(agent core.Agent, _ proto.ItemSlot) {
 		w := agent.GetCharacter().AutoAttacks.Ranged()
@@ -291,13 +279,11 @@ func init() {
 		character.AddBonusRangedHitRating(3)
 	})
 
-	// Gloves - Libram of Rapidity
-	// Confirmed to mod both melee and ranged speed
-	core.NewEnchantEffect(2543, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
-		character.PseudoStats.RangedSpeedMultiplier *= 1.01
+	// Obsidian Scope
+	core.AddWeaponEffect(7657, func(agent core.Agent, _ proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.Ranged()
+		w.BaseDamageMin += 10
+		w.BaseDamageMax += 10
 	})
 
 	// Boots - Minor Speed
@@ -310,6 +296,15 @@ func init() {
 				character.AddMoveSpeedModifier(&core.ActionID{SpellID: 13889}, 1.08)
 			},
 		})
+	})
+
+	// Gloves - Libram of Rapidity
+	// Confirmed to mod both melee and ranged speed
+	core.NewEnchantEffect(2543, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
+		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 	})
 
 	core.NewEnchantEffect(2621, func(agent core.Agent) {
@@ -343,15 +338,15 @@ func init() {
 			SpellSchool: core.SpellSchoolNature,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-	
+
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
-	
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.CalcAndDealDamage(sim, target, 20, spell.OutcomeMagicHit)
 			},
 		})
-		
+
 		character.GetOrRegisterAura(core.Aura{
 			Label:    "Thorns +20",
 			Duration: core.NeverExpires,
@@ -365,7 +360,6 @@ func init() {
 			},
 		})
 	})
-
 
 	core.AddEffectsToTest = true
 }
