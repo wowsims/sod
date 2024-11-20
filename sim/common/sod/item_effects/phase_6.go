@@ -22,6 +22,7 @@ const (
 	ObsidianSageblade   = 233798
 	ObsidianDefender    = 233801
 	ObsidianHeartseeker = 234428
+	ObsidianShotgun     = 234434
 
 	// Brood of Nozdormu Reputations Rings
 	SignetRingBronzeDominatorR5   = 234034
@@ -122,6 +123,10 @@ func init() {
 		ObsidianEdgedAura(ObsidianSageblade, agent)
 	})
 
+	core.NewItemEffect(ObsidianShotgun, func(agent core.Agent) {
+		ObsidianEdgedAura(ObsidianShotgun, agent)
+	})
+
 	// https://www.wowhead.com/classic/item=233797/obsidian-stormhammer
 	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
 	// Equip: Chance on direct spell damage or melee attack to deal 325 to 500 Fire damage to your target.
@@ -168,32 +173,32 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=234198/signet-ring-of-the-bronze-dragonflight
-	core.NewItemEffect(SignetRingBronzeConquerorR5, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeConquerorR4, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeConquerorR3, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeConquerorR2, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeConquerorR1, TimeswornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeConquerorR5, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeConquerorR4, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeConquerorR3, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeConquerorR2, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeConquerorR1, TimewornStrikeAura)
 
 	// https://www.wowhead.com/classic/item=234034/signet-ring-of-the-bronze-dragonflight
-	core.NewItemEffect(SignetRingBronzeDominatorR5, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeDominatorR4, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeDominatorR3, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeDominatorR2, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeDominatorR1, TimeswornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeDominatorR5, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeDominatorR4, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeDominatorR3, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeDominatorR2, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeDominatorR1, TimewornStrikeAura)
 
 	// https://www.wowhead.com/classic/item=234964/signet-ring-of-the-bronze-dragonflight
-	core.NewItemEffect(SignetRingBronzeFlamekeeperR5, TimeswornPyromancyAura)
-	core.NewItemEffect(SignetRingBronzeFlamekeeperR4, TimeswornPyromancyAura)
-	core.NewItemEffect(SignetRingBronzeFlamekeeperR3, TimeswornPyromancyAura)
-	core.NewItemEffect(SignetRingBronzeFlamekeeperR2, TimeswornPyromancyAura)
-	core.NewItemEffect(SignetRingBronzeFlamekeeperR1, TimeswornPyromancyAura)
+	core.NewItemEffect(SignetRingBronzeFlamekeeperR5, TimewornPyromancyAura)
+	core.NewItemEffect(SignetRingBronzeFlamekeeperR4, TimewornPyromancyAura)
+	core.NewItemEffect(SignetRingBronzeFlamekeeperR3, TimewornPyromancyAura)
+	core.NewItemEffect(SignetRingBronzeFlamekeeperR2, TimewornPyromancyAura)
+	core.NewItemEffect(SignetRingBronzeFlamekeeperR1, TimewornPyromancyAura)
 
 	// https://www.wowhead.com/classic/item=234032/signet-ring-of-the-bronze-dragonflight
-	core.NewItemEffect(SignetRingBronzeInvokerR5, TimeswornSpellAura)
-	core.NewItemEffect(SignetRingBronzeInvokerR4, TimeswornSpellAura)
-	core.NewItemEffect(SignetRingBronzeInvokerR3, TimeswornSpellAura)
-	core.NewItemEffect(SignetRingBronzeInvokerR2, TimeswornSpellAura)
-	core.NewItemEffect(SignetRingBronzeInvokerR1, TimeswornSpellAura)
+	core.NewItemEffect(SignetRingBronzeInvokerR5, TimewornSpellAura)
+	core.NewItemEffect(SignetRingBronzeInvokerR4, TimewornSpellAura)
+	core.NewItemEffect(SignetRingBronzeInvokerR3, TimewornSpellAura)
+	core.NewItemEffect(SignetRingBronzeInvokerR2, TimewornSpellAura)
+	core.NewItemEffect(SignetRingBronzeInvokerR1, TimewornSpellAura)
 
 	// https://www.wowhead.com/classic/item=234032/signet-ring-of-the-bronze-dragonflight
 	core.NewItemEffect(SignetRingBronzePreserverR5, TimewornHealing)
@@ -203,11 +208,11 @@ func init() {
 	core.NewItemEffect(SignetRingBronzePreserverR1, TimewornHealing)
 
 	// https://www.wowhead.com/classic/item=234035/signet-ring-of-the-bronze-dragonflight
-	core.NewItemEffect(SignetRingBronzeProtectorR5, TimeswornExpertiseAura)
-	core.NewItemEffect(SignetRingBronzeProtectorR4, TimeswornExpertiseAura)
-	core.NewItemEffect(SignetRingBronzeProtectorR3, TimeswornExpertiseAura)
-	core.NewItemEffect(SignetRingBronzeProtectorR2, TimeswornExpertiseAura)
-	core.NewItemEffect(SignetRingBronzeProtectorR1, TimeswornExpertiseAura)
+	core.NewItemEffect(SignetRingBronzeProtectorR5, TimewornExpertiseAura)
+	core.NewItemEffect(SignetRingBronzeProtectorR4, TimewornExpertiseAura)
+	core.NewItemEffect(SignetRingBronzeProtectorR3, TimewornExpertiseAura)
+	core.NewItemEffect(SignetRingBronzeProtectorR2, TimewornExpertiseAura)
+	core.NewItemEffect(SignetRingBronzeProtectorR1, TimewornExpertiseAura)
 
 	// https://www.wowhead.com/classic/item=234436/signet-ring-of-the-bronze-dragonflight
 	core.NewItemEffect(SignetRingBronzeSubjugatorR5, TimewornDecayAura)
@@ -311,26 +316,26 @@ func ObsidianEdgedAura(itemID int32, agent core.Agent) {
 		},
 	})
 
-	meleeProcMask := character.GetProcMaskForItem(itemID)
+	procMask := character.GetProcMaskForItem(itemID)
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:     "Obsidian Edged Proc Melee",
-		Callback: core.CallbackOnSpellHitDealt,
-		Outcome:  core.OutcomeLanded,
-		ProcMask: meleeProcMask,
-		PPM:      1.0, // TODO: Determine PPM
-		ICD:      time.Millisecond * 2100,
+		Name:       "Obsidian Edged Proc Physical",
+		Callback:   core.CallbackOnSpellHitDealt,
+		Outcome:    core.OutcomeLanded,
+		ProcMask:   procMask,
+		ProcChance: 0.05,
+		ICD:        time.Millisecond * 2100,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			damageSpell.Cast(sim, result.Target)
 		},
 	})
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:       "Obsidian Edged Proc Melee",
+		Name:       "Obsidian Edged Proc Spell",
 		Callback:   core.CallbackOnSpellHitDealt,
 		Outcome:    core.OutcomeLanded,
 		ProcMask:   core.ProcMaskSpellDamage,
-		ProcChance: 1.0, // Wowhead and Wago show 100% but this seems unlikely due to the tooltip. We'll see
+		ProcChance: 0.05,
 		ICD:        time.Millisecond * 2100,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			damageSpell.Cast(sim, result.Target)
@@ -357,7 +362,7 @@ func TimewornDecayAura(agent core.Agent) {
 
 // https://www.wowhead.com/classic/spell=1213407/timeworn-expertise
 // Reduces the chance for your attacks to be dodged or parried by 1% per piece of Timeworn armor equipped.
-func TimeswornExpertiseAura(agent core.Agent) {
+func TimewornExpertiseAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
 		return
@@ -412,7 +417,7 @@ func TimewornHealing(agent core.Agent) {
 
 // https://www.wowhead.com/classic/spell=1215404/timeworn-pyromancy
 // Increases the effectiveness of your Fire damage spells by 3% per piece of Timeworn armor equipped.
-func TimeswornPyromancyAura(agent core.Agent) {
+func TimewornPyromancyAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
 		return
@@ -434,7 +439,7 @@ func TimeswornPyromancyAura(agent core.Agent) {
 
 // https://www.wowhead.com/classic/spell=1213398/timeworn-spell
 // Increases the casting speed of your spells by 2% per piece of Timeworn armor equipped.
-func TimeswornSpellAura(agent core.Agent) {
+func TimewornSpellAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
 		return
@@ -457,7 +462,7 @@ func TimeswornSpellAura(agent core.Agent) {
 // https://www.wowhead.com/classic/spell=1213390/timeworn-strike
 // Gives you 1% chance per piece of Timeworn armor equipped to get an extra attack on regular melee or ranged hit that deals 100% weapon damage.
 // (100ms cooldown)
-func TimeswornStrikeAura(agent core.Agent) {
+func TimewornStrikeAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
 		return
@@ -477,7 +482,7 @@ func TimeswornStrikeAura(agent core.Agent) {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
