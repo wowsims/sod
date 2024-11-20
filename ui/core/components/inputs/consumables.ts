@@ -913,7 +913,6 @@ export const makePotionsInput = makeConsumeInputFactory({ consumesFieldName: 'de
 export const MildlyIrradiatedRejuvPotion = makeBooleanConsumeInput({
 	actionId: player => player.getMatchingItemActionId([{ id: 215162, minLevel: 35 }]),
 	fieldName: 'mildlyIrradiatedRejuvPot',
-	showWhen: player => player.hasProfession(Profession.Alchemy),
 });
 
 ///////////////////////////////////////////////////////////////////////////
