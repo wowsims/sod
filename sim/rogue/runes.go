@@ -291,14 +291,16 @@ func (rogue *Rogue) applyJustAFleshWound() {
 	// Shuriken Toss and Poisoned Knife gain 50% threat mod
 	// Implemented in the relevant files
 	
-	// -30% Dodge
-	rogue.AddStat(stats.Dodge, -30)
+	// -50% of Current non Evasion Dodge
+	statDep := rogue.NewDynamicMultiplyStat(stats.Dodge, 0.5*core.DodgeRatingPerDodgeChance)
 
 	// 1% Physical DR gained for 8 defense over max
 	
 	rogue.RegisterAura(core.Aura{
 		Label:     "Just a Flesh Wound",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.EnableDynamicStatDep(sim, statDep)
+
 			drBonus := .125 * max(rogue.GetStat(stats.Defense), 0)
 			rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] -= drBonus/100
 

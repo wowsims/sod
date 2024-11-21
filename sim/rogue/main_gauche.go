@@ -15,7 +15,6 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 	hasPKRune := rogue.HasRune(proto.RogueRune_RunePoisonedKnife)
 	hasQDRune := rogue.HasRune(proto.RogueRune_RuneQuickDraw)
 
-	// Aura gained regardless of landed hit.  Need to confirm later with tank sim if parry is being modified correctly
 	mainGaucheAura := rogue.RegisterAura(core.Aura{
 		Label:    "Main Gauche Buff",
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneMainGauche)},
@@ -36,33 +35,33 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 	mainGaucheSSAura := rogue.RegisterAura(core.Aura{
 		Label:    "Main Gauche Sinister Strike Discount",
 		ActionID: core.ActionID{SpellID: 462752},
-		Duration: time.Second * 10,
+		Duration: time.Second * 30,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier -= 20
-			rogue.SinisterStrike.ThreatMultiplier *= 1.5
+			rogue.SinisterStrike.ThreatMultiplier *= 3.0
 
 			if hasPKRune {
 				rogue.PoisonedKnife.Cost.FlatModifier -= 20
-				rogue.PoisonedKnife.ThreatMultiplier *= 1.5
+				rogue.PoisonedKnife.ThreatMultiplier *= 3.0
 			}
 
 			if hasQDRune {
 				rogue.QuickDraw.Cost.FlatModifier -= 20
-				rogue.QuickDraw.ThreatMultiplier *= 1.5
+				rogue.QuickDraw.ThreatMultiplier *= 3.0
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier += 20
-			rogue.SinisterStrike.ThreatMultiplier /= 1.5
+			rogue.SinisterStrike.ThreatMultiplier /= 3.0
 
 			if hasPKRune {
 				rogue.PoisonedKnife.Cost.FlatModifier += 20
-				rogue.PoisonedKnife.ThreatMultiplier /= 1.5
+				rogue.PoisonedKnife.ThreatMultiplier /= 3.0
 			}
 
 			if hasQDRune {
 				rogue.QuickDraw.Cost.FlatModifier += 20
-				rogue.QuickDraw.ThreatMultiplier /= 1.5
+				rogue.QuickDraw.ThreatMultiplier /= 3.0
 			}
 		},
 	})
@@ -86,7 +85,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),
-				Duration: time.Second * 20,
+				Duration: time.Second * 15,
 			},
 			IgnoreHaste: true,
 		},
@@ -94,17 +93,19 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		CritDamageBonus: rogue.lethality(),
 
 		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
-		ThreatMultiplier: 1,
+		ThreatMultiplier: 4,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			
+			// Auras gained regardless of landed hit.
+			mainGaucheAura.Activate(sim)
+			mainGaucheSSAura.Activate(sim)
 
 			if result.Landed() {
-				mainGaucheAura.Activate(sim)
-				mainGaucheSSAura.Activate(sim)
 				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 			} else {
 				spell.IssueRefund(sim)

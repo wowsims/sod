@@ -531,7 +531,7 @@ var ItemSetDeathdealersBattlearmor = core.NewItemSet(core.ItemSet{
 //				Duration: time.Second * 15,
 //				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 //					if result.Landed() && spell.SpellCode == SpellCode_RogueSinisterStrike{
-//						shieldSpell.Shield(&rogue.Unit).Apply(sim, result.Damage*0.10)
+//						shieldSpell.Shield(&rogue.Unit).Apply(sim, result.Damage*0.15)
 //					}
 //				},
 //			})
