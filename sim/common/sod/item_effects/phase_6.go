@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -416,10 +417,15 @@ func TimewornHealing(agent core.Agent) {
 }
 
 // https://www.wowhead.com/classic/spell=1215404/timeworn-pyromancy
-// Increases the effectiveness of your Fire damage spells by 3% per piece of Timeworn armor equipped.
+// While Metamorphosis or Way of Earth is active, increases the effectiveness of your Fire damage spells by 3% per piece of Timeworn armor equipped.
 func TimewornPyromancyAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
+		return
+	}
+
+	// Just applying this rune if the user has Meta or WoE
+	if !character.HasRuneById(int32(proto.WarlockRune_RuneHandsMetamorphosis)) && !character.HasRuneById(int32(proto.ShamanRune_RuneLegsWayOfEarth)) {
 		return
 	}
 
