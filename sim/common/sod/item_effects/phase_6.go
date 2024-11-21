@@ -345,14 +345,14 @@ func ObsidianEdgedAura(itemID int32, agent core.Agent) {
 }
 
 // https://www.wowhead.com/classic/spell=1214155/timeworn-decay
-// Increases the damage dealt by all of your damage over time spells by 2% per piece of Timeworn armor equipped.
+// Increases the damage dealt by all of your damage over time spells by 3% per piece of Timeworn armor equipped.
 func TimewornDecayAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
 		return
 	}
 
-	multiplier := 0.02 * float64(character.PseudoStats.TimewornBonus)
+	multiplier := 0.03 * float64(character.PseudoStats.TimewornBonus)
 
 	character.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode != 0 && len(spell.Dots()) > 0 {
