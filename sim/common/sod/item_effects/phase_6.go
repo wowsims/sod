@@ -470,56 +470,15 @@ func TimewornStrikeAura(agent core.Agent) {
 
 	procChance := float64(character.PseudoStats.TimewornBonus) * 0.01
 
-	timeStrikeMelee := character.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1213381},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-
-		BonusCoefficient: 1,
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-		},
-	})
-
-	timestrikeRanged := character.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1213381},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-		// TODO: Copied from Chimera Shot
-		MissileSpeed: 24,
-
-		BonusCoefficient: 1,
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO: Missing the hunter Ammo damage bonus. We need to be able to store it on the character instead of the hunter
-			baseDamage := character.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target, false))
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-
-			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-				spell.DealDamage(sim, result)
-			})
-		},
-	})
-
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:       "Timeworn Strike Aura Melee",
 		Callback:   core.CallbackOnSpellHitDealt,
 		Outcome:    core.OutcomeLanded,
-		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		ProcMask:   core.ProcMaskMelee,
 		ProcChance: procChance,
 		ICD:        time.Millisecond * 100,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			timeStrikeMelee.Cast(sim, result.Target)
+			character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1213381}, spell)
 		},
 	})
 
@@ -527,11 +486,11 @@ func TimewornStrikeAura(agent core.Agent) {
 		Name:       "Timeworn Strike Aura Ranged",
 		Callback:   core.CallbackOnSpellHitDealt,
 		Outcome:    core.OutcomeLanded,
-		ProcMask:   core.ProcMaskRangedAuto,
+		ProcMask:   core.ProcMaskRanged,
 		ProcChance: procChance,
 		ICD:        time.Millisecond * 100,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			timestrikeRanged.Cast(sim, result.Target)
+			character.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
 		},
 	})
 }
