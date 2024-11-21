@@ -6,6 +6,8 @@ export enum Phase {
 	Phase3,
 	Phase4,
 	Phase5,
+	Phase6,
+	Phase7,
 }
 
 export const LEVEL_THRESHOLDS: Record<Phase, number> = {
@@ -14,6 +16,8 @@ export const LEVEL_THRESHOLDS: Record<Phase, number> = {
 	[Phase.Phase3]: 50,
 	[Phase.Phase4]: 60,
 	[Phase.Phase5]: 60,
+	[Phase.Phase6]: 60,
+	[Phase.Phase7]: 60,
 };
 
 export const CURRENT_PHASE = Phase.Phase3;
