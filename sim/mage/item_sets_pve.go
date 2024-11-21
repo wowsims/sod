@@ -463,7 +463,7 @@ var ItemSetTrappingsOfVaultedSecrets = core.NewItemSet(core.ItemSet{
 								}
 							}
 
-							multiplier = math.Max(1.20, multiplier)
+							multiplier = math.Min(1.20, multiplier)
 
 							// TODO: Additive or Multiplicative?
 							spell.DamageMultiplier *= multiplier
