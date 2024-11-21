@@ -298,7 +298,12 @@ func (rogue *Rogue) applyJustAFleshWound() {
 	
 	rogue.RegisterAura(core.Aura{
 		Label:     "Just a Flesh Wound",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneJustAFleshWound)},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.EnableDynamicStatDep(sim, statDep)
 
 			drBonus := .125 * max(rogue.GetStat(stats.Defense), 0)
@@ -315,6 +320,9 @@ func (rogue *Rogue) applyJustAFleshWound() {
 					rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] -= drBonus/100
 				},
 			})
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.DisableDynamicStatDep(sim,statDep)
 		},
 	})
 }
