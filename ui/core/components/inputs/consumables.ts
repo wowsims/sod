@@ -339,6 +339,14 @@ export const makeFlasksInput = makeConsumeInputFactory({ consumesFieldName: 'fla
 //                                 FOOD
 ///////////////////////////////////////////////////////////////////////////
 
+export const DarkclawBisque: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 232436, minLevel: 45 }]),
+	value: Food.FoodDarkclawBisque,
+};
+export const SmokedRedgill: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 232438, minLevel: 45 }]),
+	value: Food.FoodSmokedRedgill,
+};
 export const DirgesKickChimaerokChops: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21023, minLevel: 55 }]),
 	value: Food.FoodDirgesKickChimaerokChops,
@@ -347,14 +355,12 @@ export const GrilledSquid: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13928, minLevel: 50 }]),
 	value: Food.FoodGrilledSquid,
 };
-// Original lvl 50 not obtainable in Phase 3
 export const SmokedDesertDumpling: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 20452, minLevel: 51 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 20452, minLevel: 50 }]),
 	value: Food.FoodSmokedDesertDumpling,
 };
-// Original lvl 45 not obtainable in Phase 3
 export const RunnTumTuberSurprise: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18254, minLevel: 51 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18254, minLevel: 45 }]),
 	value: Food.FoodRunnTumTuberSurprise,
 };
 export const BlessSunfruit: ConsumableInputConfig<Food> = {
@@ -388,6 +394,8 @@ export const SmokedSagefish: ConsumableInputConfig<Food> = {
 
 // Ordered by level
 export const FOOD_CONFIG: ConsumableStatOption<Food>[] = [
+	{ config: DarkclawBisque, stats: [Stat.StatSpellDamage] },
+	{ config: SmokedRedgill, stats: [Stat.StatHealingPower] },
 	{ config: DirgesKickChimaerokChops, stats: [Stat.StatStamina] },
 	{ config: GrilledSquid, stats: [Stat.StatAgility] },
 	{ config: SmokedDesertDumpling, stats: [Stat.StatStrength] },
