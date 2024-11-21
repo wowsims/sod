@@ -46,7 +46,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		PseudoStat.PseudoStatMeleeSpeedMultiplier,
 	],
 	// Reference stat against which to calculate EP.
-	epReferenceStat: Stat.StatRangedAttackPower,
+	epReferenceStat: Stat.StatAgility,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		// Primary

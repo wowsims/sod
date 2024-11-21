@@ -448,6 +448,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 				return
 			}
 
+			cdReduction := 1/(1.0-0.65)
 			core.MakePermanent(hunter.RegisterAura(core.Aura{
 				Label: "Striker's Pursuit 2P",
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -458,7 +459,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 					if hunter.HasActiveAura("Rapid Fire") {
 						spell.CD.Reset()
 					} else if sim.CurrentTime > sim.Encounter.Duration/2 {
-						spell.CD.Set(sim.CurrentTime + spell.CD.TimeToReady(sim)/2)
+						spell.CD.Set(sim.CurrentTime + spell.CD.TimeToReady(sim)/time.Duration(cdReduction))
 					}
 				},
 			}))
