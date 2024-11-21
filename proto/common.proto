@@ -579,7 +579,7 @@ enum WeaponImbue {
 	MagnificentTrollshine = 29;
 }
 
-// NextIndex: 13
+// NextIndex: 14
 enum Food {
 	FoodUnknown = 0;
 	FoodGrilledSquid = 1;
@@ -593,6 +593,8 @@ enum Food {
 	FoodTenderWolfSteak = 9;
 	FoodSmokedSagefish = 10;
 	FoodSagefishDelight = 11;
+	FoodDarkclawBisque = 12;
+	FoodSmokedRedgill = 13;
 }
 
 enum SaygesFortune {

@@ -141,6 +141,15 @@ var ItemDenyList = map[int32]struct{}{
 	17802:  {}, // Deprecated version of Thunderfury
 	19169:  {}, // https://www.wowhead.com/classic/item=19169/nightfall Removed from SoD
 	20522:  {}, // Feral Staff
+	21198:  {}, // Signet Ring of the Bronze Dragonflight
+	21199:  {}, // Signet Ring of the Bronze Dragonflight
+	21200:  {}, // Signet Ring of the Bronze Dragonflight
+	21203:  {}, // Signet Ring of the Bronze Dragonflight
+	21204:  {}, // Signet Ring of the Bronze Dragonflight
+	21205:  {}, // Signet Ring of the Bronze Dragonflight
+	21208:  {}, // Signet Ring of the Bronze Dragonflight
+	21209:  {}, // Signet Ring of the Bronze Dragonflight
+	21210:  {}, // Signet Ring of the Bronze Dragonflight
 	22736:  {}, // Andonisus, Reaper of Souls
 	34576:  {}, // Battlemaster's Cruelty
 	34577:  {}, // Battlemaster's Depreavity

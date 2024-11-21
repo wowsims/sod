@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -173,32 +174,32 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=234198/signet-ring-of-the-bronze-dragonflight
-	core.NewItemEffect(SignetRingBronzeConquerorR5, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeConquerorR4, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeConquerorR3, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeConquerorR2, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeConquerorR1, TimeswornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeConquerorR5, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeConquerorR4, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeConquerorR3, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeConquerorR2, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeConquerorR1, TimewornStrikeAura)
 
 	// https://www.wowhead.com/classic/item=234034/signet-ring-of-the-bronze-dragonflight
-	core.NewItemEffect(SignetRingBronzeDominatorR5, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeDominatorR4, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeDominatorR3, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeDominatorR2, TimeswornStrikeAura)
-	core.NewItemEffect(SignetRingBronzeDominatorR1, TimeswornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeDominatorR5, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeDominatorR4, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeDominatorR3, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeDominatorR2, TimewornStrikeAura)
+	core.NewItemEffect(SignetRingBronzeDominatorR1, TimewornStrikeAura)
 
 	// https://www.wowhead.com/classic/item=234964/signet-ring-of-the-bronze-dragonflight
-	core.NewItemEffect(SignetRingBronzeFlamekeeperR5, TimeswornPyromancyAura)
-	core.NewItemEffect(SignetRingBronzeFlamekeeperR4, TimeswornPyromancyAura)
-	core.NewItemEffect(SignetRingBronzeFlamekeeperR3, TimeswornPyromancyAura)
-	core.NewItemEffect(SignetRingBronzeFlamekeeperR2, TimeswornPyromancyAura)
-	core.NewItemEffect(SignetRingBronzeFlamekeeperR1, TimeswornPyromancyAura)
+	core.NewItemEffect(SignetRingBronzeFlamekeeperR5, TimewornPyromancyAura)
+	core.NewItemEffect(SignetRingBronzeFlamekeeperR4, TimewornPyromancyAura)
+	core.NewItemEffect(SignetRingBronzeFlamekeeperR3, TimewornPyromancyAura)
+	core.NewItemEffect(SignetRingBronzeFlamekeeperR2, TimewornPyromancyAura)
+	core.NewItemEffect(SignetRingBronzeFlamekeeperR1, TimewornPyromancyAura)
 
 	// https://www.wowhead.com/classic/item=234032/signet-ring-of-the-bronze-dragonflight
-	core.NewItemEffect(SignetRingBronzeInvokerR5, TimeswornSpellAura)
-	core.NewItemEffect(SignetRingBronzeInvokerR4, TimeswornSpellAura)
-	core.NewItemEffect(SignetRingBronzeInvokerR3, TimeswornSpellAura)
-	core.NewItemEffect(SignetRingBronzeInvokerR2, TimeswornSpellAura)
-	core.NewItemEffect(SignetRingBronzeInvokerR1, TimeswornSpellAura)
+	core.NewItemEffect(SignetRingBronzeInvokerR5, TimewornSpellAura)
+	core.NewItemEffect(SignetRingBronzeInvokerR4, TimewornSpellAura)
+	core.NewItemEffect(SignetRingBronzeInvokerR3, TimewornSpellAura)
+	core.NewItemEffect(SignetRingBronzeInvokerR2, TimewornSpellAura)
+	core.NewItemEffect(SignetRingBronzeInvokerR1, TimewornSpellAura)
 
 	// https://www.wowhead.com/classic/item=234032/signet-ring-of-the-bronze-dragonflight
 	core.NewItemEffect(SignetRingBronzePreserverR5, TimewornHealing)
@@ -208,11 +209,11 @@ func init() {
 	core.NewItemEffect(SignetRingBronzePreserverR1, TimewornHealing)
 
 	// https://www.wowhead.com/classic/item=234035/signet-ring-of-the-bronze-dragonflight
-	core.NewItemEffect(SignetRingBronzeProtectorR5, TimeswornExpertiseAura)
-	core.NewItemEffect(SignetRingBronzeProtectorR4, TimeswornExpertiseAura)
-	core.NewItemEffect(SignetRingBronzeProtectorR3, TimeswornExpertiseAura)
-	core.NewItemEffect(SignetRingBronzeProtectorR2, TimeswornExpertiseAura)
-	core.NewItemEffect(SignetRingBronzeProtectorR1, TimeswornExpertiseAura)
+	core.NewItemEffect(SignetRingBronzeProtectorR5, TimewornExpertiseAura)
+	core.NewItemEffect(SignetRingBronzeProtectorR4, TimewornExpertiseAura)
+	core.NewItemEffect(SignetRingBronzeProtectorR3, TimewornExpertiseAura)
+	core.NewItemEffect(SignetRingBronzeProtectorR2, TimewornExpertiseAura)
+	core.NewItemEffect(SignetRingBronzeProtectorR1, TimewornExpertiseAura)
 
 	// https://www.wowhead.com/classic/item=234436/signet-ring-of-the-bronze-dragonflight
 	core.NewItemEffect(SignetRingBronzeSubjugatorR5, TimewornDecayAura)
@@ -362,7 +363,7 @@ func TimewornDecayAura(agent core.Agent) {
 
 // https://www.wowhead.com/classic/spell=1213407/timeworn-expertise
 // Reduces the chance for your attacks to be dodged or parried by 1% per piece of Timeworn armor equipped.
-func TimeswornExpertiseAura(agent core.Agent) {
+func TimewornExpertiseAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
 		return
@@ -416,10 +417,15 @@ func TimewornHealing(agent core.Agent) {
 }
 
 // https://www.wowhead.com/classic/spell=1215404/timeworn-pyromancy
-// Increases the effectiveness of your Fire damage spells by 3% per piece of Timeworn armor equipped.
-func TimeswornPyromancyAura(agent core.Agent) {
+// While Metamorphosis or Way of Earth is active, increases the effectiveness of your Fire damage spells by 3% per piece of Timeworn armor equipped.
+func TimewornPyromancyAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
+		return
+	}
+
+	// Just applying this rune if the user has Meta or WoE
+	if !character.HasRuneById(int32(proto.WarlockRune_RuneHandsMetamorphosis)) && !character.HasRuneById(int32(proto.ShamanRune_RuneLegsWayOfEarth)) {
 		return
 	}
 
@@ -439,7 +445,7 @@ func TimeswornPyromancyAura(agent core.Agent) {
 
 // https://www.wowhead.com/classic/spell=1213398/timeworn-spell
 // Increases the casting speed of your spells by 2% per piece of Timeworn armor equipped.
-func TimeswornSpellAura(agent core.Agent) {
+func TimewornSpellAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
 		return
@@ -462,7 +468,7 @@ func TimeswornSpellAura(agent core.Agent) {
 // https://www.wowhead.com/classic/spell=1213390/timeworn-strike
 // Gives you 1% chance per piece of Timeworn armor equipped to get an extra attack on regular melee or ranged hit that deals 100% weapon damage.
 // (100ms cooldown)
-func TimeswornStrikeAura(agent core.Agent) {
+func TimewornStrikeAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
 		return
@@ -470,56 +476,15 @@ func TimeswornStrikeAura(agent core.Agent) {
 
 	procChance := float64(character.PseudoStats.TimewornBonus) * 0.01
 
-	timeStrikeMelee := character.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1213381},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-
-		BonusCoefficient: 1,
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-		},
-	})
-
-	timestrikeRanged := character.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1213381},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-		// TODO: Copied from Chimera Shot
-		MissileSpeed: 24,
-
-		BonusCoefficient: 1,
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO: Missing the hunter Ammo damage bonus. We need to be able to store it on the character instead of the hunter
-			baseDamage := character.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target, false))
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-
-			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-				spell.DealDamage(sim, result)
-			})
-		},
-	})
-
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:       "Timeworn Strike Aura Melee",
 		Callback:   core.CallbackOnSpellHitDealt,
 		Outcome:    core.OutcomeLanded,
-		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		ProcMask:   core.ProcMaskMelee,
 		ProcChance: procChance,
 		ICD:        time.Millisecond * 100,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			timeStrikeMelee.Cast(sim, result.Target)
+			character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1213381}, spell)
 		},
 	})
 
@@ -527,11 +492,11 @@ func TimeswornStrikeAura(agent core.Agent) {
 		Name:       "Timeworn Strike Aura Ranged",
 		Callback:   core.CallbackOnSpellHitDealt,
 		Outcome:    core.OutcomeLanded,
-		ProcMask:   core.ProcMaskRangedAuto,
+		ProcMask:   core.ProcMaskRanged,
 		ProcChance: procChance,
 		ICD:        time.Millisecond * 100,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			timestrikeRanged.Cast(sim, result.Target)
+			character.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
 		},
 	})
 }
