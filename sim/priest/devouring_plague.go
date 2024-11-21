@@ -19,7 +19,7 @@ func (priest *Priest) registerDevouringPlagueSpell() {
 	priest.DevouringPlague = make([]*core.Spell, DevouringPlagueRanks+1)
 	cdTimer := priest.NewTimer()
 
-	for rank := 1; rank < DevouringPlagueRanks; rank++ {
+	for rank := 1; rank <= DevouringPlagueRanks; rank++ {
 		config := priest.getDevouringPlagueConfig(rank, cdTimer)
 
 		if config.RequiredLevel <= int(priest.Level) {
