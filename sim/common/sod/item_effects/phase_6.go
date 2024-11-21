@@ -488,6 +488,10 @@ func TimewornStrikeAura(agent core.Agent) {
 		},
 	})
 
+	if !character.HasRangedWeapon() {
+		return
+	}
+
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:       "Timeworn Strike Aura Ranged",
 		Callback:   core.CallbackOnSpellHitDealt,
