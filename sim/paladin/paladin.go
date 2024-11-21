@@ -30,6 +30,8 @@ const (
 	SpellCode_PaladinLayOnHands
 	SpellCode_PaladinHammerOfWrath
 	SpellCode_PaladinCrusaderStrike
+	SpellCode_PaladinHammerOfTheRighteous
+	SpellCode_PaladinShieldOfRighteousness
 )
 
 type SealJudgeCode uint8

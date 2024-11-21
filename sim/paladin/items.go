@@ -28,6 +28,9 @@ const (
 	ZandalarFreethinkersBreastplate      = 231329
 	ZandalarFreethinkersBelt             = 231330
 	LibramOfWrath                        = 232420
+	LibramOfTheExorcist                  = 234475
+	LibramOfSanctity                     = 234476
+	LibramOfRighteousness                = 234477
 )
 
 func init() {
@@ -257,6 +260,45 @@ func init() {
 			},
 		}))
 	})
+
+	core.NewItemEffect(LibramOfTheExorcist, func(agent core.Agent) {
+		paladin := agent.(PaladinAgent).GetPaladin()
+		paladin.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_PaladinCrusaderStrike || spell.SpellCode == SpellCode_PaladinExorcism {
+				// Increases the damage of Exorcism and Crusader Strike by 3%.
+				spell.DamageMultiplier += 0.03
+			}
+		})
+	})
+
+	core.NewItemEffect(LibramOfSanctity, func(agent core.Agent) {
+		paladin := agent.(PaladinAgent).GetPaladin()
+		sanctityLibramAura := ApplyLibramOfSanctityAura(&paladin.Unit)
+
+		paladin.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_PaladinHolyShock {
+				// Increases the damage of Holy Shock by 3%, and your Shock and Awe buff now also grants 10% increased Holy Damage. (This effect does not stack with Sanctity Aura).
+				spell.DamageMultiplier += 0.03
+				originalApplyEffects := spell.ApplyEffects
+
+				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					originalApplyEffects(sim, target, spell)
+					sanctityLibramAura.Activate(sim)
+				}
+			}
+		})
+	})
+
+	core.NewItemEffect(LibramOfRighteousness, func(agent core.Agent) {
+		paladin := agent.(PaladinAgent).GetPaladin()
+		paladin.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_PaladinHammerOfTheRighteous || spell.SpellCode == SpellCode_PaladinShieldOfRighteousness {
+				// Increases the damage of Hammer of the Righteous and Shield of Righteousness by 3%.
+				spell.DamageMultiplier += 0.03
+			}
+		})
+	})
+
 }
 
 // https://www.wowhead.com/classic/spell=465414/crusaders-zeal
@@ -290,9 +332,36 @@ func crusadersZealAura465414(character *core.Character) *core.Aura {
 		Outcome:           core.OutcomeLanded,
 		ProcMask:          core.ProcMaskMelee,
 		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-		PPM:               2.0, // TBD
+		PPM:               2.0,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			procAura.Activate(sim)
 		},
 	})
+}
+
+func ApplyLibramOfSanctityAura(unit *core.Unit) *core.Aura {
+
+	sanctityLibramAura := unit.GetOrRegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 1214298},
+		Label:    "Libram of Sanctity",
+		Duration: time.Minute * 1,
+
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			sanctityAura := aura.Unit.GetAuraByID(core.ActionID{SpellID: 20218})
+
+			if sanctityAura == nil || !sanctityAura.IsActive() {
+				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			sanctityAura := aura.Unit.GetAuraByID(core.ActionID{SpellID: 20218})
+
+			if sanctityAura == nil || !sanctityAura.IsActive() {
+				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1.1
+			}
+		},
+	})
+
+	return sanctityLibramAura
+
 }
