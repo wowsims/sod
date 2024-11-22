@@ -38,30 +38,30 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		Duration: time.Second * 30,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier -= 20
-			rogue.SinisterStrike.ThreatMultiplier *= 3.0
+			rogue.SinisterStrike.ThreatMultiplier *= 2.0
 
 			if hasPKRune {
 				rogue.PoisonedKnife.Cost.FlatModifier -= 20
-				rogue.PoisonedKnife.ThreatMultiplier *= 3.0
+				rogue.PoisonedKnife.ThreatMultiplier *= 2.0
 			}
 
 			if hasQDRune {
 				rogue.QuickDraw.Cost.FlatModifier -= 20
-				rogue.QuickDraw.ThreatMultiplier *= 3.0
+				rogue.QuickDraw.ThreatMultiplier *= 2.0
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier += 20
-			rogue.SinisterStrike.ThreatMultiplier /= 3.0
+			rogue.SinisterStrike.ThreatMultiplier /= 2.0
 
 			if hasPKRune {
 				rogue.PoisonedKnife.Cost.FlatModifier += 20
-				rogue.PoisonedKnife.ThreatMultiplier /= 3.0
+				rogue.PoisonedKnife.ThreatMultiplier /= 2.0
 			}
 
 			if hasQDRune {
 				rogue.QuickDraw.Cost.FlatModifier += 20
-				rogue.QuickDraw.ThreatMultiplier /= 3.0
+				rogue.QuickDraw.ThreatMultiplier /= 2.0
 			}
 		},
 	})
@@ -93,7 +93,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		CritDamageBonus: rogue.lethality(),
 
 		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
-		ThreatMultiplier: 4,
+		ThreatMultiplier: 3,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
