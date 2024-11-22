@@ -39,6 +39,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier -= 20
 			rogue.SinisterStrike.ThreatMultiplier *= 3.0
+			rogue.MainGauche.ThreatMultiplier *= 3.0
 
 			if hasPKRune {
 				rogue.PoisonedKnife.Cost.FlatModifier -= 20
@@ -53,6 +54,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier += 20
 			rogue.SinisterStrike.ThreatMultiplier /= 3.0
+			rogue.MainGauche.ThreatMultiplier /= 3.0
 
 			if hasPKRune {
 				rogue.PoisonedKnife.Cost.FlatModifier += 20

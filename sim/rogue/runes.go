@@ -224,14 +224,14 @@ func (rogue *Rogue) registerBladeDance() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.AddStatDynamic(sim, stats.Parry, 10*core.ParryRatingPerParryChance)
 			if justAFleshWound {
-				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] -= 0.3
+				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] -= (0.3 + aura.Unit.GetStat(stats.Defense)/1200)
 			}
 			apProcAura.Activate(sim)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.AddStatDynamic(sim, stats.Parry, -10*core.ParryRatingPerParryChance)
 			if justAFleshWound {
-				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] += 0.3
+				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] += (0.3 + aura.Unit.GetStat(stats.Defense)/1200)
 			}
 			apProcAura.Deactivate(sim)
 		},
