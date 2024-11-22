@@ -305,21 +305,6 @@ func (rogue *Rogue) applyJustAFleshWound() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.EnableDynamicStatDep(sim, statDep)
-
-			drBonus := .125 * max(rogue.GetStat(stats.Defense), 0)
-			rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] -= drBonus/100
-
-			core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-				Period:          time.Second * 1,
-				NumTicks:        0,
-				Priority:        core.ActionPriorityAuto,
-				TickImmediately: true,
-				OnAction: func(sim *core.Simulation) {
-					rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] += drBonus/100
-					drBonus = .125 * max(rogue.GetStat(stats.Defense), 0)
-					rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] -= drBonus/100
-				},
-			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.DisableDynamicStatDep(sim,statDep)
