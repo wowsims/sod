@@ -423,6 +423,7 @@ var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					rogue.SaberSlash.DamageMultiplier *= 1.20
 					rogue.saberSlashTick.DamageMultiplier *= 1.20
+					rogue.SinisterStrike.DamageMultiplier *= 1.20
 				},
 			})	
 		},
@@ -530,7 +531,7 @@ var ItemSetDeathdealersBattlearmor = core.NewItemSet(core.ItemSet{
 //				Duration: time.Second * 15,
 //				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 //					if result.Landed() && spell.SpellCode == SpellCode_RogueSinisterStrike{
-//						shieldSpell.Shield(&rogue.Unit).Apply(sim, result.Damage*0.10)
+//						shieldSpell.Shield(&rogue.Unit).Apply(sim, result.Damage*0.15)
 //					}
 //				},
 //			})
