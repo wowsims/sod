@@ -213,11 +213,11 @@ func init() {
 				core.Each(holyWrathSpells, func(spell *core.Spell) {
 					spell.CastTimeMultiplier += (0.2 * float64(oldStacks))
 					spell.Cost.Multiplier += int32(100.0 * (0.2 * float64(oldStacks)))
-					spell.DamageMultiplier -= (0.2 * float64(oldStacks))
+					spell.DamageMultiplierAdditive -= (0.2 * float64(oldStacks))
 
 					spell.CastTimeMultiplier -= (0.2 * float64(newStacks))
 					spell.Cost.Multiplier -= int32(100.0 * (0.2 * float64(newStacks)))
-					spell.DamageMultiplier += (0.2 * float64(newStacks))
+					spell.DamageMultiplierAdditive += (0.2 * float64(newStacks))
 
 				})
 			},
@@ -266,7 +266,7 @@ func init() {
 		paladin.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_PaladinCrusaderStrike || spell.SpellCode == SpellCode_PaladinExorcism {
 				// Increases the damage of Exorcism and Crusader Strike by 3%.
-				spell.DamageMultiplier += 0.03
+				spell.DamageMultiplierAdditive += 0.03
 			}
 		})
 	})
@@ -278,7 +278,7 @@ func init() {
 		paladin.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_PaladinHolyShock {
 				// Increases the damage of Holy Shock by 3%, and your Shock and Awe buff now also grants 10% increased Holy Damage. (This effect does not stack with Sanctity Aura).
-				spell.DamageMultiplier += 0.03
+				spell.DamageMultiplierAdditive += 0.03
 				originalApplyEffects := spell.ApplyEffects
 
 				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -294,7 +294,7 @@ func init() {
 		paladin.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_PaladinHammerOfTheRighteous || spell.SpellCode == SpellCode_PaladinShieldOfRighteousness {
 				// Increases the damage of Hammer of the Righteous and Shield of Righteousness by 3%.
-				spell.DamageMultiplier += 0.03
+				spell.DamageMultiplierAdditive += 0.03
 			}
 		})
 	})
