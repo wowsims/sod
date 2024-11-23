@@ -34,8 +34,6 @@ type Priest struct {
 	Talents *proto.PriestTalents
 
 	Latency                     float64
-	MindFlayModifier            float64 // For Twisted Faith
-	MindBlastModifier           float64 // For Twisted Faith
 	MindBlastCritChanceModifier float64
 
 	CircleOfHealing   *core.Spell
@@ -129,8 +127,6 @@ func (priest *Priest) RegisterHealingSpells() {
 }
 
 func (priest *Priest) Reset(_ *core.Simulation) {
-	priest.MindFlayModifier = 1
-	priest.MindBlastModifier = 1
 }
 
 func New(character *core.Character, talents string) *Priest {

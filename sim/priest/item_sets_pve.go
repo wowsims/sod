@@ -128,37 +128,37 @@ var ItemSetTwilightProphecy = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			priest := agent.(PriestAgent).GetPriest()
 
-			damageMultiplier := 1.50
+			damageModifier := 0.50
 			durationDivisor := time.Duration(2)
+
+			var affectedSpells []*core.Spell
 
 			buffAura := priest.GetOrRegisterAura(core.Aura{
 				Label:    "Melting Faces",
 				ActionID: core.ActionID{SpellID: 456549},
 				Duration: core.NeverExpires,
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					affectedSpells = core.FilterSlice(
+						core.Flatten(priest.MindFlay),
+						func(spell *core.Spell) bool { return spell != nil },
+					)
+				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spells := range priest.MindFlay {
-						for _, spell := range spells {
-							if spell != nil {
-								spell.DamageMultiplier *= damageMultiplier
-								for _, dot := range spell.Dots() {
-									if dot != nil {
-										dot.TickLength /= durationDivisor
-									}
-								}
+					for _, spell := range affectedSpells {
+						spell.DamageMultiplierAdditive += damageModifier
+						for _, dot := range spell.Dots() {
+							if dot != nil {
+								dot.TickLength /= durationDivisor
 							}
 						}
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spells := range priest.MindFlay {
-						for _, spell := range spells {
-							if spell != nil {
-								spell.DamageMultiplier /= damageMultiplier
-								for _, dot := range spell.Dots() {
-									if dot != nil {
-										dot.TickLength *= durationDivisor
-									}
-								}
+					for _, spell := range affectedSpells {
+						spell.DamageMultiplierAdditive -= damageModifier
+						for _, dot := range spell.Dots() {
+							if dot != nil {
+								dot.TickLength *= durationDivisor
 							}
 						}
 					}
@@ -413,7 +413,7 @@ var ItemSetTwilightOfTheOracle = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - TAQ - Priest - Shadow 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					priest.MindSpike.CastTimeMultiplier -= 1
-					priest.MindSpike.DamageMultiplier *= 1.30
+					priest.MindSpike.DamageMultiplierAdditive += 0.30
 					priest.MindSpike.Flags |= core.SpellFlagCastWhileChanneling
 				},
 			})

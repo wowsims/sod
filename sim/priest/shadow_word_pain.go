@@ -67,16 +67,6 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: fmt.Sprintf("Shadow Word: Pain (Rank %d)", rank),
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					if priest.HasRune(proto.PriestRune_RuneChestTwistedFaith) {
-						priest.MindBlastModifier = 1.5
-						priest.MindFlayModifier = 1.5
-					}
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					priest.MindBlastModifier = 1
-					priest.MindFlayModifier = 1
-				},
 			},
 
 			NumberOfTicks:    ticks + (priest.Talents.ImprovedShadowWordPain),
