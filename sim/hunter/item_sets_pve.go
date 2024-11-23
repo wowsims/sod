@@ -459,7 +459,8 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 					if hunter.HasActiveAura("Rapid Fire") {
 						spell.CD.Reset()
 					} else if sim.CurrentTime > sim.Encounter.Duration/2 {
-						spell.CD.Set(sim.CurrentTime + spell.CD.TimeToReady(sim)/time.Duration(1/(1.0-cdReduction)))
+						reducedCooldown := spell.CD.TimeToReady(sim) / 1000 * time.Duration(1000*(1.0-cdReduction))
+						spell.CD.Set(sim.CurrentTime + reducedCooldown)
 					}
 				},
 			}))
