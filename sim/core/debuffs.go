@@ -233,6 +233,10 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.DemoralizingShout != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(DemoralizingShoutAura(target, 0, GetTristateValueInt32(debuffs.DemoralizingShout, 0, 5), level))
 	}
+	if debuffs.AtrophicPoison{
+		MakePermanent(AtrophicPoisonAura(target))
+	}
+
 	if debuffs.HuntersMark != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(HuntersMarkAura(target, GetTristateValueInt32(debuffs.HuntersMark, 0, 5), level))
 	}
@@ -246,6 +250,9 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 	if debuffs.Thunderfury {
 		MakePermanent(ThunderfuryASAura(target, level))
+	}
+	if debuffs.NumbingPoison {
+		MakePermanent(NumbingPoisonAura(target))
 	}
 
 	// Miss
@@ -563,8 +570,8 @@ func OccultPoisonDebuffAura(target *Unit, playerLevel int32) *Aura {
 	}
 
 	aura := target.GetOrRegisterAura(Aura{
-		Label:     "Occult Poison I",
-		ActionID:  ActionID{SpellID: 462286},
+		Label:     "Occult Poison II",
+		ActionID:  ActionID{SpellID: 1214170},
 		Duration:  time.Second * 12,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
@@ -1268,6 +1275,16 @@ func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts 
 	return aura
 }
 
+func AtrophicPoisonAura(target *Unit) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Atrophic Poison",
+		ActionID: ActionID{SpellID: 439473},
+		Duration: time.Second * 15,
+	})
+	apReductionEffect(aura, 205)
+	return aura
+}
+
 func VindicationAura(target *Unit, points int32, _ int32) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Vindication",
@@ -1315,6 +1332,16 @@ func ThunderfuryASAura(target *Unit, _ int32) *Aura {
 		Label:    "Thunderfury",
 		ActionID: ActionID{SpellID: 21992},
 		Duration: time.Second * 12,
+	})
+	AtkSpeedReductionEffect(aura, 1.2)
+	return aura
+}
+
+func NumbingPoisonAura(target *Unit) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Numbing Poison",
+		ActionID: ActionID{SpellID: 439472},
+		Duration: time.Second * 15,
 	})
 	AtkSpeedReductionEffect(aura, 1.2)
 	return aura

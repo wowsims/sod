@@ -13,7 +13,6 @@ func (rogue *Rogue) registerEnvenom() {
 	}
 
 	baseAbilityDamage := rogue.baseRuneAbilityDamage()
-
 	cutToTheChase := rogue.HasRune(proto.RogueRune_RuneCutToTheChase)
 
 	rogue.EnvenomAura = rogue.RegisterAura(core.Aura{
@@ -50,7 +49,12 @@ func (rogue *Rogue) registerEnvenom() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return rogue.ComboPoints() > 0 && rogue.deadlyPoisonTick.Dot(target).IsActive()
+			if rogue.usingOccult {
+				return rogue.ComboPoints() > 0 && rogue.occultPoisonTick.Dot(target).IsActive()
+			} else if rogue.usingDeadly {
+				return rogue.ComboPoints() > 0 && rogue.deadlyPoisonTick.Dot(target).IsActive()
+			}
+			return false
 		},
 
 		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
@@ -60,6 +64,7 @@ func (rogue *Rogue) registerEnvenom() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			comboPoints := rogue.ComboPoints()
+			consumed := int32(0)
 			// - the aura is active even if the attack fails to land
 			// - the aura is applied before the hit effect
 			// See: https://github.com/where-fore/rogue-wotlk/issues/32
@@ -67,10 +72,15 @@ func (rogue *Rogue) registerEnvenom() {
 			rogue.EnvenomAura.Duration = rogue.EnvenomDuration(rogue.ComboPoints())
 			rogue.EnvenomAura.Activate(sim)
 
-			dp := rogue.deadlyPoisonTick.Dot(target)
 			// - base damage is scaled by consumed doses (<= comboPoints)
 			// - apRatio is scaled of lowest of cp or dp (== comboPoints)
-			consumed := min(dp.GetStacks(), comboPoints)
+
+			if rogue.usingOccult {
+				consumed = min(rogue.occultPoisonTick.Dot(target).GetStacks(), comboPoints)
+			} else if rogue.usingDeadly {
+				consumed = min(rogue.deadlyPoisonTick.Dot(target).GetStacks(), comboPoints)
+			}
+			
 			baseDamage := baseAbilityDamage*float64(consumed)*0.8 + 0.072*float64(consumed)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
