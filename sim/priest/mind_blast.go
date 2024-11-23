@@ -76,14 +76,9 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 			}
 
 			oldBonusCrit := spell.BonusCritRating
-			oldMultiplier := spell.DamageMultiplier
 			spell.BonusCritRating += float64(mindSpikeAura.GetStacks()) * 30 * core.CritRatingPerCritChance
-			spell.DamageMultiplier *= priest.MindBlastModifier
-
 			result := spell.CalcDamage(sim, target, sim.Roll(baseDamageLow, baseDamageHigh), spell.OutcomeMagicHitAndCrit)
-
 			spell.BonusCritRating = oldBonusCrit
-			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)
@@ -96,12 +91,8 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 		},
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			damage := (baseDamageLow + baseDamageHigh) / 2
-
-			oldMultiplier := spell.DamageMultiplier
-			spell.DamageMultiplier *= priest.MindBlastModifier
-			result := spell.CalcDamage(sim, target, damage, spell.OutcomeExpectedMagicHitAndCrit)
-			spell.DamageMultiplier = oldMultiplier
+			baseDamage := (baseDamageLow + baseDamageHigh) / 2
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicHitAndCrit)
 			return result
 		},
 	}

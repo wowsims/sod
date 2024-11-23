@@ -66,10 +66,13 @@ func (priest *Priest) applyForceOfWill() {
 		return
 	}
 
+	modifier := 0.01 * float64(priest.Talents.ForceOfWill)
+	bonusCrit := 1 * float64(priest.Talents.ForceOfWill) * core.CritRatingPerCritChance
+
 	priest.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(SpellFlagPriest) {
-			spell.DamageMultiplier *= .01 * float64(priest.Talents.ForceOfWill)
-			spell.BonusCritRating += 1 * float64(priest.Talents.ForceOfWill) * core.CritRatingPerCritChance
+			spell.DamageMultiplierAdditive += modifier
+			spell.BonusCritRating += bonusCrit
 		}
 	})
 }
@@ -118,9 +121,11 @@ func (priest *Priest) applySearingLight() {
 		return
 	}
 
+	modifier := 0.05 * float64(priest.Talents.SearingLight)
+
 	priest.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode == SpellCode_PriestSmite || spell.SpellCode == SpellCode_PriestHolyFire {
-			spell.DamageMultiplier *= 0.05 * float64(priest.Talents.SearingLight)
+			spell.DamageMultiplierAdditive += modifier
 		}
 	})
 }

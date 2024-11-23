@@ -102,12 +102,8 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 		// Lifetap generates 50% more mana and 100% less threat.
 		2: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
-			warlock.RegisterAura(core.Aura{
-				Label:    "S03 - Item - T1 - Warlock - Damage 2P Bonus",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
+			core.MakePermanent(warlock.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Warlock - Damage 2P Bonus",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.LifeTap {
 						spell.DamageMultiplier *= 1.5
@@ -120,7 +116,7 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 						spell.ThreatMultiplier *= -1
 					}
 				},
-			})
+			}))
 		},
 		// Increases your critical strike chance with spells and attacks by 2%.
 		4: func(agent core.Agent) {

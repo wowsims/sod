@@ -18,6 +18,7 @@ func (priest *Priest) ApplyRunes() {
 
 	// Chest
 	priest.registerVoidPlagueSpell()
+	priest.applyTwistedFaith()
 
 	// Bracers
 	priest.applySurgeOfLight()
@@ -40,6 +41,45 @@ func (priest *Priest) ApplyRunes() {
 
 	// Skill Books
 	priest.registerShadowfiendSpell()
+}
+
+func (priest *Priest) applyTwistedFaith() {
+	if !priest.HasRune(proto.PriestRune_RuneChestTwistedFaith) {
+		return
+	}
+
+	priest.RegisterAura(core.Aura{
+		Label: "Twisted Faith",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells := core.Flatten(priest.MindFlay)
+			affectedSpells = core.FilterSlice(
+				core.Flatten([][]*core.Spell{
+					affectedSpells,
+					priest.MindBlast,
+				}), func(spell *core.Spell) bool { return spell != nil },
+			)
+
+			swpSpells := core.FilterSlice(priest.ShadowWordPain, func(spell *core.Spell) bool { return spell != nil })
+
+			for _, spell := range affectedSpells {
+				oldApplyEffects := spell.ApplyEffects
+				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					modifier := 0.0
+
+					for _, spell := range swpSpells {
+						if spell.Dot(target).IsActive() {
+							modifier += 0.50
+							break
+						}
+					}
+
+					spell.DamageMultiplierAdditive += modifier
+					oldApplyEffects(sim, target, spell)
+					spell.DamageMultiplierAdditive -= modifier
+				}
+			}
+		},
+	})
 }
 
 func (priest *Priest) applyPainAndSuffering() {
