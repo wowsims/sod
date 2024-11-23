@@ -488,7 +488,7 @@ func TimewornStrikeAura(agent core.Agent) {
 		},
 	})
 
-	if !character.HasRangedWeapon() {
+	if character.Class != proto.Class_ClassHunter {
 		return
 	}
 
