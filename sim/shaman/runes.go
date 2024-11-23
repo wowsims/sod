@@ -156,7 +156,7 @@ func (shaman *Shaman) applyShieldMastery() {
 		return
 	}
 
-	defendersResolveAura := core.DefendersResolveSpellDamage(shaman.GetCharacter())
+	defendersResolveAura := core.DefendersResolveSpellDamage(shaman.GetCharacter(), 4)
 
 	has4PEarthfuryResolve := shaman.HasSetBonus(ItemSetEarthfuryResolve, 4)
 
