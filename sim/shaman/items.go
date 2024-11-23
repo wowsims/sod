@@ -328,12 +328,12 @@ func init() {
 				affectedSpells = core.FilterSlice(shaman.ChainLightningOverload, func(spell *core.Spell) bool { return spell != nil })
 			},
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				oldStackValue := .20 * float64(oldStacks)
-				newStackValue := .20 * float64(newStacks)
+				oldStackValue := 0.20 * float64(oldStacks)
+				newStackValue := 0.20 * float64(newStacks)
 
 				for _, spell := range affectedSpells {
-					spell.DamageMultiplier /= 1 + oldStackValue
-					spell.DamageMultiplier *= 1 + newStackValue
+					spell.DamageMultiplierAdditive -= oldStackValue
+					spell.DamageMultiplierAdditive += newStackValue
 
 					spell.CastTimeMultiplier += oldStackValue
 					spell.CastTimeMultiplier -= newStackValue
@@ -685,12 +685,12 @@ func init() {
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range affectedSpells {
-					spell.DamageMultiplier *= 2
+					spell.DamageMultiplierAdditive += 1.0
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				for _, spell := range affectedSpells {
-					spell.DamageMultiplier /= 2
+					spell.DamageMultiplierAdditive -= 1.0
 				}
 			},
 		})

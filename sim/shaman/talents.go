@@ -12,6 +12,7 @@ import (
 func (shaman *Shaman) ApplyTalents() {
 	// Elemental Talents
 	shaman.applyConcussion()
+	shaman.applyCallOfFlame()
 	shaman.applyElementalFocus()
 	shaman.applyElementalDevastation()
 	shaman.applyElementalFury()
@@ -84,17 +85,34 @@ func (shaman *Shaman) applyConcussion() {
 		return
 	}
 
-	additiveMultiplier := 0.01 * float64(shaman.Talents.Concussion)
+	multiplier := 0.01 * float64(shaman.Talents.Concussion)
 	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning, SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
 
 	shaman.OnSpellRegistered(func(spell *core.Spell) {
 		if slices.Contains(affectedSpellCodes, spell.SpellCode) {
-			spell.DamageMultiplierAdditive += additiveMultiplier
+			spell.DamageMultiplierAdditive += multiplier
 		}
 	})
 }
-func (shaman *Shaman) callOfFlameMultiplier() float64 {
-	return 1 + .05*float64(shaman.Talents.CallOfFlame)
+
+func (shaman *Shaman) applyCallOfFlame() {
+	if shaman.Talents.CallOfFlame == 0 {
+		return
+	}
+
+	multiplier := 0.05 * float64(shaman.Talents.CallOfFlame)
+
+	shaman.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == 0 {
+			return
+		}
+
+		if spell.SpellCode == SpellCode_ShamanSearingTotemAttack ||
+			spell.SpellCode == SpellCode_ShamanFireNovaTotemAttack ||
+			spell.SpellCode == SpellCode_ShamanFireNova {
+			spell.DamageMultiplierAdditive += multiplier
+		}
+	})
 }
 
 func (shaman *Shaman) applyElementalFocus() {

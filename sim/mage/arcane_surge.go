@@ -65,10 +65,10 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamageLow, baseDamageHigh)
 			// Damage increased based on remaining mana up to 300%
-			oldMultiplier := spell.DamageMultiplier
-			spell.DamageMultiplier *= 1 + mage.CurrentManaPercent()*3
+			modifier := mage.CurrentManaPercent() * 3
+			spell.DamageMultiplierAdditive += modifier
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier = oldMultiplier
+			spell.DamageMultiplierAdditive -= modifier
 			// Because of the 0 base mana cost we have to create resource metrics
 			mage.SpendMana(sim, mage.CurrentMana(), manaMetrics)
 			manaAura.Activate(sim)

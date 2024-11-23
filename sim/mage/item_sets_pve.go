@@ -223,18 +223,18 @@ var ItemSetNetherwindInsight = core.NewItemSet(core.ItemSet{
 
 						oldApplyEffects := spell.ApplyEffects
 						spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-							multiplier := 1.0
+							modifier := 0.0
 
 							for _, spell := range fireballSpells {
 								if spell.Dot(target).IsActive() {
-									multiplier *= 1.20
+									modifier += 0.20
 									break
 								}
 							}
 
-							spell.DamageMultiplier *= multiplier
+							spell.DamageMultiplierAdditive += modifier
 							oldApplyEffects(sim, target, spell)
-							spell.DamageMultiplier /= multiplier
+							spell.DamageMultiplierAdditive -= modifier
 						}
 					}
 				},
@@ -314,14 +314,15 @@ var ItemSetIllusionistsAttire = core.NewItemSet(core.ItemSet{
 			mage.RegisterAura(core.Aura{
 				Label: "S03 - Item - ZG - Mage - Frost 5P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range mage.Frostbolt {
-						if spell != nil {
-							spell.DamageMultiplier *= 1.65
-						}
-					}
+					affectedSpells := core.FilterSlice(
+						core.Flatten([][]*core.Spell{
+							mage.Frostbolt,
+							{mage.SpellfrostBolt},
+						}), func(spell *core.Spell) bool { return spell != nil },
+					)
 
-					if mage.SpellfrostBolt != nil {
-						mage.SpellfrostBolt.DamageMultiplier *= 1.65
+					for _, spell := range affectedSpells {
+						spell.DamageMultiplierAdditive += 0.65
 					}
 				},
 			})
@@ -401,7 +402,7 @@ var ItemSetEnigmaInsight = core.NewItemSet(core.ItemSet{
 			mage.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Mage - Fire 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					mage.Ignite.DamageMultiplier *= 1.20
+					mage.Ignite.DamageMultiplierAdditive += 0.20
 				},
 			})
 		},
@@ -455,20 +456,19 @@ var ItemSetTrappingsOfVaultedSecrets = core.NewItemSet(core.ItemSet{
 					for _, spell := range affectedSpells {
 						oldApplyEffects := spell.ApplyEffects
 						spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-							multiplier := 1.0
+							modifier := 0.0
 
 							for _, spell := range dotSpells {
 								if spell.Dot(target).IsActive() {
-									multiplier += 0.05
+									modifier += 0.05
 								}
 							}
 
-							multiplier = math.Min(1.20, multiplier)
+							modifier = math.Min(0.20, modifier)
 
-							// TODO: Additive or Multiplicative?
-							spell.DamageMultiplier *= multiplier
+							spell.DamageMultiplierAdditive += modifier
 							oldApplyEffects(sim, target, spell)
-							spell.DamageMultiplier /= multiplier
+							spell.DamageMultiplierAdditive -= modifier
 						}
 					}
 				},

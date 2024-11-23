@@ -15,7 +15,6 @@ const ShredFlatDmgMultiplier = .75     // decreases flat damage modifier multipl
 
 func (druid *Druid) registerShredSpell() {
 	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
-	// has6pCunningOfStormrage := druid.HasSetBonus(ItemSetCunningOfStormrage, 6)
 
 	damageMultiplier := 2.25
 	flatDamageBonus := map[int32]float64{

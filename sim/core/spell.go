@@ -259,6 +259,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		expectedInitialDamageInternal: config.ExpectedInitialDamage,
 		expectedTickDamageInternal:    config.ExpectedTickDamage,
 
+		BonusDamage:        config.BonusDamage,
 		BonusHitRating:     config.BonusHitRating,
 		BonusCritRating:    config.BonusCritRating,
 		CastTimeMultiplier: 1,
