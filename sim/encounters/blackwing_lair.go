@@ -68,7 +68,9 @@ func NewVaelastraszTheCorruptAI() core.AIFactory {
 
 func (ai *VaelastraszTheCorruptAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.Target = target
-	ai.burningAdrenalineTime = config.TargetInputs[0].NumberValue
+	if len(config.TargetInputs) > 0 {
+		ai.burningAdrenalineTime = config.TargetInputs[0].NumberValue
+	}
 	ai.registerSpells()
 	ai.canAct = true
 }
