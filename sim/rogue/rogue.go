@@ -103,8 +103,13 @@ type Rogue struct {
 	deadlyPoisonTick *core.Spell
 	InstantPoison    [3]*core.Spell
 	WoundPoison      [2]*core.Spell
-	OccultPoison     *core.Spell
+	OccultPoison     [3]*core.Spell
 	occultPoisonTick *core.Spell
+	SebaciousPoison  [2]*core.Spell
+	AtrophicPoison  [2]*core.Spell
+	NumbingPoison  [2]*core.Spell
+	usingDeadly bool
+	usingOccult bool
 
 	instantPoisonProcChanceBonus float64
 	additivePoisonBonusChance    float64
@@ -129,7 +134,11 @@ type Rogue struct {
 
 	HonorAmongThieves *core.Aura
 
-	woundPoisonDebuffAuras core.AuraArray
+	woundPoisonDebuffAuras         core.AuraArray
+	occultPoisonDebuffAuras        core.AuraArray
+	sebaciousPoisonDebuffAura      core.AuraArray
+	atrophicPoisonDebuffAura      core.AuraArray
+	numbingPoisonDebuffAura      core.AuraArray
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -170,6 +179,8 @@ func (rogue *Rogue) Initialize() {
 	rogue.registerOccultPoisonSpell()
 	rogue.registerWoundPoisonSpell()
 	rogue.registerSebaciousPoisonSpell()
+	rogue.registerAtrophicPoisonSpell()
+	rogue.registerNumbingPoisonSpell()
 
 	// Stealth
 	rogue.registerStealthAura()
