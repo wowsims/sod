@@ -12,7 +12,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 		return
 	}
 
-	baseDamage := 113 / 100 * hunter.baseRuneAbilityDamage()
+	baseDamage := 113 / 100 * hunter.baseRuneAbilityDamage() * 5.21
 
 	hunter.KillShot = hunter.RegisterSpell(core.SpellConfig{
 		SpellCode:    SpellCode_HunterKillShot,
@@ -34,7 +34,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CD: core.Cooldown{
 				Timer:    hunter.NewTimer(),
-				Duration: time.Second * 15,
+				Duration: time.Second * 12,
 			},
 		},
 

@@ -404,7 +404,8 @@ var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
 			druid.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2- Druid - Feral 2P Bonus",
+				ActionID: core.ActionID{SpellID: 467207},
+				Label:    "S03 - Item - T2- Druid - Feral 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, dot := range druid.Rake.Dots() {
 						if dot != nil {
@@ -635,7 +636,8 @@ var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakePermanent(druid.RegisterAura(core.Aura{
-				Label: "S03 - Item - TAQ - Druid - Feral 4P Bonus",
+				ActionID: core.ActionID{SpellID: 1213174},
+				Label:    "S03 - Item - TAQ - Druid - Feral 4P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
 						return

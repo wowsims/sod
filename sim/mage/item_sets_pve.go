@@ -435,8 +435,6 @@ var ItemSetTrappingsOfVaultedSecrets = core.NewItemSet(core.ItemSet{
 		3: func(agent core.Agent) {
 			mage := agent.(MageAgent).GetMage()
 
-			hasImprovedScorch := mage.Talents.ImprovedScorch > 0
-
 			mage.RegisterAura(core.Aura{
 				Label: "S03 - Item - RAQ - Mage - Fire 3P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -465,11 +463,7 @@ var ItemSetTrappingsOfVaultedSecrets = core.NewItemSet(core.ItemSet{
 								}
 							}
 
-							if hasImprovedScorch && mage.ImprovedScorchAuras.Get(target).IsActive() {
-								multiplier += 0.05
-							}
-
-							multiplier = math.Max(1.20, multiplier)
+							multiplier = math.Min(1.20, multiplier)
 
 							// TODO: Additive or Multiplicative?
 							spell.DamageMultiplier *= multiplier

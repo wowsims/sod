@@ -6,6 +6,7 @@ import (
 	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -344,14 +345,14 @@ func ObsidianEdgedAura(itemID int32, agent core.Agent) {
 }
 
 // https://www.wowhead.com/classic/spell=1214155/timeworn-decay
-// Increases the damage dealt by all of your damage over time spells by 2% per piece of Timeworn armor equipped.
+// Increases the damage dealt by all of your damage over time spells by 3% per piece of Timeworn armor equipped.
 func TimewornDecayAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
 		return
 	}
 
-	multiplier := 0.02 * float64(character.PseudoStats.TimewornBonus)
+	multiplier := 0.03 * float64(character.PseudoStats.TimewornBonus)
 
 	character.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode != 0 && len(spell.Dots()) > 0 {
@@ -416,10 +417,15 @@ func TimewornHealing(agent core.Agent) {
 }
 
 // https://www.wowhead.com/classic/spell=1215404/timeworn-pyromancy
-// Increases the effectiveness of your Fire damage spells by 3% per piece of Timeworn armor equipped.
+// While Metamorphosis or Way of Earth is active, increases the effectiveness of your Fire damage spells by 3% per piece of Timeworn armor equipped.
 func TimewornPyromancyAura(agent core.Agent) {
 	character := agent.GetCharacter()
 	if character.PseudoStats.TimewornBonus == 0 {
+		return
+	}
+
+	// Just applying this rune if the user has Meta or WoE
+	if !character.HasRuneById(int32(proto.WarlockRune_RuneHandsMetamorphosis)) && !character.HasRuneById(int32(proto.ShamanRune_RuneLegsWayOfEarth)) {
 		return
 	}
 
@@ -470,68 +476,31 @@ func TimewornStrikeAura(agent core.Agent) {
 
 	procChance := float64(character.PseudoStats.TimewornBonus) * 0.01
 
-	timeStrikeMelee := character.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1213381},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-
-		BonusCoefficient: 1,
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-		},
-	})
-
-	timestrikeRanged := character.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1213381},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-		// TODO: Copied from Chimera Shot
-		MissileSpeed: 24,
-
-		BonusCoefficient: 1,
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// TODO: Missing the hunter Ammo damage bonus. We need to be able to store it on the character instead of the hunter
-			baseDamage := character.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target, false))
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-
-			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-				spell.DealDamage(sim, result)
-			})
-		},
-	})
-
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:       "Timeworn Strike Aura Melee",
 		Callback:   core.CallbackOnSpellHitDealt,
 		Outcome:    core.OutcomeLanded,
-		ProcMask:   core.ProcMaskMeleeWhiteHit,
+		ProcMask:   core.ProcMaskMelee,
 		ProcChance: procChance,
 		ICD:        time.Millisecond * 100,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			timeStrikeMelee.Cast(sim, result.Target)
+			character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1213381}, spell)
 		},
 	})
+
+	if !character.HasRangedWeapon() || !character.AutoAttacks.AutoSwingRanged {
+		return
+	}
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:       "Timeworn Strike Aura Ranged",
 		Callback:   core.CallbackOnSpellHitDealt,
 		Outcome:    core.OutcomeLanded,
-		ProcMask:   core.ProcMaskRangedAuto,
+		ProcMask:   core.ProcMaskRanged,
 		ProcChance: procChance,
 		ICD:        time.Millisecond * 100,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			timestrikeRanged.Cast(sim, result.Target)
+			character.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
 		},
 	})
 }
