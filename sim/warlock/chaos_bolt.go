@@ -18,6 +18,7 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 	baseHighDamage := warlock.baseRuneAbilityDamage() * 6.62
 
 	warlock.ChaosBolt = warlock.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_WarlockChaosBolt,
 		ActionID:    core.ActionID{SpellID: 403629},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,

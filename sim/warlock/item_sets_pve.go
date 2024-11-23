@@ -494,32 +494,40 @@ var ItemSetDemoniacsThreads = core.NewItemSet(core.ItemSet{
 var ItemSetDoomcallersCorruption = core.NewItemSet(core.ItemSet{
 	Name: "Doomcaller's Corruption",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Reduces the cooldown on your Chaos Bolt by 50% and increases its damage done by 10%.
+		// Reduces the cooldown on your Chaos Bolt by 50%, increases the damage of your Shadow Bolt and Chaos Bolt by 10%, and your Chaos Bolt now triggers your Improved Shadow Bolt talents.
 		2: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
-			if !warlock.HasRune(proto.WarlockRune_RuneHandsChaosBolt) {
-				return
-			}
 
 			warlock.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Warlock - Damage 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					warlock.ChaosBolt.CD.Duration /= 2
-					warlock.ChaosBolt.DamageMultiplier *= 1.10
+					for _, spell := range warlock.ShadowBolt {
+						spell.DamageMultiplierAdditive += 0.10
+					}
+
+					if warlock.ChaosBolt != nil {
+						warlock.ChaosBolt.CD.Duration /= 2
+						warlock.ChaosBolt.DamageMultiplierAdditive += 0.10
+					}
+
+					warlock.improvedShadowBoltSpellCodes = append(warlock.improvedShadowBoltSpellCodes, SpellCode_WarlockChaosBolt)
 				},
 			})
 		},
-		// Each time you hit a target with Conflagrate, you gain 2% increased Fire damage for 20 sec, stacking up to 5 times.
+		// Each time you hit a target with Conflagrate, you gain 5% increased Fire damage for 20 sec, stacking up to 2 times.
 		4: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
+			if !warlock.Talents.Conflagrate {
+				return
+			}
 
 			buffAura := warlock.RegisterAura(core.Aura{
 				ActionID:  core.ActionID{SpellID: 1214088},
 				Label:     "Infernalist",
 				Duration:  time.Second * 20,
-				MaxStacks: 5,
+				MaxStacks: 2,
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-					warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + 0.02*(float64(newStacks-oldStacks))
+					warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1 + 0.05*(float64(newStacks-oldStacks))
 				},
 			})
 
@@ -556,6 +564,7 @@ var ItemSetDoomcallersMalevolence = core.NewItemSet(core.ItemSet{
 			})
 		},
 		// You keep the benefits of your Master Demonologist talent while Demonic Sacrifice is active.
+		// TODO: allows the effects of Demonic Sacrifice to persist while having a pet active, as long as the Warlock does not resummon the sacrificed pet.
 		4: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 			core.MakePermanent(warlock.RegisterAura(core.Aura{

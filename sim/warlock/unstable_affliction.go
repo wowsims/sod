@@ -15,7 +15,9 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
-	baseDamage := warlock.baseRuneAbilityDamage() * 1.1
+	// TODO: Verify numbers after tooltips update
+	// 2024-11-22 +120% damage
+	baseDamage := warlock.baseRuneAbilityDamage() * 1.1 * 2.20
 
 	warlock.UnstableAffliction = warlock.GetOrRegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_WarlockUnstableAffliction,
@@ -35,10 +37,9 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 			},
 		},
 
-		CritDamageBonus: core.TernaryFloat64(hasPandemicRune, 1, 0),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: 0.2,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

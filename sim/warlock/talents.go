@@ -552,7 +552,7 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 		return core.ImprovedShadowBoltAura(unit, warlock.Talents.ImprovedShadowBolt, stackCount)
 	})
 
-	affectedSpellCodes := []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockShadowflame}
+	warlock.improvedShadowBoltSpellCodes = []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockShadowflame}
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "ISB Trigger",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -562,7 +562,7 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 			warlock.DebuffSpells = append(warlock.DebuffSpells, warlock.ShadowBolt...)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && result.DidCrit() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
+			if result.Landed() && result.DidCrit() && slices.Contains(warlock.improvedShadowBoltSpellCodes, spell.SpellCode) {
 				impShadowBoltAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
 				impShadowBoltAura.Activate(sim)
 				impShadowBoltAura.SetStacks(sim, stackCount)

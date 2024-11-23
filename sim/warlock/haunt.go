@@ -26,7 +26,7 @@ func (warlock *Warlock) registerHauntSpell() {
 		return target.GetOrRegisterAura(core.Aura{
 			Label:    "Haunt-" + warlock.Label,
 			ActionID: actionID,
-			Duration: time.Second * 12,
+			Duration: time.Second * 15,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				warlock.AttackTables[aura.Unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDoneByCasterMultiplier = hauntMultiplier
 			},

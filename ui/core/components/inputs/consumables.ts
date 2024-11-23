@@ -38,7 +38,15 @@ import { makeBooleanConsumeInput, makeBooleanMiscConsumeInput, makeBooleanPetMis
 import { IconPicker, IconPickerDirection } from '../icon_picker';
 import * as InputHelpers from '../input_helpers';
 import { MultiIconPicker, MultiIconPickerConfig, MultiIconPickerItemConfig } from '../multi_icon_picker';
-import { DeadlyPoisonWeaponImbue, InstantPoisonWeaponImbue, WoundPoisonWeaponImbue } from './rogue_imbues';
+import {
+	AtrophicPoisonWeaponImbue,
+	DeadlyPoisonWeaponImbue,
+	InstantPoisonWeaponImbue,
+	NumbingPoisonWeaponImbue,
+	OccultPoisonWeaponImbue,
+	SebaciousPoisonWeaponImbue,
+	WoundPoisonWeaponImbue,
+} from './rogue_imbues';
 import { FlametongueWeaponImbue, FrostbrandWeaponImbue, RockbiterWeaponImbue, WindfuryWeaponImbue } from './shaman_imbues';
 import { ActionInputConfig, ItemStatOption, PickerStatOptions, StatOptions } from './stat_options';
 
@@ -339,6 +347,14 @@ export const makeFlasksInput = makeConsumeInputFactory({ consumesFieldName: 'fla
 //                                 FOOD
 ///////////////////////////////////////////////////////////////////////////
 
+export const DarkclawBisque: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 232436, minLevel: 45 }]),
+	value: Food.FoodDarkclawBisque,
+};
+export const SmokedRedgill: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 232438, minLevel: 45 }]),
+	value: Food.FoodSmokedRedgill,
+};
 export const DirgesKickChimaerokChops: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21023, minLevel: 55 }]),
 	value: Food.FoodDirgesKickChimaerokChops,
@@ -347,14 +363,12 @@ export const GrilledSquid: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13928, minLevel: 50 }]),
 	value: Food.FoodGrilledSquid,
 };
-// Original lvl 50 not obtainable in Phase 3
 export const SmokedDesertDumpling: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 20452, minLevel: 51 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 20452, minLevel: 50 }]),
 	value: Food.FoodSmokedDesertDumpling,
 };
-// Original lvl 45 not obtainable in Phase 3
 export const RunnTumTuberSurprise: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18254, minLevel: 51 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 18254, minLevel: 45 }]),
 	value: Food.FoodRunnTumTuberSurprise,
 };
 export const BlessSunfruit: ConsumableInputConfig<Food> = {
@@ -388,6 +402,8 @@ export const SmokedSagefish: ConsumableInputConfig<Food> = {
 
 // Ordered by level
 export const FOOD_CONFIG: ConsumableStatOption<Food>[] = [
+	{ config: DarkclawBisque, stats: [Stat.StatSpellDamage] },
+	{ config: SmokedRedgill, stats: [Stat.StatHealingPower] },
 	{ config: DirgesKickChimaerokChops, stats: [Stat.StatStamina] },
 	{ config: GrilledSquid, stats: [Stat.StatAgility] },
 	{ config: SmokedDesertDumpling, stats: [Stat.StatStrength] },
@@ -1226,9 +1242,10 @@ const ROGUE_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 	{ config: InstantPoisonWeaponImbue, stats: [] },
 	{ config: DeadlyPoisonWeaponImbue, stats: [] },
 	{ config: WoundPoisonWeaponImbue, stats: [] },
-	// These are not yet implemented for rogues
-	// { config: OccultPoisonWeaponImbue, stats: [] },
-	// { config: SebaciousPoisonWeaponImbue, stats: [] },
+	{ config: OccultPoisonWeaponImbue, stats: [] },
+	{ config: SebaciousPoisonWeaponImbue, stats: [] },
+	{ config: AtrophicPoisonWeaponImbue, stats: [] },
+	{ config: NumbingPoisonWeaponImbue, stats: [] },
 ];
 
 const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [

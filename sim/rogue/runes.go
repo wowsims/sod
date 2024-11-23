@@ -204,6 +204,8 @@ func (rogue *Rogue) registerBladeDance() {
 	}
 
 	cachedBonusAP := 0.0
+	cachedDefense := 0.0 
+
 	apProcAura := rogue.RegisterAura(core.Aura{
 		Label:    "Defender's Resolve",
 		ActionID: core.ActionID{SpellID: 462230},
@@ -223,15 +225,16 @@ func (rogue *Rogue) registerBladeDance() {
 		Duration: rogue.bladeDanceDurations[5],
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.AddStatDynamic(sim, stats.Parry, 10*core.ParryRatingPerParryChance)
+			cachedDefense = aura.Unit.GetStat(stats.Defense)
 			if justAFleshWound {
-				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= 0.8
+				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= (1 - (0.3 + cachedDefense/1200))
 			}
 			apProcAura.Activate(sim)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.AddStatDynamic(sim, stats.Parry, -10*core.ParryRatingPerParryChance)
 			if justAFleshWound {
-				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= 0.8
+				rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= (1 - (0.3 + cachedDefense/1200))
 			}
 			apProcAura.Deactivate(sim)
 		},
@@ -277,7 +280,7 @@ func (rogue *Rogue) applyJustAFleshWound() {
 	// Mod threat
 	rogue.PseudoStats.ThreatMultiplier *= 2.68
 
-	// Blade Dance 20% Physical DR - Added in registerBladeDance()
+	// Blade Dance 30% Physical DR - Added in registerBladeDance()
 
 	// -20% damage done mod
 	rogue.PseudoStats.DamageDealtMultiplier *= 0.80
@@ -290,6 +293,26 @@ func (rogue *Rogue) applyJustAFleshWound() {
 
 	// Shuriken Toss and Poisoned Knife gain 50% threat mod
 	// Implemented in the relevant files
+	
+	// -50% of Current non Evasion Dodge
+	statDep := rogue.NewDynamicMultiplyStat(stats.Dodge, 0.5*core.DodgeRatingPerDodgeChance)
+
+	// 1% Physical DR gained for 8 defense over max
+	
+	rogue.RegisterAura(core.Aura{
+		Label:     "Just a Flesh Wound",
+		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneJustAFleshWound)},
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.EnableDynamicStatDep(sim, statDep)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.DisableDynamicStatDep(sim,statDep)
+		},
+	})
 }
 
 func (rogue *Rogue) applyRollingWithThePunches() {
