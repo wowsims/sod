@@ -18,6 +18,39 @@ const (
 	SpellFlagMaelstrom = core.SpellFlagAgentReserved4
 )
 
+const (
+	SpellCode_ShamanNone int32 = iota
+
+	SpellCode_ShamanChainHeal
+	SpellCode_ShamanChainLightning
+	SpellCode_ShamanEarthShock
+	SpellCode_ShamanFireNova
+	SpellCode_ShamanFireNovaTotem
+	SpellCode_ShamanFireNovaTotemAttack
+	SpellCode_ShamanFlameShock
+	SpellCode_ShamanFrostShock
+	SpellCode_ShamanHealingWave
+	SpellCode_ShamanLavaLash
+	SpellCode_ShamanLesserHealingWave
+	SpellCode_ShamanLightningBolt
+	SpellCode_ShamanLightningShield
+	SpellCode_ShamanLavaBurst
+	SpellCode_ShamanMagmaTotem
+	SpellCode_ShamanMagmaTotemAttack
+	SpellCode_ShamanMoltenBlast
+	SpellCode_ShamanSearingTotem
+	SpellCode_ShamanSearingTotemAttack
+	SpellCode_ShamanStormstrike
+)
+
+// Indexes into NextTotemDrops for self buffs
+const (
+	AirTotem int = iota
+	EarthTotem
+	FireTotem
+	WaterTotem
+)
+
 func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman := &Shaman{
 		Character: *character,
@@ -59,36 +92,6 @@ func (shaman *Shaman) getImbueProcMask(imbue proto.WeaponImbue) core.ProcMask {
 	}
 	return mask
 }
-
-// Indexes into NextTotemDrops for self buffs
-const (
-	AirTotem int = iota
-	EarthTotem
-	FireTotem
-	WaterTotem
-)
-
-const (
-	SpellCode_ShamanNone int32 = iota
-
-	SpellCode_ShamanChainHeal
-	SpellCode_ShamanChainLightning
-	SpellCode_ShamanEarthShock
-	SpellCode_ShamanFireNova
-	SpellCode_ShamanFireNovaTotem
-	SpellCode_ShamanFlameShock
-	SpellCode_ShamanFrostShock
-	SpellCode_ShamanHealingWave
-	SpellCode_ShamanLavaLash
-	SpellCode_ShamanLesserHealingWave
-	SpellCode_ShamanLightningBolt
-	SpellCode_ShamanLightningShield
-	SpellCode_ShamanLavaBurst
-	SpellCode_ShamanMagmaTotem
-	SpellCode_ShamanMoltenBlast
-	SpellCode_ShamanSearingTotem
-	SpellCode_ShamanStormstrike
-)
 
 // Shaman represents a shaman character.
 type Shaman struct {

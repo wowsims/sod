@@ -482,7 +482,7 @@ var ItemSetImpactOfTheTenStorms = core.NewItemSet(core.ItemSet{
 			shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Shaman - Enhancement 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					shaman.StormstrikeMH.DamageMultiplier *= 1.50
+					shaman.StormstrikeMH.DamageMultiplier += 0.50
 				},
 			})
 		},
@@ -560,17 +560,17 @@ var ItemSetReliefOfTheTenStorms = core.NewItemSet(core.ItemSet{
 			shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Shaman - Restoration 6P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					spells := core.Flatten([][]*core.Spell{
-						shaman.ChainHeal,
-						shaman.ChainHealOverload,
-						shaman.ChainLightning,
-						shaman.ChainLightningOverload,
-					})
+					spells := core.FilterSlice(
+						core.Flatten([][]*core.Spell{
+							shaman.ChainHeal,
+							shaman.ChainHealOverload,
+							shaman.ChainLightning,
+							shaman.ChainLightningOverload,
+						}), func(spell *core.Spell) bool { return spell != nil },
+					)
 
 					for _, spell := range spells {
-						if spell != nil {
-							spell.DamageMultiplier *= 1.20
-						}
+						spell.DamageMultiplierAdditive += 0.20
 					}
 				},
 			})
@@ -718,15 +718,15 @@ var ItemSetStormcallersImpact = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - TAQ - Shaman - Enhancement 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					if shaman.StormstrikeMH != nil {
-						shaman.StormstrikeMH.DamageMultiplier *= 1.50
+						shaman.StormstrikeMH.DamageMultiplierAdditive += 0.50
 					}
 
 					if shaman.StormstrikeOH != nil {
-						shaman.StormstrikeOH.DamageMultiplier *= 1.50
+						shaman.StormstrikeOH.DamageMultiplierAdditive += 0.50
 					}
 
 					if shaman.LavaLash != nil {
-						shaman.LavaLash.DamageMultiplier *= 1.50
+						shaman.LavaLash.DamageMultiplierAdditive += 0.50
 					}
 				},
 			})

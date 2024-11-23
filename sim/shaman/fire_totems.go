@@ -47,12 +47,13 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 	attackInterval := time.Millisecond * 2500
 
 	attackSpell := shaman.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_ShamanSearingTotemAttack,
 		ActionID:    core.ActionID{SpellID: SearingTotemAttackSpellId[rank]},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
 
-		DamageMultiplier: shaman.callOfFlameMultiplier(),
+		DamageMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -151,12 +152,13 @@ func (shaman *Shaman) newMagmaTotemSpellConfig(rank int) core.SpellConfig {
 	attackInterval := time.Second * 2
 
 	aoeSpell := shaman.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_ShamanMagmaTotemAttack,
 		ActionID:    core.ActionID{SpellID: MagmaTotemAoeSpellId[rank]},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
 
-		DamageMultiplier: shaman.callOfFlameMultiplier(),
+		DamageMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -258,12 +260,14 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 	attackInterval := duration
 
 	novaSpell := shaman.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_ShamanFireNovaTotemAttack,
 		ActionID:    core.ActionID{SpellID: FireNovaTotemAoeSpellId[rank]},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
+		Flags:       SpellFlagShaman,
 
-		DamageMultiplier: shaman.callOfFlameMultiplier(),
+		DamageMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
