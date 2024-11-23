@@ -329,12 +329,15 @@ var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
 			druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Druid - Balance 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range druid.Hurricane {
-						spell.DamageMultiplier *= 1.25
-					}
-					if druid.Starfall != nil {
-						druid.StarfallTick.DamageMultiplier *= 1.25
-						druid.StarfallSplash.DamageMultiplier *= 1.25
+					affectedSpells := core.FilterSlice(
+						core.Flatten([][]*DruidSpell{
+							druid.Hurricane,
+							{druid.Starfall, druid.StarfallTick, druid.StarfallSplash},
+						}), func(spell *DruidSpell) bool { return spell != nil },
+					)
+
+					for _, spell := range affectedSpells {
+						spell.DamageMultiplierAdditive += 0.25
 					}
 				},
 			})
@@ -372,8 +375,8 @@ var ItemSetEclipseOfStormrage = core.NewItemSet(core.ItemSet{
 				},
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 					for _, spell := range starfires {
-						spell.DamageMultiplier /= 1 + .10*float64(oldStacks)
-						spell.DamageMultiplier *= 1 + .10*float64(newStacks)
+						spell.DamageMultiplierAdditive -= 0.10 * float64(oldStacks)
+						spell.DamageMultiplierAdditive += 0.10 * float64(newStacks)
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -454,15 +457,15 @@ var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
 
 						oldApplyEffects := spell.ApplyEffects
 						spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-							bonusMultiplier := 1.0
+							modifier := 0.0
 							for _, dotSpell := range bleedSpells {
 								if dotSpell.Dot(target).IsActive() {
-									bonusMultiplier += .10
+									modifier += 0.10
 								}
 							}
-							spell.DamageMultiplier *= bonusMultiplier
+							spell.DamageMultiplierAdditive += modifier
 							oldApplyEffects(sim, target, spell)
-							spell.DamageMultiplier /= bonusMultiplier
+							spell.DamageMultiplierAdditive -= modifier
 						}
 					}
 				},
@@ -596,8 +599,7 @@ var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					druid.ShredPositionOverride = true
 					if !druid.PseudoStats.InFrontOfTarget {
-						// TODO: Check how this interacts with other multipliers, e.g. the idols.
-						druid.Shred.DamageMultiplier *= 1.2
+						druid.Shred.DamageMultiplierAdditive += 0.20
 					}
 				},
 			})

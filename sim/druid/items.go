@@ -137,6 +137,12 @@ func init() {
 		}))
 	})
 
+	// https://www.wowhead.com/classic/item=23198/idol-of-brutality
+	// Equip: Reduces the rage cost of Maul and Swipe by 3.
+	core.NewItemEffect(IdolOfBrutality, func(agent core.Agent) {
+		// Implemented in maul.go and swipe.go
+	})
+
 	// https://www.wowhead.com/classic/item=232390/idol-of-celestial-focus
 	// Equip: Increases the damage done by Starfall by 10%, but decreases its radius by 50%.
 	core.NewItemEffect(IdolOfCelestialFocus, func(agent core.Agent) {
@@ -144,7 +150,7 @@ func init() {
 
 		druid.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_DruidStarfallTick || spell.SpellCode == SpellCode_DruidStarfallSplash {
-				spell.DamageMultiplier *= 1.10
+				spell.DamageMultiplierAdditive += 0.10
 			}
 		})
 	})
@@ -195,12 +201,6 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic/item=23198/idol-of-brutality
-	// Equip: Reduces the rage cost of Maul and Swipe by 3.
-	core.NewItemEffect(IdolOfBrutality, func(agent core.Agent) {
-		// Implemented in maul.go and swipe.go
-	})
-
 	core.NewItemEffect(IdolMindExpandingMushroom, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		character.AddStat(stats.Spirit, 5)
@@ -228,7 +228,7 @@ func init() {
 	core.NewItemEffect(IdolOfFelineFerocity, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 		druid.RegisterAura(core.Aura{
-			Label: "Improved Wrath/Moonfire",
+			Label: "Improved Shred/Ferocious Bite",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				affectedSpells := core.FilterSlice(
 					[]*DruidSpell{

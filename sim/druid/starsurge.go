@@ -18,7 +18,7 @@ func (druid *Druid) applyStarsurge() {
 	baseHighDamage := druid.baseRuneAbilityDamage() * 3.04
 	spellCoeff := .429
 
-	starfireAuraMultiplier := 1 + .80
+	starfireAuraModifier := 0.80
 	starfireAuraDuration := time.Second * 15
 
 	starfireDamageAura := druid.RegisterAura(core.Aura{
@@ -29,14 +29,14 @@ func (druid *Druid) applyStarsurge() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(druid.Starfire, func(spell *DruidSpell) {
 				if spell != nil {
-					spell.DamageMultiplier *= starfireAuraMultiplier
+					spell.DamageMultiplierAdditive += starfireAuraModifier
 				}
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(druid.Starfire, func(spell *DruidSpell) {
 				if spell != nil {
-					spell.DamageMultiplier /= starfireAuraMultiplier
+					spell.DamageMultiplierAdditive -= starfireAuraModifier
 				}
 			})
 		},
