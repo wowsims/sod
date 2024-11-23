@@ -447,9 +447,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 646.7303
-  tps: 454.0011
-  hps: 270.79764
+  dps: 646.72959
+  tps: 454.02774
+  hps: 270.81193
  }
 }
 dps_results: {
@@ -471,9 +471,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 630.33445
-  tps: 446.9489
-  hps: 271.7413
+  dps: 630.33261
+  tps: 446.9369
+  hps: 271.72929
  }
 }
 dps_results: {
