@@ -21,6 +21,7 @@ const (
 const (
 	SpellCode_WarlockNone int32 = iota
 
+	SpellCode_WarlockChaosBolt
 	SpellCode_WarlockConflagrate
 	SpellCode_WarlockCorruption
 	SpellCode_WarlockCurseOfAgony
@@ -127,6 +128,7 @@ type Warlock struct {
 	demonicKnowledgeSp                   float64
 	masterDemonologistBonus              float64 // Bonus multiplier applied to the Master Demonologist talent
 	disableMasterDemonologistOnSacrifice bool    // Whether to disable the Master Demonologist buff after Sacrificing a pet. Used by TAQ 4pc
+	improvedShadowBoltSpellCodes         []int32 // List of spells that proc ISB
 	nightfallProcChance                  float64
 	// For effects that buff the damage of shadow bolt for each active Warlock effect on the target, e.g. 2pc DPS 6pc
 	shadowBoltActiveEffectMultiplierPer float64
