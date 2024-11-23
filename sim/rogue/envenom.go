@@ -80,7 +80,7 @@ func (rogue *Rogue) registerEnvenom() {
 			} else if rogue.usingDeadly {
 				consumed = min(rogue.deadlyPoisonTick.Dot(target).GetStacks(), comboPoints)
 			}
-			
+
 			baseDamage := baseAbilityDamage*float64(consumed)*0.8 + 0.072*float64(consumed)*spell.MeleeAttackPower()
 
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

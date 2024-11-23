@@ -45,11 +45,13 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 			if hasPKRune {
 				rogue.PoisonedKnife.Cost.FlatModifier -= 20
 				rogue.PoisonedKnife.ThreatMultiplier *= 2.0
+				rogue.PoisonedKnife.DamageMultiplier *= 1.5
 			}
 
 			if hasQDRune {
 				rogue.QuickDraw.Cost.FlatModifier -= 20
 				rogue.QuickDraw.ThreatMultiplier *= 2.0
+				rogue.QuickDraw.DamageMultiplier *= 1.5
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -61,11 +63,13 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 			if hasPKRune {
 				rogue.PoisonedKnife.Cost.FlatModifier += 20
 				rogue.PoisonedKnife.ThreatMultiplier /= 2.0
+				rogue.PoisonedKnife.DamageMultiplier /= 1.5
 			}
 
 			if hasQDRune {
 				rogue.QuickDraw.Cost.FlatModifier += 20
 				rogue.QuickDraw.ThreatMultiplier /= 2.0
+				rogue.QuickDraw.DamageMultiplier /= 1.5
 			}
 		},
 	})
@@ -104,7 +108,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			
+
 			// Auras gained regardless of landed hit.
 			mainGaucheAura.Activate(sim)
 			mainGaucheSSAura.Activate(sim)

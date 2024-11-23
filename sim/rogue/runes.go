@@ -204,7 +204,7 @@ func (rogue *Rogue) registerBladeDance() {
 	}
 
 	cachedBonusAP := 0.0
-	cachedDefense := 0.0 
+	cachedDefense := 0.0
 
 	apProcAura := rogue.RegisterAura(core.Aura{
 		Label:    "Defender's Resolve",
@@ -293,14 +293,14 @@ func (rogue *Rogue) applyJustAFleshWound() {
 
 	// Shuriken Toss and Poisoned Knife gain 50% threat mod
 	// Implemented in the relevant files
-	
+
 	// -50% of Current non Evasion Dodge
 	statDep := rogue.NewDynamicMultiplyStat(stats.Dodge, 0.5*core.DodgeRatingPerDodgeChance)
 
 	// 1% Physical DR gained for 8 defense over max
-	
+
 	rogue.RegisterAura(core.Aura{
-		Label:     "Just a Flesh Wound",
+		Label:    "Just a Flesh Wound",
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneJustAFleshWound)},
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -310,7 +310,7 @@ func (rogue *Rogue) applyJustAFleshWound() {
 			rogue.EnableDynamicStatDep(sim, statDep)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.DisableDynamicStatDep(sim,statDep)
+			rogue.DisableDynamicStatDep(sim, statDep)
 		},
 	})
 }

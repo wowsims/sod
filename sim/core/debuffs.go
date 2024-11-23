@@ -233,7 +233,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	if debuffs.DemoralizingShout != proto.TristateEffect_TristateEffectMissing {
 		MakePermanent(DemoralizingShoutAura(target, 0, GetTristateValueInt32(debuffs.DemoralizingShout, 0, 5), level))
 	}
-	if debuffs.AtrophicPoison{
+	if debuffs.AtrophicPoison {
 		MakePermanent(AtrophicPoisonAura(target))
 	}
 
