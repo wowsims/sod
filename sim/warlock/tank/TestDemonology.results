@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.48853
+  weights: -0.37627
   weights: 0
-  weights: 0.94345
-  weights: 0
-  weights: 0
+  weights: 0.82603
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 15.80004
-  weights: 9.02814
+  weights: 0
+  weights: 0
+  weights: 18.58084
+  weights: 8.34795
   weights: 0
   weights: 0
   weights: 0
@@ -269,7 +269,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 692.33405
+  dps: 1147.38615
   tps: 416.74601
   hps: 228.25902
  }
@@ -285,7 +285,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 692.74657
+  dps: 1150.20075
   tps: 414.38849
   hps: 227.46431
  }
@@ -293,7 +293,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 1762.95342
+  dps: 2253.2068
   tps: 4592.07365
   hps: 402.51414
  }
@@ -309,7 +309,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 1816.82757
+  dps: 2326.0892
   tps: 4547.47334
   hps: 395.53501
  }
@@ -317,7 +317,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 692.33405
+  dps: 1147.38615
   tps: 416.74601
   hps: 228.25902
  }
@@ -325,7 +325,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 772.55144
+  dps: 1250.81307
   tps: 1353.1845
   hps: 217.82529
  }
@@ -333,7 +333,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 759.03059
+  dps: 1223.38191
   tps: 1337.13652
   hps: 217.87458
  }
@@ -341,7 +341,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 1762.95342
+  dps: 2253.2068
   tps: 4592.07365
   hps: 402.51414
  }
@@ -349,7 +349,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1772.80741
+  dps: 2261.35125
   tps: 4625.87505
   hps: 410.19321
  }
@@ -357,7 +357,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2327.78394
+  dps: 2846.62906
   tps: 9134.65909
   hps: 413.40117
  }
@@ -365,7 +365,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1706.29497
+  dps: 2199.06432
   tps: 4447.82641
   hps: 411.69711
  }
@@ -373,7 +373,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1685.04044
+  dps: 2171.73853
   tps: 4420.23142
   hps: 403.79946
  }
@@ -381,7 +381,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1026.84755
+  dps: 1189.69605
   tps: 5890.09727
   hps: 212.13146
  }
@@ -389,7 +389,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 747.15278
+  dps: 896.88394
   tps: 2079.88969
   hps: 219.54433
  }
@@ -397,7 +397,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 753.03803
+  dps: 899.15945
   tps: 2120.97008
   hps: 215.97381
  }
@@ -405,7 +405,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1727.90631
+  dps: 2216.22136
   tps: 4510.2395
   hps: 402.96262
  }
