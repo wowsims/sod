@@ -110,7 +110,7 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.LifeTap {
-						spell.DamageMultiplier *= 1.5
+						spell.DamageMultiplierAdditive += 0.5
 						spell.ThreatMultiplier *= -1
 					}
 				},
@@ -284,7 +284,7 @@ var ItemSetWickedNemesis = core.NewItemSet(core.ItemSet{
 						// Enemy hit can partially resist and cannot crit
 						spell.Flags &= ^core.SpellFlagBinary
 						spell.DamageMultiplier /= 2
-						var damageResult = spell.CalcDamage(sim, warlock.CurrentTarget, LifeTapBaseDamage[spell.Rank], spell.OutcomeMagicHit)
+						damageResult := spell.CalcDamage(sim, warlock.CurrentTarget, LifeTapBaseDamage[spell.Rank], spell.OutcomeMagicHit)
 						spell.DealDamage(sim, damageResult)
 						spell.DamageMultiplier *= 2
 						spell.Flags |= core.SpellFlagBinary
@@ -405,7 +405,7 @@ var ItemSetCorruptedNemesis = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.Spellbook {
 						if spell.Flags.Matches(SpellFlagWarlock) && len(spell.Dots()) > 0 {
-							spell.DamageMultiplier *= 1.10
+							spell.PeriodicDamageMultiplierAdditive += 0.10
 						}
 					}
 				},
@@ -444,8 +444,8 @@ var ItemSetCorruptedNemesis = core.NewItemSet(core.ItemSet{
 		6: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			warlock.shadowBoltActiveEffectMultiplierPer = .10
-			warlock.shadowBoltActiveEffectMultiplierMax = 1.30
+			warlock.shadowBoltActiveEffectModifierPer = 0.10
+			warlock.shadowBoltActiveEffectModifierMax = 0.30
 		},
 	},
 })

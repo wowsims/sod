@@ -87,10 +87,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			oldMultiplier := spell.DamageMultiplier
-			spell.DamageMultiplier *= 1 + warlock.improvedImmolateBonus()
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
 				dot := spell.Dot(target)

@@ -131,8 +131,8 @@ type Warlock struct {
 	improvedShadowBoltSpellCodes         []int32 // List of spells that proc ISB
 	nightfallProcChance                  float64
 	// For effects that buff the damage of shadow bolt for each active Warlock effect on the target, e.g. 2pc DPS 6pc
-	shadowBoltActiveEffectMultiplierPer float64
-	shadowBoltActiveEffectMultiplierMax float64
+	shadowBoltActiveEffectModifierPer float64
+	shadowBoltActiveEffectModifierMax float64
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {

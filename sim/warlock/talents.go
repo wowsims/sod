@@ -158,7 +158,7 @@ func (warlock *Warlock) applyNightfall() {
 			}
 			for _, spell := range warlock.ShadowCleave {
 				spell.CD.Reset()
-				spell.DamageMultiplier *= 2
+				spell.DamageMultiplierAdditive += 1.0
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -166,7 +166,7 @@ func (warlock *Warlock) applyNightfall() {
 				spell.CastTimeMultiplier += 1
 			}
 			for _, spell := range warlock.ShadowCleave {
-				spell.DamageMultiplier /= 2
+				spell.DamageMultiplierAdditive -= 1.0
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -611,8 +611,18 @@ func (warlock *Warlock) applyDevastation() {
 	})
 }
 
-func (warlock *Warlock) improvedImmolateBonus() float64 {
-	return 0.05 * float64(warlock.Talents.ImprovedImmolate)
+func (warlock *Warlock) applyImprovedImmolate() {
+	if warlock.Talents.ImprovedImmolate == 0 {
+		return
+	}
+
+	modifier := 0.05 * float64(warlock.Talents.ImprovedImmolate)
+
+	warlock.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame {
+			spell.ImpactDamageMultiplierAdditive += modifier
+		}
+	})
 }
 
 func (warlock *Warlock) applyRuin() {
