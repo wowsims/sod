@@ -15,8 +15,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 	poisonedKnifeMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 425012})
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 	hasJustAFleshWound := rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
-	numStacks := 0.0
-
+	
 	// Poisoned Knife /might/ scale with BonusWeaponDamage, if it's using https://www.wowhead.com/classic/spell=425013/poisoned-knife
 	rogue.PoisonedKnife = rogue.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_RoguePoisonedKnife,
@@ -53,6 +52,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 			baseDamage := spell.Unit.OHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			numStacks := 0.0
 
 			// Cannot Miss, Dodge, or Parry as per spell flags
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
