@@ -26,7 +26,7 @@ func (paladin *Paladin) registerHolyShield() {
 	}
 
 	numCharges := int32(4)
-	defendersResolveSPAura := core.DefendersResolveSpellDamage(paladin.GetCharacter())
+	defendersResolveSPAura := core.DefendersResolveSpellDamage(paladin.GetCharacter(), 2)
 	blockBonus := 30.0 * core.BlockRatingPerBlockChance
 
 	for i, values := range HolyShieldValues {
