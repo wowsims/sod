@@ -412,17 +412,17 @@ var ItemSetEmblemsofVeiledShadows = core.NewItemSet(core.ItemSet{
 var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
 	Name: "Deathdealer's Thrill",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Increases Saber Slash damage by 20%
+		// Increases Saber Slash and Sinister Strike damage by 20%
 		2: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
 			rogue.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Rogue - Damage 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					if rogue.HasRune(proto.RogueRune_RuneSaberSlash) {
-						rogue.SaberSlash.DamageMultiplier *= 1.20
-						rogue.saberSlashTick.DamageMultiplier *= 1.20
+						rogue.SaberSlash.DamageMultiplierAdditive += .2
+						rogue.saberSlashTick.DamageMultiplierAdditive += .2
 					}
-					rogue.SinisterStrike.DamageMultiplier *= 1.20
+					rogue.SinisterStrike.DamageMultiplierAdditive += .2
 				},
 			})
 		},
