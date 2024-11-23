@@ -255,6 +255,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
 	homunculi: 70, // 70% average uptime default
+	dreamstate: true,
 	faerieFire: true,
 	giftOfArthas: true,
 	sunderArmor: true,

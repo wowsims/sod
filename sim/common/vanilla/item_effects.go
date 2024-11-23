@@ -1208,8 +1208,8 @@ func init() {
 
 	itemhelpers.CreateWeaponCoHProcDamage(JoonhosMercy, "Joonho's Mercy", 1.0, 20883, core.SpellSchoolArcane, 70, 0, 0, core.DefenseTypeMagic)
 
-	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevenge, "Kalimdor's Revenge", 1.25, 1213355, core.SpellSchoolNature, 339, 138, 0, core.DefenseTypeMagic)            // TODO Update PPM/scaling from PTR
-	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevengeVoidTouched, "Kalimdor's Revenge", 1.25, 1213355, core.SpellSchoolNature, 339, 138, 0, core.DefenseTypeMagic) // TODO Update PPM/scaling from PTR
+	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevenge, "Kalimdor's Revenge", 14, 1213355, core.SpellSchoolNature, 339, 38, 0.25, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevengeVoidTouched, "Kalimdor's Revenge", 14, 1213355, core.SpellSchoolNature, 339, 38, 0.25, core.DefenseTypeMagic)
 
 	itemhelpers.CreateWeaponCoHProcDamage(LinkensSwordOfMastery, "Linken's Sword of Mastery", 1.0, 18089, core.SpellSchoolNature, 45, 30, 0, core.DefenseTypeMagic)
 
@@ -3072,6 +3072,7 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 		Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		//BonusCoefficient: 0.10,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicCrit)
 		},

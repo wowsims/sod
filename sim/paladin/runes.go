@@ -58,19 +58,41 @@ func (paladin *Paladin) registerSheathOfLight() {
 		return
 	}
 
-	dep := paladin.NewDynamicStatDependency(
-		stats.AttackPower, stats.SpellPower, 0.3,
-	)
+	var prevSPBonus = 0.0
 
 	sheathAura := paladin.RegisterAura(core.Aura{
 		Label:    "Sheath of Light",
 		Duration: time.Second * 60,
 		ActionID: core.ActionID{SpellID: 426159},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.EnableDynamicStatDep(sim, dep)
+			newSPBonus := paladin.GetStat(stats.AttackPower) * 0.3
+			paladin.AddStatDynamic(sim, stats.SpellDamage, +newSPBonus)
+
+			if (newSPBonus != prevSPBonus) && (sim.Log != nil) {
+				paladin.Log(sim, "Sheath of Light new bonus is %d old was %d", int32(newSPBonus), int32(prevSPBonus))
+			}
+
+			prevSPBonus = newSPBonus
+
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
+				return
+			}
+
+			paladin.AddStatDynamic(sim, stats.SpellDamage, -prevSPBonus)
+			newSPBonus := paladin.GetStat(stats.AttackPower) * 0.3
+			paladin.AddStatDynamic(sim, stats.SpellDamage, +newSPBonus)
+
+			if (newSPBonus != prevSPBonus) && (sim.Log != nil) {
+				paladin.Log(sim, "Sheath of Light new bonus is %d old was %d", int32(newSPBonus), int32(prevSPBonus))
+			}
+
+			prevSPBonus = newSPBonus
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.DisableDynamicStatDep(sim, dep)
+			paladin.AddStatDynamic(sim, stats.SpellDamage, -prevSPBonus)
+			prevSPBonus = 0.0
 		},
 	})
 	paladin.RegisterAura(core.Aura{
@@ -80,10 +102,13 @@ func (paladin *Paladin) registerSheathOfLight() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskWhiteHit) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
 				return
 			}
-			sheathAura.Activate(sim)
+			if !sheathAura.IsActive() {
+				sheathAura.Activate(sim)
+			}
+
 		},
 	})
 }
