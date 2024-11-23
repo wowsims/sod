@@ -110,7 +110,7 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.LifeTap {
-						spell.DamageMultiplierAdditive += 0.5
+						spell.DamageMultiplier *= 1.5
 						spell.ThreatMultiplier *= -1
 					}
 				},
