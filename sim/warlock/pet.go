@@ -145,6 +145,7 @@ func (wp *WarlockPet) Initialize() {
 }
 
 func (wp *WarlockPet) Reset(_ *core.Simulation) {
+	wp.manaPooling = false
 }
 
 func (wp *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {

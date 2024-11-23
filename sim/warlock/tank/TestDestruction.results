@@ -519,9 +519,9 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 321.19075
-  tps: 199.75076
-  hps: 161.55267
+  dps: 321.21283
+  tps: 199.73444
+  hps: 161.53984
  }
 }
 dps_results: {
