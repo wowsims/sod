@@ -656,9 +656,11 @@ var ItemSetStormcallersEruption = core.NewItemSet(core.ItemSet{
 var ItemSetStormcallersResolve = core.NewItemSet(core.ItemSet{
 	Name: "Stormcaller's Resolve",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Damaging a target with Stormstrike also reduces all damage you take by 10% for 10 sec.
+		// Damaging a target with Stormstrike, Lava Burst, or Molten Blast also reduces all damage you take by 10% for 10 sec.
 		2: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
+
+			affectedSpellCodess := []int32{SpellCode_ShamanStormstrike, SpellCode_ShamanLavaBurst, SpellCode_ShamanMoltenBlast}
 
 			buffAura := shaman.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 1213934},
@@ -675,17 +677,19 @@ var ItemSetStormcallersResolve = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Shaman - Elemental 2P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellCode == SpellCode_ShamanStormstrike && result.Landed() {
+					if result.Landed() && slices.Contains(affectedSpellCodess, spell.SpellCode) {
 						buffAura.Activate(sim)
 					}
 				},
 			}))
 		},
-		// Your Spirit of the Alpha also increases your health by 10% when cast on self.
+		// Your Spirit of the Alpha also increases your health by 10%, threat by 20%, and damage by 10% when cast on self.
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			// Do a simple multiply stat because we assume that a tank shaman is using Alpha on theirself
 			if shaman.HasRune(proto.ShamanRune_RuneFeetSpiritOfTheAlpha) && shaman.IsTanking() {
+				shaman.PseudoStats.DamageDealtMultiplier *= 1.10
+				shaman.PseudoStats.ThreatMultiplier *= 1.20
 				shaman.MultiplyStat(stats.Health, 1.10)
 			}
 		},
