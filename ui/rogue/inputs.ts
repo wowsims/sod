@@ -12,3 +12,9 @@ export const HonorOfThievesCritRate = InputHelpers.makeSpecOptionsNumberInput<Sp
 	label: 'Honor Among Thieves Crit Rate',
 	labelTooltip: 'Number of crits other group members generate within 100 seconds',
 });
+
+export const pkSwap = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecRogue>({
+	fieldName: 'pkSwap',
+	label: 'PK Swap',
+	labelTooltip: 'Apply sebacious poison to the boss on pull',
+});
