@@ -344,30 +344,3 @@ func crusadersZealAura465414(character *core.Character) *core.Aura {
 		},
 	})
 }
-
-func ApplyLibramOfSanctityAura(unit *core.Unit) *core.Aura {
-
-	sanctityLibramAura := unit.GetOrRegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 1214298},
-		Label:    "Libram of Sanctity",
-		Duration: time.Minute * 1,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			sanctityAura := aura.Unit.GetAuraByID(core.ActionID{SpellID: 20218})
-
-			if sanctityAura == nil || !sanctityAura.IsActive() {
-				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			sanctityAura := aura.Unit.GetAuraByID(core.ActionID{SpellID: 20218})
-
-			if sanctityAura == nil || !sanctityAura.IsActive() {
-				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1.1
-			}
-		},
-	})
-
-	return sanctityLibramAura
-
-}
