@@ -890,26 +890,24 @@ func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuf
 }
 
 func SanctityAuraAura(character *Character) *Aura {
-	return character.GetOrRegisterAura(Aura{
+	aura := MakePermanent(character.GetOrRegisterAura(Aura{
 		Label:    "Sanctity Aura",
 		ActionID: ActionID{SpellID: 20218},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			sanctityLibramAura := aura.Unit.GetAuraByID(ActionID{SpellID: 1214298})
+	}))
 
-			if sanctityLibramAura == nil || !sanctityLibramAura.IsActive() {
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			sanctityLibramAura := aura.Unit.GetAuraByID(ActionID{SpellID: 1214298})
+	ExclusiveHolyDamageDealtAura(aura, 1.1)
 
-			if sanctityLibramAura == nil || !sanctityLibramAura.IsActive() {
-				character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1.1
-			}
+	return aura
+}
+
+func ExclusiveHolyDamageDealtAura(aura *Aura, multiplier float64) {
+	aura.NewExclusiveEffect("HolyDamageDealt", false, ExclusiveEffect{
+		Priority: multiplier,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= multiplier
+		},
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= multiplier
 		},
 	})
 }
@@ -1908,22 +1906,6 @@ func DemonicPactAura(unit *Unit, spellpower float64, buildPhase CharacterBuildPh
 func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect {
 	return aura.NewExclusiveEffect("SpellPowerBonus", false, ExclusiveEffect{
 		Priority: spellPowerBonus,
-		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.SpellPower: ee.Priority,
-			})
-		},
-		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.SpellPower: -ee.Priority,
-			})
-		},
-	})
-}
-
-func holyDamageDealtMultiplierEffect(aura *Aura, holyMultiplier float64) *ExclusiveEffect {
-	return aura.NewExclusiveEffect("HolyDamageDealt", false, ExclusiveEffect{
-		Priority: holyMultiplier,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
 				stats.SpellPower: ee.Priority,

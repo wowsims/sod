@@ -273,17 +273,23 @@ func init() {
 
 	core.NewItemEffect(LibramOfSanctity, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
-		sanctityLibramAura := ApplyLibramOfSanctityAura(&paladin.Unit)
+
+		buffAura := core.MakePermanent(paladin.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1214298},
+			Label:    "Libram of Sanctity",
+			Duration: time.Minute,
+		}))
+		core.ExclusiveHolyDamageDealtAura(buffAura, 1.1)
 
 		paladin.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_PaladinHolyShock {
 				// Increases the damage of Holy Shock by 3%, and your Shock and Awe buff now also grants 10% increased Holy Damage. (This effect does not stack with Sanctity Aura).
 				spell.DamageMultiplierAdditive += 0.03
-				originalApplyEffects := spell.ApplyEffects
 
+				originalApplyEffects := spell.ApplyEffects
 				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					originalApplyEffects(sim, target, spell)
-					sanctityLibramAura.Activate(sim)
+					buffAura.Activate(sim)
 				}
 			}
 		})
