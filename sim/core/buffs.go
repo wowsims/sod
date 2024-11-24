@@ -890,18 +890,24 @@ func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuf
 }
 
 func SanctityAuraAura(character *Character) *Aura {
-	return character.GetOrRegisterAura(Aura{
+	aura := MakePermanent(character.GetOrRegisterAura(Aura{
 		Label:    "Sanctity Aura",
 		ActionID: ActionID{SpellID: 20218},
-		Duration: NeverExpires,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
+	}))
+
+	ExclusiveHolyDamageDealtAura(aura, 1.1)
+
+	return aura
+}
+
+func ExclusiveHolyDamageDealtAura(aura *Aura, multiplier float64) {
+	aura.NewExclusiveEffect("HolyDamageDealt", false, ExclusiveEffect{
+		Priority: multiplier,
+		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= multiplier
 		},
-		OnGain: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= 1.1
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= 1.1
+		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= multiplier
 		},
 	})
 }

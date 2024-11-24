@@ -233,7 +233,7 @@ var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 			paladin.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_PaladinHolyShock {
 					//Damage multiplier is Additive with Infusion of Light rather than multiplicitive
-					spell.DamageMultiplier += 0.5
+					spell.DamageMultiplierAdditive += 0.5
 				}
 			})
 		},
@@ -245,7 +245,7 @@ var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range paladin.exorcism {
 						spell.CD.Duration -= time.Second * 3
-						spell.DamageMultiplier *= 1.50
+						spell.DamageMultiplierAdditive += 0.5
 					}
 				},
 			})
@@ -270,7 +270,7 @@ var ItemSetMercifulJudgement = core.NewItemSet(core.ItemSet{
 			paladin := agent.GetCharacter()
 			paladin.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_PaladinConsecration {
-					spell.AOEDot().DamageMultiplier *= 1.5
+					spell.AOEDot().DamageMultiplier += 0.5
 				}
 			})
 		},
@@ -293,7 +293,7 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, judgeSpells := range paladin.allJudgeSpells {
 						for _, judgeRankSpell := range judgeSpells {
-							judgeRankSpell.DamageMultiplier *= 1.2
+							judgeRankSpell.DamageMultiplierAdditive += 0.2
 						}
 					}
 
@@ -450,7 +450,7 @@ var ItemSetAvengersRadiance = core.NewItemSet(core.ItemSet{
 				//"S03 - Item - TAQ - Paladin - Retribution 2P Bonus",
 				if spell.SpellCode == SpellCode_PaladinCrusaderStrike {
 					// 2 Set: Increases Crusader Strike Damage by 50%
-					spell.DamageMultiplier *= 1.5
+					spell.DamageMultiplier += 0.5
 				}
 			})
 		},
