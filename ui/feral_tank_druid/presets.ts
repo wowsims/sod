@@ -75,7 +75,7 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '-503232132322010353120300313511-20350001',
+		talentsString: '014005301-5050021323022151-05',
 	}),
 };
 
