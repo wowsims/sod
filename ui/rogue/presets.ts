@@ -358,7 +358,7 @@ export const PresetBuildSaberSlashIEA = PresetUtils.makePresetBuild('Saber Slash
 
 export const DefaultOptions = RogueOptions.create({
 	honorAmongThievesCritRate: 100,
-	pkSwap: false
+	pkSwap: true
 });
 
 ///////////////////////////////////////////////////////////////////////////
