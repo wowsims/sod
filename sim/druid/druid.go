@@ -121,6 +121,8 @@ type Druid struct {
 	SolarEclipseProcAura     *core.Aura
 	LunarEclipseProcAura     *core.Aura
 	WildStrikesBuffAura      *core.Aura
+	Tank2PieceAqAura         *core.Aura
+	Tank2PieceAqProcAura     *core.Aura
 
 	BleedCategories         core.ExclusiveCategoryArray
 	SavageRoarDurationTable [6]time.Duration
