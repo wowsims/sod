@@ -383,7 +383,7 @@ func (rogue *Rogue) applySlaughterfromtheShadows() {
 
 	rogue.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode == SpellCode_RogueAmbush || spell.SpellCode == SpellCode_RogueBackstab {
-			spell.DamageMultiplier *= 1.5
+			spell.DamageMultiplier *= 1.6
 			spell.Cost.FlatModifier -= 30
 		}
 	})

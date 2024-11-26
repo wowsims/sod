@@ -422,7 +422,10 @@ var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
 						rogue.SaberSlash.DamageMultiplierAdditive += .2
 						rogue.saberSlashTick.DamageMultiplierAdditive += .2
 					}
-					rogue.SinisterStrike.DamageMultiplierAdditive += .2
+					if rogue.HasRune(proto.RogueRune_RuneMutilate) {
+						rogue.MutilateMH.DamageMultiplierAdditive += .2
+						rogue.MutilateOH.DamageMultiplierAdditive += .2
+					}
 				},
 			})
 		},

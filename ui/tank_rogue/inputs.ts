@@ -15,6 +15,6 @@ export const HonorOfThievesCritRate = InputHelpers.makeSpecOptionsNumberInput<Sp
 
 export const pkSwap = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecRogue>({
 	fieldName: 'pkSwap',
-	label: 'PK Swap',
+	label: 'Poisoned Knife Swap',
 	labelTooltip: 'Apply sebacious poison to the boss on pull',
 });
