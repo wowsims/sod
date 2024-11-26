@@ -32,6 +32,7 @@ func (warlock *Warlock) ApplyTalents() {
 	warlock.applyCataclysm()
 	warlock.applyBane()
 	warlock.applyDevastation()
+	warlock.applyImprovedImmolate()
 	warlock.applyRuin()
 	warlock.applyEmberstorm()
 }
