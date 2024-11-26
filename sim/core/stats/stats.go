@@ -506,6 +506,8 @@ type PseudoStats struct {
 	ArmorMultiplier float64 // Major/minor/special multiplicative armor modifiers
 
 	HealingTakenMultiplier float64
+
+	SpellPushbackMultiplier float64 // Multiplier for the amount of spell pushback taken on a hit
 }
 
 func NewPseudoStats() PseudoStats {
@@ -543,17 +545,19 @@ func NewPseudoStats() PseudoStats {
 
 		ArmorMultiplier: 1,
 
-		HealingTakenMultiplier: 1,
-		UnarmedSkill:           0,
-		DaggersSkill:           0,
-		SwordsSkill:            0,
-		MacesSkill:             0,
-		AxesSkill:              0,
-		TwoHandedSwordsSkill:   0,
-		TwoHandedMacesSkill:    0,
-		TwoHandedAxesSkill:     0,
-		PolearmsSkill:          0,
-		StavesSkill:            0,
+		HealingTakenMultiplier:  1,
+		SpellPushbackMultiplier: 1,
+
+		UnarmedSkill:         0,
+		DaggersSkill:         0,
+		SwordsSkill:          0,
+		MacesSkill:           0,
+		AxesSkill:            0,
+		TwoHandedSwordsSkill: 0,
+		TwoHandedMacesSkill:  0,
+		TwoHandedAxesSkill:   0,
+		PolearmsSkill:        0,
+		StavesSkill:          0,
 
 		BowsSkill:      0,
 		GunsSkill:      0,
