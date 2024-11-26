@@ -58,43 +58,43 @@ message ShamanTalents {
 }
 
 enum ShamanRune {
-	RuneNone										= 0;
+	RuneNone						= 0;
 
-	RuneHelmBurn								= 415231;
+	RuneHelmBurn					= 415231;
 	RuneHelmMentalDexterity			= 415140;
-	RuneHelmTidalWaves					= 432042;
+	RuneHelmTidalWaves				= 432042;
 
-	RuneCloakCoherence					= 415096;
-	RuneCloakStormEarthAndFire	= 440569;
-	RuneCloakFeralSpirit				= 440580;
+	RuneCloakCoherence				= 415096;
+	RuneCloakStormEarthAndFire		= 440569;
+	RuneCloakFeralSpirit			= 440580;
 
 	RuneChestDualWieldSpec			= 408496;
-	RuneChestHealingRain				= 415236;
-	RuneChestOverload						= 408438;
+	RuneChestHealingRain			= 415236;
+	RuneChestOverload				= 408438;
 	RuneChestShieldMastery			= 408524;
 	RuneChestTwoHandedMastery		= 436364;
 	
 	RuneBracersOvercharged			= 432140;
-	RuneBracersRiptide					= 408521;
+	RuneBracersRiptide				= 408521;
 	RuneBracersRollingThunder		= 432056;
 	RuneBracersStaticShock			= 432134;
 
-	RuneHandsLavaBurst					= 408490;
-	RuneHandsLavaLash						= 408507;
-	RuneHandsMoltenBlast				= 425339;
-	RuneHandsWaterShield				= 408510;
+	RuneHandsLavaBurst				= 408490;
+	RuneHandsLavaLash				= 408507;
+	RuneHandsMoltenBlast			= 425339;
+	RuneHandsWaterShield			= 408510;
 
-	RuneWaistFireNova						= 408339;
+	RuneWaistFireNova				= 408339;
 	RuneWaistMaelstromWeapon		= 408498;
-	RuneWaistPowerSurge					= 415100;
+	RuneWaistPowerSurge				= 415100;
 
-	RuneLegsAncestralGuidance 	= 409324;
-	RuneLegsEarthShield					= 408514;
-	RuneLegsWayOfEarth					= 408531;
+	RuneLegsAncestralGuidance 		= 409324;
+	RuneLegsEarthShield				= 408514;
+	RuneLegsWayOfEarth				= 408531;
 	RuneLegsGreaterGhostWolf		= 415813;
 
-	RuneFeetAncestralAwakening 	= 425858;
-	RuneFeetDecoyTotem					= 425874;
+	RuneFeetAncestralAwakening 		= 425858;
+	RuneFeetDecoyTotem				= 425874;
 	RuneFeetSpiritOfTheAlpha		= 408696;
 }
 

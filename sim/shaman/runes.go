@@ -41,6 +41,7 @@ func (shaman *Shaman) ApplyRunes() {
 	// Legs
 	shaman.applyAncestralGuidance()
 	shaman.applyWayOfEarth()
+	shaman.registerEarthShieldSpell()
 
 	// Feet
 	shaman.applyAncestralAwakening()
