@@ -336,7 +336,7 @@ func (druid *Druid) applyMoonfury() {
 			)
 
 			for _, spell := range affectedSpells {
-				spell.BaseDamageMultiplierAdditive += multiplier
+				spell.DamageMultiplierAdditive += multiplier
 			}
 		},
 	})
@@ -353,22 +353,11 @@ func (druid *Druid) applyImprovedMoonfire() {
 	druid.RegisterAura(core.Aura{
 		Label: "Improved moonfire",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			damageAffectedSpells := core.FilterSlice(
+			affectedSpells := core.FilterSlice(
 				core.Flatten(
 					[][]*DruidSpell{
 						druid.Moonfire,
 						{druid.Sunfire},
-					},
-				),
-				func(spell *DruidSpell) bool { return spell != nil },
-			)
-
-			critAffectedSpells := core.FilterSlice(
-				core.Flatten(
-					[][]*DruidSpell{
-						druid.Moonfire,
-						{druid.Sunfire},
-						// Starfall only receives the bonus crit, not damage
 						{druid.StarfallTick},
 						{druid.StarfallSplash},
 					},
@@ -376,11 +365,8 @@ func (druid *Druid) applyImprovedMoonfire() {
 				func(spell *DruidSpell) bool { return spell != nil },
 			)
 
-			for _, spell := range damageAffectedSpells {
+			for _, spell := range affectedSpells {
 				spell.BaseDamageMultiplierAdditive += damageMultiplier
-			}
-
-			for _, spell := range critAffectedSpells {
 				spell.BonusCritRating += bonusCrit
 			}
 		},
