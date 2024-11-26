@@ -536,6 +536,9 @@ var ItemSetReliefOfTheTenStorms = core.NewItemSet(core.ItemSet{
 		// Your damaging and healing critical strikes now have a 100% chance to trigger your Water Shield, but do not consume a charge or trigger its cooldown.
 		2: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
+			if !shaman.HasRune(proto.ShamanRune_RuneHandsWaterShield) {
+				return
+			}
 
 			core.MakePermanent(shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Shaman - Restoration 2P Bonus",
@@ -549,7 +552,10 @@ var ItemSetReliefOfTheTenStorms = core.NewItemSet(core.ItemSet{
 		// Your Chain Lightning now also heals the target of your Earth Shield for 100% of the damage done.
 		4: func(agent core.Agent) {
 			// TODO: Implement Earth Shield
-			// shaman := agent.(ShamanAgent).GetShaman()
+			shaman := agent.(ShamanAgent).GetShaman()
+			if !shaman.HasRune(proto.ShamanRune_RuneLegsEarthShield) {
+				return
+			}
 
 			// core.MakePermanent(shaman.RegisterAura())
 		},
