@@ -23,10 +23,14 @@ var RuneOverrides = []*proto.UIRune{
 	{Id: 442890, ClassAllowlist: []proto.Class{proto.Class_ClassWarrior, proto.Class_ClassHunter, proto.Class_ClassRogue, proto.Class_ClassShaman, proto.Class_ClassDruid}},
 	// Ring - Frost Specialization
 	{Id: 442895, ClassAllowlist: []proto.Class{proto.Class_ClassShaman, proto.Class_ClassMage}},
+	// Ring - Healing Specialization
+	{Id: 468758, ClassAllowlist: []proto.Class{proto.Class_ClassDruid, proto.Class_ClassMage, proto.Class_ClassPaladin, proto.Class_ClassPriest, proto.Class_ClassShaman}},
 	// Ring - Holy Specialization
 	{Id: 442898, ClassAllowlist: []proto.Class{proto.Class_ClassPaladin, proto.Class_ClassPriest}},
 	// Ring - Mace Specialization
 	{Id: 442881, ClassAllowlist: []proto.Class{proto.Class_ClassWarrior, proto.Class_ClassPaladin, proto.Class_ClassRogue, proto.Class_ClassPriest, proto.Class_ClassShaman, proto.Class_ClassDruid}},
+	// Ring - Meditation Specialization
+	{Id: 468762, ClassAllowlist: []proto.Class{proto.Class_ClassDruid, proto.Class_ClassHunter, proto.Class_ClassMage, proto.Class_ClassPaladin, proto.Class_ClassPriest, proto.Class_ClassShaman, proto.Class_ClassWarlock}},
 	// Ring - Nature Specialization
 	{Id: 442896, ClassAllowlist: []proto.Class{proto.Class_ClassRogue, proto.Class_ClassShaman, proto.Class_ClassDruid}},
 	// Ring - Pole Weapon Specialization

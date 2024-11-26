@@ -1113,8 +1113,10 @@ enum RingRune {
 	RuneRingFireSpecialization			= 442894;
 	RuneRingFistWeaponSpecialization	= 442890;
 	RuneRingFrostSpecialization			= 442895;
+	RuneRingHealingSpecialization		= 468758;
 	RuneRingHolySpecialization			= 442898;
 	RuneRingMaceSpecialization			= 442881;
+	RuneRingMeditationSpecialization	= 468762;
 	RuneRingNatureSpecialization		= 442896;
 	RuneRingPoleWeaponSpecialization	= 442892;
 	RuneRingRangedWeaponSpecialization	= 442891;

@@ -719,6 +719,14 @@ func (c *Character) ApplyRingRunes() {
 		c.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexShadow] += 6
 	}
 
+	if c.HasRuneById(int32(proto.RingRune_RuneRingHealingSpecialization)) {
+		c.AddStat(stats.HealingPower, 26)
+	}
+
+	if c.HasRuneById(int32(proto.RingRune_RuneRingMeditationSpecialization)) {
+		c.AddStat(stats.MP5, 5)
+	}
+
 	// Weapon Skill Specializations
 	if c.HasRuneById(int32(proto.RingRune_RuneRingAxeSpecialization)) {
 		c.AxeSpecializationAura()
