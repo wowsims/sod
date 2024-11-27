@@ -685,13 +685,8 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 				Duration:  time.Second * 10,
 				MaxStacks: 5,
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-					if newStacks == 0 {
-						druid.MangleBear.DamageMultiplierAdditive -= float64(oldStacks) * .1
-						druid.SwipeBear.DamageMultiplierAdditive -= float64(oldStacks) * .1
-					} else {
-						druid.MangleBear.DamageMultiplierAdditive += .1
-						druid.SwipeBear.DamageMultiplierAdditive += .1
-					}
+				druid.MangleBear.DamageMultiplierAdditive += 0.1 * (newStacks - oldStacks)
+				druid.SwipeBear.DamageMultiplierAdditive += 0.1 * (newStacks - oldStacks)
 				},
 			})
 
