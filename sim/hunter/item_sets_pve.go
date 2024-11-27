@@ -468,27 +468,29 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					hunter.KillShot.CD.Duration -= 6 * time.Second
 
-					if hunter.HasRune(proto.HunterRune_RuneHelmRapidKilling) {
-						oldApplyEffects := hunter.KillShot.ApplyEffects
-						hunter.KillShot.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-							oldApplyEffects(sim, target, spell)
+					if !hunter.HasRune(proto.HunterRune_RuneHelmRapidKilling) {
+						return
+					}
 
-							if hunter.RapidFireAura.IsActive() {
-								spell.CD.Reset()
+					oldApplyEffects := hunter.KillShot.ApplyEffects
+					hunter.KillShot.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						oldApplyEffects(sim, target, spell)
 
-								for i := 1; i < 4; i++ {
-									core.StartDelayedAction(sim, core.DelayedActionOptions{
-										DoAt: sim.CurrentTime + time.Duration(i*375)*time.Millisecond,
-										OnAction: func(sim *core.Simulation) {
-											// Ensure that the cloned shots get any damage amps from the main Kill Shot ability
-											clonedShot.DamageMultiplier *= spell.DamageMultiplier
-											clonedShot.DamageMultiplierAdditive += spell.DamageMultiplierAdditive - 1
-											clonedShot.Cast(sim, target)
-											clonedShot.DamageMultiplier /= spell.DamageMultiplier
-											clonedShot.DamageMultiplierAdditive -= spell.DamageMultiplierAdditive - 1
-										},
-									})
-								}
+						if hunter.RapidFireAura.IsActive() {
+							spell.CD.Reset()
+
+							for i := 1; i < 4; i++ {
+								core.StartDelayedAction(sim, core.DelayedActionOptions{
+									DoAt: sim.CurrentTime + time.Duration(i*375)*time.Millisecond,
+									OnAction: func(sim *core.Simulation) {
+										// Ensure that the cloned shots get any damage amps from the main Kill Shot ability
+										clonedShot.DamageMultiplier *= spell.DamageMultiplier
+										clonedShot.DamageMultiplierAdditive += spell.DamageMultiplierAdditive - 1
+										clonedShot.Cast(sim, target)
+										clonedShot.DamageMultiplier /= spell.DamageMultiplier
+										clonedShot.DamageMultiplierAdditive -= spell.DamageMultiplierAdditive - 1
+									},
+								})
 							}
 						}
 					}
