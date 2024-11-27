@@ -442,8 +442,23 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 var StrikersPursuit = core.NewItemSet(core.ItemSet{
 	Name: "Striker's Pursuit",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Kill Shot's cooldown is reduced by 6 sec and it has no cooldown while your Rapid Fire is active.
+		// Increases Kill Shot damage by 50% against non-player targets.
 		2: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
+				return
+			}
+
+			hunter.RegisterAura(core.Aura{
+				Label: "Striker's Pursuit 4P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.KillShot.DamageMultiplierAdditive += 0.50
+				},
+			})
+		},
+		// Kill Shot's cooldown is reduced by 50%.
+		// While Rapid Fire is active with Rapid killing engraved, Kill Shot has no cooldown and fires 3 additional Kill Shots at 33% damage, with a minimum range.
+		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
 			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
 				return
@@ -494,20 +509,6 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 							}
 						}
 					}
-				},
-			})
-		},
-		// Increases Kill Shot damage by 50%
-		4: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
-				return
-			}
-
-			hunter.RegisterAura(core.Aura{
-				Label: "Striker's Pursuit 4P",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.KillShot.DamageMultiplierAdditive += 0.50
 				},
 			})
 		},
