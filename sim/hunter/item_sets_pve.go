@@ -452,7 +452,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Pursuit 4P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.KillShot.DamageMultiplierAdditive += 0.50
+					hunter.KillShot.DamageMultiplierAdditive += 0.35
 				},
 			})
 		},
