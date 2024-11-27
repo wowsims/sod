@@ -686,18 +686,17 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 			druid := agent.(DruidAgent).GetDruid()
 
 			druid.Tank2PieceAqProcAura = druid.RegisterAura(core.Aura{
-				Label:     "Feral 2P Bonus Proc",
-				ActionID:  core.ActionID{SpellID: 1213188},
+				Label:     "Guardian 2P Bonus Proc",
 				Duration:  time.Second * 10,
 				MaxStacks: 5,
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				druid.MangleBear.DamageMultiplierAdditive += 0.1 * (newStacks - oldStacks)
-				druid.SwipeBear.DamageMultiplierAdditive += 0.1 * (newStacks - oldStacks)
+					druid.MangleBear.DamageMultiplierAdditive += 0.1 * float64(newStacks-oldStacks)
+					druid.SwipeBear.DamageMultiplierAdditive += 0.1 * float64(newStacks-oldStacks)
 				},
 			})
 
 			druid.Tank2PieceAqAura = druid.RegisterAura(core.Aura{
-				Label:           "S03 - Item - TAQ - Druid - Feral 2P Bonus",
+				Label:           "S03 - Item - TAQ - Druid - Guardian 2P Bonus",
 				ActionID:        core.ActionID{SpellID: 1213188},
 				ActionIDForProc: core.ActionID{SpellID: 1213190},
 				Duration:        core.NeverExpires,
@@ -705,7 +704,7 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 					aura.Activate(sim)
 				},
 				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if druid.HasRageBar() && spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.Outcome.Matches(core.OutcomeDodge) {
+					if druid.form == Bear && spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeDodge) {
 						druid.Tank2PieceAqProcAura.Activate(sim)
 						druid.Tank2PieceAqProcAura.AddStack(sim)
 					}
@@ -724,9 +723,9 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 				return
 			}
 			druid.RegisterAura(core.Aura{
-				Label: "S03 - Item - TAQ - Druid - Feral 4P Bonus",
+				Label: "S03 - Item - TAQ - Druid - Guardian 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					druid.MangleBear.CD.Duration -= (time.Second + 500*time.Millisecond)
+					druid.MangleBear.CD.Duration -= 1500 * time.Millisecond
 				},
 			})
 		},
