@@ -15,7 +15,8 @@ func (hunter *Hunter) ApplyRunes() {
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneChestBeastmastery) && hunter.pet != nil {
-		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.15
+		hunter.pet.PseudoStats.DamageDealtMultiplierAdditive += 0.15
+
 		core.MakePermanent(hunter.RegisterAura(core.Aura{
 			Label: "Beastmastery Rune Focus",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {

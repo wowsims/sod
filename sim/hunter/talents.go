@@ -16,7 +16,7 @@ func (hunter *Hunter) ApplyTalents() {
 		hunter.pet.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*3*float64(hunter.Talents.Ferocity))
 		hunter.pet.AddStat(stats.SpellCrit, core.SpellCritRatingPerCritChance*3*float64(hunter.Talents.Ferocity))
 
-		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1 + 0.04*float64(hunter.Talents.UnleashedFury)
+		hunter.pet.PseudoStats.DamageDealtMultiplierAdditive += 0.04 * float64(hunter.Talents.UnleashedFury)
 
 		if hunter.Talents.EnduranceTraining > 0 {
 			hunter.pet.MultiplyStat(stats.Health, 1+(0.03*float64(hunter.Talents.EnduranceTraining)))
@@ -42,7 +42,7 @@ func (hunter *Hunter) ApplyTalents() {
 				}
 			}
 		})
-	} else if hunter.Consumes.MiscConsumes.DraughtOfTheSands {
+	} else if hunter.Consumes.MiscConsumes != nil && hunter.Consumes.MiscConsumes.DraughtOfTheSands {
 		hunter.Env.RegisterPostFinalizeEffect(func() {
 			multiplier := 1.03
 			for _, t := range hunter.Env.Encounter.Targets {

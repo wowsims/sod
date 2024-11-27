@@ -204,7 +204,7 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase2-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 781.08603
+  dps: 781.00604
   tps: 388.97231
  }
 }

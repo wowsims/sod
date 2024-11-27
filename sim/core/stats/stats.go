@@ -431,8 +431,9 @@ type PseudoStats struct {
 
 	ThreatMultiplier float64 // Modulates the threat generated. Affected by things like salv.
 
-	DamageDealtMultiplier       float64                   // All damage
-	SchoolDamageDealtMultiplier SchoolValueArray[float64] // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
+	DamageDealtMultiplier         float64                   // All damage
+	DamageDealtMultiplierAdditive float64                   // The game only uses a general additive damage multiplier for pets, e.g. Command racial, Unleashed talent
+	SchoolDamageDealtMultiplier   SchoolValueArray[float64] // For specific spell schools. DO NOT use with multi school idices! See helper functions on Unit!
 
 	HealingDealtMultiplier float64 // All healing
 	ShieldDealtMultiplier  float64 // Increases the effectiveness of your shielding spells.
@@ -523,8 +524,9 @@ func NewPseudoStats() PseudoStats {
 
 		ThreatMultiplier: 1,
 
-		DamageDealtMultiplier:       1,
-		SchoolDamageDealtMultiplier: NewSchoolValueArray(1.0),
+		DamageDealtMultiplier:         1,
+		DamageDealtMultiplierAdditive: 1,
+		SchoolDamageDealtMultiplier:   NewSchoolValueArray(1.0),
 
 		HealingDealtMultiplier: 1,
 		ShieldDealtMultiplier:  1,

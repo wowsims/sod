@@ -204,7 +204,7 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase2-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 341.44753
+  dps: 341.37292
   tps: 182.26265
  }
 }

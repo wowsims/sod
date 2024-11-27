@@ -174,7 +174,7 @@ func init() {
 	core.NewItemEffect(SignetOfBeasts, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 		if hunter.pet != nil {
-			hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.01
+			hunter.pet.PseudoStats.DamageDealtMultiplierAdditive += 0.01
 		}
 	})
 

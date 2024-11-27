@@ -69,7 +69,7 @@ func applyRaceEffects(agent Agent) {
 			// Command Damage dealt by Hunter and Warlock pets increased by 5%
 			for _, pet := range character.Pets {
 				if !pet.IsGuardian() {
-					pet.PseudoStats.DamageDealtMultiplier *= 1.05
+					pet.PseudoStats.DamageDealtMultiplierAdditive += 0.05
 				}
 			}
 		}
