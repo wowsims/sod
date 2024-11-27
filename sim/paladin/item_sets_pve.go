@@ -457,40 +457,29 @@ var ItemSetAvengersRadiance = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 
-			taq4pcAura := paladin.GetOrRegisterAura(core.Aura{
-				Label:     "Empower Exorcism",
-				ActionID:  core.ActionID{SpellID: 415073}, // temp id
+			buffAura := paladin.GetOrRegisterAura(core.Aura{
+				Label:     "Excommunication",
+				ActionID:  core.ActionID{SpellID: 1217927},
 				Duration:  time.Second * 20,
 				MaxStacks: 3,
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 					for _, exorcism := range paladin.exorcism {
-						exorcism.DamageMultiplierAdditive -= 0.4 * float64(oldStacks)
-						exorcism.DamageMultiplierAdditive += 0.4 * float64(newStacks)
-
-						if newStacks == 0 {
-							aura.Activate(sim)
-						}
+						exorcism.DamageMultiplierAdditive += 0.4 * float64(newStacks-oldStacks)
 					}
 				},
 			})
 
-			paladin.RegisterAura(core.Aura{
-				Label:    "S03 - Item - TAQ - Paladin - Retribution 4P Bonus",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
+			core.MakePermanent(paladin.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Paladin - Retribution 4P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
-						if !taq4pcAura.IsActive() {
-							taq4pcAura.Activate(sim)
-						}
-						taq4pcAura.AddStack(sim)
+						buffAura.Activate(sim)
+						buffAura.AddStack(sim)
 					} else if spell.SpellCode == SpellCode_PaladinExorcism {
-						taq4pcAura.SetStacks(sim, 0)
+						buffAura.Deactivate(sim)
 					}
 				},
-			})
+			}))
 		},
 	},
 })

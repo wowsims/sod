@@ -53,7 +53,6 @@ func (paladin *Paladin) registerTheArtOfWar() {
 }
 
 func (paladin *Paladin) registerSheathOfLight() {
-
 	if !paladin.hasRune(proto.PaladinRune_RuneWaistSheathOfLight) {
 		return
 	}
@@ -80,9 +79,8 @@ func (paladin *Paladin) registerSheathOfLight() {
 				return
 			}
 
-			paladin.AddStatDynamic(sim, stats.SpellDamage, -prevSPBonus)
 			newSPBonus := paladin.GetStat(stats.AttackPower) * 0.3
-			paladin.AddStatDynamic(sim, stats.SpellDamage, +newSPBonus)
+			paladin.AddStatDynamic(sim, stats.SpellDamage, newSPBonus-prevSPBonus)
 
 			if (newSPBonus != prevSPBonus) && (sim.Log != nil) {
 				paladin.Log(sim, "Sheath of Light new bonus is %d old was %d", int32(newSPBonus), int32(prevSPBonus))
@@ -105,10 +103,8 @@ func (paladin *Paladin) registerSheathOfLight() {
 			if !spell.ProcMask.Matches(core.ProcMaskMelee) {
 				return
 			}
-			if !sheathAura.IsActive() {
-				sheathAura.Activate(sim)
-			}
 
+			sheathAura.Activate(sim)
 		},
 	})
 }

@@ -1208,8 +1208,8 @@ func init() {
 
 	itemhelpers.CreateWeaponCoHProcDamage(JoonhosMercy, "Joonho's Mercy", 1.0, 20883, core.SpellSchoolArcane, 70, 0, 0, core.DefenseTypeMagic)
 
-	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevenge, "Kalimdor's Revenge", 14, 1213355, core.SpellSchoolNature, 339, 38, 0.25, core.DefenseTypeMagic)
-	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevengeVoidTouched, "Kalimdor's Revenge", 14, 1213355, core.SpellSchoolNature, 339, 38, 0.25, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevenge, "Kalimdor's Revenge", 12, 1213355, core.SpellSchoolNature, 339, 38, 0.15, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevengeVoidTouched, "Kalimdor's Revenge", 12, 1213355, core.SpellSchoolNature, 339, 38, 0.15, core.DefenseTypeMagic)
 
 	itemhelpers.CreateWeaponCoHProcDamage(LinkensSwordOfMastery, "Linken's Sword of Mastery", 1.0, 18089, core.SpellSchoolNature, 45, 30, 0, core.DefenseTypeMagic)
 
