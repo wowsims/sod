@@ -252,6 +252,12 @@ var ItemSetCenarionCunning = core.NewItemSet(core.ItemSet{
 		},
 		// Periodic damage from your Rake and Rip can now be critical strikes.
 		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 455872},
+				Label:    "S03 - Item - T1 - Druid - Feral 4P Bonus",
+			}))
+
 			// Implemented in rake.go and rip.go
 		},
 		// Your Rip and Ferocious Bite have a 20% chance per combo point spent to refresh the duration of Savage Roar back to its initial value.
