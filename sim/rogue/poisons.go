@@ -83,6 +83,16 @@ func (rogue *Rogue) applyPoisons() {
 	rogue.applySebaciousPoison()
 	rogue.applyAtrophicPoison()
 	rogue.applyNumbingPoison()
+
+	if rogue.Options.PkSwap && rogue.HasRune(proto.RogueRune_RunePoisonedKnife) {
+		rogue.RegisterAura(core.Aura{
+			Label:    "Apply Sebacious on pull (PK Swap)",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				rogue.SebaciousPoison[1].Cast(sim, sim.GetTargetUnit(0))
+			},
+		})
+	}
 }
 
 // Apply Deadly Brew Instant Poison procs
