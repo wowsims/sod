@@ -717,14 +717,14 @@ var ItemSetStormcallersRelief = core.NewItemSet(core.ItemSet{
 var ItemSetStormcallersImpact = core.NewItemSet(core.ItemSet{
 	Name: "Stormcaller's Impact",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Increases Stormstrike and Lava Lash damage by 50%.
+		// Increases Stormstrike and Lava Lash damage by 50%. Stormstrike's damage is increased by an additional 50% when using a Two-handed weapon.
 		2: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Shaman - Enhancement 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					if shaman.StormstrikeMH != nil {
-						shaman.StormstrikeMH.DamageMultiplierAdditive += 0.50
+						shaman.StormstrikeMH.DamageMultiplierAdditive += core.TernaryFloat64(shaman.HasRune(proto.ShamanRune_RuneChestTwoHandedMastery), 1.00, 0.50)
 					}
 
 					if shaman.StormstrikeOH != nil {
@@ -737,7 +737,7 @@ var ItemSetStormcallersImpact = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		// Your Stormstrike and Lava Lash critical strikes cause your target to burn for 30% of the damage done over 4 sec.
+		// Your Stormstrike, Lava Lash, and Lava Burst critical strikes cause your target to burn for 30% of the damage done over 4 sec.
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 
@@ -774,7 +774,7 @@ var ItemSetStormcallersImpact = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Shaman - Enhancement 4P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == shaman.StormstrikeMH || spell == shaman.LavaLash) {
+					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == shaman.StormstrikeMH || spell == shaman.LavaLash || spell == shaman.LavaBurst) {
 						return
 					}
 

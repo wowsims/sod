@@ -252,6 +252,12 @@ var ItemSetCenarionCunning = core.NewItemSet(core.ItemSet{
 		},
 		// Periodic damage from your Rake and Rip can now be critical strikes.
 		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 455872},
+				Label:    "S03 - Item - T1 - Druid - Feral 4P Bonus",
+			}))
+
 			// Implemented in rake.go and rip.go
 		},
 		// Your Rip and Ferocious Bite have a 20% chance per combo point spent to refresh the duration of Savage Roar back to its initial value.
@@ -590,7 +596,7 @@ var ItemSetGenesisEclipse = core.NewItemSet(core.ItemSet{
 var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
 	Name: "Genesis Cunning",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Your Shred no longer has a positional requirement, but deals 20% more damage if you are behind the target.
+		// Your Shred no longer has a positional requirement, but deals 15% more damage if you are behind the target.
 		2: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
 			druid.RegisterAura(core.Aura{
@@ -599,7 +605,7 @@ var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					druid.ShredPositionOverride = true
 					if !druid.PseudoStats.InFrontOfTarget {
-						druid.Shred.DamageMultiplierAdditive += 0.20
+						druid.Shred.DamageMultiplierAdditive += 0.15
 					}
 				},
 			})

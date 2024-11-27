@@ -402,7 +402,7 @@ var ItemSetTwilightOfTheOracle = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		// Your Mind Spike is now instant, deals 30% more damage, and can be cast while channeling another spell.
+		// Your Mind Spike is now instant, deals 20% more damage, and can be cast while channeling another spell.
 		4: func(agent core.Agent) {
 			priest := agent.(PriestAgent).GetPriest()
 			if !priest.HasRune(proto.PriestRune_RuneWaistMindSpike) {
@@ -413,7 +413,7 @@ var ItemSetTwilightOfTheOracle = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - TAQ - Priest - Shadow 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					priest.MindSpike.CastTimeMultiplier -= 1
-					priest.MindSpike.DamageMultiplierAdditive += 0.30
+					priest.MindSpike.DamageMultiplierAdditive += 0.20
 					priest.MindSpike.Flags |= core.SpellFlagCastWhileChanneling
 				},
 			})

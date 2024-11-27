@@ -418,11 +418,15 @@ var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
 			rogue.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Rogue - Damage 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					if rogue.HasRune(proto.RogueRune_RuneSaberSlash) {
-						rogue.SaberSlash.DamageMultiplierAdditive += .2
-						rogue.saberSlashTick.DamageMultiplierAdditive += .2
+					rogue.SinisterStrike.DamageMultiplierAdditive += 0.20
+					if rogue.SaberSlash != nil {
+						rogue.SaberSlash.DamageMultiplierAdditive += 0.20
+						rogue.saberSlashTick.DamageMultiplierAdditive += 0.20
 					}
-					rogue.SinisterStrike.DamageMultiplierAdditive += .2
+					if rogue.Mutilate != nil {
+						rogue.MutilateMH.DamageMultiplierAdditive += 0.20
+						rogue.MutilateOH.DamageMultiplierAdditive += 0.20
+					}
 				},
 			})
 		},
