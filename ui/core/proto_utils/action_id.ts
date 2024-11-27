@@ -466,6 +466,9 @@ export class ActionId {
 			case 'Death Coil':
 				if (this.tag === 1) name += ` (Heal)`;
 				break;
+			case 'Kill Shot':
+				if (this.tag === 1) name = `${name} (Rapid Fire)`
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';

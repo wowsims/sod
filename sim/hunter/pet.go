@@ -189,7 +189,12 @@ func (hp *HunterPet) Initialize() {
 	hp.specialAbility = hp.NewPetAbility(hp.config.SpecialAbility, true)
 	hp.focusDump = hp.NewPetAbility(hp.config.FocusDump, false)
 
-	hp.EnableFocusBar(1, func(sim *core.Simulation) {
+	maxFocus := core.MaxFocus
+	if hp.hunterOwner.HasSetBonus(StrikersProwess, 2) {
+		maxFocus += 50
+	}
+
+	hp.EnableFocusBar(maxFocus, 1, func(sim *core.Simulation) {
 		if hp.GCD.IsReady(sim) {
 			hp.OnGCDReady(sim)
 		}
@@ -312,7 +317,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		Damage: 1.10,
 
 		CustomRotation: func(sim *core.Simulation, hp *HunterPet, tryCast func(*core.Spell) bool) {
-			if hp.specialAbility.CD.IsReady(sim) && hp.CurrentFocusPerSecond() > hp.focusDump.Cost.BaseCost / 1.6  {
+			if hp.specialAbility.CD.IsReady(sim) && hp.CurrentFocusPerSecond() > hp.focusDump.Cost.BaseCost/1.6 {
 				if !tryCast(hp.specialAbility) && hp.GCD.IsReady(sim) {
 					hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 				}
@@ -328,7 +333,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		MobType: proto.MobType_MobTypeBeast,
 
 		//SpecialAbility: Bite,
-		FocusDump:      LightningBreath,
+		FocusDump: LightningBreath,
 
 		Health: 1.00,
 		Armor:  1.00,
@@ -339,7 +344,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		MobType: proto.MobType_MobTypeBeast,
 
 		SpecialAbility: Bite,
-		FocusDump: Screech,
+		FocusDump:      Screech,
 
 		Health: 1.00,
 		Armor:  1.00,
@@ -395,7 +400,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		MobType: proto.MobType_MobTypeBeast,
 
 		//SpecialAbility: Screech,
-		FocusDump:      Claw,
+		FocusDump: Claw,
 
 		Health: 1.00,
 		Armor:  1.00,
@@ -476,8 +481,8 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 
 		CustomRotation: func(sim *core.Simulation, hp *HunterPet, tryCast func(*core.Spell) bool) {
 			target := hp.CurrentTarget
-			
-			if (hp.specialAbility.Dot(target).GetStacks() < hp.specialAbility.Dot(target).MaxStacks || hp.specialAbility.Dot(target).RemainingDuration(sim) < time.Second * 3) && hp.CurrentFocus() < 90 {
+
+			if (hp.specialAbility.Dot(target).GetStacks() < hp.specialAbility.Dot(target).MaxStacks || hp.specialAbility.Dot(target).RemainingDuration(sim) < time.Second*3) && hp.CurrentFocus() < 90 {
 				if !tryCast(hp.specialAbility) && hp.GCD.IsReady(sim) {
 					hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 				}

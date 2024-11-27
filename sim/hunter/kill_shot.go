@@ -12,9 +12,13 @@ func (hunter *Hunter) registerKillShotSpell() {
 		return
 	}
 
+	hunter.KillShot = hunter.RegisterSpell(hunter.newKillShotConfig())
+}
+
+func (hunter *Hunter) newKillShotConfig() core.SpellConfig {
 	baseDamage := 113 / 100 * hunter.baseRuneAbilityDamage() * 5.21
 
-	hunter.KillShot = hunter.RegisterSpell(core.SpellConfig{
+	return core.SpellConfig{
 		SpellCode:    SpellCode_HunterKillShot,
 		ActionID:     core.ActionID{SpellID: int32(proto.HunterRune_RuneLegsKillShot)},
 		SpellSchool:  core.SpellSchoolPhysical,
@@ -45,7 +49,7 @@ func (hunter *Hunter) registerKillShotSpell() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if sim.IsExecutePhase20() {
+			if sim.IsExecutePhase20() && spell.CD.Duration != 0 {
 				spell.CD.Reset()
 			}
 
@@ -56,5 +60,5 @@ func (hunter *Hunter) registerKillShotSpell() {
 				spell.DealDamage(sim, result)
 			})
 		},
-	})
+	}
 }

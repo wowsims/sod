@@ -9,7 +9,7 @@ import (
 
 // Time between focus ticks.
 const MaxFocus = 100.0
-const tickDuration = time.Millisecond * 5250 
+const tickDuration = time.Millisecond * 5250
 const BaseFocusPerTick = 26.25
 
 // OnFocusGain is called any time focus is increased.
@@ -18,10 +18,11 @@ type OnFocusGain func(sim *Simulation)
 type focusBar struct {
 	unit *Unit
 
-	focusPerTick float64
-	focusRegenMultiplier float64
-
+	maxFocus     float64
 	currentFocus float64
+
+	focusPerTick         float64
+	focusRegenMultiplier float64
 
 	onFocusGain OnFocusGain
 
@@ -31,14 +32,15 @@ type focusBar struct {
 	refundMetrics *ResourceMetrics
 }
 
-func (unit *Unit) EnableFocusBar(regenMultiplier float64, onFocusGain OnFocusGain) {
+func (unit *Unit) EnableFocusBar(maxFocus float64, regenMultiplier float64, onFocusGain OnFocusGain) {
 	unit.focusBar = focusBar{
-		unit:          unit,
-		focusPerTick:  BaseFocusPerTick,
+		unit:                 unit,
+		maxFocus:             max(MaxFocus, maxFocus),
+		focusPerTick:         BaseFocusPerTick,
 		focusRegenMultiplier: regenMultiplier,
-		onFocusGain:   onFocusGain,
-		regenMetrics:  unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionFocusRegen}),
-		refundMetrics: unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
+		onFocusGain:          onFocusGain,
+		regenMetrics:         unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionFocusRegen}),
+		refundMetrics:        unit.NewEnergyMetrics(ActionID{OtherID: proto.OtherAction_OtherActionRefund}),
 	}
 }
 
@@ -50,6 +52,10 @@ func (fb *focusBar) CurrentFocus() float64 {
 	return fb.currentFocus
 }
 
+func (fb *focusBar) MaxFocus() float64 {
+	return fb.maxFocus
+}
+
 func (fb *focusBar) CurrentFocusPerTick() float64 {
 	return fb.focusPerTick * fb.focusRegenMultiplier
 }
@@ -58,7 +64,7 @@ func (fb *focusBar) CurrentFocusPerSecond() float64 {
 	return fb.CurrentFocusPerTick() / tickDuration.Seconds()
 }
 
-func (fb *focusBar) AddFocusRegenMultiplier (multiplier float64) {
+func (fb *focusBar) AddFocusRegenMultiplier(multiplier float64) {
 	fb.focusRegenMultiplier += multiplier
 }
 
@@ -67,7 +73,7 @@ func (fb *focusBar) AddFocus(sim *Simulation, amount float64, metrics *ResourceM
 		panic("Trying to add negative focus!")
 	}
 
-	newFocus := min(fb.currentFocus+amount, MaxFocus)
+	newFocus := min(fb.currentFocus+amount, fb.maxFocus)
 	metrics.AddEvent(amount, newFocus-fb.currentFocus)
 
 	if sim.Log != nil {
@@ -101,7 +107,7 @@ func (fb *focusBar) reset(sim *Simulation) {
 		return
 	}
 
-	fb.currentFocus = MaxFocus
+	fb.currentFocus = fb.maxFocus
 
 	if fb.unit.Type != PetUnit {
 		fb.enable(sim)

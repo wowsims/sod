@@ -15,8 +15,7 @@ func (hunter *Hunter) ApplyRunes() {
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneChestBeastmastery) && hunter.pet != nil {
-		// https://www.wowhead.com/classic/news/class-tuning-incoming-hunter-shaman-warlock-season-of-discovery-339072?webhook
-		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.1
+		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.15
 		core.MakePermanent(hunter.RegisterAura(core.Aura{
 			Label: "Beastmastery Rune Focus",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -152,7 +151,7 @@ func (hunter *Hunter) applySniperTraining() {
 				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) || spell.SpellCode == SpellCode_HunterChimeraSerpent {
 					spell.BonusCritRating += statDelta * 2 * core.CritRatingPerCritChance
 				}
-				
+
 			}
 		},
 	})
@@ -268,7 +267,7 @@ func (hunter *Hunter) applyLockAndLoad() {
 		Label: "Lock And Load Trigger",
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagTrap) {
-					hunter.LockAndLoadAura.Activate(sim)
+				hunter.LockAndLoadAura.Activate(sim)
 			}
 		},
 	}))
@@ -339,7 +338,7 @@ func (hunter *Hunter) applyTNT() {
 
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Flags.Matches(SpellFlagTrap) || spell.SpellCode == SpellCode_HunterExplosiveShot {
-			spell.DamageMultiplier *= 1.10
+			spell.DamageMultiplierAdditive += 0.10
 		}
 	})
 }
@@ -400,7 +399,7 @@ func (hunter *Hunter) applyImprovedVolley() {
 		ActionID: core.ActionID{SpellID: 440520},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			// The 3% rAP scaling and manacost reduction is applied inside the volley spell config itself
-			hunter.Volley.DamageMultiplier *= 2
+			hunter.Volley.DamageMultiplierAdditive += 1.00
 		},
 	})
 }
