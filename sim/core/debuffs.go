@@ -1150,7 +1150,7 @@ func ImprovedFaerieFireAura(target *Unit) *Aura {
 func MeleeHunterDodgeReductionAura(target *Unit, _ int32) *Aura {
 	return target.GetOrRegisterAura(Aura{
 		Label:    "Stalked",
-		ActionID: ActionID{SpellID: 456393},
+		ActionID: ActionID{SpellID: 456389},
 		Duration: time.Second * 30,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.DodgeReduction += 0.01

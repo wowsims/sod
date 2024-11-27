@@ -929,7 +929,7 @@ export const ImprovedFaerieFire = makeBooleanDebuffInput({
 	fieldName: 'improvedFaerieFire',
 });
 export const MeleeHunter2pcT1Bonus = makeBooleanDebuffInput({
-	actionId: player => player.getMatchingSpellActionId([{ id: 456393, minLevel: 60 }]),
+	actionId: player => player.getMatchingSpellActionId([{ id: 456389, minLevel: 60 }]),
 	fieldName: 'meleeHunterDodgeDebuff',
 });
 export const MekkatorqueFistDebuff = makeBooleanDebuffInput({
