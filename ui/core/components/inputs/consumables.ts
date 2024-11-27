@@ -678,6 +678,11 @@ export const ZANZA_BUFF_CONSUMES_CONFIG: ConsumableStatOption<ZanzaBuff>[] = [
 ];
 export const makeZanzaBuffConsumesInput = makeConsumeInputFactory({ consumesFieldName: 'zanzaBuff' });
 
+export const DraughtOfTheSands = makeBooleanMiscConsumeInput({
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 235497, minLevel: 55 }]),
+	fieldName: 'draughtOfTheSands',
+	showWhen: player => player.getClass() === Class.ClassHunter,
+})
 export const Catnip = makeBooleanMiscConsumeInput({
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
 	fieldName: 'catnip',
@@ -692,6 +697,7 @@ export const elixirOfCoalescedRegret = makeBooleanMiscConsumeInput({ actionId: (
 export const BoglingRoot = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' });
 
 export const MISC_OFFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
+	{ config: DraughtOfTheSands, picker: IconPicker, stats: [] },
 	{ config: Catnip, picker: IconPicker, stats: [] },
 	{ config: JujuFlurry, picker: IconPicker, stats: [Stat.StatAttackPower] },
 	{ config: elixirOfCoalescedRegret, picker: IconPicker, stats: [] },

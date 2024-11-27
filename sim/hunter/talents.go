@@ -42,6 +42,16 @@ func (hunter *Hunter) ApplyTalents() {
 				}
 			}
 		})
+	} else if hunter.Consumes.MiscConsumes.DraughtOfTheSands {
+		hunter.Env.RegisterPostFinalizeEffect(func() {
+			multiplier := 1.03
+			for _, t := range hunter.Env.Encounter.Targets {
+				for _, at := range hunter.AttackTables[t.UnitIndex] {
+					at.DamageDealtMultiplier *= multiplier
+					at.CritMultiplier *= multiplier
+				}
+			}
+		})
 	}
 
 	if hunter.Talents.BestialDiscipline > 0 {
@@ -49,7 +59,7 @@ func (hunter *Hunter) ApplyTalents() {
 			Label: "Bestial Discipline",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				if hunter.pet != nil {
-					hunter.pet.AddFocusRegenMultiplier(0.1*float64(hunter.Talents.BestialDiscipline))
+					hunter.pet.AddFocusRegenMultiplier(0.1 * float64(hunter.Talents.BestialDiscipline))
 				}
 			},
 		}))
