@@ -8,7 +8,7 @@ import (
 )
 
 func hauntMultiplier(spell *core.Spell, _ *core.AttackTable) float64 {
-	return core.TernaryFloat64(spell.Flags.Matches(WarlockFlagHaunt), 1.2, 1)
+	return core.TernaryFloat64(spell.Flags.Matches(WarlockFlagHaunt), 1.40, 1)
 }
 
 func (warlock *Warlock) registerHauntSpell() {

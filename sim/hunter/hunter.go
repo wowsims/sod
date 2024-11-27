@@ -92,7 +92,7 @@ type Hunter struct {
 	NormalizedAmmoDamageBonus float64
 
 	// Miscellaneous set bonuses that require extra logic inside of spells
-	SerpentStingAPCoeff       float64
+	SerpentStingAPCoeff float64
 
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *core.Spell
@@ -158,9 +158,9 @@ func (hunter *Hunter) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	if raidBuffs.TrueshotAura && hunter.Talents.TrueshotAura {
 		hunter.AddStat(stats.RangedAttackPower, map[int32]float64{
 			25: 0,
-			40: 50,
-			50: 75,
-			60: 100,
+			40: 100,
+			50: 150,
+			60: 200,
 		}[hunter.Level])
 	}
 

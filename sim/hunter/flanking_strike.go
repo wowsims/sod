@@ -32,7 +32,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			for _, spell := range affectedSpells {
-				spell.DamageMultiplier *= (1 + 0.08*float64(newStacks)) / (1 + 0.08*float64(oldStacks))
+				spell.DamageMultiplierAdditive += 0.08 * float64(newStacks-oldStacks)
 			}
 		},
 	})

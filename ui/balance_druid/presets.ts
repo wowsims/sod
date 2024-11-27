@@ -159,7 +159,6 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 export const DefaultPartyBuffs = PartyBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
-	faerieFire: true,
 	improvedFaerieFire: true,
 	judgementOfWisdom: true,
 	occultPoison: true,

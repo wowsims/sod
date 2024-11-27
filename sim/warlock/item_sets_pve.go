@@ -490,11 +490,14 @@ var ItemSetDemoniacsThreads = core.NewItemSet(core.ItemSet{
 var ItemSetDoomcallersCorruption = core.NewItemSet(core.ItemSet{
 	Name: "Doomcaller's Corruption",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Reduces the cooldown on your Chaos Bolt by 50%, increases the damage of your Shadow Bolt and Chaos Bolt by 10%, and your Chaos Bolt now triggers your Improved Shadow Bolt talents.
+		// Reduces the cooldown on your Chaos Bolt by 50% and increases Chaos Bolt and Shadow Bolt damage done by 10%.
+		// In addition, Chaos Bolt can now trigger your Improved Shadow Bolt talent.
 		2: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			warlock.RegisterAura(core.Aura{
+			hasChaosBoltRune := warlock.HasRune(proto.WarlockRune_RuneHandsChaosBolt)
+
+			aura := warlock.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Warlock - Damage 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range warlock.ShadowBolt {
@@ -505,10 +508,22 @@ var ItemSetDoomcallersCorruption = core.NewItemSet(core.ItemSet{
 						warlock.ChaosBolt.CD.Duration /= 2
 						warlock.ChaosBolt.DamageMultiplierAdditive += 0.10
 					}
-
-					warlock.improvedShadowBoltSpellCodes = append(warlock.improvedShadowBoltSpellCodes, SpellCode_WarlockChaosBolt)
 				},
 			})
+
+			if !hasChaosBoltRune {
+				return
+			}
+
+			core.MakePermanent(aura)
+			aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && result.DidCrit() && spell.SpellCode == SpellCode_WarlockChaosBolt {
+					isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
+					isbAura.Activate(sim)
+					isbAura.SetStacks(sim, core.ISBNumStacksShadowflame)
+				}
+			}
+
 		},
 		// Each time you hit a target with Conflagrate, you gain 5% increased Fire damage for 20 sec, stacking up to 2 times.
 		4: func(agent core.Agent) {

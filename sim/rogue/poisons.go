@@ -83,6 +83,16 @@ func (rogue *Rogue) applyPoisons() {
 	rogue.applySebaciousPoison()
 	rogue.applyAtrophicPoison()
 	rogue.applyNumbingPoison()
+
+	if rogue.Options.PkSwap && rogue.HasRune(proto.RogueRune_RunePoisonedKnife) {
+		rogue.RegisterAura(core.Aura{
+			Label:    "Apply Sebacious on pull (PK Swap)",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				rogue.SebaciousPoison[1].Cast(sim, sim.GetTargetUnit(0))
+			},
+		})
+	}
 }
 
 // Apply Deadly Brew Instant Poison procs
@@ -568,7 +578,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(baseDamageByLevel, baseDamageByLevel+damageVariance) + core.TernaryFloat64(hasDeadlyBrew, 0.03*spell.MeleeAttackPower(), 0)
+			baseDamage := sim.Roll(baseDamageByLevel, baseDamageByLevel+damageVariance) + core.TernaryFloat64(hasDeadlyBrew, 0.05*spell.MeleeAttackPower(), 0)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 		},
 	})

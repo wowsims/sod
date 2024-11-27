@@ -162,14 +162,14 @@ var ItemSetGiantstalkerPursuit = core.NewItemSet(core.ItemSet{
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.Shots {
 						if spell != nil {
-							spell.DamageMultiplier *= 1.20
+							spell.DamageMultiplierAdditive += 0.20
 						}
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.Shots {
 						if spell != nil {
-							spell.DamageMultiplier /= 1.20
+							spell.DamageMultiplierAdditive -= 0.20
 						}
 					}
 				},
@@ -216,12 +216,12 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for spell := range affectedSpells {
-						spell.DamageMultiplier *= 1.20
+						spell.DamageMultiplierAdditive += 0.20
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for spell := range affectedSpells {
-						spell.DamageMultiplier /= 1.20
+						spell.DamageMultiplierAdditive -= 0.20
 					}
 				},
 				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -248,7 +248,7 @@ var ItemSetDragonstalkerProwess = core.NewItemSet(core.ItemSet{
 
 			hunter.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_HunterWyvernStrike || (spell.SpellCode == SpellCode_HunterRaptorStrikeHit && spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial)) {
-					spell.DamageMultiplier *= 1.20
+					spell.DamageMultiplierAdditive += 0.20
 				}
 			})
 		},
@@ -299,14 +299,14 @@ var ItemSetDragonstalkerPursuit = core.NewItemSet(core.ItemSet{
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range shotSpells {
 						if spell.SpellCode != hunter.LastShot.SpellCode {
-							spell.DamageMultiplier *= 1.10
+							spell.DamageMultiplierAdditive += 0.10
 						}
 					}
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range shotSpells {
 						if spell.SpellCode != hunter.LastShot.SpellCode {
-							spell.DamageMultiplier /= 1.10
+							spell.DamageMultiplierAdditive -= 0.10
 						}
 					}
 				},
@@ -406,32 +406,33 @@ var TrappingsOfTheUnseenPath = core.NewItemSet(core.ItemSet{
 var StrikersProwess = core.NewItemSet(core.ItemSet{
 	Name: "Striker's Prowess",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Increases Wyvern Strike DoT by 50%
+		// Increases Wyvern Strike DoT by 50% and increases your pet's maximum focus by 50.
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			if !hunter.Talents.WyvernSting || !hunter.HasRune(proto.HunterRune_RuneBootsWyvernStrike) {
-				return
-			}
 
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Prowess 2P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.WyvernStrike.PeriodicDamageMultiplierAdditive += 0.50
+					if hunter.WyvernStrike != nil {
+						hunter.WyvernStrike.PeriodicDamageMultiplierAdditive += 0.50
+					}
+
+					// Focus implementation in pet.go
 				},
 			})
 		},
-		// Increases the Impact Damage of Mongoose Bite and all Strikes by 10%
+		// Increases the Impact Damage of Mongoose Bite and all Strikes by 15%
 		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Prowess 4P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range hunter.Strikes {
-						spell.ImpactDamageMultiplierAdditive += 0.10
+						spell.ImpactDamageMultiplierAdditive += 0.15
 					}
-					hunter.RaptorStrikeMH.ImpactDamageMultiplierAdditive += 0.10
-					hunter.RaptorStrikeOH.ImpactDamageMultiplierAdditive += 0.10
-					hunter.MongooseBite.ImpactDamageMultiplierAdditive += 0.10
+					hunter.RaptorStrikeMH.ImpactDamageMultiplierAdditive += 0.15
+					hunter.RaptorStrikeOH.ImpactDamageMultiplierAdditive += 0.15
+					hunter.MongooseBite.ImpactDamageMultiplierAdditive += 0.15
 				},
 			})
 		},
@@ -441,32 +442,8 @@ var StrikersProwess = core.NewItemSet(core.ItemSet{
 var StrikersPursuit = core.NewItemSet(core.ItemSet{
 	Name: "Striker's Pursuit",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Kill Shot's remaining cooldown is reduced by 65% when used on targets between 20% and 50% health, and has no cooldown while your Rapid Fire is active
+		// Increases Kill Shot damage by 50% against non-player targets.
 		2: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
-				return
-			}
-
-			cdReduction := 0.65
-			core.MakePermanent(hunter.RegisterAura(core.Aura{
-				Label: "Striker's Pursuit 2P",
-				OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-					if spell.SpellCode != SpellCode_HunterKillShot {
-						return
-					}
-
-					if hunter.HasActiveAura("Rapid Fire") {
-						spell.CD.Reset()
-					} else if sim.CurrentTime > sim.Encounter.Duration/2 {
-						reducedCooldown := spell.CD.TimeToReady(sim) / 1000 * time.Duration(1000*(1.0-cdReduction))
-						spell.CD.Set(sim.CurrentTime + reducedCooldown)
-					}
-				},
-			}))
-		},
-		// Increases Kill Shot damage by 50%
-		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
 			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
 				return
@@ -475,7 +452,63 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Pursuit 4P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.KillShot.DamageMultiplier *= 1.50
+					hunter.KillShot.DamageMultiplierAdditive += 0.50
+				},
+			})
+		},
+		// Kill Shot's cooldown is reduced by 50%.
+		// While Rapid Fire is active with Rapid killing engraved, Kill Shot has no cooldown and fires 3 additional Kill Shots at 33% damage, with a minimum range.
+		4: func(agent core.Agent) {
+			hunter := agent.(HunterAgent).GetHunter()
+			if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
+				return
+			}
+
+			clonedShotConfig := hunter.newKillShotConfig()
+			clonedShotConfig.ActionID.Tag = 1
+			clonedShotConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
+			clonedShotConfig.Cast.DefaultCast.CastTime = 0
+			clonedShotConfig.Cast.DefaultCast.GCD = 0
+			clonedShotConfig.Cast.DefaultCast.Cost = 0
+			clonedShotConfig.Cast.CD = core.Cooldown{}
+			clonedShotConfig.ManaCost.BaseCost = 0
+			clonedShotConfig.ManaCost.FlatCost = 0
+			clonedShotConfig.MetricSplits = 0
+			clonedShotConfig.DamageMultiplier *= 0.3333
+
+			clonedShot := hunter.RegisterSpell(clonedShotConfig)
+
+			hunter.RegisterAura(core.Aura{
+				Label: "Striker's Pursuit 2P",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.KillShot.CD.Duration -= 6 * time.Second
+
+					if !hunter.HasRune(proto.HunterRune_RuneHelmRapidKilling) {
+						return
+					}
+
+					oldApplyEffects := hunter.KillShot.ApplyEffects
+					hunter.KillShot.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+						oldApplyEffects(sim, target, spell)
+
+						if hunter.RapidFireAura.IsActive() {
+							spell.CD.Reset()
+
+							for i := 1; i < 4; i++ {
+								core.StartDelayedAction(sim, core.DelayedActionOptions{
+									DoAt: sim.CurrentTime + time.Duration(i*375)*time.Millisecond,
+									OnAction: func(sim *core.Simulation) {
+										// Ensure that the cloned shots get any damage amps from the main Kill Shot ability
+										clonedShot.DamageMultiplier *= spell.DamageMultiplier
+										clonedShot.DamageMultiplierAdditive += spell.DamageMultiplierAdditive - 1
+										clonedShot.Cast(sim, target)
+										clonedShot.DamageMultiplier /= spell.DamageMultiplier
+										clonedShot.DamageMultiplierAdditive -= spell.DamageMultiplierAdditive - 1
+									},
+								})
+							}
+						}
+					}
 				},
 			})
 		},

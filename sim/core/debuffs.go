@@ -305,7 +305,7 @@ func exclusiveNatureDamageTakenAura(unit *Unit, label string, actionID ActionID)
 func ExternalIsbCaster(_ *proto.Debuffs, target *Unit) {
 	isbConfig := target.Env.Raid.Parties[0].Players[0].GetCharacter().IsbConfig
 	baseStacks := TernaryInt32(isbConfig.hasShadowflameRune, ISBNumStacksShadowflame, ISBNumStacksBase)
-	isbAura := ImprovedShadowBoltAura(target, 5, baseStacks)
+	isbAura := ImprovedShadowBoltAura(target, 5)
 	isbCrit := isbConfig.casterCrit / 100.0
 	var pa *PendingAction
 	MakePermanent(target.GetOrRegisterAura(Aura{
@@ -365,7 +365,7 @@ const (
 	ISBNumStacksShadowflame = 30
 )
 
-func ImprovedShadowBoltAura(unit *Unit, rank int32, stackCount int32) *Aura {
+func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 	isbLabel := "Improved Shadow Bolt"
 	if unit.GetAura(isbLabel) != nil {
 		return unit.GetAura(isbLabel)
@@ -383,7 +383,7 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32, stackCount int32) *Aura {
 		Label:     isbLabel,
 		ActionID:  ActionID{SpellID: 17800},
 		Duration:  12 * time.Second,
-		MaxStacks: stackCount,
+		MaxStacks: 30,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			// External shadow priests simulation
 			if externalShadowPriests > 0 {

@@ -17,7 +17,6 @@ type Hardcast struct {
 	ActionID   ActionID
 	OnComplete func(*Simulation, *Unit)
 	Target     *Unit
-	Pushback   float64
 }
 
 // Input for constructing the CastSpell function for a spell.
@@ -98,12 +97,15 @@ func (unit *Unit) applySpellPushback() {
 				return
 			}
 
-			if hc := aura.Unit.Hardcast; aura.Unit.IsCasting(sim) && sim.Roll(0, 1.0) > spell.PushbackReduction {
-				// Do spell pushback
-				pushback := DurationFromSeconds(max(0.2, hc.Pushback))
-				aura.Unit.Hardcast.Pushback -= 0.2
-
+			if hc := aura.Unit.Hardcast; aura.Unit.IsCasting(sim) {
 				hcSpell := aura.Unit.GetSpell(hc.ActionID)
+				// Caster avoided the pushback
+				if sim.Roll(0, 1.0) <= hcSpell.PushbackReduction {
+					return
+				}
+
+				// Do spell pushback
+				pushback := DurationFromSeconds(sim.Roll(0.5, 1.0) * unit.PseudoStats.SpellPushbackMultiplier)
 
 				if hcSpell.Flags.Matches(SpellFlagChanneled) {
 					newExpires := max(sim.CurrentTime, hc.Expires-pushback)
@@ -268,7 +270,6 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			spell.Unit.Hardcast = Hardcast{
 				Expires:  sim.CurrentTime + spell.CurCast.CastTime,
 				ActionID: spell.ActionID,
-				Pushback: 1.0,
 				OnComplete: func(sim *Simulation, target *Unit) {
 					spell.LastCastAt = sim.CurrentTime
 

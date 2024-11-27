@@ -32,6 +32,7 @@ func (warlock *Warlock) ApplyTalents() {
 	warlock.applyCataclysm()
 	warlock.applyBane()
 	warlock.applyDevastation()
+	warlock.applyImprovedImmolate()
 	warlock.applyRuin()
 	warlock.applyEmberstorm()
 }
@@ -549,7 +550,7 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 
 	stackCount := core.TernaryInt32(hasShadowflameRune, core.ISBNumStacksShadowflame, core.ISBNumStacksBase)
 	warlock.ImprovedShadowBoltAuras = warlock.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.ImprovedShadowBoltAura(unit, warlock.Talents.ImprovedShadowBolt, stackCount)
+		return core.ImprovedShadowBoltAura(unit, warlock.Talents.ImprovedShadowBolt)
 	})
 
 	warlock.improvedShadowBoltSpellCodes = []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockShadowflame}
@@ -563,9 +564,9 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && result.DidCrit() && slices.Contains(warlock.improvedShadowBoltSpellCodes, spell.SpellCode) {
-				impShadowBoltAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
-				impShadowBoltAura.Activate(sim)
-				impShadowBoltAura.SetStacks(sim, stackCount)
+				isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
+				isbAura.Activate(sim)
+				isbAura.SetStacks(sim, stackCount)
 			}
 		},
 	}))
