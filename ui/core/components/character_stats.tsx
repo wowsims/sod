@@ -256,7 +256,7 @@ export class CharacterStats extends Component {
 				</div>
 			);
 
-			if (stat.isStat() && stat.getStat() === Stat.StatMeleeHit) {
+			if (stat.isStat() && [Stat.StatMeleeHit, Stat.StatExpertise].includes(stat.getStat())) {
 				tooltipContent.appendChild(
 					<div className="ps-2">
 						<div className="character-stats-tooltip-row">
