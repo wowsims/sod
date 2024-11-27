@@ -774,7 +774,7 @@ var ItemSetStormcallersImpact = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(shaman.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Shaman - Enhancement 4P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == shaman.StormstrikeMH || spell == shaman.LavaLash || spell == shaman.LavaBurst) {
+					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == shaman.StormstrikeMH || spell == shaman.StormstrikeOH || spell == shaman.LavaLash || spell == shaman.LavaBurst) {
 						return
 					}
 
