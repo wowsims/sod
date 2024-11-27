@@ -119,6 +119,7 @@ type Spell struct {
 
 	SpellMetrics []SpellMetrics
 
+	splitIdx          int32
 	splitSpellMetrics [][]SpellMetrics // Used to split metrics by some condition, via SetMetricsSplit
 	splitTags         []int32          // Tags for each splitSpellMetrics used in doneIteration, defaults to the metrics splitIdx.
 
@@ -454,7 +455,12 @@ func (spell *Spell) reset(_ *Simulation) {
 	spell.LastCastAt = 0
 }
 
+func (spell *Spell) GetMetricsSplitIdx() int32 {
+	return spell.splitIdx
+}
+
 func (spell *Spell) SetMetricsSplit(splitIdx int32) {
+	spell.splitIdx = splitIdx
 	spell.SpellMetrics = spell.splitSpellMetrics[splitIdx]
 	spell.Tag = spell.splitTags[splitIdx]
 }

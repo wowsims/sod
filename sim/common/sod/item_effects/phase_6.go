@@ -482,7 +482,7 @@ func TimewornStrikeAura(agent core.Agent) {
 		Outcome:    core.OutcomeLanded,
 		ProcMask:   core.ProcMaskMelee,
 		ProcChance: procChance,
-		ICD:        time.Millisecond * 100,
+		ICD:        time.Millisecond * 200,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1213381}, spell)
 		},
@@ -498,9 +498,10 @@ func TimewornStrikeAura(agent core.Agent) {
 		Outcome:    core.OutcomeLanded,
 		ProcMask:   core.ProcMaskRanged,
 		ProcChance: procChance,
-		ICD:        time.Millisecond * 100,
+		ICD:        time.Millisecond * 200,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			character.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
+			// Extra ranged attacks do not reset the swing timer confirmed by Zirene
+			character.AutoAttacks.StoreExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
 		},
 	})
 }

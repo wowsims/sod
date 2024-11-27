@@ -753,14 +753,6 @@ func (c *Character) ApplyRingRunes() {
 		c.BowSpecializationAura()
 		c.CrossbowSpecializationAura()
 		c.ThrownSpecializationAura()
-
-		// Also increases chance for Beast pets to hit by 2%
-		for _, pet := range c.Pets {
-			if !pet.IsGuardian() && pet.Unit.MobType == proto.MobType_MobTypeBeast {
-				pet.AddStat(stats.MeleeHit, 2*MeleeHitRatingPerHitChance)
-				pet.AddStat(stats.SpellHit, 2*SpellHitRatingPerHitChance)
-			}
-		}
 	}
 
 	if c.HasRuneById(int32(proto.RingRune_RuneRingSwordSpecialization)) {

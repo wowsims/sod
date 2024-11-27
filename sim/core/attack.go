@@ -164,10 +164,11 @@ func (aa *AutoAttacks) MH() *Weapon {
 }
 
 func (aa *AutoAttacks) SetMH(weapon Weapon) {
+	extraAttacksAura := aa.mh.extraAttacksAura
 	aa.mh.setWeapon(weapon)
 
-	if aa.mh.extraAttacksAura == nil {
-		aa.mh.extraAttacksAura = aa.mh.unit.GetAuraByID(ActionID{SpellID: 21919})
+	if extraAttacksAura != nil && aa.mh.extraAttacksAura == nil {
+		aa.mh.extraAttacksAura = extraAttacksAura
 	}
 }
 
@@ -296,11 +297,14 @@ func (wa *WeaponAttack) castExtraAttacks(sim *Simulation, numExtraAttacks int32,
 	if numExtraAttacks > 0 {
 		// if startIndex==1, Ignore the first extra attack, that was used to speed up next attack
 		wa.spell.SetMetricsSplit(1)
+		wa.spell.CastTimeMultiplier -= 1
 
 		for i := int32(startIndex); i < numExtraAttacks; i++ {
 			// use original attacks for subsequent extra Attacks
 			wa.spell.Cast(sim, wa.unit.CurrentTarget)
 		}
+
+		wa.spell.CastTimeMultiplier += 1
 
 		return true
 	}
@@ -464,16 +468,21 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		BonusCoefficient: TernaryFloat64(options.MainHand.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-
 			autoInProgress := *spell
-
 			baseDamage := autoInProgress.Unit.MHWeaponDamage(sim, autoInProgress.MeleeAttackPower())
 			result := autoInProgress.CalcDamage(sim, target, baseDamage, autoInProgress.OutcomeMeleeWhite)
 
+			splitIdx := spell.GetMetricsSplitIdx()
+
 			StartDelayedAction(sim, DelayedActionOptions{
 				DoAt: sim.CurrentTime + SpellBatchWindow,
-				OnAction: func(s *Simulation) {
+				OnAction: func(sim *Simulation) {
+					newSplitIdx := autoInProgress.GetMetricsSplitIdx()
+
+					// We have to dynamically update the split metrics to ensure extra attacks' damage are categorized correctly
+					autoInProgress.SetMetricsSplit(splitIdx)
 					autoInProgress.DealDamage(sim, result)
+					autoInProgress.SetMetricsSplit(newSplitIdx)
 				},
 			})
 		},
@@ -494,14 +503,13 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		BonusCoefficient: TernaryFloat64(options.OffHand.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-
 			autoInProgress := *spell
 			baseDamage := autoInProgress.Unit.OHWeaponDamage(sim, autoInProgress.MeleeAttackPower())
 			result := autoInProgress.CalcDamage(sim, target, baseDamage, autoInProgress.OutcomeMeleeWhite)
 
 			StartDelayedAction(sim, DelayedActionOptions{
 				DoAt: sim.CurrentTime + SpellBatchWindow,
-				OnAction: func(s *Simulation) {
+				OnAction: func(sim *Simulation) {
 					autoInProgress.DealDamage(sim, result)
 				},
 			})
@@ -527,8 +535,15 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target, false))
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
+			splitIdx := spell.GetMetricsSplitIdx()
+
 			spell.WaitTravelTime(sim, func(sim *Simulation) {
+				newSplitIdx := spell.GetMetricsSplitIdx()
+
+				// We have to dynamically update the split metrics to ensure extra attacks' damage are categorized correctly
+				spell.SetMetricsSplit(splitIdx)
 				spell.DealDamage(sim, result)
+				spell.SetMetricsSplit(newSplitIdx)
 			})
 		},
 	}
@@ -546,6 +561,20 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeEnemyMeleeWhite)
 		}
+	} else {
+		unit.AutoAttacks.mh.extraAttacksAura = MakePermanent(unit.RegisterAura(Aura{
+			Label:     "Extra Attacks (Main Hand)", // Tracks Stored Extra Attacks from all sources
+			ActionID:  ActionID{SpellID: 21919},    // Thrash ID
+			Duration:  NeverExpires,
+			MaxStacks: 4, // Max is 4 extra attacks stored - more can proc after
+		}))
+
+		unit.AutoAttacks.ranged.extraAttacksAura = MakePermanent(unit.RegisterAura(Aura{
+			Label:     "Extra Attacks (Ranged)", // Tracks Stored Extra Attacks from all sources
+			ActionID:  ActionID{SpellID: 21919}, // Thrash ID
+			Duration:  NeverExpires,
+			MaxStacks: 4, // Max is 4 extra attacks stored - more can proc after
+		}))
 	}
 }
 
@@ -770,19 +799,6 @@ func (aa *AutoAttacks) StoreExtraMHAttack(sim *Simulation, attacks int32, action
 		return
 	}
 
-	if aa.mh.extraAttacksAura == nil {
-		aa.mh.extraAttacksAura = aa.mh.unit.GetAuraByID(ActionID{SpellID: 21919})
-	}
-
-	if aa.mh.extraAttacksAura == nil {
-		aa.mh.extraAttacksAura = MakePermanent(aa.mh.unit.GetOrRegisterAura(Aura{
-			Label:     "Extra Attacks (Main Hand)", // Tracks Stored Extra Attacks from all sources
-			ActionID:  ActionID{SpellID: 21919},    // Thrash ID
-			Duration:  NeverExpires,
-			MaxStacks: 4, // Max is 4 extra attacks stored - more can proc after
-		}))
-	}
-
 	if !aa.mh.extraAttacksAura.IsActive() {
 		aa.mh.extraAttacksAura.Activate(sim)
 	}
@@ -820,6 +836,22 @@ func (aa *AutoAttacks) ExtraRangedAttack(sim *Simulation, attacks int32, actionI
 	aa.ranged.spell.SetMetricsSplit(1)
 	sim.rescheduleWeaponAttack(aa.ranged.swingAt)
 	aa.ranged.extraAttacks += attacks
+}
+
+func (aa *AutoAttacks) StoreExtraRangedAttack(sim *Simulation, attacks int32, actionID ActionID, triggerAction ActionID) {
+	if attacks == 0 {
+		return
+	}
+
+	if !aa.ranged.extraAttacksAura.IsActive() {
+		aa.ranged.extraAttacksAura.Activate(sim)
+	}
+
+	aa.ranged.extraAttacksAura.AddStacks(sim, attacks)
+
+	if sim.Log != nil {
+		aa.ranged.unit.Log(sim, "stored %d extra main-hand attacks from %s triggered by %s, total is %d", attacks, actionID, triggerAction, aa.mh.extraAttacksStored)
+	}
 }
 
 // StopMeleeUntil should be used whenever a non-melee spell is cast. It stops melee, then restarts it

@@ -267,23 +267,27 @@ func (hp *HunterPet) killCommandMult() float64 {
 }
 
 func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
+	// Ranged Weapon Specialization adds 3% hit and 0.5% expertise
+	hasRangedWeaponSpecialization := hunter.HasRune(proto.HunterRune(proto.RingRune_RuneRingRangedWeaponSpecialization))
+
+	bonusHit := core.TernaryFloat64(hasRangedWeaponSpecialization, 3, 0)
+	bonusExpertise := core.TernaryFloat64(hasRangedWeaponSpecialization, 0.5, 0)
+
 	return func(ownerStats stats.Stats) stats.Stats {
-		// EJ posts claim this value is passed through math.Floor, but in-game testing
-		// shows pets benefit from each point of owner hit rating in WotLK Classic.
-		// https://web.archive.org/web/20120112003252/http://elitistjerks.com/f80/t100099-demonology_releasing_demon_you
-		ownerHitChance := ownerStats[stats.MeleeHit] / core.MeleeHitRatingPerHitChance
-		hitRatingFromOwner := ownerHitChance * core.MeleeHitRatingPerHitChance
+		ownerHitChance := ownerStats[stats.MeleeHit]
 
 		return stats.Stats{
 			stats.Stamina:     ownerStats[stats.Stamina] * 0.3,
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
 			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.22,
 
-			stats.MeleeCrit: ownerStats[stats.MeleeCrit],
-			stats.SpellCrit: ownerStats[stats.MeleeCrit],
+			stats.MeleeCrit: ownerStats[stats.MeleeCrit] + bonusHit,
+			stats.SpellCrit: ownerStats[stats.MeleeCrit] + bonusHit,
 
-			stats.MeleeHit: hitRatingFromOwner,
-			stats.SpellHit: hitRatingFromOwner * 2,
+			stats.MeleeHit: ownerHitChance + bonusHit,
+			stats.SpellHit: ownerHitChance*2 + bonusHit,
+
+			stats.Expertise: ownerStats[stats.Expertise] + bonusExpertise,
 		}
 	}
 }

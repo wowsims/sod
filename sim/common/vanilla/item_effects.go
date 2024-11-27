@@ -2418,25 +2418,17 @@ func init() {
 			return
 		}
 
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Second * 2,
-		}
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Hand of Injustice",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
-					return
-				}
-				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskRanged) && icd.IsReady(sim) && sim.Proc(0.02, "HandOfInjustice") {
-					icd.Use(sim)
-					aura.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164}, spell.ActionID)
-				}
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Hand of Injustice Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskRanged,
+			ProcChance:        0.02,
+			ICD:               2 * time.Second,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				// Extra ranged attacks do not reset the swing timer confirmed by Zirene
+				character.AutoAttacks.StoreExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
 			},
 		})
 	})

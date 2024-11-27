@@ -1,6 +1,7 @@
 package hunter
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/guardians"
@@ -322,9 +323,8 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 		ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
 			cast.CastTime = spell.CastTime()
 		},
-		IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 		CastTime: func(spell *core.Spell) time.Duration {
-			return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
+			return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed() * math.Max(spell.CastTimeMultiplier, 0))
 		},
 	}
 	hunter.AutoAttacks.RangedConfig().ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
@@ -337,8 +337,15 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 			hunter.AmmoDamageBonus
 		result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
+		splitIdx := spell.GetMetricsSplitIdx()
+
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+			newSplitIdx := spell.GetMetricsSplitIdx()
+
+			// We have to dynamically update the split metrics to ensure extra attacks' damage are categorized correctly
+			spell.SetMetricsSplit(splitIdx)
 			spell.DealDamage(sim, result)
+			spell.SetMetricsSplit(newSplitIdx)
 		})
 	}
 
