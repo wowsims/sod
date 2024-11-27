@@ -452,7 +452,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Pursuit 4P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.KillShot.DamageMultiplierAdditive += 0.35
+					hunter.KillShot.DamageMultiplierAdditive += 0.20
 				},
 			})
 		},
@@ -467,6 +467,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 			clonedShotConfig := hunter.newKillShotConfig()
 			clonedShotConfig.ActionID.Tag = 1
 			clonedShotConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
+			clonedShotConfig.Flags ^= core.SpellFlagAPL
 			clonedShotConfig.Cast.DefaultCast.CastTime = 0
 			clonedShotConfig.Cast.DefaultCast.GCD = 0
 			clonedShotConfig.Cast.DefaultCast.Cost = 0
@@ -474,7 +475,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 			clonedShotConfig.ManaCost.BaseCost = 0
 			clonedShotConfig.ManaCost.FlatCost = 0
 			clonedShotConfig.MetricSplits = 0
-			clonedShotConfig.DamageMultiplier *= 0.3333
+			clonedShotConfig.DamageMultiplier *= 0.30
 
 			clonedShot := hunter.RegisterSpell(clonedShotConfig)
 
