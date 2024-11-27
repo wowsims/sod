@@ -162,9 +162,9 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	}
 }
 
-// func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-// 	return druid.MaulReplaceMH(sim, mhSwingSpell)
-// }
+func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
+	return druid.MaulReplaceMH(sim, mhSwingSpell)
+}
 
 func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *DruidSpell {
 	prev := config.ExtraCastCondition
@@ -233,12 +233,12 @@ func (druid *Druid) RegisterFeralCatSpells() {
 func (druid *Druid) RegisterFeralTankSpells() {
 	// druid.registerBarkskinCD()
 	// druid.registerBerserkCD()
-	// druid.registerBearFormSpell()
+	druid.registerBearFormSpell()
 	// druid.registerDemoralizingRoarSpell()
 	// druid.registerEnrageSpell()
 	// druid.registerFrenziedRegenerationCD()
 	// druid.registerMangleBearSpell()
-	// druid.registerMaulSpell()
+	druid.registerMaulSpell()
 	// druid.registerLacerateSpell()
 	// druid.registerRakeSpell()
 	// druid.registerRipSpell()

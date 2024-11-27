@@ -18,14 +18,14 @@ func (druid *Druid) registerMaulSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
-		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagNoOnCastComplete,
+		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 		RageCost: core.RageCostOptions{
 			Cost:   rageCost,
 			Refund: 0.8,
 		},
 
-		DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		FlatThreatBonus:  424,
 
@@ -36,19 +36,18 @@ func (druid *Druid) registerMaulSpell() {
 			}
 
 			modifier := 1.0
-			if druid.BleedCategories.Get(target).AnyActive() {
-				modifier += .3
-			}
-			if druid.AssumeBleedActive || druid.Rip.Dot(target).IsActive() || druid.Rake.Dot(target).IsActive() || druid.Lacerate.Dot(target).IsActive() {
-				modifier *= 1.0 + (0.04 * float64(druid.Talents.RendAndTear))
-			}
+			// if druid.BleedCategories.Get(target).AnyActive() {
+			// 	modifier += .3
+			// }
+			// if druid.AssumeBleedActive || druid.Rip.Dot(target).IsActive() || druid.Rake.Dot(target).IsActive() || druid.Lacerate.Dot(target).IsActive() {
+			// 	modifier *= 1.0 + (0.04 * float64(druid.Talents.RendAndTear))
+			// }
 
 			baseDamage := flatBaseDamage +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			baseDamage *= modifier
 
-			result := spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)
