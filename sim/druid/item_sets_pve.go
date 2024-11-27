@@ -683,11 +683,57 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// Each time you Dodge while in Dire Bear Form, you gain 10% increased damage on your next Mangle or Swipe, stacking up to 5 times.
 		2: func(agent core.Agent) {
-			// TODO Bear
+			druid := agent.(DruidAgent).GetDruid()
+
+			druid.Tank2PieceAqProcAura = druid.RegisterAura(core.Aura{
+				Label:     "Feral 2P Bonus Proc",
+				ActionID:  core.ActionID{SpellID: 1213188},
+				Duration:  time.Second * 10,
+				MaxStacks: 5,
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					if newStacks == 0 {
+						druid.MangleBear.DamageMultiplierAdditive -= float64(oldStacks) * .1
+						druid.SwipeBear.DamageMultiplierAdditive -= float64(oldStacks) * .1
+					} else {
+						druid.MangleBear.DamageMultiplierAdditive += .1
+						druid.SwipeBear.DamageMultiplierAdditive += .1
+					}
+				},
+			})
+
+			druid.Tank2PieceAqAura = druid.RegisterAura(core.Aura{
+				Label:           "S03 - Item - TAQ - Druid - Feral 2P Bonus",
+				ActionID:        core.ActionID{SpellID: 1213188},
+				ActionIDForProc: core.ActionID{SpellID: 1213190},
+				Duration:        core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if druid.HasRageBar() && spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.Outcome.Matches(core.OutcomeDodge) {
+						druid.Tank2PieceAqProcAura.Activate(sim)
+						druid.Tank2PieceAqProcAura.AddStack(sim)
+					}
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellID == druid.MangleBear.SpellID || spell.SpellID == druid.SwipeBear.SpellID {
+						druid.Tank2PieceAqProcAura.SetStacks(sim, 0)
+					}
+				},
+			})
 		},
 		// Reduces the cooldown on Mangle (Bear) by 1.5 sec.
 		4: func(agent core.Agent) {
-			// TODO Bear
+			druid := agent.(DruidAgent).GetDruid()
+			if !druid.HasRune(proto.DruidRune_RuneHandsMangle) {
+				return
+			}
+			druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Druid - Feral 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					druid.MangleBear.CD.Duration -= (time.Second + 500*time.Millisecond)
+				},
+			})
 		},
 	},
 })
