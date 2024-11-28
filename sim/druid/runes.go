@@ -16,6 +16,7 @@ func (druid *Druid) ApplyRunes() {
 	// Cloak
 	druid.registerStarfallCD()
 	druid.registerSwipeCatSpell()
+	druid.registerSwipeBearSpell()
 
 	// Chest
 	druid.applyFuryOfStormRage()
@@ -270,7 +271,7 @@ func (druid *Druid) tryElunesFiresRipExtension(sim *core.Simulation, unit *core.
 }
 
 func (druid *Druid) applyMangle() {
-	//druid.registerMangleBearSpell()
+	druid.registerMangleBearSpell()
 	druid.registerMangleCatSpell()
 }
 

@@ -111,6 +111,7 @@ enum RogueRune {
 
 message RogueOptions {
 	int32 HonorAmongThievesCritRate = 1;
+	bool pkSwap = 2;
 }
 
 message Rogue {

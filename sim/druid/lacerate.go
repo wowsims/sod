@@ -7,30 +7,26 @@ import (
 )
 
 func (druid *Druid) registerLacerateSpell() {
-	tickDamage := 320.0 / 5
+	tickDamage := 20.0
 	initialDamage := 88.0
-	if druid.Ranged().ID == 27744 { // Idol of Ursoc
-		tickDamage += 8
-		initialDamage += 8
+	initialDamageMul := 1.0
+	additionalTickDamage := 0
+
+	switch druid.Ranged().ID {
+	case IdolOfBrutality:
+		initialDamageMul *= .07
+		additionalTickDamage += 7
 	}
 
-	initialDamageMul := 1 *
-		core.TernaryFloat64(druid.HasSetBonus(ItemSetLasherweaveBattlegear, 2), 1.2, 1) *
-		core.TernaryFloat64(druid.HasSetBonus(ItemSetDreamwalkerBattlegear, 2), 1.05, 1)
-
-	tickDamageMul := 1 *
-		core.TernaryFloat64(druid.HasSetBonus(ItemSetLasherweaveBattlegear, 2), 1.2, 1) *
-		core.TernaryFloat64(druid.HasSetBonus(ItemSetMalfurionsBattlegear, 2), 1.05, 1)
-
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 48568},
+		ActionID:    core.ActionID{SpellID: 414644},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(druid.Talents.ShreddingAttacks),
+			Cost:   10,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -41,35 +37,25 @@ func (druid *Druid) registerLacerateSpell() {
 		},
 
 		DamageMultiplier: initialDamageMul,
-		ThreatMultiplier: 0.5,
-		// FlatThreatBonus:  515.5, // Handled below
+		ThreatMultiplier: 3.5,
+
+		// everything up to here should be accurate
 
 		Dot: core.DotConfig{
-			Aura: druid.applyRendAndTear(core.Aura{
-				Label:     "Lacerate",
-				MaxStacks: 5,
-				Duration:  time.Second * 15,
-			}),
 			NumberOfTicks: 5,
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = tickDamage + 0.01*dot.Spell.MeleeAttackPower()
+				dot.SnapshotBaseDamage = tickDamage + float64(dot.Aura.GetStacks() * int32(additionalTickDamage))
 				dot.SnapshotBaseDamage *= float64(dot.Aura.GetStacks())
 
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.Spell.DamageMultiplier = tickDamageMul
-					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if druid.Talents.PrimalGore {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-				} else {
-					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
-				}
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
 			},
 		},
 
@@ -79,8 +65,6 @@ func (druid *Druid) registerLacerateSpell() {
 				baseDamage *= 1.3
 			}
 
-			// Hack so that FlatThreatBonus only applies to the initial portion.
-			spell.FlatThreatBonus = 515.5
 			spell.DamageMultiplier = initialDamageMul
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			spell.FlatThreatBonus = 0

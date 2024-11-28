@@ -710,7 +710,7 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 					}
 				},
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellID == druid.MangleBear.SpellID || spell.SpellID == druid.SwipeBear.SpellID {
+					if spell.SpellCode == SpellCode_DruidMangleBear || spell.SpellCode == SpellCode_DruidSwipeBear {
 						druid.Tank2PieceAqProcAura.SetStacks(sim, 0)
 					}
 				},

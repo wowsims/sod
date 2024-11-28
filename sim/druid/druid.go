@@ -25,6 +25,8 @@ const (
 	SpellCode_DruidInsectSwarm
 	SpellCode_DruidMangleCat
 	SpellCode_DruidMangleBear
+	SpellCode_DruidSwipeCat
+	SpellCode_DruidSwipeBear
 	SpellCode_DruidMoonfire
 	SpellCode_DruidRake
 	SpellCode_DruidRip
@@ -237,13 +239,11 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	// druid.registerDemoralizingRoarSpell()
 	// druid.registerEnrageSpell()
 	// druid.registerFrenziedRegenerationCD()
-	// druid.registerMangleBearSpell()
+	druid.registerMangleBearSpell()
 	druid.registerMaulSpell()
-	// druid.registerLacerateSpell()
-	// druid.registerRakeSpell()
-	// druid.registerRipSpell()
+	druid.registerLacerateSpell()
 	// druid.registerSurvivalInstinctsCD()
-	// druid.registerSwipeBearSpell()
+	druid.registerSwipeBearSpell()
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {

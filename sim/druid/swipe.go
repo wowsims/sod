@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 const SwipeRanks = 5
@@ -15,7 +16,7 @@ var SwipeLevel = [SwipeRanks + 1]int{0, 16, 24, 34, 44, 54}
 
 // See https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
 // Modifies Threat +101%:
-const SwipeThreatMultiplier = 2.0
+const SwipeThreatMultiplier = 3.5
 
 func (druid *Druid) registerSwipeBearSpell() {
 	hasImprovedSwipeRune := druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe)
@@ -26,10 +27,11 @@ func (druid *Druid) registerSwipeBearSpell() {
 		50: 4,
 		60: 6,
 	}[druid.Level]
+	baseMultiplier := 1.0
 
 	level := SwipeLevel[rank]
 	spellID := SwipeSpellId[rank]
-	baseDamage := SwipeBaseDamage[rank]
+	baseDamage := SwipeBaseDamage[rank] + .1*druid.GetStat(stats.AttackPower)
 
 	rageCost := 20 - float64(druid.Talents.Ferocity)
 	targetCount := core.TernaryInt32(hasImprovedSwipeRune, 10, 3)
@@ -39,6 +41,8 @@ func (druid *Druid) registerSwipeBearSpell() {
 	switch druid.Ranged().ID {
 	case IdolOfBrutality:
 		rageCost -= 3
+	case IdolOfUrsinPower:
+		baseMultiplier += .03
 	}
 
 	druid.SwipeBear = druid.RegisterSpell(Bear, core.SpellConfig{
@@ -62,7 +66,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
+		DamageMultiplier: baseMultiplier + 0.1*float64(druid.Talents.SavageFury),
 		ThreatMultiplier: SwipeThreatMultiplier,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
