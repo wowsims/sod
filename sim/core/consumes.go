@@ -1513,7 +1513,33 @@ func registerMildlyIrradiatedRejuvCD(agent Agent, consumes *proto.Consumes) {
 		actionID := ActionID{ItemID: 215162}
 		healthMetrics := character.NewHealthMetrics(actionID)
 		manaMetrics := character.NewManaMetrics(actionID)
-		aura := character.NewTemporaryStatsAura("Mildly Irradiated Rejuvenation Potion", actionID, stats.Stats{stats.AttackPower: 40, stats.SpellDamage: 35}, time.Second*20)
+		aura := character.RegisterAura(Aura{
+			ActionID: actionID,
+			Label:    "Mildly Irradiated Rejuvenation Potion",
+			Duration: time.Second * 20,
+			OnGain: func(aura *Aura, sim *Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.AttackPower:       40,
+					stats.RangedAttackPower: 40,
+					stats.SpellDamage:       35,
+				})
+				character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 2
+				character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= 2
+				character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 2
+				character.AddMoveSpeedModifier(&aura.ActionID, .70)
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				character.AddStatsDynamic(sim, stats.Stats{
+					stats.AttackPower:       -40,
+					stats.RangedAttackPower: -40,
+					stats.SpellDamage:       -35,
+				})
+				character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] /= 2
+				character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= 2
+				character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= 2
+				character.RemoveMoveSpeedModifier(&aura.ActionID)
+			},
+		})
 		character.AddMajorCooldown(MajorCooldown{
 			Type: CooldownTypeDPS,
 			Spell: character.GetOrRegisterSpell(SpellConfig{
