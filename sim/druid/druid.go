@@ -240,6 +240,8 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	// druid.registerEnrageSpell()
 	// druid.registerFrenziedRegenerationCD()
 	druid.registerMangleBearSpell()
+	druid.registerRakeSpell()
+	druid.registerRipSpell()
 	druid.registerMaulSpell()
 	druid.registerLacerateSpell()
 	// druid.registerSurvivalInstinctsCD()

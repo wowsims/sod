@@ -8,30 +8,15 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-const SwipeRanks = 5
-
-var SwipeSpellId = [SwipeRanks + 1]int32{0, 779, 780, 769, 9754, 9908}
-var SwipeBaseDamage = [SwipeRanks + 1]float64{0, 18, 25, 36, 60, 83}
-var SwipeLevel = [SwipeRanks + 1]int{0, 16, 24, 34, 44, 54}
-
 // See https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
 // Modifies Threat +101%:
 const SwipeThreatMultiplier = 3.5
 
 func (druid *Druid) registerSwipeBearSpell() {
 	hasImprovedSwipeRune := druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe)
-
-	rank := map[int32]int{
-		25: 2,
-		40: 3,
-		50: 4,
-		60: 6,
-	}[druid.Level]
 	baseMultiplier := 1.0
 
-	level := SwipeLevel[rank]
-	spellID := SwipeSpellId[rank]
-	baseDamage := SwipeBaseDamage[rank] + .1*druid.GetStat(stats.AttackPower)
+	baseDamage := 83 + .1*druid.GetStat(stats.AttackPower)
 
 	rageCost := 20 - float64(druid.Talents.Ferocity)
 	targetCount := core.TernaryInt32(hasImprovedSwipeRune, 10, 3)
@@ -46,14 +31,11 @@ func (druid *Druid) registerSwipeBearSpell() {
 	}
 
 	druid.SwipeBear = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
+		ActionID:    core.ActionID{SpellID: 9908},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-
-		Rank:          rank,
-		RequiredLevel: level,
 
 		RageCost: core.RageCostOptions{
 			Cost: 20 - float64(druid.Talents.Ferocity),

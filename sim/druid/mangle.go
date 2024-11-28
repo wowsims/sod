@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (druid *Druid) registerMangleBearSpell() {
@@ -13,7 +12,6 @@ func (druid *Druid) registerMangleBearSpell() {
 		return
 	}
 
-	cachedBonusAP := 0.0
 	baseMultiplier := 1.0
 
 	switch druid.Ranged().ID {
@@ -22,18 +20,6 @@ func (druid *Druid) registerMangleBearSpell() {
 	}
 
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
-	apProcAura := druid.RegisterAura(core.Aura{
-		Label:    "Defender's Resolve",
-		ActionID: core.ActionID{SpellID: 460171},
-		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			cachedBonusAP = 4 * max(druid.GetStat(stats.Defense), 0)
-			druid.AddStatDynamic(sim, stats.AttackPower, cachedBonusAP)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.AddStatDynamic(sim, stats.AttackPower, -cachedBonusAP)
-		},
-	})
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		SpellCode:   SpellCode_DruidMangleBear,
@@ -68,7 +54,6 @@ func (druid *Druid) registerMangleBearSpell() {
 
 			if result.Landed() {
 				mangleAuras.Get(target).Activate(sim)
-				apProcAura.Activate(sim)
 
 			} else {
 				spell.IssueRefund(sim)

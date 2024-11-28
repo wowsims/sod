@@ -8,14 +8,13 @@ import (
 
 func (druid *Druid) registerLacerateSpell() {
 	tickDamage := 20.0
-	initialDamage := 88.0
+	initialDamage := 149.0
 	initialDamageMul := 1.0
-	additionalTickDamage := 0
 
 	switch druid.Ranged().ID {
-	case IdolOfBrutality:
-		initialDamageMul *= .07
-		additionalTickDamage += 7
+	case IdolOfCruelty:
+		initialDamageMul += .07
+		tickDamage += 7.0
 	}
 
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
@@ -39,14 +38,17 @@ func (druid *Druid) registerLacerateSpell() {
 		DamageMultiplier: initialDamageMul,
 		ThreatMultiplier: 3.5,
 
-		// everything up to here should be accurate
-
 		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label:     "Lacerate",
+				MaxStacks: 5,
+				Duration:  time.Second * 15,
+			},
 			NumberOfTicks: 5,
 			TickLength:    time.Second * 3,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.SnapshotBaseDamage = tickDamage + float64(dot.Aura.GetStacks() * int32(additionalTickDamage))
+				dot.SnapshotBaseDamage = tickDamage
 				dot.SnapshotBaseDamage *= float64(dot.Aura.GetStacks())
 
 				if !isRollover {
@@ -60,10 +62,7 @@ func (druid *Druid) registerLacerateSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := initialDamage + 0.01*spell.MeleeAttackPower()
-			if druid.BleedCategories.Get(target).AnyActive() {
-				baseDamage *= 1.3
-			}
+			baseDamage := initialDamage + (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())*.2)*float64(spell.Dot(target).GetStacks())
 
 			spell.DamageMultiplier = initialDamageMul
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
