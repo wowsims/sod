@@ -36,7 +36,7 @@ func (druid *Druid) registerLacerateSpell() {
 		},
 
 		DamageMultiplier: initialDamageMul,
-		ThreatMultiplier: 3.5,
+		ThreatMultiplier: 3.25,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -50,6 +50,7 @@ func (druid *Druid) registerLacerateSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				dot.SnapshotBaseDamage = tickDamage
 				dot.SnapshotBaseDamage *= float64(dot.Aura.GetStacks())
+				dot.ThreatMultiplier = 3.4
 
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
@@ -66,7 +67,6 @@ func (druid *Druid) registerLacerateSpell() {
 
 			spell.DamageMultiplier = initialDamageMul
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			spell.FlatThreatBonus = 0
 
 			if result.Landed() {
 				dot := spell.Dot(target)

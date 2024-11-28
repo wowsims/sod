@@ -26,6 +26,7 @@ type DotConfig struct {
 	OnTick     OnTick
 
 	DamageMultiplier float64 // periodic damage multiplier
+	ThreatMultiplier float64 // threat multiplier
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 }
 
@@ -59,6 +60,7 @@ type Dot struct {
 	isChanneled  bool
 
 	DamageMultiplier float64 // periodic damage multiplier
+	ThreatMultiplier float64 // threat multiplier
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
 }
 
@@ -266,6 +268,9 @@ func newDot(config Dot) *Dot {
 
 	dot.tickPeriod = dot.TickLength
 	dot.Aura.Duration = dot.TickLength * time.Duration(dot.NumberOfTicks)
+	if dot.ThreatMultiplier == 0 {
+		dot.ThreatMultiplier = dot.Spell.ThreatMultiplier
+	}
 
 	dot.Aura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
 		dot.lastTickTime = sim.CurrentTime
@@ -313,6 +318,10 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		config.DamageMultiplier = 1
 	}
 
+	if config.ThreatMultiplier == 0 {
+		config.ThreatMultiplier = config.Spell.ThreatMultiplier
+	}
+
 	dot := Dot{
 		Spell: config.Spell,
 
@@ -327,6 +336,7 @@ func (spell *Spell) createDots(config DotConfig, isHot bool) {
 		isChanneled: config.Spell.Flags.Matches(SpellFlagChanneled),
 
 		DamageMultiplier: config.DamageMultiplier,
+		ThreatMultiplier: config.ThreatMultiplier,
 		BonusCoefficient: config.BonusCoefficient,
 	}
 
