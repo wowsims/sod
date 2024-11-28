@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"math"
 
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -653,9 +654,12 @@ func (spell *Spell) fixedCritCheck(sim *Simulation, critChance float64) bool {
 
 func (result *SpellResult) applyAttackTableMiss(spell *Spell, attackTable *AttackTable, roll float64, chance *float64, countHits bool) bool {
 	missChance := attackTable.BaseMissChance - spell.PhysicalHitChance(attackTable)
+	missChance = math.Round(missChance*1000) / 1000
+
 	if spell.Unit.AutoAttacks.IsDualWielding && !spell.Unit.PseudoStats.DisableDWMissPenalty {
 		missChance += 0.19
 	}
+
 	*chance = max(0, missChance)
 
 	if roll < *chance {
@@ -717,6 +721,7 @@ func (result *SpellResult) applyAttackTableDodge(spell *Spell, attackTable *Atta
 	expertiseDodgeReduction := attackTable.Attacker.stats[stats.Expertise] / 100
 
 	*chance += max(0, attackTable.BaseDodgeChance-attackTable.Defender.PseudoStats.DodgeReduction-expertiseDodgeReduction)
+	*chance = math.Round(*chance*1000) / 1000
 
 	if roll < *chance {
 		result.Outcome = OutcomeDodge

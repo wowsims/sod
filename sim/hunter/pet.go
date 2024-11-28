@@ -113,8 +113,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		}
 	case 60:
 		// TODO:
-		baseMinDamage = 18.5 * attackSpeed
-		baseMaxDamage = 28.0 * attackSpeed
+		baseMinDamage = 18.17 * attackSpeed
+		baseMaxDamage = 27.66 * attackSpeed
 		hunterPetBaseStats = stats.Stats{
 			stats.Strength:  136,
 			stats.Agility:   100,
@@ -166,6 +166,13 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	// Warrior crit scaling
 	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[proto.Class_ClassWarrior][int(hp.Level)]*core.CritRatingPerCritChance)
 	hp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassWarrior][int(hp.Level)]*core.SpellCritRatingPerCritChance)
+
+	// Ranged Weapon Specialization adds 3% hit and 0.5% expertise
+	hasRangedWeaponSpecialization := hunter.HasRune(proto.HunterRune(proto.RingRune_RuneRingRangedWeaponSpecialization))
+	if hasRangedWeaponSpecialization {
+		hp.AddStat(stats.MeleeHit, 3*core.MeleeHitRatingPerHitChance)
+		hp.AddStat(stats.Expertise, 0.5*core.ExpertiseRatingPerExpertiseChance)
+	}
 
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
 
@@ -267,12 +274,6 @@ func (hp *HunterPet) killCommandMult() float64 {
 }
 
 func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
-	// Ranged Weapon Specialization adds 3% hit and 0.5% expertise
-	hasRangedWeaponSpecialization := hunter.HasRune(proto.HunterRune(proto.RingRune_RuneRingRangedWeaponSpecialization))
-
-	bonusHit := core.TernaryFloat64(hasRangedWeaponSpecialization, 3, 0)
-	bonusExpertise := core.TernaryFloat64(hasRangedWeaponSpecialization, 0.5, 0)
-
 	return func(ownerStats stats.Stats) stats.Stats {
 		ownerHitChance := ownerStats[stats.MeleeHit]
 
@@ -281,13 +282,13 @@ func (hunter *Hunter) makeStatInheritance() core.PetStatInheritance {
 			stats.Armor:       ownerStats[stats.Armor] * 0.35,
 			stats.AttackPower: ownerStats[stats.RangedAttackPower] * 0.22,
 
-			stats.MeleeCrit: ownerStats[stats.MeleeCrit] + bonusHit,
-			stats.SpellCrit: ownerStats[stats.MeleeCrit] + bonusHit,
+			stats.MeleeCrit: ownerStats[stats.MeleeCrit],
+			stats.SpellCrit: ownerStats[stats.MeleeCrit],
 
-			stats.MeleeHit: ownerHitChance + bonusHit,
-			stats.SpellHit: ownerHitChance*2 + bonusHit,
+			stats.MeleeHit: ownerHitChance,
+			stats.SpellHit: ownerHitChance * 2,
 
-			stats.Expertise: ownerStats[stats.Expertise] + bonusExpertise,
+			stats.Expertise: ownerStats[stats.Expertise],
 		}
 	}
 }
