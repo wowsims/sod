@@ -269,9 +269,9 @@ func (druid *Druid) registerBearFormSpell() {
 
 	statBonus := druid.GetFormShiftStats().Add(stats.Stats{
 		stats.AttackPower: 3 * float64(druid.Level),
+		stats.Health:      1240,
 	})
 
-	stamDep := druid.NewDynamicMultiplyStat(stats.Stamina, 1.25)
 	feralApDep := druid.NewDynamicStatDependency(stats.FeralAttackPower, stats.AttackPower, 1)
 
 	// var potpDep *stats.StatDependency
@@ -307,7 +307,7 @@ func (druid *Druid) registerBearFormSpell() {
 
 			druid.AutoAttacks.SetMH(clawWeapon)
 
-			druid.PseudoStats.ThreatMultiplier *= 2.1021
+			druid.PseudoStats.ThreatMultiplier *= 1.3
 			// druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.0 + 0.02*float64(druid.Talents.MasterShapeshifter)
 			druid.PseudoStats.DamageTakenMultiplier *= sotfdtm
 			// Switch to using AddStat as PseudoStat is being removed
@@ -316,14 +316,13 @@ func (druid *Druid) registerBearFormSpell() {
 			// predBonus = druid.GetDynamicPredStrikeStats()
 			// druid.AddStatsDynamic(sim, predBonus)
 			druid.AddStatsDynamic(sim, statBonus)
-			druid.ApplyDynamicEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
+			druid.ApplyDynamicEquipScaling(sim, stats.Armor, 4.6)
 			// if potpDep != nil {
 			// 	druid.EnableDynamicStatDep(sim, potpDep)
 			// }
 
 			// Preserve fraction of max health when shifting
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
-			druid.EnableDynamicStatDep(sim, stamDep)
 			druid.EnableDynamicStatDep(sim, feralApDep)
 			if hotwDep != nil {
 				druid.EnableDynamicStatDep(sim, hotwDep)
@@ -336,6 +335,9 @@ func (druid *Druid) registerBearFormSpell() {
 
 				druid.manageCooldownsEnabled()
 				druid.UpdateManaRegenRates()
+				if druid.BearFormAura.IsActive() {
+					druid.MaulQueueAura.Activate(sim)
+				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -343,7 +345,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.SetCurrentPowerBar(core.ManaBar)
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
-			druid.PseudoStats.ThreatMultiplier /= 2.1021
+			druid.PseudoStats.ThreatMultiplier /= 1.3
 			// druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.0 + 0.02*float64(druid.Talents.MasterShapeshifter)
 			druid.PseudoStats.DamageTakenMultiplier /= sotfdtm
 			// Switch to using AddStat as PseudoStat is being removed
@@ -351,13 +353,12 @@ func (druid *Druid) registerBearFormSpell() {
 
 			// druid.AddStatsDynamic(sim, predBonus.Invert())
 			druid.AddStatsDynamic(sim, statBonus.Invert())
-			druid.RemoveDynamicEquipScaling(sim, stats.Armor, druid.BearArmorMultiplier())
+			druid.RemoveDynamicEquipScaling(sim, stats.Armor, 4.6)
 			// if potpDep != nil {
 			// 	druid.DisableDynamicStatDep(sim, potpDep)
 			// }
 
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
-			druid.DisableDynamicStatDep(sim, stamDep)
 			if hotwDep != nil {
 				druid.DisableDynamicStatDep(sim, hotwDep)
 			}
@@ -370,7 +371,7 @@ func (druid *Druid) registerBearFormSpell() {
 				druid.manageCooldownsEnabled()
 				druid.UpdateManaRegenRates()
 				// druid.EnrageAura.Deactivate(sim)
-				if(druid.BearFormAura.IsActive()) {
+				if !druid.BearFormAura.IsActive() {
 					druid.MaulQueueAura.Deactivate(sim)
 				}
 			}
