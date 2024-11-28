@@ -1526,7 +1526,7 @@ func registerMildlyIrradiatedRejuvCD(agent Agent, consumes *proto.Consumes) {
 				character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexNature] *= 2
 				character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= 2
 				character.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] *= 2
-				character.AddMoveSpeedModifier(&aura.ActionID, .70)
+				character.AddMoveSpeedModifier(&aura.ActionID, .30)
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				character.AddStatsDynamic(sim, stats.Stats{
