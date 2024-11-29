@@ -27,6 +27,7 @@ const (
 	SpellCode_MageFrostbolt
 	SpellCode_MageFrostfireBolt
 	SpellCode_MageFrozenOrb
+	SpellCode_MageIceLance
 	SpellCode_MageIgnite
 	SpellCode_MageLivingBomb
 	SpellCode_MageLivingBombExplosion
@@ -98,6 +99,7 @@ type Mage struct {
 	ClearcastingAura    *core.Aura
 	CombustionAura      *core.Aura
 	FingersOfFrostAura  *core.Aura
+	GlaciateAuras       core.AuraArray
 	HotStreakAura       *core.Aura
 	IceArmorAura        *core.Aura
 	IceBarrierAuras     []*core.Aura
@@ -105,6 +107,7 @@ type Mage struct {
 	MageArmorAura       *core.Aura
 	MissileBarrageAura  *core.Aura
 	MoltenArmorAura     *core.Aura
+	WintersChillAuras   core.AuraArray
 
 	ArcaneBlastMissileBarrageChance float64
 	BonusFireballDoTAmount          float64

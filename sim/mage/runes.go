@@ -138,7 +138,7 @@ func (mage *Mage) applyFingersOfFrost() {
 		return
 	}
 
-	mage.FingersOfFrostProcChance += 0.15
+	mage.FingersOfFrostProcChance += 0.25
 	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
 
 	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
@@ -148,9 +148,15 @@ func (mage *Mage) applyFingersOfFrost() {
 		MaxStacks: 2,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			mage.AddStatDynamic(sim, stats.SpellCrit, bonusCrit)
+			if mage.IceLance != nil {
+				mage.IceLance.DamageMultiplier *= 4.0
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			mage.AddStatDynamic(sim, stats.SpellCrit, -bonusCrit)
+			if mage.IceLance != nil {
+				mage.IceLance.DamageMultiplier /= 4.0
+			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
@@ -163,7 +169,7 @@ func (mage *Mage) applyFingersOfFrost() {
 			}
 
 			if aura.GetStacks() == 1 {
-				// Brain freeze can be batched with 2x FFBs into Deep Freeze
+				// Fingers of Frost can be batched with 2x FFBs into Deep Freeze
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {

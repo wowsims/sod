@@ -16,6 +16,8 @@ func (mage *Mage) registerLivingBombSpell() {
 		return
 	}
 
+	hasImprovedScorchTalent := mage.Talents.ImprovedScorch > 0
+
 	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneHandsLivingBomb)}
 	baseDotDamage := mage.baseRuneAbilityDamage() * .85
 	baseExplosionDamage := mage.baseRuneAbilityDamage() * 1.71
@@ -40,6 +42,13 @@ func (mage *Mage) registerLivingBombSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealDamage(sim, target, baseExplosionDamage, spell.OutcomeMagicCrit)
+
+			// Unlike the normal Scorch application, Living Bomb explosions are guaranteed to apply Improved Scorch as long as they have at least 1 point talented.
+			if hasImprovedScorchTalent {
+				impScorchAura := mage.ImprovedScorchAuras.Get(target)
+				impScorchAura.Activate(sim)
+				impScorchAura.AddStack(sim)
+			}
 		},
 	})
 
@@ -57,9 +66,6 @@ func (mage *Mage) registerLivingBombSpell() {
 				GCD: core.GCDDefault,
 			},
 		},
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -80,13 +86,25 @@ func (mage *Mage) registerLivingBombSpell() {
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+
+				// Unlike the normal Scorch application, Living Bomb ticks are guaranteed to apply Improved Scorch as long as they have at least 1 point talented.
+				if hasImprovedScorchTalent {
+					impScorchAura := mage.ImprovedScorchAuras.Get(target)
+					impScorchAura.Activate(sim)
+					impScorchAura.AddStack(sim)
+				}
 			},
 		},
+
+		BonusCritRating: 2 * float64(mage.Talents.Incinerate),
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				spell.Dot(target).Apply(sim)
+				spell.Dot(target).ApplyOrReset(sim)
 			}
 		},
 	})

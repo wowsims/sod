@@ -511,7 +511,7 @@ func (mage *Mage) registerColdSnapCD() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Duration(time.Minute * 10),
+				Duration: time.Duration(time.Minute * 5),
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
@@ -534,33 +534,33 @@ func (mage *Mage) applyWintersChill() {
 
 	procChance := float64(mage.Talents.WintersChill) * 0.2
 
-	wcAuras := mage.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+	mage.WintersChillAuras = mage.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
 		return core.WintersChillAura(target)
 	})
+
 	mage.Env.RegisterPreFinalizeEffect(func() {
 		for _, spell := range mage.GetSpellsMatchingSchool(core.SpellSchoolFrost) {
-			spell.RelatedAuras = append(spell.RelatedAuras, wcAuras)
+			spell.RelatedAuras = append(spell.RelatedAuras, mage.WintersChillAuras)
 		}
 	})
 
-	mage.RegisterAura(core.Aura{
-		Label:    "Winters Chill Talent",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.SpellSchool.Matches(core.SpellSchoolFrost) {
-				return
-			}
+	// For talents that benefit both the mage and frozen orbs
+	units := []*core.Unit{&mage.Unit}
+	// Frozen Orb also benefits
+	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
+		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
+	}
 
-			if sim.Proc(procChance, "Winters Chill") {
-				aura := wcAuras.Get(result.Target)
-				aura.Activate(sim)
-				if aura.IsActive() {
+	for _, unit := range units {
+		core.MakePermanent(unit.RegisterAura(core.Aura{
+			Label: "Winters Chill Trigger",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) && sim.Proc(procChance, "Winters Chill") {
+					aura := mage.WintersChillAuras.Get(result.Target)
+					aura.Activate(sim)
 					aura.AddStack(sim)
 				}
-			}
-		},
-	})
+			},
+		}))
+	}
 }

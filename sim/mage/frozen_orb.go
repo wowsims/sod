@@ -17,6 +17,13 @@ func (mage *Mage) registerFrozenOrbCD() {
 	cooldown := time.Minute
 	manaCost := 0.11
 
+	// Create a dummy aura for tracking Frozen Orb uptime in the APL
+	activeAura := mage.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: int32(proto.MageRune_RuneCloakFrozenOrb)},
+		Label:    "Frozen Orb",
+		Duration: time.Second * 15,
+	})
+
 	mage.FrozenOrb = mage.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_MageFrozenOrb,
 		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneCloakFrozenOrb)},
@@ -41,6 +48,7 @@ func (mage *Mage) registerFrozenOrbCD() {
 			for _, orb := range mage.frozenOrbPets {
 				if !orb.IsActive() {
 					orb.EnableWithTimeout(sim, orb, time.Second*15)
+					activeAura.Activate(sim)
 					break
 				}
 			}
@@ -114,6 +122,7 @@ func frozenOrbStatInheritance() core.PetStatInheritance {
 
 func (orb *FrozenOrb) registerFrozenOrbTickSpell() {
 	hasFOFRune := orb.mage.HasRune(proto.MageRune_RuneChestFingersOfFrost)
+
 	baseDamage := orb.mage.baseRuneAbilityDamage() * 0.9
 	spellCoef := .129
 

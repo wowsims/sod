@@ -66,7 +66,7 @@ func (mage *Mage) getScorchConfig(rank int) core.SpellConfig {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			if sim.RandomFloat("Improved Scorch") < debuffProcChance {
+			if sim.Proc(debuffProcChance, "Improved Scorch") {
 				aura := mage.ImprovedScorchAuras.Get(target)
 				aura.Activate(sim)
 				aura.AddStack(sim)
