@@ -23,6 +23,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
+		SpellCode:   SpellCode_PaladinHammerOfTheRighteous,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
