@@ -13,29 +13,31 @@ func init() {
 }
 
 func TestFeralTank(t *testing.T) {
-	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator(core.CharacterSuiteConfig{
-		Class: proto.Class_ClassDruid,
-		Race:  proto.Race_RaceTauren,
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class: proto.Class_ClassDruid,
+			Race:  proto.Race_RaceTauren,
 
-		GearSet:     core.GetGearSet("../../../ui/feral_tank_druid/gear_sets", "p1"),
-		Talents:     StandardTalents,
-		Consumes:    FullConsumes,
-		SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsDefault},
-		Rotation:    core.GetAplRotation("../../../ui/feral_tank_druid/apls", "default"),
+			GearSet:     core.GetGearSet("../../../ui/feral_tank_druid/gear_sets", "p1"),
+			Talents:     StandardTalents,
+			Consumes:    FullConsumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsDefault},
+			Rotation:    core.GetAplRotation("../../../ui/feral_tank_druid/apls", "phase_5"),
 
-		IsTank:          true,
-		InFrontOfTarget: true,
+			IsTank:          true,
+			InFrontOfTarget: true,
 
-		ItemFilter: core.ItemFilter{
-			WeaponTypes: []proto.WeaponType{
-				proto.WeaponType_WeaponTypeDagger,
-				proto.WeaponType_WeaponTypeMace,
-				proto.WeaponType_WeaponTypeOffHand,
-				proto.WeaponType_WeaponTypeStaff,
-			},
-			ArmorType: proto.ArmorType_ArmorTypeLeather,
-			RangedWeaponTypes: []proto.RangedWeaponType{
-				proto.RangedWeaponType_RangedWeaponTypeIdol,
+			ItemFilter: core.ItemFilter{
+				WeaponTypes: []proto.WeaponType{
+					proto.WeaponType_WeaponTypeDagger,
+					proto.WeaponType_WeaponTypeMace,
+					proto.WeaponType_WeaponTypeOffHand,
+					proto.WeaponType_WeaponTypeStaff,
+				},
+				ArmorType: proto.ArmorType_ArmorTypeLeather,
+				RangedWeaponTypes: []proto.RangedWeaponType{
+					proto.RangedWeaponType_RangedWeaponTypeIdol,
+				},
 			},
 		},
 	}))
@@ -52,12 +54,17 @@ var PlayerOptionsDefault = &proto.Player_FeralTankDruid{
 	},
 }
 
-var FullConsumes = &proto.Consumes{
-	BattleElixir:    proto.BattleElixir_GurusElixir,
-	GuardianElixir:  proto.GuardianElixir_GiftOfArthas,
-	Food:            proto.Food_FoodBlackenedDragonfin,
-	DefaultPotion:   proto.Potions_IndestructiblePotion,
-	DefaultConjured: proto.Conjured_ConjuredHealthstone,
-	ThermalSapper:   true,
-	FillerExplosive: proto.Explosive_ExplosiveSaroniteBomb,
+var FullConsumes = core.ConsumesCombo{
+	Label: "Full Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
+		DragonBreathChili: true,
+		Flask:             proto.Flask_FlaskOfTheTitans,
+		Food:              proto.Food_FoodDirgesKickChimaerokChops,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		StrengthBuff:      proto.StrengthBuff_JujuPower,
+		DefaultPotion:     proto.Potions_GreaterStoneshieldPotion,
+		DefaultConjured:   proto.Conjured_ConjuredHealthstone,
+	},
 }
