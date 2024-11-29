@@ -14,6 +14,10 @@ func (mage *Mage) registerFrozenOrbCD() {
 		return
 	}
 
+	mage.registerFrozenOrbTickSpell()
+
+	hasFoFRune := mage.HasRune(proto.MageRune_RuneChestFingersOfFrost)
+
 	cooldown := time.Minute
 	manaCost := 0.11
 
@@ -49,6 +53,11 @@ func (mage *Mage) registerFrozenOrbCD() {
 				if !orb.IsActive() {
 					orb.EnableWithTimeout(sim, orb, time.Second*15)
 					activeAura.Activate(sim)
+
+					if hasFoFRune {
+						mage.FingersOfFrostAura.Activate(sim)
+						mage.FingersOfFrostAura.AddStack(sim)
+					}
 					break
 				}
 			}
@@ -61,14 +70,33 @@ func (mage *Mage) registerFrozenOrbCD() {
 	})
 }
 
+func (mage *Mage) registerFrozenOrbTickSpell() {
+	baseDamage := mage.baseRuneAbilityDamage() * 0.9
+	spellCoef := .129
+
+	mage.FrozenOrbTick = mage.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 440809},
+		SpellSchool: core.SpellSchoolFrost | core.SpellSchoolArcane,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+		Flags:       SpellFlagMage | SpellFlagChillSpell | core.SpellFlagNotAProc | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		BonusCoefficient: spellCoef,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			for _, aoeTarget := range sim.Encounter.TargetUnits {
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicCrit)
+			}
+		},
+	})
+}
+
 type FrozenOrb struct {
 	core.Pet
 
 	mage *Mage
-
-	FrozenOrbTick          *core.Spell
-	FrozenOrbFingerOfFrost *core.Aura
-	TickCount              int64
 }
 
 func (mage *Mage) NewFrozenOrbPets() []*FrozenOrb {
@@ -78,9 +106,8 @@ func (mage *Mage) NewFrozenOrbPets() []*FrozenOrb {
 
 func (mage *Mage) newFrozenOrb(idx int32) *FrozenOrb {
 	frozenOrb := &FrozenOrb{
-		Pet:       core.NewPet(fmt.Sprintf("Frozen Orb %d", idx), &mage.Character, frozenOrbBaseStats, frozenOrbStatInheritance(), false, true),
-		mage:      mage,
-		TickCount: 0,
+		Pet:  core.NewPet(fmt.Sprintf("Frozen Orb %d", idx), &mage.Character, frozenOrbBaseStats, frozenOrbStatInheritance(), false, true),
+		mage: mage,
 	}
 
 	mage.AddPet(frozenOrb)
@@ -93,18 +120,14 @@ func (orb *FrozenOrb) GetPet() *core.Pet {
 }
 
 func (orb *FrozenOrb) Initialize() {
-	orb.registerFrozenOrbTickSpell()
-
-	// Frozen Orb seems to benefit from Frost Specialization
-	orb.PseudoStats.SchoolBonusHitChance = orb.mage.PseudoStats.SchoolBonusHitChance
 }
 
 func (orb *FrozenOrb) Reset(_ *core.Simulation) {
 }
 
 func (orb *FrozenOrb) ExecuteCustomRotation(sim *core.Simulation) {
-	if success := orb.FrozenOrbTick.Cast(sim, orb.mage.CurrentTarget); !success {
-		orb.Disable(sim)
+	if success := orb.mage.FrozenOrbTick.Cast(sim, orb.mage.CurrentTarget); success {
+		orb.WaitUntil(sim, sim.CurrentTime+time.Second)
 	}
 }
 
@@ -117,52 +140,5 @@ func frozenOrbStatInheritance() core.PetStatInheritance {
 			stats.SpellCrit:  ownerStats[stats.SpellCrit],
 			stats.SpellPower: ownerStats[stats.SpellPower],
 		}
-	}
-}
-
-func (orb *FrozenOrb) registerFrozenOrbTickSpell() {
-	hasFOFRune := orb.mage.HasRune(proto.MageRune_RuneChestFingersOfFrost)
-
-	baseDamage := orb.mage.baseRuneAbilityDamage() * 0.9
-	spellCoef := .129
-
-	orb.FrozenOrbTick = orb.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 440809},
-		SpellSchool: core.SpellSchoolFrost | core.SpellSchoolArcane,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | SpellFlagChillSpell,
-
-		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: time.Second,
-			},
-		},
-
-		BonusCoefficient: spellCoef,
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
-			orb.TickCount += 1
-			if orb.TickCount == 15 {
-				orb.TickCount = 0
-			}
-		},
-	})
-
-	if hasFOFRune {
-		orb.FrozenOrbFingerOfFrost = core.MakePermanent(orb.RegisterAura(core.Aura{
-			Label: "Frozen Orb FoF",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell == orb.FrozenOrbTick && orb.TickCount == 0 {
-					orb.mage.FingersOfFrostAura.Activate(sim)
-					orb.mage.FingersOfFrostAura.AddStack(sim)
-				}
-			},
-		}))
 	}
 }

@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const FireBlastRanks = 7
@@ -29,8 +28,6 @@ func (mage *Mage) registerFireBlastSpell() {
 }
 
 func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.SpellConfig {
-	hasOverheatRune := mage.HasRune(proto.MageRune_RuneCloakOverheat)
-
 	spellId := FireBlastSpellId[rank]
 	baseDamageLow := FireBlastBaseDamage[rank][0]
 	baseDamageHigh := FireBlastBaseDamage[rank][1]
@@ -39,12 +36,6 @@ func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 	level := FireBlastLevel[rank]
 
 	cooldown := time.Second * 8
-	flags := SpellFlagMage | core.SpellFlagAPL
-	if hasOverheatRune {
-		cooldown = time.Second * 15
-		flags |= core.SpellFlagCastTimeNoGCD | core.SpellFlagCastWhileCasting
-	}
-	gcd := core.TernaryDuration(hasOverheatRune, 0, core.GCDDefault)
 
 	return core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId},
@@ -52,7 +43,7 @@ func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       flags,
+		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
 		Rank:          rank,
 		RequiredLevel: level,
@@ -62,15 +53,13 @@ func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
-				GCD: gcd,
+				GCD: core.GCDDefault,
 			},
 			CD: core.Cooldown{
 				Timer:    cdTimer,
-				Duration: cooldown - time.Millisecond*500*time.Duration(mage.Talents.ImprovedFireBlast),
+				Duration: cooldown,
 			},
 		},
-
-		BonusCritRating: core.TernaryFloat64(hasOverheatRune, 100, 2*float64(mage.Talents.Incinerate)) * core.SpellCritRatingPerCritChance,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

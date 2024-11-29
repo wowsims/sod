@@ -56,8 +56,6 @@ func (mage *Mage) getScorchConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		BonusCritRating: 2 * float64(mage.Talents.Incinerate) * core.SpellCritRatingPerCritChance,
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,

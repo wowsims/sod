@@ -80,6 +80,7 @@ type Mage struct {
 	Frostbolt               []*core.Spell
 	FrostfireBolt           *core.Spell
 	FrozenOrb               *core.Spell
+	FrozenOrbTick           *core.Spell
 	IceBarrier              []*core.Spell
 	IceLance                *core.Spell
 	Ignite                  *core.Spell
@@ -94,7 +95,6 @@ type Mage struct {
 	IcyVeins *core.Spell
 
 	ArcaneBlastAura     *core.Aura
-	ArcanePotencyAura   *core.Aura
 	ArcanePowerAura     *core.Aura
 	ClearcastingAura    *core.Aura
 	CombustionAura      *core.Aura
@@ -158,9 +158,6 @@ func (mage *Mage) Initialize() {
 
 func (mage *Mage) Reset(sim *core.Simulation) {
 	mage.BonusFireballDoTAmount = 0
-	for _, orb := range mage.frozenOrbPets {
-		orb.TickCount = 0
-	}
 }
 
 func NewMage(character *core.Character, options *proto.Player) *Mage {

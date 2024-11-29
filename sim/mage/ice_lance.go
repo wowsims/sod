@@ -85,23 +85,14 @@ func (mage *Mage) registerIceLanceSpell() {
 		})
 	}
 
-	// For talents that benefit both the mage and frozen orbs
-	units := []*core.Unit{&mage.Unit}
-	// Frozen Orb also benefits
-	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
-		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
-	}
-
-	for _, unit := range units {
-		core.MakePermanent(unit.RegisterAura(core.Aura{
-			Label: "Glaciate Trigger",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) && spell.SpellCode != SpellCode_MageIceLance {
-					glaciateAura := mage.GlaciateAuras.Get(result.Target)
-					glaciateAura.Activate(sim)
-					glaciateAura.AddStack(sim)
-				}
-			},
-		}))
-	}
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Glaciate Trigger",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) && spell.SpellCode != SpellCode_MageIceLance {
+				glaciateAura := mage.GlaciateAuras.Get(result.Target)
+				glaciateAura.Activate(sim)
+				glaciateAura.AddStack(sim)
+			}
+		},
+	}))
 }
