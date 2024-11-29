@@ -23,6 +23,7 @@ func (paladin *Paladin) registerShieldOfRighteousness() {
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		SpellCode:   SpellCode_PaladinShieldOfRighteousness,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
