@@ -36,7 +36,7 @@ func (druid *Druid) registerLacerateSpell() {
 		},
 
 		DamageMultiplier: initialDamageMul,
-		ThreatMultiplier: 3.5,
+		ThreatMultiplier: 3.25,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

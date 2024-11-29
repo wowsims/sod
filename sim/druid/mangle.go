@@ -45,7 +45,7 @@ func (druid *Druid) registerMangleBearSpell() {
 		},
 
 		DamageMultiplier: 1.6 + 0.1*float64(druid.Talents.SavageFury)*baseMultiplier,
-		ThreatMultiplier: 1,
+		ThreatMultiplier: 1.5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
