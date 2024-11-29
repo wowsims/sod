@@ -357,12 +357,7 @@ func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage
 	return spell.calcDamageInternal(sim, target, baseDamage, attackerMultiplier, true, outcomeApplier)
 }
 func (dot *Dot) CalcSnapshotDamage(sim *Simulation, target *Unit, outcomeApplier OutcomeApplier) *SpellResult {
-	result := dot.Spell.calcDamageInternal(sim, target, dot.SnapshotBaseDamage, dot.SnapshotAttackerMultiplier, true, outcomeApplier)
-	// Dots have their own individual threat modifiers that default to the spell modifier
-	result.Threat /= dot.Spell.ThreatMultiplier
-	result.Threat *= dot.ThreatMultiplier
-
-	return result
+	return dot.Spell.calcDamageInternal(sim, target, dot.SnapshotBaseDamage, dot.SnapshotAttackerMultiplier, true, outcomeApplier)
 }
 
 func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
