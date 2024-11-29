@@ -124,7 +124,7 @@ func (hp *HunterPet) newBite() *core.Spell {
 		60: 17261,
 	}[hp.Owner.Level]
 
-	ApCoeff := 2.15/14
+	ApCoeff := 2.15 / 14
 
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -183,7 +183,7 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 		60: 25012,
 	}[hp.Owner.Level]
 
-	ApCoeff := 3.65/14
+	ApCoeff := 3.65 / 14
 	SpCoeff := 0.429
 
 	return hp.RegisterSpell(core.SpellConfig{
@@ -237,7 +237,7 @@ func (hp *HunterPet) newScreech() *core.Spell {
 		60: 24582,
 	}[hp.Owner.Level]
 
-	ApCoeff := 1.15/14
+	ApCoeff := 1.15 / 14
 
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -328,7 +328,7 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 		60: 24587,
 	}[hp.Owner.Level]
 
-	ApCoeff := 0.07/5
+	ApCoeff := 0.07 / 5
 
 	return hp.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellID},
@@ -413,7 +413,7 @@ func (hp *HunterPet) newLavaBreath() *core.Spell {
 		60: 444681,
 	}[hp.Owner.Level]
 
-	ApCoeff := 3.65/14
+	ApCoeff := 3.65 / 14
 	SpCoeff := 0.429
 
 	return hp.RegisterSpell(core.SpellConfig{
@@ -422,7 +422,7 @@ func (hp *HunterPet) newLavaBreath() *core.Spell {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagMeleeMetrics,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagBinary,
 
 		FocusCost: core.FocusCostOptions{
 			Cost: 50,
