@@ -36,7 +36,7 @@ func (druid *Druid) registerLacerateSpell() {
 		},
 
 		DamageMultiplier: initialDamageMul,
-		ThreatMultiplier: 3.25,
+		ThreatMultiplier: 3.5,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -67,6 +67,7 @@ func (druid *Druid) registerLacerateSpell() {
 
 			spell.DamageMultiplier = initialDamageMul
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.FlatThreatBonus = 0
 
 			if result.Landed() {
 				dot := spell.Dot(target)
