@@ -68,6 +68,7 @@ type Druid struct {
 	Innervate            *DruidSpell
 	InsectSwarm          []*DruidSpell
 	Lacerate             *DruidSpell
+	LacerateDirect       *DruidSpell
 	Languish             *DruidSpell
 	MangleBear           *DruidSpell
 	MangleCat            *DruidSpell
@@ -92,6 +93,8 @@ type Druid struct {
 	SwipeCat             *DruidSpell
 	TigersFury           *DruidSpell
 	Typhoon              *DruidSpell
+	curQueuedAutoSpell   *DruidSpell
+	MaulQueue            *DruidSpell
 	Wrath                []*DruidSpell
 
 	BearForm    *DruidSpell
@@ -102,6 +105,7 @@ type Druid struct {
 	BearFormAura             *core.Aura
 	BerserkAura              *core.Aura
 	CatFormAura              *core.Aura
+	curQueueAura             *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
 	DreamstateManaRegenAura  *core.Aura
@@ -165,7 +169,16 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 }
 
 func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-	return druid.MaulReplaceMH(sim, mhSwingSpell)
+	if !druid.curQueueAura.IsActive() {
+		return mhSwingSpell
+	}
+
+	if !druid.curQueuedAutoSpell.CanCast(sim, druid.CurrentTarget) {
+		druid.curQueueAura.Deactivate(sim)
+		return mhSwingSpell
+	}
+
+	return druid.curQueuedAutoSpell.Spell
 }
 
 func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *DruidSpell {
@@ -232,7 +245,7 @@ func (druid *Druid) RegisterFeralCatSpells() {
 }
 
 // TODO: Classic feral tank
-func (druid *Druid) RegisterFeralTankSpells() {
+func (druid *Druid) RegisterFeralTankSpells(realismICD *core.Cooldown) {
 	// druid.registerBarkskinCD()
 	// druid.registerBerserkCD()
 	druid.registerBearFormSpell()
@@ -242,7 +255,8 @@ func (druid *Druid) RegisterFeralTankSpells() {
 	druid.registerMangleBearSpell()
 	druid.registerRakeSpell()
 	druid.registerRipSpell()
-	druid.registerMaulSpell()
+	druid.registerMaulSpell(realismICD)
+	druid.registerLacerateDirectSpell()
 	druid.registerLacerateSpell()
 	// druid.registerSurvivalInstinctsCD()
 	druid.registerSwipeBearSpell()

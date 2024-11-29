@@ -6,19 +6,44 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (druid *Druid) registerLacerateSpell() {
-	tickDamage := 20.0
+func (druid *Druid) registerLacerateDirectSpell() {
 	initialDamage := 149.0
 	initialDamageMul := 1.0
 
 	switch druid.Ranged().ID {
 	case IdolOfCruelty:
 		initialDamageMul += .07
+	}
+
+	druid.LacerateDirect = druid.RegisterSpell(Bear, core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 414644},
+		SpellSchool: core.SpellSchoolPhysical,
+		DefenseType: core.DefenseTypeMelee,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: initialDamageMul,
+		ThreatMultiplier: 3.25,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := initialDamage + (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())*.2)*float64(druid.Lacerate.Dot(target).GetStacks())
+
+			spell.DamageMultiplier = initialDamageMul
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
+		},
+	})
+}
+
+func (druid *Druid) registerLacerateSpell() {
+	tickDamage := 20.0
+
+	switch druid.Ranged().ID {
+	case IdolOfCruelty:
 		tickDamage += 7.0
 	}
 
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 414644},
+		ActionID:    core.ActionID{SpellID: 414647},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -35,8 +60,8 @@ func (druid *Druid) registerLacerateSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: initialDamageMul,
-		ThreatMultiplier: 3.25,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 3.4,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -62,13 +87,10 @@ func (druid *Druid) registerLacerateSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := initialDamage + (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())*.2)*float64(spell.Dot(target).GetStacks())
-
-			spell.DamageMultiplier = initialDamageMul
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			spell.FlatThreatBonus = 0
+			result := spell.CalcDamage(sim, target, 0, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
+				druid.LacerateDirect.Cast(sim, target)
 				dot := spell.Dot(target)
 				if dot.IsActive() {
 					dot.Refresh(sim)
@@ -82,8 +104,6 @@ func (druid *Druid) registerLacerateSpell() {
 			} else {
 				spell.IssueRefund(sim)
 			}
-
-			spell.DealDamage(sim, result)
 		},
 	})
 }

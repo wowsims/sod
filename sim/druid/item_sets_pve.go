@@ -725,6 +725,7 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 			druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Druid - Guardian 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					// TODO: troubleshoot this. Cooldown reduction not working
 					druid.MangleBear.CD.Duration -= 1500 * time.Millisecond
 				},
 			})

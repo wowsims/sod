@@ -4,7 +4,7 @@ import (
 	"github.com/wowsims/sod/sim/core"
 )
 
-func (druid *Druid) registerMaulSpell() {
+func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
 	flatBaseDamage := 128.0
 	rageCost := 15 - float64(druid.Talents.Ferocity)
 
@@ -42,50 +42,56 @@ func (druid *Druid) registerMaulSpell() {
 				spell.IssueRefund(sim)
 			}
 
-			druid.MaulQueueAura.Deactivate(sim)
+			spell.DealDamage(sim, result)
+			if druid.curQueueAura != nil {
+				druid.curQueueAura.Deactivate(sim)
+			}
+		},
+	})
+	druid.MaulQueue = druid.makeQueueSpellsAndAura(druid.Maul, realismICD)
+}
+
+func (druid *Druid) makeQueueSpellsAndAura(srcSpell *DruidSpell, realismICD *core.Cooldown) *DruidSpell {
+	queueAura := druid.RegisterAura(core.Aura{
+		Label:    "Maul Queue Aura-" + srcSpell.ActionID.String(),
+		ActionID: srcSpell.ActionID.WithTag(1),
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if druid.curQueueAura != nil {
+				druid.curQueueAura.Deactivate(sim)
+			}
+			druid.curQueueAura = aura
+			druid.curQueuedAutoSpell = srcSpell
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.curQueueAura = nil
+			druid.curQueuedAutoSpell = nil
 		},
 	})
 
-	druid.MaulQueueAura = druid.RegisterAura(core.Aura{
-		Label:    "Maul Queue Aura",
-		ActionID: druid.Maul.ActionID,
-		Duration: core.NeverExpires,
-	})
-
-	druid.MaulQueueSpell = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    druid.Maul.WithTag(1),
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+	queueSpell := druid.RegisterSpell(Bear, core.SpellConfig{
+		ActionID: srcSpell.ActionID.WithTag(1),
+		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagCastTimeNoGCD,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return !druid.MaulQueueAura.IsActive() &&
-				druid.CurrentRage() >= druid.Maul.Cost.GetCurrentCost() &&
-				!druid.IsCasting(sim)
+			return druid.curQueueAura == nil &&
+				druid.CurrentRage() >= srcSpell.DefaultCast.Cost &&
+				!druid.IsCasting(sim) &&
+				realismICD.IsReady(sim)
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			druid.MaulQueueAura.Activate(sim)
+			if realismICD.IsReady(sim) {
+				realismICD.Use(sim)
+				sim.AddPendingAction(&core.PendingAction{
+					NextActionAt: sim.CurrentTime + realismICD.Duration,
+					OnAction: func(sim *core.Simulation) {
+						queueAura.Activate(sim)
+					},
+				})
+			}
 		},
 	})
-}
 
-func (druid *Druid) QueueMaul(sim *core.Simulation) {
-	if druid.MaulQueueSpell.CanCast(sim, druid.CurrentTarget) {
-		druid.MaulQueueSpell.Cast(sim, druid.CurrentTarget)
-	}
-}
-
-// Returns true if the regular melee swing should be used, false otherwise.
-func (druid *Druid) MaulReplaceMH(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-	if !druid.MaulQueueAura.IsActive() {
-		return mhSwingSpell
-	}
-
-	if !druid.Maul.Spell.CanCast(sim, druid.CurrentTarget) {
-		druid.MaulQueueAura.Deactivate(sim)
-		return mhSwingSpell
-	}
-
-	return druid.Maul.Spell
+	return queueSpell
 }

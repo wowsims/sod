@@ -18,7 +18,7 @@ func TestFeralTank(t *testing.T) {
 			Class: proto.Class_ClassDruid,
 			Race:  proto.Race_RaceTauren,
 
-			GearSet:     core.GetGearSet("../../../ui/feral_tank_druid/gear_sets", "p1"),
+			GearSet:     core.GetGearSet("../../../ui/feral_tank_druid/gear_sets", "phase_5"),
 			Talents:     StandardTalents,
 			Consumes:    FullConsumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsDefault},

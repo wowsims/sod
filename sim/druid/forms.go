@@ -335,9 +335,6 @@ func (druid *Druid) registerBearFormSpell() {
 
 				druid.manageCooldownsEnabled()
 				druid.UpdateManaRegenRates()
-				if druid.BearFormAura.IsActive() {
-					druid.MaulQueueAura.Activate(sim)
-				}
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -371,9 +368,6 @@ func (druid *Druid) registerBearFormSpell() {
 				druid.manageCooldownsEnabled()
 				druid.UpdateManaRegenRates()
 				// druid.EnrageAura.Deactivate(sim)
-				if !druid.BearFormAura.IsActive() {
-					druid.MaulQueueAura.Deactivate(sim)
-				}
 			}
 		},
 	})

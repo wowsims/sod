@@ -38,7 +38,7 @@ func NewFeralTankDruid(character *core.Character, options *proto.Player) *FeralT
 	}
 
 	bear.EnableRageBar(core.RageBarOptions{
-		StartingRage:   bear.Options.StartingRage,
+		StartingRage:          bear.Options.StartingRage,
 		DamageDealtMultiplier: 1,
 		DamageTakenMultiplier: 1,
 	})
@@ -49,7 +49,7 @@ func NewFeralTankDruid(character *core.Character, options *proto.Player) *FeralT
 		AutoSwingMelee: true,
 		ReplaceMHSwing: bear.TryMaul,
 	})
-	// bear.ReplaceBearMHFunc = bear.TryMaul
+	bear.ReplaceBearMHFunc = bear.TryMaul
 
 	healingModel := options.HealingModel
 	if healingModel != nil {
@@ -73,7 +73,11 @@ func (bear *FeralTankDruid) GetDruid() *druid.Druid {
 
 func (bear *FeralTankDruid) Initialize() {
 	bear.Druid.Initialize()
-	bear.RegisterFeralTankSpells()
+	queuedRealismICD := &core.Cooldown{
+		Timer:    bear.NewTimer(),
+		Duration: core.SpellBatchWindow * 10,
+	}
+	bear.RegisterFeralTankSpells(queuedRealismICD)
 }
 
 func (bear *FeralTankDruid) Reset(sim *core.Simulation) {
