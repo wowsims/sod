@@ -469,6 +469,10 @@ export class ActionId {
 			case 'Kill Shot':
 				if (this.tag === 1) name = `${name} (Rapid Fire)`
 				break;
+			// Temporary until real debuff is implemented
+			case 'Ice Lance':
+				if (this.tag === 1) name = 'Glaciate'
+				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';

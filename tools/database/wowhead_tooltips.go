@@ -514,18 +514,12 @@ func (item WowheadItemResponse) IsScalableArmorSlot() bool {
 	return true
 }
 
+// In Vanilla and TBC, both Armor and Bonus Armor scale with gear armor multipliers on all equipment.
 func (item WowheadItemResponse) GetArmorValues() (int, int) {
 	armorValue := item.GetIntValue(armorRegex)
-	bonusArmorValue := item.GetIntValue(bonusArmorRegex)
+	// bonusArmorValue := item.GetIntValue(bonusArmorRegex)
 
-	if item.IsScalableArmorSlot() {
-		armorValue = armorValue - bonusArmorValue
-	} else {
-		bonusArmorValue = armorValue
-		armorValue = 0
-	}
-
-	return armorValue, bonusArmorValue
+	return armorValue, 0
 }
 
 var armorTypePatterns = map[proto.ArmorType]*regexp.Regexp{
