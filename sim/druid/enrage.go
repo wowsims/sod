@@ -11,31 +11,18 @@ func (druid *Druid) registerEnrageSpell() {
 	actionID := core.ActionID{SpellID: 5229}
 	rageMetrics := druid.NewRageMetrics(actionID)
 
-	instantRage := []float64{20, 24, 27, 30}[druid.Talents.Intensity]
-
-	dmgBonus := 0.05 * float64(druid.Talents.KingOfTheJungle)
-
-	t10_4p := druid.HasSetBonus(ItemSetLasherweaveBattlegear, 4)
+	instantRage := []float64{0, 5, 10}[druid.Talents.ImprovedEnrage]
+	initarmor := druid.BaseEquipStats()[stats.Armor]
 
 	druid.EnrageAura = druid.RegisterAura(core.Aura{
 		Label:    "Enrage Aura",
 		ActionID: actionID,
 		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.DamageDealtMultiplier *= 1.0 + dmgBonus
-			if !t10_4p {
-				druid.ApplyDynamicEquipScaling(sim, stats.Armor, 0.84)
-			} else {
-				druid.PseudoStats.DamageTakenMultiplier *= 0.88
-			}
+			druid.AddStatDynamic(sim, stats.Armor, float64(0.16*initarmor) * -1)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.DamageDealtMultiplier /= 1.0 + dmgBonus
-			if !t10_4p {
-				druid.RemoveDynamicEquipScaling(sim, stats.Armor, 0.84)
-			} else {
-				druid.PseudoStats.DamageTakenMultiplier /= 0.88
-			}
+			druid.AddStatDynamic(sim, stats.Armor, float64(0.16*initarmor))
 		},
 	})
 
@@ -59,7 +46,7 @@ func (druid *Druid) registerEnrageSpell() {
 				Period:   time.Second * 1,
 				OnAction: func(sim *core.Simulation) {
 					if druid.EnrageAura.IsActive() {
-						druid.AddRage(sim, 1, rageMetrics)
+						druid.AddRage(sim, 2, rageMetrics)
 					}
 				},
 			})
