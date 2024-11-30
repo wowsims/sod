@@ -7,7 +7,7 @@ import (
 )
 
 func (druid *Druid) registerFrenziedRegenerationCD() {
-	actionID := core.ActionID{SpellID: 22842}
+	actionID := core.ActionID{SpellID: 22896}
 	healthMetrics := druid.NewHealthMetrics(actionID)
 	rageMetrics := druid.NewRageMetrics(actionID)
 
@@ -46,7 +46,7 @@ func (druid *Druid) registerFrenziedRegenerationCD() {
 				Period:   time.Second * 1,
 				OnAction: func(sim *core.Simulation) {
 					rageDumped := min(druid.CurrentRage(), 10.0)
-					healthGained := rageDumped * 0.3 / 100 * druid.MaxHealth() * druid.PseudoStats.HealingTakenMultiplier
+					healthGained := rageDumped * 20 * druid.PseudoStats.HealingTakenMultiplier
 
 					if druid.FrenziedRegenerationAura.IsActive() {
 						druid.SpendRage(sim, rageDumped, rageMetrics)

@@ -555,7 +555,27 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 		},
 		// Your Swipe now spreads your Lacerate from your primary target to other targets it strikes.
 		6: func(agent core.Agent) {
+			// druid := agent.(DruidAgent).GetDruid()
+			// if druid.Env.GetNumTargets() == 1 {
+			// 	return
+			// }
 
+			// targetCount := core.TernaryInt32(druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe), 10, 3)
+			// numHits := min(targetCount, druid.Env.GetNumTargets())
+			// results := make([]*core.SpellResult, numHits)
+
+			// core.MakePermanent(druid.RegisterAura(core.Aura{
+			// 	Label: "S03 - Item - T2 - Druid - Guardian 6P Bonus",
+			// 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// 		if spell.SpellCode == SpellCode_DruidSwipeBear {
+			// 			// TODO: Troubleshoot - Saeyon
+			// 			for _, cleaveMob := range results {
+			// 				druid.LacerateBleed.Cast(sim, cleaveMob.Target)
+			// 				druid.LacerateBleed.Dot(cleaveMob.Target).SetStacks(sim, druid.LacerateBleed.Dot(result.Target).GetStacks())
+			// 			}
+			// 		}
+			// 	},
+			// }))
 		},
 	},
 })

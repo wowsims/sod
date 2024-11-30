@@ -281,7 +281,7 @@ func (druid *Druid) registerBearFormSpell() {
 
 	sotfdtm := 1.0
 	if druid.HasRune(proto.DruidRune_RuneChestSurvivalOfTheFittest) {
-		sotfdtm = 0.81
+		sotfdtm = 0.80
 	}
 
 	clawWeapon := druid.GetBearWeapon()

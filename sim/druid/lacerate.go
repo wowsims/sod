@@ -27,7 +27,7 @@ func (druid *Druid) registerLacerateSpell() {
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   10,
+			Cost:   core.TernaryFloat64(druid.BerserkAura.IsActive(), 0, 10),
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -39,6 +39,7 @@ func (druid *Druid) registerLacerateSpell() {
 
 		DamageMultiplier: initialDamageMul,
 		ThreatMultiplier: 3.25,
+		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := initialDamage + (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())*.2)*float64(druid.LacerateBleed.Dot(target).GetStacks())

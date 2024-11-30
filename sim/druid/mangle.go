@@ -22,8 +22,8 @@ func (druid *Druid) registerMangleBearSpell() {
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
-		SpellCode:   SpellCode_DruidMangleBear,
 		ActionID:    core.ActionID{SpellID: 407995},
+		SpellCode:   SpellCode_DruidMangleBear,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -43,6 +43,7 @@ func (druid *Druid) registerMangleBearSpell() {
 				Duration: time.Second * 6,
 			},
 		},
+		// TODO: Berserk 3 target mangle cleave - Saeyon
 
 		DamageMultiplier: 1.6 + 0.1*float64(druid.Talents.SavageFury)*baseMultiplier,
 		ThreatMultiplier: 1.5,
@@ -54,7 +55,6 @@ func (druid *Druid) registerMangleBearSpell() {
 
 			if result.Landed() {
 				mangleAuras.Get(target).Activate(sim)
-
 			} else {
 				spell.IssueRefund(sim)
 			}
