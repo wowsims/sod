@@ -26,7 +26,9 @@ const (
 	SpellCode_DruidMangleCat
 	SpellCode_DruidMangleBear
 	SpellCode_DruidSwipeCat
+	SpellCode_DruidLacerate
 	SpellCode_DruidSwipeBear
+	SpellCode_DruidMaul
 	SpellCode_DruidMoonfire
 	SpellCode_DruidRake
 	SpellCode_DruidRip
@@ -68,7 +70,7 @@ type Druid struct {
 	Innervate            *DruidSpell
 	InsectSwarm          []*DruidSpell
 	Lacerate             *DruidSpell
-	LacerateDirect       *DruidSpell
+	LacerateBleed        *DruidSpell
 	Languish             *DruidSpell
 	MangleBear           *DruidSpell
 	MangleCat            *DruidSpell
@@ -250,13 +252,13 @@ func (druid *Druid) RegisterFeralTankSpells(realismICD *core.Cooldown) {
 	// druid.registerBerserkCD()
 	druid.registerBearFormSpell()
 	// druid.registerDemoralizingRoarSpell()
-	// druid.registerEnrageSpell()
+	druid.registerEnrageSpell()
 	// druid.registerFrenziedRegenerationCD()
 	druid.registerMangleBearSpell()
 	druid.registerRakeSpell()
 	druid.registerRipSpell()
 	druid.registerMaulSpell(realismICD)
-	druid.registerLacerateDirectSpell()
+	druid.registerLacerateBleedSpell()
 	druid.registerLacerateSpell()
 	// druid.registerSurvivalInstinctsCD()
 	druid.registerSwipeBearSpell()
