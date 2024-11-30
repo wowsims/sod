@@ -273,8 +273,8 @@ func (warlock *Warlock) applyDemonicKnowledge() {
 		}
 
 		oldOnPetDisable := pet.OnPetDisable
-		pet.OnPetDisable = func(sim *core.Simulation) {
-			oldOnPetDisable(sim)
+		pet.OnPetDisable = func(sim *core.Simulation, isSacrifice bool) {
+			oldOnPetDisable(sim, isSacrifice)
 			warlock.DemonicKnowledgeAura.Deactivate(sim)
 		}
 	}

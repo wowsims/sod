@@ -49,15 +49,16 @@ type Warlock struct {
 	Options *proto.WarlockOptions
 
 	BasePets   []*WarlockPet
-	ActivePet  *WarlockPet
 	Felhunter  *WarlockPet
 	Felguard   *WarlockPet
 	Imp        *WarlockPet
 	Succubus   *WarlockPet
 	Voidwalker *WarlockPet
-
 	// Doomguard *DoomguardPet
 	// Infernal  *InfernalPet
+
+	ActivePet     *WarlockPet // The Warlock's current pet
+	SacrificedPet *WarlockPet // Stored reference to the Warlock's most recently-sacrified pet
 
 	ChaosBolt          *core.Spell
 	Conflagrate        []*core.Spell
@@ -125,11 +126,11 @@ type Warlock struct {
 	DPSPAggregate float64
 
 	// Extra state and logic variables
-	demonicKnowledgeSp                   float64
-	masterDemonologistBonus              float64 // Bonus multiplier applied to the Master Demonologist talent
-	disableMasterDemonologistOnSacrifice bool    // Whether to disable the Master Demonologist buff after Sacrificing a pet. Used by TAQ 4pc
-	improvedShadowBoltSpellCodes         []int32 // List of spells that proc ISB
-	nightfallProcChance                  float64
+	demonicKnowledgeSp           float64
+	maintainBuffsOnSacrifice     bool    // Whether to disable the Master Demonologist and Demonic Sacrifice buffs when sacrificing/summoning pets. Used by TAQ 4pc
+	masterDemonologistBonus      float64 // Bonus multiplier applied to the Master Demonologist talent
+	improvedShadowBoltSpellCodes []int32 // List of spells that proc ISB
+	nightfallProcChance          float64
 	// For effects that buff the damage of shadow bolt for each active Warlock effect on the target, e.g. 2pc DPS 6pc
 	shadowBoltActiveEffectModifierPer float64
 	shadowBoltActiveEffectModifierMax float64
@@ -194,6 +195,7 @@ func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 
 func (warlock *Warlock) Reset(sim *core.Simulation) {
 	warlock.setDefaultActivePet()
+	warlock.SacrificedPet = nil
 	warlock.ActiveCurseAura = make([]*core.Aura, len(sim.Environment.AllUnits))
 
 	// warlock.ItemSwap.SwapItems(sim, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand,

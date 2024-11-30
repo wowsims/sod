@@ -9,8 +9,12 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+type OnPetDisable func(sim *core.Simulation, isSacrifice bool)
+
 type WarlockPet struct {
 	core.Pet
+
+	OnPetDisable OnPetDisable
 
 	owner *Warlock
 
@@ -50,13 +54,13 @@ func (warlock *Warlock) setDefaultActivePet() {
 }
 
 func (warlock *Warlock) changeActivePet(sim *core.Simulation, newPet *WarlockPet, isSacrifice bool) {
-	hasMasterDemonologist := warlock.MasterDemonologistAura != nil
-
 	if warlock.ActivePet != nil {
-		warlock.ActivePet.Disable(sim)
+		warlock.ActivePet.Disable(sim, isSacrifice)
 
-		// Sacrificed pets lose all buffs
 		if isSacrifice {
+			warlock.SacrificedPet = warlock.ActivePet
+
+			// Sacrificed pets lose all buffs, but don't remove trigger auras
 			for _, aura := range warlock.ActivePet.GetAuras() {
 				if aura.Duration == core.NeverExpires {
 					continue
@@ -64,10 +68,6 @@ func (warlock *Warlock) changeActivePet(sim *core.Simulation, newPet *WarlockPet
 
 				aura.Deactivate(sim)
 			}
-		}
-
-		if hasMasterDemonologist && (!isSacrifice || warlock.disableMasterDemonologistOnSacrifice) {
-			warlock.MasterDemonologistAura.Deactivate(sim)
 		}
 	}
 
@@ -94,8 +94,9 @@ func (warlock *Warlock) registerPets() {
 
 func (warlock *Warlock) makePet(cfg PetConfig, enabledOnStart bool) *WarlockPet {
 	wp := &WarlockPet{
-		Pet:   core.NewPet(cfg.Name, &warlock.Character, cfg.Stats, warlock.makeStatInheritance(), enabledOnStart, false),
-		owner: warlock,
+		Pet:          core.NewPet(cfg.Name, &warlock.Character, cfg.Stats, warlock.makeStatInheritance(), enabledOnStart, false),
+		owner:        warlock,
+		OnPetDisable: func(sim *core.Simulation, isSacrifice bool) {},
 	}
 
 	wp.EnableManaBarWithModifier(cfg.PowerModifier)
@@ -150,6 +151,26 @@ func (wp *WarlockPet) Initialize() {
 
 func (wp *WarlockPet) Reset(_ *core.Simulation) {
 	wp.manaPooling = false
+}
+
+func (wp *WarlockPet) Disable(sim *core.Simulation, isSacrifice bool) {
+	wp.Pet.Disable(sim)
+
+	if wp.OnPetDisable != nil {
+		wp.OnPetDisable(sim, isSacrifice)
+	}
+}
+
+func (wp *WarlockPet) ApplyOnPetDisable(newOnPetDisable OnPetDisable) {
+	oldOnPetDisable := wp.OnPetDisable
+	if oldOnPetDisable == nil {
+		wp.OnPetDisable = oldOnPetDisable
+	} else {
+		wp.OnPetDisable = func(sim *core.Simulation, isSacrifice bool) {
+			oldOnPetDisable(sim, isSacrifice)
+			newOnPetDisable(sim, isSacrifice)
+		}
+	}
 }
 
 func (wp *WarlockPet) ExecuteCustomRotation(sim *core.Simulation) {
