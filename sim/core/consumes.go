@@ -1,6 +1,7 @@
 package core
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -970,7 +971,9 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	}
 
 	if hasFiller {
-		if consumes.FillerExplosive != proto.Explosive_ExplosiveEzThroRadiationBomb && !character.HasProfession(proto.Profession_Engineering) {
+		// Update this list with explosives that don't require engi
+		nonEngiExplosives := []proto.Explosive{proto.Explosive_ExplosiveEzThroRadiationBomb, proto.Explosive_ExplosiveObsidianBomb}
+		if !character.HasProfession(proto.Profession_Engineering) || !slices.Contains(nonEngiExplosives, consumes.FillerExplosive) {
 			return
 		}
 

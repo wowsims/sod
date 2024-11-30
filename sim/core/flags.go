@@ -48,10 +48,13 @@ const (
 	ProcMaskRangedSpecial
 	ProcMaskSpellDamage
 	ProcMaskSpellHealing
-	ProcMaskSpellProc       // Special mask for Spell procs that can trigger things (Can be used together with damage proc mask or alone)
-	ProcMaskMeleeProc       // Special mask for Melee procs that can trigger things (Can be used together with damage proc mask or alone)
-	ProcMaskSpellDamageProc // Mask for procs triggering from spell damage procs like FT weapon and rogue poisons
-	ProcMaskMeleeDamageProc // Mask for procs (e.g.  War Rune / Focuessed Attacks) triggering from melee damage procs
+
+	ProcMaskMeleeProc        // Special mask for Melee procs that can trigger things (Can be used together with damage proc mask or alone)
+	ProcMaskRangedProc       // Special mask for Ranged procs that can trigger things (Can be used together with damage proc mask or alone)
+	ProcMaskSpellProc        // Special mask for Spell procs that can trigger things (Can be used together with damage proc mask or alone)
+	ProcMaskMeleeDamageProc  // Mask for procs (e.g. Art of War Rune Focuessed Attacks) triggering from melee damage procs
+	ProcMaskRangedDamageProc // Mask for procs triggering from ranged damage procs
+	ProcMaskSpellDamageProc  // Mask for procs triggering from spell damage procs like FT weapon and rogue poisons
 
 )
 
@@ -77,11 +80,12 @@ const (
 
 	ProcMaskSpecial = ProcMaskMeleeOrRangedSpecial | ProcMaskSpellDamage
 
-	ProcMaskMeleeOrMeleeProc = ProcMaskMelee | ProcMaskMeleeProc
-	ProcMaskSpellOrSpellProc = ProcMaskSpellDamage | ProcMaskSpellProc
+	ProcMaskMeleeOrMeleeProc   = ProcMaskMelee | ProcMaskMeleeProc
+	ProcMaskRangedOrRangedProc = ProcMaskRanged | ProcMaskRangedProc
+	ProcMaskSpellOrSpellProc   = ProcMaskSpellDamage | ProcMaskSpellProc
 
-	ProcMaskProc       = ProcMaskSpellProc | ProcMaskMeleeProc
-	ProcMaskDamageProc = ProcMaskSpellDamageProc | ProcMaskMeleeDamageProc // Mask for Fiery Weapon and Blazefury Medalion that trigger melee and spell procs
+	ProcMaskProc       = ProcMaskMeleeProc | ProcMaskRangedProc | ProcMaskSpellProc
+	ProcMaskDamageProc = ProcMaskMeleeDamageProc | ProcMaskRangedDamageProc | ProcMaskSpellDamageProc // Mask for Fiery Weapon and Blazefury Medalion that trigger melee and spell procs
 )
 
 // Possible outcomes of any hit/damage roll.
