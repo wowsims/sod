@@ -58,6 +58,10 @@ func (warlock *Warlock) changeActivePet(sim *core.Simulation, newPet *WarlockPet
 		// Sacrificed pets lose all buffs
 		if isSacrifice {
 			for _, aura := range warlock.ActivePet.GetAuras() {
+				if aura.Duration == core.NeverExpires {
+					continue
+				}
+
 				aura.Deactivate(sim)
 			}
 		}

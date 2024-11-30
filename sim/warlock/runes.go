@@ -494,7 +494,7 @@ func (warlock *Warlock) applyDemonicPact() {
 
 			// Remove DP bonus from SP bonus if active
 			if warlockAura.IsActive() {
-				lastBonus = demonicPactAuras.Get(&warlock.Unit).ExclusiveEffects[0].Priority
+				lastBonus = warlockAura.ExclusiveEffects[0].Priority
 			}
 			newSPBonus := max(math.Round(0.10*(currentSP-lastBonus)), math.Round(float64(warlock.Level)/2))
 

@@ -85,7 +85,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		SpellSchool:  core.SpellSchoolNature,
 		CastType:     proto.CastType_CastTypeRanged,
 		DefenseType:  core.DefenseTypeRanged,
-		ProcMask:     core.ProcMaskEmpty,
+		ProcMask:     core.ProcMaskRangedProc | core.ProcMaskRangedDamageProc,
 		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		MissileSpeed: 24,
 

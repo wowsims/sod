@@ -259,7 +259,7 @@ func init() {
 					felguardAura.Activate(sim)
 				}
 
-				warlock.changeActivePet(sim, nil, true)
+				warlock.changeActivePet(sim, nil, false)
 			},
 		})
 
