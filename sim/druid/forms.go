@@ -274,11 +274,6 @@ func (druid *Druid) registerBearFormSpell() {
 
 	feralApDep := druid.NewDynamicStatDependency(stats.FeralAttackPower, stats.AttackPower, 1)
 
-	// var potpDep *stats.StatDependency
-	// if druid.Talents.ProtectorOfThePack > 0 {
-	// 	potpDep = druid.NewDynamicMultiplyStat(stats.AttackPower, 1.0+0.02*float64(druid.Talents.ProtectorOfThePack))
-	// }
-
 	var hotwDep *stats.StatDependency
 	if druid.Talents.HeartOfTheWild > 0 {
 		hotwDep = druid.NewDynamicMultiplyStat(stats.Stamina, 1.0+0.04*float64(druid.Talents.HeartOfTheWild))
@@ -287,11 +282,10 @@ func (druid *Druid) registerBearFormSpell() {
 	sotfdtm := 1.0
 	if druid.HasRune(proto.DruidRune_RuneChestSurvivalOfTheFittest) {
 		sotfdtm = 0.81
-		// potpdtm := 1 - 0.04*float64(druid.Talents.ProtectorOfThePack)
 	}
 
 	clawWeapon := druid.GetBearWeapon()
-	// predBonus := stats.Stats{}
+	predBonus := stats.Stats{}
 
 	druid.BearFormAura = druid.RegisterAura(core.Aura{
 		Label:      "Bear Form",
@@ -308,18 +302,12 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.AutoAttacks.SetMH(clawWeapon)
 
 			druid.PseudoStats.ThreatMultiplier *= 1.3
-			// druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.0 + 0.02*float64(druid.Talents.MasterShapeshifter)
 			druid.PseudoStats.DamageTakenMultiplier *= sotfdtm
-			// Switch to using AddStat as PseudoStat is being removed
-			// druid.PseudoStats.BaseDodge += 0.02 * float64(druid.Talents.FeralSwiftness+druid.Talents.NaturalReaction)
 
-			// predBonus = druid.GetDynamicPredStrikeStats()
-			// druid.AddStatsDynamic(sim, predBonus)
+			predBonus = druid.GetDynamicPredStrikeStats()
+			druid.AddStatsDynamic(sim, predBonus)
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.ApplyDynamicEquipScaling(sim, stats.Armor, 4.6)
-			// if potpDep != nil {
-			// 	druid.EnableDynamicStatDep(sim, potpDep)
-			// }
 
 			// Preserve fraction of max health when shifting
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
@@ -343,17 +331,11 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
 			druid.PseudoStats.ThreatMultiplier /= 1.3
-			// druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.0 + 0.02*float64(druid.Talents.MasterShapeshifter)
 			druid.PseudoStats.DamageTakenMultiplier /= sotfdtm
-			// Switch to using AddStat as PseudoStat is being removed
-			// druid.PseudoStats.BaseDodge -= 0.02 * float64(druid.Talents.FeralSwiftness+druid.Talents.NaturalReaction)
 
-			// druid.AddStatsDynamic(sim, predBonus.Invert())
+			druid.AddStatsDynamic(sim, predBonus.Invert())
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.RemoveDynamicEquipScaling(sim, stats.Armor, 4.6)
-			// if potpDep != nil {
-			// 	druid.DisableDynamicStatDep(sim, potpDep)
-			// }
 
 			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
 			if hotwDep != nil {
@@ -367,7 +349,7 @@ func (druid *Druid) registerBearFormSpell() {
 
 				druid.manageCooldownsEnabled()
 				druid.UpdateManaRegenRates()
-				// druid.EnrageAura.Deactivate(sim)
+				druid.EnrageAura.Deactivate(sim)
 			}
 		},
 	})

@@ -4,9 +4,13 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
-func (druid *Druid) registerLacerateDirectSpell() {
+func (druid *Druid) registerLacerateSpell() {
+	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
+		return
+	}
 	initialDamage := 149.0
 	initialDamageMul := 1.0
 
@@ -15,35 +19,8 @@ func (druid *Druid) registerLacerateDirectSpell() {
 		initialDamageMul += .07
 	}
 
-	druid.LacerateDirect = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 414644},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-
-		DamageMultiplier: initialDamageMul,
-		ThreatMultiplier: 3.25,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := initialDamage + (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())*.2)*float64(druid.Lacerate.Dot(target).GetStacks())
-
-			spell.DamageMultiplier = initialDamageMul
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
-		},
-	})
-}
-
-func (druid *Druid) registerLacerateSpell() {
-	tickDamage := 20.0
-
-	switch druid.Ranged().ID {
-	case IdolOfCruelty:
-		tickDamage += 7.0
-	}
-
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 414647},
+		ActionID:    core.ActionID{SpellID: 414644},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -59,6 +36,49 @@ func (druid *Druid) registerLacerateSpell() {
 			},
 			IgnoreHaste: true,
 		},
+
+		DamageMultiplier: initialDamageMul,
+		ThreatMultiplier: 3.25,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseDamage := initialDamage + (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())*.2)*float64(druid.LacerateBleed.Dot(target).GetStacks())
+
+			spell.DamageMultiplier = initialDamageMul
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+
+			if result.Landed() {
+				druid.LacerateBleed.Cast(sim, target)
+
+				if druid.HasRune(proto.DruidRune_RuneHelmGore) && sim.Proc(0.15, "Gore") {
+					rageMetrics := druid.NewRageMetrics(spell.ActionID)
+					druid.AddRage(sim, 10.0, rageMetrics)
+					// TODO: rage works, figure out why Mangle CD can't be modified - Saeyon
+					druid.MangleBear.CD.Reset()
+				}
+			} else {
+				spell.IssueRefund(sim)
+			}
+		},
+	})
+}
+
+func (druid *Druid) registerLacerateBleedSpell() {
+	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
+		return
+	}
+	tickDamage := 20.0
+
+	switch druid.Ranged().ID {
+	case IdolOfCruelty:
+		tickDamage += 7.0
+	}
+
+	druid.LacerateBleed = druid.RegisterSpell(Bear, core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 414647},
+		SpellSchool: core.SpellSchoolPhysical,
+		SpellCode:   SpellCode_DruidLacerate,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 3.4,
@@ -87,22 +107,15 @@ func (druid *Druid) registerLacerateSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcDamage(sim, target, 0, spell.OutcomeMeleeSpecialHitAndCrit)
-
-			if result.Landed() {
-				druid.LacerateDirect.Cast(sim, target)
-				dot := spell.Dot(target)
-				if dot.IsActive() {
-					dot.Refresh(sim)
-					dot.AddStack(sim)
-					dot.TakeSnapshot(sim, true)
-				} else {
-					dot.Apply(sim)
-					dot.SetStacks(sim, 1)
-					dot.TakeSnapshot(sim, true)
-				}
+			dot := spell.Dot(target)
+			if dot.IsActive() {
+				dot.Refresh(sim)
+				dot.AddStack(sim)
+				dot.TakeSnapshot(sim, true)
 			} else {
-				spell.IssueRefund(sim)
+				dot.Apply(sim)
+				dot.SetStacks(sim, 1)
+				dot.TakeSnapshot(sim, true)
 			}
 		},
 	})
