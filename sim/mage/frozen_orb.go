@@ -56,7 +56,7 @@ func (mage *Mage) registerFrozenOrbCD() {
 
 					if hasFoFRune {
 						mage.FingersOfFrostAura.Activate(sim)
-						mage.FingersOfFrostAura.AddStack(sim)
+						mage.FingersOfFrostAura.AddStacks(sim, mage.FingersOfFrostAura.MaxStacks)
 					}
 					break
 				}
