@@ -260,7 +260,7 @@ func (druid *Druid) RegisterFeralTankSpells(realismICD *core.Cooldown) {
 	druid.registerMaulSpell(realismICD)
 	druid.registerLacerateBleedSpell()
 	druid.registerLacerateSpell()
-	druid.registerSurvivalInstinctsCD()
+	// druid.registerSurvivalInstinctsCD()
 	druid.registerSwipeBearSpell()
 }
 
