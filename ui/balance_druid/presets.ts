@@ -121,7 +121,7 @@ export const DefaultConsumes = Consumes.create({
 	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	flask: Flask.FlaskOfAncientKnowledge,
 	food: Food.FoodRunnTumTuberSurprise,
-	mainHandImbue: WeaponImbue.BrilliantWizardOil,
+	mainHandImbue: WeaponImbue.EnchantedRepellent,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 
 	mildlyIrradiatedRejuvPot: true,

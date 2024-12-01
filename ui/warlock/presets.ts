@@ -245,7 +245,7 @@ export const DefaultConsumes = Consumes.create({
 	flask: Flask.FlaskOfAncientKnowledge,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	food: Food.FoodTenderWolfSteak,
-	mainHandImbue: WeaponImbue.BrilliantWizardOil,
+	mainHandImbue: WeaponImbue.EnchantedRepellent,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 
 	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,

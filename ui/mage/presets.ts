@@ -282,7 +282,7 @@ export const DefaultConsumes = Consumes.create({
 	food: Food.FoodRunnTumTuberSurprise,
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
 	mageScroll: MageScroll.MageScrollArcanePower,
-	mainHandImbue: WeaponImbue.BrilliantWizardOil,
+	mainHandImbue: WeaponImbue.EnchantedRepellent,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 
 	mildlyIrradiatedRejuvPot: true,

@@ -1053,7 +1053,7 @@ export const EnchantedRepellent = (slot: ItemSlot): ConsumableInputConfig<Weapon
 export const BrilliantWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 20749, minLevel: 45 }]),
-		value: WeaponImbue.BrilliantWizardOil,
+		value: WeaponImbue.EnchantedRepellent,
 		showWhen: player => {
 			const weapon = player.getEquippedItem(slot);
 			return !weapon || isWeapon(weapon.item.weaponType);
