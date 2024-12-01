@@ -3,6 +3,7 @@ import * as PresetUtils from '../core/preset_utils.js';
 import {
 	AgilityElixir,
 	AttackPowerBuff,
+	Conjured,
 	Consumes,
 	Debuffs,
 	EnchantedSigil,
@@ -14,6 +15,7 @@ import {
 	Potions,
 	Profession,
 	RaidBuffs,
+	SapperExplosive,
 	SaygesFortune,
 	SpellPowerBuff,
 	StrengthBuff,
@@ -28,6 +30,7 @@ import Phase2APL from './apls/phase_2.apl.json';
 import Phase3APL from './apls/phase_3.apl.json';
 import Phase4APL from './apls/phase_4.apl.json';
 import Phase5APL from './apls/phase_5.apl.json';
+import Phase6APL from './apls/phase_6.apl.json';
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
 import Phase3Gear from './gear_sets/phase_3.gear.json';
@@ -35,6 +38,8 @@ import Phase4Gear2H from './gear_sets/phase_4_2h.gear.json';
 import Phase4GearDW from './gear_sets/phase_4_dw.gear.json';
 import Phase5Gear2H from './gear_sets/phase_5_2h.gear.json';
 import Phase5GearDW from './gear_sets/phase_5_dw.gear.json';
+import Phase6Gear2H from './gear_sets/phase_6_2h.gear.json';
+import Phase6GearDW from './gear_sets/phase_6_dw.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -50,6 +55,8 @@ export const GearDWPhase4 = PresetUtils.makePresetGear('Phase 4 DW', Phase4GearD
 export const Gear2HPhase4 = PresetUtils.makePresetGear('Phase 4 2H', Phase4Gear2H, { customCondition: player => player.getLevel() === 60 });
 export const GearDWPhase5 = PresetUtils.makePresetGear('Phase 5 DW', Phase5GearDW, { customCondition: player => player.getLevel() === 60 });
 export const Gear2HPhase5 = PresetUtils.makePresetGear('Phase 5 2H', Phase5Gear2H, { customCondition: player => player.getLevel() === 60 });
+export const GearDWPhase6 = PresetUtils.makePresetGear('Phase 6 DW', Phase6GearDW, { customCondition: player => player.getLevel() === 60 });
+export const Gear2HPhase6 = PresetUtils.makePresetGear('Phase 6 2H', Phase6Gear2H, { customCondition: player => player.getLevel() === 60 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearPhase1],
@@ -57,9 +64,10 @@ export const GearPresets = {
 	[Phase.Phase3]: [GearPhase3],
 	[Phase.Phase4]: [GearDWPhase4, Gear2HPhase4],
 	[Phase.Phase5]: [GearDWPhase5, Gear2HPhase5],
+	[Phase.Phase6]: [GearDWPhase6, Gear2HPhase6],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase5][0];
+export const DefaultGear = GearPresets[Phase.Phase6][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -70,6 +78,7 @@ export const APLPhase2 = PresetUtils.makePresetAPLRotation('Phase 2', Phase2APL,
 export const APLPhase3 = PresetUtils.makePresetAPLRotation('Phase 3', Phase3APL, { customCondition: player => player.getLevel() === 50 });
 export const APLPhase4 = PresetUtils.makePresetAPLRotation('Phase 4', Phase4APL, { customCondition: player => player.getLevel() === 60 });
 export const APLPhase5 = PresetUtils.makePresetAPLRotation('Phase 5', Phase5APL, { customCondition: player => player.getLevel() === 60 });
+export const APLPhase6 = PresetUtils.makePresetAPLRotation('Phase 6', Phase6APL, { customCondition: player => player.getLevel() === 60 });
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLPhase1],
@@ -77,13 +86,14 @@ export const APLPresets = {
 	[Phase.Phase3]: [APLPhase3],
 	[Phase.Phase4]: [APLPhase4],
 	[Phase.Phase5]: [APLPhase5],
+	[Phase.Phase6]: [APLPhase6],
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 	25: APLPresets[Phase.Phase1][0],
 	40: APLPresets[Phase.Phase2][0],
 	50: APLPresets[Phase.Phase3][0],
-	60: APLPresets[Phase.Phase5][0],
+	60: APLPresets[Phase.Phase6][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -99,7 +109,7 @@ export const TalentsPhase2 = PresetUtils.makePresetTalents('Level 40', SavedTale
 export const TalentsPhase3 = PresetUtils.makePresetTalents('Level 50', SavedTalents.create({ talentsString: '05003-5005132105023051' }), {
 	customCondition: player => player.getLevel() === 50,
 });
-export const TalentsPhase4 = PresetUtils.makePresetTalents('Level 60', SavedTalents.create({ talentsString: '25003105003-5005032105023051' }), {
+export const TalentsPhase4 = PresetUtils.makePresetTalents('Level 60', SavedTalents.create({ talentsString: '05023105003-5005032105023051' }), {
 	customCondition: player => player.getLevel() === 60,
 });
 
@@ -109,9 +119,25 @@ export const TalentPresets = {
 	[Phase.Phase3]: [TalentsPhase3],
 	[Phase.Phase4]: [TalentsPhase4],
 	[Phase.Phase5]: [],
+	[Phase.Phase6]: [],
 };
 
 export const DefaultTalents = TalentPresets[Phase.Phase4][0];
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Build Presets
+///////////////////////////////////////////////////////////////////////////
+
+export const PresetBuildDW = PresetUtils.makePresetBuild('Dual Wield', {
+	gear: GearDWPhase6,
+	talents: TalentsPhase4,
+	rotation: APLPhase6,
+});
+export const PresetBuild2H = PresetUtils.makePresetBuild('2-Handed', {
+	gear: Gear2HPhase6,
+	talents: TalentsPhase4,
+	rotation: APLPhase6,
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
@@ -122,18 +148,20 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
+	defaultConjured: Conjured.ConjuredDemonicRune,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	flask: Flask.FlaskOfAncientKnowledge,
-	food: Food.FoodBlessSunfruit,
+	food: Food.FoodSmokedDesertDumpling,
 	mainHandImbue: WeaponImbue.WindfuryWeapon,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
-	offHandImbue: WeaponImbue.WindfuryWeapon,
+	offHandImbue: WeaponImbue.FlametongueWeapon,
+	sapperExplosive: SapperExplosive.SapperFumigator,
 	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
@@ -171,15 +199,13 @@ export const DefaultDebuffs = Debuffs.create({
 	exposeArmor: TristateEffect.TristateEffectImproved,
 	faerieFire: true,
 	homunculi: 70, // 70% average uptime default
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	markOfChaos: true,
 	occultPoison: true,
 	stormstrike: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {
 	profession1: Profession.Alchemy,
-	profession2: Profession.Enchanting,
+	profession2: Profession.Engineering,
 };

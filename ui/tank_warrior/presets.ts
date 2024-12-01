@@ -108,7 +108,7 @@ export const DefaultOptions = TankWarriorOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	alcohol: Alcohol.AlcoholRumseyRumBlackLabel,
 	armorElixir: ArmorElixir.ElixirOfSuperiorDefense,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
@@ -159,11 +159,9 @@ export const DefaultDebuffs = Debuffs.create({
 	faerieFire: true,
 	giftOfArthas: true,
 	homunculi: 70, // 70% average uptime default
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	insectSwarm: true,
 	mangle: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {

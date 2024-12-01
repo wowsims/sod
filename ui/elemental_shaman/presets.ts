@@ -182,7 +182,6 @@ export const DefaultDebuffs = Debuffs.create({
 	markOfChaos: true,
 	occultPoison: true,
 	stormstrike: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {

@@ -390,7 +390,7 @@ export const P3Consumes = Consumes.create({
 });
 
 export const P4Consumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultConjured: Conjured.ConjuredRogueThistleTea,
 	dragonBreathChili: true,
@@ -408,7 +408,7 @@ export const P4Consumes = Consumes.create({
 });
 
 export const P5Consumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultConjured: Conjured.ConjuredRogueThistleTea,
 	dragonBreathChili: true,
@@ -461,11 +461,9 @@ export const DefaultDebuffs = Debuffs.create({
 	dreamstate: true,
 	faerieFire: true,
 	homunculi: 100,
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	mangle: true,
 	markOfChaos: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {

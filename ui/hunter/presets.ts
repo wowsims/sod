@@ -256,7 +256,7 @@ export const DefaultOptions = HunterOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	alcohol: Alcohol.AlcoholRumseyRumBlackLabel,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultConjured: Conjured.ConjuredDemonicRune,
@@ -272,7 +272,7 @@ export const DefaultConsumes = Consumes.create({
 	petAttackPowerConsumable: 1,
 	petAgilityConsumable: 1,
 	petStrengthConsumable: 1,
-	sapperExplosive: SapperExplosive.SapperGoblinSapper,
+	sapperExplosive: SapperExplosive.SapperFumigator,
 	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.GroundScorpokAssay,
@@ -320,13 +320,11 @@ export const DefaultDebuffs = Debuffs.create({
 	homunculi: 70, // 70% average uptime default
 	huntersMark: TristateEffect.TristateEffectImproved,
 	improvedScorch: true,
-	improvedFaerieFire: true,
 	judgementOfWisdom: true,
 	mangle: true,
 	markOfChaos: true,
 	occultPoison: true,
 	stormstrike: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {

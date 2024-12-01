@@ -230,7 +230,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.ShadowOil,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 
-	sapperExplosive: SapperExplosive.SapperGoblinSapper,
+	sapperExplosive: SapperExplosive.SapperFumigator,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
 	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 });
@@ -280,7 +280,6 @@ export const DefaultDebuffs = Debuffs.create({
 	demoralizingShout: TristateEffect.TristateEffectImproved,
 	faerieFire: true,
 	homunculi: 100,
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	judgementOfWisdom: true,
 	markOfChaos: true,

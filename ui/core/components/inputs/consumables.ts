@@ -205,7 +205,7 @@ export const makeEncanthedSigilInput = makeConsumeInputFactory({ consumesFieldNa
 export const SapperGoblinSapper: ConsumableInputConfig<SapperExplosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 10646, minLevel: 50 }]),
 	showWhen: player => player.hasProfession(Profession.Engineering),
-	value: SapperExplosive.SapperGoblinSapper,
+	value: SapperExplosive.SapperFumigator,
 };
 
 export const SapperFumigator: ConsumableInputConfig<SapperExplosive> = {
@@ -545,7 +545,7 @@ export const ElixirOfTheHoneyBadger: ConsumableInputConfig<AgilityElixir> = {
 };
 export const ElixirOfTheMongoose: ConsumableInputConfig<AgilityElixir> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 13452, minLevel: 46 }]),
-	value: AgilityElixir.ElixirOfTheMongoose,
+	value: AgilityElixir.ElixirOfTheHoneyBadger,
 };
 export const ElixirOfGreaterAgility: ConsumableInputConfig<AgilityElixir> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 9187, minLevel: 38 }]),

@@ -164,7 +164,6 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 });
 
 export const DefaultDebuffs = Debuffs.create({
-	improvedFaerieFire: true,
 	improvedShadowBolt: true,
 	judgementOfWisdom: true,
 	occultPoison: true,

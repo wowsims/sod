@@ -315,7 +315,6 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 
 export const DefaultDebuffs = Debuffs.create({
 	dreamstate: true,
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	judgementOfWisdom: true,
 	markOfChaos: true,

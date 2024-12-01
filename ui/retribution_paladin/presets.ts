@@ -203,7 +203,7 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	boglingRoot: false,
 	defaultConjured: Conjured.ConjuredDemonicRune,
@@ -258,10 +258,8 @@ export const DefaultDebuffs = Debuffs.create({
 	dreamstate: true,
 	faerieFire: true,
 	giftOfArthas: true,
-	sunderArmor: true,
 	judgementOfWisdom: true,
 	judgementOfTheCrusader: TristateEffect.TristateEffectImproved,
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	markOfChaos: true,
 	occultPoison: true,
