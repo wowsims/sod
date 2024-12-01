@@ -59,7 +59,7 @@ export const GearPresets = {
 	[Phase.Phase6]: [GearPhase6],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase5][0];
+export const DefaultGear = GearPresets[Phase.Phase6][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -95,7 +95,7 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 export const TalentsPhase1 = PresetUtils.makePresetTalents('Level 25', SavedTalents.create({ talentsString: '25003105' }));
 export const TalentsPhase2 = PresetUtils.makePresetTalents('Level 40', SavedTalents.create({ talentsString: '550031550000151' }));
 export const TalentsPhase3 = PresetUtils.makePresetTalents('Level 50', SavedTalents.create({ talentsString: '550031550000151-500203' }));
-export const TalentsPhase4 = PresetUtils.makePresetTalents('Level 60', SavedTalents.create({ talentsString: '550301550000151--50205300005' }));
+export const TalentsPhase4 = PresetUtils.makePresetTalents('Level 60', SavedTalents.create({ talentsString: '050331552000151--50105301005' }));
 
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsPhase1],
@@ -137,15 +137,15 @@ export const DefaultOptions = ElementalShamanOptions.create({});
 export const DefaultConsumes = Consumes.create({
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultPotion: Potions.MajorManaPotion,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
-	flask: Flask.FlaskOfSupremePower,
+	flask: Flask.FlaskOfAncientKnowledge,
 	food: Food.FoodRunnTumTuberSurprise,
 	mainHandImbue: WeaponImbue.FlametongueWeapon,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
-	offHandImbue: WeaponImbue.MagnificentTrollshine,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	offHandImbue: WeaponImbue.EnchantedRepellent,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.CerebralCortexCompound,
 });
@@ -153,7 +153,7 @@ export const DefaultConsumes = Consumes.create({
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	aspectOfTheLion: true,
-	demonicPact: 110,
+	demonicPact: 120,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectRegular,
@@ -178,7 +178,6 @@ export const DefaultDebuffs = Debuffs.create({
 	curseOfRecklessness: true,
 	faerieFire: true,
 	homunculi: 70, // 70% average uptime default
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	markOfChaos: true,
 	occultPoison: true,

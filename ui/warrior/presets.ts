@@ -227,7 +227,7 @@ export const DefaultConsumes = Consumes.create({
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultPotion: Potions.MightyRagePotion,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	food: Food.FoodSmokedDesertDumpling,
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.WildStrikes,

@@ -140,7 +140,7 @@ export const DefaultConsumes = Consumes.create({
 	defaultConjured: Conjured.ConjuredDemonicRune,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	flask: Flask.FlaskOfDistilledWisdom,
 	food: Food.FoodSmokedDesertDumpling,
 	mainHandImbue: WeaponImbue.ElementalSharpeningStone,

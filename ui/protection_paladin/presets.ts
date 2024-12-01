@@ -127,7 +127,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.MagnificentTrollshine,
 
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
@@ -156,7 +156,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	sanctityAura: true,
-	demonicPact: 110,
+	demonicPact: 120,
 	aspectOfTheLion: true,
 	vampiricTouch: 300,
 });

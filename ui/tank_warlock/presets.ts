@@ -221,10 +221,10 @@ export const DefaultConsumes = Consumes.create({
 	defaultConjured: Conjured.ConjuredDemonicRune,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	fillerExplosive: Explosive.ExplosiveDenseDynamite,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
-	flask: Flask.FlaskOfSupremePower,
+	flask: Flask.FlaskOfAncientKnowledge,
 	food: Food.FoodTenderWolfSteak,
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.ShadowOil,
@@ -232,7 +232,7 @@ export const DefaultConsumes = Consumes.create({
 
 	sapperExplosive: SapperExplosive.SapperGoblinSapper,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -240,7 +240,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	bloodPact: TristateEffect.TristateEffectImproved,
-	demonicPact: 110,
+	demonicPact: 120,
 	devotionAura: TristateEffect.TristateEffectImproved,
 	divineSpirit: true,
 	fireResistanceAura: true,

@@ -219,7 +219,7 @@ export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultConjured: Conjured.ConjuredRogueThistleTea,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	flask: Flask.FlaskOfTheTitans,
 	food: Food.FoodGrilledSquid,
 	mainHandImbue: WeaponImbue.WildStrikes,

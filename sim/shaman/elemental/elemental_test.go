@@ -203,7 +203,7 @@ var Phase6Consumes = core.ConsumesCombo{
 		Food:           proto.Food_FoodRunnTumTuberSurprise,
 		MainHandImbue:  proto.WeaponImbue_FlametongueWeapon,
 		OffHandImbue:   proto.WeaponImbue_EnchantedRepellent,
-		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
+		SpellPowerBuff: proto.SpellPowerBuff_ElixirOfTheMageLord,
 	},
 }
 

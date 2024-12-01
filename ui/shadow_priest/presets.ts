@@ -126,22 +126,22 @@ export const DefaultOptions = Options.create({});
 export const DefaultConsumes = Consumes.create({
 	defaultConjured: Conjured.ConjuredDemonicRune,
 	defaultPotion: Potions.MajorManaPotion,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
-	flask: Flask.FlaskOfSupremePower,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
+	flask: Flask.FlaskOfAncientKnowledge,
 	food: Food.FoodRunnTumTuberSurprise,
 	mainHandImbue: WeaponImbue.BrilliantWizardOil,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
 
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	zanzaBuff: ZanzaBuff.CerebralCortexCompound,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	aspectOfTheLion: true,
-	demonicPact: 110,
+	demonicPact: 120,
 	divineSpirit: true,
 	fireResistanceAura: true,
 	fireResistanceTotem: true,

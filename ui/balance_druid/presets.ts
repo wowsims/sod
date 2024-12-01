@@ -118,21 +118,21 @@ export const DefaultOptions = BalanceDruidOptions.create({
 
 export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.MajorManaPotion,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
-	flask: Flask.FlaskOfSupremePower,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
+	flask: Flask.FlaskOfAncientKnowledge,
 	food: Food.FoodRunnTumTuberSurprise,
 	mainHandImbue: WeaponImbue.BrilliantWizardOil,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 
 	mildlyIrradiatedRejuvPot: true,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	zanzaBuff: ZanzaBuff.CerebralCortexCompound,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	aspectOfTheLion: true,
-	demonicPact: 110,
+	demonicPact: 120,
 	divineSpirit: true,
 	fireResistanceAura: true,
 	fireResistanceTotem: true,
