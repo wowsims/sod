@@ -16,10 +16,13 @@ func TestFeralTank(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class: proto.Class_ClassDruid,
+			Level: 60,
+			Phase: 4,
 			Race:  proto.Race_RaceTauren,
 
 			GearSet:     core.GetGearSet("../../../ui/feral_tank_druid/gear_sets", "phase_5"),
 			Talents:     StandardTalents,
+			Buffs:       core.FullBuffsPhase4,
 			Consumes:    FullConsumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsDefault},
 			Rotation:    core.GetAplRotation("../../../ui/feral_tank_druid/apls", "phase_5"),
@@ -43,7 +46,7 @@ func TestFeralTank(t *testing.T) {
 	}))
 }
 
-var StandardTalents = "-503232132322010353120300313511-20350001"
+var StandardTalents = "500005001-5050321303022151-05002"
 
 var PlayerOptionsDefault = &proto.Player_FeralTankDruid{
 	FeralTankDruid: &proto.FeralTankDruid{
@@ -64,7 +67,5 @@ var FullConsumes = core.ConsumesCombo{
 		Food:              proto.Food_FoodDirgesKickChimaerokChops,
 		MainHandImbue:     proto.WeaponImbue_WildStrikes,
 		StrengthBuff:      proto.StrengthBuff_JujuPower,
-		DefaultPotion:     proto.Potions_GreaterStoneshieldPotion,
-		DefaultConjured:   proto.Conjured_ConjuredHealthstone,
 	},
 }

@@ -23,6 +23,7 @@ func (druid *Druid) registerMangleBearSpell() {
 	}
 
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
+	apProcAura := core.DefendersResolveAttackPower(druid.GetCharacter())
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 407995},
@@ -58,6 +59,7 @@ func (druid *Druid) registerMangleBearSpell() {
 
 			if result.Landed() {
 				mangleAuras.Get(target).Activate(sim)
+				apProcAura.Activate(sim)
 			} else {
 				spell.IssueRefund(sim)
 			}

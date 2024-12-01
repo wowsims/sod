@@ -25,10 +25,6 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyPrimalFury()
 	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
 
-	if druid.Talents.FeralInstinct > 0 {
-		druid.PseudoStats.ThreatMultiplier += .03 * float64(druid.Talents.FeralInstinct)
-	}
-
 	if druid.Talents.HeartOfTheWild > 0 {
 		bonus := 0.04 * float64(druid.Talents.HeartOfTheWild)
 		druid.MultiplyStat(stats.Intellect, 1.0+bonus)
@@ -44,7 +40,7 @@ func (druid *Druid) ThickHideMultiplier() float64 {
 	thickHideMulti := 1.0
 
 	if druid.Talents.ThickHide > 0 {
-		thickHideMulti += 0.04 + 0.03*float64(druid.Talents.ThickHide-1)
+		thickHideMulti += 0.02 * float64(druid.Talents.ThickHide)
 	}
 
 	return thickHideMulti

@@ -301,7 +301,7 @@ func (druid *Druid) registerBearFormSpell() {
 
 			druid.AutoAttacks.SetMH(clawWeapon)
 
-			druid.PseudoStats.ThreatMultiplier *= 1.3
+			druid.PseudoStats.ThreatMultiplier += .3 + .03*float64(druid.Talents.FeralInstinct)
 			druid.PseudoStats.DamageTakenMultiplier *= sotfdtm
 
 			predBonus = druid.GetDynamicPredStrikeStats()
@@ -330,7 +330,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.SetCurrentPowerBar(core.ManaBar)
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
-			druid.PseudoStats.ThreatMultiplier /= 1.3
+			druid.PseudoStats.ThreatMultiplier -= .3 + .03*float64(druid.Talents.FeralInstinct)
 			druid.PseudoStats.DamageTakenMultiplier /= sotfdtm
 
 			druid.AddStatsDynamic(sim, predBonus.Invert())
