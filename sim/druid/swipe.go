@@ -29,6 +29,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 	case IdolOfUrsinPower:
 		baseMultiplier += .03
 	}
+	rageMetrics := druid.NewRageMetrics(core.ActionID{SpellID: 431446})
 
 	druid.SwipeBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 9908},
@@ -57,7 +58,6 @@ func (druid *Druid) registerSwipeBearSpell() {
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}
-			rageMetrics := druid.NewRageMetrics(spell.ActionID)
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)

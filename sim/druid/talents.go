@@ -23,7 +23,6 @@ func (druid *Druid) ApplyTalents() {
 	// Feral
 	druid.applyBloodFrenzy()
 	druid.applyPrimalFury()
-	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
 
 	if druid.Talents.HeartOfTheWild > 0 {
 		bonus := 0.04 * float64(druid.Talents.HeartOfTheWild)
@@ -34,16 +33,6 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyFuror()
 
 	druid.PseudoStats.SpiritRegenRateCasting += .05 * float64(druid.Talents.Reflection)
-}
-
-func (druid *Druid) ThickHideMultiplier() float64 {
-	thickHideMulti := 1.0
-
-	if druid.Talents.ThickHide > 0 {
-		thickHideMulti += 0.02 * float64(druid.Talents.ThickHide)
-	}
-
-	return thickHideMulti
 }
 
 func (druid *Druid) applyNaturesGrace() {

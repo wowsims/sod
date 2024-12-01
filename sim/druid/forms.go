@@ -265,7 +265,6 @@ func (druid *Druid) registerCatFormSpell() {
 
 func (druid *Druid) registerBearFormSpell() {
 	actionID := core.ActionID{SpellID: 9634}
-	healthMetrics := druid.NewHealthMetrics(actionID)
 
 	statBonus := druid.GetFormShiftStats().Add(stats.Stats{
 		stats.AttackPower: 3 * float64(druid.Level),
@@ -308,14 +307,12 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.AddStatsDynamic(sim, predBonus)
 			druid.AddStatsDynamic(sim, statBonus)
 			druid.ApplyDynamicEquipScaling(sim, stats.Armor, 4.6)
+			druid.ApplyDynamicEquipScaling(sim, stats.Armor, 1+.02*float64(druid.Talents.ThickHide))
 
-			// Preserve fraction of max health when shifting
-			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
 			druid.EnableDynamicStatDep(sim, feralApDep)
 			if hotwDep != nil {
 				druid.EnableDynamicStatDep(sim, hotwDep)
 			}
-			druid.GainHealth(sim, healthFrac*druid.MaxHealth()-druid.CurrentHealth(), healthMetrics)
 
 			if !druid.Env.MeasuringStats {
 				druid.AutoAttacks.SetReplaceMHSwing(druid.ReplaceBearMHFunc)
@@ -336,12 +333,11 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.AddStatsDynamic(sim, predBonus.Invert())
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.RemoveDynamicEquipScaling(sim, stats.Armor, 4.6)
+			druid.RemoveDynamicEquipScaling(sim, stats.Armor, 1+.02*float64(druid.Talents.ThickHide))
 
-			healthFrac := druid.CurrentHealth() / druid.MaxHealth()
 			if hotwDep != nil {
 				druid.DisableDynamicStatDep(sim, hotwDep)
 			}
-			druid.RemoveHealth(sim, druid.CurrentHealth()-healthFrac*druid.MaxHealth())
 
 			if !druid.Env.MeasuringStats {
 				druid.AutoAttacks.SetReplaceMHSwing(nil)

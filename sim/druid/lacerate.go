@@ -17,6 +17,7 @@ func (druid *Druid) registerLacerateSpell() {
 	case IdolOfCruelty:
 		initialDamageMul += .07
 	}
+	rageMetrics := druid.NewRageMetrics(core.ActionID{SpellID: 431446})
 
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414644},
@@ -50,7 +51,6 @@ func (druid *Druid) registerLacerateSpell() {
 				druid.LacerateBleed.Cast(sim, target)
 
 				if druid.HasRune(proto.DruidRune_RuneHelmGore) && sim.Proc(0.15, "Gore") {
-					rageMetrics := druid.NewRageMetrics(spell.ActionID)
 					druid.AddRage(sim, 10.0, rageMetrics)
 					druid.MangleBear.CD.Reset()
 				}

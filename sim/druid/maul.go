@@ -13,6 +13,7 @@ func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
 	case IdolOfBrutality:
 		rageCost -= 3
 	}
+	rageMetrics := druid.NewRageMetrics(core.ActionID{SpellID: 431446})
 
 	druid.Maul = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 9881},
@@ -39,7 +40,6 @@ func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
 			baseDamage := flatBaseDamage + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			rageMetrics := druid.NewRageMetrics(spell.ActionID)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)

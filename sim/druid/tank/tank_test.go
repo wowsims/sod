@@ -17,7 +17,7 @@ func TestFeralTank(t *testing.T) {
 		{
 			Class: proto.Class_ClassDruid,
 			Level: 60,
-			Phase: 4,
+			Phase: 5,
 			Race:  proto.Race_RaceTauren,
 
 			GearSet:     core.GetGearSet("../../../ui/feral_tank_druid/gear_sets", "phase_5"),
