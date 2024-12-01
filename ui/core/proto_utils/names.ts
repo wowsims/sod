@@ -207,7 +207,7 @@ export const pseudoStatNames: Map<PseudoStat, string> = new Map([
 	[PseudoStat.PseudoStatOffHandDps, 'Off Hand DPS'],
 	[PseudoStat.PseudoStatRangedDps, 'Ranged DPS'],
 	[PseudoStat.PseudoStatBlockValueMultiplier, 'Block Value Multiplier'],
-	[PseudoStat.TimewornBonus, 'Timeworn Pieces2'],
+	[PseudoStat.TimewornBonus, 'Timeworn Pieces'],
 	[PseudoStat.BonusPhysicalDamage, 'Bonus Weapon Damage'],
 ]);
 

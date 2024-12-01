@@ -22,7 +22,7 @@ func (druid *Druid) ApplyTalents() {
 
 	// Feral
 	druid.applyBloodFrenzy()
-
+	druid.applyPrimalFury()
 	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
 
 	if druid.Talents.FeralInstinct > 0 {
@@ -172,14 +172,13 @@ func (druid *Druid) applyNaturesGrace() {
 // 	})
 // }
 
-// TODO: Classic bear
 func (druid *Druid) applyPrimalFury() {
 	if druid.Talents.PrimalFury == 0 {
 		return
 	}
 
 	procChance := []float64{0, 0.5, 1}[druid.Talents.PrimalFury]
-	actionID := core.ActionID{SpellID: 37117}
+	actionID := core.ActionID{SpellID: 16959}
 	rageMetrics := druid.NewRageMetrics(actionID)
 	// cpMetrics := druid.NewComboPointMetrics(actionID)
 
@@ -197,15 +196,6 @@ func (druid *Druid) applyPrimalFury() {
 					}
 				}
 			}
-			// else if druid.InForm(Cat) {
-			// 	if druid.IsMangle(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) {
-			// 		if result.Outcome.Matches(core.OutcomeCrit) {
-			// 			if sim.Proc(procChance, "Primal Fury") {
-			// 				druid.AddComboPoints(sim, 1, cpMetrics)
-			// 			}
-			// 		}
-			// 	}
-			// }
 		},
 	})
 }

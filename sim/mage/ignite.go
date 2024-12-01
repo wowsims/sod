@@ -45,7 +45,7 @@ func (mage *Mage) applyIgnite() {
 		ActionID:    core.ActionID{SpellID: 12654},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellProc,
+		ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagMage,
 
 		DamageMultiplier: 1,

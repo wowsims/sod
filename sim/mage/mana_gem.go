@@ -21,16 +21,14 @@ func (mage *Mage) registerManaGemCD() {
 
 		if config.RequiredLevel <= int(mage.Level) {
 			mage.ManaGem[rank] = mage.RegisterSpell(config)
-			minMana, maxMana := ManaGemManaRestored[rank][0], ManaGemManaRestored[rank][1]
+			maxMana := ManaGemManaRestored[rank][1]
 
 			mage.AddMajorCooldown(core.MajorCooldown{
 				Spell:    mage.ManaGem[rank],
-				Priority: int32(minMana),
+				Priority: int32(maxMana),
 				Type:     core.CooldownTypeMana,
-				ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-					// Only pop if we have less than the max mana provided by the potion minus 1mp5 tick.
-					totalRegen := character.ManaRegenPerSecondWhileCasting() * 2
-					return (character.MaxMana()-(character.CurrentMana()+totalRegen) >= maxMana)
+				ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
+					return false
 				},
 			})
 		}
@@ -58,6 +56,10 @@ func (mage *Mage) newManaGemCooldown(rank int) core.SpellConfig {
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
+				Timer:    mage.NewTimer(),
+				Duration: time.Minute * 2,
+			},
+			SharedCD: core.Cooldown{
 				Timer:    mage.GetConjuredCD(),
 				Duration: time.Minute * 2,
 			},

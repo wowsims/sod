@@ -464,14 +464,13 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Level:     60,
 			Equipment: &proto.EquipmentSpec{},
 			Rotation:  &proto.APLRotation{},
-		}, &proto.Player_Rogue{Rogue: &proto.Rogue{}}), nil, nil, nil)},
-		// TODO: Rogue Tank Sim
-		// {Name: "tank rogue", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-		// 	Class:     proto.Class_ClassRogue,
-		// 	Level:     60,
-		// 	Equipment: &proto.EquipmentSpec{},
-		// 	Rotation:  &proto.APLRotation{},
-		// }, &proto.Player_TankRogue{TankRogue: &proto.TankRogue{}}), nil, nil, nil)},
+		}, &proto.Player_Rogue{Rogue: &proto.Rogue{Options: &proto.RogueOptions{}}}), nil, nil, nil)},
+		{Name: "tank rogue", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassRogue,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+			Rotation:  &proto.APLRotation{},
+		}, &proto.Player_TankRogue{TankRogue: &proto.TankRogue{Options: &proto.RogueOptions{}}}), nil, nil, nil)},
 		{Name: "warrior", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:     proto.Class_ClassWarrior,
 			Level:     60,

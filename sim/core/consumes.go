@@ -1,6 +1,7 @@
 package core
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -947,15 +948,20 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 		if consumes.SapperExplosive != proto.SapperExplosive_SapperFumigator && !character.HasProfession(proto.Profession_Engineering) {
 			return
 		}
-		var filler *Spell
+		var sapperSpell *Spell
 		switch consumes.SapperExplosive {
 		case proto.SapperExplosive_SapperGoblinSapper:
-			filler = character.newSapperSpell(sharedTimer)
+			sapperSpell = character.newSapperSpell(sharedTimer)
 		case proto.SapperExplosive_SapperFumigator:
-			filler = character.newFumigatorSpell(sharedTimer)
+			sapperSpell = character.newFumigatorSpell(sharedTimer)
 		}
+
+		sapperSpell.ExtraCastCondition = func(sim *Simulation, target *Unit) bool {
+			return character.DistanceFromTarget <= 10
+		}
+
 		character.AddMajorCooldown(MajorCooldown{
-			Spell:    filler,
+			Spell:    sapperSpell,
 			Type:     CooldownTypeDPS | CooldownTypeExplosive,
 			Priority: CooldownPriorityLow + 30,
 			ShouldActivate: func(s *Simulation, c *Character) bool {
@@ -965,7 +971,9 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	}
 
 	if hasFiller {
-		if consumes.FillerExplosive != proto.Explosive_ExplosiveEzThroRadiationBomb && !character.HasProfession(proto.Profession_Engineering) {
+		// Update this list with explosives that don't require engi
+		nonEngiExplosives := []proto.Explosive{proto.Explosive_ExplosiveEzThroRadiationBomb, proto.Explosive_ExplosiveObsidianBomb}
+		if !character.HasProfession(proto.Profession_Engineering) || !slices.Contains(nonEngiExplosives, consumes.FillerExplosive) {
 			return
 		}
 

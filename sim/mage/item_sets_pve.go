@@ -392,7 +392,7 @@ var ItemSetEnigmaInsight = core.NewItemSet(core.ItemSet{
 				},
 			}))
 		},
-		// Increases the damage done by your Ignite talent by 20%.
+		// Increases the damage done by your Ignite talent by 10%.
 		4: func(agent core.Agent) {
 			mage := agent.(MageAgent).GetMage()
 			if mage.Talents.Ignite == 0 {
@@ -402,7 +402,7 @@ var ItemSetEnigmaInsight = core.NewItemSet(core.ItemSet{
 			mage.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Mage - Fire 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					mage.Ignite.DamageMultiplierAdditive += 0.20
+					mage.Ignite.PeriodicDamageMultiplierAdditive += 0.10
 				},
 			})
 		},
@@ -432,9 +432,12 @@ var ItemSetEnigmaMoment = core.NewItemSet(core.ItemSet{
 var ItemSetTrappingsOfVaultedSecrets = core.NewItemSet(core.ItemSet{
 	Name: "Trappings of Vaulted Secrets",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Your Fireball, Frostfire Bolt, and Balefire Bolt spells gain 5% increased damage for each of your Fire effects on your target, up to a maximum increased of 20%.
+		// Your Fireball, Frostfire Bolt, and Balefire Bolt spells gain 3% increased damage for each of your Fire effects on your target, up to a maximum increased of 9%.
 		3: func(agent core.Agent) {
 			mage := agent.(MageAgent).GetMage()
+
+			perEffectModifier := 0.03
+			maxModifier := 0.09
 
 			mage.RegisterAura(core.Aura{
 				Label: "S03 - Item - RAQ - Mage - Fire 3P Bonus",
@@ -460,11 +463,11 @@ var ItemSetTrappingsOfVaultedSecrets = core.NewItemSet(core.ItemSet{
 
 							for _, spell := range dotSpells {
 								if spell.Dot(target).IsActive() {
-									modifier += 0.05
+									modifier += perEffectModifier
 								}
 							}
 
-							modifier = math.Min(0.20, modifier)
+							modifier = math.Min(maxModifier, modifier)
 
 							spell.DamageMultiplierAdditive += modifier
 							oldApplyEffects(sim, target, spell)

@@ -33,6 +33,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 	druid.SwipeBear = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 9908},
 		SpellSchool: core.SpellSchoolPhysical,
+		SpellCode:   SpellCode_DruidSwipeBear,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -56,9 +57,16 @@ func (druid *Druid) registerSwipeBearSpell() {
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}
+			rageMetrics := druid.NewRageMetrics(spell.ActionID)
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)
+			}
+
+			if druid.HasRune(proto.DruidRune_RuneHelmGore) && sim.Proc(0.15, "Gore") {
+				druid.AddRage(sim, 10.0, rageMetrics)
+				// TODO: rage works, figure out why Mangle CD can't be modified - Saeyon
+				druid.MangleBear.CD.Reset()
 			}
 		},
 	})

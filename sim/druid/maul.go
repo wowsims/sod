@@ -2,6 +2,7 @@ package druid
 
 import (
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
@@ -16,6 +17,7 @@ func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
 	druid.Maul = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 9881},
 		SpellSchool: core.SpellSchoolPhysical,
+		SpellCode:   SpellCode_DruidMaul,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
@@ -37,12 +39,20 @@ func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
 			baseDamage := flatBaseDamage + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			rageMetrics := druid.NewRageMetrics(spell.ActionID)
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)
+			} else {
+				spell.DealDamage(sim, result)
 			}
 
-			spell.DealDamage(sim, result)
+			if druid.HasRune(proto.DruidRune_RuneHelmGore) && sim.Proc(0.15, "Gore") {
+				druid.AddRage(sim, 10.0, rageMetrics)
+				// TODO: rage works, figure out why Mangle CD can't be modified - Saeyon
+				druid.MangleBear.CD.Reset()
+			}
+
 			if druid.curQueueAura != nil {
 				druid.curQueueAura.Deactivate(sim)
 			}

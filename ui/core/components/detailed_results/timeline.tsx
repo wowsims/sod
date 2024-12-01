@@ -1340,6 +1340,8 @@ const idToCategoryMap: Record<number, number> = {
 	[55360]: SPELL_ACTION_CATEGORY + 0.2, // Living Bomb
 	[55362]: SPELL_ACTION_CATEGORY + 0.21, // Living Bomb (Explosion)
 	[12654]: SPELL_ACTION_CATEGORY + 0.3, // Ignite
+	[440802]: SPELL_ACTION_CATEGORY + 0.3, // Frozen Orb cast
+	[440809]: SPELL_ACTION_CATEGORY + 0.3, // Frozen Orb hit
 	[12472]: SPELL_ACTION_CATEGORY + 0.4, // Icy Veins
 	[11129]: SPELL_ACTION_CATEGORY + 0.4, // Combustion
 	[12042]: SPELL_ACTION_CATEGORY + 0.4, // Arcane Power

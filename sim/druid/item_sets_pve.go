@@ -295,11 +295,20 @@ var ItemSetCenarionRage = core.NewItemSet(core.ItemSet{
 		},
 		// Reduces the cooldown of Enrage by 30 sec and it no longer reduces your armor.
 		4: func(agent core.Agent) {
-			// TODO: Enrage
+			druid := agent.(DruidAgent).GetDruid()
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - T1 - Druid - Guardian 4P Bonus",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					// TODO: This isn't working... fix it. Cooldown reduction works - Saeyon
+					druid.EnrageAura.Deactivate(sim)
+				},
+			}))
+			druid.Enrage.CD.Duration -= time.Second * 30
 		},
 		// Bear Form and Dire Bear Form increase all threat you generate by an additional 20%, and Cower now removes all your threat against the target but has a 20 sec longer cooldown.
 		6: func(agent core.Agent) {
-			// TODO: Bear, Dire Bear forms
+			druid := agent.(DruidAgent).GetDruid()
+			druid.PseudoStats.ThreatMultiplier += .2
 		},
 	},
 })
@@ -485,12 +494,88 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// Swipe(Bear) also causes your Maul to hit 1 additional target for the next 6 sec.
 		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			if druid.Env.GetNumTargets() == 1 {
+				return
+			}
+
+			var curDmg float64
+
+			cleaveHit := druid.RegisterSpell(Bear, core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 467217},
+				SpellSchool: core.SpellSchoolPhysical,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.CalcAndDealDamage(sim, target, curDmg, spell.OutcomeAlwaysHit)
+				},
+			})
+
+			cleaveAura := druid.RegisterAura(core.Aura{
+				Label:    "2P Cleave Buff",
+				Duration: time.Second * 6,
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && (spell.SpellCode == SpellCode_DruidMaul) {
+						curDmg = result.Damage / result.ResistanceMultiplier
+						cleaveHit.Cast(sim, druid.Env.NextTargetUnit(result.Target))
+						cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
+					}
+				},
+			})
+
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Druid - Guardian 2P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && spell.SpellCode == SpellCode_DruidSwipeBear {
+						cleaveAura.Activate(sim)
+						curDmg = result.Damage / result.ResistanceMultiplier
+						cleaveHit.Cast(sim, druid.Env.NextTargetUnit(result.Target))
+						cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
+					}
+				},
+			}))
 		},
 		// Your Mangle(Bear), Swipe(Bear), Maul, and Lacerate abilities gain 5% increased critical strike chance against targets afflicted by your Lacerate.
 		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 1213174},
+				Label:    "S03 - Item - T2 - Druid - Guardian 4P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if druid.LacerateBleed.Dot(result.Target).GetStacks() > 0 && (spell.SpellCode == SpellCode_DruidMangleBear || spell.SpellCode == SpellCode_DruidSwipeBear || spell.SpellCode == SpellCode_DruidLacerate) {
+						spell.BonusCritRating += core.CritRatingPerCritChance * float64(5)
+					}
+				},
+			}))
 		},
 		// Your Swipe now spreads your Lacerate from your primary target to other targets it strikes.
 		6: func(agent core.Agent) {
+			// druid := agent.(DruidAgent).GetDruid()
+			// if druid.Env.GetNumTargets() == 1 {
+			// 	return
+			// }
+
+			// targetCount := core.TernaryInt32(druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe), 10, 3)
+			// numHits := min(targetCount, druid.Env.GetNumTargets())
+			// results := make([]*core.SpellResult, numHits)
+
+			// core.MakePermanent(druid.RegisterAura(core.Aura{
+			// 	Label: "S03 - Item - T2 - Druid - Guardian 6P Bonus",
+			// 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// 		if spell.SpellCode == SpellCode_DruidSwipeBear {
+			// 			// TODO: Troubleshoot - Saeyon
+			// 			for _, cleaveMob := range results {
+			// 				druid.LacerateBleed.Cast(sim, cleaveMob.Target)
+			// 				druid.LacerateBleed.Dot(cleaveMob.Target).SetStacks(sim, druid.LacerateBleed.Dot(result.Target).GetStacks())
+			// 			}
+			// 		}
+			// 	},
+			// }))
 		},
 	},
 })
@@ -722,12 +807,10 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 			if !druid.HasRune(proto.DruidRune_RuneHandsMangle) {
 				return
 			}
-			druid.RegisterAura(core.Aura{
-				Label: "S03 - Item - TAQ - Druid - Guardian 4P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					// TODO: troubleshoot this. Cooldown reduction not working
-					druid.MangleBear.CD.Duration -= 1500 * time.Millisecond
-				},
+			druid.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_DruidMangleBear {
+					spell.CD.Duration -= 1500 * time.Millisecond
+				}
 			})
 		},
 	},

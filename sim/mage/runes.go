@@ -15,7 +15,7 @@ func (mage *Mage) ApplyRunes() {
 
 	// CLoak
 	mage.registerArcaneBarrageSpell()
-	// mage.applyOverheat()
+	mage.applyOverheat()
 	mage.registerFrozenOrbCD()
 
 	// Chest
@@ -45,6 +45,21 @@ func (mage *Mage) ApplyRunes() {
 	// Feet
 	mage.applyBrainFreeze()
 	mage.applySpellPower()
+}
+
+func (mage *Mage) applyOverheat() {
+	if !mage.HasRune(proto.MageRune_RuneCloakOverheat) {
+		return
+	}
+
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_MageFireBlast {
+			spell.BonusCritRating += 100 * core.SpellCritRatingPerCritChance
+			spell.CD.Duration += time.Second * 7
+			spell.Flags |= core.SpellFlagCastTimeNoGCD | core.SpellFlagCastWhileCasting
+			spell.DefaultCast.GCD = 0
+		}
+	})
 }
 
 func (mage *Mage) applyBurnout() {
@@ -138,19 +153,38 @@ func (mage *Mage) applyFingersOfFrost() {
 		return
 	}
 
-	mage.FingersOfFrostProcChance += 0.15
+	mage.FingersOfFrostProcChance += 0.25
 	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
+
+	var affectedSpells []*core.Spell
 
 	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
 		Label:     "Fingers of Frost Proc",
 		ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneChestFingersOfFrost)},
 		Duration:  time.Second * 15,
 		MaxStacks: 2,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(mage.Spellbook, func(spell *core.Spell) bool {
+				return spell.Flags.Matches(SpellFlagMage) && spell.ProcMask.Matches(core.ProcMaskSpellDamage)
+			})
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.AddStatDynamic(sim, stats.SpellCrit, bonusCrit)
+			for _, spell := range affectedSpells {
+				spell.BonusCritRating += bonusCrit
+			}
+
+			if mage.IceLance != nil {
+				mage.IceLance.DamageMultiplier *= 4.0
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.AddStatDynamic(sim, stats.SpellCrit, -bonusCrit)
+			for _, spell := range affectedSpells {
+				spell.BonusCritRating -= bonusCrit
+			}
+
+			if mage.IceLance != nil {
+				mage.IceLance.DamageMultiplier /= 4.0
+			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
@@ -158,12 +192,12 @@ func (mage *Mage) applyFingersOfFrost() {
 				return
 			}
 
-			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) || !spell.SpellSchool.Matches(core.SpellSchoolFrost) {
+			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
 				return
 			}
 
 			if aura.GetStacks() == 1 {
-				// Brain freeze can be batched with 2x FFBs into Deep Freeze
+				// Fingers of Frost can be batched with 2x FFBs into Deep Freeze
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {
@@ -178,19 +212,15 @@ func (mage *Mage) applyFingersOfFrost() {
 		},
 	})
 
-	mage.RegisterAura(core.Aura{
-		Label:    "Fingers of Frost Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Fingers of Frost Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagChillSpell) && sim.RandomFloat("Fingers of Frost") < mage.FingersOfFrostProcChance {
+			if spell.Flags.Matches(SpellFlagChillSpell) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && sim.RandomFloat("Fingers of Frost") < mage.FingersOfFrostProcChance {
 				mage.FingersOfFrostAura.Activate(sim)
 				mage.FingersOfFrostAura.SetStacks(sim, 2)
 			}
 		},
-	})
+	}))
 }
 
 func (mage *Mage) applyHotStreak() {
@@ -383,22 +413,14 @@ func (mage *Mage) applyBrainFreeze() {
 		},
 	})
 
-	units := []*core.Unit{&mage.Unit}
-	// Can also proc from Frozen Orb hits
-	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
-		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
-	}
-
-	for _, unit := range units {
-		core.MakePermanent(unit.RegisterAura(core.Aura{
-			Label: "Brain Freeze Trigger",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(SpellFlagChillSpell) && result.Landed() && sim.Proc(procChance, "Brain Freeze") {
-					procAura.Activate(sim)
-				}
-			},
-		}))
-	}
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Brain Freeze Trigger",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Flags.Matches(SpellFlagChillSpell) && result.Landed() && sim.Proc(procChance, "Brain Freeze") {
+				procAura.Activate(sim)
+			}
+		},
+	}))
 }
 
 func (mage *Mage) applySpellPower() {
@@ -406,17 +428,9 @@ func (mage *Mage) applySpellPower() {
 		return
 	}
 
-	units := []*core.Unit{&mage.Unit}
-	// Can also proc from Frozen Orb hits
-	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
-		units = append(units, core.MapSlice(mage.frozenOrbPets, func(orb *FrozenOrb) *core.Unit { return &orb.Unit })...)
-	}
-
-	for _, unit := range units {
-		unit.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagMage) {
-				spell.CritDamageBonus += 0.5
-			}
-		})
-	}
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagMage) {
+			spell.CritDamageBonus += 0.5
+		}
+	})
 }
