@@ -101,6 +101,24 @@ func TestElemental(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassShaman,
+			Phase:      6,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceOrc},
+
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_6"),
+			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_6"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase5Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -172,6 +190,19 @@ var Phase5Consumes = core.ConsumesCombo{
 		Food:           proto.Food_FoodRunnTumTuberSurprise,
 		MainHandImbue:  proto.WeaponImbue_FlametongueWeapon,
 		OffHandImbue:   proto.WeaponImbue_MagnificentTrollshine,
+		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
+	},
+}
+
+var Phase6Consumes = core.ConsumesCombo{
+	Label: "P6-Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  proto.Potions_MajorManaPotion,
+		Flask:          proto.Flask_FlaskOfSupremePower,
+		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		Food:           proto.Food_FoodRunnTumTuberSurprise,
+		MainHandImbue:  proto.WeaponImbue_FlametongueWeapon,
+		OffHandImbue:   proto.WeaponImbue_EnchantedRepellent,
 		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
 	},
 }
