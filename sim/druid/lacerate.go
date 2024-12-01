@@ -11,7 +11,6 @@ func (druid *Druid) registerLacerateSpell() {
 	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
 		return
 	}
-	initialDamage := 149.0
 	initialDamageMul := 1.0
 
 	switch druid.Ranged().ID {
@@ -42,7 +41,7 @@ func (druid *Druid) registerLacerateSpell() {
 		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := initialDamage + (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())*.2)*float64(druid.LacerateBleed.Dot(target).GetStacks())
+			baseDamage := (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * .2) * float64(druid.LacerateBleed.Dot(target).GetStacks())
 
 			spell.DamageMultiplier = initialDamageMul
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

@@ -13,10 +13,13 @@ func (druid *Druid) registerMangleBearSpell() {
 	}
 
 	baseMultiplier := 1.0
+	rageCostReduction := float64(druid.Talents.Ferocity)
 
 	switch druid.Ranged().ID {
 	case IdolOfUrsinPower:
 		baseMultiplier += .03
+	case IdolOfBrutality:
+		rageCostReduction += 3
 	}
 
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
@@ -30,7 +33,7 @@ func (druid *Druid) registerMangleBearSpell() {
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   15 - float64(druid.Talents.Ferocity),
+			Cost:   15 - rageCostReduction,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -45,7 +48,7 @@ func (druid *Druid) registerMangleBearSpell() {
 		},
 		// TODO: Berserk 3 target mangle cleave - Saeyon
 
-		DamageMultiplier: 1.6 + 0.1*float64(druid.Talents.SavageFury)*baseMultiplier,
+		DamageMultiplier: (1.6 + 0.1*float64(druid.Talents.SavageFury)) * baseMultiplier,
 		ThreatMultiplier: 1.5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
