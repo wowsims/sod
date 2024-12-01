@@ -77,9 +77,6 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 			stats.Spirit:    39,
 
 			stats.AttackPower: -20,
-
-			// Add 1.8% because pets aren't affected by that component of crit suppression.
-			stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
 		}
 	case 40:
 		baseMinDamage = 9.5 * attackSpeed
@@ -92,9 +89,6 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 			stats.Spirit:    55,
 
 			stats.AttackPower: -20,
-
-			// Add 1.8% because pets aren't affected by that component of crit suppression.
-			stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
 		}
 	case 50:
 		baseMinDamage = 23.5 * attackSpeed
@@ -107,9 +101,6 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 			stats.Spirit:    67,
 
 			stats.AttackPower: -20,
-
-			// Add 1.8% because pets aren't affected by that component of crit suppression.
-			stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
 		}
 	case 60:
 		// TODO:
@@ -123,9 +114,6 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 			stats.Spirit:    80,
 
 			stats.AttackPower: -20,
-
-			// Add 1.8% because pets aren't affected by that component of crit suppression.
-			stats.MeleeCrit: (3.2 + 1.8) * core.CritRatingPerCritChance,
 		}
 	}
 
