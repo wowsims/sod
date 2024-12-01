@@ -7,7 +7,6 @@ import (
 )
 
 func (druid *Druid) registerLacerateDirectSpell() {
-	initialDamage := 149.0
 	initialDamageMul := 1.0
 
 	switch druid.Ranged().ID {
@@ -26,10 +25,10 @@ func (druid *Druid) registerLacerateDirectSpell() {
 		ThreatMultiplier: 3.25,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := initialDamage + (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())*.2)*float64(druid.Lacerate.Dot(target).GetStacks())
+			baseDamage := (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * .2) * float64(druid.Lacerate.Dot(target).GetStacks())
 
 			spell.DamageMultiplier = initialDamageMul
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeAlwaysHit)
+			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 		},
 	})
 }
