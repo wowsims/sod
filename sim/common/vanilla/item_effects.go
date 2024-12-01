@@ -133,7 +133,11 @@ const (
 	KalimdorsRevenge                = 233621
 	JomGabbar                       = 233627 // 23570
 	NeretzekBloodDrinker            = 233647
+	RazorbrambleShoulderpads        = 233804
+	RazorbrambleCowl                = 233808
+	RazorbrambleLeathers            = 233813
 	Speedstone                      = 233990
+	LodestoneofRetaliation          = 233992
 	ManslayerOfTheQiraji            = 234067
 	EyeOfMoam                       = 234080 // 21473
 	DarkmoonCardHeroism             = 234176 // 19287
@@ -2406,6 +2410,21 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=228293/essence-of-the-pure-flame
+	// Equip: When struck in combat inflicts 100 Nature damage to the attacker.  Causes twice as much threat as damage dealt.
+	core.NewItemEffect(RazorbrambleLeathers, func(agent core.Agent) {
+		DamageShieldWithThreatMod(agent.GetCharacter(), 1213813, 100, 2, "Damage Shield Razorbramble Leathers")
+	})
+	core.NewItemEffect(RazorbrambleShoulderpads, func(agent core.Agent) {
+		DamageShieldWithThreatMod(agent.GetCharacter(), 1213816, 80, 2, "Damage Shield Razorbramble Shoulderpads")
+	})
+	core.NewItemEffect(RazorbrambleCowl, func(agent core.Agent) {
+		DamageShieldWithThreatMod(agent.GetCharacter(), 1213813, 100, 2, "Damage Shield Razorbramble Cowl")
+	})
+	core.NewItemEffect(LodestoneofRetaliation, func(agent core.Agent) {
+		DamageShieldWithThreatMod(agent.GetCharacter(), 1213816, 80, 2, "Damage Shield Lodestone of Retaliation")
+	})
+
 	// https://www.wowhead.com/classic/item=234080/eye-of-moam
 	// Use: Increases damage done by magical spells and effects by up to 150, and decreases the magical resistances of your spell targets by 100 for 30 sec. (3 Min Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(EyeOfMoam, stats.Stats{stats.SpellDamage: 150, stats.SpellPenetration: 100}, time.Second*30, time.Minute*3)
@@ -3293,6 +3312,34 @@ func manslayerOfTheQirajiAura(character *core.Character) *core.Aura {
 				icd.Use(sim)
 				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1214927}, spell)
 			}
+		},
+	})
+}
+
+func DamageShieldWithThreatMod(character *core.Character, spellID int32, damage float64, threatMod float64, procName string) {
+
+	procSpell := character.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: threatMod,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeAlwaysHit)
+		},
+	})
+
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:     procName,
+		Callback: core.CallbackOnSpellHitTaken,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee, // TODO: Unsure if this means melee attacks or all attacks
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procSpell.Cast(sim, spell.Unit)
 		},
 	})
 }
