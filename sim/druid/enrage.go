@@ -13,16 +13,21 @@ func (druid *Druid) registerEnrageSpell() {
 
 	instantRage := []float64{0, 5, 10}[druid.Talents.ImprovedEnrage]
 	initarmor := druid.BaseEquipStats()[stats.Armor]
+	hasCenarionRage4Piece := druid.HasSetBonus(ItemSetCenarionRage, 4)
 
 	druid.EnrageAura = druid.RegisterAura(core.Aura{
 		Label:    "Enrage Aura",
 		ActionID: actionID,
 		Duration: 10 * time.Second,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.AddStatDynamic(sim, stats.Armor, float64(0.16*initarmor) * -1)
+			if !hasCenarionRage4Piece {
+				druid.AddStatDynamic(sim, stats.Armor, float64(0.16*initarmor)*-1)
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.AddStatDynamic(sim, stats.Armor, float64(0.16*initarmor))
+			if !hasCenarionRage4Piece {
+				druid.AddStatDynamic(sim, stats.Armor, float64(0.16*initarmor))
+			}
 		},
 	})
 

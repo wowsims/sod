@@ -52,7 +52,6 @@ func (druid *Druid) registerLacerateSpell() {
 				if druid.HasRune(proto.DruidRune_RuneHelmGore) && sim.Proc(0.15, "Gore") {
 					rageMetrics := druid.NewRageMetrics(spell.ActionID)
 					druid.AddRage(sim, 10.0, rageMetrics)
-					// TODO: rage works, figure out why Mangle CD can't be modified - Saeyon
 					druid.MangleBear.CD.Reset()
 				}
 			} else {

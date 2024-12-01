@@ -296,13 +296,6 @@ var ItemSetCenarionRage = core.NewItemSet(core.ItemSet{
 		// Reduces the cooldown of Enrage by 30 sec and it no longer reduces your armor.
 		4: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
-			core.MakePermanent(druid.RegisterAura(core.Aura{
-				Label: "S03 - Item - T1 - Druid - Guardian 4P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					// TODO: This isn't working... fix it. Cooldown reduction works - Saeyon
-					druid.EnrageAura.Deactivate(sim)
-				},
-			}))
 			druid.Enrage.CD.Duration -= time.Second * 30
 		},
 		// Bear Form and Dire Bear Form increase all threat you generate by an additional 20%, and Cower now removes all your threat against the target but has a 20 sec longer cooldown.
