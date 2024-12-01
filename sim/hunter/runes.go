@@ -90,7 +90,7 @@ func (hunter *Hunter) applyMasterMarksman() {
 		hunter.AddStat(stats.SpellCrit, 5*core.SpellCritRatingPerCritChance)
 
 		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagShot) {
+			if spell.Flags.Matches(SpellFlagShot) && spell.Cost != nil {
 				spell.Cost.Multiplier -= 25
 			}
 		})
