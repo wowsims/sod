@@ -507,7 +507,6 @@ var ItemSetDeathdealersBattlearmor = core.NewItemSet(core.ItemSet{
 		},
 		// While active, your Main Gauche also causes you to heal for 10% of all damage done by Sinister Strike.
 		// Any excess healing becomes a Blood Barrier, absorbing damage up to 20% of your maximum health.
-		// Shield appear to not be fully implemented in SoD commenting out until fixed
 		4: func(agent core.Agent) {
 						rogue := agent.(RogueAgent).GetRogue()
 						if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
