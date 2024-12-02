@@ -12,7 +12,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 		return
 	}
 
-	poisonedKnifeMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 425012})
+	poisonedKnifeMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 425013})
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 	hasJustAFleshWound := rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 
