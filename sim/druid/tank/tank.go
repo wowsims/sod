@@ -59,6 +59,7 @@ func NewFeralTankDruid(character *core.Character, options *proto.Player) *FeralT
 	}
 
 	bear.PseudoStats.FeralCombatEnabled = true
+	bear.PseudoStats.InFrontOfTarget = true
 
 	return bear
 }
