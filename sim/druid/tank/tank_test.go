@@ -27,9 +27,6 @@ func TestFeralTank(t *testing.T) {
 			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsDefault},
 			Rotation:    core.GetAplRotation("../../../ui/feral_tank_druid/apls", "phase_5"),
 
-			IsTank:          true,
-			InFrontOfTarget: true,
-
 			ItemFilter: core.ItemFilter{
 				WeaponTypes: []proto.WeaponType{
 					proto.WeaponType_WeaponTypeDagger,
