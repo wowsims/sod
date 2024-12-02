@@ -16,7 +16,6 @@ func (druid *Druid) ApplyRunes() {
 	// Cloak
 	druid.registerStarfallCD()
 	druid.registerSwipeCatSpell()
-	druid.registerSwipeBearSpell()
 
 	// Chest
 	druid.applyFuryOfStormRage()
@@ -26,7 +25,6 @@ func (druid *Druid) ApplyRunes() {
 	druid.applyElunesFires()
 
 	// Hands
-	druid.applyMangle()
 	druid.registerSunfireSpell()
 
 	// Belt
