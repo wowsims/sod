@@ -538,17 +538,7 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 		},
 		// Your Mangle(Bear), Swipe(Bear), Maul, and Lacerate abilities gain 5% increased critical strike chance against targets afflicted by your Lacerate.
 		4: func(agent core.Agent) {
-			druid := agent.(DruidAgent).GetDruid()
-			core.MakePermanent(druid.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 1213174},
-				Label:    "S03 - Item - T2 - Druid - Guardian 4P Bonus",
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if druid.LacerateBleed.Dot(result.Target).GetStacks() > 0 && (spell.SpellCode == SpellCode_DruidMangleBear || spell.SpellCode == SpellCode_DruidSwipeBear || spell.SpellCode == SpellCode_DruidLacerateDirect || spell.SpellCode == SpellCode_DruidMaul) {
-						// TODO: don't overwrite bonus here, but adding to it makes it increase on each cast..
-						spell.BonusCritRating = float64(5) * core.SpellCritRatingPerCritChance
-					}
-				},
-			}))
+			// Handle inside each individual spell
 		},
 		// Your Swipe now spreads your Lacerate from your primary target to other targets it strikes.
 		6: func(agent core.Agent) {

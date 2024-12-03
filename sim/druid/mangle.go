@@ -12,6 +12,7 @@ func (druid *Druid) registerMangleBearSpell() {
 	if !druid.HasRune(proto.DruidRune_RuneHandsMangle) {
 		return
 	}
+	furyOfStormrage4p := druid.HasSetBonus(ItemSetFuryOfStormrage, 4)
 
 	idolMultiplier := 1.0
 	rageCostReduction := float64(druid.Talents.Ferocity)
@@ -55,8 +56,13 @@ func (druid *Druid) registerMangleBearSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-
+			stormrageBonusCrit := 0.0
+			if furyOfStormrage4p {
+				stormrageBonusCrit = druid.GetFuryOfStormrage4pCrit(target)
+			}
+			spell.BonusCritRating += stormrageBonusCrit
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.BonusCritRating -= stormrageBonusCrit
 
 			if result.Landed() {
 				mangleAuras.Get(target).Activate(sim)

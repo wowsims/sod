@@ -12,6 +12,7 @@ func (druid *Druid) registerLacerateSpell() {
 		return
 	}
 	initialDamageMul := 1.0
+	furyOfStormrage4p := druid.HasSetBonus(ItemSetFuryOfStormrage, 4)
 
 	switch druid.Ranged().ID {
 	case IdolOfCruelty:
@@ -46,7 +47,13 @@ func (druid *Druid) registerLacerateSpell() {
 			baseDamage := (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * .2) * float64(druid.LacerateBleed.Dot(target).GetStacks())
 
 			spell.DamageMultiplier = initialDamageMul
+			stormrageBonusCrit := 0.0
+			if furyOfStormrage4p {
+				stormrageBonusCrit = druid.GetFuryOfStormrage4pCrit(target)
+			}
+			spell.BonusCritRating += stormrageBonusCrit
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.BonusCritRating -= stormrageBonusCrit
 
 			if result.Landed() {
 				druid.LacerateBleed.Cast(sim, target)
