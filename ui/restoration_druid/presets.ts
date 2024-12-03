@@ -53,7 +53,6 @@ export const DefaultPartyBuffs = PartyBuffs.create({});
 
 export const DefaultDebuffs = Debuffs.create({
 	faerieFire: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {

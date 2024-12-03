@@ -581,7 +581,7 @@ var ItemSetDoomcallersMalevolence = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(warlock.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Warlock - Tank 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					warlock.disableMasterDemonologistOnSacrifice = false
+					warlock.maintainBuffsOnSacrifice = true
 				},
 			}))
 		},

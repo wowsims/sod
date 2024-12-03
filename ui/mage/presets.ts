@@ -276,24 +276,24 @@ export const DefaultOptions = MageOptions.create({
 export const DefaultConsumes = Consumes.create({
 	defaultConjured: Conjured.ConjuredDemonicRune,
 	defaultPotion: Potions.MajorManaPotion,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
-	flask: Flask.FlaskOfSupremePower,
+	flask: Flask.FlaskOfAncientKnowledge,
 	food: Food.FoodRunnTumTuberSurprise,
 	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
 	mageScroll: MageScroll.MageScrollArcanePower,
-	mainHandImbue: WeaponImbue.BrilliantWizardOil,
+	mainHandImbue: WeaponImbue.EnchantedRepellent,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 
 	mildlyIrradiatedRejuvPot: true,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	zanzaBuff: ZanzaBuff.CerebralCortexCompound,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	aspectOfTheLion: true,
-	demonicPact: 110,
+	demonicPact: 120,
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	manaSpringTotem: TristateEffect.TristateEffectRegular,
@@ -315,7 +315,6 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 
 export const DefaultDebuffs = Debuffs.create({
 	dreamstate: true,
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	judgementOfWisdom: true,
 	markOfChaos: true,

@@ -179,6 +179,18 @@ func (pet *Pet) Enable(sim *Simulation, petAgent PetAgent) {
 	}
 }
 
+func (pet *Pet) ApplyOnPetEnable(newOnPetEnable OnPetEnable) {
+	oldOnPetEnable := pet.OnPetEnable
+	if oldOnPetEnable == nil {
+		pet.OnPetEnable = oldOnPetEnable
+	} else {
+		pet.OnPetEnable = func(sim *Simulation) {
+			oldOnPetEnable(sim)
+			newOnPetEnable(sim)
+		}
+	}
+}
+
 // Helper for enabling a pet that will expire after a certain duration.
 func (pet *Pet) EnableWithTimeout(sim *Simulation, petAgent PetAgent, petDuration time.Duration) {
 	pet.Enable(sim, petAgent)
@@ -257,6 +269,18 @@ func (pet *Pet) Disable(sim *Simulation) {
 	if sim.Log != nil {
 		pet.Log(sim, "Pet dismissed")
 		pet.Log(sim, pet.GetStats().FlatString())
+	}
+}
+
+func (pet *Pet) ApplyOnPetDisable(newOnPetDisable OnPetDisable) {
+	oldOnPetDisable := pet.OnPetDisable
+	if oldOnPetDisable == nil {
+		pet.OnPetDisable = oldOnPetDisable
+	} else {
+		pet.OnPetDisable = func(sim *Simulation) {
+			oldOnPetDisable(sim)
+			newOnPetDisable(sim)
+		}
 	}
 }
 

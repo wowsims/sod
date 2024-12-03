@@ -221,19 +221,19 @@ export const DefaultOptions = WarriorOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	alcohol: Alcohol.AlcoholRumseyRumBlackLabel,
 	armorElixir: ArmorElixir.ElixirOfSuperiorDefense,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultPotion: Potions.MightyRagePotion,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	food: Food.FoodSmokedDesertDumpling,
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	mildlyIrradiatedRejuvPot: true,
 	offHandImbue: WeaponImbue.ElementalSharpeningStone,
-	sapperExplosive: SapperExplosive.SapperGoblinSapper,
+	sapperExplosive: SapperExplosive.SapperFumigator,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
 });
@@ -271,10 +271,8 @@ export const DefaultDebuffs = Debuffs.create({
 	faerieFire: true,
 	giftOfArthas: true,
 	homunculi: 70, // 70% average uptime default
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	mangle: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {

@@ -389,34 +389,34 @@ export const P3Consumes = Consumes.create({
 });
 
 export const P4Consumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultConjured: Conjured.ConjuredRogueThistleTea,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
-	flask: Flask.FlaskOfSupremePower,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
+	flask: Flask.FlaskOfAncientKnowledge,
 	food: Food.FoodGrilledSquid,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	miscConsumes: {
 		jujuEmber: true,
 	},
 	offHandImbue: WeaponImbue.ElementalSharpeningStone,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.GroundScorpokAssay,
 });
 
 export const P5Consumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultConjured: Conjured.ConjuredRogueThistleTea,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
-	flask: Flask.FlaskOfSupremePower,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
+	flask: Flask.FlaskOfAncientKnowledge,
 	food: Food.FoodGrilledSquid,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.ElementalSharpeningStone,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.GroundScorpokAssay,
 });
@@ -432,7 +432,7 @@ export const DefaultConsumes = {
 export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
-	demonicPact: 110,
+	demonicPact: 120,
 	fireResistanceAura: true,
 	fireResistanceTotem: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
@@ -460,11 +460,9 @@ export const DefaultDebuffs = Debuffs.create({
 	dreamstate: true,
 	faerieFire: true,
 	homunculi: 100,
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	mangle: true,
 	markOfChaos: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {

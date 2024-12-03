@@ -428,6 +428,16 @@ var FullBuffsPhase5 = BuffsCombo{
 	Raid:    FullRaidBuffsPhase5,
 }
 
+// No noteworthy additions in phase 6 sso far
+var FullBuffsPhase6 = BuffsCombo{
+	Label: "Phase 6 Buffs",
+
+	Debuffs: FullDebuffsPhase4,
+	Party:   FullPartyBuffs,
+	Player:  FullIndividualBuffsPhase5,
+	Raid:    FullRaidBuffsPhase5,
+}
+
 func NewDefaultTarget(playerLevel int32) *proto.Target {
 	switch playerLevel {
 	case 40:

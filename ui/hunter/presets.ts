@@ -256,14 +256,14 @@ export const DefaultOptions = HunterOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	alcohol: Alcohol.AlcoholRumseyRumBlackLabel,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultConjured: Conjured.ConjuredDemonicRune,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
-	flask: Flask.FlaskOfSupremePower,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
+	flask: Flask.FlaskOfAncientKnowledge,
 	food: Food.FoodSmokedDesertDumpling,
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.WildStrikes,
@@ -272,8 +272,8 @@ export const DefaultConsumes = Consumes.create({
 	petAttackPowerConsumable: 1,
 	petAgilityConsumable: 1,
 	petStrengthConsumable: 1,
-	sapperExplosive: SapperExplosive.SapperGoblinSapper,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	sapperExplosive: SapperExplosive.SapperFumigator,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.GroundScorpokAssay,
 });
@@ -283,7 +283,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	commandingShout: true,
-	demonicPact: 110,
+	demonicPact: 120,
 	divineSpirit: true,
 	fireResistanceAura: true,
 	fireResistanceTotem: true,
@@ -320,13 +320,11 @@ export const DefaultDebuffs = Debuffs.create({
 	homunculi: 70, // 70% average uptime default
 	huntersMark: TristateEffect.TristateEffectImproved,
 	improvedScorch: true,
-	improvedFaerieFire: true,
 	judgementOfWisdom: true,
 	mangle: true,
 	markOfChaos: true,
 	occultPoison: true,
 	stormstrike: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {
