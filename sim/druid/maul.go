@@ -86,7 +86,7 @@ func (druid *Druid) newMaulSpellConfig(maulRank MaulRankInfo) core.SpellConfig {
 		},
 
 		DamageMultiplier: 1 + .1*float64(druid.Talents.SavageFury),
-		ThreatMultiplier: 1,
+		ThreatMultiplier: 1.75,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Need to specially deactivate CC here in case maul is cast simultaneously with another spell.
