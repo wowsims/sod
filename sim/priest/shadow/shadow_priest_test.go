@@ -104,6 +104,24 @@ func TestShadow(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassPriest,
+			Level:      60,
+			Phase:      6,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/shadow_priest/gear_sets", "phase_6"),
+			Rotation:    core.GetAplRotation("../../../ui/shadow_priest/apls", "phase_6"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase6Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Basic", SpecOptions: PlayerOptionsBasic},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -150,6 +168,18 @@ var Phase4Consumes = core.ConsumesCombo{
 		Food:            proto.Food_FoodRunnTumTuberSurprise,
 		MainHandImbue:   proto.WeaponImbue_WizardOil,
 		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
+		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
+	},
+}
+
+var Phase6Consumes = core.ConsumesCombo{
+	Label: "P6-Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:   proto.Potions_MajorManaPotion,
+		Flask:           proto.Flask_FlaskOfAncientKnowledge,
+		Food:            proto.Food_FoodDarkclawBisque,
+		MainHandImbue:   proto.WeaponImbue_EnchantedRepellent,
+		SpellPowerBuff:  proto.SpellPowerBuff_ElixirOfTheMageLord,
 		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
 	},
 }

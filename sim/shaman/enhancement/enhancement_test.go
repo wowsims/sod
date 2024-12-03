@@ -128,6 +128,30 @@ func TestEnhancement(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassShaman,
+			Phase:      6,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceOrc},
+
+			Talents: Phase4Talents,
+			GearSet: core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_6_dw"),
+			OtherGearSets: []core.GearSetCombo{
+				core.GetGearSet("../../../ui/enhancement_shaman/gear_sets", "phase_6_2h"),
+			},
+			Rotation:    core.GetAplRotation("../../../ui/enhancement_shaman/apls", "phase_6"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase6Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Sync Auto", SpecOptions: PlayerOptionsSyncAuto},
+			OtherSpecOptions: []core.SpecOptionsCombo{
+				{Label: "Sync Delay OH", SpecOptions: PlayerOptionsSyncDelayOH},
+			},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -258,6 +282,23 @@ var Phase4ConsumesWFFT = core.ConsumesCombo{
 		MainHandImbue:     proto.WeaponImbue_WindfuryWeapon,
 		OffHandImbue:      proto.WeaponImbue_FlametongueWeapon,
 		SpellPowerBuff:    proto.SpellPowerBuff_GreaterArcaneElixir,
+		StrengthBuff:      proto.StrengthBuff_JujuPower,
+	},
+}
+
+var Phase6Consumes = core.ConsumesCombo{
+	Label: "P6-Consumes",
+	Consumes: &proto.Consumes{
+		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheHoneyBadger,
+		DefaultPotion:     proto.Potions_MajorManaPotion,
+		DragonBreathChili: true,
+		FirePowerBuff:     proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		Flask:             proto.Flask_FlaskOfAncientKnowledge,
+		Food:              proto.Food_FoodSmokedDesertDumpling,
+		MainHandImbue:     proto.WeaponImbue_WindfuryWeapon,
+		OffHandImbue:      proto.WeaponImbue_FlametongueWeapon,
+		SpellPowerBuff:    proto.SpellPowerBuff_ElixirOfTheMageLord,
 		StrengthBuff:      proto.StrengthBuff_JujuPower,
 	},
 }

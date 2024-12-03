@@ -469,6 +469,13 @@ export class ActionId {
 			case 'Kill Shot':
 				if (this.tag === 1) name = `${name} (Rapid Fire)`
 				break;
+			case 'Master Demonologist':
+				if (this.tag === 1) name = `${name} (Imp)`
+				else if (this.tag === 2) name = `${name} (Voidwalker)`
+				else if (this.tag === 3) name = `${name} (Succubus)`
+				else if (this.tag === 4) name = `${name} (Felhunter)`
+				else if (this.tag === 5) name = `${name} (Felguard)`
+				break;
 			// Temporary until real debuff is implemented
 			case 'Ice Lance':
 				if (this.tag === 1) name = 'Glaciate'

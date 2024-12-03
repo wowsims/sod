@@ -73,7 +73,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 			judgementOfLight: true,
 			faerieFire: true,
 			exposeArmor: TristateEffect.TristateEffectImproved,
-			sunderArmor: true,
 			thunderClap: TristateEffect.TristateEffectImproved,
 			insectSwarm: true,
 		}),

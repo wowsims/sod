@@ -241,14 +241,14 @@ export const DefaultConsumes = Consumes.create({
 	alcohol: Alcohol.AlcoholKreegsStoutBeatdown,
 	defaultPotion: Potions.MajorManaPotion,
 	defaultConjured: Conjured.ConjuredDemonicRune,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
-	flask: Flask.FlaskOfSupremePower,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
+	flask: Flask.FlaskOfAncientKnowledge,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	food: Food.FoodTenderWolfSteak,
-	mainHandImbue: WeaponImbue.BrilliantWizardOil,
+	mainHandImbue: WeaponImbue.EnchantedRepellent,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
 	zanzaBuff: ZanzaBuff.GizzardGum,
 });
@@ -256,7 +256,7 @@ export const DefaultConsumes = Consumes.create({
 export const DefaultRaidBuffs = RaidBuffs.create({
 	arcaneBrilliance: true,
 	aspectOfTheLion: true,
-	demonicPact: 110,
+	demonicPact: 120,
 	divineSpirit: true,
 	fireResistanceAura: true,
 	fireResistanceTotem: true,
@@ -284,7 +284,6 @@ export const DefaultIndividualBuffs = IndividualBuffs.create({
 export const DefaultDebuffs = Debuffs.create({
 	faerieFire: true,
 	homunculi: 100,
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	judgementOfWisdom: true,
 	markOfChaos: true,

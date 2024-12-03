@@ -101,13 +101,13 @@ export const DefaultOptions = EnhancementShamanOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	alcohol: Alcohol.AlcoholRumseyRumBlackLabel,
 	armorElixir: ArmorElixir.ElixirOfSuperiorDefense,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	flask: Flask.FlaskOfTheTitans,
 	food: Food.FoodBlessSunfruit,
@@ -116,7 +116,7 @@ export const DefaultConsumes = Consumes.create({
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
 	offHandImbue: WeaponImbue.ConductiveShieldCoating,
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
 });
@@ -126,7 +126,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	aspectOfTheLion: true,
 	battleShout: TristateEffect.TristateEffectImproved,
 	commandingShout: true,
-	demonicPact: 110,
+	demonicPact: 120,
 	divineSpirit: true,
 	fireResistanceAura: true,
 	fireResistanceTotem: true,
@@ -156,13 +156,11 @@ export const DefaultDebuffs = Debuffs.create({
 	exposeArmor: TristateEffect.TristateEffectImproved,
 	faerieFire: true,
 	homunculi: 70, // 70% average uptime default
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	insectSwarm: true,
 	markOfChaos: true,
 	occultPoison: true,
 	stormstrike: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {

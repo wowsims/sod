@@ -47,6 +47,24 @@ func TestCombat(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassRogue,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceOrc},
+
+			Talents:     P4DeadlyPoisonTalents,
+			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p5_saber"),
+			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "P5_Saber"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "No Poisons", SpecOptions: DefaultCombatRogue},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -86,6 +104,24 @@ func TestAssassination(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassRogue,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceOrc},
+
+			Talents:     P4DaggersTalents,
+			GearSet:     core.GetGearSet("../../../ui/rogue/gear_sets", "p5_backstab"),
+			Rotation:    core.GetAplRotation("../../../ui/rogue/apls", "P5_Assassination_Backstab"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase4Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "No Poisons", SpecOptions: DefaultAssassinationRogue},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -93,6 +129,8 @@ var CombatDagger25Talents = "-025305000001"
 var CombatDagger40Talents = "-0053052020550100201"
 var Assassination25Talents = "0053021--05"
 var Assassination40Talents = "005303103551--05"
+var P4DaggersTalents = "005323105551051-023302-05"
+var P4DeadlyPoisonTalents = "00532310155104-02330520000501"
 
 var ItemFilters = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypeLeather,
@@ -148,5 +186,30 @@ var Phase2Consumes = core.ConsumesCombo{
 		MainHandImbue: proto.WeaponImbue_WildStrikes,
 		OffHandImbue:  proto.WeaponImbue_SolidSharpeningStone,
 		StrengthBuff:  proto.StrengthBuff_ElixirOfOgresStrength,
+	},
+}
+
+var Phase3Consumes = core.ConsumesCombo{
+	Label: "P3-Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		DragonBreathChili: true,
+		Food:              proto.Food_FoodGrilledSquid,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_SolidSharpeningStone,
+		StrengthBuff:      proto.StrengthBuff_ElixirOfOgresStrength,
+	},
+}
+
+var Phase4Consumes = core.ConsumesCombo{
+	Label: "P4-Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
+		DragonBreathChili: true,
+		Food:              proto.Food_FoodGrilledSquid,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_ElementalSharpeningStone,
+		StrengthBuff:      proto.StrengthBuff_JujuPower,
 	},
 }

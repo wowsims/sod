@@ -115,6 +115,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	presets: {
 		talents: [
+			...Presets.TalentPresets[Phase.Phase6],
 			...Presets.TalentPresets[Phase.Phase5],
 			...Presets.TalentPresets[Phase.Phase4],
 			...Presets.TalentPresets[Phase.Phase3],
@@ -122,6 +123,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		rotations: [
+			...Presets.APLPresets[Phase.Phase6],
 			...Presets.APLPresets[Phase.Phase5],
 			...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
@@ -129,12 +131,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			...Presets.APLPresets[Phase.Phase1],
 		],
 		gear: [
+			...Presets.GearPresets[Phase.Phase6],
 			...Presets.GearPresets[Phase.Phase5],
 			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
+		builds: [
+			Presets.PresetBuildPhase6,
+			Presets.PresetBuildPhase5Draconic,
+			Presets.PresetBuildPhase5CoreForged,
+			Presets.PresetBuildPhase4,
+		]
 	},
 
 	autoRotation: player => {

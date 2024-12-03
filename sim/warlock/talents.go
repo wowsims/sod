@@ -288,8 +288,6 @@ func (warlock *Warlock) applyMasterDemonologist() {
 		return
 	}
 
-	warlock.disableMasterDemonologistOnSacrifice = true
-
 	hasMetaRune := warlock.HasRune(proto.WarlockRune_RuneHandsMetamorphosis)
 
 	points := float64(warlock.Talents.MasterDemonologist)
@@ -299,70 +297,143 @@ func (warlock *Warlock) applyMasterDemonologist() {
 	threatMultiplier := 1 + (core.TernaryFloat64(hasMetaRune, 0.04*points, -0.04*points) * bonusMultiplier)
 	bonusResistance := 2 * points * bonusMultiplier
 
-	masterDemonologistConfig := core.Aura{
-		Label:    "Master Demonologist",
-		ActionID: core.ActionID{SpellID: 23825},
+	impConfig := core.Aura{
+		Label:    "Master Demonologist (Imp)",
+		ActionID: core.ActionID{SpellID: 23825, Tag: 1},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if warlock.ActivePet == nil {
-				return
-			}
-
-			switch warlock.ActivePet {
-			case warlock.Felguard:
-				aura.Unit.PseudoStats.DamageDealtMultiplier *= damageDealtMultiplier
-				aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMultiplier
-				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
-				aura.Unit.AddResistancesDynamic(sim, bonusResistance)
-			case warlock.Felhunter:
-				aura.Unit.AddResistancesDynamic(sim, bonusResistance)
-			case warlock.Imp:
-				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
-			case warlock.Succubus:
-				aura.Unit.PseudoStats.DamageDealtMultiplier *= damageDealtMultiplier
-			case warlock.Voidwalker:
-				aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMultiplier
-			}
+			aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if warlock.ActivePet == nil {
-				return
-			}
-
-			switch warlock.ActivePet {
-			case warlock.Felguard:
-				aura.Unit.PseudoStats.DamageDealtMultiplier /= damageDealtMultiplier
-				aura.Unit.PseudoStats.DamageTakenMultiplier /= damageTakenMultiplier
-				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
-				aura.Unit.AddResistancesDynamic(sim, -bonusResistance)
-			case warlock.Felhunter:
-				aura.Unit.AddResistancesDynamic(sim, -bonusResistance)
-			case warlock.Imp:
-				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
-			case warlock.Succubus:
-				aura.Unit.PseudoStats.DamageDealtMultiplier /= damageDealtMultiplier
-			case warlock.Voidwalker:
-				aura.Unit.PseudoStats.DamageTakenMultiplier /= damageTakenMultiplier
-			}
+			aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
 		},
 	}
 
-	warlock.MasterDemonologistAura = warlock.RegisterAura(masterDemonologistConfig)
+	voidwalkerConfig := core.Aura{
+		Label:    "Master Demonologist (Voidwalker)",
+		ActionID: core.ActionID{SpellID: 23825, Tag: 2},
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMultiplier
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageTakenMultiplier /= damageTakenMultiplier
+		},
+	}
+
+	succubusConfig := core.Aura{
+		Label:    "Master Demonologist (Succubus)",
+		ActionID: core.ActionID{SpellID: 23825, Tag: 3},
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= damageDealtMultiplier
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= damageDealtMultiplier
+		},
+	}
+
+	felhunterConfig := core.Aura{
+		Label:    "Master Demonologist (Felhunter)",
+		ActionID: core.ActionID{SpellID: 23825, Tag: 4},
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddResistancesDynamic(sim, bonusResistance)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddResistancesDynamic(sim, -bonusResistance)
+		},
+	}
+
 	for _, pet := range warlock.BasePets {
-		petAura := pet.RegisterAura(masterDemonologistConfig)
+		pet.ApplyOnPetEnable(func(sim *core.Simulation) {
+			if warlock.MasterDemonologistAura != nil {
+				warlock.MasterDemonologistAura.Deactivate(sim)
+			}
+		})
+	}
 
-		oldOnPetEnable := pet.OnPetEnable
-		pet.OnPetEnable = func(sim *core.Simulation) {
-			oldOnPetEnable(sim)
+	warlockImpAura := warlock.RegisterAura(impConfig)
+	impAura := warlock.Imp.RegisterAura(impConfig)
+	warlock.Imp.ApplyOnPetEnable(func(sim *core.Simulation) {
+		impAura.Activate(sim)
+		warlock.MasterDemonologistAura = warlockImpAura
+	})
+	warlock.Imp.ApplyOnPetDisable(func(sim *core.Simulation, isSacrifice bool) {
+		impAura.Deactivate(sim)
+	})
+
+	warlockVoidwalkerAura := warlock.RegisterAura(voidwalkerConfig)
+	voidwalkerAura := warlock.Voidwalker.RegisterAura(voidwalkerConfig)
+	warlock.Voidwalker.ApplyOnPetEnable(func(sim *core.Simulation) {
+		voidwalkerAura.Activate(sim)
+		warlock.MasterDemonologistAura = warlockVoidwalkerAura
+	})
+	warlock.Voidwalker.ApplyOnPetDisable(func(sim *core.Simulation, isSacrifice bool) {
+		voidwalkerAura.Deactivate(sim)
+	})
+
+	warlockSuccubusAura := warlock.RegisterAura(succubusConfig)
+	succubusAura := warlock.Succubus.RegisterAura(succubusConfig)
+	warlock.Succubus.ApplyOnPetEnable(func(sim *core.Simulation) {
+		succubusAura.Activate(sim)
+		warlock.MasterDemonologistAura = warlockSuccubusAura
+	})
+	warlock.Succubus.ApplyOnPetDisable(func(sim *core.Simulation, isSacrifice bool) {
+		succubusAura.Deactivate(sim)
+	})
+
+	warlockFelhunterAura := warlock.RegisterAura(felhunterConfig)
+	felhunterAura := warlock.Felhunter.RegisterAura(felhunterConfig)
+	warlock.Felhunter.ApplyOnPetEnable(func(sim *core.Simulation) {
+		felhunterAura.Activate(sim)
+		warlock.MasterDemonologistAura = warlockFelhunterAura
+	})
+	warlock.Felhunter.ApplyOnPetDisable(func(sim *core.Simulation, isSacrifice bool) {
+		felhunterAura.Deactivate(sim)
+	})
+
+	if warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
+		felguardConfig := core.Aura{
+			Label:    "Master Demonologist (Felguard)",
+			ActionID: core.ActionID{SpellID: 23825, Tag: 5},
+			Duration: core.NeverExpires,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
+				aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMultiplier
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= damageDealtMultiplier
+				aura.Unit.AddResistancesDynamic(sim, bonusResistance)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
+				aura.Unit.PseudoStats.DamageTakenMultiplier /= damageTakenMultiplier
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= damageDealtMultiplier
+				aura.Unit.AddResistancesDynamic(sim, -bonusResistance)
+			},
+		}
+
+		warlockFelguardAura := warlock.RegisterAura(felguardConfig)
+		felguardAura := warlock.Felguard.RegisterAura(felguardConfig)
+		warlock.Felguard.ApplyOnPetEnable(func(sim *core.Simulation) {
+			felguardAura.Activate(sim)
+			warlock.MasterDemonologistAura = warlockFelguardAura
+		})
+		warlock.Felguard.ApplyOnPetDisable(func(sim *core.Simulation, isSacrifice bool) {
+			felguardAura.Deactivate(sim)
+		})
+	}
+
+	for _, pet := range warlock.BasePets {
+		pet.ApplyOnPetEnable(func(sim *core.Simulation) {
 			warlock.MasterDemonologistAura.Activate(sim)
-			petAura.Activate(sim)
-		}
+		})
 
-		oldOnPetDisable := pet.OnPetDisable
-		pet.OnPetDisable = func(sim *core.Simulation) {
-			oldOnPetDisable(sim)
-			petAura.Deactivate(sim)
-		}
+		pet.ApplyOnPetDisable(func(sim *core.Simulation, isSacrifice bool) {
+			if !isSacrifice || !warlock.maintainBuffsOnSacrifice {
+				warlock.MasterDemonologistAura.Deactivate(sim)
+				warlock.MasterDemonologistAura = nil
+			}
+		})
 	}
 }
 
@@ -391,8 +462,8 @@ func (warlock *Warlock) applySoulLink() {
 		pet.SoulLinkAura = pet.RegisterAura(soulLinkConfig)
 
 		oldOnPetDisable := pet.OnPetDisable
-		pet.OnPetDisable = func(sim *core.Simulation) {
-			oldOnPetDisable(sim)
+		pet.OnPetDisable = func(sim *core.Simulation, isSacrifice bool) {
+			oldOnPetDisable(sim, isSacrifice)
 			warlock.SoulLinkAura.Deactivate(sim)
 			pet.SoulLinkAura.Deactivate(sim)
 		}
@@ -495,14 +566,16 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 	})
 
 	dsAuras := []*core.Aura{felhunterAura, impAura, succubusAura, voidwalkerAura}
-	for _, pet := range warlock.BasePets {
-		oldOnPetEnable := pet.OnPetEnable
-		pet.OnPetEnable = func(sim *core.Simulation) {
-			oldOnPetEnable(sim)
-			for _, dsAura := range dsAuras {
-				dsAura.Deactivate(sim)
+	for idx := range warlock.BasePets {
+		pet := warlock.BasePets[idx]
+
+		pet.ApplyOnPetEnable(func(sim *core.Simulation) {
+			if !warlock.maintainBuffsOnSacrifice || pet == warlock.SacrificedPet {
+				for _, dsAura := range dsAuras {
+					dsAura.Deactivate(sim)
+				}
 			}
-		}
+		})
 	}
 
 	warlock.GetOrRegisterSpell(core.SpellConfig{
@@ -516,6 +589,11 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			felhunterAura.Deactivate(sim)
+			impAura.Deactivate(sim)
+			succubusAura.Deactivate(sim)
+			voidwalkerAura.Deactivate(sim)
+
 			switch warlock.ActivePet {
 			case warlock.Felguard:
 				felhunterAura.Activate(sim)

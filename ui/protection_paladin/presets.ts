@@ -25,10 +25,10 @@ import {
 	WeaponImbue,
 	ZanzaBuff,
 } from '../core/proto/common.js';
-import { PaladinAura, PaladinSeal, Blessings, PaladinOptions as ProtectionPaladinOptions } from '../core/proto/paladin.js';
+import { Blessings, PaladinAura, PaladinOptions as ProtectionPaladinOptions,PaladinSeal } from '../core/proto/paladin.js';
 import { SavedTalents } from '../core/proto/ui.js';
-import APLP5ProtJson from './apls/p5prot.apl.json';
 import APLP4ProtJson from './apls/p4prot.apl.json';
+import APLP5ProtJson from './apls/p5prot.apl.json';
 import Phase4ProtGearJson from './gear_sets/p4prot.gear.json';
 import Phase5ProtGearJson from './gear_sets/p5prot.gear.json';
 
@@ -115,7 +115,7 @@ export const DefaultOptions = ProtectionPaladinOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	armorElixir: ArmorElixir.ElixirOfSuperiorDefense,
 	defaultPotion: Potions.GreaterStoneshieldPotion,
@@ -127,7 +127,7 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.WildStrikes,
 	offHandImbue: WeaponImbue.MagnificentTrollshine,
 
-	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
@@ -156,7 +156,7 @@ export const DefaultRaidBuffs = RaidBuffs.create({
 	divineSpirit: true,
 	giftOfTheWild: TristateEffect.TristateEffectImproved,
 	sanctityAura: true,
-	demonicPact: 110,
+	demonicPact: 120,
 	aspectOfTheLion: true,
 	vampiricTouch: 300,
 });
@@ -169,7 +169,6 @@ export const DefaultDebuffs = Debuffs.create({
 	exposeArmor: TristateEffect.TristateEffectImproved,
 	judgementOfWisdom: true,
 	judgementOfTheCrusader: TristateEffect.TristateEffectImproved,
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	markOfChaos: true,
 	occultPoison: true,

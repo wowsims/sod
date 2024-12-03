@@ -215,10 +215,10 @@ export const DefaultOptions = RogueOptions.create({
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultConjured: Conjured.ConjuredRogueThistleTea,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	flask: Flask.FlaskOfTheTitans,
 	food: Food.FoodGrilledSquid,
 	mainHandImbue: WeaponImbue.WildStrikes,
@@ -258,11 +258,9 @@ export const DefaultDebuffs = Debuffs.create({
 	dreamstate: true,
 	faerieFire: true,
 	homunculi: 100,
-	improvedFaerieFire: true,
 	improvedScorch: true,
 	mangle: true,
 	markOfChaos: true,
-	sunderArmor: true,
 });
 
 export const OtherDefaults = {
