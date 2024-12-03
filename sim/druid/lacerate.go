@@ -22,6 +22,7 @@ func (druid *Druid) registerLacerateSpell() {
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414644},
 		SpellSchool: core.SpellSchoolPhysical,
+		SpellCode:   SpellCode_DruidLacerateDirect,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -38,7 +39,7 @@ func (druid *Druid) registerLacerateSpell() {
 		},
 
 		DamageMultiplier: initialDamageMul,
-		ThreatMultiplier: 3.25,
+		ThreatMultiplier: 3.33,
 		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -75,12 +76,12 @@ func (druid *Druid) registerLacerateBleedSpell() {
 	druid.LacerateBleed = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414647},
 		SpellSchool: core.SpellSchoolPhysical,
-		SpellCode:   SpellCode_DruidLacerate,
+		SpellCode:   SpellCode_DruidLacerateDot,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 3.4,
+		ThreatMultiplier: 3.33,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (druid *Druid) registerMangleBearSpell() {
@@ -12,12 +13,12 @@ func (druid *Druid) registerMangleBearSpell() {
 		return
 	}
 
-	baseMultiplier := 1.0
+	idolMultiplier := 1.0
 	rageCostReduction := float64(druid.Talents.Ferocity)
 
 	switch druid.Ranged().ID {
 	case IdolOfUrsinPower:
-		baseMultiplier += .03
+		idolMultiplier += .03
 	case IdolOfBrutality:
 		rageCostReduction += 3
 	}
@@ -49,7 +50,7 @@ func (druid *Druid) registerMangleBearSpell() {
 		},
 		// TODO: Berserk 3 target mangle cleave - Saeyon
 
-		DamageMultiplier: (1.6 + 0.1*float64(druid.Talents.SavageFury)) * baseMultiplier,
+		DamageMultiplier: 1.6 * (1 + 0.1*float64(druid.Talents.SavageFury)) * idolMultiplier,
 		ThreatMultiplier: 1.5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -59,7 +60,12 @@ func (druid *Druid) registerMangleBearSpell() {
 
 			if result.Landed() {
 				mangleAuras.Get(target).Activate(sim)
-				apProcAura.Activate(sim)
+				if stacks := int32(druid.GetStat(stats.Defense)); stacks > 0 {
+					apProcAura.Activate(sim)
+					if apProcAura.GetStacks() != stacks {
+						apProcAura.SetStacks(sim, stacks)
+					}
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}

@@ -26,7 +26,8 @@ const (
 	SpellCode_DruidMangleCat
 	SpellCode_DruidMangleBear
 	SpellCode_DruidSwipeCat
-	SpellCode_DruidLacerate
+	SpellCode_DruidLacerateDirect
+	SpellCode_DruidLacerateDot
 	SpellCode_DruidSwipeBear
 	SpellCode_DruidMaul
 	SpellCode_DruidMoonfire
