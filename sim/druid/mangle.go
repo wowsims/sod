@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (druid *Druid) registerMangleBearSpell() {
@@ -59,7 +60,13 @@ func (druid *Druid) registerMangleBearSpell() {
 
 			if result.Landed() {
 				mangleAuras.Get(target).Activate(sim)
-				apProcAura.Activate(sim)
+
+				if stacks := int32(druid.GetStat(stats.Defense)); stacks > 0 {
+					apProcAura.Activate(sim)
+					if apProcAura.GetStacks() != stacks {
+						apProcAura.SetStacks(sim, stacks)
+					}
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}
