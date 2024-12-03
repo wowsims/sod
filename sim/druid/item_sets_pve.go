@@ -538,7 +538,8 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 		},
 		// Your Mangle(Bear), Swipe(Bear), Maul, and Lacerate abilities gain 5% increased critical strike chance against targets afflicted by your Lacerate.
 		4: func(agent core.Agent) {
-			// Handle inside each individual spell
+			druid := agent.(DruidAgent).GetDruid()
+			druid.LacerateDotCritRatingBonus = 5 * core.SpellCritRatingPerCritChance
 		},
 		// Your Swipe now spreads your Lacerate from your primary target to other targets it strikes.
 		6: func(agent core.Agent) {
@@ -719,10 +720,8 @@ var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 1213174},
 				Label:    "S03 - Item - TAQ - Druid - Feral 4P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if druid.form != Cat {
-						return
-					}
-					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
+
+					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell.SpellCode == SpellCode_DruidShred || spell.SpellCode == SpellCode_DruidMangleCat || spell.SpellCode == SpellCode_DruidFerociousBite) {
 						return
 					}
 

@@ -8,7 +8,6 @@ import (
 func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
 	flatBaseDamage := 128.0
 	rageCost := 15 - float64(druid.Talents.Ferocity)
-	furyOfStormrage4p := druid.HasSetBonus(ItemSetFuryOfStormrage, 4)
 
 	switch druid.Ranged().ID {
 	case IdolOfBrutality:
@@ -40,13 +39,14 @@ func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
 
 			baseDamage := flatBaseDamage + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
-			stormrageBonusCrit := 0.0
-			if furyOfStormrage4p {
-				stormrageBonusCrit = druid.GetFuryOfStormrage4pCrit(target)
+			dotBonusCrit := 0.0
+			if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+				dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
 			}
-			spell.BonusCritRating += stormrageBonusCrit
+
+			spell.BonusCritRating += dotBonusCrit
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			spell.BonusCritRating -= stormrageBonusCrit
+			spell.BonusCritRating -= dotBonusCrit
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)

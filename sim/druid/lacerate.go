@@ -12,7 +12,6 @@ func (druid *Druid) registerLacerateSpell() {
 		return
 	}
 	initialDamageMul := 1.0
-	furyOfStormrage4p := druid.HasSetBonus(ItemSetFuryOfStormrage, 4)
 
 	switch druid.Ranged().ID {
 	case IdolOfCruelty:
@@ -23,7 +22,7 @@ func (druid *Druid) registerLacerateSpell() {
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414644},
 		SpellSchool: core.SpellSchoolPhysical,
-		SpellCode:   SpellCode_DruidLacerateDirect,
+		SpellCode:   SpellCode_DruidLacerate,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -47,13 +46,14 @@ func (druid *Druid) registerLacerateSpell() {
 			baseDamage := (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * .2) * float64(druid.LacerateBleed.Dot(target).GetStacks())
 
 			spell.DamageMultiplier = initialDamageMul
-			stormrageBonusCrit := 0.0
-			if furyOfStormrage4p {
-				stormrageBonusCrit = druid.GetFuryOfStormrage4pCrit(target)
+			dotBonusCrit := 0.0
+			if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+				dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
 			}
-			spell.BonusCritRating += stormrageBonusCrit
+
+			spell.BonusCritRating += dotBonusCrit
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			spell.BonusCritRating -= stormrageBonusCrit
+			spell.BonusCritRating -= dotBonusCrit
 
 			if result.Landed() {
 				druid.LacerateBleed.Cast(sim, target)
@@ -83,7 +83,6 @@ func (druid *Druid) registerLacerateBleedSpell() {
 	druid.LacerateBleed = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414647},
 		SpellSchool: core.SpellSchoolPhysical,
-		SpellCode:   SpellCode_DruidLacerateDot,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 

@@ -15,7 +15,6 @@ const SwipeThreatMultiplier = 3.5
 func (druid *Druid) registerSwipeBearSpell() {
 	hasImprovedSwipeRune := druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe)
 	baseMultiplier := 1.0
-	furyOfStormrage4p := druid.HasSetBonus(ItemSetFuryOfStormrage, 4)
 
 	baseDamage := 83 + .1*druid.GetStat(stats.AttackPower)
 
@@ -56,13 +55,14 @@ func (druid *Druid) registerSwipeBearSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
-				stormrageBonusCrit := 0.0
-				if furyOfStormrage4p {
-					stormrageBonusCrit = druid.GetFuryOfStormrage4pCrit(target)
+				dotBonusCrit := 0.0
+				if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+					dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
 				}
-				spell.BonusCritRating += stormrageBonusCrit
-				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				spell.BonusCritRating -= stormrageBonusCrit
+
+				spell.BonusCritRating += dotBonusCrit
+				result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				spell.BonusCritRating -= dotBonusCrit
 
 				target = sim.Environment.NextTargetUnit(target)
 			}
