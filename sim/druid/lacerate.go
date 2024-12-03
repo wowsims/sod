@@ -12,6 +12,8 @@ func (druid *Druid) registerLacerateSpell() {
 		return
 	}
 	initialDamageMul := 1.0
+	berserking := druid.BerserkAura.IsActive()
+	hasGore := druid.HasRune(proto.DruidRune_RuneHelmGore)
 
 	switch druid.Ranged().ID {
 	case IdolOfCruelty:
@@ -27,7 +29,7 @@ func (druid *Druid) registerLacerateSpell() {
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   core.TernaryFloat64(druid.BerserkAura.IsActive(), 0, 10),
+			Cost:   10,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -42,15 +44,16 @@ func (druid *Druid) registerLacerateSpell() {
 		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * .2) * float64(druid.LacerateBleed.Dot(target).GetStacks())
+			baseDamage := (druid.baseRuneAbilityDamage() * .2) * float64(druid.LacerateBleed.Dot(target).GetStacks())
 
-			spell.DamageMultiplier = initialDamageMul
+			spell.Cost.FlatModifier -= core.TernaryInt32(berserking, 10, 0)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.Cost.FlatModifier += core.TernaryInt32(berserking, 10, 0)
 
 			if result.Landed() {
 				druid.LacerateBleed.Cast(sim, target)
 
-				if druid.HasRune(proto.DruidRune_RuneHelmGore) && sim.Proc(0.15, "Gore") {
+				if hasGore && sim.Proc(0.15, "Gore") {
 					druid.AddRage(sim, 10.0, rageMetrics)
 					druid.MangleBear.CD.Reset()
 				}
@@ -107,15 +110,9 @@ func (druid *Druid) registerLacerateBleedSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dot := spell.Dot(target)
-			if dot.IsActive() {
-				dot.Refresh(sim)
-				dot.AddStack(sim)
-				dot.TakeSnapshot(sim, true)
-			} else {
-				dot.Apply(sim)
-				dot.SetStacks(sim, 1)
-				dot.TakeSnapshot(sim, true)
-			}
+			dot.Apply(sim)
+			dot.AddStack(sim)
+			dot.TakeSnapshot(sim, true)
 		},
 	})
 }

@@ -254,12 +254,9 @@ func (druid *Druid) RegisterFeralTankSpells(realismICD *core.Cooldown) {
 	// druid.registerDemoralizingRoarSpell()
 	druid.registerEnrageSpell()
 	druid.registerFrenziedRegenerationCD()
-	druid.registerMangleBearSpell()
 	druid.registerRakeSpell()
 	druid.registerRipSpell()
 	druid.registerMaulSpell(realismICD)
-	druid.registerLacerateBleedSpell()
-	druid.registerLacerateSpell()
 	// druid.registerSurvivalInstinctsCD()
 	druid.registerSwipeBearSpell()
 }

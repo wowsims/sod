@@ -5,18 +5,75 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+type MaulRankInfo struct {
+	id     int32
+	level  int32
+	damage float64
+}
+
+var maulSpells = []MaulRankInfo{
+	{
+		id:     6807,
+		level:  10,
+		damage: 18.0,
+	},
+	{
+		id:     6808,
+		level:  18,
+		damage: 27.0,
+	},
+	{
+		id:     6809,
+		level:  26,
+		damage: 37.0,
+	},
+	{
+		id:     8972,
+		level:  34,
+		damage: 49.0,
+	},
+	{
+		id:     9745,
+		level:  42,
+		damage: 71.0,
+	},
+	{
+		id:     9880,
+		level:  50,
+		damage: 101.0,
+	},
+	{
+		id:     9881,
+		level:  58,
+		damage: 128.0,
+	},
+}
+
 func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
-	flatBaseDamage := 128.0
+	// Add highest available rank for level.
+	for rank := len(maulSpells) - 1; rank >= 0; rank-- {
+		if druid.Level >= maulSpells[rank].level {
+			config := druid.newMaulSpellConfig(maulSpells[rank])
+			druid.Maul = druid.RegisterSpell(Bear, config)
+			break
+		}
+	}
+
+	druid.MaulQueue = druid.makeQueueSpellsAndAura(druid.Maul, realismICD)
+}
+
+func (druid *Druid) newMaulSpellConfig(maulRank MaulRankInfo) core.SpellConfig {
+	flatBaseDamage := maulRank.damage
 	rageCost := 15 - float64(druid.Talents.Ferocity)
 
 	switch druid.Ranged().ID {
 	case IdolOfBrutality:
 		rageCost -= 3
 	}
-	rageMetrics := druid.NewRageMetrics(core.ActionID{SpellID: 431446})
+	rageMetrics := druid.NewRageMetrics(core.ActionID{SpellID: maulRank.id})
 
-	druid.Maul = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 9881},
+	return core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: maulRank.id},
 		SpellSchool: core.SpellSchoolPhysical,
 		SpellCode:   SpellCode_DruidMaul,
 		DefenseType: core.DefenseTypeMelee,
@@ -56,8 +113,7 @@ func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
 				druid.curQueueAura.Deactivate(sim)
 			}
 		},
-	})
-	druid.MaulQueue = druid.makeQueueSpellsAndAura(druid.Maul, realismICD)
+	}
 }
 
 func (druid *Druid) makeQueueSpellsAndAura(srcSpell *DruidSpell, realismICD *core.Cooldown) *DruidSpell {

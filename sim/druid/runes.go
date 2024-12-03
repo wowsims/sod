@@ -26,6 +26,7 @@ func (druid *Druid) ApplyRunes() {
 
 	// Hands
 	druid.registerSunfireSpell()
+	druid.applyMangle()
 
 	// Belt
 	druid.applyBerserk()
@@ -34,6 +35,8 @@ func (druid *Druid) ApplyRunes() {
 	// Legs
 	druid.applyStarsurge()
 	druid.applySavageRoar()
+	druid.registerLacerateBleedSpell()
+	druid.registerLacerateSpell()
 
 	// Feet
 	druid.applyDreamstate()
