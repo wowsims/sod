@@ -539,7 +539,7 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 		// Your Mangle(Bear), Swipe(Bear), Maul, and Lacerate abilities gain 5% increased critical strike chance against targets afflicted by your Lacerate.
 		4: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
-			druid.LacerateDotCritRatingBonus = 5 * core.SpellCritRatingPerCritChance
+			druid.FuryOfStormrageCritRatingBonus = 5 * core.SpellCritRatingPerCritChance
 		},
 		// Your Swipe now spreads your Lacerate from your primary target to other targets it strikes.
 		6: func(agent core.Agent) {

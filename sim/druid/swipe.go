@@ -61,7 +61,7 @@ func (druid *Druid) registerSwipeBearSpell() {
 				}
 
 				spell.BonusCritRating += dotBonusCrit
-				result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 				spell.BonusCritRating -= dotBonusCrit
 
 				target = sim.Environment.NextTargetUnit(target)
