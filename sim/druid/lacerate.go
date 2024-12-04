@@ -12,7 +12,6 @@ func (druid *Druid) registerLacerateSpell() {
 		return
 	}
 	initialDamageMul := 1.0
-	berserking := druid.BerserkAura.IsActive()
 	hasGore := druid.HasRune(proto.DruidRune_RuneHelmGore)
 
 	switch druid.Ranged().ID {
@@ -44,7 +43,8 @@ func (druid *Druid) registerLacerateSpell() {
 		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (druid.baseRuneAbilityDamage() * .2) * float64(druid.LacerateBleed.Dot(target).GetStacks())
+			baseDamage := (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * .2) * float64(druid.LacerateBleed.Dot(target).GetStacks())
+			berserking := druid.BerserkAura.IsActive()
 
 			spell.Cost.FlatModifier -= core.TernaryInt32(berserking, 10, 0)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -110,9 +110,15 @@ func (druid *Druid) registerLacerateBleedSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			dot := spell.Dot(target)
-			dot.Apply(sim)
-			dot.AddStack(sim)
-			dot.TakeSnapshot(sim, true)
+			if dot.IsActive() {
+				dot.Refresh(sim)
+				dot.AddStack(sim)
+				dot.TakeSnapshot(sim, true)
+			} else {
+				dot.Apply(sim)
+				dot.SetStacks(sim, 1)
+				dot.TakeSnapshot(sim, true)
+			}
 		},
 	})
 }
