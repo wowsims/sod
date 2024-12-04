@@ -1816,7 +1816,7 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 		60: TernaryInt32(unit.Env.UseAQSpellRanks, 5, 4),
 	}[level]
 	spellID := StrengthOfEarthTotemSpellId[rank]
-	bonusStrength := math.Floor(StrengthOfEarthStrength[level] * multiplier)
+	bonusStrength := math.Floor(StrengthOfEarthStrength[rank] * multiplier)
 
 	duration := time.Minute * 2
 
