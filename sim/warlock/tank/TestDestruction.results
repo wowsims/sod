@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 7.88189
   final_stats: 0
   final_stats: 10
-  final_stats: 428.8
+  final_stats: 215.8
   final_stats: 1
   final_stats: 8.09959
   final_stats: 0
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 14.40636
   final_stats: 0
   final_stats: 0
-  final_stats: 670.8
+  final_stats: 322.8
   final_stats: 2
   final_stats: 8.76222
   final_stats: 0
@@ -116,7 +116,7 @@ character_stats_results: {
   final_stats: 20.03174
   final_stats: 0
   final_stats: 0
-  final_stats: 973.432
+  final_stats: 457.432
   final_stats: 5
   final_stats: 23.38253
   final_stats: 0
@@ -165,7 +165,7 @@ character_stats_results: {
   final_stats: 28.89265
   final_stats: 0
   final_stats: 0
-  final_stats: 1657.9
+  final_stats: 934.9
   final_stats: 8
   final_stats: 25.525
   final_stats: 0
@@ -249,17 +249,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.13759
+  weights: 0.1384
   weights: 0
-  weights: 0.58838
-  weights: 0
-  weights: 0
+  weights: 0.58844
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.68443
+  weights: 0
+  weights: 0
+  weights: 5.68254
   weights: 3.23199
   weights: 0
   weights: 0
@@ -298,18 +298,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.66623
+  weights: 0.67078
   weights: 0
-  weights: 0.75808
-  weights: 0
-  weights: 0
+  weights: 0.75835
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 7.61603
+  weights: 0
+  weights: 0
+  weights: 7.61585
   weights: 0
   weights: 0
   weights: 0
@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.79576
+  weights: 0.79014
   weights: 0
-  weights: 0.77679
-  weights: 0
-  weights: 0
+  weights: 0.77666
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 15.67659
-  weights: 11.39729
+  weights: 0
+  weights: 0
+  weights: 15.66683
+  weights: 11.39532
   weights: 0
   weights: 0
   weights: 0
@@ -393,15 +393,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Phase1-Lvl25-AllItems-DeathmistRaiment"
  value: {
-  dps: 109.88407
-  tps: 73.24189
+  dps: 105.62966
+  tps: 68.98748
  }
 }
 dps_results: {
  key: "TestDestruction-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 197.52111
-  tps: 475.69177
+  dps: 197.4992
+  tps: 475.65298
  }
 }
 dps_results: {
@@ -449,22 +449,22 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 197.14476
-  tps: 475.7682
+  dps: 197.12883
+  tps: 475.74001
  }
 }
 dps_results: {
  key: "TestDestruction-Phase2-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 146.77913
-  tps: 93.51091
+  dps: 140.0094
+  tps: 86.74117
  }
 }
 dps_results: {
  key: "TestDestruction-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 472.74756
-  tps: 1323.69915
+  dps: 467.69761
+  tps: 1314.76074
  }
 }
 dps_results: {
@@ -512,23 +512,23 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 463.39117
-  tps: 1303.2644
+  dps: 459.81402
+  tps: 1296.93285
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 324.73603
-  tps: 203.25765
+  dps: 321.21283
+  tps: 199.73444
   hps: 161.53984
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1330.41482
-  tps: 2708.88089
+  dps: 1318.31203
+  tps: 2687.45895
   hps: 270.45762
  }
 }
@@ -583,89 +583,89 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1308.06434
-  tps: 2658.17027
+  dps: 1299.78442
+  tps: 2643.5148
   hps: 268.60893
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1532.91035
-  tps: 1882.10411
+  dps: 1528.06807
+  tps: 1877.26183
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 1333.3829
-  tps: 1594.03051
+  dps: 1329.2713
+  tps: 1589.91891
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1525.6655
-  tps: 1873.65081
+  dps: 1520.79508
+  tps: 1868.7804
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2038.1047
-  tps: 4227.38028
+  dps: 2024.88593
+  tps: 4203.98306
   hps: 425.86314
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 1287.64426
-  tps: 1532.52734
+  dps: 1283.26413
+  tps: 1528.1472
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 2024.9747
-  tps: 4213.20866
+  dps: 2011.76178
+  tps: 4189.82179
   hps: 413.07278
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1532.91035
-  tps: 1882.10411
+  dps: 1528.06807
+  tps: 1877.26183
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1692.74084
-  tps: 3558.57863
+  dps: 1681.04875
+  tps: 3537.88363
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1675.24786
-  tps: 3505.49139
+  dps: 1662.9513
+  tps: 3483.72648
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2035.9383
-  tps: 4227.38028
+  dps: 2022.71954
+  tps: 4203.98306
   hps: 425.86314
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 2049.32253
-  tps: 4246.27879
+  dps: 2035.94149
+  tps: 4222.59434
   hps: 417.42547
  }
 }
@@ -720,8 +720,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1991.99473
-  tps: 4139.25959
+  dps: 1986.67457
+  tps: 4129.84291
   hps: 408.2506
  }
 }

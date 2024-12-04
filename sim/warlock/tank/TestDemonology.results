@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 14.49282
   final_stats: 0
   final_stats: 0
-  final_stats: 670.8
+  final_stats: 322.8
   final_stats: 2
   final_stats: 8.76222
   final_stats: 0
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 28.89265
   final_stats: 0
   final_stats: 0
-  final_stats: 1657.9
+  final_stats: 934.9
   final_stats: 8
   final_stats: 25.525
   final_stats: 0
@@ -102,17 +102,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.18375
+  weights: 0.18373
   weights: 0
-  weights: 0.57026
-  weights: 0
-  weights: 0
+  weights: 0.56946
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.48654
+  weights: 0
+  weights: 0
+  weights: 4.4873
   weights: 1.1628
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.51768
+  weights: -0.34658
   weights: 0
-  weights: 0.75411
-  weights: 0
-  weights: 0
+  weights: 0.80619
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 18.88056
-  weights: 8.33156
+  weights: 0
+  weights: 0
+  weights: 18.36049
+  weights: 8.4516
   weights: 0
   weights: 0
   weights: 0
@@ -197,16 +197,16 @@ stat_weights_results: {
 dps_results: {
  key: "TestDemonology-Phase2-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 107.85717
-  tps: 115.60738
+  dps: 107.53626
+  tps: 115.28647
   hps: 106.55339
  }
 }
 dps_results: {
  key: "TestDemonology-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 368.04505
-  tps: 1098.39738
+  dps: 363.1817
+  tps: 1089.78925
   hps: 132.01743
  }
 }
@@ -261,103 +261,103 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 362.65618
-  tps: 1085.74971
+  dps: 359.22882
+  tps: 1079.68328
   hps: 133.48477
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1194.01511
-  tps: 420.88152
+  dps: 1108.15617
+  tps: 416.05743
   hps: 228.25902
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 120.94787
-  tps: 131.93018
+  dps: 107.93492
+  tps: 118.91722
   hps: 4.3855
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1197.19717
-  tps: 418.65537
+  dps: 1110.6653
+  tps: 413.67803
   hps: 227.46431
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2309.62428
-  tps: 4615.83953
+  dps: 2215.4787
+  tps: 4588.1165
   hps: 402.51414
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 118.92784
-  tps: 129.8187
+  dps: 105.90832
+  tps: 116.79917
   hps: 4.1892
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 2388.01387
-  tps: 4570.92854
+  dps: 2283.76489
+  tps: 4543.56793
   hps: 395.53501
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1194.01511
-  tps: 420.88152
+  dps: 1108.15617
+  tps: 416.05743
   hps: 228.25902
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1300.94754
-  tps: 1365.20028
+  dps: 1213.70555
+  tps: 1351.18381
   hps: 217.82529
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1273.59907
-  tps: 1350.18838
+  dps: 1187.96752
+  tps: 1334.96332
   hps: 217.87458
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2309.62428
-  tps: 4615.83953
+  dps: 2215.4787
+  tps: 4588.1165
   hps: 402.51414
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 2318.47268
-  tps: 4649.74845
+  dps: 2224.51241
+  tps: 4621.9
   hps: 410.19321
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2904.36905
+  dps: 2803.43959
   tps: 9134.65909
   hps: 413.40117
  }
@@ -365,7 +365,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 2245.9162
+  dps: 2164.26687
   tps: 4447.82641
   hps: 411.69711
  }
@@ -373,7 +373,7 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 2217.471
+  dps: 2136.55407
   tps: 4420.23142
   hps: 403.79946
  }
@@ -405,8 +405,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2265.34443
-  tps: 4519.85131
+  dps: 2179.3617
+  tps: 4508.63908
   hps: 402.96262
  }
 }

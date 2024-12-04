@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 8.05608
   final_stats: 0
   final_stats: 10
-  final_stats: 556.8
+  final_stats: 343.8
   final_stats: 1
   final_stats: 7.9724
   final_stats: 0
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 14.66052
   final_stats: 0
   final_stats: 0
-  final_stats: 901.4
+  final_stats: 553.4
   final_stats: 4
   final_stats: 8.95898
   final_stats: 0
@@ -116,7 +116,7 @@ character_stats_results: {
   final_stats: 26.82355
   final_stats: 0
   final_stats: 0
-  final_stats: 1327.168
+  final_stats: 811.168
   final_stats: 4
   final_stats: 30.89512
   final_stats: 0
@@ -165,7 +165,7 @@ character_stats_results: {
   final_stats: 35.49047
   final_stats: 0
   final_stats: 0
-  final_stats: 2024.2
+  final_stats: 1301.2
   final_stats: 8
   final_stats: 30.14372
   final_stats: 0
@@ -214,7 +214,7 @@ character_stats_results: {
   final_stats: 40.38107
   final_stats: 0
   final_stats: 0
-  final_stats: 2087.23
+  final_stats: 1364.23
   final_stats: 9
   final_stats: 33.56028
   final_stats: 0
@@ -263,7 +263,7 @@ character_stats_results: {
   final_stats: 45.47138
   final_stats: 0
   final_stats: 0
-  final_stats: 2077.11
+  final_stats: 1354.11
   final_stats: 10
   final_stats: 37.30323
   final_stats: 0
@@ -347,7 +347,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.07772
+  weights: 1.10038
   weights: 0
   weights: 0.87591
   weights: 0
@@ -357,7 +357,7 @@ stat_weights_results: {
   weights: 0.61065
   weights: 0
   weights: 0
-  weights: 7.498
+  weights: 7.52092
   weights: 3.32702
   weights: 0
   weights: 0
@@ -406,7 +406,7 @@ stat_weights_results: {
   weights: 0.78342
   weights: 0
   weights: 0
-  weights: 12.23007
+  weights: 12.2343
   weights: 8.89473
   weights: 0
   weights: 0
@@ -445,7 +445,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.53563
+  weights: 2.53818
   weights: 0
   weights: 1.46966
   weights: 0
@@ -455,8 +455,8 @@ stat_weights_results: {
   weights: 1.21143
   weights: 0
   weights: 0
-  weights: 22.25597
-  weights: 20.04526
+  weights: 22.25678
+  weights: 20.06059
   weights: 0
   weights: 0
   weights: 0
@@ -589,8 +589,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestElemental-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 198.60282
-  tps: 158.64804
+  dps: 196.97893
+  tps: 157.02415
  }
 }
 dps_results: {
@@ -680,15 +680,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 196.08741
-  tps: 157.07283
+  dps: 194.54578
+  tps: 155.53119
  }
 }
 dps_results: {
  key: "TestElemental-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 628.30862
-  tps: 528.0328
+  dps: 625.19519
+  tps: 524.90113
  }
 }
 dps_results: {
@@ -778,15 +778,15 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 627.03619
-  tps: 529.8338
+  dps: 624.19466
+  tps: 526.976
  }
 }
 dps_results: {
  key: "TestElemental-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1693.29266
-  tps: 1457.7055
+  dps: 1692.70188
+  tps: 1457.11365
  }
 }
 dps_results: {
@@ -876,64 +876,64 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1672.03083
-  tps: 1443.74922
+  dps: 1671.44553
+  tps: 1443.16068
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1411.37987
-  tps: 1484.22906
+  dps: 1410.77862
+  tps: 1483.62781
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1410.46377
-  tps: 1483.76565
+  dps: 1409.86253
+  tps: 1483.16441
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1542.02628
-  tps: 1615.4498
+  dps: 1541.42585
+  tps: 1614.84937
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1492.52755
-  tps: 1565.27266
+  dps: 1491.92631
+  tps: 1564.67141
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1409.56435
-  tps: 1483.01711
+  dps: 1408.9631
+  tps: 1482.41587
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1409.70405
-  tps: 1483.15682
+  dps: 1409.10281
+  tps: 1482.55557
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 2129.9121
-  tps: 2167.38445
+  dps: 2128.68722
+  tps: 2166.15957
  }
 }
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 2242.45541
-  tps: 2275.94919
+  dps: 2241.37214
+  tps: 2274.86592
  }
 }
 dps_results: {
@@ -946,8 +946,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 2931.08269
-  tps: 1756.42639
+  dps: 2929.13923
+  tps: 1755.06597
  }
 }
 dps_results: {
@@ -1037,64 +1037,64 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2907.54911
-  tps: 1744.40414
+  dps: 2905.8277
+  tps: 1743.19915
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1467.50059
-  tps: 1507.61107
+  dps: 1466.67852
+  tps: 1506.789
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1467.50974
-  tps: 1507.64151
+  dps: 1466.68767
+  tps: 1506.81944
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1609.91603
-  tps: 1645.90813
+  dps: 1609.08798
+  tps: 1645.08008
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1551.82384
-  tps: 1591.44631
+  dps: 1551.00177
+  tps: 1590.62424
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1466.22602
-  tps: 1506.38188
+  dps: 1465.40395
+  tps: 1505.55981
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1466.41704
-  tps: 1506.5729
+  dps: 1465.59497
+  tps: 1505.75083
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 2457.49875
-  tps: 2464.80871
+  dps: 2456.99195
+  tps: 2464.3019
  }
 }
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 2588.45279
-  tps: 2595.95876
+  dps: 2587.94598
+  tps: 2595.45195
  }
 }
 dps_results: {
@@ -1107,8 +1107,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4252.15095
-  tps: 2516.82388
+  dps: 4251.34805
+  tps: 2516.26184
  }
 }
 dps_results: {
@@ -1198,64 +1198,64 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4201.64027
-  tps: 2489.44294
+  dps: 4200.89634
+  tps: 2488.92219
  }
 }
 dps_results: {
  key: "TestElemental-Phase6-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1601.0819
-  tps: 1690.01285
+  dps: 1600.69557
+  tps: 1689.62652
  }
 }
 dps_results: {
  key: "TestElemental-Phase6-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1600.69267
-  tps: 1689.61157
+  dps: 1600.30634
+  tps: 1689.22524
  }
 }
 dps_results: {
  key: "TestElemental-Phase6-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1730.36288
-  tps: 1820.43445
+  dps: 1729.97655
+  tps: 1820.04812
  }
 }
 dps_results: {
  key: "TestElemental-Phase6-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1692.68157
-  tps: 1781.06395
+  dps: 1692.29524
+  tps: 1780.67762
  }
 }
 dps_results: {
  key: "TestElemental-Phase6-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1599.28962
-  tps: 1688.00746
+  dps: 1598.90329
+  tps: 1687.62113
  }
 }
 dps_results: {
  key: "TestElemental-Phase6-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1599.37939
-  tps: 1688.09723
+  dps: 1598.99306
+  tps: 1687.7109
  }
 }
 dps_results: {
  key: "TestElemental-Phase6-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 3000.24163
-  tps: 3044.98297
+  dps: 2999.95436
+  tps: 3044.69571
  }
 }
 dps_results: {
  key: "TestElemental-Phase6-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 3156.40504
-  tps: 3201.10621
+  dps: 3156.11777
+  tps: 3200.81895
  }
 }
 dps_results: {
@@ -1268,8 +1268,8 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 4864.02898
-  tps: 2865.60361
+  dps: 4863.67157
+  tps: 2865.35342
  }
 }
 dps_results: {
@@ -1359,7 +1359,7 @@ dps_results: {
 dps_results: {
  key: "TestElemental-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4813.39114
-  tps: 2838.60865
+  dps: 4813.07316
+  tps: 2838.38606
  }
 }

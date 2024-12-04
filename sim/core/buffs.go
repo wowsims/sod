@@ -1907,7 +1907,6 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 			} else {
 				aura.Unit.AddStatDynamic(sim, stats.AttackPower, baseAP)
 			}
-			aura.Unit.AddStatDynamic(sim, stats.AttackPower, baseAP)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {

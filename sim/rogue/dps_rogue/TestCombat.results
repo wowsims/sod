@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 759.9
+  final_stats: 546.9
   final_stats: 7
   final_stats: 17.91744
   final_stats: 0
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 9
   final_stats: 0
   final_stats: 0
-  final_stats: 1235.3
+  final_stats: 887.3
   final_stats: 9
   final_stats: 23.94448
   final_stats: 0
@@ -116,7 +116,7 @@ character_stats_results: {
   final_stats: 27
   final_stats: 0
   final_stats: 0
-  final_stats: 2961.8895
+  final_stats: 2238.8895
   final_stats: 20
   final_stats: 54.32297
   final_stats: 0
@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestCombat-Phase1-Lvl25-StatWeights-Default"
  value: {
   weights: 0.25039
-  weights: 0.4911
+  weights: 0.45842
   weights: 0
   weights: 0
   weights: 0
@@ -166,8 +166,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.22763
-  weights: 2.18379
-  weights: 2.10781
+  weights: 1.89189
+  weights: 1.82161
   weights: 0
   weights: 0
   weights: 0
@@ -198,7 +198,7 @@ stat_weights_results: {
  key: "TestCombat-Phase2-Lvl40-StatWeights-Default"
  value: {
   weights: 0.37601
-  weights: 0.64411
+  weights: 0.60813
   weights: 0
   weights: 0
   weights: 0
@@ -215,8 +215,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.34183
-  weights: 4.69537
-  weights: 4.33689
+  weights: 4.04906
+  weights: 3.74848
   weights: 0
   weights: 0
   weights: 0
@@ -247,7 +247,7 @@ stat_weights_results: {
  key: "TestCombat-Phase5-Lvl60-StatWeights-Default"
  value: {
   weights: 1.51583
-  weights: 2.59362
+  weights: 2.4445
   weights: 0
   weights: 0
   weights: 0
@@ -264,8 +264,8 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 1.19829
-  weights: 19.04448
-  weights: 26.39832
+  weights: 16.75388
+  weights: 23.00903
   weights: 0
   weights: 0
   weights: 0
@@ -295,36 +295,36 @@ stat_weights_results: {
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-AllItems-DarkmantleArmor"
  value: {
-  dps: 291.37706
-  tps: 206.87771
+  dps: 258.17768
+  tps: 183.30616
  }
 }
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 250.92647
-  tps: 178.15779
+  dps: 218.50108
+  tps: 155.13577
  }
 }
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 59.31944
-  tps: 42.1168
+  dps: 52.12564
+  tps: 37.00921
  }
 }
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 59.31944
-  tps: 42.1168
+  dps: 52.12564
+  tps: 37.00921
  }
 }
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-Settings-Human-p1_combat-No Poisons-basic_strike_25-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 62.63105
-  tps: 44.46804
+  dps: 55.01658
+  tps: 39.06177
  }
 }
 dps_results: {
@@ -351,22 +351,22 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 57.13704
-  tps: 40.5673
+  dps: 49.96048
+  tps: 35.47194
  }
 }
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 57.13704
-  tps: 40.5673
+  dps: 49.96048
+  tps: 35.47194
  }
 }
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-Settings-Orc-p1_combat-No Poisons-basic_strike_25-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 60.24816
-  tps: 42.7762
+  dps: 52.6555
+  tps: 37.3854
  }
 }
 dps_results: {
@@ -393,43 +393,43 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 236.09469
-  tps: 167.62723
+  dps: 205.62579
+  tps: 145.99431
  }
 }
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-AllItems-DarkmantleArmor"
  value: {
-  dps: 305.5317
-  tps: 216.92751
+  dps: 264.57647
+  tps: 187.8493
  }
 }
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 622.47296
-  tps: 441.9558
+  dps: 543.26531
+  tps: 385.71837
  }
 }
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 237.693
-  tps: 168.76203
+  dps: 211.62717
+  tps: 150.25529
  }
 }
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 206.38098
-  tps: 146.5305
+  dps: 183.84937
+  tps: 130.53305
  }
 }
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-Settings-Human-p2_daggers-No Poisons-mutilate-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 272.71298
-  tps: 193.62621
+  dps: 242.39578
+  tps: 172.10101
  }
 }
 dps_results: {
@@ -456,22 +456,22 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 237.57936
-  tps: 168.68134
+  dps: 211.25637
+  tps: 149.99203
  }
 }
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 204.77255
-  tps: 145.38851
+  dps: 182.05478
+  tps: 129.25889
  }
 }
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-Settings-Orc-p2_daggers-No Poisons-mutilate-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 268.22968
-  tps: 190.44307
+  dps: 238.35292
+  tps: 169.23057
  }
 }
 dps_results: {
@@ -498,50 +498,50 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 593.65368
-  tps: 421.49411
+  dps: 518.35971
+  tps: 368.0354
  }
 }
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-AllItems-BloodCorruptedLeathers"
  value: {
-  dps: 1275.98944
-  tps: 905.9525
+  dps: 1095.40143
+  tps: 777.73502
  }
 }
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-AllItems-DarkmantleArmor"
  value: {
-  dps: 1078.66021
-  tps: 765.84875
+  dps: 930.10434
+  tps: 660.37408
  }
 }
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4606.07362
-  tps: 3270.31227
+  dps: 4028.1221
+  tps: 2859.96669
  }
 }
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-Settings-Human-p5_saber-No Poisons-P5_Saber-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2965.72636
-  tps: 2105.66572
+  dps: 2582.33388
+  tps: 1833.45705
  }
 }
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-Settings-Human-p5_saber-No Poisons-P5_Saber-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 2683.01364
-  tps: 1904.93968
+  dps: 2331.20836
+  tps: 1655.15794
  }
 }
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-Settings-Human-p5_saber-No Poisons-P5_Saber-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 2658.21825
-  tps: 1887.33496
+  dps: 2308.52858
+  tps: 1639.05529
  }
 }
 dps_results: {
@@ -568,22 +568,22 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-Settings-Orc-p5_saber-No Poisons-P5_Saber-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 3076.41902
-  tps: 2184.25751
+  dps: 2692.72321
+  tps: 1911.83348
  }
 }
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-Settings-Orc-p5_saber-No Poisons-P5_Saber-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 2772.94201
-  tps: 1968.78883
+  dps: 2421.92341
+  tps: 1719.56562
  }
 }
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-Settings-Orc-p5_saber-No Poisons-P5_Saber-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 2810.58488
-  tps: 1995.51527
+  dps: 2456.15934
+  tps: 1743.87313
  }
 }
 dps_results: {
@@ -610,7 +610,7 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3899.21274
-  tps: 2768.44104
+  dps: 3409.69414
+  tps: 2420.88284
  }
 }
