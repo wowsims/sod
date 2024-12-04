@@ -1843,6 +1843,11 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 	return aura
 }
 
+const GraceOfAirTotemRanks = 3
+
+var GraceOfAirTotemSpellId = [GraceOfAirTotemRanks + 1]int32{0, 8835, 10627, 25359}
+var GraceOfAirTotemAgility = [GraceOfAirTotemRanks + 1]float64{0, 43, 67, 77}
+
 func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 	rank := map[int32]int32{
 		50: 1,
@@ -1850,7 +1855,7 @@ func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 	}[level]
 	spellID := []int32{0, 8835, 10627, 25359}[rank]
 	duration := time.Minute * 2
-	updateStats := BuffSpellByLevel[GraceOfAir][level].Multiply(multiplier).Floor()
+	bonusAgi := math.Floor(GraceOfAirTotemAgility[rank] * multiplier)
 
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Grace of Air Totem",
@@ -1859,16 +1864,16 @@ func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats)
+				unit.AddStat(stats.Agility, bonusAgi)
 			} else {
-				unit.AddStatsDynamic(sim, updateStats)
+				unit.AddStatDynamic(sim, stats.Agility, bonusAgi)
 			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats.Multiply(-1))
+				unit.AddStat(stats.Agility, -bonusAgi)
 			} else {
-				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+				unit.AddStatDynamic(sim, stats.Agility, -bonusAgi)
 			}
 		},
 	})

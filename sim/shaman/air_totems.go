@@ -50,16 +50,13 @@ func (shaman *Shaman) newWindfuryTotemSpellConfig(rank int) core.SpellConfig {
 	return spell
 }
 
-const GraceOfAirTotemRanks = 3
-
-var GraceOfAirTotemSpellId = [GraceOfAirTotemRanks + 1]int32{0, 8835, 10627, 25359}
-var GraceOfAirTotemManaCost = [GraceOfAirTotemRanks + 1]float64{0, 155, 250, 310}
-var GraceOfAirTotemLevel = [GraceOfAirTotemRanks + 1]int{0, 42, 56, 60}
+var GraceOfAirTotemManaCost = [core.GraceOfAirTotemRanks + 1]float64{0, 155, 250, 310}
+var GraceOfAirTotemLevel = [core.GraceOfAirTotemRanks + 1]int{0, 42, 56, 60}
 
 func (shaman *Shaman) registerGraceOfAirTotemSpell() {
-	shaman.GraceOfAirTotem = make([]*core.Spell, GraceOfAirTotemRanks+1)
+	shaman.GraceOfAirTotem = make([]*core.Spell, core.GraceOfAirTotemRanks+1)
 
-	for rank := 1; rank <= GraceOfAirTotemRanks; rank++ {
+	for rank := 1; rank <= core.GraceOfAirTotemRanks; rank++ {
 		config := shaman.newGraceOfAirTotemSpellConfig(rank)
 
 		if config.RequiredLevel <= int(shaman.Level) {
@@ -74,7 +71,7 @@ func (shaman *Shaman) registerGraceOfAirTotemSpell() {
 }
 
 func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
-	spellId := GraceOfAirTotemSpellId[rank]
+	spellId := core.GraceOfAirTotemSpellId[rank]
 	manaCost := GraceOfAirTotemManaCost[rank]
 	level := GraceOfAirTotemLevel[rank]
 
