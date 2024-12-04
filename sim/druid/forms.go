@@ -447,7 +447,7 @@ func (druid *Druid) registerMoonkinFormSpell() {
 			}
 			druid.form = Moonkin
 
-			druid.AddStatDynamic(sim, stats.SpellDamage, float64(2*druid.Level))
+			druid.AddStatDynamic(sim, stats.SpellDamage, float64(3*druid.Level))
 
 			druid.MoonfireDotMultiplier *= 2.0
 			core.Each(druid.Moonfire, func(spell *DruidSpell) {
@@ -464,7 +464,7 @@ func (druid *Druid) registerMoonkinFormSpell() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.form = Humanoid
 
-			druid.AddStatDynamic(sim, stats.SpellDamage, float64(-2*druid.Level))
+			druid.AddStatDynamic(sim, stats.SpellDamage, float64(-3*druid.Level))
 
 			core.Each(druid.Moonfire, func(spell *DruidSpell) {
 				if spell != nil {
