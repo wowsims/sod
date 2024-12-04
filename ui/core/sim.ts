@@ -59,12 +59,13 @@ export enum SimSettingCategories {
 }
 
 const WASM_CONCURRENCY_STORAGE_KEY = `sod_wasmconcurrency`;
+const DEFAULT_ITERATIONS = 10_000;
 
 // Core Sim module which deals only with api types, no UI-related stuff.
 export class Sim {
 	private readonly workerPool: WorkerPool;
 
-	private iterations = 3000;
+	private iterations = DEFAULT_ITERATIONS;
 	private phase: number = OtherConstants.CURRENT_PHASE;
 	private faction: Faction = Faction.Alliance;
 	private fixedRngSeed = 0;
@@ -76,6 +77,7 @@ export class Sim {
 	private wasmConcurrency = 0;
 	private showEPValues = false;
 	private language = '';
+	private useAQSpellRanks = true;
 
 	readonly raid: Raid;
 	readonly encounter: Encounter;
@@ -95,6 +97,7 @@ export class Sim {
 	readonly wasmConcurrencyChangeEmitter = new TypedEvent<void>();
 	readonly showEPValuesChangeEmitter = new TypedEvent<void>();
 	readonly languageChangeEmitter = new TypedEvent<void>();
+	readonly useAQSpellsChangeEmitter = new TypedEvent<void>();
 	readonly crashEmitter = new TypedEvent<SimError>();
 
 	// Emits when any of the settings change (but not the raid / encounter).
@@ -163,6 +166,7 @@ export class Sim {
 			this.showExperimentalChangeEmitter,
 			this.showEPValuesChangeEmitter,
 			this.languageChangeEmitter,
+			this.useAQSpellsChangeEmitter,
 		]);
 
 		this.changeEmitter = TypedEvent.onAny([this.settingsChangeEmitter, this.raid.changeEmitter, this.encounter.changeEmitter]);
@@ -635,6 +639,16 @@ export class Sim {
 		}
 	}
 
+	getUseAQSpellRanks(): boolean {
+		return this.useAQSpellRanks;
+	}
+	setUseAQSpellRanks(eventID: EventID, newVal: boolean) {
+		if (newVal != this.useAQSpellRanks) {
+			this.useAQSpellRanks = newVal;
+			this.useAQSpellsChangeEmitter.emit(eventID);
+		}
+	}
+
 	static readonly ALL_ARMOR_TYPES = (getEnumValues(ArmorType) as Array<ArmorType>).filter(v => v != 0);
 	static readonly ALL_WEAPON_TYPES = (getEnumValues(WeaponType) as Array<WeaponType>).filter(v => v != 0);
 	static readonly ALL_RANGED_WEAPON_TYPES = (getEnumValues(RangedWeaponType) as Array<RangedWeaponType>).filter(v => v != 0);
@@ -669,6 +683,7 @@ export class Sim {
 			showExperimental: this.getShowExperimental(),
 			showEpValues: this.getShowEPValues(),
 			language: this.getLanguage(),
+			useAqSpellRanks: this.getUseAQSpellRanks(),
 			faction: this.getFaction(),
 			filters: filters,
 		});
@@ -676,7 +691,7 @@ export class Sim {
 
 	fromProto(eventID: EventID, proto: SimSettingsProto) {
 		TypedEvent.freezeAllAndDo(() => {
-			this.setIterations(eventID, proto.iterations || 3000);
+			this.setIterations(eventID, proto.iterations || DEFAULT_ITERATIONS);
 			this.setPhase(eventID, proto.phase || OtherConstants.CURRENT_PHASE);
 			this.setFixedRngSeed(eventID, Number(proto.fixedRngSeed));
 			this.setShowDamageMetrics(eventID, proto.showDamageMetrics);
@@ -685,6 +700,7 @@ export class Sim {
 			this.setShowExperimental(eventID, proto.showExperimental);
 			this.setShowEPValues(eventID, proto.showEpValues);
 			this.setLanguage(eventID, proto.language);
+			this.setUseAQSpellRanks(eventID, proto.useAqSpellRanks);
 			this.setFaction(eventID, proto.faction || Faction.Alliance);
 
 			const filters = proto.filters || Sim.defaultFilters();
@@ -711,13 +727,14 @@ export class Sim {
 		this.fromProto(
 			eventID,
 			SimSettingsProto.create({
-				iterations: 3000,
+				iterations: DEFAULT_ITERATIONS,
 				phase: OtherConstants.CURRENT_PHASE,
 				faction: Faction.Alliance,
 				showDamageMetrics: !isHealingSim,
 				showThreatMetrics: isTankSim,
 				showHealingMetrics: isHealingSim,
 				language: this.getLanguage(), // Don't change language.
+				useAqSpellRanks: true,
 				filters: Sim.defaultFilters(),
 				showEpValues: false,
 			}),

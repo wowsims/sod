@@ -147,6 +147,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			OtherInputs.UseAQSpellRanks,
 			OtherInputs.InFrontOfTarget,
 			OtherInputs.TankAssignment,
 			OtherInputs.IncomingHps,

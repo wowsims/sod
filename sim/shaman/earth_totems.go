@@ -7,16 +7,13 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-const StrengthOfEarthTotemRanks = 5
-
-var StrengthOfEarthTotemSpellId = [StrengthOfEarthTotemRanks + 1]int32{0, 8075, 8160, 8161, 10442, 25361}
-var StrengthOfEarthTotemManaCost = [StrengthOfEarthTotemRanks + 1]float64{0, 25, 65, 125, 225, 275}
-var StrengthOfEarthTotemLevel = [StrengthOfEarthTotemRanks + 1]int{0, 10, 24, 38, 52, 60}
+var StrengthOfEarthTotemManaCost = [core.StrengthOfEarthTotemRanks + 1]float64{0, 25, 65, 125, 225, 275}
+var StrengthOfEarthTotemLevel = [core.StrengthOfEarthTotemRanks + 1]int{0, 10, 24, 38, 52, 60}
 
 func (shaman *Shaman) registerStrengthOfEarthTotemSpell() {
-	shaman.StrengthOfEarthTotem = make([]*core.Spell, StrengthOfEarthTotemRanks+1)
+	shaman.StrengthOfEarthTotem = make([]*core.Spell, core.StrengthOfEarthTotemRanks+1)
 
-	for rank := 1; rank <= StrengthOfEarthTotemRanks; rank++ {
+	for rank := 1; rank <= core.StrengthOfEarthTotemRanks; rank++ {
 		config := shaman.newStrengthOfEarthTotemSpellConfig(rank)
 
 		if config.RequiredLevel <= int(shaman.Level) {
@@ -31,7 +28,7 @@ func (shaman *Shaman) registerStrengthOfEarthTotemSpell() {
 }
 
 func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellConfig {
-	spellId := StrengthOfEarthTotemSpellId[rank]
+	spellId := core.StrengthOfEarthTotemSpellId[rank]
 	manaCost := StrengthOfEarthTotemManaCost[rank]
 	level := StrengthOfEarthTotemLevel[rank]
 

@@ -118,7 +118,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [ShamanInputs.SyncTypeInput, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
+		inputs: [
+			OtherInputs.UseAQSpellRanks,
+			ShamanInputs.SyncTypeInput,
+			OtherInputs.TankAssignment,
+			OtherInputs.InFrontOfTarget,
+		],
 	},
 	itemSwapConfig: {
 		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],

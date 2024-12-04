@@ -126,6 +126,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			OtherInputs.UseAQSpellRanks,
 			//HunterInputs.NewRaptorStrike,
 			HunterInputs.PetAttackSpeedInput,
 			HunterInputs.PetUptime,

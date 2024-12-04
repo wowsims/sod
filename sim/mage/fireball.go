@@ -20,7 +20,11 @@ var FireballLevel = [FireballRanks + 1]int{0, 1, 6, 12, 18, 24, 30, 36, 42, 48, 
 func (mage *Mage) registerFireballSpell() {
 	mage.Fireball = make([]*core.Spell, FireballRanks+1)
 
-	maxRank := core.TernaryInt(core.IncludeAQ, FireballRanks, FireballRanks-1)
+	maxRank := FireballRanks
+	if !mage.Env.UseAQSpellRanks {
+		maxRank -= 1
+	}
+
 	for rank := 1; rank <= maxRank; rank++ {
 		config := mage.newFireballSpellConfig(rank)
 

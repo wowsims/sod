@@ -180,7 +180,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	petConsumeInputs: [ConsumablesInputs.PetAttackPowerConsumable, ConsumablesInputs.PetAgilityConsumable, ConsumablesInputs.PetStrengthConsumable],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [WarlockInputs.PetPoolManaInput(), OtherInputs.DistanceFromTarget, OtherInputs.ChannelClipDelay],
+		inputs: [
+			OtherInputs.UseAQSpellRanks,
+			WarlockInputs.PetPoolManaInput(),
+			OtherInputs.DistanceFromTarget,
+			OtherInputs.ChannelClipDelay,
+		],
 	},
 	itemSwapConfig: {
 		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],

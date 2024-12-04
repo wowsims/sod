@@ -17,7 +17,11 @@ var StarfireLevel = [StarfireRanks + 1]int{0, 20, 26, 34, 42, 50, 58, 60}
 func (druid *Druid) registerStarfireSpell() {
 	druid.Starfire = make([]*DruidSpell, StarfireRanks+1)
 
-	maxRank := core.TernaryInt(core.IncludeAQ, StarfireRanks, StarfireRanks-1)
+	maxRank := StarfireRanks
+	if !druid.Env.UseAQSpellRanks {
+		maxRank -= 1
+	}
+
 	for rank := 1; rank <= maxRank; rank++ {
 		config := druid.newStarfireSpellConfig(rank)
 

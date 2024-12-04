@@ -50,30 +50,6 @@ const (
 	ScrollOfProtection
 )
 
-var LevelToBuffRank = map[BuffName]map[int32]int32{
-	BattleShout: {
-		25: 3,
-		40: 4,
-		50: 5,
-		60: TernaryInt32(IncludeAQ, 7, 6),
-	},
-	GraceOfAir: {
-		50: 1,
-		60: TernaryInt32(IncludeAQ, 3, 2),
-	},
-	StrengthOfEarth: {
-		25: 2,
-		40: 3,
-		50: 3,
-		60: TernaryInt32(IncludeAQ, 5, 4),
-	},
-	Windfury: {
-		40: 1,
-		50: 2,
-		60: 3,
-	},
-}
-
 // Stats from buffs pre-tristate buffs
 var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 	ArcaneIntellect: {
@@ -118,66 +94,6 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 			stats.NatureResistance: 60,
 		},
 	},
-	BattleShout: {
-		25: stats.Stats{
-			stats.AttackPower: 57,
-		},
-		40: stats.Stats{
-			stats.AttackPower: 93,
-		},
-		50: stats.Stats{
-			stats.AttackPower: 138,
-		},
-		60: stats.Stats{
-			stats.AttackPower: TernaryFloat64(IncludeAQ, 232, 193),
-		},
-	},
-	BlessingOfMight: {
-		25: stats.Stats{
-			stats.AttackPower: 55,
-		},
-		40: stats.Stats{
-			stats.AttackPower: 85,
-		},
-		50: stats.Stats{
-			stats.AttackPower: 115,
-		},
-		60: stats.Stats{
-			stats.AttackPower: TernaryFloat64(IncludeAQ, 185, 155),
-		},
-	},
-	BlessingOfWisdom: {
-		25: stats.Stats{
-			stats.MP5: 15,
-		},
-		40: stats.Stats{
-			stats.MP5: 20,
-		},
-		50: stats.Stats{
-			stats.MP5: 25,
-		},
-		60: stats.Stats{
-			stats.MP5: TernaryFloat64(IncludeAQ, 33, 30),
-		},
-	},
-	HornOfLordaeron: {
-		25: stats.Stats{
-			stats.Strength: 17,
-			stats.Agility:  17,
-		},
-		40: stats.Stats{
-			stats.Strength: 26,
-			stats.Agility:  26,
-		},
-		50: stats.Stats{
-			stats.Strength: 45,
-			stats.Agility:  45,
-		},
-		60: stats.Stats{
-			stats.Strength: TernaryFloat64(IncludeAQ, 89, 70.15),
-			stats.Agility:  TernaryFloat64(IncludeAQ, 89, 70.15),
-		},
-	},
 	BloodPact: {
 		25: stats.Stats{
 			stats.Stamina: 9,
@@ -218,20 +134,6 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		},
 		60: stats.Stats{
 			stats.BonusArmor: 735,
-		},
-	},
-	GraceOfAir: {
-		25: stats.Stats{
-			stats.Agility: 0,
-		},
-		40: stats.Stats{
-			stats.Agility: 0,
-		},
-		50: stats.Stats{
-			stats.Agility: 43,
-		},
-		60: stats.Stats{
-			stats.Agility: TernaryFloat64(IncludeAQ, 77, 67),
 		},
 	},
 	FireResistanceAura: {
@@ -412,20 +314,6 @@ var BuffSpellByLevel = map[BuffName]map[int32]stats.Stats{
 		},
 		60: stats.Stats{
 			stats.ShadowResistance: 60,
-		},
-	},
-	StrengthOfEarth: {
-		25: stats.Stats{
-			stats.Strength: 20,
-		},
-		40: stats.Stats{
-			stats.Strength: 36,
-		},
-		50: stats.Stats{
-			stats.Strength: 36,
-		},
-		60: stats.Stats{
-			stats.Strength: TernaryFloat64(IncludeAQ, 77, 61),
 		},
 	},
 	ScrollOfAgility: {
@@ -773,11 +661,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if individualBuffs.BlessingOfWisdom > 0 && isAlliance {
-		updateStats := BuffSpellByLevel[BlessingOfWisdom][level]
-		if individualBuffs.BlessingOfWisdom == proto.TristateEffect_TristateEffectImproved {
-			updateStats = updateStats.Multiply(1.2)
-		}
-		character.AddStats(updateStats)
+		MakePermanent(BlessingOfWisdomAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfWisdom, 0, 2), character.Level))
 	} else if raidBuffs.ManaSpringTotem > 0 && isHorde {
 		updateStats := BuffSpellByLevel[ManaSpring][level]
 		if raidBuffs.ManaSpringTotem == proto.TristateEffect_TristateEffectImproved {
@@ -1919,11 +1803,22 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 	})
 }
 
+const StrengthOfEarthTotemRanks = 5
+
+var StrengthOfEarthTotemSpellId = [StrengthOfEarthTotemRanks + 1]int32{0, 8075, 8160, 8161, 10442, 25361}
+var StrengthOfEarthStrength = [StrengthOfEarthTotemRanks + 1]float64{0, 10, 20, 36, 61, 77}
+
 func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
-	rank := LevelToBuffRank[StrengthOfEarth][level]
-	spellID := []int32{0, 8075, 8160, 8161, 10442, 25361}[rank]
+	rank := map[int32]int32{
+		25: 2,
+		40: 3,
+		50: 3,
+		60: TernaryInt32(unit.Env.UseAQSpellRanks, 5, 4),
+	}[level]
+	spellID := StrengthOfEarthTotemSpellId[rank]
+	bonusStrength := math.Floor(StrengthOfEarthStrength[level] * multiplier)
+
 	duration := time.Minute * 2
-	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier).Floor()
 
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:      "Strength of Earth Totem",
@@ -1932,16 +1827,16 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats)
+				unit.AddStat(stats.Strength, bonusStrength)
 			} else {
-				unit.AddStatsDynamic(sim, updateStats)
+				unit.AddStatDynamic(sim, stats.Strength, bonusStrength)
 			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats.Multiply(-1))
+				unit.AddStat(stats.Strength, -bonusStrength)
 			} else {
-				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+				unit.AddStatDynamic(sim, stats.Strength, -bonusStrength)
 			}
 		},
 	})
@@ -1949,7 +1844,10 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 }
 
 func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
-	rank := LevelToBuffRank[GraceOfAir][level]
+	rank := map[int32]int32{
+		50: 1,
+		60: TernaryInt32(unit.Env.UseAQSpellRanks, 3, 2),
+	}[level]
 	spellID := []int32{0, 8835, 10627, 25359}[rank]
 	duration := time.Minute * 2
 	updateStats := BuffSpellByLevel[GraceOfAir][level].Multiply(multiplier).Floor()
@@ -1984,9 +1882,14 @@ var BattleShoutBaseAP = [BattleShoutRanks + 1]float64{0, 20, 40, 57, 93, 138, 19
 var BattleShoutLevel = [BattleShoutRanks + 1]int{0, 1, 12, 22, 32, 42, 52, 60}
 
 func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *Aura {
-	rank := LevelToBuffRank[BattleShout][unit.Level]
+	rank := map[int32]int32{
+		25: 3,
+		40: 4,
+		50: 5,
+		60: TernaryInt32(unit.Env.UseAQSpellRanks, 7, 6),
+	}[unit.Level]
 	spellId := BattleShoutSpellId[rank]
-	baseAP := BattleShoutBaseAP[rank]
+	baseAP := math.Floor(BattleShoutBaseAP[rank] * (1 + 0.05*float64(impBattleShout)))
 
 	return unit.GetOrRegisterAura(Aura{
 		Label:      "Battle Shout",
@@ -1994,14 +1897,10 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 		Duration:   time.Duration(float64(time.Minute*2) * (1 + 0.1*float64(boomingVoicePts))),
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: math.Floor(baseAP * (1 + 0.05*float64(impBattleShout))),
-			})
+			aura.Unit.AddStatDynamic(sim, stats.AttackPower, baseAP)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: -1 * math.Floor(baseAP*(1+0.05*float64(impBattleShout))),
-			})
+			aura.Unit.AddStatDynamic(sim, stats.AttackPower, -baseAP)
 		},
 	})
 }
@@ -2051,15 +1950,20 @@ func TrueshotAura(unit *Unit) *Aura {
 	return aura
 }
 
-func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
-	spellID := map[int32]int32{
-		25: 19835,
-		40: 19836,
-		50: 19837,
-		60: TernaryInt32(IncludeAQ, 25291, 19838),
-	}[level]
+const BlessingOfMightRanks = 7
 
-	bonusAP := math.Floor(BuffSpellByLevel[BlessingOfMight][level][stats.AttackPower] * (1 + 0.04*float64(impBomPts)))
+var BlessingOfMightSpellID = [BlessingOfMightRanks + 1]int32{0, 19740, 19834, 19835, 19836, 19837, 19838, 25291}
+var BlessingOfMightBaseAP = [BlessingOfMightRanks + 1]float64{0, 20, 35, 55, 85, 115, 155, 185}
+
+func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
+	rank := map[int32]int32{
+		25: 3,
+		40: 4,
+		50: 5,
+		60: TernaryInt32(unit.Env.UseAQSpellRanks, 7, 6),
+	}[level]
+	spellID := BlessingOfMightSpellID[rank]
+	bonusAP := math.Floor(BlessingOfMightBaseAP[rank] * (1 + 0.04*float64(impBomPts)))
 
 	aura := MakePermanent(unit.GetOrRegisterAura(Aura{
 		Label:      "Blessing of Might",
@@ -2079,7 +1983,12 @@ func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
 }
 
 func HornOfLordaeronAura(unit *Unit, level int32) *Aura {
-	updateStats := BuffSpellByLevel[HornOfLordaeron][level]
+	bonusAmount := map[int32]float64{
+		25: 17,
+		40: 26,
+		50: 45,
+		60: TernaryFloat64(unit.Env.UseAQSpellRanks, 89, 70.15),
+	}[level]
 
 	aura := MakePermanent(unit.RegisterAura(Aura{
 		Label:    "Horn Of Lordaeron",
@@ -2089,8 +1998,54 @@ func HornOfLordaeronAura(unit *Unit, level int32) *Aura {
 	makeExclusiveBuff(aura, BuffConfig{
 		Category: "Paladin Physical Buffs",
 		Stats: []StatConfig{
-			{stats.Agility, updateStats[stats.Agility], false},
-			{stats.Strength, updateStats[stats.Strength], false},
+			{stats.Agility, bonusAmount, false},
+			{stats.Strength, bonusAmount, false},
+		},
+	})
+
+	return aura
+}
+
+const BlessingOfWisdomRanks = 6
+
+var BlessingOfWisdomSpellID = [BlessingOfWisdomRanks + 1]int32{0, 19742, 19850, 19852, 19853, 19854, 25290}
+var BlessingOfWisdomMP5 = [BlessingOfWisdomRanks + 1]float64{0, 10, 15, 20, 25, 30, 33}
+
+func BlessingOfWisdomAura(unit *Unit, impBowPts int32, level int32) *Aura {
+	rank := map[int32]int32{
+		25: 2,
+		40: 3,
+		50: 4,
+		60: TernaryInt32(unit.Env.UseAQSpellRanks, 6, 5),
+	}[level]
+	spellID := BlessingOfWisdomSpellID[rank]
+	bonusMP5 := math.Floor(BlessingOfWisdomMP5[rank] * (1 + 0.10*float64(impBowPts)))
+
+	aura := MakePermanent(unit.GetOrRegisterAura(Aura{
+		Label:      "Blessing of Wisdom",
+		ActionID:   ActionID{SpellID: spellID},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStat(stats.MP5, bonusMP5)
+			} else {
+				aura.Unit.AddStatDynamic(sim, stats.MP5, bonusMP5)
+			}
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStat(stats.MP5, -bonusMP5)
+			} else {
+				aura.Unit.AddStatDynamic(sim, stats.MP5, -bonusMP5)
+			}
+		},
+	}))
+
+	makeExclusiveBuff(aura, BuffConfig{
+		Category: "Paladin Physical Buffs",
+		Stats: []StatConfig{
+			{stats.MP5, bonusMP5, false},
 		},
 	})
 
@@ -2267,12 +2222,15 @@ func GetWindfuryAP(aura *Aura, rank int32) float64 {
 }
 
 func ApplyWindfury(character *Character) *Aura {
-	level := character.Level
-	if level < 32 {
+	if character.Level < 32 {
 		return nil
 	}
 
-	rank := LevelToBuffRank[Windfury][level]
+	rank := map[int32]int32{
+		40: 1,
+		50: 2,
+		60: 3,
+	}[character.Level]
 	spellId := WindfuryBuffSpellId[rank]
 	buffActionID := ActionID{SpellID: spellId}
 

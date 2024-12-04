@@ -105,7 +105,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.DistanceFromTarget, OtherInputs.TankAssignment],
+		inputs: [
+			OtherInputs.UseAQSpellRanks,
+			OtherInputs.DistanceFromTarget,
+			OtherInputs.TankAssignment,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

@@ -99,7 +99,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget],
+		inputs: [
+			OtherInputs.UseAQSpellRanks,
+			OtherInputs.ReactionTime,
+			OtherInputs.DistanceFromTarget,
+		],
 	},
 	itemSwapConfig: {
 		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],

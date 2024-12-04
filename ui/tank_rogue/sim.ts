@@ -122,6 +122,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 	excludeBuffDebuffInputs: [],
 	otherInputs: {
 		inputs: [
+			OtherInputs.UseAQSpellRanks,
 			OtherInputs.TankAssignment,
 			OtherInputs.IncomingHps,
 			OtherInputs.HealingCadence,

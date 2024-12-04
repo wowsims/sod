@@ -118,6 +118,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			OtherInputs.UseAQSpellRanks,
 			OtherInputs.ReactionTime,
 			// DruidInputs.AssumeBleedActive,
 			OtherInputs.TankAssignment,

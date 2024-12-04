@@ -101,7 +101,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [WarriorInputs.StartingRage<Spec.SpecWarrior>(), WarriorInputs.StanceSnapshot<Spec.SpecWarrior>(), OtherInputs.InFrontOfTarget],
+		inputs: [
+			OtherInputs.UseAQSpellRanks,
+			WarriorInputs.StartingRage<Spec.SpecWarrior>(),
+			WarriorInputs.StanceSnapshot<Spec.SpecWarrior>(),
+			OtherInputs.InFrontOfTarget,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

@@ -124,6 +124,18 @@ export const DistanceFromTarget = {
 	},
 };
 
+export const UseAQSpellRanks = {
+	id: 'use-aq-spell-ranks',
+	type: 'boolean' as const,
+	label: 'Use AQ Spell Ranks',
+	labelTooltip: 'Include ranks of spells that were added in the Ahn\'Qiraj patch.',
+	changedEvent: (player: Player<any>) => player.sim.useAQSpellsChangeEmitter,
+	getValue: (player: Player<any>) => player.sim.getUseAQSpellRanks(),
+	setValue: (eventID: EventID, player: Player<any>, newValue: boolean) => {
+		player.sim.setUseAQSpellRanks(eventID, newValue);
+	},
+};
+
 export const IsbUsingShadowflame = {
 	id: 'isb-using-shadowflame',
 	type: 'boolean' as const,

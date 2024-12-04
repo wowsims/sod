@@ -114,6 +114,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			OtherInputs.UseAQSpellRanks,
 			WarriorInputs.StartingRage<Spec.SpecWarrior>(),
 			WarriorInputs.StanceSnapshot<Spec.SpecWarrior>(),
 			OtherInputs.InFrontOfTarget,

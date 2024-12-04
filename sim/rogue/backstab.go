@@ -12,14 +12,14 @@ func (rogue *Rogue) registerBackstabSpell() {
 		25: 32,
 		40: 60,
 		50: 90,
-		60: core.TernaryFloat64(core.IncludeAQ, 150, 140),
+		60: core.TernaryFloat64(rogue.Env.UseAQSpellRanks, 150, 140),
 	}[rogue.Level]
 
 	spellID := map[int32]int32{
 		25: 2590,
 		40: 8721,
 		50: 11279,
-		60: core.TernaryInt32(core.IncludeAQ, 25300, 11281),
+		60: core.TernaryInt32(rogue.Env.UseAQSpellRanks, 25300, 11281),
 	}[rogue.Level]
 
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
