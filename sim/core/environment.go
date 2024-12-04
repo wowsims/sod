@@ -31,7 +31,8 @@ type Environment struct {
 
 	// Whether stats are currently being measured. Used to disable some validation
 	// checks which are otherwise helpful.
-	MeasuringStats bool
+	MeasuringStats  bool
+	UseAQSpellRanks bool
 
 	Raid      *Raid
 	Encounter Encounter
@@ -71,8 +72,8 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 	env.Encounter = NewEncounter(encounterProto)
 	env.BaseDuration = env.Encounter.Duration
 	env.DurationVariation = env.Encounter.DurationVariation
-	env.Raid = NewRaid(raidProto)
 
+	env.Raid = NewRaid(raidProto)
 	env.Raid.updatePlayersAndPets()
 
 	env.AllUnits = append(env.Encounter.TargetUnits, env.Raid.AllUnits...)

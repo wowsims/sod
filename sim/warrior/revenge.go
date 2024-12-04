@@ -17,7 +17,7 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 		25: 2,
 		40: 3,
 		50: 4,
-		60: core.TernaryInt(core.IncludeAQ, 6, 5),
+		60: core.TernaryInt(warrior.Env.UseAQSpellRanks, 6, 5),
 	}[warrior.Level]
 	actionID := core.ActionID{SpellID: RevengeSpellId[rank]}
 	basedamageLow := RevengeBaseDamage[rank][0]

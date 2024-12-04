@@ -92,7 +92,11 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 func (warlock *Warlock) registerShadowBoltSpell() {
 	warlock.ShadowBolt = make([]*core.Spell, 0)
 
-	maxRank := core.TernaryInt(core.IncludeAQ, ShadowBoltRanks, ShadowBoltRanks-1)
+	maxRank := ShadowBoltRanks
+	if !warlock.Env.UseAQSpellRanks {
+		maxRank -= 1
+	}
+
 	for rank := 1; rank <= maxRank; rank++ {
 		config := warlock.getShadowBoltBaseConfig(rank)
 

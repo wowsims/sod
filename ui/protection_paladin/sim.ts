@@ -176,6 +176,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
+			OtherInputs.UseAQSpellRanks,
 			OtherInputs.TankAssignment,
 			OtherInputs.IncomingHps,
 			OtherInputs.HealingCadence,

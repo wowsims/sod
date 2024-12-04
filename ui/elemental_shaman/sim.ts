@@ -93,7 +93,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.DistanceFromTarget],
+		inputs: [
+			OtherInputs.UseAQSpellRanks,
+			OtherInputs.DistanceFromTarget,
+		],
 	},
 	itemSwapConfig: {
 		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],

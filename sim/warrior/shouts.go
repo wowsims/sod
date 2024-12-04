@@ -38,7 +38,12 @@ func (warrior *Warrior) newShoutSpellConfig(actionID core.ActionID, rank int32, 
 }
 
 func (warrior *Warrior) registerBattleShout() {
-	rank := core.LevelToBuffRank[core.BattleShout][warrior.Level]
+	rank := map[int32]int32{
+		25: 3,
+		40: 4,
+		50: 5,
+		60: core.TernaryInt32(warrior.Env.UseAQSpellRanks, 7, 6),
+	}[warrior.Level]
 	actionId := core.BattleShoutSpellId[rank]
 
 	warrior.BattleShout = warrior.newShoutSpellConfig(core.ActionID{SpellID: actionId}, rank, warrior.NewPartyAuraArray(func(unit *core.Unit) *core.Aura {

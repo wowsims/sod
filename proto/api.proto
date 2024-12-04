@@ -126,6 +126,7 @@ message SimOptions {
 	bool save_all_values = 7; // Only used internally.
 	bool interactive = 8; // Enables interactive mode.
 	bool use_labeled_rands = 9; // Use test level RNG.
+	bool use_aq_spell_ranks = 10;
 }
 
 // The aggregated results from all uses of a particular action.

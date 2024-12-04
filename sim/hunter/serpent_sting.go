@@ -112,7 +112,11 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 func (hunter *Hunter) registerSerpentStingSpell() {
 	hunter.SerpentStingAPCoeff = 0
 
-	maxRank := core.TernaryInt(core.IncludeAQ, 9, 8)
+	maxRank := 9
+	if !hunter.Env.UseAQSpellRanks {
+		maxRank -= 1
+	}
+
 	for rank := maxRank; rank >= 0; rank-- {
 		config := hunter.getSerpentStingConfig(rank)
 

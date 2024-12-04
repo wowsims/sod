@@ -346,13 +346,13 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		25: 9,
 		40: 13,
 		50: 20,
-		60: 34, //updated to Rank 5
+		60: core.TernaryFloat64(rogue.Env.UseAQSpellRanks, 34, 27),
 	}[rogue.Level]
 	spellID := map[int32]int32{
 		25: 2823,
 		40: 2824,
 		50: 11355,
-		60: 25351,
+		60: core.TernaryInt32(rogue.Env.UseAQSpellRanks, 25351, 8985),
 	}[rogue.Level]
 
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)

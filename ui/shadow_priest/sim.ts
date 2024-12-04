@@ -106,7 +106,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.TankAssignment, OtherInputs.ChannelClipDelay, OtherInputs.DistanceFromTarget],
+		inputs: [
+			OtherInputs.UseAQSpellRanks,
+			OtherInputs.TankAssignment,
+			OtherInputs.ChannelClipDelay,
+			OtherInputs.DistanceFromTarget,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
