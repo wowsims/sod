@@ -1902,10 +1902,19 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 		Duration:   time.Duration(float64(time.Minute*2) * (1 + 0.1*float64(boomingVoicePts))),
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStat(stats.AttackPower, baseAP)
+			} else {
+				aura.Unit.AddStatDynamic(sim, stats.AttackPower, baseAP)
+			}
 			aura.Unit.AddStatDynamic(sim, stats.AttackPower, baseAP)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.AttackPower, -baseAP)
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStat(stats.AttackPower, -baseAP)
+			} else {
+				aura.Unit.AddStatDynamic(sim, stats.AttackPower, -baseAP)
+			}
 		},
 	})
 }
@@ -2046,13 +2055,6 @@ func BlessingOfWisdomAura(unit *Unit, impBowPts int32, level int32) *Aura {
 			}
 		},
 	}))
-
-	makeExclusiveBuff(aura, BuffConfig{
-		Category: "Paladin Physical Buffs",
-		Stats: []StatConfig{
-			{stats.MP5, bonusMP5, false},
-		},
-	})
 
 	return aura
 }

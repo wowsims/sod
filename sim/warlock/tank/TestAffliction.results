@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 7.88189
   final_stats: 0
   final_stats: 10
-  final_stats: 215.8
+  final_stats: 428.8
   final_stats: 1
   final_stats: 8.09959
   final_stats: 0
@@ -50,8 +50,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestAffliction-Phase4-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 183.7
-  final_stats: 182.6
+  final_stats: 163.9
+  final_stats: 170.5
   final_stats: 629.97
   final_stats: 254.1
   final_stats: 221.1
@@ -67,21 +67,21 @@ character_stats_results: {
   final_stats: 28.89265
   final_stats: 0
   final_stats: 0
-  final_stats: 1003.7
+  final_stats: 1657.9
   final_stats: 8
-  final_stats: 26.13
+  final_stats: 25.525
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 4904.5
   final_stats: 0
   final_stats: 0
-  final_stats: 2115.2
+  final_stats: 2091
   final_stats: 740
   final_stats: 121
   final_stats: 9.84
   final_stats: 0
-  final_stats: 15.97
+  final_stats: 15.365
   final_stats: 9.84
   final_stats: 0
   final_stats: 7833.7
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.41469
+  weights: 4.41311
   weights: 0
-  weights: 0.98931
-  weights: 0
-  weights: 0
+  weights: 0.98946
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 12.49666
-  weights: 9.16248
+  weights: 0
+  weights: 0
+  weights: 12.50299
+  weights: 9.17133
   weights: 0
   weights: 0
   weights: 0
@@ -197,16 +197,16 @@ stat_weights_results: {
 dps_results: {
  key: "TestAffliction-Phase1-Lvl25-AllItems-DeathmistRaiment"
  value: {
-  dps: 120.06911
-  tps: 96.16488
+  dps: 121.6734
+  tps: 97.76917
   hps: 58.11955
  }
 }
 dps_results: {
  key: "TestAffliction-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 217.91643
-  tps: 511.33844
+  dps: 217.93835
+  tps: 511.37722
   hps: 67.29325
  }
 }
@@ -261,89 +261,89 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 216.947
-  tps: 508.12062
+  dps: 216.96293
+  tps: 508.14881
   hps: 67.34452
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1454.89684
-  tps: 1687.92952
+  dps: 1459.65696
+  tps: 1692.68964
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 1284.10688
-  tps: 1449.92251
+  dps: 1288.18611
+  tps: 1454.00174
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1457.50175
-  tps: 1690.57541
+  dps: 1462.27727
+  tps: 1695.35093
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 1999.49726
-  tps: 3972.43194
+  dps: 2010.8204
+  tps: 3992.47389
   hps: 446.46635
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 1243.30681
-  tps: 1403.70299
+  dps: 1247.62881
+  tps: 1408.02499
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 1986.84411
-  tps: 3956.57268
+  dps: 1998.19825
+  tps: 3976.66952
   hps: 434.10525
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1454.89684
-  tps: 1687.92952
+  dps: 1459.65696
+  tps: 1692.68964
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1634.67641
-  tps: 3259.56615
+  dps: 1644.69115
+  tps: 3277.29225
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1615.70586
-  tps: 3217.56295
+  dps: 1626.23785
+  tps: 3236.20457
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 1997.64567
-  tps: 3972.43194
+  dps: 2008.9688
+  tps: 3992.47389
   hps: 446.46635
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 2017.58299
-  tps: 4011.0149
+  dps: 2029.05698
+  tps: 4031.32386
   hps: 449.53134
  }
 }
@@ -398,8 +398,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1979.69481
-  tps: 3938.26721
+  dps: 1984.25307
+  tps: 3946.33533
   hps: 449.69936
  }
 }

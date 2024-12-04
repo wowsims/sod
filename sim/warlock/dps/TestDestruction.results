@@ -18,7 +18,7 @@ character_stats_results: {
   final_stats: 7.74032
   final_stats: 0
   final_stats: 10
-  final_stats: 207
+  final_stats: 420
   final_stats: 0
   final_stats: 7.29967
   final_stats: 0
@@ -67,7 +67,7 @@ character_stats_results: {
   final_stats: 16.26226
   final_stats: 0
   final_stats: 0
-  final_stats: 319.5
+  final_stats: 667.5
   final_stats: 2
   final_stats: 9.76408
   final_stats: 0
@@ -116,7 +116,7 @@ character_stats_results: {
   final_stats: 35.92209
   final_stats: 0
   final_stats: 0
-  final_stats: 457.432
+  final_stats: 973.432
   final_stats: 4
   final_stats: 37.38253
   final_stats: 0
@@ -148,8 +148,8 @@ character_stats_results: {
 character_stats_results: {
  key: "TestDestruction-Phase4-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 188.1
-  final_stats: 187
+  final_stats: 168.3
+  final_stats: 174.9
   final_stats: 488.796
   final_stats: 377.3
   final_stats: 223.63
@@ -165,21 +165,21 @@ character_stats_results: {
   final_stats: 45.92545
   final_stats: 0
   final_stats: 0
-  final_stats: 1008.1
+  final_stats: 1662.3
   final_stats: 9
-  final_stats: 41.35
+  final_stats: 40.745
   final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 6752.5
   final_stats: 0
   final_stats: 0
-  final_stats: 1369
+  final_stats: 1344.8
   final_stats: 740
   final_stats: 0
   final_stats: 5
   final_stats: 0
-  final_stats: 11.35
+  final_stats: 10.745
   final_stats: 5
   final_stats: 0
   final_stats: 6421.96
