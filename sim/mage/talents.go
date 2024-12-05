@@ -111,6 +111,7 @@ func (mage *Mage) applyFireTalents() {
 func (mage *Mage) applyFrostTalents() {
 	mage.registerColdSnapCD()
 	mage.registerIceBarrierSpell()
+	mage.applyImprovedBlizzard()
 	mage.applyWintersChill()
 
 	// Elemental Precision
@@ -510,6 +511,18 @@ func (mage *Mage) registerColdSnapCD() {
 	})
 }
 
+func (mage *Mage) applyImprovedBlizzard() {
+	if mage.Talents.ImprovedBlizzard == 0 {
+		return
+	}
+
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_MageBlizzard {
+			spell.Flags |= SpellFlagChillSpell
+		}
+	})
+}
+
 func (mage *Mage) applyWintersChill() {
 	if mage.Talents.WintersChill == 0 {
 		return
@@ -529,6 +542,13 @@ func (mage *Mage) applyWintersChill() {
 
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Winters Chill Trigger",
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) && sim.Proc(procChance, "Winters Chill") {
+				aura := mage.WintersChillAuras.Get(result.Target)
+				aura.Activate(sim)
+				aura.AddStack(sim)
+			}
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) && sim.Proc(procChance, "Winters Chill") {
 				aura := mage.WintersChillAuras.Get(result.Target)

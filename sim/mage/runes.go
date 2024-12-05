@@ -214,6 +214,12 @@ func (mage *Mage) applyFingersOfFrost() {
 
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Fingers of Frost Trigger",
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Flags.Matches(SpellFlagChillSpell) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && sim.RandomFloat("Fingers of Frost") < mage.FingersOfFrostProcChance {
+				mage.FingersOfFrostAura.Activate(sim)
+				mage.FingersOfFrostAura.SetStacks(sim, 2)
+			}
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Flags.Matches(SpellFlagChillSpell) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && sim.RandomFloat("Fingers of Frost") < mage.FingersOfFrostProcChance {
 				mage.FingersOfFrostAura.Activate(sim)
@@ -415,6 +421,11 @@ func (mage *Mage) applyBrainFreeze() {
 
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Brain Freeze Trigger",
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Flags.Matches(SpellFlagChillSpell) && result.Landed() && sim.Proc(procChance, "Brain Freeze") {
+				procAura.Activate(sim)
+			}
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Flags.Matches(SpellFlagChillSpell) && result.Landed() && sim.Proc(procChance, "Brain Freeze") {
 				procAura.Activate(sim)

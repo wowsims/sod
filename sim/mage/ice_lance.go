@@ -87,6 +87,13 @@ func (mage *Mage) registerIceLanceSpell() {
 
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Glaciate Trigger",
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) && spell.SpellCode != SpellCode_MageIceLance {
+				glaciateAura := mage.GlaciateAuras.Get(result.Target)
+				glaciateAura.Activate(sim)
+				glaciateAura.AddStack(sim)
+			}
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) && spell.SpellCode != SpellCode_MageIceLance {
 				glaciateAura := mage.GlaciateAuras.Get(result.Target)
