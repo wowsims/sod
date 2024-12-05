@@ -11,11 +11,11 @@ func (druid *Druid) registerLacerateSpell() {
 	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
 		return
 	}
-	initialDamageMul := 1.0
+	idolMultiplierBonus := 0.0
 
 	switch druid.Ranged().ID {
 	case IdolOfCruelty:
-		initialDamageMul += .07
+		idolMultiplierBonus = .07
 	}
 	rageMetrics := druid.NewRageMetrics(core.ActionID{SpellID: 431446})
 
@@ -38,14 +38,14 @@ func (druid *Druid) registerLacerateSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: initialDamageMul,
+		DamageMultiplier: 1.0,
 		ThreatMultiplier: 3.33,
 		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * .2) * float64(druid.LacerateBleed.Dot(target).GetStacks())
+			// Idol of Cruelty adds the the same bonus weapon damage regardless of number of stacks
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2*float64(druid.LacerateBleed.Dot(target).GetStacks()) + idolMultiplierBonus)
 
-			spell.DamageMultiplier = initialDamageMul
 			dotBonusCrit := 0.0
 			if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
 				dotBonusCrit = druid.FuryOfStormrageCritRatingBonus

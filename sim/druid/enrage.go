@@ -32,8 +32,9 @@ func (druid *Druid) registerEnrageSpell() {
 	})
 
 	druid.Enrage = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:  actionID,
+		SpellCode: SpellCode_DruidEnrage,
+		Flags:     core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
