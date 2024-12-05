@@ -49,7 +49,7 @@ func TestCombat(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassRogue,
-			Phase:      5,
+			Phase:		5,
 			Level:      60,
 			Race:       proto.Race_RaceHuman,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
@@ -106,7 +106,7 @@ func TestAssassination(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassRogue,
-			Phase:      5,
+			Phase:		5,
 			Level:      60,
 			Race:       proto.Race_RaceHuman,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
@@ -130,7 +130,7 @@ var CombatDagger40Talents = "-0053052020550100201"
 var Assassination25Talents = "0053021--05"
 var Assassination40Talents = "005303103551--05"
 var P4DaggersTalents = "005323105551051-023302-05"
-var P4DeadlyPoisonTalents = "00532310155104-02330520000501"
+var P4DeadlyPoisonTalents = "00532310155104-02330520000501" 
 
 var ItemFilters = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypeLeather,

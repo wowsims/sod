@@ -15,7 +15,7 @@ func TestTank(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class:      proto.Class_ClassRogue,
-			Phase:      5,
+			Phase:		5,
 			Level:      60,
 			Race:       proto.Race_RaceHuman,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
@@ -33,8 +33,7 @@ func TestTank(t *testing.T) {
 		},
 	}))
 }
-
-var P5TankTalents = "30532312-0230550100050140231"
+var P5TankTalents = "30532312-0230550100050140231" 
 
 var ItemFilters = core.ItemFilter{
 	ArmorType: proto.ArmorType_ArmorTypeLeather,
