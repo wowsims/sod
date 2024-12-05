@@ -63,7 +63,7 @@ func (rogue *Rogue) applyMurder() {
 	rogue.Env.RegisterPostFinalizeEffect(func() {
 		// TODO: Implement new Draught of the Sands and make this conditional with the real talent
 		for _, t := range rogue.Env.Encounter.Targets {
-			multiplier := 1.2
+			multiplier := 1.02
 			for _, at := range rogue.AttackTables[t.UnitIndex] {
 				at.DamageDealtMultiplier *= multiplier
 				at.CritMultiplier *= multiplier
