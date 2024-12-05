@@ -96,12 +96,17 @@ func (druid *Druid) newMaulSpellConfig(maulRank MaulRankInfo) core.SpellConfig {
 
 			baseDamage := flatBaseDamage + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
+			dotBonusCrit := 0.0
+			if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+				dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
+			}
+
+			spell.BonusCritRating += dotBonusCrit
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.BonusCritRating -= dotBonusCrit
 
 			if !result.Landed() {
 				spell.IssueRefund(sim)
-			} else {
-				spell.DealDamage(sim, result)
 			}
 
 			if druid.HasRune(proto.DruidRune_RuneHelmGore) && sim.Proc(0.15, "Gore") {

@@ -438,6 +438,9 @@ var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
 			druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2- Druid - Feral 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					if druid.form != Cat {
+						return
+					}
 					oldOnGain := druid.TigersFuryAura.OnGain
 					druid.TigersFuryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnGain(aura, sim)
@@ -536,15 +539,7 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 		// Your Mangle(Bear), Swipe(Bear), Maul, and Lacerate abilities gain 5% increased critical strike chance against targets afflicted by your Lacerate.
 		4: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
-			core.MakePermanent(druid.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 1213174},
-				Label:    "S03 - Item - T2 - Druid - Guardian 4P Bonus",
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if druid.LacerateBleed.Dot(result.Target).GetStacks() > 0 && (spell.SpellCode == SpellCode_DruidMangleBear || spell.SpellCode == SpellCode_DruidSwipeBear || spell.SpellCode == SpellCode_DruidLacerate) {
-						spell.BonusCritRating += core.CritRatingPerCritChance * float64(5)
-					}
-				},
-			}))
+			druid.FuryOfStormrageCritRatingBonus = 5 * core.SpellCritRatingPerCritChance
 		},
 		// Your Swipe now spreads your Lacerate from your primary target to other targets it strikes.
 		6: func(agent core.Agent) {
@@ -725,7 +720,8 @@ var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 1213174},
 				Label:    "S03 - Item - TAQ - Druid - Feral 4P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
+
+					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell.SpellCode == SpellCode_DruidShred || spell.SpellCode == SpellCode_DruidMangleCat || spell.SpellCode == SpellCode_DruidFerociousBite) {
 						return
 					}
 

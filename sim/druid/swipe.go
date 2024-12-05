@@ -55,7 +55,15 @@ func (druid *Druid) registerSwipeBearSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
+				dotBonusCrit := 0.0
+				if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+					dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
+				}
+
+				spell.BonusCritRating += dotBonusCrit
 				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				spell.BonusCritRating -= dotBonusCrit
+
 				target = sim.Environment.NextTargetUnit(target)
 			}
 

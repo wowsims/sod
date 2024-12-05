@@ -23,6 +23,7 @@ func (druid *Druid) registerLacerateSpell() {
 	druid.Lacerate = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414644},
 		SpellSchool: core.SpellSchoolPhysical,
+		SpellCode:   SpellCode_DruidLacerate,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
@@ -39,16 +40,23 @@ func (druid *Druid) registerLacerateSpell() {
 		},
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 3.25,
+		ThreatMultiplier: 3.33,
 		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2 * float64(druid.LacerateBleed.Dot(target).GetStacks()) * initialDamageMul)
 			berserking := druid.BerserkAura.IsActive()
 
+			dotBonusCrit := 0.0
+			if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+				dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
+			}
+
+			spell.BonusCritRating += dotBonusCrit
 			spell.Cost.FlatModifier -= core.TernaryInt32(berserking, 10, 0)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			spell.Cost.FlatModifier += core.TernaryInt32(berserking, 10, 0)
+			spell.BonusCritRating -= dotBonusCrit
 
 			if result.Landed() {
 				druid.LacerateBleed.Cast(sim, target)
@@ -78,12 +86,11 @@ func (druid *Druid) registerLacerateBleedSpell() {
 	druid.LacerateBleed = druid.RegisterSpell(Bear, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 414647},
 		SpellSchool: core.SpellSchoolPhysical,
-		SpellCode:   SpellCode_DruidLacerate,
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: 3.4,
+		ThreatMultiplier: 3.33,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

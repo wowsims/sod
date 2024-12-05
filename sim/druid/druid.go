@@ -137,6 +137,7 @@ type Druid struct {
 
 	// Extra data used for various calculations and overrides
 	FerociousBiteExcessEnergyOverride bool // When true, disables the excess energy consumption of Ferocious bite
+	FuryOfStormrageCritRatingBonus    float64
 	// Sunfire/Moonfire modifiers applied when in Moonkin form
 	MoonfireDotMultiplier float64
 	ShredPositionOverride bool

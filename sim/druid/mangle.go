@@ -13,12 +13,12 @@ func (druid *Druid) registerMangleBearSpell() {
 		return
 	}
 
-	baseMultiplier := 1.0
+	idolMultiplier := 1.0
 	rageCostReduction := float64(druid.Talents.Ferocity)
 
 	switch druid.Ranged().ID {
 	case IdolOfUrsinPower:
-		baseMultiplier += .03
+		idolMultiplier += .03
 	case IdolOfBrutality:
 		rageCostReduction += 3
 	}
@@ -50,17 +50,22 @@ func (druid *Druid) registerMangleBearSpell() {
 		},
 		// TODO: Berserk 3 target mangle cleave - Saeyon
 
-		DamageMultiplier: (1.6 + 0.1*float64(druid.Talents.SavageFury)) * baseMultiplier,
+		DamageMultiplier: 1.6 * (1 + 0.1*float64(druid.Talents.SavageFury)) * idolMultiplier,
 		ThreatMultiplier: 1.5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			dotBonusCrit := 0.0
+			if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+				dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
+			}
 
+			spell.BonusCritRating += dotBonusCrit
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.BonusCritRating -= dotBonusCrit
 
 			if result.Landed() {
 				mangleAuras.Get(target).Activate(sim)
-
 				if stacks := int32(druid.GetStat(stats.Defense)); stacks > 0 {
 					apProcAura.Activate(sim)
 					if apProcAura.GetStacks() != stacks {
