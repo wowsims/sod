@@ -126,6 +126,14 @@ func (warlock *Warlock) makePet(cfg PetConfig, enabledOnStart bool) *WarlockPet 
 		wp.AutoAttacks.MHConfig().DamageMultiplier *= 1 + 0.04*float64(warlock.Talents.UnholyPower)
 	}
 
+	// Having either the Fire or Shadow ring rune grants the pet 6% spell hit, 4.8% physical hit, and 0.5% expertise
+	hasRingRune := warlock.HasRuneById(int32(proto.RingRune_RuneRingFireSpecialization)) || warlock.HasRuneById(int32(proto.RingRune_RuneRingShadowSpecialization))
+	if hasRingRune {
+		wp.AddStat(stats.MeleeHit, 4.8*core.MeleeHitRatingPerHitChance)
+		wp.AddStat(stats.SpellHit, 6*core.SpellHitRatingPerHitChance)
+		wp.AddStat(stats.Expertise, 0.5*core.ExpertiseRatingPerExpertiseChance)
+	}
+
 	core.ApplyPetConsumeEffects(&wp.Character, warlock.Consumes)
 
 	warlock.AddPet(wp)
