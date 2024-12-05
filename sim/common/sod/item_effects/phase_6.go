@@ -78,9 +78,37 @@ func init() {
 	// 		  (2.1s cooldown)
 	core.NewItemEffect(ObsidianChampion, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		vanilla.StrengthOfTheChampionAura(character)
-		vanilla.EnrageAura446327(character)
+
 		ObsidianEdgedAura(ObsidianChampion, agent)
+
+		strengthAura := vanilla.StrengthOfTheChampionAura(character)
+		enrageAura := vanilla.EnrageAura446327(character)
+
+		procMask := character.GetProcMaskForItem(ObsidianChampion)
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Obsidian Champion (Strength)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				strengthAura.Activate(sim)
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Obsidian Champion (Enrage)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				enrageAura.Activate(sim)
+			},
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=233801/obsidian-defender
