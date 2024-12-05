@@ -295,11 +295,13 @@ var ItemSetCenarionRage = core.NewItemSet(core.ItemSet{
 		},
 		// Reduces the cooldown of Enrage by 30 sec and it no longer reduces your armor.
 		4: func(agent core.Agent) {
-			// TODO: Enrage
+			druid := agent.(DruidAgent).GetDruid()
+			druid.Enrage.CD.Duration -= time.Second * 30
 		},
 		// Bear Form and Dire Bear Form increase all threat you generate by an additional 20%, and Cower now removes all your threat against the target but has a 20 sec longer cooldown.
 		6: func(agent core.Agent) {
-			// TODO: Bear, Dire Bear forms
+			druid := agent.(DruidAgent).GetDruid()
+			druid.PseudoStats.ThreatMultiplier += .2
 		},
 	},
 })
@@ -436,6 +438,9 @@ var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
 			druid.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2- Druid - Feral 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					if druid.form != Cat {
+						return
+					}
 					oldOnGain := druid.TigersFuryAura.OnGain
 					druid.TigersFuryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 						oldOnGain(aura, sim)
@@ -485,12 +490,80 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// Swipe(Bear) also causes your Maul to hit 1 additional target for the next 6 sec.
 		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+
+			if druid.Env.GetNumTargets() == 1 {
+				return
+			}
+
+			var curDmg float64
+
+			cleaveHit := druid.RegisterSpell(Bear, core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 467217},
+				SpellSchool: core.SpellSchoolPhysical,
+				ProcMask:    core.ProcMaskEmpty,
+				Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					spell.CalcAndDealDamage(sim, target, curDmg, spell.OutcomeAlwaysHit)
+				},
+			})
+
+			cleaveAura := druid.RegisterAura(core.Aura{
+				Label:    "2P Cleave Buff",
+				Duration: time.Second * 6,
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && (spell.SpellCode == SpellCode_DruidSwipeBear) {
+						curDmg = result.Damage / result.ResistanceMultiplier
+						cleaveHit.Cast(sim, druid.Env.NextTargetUnit(result.Target))
+						cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
+					}
+				},
+			})
+
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				Label: "S03 - Item - T2 - Druid - Guardian 2P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && spell.SpellCode == SpellCode_DruidMaul {
+						cleaveAura.Activate(sim)
+						curDmg = result.Damage / result.ResistanceMultiplier
+						cleaveHit.Cast(sim, druid.Env.NextTargetUnit(result.Target))
+						cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
+					}
+				},
+			}))
 		},
 		// Your Mangle(Bear), Swipe(Bear), Maul, and Lacerate abilities gain 5% increased critical strike chance against targets afflicted by your Lacerate.
 		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.FuryOfStormrageCritRatingBonus = 5 * core.SpellCritRatingPerCritChance
 		},
 		// Your Swipe now spreads your Lacerate from your primary target to other targets it strikes.
 		6: func(agent core.Agent) {
+			// druid := agent.(DruidAgent).GetDruid()
+			// if druid.Env.GetNumTargets() == 1 {
+			// 	return
+			// }
+
+			// targetCount := core.TernaryInt32(druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe), 10, 3)
+			// numHits := min(targetCount, druid.Env.GetNumTargets())
+			// results := make([]*core.SpellResult, numHits)
+
+			// core.MakePermanent(druid.RegisterAura(core.Aura{
+			// 	Label: "S03 - Item - T2 - Druid - Guardian 6P Bonus",
+			// 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// 		if spell.SpellCode == SpellCode_DruidSwipeBear {
+			// 			// TODO: Troubleshoot - Saeyon
+			// 			for _, cleaveMob := range results {
+			// 				druid.LacerateBleed.Cast(sim, cleaveMob.Target)
+			// 				druid.LacerateBleed.Dot(cleaveMob.Target).SetStacks(sim, druid.LacerateBleed.Dot(result.Target).GetStacks())
+			// 			}
+			// 		}
+			// 	},
+			// }))
 		},
 	},
 })
@@ -647,7 +720,8 @@ var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 1213174},
 				Label:    "S03 - Item - TAQ - Druid - Feral 4P Bonus",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
+
+					if !result.Outcome.Matches(core.OutcomeCrit) || !(spell.SpellCode == SpellCode_DruidShred || spell.SpellCode == SpellCode_DruidMangleCat || spell.SpellCode == SpellCode_DruidFerociousBite) {
 						return
 					}
 
@@ -683,11 +757,50 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// Each time you Dodge while in Dire Bear Form, you gain 10% increased damage on your next Mangle or Swipe, stacking up to 5 times.
 		2: func(agent core.Agent) {
-			// TODO Bear
+			druid := agent.(DruidAgent).GetDruid()
+
+			druid.Tank2PieceAqProcAura = druid.RegisterAura(core.Aura{
+				Label:     "Guardian 2P Bonus Proc",
+				Duration:  time.Second * 10,
+				MaxStacks: 5,
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					druid.MangleBear.DamageMultiplierAdditive += 0.1 * float64(newStacks-oldStacks)
+					druid.SwipeBear.DamageMultiplierAdditive += 0.1 * float64(newStacks-oldStacks)
+				},
+			})
+
+			druid.Tank2PieceAqAura = druid.RegisterAura(core.Aura{
+				Label:           "S03 - Item - TAQ - Druid - Guardian 2P Bonus",
+				ActionID:        core.ActionID{SpellID: 1213188},
+				ActionIDForProc: core.ActionID{SpellID: 1213190},
+				Duration:        core.NeverExpires,
+				OnReset: func(aura *core.Aura, sim *core.Simulation) {
+					aura.Activate(sim)
+				},
+				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if druid.form == Bear && spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeDodge) {
+						druid.Tank2PieceAqProcAura.Activate(sim)
+						druid.Tank2PieceAqProcAura.AddStack(sim)
+					}
+				},
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if spell.SpellCode == SpellCode_DruidMangleBear || spell.SpellCode == SpellCode_DruidSwipeBear {
+						druid.Tank2PieceAqProcAura.SetStacks(sim, 0)
+					}
+				},
+			})
 		},
 		// Reduces the cooldown on Mangle (Bear) by 1.5 sec.
 		4: func(agent core.Agent) {
-			// TODO Bear
+			druid := agent.(DruidAgent).GetDruid()
+			if !druid.HasRune(proto.DruidRune_RuneHandsMangle) {
+				return
+			}
+			druid.OnSpellRegistered(func(spell *core.Spell) {
+				if spell.SpellCode == SpellCode_DruidMangleBear {
+					spell.CD.Duration -= 1500 * time.Millisecond
+				}
+			})
 		},
 	},
 })

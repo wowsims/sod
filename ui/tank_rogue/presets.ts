@@ -208,7 +208,6 @@ export const PresetBuildEncounterVael = PresetUtils.makePresetBuild('Vael', {
 
 export const DefaultOptions = RogueOptions.create({
 	honorAmongThievesCritRate: 100,
-	pkSwap: false
 });
 
 ///////////////////////////////////////////////////////////////////////////
