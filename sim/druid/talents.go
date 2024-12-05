@@ -22,8 +22,7 @@ func (druid *Druid) ApplyTalents() {
 
 	// Feral
 	druid.applyBloodFrenzy()
-
-	druid.ApplyEquipScaling(stats.Armor, druid.ThickHideMultiplier())
+	druid.applyPrimalFury()
 
 	if druid.Talents.HeartOfTheWild > 0 {
 		bonus := 0.04 * float64(druid.Talents.HeartOfTheWild)
@@ -34,21 +33,6 @@ func (druid *Druid) ApplyTalents() {
 	druid.applyFuror()
 
 	druid.PseudoStats.SpiritRegenRateCasting += .05 * float64(druid.Talents.Reflection)
-}
-
-func (druid *Druid) ThickHideMultiplier() float64 {
-	thickHideMulti := 1.0
-
-	if druid.Talents.ThickHide > 0 {
-		thickHideMulti += 0.04 + 0.03*float64(druid.Talents.ThickHide-1)
-	}
-
-	return thickHideMulti
-}
-
-func (druid *Druid) BearArmorMultiplier() float64 {
-	sotfMulti := 1.0 + 0.33/3.0
-	return 4.7 * sotfMulti
 }
 
 func (druid *Druid) applyNaturesGrace() {
@@ -173,42 +157,33 @@ func (druid *Druid) applyNaturesGrace() {
 // 	})
 // }
 
-// TODO: Classic bear
-// func (druid *Druid) applyPrimalFury() {
-// 	if druid.Talents.PrimalFury == 0 {
-// 		return
-// 	}
+func (druid *Druid) applyPrimalFury() {
+	if druid.Talents.PrimalFury == 0 {
+		return
+	}
 
-// 	procChance := []float64{0, 0.5, 1}[druid.Talents.PrimalFury]
-// 	actionID := core.ActionID{SpellID: 37117}
-// 	rageMetrics := druid.NewRageMetrics(actionID)
-// 	cpMetrics := druid.NewComboPointMetrics(actionID)
+	procChance := []float64{0, 0.5, 1}[druid.Talents.PrimalFury]
+	actionID := core.ActionID{SpellID: 16959}
+	rageMetrics := druid.NewRageMetrics(actionID)
+	// cpMetrics := druid.NewComboPointMetrics(actionID)
 
-// 	druid.RegisterAura(core.Aura{
-// 		Label:    "Primal Fury",
-// 		Duration: core.NeverExpires,
-// 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-// 			aura.Activate(sim)
-// 		},
-// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-// 			if druid.InForm(Bear) {
-// 				if result.Outcome.Matches(core.OutcomeCrit) {
-// 					if sim.Proc(procChance, "Primal Fury") {
-// 						druid.AddRage(sim, 5, rageMetrics)
-// 					}
-// 				}
-// 			} else if druid.InForm(Cat) {
-// 				if druid.IsMangle(spell) || druid.Shred.IsEqual(spell) || druid.Rake.IsEqual(spell) {
-// 					if result.Outcome.Matches(core.OutcomeCrit) {
-// 						if sim.Proc(procChance, "Primal Fury") {
-// 							druid.AddComboPoints(sim, 1, cpMetrics)
-// 						}
-// 					}
-// 				}
-// 			}
-// 		},
-// 	})
-// }
+	druid.RegisterAura(core.Aura{
+		Label:    "Primal Fury",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if druid.InForm(Bear) {
+				if result.Outcome.Matches(core.OutcomeCrit) {
+					if sim.Proc(procChance, "Primal Fury") {
+						druid.AddRage(sim, 5, rageMetrics)
+					}
+				}
+			}
+		},
+	})
+}
 
 func (druid *Druid) applyBloodFrenzy() {
 	if druid.Talents.BloodFrenzy == 0 {

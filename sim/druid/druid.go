@@ -25,6 +25,10 @@ const (
 	SpellCode_DruidInsectSwarm
 	SpellCode_DruidMangleCat
 	SpellCode_DruidMangleBear
+	SpellCode_DruidSwipeCat
+	SpellCode_DruidLacerate
+	SpellCode_DruidSwipeBear
+	SpellCode_DruidMaul
 	SpellCode_DruidMoonfire
 	SpellCode_DruidRake
 	SpellCode_DruidRip
@@ -66,6 +70,7 @@ type Druid struct {
 	Innervate            *DruidSpell
 	InsectSwarm          []*DruidSpell
 	Lacerate             *DruidSpell
+	LacerateBleed        *DruidSpell
 	Languish             *DruidSpell
 	MangleBear           *DruidSpell
 	MangleCat            *DruidSpell
@@ -90,6 +95,8 @@ type Druid struct {
 	SwipeCat             *DruidSpell
 	TigersFury           *DruidSpell
 	Typhoon              *DruidSpell
+	curQueuedAutoSpell   *DruidSpell
+	MaulQueue            *DruidSpell
 	Wrath                []*DruidSpell
 
 	BearForm    *DruidSpell
@@ -100,6 +107,7 @@ type Druid struct {
 	BearFormAura             *core.Aura
 	BerserkAura              *core.Aura
 	CatFormAura              *core.Aura
+	curQueueAura             *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
 	DreamstateManaRegenAura  *core.Aura
@@ -121,12 +129,15 @@ type Druid struct {
 	SolarEclipseProcAura     *core.Aura
 	LunarEclipseProcAura     *core.Aura
 	WildStrikesBuffAura      *core.Aura
+	Tank2PieceAqAura         *core.Aura
+	Tank2PieceAqProcAura     *core.Aura
 
 	BleedCategories         core.ExclusiveCategoryArray
 	SavageRoarDurationTable [6]time.Duration
 
 	// Extra data used for various calculations and overrides
 	FerociousBiteExcessEnergyOverride bool // When true, disables the excess energy consumption of Ferocious bite
+	FuryOfStormrageCritRatingBonus    float64
 	// Sunfire/Moonfire modifiers applied when in Moonkin form
 	MoonfireDotMultiplier float64
 	ShredPositionOverride bool
@@ -160,9 +171,18 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	}
 }
 
-// func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-// 	return druid.MaulReplaceMH(sim, mhSwingSpell)
-// }
+func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
+	if !druid.curQueueAura.IsActive() {
+		return mhSwingSpell
+	}
+
+	if !druid.curQueuedAutoSpell.CanCast(sim, druid.CurrentTarget) {
+		druid.curQueueAura.Deactivate(sim)
+		return mhSwingSpell
+	}
+
+	return druid.curQueuedAutoSpell.Spell
+}
 
 func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *DruidSpell {
 	prev := config.ExtraCastCondition
@@ -228,20 +248,18 @@ func (druid *Druid) RegisterFeralCatSpells() {
 }
 
 // TODO: Classic feral tank
-func (druid *Druid) RegisterFeralTankSpells() {
+func (druid *Druid) RegisterFeralTankSpells(realismICD *core.Cooldown) {
 	// druid.registerBarkskinCD()
 	// druid.registerBerserkCD()
-	// druid.registerBearFormSpell()
+	druid.registerBearFormSpell()
 	// druid.registerDemoralizingRoarSpell()
-	// druid.registerEnrageSpell()
-	// druid.registerFrenziedRegenerationCD()
-	// druid.registerMangleBearSpell()
-	// druid.registerMaulSpell()
-	// druid.registerLacerateSpell()
-	// druid.registerRakeSpell()
-	// druid.registerRipSpell()
+	druid.registerEnrageSpell()
+	druid.registerFrenziedRegenerationCD()
+	druid.registerRakeSpell()
+	druid.registerRipSpell()
+	druid.registerMaulSpell(realismICD)
 	// druid.registerSurvivalInstinctsCD()
-	// druid.registerSwipeBearSpell()
+	druid.registerSwipeBearSpell()
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
