@@ -264,11 +264,11 @@ func (druid *Druid) registerCatFormSpell() {
 }
 
 func (druid *Druid) registerBearFormSpell() {
-	actionID := core.ActionID{SpellID: 9634}
+	actionID := core.ActionID{SpellID: core.TernaryInt32(druid.Level < 40, 5487, 9634)}
 
 	statBonus := druid.GetFormShiftStats().Add(stats.Stats{
 		stats.AttackPower: 3 * float64(druid.Level),
-		stats.Health:      1240,
+		stats.Health:      core.TernaryFloat64(druid.Level < 40, (18*float64(druid.Level))-160, (32*float64(druid.Level))-680),
 	})
 
 	feralApDep := druid.NewDynamicStatDependency(stats.FeralAttackPower, stats.AttackPower, 1)
@@ -306,7 +306,7 @@ func (druid *Druid) registerBearFormSpell() {
 			predBonus = druid.GetDynamicPredStrikeStats()
 			druid.AddStatsDynamic(sim, predBonus)
 			druid.AddStatsDynamic(sim, statBonus)
-			druid.ApplyDynamicEquipScaling(sim, stats.Armor, 4.6)
+			druid.ApplyDynamicEquipScaling(sim, stats.Armor, core.TernaryFloat64(druid.Level < 40, 1.8, 4.6))
 			druid.ApplyDynamicEquipScaling(sim, stats.Armor, 1+.02*float64(druid.Talents.ThickHide))
 
 			druid.EnableDynamicStatDep(sim, feralApDep)
@@ -332,7 +332,7 @@ func (druid *Druid) registerBearFormSpell() {
 
 			druid.AddStatsDynamic(sim, predBonus.Invert())
 			druid.AddStatsDynamic(sim, statBonus.Invert())
-			druid.RemoveDynamicEquipScaling(sim, stats.Armor, 4.6)
+			druid.RemoveDynamicEquipScaling(sim, stats.Armor, core.TernaryFloat64(druid.Level < 40, 1.8, 4.6))
 			druid.RemoveDynamicEquipScaling(sim, stats.Armor, 1+.02*float64(druid.Talents.ThickHide))
 
 			if hotwDep != nil {

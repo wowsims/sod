@@ -2403,7 +2403,7 @@ func init() {
 			Name:     "Fiery Aura Proc",
 			Callback: core.CallbackOnSpellHitTaken,
 			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee, // TODO: Unsure if this means melee attacks or all attacks
+			ProcMask: core.ProcMaskMelee,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, spell.Unit)
 			},
@@ -3337,7 +3337,7 @@ func DamageShieldWithThreatMod(character *core.Character, spellID int32, damage 
 		Name:     procName,
 		Callback: core.CallbackOnSpellHitTaken,
 		Outcome:  core.OutcomeLanded,
-		ProcMask: core.ProcMaskMelee, // TODO: Unsure if this means melee attacks or all attacks
+		ProcMask: core.ProcMaskMelee,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			procSpell.Cast(sim, spell.Unit)
 		},

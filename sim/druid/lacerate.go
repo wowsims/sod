@@ -11,11 +11,12 @@ func (druid *Druid) registerLacerateSpell() {
 	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
 		return
 	}
-	idolMultiplierBonus := 0.0
+	initialDamageMul := 1.0
+	hasGore := druid.HasRune(proto.DruidRune_RuneHelmGore)
 
 	switch druid.Ranged().ID {
 	case IdolOfCruelty:
-		idolMultiplierBonus = .07
+		initialDamageMul += .07
 	}
 	rageMetrics := druid.NewRageMetrics(core.ActionID{SpellID: 431446})
 
@@ -28,7 +29,7 @@ func (druid *Druid) registerLacerateSpell() {
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   core.TernaryFloat64(druid.BerserkAura.IsActive(), 0, 10),
+			Cost:   10,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -38,13 +39,13 @@ func (druid *Druid) registerLacerateSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1.0,
+		DamageMultiplier: 1,
 		ThreatMultiplier: 3.33,
 		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// Idol of Cruelty adds the the same bonus weapon damage regardless of number of stacks
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2*float64(druid.LacerateBleed.Dot(target).GetStacks()) + idolMultiplierBonus)
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2 * float64(druid.LacerateBleed.Dot(target).GetStacks()) * initialDamageMul)
+			berserking := druid.BerserkAura.IsActive()
 
 			dotBonusCrit := 0.0
 			if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
@@ -52,13 +53,15 @@ func (druid *Druid) registerLacerateSpell() {
 			}
 
 			spell.BonusCritRating += dotBonusCrit
+			spell.Cost.FlatModifier -= core.TernaryInt32(berserking, 10, 0)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.Cost.FlatModifier += core.TernaryInt32(berserking, 10, 0)
 			spell.BonusCritRating -= dotBonusCrit
 
 			if result.Landed() {
 				druid.LacerateBleed.Cast(sim, target)
 
-				if druid.HasRune(proto.DruidRune_RuneHelmGore) && sim.Proc(0.15, "Gore") {
+				if hasGore && sim.Proc(0.15, "Gore") {
 					druid.AddRage(sim, 10.0, rageMetrics)
 					druid.MangleBear.CD.Reset()
 				}
