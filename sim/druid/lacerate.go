@@ -38,12 +38,12 @@ func (druid *Druid) registerLacerateSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: initialDamageMul,
+		DamageMultiplier: 1,
 		ThreatMultiplier: 3.25,
 		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := (spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * .2) * float64(druid.LacerateBleed.Dot(target).GetStacks())
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2 * float64(druid.LacerateBleed.Dot(target).GetStacks()) * initialDamageMul)
 			berserking := druid.BerserkAura.IsActive()
 
 			spell.Cost.FlatModifier -= core.TernaryInt32(berserking, 10, 0)
