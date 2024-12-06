@@ -192,30 +192,27 @@ func (mage *Mage) applyFingersOfFrost() {
 				return
 			}
 
-			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
 				return
 			}
 
-			if aura.GetStacks() == 1 {
-				// Fingers of Frost can be batched with 2x FFBs into Deep Freeze
-				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + core.SpellBatchWindow,
-					OnAction: func(sim *core.Simulation) {
-						if aura.IsActive() {
-							aura.RemoveStack(sim)
-						}
-					},
-				})
-			} else {
-				aura.RemoveStack(sim)
-			}
+			// Fingers of Frost can be batched with a casted spell into an instant
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt: sim.CurrentTime + core.SpellBatchWindow,
+				OnAction: func(sim *core.Simulation) {
+					if aura.IsActive() {
+						aura.RemoveStack(sim)
+					}
+				},
+			})
 		},
 	})
 
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Fingers of Frost Trigger",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagChillSpell) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && sim.RandomFloat("Fingers of Frost") < mage.FingersOfFrostProcChance {
+			// Only Blizzard ticks proc
+			if spell.SpellCode == SpellCode_MageBlizzard && spell.Flags.Matches(SpellFlagChillSpell) && sim.RandomFloat("Fingers of Frost") < mage.FingersOfFrostProcChance {
 				mage.FingersOfFrostAura.Activate(sim)
 				mage.FingersOfFrostAura.SetStacks(sim, 2)
 			}
@@ -422,7 +419,8 @@ func (mage *Mage) applyBrainFreeze() {
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Brain Freeze Trigger",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagChillSpell) && result.Landed() && sim.Proc(procChance, "Brain Freeze") {
+			// Only Blizzard ticks proc
+			if spell.SpellCode == SpellCode_MageBlizzard && spell.Flags.Matches(SpellFlagChillSpell) && sim.Proc(procChance, "Brain Freeze") {
 				procAura.Activate(sim)
 			}
 		},
