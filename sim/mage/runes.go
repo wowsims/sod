@@ -196,15 +196,17 @@ func (mage *Mage) applyFingersOfFrost() {
 				return
 			}
 
-			// Fingers of Frost can be batched with a casted spell into an instant
-			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + core.SpellBatchWindow,
-				OnAction: func(sim *core.Simulation) {
-					if aura.IsActive() {
-						aura.RemoveStack(sim)
-					}
-				},
-			})
+			if aura.GetStacks() == 1 {
+				// Fingers of Frost can be batched with a casted spell into an instant
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
+					OnAction: func(sim *core.Simulation) {
+						if aura.IsActive() {
+							aura.RemoveStack(sim)
+						}
+					},
+				})
+			}
 		},
 	})
 
