@@ -192,7 +192,7 @@ func (mage *Mage) applyFingersOfFrost() {
 				return
 			}
 
-			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
 				return
 			}
 
@@ -201,11 +201,13 @@ func (mage *Mage) applyFingersOfFrost() {
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {
-						if aura.IsActive() {
+						if aura.IsActive() && aura.GetStacks() == 1 {
 							aura.RemoveStack(sim)
 						}
 					},
 				})
+			} else {
+				aura.RemoveStack(sim)
 			}
 		},
 	})
