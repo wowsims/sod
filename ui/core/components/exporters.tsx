@@ -328,7 +328,7 @@ export class Individual60UEPExporter<SpecType extends Spec> extends Exporter {
 		});
 
 		return (
-			`https://eightyupgrades.com/ep/import?name=${encodeURIComponent(`${specNames[player.spec]} WoWSims Weights`)}` +
+			`https://sixtyupgrades.com/sod/ep/import?name=${encodeURIComponent(`${specNames[player.spec]} WoWSims Weights`)}` +
 			Object.keys(namesToWeights)
 				.map(statName => `&${statName}=${namesToWeights[statName].toFixed(3)}`)
 				.join('')
