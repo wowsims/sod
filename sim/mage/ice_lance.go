@@ -91,6 +91,9 @@ func (mage *Mage) registerIceLanceSpell() {
 				glaciateAura := mage.GlaciateAuras.Get(result.Target)
 				glaciateAura.Activate(sim)
 				glaciateAura.AddStack(sim)
+
+				// React to event for special stop casting at high stacks
+				mage.ReactToEvent(sim)
 			}
 		},
 	}))

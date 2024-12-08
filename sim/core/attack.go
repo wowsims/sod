@@ -204,8 +204,16 @@ func (aa *AutoAttacks) MainhandSwingAt() time.Duration {
 	return aa.mh.swingAt
 }
 
+func (aa *AutoAttacks) LastMainhandAutoAt() time.Duration {
+	return aa.mh.lastAutoAt
+}
+
 func (aa *AutoAttacks) OffhandSwingAt() time.Duration {
 	return aa.oh.swingAt
+}
+
+func (aa *AutoAttacks) LastOffhandAutoAt() time.Duration {
+	return aa.oh.lastAutoAt
 }
 
 func (aa *AutoAttacks) SetOffhandSwingAt(offhandSwingAt time.Duration) {
@@ -245,8 +253,11 @@ type WeaponAttack struct {
 
 	replaceSwing ReplaceMHSwing
 
-	swingAt             time.Duration
-	lastSwingAt         time.Duration
+	autoAt      time.Duration
+	swingAt     time.Duration // The time that the next weapon swing will occur
+	lastSwingAt time.Duration // The time that the last weapon swing occurred
+	lastAutoAt  time.Duration // The time that the last auto attack occurred, excluding extra attacks
+
 	extraAttacks        int32 // extra attacks that happen right away
 	extraAttacksStored  int32 // extra attack that happen on next auto (e.g reckoning)
 	extraAttacksPending int32 // extraAttacks prior to previous ones resolving for spell metrics
@@ -328,10 +339,13 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 
 	if wa.replaceSwing != nil {
 		// Need to check APL here to allow last-moment HS queue casts.
-		wa.unit.Rotation.DoNextAction(sim)
+		wa.unit.ReactToEvent(sim)
 
-		// Allow MH swing to be overridden for abilities like Heroic Strike.
-		attackSpell = wa.replaceSwing(sim, attackSpell)
+		// Need to check this again in case the DoNextAction call swapped items.
+		if wa.replaceSwing != nil {
+			// Allow MH swing to be overridden for abilities like Heroic Strike.
+			attackSpell = wa.replaceSwing(sim, attackSpell)
+		}
 	}
 
 	if attackSpell.CanCast(sim, wa.unit.CurrentTarget) {
@@ -340,6 +354,10 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 
 		wa.swingAt = sim.CurrentTime + wa.curSwingDuration
 		wa.lastSwingAt = sim.CurrentTime
+		if !isExtraAttack {
+			wa.autoAt = wa.swingAt
+			wa.lastAutoAt = sim.CurrentTime
+		}
 
 		// don't update isExtraAttack here
 
@@ -377,7 +395,7 @@ func (wa *WeaponAttack) swing(sim *Simulation) time.Duration {
 		}
 
 		if !sim.Options.Interactive && wa.unit.Rotation != nil {
-			wa.unit.Rotation.DoNextAction(sim)
+			wa.unit.ReactToEvent(sim)
 		}
 	} else {
 		// Delay till cast finishes if casting or 100 ms if not
@@ -903,14 +921,29 @@ func (aa *AutoAttacks) NextAttackAt() time.Duration {
 	return min(aa.mh.swingAt, aa.oh.swingAt)
 }
 
+// Returns the time at which the last melee auto attack occurred.
+func (aa *AutoAttacks) LastAutoAt() time.Duration {
+	return max(aa.mh.lastAutoAt, aa.oh.lastAutoAt)
+}
+
 // Returns the time at which the next attack will occur.
 func (aa *AutoAttacks) NextAnyAttackAt() time.Duration {
-	return min(min(aa.mh.swingAt, aa.oh.swingAt), aa.ranged.swingAt)
+	return min(aa.mh.swingAt, aa.oh.swingAt, aa.ranged.swingAt)
+}
+
+// Returns the time at which the last auto attack occurred.
+func (aa *AutoAttacks) LastAnyAutoAt() time.Duration {
+	return max(aa.mh.lastAutoAt, aa.oh.lastAutoAt, aa.ranged.lastAutoAt)
 }
 
 // Returns the time at which the next ranged attack will occur.
 func (aa *AutoAttacks) NextRangedAttackAt() time.Duration {
 	return aa.ranged.swingAt
+}
+
+// Returns the time at which the last ranged auto attack occurred.
+func (aa *AutoAttacks) LastRangedAutoAt() time.Duration {
+	return aa.ranged.lastAutoAt
 }
 
 type PPMManager struct {

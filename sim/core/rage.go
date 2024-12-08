@@ -169,7 +169,7 @@ func (rb *rageBar) AddRage(sim *Simulation, amount float64, metrics *ResourceMet
 
 	rb.currentRage = newRage
 	if !sim.Options.Interactive {
-		rb.unit.Rotation.DoNextAction(sim)
+		rb.unit.ReactToEvent(sim)
 	}
 	StartDelayedAction(sim, DelayedActionOptions{
 		DoAt: sim.CurrentTime + time.Millisecond*1,

@@ -315,7 +315,7 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 		AutoSwingMelee:  true,
 	})
 
-	hunter.AutoAttacks.RangedConfig().Flags |= core.SpellFlagCastTimeNoGCD
+	hunter.AutoAttacks.RangedConfig().Flags |= core.SpellFlagOffGCD
 	hunter.AutoAttacks.RangedConfig().Cast = core.CastConfig{
 		DefaultCast: core.Cast{
 			CastTime: time.Millisecond * 500,

@@ -12,7 +12,7 @@ func (mage *Mage) registerCounterspellSpell() {
 		ActionID:    core.ActionID{SpellID: 2139},
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | SpellFlagMage | core.SpellFlagCastTimeNoGCD,
+		Flags:       core.SpellFlagAPL | SpellFlagMage | core.SpellFlagOffGCD,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: 100,

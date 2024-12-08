@@ -148,7 +148,7 @@ func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *WarriorSpell, realismIC
 
 	queueSpell := warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: srcSpell.ActionID.WithTag(1),
-		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagCastTimeNoGCD,
+		Flags:    core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagOffGCD,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return warrior.curQueueAura == nil &&

@@ -12,6 +12,7 @@ import {
 	APLValueAuraShouldRefresh,
 	APLValueAutoSwingTime,
 	APLValueAutoSwingTime_SwingType as AutoSwingType,
+	APLValueAutoTimeSinceLast,
 	APLValueAutoTimeToNext,
 	APLValueAutoTimeToNext_AttackType as AutoAttackType,
 	APLValueCatExcessEnergy,
@@ -691,6 +692,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	}),
 
 	// Auto attacks
+	autoTimeSinceLast: inputBuilder({
+		label: 'Time Since Last Auto',
+		submenu: ['Auto'],
+		shortDescription: 'Amount of time remaining since the last Main-hand or Off-hand melee attack, or <b>0</b> if autoattacks are not engaged.',
+		newValue: APLValueAutoTimeSinceLast.create,
+		fields: [autoTypeFieldConfig('autoType')],
+	}),
 	autoTimeToNext: inputBuilder({
 		label: 'Time To Next Auto',
 		submenu: ['Auto'],

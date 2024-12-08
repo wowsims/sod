@@ -41,7 +41,7 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 24
+// NextIndex: 25
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
@@ -119,6 +119,7 @@ message APLValue {
         APLValueGCDTimeToReady gcd_time_to_ready = 18;
 
         // Autoattack values
+        APLValueAutoTimeSinceLast auto_time_since_last = 75;
         APLValueAutoTimeToNext auto_time_to_next = 40;
         APLValueAutoSwingTime auto_swing_time = 64;
 
@@ -391,6 +392,19 @@ message APLValueEnergyThreshold {
 
 message APLValueGCDIsReady {}
 message APLValueGCDTimeToReady {}
+
+message APLValueAutoTimeSinceLast {
+    enum AttackType
+    {
+        Unknown = 0;
+        Any = 1;
+        Melee = 2;
+        MainHand = 3;
+        OffHand = 4;
+        Ranged = 5;
+    }
+    AttackType auto_type = 1;
+}
 
 message APLValueAutoTimeToNext {
     enum AttackType

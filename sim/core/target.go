@@ -3,6 +3,7 @@ package core
 import (
 	"strconv"
 	"time"
+
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -132,6 +133,7 @@ func NewTarget(options *proto.Target, targetIndex int32) *Target {
 	}
 	defaultRaidBossLevel := int32(CharacterMaxLevel + 3)
 	target.GCD = target.NewTimer()
+	target.RotationTimer = target.NewTimer()
 	if target.Level == 0 {
 		target.Level = defaultRaidBossLevel
 	}

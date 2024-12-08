@@ -16,6 +16,7 @@ type Hardcast struct {
 	Expires    time.Duration
 	ActionID   ActionID
 	OnComplete func(*Simulation, *Unit)
+	Unit       *Unit
 	Target     *Unit
 }
 
@@ -191,7 +192,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		// By panicking if spell is on CD, we force each sim to properly check for their own CDs.
-		if spell.CurCast.GCD != 0 && !spell.Unit.GCD.IsReady(sim) {
+		if spell.CurCast.GCD > 0 && !spell.Unit.GCD.IsReady(sim) {
 			return spell.castFailureHelper(sim, "GCD on cooldown for %s, curTime = %s", spell.Unit.GCD.TimeToReady(sim), sim.CurrentTime)
 		}
 
@@ -209,15 +210,13 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		if effectiveTime := spell.CurCast.EffectiveTime(); effectiveTime != 0 {
-			if spell.Flags.Matches(SpellFlagCastTimeNoGCD) {
-				effectiveTime = max(effectiveTime, spell.Unit.GCD.TimeToReady(sim))
-			}
 			// do not add channeled time here as they have variable cast length
 			// cast time for channels is handled in dot.OnExpire
 			if !spell.Flags.Matches(SpellFlagChanneled) {
 				spell.SpellMetrics[target.UnitIndex].TotalCastTime += effectiveTime
 			}
-			spell.Unit.SetGCDTimer(sim, sim.CurrentTime+effectiveTime)
+
+			spell.Unit.SetGCDTimer(sim, max(sim.CurrentTime+effectiveTime, spell.Unit.NextGCDAt()))
 		}
 
 		if (spell.CurCast.CastTime > 0) && spell.Unit.IsMoving() {
@@ -290,11 +289,8 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 					if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
 						spell.Unit.OnCastComplete(sim, spell)
 					}
-
-					if !sim.Options.Interactive {
-						spell.Unit.Rotation.DoNextAction(sim)
-					}
 				},
+				Unit:   spell.Unit,
 				Target: target,
 			}
 

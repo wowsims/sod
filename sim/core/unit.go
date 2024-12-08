@@ -134,13 +134,16 @@ type Unit struct {
 
 	GCD *Timer
 
+	// Separate from GCD timer to support spell queueing and off-GCD actions
+	RotationTimer *Timer
+
 	// Used for applying the effect of a hardcast spell when casting finishes.
 	// For channeled spells, only Expires is set.
 	// No more than one cast may be active at any given time.
 	Hardcast Hardcast
 
 	// GCD-related PendingActions.
-	gcdAction              *PendingAction
+	rotationAction         *PendingAction
 	hardcastAction         *PendingAction
 	castWhileCastingAction *PendingAction
 
@@ -155,6 +158,9 @@ type Unit struct {
 
 	// The currently-channeled DOT spell, otherwise nil.
 	ChanneledDot *Dot
+
+	// Data about the most recently queued spell, otherwise nil.
+	QueuedSpell *QueuedSpell
 }
 
 // Units can be disabled for several reasons:

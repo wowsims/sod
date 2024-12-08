@@ -120,7 +120,9 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 	case *proto.APLValue_GcdTimeToReady:
 		return rot.newValueGCDTimeToReady(config.GetGcdTimeToReady())
 
-	// Auto attacks
+		// Auto attacks
+	case *proto.APLValue_AutoTimeSinceLast:
+		return rot.newValueAutoTimeSinceLast(config.GetAutoTimeSinceLast())
 	case *proto.APLValue_AutoTimeToNext:
 		return rot.newValueAutoTimeToNext(config.GetAutoTimeToNext())
 	case *proto.APLValue_AutoSwingTime:

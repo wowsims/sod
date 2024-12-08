@@ -1023,7 +1023,7 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 		SpellSchool: school,
 		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagCastTimeNoGCD,
+		Flags:       SpellFlagOffGCD,
 
 		Cast: CastConfig{
 			DefaultCast: defaultCast,
@@ -1088,7 +1088,7 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 		SpellSchool: SpellSchoolFire,
 		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagCastTimeNoGCD,
+		Flags:       SpellFlagOffGCD,
 
 		Cast: CastConfig{
 			DefaultCast: Cast{
@@ -1189,7 +1189,7 @@ func makePotionActivation(potionType proto.Potions, character *Character, potion
 		// Mark as 'Encounter Only' so that users are forced to select the generic Potion
 		// placeholder action instead of specific potion spells, in APL prepull. This
 		// prevents a mismatch between Consumes and Rotation settings.
-		mcd.Spell.Flags |= SpellFlagEncounterOnly | SpellFlagPotion | SpellFlagCastTimeNoGCD
+		mcd.Spell.Flags |= SpellFlagEncounterOnly | SpellFlagPotion | SpellFlagOffGCD
 		oldApplyEffects := mcd.Spell.ApplyEffects
 		mcd.Spell.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
 			oldApplyEffects(sim, target, spell)
