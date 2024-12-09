@@ -85,7 +85,8 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 	dungeonPattern := regexp.MustCompile(`data\["([^"]+)"] = {(.*?)items = {(.*?)@@@}@@@`)
 	mapIdRegexp := regexp.MustCompile(`MapID = (\d+),`)
 	npcNameAndIDPattern := regexp.MustCompile(`^[^@]*?AL\["(.*?)"\]\)?(.*?(@@@\s*npcID = {?(\d+),))?`)
-	diffItemsPattern := regexp.MustCompile(`\[([A-Z0-9]+_DIFF)\] = (({.*?@@@\s*},?@@@)|(.*?@@@\s*\),?@@@))`)
+	sodDiffItemsPattern := regexp.MustCompile(`\[(SOD_DIFF)\] = (({.*?@@@\s*},?@@@)|(.*?@@@\s*\),?@@@))`)
+	normalDiffItemsPattern := regexp.MustCompile(`\[(NORMAL_DIFF)\] = (({.*?@@@\s*},?@@@)|(.*?@@@\s*\),?@@@))`)
 	itemsPattern := regexp.MustCompile(`@@@\s+{(.*?)},`)
 	itemParamPattern := regexp.MustCompile(`AL\["(.*?)"\]`)
 
@@ -126,62 +127,68 @@ func readAtlasLootDungeonData(db *WowDatabase, expansion proto.Expansion, srcUrl
 				})
 			}
 
-			for _, difficultyMatch := range diffItemsPattern.FindAllStringSubmatch(npcSplit, -1) {
-				difficulty, ok := AtlasLootDifficulties[difficultyMatch[1]]
-				if !ok {
-					log.Fatalf("Invalid difficulty for NPC %s: %s", npcName, difficultyMatch[1])
-				}
+			// In AtlasLootClassic_SoD the maintainer split data into two categories: SOD_DIFF and NORMAL_DIFF.
+			// Any boss with loot changed in SoD will use SOD_DIFF, and if not it defaults to NORMAL_DIFF
+			var difficultyMatch []string
+			if sodDifficultyMatch := sodDiffItemsPattern.FindAllStringSubmatch(npcSplit, -1); len(sodDifficultyMatch) > 0 {
+				difficultyMatch = sodDifficultyMatch[0]
+			} else if normalDifficultyMatch := normalDiffItemsPattern.FindAllStringSubmatch(npcSplit, -1); len(normalDifficultyMatch) > 0 {
+				difficultyMatch = normalDifficultyMatch[0]
+			} else {
+				log.Fatalf("Invalid difficulty for NPC %s: %s", npcName, difficultyMatch[1])
+			}
 
-				curCategory := ""
-				curLocation := 0
+			difficulty := proto.DungeonDifficulty_DifficultyNormal
 
-				for _, itemMatch := range itemsPattern.FindAllStringSubmatch(difficultyMatch[0], -1) {
-					itemParams := core.MapSlice(strings.Split(itemMatch[1], ","), strings.TrimSpace)
-					location, _ := strconv.Atoi(itemParams[0]) // Location within AtlasLoot's menu.
+			curCategory := ""
+			curLocation := 0
 
-					idStr := itemParams[1]
-					if idStr[0] == 'n' || idStr[0] == '"' { // nil or "xxx"
-						if len(itemParams) > 3 {
-							if paramMatch := itemParamPattern.FindStringSubmatch(itemParams[3]); paramMatch != nil {
-								curCategory = paramMatch[1]
-								curLocation = location
-							}
-						}
-						if len(itemParams) > 4 {
-							if paramMatch := itemParamPattern.FindStringSubmatch(itemParams[4]); paramMatch != nil {
-								curCategory = paramMatch[1]
-								curLocation = location
-							}
-						}
-					} else { // item ID
-						itemID, _ := strconv.Atoi(idStr)
-						//fmt.Printf("Item: %d\n", itemID)
-						dropSource := &proto.DropSource{
-							Difficulty: difficulty,
-						}
+			for _, itemMatch := range itemsPattern.FindAllStringSubmatch(difficultyMatch[0], -1) {
+				itemParams := core.MapSlice(strings.Split(itemMatch[1], ","), strings.TrimSpace)
+				location, _ := strconv.Atoi(itemParams[0]) // Location within AtlasLoot's menu.
 
-						if zoneID != 0 {
-							dropSource.ZoneId = int32(zoneID)
-						}
-
-						if npcID == 0 {
-							dropSource.OtherName = npcName
-						} else {
-							dropSource.NpcId = int32(npcID)
-						}
-
-						if curCategory != "" && location == curLocation+1 {
+				idStr := itemParams[1]
+				if idStr[0] == 'n' || idStr[0] == '"' { // nil or "xxx"
+					if len(itemParams) > 3 {
+						if paramMatch := itemParamPattern.FindStringSubmatch(itemParams[3]); paramMatch != nil {
+							curCategory = paramMatch[1]
 							curLocation = location
-							dropSource.Category = curCategory
 						}
-
-						item := &proto.UIItem{Id: int32(itemID), Sources: []*proto.UIItemSource{{
-							Source: &proto.UIItemSource_Drop{
-								Drop: dropSource,
-							},
-						}}}
-						db.MergeItem(item)
 					}
+					if len(itemParams) > 4 {
+						if paramMatch := itemParamPattern.FindStringSubmatch(itemParams[4]); paramMatch != nil {
+							curCategory = paramMatch[1]
+							curLocation = location
+						}
+					}
+				} else { // item ID
+					itemID, _ := strconv.Atoi(idStr)
+					//fmt.Printf("Item: %d\n", itemID)
+					dropSource := &proto.DropSource{
+						Difficulty: difficulty,
+					}
+
+					if zoneID != 0 {
+						dropSource.ZoneId = int32(zoneID)
+					}
+
+					if npcID == 0 {
+						dropSource.OtherName = npcName
+					} else {
+						dropSource.NpcId = int32(npcID)
+					}
+
+					if curCategory != "" && location == curLocation+1 {
+						curLocation = location
+						dropSource.Category = curCategory
+					}
+
+					item := &proto.UIItem{Id: int32(itemID), Sources: []*proto.UIItemSource{{
+						Source: &proto.UIItemSource_Drop{
+							Drop: dropSource,
+						},
+					}}}
+					db.MergeItem(item)
 				}
 			}
 		}
@@ -395,10 +402,6 @@ var AtlasLootProfessionIDs = map[int]proto.Profession{
 	11: proto.Profession_Tailoring,
 	12: proto.Profession_Engineering,
 	13: proto.Profession_Enchanting,
-}
-
-var AtlasLootDifficulties = map[string]proto.DungeonDifficulty{
-	"NORMAL_DIFF": proto.DungeonDifficulty_DifficultyNormal,
 }
 
 var AtlasLootPVPFactions = map[int]map[string]int32{
