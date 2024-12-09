@@ -288,7 +288,7 @@ type APLActionCustomRotation struct {
 	lastExecutedAt time.Duration
 }
 
-func (rot *APLRotation) newActionCustomRotation(config *proto.APLActionCustomRotation) APLActionImpl {
+func (rot *APLRotation) newActionCustomRotation(_ *proto.APLActionCustomRotation) APLActionImpl {
 	agent := rot.unit.Env.GetAgentFromUnit(rot.unit)
 	if agent == nil {
 		panic("Agent not found for custom rotation")

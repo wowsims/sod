@@ -36,6 +36,7 @@ func NewTargetDummy(dummyIndex int, party *Party, partyIndex int) *TargetDummy {
 
 	td.Label = fmt.Sprintf("%s (#%d)", td.Name, td.Index+1)
 	td.GCD = td.NewTimer()
+	td.RotationTimer = td.NewTimer()
 
 	return td
 }

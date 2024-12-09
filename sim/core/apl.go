@@ -3,7 +3,6 @@ package core
 import (
 	"fmt"
 	"slices"
-	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
 	"google.golang.org/protobuf/encoding/protojson"
@@ -31,6 +30,9 @@ type APLRotation struct {
 
 	// Used to avoid recursive APL loops.
 	inLoop bool
+
+	// Used to override MCD restrictions within sequences.
+	inSequence bool
 
 	// Validation warnings that occur during proto parsing.
 	// We return these back to the user for display in the UI.
@@ -194,6 +196,10 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 		return
 	}
 
+	if !apl.unit.RotationTimer.IsReady(sim) {
+		return
+	}
+
 	i := 0
 	apl.inLoop = true
 
@@ -210,9 +216,15 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 		apl.unit.Log(sim, "No available actions!")
 	}
 
-	gcdReady := apl.unit.GCD.IsReady(sim)
-	if gcdReady {
-		apl.unit.WaitUntil(sim, sim.CurrentTime+time.Millisecond*50)
+	// Schedule the next rotation evaluation based on either the GCD or reaction time
+	if apl.unit.RotationTimer.IsReady(sim) {
+		nextEvaluation := sim.CurrentTime + apl.unit.ReactionTime
+
+		if !apl.unit.IsMoving() {
+			nextEvaluation = max(nextEvaluation, apl.unit.NextGCDAt())
+		}
+
+		apl.unit.WaitUntil(sim, nextEvaluation)
 	}
 }
 

@@ -15,7 +15,7 @@ func (paladin *Paladin) registerJudgement() {
 		ActionID:    core.ActionID{SpellID: 20271},
 		SpellSchool: core.SpellSchoolHoly,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagCastTimeNoGCD,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagOffGCD,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.06,
