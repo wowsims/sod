@@ -366,33 +366,42 @@ export class DamageDealtLog extends SimLog {
 	result() {
 		return (
 			<>
-				{this.isHealing() ? `Heal ` : ''}
-				{this.isShielding() ? `Shield ` : ''}
-				{this.miss
-					? 'Miss'
-					: this.dodge
-					? 'Dodge'
-					: this.parry
-					? 'Parry'
-					: this.glance
-					? 'Glance'
-					: this.blockedCrit
-					? 'Blocked Crit'
-					: this.block
-					? 'Block'
-					: this.crit
-					? 'Crit'
-					: this.crush
-					? 'Crush'
-					: this.tick
-					? 'Tick'
-					: 'Hit'}
+				{this.isHealing() ? `Healed ` : ''}
+				{this.isShielding() ? `Shielded ` : ''}
+				{!(this.isHealing() || this.isShielding()) && (
+					<>
+						{this.miss
+							? 'Miss'
+							: this.dodge
+							? 'Dodge'
+							: this.parry
+							? 'Parry'
+							: this.glance
+							? 'Glance'
+							: this.blockedCrit
+							? 'Blocked Crit'
+							: this.block
+							? 'Block'
+							: this.crit
+							? 'Crit'
+							: this.crush
+							? 'Crush'
+							: this.tick
+							? 'Tick'
+							: 'Hit'}
+					</>
+				)}
 				{` `}
 				{this.target?.toHTML() || ''}
 				{!this.miss && !this.dodge && !this.parry ? (
 					<>
 						{` `}
-						for <strong className="text-danger">{this.amount.toFixed(2)} damage</strong>
+						for{' '}
+						{this.isHealing() || this.isShielding() ? (
+							<strong className="resource-health">{this.amount.toFixed(2)} health</strong>
+						) : (
+							<strong className="text-danger">{this.amount.toFixed(2)} damage</strong>
+						)}
 						{this.partialResist1_4 ? (
 							<> (25% Resist)</>
 						) : this.partialResist2_4 ? (
@@ -762,17 +771,20 @@ export class ResourceChangedLog extends SimLog {
 			const verb = isHealth ? (this.isSpend ? 'Lost' : 'Recovered') : this.isSpend ? 'Spent' : 'Gained';
 			const resourceName = resourceNames.get(this.resourceType)!;
 			const resourceClass = `resource-${resourceName.replace(/\s/g, '-').toLowerCase()}`;
-			
+
 			return (
 				<>
 					{this.toPrefix(includeTimestamp)} {verb}{' '}
 					<strong className={resourceClass}>
 						{signedDiff.toFixed(1)} {resourceName}
 					</strong>
-					{this.target ? <>{` on `} {this.target?.toHTML()}</> : null}
+					{this.target ? (
+						<>
+							{` on `} {this.target?.toHTML()}
+						</>
+					) : null}
 					{` from `}
-					{this.newActionIdLink(this.actionId!)}. 
-					({this.valueBefore.toFixed(1)} &rarr; {this.valueAfter.toFixed(1)})
+					{this.newActionIdLink(this.actionId!)}. ({this.valueBefore.toFixed(1)} &rarr; {this.valueAfter.toFixed(1)})
 				</>
 			);
 		});
@@ -796,7 +808,7 @@ export class ResourceChangedLog extends SimLog {
 		if (match) {
 			const resourceType = stringToResourceType(match[4]);
 			// combo points have an additional Target included in its log lines, adjust for that here
-			const valueBefore = match[13]
+			const valueBefore = match[13];
 			const valueAfter = match[14];
 			return ActionId.fromLogString(match[12])
 				.fill(params.source?.index)
