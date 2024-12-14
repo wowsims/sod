@@ -101,6 +101,24 @@ func TestBalance(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassDruid,
+			Phase:      6,
+			Level:      60,
+			Race:       proto.Race_RaceTauren,
+			OtherRaces: []proto.Race{proto.Race_RaceNightElf},
+
+			Talents:     Phase4Talents,
+			GearSet:     core.GetGearSet("../../../ui/balance_druid/gear_sets", "phase_6"),
+			Rotation:    core.GetAplRotation("../../../ui/balance_druid/apls", "phase_6"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase6Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsAdaptive},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -158,6 +176,17 @@ var Phase5Consumes = core.ConsumesCombo{
 		Food:           proto.Food_FoodNightfinSoup,
 		MainHandImbue:  proto.WeaponImbue_BrilliantWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
+	},
+}
+
+var Phase6Consumes = core.ConsumesCombo{
+	Label: "P6-Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  proto.Potions_MajorManaPotion,
+		Flask:          proto.Flask_FlaskOfAncientKnowledge,
+		Food:           proto.Food_FoodDarkclawBisque,
+		MainHandImbue:  proto.WeaponImbue_EnchantedRepellent,
+		SpellPowerBuff: proto.SpellPowerBuff_ElixirOfTheMageLord,
 	},
 }
 

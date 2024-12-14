@@ -328,7 +328,7 @@ export class Individual60UEPExporter<SpecType extends Spec> extends Exporter {
 		});
 
 		return (
-			`https://eightyupgrades.com/ep/import?name=${encodeURIComponent(`${specNames[player.spec]} WoWSims Weights`)}` +
+			`https://sixtyupgrades.com/sod/ep/import?name=${encodeURIComponent(`${specNames[player.spec]} WoWSims Weights`)}` +
 			Object.keys(namesToWeights)
 				.map(statName => `&${statName}=${namesToWeights[statName].toFixed(3)}`)
 				.join('')
@@ -358,27 +358,27 @@ export class Individual60UEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatNaturePower]: 'natureDamage',
 		[Stat.StatShadowPower]: 'shadowDamage',
 		[Stat.StatMP5]: 'mp5',
-		[Stat.StatSpellHit]: 'hitRating',
-		[Stat.StatSpellCrit]: 'critRating',
-		[Stat.StatSpellHaste]: 'hasteRating',
+		[Stat.StatSpellHit]: 'spellHit',
+		[Stat.StatSpellCrit]: 'spellCrit',
+		[Stat.StatSpellHaste]: 'spellHaste',
 		[Stat.StatSpellPenetration]: 'spellPen',
 		[Stat.StatAttackPower]: 'attackPower',
-		[Stat.StatMeleeHit]: 'hitRating',
-		[Stat.StatMeleeCrit]: 'critRating',
-		[Stat.StatMeleeHaste]: 'hasteRating',
-		[Stat.StatArmorPenetration]: 'armorPenRating',
-		[Stat.StatExpertise]: 'expertiseRating',
+		[Stat.StatMeleeHit]: 'hit',
+		[Stat.StatMeleeCrit]: 'crit',
+		[Stat.StatMeleeHaste]: 'haste',
+		[Stat.StatArmorPenetration]: 'armorPen',
+		[Stat.StatExpertise]: 'expertise',
 		[Stat.StatMana]: 'mana',
 		[Stat.StatEnergy]: 'energy',
 		[Stat.StatRage]: 'rage',
 		[Stat.StatArmor]: 'armor',
 		[Stat.StatRangedAttackPower]: 'attackPower',
-		[Stat.StatDefense]: 'defenseRating',
-		[Stat.StatBlock]: 'blockRating',
+		[Stat.StatDefense]: 'defense',
+		[Stat.StatBlock]: 'block',
 		[Stat.StatBlockValue]: 'blockValue',
-		[Stat.StatDodge]: 'dodgeRating',
-		[Stat.StatParry]: 'parryRating',
-		[Stat.StatResilience]: 'resilienceRating',
+		[Stat.StatDodge]: 'dodge',
+		[Stat.StatParry]: 'parry',
+		[Stat.StatResilience]: 'resilience',
 		[Stat.StatHealth]: 'health',
 		[Stat.StatArcaneResistance]: 'arcaneResistance',
 		[Stat.StatFireResistance]: 'fireResistance',
@@ -386,12 +386,27 @@ export class Individual60UEPExporter<SpecType extends Spec> extends Exporter {
 		[Stat.StatNatureResistance]: 'natureResistance',
 		[Stat.StatShadowResistance]: 'shadowResistance',
 		[Stat.StatBonusArmor]: 'armorBonus',
-		[Stat.StatHealingPower]: 'Healing',
+		[Stat.StatHealingPower]: 'healing',
 		[Stat.StatFeralAttackPower]: 'feralAttackPower',
 	};
 	static pseudoStatNames: Partial<Record<PseudoStat, string>> = {
 		[PseudoStat.PseudoStatMainHandDps]: 'dps',
 		[PseudoStat.PseudoStatRangedDps]: 'rangedDps',
+		// Weapon Skills
+		[PseudoStat.PseudoStatUnarmedSkill]: 'unarmedSkill',
+		[PseudoStat.PseudoStatDaggersSkill]: 'daggerSkill',
+		[PseudoStat.PseudoStatSwordsSkill]: 'swordSkill',
+		[PseudoStat.PseudoStatMacesSkill]: 'maceSkill',
+		[PseudoStat.PseudoStatAxesSkill]: 'axeSkill',
+		[PseudoStat.PseudoStatTwoHandedSwordsSkill]: 'sword2hSkill',
+		[PseudoStat.PseudoStatTwoHandedMacesSkill]: 'mace2hSkill',
+		[PseudoStat.PseudoStatTwoHandedAxesSkill]: 'axe2hSkill',
+		[PseudoStat.PseudoStatPolearmsSkill]: 'polearmSkill',
+		[PseudoStat.PseudoStatStavesSkill]: 'staffSkill',
+		[PseudoStat.PseudoStatBowsSkill]: 'bowSkill',
+		[PseudoStat.PseudoStatCrossbowsSkill]: 'crossbowSkill',
+		[PseudoStat.PseudoStatGunsSkill]: 'gunSkill',
+		[PseudoStat.PseudoStatThrownSkill]: 'thrownSkill',
 	};
 }
 

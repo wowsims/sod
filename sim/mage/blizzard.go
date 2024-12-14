@@ -37,27 +37,8 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 
 	spellCoeff := .042
 
-	var improvedBlizzardProcApplication *core.Spell
-	if mage.Talents.ImprovedBlizzard > 0 {
-		impId := []int32{0, 11185, 12487, 12488}[mage.Talents.ImprovedBlizzard]
-		auras := mage.NewEnemyAuraArray(func(unit *core.Unit, playerLevel int32) *core.Aura {
-			return unit.GetOrRegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: impId},
-				Label:    "Improved Blizzard",
-				Duration: time.Millisecond * 1500,
-			})
-		})
-		improvedBlizzardProcApplication = mage.RegisterSpell(core.SpellConfig{
-			ActionID: core.ActionID{SpellID: impId},
-			ProcMask: core.ProcMaskSpellProc,
-			Flags:    SpellFlagMage | core.SpellFlagNoLogs | SpellFlagChillSpell,
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				auras.Get(target).Activate(sim)
-			},
-		})
-	}
-
 	return core.SpellConfig{
+		SpellCode:   SpellCode_MageBlizzard,
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolFrost,
 		ProcMask:    core.ProcMaskSpellDamage,
@@ -89,10 +70,6 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
-
-					if improvedBlizzardProcApplication != nil {
-						improvedBlizzardProcApplication.Cast(sim, aoeTarget)
-					}
 				}
 			},
 		},

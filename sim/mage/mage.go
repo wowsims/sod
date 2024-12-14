@@ -22,6 +22,7 @@ const (
 	SpellCode_MageArcaneSurge
 	SpellCode_MageBalefireBolt
 	SpellCode_MageBlastWave
+	SpellCode_MageBlizzard
 	SpellCode_MageFireball
 	SpellCode_MageFireBlast
 	SpellCode_MageFrostbolt

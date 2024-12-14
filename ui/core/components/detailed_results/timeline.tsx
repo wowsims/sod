@@ -1336,7 +1336,7 @@ const idToCategoryMap: Record<number, number> = {
 	[10212]: SPELL_ACTION_CATEGORY + 0.1, // Arcane Missiles
 	[44572]: SPELL_ACTION_CATEGORY + 0.1, // Deep Freeze
 	[44781]: SPELL_ACTION_CATEGORY + 0.2, // Arcane Barrage
-	[42914]: SPELL_ACTION_CATEGORY + 0.2, // Ice Lance
+	[400640]: SPELL_ACTION_CATEGORY + 0.2, // Ice Lance
 	[55360]: SPELL_ACTION_CATEGORY + 0.2, // Living Bomb
 	[55362]: SPELL_ACTION_CATEGORY + 0.21, // Living Bomb (Explosion)
 	[12654]: SPELL_ACTION_CATEGORY + 0.3, // Ignite

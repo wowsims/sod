@@ -174,6 +174,7 @@ type WowheadItemSource struct {
 	C        int32  `json:"c"`
 	Name     string `json:"n"`    // Name of crafting spell
 	Icon     string `json:"icon"` // Icon corresponding to the named entity
+	SkillID  int32  `json:"s"`    // Skill ID
 	EntityID int32  `json:"ti"`   // Crafting Spell ID / NPC ID / ?? / Quest ID
 	ZoneID   int32  `json:"z"`    // Only for drop / sold by sources
 }
@@ -183,14 +184,14 @@ func (wi WowheadItem) ToProto() *proto.UIItem {
 	for i, details := range wi.SourceDetails {
 		switch wi.SourceTypes[i] {
 		case 1: // Crafted
-			// We'll get this from AtlasLoot instead because it can also tell us the profession.
-			//sources = append(sources, &proto.UIItemSource{
-			//	Source: &proto.UIItemSource_Crafted{
-			//		Crafted: &proto.CraftedSource{
-			//			SpellId: details.EntityID,
-			//		},
-			//	},
-			//})
+			sources = append(sources, &proto.UIItemSource{
+				Source: &proto.UIItemSource_Crafted{
+					Crafted: &proto.CraftedSource{
+						Profession: WowheadProfessionIDs[details.SkillID],
+						SpellId:    details.EntityID,
+					},
+				},
+			})
 		case 2: // Dropped by
 			sources = append(sources, &proto.UIItemSource{
 				Source: &proto.UIItemSource_Drop{
@@ -318,4 +319,16 @@ func (wi WowheadItem) getClassRestriction() []proto.Class {
 	}
 
 	return classAllowlist
+}
+
+var WowheadProfessionIDs = map[int32]proto.Profession{
+	//129: proto.Profession_FirstAid,
+	164: proto.Profession_Blacksmithing,
+	165: proto.Profession_Leatherworking,
+	171: proto.Profession_Alchemy,
+	//185: proto.Profession_Cooking,
+	186: proto.Profession_Mining,
+	197: proto.Profession_Tailoring,
+	202: proto.Profession_Engineering,
+	333: proto.Profession_Enchanting,
 }

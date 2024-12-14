@@ -111,6 +111,7 @@ func (mage *Mage) applyFireTalents() {
 func (mage *Mage) applyFrostTalents() {
 	mage.registerColdSnapCD()
 	mage.registerIceBarrierSpell()
+	mage.applyImprovedBlizzard()
 	mage.applyWintersChill()
 
 	// Elemental Precision
@@ -507,6 +508,18 @@ func (mage *Mage) registerColdSnapCD() {
 	mage.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
+	})
+}
+
+func (mage *Mage) applyImprovedBlizzard() {
+	if mage.Talents.ImprovedBlizzard == 0 {
+		return
+	}
+
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_MageBlizzard {
+			spell.Flags |= SpellFlagChillSpell
+		}
 	})
 }
 

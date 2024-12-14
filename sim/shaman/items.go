@@ -444,6 +444,10 @@ func init() {
 
 	core.NewItemEffect(TotemOfTheElements, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
+		if !shaman.Talents.ElementalFocus {
+			return
+		}
+
 		shaman.RegisterAura(core.Aura{
 			Label: "Totem of the Elements",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {

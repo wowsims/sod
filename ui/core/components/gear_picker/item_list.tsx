@@ -7,7 +7,7 @@ import { EP_TOOLTIP } from '../../constants/tooltips';
 import { setItemQualityCssClass } from '../../css_utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
-import { Class, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec } from '../../proto/common';
+import { Class, ItemQuality, ItemRandomSuffix, ItemSlot, ItemSpec, Profession } from '../../proto/common';
 import { DatabaseFilters, RepSource, UIEnchant, UIFaction, UIItem, UIItem_FactionRestriction, UIRune } from '../../proto/ui';
 import { ActionId } from '../../proto_utils/action_id';
 import { getUniqueEnchantString } from '../../proto_utils/enchants';
@@ -624,8 +624,8 @@ export default class ItemList<T extends ItemListType> {
 			const href = src.spellId ? ActionId.makeSpellUrl(src.spellId) : ActionId.makeItemUrl(item.id);
 			return makeAnchor(
 				href,
-				<div className="d-flex">
-					{this.getProfessionSourceIcon()}
+				<div className="d-flex align-items-center">
+					{this.getProfessionSourceIcon(src.profession)}
 					{professionNames.get(src.profession) ?? 'Unknown'}
 				</div>,
 			);
@@ -747,8 +747,29 @@ export default class ItemList<T extends ItemListType> {
 		return <img src="https://static.wikia.nocookie.net/wowpedia/images/1/1f/Pointer_buy_on_32x32.png" className="item-source-icon-vendor me-1" />;
 	}
 
-	private getProfessionSourceIcon(): Element {
-		return <img src="https://static.wikia.nocookie.net/wowpedia/images/6/63/Pointer_repair_off_32x32.png" className="item-source-icon-profession me-1" />;
+	private getProfessionSourceIcon(profession: Profession): Element {
+		let src = "https://static.wikia.nocookie.net/wowpedia/images/6/63/Pointer_repair_off_32x32.png"
+		switch (profession) {
+			case Profession.Alchemy:
+				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_alchemy.gif"
+				break;
+			case Profession.Blacksmithing:
+				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_blacksmithing.gif"
+				break;
+			case Profession.Enchanting:
+				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_enchanting.gif"
+				break;
+			case Profession.Engineering:
+				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_engineering.gif"
+				break;
+			case Profession.Leatherworking:
+				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_leatherworking.gif"
+				break;
+			case Profession.Tailoring:
+				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_tailoring.gif"
+				break;
+		}
+		return <img src={src} className="item-source-icon-profession me-1" />;
 	}
 
 	private getQuestSourceIcon(): Element {
