@@ -33,6 +33,12 @@ import P5MutilateAPL from './apls/P5_Mutilate.apl.json';
 import P5MutilateIEAAPL from './apls/P5_Mutilate_IEA.apl.json';
 import P5SaberAPL from './apls/P5_Saber.apl.json';
 import P5SaberIEAAPL from './apls/P5_Saber_IEA.apl.json';
+import P6BackstabAPL from './apls/P6_Backstab.apl.json';
+import P6BackstabIEAAPL from './apls/P6_Backstab_IEA.apl.json';
+import P6MutilateAPL from './apls/P6_Mutilate.apl.json';
+import P6MutilateIEAAPL from './apls/P6_Mutilate_IEA.apl.json';
+import P6SaberAPL from './apls/P6_Saber.apl.json';
+import P6SaberIEAAPL from './apls/P6_Saber_IEA.apl.json';
 import SaberDPSApl50 from './apls/Saber_DPS_50.apl.json';
 import SaberDPSAPL60 from './apls/Saber_DPS_60.apl.json';
 import SaberIEAApl50 from './apls/Saber_IEA_50.apl.json';
@@ -49,6 +55,10 @@ import P4SaberGear from './gear_sets/p4_saber.gear.json';
 import P5BackstabGear from './gear_sets/p5_backstab.gear.json';
 import P5MutilateGear from './gear_sets/p5_mutilate.gear.json';
 import P5SaberGear from './gear_sets/p5_saber.gear.json';
+import P6BackstabGear from './gear_sets/p6_backstab.gear.json';
+import P6MutilateGear from './gear_sets/p6_mutilate.gear.json';
+import P6MutilateIEAGear from './gear_sets/p6_mutilate_IEA.gear.json';
+import P6SaberGear from './gear_sets/p6_saber.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -70,6 +80,10 @@ export const P4GearSaber = PresetUtils.makePresetGear('P4 Saber', P4SaberGear, {
 export const P5GearBackstab = PresetUtils.makePresetGear('P5 Backstab', P5BackstabGear, { customCondition: player => player.getLevel() === 60 });
 export const P5GearMutilate = PresetUtils.makePresetGear('P5 Mutilate', P5MutilateGear, { customCondition: player => player.getLevel() === 60 });
 export const P5GearSaber = PresetUtils.makePresetGear('P5 Saber', P5SaberGear, { customCondition: player => player.getLevel() === 60 });
+export const P6GearBackstab = PresetUtils.makePresetGear('P6 Backstab', P6BackstabGear, { customCondition: player => player.getLevel() === 60 });
+export const P6GearMutilate = PresetUtils.makePresetGear('P6 Mutilate', P6MutilateGear, { customCondition: player => player.getLevel() === 60 });
+export const P6GearMutilateIEA = PresetUtils.makePresetGear('P6 Mutilate IEA', P6MutilateIEAGear, { customCondition: player => player.getLevel() === 60 });
+export const P6GearSaber = PresetUtils.makePresetGear('P6 Saber', P6SaberGear, { customCondition: player => player.getLevel() === 60 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [P1GearDaggers, P1GearSaber],
@@ -77,12 +91,13 @@ export const GearPresets = {
 	[Phase.Phase3]: [P3GearMuti, P3GearMutiHat, P3GearSaber],
 	[Phase.Phase4]: [P4GearMuti, P4GearSaber],
 	[Phase.Phase5]: [P5GearBackstab, P5GearMutilate, P5GearSaber],
+	[Phase.Phase6]: [P6GearBackstab, P6GearMutilate, P6GearMutilateIEA, P6GearSaber],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase5][0];
-export const DefaultGearBackstab = GearPresets[Phase.Phase5][0];
-export const DefaultGearMutilate = GearPresets[Phase.Phase5][1];
-export const DefaultGearSaber = GearPresets[Phase.Phase5][2];
+export const DefaultGear = GearPresets[Phase.Phase6][0];
+export const DefaultGearBackstab = GearPresets[Phase.Phase6][0];
+export const DefaultGearMutilate = GearPresets[Phase.Phase6][1];
+export const DefaultGearSaber = GearPresets[Phase.Phase6][3];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets[]
@@ -136,6 +151,24 @@ export const ROTATION_PRESET_MUTILATE_IEA_P5 = PresetUtils.makePresetAPLRotation
 export const ROTATION_PRESET_SABER_IEA_P5 = PresetUtils.makePresetAPLRotation('P5 Saber Slash IEA', P5SaberIEAAPL, {
 	customCondition: player => player.getLevel() === 60,
 });
+export const ROTATION_PRESET_BACKSTAB_DPS_P6 = PresetUtils.makePresetAPLRotation('P6 Backstab', P6BackstabAPL, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const ROTATION_PRESET_MUTILATE_DPS_P6 = PresetUtils.makePresetAPLRotation('P6 Mutilate', P6MutilateAPL, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const ROTATION_PRESET_SABER_DPS_P6 = PresetUtils.makePresetAPLRotation('P6 Saber Slash', P6SaberAPL, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const ROTATION_PRESET_BACKSTAB_IEA_P6 = PresetUtils.makePresetAPLRotation('P6 Backstab IEA', P6BackstabIEAAPL, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const ROTATION_PRESET_MUTILATE_IEA_P6 = PresetUtils.makePresetAPLRotation('P6 Mutilate IEA', P6MutilateIEAAPL, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const ROTATION_PRESET_SABER_IEA_P6 = PresetUtils.makePresetAPLRotation('P5 Saber Slash IEA', P6SaberIEAAPL, {
+	customCondition: player => player.getLevel() === 60,
+});
 
 export const APLPresets = {
 	[Phase.Phase1]: [ROTATION_PRESET_MUTILATE, ROTATION_PRESET_SINISTER_25],
@@ -150,6 +183,14 @@ export const APLPresets = {
 		ROTATION_PRESET_MUTILATE_IEA_P5,
 		ROTATION_PRESET_SABER_IEA_P5,
 	],
+	[Phase.Phase6]: [
+		ROTATION_PRESET_BACKSTAB_DPS_P6,
+		ROTATION_PRESET_MUTILATE_DPS_P6,
+		ROTATION_PRESET_SABER_DPS_P6,
+		ROTATION_PRESET_BACKSTAB_IEA_P6,
+		ROTATION_PRESET_MUTILATE_IEA_P6,
+		ROTATION_PRESET_SABER_IEA_P6,
+	],
 };
 
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
@@ -162,15 +203,15 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		[RogueRune.RuneSaberSlash]: ROTATION_PRESET_SABER_SLASH_DPS_50,
 	},
 	60: {
-		[RogueRune.RuneMutilate]: ROTATION_PRESET_MUTILATE_DPS_P5,
-		[RogueRune.RuneSaberSlash]: ROTATION_PRESET_SABER_DPS_P5,
-		[RogueRune.RuneCutthroat]: ROTATION_PRESET_ASSASSINATION_BACKSTAB_DPS_P5,
+		[RogueRune.RuneMutilate]: ROTATION_PRESET_MUTILATE_DPS_P6,
+		[RogueRune.RuneSaberSlash]: ROTATION_PRESET_SABER_DPS_P6,
+		[RogueRune.RuneCutthroat]: ROTATION_PRESET_BACKSTAB_DPS_P6,
 	},
 };
 
-export const DefaultAPLBackstab = APLPresets[Phase.Phase5][0];
-export const DefaultAPLMutilate = APLPresets[Phase.Phase5][2];
-export const DefaultAPLSaber = APLPresets[Phase.Phase5][3];
+export const DefaultAPLBackstab = APLPresets[Phase.Phase6][0];
+export const DefaultAPLMutilate = APLPresets[Phase.Phase6][1];
+export const DefaultAPLSaber = APLPresets[Phase.Phase6][2];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Talent Presets
@@ -264,11 +305,32 @@ export const P5TalentMutilateSaberslashCTTCIEA = PresetUtils.makePresetTalents(
 	},
 );
 
+export const P6BackstabTalent = PresetUtils.makePresetTalents('P6 Backstab', SavedTalents.create({ talentsString: '005203102-0233-0502530310321005' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const P6BackstabIEATalent = PresetUtils.makePresetTalents('P6 Backstab IEA', SavedTalents.create({ talentsString: '00520312-0233-0502530310321005' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const P6MutilateSaberTalent = PresetUtils.makePresetTalents(
+	'P6 Mutilate/Saber',
+	SavedTalents.create({ talentsString: '00530310355104-02330520000501' }),
+	{
+		customCondition: player => player.getLevel() === 60,
+	},
+);
+export const P6MutilateSaberIEATalent = PresetUtils.makePresetTalents(
+	'P5 Mutilate/Saber IEA',
+	SavedTalents.create({ talentsString: '00530312155104-02330520000501' }),
+	{
+		customCondition: player => player.getLevel() === 60,
+	},
+);
+
 export const TalentPresets = {
 	[Phase.Phase1]: [CombatDagger25Talents],
 	[Phase.Phase2]: [ColdBloodMutilate40Talents, IEAMutilate40Talents, CombatMutilate40Talents],
 	[Phase.Phase3]: [P3TalentsMuti, P3TalentsMutiHat, P3TalentsSaber],
-	//	[Phase.Phase4]: [P4TalentsMutiSaber, P4TalentsSlaughter],
+	/*	[Phase.Phase4]: [P4TalentsMutiSaber, P4TalentsSlaughter],
 	[Phase.Phase5]: [
 		P5TalentBackstabAssassination,
 		P5TalentBackstabCombat,
@@ -276,79 +338,80 @@ export const TalentPresets = {
 		P5TalentMutilateSaberslashCTTC,
 		P5TalentBackstabAssassinationIEA,
 		P5TalentMutilateSaberslashCTTCIEA,
-	],
+	],*/ // Cleaner to have only current phase talents available
+	[Phase.Phase6]: [P6BackstabTalent, P6BackstabIEATalent, P6MutilateSaberTalent, P6MutilateSaberIEATalent],
 };
 
-export const DefaultTalentsAssassin = TalentPresets[Phase.Phase5][0];
-export const DefaultTalentsCombat = TalentPresets[Phase.Phase5][0];
-export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase5][0];
+export const DefaultTalentsAssassin = TalentPresets[Phase.Phase6][2];
+export const DefaultTalentsCombat = TalentPresets[Phase.Phase6][2];
+export const DefaultTalentsSubtlety = TalentPresets[Phase.Phase6][0];
 
-export const DefaultTalentsBackstab = TalentPresets[Phase.Phase5][0];
-export const DefaultTalentsMutilate = TalentPresets[Phase.Phase5][3];
-export const DefaultTalentsSaber = TalentPresets[Phase.Phase5][2];
+export const DefaultTalentsBackstab = TalentPresets[Phase.Phase6][0];
+export const DefaultTalentsMutilate = TalentPresets[Phase.Phase6][2];
+export const DefaultTalentsSaber = TalentPresets[Phase.Phase6][2];
 
-export const DefaultTalents = DefaultTalentsAssassin;
+export const DefaultTalents = DefaultTalentsCombat;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                Encounters
 ///////////////////////////////////////////////////////////////////////////
 export const PresetBuildBackstab = PresetUtils.makePresetBuild('Backstab', {
 	gear: DefaultGearBackstab,
-	talents: P5TalentBackstabAssassination,
-	rotation: DefaultAPLBackstab,
+	talents: P6BackstabTalent,
+	rotation: ROTATION_PRESET_BACKSTAB_DPS_P6,
 	encounter: PresetUtils.makePresetEncounter(
 		'Backstab',
-		'https://wowsims.github.io/sod/rogue/#eJztVV1sVEUUvmfu3d3Z09zrdAS5O23tdlVyXSzcu38ppbpLlYhoyEZ52BhjqlIE0mgjiVGfaqEqqUBRo1II6ZsV1OgGX/pgGh4MfSsmNiTSiPGNGG3iT7Ga6My92227LfIA/jx4HiZnzpzznW/OmR9klMSJQwqkC/pIcYhAZ6MNowQ+JlCASYBLAEWyG84BbIURAlwTMwzDxZ4nXux+joXsjng4+QFgHdt/yLInNjl9nwg02OgRCyPs1BHL/miVXBsbtOzzYWf8zZicvC+t31rO9KyanJaTact5S0bVsX4J8bXl/HSyESkbOGQ5Z64onwMB8ldnbDl5OfB57deY9Pls1nRePdAgtckfTGdIagabPWzJ8fIrisDclGl/p5TpOV8x2IlZMxWnOgMH2uT+tpIX1vSBPQT6COjjAF+AdgFC7VMGXiLa//K3Cp+Bf5vCPy2XidZZ3wajoI4eFKEEXdAL22Kum02n0p6bzWbl4LW6qXTaTbW62SJ9Uts7E7V1rMfI3hDq9DczEUYDibsPVyMVUqcXRyARxQiGWr312aqZff+zWTXnFsxzQ/Nmd723j98vtmCHaEeWtKjByUua8OE9F9fy2+et2+at2Vq/jCskK/b7Jm4I0q7xdeJOjItb0SwDcsJCkp6622aiDqOnjHAw9UPefoTfJZLYIpqxiTcglkFyor9kHFITrLzppz38BIhjgIdBDALu4A9jU7KBhjk7C6bvG6EXS/GdjqHcETI+UZ3r/aAFlmXU025AqwyK1jufN2Kaez6qwdnYiqgesnLtggqW75S/mWbe5GcJL2TJuYsyCLXFoyWH8uMg3gV8HcRBwHbeVomqZRteVPoc8gRDqwx1fv4QHSw5YXyQP7AsNo03Jc1KrG9YObS2tzmfnVriRbEd7xWbMc/vXoaewTXJ1bKyOFZtWLU4NZRdMe/Bu8TjeB/vXFxx9YQHHBZTrynf0ib9eLIxdQtGfdhxy4GKOqA47wfRB7hHPI3d/CkfBpbUUzUWrnZcshgd9jOoT6YhGZMUrLEl5Qr8UkiHQZ3Hb55J3YwREaiVeyhj+W6xCx8Tj6LHN6zQ079EvoPftkKxVSuNhVZmqpnuER3oiQ3LSpjxsxhXybJQr+uI909wq1iHLbz5GtdwyfW49sOgHqjzR6H3HFwhMAxaP5F7pzsTZ/Vo8IJuL9QHyqpCbPiYkon8xsAymW/Z5ctUPvWGTi/0m5w+1P18d08859r5uJ78j33pzsHCDcFZ++F14TDxx43hIcXzx973Chv3PDszMLHjy/zmykqhBH8CZHYaeA==',
+		'https://wowsims.github.io/sod/rogue/#eJztVl1oHFUU3nNndnb2pDOZXFKd3KTpuqJcVjfMzuyum8S6m+hDmorsQ5E8lSiNaCkajBT1xU2a0n+7+IO1FZO0iqGo1NinIBIFpXmrv8RasSCIrT4IiqlW0Duzs91hsw+xVhD0Psycc+45Z77v3HPvHTRUEiOcFMgwlEixTKC/zYRZAicJFOAMwHmAInkQTgMMAA2xcy2oFLff98TIo0bYvD2mJF4HbDJ2HtTNxV5eeouhbMwe0jFinDikm2+2irmlKd38SOELz7YJpSQcv9H5V8uucmBGN7/r5c+JqCbj+2ndnGzlP7/cgapxfEbnpy65PpOVzF+eMoUyLpSvdb7n1zbhc3ZK57sn213pVZ2XhSQby0/r4nl0xgVwTGT/wRW+mPIE2XhpWbO5GjEIV3KC3IBcJuTxSAnayyBNgzwLsADwMRADliDc862M50no//GPDlr6z5f4Ign1t+RAdJ9oSSjCEAzDKAyut6yMbTkpy05atuMkrYxlZxzX4NgpMVdUh+T7Q9veQVNCipFtYZTUy1o8gkJIpsdQ7NN5kChkfJMzhtdhlAlF/SXNSTyKQkzaXZkxXIsqU1BWz02Db04FzMZvZc03W12pMToO7CncwR7DHM2ikdBVmZInQ64nkpTlW6QJCDHxWYS0ZwlT6RnZt6SCkYPVyEx9rrS1MtJ9Gb/30veAvQv4NrCTgPfSzfWhzupgaPEmjM6BS/2FDzuC6k/iFArkrQMpBb70l/N6JRXnFJUZ6QnRArsD09TGGOtEbQ6QEiMsHN0z0Ys7ISu+qsfXIM6Bu4CXNS57ecZf0WmS3YLr6ToPh1JDlrUCGJiKivrpB8Cj9DCw5wH3AdsN2E1v88NqhcpUE10hncWWeHMQ3M5PGA7SgRWhDjYnND/UMzSMrK9p1us9cT3QIrsH72R9mKcbGsC6PrFWVB7nodrC1XLX47WuNDk9Cuww4AFgewF7aG5VZGncQH0OmjzIYXX/EFdwE924GraNQlfSjfhTdJhtwbtof7BB3KutvnXt+s6sW2nHsqs7e0Hn4Iu73C9sYhsxzzZgK6UNuN9Eb1xhTXus5BqrtLc84v6lfSyPaWY32FqdrANZwhRWbT641pX5XA1PPytcZYpaA69j7UipUdkPx6BK23VULzxMb2UJjNFO7EgwQaz5fVjjJVPUswcHY1uDnMQPxuhpuETgCIQmiKCsbo0vSNHKqbyl0FIRugptR150x2K+u2I5k7/hAW98nrfLkro0oVH17pEdI9tjWcvMJ/5lPw18b+Ga5Ln5jb+Vx2B/XBscYqS85+hrhe6HHvlx1+Lmz/J9/kxhCP4ETjAc6g==',
 	),
 });
 
 export const PresetBuildBackstabIEA = PresetUtils.makePresetBuild('Backstab IEA', {
 	gear: DefaultGearBackstab,
-	talents: P5TalentBackstabAssassinationIEA,
-	rotation: DefaultAPLBackstab,
+	talents: P6BackstabIEATalent,
+	rotation: ROTATION_PRESET_BACKSTAB_IEA_P6,
 	encounter: PresetUtils.makePresetEncounter(
 		'Backstab IEA',
-		'http://localhost:5173/sod/rogue/#eJztVV1oXEUUvmfu3d3ZE+51MrZ6d5KYzarlujXtvftHmkZ3GxVrlbJoHxYRidrUtgQNFkR9imlDrbFtqqI2lpI3Y/1BlwqSBwl9kOQtFQwBW1R8E9GAP1uroDP3bjbJJrUPrT8PnofhzJlzvvPNOfODjJI4cUiB9MAAKY4Q6G6xYZzABwQKMAMwB/AxIbthCmArjBHgmphnGC72PfJs71MsZHfFw8l3ARvY/sOWPb3ZGfhQoMHGj1oYYaeOWvb7a+TaxLBlnw07k6/E5ORtaf3Gcs5X1OQdOTlvOa/KqAY2KCG+tJyfTjYjZUOHLef0BeVzIED+4rQtJ88HPi/8GpM+n1RM5+CBJqnN/GA6I1IzWOWIJccXDyoCUxXT/k4pF2d9xWAnKmYqTnUGDnTIDW4lz9gDEBsBfQz0SYDPQJuDUOesgV8R7X/5W4XPw79N4Z+Wb4nW3dgB46COHhShBD3QD9tirptNp9Kem81m5eC1u6l02k21u9kifVTbOx+1dWzEyN4Q6vQ3MxFGA4m7D9ciFVKn58YgEcUIhtq9DdmamX3/s1kz5xbNF0cWzO4Gbx+/W9yFXaITWdKiBifPacKH91xcx29asG5bsGbr/TKukKzY75u5IUinxteLWzAubkCzDMgJC0l66m6biQaMnjLCwdQPee0BfqtIYptoxRbehFgGyYn+knFIXbDyph/18RMgjgMeATEMuIPfjy3JJhrm7AyYvm+EnivFdzqGckfI+ER1rg+CFlhWUE+7Aa0yKFqvf9qMae75qAZnE6uiesjK9QsqWL5T/mZaeYufJbyYJecuySDUFo+VHMrfBPEG4EsgDgF28o5qVD3b8JLS55AnGFplaPDzh+hwyQnjvfyeFbFpvCZpVmN9w+qh9b3N+ezUEi+K7XiH2IJ5ftsK9Axen1wrK4sTtYbVilNH2RULHrxHPIx38u6lFVdPeMBhKfW68i1v0o8nm1PXYdSHnbQcqKpDivN+EAOAe8Tj2Msf82FgWT1VY+FSxyWL0VE/g/pkmpIxScGaWFauwC+FdBTUefz6idS1GBGBWr2HMpbvFrvwIfEgenzjKj39S+Sb+Y2rFFu10lhsZaaW6XbRhZ7YuKKEGT+LcYksi/W6gnj/BLeL9djGWy9zDZddj8s/DOqBOnsM+qfgAoFR0AaJ3DvdmTijR4MXdHuhMVDWFGKjx5VM5zcFlpl82y5fZvOpl3U6N2hyel/v07198Zxr5+N68j/2pTuHClcFZ917V4TDxB9Xh4cUzx/73yps2vPk/ND0js/zW6orhRL8CQTAGmY=',
+		'https://wowsims.github.io/sod/rogue/#eJztVk1sG0UU9huv1+uX7mYzSulm4gbX0Ghk5Gi9/sFJKN4EDmmKkA8VyqkKqEFQVRARVAEXnDRVKbTU4keUFpGk5SeqKCqhpxxQQKJqbuVXoYCIhIQocKhURApFKrPrdWzZPgQoEhLMYf3em/nevO/NmzdGXSERwolNhqFA8kUC/RsMmCVwmoAN5wGWAR6AcwADQH3sWgvK+d33Pj7yiB4wbovIsbcAm/S9hzRjsZcX3mEo6bOHNQzqJw9rxtutYm5pSjM+kvnC821CKYiF32r86xVHOTijGd/38hcEqkn/cVozJlv5z6+GUdFPzGj8zBVnzWTJ85dnDKGMC+UbjT/1a5tYc2FK4/sn2x3pdY0XhSTpK89q4ntsxgnguPD+kyN8MeUKkv7KimpxJagTLmcFtQGpSMhj7QUIF8E/DdIswALAx0B0WIJAz3cSLhPf/+MfHbTwn0/xD8TX35IFUX2iJCEPQzAMozDYYZppy0wmrLhpJZNxM21a6aTQzaSVEFN5ZUi6z7drGQ0/UgzuCqBfuapGgyiEeGoMxTWdBz+FtGdKjuENGGJCUX5JcRINoRDjVld6DNejwmSUlK+mwTMnqsz6b0XVM5tdiTHayW5GFjMUiarzgJToAQF94yJjYheEhOtJXF06DuxJ3MMexSzNoB7TBIA84XOmkSRMz+KfAF8JmHItAep/TvIsiWrkYBmZrvWVMuuRzo/+ey99H9h7gO8COw14D91eC02uLQw12oShOXCIvXQ2XK1eFs2qym9NkP6qnf60Xzf1op1RiZEeH7XZ7ZiiFkZYB6pzq3l3WqeLOynJnqpF1yHOgXPQV1UuuX7GX9NonN2CN9KNbhxyJbKMWRUDU1BWPv0QeIgeAfYi4NPA9gN201s9WCVR6bKjVdIZbIk2Vwe39xOGg3SgDprE5pjqQV1DQ2RtTjNuZYlXhObZ3XgH68Mc3dIgrA2x9SLzOA/lUi+nuzZec/Uy0GPAjgAeBHYAsIdm10SWRnXU5qDJDTmgPDPEZdxGt66FbSNoPd2gN0WH2Q68k/ZXF4jzAtaWrlVbmTUnnTStcgdY0Dh44j5nh21sK+bYFmyltAH3zfSmOmvKZSVVWKXc4xHPNO1jOUwxq8HV6mDh+tYhzro0n63E08/sv+iiUsAbWTtSqpfuw3Eo03YWKhcfopx1YjjGBKnmD2Cd60hWLhwajOys5iMa2eg5uELgKPgmiKCr7Iwu+EOlxr3DbikJXXbb0ZedsZjrLlnO5zbd747Pc1bRryxNqFS5a2TPyO5IxjRysX/Z/wp+wL4ufjpP/S0/Ort2feIQI+F+R9+0ux98+NK+xe2f5fq8GXsI/gCC7iJ2',
 	),
 });
 
 export const PresetBuildMutilate = PresetUtils.makePresetBuild('Mutilate', {
-	gear: DefaultGearMutilate,
-	talents: DefaultTalentsMutilate,
-	rotation: DefaultAPLMutilate,
+	gear: P6GearMutilate,
+	talents: P6MutilateSaberTalent,
+	rotation: ROTATION_PRESET_MUTILATE_DPS_P6,
 	encounter: PresetUtils.makePresetEncounter(
 		'Mutilate',
-		'https://wowsims.github.io/sod/rogue/#eJztVVtIFFEYnv/M7O7420zjwWg8Zmxb2bCkzK6OeaPdLEskyqAHHyu0i0hqQlRPIl0UIrfAhyTItyQoSvQ1wid90ygRUjKiF4nypdbMLmdmdr3Wk3Z56H84/Oc7/+X7z+U/SGXiJwaJkgo4Bi2kKkagbJMOPQQeEYjCMMAkQBU5DYMAFdBNgAqsXUFvVf3xi7XnNI9e6vcGewBTtW8xRR8qMdoeM5S0ng4Vfdr9DlV/mM6VuzOKPuK1jTpV/Y1qTPTpfBLnkwnV6OAeqdocn7xSjed8RdZmOlWjbyaDw7Mc5lFfOg5fXZu2zxncZviDYly7nMm1J3HFiHFN0qauqnyM37CTz44q+jtb6Y87iqTdiSthvyxqYEAhr62CXPC1gBQDsRvEpwDPQBgDT/GohJNE+C+/Veg0/G0Kf1qmiFCmOvcOqqCav7ZGqMwyTSsvbIbMfMviQ44ZzsszrbDJxTJD1fIJoe66VxcxDX11HhTlL0rAixISsxk3oMy4Lo93QyAFfejJCeVa87D2/qMyDxcswLOxJGzmhprpAVaOpawYtaAqS5RcEpgTPmxiNt2WRCsX0GV2+SbjrLS5ElrB9q8mkGU67PjDpRIjxQI1WDZmsUzMoBsRe4ETlj/lGwRTesEumrcDO7PcX0+PsMNYTvdiVjBT9lJtABRKNA/65PFqf40h2WYI+U5CkYqtILiItZzCLoeCzLuOsyvFrBALqOvnXeQXQjWwbgkl12K+uJDJkku0hBVhLt2JSiA1ydzuXbYHLOGS0jVflu38VDWANrEG3MfKMEp3/8TDLhd+Ve7igCiEd6DP2a3XZxO3wG6T7u2xDVzt7RijzawJT7FaTKd0ReEWbqdbV6B5uD6oJM42sdPJA19sltzHhQO3kumpn23GdEYT57EotGPB/wOKzKU9chMaB2GGQBcIrYQnlWsCA2KK+7wORdNcJT2a0XXblqFIkYsMR7acdGQ0Er4lymOtCpUP1p6vrfcXmHrELwb/sX5vtEfXJE72g1XF0dj3teHBJeSMjfeiRWcapq8MHX0R2ZNYiVbDDyGt3Iw=',
+		'https://wowsims.github.io/sod/rogue/#eJztVU1sG1UQ3nler9eTerN5dYrzSivXQPRkJdHu2tsmcandokJkVcgHDhFCqKAaaBSVtJaqlpMJ/ZVaySr0QC5JRSSqKkFtKD30FPWU3MJfFAKIAhJCFQdOKE2C4L312uQHTg1SpXYOq5lvZr43Mx6/h6ZO4oSTHDkIZVKoENjXEoOrBK4TyMEMwF2AAnkLpgB6gCqsbKBW6H/tZPGYGYztjmvJMcAGc2zYiE1n+LkbDFVz6ZKBIfP+ZSP2SVT45oTvc41Pvt8ijHFh/Gzw72/GhHHhihH7NcM/EFkN5rKIPxXlXwmPbn50xeA3F2TC4mWP+Vsv4U9h/GDwc/dbRMz8sMHPntoqtE9HDV4RmmreO2OI75lRWcA34qjfpLI4G5GKai6MGg7XQybhWqdorketEHIiVAa1AoERUK8CTAJ8AcSEOQh2/6LiXaI8lv9VaPmRH/E9ouxr6gSxfWIloQC9cBAGIL/NstyUlbKtlOvaVrrdclIpy3UsIa5lF/Re9XWl7yctFsAo6kxDVb91Np/QUWjttl3CzRjqC2JAX4rUQKuETajdhgAFNxFC4WxPl3ALhpkw9D/SnCTCKNT2VIdbEqwhJvM/6/dRR6LN/lnfjYAP2ytgc7ES8WGrwy7RF9h+3M260UwaukrJO4oMQmJb2EqfrqF5H3WstXFpS1ZgLmeoyki3QnNsD6apg3G2HSMTgJSYQVGLvD8iiQYMX1M13zQSmxAnQPa1FOGqV9u7owbdxVxsY0nktLXml32vZQtPgGQSl44/AlpgL+JzbC9m6bNelRoNDIIivQhpfCLZrAco3q4TVh22H1pv0bbqo6Y97HlvNp10578wNiYjfqIHuNiUaFxZ5XtfMu93ELcqzbAu7KBt1RlUK5c3pCSFFaQuhofqbckyJg0O9BX28qrGVmc8mWQCabwDm7xzNX3+Yj5+aD0fKs5mf19+POKviIBpiR3FN1kRo5Sua9LFZ+hT69CU17r6T+vp+q6snpA/2tquOG79ULkeUUb9bVpB7UWIB4bKFYjT7V572n+0l/aixSM0MAULBIZAGSSiLP1QYjIQrv5zX801VZWOXMvQh1Kms11VZCa74w1PZrNOJaDPDUaofqB4vNgf32nFssmH7GHh53MbwtM6/kA8JvtrY+oQYnvfgY9zXYff/v309EtfZ/f6nlwv/A3G2evT',
 	),
 });
 
 export const PresetBuildMutilateIEA = PresetUtils.makePresetBuild('Mutilate IEA', {
-	gear: DefaultGearMutilate,
-	talents: P5TalentMutilateSaberslashCTTCIEA,
-	rotation: ROTATION_PRESET_MUTILATE_IEA_P5,
+	gear: P6GearMutilateIEA,
+	talents: P6MutilateSaberIEATalent,
+	rotation: ROTATION_PRESET_MUTILATE_IEA_P6,
 	encounter: PresetUtils.makePresetEncounter(
 		'Mutilate IEA',
-		'https://wowsims.github.io/sod/rogue/#eJztVVtsDGEUnvPP7O70NDOmfyqmf1PWRmSsS2Znd1yqsauCqkvrkugLSlRcGhoNwZM0ri9agkQjUU8aCaHhxYOIJ31r0UaCqHhrBC9s1fWff7aLti6J64PzMDn/+b/zncucOYOGSsLEIilSDXtJZROBUmZCK4FLBFLQAdADsBFuAZRBCwEqsTs6Bitr1+6u2W4EzJJwMNoKmGu8OaGb7TOtQ5cZKkZro44h43yjbl7M58qZPs3sDHLQew56olsPr5j8kOaHh7rVyD1yjbNpzXykW3f5jWr0ndCtK30F3Nzvs94XDu/4gWMOvS7gmI7nmnVwXyHXrqc1q4lritF7QOfP9BEveH+3Zj71lKtpoSjG6bTmhFXZAAum88rKyK7QXlCaQG4B+QbAbZDuQaC4W8EeIv2X3yr0BfztFP609BKpNG86tII3elAJVVANdVBeZNtu3LFjjuO6MTsx2Xbicdt1bC6uHVsnbe4KmTLmYWhzAGX1jRYJooLErseRqDKuqw9aIJKDIQxMjk1xs2bj2Usta576ydzfNGC2p8Tq6Xw2F0tYMRpRXVUo2SMxQR+zcTwdN2Atz1gdezAuYTOelfF2Ji1j84Yjcn6QyLVFdvzLpQojxRKdyCZgmI1GrQ2QEiPACz3O94QWycWc80rQP4rgJ5fTSSyKY9kYLKKFiG3Aq1NfJSwyyNlDq1draTVbjcvZUqygi0UaQSo3gOTdIsRwVHQkTwyvZVkGLnxotgbeIr0NcgV9QL2+0gqwAQ+6lFXgXDoHi6KF3MW4CZqAhdQHVeH1luIzJgSj/Flwd3BXpomuqHwT0gq2GEtpCgujBdxHv/ZlZOEeF+7wBeGIqJZJ2oeIHD0XupAtwFm0xO9oG3hxvL06lCKnWVx6G3i4gm/oFtAdrB6XsUpcQhcNw+C1Ab7Whm8FcIowJN7a462Z8fUWvD/2HE63sE24hq3CcTQy5E0mBpOhS+NDUHHRIeVTh4a4ZYN505jPaOYdfUYhEPy/Jcbw+zPrldF5FOpuQR+BZpAaCA+vro/clHP8RbEklecr+amC5lOetCdn+JaO5NgNQrqTzjFZvdegUXVRzc6a2vBU20yG5eg/9ueyDqd+Cc/4Cz/FY7APvyYPLjHxrDuXmrFp24v97Su6krMzN6kq+AjqqvoQ',
+		'https://wowsims.github.io/sod/rogue/#eJztVVtsFFUYnv/M7OzsX3Y6PWlleopkXbQ52WTLXHZEWuIOqzGbjZd9UNknI4QSII02NjFKfKgNN29ho/IgL4A2kRgwWtGHPpiGJ/qGRklFjRATQ4gPPhhTykXPmZ2FYYEnMTHR8zDzX7/z/9+5ITVIjnASkio8C5Ok3iRQWW7DEQKfEAjhFMBZgK1wEqAKVGHvd6NeH9v48ugLVspel9MLRwG7rKMHTXt+hO/9lKFmXXrbxLR1cb9pf9wrfAvC95XO597pF8oxofxs8h+P20J587Bpnx/h+0RWl3VZxO/s5d8Ij2F9cNjkxxdlwtL+CPn7KOGKUH4y+d6L/SLmzEGT79k5IKTPpk3eFJJmXdhtiu/uaVnAd2KqX6WwdDorBc1anDY9bqQtwvUHRGtVrUnIS+lJ0JqgHgLtCMAcwNdALFiA1PAvGp4lyv/jHx108j9P8QWiVMxoP0IdGuIQjkPtbscJfMd3PTcIXKdUdDzfdwLPESNw3LrWMDYp23cZtop3ocF01Iwv9tTyBgqp6LoTNmAfZranMWVcynKt7XAmsAf1WVApBHnhRLUYTAiEDJORf5Q4yWdQiMXSkLD3YpqJEOPzsdjqS2tfPN8PhyA2ewmztdTMxmZnyJ2gDhvC+9gqtAqmoVGyQ5FBSDwHuwtZaakpcg6EQP6syyNUY2RYoSF7EEvUwxxbidkZQEqslJj0XXFTZPNdmPlI02PVzC9DnIF2q1ERr06b1GcucjrYDt3XzpwBqV79faCdJduO+6QVFuIaGiTxO5I6irkFRp09jg/TCq4oMEOn3SdgWRSvG2fequU2t7otRYSoVJ2Cdv+dFK1xIprFJUifYI9hhYY4UOgXOeYsdEWIKePLDTzVSvejdLgBUDKsX2fYjxZZptAN7Cms0WqyzeWFPjE7zt7QDoIb4eoJ3FJskbhRoa5zbffQdWwYV9NikvTE+siQm/C869mSuYfo+mRZPfnuTso7AfzORoMI8Y0G1+krbAc26NPJRZRvR9xBm2o/uAV76uugRGsIt1nDwFsZH5Bzz8UnaM7kEB8P8V7RKnsEJSM3gw/Se29PbLusILiGtIKxeH8k+o684rkcPwmLBA6AMkV0qhmbLcjPqZnW3fJM2NMShsL+A+/JMV9e27KcKt+zJRqny15TNRamstR4dPTF0bHc/Y5dLvzLnj7+WnhHcAaP/S0ci/15Z+oQw42+4x+Ga7c9/9uu+Se/La+PPWED/gKA7wPp',
 	),
 });
 
 export const PresetBuildSaberSlash = PresetUtils.makePresetBuild('Saber Slash', {
-	gear: DefaultGearSaber,
-	talents: DefaultTalentsSaber,
-	rotation: DefaultAPLSaber,
+	gear: P6GearSaber,
+	talents: P6MutilateSaberTalent,
+	rotation: ROTATION_PRESET_SABER_DPS_P6,
 	encounter: PresetUtils.makePresetEncounter(
 		'Saber Slash',
-		'https://wowsims.github.io/sod/rogue/#eJztVV1oHFUUnnNndnb2xJneXFOc3LSyRlvHMQ13ZrM1f3a3aauhSF3Rh4AIVRJ/StBoQPxBqGva1EogFhUMIhEEg2BpY30JKCVPzVsiGAq2WPGtiPbFpm1EvXNnZ9M0iQrWnwfPw+y53/k/99yzSC2SJR4pkr2wn5RGCXRtcGGCwDECRZgFOAdQIk/CKYBuGCfANF6maJb6H32x7zmacjuzpj8BWEMX33bcmQ7v0HGOBl084mCaXpbQ0TrJTL3huHOmVPpFIt853tkTrjwsyMNZx3tLWtTQ8ojjfuN4cxfr0aIHRhzvxKV6CQ+NKK9fK4NXY51DlyOdLxZsb3ioQXKzP9re5681yLDnDzrye3g4Cj570HG/j5gr83bEGPS9BTvMWjoFD1plbd3khfR+MEZBHwf9JMCXoJ2GVPu8geeI9j/9rcQuwL+dwj9N54nWVdsKExCNHpSgB/bCAOzeKEQ+F+YCEeTzgWjZIsJcTuRDISkvgse0fUMZV8daTO9LoW4t2o0mGkjEIK5Hi0veOjMOjRlMY2pL0JyvwvSHn+wqvHUJvjKawKI5GGT38l3YyduR+o5lMPKSxpX7QOBmdluC7k7Q/LV6LYLLrOjPHczgpF1jd/I7MMtvRnsSkBGakulFr9turMHMx4YZH5XJOw+yw8CHAV9hLyuvOtPLoEUyhBbcxjtxg88lum4ablCuTEvuhmxvrJFLpFOrSUO83d+0JCVVKZ0ktgWqolhRdVDKWAdvQ8GbsYn5iJMgG2RdbPGICgNrJRH9WJ/1swf4/biL7cCNfoNlMjoNtlJOW2d6sr2ekRR1bZkr2tkqVD5y87ES34M7+HYssLuVlrmsPTf566UnnKrmGQuCimr1xkLBEw1VYTNrii9jEqJA0SKNLGBZUpkxJZQrVxmfdDxgj/CHcSfvwiLbtopFVDesVffVDlELb8S0atu3T1fmV8JskD+LT/A+rGNsFfeb2K0repDDdb5dGc5KU5KJXd6qSkeSFt8lqkE/BX4M8EPgHwDuZF1rXM/VtvlkHFadutZqovrvJxoyUbn5JbVQuTbXcq1u4v0ez2Ld/B71YpNq/yjjFYGqI9/E/T/xWKOlMfcmDJyCSwTGQCsTWYvV2zitZ+K9tqdYGzN1xfqxdyOaKbTFyGzhlscVzRfCI7p1umwz676+5/v6s1uFW8jq/n/sj9Z7vXhd/Gz+5C/5ofzX65OHpEB9Bz4qtj31zIUDMw99VdhekRR74DfhTw0j',
+		'https://wowsims.github.io/sod/rogue/#eJztVV1oHFUUnnN3Mjt70rmZ3KY6ubWy3do6LM1yZ380f3a3sa0hlLIPPoQipZXGnxI0uiC2IqRrJLU0sFBfjA9JsMVSWmlD9SEghD41b22hEqvFFkGk+KAPlmiFeufuzGa3qU9WEPQ8DPf8f+dnz6JtkjhxSYHshVFSrBDoa3fgFIFzBApwGeAmQJG8ApcA+oFp/HgLGsXhfQeH3rSbnN64kTwD2GyfmaLOQo975DxH3S4vWRi17x2jzmdtUrcodVcMd/54u2TOSuZ76t644Ejm2Ax1fuxxP5RezXZ5gjpjbe6VO+1o2p/MUPfCku8wNqEif6McDkvmO+oe+c23uT5F3fGxtf7rJHW/fG+tTP3xDJXfo+NUAvhlmjo/+Y+vp9RDt5dO0LRrRm3iGp2yuH69Qsjb0VHQKxCZBv0UwDzAVSA2LEJT9w863iTa//SPEhv9z7f4NtH6WjtBbp9cSSjCIOyFERhYJ0QuIzKeyORynsh2iHQmI3JpISknvKI5qL+oHfg16kSwDU1uoG5+MT6QMFG+OjyvhKsxeqAJI+ZdKxSKEraiMQcRBrlEFKWyI1vCRzDGJWPeybokEUP57MikciUZNcp9/8+HA2nal64Jcn07DYHYqxPbv1esQCxSXok9x7djL+9GO0lNnZFDmm+ExBO4iT0RSgdCae5+u6zwEdh/9DCdk26NFfgWzLI0xvnjaM0CMmI3SSz+/bASzRg7rRsBSxOrEGfBr+uu5eoK2+ETlB0FPg74LntHpYqwSBk0PwdCFrfwXnwsyaW05SKsUrENU56j+P6qRSbUzj1Im8YnkxuXtaSmtWeJZYIqs2qo+id1rId3oeAp3MySIVh/CCoN/BWIYCasyHfhNtanjI164+sTA8uY7q9yRYs7hYIjb62K+Czfinn2jLIyGrrzaHKNjIRzNZhVhReYLk9R1LZJFZhim6vDmQU/kX+6fQ9oABWbVEp55JXzPHWBvcB3N8Bp9FjRo7qy6+Ohll4dLPKt14LdlWJW4m/gy3wI2xh7QPSNbMOKFmSwJWkF+xr0JFzixk4FDQk7/LSoJe3nO9TPIfRbOZl6v3BWyza11Rm5BEsEJkErEwnI3J+Yj8Sqx2RPobX6SBXaJz/yaSHfVZVczq9/SdFX+XQlYi6WLWbuHHpraDj+lHDyyX/Zf537QeGhxNl09m/Fsfm9h4NDkqe+I58Wul59/ef3F56/lt8aaAqD8CcV3P3q',
 	),
 });
 
 export const PresetBuildSaberSlashIEA = PresetUtils.makePresetBuild('Saber Slash IEA', {
-	gear: DefaultGearSaber,
-	talents: P5TalentMutilateSaberslashCTTCIEA,
-	rotation: ROTATION_PRESET_SABER_IEA_P5,
+	gear: P6GearSaber,
+	talents: P6MutilateSaberIEATalent,
+	rotation: ROTATION_PRESET_SABER_IEA_P6,
 	encounter: PresetUtils.makePresetEncounter(
 		'Saber Slash IEA',
-		'https://wowsims.github.io/sod/rogue/#eJztVl1oHFUUnnNndvbmxJlOri1Obqysa1vHsQ2zs7sxf3TXaDX9TWoF8ySxJGJr0GBB/EGosW1qJRCLFQ1FIooGwVLXlkLAUvLUvCWCoWCLFd+KaF9s2qaod+7sbEx2o4L158H7cPfe8/Odc74597BoUZIgDsmTbthLOocJtHEbxggcJ5CHKYCLAE/BWYB2GCXAFH6yBvXOvide7H3OitmtCd0dA6y25o6Y9mSLc/Azjpo1d9jEuHVNiI4tF4fxN0x7WhdGPwvJd6Zz4YQtLrPicsF03hIe1dbAkGl/YzrTV2qRWvuHTOfE1Voh3jckUb+WDq+GNgevBTanZw1ncF+dOE39aDhfvFYnwl46YIr90GAQfOqAaX8fHK7PGMFBs47OGn6CqhY40CgqaycvxPeCNgzqKKhnAL4E5RzEmmc0vEiU/9ffuthl+LdT+KfXJaK01TTCGAStB53QBd3QD5tWel427fsp38tmU15mnednhMT3fLF7qZ3K7lNoq1iD8d0xVOmckdRRQ+LtwRVIuTjT86OQrMI4xtal6rMlsfXDT0ZJ3DAvvj4cib361B72MN+ArbwZLdekGiMvKVzCpzxcw1ZF0k2RNLvYLuNxkZV1o4VpnDQr7F5+Dyb4HWgUABmxYiK94HUbyWqs+kTTw6t0eXsHOwR8EPAV9rJEVZk6AEqgQ8jget6Kt7tcSJdNwC0SSqdiNiR6Qot0pB2vpPXxbnf1vJaUtFaBGBRkRaGhZFDoWAtvQo/X41rmIhZAEESvZBwiw8BSSQQ/9GQf2847cAN7AFe6dVRn1gQY0jhOz3clehwtKmpxmWV0NnoyHzH5WAffim0sj3VurfAxx6FaQsbo6cecWMRB4A4LAJe5hsigVF+ax4surJs/jjv4duxgW6WfvoDv29wVIgyOlwoPFamiaakFfA/NwsJcIg+2mW/E9aw1/NoFCCoJJnV5klUjUhnM9EpgZ0wH2NN8Fz7CO3Eb21IBISAaliL69wL4t2JcfrVvnyk+H2HEPgL+AeA7wI8ArmLJCgEXwWCWpctYTEv2tXn2M2VuDSxTgfwix1EX3FfOcZTo58CPA34I/H3AB1nbEh31W6xs1MEVH0ojrmZ3laFUKMRnXrFZ5818Ca0vBS2/5XtdDmXt/CE5ZKKR8kcZlwUqvdK13P0T8yWYc9NvQv9ZuEpgBJQBImqhPckJtSocxdvyNeFheb525N1gTeaaQslU7s4n5ZrJ+YdVem7AYHRL7/O9fYkGz84lVPc/9t/AeT1/U3DWfPqXcCz+y83JQ6yU3Ps/zjftevby/slHv8rdX9Tku+BXQNYmBQ==',
+		'https://wowsims.github.io/sod/rogue/#eJztVVtoHFUY3v/s7Ozsn+7p5GRrJycq62rjsDRhZndWc7M7jbcQtO6DYBCRKo2XEjS6IF4Q0jWSWhpZ0BfjQxJssUgrGmofApXQp+atFZRYFSuCiIjoS4lWqOecndnNdqsvVhD0PAznfP///fdzBk2DpIlNfLIbpkipSmB4qwVHCHxAwIczAOcBnoDTACPAIvx1E/XSxCMvjD9rxqyhtJ49CthmHp2n1uqgvf9DjppZWU9i3Lx0kFrvp4RsTcjO6vbKG53icEwcvqX2V8ctcTi4SK3vB+03BavNrMxSazpln73QiYb5ziK1j69LwvSssvyFIuwTh6+pvf9XqXNuntoz011yd5jaJ1/pEq7fXqTie2CGigB+WaDWj3Lz+bzaaOb6IZqzjbhJbL1PpDaiVQl5Pj4FWhWiC6AdAVgB+ASICWsQG/hOw/Mk8v/6Rxeb+s+X+AcSGW7vAzF9YiShBGOwGyZh9DrHKeSdvJtzCwXX8XqcXD7vFHKOWAXHLRlj2qORvT8ZVhRTaHAdNePEzGjGQLHrcd0ydmB8bwyjxsVkCDplbEd9GaIMCpk4CmFPoYzXYIKLg3HBs0kmgWLb4/UKPIVxLvkfTQRoXqJbAl9fLkAA5yTcUYPN36rJwLJbZnfzO3GID6CZpYbGyIsRqYLEdbCb3RSioyFauFzPc6R/8/dBpnEyEGE+34Eey2GaX4/JJUBGzJiIRL4eyUwbJt7T9OBIM5sQl0BmdTFpayqyfYcoOwB8BvBl9pJyFWXRCkSkDwQPd/AhvDbLBbr5FGxStnVDPEbpPTWNfChdvpI0hzdntzWkpC41l0jSAJVmTVFVT8jYIO9Hh/fidpYNg5UtUG7gz4IIOsJKfBfewYaVsr5R+dzsaCOmy7NsKXGfo8IRLy27j9+Lw8zHrmyn4NBlaFMWY8bHD9ixsASSrjcZ3JxNCqSeXl6NkqSoEG/nO7HIbmvhebg1u0W4weV63jWBG6g2xsKpD6eqWC/bXuv2EsjI5Z9AMqApqMScEop/hiKvUBvYQ/zBpnCaGS1F31DHjfYwkusI7sU3TwVXQcCszJ/Bx/k4phi7gvVt7MaWEuRV6bRG6bz6rWiuVFCQsGW3OnWnI/wudb9CXmurN/LC5jd0GrNo8+6/HCUvHJPJ07BOYA4iFaIzzdhjQmYlmqi9Yw/77bVNr98595Zcq8X+GnKmeMNjan1WzFWjxlolyYx7xp8bn0jf4ljF7L/sN2u/5l8VO93H/pYdk1+6OnGI5arv5Lt+/5NP//zq6v2fFncGEn8M/gCWAwy7',
 	),
 });
 
@@ -358,7 +421,7 @@ export const PresetBuildSaberSlashIEA = PresetUtils.makePresetBuild('Saber Slash
 
 export const DefaultOptions = RogueOptions.create({
 	honorAmongThievesCritRate: 100,
-	pkSwap: false
+	pkSwap: false,
 });
 
 ///////////////////////////////////////////////////////////////////////////
