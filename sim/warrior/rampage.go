@@ -31,7 +31,7 @@ func (warrior *Warrior) registerRampage() {
 
 	warrior.Rampage = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagAPL | core.SpellFlagCastTimeNoGCD,
+		Flags:    core.SpellFlagAPL | core.SpellFlagOffGCD,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
