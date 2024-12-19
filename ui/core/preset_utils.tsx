@@ -16,6 +16,7 @@ import {
 	Spec,
 	UnitReference,
 } from './proto/common.js';
+import { Hunter_Options } from './proto/hunter';
 import { SavedRotation, SavedTalents } from './proto/ui.js';
 import { Stats } from './proto_utils/stats.js';
 import { SpecRotation, specTypeFunctions } from './proto_utils/utils.js';

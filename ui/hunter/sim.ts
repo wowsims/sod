@@ -143,6 +143,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase6],
 			...Presets.TalentPresets[Phase.Phase5],
 			...Presets.TalentPresets[Phase.Phase4],
 			...Presets.TalentPresets[Phase.Phase3],
@@ -151,6 +152,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase6],
 			...Presets.APLPresets[Phase.Phase5],
 			...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
@@ -159,13 +161,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase6],
 			...Presets.GearPresets[Phase.Phase5],
 			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [Presets.PresetBuildRangedMM, Presets.PresetBuildRangedSV, Presets.PresetBuildMeleeBM, Presets.PresetBuildMeleeSV, Presets.PresetBuildWeave],
+		builds: [Presets.PresetBuildRangedDraconic, Presets.PresetBuildRangedKillshot, Presets.PresetBuildMeleeBM, Presets.PresetBuildMeleeSV, Presets.PresetBuildWeave],
 	},
 
 	autoRotation: player => {
