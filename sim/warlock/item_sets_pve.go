@@ -494,9 +494,6 @@ var ItemSetDoomcallersCorruption = core.NewItemSet(core.ItemSet{
 		// In addition, Chaos Bolt can now trigger your Improved Shadow Bolt talent.
 		2: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
-			if !warlock
-
-			hasChaosBoltRune := warlock.HasRune(proto.WarlockRune_RuneHandsChaosBolt)
 
 			aura := warlock.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Warlock - Damage 2P Bonus",
