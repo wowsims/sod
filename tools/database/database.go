@@ -193,7 +193,6 @@ func (db *WowDatabase) AddRune(id int32, tooltip WowheadItemResponse) {
 		Icon:           tooltip.GetIcon(),
 		ClassAllowlist: []proto.Class{tooltip.GetRequiredClass()},
 		Type:           tooltip.GetRequiredItemSlot(),
-		RequiresLevel:  int32(tooltip.GetRequiresLevel()),
 	}
 }
 
