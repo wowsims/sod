@@ -495,8 +495,6 @@ var ItemSetDoomcallersCorruption = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			hasChaosBoltRune := warlock.HasRune(proto.WarlockRune_RuneHandsChaosBolt)
-
 			aura := warlock.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Warlock - Damage 2P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -511,7 +509,7 @@ var ItemSetDoomcallersCorruption = core.NewItemSet(core.ItemSet{
 				},
 			})
 
-			if !hasChaosBoltRune {
+			if !warlock.HasRune(proto.WarlockRune_RuneHandsChaosBolt) || warlock.Talents.ImprovedShadowBolt == 0 {
 				return
 			}
 

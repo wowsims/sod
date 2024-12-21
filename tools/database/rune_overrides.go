@@ -46,26 +46,30 @@ var RuneOverrides = []*proto.UIRune{
 	// As of 2024-06-13 Cobra Slayer is being missed by the scraper because the rune engraving ability is missing "Engrave Rune" in the name
 	{Id: 458393, Name: "Engrave Gloves - Cobra Slayer", Icon: "spell_nature_guardianward", Type: proto.ItemType_ItemTypeHands, ClassAllowlist: []proto.Class{proto.Class_ClassHunter}},
 
-	// Warlock
-	// As of 2024-09-13 Wowhead hasn't picked up the Decimation <=> Mark of Chaos rune swap
-	{Id: 440870, Name: "Engrave Boots - Decimation", Type: proto.ItemType_ItemTypeFeet},
-	{Id: 440892, Name: "Engrave Cloak - Mark of Chaos", Type: proto.ItemType_ItemTypeBack},
-}
+	// Special should pseudo-runes
 
-// Remove runes as you implement them.
-var UnimplementedRuneOverrides = []int32{
 	// Druid
 
 	// Hunter
 
 	// Mage
+	// {Id: 1220158, Name: "Soul of Winter's Grasp", Icon: "spell_holy_divinespirit", Type: proto.ItemType_ItemTypeShoulder, ClassAllowlist: []proto.Class{proto.Class_ClassMage}},
 
 	// Paladin
-	440666, // Cloak - Vindicator
 
 	// Priest
+	// {Id: 1220134, Name: "Soul of the Zealot", Icon: "spell_holy_divinespirit", Type: proto.ItemType_ItemTypeShoulder, ClassAllowlist: []proto.Class{proto.Class_ClassPriest}},
+
+	// Rogue
 
 	// Shaman
+	// {Id: 1220232, Name: "Soul of the Windwalker", Icon: "spell_holy_divinespirit", Type: proto.ItemType_ItemTypeShoulder, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
+	// {Id: 1220234, Name: "Soul of the Shield Master", Icon: "spell_holy_divinespirit", Type: proto.ItemType_ItemTypeShoulder, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
+	// {Id: 1220236, Name: "Soul of the Totemic Protector", Icon: "spell_holy_divinespirit", Type: proto.ItemType_ItemTypeShoulder, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
+	// {Id: 1220238, Name: "Soul of the Shock-Absorber", Icon: "spell_holy_divinespirit", Type: proto.ItemType_ItemTypeShoulder, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
+	// {Id: 1220240, Name: "Soul of the Spiritual Bulwark", Icon: "spell_holy_divinespirit", Type: proto.ItemType_ItemTypeShoulder, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
+	// {Id: 1220242, Name: "Soul of the Maelstrombringer", Icon: "spell_holy_divinespirit", Type: proto.ItemType_ItemTypeShoulder, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
+	// {Id: 1220244, Name: "Soul of the Lavawalker", Icon: "spell_holy_divinespirit", Type: proto.ItemType_ItemTypeShoulder, ClassAllowlist: []proto.Class{proto.Class_ClassShaman}},
 
 	// Warlock
 

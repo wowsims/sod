@@ -182,14 +182,13 @@ message UIEnchant {
 }
 
 message UIRune {
-	reserved 4;
-	reserved "class";
+	reserved 4, 6;
+	reserved "class", "requires_level";
 
 	int32 id = 1; 
 	string name = 2;    
 	string icon = 3;
 	ItemType type = 5;
-	int32 requires_level = 6;
 	repeated Class class_allowlist = 7;
 }
 
