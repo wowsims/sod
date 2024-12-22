@@ -161,9 +161,7 @@ func main() {
 	}
 
 	for id, rune := range runeTooltips {
-		if !slices.Contains(database.UnimplementedRuneOverrides, id) {
-			db.AddRune(id, rune)
-		}
+		db.AddRune(id, rune)
 	}
 
 	db.MergeItems(database.ItemOverrides)
