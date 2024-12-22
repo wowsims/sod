@@ -356,7 +356,7 @@ export const DefaultTalents = DefaultTalentsCombat;
 //                                Encounters
 ///////////////////////////////////////////////////////////////////////////
 export const PresetBuildBackstab = PresetUtils.makePresetBuild('Backstab', {
-	gear: DefaultGearBackstab,
+	gear: P6GearBackstab,
 	talents: P6BackstabTalent,
 	rotation: ROTATION_PRESET_BACKSTAB_DPS_P6,
 	encounter: PresetUtils.makePresetEncounter(
@@ -366,7 +366,7 @@ export const PresetBuildBackstab = PresetUtils.makePresetBuild('Backstab', {
 });
 
 export const PresetBuildBackstabIEA = PresetUtils.makePresetBuild('Backstab IEA', {
-	gear: DefaultGearBackstab,
+	gear: P6GearBackstab,
 	talents: P6BackstabIEATalent,
 	rotation: ROTATION_PRESET_BACKSTAB_IEA_P6,
 	encounter: PresetUtils.makePresetEncounter(
