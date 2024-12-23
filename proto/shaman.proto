@@ -4,211 +4,240 @@ package proto;
 option go_package = "./proto";
 
 message ShamanTalents {
-	// Elemental
-	int32 convection = 1;
-	int32 concussion = 2;
-	int32 earths_grasp = 3;
-	int32 elemental_warding = 4;
-	int32 call_of_flame = 5;
-	bool elemental_focus = 6;
-	int32 reverberation = 7;
-	int32 call_of_thunder = 8;
-	int32 improved_fire_totems = 9;
-	int32 eye_of_the_storm = 10;
-	int32 elemental_devastation = 11;
-	int32 storm_reach = 12;
-	bool elemental_fury = 13;
-	int32 lightning_mastery = 14;
-	bool elemental_mastery = 15;
+    // Elemental
+    int32 convection = 1;
+    int32 concussion = 2;
+    int32 earths_grasp = 3;
+    int32 elemental_warding = 4;
+    int32 call_of_flame = 5;
+    bool elemental_focus = 6;
+    int32 reverberation = 7;
+    int32 call_of_thunder = 8;
+    int32 improved_fire_totems = 9;
+    int32 eye_of_the_storm = 10;
+    int32 elemental_devastation = 11;
+    int32 storm_reach = 12;
+    bool elemental_fury = 13;
+    int32 lightning_mastery = 14;
+    bool elemental_mastery = 15;
 
-	// Enhancement
-	int32 ancestral_knowledge = 16;
-	int32 shield_specialization = 17;
-	int32 guardian_totems = 18;
-	int32 thundering_strikes = 19;
-	int32 improved_ghost_wolf = 20;
-	int32 improved_lightning_shield = 21;
-	int32 enhancing_totems = 22;
-	bool two_handed_axes_and_maces = 23;
-	int32 anticipation = 24;
-	int32 flurry = 25;
-	int32 toughness = 26;
-	int32 improved_weapon_totems = 27;
-	int32 elemental_weapons = 28;
-	bool parry = 29;
-	int32 weapon_mastery = 30;
-	bool stormstrike = 31;
+    // Enhancement
+    int32 ancestral_knowledge = 16;
+    int32 shield_specialization = 17;
+    int32 guardian_totems = 18;
+    int32 thundering_strikes = 19;
+    int32 improved_ghost_wolf = 20;
+    int32 improved_lightning_shield = 21;
+    int32 enhancing_totems = 22;
+    bool two_handed_axes_and_maces = 23;
+    int32 anticipation = 24;
+    int32 flurry = 25;
+    int32 toughness = 26;
+    int32 improved_weapon_totems = 27;
+    int32 elemental_weapons = 28;
+    bool parry = 29;
+    int32 weapon_mastery = 30;
+    bool stormstrike = 31;
 
-	// Restoration
-	int32 improved_healing_wave = 32;
-	int32 tidal_focus = 33;
-	int32 improved_reincarnation = 34;
-	int32 ancestral_healing = 35;
-	int32 totemic_focus = 36;
-	int32 natures_guidance = 37;
-	int32 healing_focus = 38;
-	bool totemic_mastery = 39;
-	int32 healing_grace = 40;
-	int32 restorative_totems = 41;
-	int32 tidal_mastery = 42;
-	int32 healing_way = 43;
-	bool natures_swiftness = 44;
-	int32 purification = 45;
-	bool mana_tide_totem = 46;
+    // Restoration
+    int32 improved_healing_wave = 32;
+    int32 tidal_focus = 33;
+    int32 improved_reincarnation = 34;
+    int32 ancestral_healing = 35;
+    int32 totemic_focus = 36;
+    int32 natures_guidance = 37;
+    int32 healing_focus = 38;
+    bool totemic_mastery = 39;
+    int32 healing_grace = 40;
+    int32 restorative_totems = 41;
+    int32 tidal_mastery = 42;
+    int32 healing_way = 43;
+    bool natures_swiftness = 44;
+    int32 purification = 45;
+    bool mana_tide_totem = 46;
 }
 
 enum ShamanRune {
-	RuneNone						= 0;
+    RuneNone                        = 0;
 
-	RuneHelmBurn					= 415231;
-	RuneHelmMentalDexterity			= 415140;
-	RuneHelmTidalWaves				= 432042;
+    RuneHelmBurn                    = 415231;
+    RuneHelmMentalDexterity         = 415140;
+    RuneHelmTidalWaves              = 432042;
 
-	RuneCloakCoherence				= 415096;
-	RuneCloakStormEarthAndFire		= 440569;
-	RuneCloakFeralSpirit			= 440580;
+    RuneShouldersAncestralWarden    = 1220295;
+    RuneShouldersChieftain          = 1220266;
+    RuneShouldersCorrupt            = 1220297;
+    RuneShouldersElder              = 1220288;
+    RuneShouldersElementalMaster    = 1220282;
+    RuneShouldersElementalSeer      = 1220258;
+    RuneShouldersElements           = 1220291;
+    RuneShouldersFlamebringer       = 1220276;
+    RuneShouldersFurycharged        = 1220268;
+    RuneShouldersLavaSage           = 1220293;
+    RuneShouldersLavaWalker         = 1220244;
+    RuneShouldersMaelstrombringer   = 1220242;
+    RuneShouldersRagingFlame        = 1220279;
+    RuneShouldersRefined            = 1220034;
+    RuneShouldersSeismicSmasher     = 1220274;
+    RuneShouldersShieldMaster       = 1220234;
+    RuneShouldersShockAbsorber      = 1220238;
+    RuneShouldersSpiritualBulwark   = 1220240;
+    RuneShouldersSpiritGuide        = 1220286;
+    RuneShouldersStormbreaker       = 1220270;
+    RuneShouldersStormtender        = 1220256;
+    RuneShouldersTempest            = 1220272;
+    RuneShouldersTotemicProtector   = 1220236;
+    RuneShouldersTribesman          = 1220284;
+    RuneShouldersTrueAlpha          = 1220246;
+    RuneShouldersVolcano            = 1220278;
+    RuneShouldersWaterWalker        = 1220254;
+    RuneShouldersWindwalker         = 1220232;
 
-	RuneChestDualWieldSpec			= 408496;
-	RuneChestHealingRain			= 415236;
-	RuneChestOverload				= 408438;
-	RuneChestShieldMastery			= 408524;
-	RuneChestTwoHandedMastery		= 436364;
-	
-	RuneBracersOvercharged			= 432140;
-	RuneBracersRiptide				= 408521;
-	RuneBracersRollingThunder		= 432056;
-	RuneBracersStaticShock			= 432134;
+    RuneCloakCoherence              = 415096;
+    RuneCloakStormEarthAndFire      = 440569;
+    RuneCloakFeralSpirit            = 440580;
 
-	RuneHandsLavaBurst				= 408490;
-	RuneHandsLavaLash				= 408507;
-	RuneHandsMoltenBlast			= 425339;
-	RuneHandsWaterShield			= 408510;
+    RuneChestDualWieldSpec          = 408496;
+    RuneChestHealingRain            = 415236;
+    RuneChestOverload               = 408438;
+    RuneChestShieldMastery          = 408524;
+    RuneChestTwoHandedMastery       = 436364;
+    
+    RuneBracersOvercharged          = 432140;
+    RuneBracersRiptide              = 408521;
+    RuneBracersRollingThunder       = 432056;
+    RuneBracersStaticShock          = 432134;
 
-	RuneWaistFireNova				= 408339;
-	RuneWaistMaelstromWeapon		= 408498;
-	RuneWaistPowerSurge				= 415100;
+    RuneHandsLavaBurst              = 408490;
+    RuneHandsLavaLash               = 408507;
+    RuneHandsMoltenBlast            = 425339;
+    RuneHandsWaterShield            = 408510;
 
-	RuneLegsAncestralGuidance 		= 409324;
-	RuneLegsEarthShield				= 408514;
-	RuneLegsWayOfEarth				= 408531;
-	RuneLegsGreaterGhostWolf		= 415813;
+    RuneWaistFireNova               = 408339;
+    RuneWaistMaelstromWeapon        = 408498;
+    RuneWaistPowerSurge             = 415100;
 
-	RuneFeetAncestralAwakening 		= 425858;
-	RuneFeetDecoyTotem				= 425874;
-	RuneFeetSpiritOfTheAlpha		= 408696;
+    RuneLegsAncestralGuidance       = 409324;
+    RuneLegsEarthShield             = 408514;
+    RuneLegsWayOfEarth              = 408531;
+    RuneLegsGreaterGhostWolf        = 415813;
+
+    RuneFeetAncestralAwakening      = 425858;
+    RuneFeetDecoyTotem              = 425874;
+    RuneFeetSpiritOfTheAlpha        = 408696;
 }
 
 enum EarthTotem {
-	NoEarthTotem = 0;
-	StrengthOfEarthTotem = 1;
-	TremorTotem = 2;
-	StoneskinTotem = 3;
+    NoEarthTotem = 0;
+    StrengthOfEarthTotem = 1;
+    TremorTotem = 2;
+    StoneskinTotem = 3;
 }
 
 enum AirTotem {
-	NoAirTotem = 0;
-	WindfuryTotem = 1;
-	GraceOfAirTotem = 2;
+    NoAirTotem = 0;
+    WindfuryTotem = 1;
+    GraceOfAirTotem = 2;
 }
 
 enum FireTotem {
-	NoFireTotem = 0;
-	MagmaTotem = 1;
-	SearingTotem = 2;
-	FireNovaTotem = 3;
+    NoFireTotem = 0;
+    MagmaTotem = 1;
+    SearingTotem = 2;
+    FireNovaTotem = 3;
 }
 
 enum WaterTotem {
-	NoWaterTotem = 0;
-	ManaSpringTotem = 1;
-	HealingStreamTotem = 2;
+    NoWaterTotem = 0;
+    ManaSpringTotem = 1;
+    HealingStreamTotem = 2;
 }
 
 // Deprecated on 2024-02-08. Use APL totems instead
 message ShamanTotems {
-	// Not used here, but used by APL
-	enum TotemType {
-		TypeUnknown = 0;
-		Earth = 1;
-		Air = 2;
-		Fire = 3;
-		Water = 4;
-	}
+    // Not used here, but used by APL
+    enum TotemType {
+        TypeUnknown = 0;
+        Earth = 1;
+        Air = 2;
+        Fire = 3;
+        Water = 4;
+    }
 
-	EarthTotem earth = 1;
-	AirTotem air = 2;
-	FireTotem fire = 3;
-	WaterTotem water = 4;
+    EarthTotem earth = 1;
+    AirTotem air = 2;
+    FireTotem fire = 3;
+    WaterTotem water = 4;
 
-	// If set, will use mana tide when appropriate.
-	bool use_mana_tide = 5;
+    // If set, will use mana tide when appropriate.
+    bool use_mana_tide = 5;
 
-	// If set, any time a 2-minute totem is about to expire, will recall and
-	// replace all totems.
-	bool recall_totems = 8;
+    // If set, any time a 2-minute totem is about to expire, will recall and
+    // replace all totems.
+    bool recall_totems = 8;
 
-	// If set will use fire totems as an MCD instead of manually controlling when to place them.
-	bool use_fire_mcd = 9;
+    // If set will use fire totems as an MCD instead of manually controlling when to place them.
+    bool use_fire_mcd = 9;
 
-	// Bonus spell power for fire elemental snapshotting.
-	int32 bonus_spellpower = 10;
+    // Bonus spell power for fire elemental snapshotting.
+    int32 bonus_spellpower = 10;
 
-	// Snapshot fire elemental using Tier 10 4 set bonus.
-	bool enh_tier_ten_bonus = 11;
+    // Snapshot fire elemental using Tier 10 4 set bonus.
+    bool enh_tier_ten_bonus = 11;
 }
 
 enum ShamanSyncType {
   NoSync = 0;
   SyncMainhandOffhandSwings = 1;
   DelayOffhandSwings = 2;
-	Auto = 3;
+    Auto = 3;
 }
 
 message ElementalShaman {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	// NextIndex: 6
-	message Options {
-	}
-	Options options = 3;
+    // NextIndex: 6
+    message Options {
+    }
+    Options options = 3;
 }
 
 message EnhancementShaman {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	// NextIndex: 7
-	message Options {
-		ShamanSyncType sync_type = 3;
-	}
-	Options options = 3;
+    // NextIndex: 7
+    message Options {
+        ShamanSyncType sync_type = 3;
+    }
+    Options options = 3;
 }
 
 enum ShamanHealSpell {
-	AutoHeal = 0;
-	HealingWave = 1;
-	LesserHealingWave = 2;
-	ChainHeal = 3;
+    AutoHeal = 0;
+    HealingWave = 1;
+    LesserHealingWave = 2;
+    ChainHeal = 3;
 }
 
 message RestorationShaman {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	// NextIndex: 8
-	message Options {
-		int32 earth_shield_p_p_m = 5;
-		ShamanTotems totems = 6 [deprecated=true];
-	}
-	Options options = 3;
+    // NextIndex: 8
+    message Options {
+        int32 earth_shield_p_p_m = 5;
+        ShamanTotems totems = 6 [deprecated=true];
+    }
+    Options options = 3;
 }
 
 message WardenShaman {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	message Options {
-	}
-	Options options = 1;
+    message Options {
+    }
+    Options options = 1;
 }

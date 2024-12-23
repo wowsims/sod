@@ -14,6 +14,9 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyBurn()
 	shaman.applyMentalDexterity()
 
+	// Shoulder
+	shaman.applyShoulderRuneEffect()
+
 	// Cloak
 	shaman.registerFeralSpiritCD()
 
@@ -46,6 +49,78 @@ func (shaman *Shaman) ApplyRunes() {
 	// Feet
 	shaman.applyAncestralAwakening()
 	shaman.applySpiritOfTheAlpha()
+}
+
+func (shaman *Shaman) applyShoulderRuneEffect() {
+	if shaman.Equipment.Shoulders().Rune == int32(proto.ShamanRune_RuneNone) {
+		return
+	}
+
+	switch shaman.Equipment.Shoulders().Rune {
+	// Elemental
+	case int32(proto.ShamanRune_RuneShouldersVolcano):
+		shaman.applyT1Elemental4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersRagingFlame):
+		shaman.applyT1Elemental6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersElementalMaster):
+		shaman.applyT2Elemental2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersTribesman):
+		shaman.applyT2Elemental4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersSpiritGuide):
+		shaman.applyT2Elemental6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersElder):
+		shaman.applyTAQElemental2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersElements):
+		shaman.applyTAQElemental4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersLavaSage):
+		shaman.applyRAQElemental3PBonus()
+
+	// Enhancement
+	case int32(proto.ShamanRune_RuneShouldersRefined):
+		shaman.applyT1Enhancement4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersChieftain):
+		shaman.applyT1Enhancement6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersFurycharged):
+		shaman.applyT2Enhancement2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersStormbreaker):
+		shaman.applyT2Enhancement4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersTempest):
+		shaman.applyT2Enhancement6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersSeismicSmasher):
+		shaman.applyTAQEnhancement2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersFlamebringer):
+		shaman.applyTAQEnhancement4PBonus()
+
+	// Restoration
+	case int32(proto.ShamanRune_RuneShouldersWaterWalker):
+		shaman.applyT2Restoration2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersStormtender):
+		shaman.applyT2Restoration4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersElementalSeer):
+		shaman.applyT2Restoration6PBonus()
+
+	// Tank
+	case int32(proto.ShamanRune_RuneShouldersWindwalker):
+		shaman.applyT1Tank2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersShieldMaster):
+		shaman.applyT1Tank4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersTotemicProtector):
+		shaman.applyT1Tank6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersShockAbsorber):
+		shaman.applyT2Tank2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersSpiritualBulwark):
+		shaman.applyT2Tank4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersMaelstrombringer):
+		shaman.applyT2Tank6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersAncestralWarden):
+		shaman.applyZGTank3PBonus()
+	case int32(proto.ShamanRune_RuneShouldersCorrupt):
+		shaman.applyZGTank5PBonus()
+	case int32(proto.ShamanRune_RuneShouldersLavaWalker):
+		shaman.applyTAQTank2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersTrueAlpha):
+		shaman.applyTAQTank4PBonus()
+	}
 }
 
 var BurnFlameShockTargetCount = int32(5)
@@ -159,8 +234,6 @@ func (shaman *Shaman) applyShieldMastery() {
 
 	defendersResolveAura := core.DefendersResolveSpellDamage(shaman.GetCharacter(), 4)
 
-	has4PEarthfuryResolve := shaman.HasSetBonus(ItemSetEarthfuryResolve, 4)
-
 	shaman.AddStat(stats.Block, 10)
 	shaman.PseudoStats.BlockValueMultiplier = 1.15
 
@@ -169,11 +242,14 @@ func (shaman *Shaman) applyShieldMastery() {
 	procManaReturn := 0.08
 	armorPerStack := shaman.Equipment.OffHand().Stats[stats.Armor] * 0.3
 
-	blockProcAura := shaman.RegisterAura(core.Aura{
+	shaman.ShieldMasteryAura = shaman.RegisterAura(core.Aura{
 		Label:     "Shield Mastery Block",
 		ActionID:  core.ActionID{SpellID: 408525},
 		Duration:  time.Second * 15,
 		MaxStacks: 5,
+		OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.AddMana(sim, shaman.MaxMana()*procManaReturn, manaMetrics)
+		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			shaman.AddStatDynamic(sim, stats.Armor, armorPerStack*float64(newStacks-oldStacks))
 		},
@@ -183,10 +259,9 @@ func (shaman *Shaman) applyShieldMastery() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Shield Mastery Trigger",
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidBlock() || (has4PEarthfuryResolve && (result.DidParry() || result.DidDodge())) {
-				shaman.AddMana(sim, shaman.MaxMana()*procManaReturn, manaMetrics)
-				blockProcAura.Activate(sim)
-				blockProcAura.AddStack(sim)
+			if result.DidBlock() {
+				shaman.ShieldMasteryAura.Activate(sim)
+				shaman.ShieldMasteryAura.AddStack(sim)
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

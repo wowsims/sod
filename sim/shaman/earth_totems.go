@@ -83,8 +83,6 @@ func (shaman *Shaman) registerStoneskinTotemSpell() {
 }
 
 func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
-	has6PEarthfuryResolve := shaman.HasSetBonus(ItemSetEarthfuryResolve, 6)
-
 	spellId := StoneskinTotemSpellId[rank]
 	manaCost := StoneskinTotemManaCost[rank]
 	level := StoneskinTotemLevel[rank]
@@ -99,9 +97,6 @@ func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
 		shaman.ActiveTotems[EarthTotem] = spell
 
 		core.StoneskinTotemAura(&shaman.Unit, shaman.Talents.GuardianTotems).Activate(sim)
-		if has6PEarthfuryResolve {
-			core.ImprovedStoneskinTotemAura(&shaman.Unit).Activate(sim)
-		}
 	}
 	return spell
 }

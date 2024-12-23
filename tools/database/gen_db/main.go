@@ -26,6 +26,7 @@ import (
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-gearplannerdb
 // go run ./tools/database/gen_db -outDir=assets -gen=wago-db2-items
 // python3 tools/scrape_runes.py assets/db_inputs/wowhead_rune_tooltips.csv
+// python3 tools/scrape_shoulder_runes.py assets/db_inputs/wowhead_shoulder_rune_tooltips.csv
 
 // Lastly run the following to generate db.json (ensure to delete cached versions and/or rebuild for copying of assets during local development)
 // Note: This does not make network requests, only regenerates core db binary and json files from existing inputs
@@ -75,6 +76,7 @@ func main() {
 	itemTooltips := database.NewWowheadItemTooltipManager(fmt.Sprintf("%s/wowhead_item_tooltips.csv", inputsDir)).Read()
 	spellTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Read()
 	runeTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_rune_tooltips.csv", inputsDir)).Read()
+	shoulderRuneTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_shoulder_rune_tooltips.csv", inputsDir)).Read()
 	wowheadDB := database.ParseWowheadDB(tools.ReadFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir)))
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
 	wagoItems := database.ParseWagoDB(tools.ReadFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir)))
@@ -162,6 +164,12 @@ func main() {
 
 	for id, rune := range runeTooltips {
 		db.AddRune(id, rune)
+	}
+
+	for id, rune := range shoulderRuneTooltips {
+		if database.ShoulderRuneClassAllowlist[rune.GetRequiredClasses()[0]] {
+			db.AddShoulderRune(id, rune)
+		}
 	}
 
 	db.MergeItems(database.ItemOverrides)

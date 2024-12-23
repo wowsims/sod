@@ -401,9 +401,14 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 
 	spellID := []int32{16257, 16277, 16278, 16279, 16280}[points-1]
 	attackSpeed := []float64{1.1, 1.15, 1.2, 1.25, 1.3}[points-1]
+	label := fmt.Sprintf("Flurry Proc (%d)", spellID)
 
-	aura := shaman.GetOrRegisterAura(core.Aura{
-		Label:     fmt.Sprintf("Flurry Proc (%d)", spellID),
+	if aura := shaman.GetAura(label); aura != nil {
+		return aura
+	}
+
+	aura := shaman.RegisterAura(core.Aura{
+		Label:     label,
 		ActionID:  core.ActionID{SpellID: spellID},
 		Duration:  core.NeverExpires,
 		MaxStacks: 3,
@@ -425,12 +430,18 @@ func (shaman *Shaman) makeFlurryAura(points int32) *core.Aura {
 // With the Warden T1 2pc it's possible to have 2 different Flurry auras if using less than 5/5 points in Flurry.
 // The two different buffs don't stack whatsoever. Instead the stronger aura takes precedence and each one is only refreshed by the corresponding triggers.
 func (shaman *Shaman) makeFlurryConsumptionTrigger(flurryAura *core.Aura) *core.Aura {
+	label := fmt.Sprintf("Flurry Consume Trigger - %d", flurryAura.ActionID.SpellID)
+	if aura := shaman.GetAura(label); aura != nil {
+		return aura
+	}
+
 	icd := core.Cooldown{
 		Timer:    shaman.NewTimer(),
 		Duration: time.Millisecond * 500,
 	}
-	return core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
-		Label: fmt.Sprintf("Flurry Consume Trigger - %d", flurryAura.ActionID.SpellID),
+
+	return core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: label,
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Remove a stack.
 			if flurryAura.IsActive() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && icd.IsReady(sim) {
