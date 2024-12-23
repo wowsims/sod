@@ -75,6 +75,7 @@ func main() {
 	itemTooltips := database.NewWowheadItemTooltipManager(fmt.Sprintf("%s/wowhead_item_tooltips.csv", inputsDir)).Read()
 	spellTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Read()
 	runeTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_rune_tooltips.csv", inputsDir)).Read()
+	shoulderRuneTooltips := database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_shoulder_rune_tooltips.csv", inputsDir)).Read()
 	wowheadDB := database.ParseWowheadDB(tools.ReadFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir)))
 	atlaslootDB := database.ReadDatabaseFromJson(tools.ReadFile(fmt.Sprintf("%s/atlasloot_db.json", inputsDir)))
 	wagoItems := database.ParseWagoDB(tools.ReadFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir)))
@@ -162,6 +163,10 @@ func main() {
 
 	for id, rune := range runeTooltips {
 		db.AddRune(id, rune)
+	}
+
+	for id, rune := range shoulderRuneTooltips {
+		db.AddShoulderRune(id, rune)
 	}
 
 	db.MergeItems(database.ItemOverrides)
