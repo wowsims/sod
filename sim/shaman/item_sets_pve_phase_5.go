@@ -316,7 +316,7 @@ func (shaman *Shaman) applyT2Enhancement6PBonus() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Tested and it doesn't proc from overloads
-			if slices.Contains(affectedSpellCodes, spell.SpellCode) && spell.ActionID.Tag != CastTagOverload && result.Landed() {
+			if slices.Contains(affectedSpellCodes, spell.SpellCode) && !spell.ProcMask.Matches(core.ProcMaskSpellProc) && result.Landed() {
 				shaman.ActiveShieldAura.AddStack(sim)
 			}
 		},

@@ -316,7 +316,7 @@ func init() {
 			return
 		}
 
-		affectedSpells := []*core.Spell{}
+		var affectedSpells []*core.Spell
 
 		buffAura := shaman.RegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 470272},
@@ -325,7 +325,7 @@ func init() {
 			MaxStacks: 5,
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				affectedSpells = core.FilterSlice(shaman.ChainLightning, func(spell *core.Spell) bool { return spell != nil })
-				affectedSpells = core.FilterSlice(shaman.ChainLightningOverload, func(spell *core.Spell) bool { return spell != nil })
+				affectedSpells = append(affectedSpells, core.FilterSlice(shaman.ChainLightningOverload, func(spell *core.Spell) bool { return spell != nil })...)
 			},
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 				oldStackValue := 0.20 * float64(oldStacks)
