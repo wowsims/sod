@@ -167,7 +167,9 @@ func main() {
 	}
 
 	for id, rune := range shoulderRuneTooltips {
-		db.AddShoulderRune(id, rune)
+		if database.ShoulderRuneClassAllowlist[rune.GetRequiredClasses()[0]] {
+			db.AddShoulderRune(id, rune)
+		}
 	}
 
 	db.MergeItems(database.ItemOverrides)
