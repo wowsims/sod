@@ -60,7 +60,7 @@ func (shaman *Shaman) applyShoulderRuneEffect() {
 	case int32(proto.ShamanRune_RuneShouldersVolcano):
 		shaman.applyT1Elemental4PBonus()
 	case int32(proto.ShamanRune_RuneShouldersRagingFlame):
-		shaman.applyT1Elemental4PBonus()
+		shaman.applyT1Elemental6PBonus()
 	case int32(proto.ShamanRune_RuneShouldersRefined):
 		shaman.applyT1Enhancement4PBonus()
 	case int32(proto.ShamanRune_RuneShouldersChieftain):
