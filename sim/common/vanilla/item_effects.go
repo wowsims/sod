@@ -286,34 +286,34 @@ func init() {
 			},
 		})
 
+		// This isn't explicit in-game but using a safe value that will likely never be hit
+		numFistOfShahramAuras := 8
+		fistOfShahramAuras := []*core.Aura{}
+		for i := 0; i < numFistOfShahramAuras; i++ {
+			fistOfShahramAuras = append(fistOfShahramAuras, character.GetOrRegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 16601},
+				Label:    fmt.Sprintf("Fist of Shahram (%d)", i),
+				Duration: time.Second * 8,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					character.MultiplyAttackSpeed(sim, 1.3)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					character.MultiplyAttackSpeed(sim, 1/(1.3))
+				},
+			}))
+		}
+
 		fistOfShahram := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 16601},
 			SpellSchool: core.SpellSchoolArcane,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				counter := 0
-
-				for counter < 10 {
-					fistOfShahramAura := character.GetOrRegisterAura(core.Aura{
-						ActionID: core.ActionID{SpellID: 16601},
-						Label:    fmt.Sprintf("Fist of Shahram (%d)", counter),
-						Duration: time.Second * 8,
-						OnGain: func(aura *core.Aura, sim *core.Simulation) {
-							character.MultiplyAttackSpeed(sim, 1.3)
-						},
-						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-							character.MultiplyAttackSpeed(sim, 1/(1.3))
-						},
-					})
-
-					if !fistOfShahramAura.IsActive() {
-						fistOfShahramAura.Activate(sim)
+				for i := 0; i < numFistOfShahramAuras; i++ {
+					if aura := fistOfShahramAuras[i]; !aura.IsActive() {
+						aura.Activate(sim)
 						break
 					}
-
-					counter += 1
-
 				}
 			},
 		})
@@ -348,6 +348,31 @@ func init() {
 			},
 		})
 
+		// This isn't explicit in-game but using a safe value that will likely never be hit
+		numWillOfShahramAuras := 8
+		willOfShahramAuras := []*core.Aura{}
+		willOfShahramStats := stats.Stats{
+			stats.Agility:   50,
+			stats.Intellect: 50,
+			stats.Stamina:   50,
+			stats.Spirit:    50,
+			stats.Strength:  50,
+		}
+
+		for i := 0; i < numWillOfShahramAuras; i++ {
+			willOfShahramAuras = append(willOfShahramAuras, character.GetOrRegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 16598},
+				Label:    fmt.Sprintf("Will of Shahram (%d)", i),
+				Duration: time.Second * 20,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					character.AddStatsDynamic(sim, willOfShahramStats)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					character.AddStatsDynamic(sim, willOfShahramStats.Invert())
+				},
+			}))
+		}
+
 		willOfShahram := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 16598},
 			SpellSchool: core.SpellSchoolArcane,
@@ -355,36 +380,11 @@ func init() {
 			ProcMask:    core.ProcMaskEmpty,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				counter := 0
-
-				stats := stats.Stats{
-					stats.Agility:   50,
-					stats.Intellect: 50,
-					stats.Stamina:   50,
-					stats.Spirit:    50,
-					stats.Strength:  50,
-				}
-
-				for counter < 10 {
-					willOfShahram := character.GetOrRegisterAura(core.Aura{
-						ActionID: core.ActionID{SpellID: 16598},
-						Label:    fmt.Sprintf("Will of Shahram (%d)", counter),
-						Duration: time.Second * 20,
-						OnGain: func(aura *core.Aura, sim *core.Simulation) {
-							character.AddStatsDynamic(sim, stats)
-						},
-						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-							character.AddStatsDynamic(sim, stats.Multiply(-1.0))
-						},
-					})
-
-					if !willOfShahram.IsActive() {
-						willOfShahram.Activate(sim)
+				for i := 0; i < numWillOfShahramAuras; i++ {
+					if aura := willOfShahramAuras[i]; !aura.IsActive() {
+						aura.Activate(sim)
 						break
 					}
-
-					counter += 1
-
 				}
 			},
 		})
