@@ -64,12 +64,33 @@ enum ShamanRune {
     RuneHelmMentalDexterity         = 415140;
     RuneHelmTidalWaves              = 432042;
 
+    RuneShouldersAncestralWarden    = 1220295;
     RuneShouldersChieftain          = 1220266;
+    RuneShouldersCorrupt            = 1220297;
+    RuneShouldersElder              = 1220288;
+    RuneShouldersElementalMaster    = 1220282;
+    RuneShouldersElementalSeer      = 1220258;
+    RuneShouldersElements           = 1220291;
+    RuneShouldersFlamebringer       = 1220276;
+    RuneShouldersFurycharged        = 1220268;
+    RuneShouldersLavaSage           = 1220293;
+    RuneShouldersLavaWalker         = 1220244;
+    RuneShouldersMaelstrombringer   = 1220242;
     RuneShouldersRagingFlame        = 1220279;
     RuneShouldersRefined            = 1220034;
+    RuneShouldersSeismicSmasher     = 1220274;
     RuneShouldersShieldMaster       = 1220234;
+    RuneShouldersShockAbsorber      = 1220238;
+    RuneShouldersSpiritualBulwark   = 1220240;
+    RuneShouldersSpiritGuide        = 1220286;
+    RuneShouldersStormbreaker       = 1220270;
+    RuneShouldersStormtender        = 1220256;
+    RuneShouldersTempest            = 1220272;
     RuneShouldersTotemicProtector   = 1220236;
+    RuneShouldersTribesman          = 1220284;
+    RuneShouldersTrueAlpha          = 1220246;
     RuneShouldersVolcano            = 1220278;
+    RuneShouldersWaterWalker        = 1220254;
     RuneShouldersWindwalker         = 1220232;
 
     RuneCloakCoherence              = 415096;

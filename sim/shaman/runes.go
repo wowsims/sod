@@ -57,20 +57,69 @@ func (shaman *Shaman) applyShoulderRuneEffect() {
 	}
 
 	switch shaman.Equipment.Shoulders().Rune {
+	// Elemental
 	case int32(proto.ShamanRune_RuneShouldersVolcano):
 		shaman.applyT1Elemental4PBonus()
 	case int32(proto.ShamanRune_RuneShouldersRagingFlame):
 		shaman.applyT1Elemental6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersElementalMaster):
+		shaman.applyT2Elemental2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersTribesman):
+		shaman.applyT2Elemental4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersSpiritGuide):
+		shaman.applyT2Elemental6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersElder):
+		shaman.applyTAQElemental2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersElements):
+		shaman.applyTAQElemental4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersLavaSage):
+		shaman.applyRAQElemental3PBonus()
+
+	// Enhancement
 	case int32(proto.ShamanRune_RuneShouldersRefined):
 		shaman.applyT1Enhancement4PBonus()
 	case int32(proto.ShamanRune_RuneShouldersChieftain):
 		shaman.applyT1Enhancement6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersFurycharged):
+		shaman.applyT2Enhancement2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersStormbreaker):
+		shaman.applyT2Enhancement4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersTempest):
+		shaman.applyT2Enhancement6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersSeismicSmasher):
+		shaman.applyTAQEnhancement2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersFlamebringer):
+		shaman.applyTAQEnhancement4PBonus()
+
+	// Restoration
+	case int32(proto.ShamanRune_RuneShouldersWaterWalker):
+		shaman.applyT2Restoration2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersStormtender):
+		shaman.applyT2Restoration4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersElementalSeer):
+		shaman.applyT2Restoration6PBonus()
+
+	// Tank
 	case int32(proto.ShamanRune_RuneShouldersWindwalker):
 		shaman.applyT1Tank2PBonus()
 	case int32(proto.ShamanRune_RuneShouldersShieldMaster):
 		shaman.applyT1Tank4PBonus()
 	case int32(proto.ShamanRune_RuneShouldersTotemicProtector):
 		shaman.applyT1Tank6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersShockAbsorber):
+		shaman.applyT2Tank2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersSpiritualBulwark):
+		shaman.applyT2Tank4PBonus()
+	case int32(proto.ShamanRune_RuneShouldersMaelstrombringer):
+		shaman.applyT2Tank6PBonus()
+	case int32(proto.ShamanRune_RuneShouldersAncestralWarden):
+		shaman.applyZGTank3PBonus()
+	case int32(proto.ShamanRune_RuneShouldersCorrupt):
+		shaman.applyZGTank5PBonus()
+	case int32(proto.ShamanRune_RuneShouldersLavaWalker):
+		shaman.applyTAQTank2PBonus()
+	case int32(proto.ShamanRune_RuneShouldersTrueAlpha):
+		shaman.applyTAQTank4PBonus()
 	}
 }
 
