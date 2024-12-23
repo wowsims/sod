@@ -64,6 +64,14 @@ enum ShamanRune {
 	RuneHelmMentalDexterity			= 415140;
 	RuneHelmTidalWaves				= 432042;
 
+	RuneShouldersChieftain 			= 1220266;
+	RuneShouldersRagingFlame		= 1220279;
+	RuneShouldersRefined			= 1220034;
+	RuneShouldersShieldMaster		= 1220234;
+	RuneShouldersTotemicProtector	= 1220236;
+	RuneShouldersVolcano 			= 1220278;
+	RuneShouldersWindwalker			= 1220232;
+
 	RuneCloakCoherence				= 415096;
 	RuneCloakStormEarthAndFire		= 440569;
 	RuneCloakFeralSpirit			= 440580;

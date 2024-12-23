@@ -150,6 +150,7 @@ type Shaman struct {
 	MaelstromWeaponAura  *core.Aura
 	PowerSurgeDamageAura *core.Aura
 	PowerSurgeHealAura   *core.Aura
+	ShieldMasteryAura    *core.Aura
 	SpiritOfTheAlphaAura *core.Aura
 	WaterShieldAura      *core.Aura
 

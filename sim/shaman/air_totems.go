@@ -127,15 +127,11 @@ func (shaman *Shaman) registerWindwallTotemSpell() {
 }
 
 func (shaman *Shaman) newWindwallTotemSpellConfig(rank int) core.SpellConfig {
-	has6PEarthfuryResolve := shaman.HasSetBonus(ItemSetEarthfuryResolve, 6)
-
 	spellId := WindwallTotemSpellId[rank]
 	manaCost := WindwallTotemManaCost[rank]
 	level := WindwallTotemLevel[rank]
 
 	duration := time.Second * 120
-
-	windwallTotemAura := core.ImprovedWindwallTotemAura(&shaman.Unit)
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
 	spell.RequiredLevel = level
@@ -147,9 +143,6 @@ func (shaman *Shaman) newWindwallTotemSpellConfig(rank int) core.SpellConfig {
 		// We don't have a separation of Melee vs Ranged bonus physical damage at the moment
 		// but it's probably fine because bosses generally don't have ranged physical attacks.
 		// core.WindwallTotemAura(&shaman.Unit, shaman.Level, shaman.Talents.GuardianTotems).Activate(sim)
-		if has6PEarthfuryResolve {
-			windwallTotemAura.Activate(sim)
-		}
 	}
 	return spell
 }
