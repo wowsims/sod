@@ -26,6 +26,7 @@ import (
 // go run ./tools/database/gen_db -outDir=assets -gen=wowhead-gearplannerdb
 // go run ./tools/database/gen_db -outDir=assets -gen=wago-db2-items
 // python3 tools/scrape_runes.py assets/db_inputs/wowhead_rune_tooltips.csv
+// python3 tools/scrape_shoulder_runes.py assets/db_inputs/wowhead_shoulder_rune_tooltips.csv
 
 // Lastly run the following to generate db.json (ensure to delete cached versions and/or rebuild for copying of assets during local development)
 // Note: This does not make network requests, only regenerates core db binary and json files from existing inputs
