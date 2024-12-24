@@ -477,7 +477,7 @@ var ItemSetConquerorsAdvance = core.NewItemSet(core.ItemSet{
 				},
 			})
 		},
-		// You deal 10% increased damage while any nearby enemy is afflicted with both your Rend and your Deep Wounds.
+		// You deal 15% increased damage while any nearby enemy is afflicted with both your Rend and your Deep Wounds.
 		4: func(agent core.Agent) {
 			warrior := agent.(WarriorAgent).GetWarrior()
 			if warrior.Talents.DeepWounds == 0 {
@@ -489,10 +489,10 @@ var ItemSetConquerorsAdvance = core.NewItemSet(core.ItemSet{
 				Label:    "Bloodythirsty",
 				Duration: time.Second * 3,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.PseudoStats.DamageDealtMultiplier *= 1.10
+					warrior.PseudoStats.DamageDealtMultiplier *= 1.15
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					warrior.PseudoStats.DamageDealtMultiplier /= 1.10
+					warrior.PseudoStats.DamageDealtMultiplier /= 1.15
 				},
 			})
 

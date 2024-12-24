@@ -474,7 +474,7 @@ func (warrior *Warrior) applySwordAndBoard() {
 	}))
 }
 
-// While dual-wielding, your movement speed is increased by 10% and you gain 2% attack speed each time your melee auto-attack strikes the same target as your previous auto-attack, stacking up to 5 times.
+// While dual-wielding, your movement speed is increased by 10% and you gain 3% attack speed each time your melee auto-attack strikes the same target as your previous auto-attack, stacking up to 5 times.
 // Lasts 10 sec or until your auto-attack strikes a different target.
 func (warrior *Warrior) applySingleMindedFury() {
 	if !warrior.HasRune(proto.WarriorRune_RuneSingleMindedFury) {
@@ -487,8 +487,8 @@ func (warrior *Warrior) applySingleMindedFury() {
 		Duration:  time.Second * 10,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			warrior.MultiplyAttackSpeed(sim, 1/(1+.02*float64(oldStacks)))
-			warrior.MultiplyAttackSpeed(sim, 1+.02*float64(newStacks))
+			warrior.MultiplyAttackSpeed(sim, 1/(1+0.03*float64(oldStacks)))
+			warrior.MultiplyAttackSpeed(sim, 1+0.03*float64(newStacks))
 		},
 	})
 
