@@ -74,11 +74,11 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 			}
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					spell.DealDamage(sim, results[hitIndex])
+				for _, result := range results {
+					spell.DealDamage(sim, result)
 
 					if hasSerpentSpread {
-						serpentStingAura := hunter.SerpentSting.Dot(curTarget)
+						serpentStingAura := hunter.SerpentSting.Dot(result.Target)
 						serpentStingTicks := serpentStingAura.NumberOfTicks
 						if serpentStingAura.IsActive() {
 							// If less then 4 ticks are left then we rollover with a 4 tick duration
@@ -91,8 +91,6 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 						}
 						serpentStingAura.NumberOfTicks = serpentStingTicks
 					}
-
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			})
 
