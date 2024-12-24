@@ -13,6 +13,9 @@ func (priest *Priest) ApplyRunes() {
 	priest.registerEyeOfTheVoidCD()
 	priest.applyPainAndSuffering()
 
+	// Shoulders
+	priest.applyShoulderRuneEffect()
+
 	// Cloak
 	priest.registerVampiricTouchSpell()
 
@@ -41,6 +44,38 @@ func (priest *Priest) ApplyRunes() {
 
 	// Skill Books
 	priest.registerShadowfiendSpell()
+}
+
+func (priest *Priest) applyShoulderRuneEffect() {
+	if priest.Equipment.Shoulders().Rune == int32(proto.PriestRune_PriestRuneNone) {
+		return
+	}
+
+	switch priest.Equipment.Shoulders().Rune {
+	// Shadow
+	case int32(proto.PriestRune_RuneShouldersMindBreaker):
+		priest.applyT1Shadow6PBonus()
+	case int32(proto.PriestRune_RuneShouldersDeathdealer):
+		priest.applyT2Shadow2PBonus()
+	case int32(proto.PriestRune_RuneShouldersSpiritFont):
+		priest.applyT2Shadow4PBonus()
+	case int32(proto.PriestRune_RuneShouldersZealot):
+		priest.applyT2Shadow6PBonus()
+	case int32(proto.PriestRune_RuneShouldersUnwaveringDefiler):
+		priest.applyTAQShadow2PBonus()
+	case int32(proto.PriestRune_RuneShouldersContemnor):
+		priest.applyTAQShadow4PBonus()
+	case int32(proto.PriestRune_RuneShouldersPlaguebringer):
+		priest.applyRAQShadow3PBonus()
+
+	// Healer
+	case int32(proto.PriestRune_RuneShouldersFaithful):
+		priest.applyT2Healer2PBonus()
+	case int32(proto.PriestRune_RuneShouldersSerendipitous):
+		priest.applyT2Healer4PBonus()
+	case int32(proto.PriestRune_RuneShouldersPenitent):
+		priest.applyZGDiscipline3PBonus()
+	}
 }
 
 func (priest *Priest) applyTwistedFaith() {
