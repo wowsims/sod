@@ -151,7 +151,7 @@ func (shaman *Shaman) applyMentalDexterity() {
 		return
 	}
 
-	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, 1.0)
+	intToApStatDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.AttackPower, 1.50)
 	apToSpStatDep := shaman.NewDynamicStatDependency(stats.AttackPower, stats.SpellDamage, .35)
 
 	procAura := shaman.RegisterAura(core.Aura{
