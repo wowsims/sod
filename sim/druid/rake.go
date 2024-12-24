@@ -66,8 +66,6 @@ func (druid *Druid) registerRakeSpell() {
 }
 
 func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
-	has4PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 4)
-
 	baseDamageInitial := rakeRank.initialDamage * RakeBaseDmgMultiplier
 	baseDamageTick := rakeRank.dotTickDamage * RakeBaseDmgMultiplier
 	energyCost := 40 - float64(druid.Talents.Ferocity)
@@ -105,7 +103,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if has4PCenarionCunning {
+				if druid.AllowRakeRipDoTCrits {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				} else {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

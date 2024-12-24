@@ -80,9 +80,9 @@ print(f"Export Count ({len(item_ids)}) {item_ids}")
 
 to_export = []
 
-# This sole spell is missing a related spell to reference
 mismatchedIds = {
-    "1219819": 1220096
+    "1219819": 1220096, # This sole spell is missing a related spell to reference
+    "1220354": 1220355
 }
 
 for id in item_ids:
@@ -102,6 +102,8 @@ for id in item_ids:
 
             if len(rows) > 0:
                 actual_spell_id = _get_id_from_link(rows[0].find_element(By.CLASS_NAME, "listview-cleartext").get_attribute("href"))
+                if mismatchedIds[actual_spell_id]:
+                    actual_spell_id = mismatchedIds[actual_spell_id]
                 # Use the Spell ID of the effect but keep the item tooltip for class matching and display
                 to_export.append([actual_spell_id, item_response])
             else:

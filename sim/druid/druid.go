@@ -126,6 +126,7 @@ type Druid struct {
 	SavageRoarDurationTable [6]time.Duration
 
 	// Extra data used for various calculations and overrides
+	AllowRakeRipDoTCrits              bool // From T1 Feral 4p bonus
 	FerociousBiteExcessEnergyOverride bool // When true, disables the excess energy consumption of Ferocious bite
 	// Sunfire/Moonfire modifiers applied when in Moonkin form
 	MoonfireDotMultiplier float64
