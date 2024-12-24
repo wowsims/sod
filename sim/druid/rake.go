@@ -52,7 +52,7 @@ const RakeBaseDmgMultiplier = 2.25
 // - Rake and Rip damage contributions from attack power increased by roughly 50%.
 // PTR testing comes out to .0993377 AP scaling
 // damageCoef := .04
-const RakeDamageCoef = 0.09
+const RakeAPCoef = 0.05
 
 func (druid *Druid) registerRakeSpell() {
 	// Add highest available rake rank for level.
@@ -99,7 +99,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			NumberOfTicks: 3,
 			TickLength:    time.Second * 3,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				damage := baseDamageTick + RakeDamageCoef*dot.Spell.MeleeAttackPower()
+				damage := baseDamageTick + RakeAPCoef*dot.Spell.MeleeAttackPower()
 				dot.Snapshot(target, damage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
@@ -112,7 +112,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := baseDamageInitial + RakeDamageCoef*spell.MeleeAttackPower()
+			baseDamage := baseDamageInitial + RakeAPCoef*spell.MeleeAttackPower()
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
@@ -124,7 +124,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 		},
 
 		ExpectedInitialDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			baseDamage := baseDamageInitial + RakeDamageCoef*spell.MeleeAttackPower()
+			baseDamage := baseDamageInitial + RakeAPCoef*spell.MeleeAttackPower()
 			initial := spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 
 			attackTable := spell.Unit.AttackTables[target.UnitIndex][spell.CastType]
@@ -134,7 +134,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			return initial
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, _ bool) *core.SpellResult {
-			tickBase := baseDamageTick + RakeDamageCoef*spell.MeleeAttackPower()
+			tickBase := baseDamageTick + RakeAPCoef*spell.MeleeAttackPower()
 			ticks := spell.CalcPeriodicDamage(sim, target, tickBase, spell.OutcomeExpectedMagicAlwaysHit)
 			return ticks
 		},

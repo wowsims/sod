@@ -305,7 +305,7 @@ func (druid *Druid) applyElunesFires() {
 const (
 	ElunesFires_BonusMoonfireTime = time.Second * 6
 	ElunesFires_BonusSunfireTime  = time.Second * 3
-	ElunesFires_BonusRipTime      = time.Second * 1
+	ElunesFires_BonusRipTime      = time.Second * 2
 )
 
 func (druid *Druid) tryElunesFiresMoonfireExtension(sim *core.Simulation, unit *core.Unit) {

@@ -121,8 +121,8 @@ func (druid *Druid) applyTAQFeral4PBonus() {
 			Aura: core.Aura{
 				Label: "Tooth and Claw",
 			},
-			NumberOfTicks: 2,
-			TickLength:    time.Second * 2,
+			NumberOfTicks: 4,
+			TickLength:    time.Second * 1,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 			},
