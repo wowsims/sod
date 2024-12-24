@@ -16,6 +16,9 @@ func (warrior *Warrior) ApplyRunes() {
 	warrior.applyShieldMastery()
 	warrior.applyTasteForBlood()
 
+	// Shoulders
+	warrior.applyShoulderRuneEffect()
+
 	// Cloak
 	warrior.applySuddenDeath()
 	warrior.applyFreshMeat()
@@ -46,6 +49,56 @@ func (warrior *Warrior) ApplyRunes() {
 
 	// Boots
 	// Gladiator implemented on stances.go
+}
+
+func (warrior *Warrior) applyShoulderRuneEffect() {
+	if warrior.Equipment.Shoulders().Rune == int32(proto.WarriorRune_WarriorRuneNone) {
+		return
+	}
+
+	switch warrior.Equipment.Shoulders().Rune {
+	// Damage
+	case int32(proto.WarriorRune_RuneShouldersTactician):
+		warrior.applyT1Damage2PBonus()
+	case int32(proto.WarriorRune_RuneShouldersWarVeteran):
+		warrior.applyT1Damage4PBonus()
+	case int32(proto.WarriorRune_RuneShouldersBattleForecaster):
+		warrior.applyT1Damage6PBonus()
+	case int32(proto.WarriorRune_RuneShouldersBloodseeker):
+		warrior.applyT2Damage2PBonus()
+	case int32(proto.WarriorRune_RuneShouldersTitan):
+		warrior.applyT2Damage4PBonus()
+	case int32(proto.WarriorRune_RuneShouldersDestroyer):
+		warrior.applyT2Damage6PBonus()
+	case int32(proto.WarriorRune_RuneShouldersDeathbound):
+		warrior.applyTAQDamage2PBonus()
+	case int32(proto.WarriorRune_RuneShouldersSanguinist):
+		warrior.applyTAQDamage4PBonus()
+
+	// Tank
+	case int32(proto.WarriorRune_RuneShouldersSavage):
+		warrior.applyT1Tank4PBonus()
+	case int32(proto.WarriorRune_RuneShouldersEnmity):
+		warrior.applyT1Tank6PBonus()
+	case int32(proto.WarriorRune_RuneShouldersDeflective):
+		warrior.applyT2Protection2PBonus()
+	case int32(proto.WarriorRune_RuneShouldersRevenger):
+		warrior.applyT2Protection4PBonus()
+	case int32(proto.WarriorRune_RuneShouldersIncessant):
+		warrior.applyT2Protection6PBonus()
+	case int32(proto.WarriorRune_RuneShouldersThunderbringer):
+		warrior.applyTAQTank2PBonus()
+	case int32(proto.WarriorRune_RuneShouldersSentinel):
+		warrior.applyTAQTank4PBonus()
+	case int32(proto.WarriorRune_RuneShouldersAftershock):
+		warrior.applyRAQTank3PBonus()
+
+	// Gladiator
+	case int32(proto.WarriorRune_RuneShouldersSouthpaw):
+		warrior.applyZGGladiator3PBonus()
+	case int32(proto.WarriorRune_RuneShouldersGladiator):
+		warrior.applyZGGladiator5PBonus()
+	}
 }
 
 func (warrior *Warrior) applyVigilance() {

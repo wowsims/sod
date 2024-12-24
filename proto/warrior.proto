@@ -4,158 +4,174 @@ package proto;
 option go_package = "./proto";
 
 message WarriorTalents {
-	// Arms
-	int32 improved_heroic_strike = 1;
-	int32 deflection = 2;
-	int32 improved_rend = 3;
-	int32 improved_charge = 4;
-	int32 tactical_mastery = 5;
-	int32 improved_thunder_clap = 6;
-	int32 improved_overpower = 7;
-	bool anger_management = 8;
-	int32 deep_wounds = 9;
-	int32 two_handed_weapon_specialization = 10;
-	int32 impale = 11;
-	int32 axe_specialization = 12;
-	bool sweeping_strikes = 13;
-	int32 mace_specialization = 14;
-	int32 sword_specialization = 15;
-	int32 polearm_specialization = 16;
-	int32 improved_hamstring = 17;
-	bool mortal_strike = 18;
+    // Arms
+    int32 improved_heroic_strike = 1;
+    int32 deflection = 2;
+    int32 improved_rend = 3;
+    int32 improved_charge = 4;
+    int32 tactical_mastery = 5;
+    int32 improved_thunder_clap = 6;
+    int32 improved_overpower = 7;
+    bool anger_management = 8;
+    int32 deep_wounds = 9;
+    int32 two_handed_weapon_specialization = 10;
+    int32 impale = 11;
+    int32 axe_specialization = 12;
+    bool sweeping_strikes = 13;
+    int32 mace_specialization = 14;
+    int32 sword_specialization = 15;
+    int32 polearm_specialization = 16;
+    int32 improved_hamstring = 17;
+    bool mortal_strike = 18;
 
-	// Fury
-	int32 booming_voice = 19;
-	int32 cruelty = 20;
-	int32 improved_demoralizing_shout = 21;
-	int32 unbridled_wrath = 22;
-	int32 improved_cleave = 23;
-	bool piercing_howl = 24;
-	int32 blood_craze = 25;
-	int32 improved_battle_shout = 26;
-	int32 dual_wield_specialization = 27;
-	int32 improved_execute = 28;
-	int32 enrage = 29;
-	int32 improved_slam = 30;
-	bool death_wish = 31;
-	int32 improved_intercept = 32;
-	int32 improved_berserker_rage = 33;
-	int32 flurry = 34;
-	bool bloodthirst = 35;
+    // Fury
+    int32 booming_voice = 19;
+    int32 cruelty = 20;
+    int32 improved_demoralizing_shout = 21;
+    int32 unbridled_wrath = 22;
+    int32 improved_cleave = 23;
+    bool piercing_howl = 24;
+    int32 blood_craze = 25;
+    int32 improved_battle_shout = 26;
+    int32 dual_wield_specialization = 27;
+    int32 improved_execute = 28;
+    int32 enrage = 29;
+    int32 improved_slam = 30;
+    bool death_wish = 31;
+    int32 improved_intercept = 32;
+    int32 improved_berserker_rage = 33;
+    int32 flurry = 34;
+    bool bloodthirst = 35;
 
-	// Protection
-	int32 shield_specialization = 36;
-	int32 anticipation = 37;
-	int32 improved_bloodrage = 38;
-	int32 toughness = 39;
-	int32 iron_will = 40;
-	bool last_stand = 41;
-	int32 improved_shield_block = 42;
-	int32 improved_revenge = 43;
-	int32 defiance = 44;
-	int32 improved_sunder_armor = 45;
-	int32 improved_disarm = 46;
-	int32 improved_taunt = 47;
-	int32 improved_shield_wall = 48;
-	bool concussion_blow = 49;
-	int32 improved_shield_bash = 50;
-	int32 one_handed_weapon_specialization = 51;
-	bool shield_slam = 52;
+    // Protection
+    int32 shield_specialization = 36;
+    int32 anticipation = 37;
+    int32 improved_bloodrage = 38;
+    int32 toughness = 39;
+    int32 iron_will = 40;
+    bool last_stand = 41;
+    int32 improved_shield_block = 42;
+    int32 improved_revenge = 43;
+    int32 defiance = 44;
+    int32 improved_sunder_armor = 45;
+    int32 improved_disarm = 46;
+    int32 improved_taunt = 47;
+    int32 improved_shield_wall = 48;
+    bool concussion_blow = 49;
+    int32 improved_shield_bash = 50;
+    int32 one_handed_weapon_specialization = 51;
+    bool shield_slam = 52;
 }
 
 enum WarriorRune {
-	WarriorRuneNone					= 0;
+    WarriorRuneNone                 = 0;
 
-	// Helm
-	RuneEndlessRage					= 403218;
-	RuneTasteForBlood				= 426953;
-	RuneVigilance						= 426972;
-	RuneShieldMastery				= 426980;
+    // Helm
+    RuneEndlessRage                 = 403218;
+    RuneTasteForBlood               = 426953;
+    RuneVigilance                   = 426972;
+    RuneShieldMastery               = 426980;
 
-	// Cloak
-	RuneSuddenDeath					= 440113;
-	RuneFreshMeat						= 440484;
-	RuneShockwave						= 440488;
+    // Shoulders
+    RuneShouldersAftershock         = 1219992;
+    RuneShouldersBattleForecaster   = 1219960;
+    RuneShouldersBloodseeker        = 1219962;
+    RuneShouldersDeathbound         = 1219968;
+    RuneShouldersDeflective         = 1219978;
+    RuneShouldersDestroyer          = 1219966;
+    RuneShouldersEnmity             = 1219976;
+    RuneShouldersGladiator          = 1219990;
+    RuneShouldersIncessant          = 1219982;
+    RuneShouldersRevenger           = 1219980;
+    RuneShouldersSanguinist         = 1219970;
+    RuneShouldersSavage             = 1219974;
+    RuneShouldersSentinel           = 1219986;
+    RuneShouldersSouthpaw           = 1219988;
+    RuneShouldersTactician          = 1219957;
+    RuneShouldersThunderbringer     = 1219984;
+    RuneShouldersTitan              = 1219964;
+    RuneShouldersWarVeteran         = 1219958;
 
-	// Chest
-	RuneFlagellation				= 402877;
-	RuneRagingBlow					= 402911;
-	RuneBloodFrenzy					= 412507;
-	RuneWarbringer					= 425421;
+    // Cloak
+    RuneSuddenDeath                 = 440113;
+    RuneFreshMeat                   = 440484;
+    RuneShockwave                   = 440488;
 
-	// Bracers
-	RuneRampage							= 426940;
-	RuneSwordAndBoard				= 426978;
-	RuneWreckingCrew				= 427065;
+    // Chest
+    RuneFlagellation                = 402877;
+    RuneRagingBlow                  = 402911;
+    RuneBloodFrenzy                 = 412507;
+    RuneWarbringer                  = 425421;
 
-	// Hands
-	RuneVictoryRush					= 402927;
-	RuneDevastate						= 403195;
-	
-	RuneSingleMindedFury		= 413404;
-	RuneQuickStrike					= 429765;
+    // Bracers
+    RuneRampage                     = 426940;
+    RuneSwordAndBoard               = 426978;
+    RuneWreckingCrew                = 427065;
 
-	// Waist
-	RuneFocusedRage					= 29787;
-	RunePreciseTiming				= 402922;
-	RuneBloodSurge					= 413380;
+    // Hands
+    RuneVictoryRush                 = 402927;
+    RuneDevastate                   = 403195;
+    RuneSingleMindedFury            = 413404;
+    RuneQuickStrike                 = 429765;
 
-	// Legs
-	RuneFuriousThunder			= 403219;
-	RuneFrenziedAssault			= 425412;
-	RuneConsumedByRage			= 425418;
-	
-	// Feet
-	RuneEnragedRegeneration	= 403467;
-	RuneIntervene						= 403472;
-	RuneRallyingCry					= 426491;
-	RuneGladiatorStance			= 412513;
+    // Waist
+    RuneFocusedRage                 = 29787;
+    RunePreciseTiming               = 402922;
+    RuneBloodSurge                  = 413380;
 
-	// Utility
-	RuneCommandingShout			= 403446;
+    // Legs
+    RuneFuriousThunder              = 403219;
+    RuneFrenziedAssault             = 425412;
+    RuneConsumedByRage              = 425418;
+    
+    // Feet
+    RuneEnragedRegeneration         = 403467;
+    RuneIntervene                   = 403472;
+    RuneRallyingCry                 = 426491;
+    RuneGladiatorStance             = 412513;
 }
 
 enum WarriorShout {
-	WarriorShoutNone = 0;
-	WarriorShoutBattle = 1;
-	WarriorShoutCommanding = 2;
+    WarriorShoutNone = 0;
+    WarriorShoutBattle = 1;
+    WarriorShoutCommanding = 2;
 }
 
 enum WarriorStance {
-	WarriorStanceNone = 0;
-	WarriorStanceBattle = 1;
-	WarriorStanceDefensive = 2;
-	WarriorStanceBerserker = 3;
-	WarriorStanceGladiator = 4;
+    WarriorStanceNone = 0;
+    WarriorStanceBattle = 1;
+    WarriorStanceDefensive = 2;
+    WarriorStanceBerserker = 3;
+    WarriorStanceGladiator = 4;
 }
 
 message Warrior {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	message Options {
-		reserved 2;
-		reserved "use_recklessness";
+    message Options {
+        reserved 2;
+        reserved "use_recklessness";
 
-		double starting_rage = 1;
-		bool stance_snapshot = 6;
+        double starting_rage = 1;
+        bool stance_snapshot = 6;
 
-		WarriorShout shout = 3;
-		WarriorStance stance = 7;
-	}
-	Options options = 3;
+        WarriorShout shout = 3;
+        WarriorStance stance = 7;
+    }
+    Options options = 3;
 }
 
 message TankWarrior {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	message Options {
-		double starting_rage = 1;
-		bool stance_snapshot = 6;
+    message Options {
+        double starting_rage = 1;
+        bool stance_snapshot = 6;
 
-		WarriorShout shout = 3;
-		WarriorStance stance = 7;
-	}
-	Options options = 3;
+        WarriorShout shout = 3;
+        WarriorStance stance = 7;
+    }
+    Options options = 3;
 }

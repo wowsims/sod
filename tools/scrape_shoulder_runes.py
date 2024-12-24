@@ -82,7 +82,8 @@ to_export = []
 
 mismatchedIds = {
     "1219819": 1220096, # This sole spell is missing a related spell to reference
-    "1220354": 1220355
+    "1220354": 1220355,
+    "1219956": 1219957
 }
 
 for id in item_ids:
