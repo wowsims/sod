@@ -13,7 +13,10 @@ func (mage *Mage) ApplyRunes() {
 	// Helm
 	mage.registerDeepFreezeSpell()
 
-	// CLoak
+	// Shoulders
+	mage.applyShoulderRuneEffect()
+
+	// Cloak
 	mage.registerArcaneBarrageSpell()
 	mage.applyOverheat()
 	mage.registerFrozenOrbCD()
@@ -45,6 +48,44 @@ func (mage *Mage) ApplyRunes() {
 	// Feet
 	mage.applyBrainFreeze()
 	mage.applySpellPower()
+}
+
+func (mage *Mage) applyShoulderRuneEffect() {
+	if mage.Equipment.Shoulders().Rune == int32(proto.MageRune_MageRuneNone) {
+		return
+	}
+
+	switch mage.Equipment.Shoulders().Rune {
+	// Damage
+	case int32(proto.MageRune_RuneShouldersElementalist):
+		mage.applyT1Damage4PBonus()
+	case int32(proto.MageRune_RuneShouldersMagicalArmorer):
+		mage.applyT1Damage6PBonus()
+	case int32(proto.MageRune_RuneShouldersKindler):
+		mage.applyT2Damage2PBonus()
+	case int32(proto.MageRune_RuneShouldersFieryConvergence):
+		mage.applyT2Damage4PBonus()
+	case int32(proto.MageRune_RuneShouldersPerpetualBlaze):
+		mage.applyT2Damage6PBonus()
+	case int32(proto.MageRune_RuneShouldersWintersGrasp):
+		mage.applyZGFrost3PBonus()
+	case int32(proto.MageRune_RuneShouldersCryomancer):
+		mage.applyZGFrost5PBonus()
+	case int32(proto.MageRune_RuneShouldersPyromaniac):
+		mage.applyTAQFire2PBonus()
+	case int32(proto.MageRune_RuneShouldersIgniter):
+		mage.applyTAQFire4PBonus()
+	case int32(proto.MageRune_RuneShouldersTorcher):
+		mage.applyRAQFire3PBonus()
+
+	// Healer
+	case int32(proto.MageRune_RuneShouldersPrecognitive):
+		mage.applyT2Healer2PBonus()
+	case int32(proto.MageRune_RuneShouldersArcanist):
+		mage.applyT2Healer4PBonus()
+	case int32(proto.MageRune_RuneShouldersSpellbinder):
+		mage.applyTAQArcane2PBonus()
+	}
 }
 
 func (mage *Mage) applyOverheat() {

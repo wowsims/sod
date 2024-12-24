@@ -4,114 +4,128 @@ package proto;
 option go_package = "./proto";
 
 message MageTalents {
-	// Arcane
-	int32 arcane_subtlety = 1;
-	int32 arcane_focus = 2;
-	int32 improved_arcane_missiles = 3;
-	int32 wand_specialization = 4;
-	int32 magic_absorption = 5;
-	int32 arcane_concentration = 6;
-	int32 magic_attunement = 7;
-	int32 improved_arcane_explosion = 8;
-	bool arcane_resilience = 9;
-	int32 improved_mana_shield = 10;
-	int32 improved_counterspell = 11;
-	int32 arcane_meditation = 12;
-	bool presence_of_mind = 13;
-	int32 arcane_mind = 14;
-	int32 arcane_instability = 15;
-	bool arcane_power = 16;
+    // Arcane
+    int32 arcane_subtlety = 1;
+    int32 arcane_focus = 2;
+    int32 improved_arcane_missiles = 3;
+    int32 wand_specialization = 4;
+    int32 magic_absorption = 5;
+    int32 arcane_concentration = 6;
+    int32 magic_attunement = 7;
+    int32 improved_arcane_explosion = 8;
+    bool arcane_resilience = 9;
+    int32 improved_mana_shield = 10;
+    int32 improved_counterspell = 11;
+    int32 arcane_meditation = 12;
+    bool presence_of_mind = 13;
+    int32 arcane_mind = 14;
+    int32 arcane_instability = 15;
+    bool arcane_power = 16;
 
-	// Fire
-	int32 improved_fireball = 17;
-	int32 impact = 18;
-	int32 ignite = 19;
-	int32 flame_throwing = 20;
-	int32 improved_fire_blast = 21;
-	int32 incinerate = 22;
-	int32 improved_flamestrike = 23;
-	bool pyroblast = 24;
-	int32 burning_soul = 25;
-	int32 improved_scorch = 26;
-	int32 improved_fire_ward = 27;
-	int32 master_of_elements = 28;
-	int32 critical_mass = 29;
-	bool blast_wave = 30;
-	int32 fire_power = 31;
-	bool combustion = 32;
+    // Fire
+    int32 improved_fireball = 17;
+    int32 impact = 18;
+    int32 ignite = 19;
+    int32 flame_throwing = 20;
+    int32 improved_fire_blast = 21;
+    int32 incinerate = 22;
+    int32 improved_flamestrike = 23;
+    bool pyroblast = 24;
+    int32 burning_soul = 25;
+    int32 improved_scorch = 26;
+    int32 improved_fire_ward = 27;
+    int32 master_of_elements = 28;
+    int32 critical_mass = 29;
+    bool blast_wave = 30;
+    int32 fire_power = 31;
+    bool combustion = 32;
 
-	// Frost
-	int32 frost_warding = 33;
-	int32 improved_frostbolt = 34;
-	int32 elemental_precision = 35;
-	int32 ice_shards = 36;
-	int32 frostbite = 37;
-	int32 improved_frost_nova = 38;
-	int32 permafrost = 39;
-	int32 piercing_ice = 40;
-	bool cold_snap = 41;
-	int32 improved_blizzard = 42;
-	int32 arctic_reach = 43;
-	int32 frost_channeling = 44;
-	int32 shatter = 45;
-	bool ice_block = 46;
-	int32 improved_cone_of_cold = 47;
-	int32 winters_chill = 48;
-	bool ice_barrier = 49;
+    // Frost
+    int32 frost_warding = 33;
+    int32 improved_frostbolt = 34;
+    int32 elemental_precision = 35;
+    int32 ice_shards = 36;
+    int32 frostbite = 37;
+    int32 improved_frost_nova = 38;
+    int32 permafrost = 39;
+    int32 piercing_ice = 40;
+    bool cold_snap = 41;
+    int32 improved_blizzard = 42;
+    int32 arctic_reach = 43;
+    int32 frost_channeling = 44;
+    int32 shatter = 45;
+    bool ice_block = 46;
+    int32 improved_cone_of_cold = 47;
+    int32 winters_chill = 48;
+    bool ice_barrier = 49;
 }
 
 enum MageRune {
-	MageRuneNone				= 0;
+    MageRuneNone                    = 0;
 
-	RuneHelmAdvancedWarding		= 428738;
-	RuneHelmDeepFreeze			= 428739;
-	RuneHelmHotStreak			= 400624;
-	RuneHelmTemporalAnomaly		= 429305;
+    RuneHelmAdvancedWarding         = 428738;
+    RuneHelmDeepFreeze              = 428739;
+    RuneHelmHotStreak               = 400624;
+    RuneHelmTemporalAnomaly         = 429305;
 
-	RuneCloakArcaneBarrage		= 400610;
-	RuneCloakOverheat			= 400615;
-	RuneCloakFrozenOrb			= 440802;
+    RuneShouldersArcanist           = 1220150;
+    RuneShouldersCryomancer         = 1220160;
+    RuneShouldersElementalist       = 1220164;
+    RuneShouldersFieryConvergence   = 1220170;
+    RuneShouldersIgniter            = 1220176;
+    RuneShouldersKindler            = 1220168;
+    RuneShouldersMagicalArmorer     = 1220166;
+    RuneShouldersPerpetualBlaze     = 1220172;
+    RuneShouldersPrecognitive       = 1220148;
+    RuneShouldersPyromaniac         = 1220174;
+    RuneShouldersSpellbinder        = 1220154;
+    RuneShouldersTorcher            = 1220178;
+    RuneShouldersWintersGrasp       = 1220158;
+    
+    RuneCloakArcaneBarrage          = 400610;
+    RuneCloakOverheat               = 400615;
+    RuneCloakFrozenOrb              = 440802;
 
-	RuneChestBurnout			= 412286;
-	RuneChestEnlightenment		= 412324;
-	RuneChestFingersOfFrost		= 400647;
-	RuneChestRegeneration		= 401417;
+    RuneChestBurnout                = 412286;
+    RuneChestEnlightenment          = 412324;
+    RuneChestFingersOfFrost         = 400647;
+    RuneChestRegeneration           = 401417;
 
-	RuneBracersMoltenArmor 		= 428741;
-	RuneBracersDisplacement		= 428863;
-	RuneBracersBalefireBolt 	= 428878;
-	RuneBracersRewindTime		= 401462;
+    RuneBracersMoltenArmor          = 428741;
+    RuneBracersDisplacement         = 428863;
+    RuneBracersBalefireBolt         = 428878;
+    RuneBracersRewindTime           = 401462;
 
-	RuneHandsArcaneBlast		= 400574;
-	RuneHandsIceLance			= 400640;
-	RuneHandsLivingBomb			= 400613;
+    RuneHandsArcaneBlast            = 400574;
+    RuneHandsIceLance               = 400640;
+    RuneHandsLivingBomb             = 400613;
 
-	RuneBeltFrostfireBolt		= 401502;
-	RuneBeltMissileBarrage		= 400588;
-	RuneBeltSpellfrostBolt		= 412532;
+    RuneBeltFrostfireBolt           = 401502;
+    RuneBeltMissileBarrage          = 400588;
+    RuneBeltSpellfrostBolt          = 412532;
 
-	RuneLegsArcaneSurge			= 425124;
-	RuneLegsIceVeins			= 425121;
-	RuneLegsLivingFlame			= 401556;
-	RuneLegsMassRegeneration	= 412510;
+    RuneLegsArcaneSurge             = 425124;
+    RuneLegsIceVeins                = 425121;
+    RuneLegsLivingFlame             = 401556;
+    RuneLegsMassRegeneration        = 412510;
 
-	RuneFeetBrainFreeze			= 400731;
-	RuneFeetChronoPreservation	= 436516;
-	RuneFeetSpellPower			= 412322;
+    RuneFeetBrainFreeze             = 400731;
+    RuneFeetChronoPreservation      = 436516;
+    RuneFeetSpellPower              = 412322;
 }
 
 message Mage {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	message Options {
-		enum ArmorType {
-			NoArmor = 0;
-			IceArmor = 1;
-			MageArmor = 2;
-			MoltenArmor = 3;
-		}
-		ArmorType armor = 1;
-	}
-	Options options = 3;
+    message Options {
+        enum ArmorType {
+            NoArmor = 0;
+            IceArmor = 1;
+            MageArmor = 2;
+            MoltenArmor = 3;
+        }
+        ArmorType armor = 1;
+    }
+    Options options = 3;
 }
