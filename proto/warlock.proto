@@ -4,151 +4,170 @@ package proto;
 option go_package = "./proto";
 
 message WarlockTalents {
-	// Affliction
-	int32 suppression = 1;
-	int32 improved_corruption = 2;
-	int32 improved_curse_of_weakness = 3;
-	int32 improved_drain_soul = 4;
-	int32 improved_life_tap = 5;
-	int32 improved_drain_life = 6;
-	int32 improved_curse_of_agony = 7;
-	int32 fel_concentration = 8;
-	bool amplify_curse = 9;
-	int32 grim_reach = 10;
-	int32 nightfall = 11;
-	int32 improved_drain_mana = 12;
-	bool siphon_life = 13;
-	bool curse_of_exhaustion = 14;
-	int32 improved_curse_of_exhaustion = 15;
-	int32 shadow_mastery = 16;
-	bool dark_pact = 17;
+    // Affliction
+    int32 suppression = 1;
+    int32 improved_corruption = 2;
+    int32 improved_curse_of_weakness = 3;
+    int32 improved_drain_soul = 4;
+    int32 improved_life_tap = 5;
+    int32 improved_drain_life = 6;
+    int32 improved_curse_of_agony = 7;
+    int32 fel_concentration = 8;
+    bool amplify_curse = 9;
+    int32 grim_reach = 10;
+    int32 nightfall = 11;
+    int32 improved_drain_mana = 12;
+    bool siphon_life = 13;
+    bool curse_of_exhaustion = 14;
+    int32 improved_curse_of_exhaustion = 15;
+    int32 shadow_mastery = 16;
+    bool dark_pact = 17;
 
-	// Demonology
-	int32 improved_healthstone = 18;
-	int32 improved_imp = 19;
-	int32 demonic_embrace = 20;
-	int32 improved_health_funnel = 21;
-	int32 improved_voidwalker = 22;
-	int32 fel_intellect = 23;
-	int32 improved_sayaad = 24;
-	bool fel_domination = 25;
-	int32 fel_stamina = 26;
-	int32 master_summoner = 27;
-	int32 unholy_power = 28;
-	int32 improved_subjugate_demon = 29;
-	bool demonic_sacrifice = 30;
-	int32 improved_firestone = 31;
-	int32 master_demonologist = 32;
-	bool soul_link = 33;
-	int32 improved_spellstone = 34;
+    // Demonology
+    int32 improved_healthstone = 18;
+    int32 improved_imp = 19;
+    int32 demonic_embrace = 20;
+    int32 improved_health_funnel = 21;
+    int32 improved_voidwalker = 22;
+    int32 fel_intellect = 23;
+    int32 improved_sayaad = 24;
+    bool fel_domination = 25;
+    int32 fel_stamina = 26;
+    int32 master_summoner = 27;
+    int32 unholy_power = 28;
+    int32 improved_subjugate_demon = 29;
+    bool demonic_sacrifice = 30;
+    int32 improved_firestone = 31;
+    int32 master_demonologist = 32;
+    bool soul_link = 33;
+    int32 improved_spellstone = 34;
 
-	// Destruction
-	int32 improved_shadow_bolt = 35;
-	int32 cataclysm = 36;
-	int32 bane = 37;
-	int32 aftermath = 38;
-	int32 improved_firebolt = 39;
-	int32 improved_lash_of_pain = 40;
-	int32 devastation = 41;
-	bool shadowburn = 42;
-	int32 intensity = 43;
-	int32 destructive_reach = 44;
-	int32 improved_searing_pain = 45;
-	int32 pyroclasm = 46;
-	int32 improved_immolate = 47;
-	bool ruin = 48;
-	int32 emberstorm = 49;
-	bool conflagrate = 50;
+    // Destruction
+    int32 improved_shadow_bolt = 35;
+    int32 cataclysm = 36;
+    int32 bane = 37;
+    int32 aftermath = 38;
+    int32 improved_firebolt = 39;
+    int32 improved_lash_of_pain = 40;
+    int32 devastation = 41;
+    bool shadowburn = 42;
+    int32 intensity = 43;
+    int32 destructive_reach = 44;
+    int32 improved_searing_pain = 45;
+    int32 pyroclasm = 46;
+    int32 improved_immolate = 47;
+    bool ruin = 48;
+    int32 emberstorm = 49;
+    bool conflagrate = 50;
 }
 
 enum WarlockRune {
-	WarlockRuneNone = 0;
+    WarlockRuneNone = 0;
 
-	RuneHelmVengeance							= 426195;
-	RuneHelmPandemic							= 427712;
-	RuneHelmBackdraft							= 427713;
+    RuneHelmVengeance               = 426195;
+    RuneHelmPandemic                = 427712;
+    RuneHelmBackdraft               = 427713;
 
-	RuneCloakMarkOfChaos					= 440892;
-	RuneCloakInfernalArmor				= 440882;
-	RuneCloakSoulSiphon						= 403511;
+    RuneShouldersAbyssal            = 1220060;
+    RuneShouldersArsonist           = 1220046;
+    RuneShouldersChaosHarbinger     = 1220044;
+    RuneShouldersDecimator          = 1220035;
+    RuneShouldersDemonicExorcist    = 1220052;
+    RuneShouldersDemonlord          = 1220050;
+    RuneShouldersFlamewraith        = 1220056;
+    RuneShouldersFleshfeaster       = 1220058;
+    RuneShouldersInfernalShepherd   = 1220048;
+    RuneShouldersMalevolent         = 1220040;
+    RuneShouldersPained             = 1220054;
+    RuneShouldersPainSpreader       = 1220068;
+    RuneShouldersRitualist          = 1220066;
+    RuneShouldersRotbringer         = 1220038;
+    RuneShouldersShadowmancer       = 1220042;
+    RuneShouldersTransfusionist     = 1220032;
+    RuneShouldersUmbralBlade        = 1220064;
+    RuneShouldersVoidborne          = 1220062;
 
-	RuneChestLakeOfFire						= 403666;
-	RuneChestMasterChanneler			= 403668;
-	RuneChestDemonicTactics				= 412727;
+    RuneCloakMarkOfChaos            = 440892;
+    RuneCloakInfernalArmor          = 440882;
+    RuneCloakSoulSiphon             = 403511;
 
-	RuneBracerUnstableAffliction  = 427717;
-	RuneBracerImmolationAura			= 427726;
-	RuneBracerIncinerate					= 412758;
-	RuneBracerSummonFelguard			= 427733;
+    RuneChestLakeOfFire             = 403666;
+    RuneChestMasterChanneler        = 403668;
+    RuneChestDemonicTactics         = 412727;
 
-	RuneHandsHaunt								= 403501;
-	RuneHandsChaosBolt						= 403629;
-	RuneHandsShadowBoltVolley			= 403628;
-	RuneHandsMetamorphosis				= 403789;
+    RuneBracerUnstableAffliction    = 427717;
+    RuneBracerImmolationAura        = 427726;
+    RuneBracerIncinerate            = 412758;
+    RuneBracerSummonFelguard        = 427733;
 
-	RuneBeltInvocation						= 426243;
-	RuneBeltGrimoireOfSynergy			= 426301;
-	RuneBeltShadowAndFlame				= 426316;
+    RuneHandsHaunt                  = 403501;
+    RuneHandsChaosBolt              = 403629;
+    RuneHandsShadowBoltVolley       = 403628;
+    RuneHandsMetamorphosis          = 403789;
 
-	RuneLegsEverlastingAffliction	= 412689;
-	RuneLegsDemonicGrace					= 425463;
-	RuneLegsDemonicPact						= 425464;
+    RuneBeltInvocation              = 426243;
+    RuneBeltGrimoireOfSynergy       = 426301;
+    RuneBeltShadowAndFlame          = 426316;
 
-	RuneBootsDemonicKnowledge			= 412732;
-	RuneBootsDanceOfTheWicked			= 412798;
-	RuneBootsShadowflame					= 426320;
-	RuneBootsDecimation						= 440870;
-	
+    RuneLegsEverlastingAffliction   = 412689;
+    RuneLegsDemonicGrace            = 425463;
+    RuneLegsDemonicPact             = 425464;
+
+    RuneBootsDemonicKnowledge       = 412732;
+    RuneBootsDanceOfTheWicked       = 412798;
+    RuneBootsShadowflame            = 426320;
+    RuneBootsDecimation             = 440870;
+    
 }
 
 message WarlockRotation {
 }
 
 message WarlockOptions {
-	enum Summon {
-		NoSummon = 0;
-		Imp = 1;
-		Voidwalker = 2;
-		Succubus = 3;
-		Felhunter = 4;
-		Felguard = 5;
-	}
+    enum Summon {
+        NoSummon = 0;
+        Imp = 1;
+        Voidwalker = 2;
+        Succubus = 3;
+        Felhunter = 4;
+        Felguard = 5;
+    }
 
-	enum Armor {
-		NoArmor = 0;
-		DemonArmor = 1;
-		FelArmor = 2;
-	}
+    enum Armor {
+        NoArmor = 0;
+        DemonArmor = 1;
+        FelArmor = 2;
+    }
 
-	enum WeaponImbue {
-		NoWeaponImbue = 0;
-		Spellstone = 1;
-		Firestone = 2;
-	}
+    enum WeaponImbue {
+        NoWeaponImbue = 0;
+        Spellstone = 1;
+        Firestone = 2;
+    }
 
-	enum MaxFireboltRank {
-		NoMaximum = 0;
-		Rank1 = 1;
-		Rank2 = 2;
-		Rank3 = 3;
-		Rank4 = 4;
-		Rank5 = 5;
-		Rank6 = 6;
-		Rank7 = 7;
-		Rank8 = 8;
-	}
+    enum MaxFireboltRank {
+        NoMaximum = 0;
+        Rank1 = 1;
+        Rank2 = 2;
+        Rank3 = 3;
+        Rank4 = 4;
+        Rank5 = 5;
+        Rank6 = 6;
+        Rank7 = 7;
+        Rank8 = 8;
+    }
 
-	Armor armor = 1;
-	Summon summon = 2;
-	WeaponImbue weapon_imbue = 3;
-	MaxFireboltRank max_firebolt_rank = 4;
-	bool pet_pool_mana = 5;
+    Armor armor = 1;
+    Summon summon = 2;
+    WeaponImbue weapon_imbue = 3;
+    MaxFireboltRank max_firebolt_rank = 4;
+    bool pet_pool_mana = 5;
 }
 
 message Warlock {
-	WarlockOptions options = 2;
+    WarlockOptions options = 2;
 }
 
 message TankWarlock {
-	WarlockOptions options = 2;
+    WarlockOptions options = 2;
 }

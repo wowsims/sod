@@ -16,6 +16,9 @@ func (warlock *Warlock) ApplyRunes() {
 	warlock.applyVengeance()
 	warlock.applyBackdraft()
 
+	// Shoulders
+	warlock.applyShoulderRuneEffect()
+
 	// Cloak Runes
 	warlock.applyDecimation()
 	warlock.registerInfernalArmorCD()
@@ -48,6 +51,54 @@ func (warlock *Warlock) ApplyRunes() {
 	warlock.applyDanceOfTheWicked()
 	warlock.registerShadowflameSpell()
 	warlock.applyMarkOfChaos()
+}
+
+func (warlock *Warlock) applyShoulderRuneEffect() {
+	if warlock.Equipment.Shoulders().Rune == int32(proto.WarlockRune_WarlockRuneNone) {
+		return
+	}
+
+	switch warlock.Equipment.Shoulders().Rune {
+	// Damage
+	case int32(proto.WarlockRune_RuneShouldersTransfusionist):
+		warlock.applyT1Damage2PBonus()
+	case int32(proto.WarlockRune_RuneShouldersDecimator):
+		warlock.applyT1Damage6PBonus()
+	case int32(proto.WarlockRune_RuneShouldersRotbringer):
+		warlock.applyT2Damage2PBonus()
+	case int32(proto.WarlockRune_RuneShouldersMalevolent):
+		warlock.applyT2Damage4PBonus()
+	case int32(proto.WarlockRune_RuneShouldersShadowmancer):
+		warlock.applyT2Damage6PBonus()
+	case int32(proto.WarlockRune_RuneShouldersInfernalShepherd):
+		warlock.applyZGDemonology3PBonus()
+	case int32(proto.WarlockRune_RuneShouldersDemonlord):
+		warlock.applyZGDemonology5PBonus()
+	case int32(proto.WarlockRune_RuneShouldersChaosHarbinger):
+		warlock.applyTAQDamage2PBonus()
+	case int32(proto.WarlockRune_RuneShouldersArsonist):
+		warlock.applyTAQDamage4PBonus()
+
+	// Tank
+	case int32(proto.WarlockRune_RuneShouldersDemonicExorcist):
+		warlock.applyT1Tank2PBonus()
+	case int32(proto.WarlockRune_RuneShouldersPained):
+		warlock.applyT1Tank4PBonus()
+	case int32(proto.WarlockRune_RuneShouldersFlamewraith):
+		warlock.applyT1Tank6PBonus()
+	case int32(proto.WarlockRune_RuneShouldersFleshfeaster):
+		warlock.applyT2Tank2PBonus()
+	case int32(proto.WarlockRune_RuneShouldersAbyssal):
+		warlock.applyT2Tank4PBonus()
+	case int32(proto.WarlockRune_RuneShouldersVoidborne):
+		warlock.applyT2Tank6PBonus()
+	case int32(proto.WarlockRune_RuneShouldersUmbralBlade):
+		warlock.applyTAQTank2PBonus()
+	case int32(proto.WarlockRune_RuneShouldersRitualist):
+		warlock.applyTAQTank4PBonus()
+	case int32(proto.WarlockRune_RuneShouldersPainSpreader):
+		warlock.applyRAQTank3PBonus()
+	}
 }
 
 func (warlock *Warlock) applyVengeance() {

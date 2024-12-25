@@ -53,5 +53,6 @@ var ShoulderRuneClassAllowlist = map[proto.Class]bool{
 	proto.Class_ClassMage:    true,
 	proto.Class_ClassPriest:  true,
 	proto.Class_ClassShaman:  true,
+	proto.Class_ClassWarlock: true,
 	proto.Class_ClassWarrior: true,
 }
