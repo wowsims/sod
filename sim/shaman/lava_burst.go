@@ -89,9 +89,30 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 			if shaman.useLavaBurstCritScaling {
 				damageMultiplier = shaman.GetStat(stats.SpellCrit) * core.SpellCritRatingPerCritChance / 100
 			}
+
+			flameShockActive := false
+			for _, spell := range shaman.FlameShock {
+				if spell == nil {
+					continue
+				}
+
+				if spell.Dot(target).IsActive() {
+					flameShockActive = true
+					break
+				}
+			}
+
 			spell.DamageMultiplierAdditive += damageMultiplier
+			if flameShockActive {
+				spell.BonusCritRating += 100 * core.SpellCritRatingPerCritChance
+			}
+
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
 			spell.DamageMultiplierAdditive -= damageMultiplier
+			if flameShockActive {
+				spell.BonusCritRating -= 100 * core.SpellCritRatingPerCritChance
+			}
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
