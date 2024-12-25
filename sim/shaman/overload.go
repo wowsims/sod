@@ -13,7 +13,8 @@ const ShamanOverloadChance = .60
 func (shaman *Shaman) applyOverloadModifiers(spell *core.SpellConfig) {
 	spell.ActionID.Tag = int32(CastTagOverload)
 	spell.ProcMask |= core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc
-	spell.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
+	spell.Flags |= core.SpellFlagPassiveSpell
+	spell.Cast.CD = core.Cooldown{}
 	spell.Cast.DefaultCast.CastTime = 0
 	spell.Cast.DefaultCast.GCD = 0
 	spell.Cast.DefaultCast.Cost = 0

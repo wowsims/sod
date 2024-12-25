@@ -30,11 +30,6 @@ func (shaman *Shaman) registerFlameShockSpell(shockTimer *core.Timer) {
 
 func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.SpellConfig {
 	hasBurnRune := shaman.HasRune(proto.ShamanRune_RuneHelmBurn)
-	hasLavaBurstRune := shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst)
-	hasPowerSurgeRune := shaman.HasRune(proto.ShamanRune_RuneWaistPowerSurge)
-	hasMoltenBlastRune := shaman.HasRune(proto.ShamanRune_RuneHandsMoltenBlast)
-	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
-	hasStormEarthAndFireRune := shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire)
 
 	numTicks := 4 + core.TernaryInt32(hasBurnRune, BurnFlameShockBonusTicks, 0)
 	tickDuration := time.Second * 3
@@ -65,22 +60,6 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 	spell.Dot = core.DotConfig{
 		Aura: core.Aura{
 			Label: fmt.Sprintf("Flame Shock (Rank %d)", rank),
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				if hasLavaBurstRune {
-					shaman.LavaBurst.BonusCritRating += 100 * core.CritRatingPerCritChance
-					if hasOverloadRune {
-						shaman.LavaBurstOverload.BonusCritRating += 100 * core.CritRatingPerCritChance
-					}
-				}
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				if hasLavaBurstRune {
-					shaman.LavaBurst.BonusCritRating -= 100 * core.CritRatingPerCritChance
-					if hasOverloadRune {
-						shaman.LavaBurstOverload.BonusCritRating -= 100 * core.CritRatingPerCritChance
-					}
-				}
-			},
 		},
 
 		NumberOfTicks:    int32(numTicks),
@@ -89,21 +68,10 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 
 		OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 			dot.Snapshot(target, baseDotDamage, isRollover)
-			if !isRollover && hasStormEarthAndFireRune {
-				dot.SnapshotAttackerMultiplier *= 1.60
-			}
 		},
 
 		OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 			dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
-
-			if hasMoltenBlastRune && sim.Proc(ShamanMoltenBlastResetChance, "Molten Blast Reset") {
-				shaman.MoltenBlast.CD.Reset()
-			}
-
-			if hasPowerSurgeRune && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
-				shaman.PowerSurgeDamageAura.Activate(sim)
-			}
 		},
 	}
 
@@ -118,12 +86,9 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 			spell.DealDamage(sim, result)
 			if result.Landed() {
 				spell.Dot(result.Target).Apply(sim)
+
 				if shaman.HasRune(proto.ShamanRune_RuneLegsAncestralGuidance) {
 					shaman.lastFlameShockTarget = target
-				}
-
-				if hasPowerSurgeRune && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
-					shaman.PowerSurgeDamageAura.Activate(sim)
 				}
 			}
 		}

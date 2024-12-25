@@ -19,6 +19,7 @@ func (shaman *Shaman) ApplyRunes() {
 
 	// Cloak
 	shaman.registerFeralSpiritCD()
+	shaman.applyStormEarthAndFire()
 
 	// Chest
 	shaman.applyDualWieldSpec()
@@ -178,6 +179,33 @@ func (shaman *Shaman) applyMentalDexterity() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && spell == shaman.StormstrikeMH {
 				procAura.Activate(sim)
+			}
+		},
+	})
+}
+
+func (shaman *Shaman) applyStormEarthAndFire() {
+	if !shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire) {
+		return
+	}
+
+	shaman.RegisterAura(core.Aura{
+		Label: "Storm, Earth, and Fire",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range shaman.ChainLightning {
+				if spell == nil {
+					continue
+				}
+
+				spell.CD.Duration /= 2
+			}
+
+			for _, spell := range shaman.FlameShock {
+				if spell == nil {
+					continue
+				}
+
+				spell.PeriodicDamageMultiplierAdditive += 0.60
 			}
 		},
 	})
@@ -453,7 +481,7 @@ func (shaman *Shaman) applyPowerSurge() {
 			core.Each(affectedDamageSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_ShamanLavaBurst || spell.SpellCode == SpellCode_ShamanChainLightning {
+			if (spell.SpellCode == SpellCode_ShamanLavaBurst || spell.SpellCode == SpellCode_ShamanChainLightning) && !spell.ProcMask.Matches(core.ProcMaskSpellDamageProc) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -478,7 +506,7 @@ func (shaman *Shaman) applyPowerSurge() {
 			core.Each(affectedHealSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_ShamanChainHeal {
+			if spell.SpellCode == SpellCode_ShamanChainHeal && !spell.ProcMask.Matches(core.ProcMaskSpellDamageProc) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -492,6 +520,16 @@ func (shaman *Shaman) applyPowerSurge() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.DisableDynamicStatDep(sim, statDep)
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.SpellCode == SpellCode_ShamanFlameShock && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
+				shaman.PowerSurgeDamageAura.Activate(sim)
+			}
+		},
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.SpellCode == SpellCode_ShamanFlameShock && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
+				shaman.PowerSurgeDamageAura.Activate(sim)
+			}
 		},
 	}))
 }
