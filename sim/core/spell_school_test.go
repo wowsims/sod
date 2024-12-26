@@ -375,9 +375,12 @@ func SchoolMultiplierArrayHelper[T stats.SchoolValueArrayValues](t *testing.T, c
 	var highest T = T(highestMult)
 
 	spell := &Spell{
-		DamageMultiplier:         1,
-		DamageMultiplierAdditive: 1,
-		Unit:                     caster,
+		BaseDamageMultiplierAdditive:     1,
+		DamageMultiplier:                 1,
+		DamageMultiplierAdditive:         1,
+		ImpactDamageMultiplierAdditive:   1,
+		PeriodicDamageMultiplierAdditive: 1,
+		Unit:                             caster,
 	}
 
 	for schoolIndex1 := stats.SchoolIndexPhysical; schoolIndex1 < stats.SchoolLen; schoolIndex1++ {
@@ -425,7 +428,7 @@ func Test_MultiSchoolModifiers(t *testing.T) {
 	t.Run("DamageDealt", func(t *testing.T) {
 		SchoolMultiplierArrayHelper(t, caster, target, &caster.PseudoStats.SchoolDamageDealtMultiplier,
 			func(spell *Spell, schoolMask SpellSchool, highest float64) (bool, string) {
-				mult := spell.AttackerDamageMultiplier(attackTable)
+				mult := spell.AttackerDamageMultiplier(attackTable, false)
 				if mult != highest {
 					return false, fmt.Sprintf("Damage dealt multiplier for school %d returned %f, expected %f!", schoolMask, mult, highest)
 				}

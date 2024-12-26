@@ -72,7 +72,7 @@ func (mage *Mage) applyNaxxramasDamage4PBonus() {
 	mage.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			mage.Evocation.CD.Duration /= 1 / 0.2
+			mage.Evocation.CD.Multiplier -= 80
 		},
 	})
 }

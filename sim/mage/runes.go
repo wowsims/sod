@@ -96,7 +96,7 @@ func (mage *Mage) applyOverheat() {
 	mage.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode == SpellCode_MageFireBlast {
 			spell.BonusCritRating += 100 * core.SpellCritRatingPerCritChance
-			spell.CD.Duration += time.Second * 7
+			spell.CD.Duration = time.Second * 15
 			spell.Flags |= core.SpellFlagCastTimeNoGCD | core.SpellFlagCastWhileCasting
 			spell.DefaultCast.GCD = 0
 		}

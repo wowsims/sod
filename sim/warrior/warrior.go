@@ -65,7 +65,9 @@ type Warrior struct {
 	OverpowerAura   *core.Aura
 
 	BloodSurgeAura      *core.Aura
+	LastStandAura       *core.Aura
 	RampageAura         *core.Aura
+	ShieldBlockAura     *core.Aura
 	SuddenDeathAura     *core.Aura
 	TasteForBloodAura   *core.Aura
 	lastMeleeAutoTarget *core.Unit
@@ -102,10 +104,12 @@ type Warrior struct {
 	Execute           *WarriorSpell
 	MortalStrike      *WarriorSpell
 	Overpower         *WarriorSpell
+	Recklessness      *WarriorSpell
 	Rend              *WarriorSpell
 	Revenge           *WarriorSpell
 	ShieldBlock       *WarriorSpell
 	ShieldSlam        *WarriorSpell
+	ShieldWall        *WarriorSpell
 	Slam              *WarriorSpell
 	SlamMH            *WarriorSpell
 	SlamOH            *WarriorSpell
@@ -135,10 +139,9 @@ type Warrior struct {
 	BerserkerStanceAura *core.Aura
 	GladiatorStanceAura *core.Aura
 
-	defensiveStanceThreatMultiplier float64
-	gladiatorStanceDamageMultiplier float64
-
-	ShieldBlockAura *core.Aura
+	defensiveStanceThreatMultiplier   float64
+	gladiatorStanceDamageMultiplier   float64
+	recklessnessDamageTakenMultiplier float64
 
 	DemoralizingShoutAuras core.AuraArray
 	SunderArmorAuras       core.AuraArray

@@ -335,7 +335,7 @@ func (mage *Mage) applyImprovedFireBlast() {
 
 	mage.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode == SpellCode_MageFireBlast {
-			spell.CD.Duration -= cdReduction
+			spell.CD.FlatModifier -= cdReduction
 		}
 	})
 }

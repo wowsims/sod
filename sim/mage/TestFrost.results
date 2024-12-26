@@ -421,8 +421,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 675.3223
-  tps: 535.57695
+  dps: 675.74632
+  tps: 535.62815
  }
 }
 dps_results: {
@@ -575,15 +575,15 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 1149.02504
-  tps: 494.57747
+  dps: 1148.90885
+  tps: 494.52867
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 936.82712
-  tps: 622.61251
+  dps: 935.08652
+  tps: 621.71543
  }
 }
 dps_results: {

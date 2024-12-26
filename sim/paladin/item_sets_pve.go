@@ -244,7 +244,7 @@ var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - ZG - Paladin - Caster 5P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
 					for _, spell := range paladin.exorcism {
-						spell.CD.Duration -= time.Second * 3
+						spell.CD.FlatModifier -= time.Second * 3
 						spell.DamageMultiplierAdditive += 0.5
 					}
 				},
@@ -308,7 +308,7 @@ var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 				Label: "S03 - Item - T2 - Paladin - Retribution 4P Bonus",
 
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					paladin.judgement.CD.Duration -= 5 * time.Second
+					paladin.judgement.CD.FlatModifier -= 5 * time.Second
 					paladin.enableMultiJudge = false // Even though this is baseline in phase 5, we set it here to avoid breaking P4
 				},
 			})

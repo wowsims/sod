@@ -441,7 +441,7 @@ var ItemSetDeathdealersThrill = core.NewItemSet(core.ItemSet{
 			rogue.RegisterAura(core.Aura{
 				Label: "S03 - Item - TAQ - Rogue - Damage 4P Bonus",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					rogue.AdrenalineRush.CD.Duration -= time.Second * 240
+					rogue.AdrenalineRush.CD.FlatModifier -= time.Minute * 4
 				},
 			})
 		},
@@ -507,89 +507,88 @@ var ItemSetDeathdealersBattlearmor = core.NewItemSet(core.ItemSet{
 		// While active, your Main Gauche also causes you to heal for 10% of all damage done by Sinister Strike.
 		// Any excess healing becomes a Blood Barrier, absorbing damage up to 20% of your maximum health.
 		4: func(agent core.Agent) {
-						rogue := agent.(RogueAgent).GetRogue()
-						if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
-							return
+			rogue := agent.(RogueAgent).GetRogue()
+			if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
+				return
+			}
+			healthMetrics := rogue.NewHealthMetrics(core.ActionID{SpellID: 11294})
+			healAmount := 0.0
+			shieldAmount := 0.0
+			currentShield := 0.0
+
+			var shieldSpell *core.Spell
+
+			shieldSpell = rogue.GetOrRegisterSpell(core.SpellConfig{
+				ActionID:    core.ActionID{SpellID: 1213761},
+				SpellSchool: core.SpellSchoolPhysical,
+				ProcMask:    core.ProcMaskSpellHealing,
+				Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
+
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+
+				Shield: core.ShieldConfig{
+					SelfOnly: true,
+					Aura: core.Aura{
+						Label:    "Blood Barrier",
+						ActionID: core.ActionID{SpellID: 1213762},
+						Duration: time.Second * 15,
+						OnReset: func(aura *core.Aura, sim *core.Simulation) {
+							shieldAmount = 0.0
+							currentShield = 0.0
+						},
+						OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+							if currentShield <= 0 || result.Damage <= 0 {
+								return
+							}
+
+							damageReduced := min(result.Damage, currentShield)
+							currentShield -= damageReduced
+
+							rogue.GainHealth(sim, damageReduced, shieldSpell.HealthMetrics(result.Target))
+							if currentShield <= 0 {
+								shieldSpell.SelfShield().Deactivate(sim)
+							}
+						},
+					},
+				},
+
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					if currentShield < rogue.MaxHealth()*0.2 {
+						shieldAmount = min(shieldAmount, rogue.MaxHealth()*0.2-currentShield)
+						currentShield += shieldAmount
+						spell.SelfShield().Apply(sim, shieldAmount)
+					}
+				},
+			})
+
+			activeAura := core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+				Name:     "Main Gauche - Blood Barrier",
+				ActionID: core.ActionID{SpellID: 1213762},
+				Callback: core.CallbackOnSpellHitDealt,
+				Duration: time.Second * 15,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && spell.SpellCode == SpellCode_RogueSinisterStrike {
+						healAmount = result.Damage * 0.15
+						if rogue.CurrentHealth() < rogue.MaxHealth() {
+							rogue.GainHealth(sim, healAmount, healthMetrics)
+						} else {
+							shieldAmount = healAmount
+							shieldSpell.Cast(sim, result.Target)
 						}
-						healthMetrics := rogue.NewHealthMetrics(core.ActionID{SpellID: 11294},)
-						healAmount := 0.0
-						shieldAmount := 0.0
-						currentShield := 0.0
 
+					}
+				},
+			})
 
-						var shieldSpell *core.Spell
-
-						shieldSpell = rogue.GetOrRegisterSpell(core.SpellConfig{
-							ActionID:    core.ActionID{SpellID: 1213761},
-							SpellSchool: core.SpellSchoolPhysical,
-							ProcMask:    core.ProcMaskSpellHealing,
-							Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
-												
-							DamageMultiplier: 1,
-							ThreatMultiplier: 1,
-			
-							Shield: core.ShieldConfig{
-								SelfOnly: true,
-								Aura: core.Aura{
-									Label:    "Blood Barrier",
-									ActionID: core.ActionID{SpellID: 1213762},
-									Duration: time.Second * 15,
-									OnReset: func(aura *core.Aura, sim *core.Simulation) {
-										shieldAmount = 0.0
-										currentShield = 0.0
-									},
-									OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {				
-										if currentShield <= 0 || result.Damage <= 0 {
-											return
-										}
-							
-										damageReduced := min(result.Damage, currentShield)
-										currentShield -= damageReduced
-							
-										rogue.GainHealth(sim, damageReduced, shieldSpell.HealthMetrics(result.Target))
-										if currentShield <= 0 {
-											shieldSpell.SelfShield().Deactivate(sim)
-										}
-									},
-								},
-							},
-
-							ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-								if currentShield < rogue.MaxHealth()*0.2 {
-									shieldAmount = min(shieldAmount, rogue.MaxHealth()*0.2-currentShield)
-									currentShield += shieldAmount
-									spell.SelfShield().Apply(sim, shieldAmount)
-								}
-							},
-						})
-			
-						activeAura := core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-							Name:     "Main Gauche - Blood Barrier",
-							ActionID: core.ActionID{SpellID: 1213762},
-							Callback: core.CallbackOnSpellHitDealt,
-							Duration: time.Second * 15,
-							Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-								if result.Landed() && spell.SpellCode == SpellCode_RogueSinisterStrike{
-									healAmount = result.Damage*0.15
-									if rogue.CurrentHealth() < rogue.MaxHealth() {
-										rogue.GainHealth(sim, healAmount, healthMetrics)
-									} else {
-										shieldAmount = healAmount
-										shieldSpell.Cast(sim, result.Target)
-									}
-									
-								}
-							},
-						})
-			
-						core.MakePermanent(rogue.RegisterAura(core.Aura{
-							Label:     "S03 - Item - TAQ - Rogue - Tank 4P Bonus",
-							OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-								if result.Landed() && spell.SpellCode == SpellCode_RogueMainGauche {
-									activeAura.Activate(sim)
-								}
-							},
-						}))
+			core.MakePermanent(rogue.RegisterAura(core.Aura{
+				Label: "S03 - Item - TAQ - Rogue - Tank 4P Bonus",
+				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.Landed() && spell.SpellCode == SpellCode_RogueMainGauche {
+						activeAura.Activate(sim)
+					}
+				},
+			}))
 		},
 	},
 })

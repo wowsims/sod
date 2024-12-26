@@ -484,7 +484,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 			hunter.RegisterAura(core.Aura{
 				Label: "Striker's Pursuit 2P",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.KillShot.CD.Duration -= 6 * time.Second
+					hunter.KillShot.CD.FlatModifier -= 6 * time.Second
 
 					if !hunter.HasRune(proto.HunterRune_RuneHelmRapidKilling) {
 						return

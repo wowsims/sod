@@ -61,7 +61,7 @@ func (shaman *Shaman) applyNaxxramasElemental4PBonus() {
 	shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.LavaBurst.CD.Duration -= time.Second * 2
+			shaman.LavaBurst.CD.FlatModifier -= time.Second * 2
 		},
 	})
 }
@@ -160,11 +160,11 @@ func (shaman *Shaman) applyNaxxramasEnhancement4PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if shaman.LavaLash != nil {
-				shaman.LavaLash.CD.Duration -= time.Millisecond * 1500
+				shaman.LavaLash.CD.FlatModifier -= time.Millisecond * 1500
 			}
 
 			if shaman.Stormstrike != nil {
-				shaman.Stormstrike.CD.Duration -= time.Millisecond * 1500
+				shaman.Stormstrike.CD.FlatModifier -= time.Millisecond * 1500
 			}
 		},
 	})

@@ -41,7 +41,7 @@ func (priest *Priest) applyT2Shadow2PBonus() {
 	priest.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			priest.ShadowWordDeath.CD.Duration -= time.Second * 6
+			priest.ShadowWordDeath.CD.FlatModifier -= time.Second * 6
 		},
 	})
 }
@@ -224,8 +224,8 @@ func (priest *Priest) applyZGDiscipline3PBonus() {
 	priest.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			priest.Penance.CD.Duration -= time.Second * 6
-			priest.PenanceHeal.CD.Duration -= time.Second * 6
+			priest.Penance.CD.FlatModifier -= time.Second * 6
+			priest.PenanceHeal.CD.FlatModifier -= time.Second * 6
 		},
 	})
 }

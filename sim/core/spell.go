@@ -109,8 +109,8 @@ type Spell struct {
 	Cost *SpellCost // Cost for the spell.
 
 	DefaultCast        Cast // Default cast parameters with all static effects applied.
-	CD                 Cooldown
-	SharedCD           Cooldown
+	CD                 *SpellCooldown
+	SharedCD           *SpellCooldown
 	ExtraCastCondition CanCastCondition
 
 	castTimeFn func(spell *Spell) time.Duration // allows to override CastTime()
@@ -249,8 +249,8 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		SchoolBaseIndices: config.SpellSchool.GetBaseIndices(),
 
 		DefaultCast:        config.Cast.DefaultCast,
-		CD:                 config.Cast.CD,
-		SharedCD:           config.Cast.SharedCD,
+		CD:                 newSpellCooldown(config.Cast.CD),
+		SharedCD:           newSpellCooldown(config.Cast.SharedCD),
 		ExtraCastCondition: config.ExtraCastCondition,
 
 		castTimeFn: config.Cast.CastTime,
@@ -692,4 +692,29 @@ func (sc *SpellCost) GetCurrentCost() float64 {
 
 func (spell *Spell) IssueRefund(sim *Simulation) {
 	spell.Cost.IssueRefund(sim, spell)
+}
+
+type SpellCooldown struct {
+	*Cooldown
+
+	FlatModifier time.Duration // Flat value added to base cooldown before pct mods
+	Multiplier   int32         // Multiplier for cooldown duration, stored as an int, e.g. 0.5 is stored as 50
+}
+
+func newSpellCooldown(cd Cooldown) *SpellCooldown {
+	return &SpellCooldown{
+		Cooldown:     &cd,
+		FlatModifier: 0,
+		Multiplier:   100,
+	}
+}
+
+func (cd *SpellCooldown) ApplyCooldownModifiers(duration time.Duration) time.Duration {
+	duration = max(0, duration+cd.FlatModifier)
+	return max(0, time.Duration(float64(duration)*float64(cd.Multiplier)/100))
+}
+
+// Get cooldown after all modifiers.
+func (cd *SpellCooldown) GetCurrentDuration() time.Duration {
+	return cd.ApplyCooldownModifiers(cd.Duration)
 }
