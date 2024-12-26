@@ -87,7 +87,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 
 			damageMultiplier := 0.0
 			if shaman.useLavaBurstCritScaling {
-				damageMultiplier = shaman.GetStat(stats.SpellCrit) * core.SpellCritRatingPerCritChance / 100
+				damageMultiplier = shaman.GetStat(stats.SpellCrit) / 100
 			}
 
 			flameShockActive := false
