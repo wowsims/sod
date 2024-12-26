@@ -30,7 +30,7 @@ func (mage *Mage) registerEvocationCD() {
 		},
 	})
 
-	evocation := mage.GetOrRegisterSpell(core.SpellConfig{
+	mage.Evocation = mage.GetOrRegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagHelpful | core.SpellFlagChanneled | core.SpellFlagAPL,
 
@@ -57,13 +57,7 @@ func (mage *Mage) registerEvocationCD() {
 			},
 			NumberOfTicks: maxTicks,
 			TickLength:    tickLength,
-			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if mage.CurrentManaPercent() >= 1 {
-					// TODO: Is this the right way to cancel a channel?
-					dot.Cancel(sim)
-					mage.SetGCDTimer(sim, sim.CurrentTime)
-				}
-			},
+			OnTick:        func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
@@ -72,18 +66,10 @@ func (mage *Mage) registerEvocationCD() {
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: evocation,
+		Spell: mage.Evocation,
 		Type:  core.CooldownTypeMana,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
-			if character.HasActiveAuraWithTag(core.InnervateAuraTag) || character.HasActiveAuraWithTag(core.ManaTideTotemAuraTag) {
-				return false
-			}
-
-			if sim.GetRemainingDuration() < 12*time.Second {
-				return false
-			}
-
-			return character.CurrentManaPercent() < 0.1
+			return false // Require APL usage
 		},
 	})
 }

@@ -195,36 +195,20 @@ func (mage *Mage) applyFingersOfFrost() {
 	}
 
 	mage.FingersOfFrostProcChance += 0.25
-	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
-
-	var affectedSpells []*core.Spell
 
 	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
 		Label:     "Fingers of Frost Proc",
 		ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneChestFingersOfFrost)},
 		Duration:  time.Second * 15,
 		MaxStacks: 2,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(mage.Spellbook, func(spell *core.Spell) bool {
-				return spell.Flags.Matches(SpellFlagMage) && spell.ProcMask.Matches(core.ProcMaskSpellDamage)
-			})
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.BonusCritRating += bonusCrit
-			}
-
-			if mage.IceLance != nil {
-				mage.IceLance.DamageMultiplier *= 4.0
+			for _, aura := range mage.FrozenAuras {
+				aura.Activate(sim)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.BonusCritRating -= bonusCrit
-			}
-
-			if mage.IceLance != nil {
-				mage.IceLance.DamageMultiplier /= 4.0
+			for _, aura := range mage.FrozenAuras {
+				aura.Deactivate(sim)
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {

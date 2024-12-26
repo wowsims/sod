@@ -52,14 +52,23 @@ func (mage *Mage) registerIceLanceSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 
+			damageMultiplier := 1.0
+			if mage.isTargetFrozen(target) {
+				damageMultiplier = 4.0
+			}
+
 			var glaciateAura *core.Aura
 			modifier := 0.0
 			if glaciateAura = mage.GlaciateAuras.Get(target); glaciateAura.IsActive() {
 				modifier += 0.20 * float64(glaciateAura.GetStacks())
 			}
 
+			spell.DamageMultiplier *= damageMultiplier
 			spell.DamageMultiplierAdditive += modifier
+
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			spell.DamageMultiplier /= damageMultiplier
 			spell.DamageMultiplierAdditive -= modifier
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
