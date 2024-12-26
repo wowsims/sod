@@ -62,6 +62,8 @@ func (warlock *Warlock) applyShoulderRuneEffect() {
 	// Damage
 	case int32(proto.WarlockRune_RuneShouldersTransfusionist):
 		warlock.applyT1Damage2PBonus()
+	case int32(proto.WarlockRune_RuneShouldersRefinedWarlock):
+		warlock.applyT1Damage4PBonus()
 	case int32(proto.WarlockRune_RuneShouldersDecimator):
 		warlock.applyT1Damage6PBonus()
 	case int32(proto.WarlockRune_RuneShouldersRotbringer):

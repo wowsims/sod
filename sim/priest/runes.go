@@ -53,6 +53,8 @@ func (priest *Priest) applyShoulderRuneEffect() {
 
 	switch priest.Equipment.Shoulders().Rune {
 	// Shadow
+	case int32(proto.PriestRune_RuneShouldersRefinedPriest):
+		priest.applyT1Shadow4PBonus()
 	case int32(proto.PriestRune_RuneShouldersMindBreaker):
 		priest.applyT1Shadow6PBonus()
 	case int32(proto.PriestRune_RuneShouldersDeathdealer):

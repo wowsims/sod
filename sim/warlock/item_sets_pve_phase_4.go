@@ -68,11 +68,8 @@ var ItemSetCorruptedFelheart = core.NewItemSet(core.ItemSet{
 			warlock.applyT1Damage2PBonus()
 		},
 		4: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.MeleeCrit: 2 * core.CritRatingPerCritChance,
-				stats.SpellCrit: 2 * core.CritRatingPerCritChance,
-			})
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyT1Damage4PBonus()
 		},
 		6: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
@@ -94,6 +91,38 @@ func (warlock *Warlock) applyT1Damage2PBonus() {
 			for _, spell := range warlock.LifeTap {
 				spell.DamageMultiplier *= 1.5
 				spell.ThreatMultiplier *= -1
+			}
+		},
+	}))
+}
+
+// Increases your critical strike chance with spells and attacks by 2%.
+func (warlock *Warlock) applyT1Damage4PBonus() {
+	label := "S03 - Item - T1 - Warlock - Damage 4P Bonus"
+	if warlock.HasAura(label) {
+		return
+	}
+
+	bonusStats := stats.Stats{
+		stats.MeleeCrit: 2 * core.CritRatingPerCritChance,
+		stats.SpellCrit: 2 * core.SpellCritRatingPerCritChance,
+	}
+
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label:      label,
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				aura.Unit.AddStats(bonusStats)
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats)
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				aura.Unit.AddStats(bonusStats.Invert())
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
 			}
 		},
 	}))
