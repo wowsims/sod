@@ -47,6 +47,104 @@ character_stats_results: {
   final_stats: 0
  }
 }
+character_stats_results: {
+ key: "TestDemonology-Phase5-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 216.315
+  final_stats: 215.05
+  final_stats: 600.81175
+  final_stats: 418.715
+  final_stats: 423.775
+  final_stats: 876.8875
+  final_stats: 0
+  final_stats: 40
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 40
+  final_stats: 41.25
+  final_stats: 9
+  final_stats: 48.6088
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1036.315
+  final_stats: 9
+  final_stats: 44.7525
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 7373.725
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1535.1
+  final_stats: 740
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 12.7525
+  final_stats: 5
+  final_stats: 0
+  final_stats: 7542.1175
+  final_stats: 27
+  final_stats: 90
+  final_stats: 100
+  final_stats: 100
+  final_stats: 60
+  final_stats: 384
+  final_stats: 18
+  final_stats: 65
+  final_stats: 0
+ }
+}
+character_stats_results: {
+ key: "TestDemonology-Phase6-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 211.255
+  final_stats: 209.99
+  final_stats: 564.443
+  final_stats: 383.295
+  final_stats: 383.295
+  final_stats: 946.6475
+  final_stats: 0
+  final_stats: 40
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 60
+  final_stats: 46.25
+  final_stats: 10
+  final_stats: 40.02437
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1031.255
+  final_stats: 10
+  final_stats: 36.4995
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 6842.425
+  final_stats: 0
+  final_stats: 0
+  final_stats: 1558.98
+  final_stats: 740
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 12.4995
+  final_stats: 5
+  final_stats: 0
+  final_stats: 7178.43
+  final_stats: 27
+  final_stats: 60
+  final_stats: 90
+  final_stats: 105
+  final_stats: 60
+  final_stats: 384
+  final_stats: 18
+  final_stats: 82
+  final_stats: 0
+ }
+}
 stat_weights_results: {
  key: "TestDemonology-Phase2-Lvl40-StatWeights-Default"
  value: {
@@ -65,6 +163,104 @@ stat_weights_results: {
   weights: 0
   weights: 4.00301
   weights: 1.90131
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestDemonology-Phase5-Lvl60-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: -0.9522
+  weights: 0
+  weights: 3.1364
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 24.84675
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestDemonology-Phase6-Lvl60-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 2.99212
+  weights: 0
+  weights: 1.6566
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 25.27465
   weights: 0
   weights: 0
   weights: 0
@@ -157,5 +353,253 @@ dps_results: {
  value: {
   dps: 492.05034
   tps: 512.50795
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-AllItems-BloodGuard'sDreadweave"
+ value: {
+  dps: 2526.42259
+  tps: 1074.52032
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-AllItems-DeathmistRaiment"
+ value: {
+  dps: 43.10907
+  tps: 44.03123
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-AllItems-EmeraldEnchantedVestments"
+ value: {
+  dps: 2526.46762
+  tps: 1075.0827
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-AllItems-InfernalPactEssence-216509"
+ value: {
+  dps: 4615.25242
+  tps: 2747.35821
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-AllItems-IronweaveBattlesuit"
+ value: {
+  dps: 41.49167
+  tps: 42.31726
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
+ value: {
+  dps: 2526.42259
+  tps: 1074.52032
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 3102.16083
+  tps: 1491.82781
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 3077.08071
+  tps: 1484.76187
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-AllItems-ZilaGular-223214"
+ value: {
+  dps: 4615.25242
+  tps: 2747.35821
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-Average-Default"
+ value: {
+  dps: 4853.25731
+  tps: 2821.08348
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P5-Consumes-LongMultiTarget"
+ value: {
+  dps: 5325.85459
+  tps: 3735.59781
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P5-Consumes-LongSingleTarget"
+ value: {
+  dps: 4817.66438
+  tps: 2788.22521
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P5-Consumes-ShortSingleTarget"
+ value: {
+  dps: 5362.43981
+  tps: 2912.59633
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P5-Consumes-LongMultiTarget"
+ value: {
+  dps: 2194.10938
+  tps: 2248.88312
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P5-Consumes-LongSingleTarget"
+ value: {
+  dps: 1989.98655
+  tps: 1253.74336
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P5-Consumes-ShortSingleTarget"
+ value: {
+  dps: 2247.05134
+  tps: 1330.35197
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 4816.72937
+  tps: 2787.04696
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-AllItems-BloodGuard'sDreadweave"
+ value: {
+  dps: 2232.65923
+  tps: 1341.83806
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-AllItems-DeathmistRaiment"
+ value: {
+  dps: 45.37489
+  tps: 45.44939
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-AllItems-EmeraldEnchantedVestments"
+ value: {
+  dps: 2231.28604
+  tps: 1341.05438
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-AllItems-InfernalPactEssence-216509"
+ value: {
+  dps: 4663.21023
+  tps: 3707.49011
+  hps: 938.24926
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-AllItems-IronweaveBattlesuit"
+ value: {
+  dps: 44.13867
+  tps: 44.04976
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
+ value: {
+  dps: 2232.65923
+  tps: 1341.83806
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 2839.43364
+  tps: 1898.95647
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-AllItems-NightmareProphet'sGarb"
+ value: {
+  dps: 2810.46554
+  tps: 1887.50819
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-AllItems-ZilaGular-223214"
+ value: {
+  dps: 4672.16233
+  tps: 3717.65286
+  hps: 947.78641
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-Average-Default"
+ value: {
+  dps: 4847.07694
+  tps: 3827.51902
+  hps: 945.02348
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P6-Consumes-LongMultiTarget"
+ value: {
+  dps: 5186.09543
+  tps: 5195.20552
+  hps: 960.86811
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P6-Consumes-LongSingleTarget"
+ value: {
+  dps: 4782.59977
+  tps: 3761.18462
+  hps: 947.30592
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P6-Consumes-ShortSingleTarget"
+ value: {
+  dps: 5039.9812
+  tps: 3728.01491
+  hps: 826.4136
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P6-Consumes-LongMultiTarget"
+ value: {
+  dps: 2193.87281
+  tps: 3214.51087
+  hps: 498.32201
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P6-Consumes-LongSingleTarget"
+ value: {
+  dps: 2041.07389
+  tps: 1750.93772
+  hps: 498.71717
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P6-Consumes-ShortSingleTarget"
+ value: {
+  dps: 2157.6129
+  tps: 1754.15873
+  hps: 449.39646
+ }
+}
+dps_results: {
+ key: "TestDemonology-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 4804.31173
+  tps: 3780.60178
+  hps: 946.03274
  }
 }

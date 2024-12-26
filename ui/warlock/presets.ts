@@ -14,6 +14,7 @@ import {
 	ManaRegenElixir,
 	Potions,
 	Profession,
+	Race,
 	RaidBuffs,
 	SaygesFortune,
 	ShadowPowerBuff,
@@ -30,58 +31,74 @@ import {
 	WarlockOptions_WeaponImbue as WarlockWeaponImbue,
 } from '../core/proto/warlock.js';
 // apls
-import DestroP1APL from './apls/p1/destruction.apl.json';
-import AfflictionAPL from './apls/p2/affliction.apl.json';
-import DemonologyAPL from './apls/p2/demonology.apl.json';
-import DestroConflagAPL from './apls/p2/fire.conflag.apl.json';
-import DestroMgiAPL from './apls/p2/fire.imp.apl.json';
-import BackdraftAPLP3 from './apls/p3/backdraft.apl.json';
-import NFRuinAPLP3 from './apls/p3/nf.ruin.apl.json';
-import AffAPLP4 from './apls/p4/affliction.apl.json';
-import DestroAPLP4 from './apls/p4/destruction.apl.json';
+import DestroAplP1JSON from './apls/p1/destruction.apl.json';
+import AfflictionAplP2JSON from './apls/p2/affliction.apl.json';
+import DemonologyAplP2JSON from './apls/p2/demonology.apl.json';
+import DestroConflagAplP2JSON from './apls/p2/fire.conflag.apl.json';
+import DestroMgiAplP2JSON from './apls/p2/fire.imp.apl.json';
+import BackdraftAplP3JSON from './apls/p3/backdraft.apl.json';
+import NFRuinAplP3JSON from './apls/p3/nf.ruin.apl.json';
+import AffAplP4JSON from './apls/p4/affliction.apl.json';
+import DestroAplP4JSON from './apls/p4/destruction.apl.json';
+import AffAplP5JSON from './apls/p5/affliction.apl.json';
+import DemoAplP5JSON from './apls/p5/demonology.apl.json';
+import DestroAplP5JSON from './apls/p5/destruction.apl.json';
+import AffAplP6JSON from './apls/p6/affliction.apl.json';
+import DemoAplP6JSON from './apls/p6/demonology.apl.json';
+import DestroAplP6JSON from './apls/p6/destruction.apl.json';
 // gear
-import DestructionGear from './gear_sets/p1/destruction.gear.json';
-import FireImpGear from './gear_sets/p2/fire.imp.gear.json';
-import FireSuccubusGear from './gear_sets/p2/fire.succubus.gear.json';
-import ShadowGear from './gear_sets/p2/shadow.gear.json';
-import BackdraftGearP3 from './gear_sets/p3/backdraft.gear.json';
-import NFRuinGearP3 from './gear_sets/p3/nf.ruin.gear.json';
-import AffGearP4 from './gear_sets/p4/affliction.gear.json';
-import DestroGearP4 from './gear_sets/p4/destruction.gear.json';
-import AffGearP5 from './gear_sets/p5/affliction.gear.json';
-import DemoGearP5 from './gear_sets/p5/demonology.gear.json';
-import DestroGearP5 from './gear_sets/p5/destruction.gear.json';
+import DestructionGearJSON from './gear_sets/p1/destruction.gear.json';
+import FireImpGearJSON from './gear_sets/p2/fire.imp.gear.json';
+import FireSuccubusGearJSON from './gear_sets/p2/fire.succubus.gear.json';
+import ShadowGearJSON from './gear_sets/p2/shadow.gear.json';
+import BackdraftGearP3JSON from './gear_sets/p3/backdraft.gear.json';
+import NFRuinGearP3JSON from './gear_sets/p3/nf.ruin.gear.json';
+import AffGearP4JSON from './gear_sets/p4/affliction.gear.json';
+import DestroGearP4JSON from './gear_sets/p4/destruction.gear.json';
+import AffGearP5JSON from './gear_sets/p5/affliction.gear.json';
+import DemoGearP5JSON from './gear_sets/p5/demonology.gear.json';
+import DestroGearP5JSON from './gear_sets/p5/destruction.gear.json';
+import AffGearP6JSON from './gear_sets/p6/affliction.gear.json';
+import DemoGearP6JSON from './gear_sets/p6/demonology.gear.json';
+import DestroGearP6JSON from './gear_sets/p6/destruction.gear.json';
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const GearDestructionPhase1 = PresetUtils.makePresetGear('Destruction', DestructionGear, { customCondition: player => player.getLevel() === 25 });
+export const GearDestructionPhase1 = PresetUtils.makePresetGear('Destruction', DestructionGearJSON, { customCondition: player => player.getLevel() === 25 });
 
-export const FireImpGearPhase2 = PresetUtils.makePresetGear('P2 Fire Imp', FireImpGear, { customCondition: player => player.getLevel() === 40 });
-export const FireSuccubusGearPhase2 = PresetUtils.makePresetGear('P2 Fire Succubus', FireSuccubusGear, { customCondition: player => player.getLevel() === 40 });
-export const ShadowGearPhase2 = PresetUtils.makePresetGear('P2 Shadow', ShadowGear, { customCondition: player => player.getLevel() === 40 });
+export const FireImpGearPhase2 = PresetUtils.makePresetGear('P2 Fire Imp', FireImpGearJSON, { customCondition: player => player.getLevel() === 40 });
+export const FireSuccubusGearPhase2 = PresetUtils.makePresetGear('P2 Fire Succubus', FireSuccubusGearJSON, { customCondition: player => player.getLevel() === 40 });
+export const ShadowGearPhase2 = PresetUtils.makePresetGear('P2 Shadow', ShadowGearJSON, { customCondition: player => player.getLevel() === 40 });
 
-export const BackdraftGearPhase3 = PresetUtils.makePresetGear('P3 Backdraft', BackdraftGearP3, { customCondition: player => player.getLevel() === 50 });
-export const NFRuinGearPhase3 = PresetUtils.makePresetGear('P3 NF/Ruin', NFRuinGearP3, { customCondition: player => player.getLevel() === 50 });
+export const BackdraftGearPhase3 = PresetUtils.makePresetGear('P3 Backdraft', BackdraftGearP3JSON, { customCondition: player => player.getLevel() === 50 });
+export const NFRuinGearPhase3 = PresetUtils.makePresetGear('P3 NF/Ruin', NFRuinGearP3JSON, { customCondition: player => player.getLevel() === 50 });
 
-export const AffGearPhase4 = PresetUtils.makePresetGear('P4 Aff', AffGearP4, { customCondition: player => player.getLevel() === 60 });
-export const DestroGearPhase4 = PresetUtils.makePresetGear('P4 Destro', DestroGearP4, { customCondition: player => player.getLevel() === 60 });
+export const AffGearPhase4 = PresetUtils.makePresetGear('P4 Aff', AffGearP4JSON, { customCondition: player => player.getLevel() === 60 });
+export const DestroGearPhase4 = PresetUtils.makePresetGear('P4 Destro', DestroGearP4JSON, { customCondition: player => player.getLevel() === 60 });
 
-export const AffGearPhase5 = PresetUtils.makePresetGear('P5 Aff', AffGearP5, { customCondition: player => player.getLevel() === 60 });
-export const DemoGearPhase5 = PresetUtils.makePresetGear('P5 Demo', AffGearP5, { customCondition: player => player.getLevel() === 60 });
-export const DestroGearPhase5 = PresetUtils.makePresetGear('P5 Destro', DestroGearP5, { customCondition: player => player.getLevel() === 60 });
+export const AffGearPhase5 = PresetUtils.makePresetGear('P5 Aff', AffGearP5JSON, { customCondition: player => player.getLevel() === 60 });
+export const DemoGearPhase5 = PresetUtils.makePresetGear('P5 Demo', DemoGearP5JSON, { customCondition: player => player.getLevel() === 60 });
+export const DestroGearPhase5 = PresetUtils.makePresetGear('P5 Destro', DestroGearP5JSON, { customCondition: player => player.getLevel() === 60 });
+
+export const AffGearPhase6 = PresetUtils.makePresetGear('P6 Aff', AffGearP6JSON, { customCondition: player => player.getLevel() === 60 });
+export const DemoGearPhase6 = PresetUtils.makePresetGear('P6 Demo', DemoGearP6JSON, { customCondition: player => player.getLevel() === 60 });
+export const DestroGearPhase6 = PresetUtils.makePresetGear('P6 Destro', DestroGearP6JSON, { customCondition: player => player.getLevel() === 60 });
 
 export const GearPresets = {
 	[Phase.Phase1]: [GearDestructionPhase1],
 	[Phase.Phase2]: [FireImpGearPhase2, FireSuccubusGearPhase2, ShadowGearPhase2],
 	[Phase.Phase3]: [NFRuinGearPhase3, BackdraftGearPhase3],
 	[Phase.Phase4]: [AffGearPhase4, DestroGearPhase4],
-	[Phase.Phase5]: [],
+	[Phase.Phase5]: [AffGearPhase5, DemoGearPhase5, DestroGearPhase5],
+	[Phase.Phase6]: [AffGearPhase6, DemoGearPhase6, DestroGearPhase6],
+	[Phase.Phase7]: [],
 };
 
-export const DefaultGearAff = AffGearPhase4;
-export const DefaultGearDestro = DestroGearPhase4;
+export const DefaultGearAff = GearPresets[Phase.Phase6][0];
+export const DefaultGearDemo = GearPresets[Phase.Phase6][1];;
+export const DefaultGearDestro = GearPresets[Phase.Phase6][2];;
 
 export const DefaultGear = DefaultGearDestro;
 
@@ -90,37 +107,59 @@ export const DefaultGear = DefaultGearDestro;
 ///////////////////////////////////////////////////////////////////////////
 
 // P1
-export const RotationDestructionPhase1 = PresetUtils.makePresetAPLRotation('Destruction', DestroP1APL, {
+export const RotationDestructionPhase1 = PresetUtils.makePresetAPLRotation('Destruction', DestroAplP1JSON, {
 	customCondition: player => player.getLevel() === 25,
 });
 
 // P2
-export const DestroMgiRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Imp', DestroMgiAPL, {
+export const DestroMgiRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Imp', DestroMgiAplP2JSON, {
 	customCondition: player => player.getLevel() === 40,
 });
-export const DestroConflagRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Conflag', DestroConflagAPL, {
+export const DestroConflagRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Destro Conflag', DestroConflagAplP2JSON, {
 	customCondition: player => player.getLevel() === 40,
 });
-export const DemonologyRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Demonology', DemonologyAPL, {
+export const DemonologyRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Demonology', DemonologyAplP2JSON, {
 	customCondition: player => player.getLevel() === 40,
 });
-export const AfflictionRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Affliction', AfflictionAPL, {
+export const AfflictionRotationPhase2 = PresetUtils.makePresetAPLRotation('P2 Affliction', AfflictionAplP2JSON, {
 	customCondition: player => player.getLevel() === 40,
 });
 
 // P3
-export const BackdraftRotationPhase3 = PresetUtils.makePresetAPLRotation('P3 Backdraft', BackdraftAPLP3, {
+export const BackdraftRotationPhase3 = PresetUtils.makePresetAPLRotation('P3 Backdraft', BackdraftAplP3JSON, {
 	customCondition: player => player.getLevel() === 50,
 });
-export const NFRuinRotationPhase3 = PresetUtils.makePresetAPLRotation('P3 NF/Ruin', NFRuinAPLP3, {
+export const NFRuinRotationPhase3 = PresetUtils.makePresetAPLRotation('P3 NF/Ruin', NFRuinAplP3JSON, {
 	customCondition: player => player.getLevel() === 50,
 });
 
 // P4
-export const DestroRotationPhase4 = PresetUtils.makePresetAPLRotation('P4 Destro', DestroAPLP4, {
+export const AffRotationPhase4 = PresetUtils.makePresetAPLRotation('P4 Aff', AffAplP4JSON, {
 	customCondition: player => player.getLevel() === 60,
 });
-export const AffRotationPhase4 = PresetUtils.makePresetAPLRotation('P4 Aff', AffAPLP4, {
+export const DestroRotationPhase4 = PresetUtils.makePresetAPLRotation('P4 Destro', DestroAplP4JSON, {
+	customCondition: player => player.getLevel() === 60,
+});
+
+// P5
+export const AffRotationPhase5 = PresetUtils.makePresetAPLRotation('P5 Aff', AffAplP5JSON, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const DemoRotationPhase5 = PresetUtils.makePresetAPLRotation('P5 Demo', DemoAplP5JSON, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const DestroRotationPhase5 = PresetUtils.makePresetAPLRotation('P5 Destro', DestroAplP5JSON, {
+	customCondition: player => player.getLevel() === 60,
+});
+
+// P5
+export const AffRotationPhase6 = PresetUtils.makePresetAPLRotation('P6 Aff', AffAplP6JSON, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const DemoRotationPhase6 = PresetUtils.makePresetAPLRotation('P6 Demo', DemoAplP6JSON, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const DestroRotationPhase6 = PresetUtils.makePresetAPLRotation('P6 Destro', DestroAplP6JSON, {
 	customCondition: player => player.getLevel() === 60,
 });
 
@@ -129,7 +168,9 @@ export const APLPresets = {
 	[Phase.Phase2]: [DestroMgiRotationPhase2, DestroConflagRotationPhase2, DemonologyRotationPhase2, AfflictionRotationPhase2],
 	[Phase.Phase3]: [NFRuinRotationPhase3, BackdraftRotationPhase3],
 	[Phase.Phase4]: [AffRotationPhase4, DestroRotationPhase4],
-	[Phase.Phase5]: [],
+	[Phase.Phase5]: [AffRotationPhase5, DemoRotationPhase5, DestroRotationPhase5],
+	[Phase.Phase6]: [AffRotationPhase6, DemoRotationPhase6, DestroRotationPhase6, ],
+	[Phase.Phase7]: [],
 };
 
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
@@ -148,8 +189,9 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 		2: BackdraftRotationPhase3,
 	},
 	60: {
-		0: AffRotationPhase4,
-		2: DestroRotationPhase4,
+		0: AffRotationPhase6,
+		1: DemoRotationPhase6,
+		2: DestroRotationPhase6,
 	},
 };
 
@@ -166,6 +208,7 @@ export const DestroP1Talents = {
 	enableWhen: (player: Player<any>) => player.getLevel() === 25,
 };
 
+// P2
 export const DestroMgiTalentsPhase2 = {
 	name: 'P2 Destro Imp',
 	data: SavedTalents.create({ talentsString: '-01-055020512000415' }),
@@ -186,6 +229,8 @@ export const AfflictionTalentsPhase2 = {
 	data: SavedTalents.create({ talentsString: '3500253012201105--1' }),
 	enableWhen: (player: Player<any>) => player.getLevel() === 40,
 };
+
+// P3
 export const BackdraftTalentsPhase3 = {
 	name: 'P3 Backdraft',
 	data: SavedTalents.create({ talentsString: '-032004-5050205102005151' }),
@@ -196,32 +241,69 @@ export const NFRuinTalentsPhase3 = {
 	data: SavedTalents.create({ talentsString: '25002500102-03-50502051020001' }),
 	enableWhen: (player: Player<any>) => player.getLevel() === 50,
 };
-export const AffTalentsPhase3 = {
-	name: 'P4 Aff',
+
+// P4
+export const AffTalentsPhase4_5 = {
+	name: 'P4/5 Aff',
 	data: SavedTalents.create({ talentsString: '4500253012201005--50502051020001' }),
 	enableWhen: (player: Player<any>) => player.getLevel() === 60,
 };
-export const DestroTalentsPhase3 = {
+export const DestroTalentsPhase4 = {
 	name: 'P4 Destro',
 	data: SavedTalents.create({ talentsString: '05002-035-5250205122005151' }),
 	enableWhen: (player: Player<any>) => player.getLevel() === 60,
 };
 
+// P5
+export const DemoTalentsPhase5_6 = {
+	name: 'P5/6 Demo',
+	data: SavedTalents.create({ talentsString: '-230205015250005-52500051020001' }),
+	enableWhen: (player: Player<any>) => player.getLevel() === 60,
+}
+export const DestroTalentsPhase5_6 = {
+	name: 'P5/6 Destro',
+	data: SavedTalents.create({ talentsString: '05002-23-5550205122005151' }),
+	enableWhen: (player: Player<any>) => player.getLevel() === 60,
+}
+
+// P6
+export const AffTalentsPhase6 = {
+	name: 'P6 Aff',
+	data: SavedTalents.create({ talentsString: '3500243212201005-2302050152001' }),
+	enableWhen: (player: Player<any>) => player.getLevel() === 60,
+}
+
 export const TalentPresets = {
 	[Phase.Phase1]: [DestroP1Talents],
 	[Phase.Phase2]: [DestroMgiTalentsPhase2, DestroConflagTalentsPhase2, DemonologyTalentsPhase2, AfflictionTalentsPhase2],
 	[Phase.Phase3]: [NFRuinTalentsPhase3, BackdraftTalentsPhase3],
-	[Phase.Phase4]: [AffTalentsPhase3, DestroTalentsPhase3],
-	[Phase.Phase5]: [],
+	[Phase.Phase4]: [AffTalentsPhase4_5, DestroTalentsPhase4],
+	[Phase.Phase5]: [AffTalentsPhase4_5, DemoTalentsPhase5_6, DestroTalentsPhase5_6],
+	[Phase.Phase6]: [AffTalentsPhase6, DemoTalentsPhase5_6, DestroTalentsPhase5_6],
+	[Phase.Phase7]: [],
 };
 
-export const DefaultTalentsAff = TalentPresets[Phase.Phase4][0];
-export const DefaultTalentsDestro = TalentPresets[Phase.Phase4][1];
+export const DefaultTalentsAff = TalentPresets[Phase.Phase6][0];
+export const DefaultTalentsDemo = TalentPresets[Phase.Phase6][1];
+export const DefaultTalentsDestro = TalentPresets[Phase.Phase6][2];
 
 export const DefaultTalents = DefaultTalentsDestro;
 
-export const PresetBuildAff = PresetUtils.makePresetBuild('Aff', { gear: DefaultGearAff, talents: DefaultTalentsAff, rotation: DefaultAPLs[60][0] });
-export const PresetBuildDestro = PresetUtils.makePresetBuild('Destro', {
+///////////////////////////////////////////////////////////////////////////
+//                                 Builds
+///////////////////////////////////////////////////////////////////////////
+
+export const PresetBuildAff = PresetUtils.makePresetBuild('Affliction', {
+	gear: DefaultGearAff,
+	talents: DefaultTalentsAff,
+	rotation: DefaultAPLs[60][0]
+});
+export const PresetBuildDemo = PresetUtils.makePresetBuild('Demonology', {
+	gear: DefaultGearDemo,
+	talents: DefaultTalentsDemo,
+	rotation: DefaultAPLs[60][1]
+});
+export const PresetBuildDestro = PresetUtils.makePresetBuild('Destruction', {
 	gear: DefaultGearDestro,
 	talents: DefaultTalentsDestro,
 	rotation: DefaultAPLs[60][2],
@@ -244,13 +326,13 @@ export const DefaultConsumes = Consumes.create({
 	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
 	flask: Flask.FlaskOfAncientKnowledge,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
-	food: Food.FoodTenderWolfSteak,
+	food: Food.FoodDarkclawBisque,
 	mainHandImbue: WeaponImbue.EnchantedRepellent,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
-
+	mildlyIrradiatedRejuvPot: true,
 	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
-	zanzaBuff: ZanzaBuff.GizzardGum,
+	zanzaBuff: ZanzaBuff.SpiritOfZanza,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
@@ -285,6 +367,7 @@ export const DefaultDebuffs = Debuffs.create({
 	faerieFire: true,
 	homunculi: 100,
 	improvedScorch: true,
+	improvedShadowBolt: true,
 	judgementOfWisdom: true,
 	markOfChaos: true,
 	occultPoison: true,
@@ -295,5 +378,6 @@ export const OtherDefaults = {
 	distanceFromTarget: 25,
 	profession1: Profession.Enchanting,
 	profession2: Profession.Tailoring,
+	race: Race.RaceOrc,
 	channelClipDelay: 150,
 };

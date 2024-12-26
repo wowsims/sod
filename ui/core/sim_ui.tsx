@@ -35,7 +35,7 @@ export interface SimUIConfig {
 	spec: Spec | null;
 	simStatus: SimStatus;
 	knownIssues?: Array<string>;
-	noticeText?: string;
+	noticeText?: JSX.Element;
 }
 
 // Shared UI for all individual sims and the raid sim.

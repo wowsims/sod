@@ -225,7 +225,7 @@ export const DefaultConsumes = Consumes.create({
 	fillerExplosive: Explosive.ExplosiveDenseDynamite,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	flask: Flask.FlaskOfAncientKnowledge,
-	food: Food.FoodTenderWolfSteak,
+	food: Food.FoodDarkclawBisque,
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.ShadowOil,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
