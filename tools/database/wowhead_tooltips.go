@@ -346,7 +346,7 @@ func (item WowheadItemResponse) GetRequiredClasses() []proto.Class {
 
 	if multiClasses := item.GetTooltipRegexString(reqClassesRegex, 1); multiClasses != "" {
 		classes := []proto.Class{}
-		for _, classMatch := range allClassesRegex.FindAllStringSubmatch(item.TooltipWithoutSetBonus(), -1) {
+		for _, classMatch := range allClassesRegex.FindAllStringSubmatch(multiClasses, -1) {
 			className := classMatch[1]
 			classes = append(classes, proto.Class(proto.Class_value["Class"+className]))
 		}
