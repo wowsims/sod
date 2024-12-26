@@ -110,7 +110,7 @@ func (warlock *Warlock) applyVengeance() {
 	healthMetrics := warlock.NewHealthMetrics(actionID)
 	var bonusHealth float64
 
-	aura := warlock.RegisterAura(core.Aura{
+	warlock.VengeanceAura = warlock.RegisterAura(core.Aura{
 		Label:    "Vengeance",
 		ActionID: actionID,
 		Duration: time.Second * 20,
@@ -142,7 +142,7 @@ func (warlock *Warlock) applyVengeance() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			aura.Activate(sim)
+			warlock.VengeanceAura.Activate(sim)
 		},
 	})
 
