@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 var ItemSetDreamwalkerEclipse = core.NewItemSet(core.ItemSet{
@@ -176,3 +177,107 @@ func (druid *Druid) applyNaxxramasFeral6PBonus() {
 		},
 	}))
 }
+
+var ItemSetDreamwalkerGuardian = core.NewItemSet(core.ItemSet{
+	Name: "Dreamwalker Guardian",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyNaxxramasGuardian2PBonus()
+		},
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyNaxxramasGuardian4PBonus()
+		},
+		6: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyNaxxramasGuardian6PBonus()
+		},
+	},
+})
+
+// Your Growl ability never misses, and your chance to be Dodged or Parried is reduced by 2%.
+func (druid *Druid) applyNaxxramasGuardian2PBonus() {
+	label := "S03 - Item - Naxxramas - Druid - Guardian 2P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
+
+	bonusStats := stats.Stats{stats.Expertise: 2 * core.ExpertiseRatingPerExpertiseChance}
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label:      label,
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				aura.Unit.AddStats(bonusStats)
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats)
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				aura.Unit.AddStats(bonusStats.Invert())
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
+			}
+		},
+	}))
+}
+
+// Reduces the cooldown on your Survival Instincts by 2 min, and reduces the cooldown on your Berserk ability by 2 min.
+func (druid *Druid) applyNaxxramasGuardian4PBonus() {
+	if !druid.HasRune(proto.DruidRune_RuneFeetSurvivalInstincts) && !druid.HasRune(proto.DruidRune_RuneBeltBerserk) {
+		return
+	}
+
+	label := "S03 - Item - Naxxramas - Druid - Guardian 4P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
+
+	druid.RegisterAura(core.Aura{
+		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			if druid.SurvivalInstincts != nil {
+				druid.SurvivalInstincts.CD.FlatModifier -= time.Minute * 2
+			}
+
+			if druid.Berserk != nil {
+				druid.Berserk.CD.FlatModifier -= time.Minute * 2
+			}
+		},
+	})
+}
+
+// When you take damage from an Undead enemy, the remaining duration of your active Frenzied Regeneration is reset to 10 sec.
+func (druid *Druid) applyNaxxramasGuardian6PBonus() {
+	label := "S03 - Item - Naxxramas - Druid - Guardian 6P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label: label,
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if druid.FrenziedRegenerationAura != nil && druid.FrenziedRegenerationAura.IsActive() && spell.Unit.MobType == proto.MobType_MobTypeUndead && result.Landed() && result.Damage > 0 {
+				druid.FrenziedRegenerationAura.Activate(sim)
+			}
+		},
+	}))
+}
+
+var ItemSetDreamwalkerRaiment = core.NewItemSet(core.ItemSet{
+	Name: "Dreamwalker Raiment",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Your Lifebloom now has a 100% chance to heal the target for one application of its dispel amount each time the target takes damage.
+		2: func(agent core.Agent) {
+		},
+		// Each time your Rejuvenation rank 10 or rank 11 heals a target, you have a 25% chance to restore 60 mana, 8 energy, or 2 rage to your target.
+		4: func(agent core.Agent) {
+		},
+		// Your Rejuvenation and Regrowth refresh their duration to full each time their target is damaged by an Undead enemy.
+		6: func(agent core.Agent) {
+		},
+	},
+})

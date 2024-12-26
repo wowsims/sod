@@ -185,10 +185,6 @@ func (warrior *Warrior) applyNaxxramasProtection6PBonus() {
 		return
 	}
 
-	if warrior.Talents.DeepWounds == 0 {
-		return
-	}
-
 	label := "S03 - Item - Naxxramas - Warrior - Protection 6P Bonus"
 	if warrior.HasAura(label) {
 		return
