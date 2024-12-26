@@ -1233,8 +1233,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase6-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 808.54133
-  tps: 584.69577
+  dps: 806.69345
+  tps: 583.37784
  }
 }
 dps_results: {
