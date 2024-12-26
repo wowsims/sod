@@ -77,7 +77,7 @@ func (shaman *Shaman) applyShoulderRuneEffect() {
 		shaman.applyRAQElemental3PBonus()
 
 	// Enhancement
-	case int32(proto.ShamanRune_RuneShouldersRefined):
+	case int32(proto.ShamanRune_RuneShouldersRefinedShaman):
 		shaman.applyT1Enhancement4PBonus()
 	case int32(proto.ShamanRune_RuneShouldersChieftain):
 		shaman.applyT1Enhancement6PBonus()

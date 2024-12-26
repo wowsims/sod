@@ -82,6 +82,7 @@ enum PaladinRune {
     RuneShouldersPristineBlocker    = 1219972;
     RuneShouldersRadiantDefender    = 1220184;
     RuneShouldersReckoner           = 1220190;
+    RuneShouldersRefinedPaladin     = 1220198;
     RuneShouldersRetributor         = 1220222;
     RuneShouldersSealbearer         = 1220214;
     RuneShouldersShieldbearer       = 1220186;

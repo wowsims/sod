@@ -75,13 +75,9 @@ var ItemSetTwilightProphecy = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			// Nothing to do
 		},
-		// Increases your critical strike chance with spells and attacks by 2%.
 		4: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.MeleeCrit: 2 * core.CritRatingPerCritChance,
-				stats.SpellCrit: 2 * core.CritRatingPerCritChance,
-			})
+			priest := agent.(PriestAgent).GetPriest()
+			priest.applyT1Shadow4PBonus()
 		},
 		6: func(agent core.Agent) {
 			priest := agent.(PriestAgent).GetPriest()
@@ -89,6 +85,38 @@ var ItemSetTwilightProphecy = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+// Increases your critical strike chance with spells and attacks by 2%.
+func (priest *Priest) applyT1Shadow4PBonus() {
+	label := "S03 - Item - T1 - Priest - Shadow 4P Bonus"
+	if priest.HasAura(label) {
+		return
+	}
+
+	bonusStats := stats.Stats{
+		stats.MeleeCrit: 2 * core.CritRatingPerCritChance,
+		stats.SpellCrit: 2 * core.SpellCritRatingPerCritChance,
+	}
+
+	core.MakePermanent(priest.RegisterAura(core.Aura{
+		Label:      label,
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				aura.Unit.AddStats(bonusStats)
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats)
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				aura.Unit.AddStats(bonusStats.Invert())
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
+			}
+		},
+	}))
+}
 
 // Mind Blast critical strikes reduce the duration of your next Mind Flay by 50% while increasing its total damage by 50%.
 func (priest *Priest) applyT1Shadow6PBonus() {

@@ -77,7 +77,7 @@ enum ShamanRune {
     RuneShouldersLavaWalker         = 1220244;
     RuneShouldersMaelstrombringer   = 1220242;
     RuneShouldersRagingFlame        = 1220279;
-    RuneShouldersRefined            = 1220034;
+    RuneShouldersRefinedShaman      = 1220034;
     RuneShouldersSeismicSmasher     = 1220274;
     RuneShouldersShieldMaster       = 1220234;
     RuneShouldersShockAbsorber      = 1220238;

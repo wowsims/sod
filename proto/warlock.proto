@@ -80,6 +80,7 @@ enum WarlockRune {
     RuneShouldersMalevolent         = 1220040;
     RuneShouldersPained             = 1220054;
     RuneShouldersPainSpreader       = 1220068;
+    RuneShouldersRefinedWarlock     = 1220034;
     RuneShouldersRitualist          = 1220066;
     RuneShouldersRotbringer         = 1220038;
     RuneShouldersShadowmancer       = 1220042;

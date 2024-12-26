@@ -73,6 +73,7 @@ enum PriestRune {
     RuneShouldersMindBreaker        = 1220128;
     RuneShouldersPenitent           = 1220122;
     RuneShouldersPlaguebringer      = 1220140;
+    RuneShouldersRefinedPriest      = 1220108;
     RuneShouldersSerendipitous      = 1220114;
     RuneShouldersSpiritFont         = 1220132;
     RuneShouldersUnwaveringDefiler  = 1220136;
