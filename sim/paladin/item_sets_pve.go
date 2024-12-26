@@ -179,7 +179,6 @@ var ItemSetLawbringerWill = core.NewItemSet(core.ItemSet{
 					blockBonus := 30.0 * core.BlockRatingPerBlockChance
 
 					for i, values := range HolyShieldValues {
-
 						if paladin.Level < values.level {
 							break
 						}
@@ -358,7 +357,6 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 			}
 
 			blockBonus := 40.0 * core.BlockRatingPerBlockChance
-			numCharges := int32(4)
 
 			paladin.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Paladin - Protection 2P Bonus",
@@ -367,11 +365,16 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 						if paladin.Level < HolyShieldValues[i].level {
 							break
 						}
+
+						oldOnGain := hsAura.OnGain
 						hsAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-							aura.SetStacks(sim, numCharges)
+							oldOnGain(aura, sim)
 							paladin.AddStatDynamic(sim, stats.Block, blockBonus)
 						}
+
+						oldOnExpire := hsAura.OnExpire
 						hsAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+							oldOnExpire(aura, sim)
 							paladin.AddStatDynamic(sim, stats.Block, -blockBonus)
 						}
 					}

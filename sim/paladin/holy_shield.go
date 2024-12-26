@@ -67,7 +67,9 @@ func (paladin *Paladin) registerHolyShield() {
 			Duration:  time.Second * 10,
 			MaxStacks: numCharges,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.SetStacks(sim, numCharges)
+				if aura.MaxStacks > 0 {
+					aura.SetStacks(sim, aura.MaxStacks)
+				}
 				paladin.AddStatDynamic(sim, stats.Block, blockBonus)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
