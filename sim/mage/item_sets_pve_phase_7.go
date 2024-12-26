@@ -94,7 +94,7 @@ func (mage *Mage) applyNaxxramasDamage6PBonus() {
 			oldProcIgnite := mage.procIgnite
 			mage.procIgnite = func(sim *core.Simulation, result *core.SpellResult) {
 				dot := mage.Ignite.Dot(result.Target)
-				if sim.IsExecutePhase20() && result.Target.MobType == proto.MobType_MobTypeUndead {
+				if dot.TickCount > 0 && sim.IsExecutePhase20() && result.Target.MobType == proto.MobType_MobTypeUndead {
 					// Effectively negate the decay by reducing the TickCount
 					dot.TickCount -= 1
 				}
