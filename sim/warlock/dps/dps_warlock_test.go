@@ -63,6 +63,40 @@ func TestAffliction(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Phase: 5,
+			Level: 60,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase5DemoTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p5", "affliction"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p5", "affliction"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase5Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Affliction Warlock", SpecOptions: DefaultAfflictionWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Phase: 6,
+			Level: 60,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase6DestroTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p6", "affliction"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p6", "affliction"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase6Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Affliction Warlock", SpecOptions: DefaultAfflictionWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -78,6 +112,40 @@ func TestDemonology(t *testing.T) {
 			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p2", "demonology"),
 			Buffs:       core.FullBuffsPhase2,
 			Consumes:    Phase2Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: DefaultDemonologyWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Phase: 5,
+			Level: 60,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase5DemoTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p5", "demonology"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p5", "demonology"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase5Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: DefaultDemonologyWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Phase: 6,
+			Level: 60,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase6DestroTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p6", "demonology"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p6", "demonology"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase6Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Demonology Warlock", SpecOptions: DefaultDemonologyWarlock},
 
 			ItemFilter:      ItemFilters,
@@ -154,6 +222,40 @@ func TestDestruction(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Phase: 5,
+			Level: 60,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase5DestroTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p5", "destruction"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p5", "destruction"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase5Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class: proto.Class_ClassWarlock,
+			Phase: 6,
+			Level: 60,
+			Race:  proto.Race_RaceOrc,
+
+			Talents:     Phase6DestroTalents,
+			GearSet:     core.GetGearSet("../../../ui/warlock/gear_sets/p6", "destruction"),
+			Rotation:    core.GetAplRotation("../../../ui/warlock/apls/p6", "destruction"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase6Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Destruction Warlock", SpecOptions: DefaultDestroWarlock},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -168,6 +270,14 @@ var Phase3NFRuinTalents = "25002500102-03-50502051020001"
 
 var Phase4AffTalents = "4500253012201005--50502051020001"
 var Phase4DestroTalents = "05002-035004-5050205102005151"
+
+var Phase5AffTalents = "4500253012201005--50502051020001"
+var Phase5DemoTalents = "-230205015250005-52500051020001"
+var Phase5DestroTalents = "05002-23-5550205122005151"
+
+var Phase6AffTalents = "3500243212201005-2302050152001"
+var Phase6DemoTalents = "-230205015250005-52500051020001"
+var Phase6DestroTalents = "05002-23-5550205122005151"
 
 var DefaultDestroWarlock = &proto.Player_Warlock{
 	Warlock: &proto.Warlock{
@@ -242,6 +352,32 @@ var Phase4Consumes = core.ConsumesCombo{
 		Food:            proto.Food_FoodTenderWolfSteak,
 		MainHandImbue:   proto.WeaponImbue_WizardOil,
 		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
+	},
+}
+
+var Phase5Consumes = core.ConsumesCombo{
+	Label: "P5-Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:   proto.Potions_MajorManaPotion,
+		Flask:           proto.Flask_FlaskOfSupremePower,
+		FirePowerBuff:   proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
+		Food:            proto.Food_FoodTenderWolfSteak,
+		MainHandImbue:   proto.WeaponImbue_FlametongueWeapon,
+		SpellPowerBuff:  proto.SpellPowerBuff_GreaterArcaneElixir,
+	},
+}
+
+var Phase6Consumes = core.ConsumesCombo{
+	Label: "P6-Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:   proto.Potions_MajorManaPotion,
+		Flask:           proto.Flask_FlaskOfSupremePower,
+		FirePowerBuff:   proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		ShadowPowerBuff: proto.ShadowPowerBuff_ElixirOfShadowPower,
+		Food:            proto.Food_FoodDarkclawBisque,
+		MainHandImbue:   proto.WeaponImbue_FlametongueWeapon,
+		SpellPowerBuff:  proto.SpellPowerBuff_ElixirOfTheMageLord,
 	},
 }
 
