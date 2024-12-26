@@ -114,6 +114,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 
 	presets: {
 		rotations: [
+			...Presets.APLPresets[Phase.Phase7],
+			...Presets.APLPresets[Phase.Phase6],
 			...Presets.APLPresets[Phase.Phase5],
 			...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
@@ -121,6 +123,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			...Presets.APLPresets[Phase.Phase1],
 		],
 		talents: [
+			...Presets.TalentPresets[Phase.Phase7],
+			...Presets.TalentPresets[Phase.Phase6],
 			...Presets.TalentPresets[Phase.Phase5],
 			...Presets.TalentPresets[Phase.Phase4],
 			...Presets.TalentPresets[Phase.Phase3],
@@ -128,6 +132,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		gear: [
+			...Presets.GearPresets[Phase.Phase7],
+			...Presets.GearPresets[Phase.Phase6],
 			...Presets.GearPresets[Phase.Phase5],
 			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],
@@ -201,7 +207,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			defaultName: 'Frost',
 			iconUrl: getSpecIcon(Class.ClassMage, 2),
 
-			talents: Presets.DefaultTalentsFrostfire.data,
+			talents: Presets.DefaultTalentsFrost.data,
 			specOptions: Presets.DefaultOptions,
 			consumes: Presets.DefaultConsumes,
 			otherDefaults: Presets.OtherDefaults,
