@@ -132,6 +132,7 @@ type Shaman struct {
 	RollingThunder         *core.Spell
 	SearingTotem           []*core.Spell
 	StoneskinTotem         []*core.Spell
+	Stormstrike            *core.Spell
 	StormstrikeMH          *core.Spell
 	StormstrikeOH          *core.Spell
 	StrengthOfEarthTotem   []*core.Spell
@@ -150,6 +151,7 @@ type Shaman struct {
 	MaelstromWeaponAura  *core.Aura
 	PowerSurgeDamageAura *core.Aura
 	PowerSurgeHealAura   *core.Aura
+	ShamanisticRageAura  *core.Aura
 	ShieldMasteryAura    *core.Aura
 	SpiritOfTheAlphaAura *core.Aura
 	WaterShieldAura      *core.Aura
@@ -171,16 +173,17 @@ type Shaman struct {
 	SpiritWolves *SpiritWolves
 
 	// Other data
-	ancestralHealingAmount   float64 // Used by Ancestral Awakening
-	bonusFlurrySpeed         float64 // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
-	bonusWindfuryWeaponAP    float64
-	elementalFocusProcChance float64
-	lastFlameShockTarget     *core.Unit // Used by Ancestral Guidance rune
-	lightningShieldCanCrit   bool
-	maelstromWeaponPPMM      *core.PPMManager
-	powerSurgeProcChance     float64
-	staticSHocksProcChance   float64
-	useLavaBurstCritScaling  bool
+	ancestralHealingAmount      float64 // Used by Ancestral Awakening
+	bonusFlurrySpeed            float64 // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
+	bonusWindfuryWeaponAP       float64
+	elementalFocusProcChance    float64
+	lastFlameShockTarget        *core.Unit // Used by Ancestral Guidance rune
+	lightningShieldCanCrit      bool
+	maelstromWeaponPPMM         *core.PPMManager
+	powerSurgeProcChance        float64
+	shamanisticRageDRMultiplier float64
+	staticSHocksProcChance      float64
+	useLavaBurstCritScaling     bool
 }
 
 // Implemented by each Shaman spec.

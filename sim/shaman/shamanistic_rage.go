@@ -7,18 +7,18 @@ import (
 )
 
 func (shaman *Shaman) registerShamanisticRageCD() {
-	damageTakenMultiplier := .8
+	shaman.shamanisticRageDRMultiplier = .8
 	duration := time.Second * 15
 	cooldown := time.Minute * 1
 
 	actionID := core.ActionID{SpellID: 425336}
 	manaMetrics := shaman.NewManaMetrics(actionID)
-	srAura := shaman.GetOrRegisterAura(core.Aura{
+	shaman.ShamanisticRageAura = shaman.GetOrRegisterAura(core.Aura{
 		Label:    "Shamanistic Rage",
 		ActionID: actionID,
 		Duration: duration,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMultiplier
+			aura.Unit.PseudoStats.DamageTakenMultiplier *= shaman.shamanisticRageDRMultiplier
 
 			// Sham rage mana gain is snapshotted on cast
 			// TODO: Raid mana regain
@@ -33,7 +33,7 @@ func (shaman *Shaman) registerShamanisticRageCD() {
 			})
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier /= damageTakenMultiplier
+			aura.Unit.PseudoStats.DamageTakenMultiplier /= shaman.shamanisticRageDRMultiplier
 		},
 	})
 
@@ -48,7 +48,7 @@ func (shaman *Shaman) registerShamanisticRageCD() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			srAura.Activate(sim)
+			shaman.ShamanisticRageAura.Activate(sim)
 		},
 	})
 
