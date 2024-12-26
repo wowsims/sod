@@ -10,6 +10,8 @@ import (
 
 func (rogue *Rogue) ApplyRunes() {
 	// Apply runes here :)
+	rogue.applyShoulderRuneEffect()
+
 	if rogue.HasRune(proto.RogueRune_RuneDeadlyBrew) {
 		rogue.applyDeadlyBrewInstant()
 		rogue.applyDeadlyBrewDeadly()
@@ -41,6 +43,29 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerFanOfKnives()
 	rogue.registerCrimsonTempestSpell()
 	rogue.applySlaughterfromtheShadows()
+}
+
+func (rogue *Rogue) applyShoulderRuneEffect() {
+	if rogue.Equipment.Shoulders().Rune == int32(proto.RogueRune_RogueRuneNone) {
+		return
+	}
+
+	switch rogue.Equipment.Shoulders().Rune {
+	// Damage
+	case int32(proto.RogueRune_RuneShouldersAvoidant):
+	case int32(proto.HunterRune_RuneShouldersToxinologist):
+		rogue.applyT1Damage4PBonus()
+	case int32(proto.RogueRune_RuneShouldersExecutioner):
+		rogue.applyT1Damage6PBonus()
+	case int32(proto.RogueRune_RuneShouldersOpportunist):
+		rogue.applyT2Damage2PBonus()
+	case int32(proto.RogueRune_RuneShouldersButcher):
+		rogue.applyT2Damage4PBonus()
+	case int32(proto.RogueRune_RuneShouldersPhantom):
+		rogue.applyT2Damage6PBonus()
+
+		// Tank
+	}
 }
 
 func (rogue *Rogue) applyCombatPotency() {

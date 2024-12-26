@@ -41,11 +41,11 @@ type SpellConfig struct {
 
 	CritDamageBonus float64
 
-	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage
-	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full spell damage
-	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full spell damage
-	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to full non-periodic spell damage
-	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to full spell periodic damage
+	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
+	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
+	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full Direct and Periodic spell damage.      Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
+	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
+	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -140,11 +140,11 @@ type Spell struct {
 	BonusCritRating    float64
 	CastTimeMultiplier float64
 
-	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage
-	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full spell damage
-	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full spell damage
-	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to full non-periodic spell damage
-	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to full spell periodic damage
+	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
+	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
+	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full Direct and Periodic spell damage.      Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
+	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
+	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -200,9 +200,11 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	} else if config.DamageMultiplierAdditive != 0 && config.DamageMultiplier == 0 {
 		config.DamageMultiplier = 1
 	}
+
 	if config.ImpactDamageMultiplierAdditive == 0 {
 		config.ImpactDamageMultiplierAdditive = 1
 	}
+
 	if config.PeriodicDamageMultiplierAdditive == 0 {
 		config.PeriodicDamageMultiplierAdditive = 1
 	}

@@ -38,7 +38,6 @@ const (
 	SpellCode_RoguePoisonedKnife
 	SpellCode_RogueRupture
 	SpellCode_RogueSaberSlash
-	SpellCode_RogueSaberSlashDoT
 	SpellCode_RogueShadowStrike
 	SpellCode_RogueSinisterStrike
 	SpellCode_RogueSliceandDice
@@ -72,7 +71,6 @@ type Rogue struct {
 	Shiv                *core.Spell
 	SinisterStrike      *core.Spell
 	SaberSlash          *core.Spell
-	saberSlashTick      *core.Spell
 	MainGauche          *core.Spell
 	Shadowstep          *core.Spell
 	Preparation         *core.Spell
