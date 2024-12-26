@@ -4,244 +4,261 @@ package proto;
 option go_package = "./proto";
 
 message HunterTalents {
-	// Beast Mastery
-	int32 improved_aspect_of_the_hawk = 1;
-	int32 endurance_training = 2;
-	int32 improved_eyes_of_the_beast = 3;
-	int32 improved_aspect_of_the_monkey = 4;
-	int32 thick_hide = 5;
-	int32 improved_revive_pet = 6;
-	int32 pathfinding = 7;
-	bool bestial_swiftness = 8;
-	int32 unleashed_fury = 9;
-	int32 improved_mend_pet = 10;
-	int32 ferocity = 11;
-	int32 spirit_bond = 12;
-	bool intimidation = 13;
-	int32 bestial_discipline = 14;
-	int32 frenzy = 15;
-	bool bestial_wrath = 16;
+    // Beast Mastery
+    int32 improved_aspect_of_the_hawk = 1;
+    int32 endurance_training = 2;
+    int32 improved_eyes_of_the_beast = 3;
+    int32 improved_aspect_of_the_monkey = 4;
+    int32 thick_hide = 5;
+    int32 improved_revive_pet = 6;
+    int32 pathfinding = 7;
+    bool bestial_swiftness = 8;
+    int32 unleashed_fury = 9;
+    int32 improved_mend_pet = 10;
+    int32 ferocity = 11;
+    int32 spirit_bond = 12;
+    bool intimidation = 13;
+    int32 bestial_discipline = 14;
+    int32 frenzy = 15;
+    bool bestial_wrath = 16;
 
-	// Marksmanship
-	int32 improved_concussive_shot = 17;
-	int32 efficiency = 18;
-	int32 improved_hunters_mark = 19;
-	int32 lethal_shots = 20;
-	bool aimed_shot = 21;
-	int32 improved_arcane_shot = 22;
-	int32 hawk_eye = 23;
-	int32 improved_serpent_sting = 24;
-	int32 mortal_shots = 25;
-	bool scatter_shot = 26;
-	int32 barrage = 27;
-	int32 improved_scorpid_sting = 28;
-	int32 ranged_weapon_specialization = 29;
-	bool trueshot_aura = 30;
+    // Marksmanship
+    int32 improved_concussive_shot = 17;
+    int32 efficiency = 18;
+    int32 improved_hunters_mark = 19;
+    int32 lethal_shots = 20;
+    bool aimed_shot = 21;
+    int32 improved_arcane_shot = 22;
+    int32 hawk_eye = 23;
+    int32 improved_serpent_sting = 24;
+    int32 mortal_shots = 25;
+    bool scatter_shot = 26;
+    int32 barrage = 27;
+    int32 improved_scorpid_sting = 28;
+    int32 ranged_weapon_specialization = 29;
+    bool trueshot_aura = 30;
 
-	// Survival
-	int32 monster_slaying = 31;
-	int32 humanoid_slaying = 32;
-	int32 deflection = 33;
-	int32 entrapment = 34;
-	int32 savage_strikes = 35;
-	int32 improved_wing_clip = 36;
-	int32 clever_traps = 37;
-	int32 survivalist = 38;
-	bool deterrence = 39;
-	int32 trap_mastery = 40;
-	int32 surefooted = 41;
-	int32 improved_feign_death = 42;
-	int32 killer_instinct = 43;
-	bool counterattack = 44;
-	int32 lightning_reflexes = 45;
-	bool wyvern_sting = 46;
+    // Survival
+    int32 monster_slaying = 31;
+    int32 humanoid_slaying = 32;
+    int32 deflection = 33;
+    int32 entrapment = 34;
+    int32 savage_strikes = 35;
+    int32 improved_wing_clip = 36;
+    int32 clever_traps = 37;
+    int32 survivalist = 38;
+    bool deterrence = 39;
+    int32 trap_mastery = 40;
+    int32 surefooted = 41;
+    int32 improved_feign_death = 42;
+    int32 killer_instinct = 43;
+    bool counterattack = 44;
+    int32 lightning_reflexes = 45;
+    bool wyvern_sting = 46;
 }
 
 message HunterPetTalents {
-	// Cunning
-	int32 cobra_reflexes = 1;
-	bool dive = 2;
-	int32 great_stamina = 3;
-	int32 natural_armor = 4;
-	bool boars_speed = 5;
-	int32 mobility = 6;
-	int32 owls_focus = 7;
-	int32 spiked_collar = 8;
-	int32 culling_the_herd = 9;
-	int32 lionhearted = 10;
-	bool carrion_feeder = 11;
-	int32 great_resistance = 12;
-	int32 cornered = 13;
-	int32 feeding_frenzy = 14;
-	bool wolverine_bite = 15;
-	bool roar_of_recovery = 16;
-	bool bullheaded = 17;
-	int32 grace_of_the_mantis = 18;
-	int32 wild_hunt = 19;
-	bool roar_of_sacrifice = 20;
+    // Cunning
+    int32 cobra_reflexes = 1;
+    bool dive = 2;
+    int32 great_stamina = 3;
+    int32 natural_armor = 4;
+    bool boars_speed = 5;
+    int32 mobility = 6;
+    int32 owls_focus = 7;
+    int32 spiked_collar = 8;
+    int32 culling_the_herd = 9;
+    int32 lionhearted = 10;
+    bool carrion_feeder = 11;
+    int32 great_resistance = 12;
+    int32 cornered = 13;
+    int32 feeding_frenzy = 14;
+    bool wolverine_bite = 15;
+    bool roar_of_recovery = 16;
+    bool bullheaded = 17;
+    int32 grace_of_the_mantis = 18;
+    int32 wild_hunt = 19;
+    bool roar_of_sacrifice = 20;
 
-	// Ferocity
-	int32 improved_cower = 21;
-	int32 bloodthirsty = 22;
-	bool heart_of_the_pheonix = 23;
-	int32 spiders_bite = 24;
-	bool rabid = 25;
-	bool lick_your_wounds = 26;
-	bool call_of_the_wild = 27;
-	int32 shark_attack = 28;
+    // Ferocity
+    int32 improved_cower = 21;
+    int32 bloodthirsty = 22;
+    bool heart_of_the_pheonix = 23;
+    int32 spiders_bite = 24;
+    bool rabid = 25;
+    bool lick_your_wounds = 26;
+    bool call_of_the_wild = 27;
+    int32 shark_attack = 28;
 
-	// Tenacity
-	bool charge = 29;
-	int32 blood_of_the_rhino = 30;
-	int32 pet_barding = 31;
-	int32 guard_dog = 32;
-	bool thunderstomp = 33;
-	bool last_stand = 34;
-	bool taunt = 35;
-	bool intervene = 36;
-	int32 silverback = 37;
+    // Tenacity
+    bool charge = 29;
+    int32 blood_of_the_rhino = 30;
+    int32 pet_barding = 31;
+    int32 guard_dog = 32;
+    bool thunderstomp = 33;
+    bool last_stand = 34;
+    bool taunt = 35;
+    bool intervene = 36;
+    int32 silverback = 37;
 }
 
 enum HunterRune {
-	HunterRuneNone 						= 0;
+    HunterRuneNone                      = 0;
 
-	RuneHelmRapidKilling				= 415405;
-	RuneHelmLockAndLoad					= 415413;
-	RuneHelmCatlikeReflexes				= 415428;
+    RuneHelmRapidKilling                = 415405;
+    RuneHelmLockAndLoad                 = 415413;
+    RuneHelmCatlikeReflexes             = 415428;
 
-	RuneCloakImprovedVolley				= 440520;
-	RuneCloakResourcefulness			= 440529;
-	RuneCloakHitAndRun					= 440533;
+    RuneshouldersAlphaTamer             = 1220090;
+    RuneShouldersAlternator             = 1220078;
+    RuneShouldersBeastTender            = 1220086;
+    RuneShouldersBountyHunter           = 1220082;
+    RuneShouldersDeadlyStriker          = 1220104;
+    RuneShouldersFerocious              = 1220301;
+    RuneShouldersHazardHarrier          = 1220076;
+    RuneShouldersHoundMaster            = 1220088;
+    RuneShouldersHuntsman               = 1220092;
+    RuneShouldersKineticist             = 1220100;
+    RuneShouldersLethalLasher           = 1220098;
+    RuneShouldersMisleader              = 1220070;
+    RuneShouldersPreyseeker             = 1220072;
+    RuneShouldersRetaliator             = 1220094;
+    RuneShouldersSharpshooter           = 1220074;
+    RuneShouldersStrategist             = 1220102;
+    RuneShouldersToxinologist           = 1220080;
+    RuneShouldersTrickShooter           = 1220084;
 
-	RuneChestBeastmastery   			= 409368;
-	RuneChestMasterMarksman 			= 409428;
-	RuneChestLoneWolf					= 415370;
-	RuneChestCobraStrikes   			= 425713;
+    RuneCloakImprovedVolley             = 440520;
+    RuneCloakResourcefulness            = 440529;
+    RuneCloakHitAndRun                  = 440533;
 
-	RuneBracersRaptorFury				= 415358;
-	RuneBracersFocusFire				= 428726;
-	RuneBracersTNT						= 428717;
+    RuneChestBeastmastery               = 409368;
+    RuneChestMasterMarksman             = 409428;
+    RuneChestLoneWolf                   = 415370;
+    RuneChestCobraStrikes               = 425713;
 
-	RuneHandsCobraSlayer				= 458393;
-	RuneHandsChimeraShot    			= 409433;
-	RuneHandsExplosiveShot  			= 409552;
-	RuneHandsCarve						= 425711;
-	
-	RuneBeltExposeWeakness 				= 409504;
-	RuneBeltMeleeSpecialist 			= 415352;
-	RuneBeltSteadyShot 					= 437123;
-	
-	RuneLegsKillShot     				= 409593;
-	RuneLegsFlankingStrike 				= 415320;
-	RuneLegsSniperTraining 				= 415399;
-	RuneLegsSerpentSpread 				= 425738;
+    RuneBracersRaptorFury               = 415358;
+    RuneBracersFocusFire                = 428726;
+    RuneBracersTNT                      = 428717;
 
-	RuneBootsTrapLauncher 				= 409541;
-	RuneBootsDualWieldSpecialization 	= 409687;
-	RuneBootsWyvernStrike				= 458479;
+    RuneHandsCobraSlayer                = 458393;
+    RuneHandsChimeraShot                = 409433;
+    RuneHandsExplosiveShot              = 409552;
+    RuneHandsCarve                      = 425711;
+    
+    RuneBeltExposeWeakness              = 409504;
+    RuneBeltMeleeSpecialist             = 415352;
+    RuneBeltSteadyShot                  = 437123;
+    
+    RuneLegsKillShot                    = 409593;
+    RuneLegsFlankingStrike              = 415320;
+    RuneLegsSniperTraining              = 415399;
+    RuneLegsSerpentSpread               = 425738;
 
-	RuneUtilityHeartOfTheLion 			= 409580;
+    RuneBootsTrapLauncher               = 409541;
+    RuneBootsDualWieldSpecialization    = 409687;
+    RuneBootsWyvernStrike               = 458479;
 }
 
 message Hunter {
-	message Rotation {
-		enum RotationType {
-			UnknownType = 0;
-			SingleTarget = 1;
-			Aoe = 3;
-			Custom = 2;
-		}
-		RotationType type = 9;
+    message Rotation {
+        enum RotationType {
+            UnknownType = 0;
+            SingleTarget = 1;
+            Aoe = 3;
+            Custom = 2;
+        }
+        RotationType type = 9;
 
-		enum StingType {
-			NoSting = 0;
-			ScorpidSting = 1;
-			SerpentSting = 2;
-		}
-		StingType sting = 2;
-		bool multi_dot_serpent_sting = 3;
-	}
-	
-	message Options {
-		enum Ammo {
-			AmmoNone = 0;
-			// 25
-			RazorArrow = 1;
-			SolidShot = 2;
-			// 40
-			JaggedArrow = 3;
-			AccurateSlugs = 4;
-			// 50
-			MithrilGyroShot = 5;
-			RockshardPellets = 6;
-			// 60
-			IceThreadedArrow = 7;
-			ThoriumHeadedArrow = 8;
-			Doomshot = 9;
-			IceThreadedBullet = 10;
-			ThoriumShells = 11;
-			MiniatureCannonBalls = 12;
-		}
-		Ammo ammo = 1;
+        enum StingType {
+            NoSting = 0;
+            ScorpidSting = 1;
+            SerpentSting = 2;
+        }
+        StingType sting = 2;
+        bool multi_dot_serpent_sting = 3;
+    }
+    
+    message Options {
+        enum Ammo {
+            AmmoNone = 0;
+            // 25
+            RazorArrow = 1;
+            SolidShot = 2;
+            // 40
+            JaggedArrow = 3;
+            AccurateSlugs = 4;
+            // 50
+            MithrilGyroShot = 5;
+            RockshardPellets = 6;
+            // 60
+            IceThreadedArrow = 7;
+            ThoriumHeadedArrow = 8;
+            Doomshot = 9;
+            IceThreadedBullet = 10;
+            ThoriumShells = 11;
+            MiniatureCannonBalls = 12;
+        }
+        Ammo ammo = 1;
 
-		enum QuiverBonus
-		{
-			QuiverNone = 0;
-			Speed10 = 1;
-			Speed11 = 2;
-			Speed12 = 3;
-			Speed13 = 4;
-			Speed14 = 5;
-			Speed15 = 6;
-		}
-		QuiverBonus quiver_bonus = 2;
+        enum QuiverBonus
+        {
+            QuiverNone = 0;
+            Speed10 = 1;
+            Speed11 = 2;
+            Speed12 = 3;
+            Speed13 = 4;
+            Speed14 = 5;
+            Speed15 = 6;
+        }
+        QuiverBonus quiver_bonus = 2;
 
-		enum PetType {
-			PetNone = 0;
-			Cat = 1;
-			WindSerpent = 2;
-			Wolf = 3;
-			Bat = 4;
-			Bear = 5;
-			Owl = 6;
-			Boar = 7;
-			CarrionBird = 8;
-			CoreHound = 10;
-			Crab = 11;
-			Crocolisk = 12;
-			Gorilla = 15;
-			Hyena = 16;
-			Raptor = 17;
-			Scorpid = 18;
-			Spider = 21;
-			Tallstrider = 24;
-			Turtle = 25;
-		}
+        enum PetType {
+            PetNone = 0;
+            Cat = 1;
+            WindSerpent = 2;
+            Wolf = 3;
+            Bat = 4;
+            Bear = 5;
+            Owl = 6;
+            Boar = 7;
+            CarrionBird = 8;
+            CoreHound = 10;
+            Crab = 11;
+            Crocolisk = 12;
+            Gorilla = 15;
+            Hyena = 16;
+            Raptor = 17;
+            Scorpid = 18;
+            Spider = 21;
+            Tallstrider = 24;
+            Turtle = 25;
+        }
 
-		enum PetAttackSpeed {
-			One = 0;
-			OneTwo = 1;
-			OneThree = 2;
-			OneFour = 3;
-			OneFive = 4;
-			OneSix = 5;
-			OneSeven = 6;
-			Two = 7;
-			TwoFour = 8;
-			TwoFive = 9;
-		}
+        enum PetAttackSpeed {
+            One = 0;
+            OneTwo = 1;
+            OneThree = 2;
+            OneFour = 3;
+            OneFive = 4;
+            OneSix = 5;
+            OneSeven = 6;
+            Two = 7;
+            TwoFour = 8;
+            TwoFive = 9;
+        }
 
-		PetType pet_type = 3;
-		HunterPetTalents pet_talents = 4;
-		double pet_uptime = 5;
+        PetType pet_type = 3;
+        HunterPetTalents pet_talents = 4;
+        double pet_uptime = 5;
 
-		double sniper_training_uptime = 6;
+        double sniper_training_uptime = 6;
 
-		double pet_attack_speed_old = 7;
+        double pet_attack_speed_old = 7;
 
-		bool new_raptor_strike = 8;
+        bool new_raptor_strike = 8;
 
-		PetAttackSpeed pet_attack_speed = 9;
-	}
-	Options options = 2;
+        PetAttackSpeed pet_attack_speed = 9;
+    }
+    Options options = 2;
 }

@@ -78,7 +78,7 @@ func (warrior *Warrior) applyShoulderRuneEffect() {
 	// Tank
 	case int32(proto.WarriorRune_RuneShouldersSavage):
 		warrior.applyT1Tank4PBonus()
-	case int32(proto.WarriorRune_RuneShouldersEnmity):
+	case int32(proto.WarriorRune_RuneShouldersEnmityWarrior):
 		warrior.applyT1Tank6PBonus()
 	case int32(proto.WarriorRune_RuneShouldersDeflective):
 		warrior.applyT2Protection2PBonus()

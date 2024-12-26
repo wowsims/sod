@@ -79,7 +79,7 @@ enum WarriorRune {
     RuneShouldersDeathbound         = 1219968;
     RuneShouldersDeflective         = 1219978;
     RuneShouldersDestroyer          = 1219966;
-    RuneShouldersEnmity             = 1219976;
+    RuneShouldersEnmityWarrior      = 1219976;
     RuneShouldersGladiator          = 1219990;
     RuneShouldersIncessant          = 1219982;
     RuneShouldersRevenger           = 1219980;

@@ -4,158 +4,185 @@ package proto;
 option go_package = "./proto";
 
 message PaladinTalents {
-	// Holy
-	int32 divine_strength = 1;
-	int32 divine_intellect = 2;
-	int32 spiritual_focus = 3;
-	int32 improved_seal_of_righteousness = 4;
-	int32 healing_light = 5;
-	bool consecration = 6;
-	int32 improved_lay_on_hands = 7;
-	int32 unyielding_faith = 8;
-	int32 illumination = 9;
-	int32 improved_blessing_of_wisdom = 10;
-	bool divine_favor = 11;
-	int32 lasting_judgement = 12;
-	int32 holy_power = 13;
-	bool holy_shock = 14;
+    // Holy
+    int32 divine_strength = 1;
+    int32 divine_intellect = 2;
+    int32 spiritual_focus = 3;
+    int32 improved_seal_of_righteousness = 4;
+    int32 healing_light = 5;
+    bool consecration = 6;
+    int32 improved_lay_on_hands = 7;
+    int32 unyielding_faith = 8;
+    int32 illumination = 9;
+    int32 improved_blessing_of_wisdom = 10;
+    bool divine_favor = 11;
+    int32 lasting_judgement = 12;
+    int32 holy_power = 13;
+    bool holy_shock = 14;
 
-	// Protection
-	int32 improved_devotion_aura = 15;
-	int32 redoubt = 16;
-	int32 precision = 17;
-	int32 guardians_favor = 18;
-	int32 toughness = 19;
-	bool blessing_of_kings = 20;
-	int32 improved_righteous_fury = 21;
-	int32 shield_specialization = 22;
-	int32 anticipation = 23;
-	int32 improved_hammer_of_justice = 24;
-	int32 improved_concentration_aura = 25;
-	bool blessing_of_sanctuary = 26;
-	int32 reckoning = 27;
-	int32 one_handed_weapon_specialization = 28;
-	bool holy_shield = 29;
+    // Protection
+    int32 improved_devotion_aura = 15;
+    int32 redoubt = 16;
+    int32 precision = 17;
+    int32 guardians_favor = 18;
+    int32 toughness = 19;
+    bool blessing_of_kings = 20;
+    int32 improved_righteous_fury = 21;
+    int32 shield_specialization = 22;
+    int32 anticipation = 23;
+    int32 improved_hammer_of_justice = 24;
+    int32 improved_concentration_aura = 25;
+    bool blessing_of_sanctuary = 26;
+    int32 reckoning = 27;
+    int32 one_handed_weapon_specialization = 28;
+    bool holy_shield = 29;
 
-	// Retribution
-	int32 improved_blessing_of_might = 30;
-	int32 benediction = 31;
-	int32 improved_judgement = 32;
-	int32 improved_seal_of_the_crusader = 33;
-	int32 deflection = 34;
-	int32 vindication = 35;
-	int32 conviction = 36;
-	bool seal_of_command = 37;
-	int32 pursuit_of_justice = 38;
-	int32 eye_for_an_eye = 39;
-	int32 improved_retribution_aura = 40;
-	int32 two_handed_weapon_specialization = 41;
-	bool sanctity_aura = 42;
-	int32 vengeance = 43;
-	bool repentance = 44;
+    // Retribution
+    int32 improved_blessing_of_might = 30;
+    int32 benediction = 31;
+    int32 improved_judgement = 32;
+    int32 improved_seal_of_the_crusader = 33;
+    int32 deflection = 34;
+    int32 vindication = 35;
+    int32 conviction = 36;
+    bool seal_of_command = 37;
+    int32 pursuit_of_justice = 38;
+    int32 eye_for_an_eye = 39;
+    int32 improved_retribution_aura = 40;
+    int32 two_handed_weapon_specialization = 41;
+    bool sanctity_aura = 42;
+    int32 vengeance = 43;
+    bool repentance = 44;
 }
 
 enum PaladinRune {
-	PaladinRuneNone = 0;
+    PaladinRuneNone = 0;
 
-	RuneHeadFanaticism				= 429142;
-	RuneHeadImprovedSanctuary		= 429133;
-	RuneHeadWrath					= 429139;
+    RuneHeadFanaticism              = 429142;
+    RuneHeadImprovedSanctuary       = 429133;
+    RuneHeadWrath                   = 429139;
 
-	RuneCloakShieldOfRighteousness	= 440658;
-	RuneCloakVindicator				= 440666;
-	RuneCloakShockAndAwe   		    = 462834;
-	RuneCloakRighteousVengeance		= 440672;
+    RuneShouldersAltruist           = 1220210;
+    RuneShouldersArbiter            = 1220212;
+    RuneShouldersAscendant          = 1220220;
+    RuneShouldersBastion            = 1220188;
+    RuneShouldersDominus            = 1220206;
+    RuneShouldersEnmityPaladin      = 1219976;
+    RuneShouldersExcommunicator     = 1220224;
+    RuneShouldersExemplar           = 1220200;
+    RuneShouldersExile              = 1220228;
+    RuneShouldersGuardian           = 1220194;
+    RuneShouldersInquisitor         = 1220202;
+    RuneShouldersIronclad           = 1220192;
+    RuneShouldersJudicator          = 1220218;
+    RuneShouldersJusticar           = 1220216;
+    RuneShouldersLightbringer       = 1220226;
+    RuneShouldersLightwarden        = 1220182;
+    RuneShouldersPeacekeeper        = 1220196;
+    RuneShouldersPristineBlocker    = 1219972;
+    RuneShouldersRadiantDefender    = 1220184;
+    RuneShouldersReckoner           = 1220190;
+    RuneShouldersRetributor         = 1220222;
+    RuneShouldersSealbearer         = 1220214;
+    RuneShouldersShieldbearer       = 1220186;
+    RuneShouldersSovereign          = 1220204;
+    RuneShouldersTemplar            = 1220230;
+    RuneShouldersVindicator         = 1220208;
 
-	RuneChestDivineStorm			= 407778;
-	RuneChestAegis					= 425589;
-	RuneChestHallowedGround			= 458287;
-	RuneChestDivineLight			= 458856;
+    RuneCloakShieldOfRighteousness  = 440658;
+    RuneCloakVindicator             = 440666;
+    RuneCloakShockAndAwe            = 462834;
+    RuneCloakRighteousVengeance     = 440672;
 
-	RuneWristHammerOfTheRighteous	= 407632;
-	RuneWristLightsGrace			= 428909;
-	RuneWristPurifyingPower			= 429144;
-	RuneWristImprovedHammerOfWrath	= 429152;
+    RuneChestDivineStorm            = 407778;
+    RuneChestAegis                  = 425589;
+    RuneChestHallowedGround         = 458287;
+    RuneChestDivineLight            = 458856;
 
-	RuneHandsBeaconOfLight			= 407613;
-	RuneHandsHandOfReckoning		= 407631;
-	RuneHandsCrusaderStrike			= 407676;
+    RuneWristHammerOfTheRighteous   = 407632;
+    RuneWristLightsGrace            = 428909;
+    RuneWristPurifyingPower         = 429144;
+    RuneWristImprovedHammerOfWrath  = 429152;
 
-	RuneWaistInfusionOfLight		= 426065;
-	RuneWaistSheathOfLight			= 426158;
-	RuneWaistMalleableProtection	= 458318;
+    RuneHandsBeaconOfLight          = 407613;
+    RuneHandsHandOfReckoning        = 407631;
+    RuneHandsCrusaderStrike         = 407676;
 
-	RuneLegsAuraMastery				= 407624;
-	RuneLegsAvengersShield			= 407669;
-	RuneLegsDivineSacrifice			= 407804;
-	RuneLegsInspirationExemplar 	= 407880;
-	RuneLegsRebuke					= 425609;
+    RuneWaistInfusionOfLight        = 426065;
+    RuneWaistSheathOfLight          = 426158;
+    RuneWaistMalleableProtection    = 458318;
 
-	RuneFeetSacredShield			= 412019;
-	RuneFeetGuardedByTheLight		= 415059;
-	RuneFeetTheArtOfWar				= 426157;
+    RuneLegsAuraMastery             = 407624;
+    RuneLegsAvengersShield          = 407669;
+    RuneLegsDivineSacrifice         = 407804;
+    RuneLegsInspirationExemplar     = 407880;
+    RuneLegsRebuke                  = 425609;
 
-	RuneUtilitySealOfMartyrdom		= 407798;
-	RuneUtilityExorcist				= 415076;
-	RuneUtilityAvengingWrath		= 407788;
+    RuneFeetSacredShield            = 412019;
+    RuneFeetGuardedByTheLight       = 415059;
+    RuneFeetTheArtOfWar             = 426157;
+
+    RuneUtilitySealOfMartyrdom      = 407798;
+    RuneUtilityExorcist             = 415076;
+    RuneUtilityAvengingWrath        = 407788;
 }
 
 enum Blessings {
-	BlessingUnknown = 0;
-	BlessingOfKings = 1;
-	BlessingOfMight = 2;
-	BlessingOfSalvation = 3;
-	BlessingOfWisdom = 4;
-	BlessingOfSanctuary = 5;
-	BlessingOfLight = 6;
+    BlessingUnknown = 0;
+    BlessingOfKings = 1;
+    BlessingOfMight = 2;
+    BlessingOfSalvation = 3;
+    BlessingOfWisdom = 4;
+    BlessingOfSanctuary = 5;
+    BlessingOfLight = 6;
 }
 
 enum PaladinAura {
-	NoPaladinAura = 0;
-	SanctityAura = 1;
-	DevotionAura = 2;
-	RetributionAura = 3;
-	ConcentrationAura = 4;
-	FrostResistanceAura = 5;
-	ShadowResistanceAura = 6;
-	FireResistanceAura = 7;
+    NoPaladinAura = 0;
+    SanctityAura = 1;
+    DevotionAura = 2;
+    RetributionAura = 3;
+    ConcentrationAura = 4;
+    FrostResistanceAura = 5;
+    ShadowResistanceAura = 6;
+    FireResistanceAura = 7;
 }
 
 enum PaladinSeal {
-	NoSeal = 0;
-	Righteousness = 1;
-	Command = 2;
-	Martyrdom = 3;
+    NoSeal = 0;
+    Righteousness = 1;
+    Command = 2;
+    Martyrdom = 3;
 }
 
 message PaladinOptions {
-	PaladinSeal primarySeal = 1;
-	PaladinAura aura = 2;
-	bool IsUsingDivineStormStopAttack = 4;
-	bool IsUsingJudgementStopAttack = 5;
-	bool IsUsingCrusaderStrikeStopAttack = 6;
+    PaladinSeal primarySeal = 1;
+    PaladinAura aura = 2;
+    bool IsUsingDivineStormStopAttack = 4;
+    bool IsUsingJudgementStopAttack = 5;
+    bool IsUsingCrusaderStrikeStopAttack = 6;
 
     bool righteousFury = 8;
     Blessings personalBlessing = 9;
 }
 
 message RetributionPaladin {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	PaladinOptions options = 3;
+    PaladinOptions options = 3;
 }
 
 message ProtectionPaladin {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	PaladinOptions options = 3;
+    PaladinOptions options = 3;
 }
 
 message HolyPaladin {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	PaladinOptions options = 3;
+    PaladinOptions options = 3;
 }
