@@ -33,7 +33,7 @@ func (rogue *Rogue) applyTAQDamage2PBonus() {
 	}
 
 	rogue.RegisterAura(core.Aura{
-		Label: "S03 - Item - TAQ - Rogue - Damage 2P Bonus",
+		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if rogue.SaberSlash != nil {
 				rogue.SaberSlash.DamageMultiplierAdditive += 0.20

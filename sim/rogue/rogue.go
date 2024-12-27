@@ -27,14 +27,17 @@ const (
 	SpellCode_RogueBladeDance
 	SpellCode_RogueBladeFlurry
 	SpellCode_RogueCrimsonTempest
+	SpellCode_RogueDeadlyPoisonTick
 	SpellCode_RogueEnvenom
 	SpellCode_RogueEviscerate
 	SpellCode_RogueExposeArmor
 	SpellCode_RogueGarrote
 	SpellCode_RogueGhostlyStrike
 	SpellCode_RogueHemorrhage
+	SpellCode_RogueInstantPoison
 	SpellCode_RogueMainGauche
 	SpellCode_RogueMutilate
+	SpellCode_RogueOccultPoisonTick
 	SpellCode_RoguePoisonedKnife
 	SpellCode_RogueRupture
 	SpellCode_RogueSaberSlash

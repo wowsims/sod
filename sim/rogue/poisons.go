@@ -358,6 +358,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 
 	rogue.deadlyPoisonTick = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueDeadlyPoisonTick,
 		ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
@@ -440,6 +441,7 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 
 	rogue.occultPoisonTick = rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueOccultPoisonTick,
 		ActionID:    core.ActionID{SpellID: spellID, Tag: 100},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
@@ -566,6 +568,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 	hasDeadlyBrew := rogue.HasRune(proto.RogueRune_RuneDeadlyBrew)
 
 	return rogue.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_RogueInstantPoison,
 		ActionID:    core.ActionID{SpellID: spellID, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
 		DefenseType: core.DefenseTypeMagic,
