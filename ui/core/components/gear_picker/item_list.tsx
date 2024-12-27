@@ -757,7 +757,7 @@ export default class ItemList<T extends ItemListType> {
 				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_blacksmithing.gif"
 				break;
 			case Profession.Enchanting:
-				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_enchanting.gif"
+				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_engraving.gif"
 				break;
 			case Profession.Engineering:
 				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_engineering.gif"

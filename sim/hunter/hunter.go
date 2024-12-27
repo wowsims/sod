@@ -98,39 +98,38 @@ type Hunter struct {
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *core.Spell
 
-	AimedShot      *core.Spell
-	ArcaneShot     *core.Spell
-	ChimeraShot    *core.Spell
-	ExplosiveShot  *core.Spell
-	ExplosiveTrap  *core.Spell
-	ImmolationTrap *core.Spell
-	FreezingTrap   *core.Spell
-	KillCommand    *core.Spell
-	KillShot       *core.Spell
-	MultiShot      *core.Spell
-	FocusFire      *core.Spell
-	RapidFire      *core.Spell
-	RaptorStrike   *core.Spell
-	RaptorStrikeMH *core.Spell
-	RaptorStrikeOH *core.Spell
-	FlankingStrike *core.Spell
-	WyvernStrike   *core.Spell
-	MongooseBite   *core.Spell
-	ScorpidSting   *core.Spell
-	SerpentSting   *core.Spell
-	SilencingShot  *core.Spell
-	SteadyShot     *core.Spell
-	Volley         *core.Spell
-	CarveMH        *core.Spell
-	CarveOH        *core.Spell
-	WingClip       *core.Spell
+	AimedShot               *core.Spell
+	ArcaneShot              *core.Spell
+	ChimeraShot             *core.Spell
+	ExplosiveShot           *core.Spell
+	ExplosiveTrap           *core.Spell
+	ImmolationTrap          *core.Spell
+	FreezingTrap            *core.Spell
+	KillCommand             *core.Spell
+	KillShot                *core.Spell
+	MultiShot               *core.Spell
+	FocusFire               *core.Spell
+	RapidFire               *core.Spell
+	RaptorStrike            *core.Spell
+	RaptorStrikeMH          *core.Spell
+	RaptorStrikeOH          *core.Spell
+	FlankingStrike          *core.Spell
+	WyvernStrike            *core.Spell
+	MongooseBite            *core.Spell
+	ScorpidSting            *core.Spell
+	SerpentSting            *core.Spell
+	SerpentStingChimeraShot *core.Spell
+	SilencingShot           *core.Spell
+	SteadyShot              *core.Spell
+	Volley                  *core.Spell
+	CarveMH                 *core.Spell
+	CarveOH                 *core.Spell
+	WingClip                *core.Spell
 
 	Shots       []*core.Spell
 	Strikes     []*core.Spell
 	MeleeSpells []*core.Spell
 	LastShot    *core.Spell
-
-	SerpentStingChimeraShot *core.Spell
 
 	FlankingStrikeAura *core.Aura
 	RaptorFuryAura     *core.Aura

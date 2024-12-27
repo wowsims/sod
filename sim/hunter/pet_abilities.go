@@ -372,7 +372,7 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 				// only the first stack snapshots the multiplier
 				if dot.GetStacks() == 1 {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 					dot.SnapshotBaseDamage = 0
 				}
 

@@ -42,7 +42,7 @@ func (warlock *Warlock) applyTAQDamage2PBonus() {
 			}
 
 			if warlock.ChaosBolt != nil {
-				warlock.ChaosBolt.CD.Duration /= 2
+				warlock.ChaosBolt.CD.Multiplier -= 50
 				warlock.ChaosBolt.DamageMultiplierAdditive += 0.10
 			}
 		},
@@ -123,7 +123,7 @@ func (warlock *Warlock) applyTAQTank2PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.ShadowCleave {
-				spell.CD.Duration -= time.Millisecond * 1500
+				spell.CD.FlatModifier -= time.Millisecond * 1500
 			}
 		},
 	})

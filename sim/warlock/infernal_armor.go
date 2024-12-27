@@ -30,7 +30,7 @@ func (warlock *Warlock) registerInfernalArmorCD() {
 		},
 	})
 
-	spell := warlock.RegisterSpell(core.SpellConfig{
+	warlock.InfernalArmor = warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolShadow,
 		Flags:       core.SpellFlagNoOnCastComplete,
@@ -46,7 +46,7 @@ func (warlock *Warlock) registerInfernalArmorCD() {
 	})
 
 	warlock.AddMajorCooldown(core.MajorCooldown{
-		Spell: spell,
+		Spell: warlock.InfernalArmor,
 		Type:  core.CooldownTypeSurvival,
 	})
 }

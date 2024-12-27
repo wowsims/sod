@@ -1,7 +1,6 @@
 package shaman
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -258,7 +257,6 @@ func (shaman *Shaman) applyT1Tank4PBonus() {
 		Label: label,
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidParry() || result.DidDodge() {
-				fmt.Println("good")
 				shaman.ShieldMasteryAura.Activate(sim)
 				shaman.ShieldMasteryAura.AddStack(sim)
 			}
