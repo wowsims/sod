@@ -94,10 +94,14 @@ func (priest *Priest) applyNaxxramasShadow6PBonus() {
 
 				oldApplyEffects := spell.ApplyEffects
 				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					critChance := priest.GetStat(stats.SpellCrit) / 100
-					spell.DamageMultiplierAdditive += critChance
+					critChanceBonus := 0.0
+					if target.MobType == proto.MobType_MobTypeUndead {
+						critChanceBonus = priest.GetStat(stats.SpellCrit) / 100
+					}
+
+					spell.DamageMultiplierAdditive += critChanceBonus
 					oldApplyEffects(sim, target, spell)
-					spell.DamageMultiplierAdditive -= critChance
+					spell.DamageMultiplierAdditive -= critChanceBonus
 				}
 			}
 		},
