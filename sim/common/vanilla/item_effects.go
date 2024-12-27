@@ -1309,7 +1309,6 @@ func init() {
 			ProcMask:         core.ProcMaskEmpty,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
-			BonusCoefficient: 1.0, // TBD - Best guess based on similarity to shadowstrike
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcAndDealDamage(sim, target, sim.Roll(171, 193), spell.OutcomeMagicHit)
 				character.GainHealth(sim, result.Damage, healthMetrics)
