@@ -114,6 +114,7 @@ enum HunterRune {
     RuneShouldersBeastTender            = 1220086;
     RuneShouldersBountyHunter           = 1220082;
     RuneShouldersDeadlyStriker          = 1220104;
+    RuneShouldersEchoes                 = 1220096;
     RuneShouldersFerocious              = 1220301;
     RuneShouldersHazardHarrier          = 1220076;
     RuneShouldersHoundMaster            = 1220088;
