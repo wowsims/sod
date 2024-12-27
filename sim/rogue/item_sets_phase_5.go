@@ -110,56 +110,88 @@ func (rogue *Rogue) applyT2Damage6PBonus() {
 var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 	Name: "Bloodfang Battlearmor",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Your Rolling with the Punches now also activates every time you gain a combo point.
 		2: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
-			if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
-				return
-			}
+			rogue.applyT2Tank2PBonus()
+		},
+		4: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			rogue.applyT2Tank4PBonus()
+		},
+		6: func(agent core.Agent) {
+			rogue := agent.(RogueAgent).GetRogue()
+			rogue.applyT2Tank6PBonus()
+		},
+	},
+})
+
+// Your Rolling with the Punches now also activates every time you gain a combo point.
+func (rogue *Rogue) applyT2Tank2PBonus() {
+	if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
+		return
+	}
+
+	label := "S03 - Item - T2 - Rogue - Tank 2P Bonus"
+	if rogue.HasAura(label) {
+		return
+	}
+
+	rogue.RegisterAura(core.Aura{
+		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.OnComboPointsGained(func(sim *core.Simulation) {
 				rogue.RollingWithThePunchesProcAura.Activate(sim)
 				rogue.RollingWithThePunchesProcAura.AddStack(sim)
 			})
 		},
-		// Your Rolling with the Punches also grants you 20% increased Armor from items per stack.
-		4: func(agent core.Agent) {
-			rogue := agent.(RogueAgent).GetRogue()
-			if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
-				return
+	})
+}
+
+// Your Rolling with the Punches also grants you 20% increased Armor from items per stack.
+func (rogue *Rogue) applyT2Tank4PBonus() {
+	if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
+		return
+	}
+
+	label := "S03 - Item - T2 - Rogue - Tank 4P Bonus"
+	if rogue.HasAura(label) {
+		return
+	}
+
+	initarmor := rogue.BaseEquipStats()[stats.Armor]
+
+	rogue.RegisterAura(core.Aura{
+		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
+			rogue.RollingWithThePunchesProcAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+				oldOnStacksChange(aura, sim, oldStacks, newStacks)
+				rogue.AddStatDynamic(sim, stats.Armor, float64(0.2*initarmor*float64(newStacks-oldStacks)))
 			}
-			initarmor := rogue.BaseEquipStats()[stats.Armor]
-
-			fmt.Println(initarmor)
-
-			rogue.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Rogue - Tank 4P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
-					rogue.RollingWithThePunchesProcAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-						oldOnStacksChange(aura, sim, oldStacks, newStacks)
-						rogue.AddStatDynamic(sim, stats.Armor, float64(0.2*initarmor*float64(newStacks-oldStacks)))
-					}
-				},
-			})
 		},
-		// The cooldown on your Main Gauche resets every time your target Dodges or Parries.
-		6: func(agent core.Agent) {
-			rogue := agent.(RogueAgent).GetRogue()
-			if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
-				return
+	})
+}
+
+// The cooldown on your Main Gauche resets every time your target Dodges or Parries.
+func (rogue *Rogue) applyT2Tank6PBonus() {
+	if !rogue.HasRune(proto.RogueRune_RuneMainGauche) {
+		return
+	}
+
+	label := "S03 - Item - T2 - Rogue - Tank 6P Bonus"
+	if rogue.HasAura(label) {
+		return
+	}
+
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
+		Label: label,
+		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.DidDodge() || result.DidParry() {
+				rogue.MainGauche.CD.Reset()
 			}
-
-			core.MakePermanent(rogue.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Rogue - Tank 6P Bonus",
-				OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.DidDodge() || result.DidParry() {
-						rogue.MainGauche.CD.Reset()
-					}
-				},
-			}))
 		},
-	},
-})
+	}))
+}
 
 var ItemSetMadCapsOutfit = core.NewItemSet(core.ItemSet{
 	Name: "Madcap's Outfit",
@@ -172,36 +204,89 @@ var ItemSetMadCapsOutfit = core.NewItemSet(core.ItemSet{
 				stats.RangedAttackPower: 20,
 			})
 		},
-		// Increases your chance to get a critical strike with Daggers by 5%.
 		3: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
-			switch rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeDagger) {
-			case core.ProcMaskMelee:
-				rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*float64(5))
-			case core.ProcMaskMeleeMH:
-				// the default character pane displays critical strike chance for main hand only
-				rogue.AddStat(stats.MeleeCrit, core.CritRatingPerCritChance*float64(5))
-				rogue.OnSpellRegistered(func(spell *core.Spell) {
-					if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
-						spell.BonusCritRating -= core.CritRatingPerCritChance * float64(5)
-					}
-				})
-			case core.ProcMaskMeleeOH:
-				rogue.OnSpellRegistered(func(spell *core.Spell) {
-					if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
-						spell.BonusCritRating += core.CritRatingPerCritChance * float64(5)
-					}
-				})
-			}
+			rogue.applyZGDagger3PBonus()
 		},
-		// Increases the critical strike chance of your Ambush ability by 30%.
 		5: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
-			rogue.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_RogueAmbush {
-					spell.BonusCritRating += 30 * core.CritRatingPerCritChance
-				}
-			})
+			rogue.applyZGDagger5PBonus()
 		},
 	},
 })
+
+// Increases your chance to get a critical strike with Daggers by 5%.
+func (rogue *Rogue) applyZGDagger3PBonus() {
+	if !rogue.Talents.AdrenalineRush {
+		return
+	}
+
+	label := "S03 - Item - ZG - Rogue - Dagger 3P Bonus"
+	if rogue.HasAura(label) {
+		return
+	}
+
+	procMask := rogue.GetProcMaskForTypes(proto.WeaponType_WeaponTypeDagger)
+
+	aura := rogue.RegisterAura(core.Aura{
+		Label: label,
+	})
+
+	// For main-hand or both hands the game adds 5% to the character sheet
+	if procMask == core.ProcMaskMelee || procMask == core.ProcMaskMeleeMH {
+		bonusStats := stats.Stats{stats.MeleeCrit: 5 * core.CritRatingPerCritChance}
+
+		core.MakePermanent(aura)
+		aura.BuildPhase = core.CharacterBuildPhaseBuffs
+		aura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				aura.Unit.AddStats(bonusStats)
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats)
+			}
+		}
+		aura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				aura.Unit.AddStats(bonusStats.Invert())
+			} else {
+				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
+			}
+		}
+	}
+
+	switch procMask {
+	// If main-hand only, offset the 5% sheet crit on off-hand attacks
+	case core.ProcMaskMeleeMH:
+		aura.OnInit = func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range rogue.Spellbook {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+					spell.BonusCritRating -= 5 * core.CritRatingPerCritChance
+				}
+			}
+		}
+	// If off-hand only, buff only off-hand attacks
+	case core.ProcMaskMeleeOH:
+		aura.OnInit = func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range rogue.Spellbook {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOH) {
+					spell.BonusCritRating += 5 * core.CritRatingPerCritChance
+				}
+			}
+		}
+	}
+}
+
+// Increases the critical strike chance of your Ambush ability by 30%.
+func (rogue *Rogue) applyZGDagger5PBonus() {
+	label := "S03 - Item - ZG - Rogue - Dagger 5P Bonus"
+	if rogue.HasAura(label) {
+		return
+	}
+
+	rogue.RegisterAura(core.Aura{
+		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.Ambush.BonusCritRating += 30 * core.CritRatingPerCritChance
+		},
+	})
+}

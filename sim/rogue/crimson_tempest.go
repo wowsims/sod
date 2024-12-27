@@ -11,7 +11,6 @@ import (
 func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 	actionID := core.ActionID{SpellID: 436611}
 	procMask := core.ProcMaskMeleeMHSpecial
-	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2) && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
@@ -21,7 +20,7 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagCarnage,
 
 		DamageMultiplier: []float64{1, 1.1, 1.2, 1.3}[rogue.Talents.SerratedBlades],
-		ThreatMultiplier: core.TernaryFloat64(activate2PcBonuses, 2, 1),
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -60,7 +59,6 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 
 	// Must be updated to match combo points spent
 	rogue.CrimsonTempestBleed = rogue.makeCrimsonTempestHitSpell()
-	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2) && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 
 	rogue.CrimsonTempest = rogue.RegisterSpell(core.SpellConfig{
 		SpellCode:    SpellCode_RogueCrimsonTempest,
@@ -72,7 +70,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 		MetricSplits: 6,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   35 - core.TernaryFloat64(activate2PcBonuses, 20, 0),
+			Cost:   35,
 			Refund: 0,
 		},
 		Cast: core.CastConfig{

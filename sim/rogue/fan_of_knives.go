@@ -14,7 +14,6 @@ func (rogue *Rogue) makeFanOfKnivesWeaponHitSpell(isMH bool) *core.Spell {
 	procMask := core.ProcMaskMeleeMHSpecial
 	flags := core.SpellFlagMeleeMetrics | SpellFlagColdBlooded
 	weaponMultiplier := core.TernaryFloat64(rogue.HasDagger(core.MainHand), 0.75, 0.5)
-	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2) && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 
 	if !isMH {
 		actionID.Tag = 2
@@ -31,7 +30,7 @@ func (rogue *Rogue) makeFanOfKnivesWeaponHitSpell(isMH bool) *core.Spell {
 		Flags:       flags,
 
 		DamageMultiplier: weaponMultiplier,
-		ThreatMultiplier: core.TernaryFloat64(activate2PcBonuses, 2, 1),
+		ThreatMultiplier: 1,
 	})
 }
 
@@ -41,7 +40,6 @@ func (rogue *Rogue) registerFanOfKnives() {
 		return
 	}
 
-	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2) && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 	mhSpell := rogue.makeFanOfKnivesWeaponHitSpell(true)
 	ohSpell := rogue.makeFanOfKnivesWeaponHitSpell(false)
 	results := make([]*core.SpellResult, len(rogue.Env.Encounter.TargetUnits))
@@ -52,7 +50,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagCarnage,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost: 50 - core.TernaryFloat64(activate2PcBonuses, 20, 0),
+			Cost: 50,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -140,41 +141,158 @@ func (rogue *Rogue) applyT1Damage6PBonus() {
 var ItemSetNightSlayerBattlearmor = core.NewItemSet(core.ItemSet{
 	Name: "Nightslayer Battlearmor",
 	Bonuses: map[int32]core.ApplyEffect{
-		// While Just a Flesh Wound and Blade Dance are active, Crimson Tempest, Blunderbuss, and Fan of Knives cost 20 less Energy and generate 100% increased threat.
 		2: func(agent core.Agent) {
-			// Implemented in individual rune sections
+			rogue := agent.(RogueAgent).GetRogue()
+			rogue.applyT1Tank2PBonus()
 		},
-		// Vanish now reduces all Magic damage you take by 50% for its duration, but it no longer grants Stealth or breaks movement impairing effects.  - 457437
 		4: func(agent core.Agent) {
-			// Implemented in Vanish.go
+			rogue := agent.(RogueAgent).GetRogue()
+			rogue.applyT1Tank4PBonus()
 		},
-		// Your finishing moves have a 20% chance per combo point to make you take 50% less Physical damage from the next melee attack that hits you within 10 sec.
 		6: func(agent core.Agent) {
 			rogue := agent.(RogueAgent).GetRogue()
-			damageTaken := 0.5
-
-			aura := rogue.RegisterAura(core.Aura{
-				Label:    "Resilient (S03 - Item - T1 - Rogue - Tank 6P Bonus)",
-				ActionID: core.ActionID{SpellID: 457469},
-				Duration: time.Second * 10,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= damageTaken
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= damageTaken
-				},
-				OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeLanded) {
-						aura.Deactivate(sim)
-					}
-				},
-			})
-
-			rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
-				if sim.Proc(0.2*float64(comboPoints), "Resilient (S03 - Item - T1 - Rogue - Tank 6P Bonus)") {
-					aura.Activate(sim)
-				}
-			})
+			rogue.applyT1Tank6PBonus()
 		},
 	},
 })
+
+// While Just a Flesh Wound and Blade Dance are active, Crimson Tempest, Blunderbuss, and Fan of Knives cost 20 less Energy and generate 100% increased threat.
+func (rogue *Rogue) applyT1Tank2PBonus() {
+	if !rogue.HasRune(proto.RogueRune_RuneJustAFleshWound) || !rogue.HasRune(proto.RogueRune_RuneBladeDance) {
+		return
+	}
+
+	label := "S03 - Item - T1 - Rogue - Tank 2P Bonus"
+	if rogue.HasAura(label) {
+		return
+	}
+
+	var affectedSpells []*core.Spell
+
+	buffAura := rogue.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 457351},
+		Label:    fmt.Sprintf("Blade Dance (%s)", label),
+		Duration: core.NeverExpires,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			affectedSpells = core.FilterSlice(
+				[]*core.Spell{rogue.CrimsonTempest, rogue.Blunderbuss, rogue.FanOfKnives},
+				func(spell *core.Spell) bool { return spell != nil },
+			)
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affectedSpells {
+				spell.Cost.FlatModifier -= 20
+				spell.ThreatMultiplier *= 2.0
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range affectedSpells {
+				spell.Cost.FlatModifier += 20
+				spell.ThreatMultiplier /= 2.0
+			}
+		},
+	})
+
+	rogue.RegisterAura(core.Aura{
+		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			oldJaWFOnGain := rogue.JustAFleshWoundAura.OnGain
+			rogue.JustAFleshWoundAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+				oldJaWFOnGain(aura, sim)
+
+				if rogue.BladeDanceAura.IsActive() {
+					buffAura.Activate(sim)
+				}
+			}
+
+			oldJaFWOnExpire := rogue.JustAFleshWoundAura.OnExpire
+			rogue.JustAFleshWoundAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+				oldJaFWOnExpire(aura, sim)
+				buffAura.Deactivate(sim)
+			}
+
+			oldBladeDanceOnGain := rogue.BladeDanceAura.OnGain
+			rogue.BladeDanceAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+				oldBladeDanceOnGain(aura, sim)
+				if rogue.JustAFleshWoundAura.IsActive() {
+					buffAura.Activate(sim)
+				}
+			}
+
+			oldBladeDanceOnExpire := rogue.BladeDanceAura.OnExpire
+			rogue.BladeDanceAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+				oldBladeDanceOnExpire(aura, sim)
+				buffAura.Deactivate(sim)
+			}
+		},
+	})
+}
+
+// Vanish now reduces all Magic damage you take by 50% for its duration, but it no longer grants Stealth or breaks movement impairing effects.  - 457437
+func (rogue *Rogue) applyT1Tank4PBonus() {
+	label := "S03 - Item - T1 - Rogue - Tank 4P Bonus"
+	if rogue.HasAura(label) {
+		return
+	}
+
+	buffAura := rogue.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 457437},
+		Label:    "Vanish",
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(0.5)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(1 / 0.5)
+		},
+	})
+
+	rogue.RegisterAura(core.Aura{
+		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			// Override Vanish's Apply Effects to prevent activating stealth
+			rogue.Vanish.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			}
+		},
+	})
+}
+
+// Your finishing moves have a 20% chance per combo point to make you take 50% less Physical damage from the next melee attack that hits you within 10 sec.
+func (rogue *Rogue) applyT1Tank6PBonus() {
+	label := "S03 - Item - T1 - Rogue - Tank 6P Bonus"
+	if rogue.HasAura(label) {
+		return
+	}
+
+	buffLabel := fmt.Sprintf("Resilient (%s)", label)
+	damageTakenMultiplier := 0.5
+
+	buffAura := rogue.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 457469},
+		Label:    buffLabel,
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] *= damageTakenMultiplier
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexPhysical] /= damageTakenMultiplier
+		},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeLanded) {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	rogue.RegisterAura(core.Aura{
+		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
+				if sim.Proc(0.2*float64(comboPoints), buffLabel) {
+					buffAura.Activate(sim)
+				}
+			})
+		},
+	})
+}

@@ -114,21 +114,21 @@ type Rogue struct {
 	cutthroatBonusChance         float64
 
 	AdrenalineRushAura            *core.Aura
+	BladeDanceAura                *core.Aura
 	BladeFlurryAura               *core.Aura
+	CutthroatProcAura             *core.Aura
 	EnvenomAura                   *core.Aura
 	ExposeArmorAuras              core.AuraArray
 	EvasionAura                   *core.Aura
-	BladeDanceAura                *core.Aura
-	SliceAndDiceAura              *core.Aura
+	JustAFleshWoundAura           *core.Aura
 	MasterOfSubtletyAura          *core.Aura
-	ShadowstepAura                *core.Aura
-	ShadowDanceAura               *core.Aura
-	StealthAura                   *core.Aura
-	WaylayAuras                   core.AuraArray
 	RollingWithThePunchesAura     *core.Aura
 	RollingWithThePunchesProcAura *core.Aura
-	CutthroatProcAura             *core.Aura
-	VanishAura                    *core.Aura
+	ShadowstepAura                *core.Aura
+	ShadowDanceAura               *core.Aura
+	SliceAndDiceAura              *core.Aura
+	StealthAura                   *core.Aura
+	WaylayAuras                   core.AuraArray
 
 	HonorAmongThieves *core.Aura
 
