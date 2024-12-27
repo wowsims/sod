@@ -217,10 +217,6 @@ var ItemSetMadCapsOutfit = core.NewItemSet(core.ItemSet{
 
 // Increases your chance to get a critical strike with Daggers by 5%.
 func (rogue *Rogue) applyZGDagger3PBonus() {
-	if !rogue.Talents.AdrenalineRush {
-		return
-	}
-
 	label := "S03 - Item - ZG - Rogue - Dagger 3P Bonus"
 	if rogue.HasAura(label) {
 		return

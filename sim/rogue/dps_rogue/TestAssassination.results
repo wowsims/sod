@@ -118,7 +118,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 2351.92
   final_stats: 15
-  final_stats: 52.65801
+  final_stats: 57.65801
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -246,8 +246,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestAssassination-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.34406
-  weights: 0.39066
+  weights: 0.34691
+  weights: 0.55775
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.27198
-  weights: 12.30185
-  weights: 1.60969
+  weights: 0.27424
+  weights: 13.16868
+  weights: 2.57765
   weights: 0
   weights: 0
   weights: 0
@@ -505,8 +505,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-AllItems-BloodCorruptedLeathers"
  value: {
-  dps: 830.97534
-  tps: 589.99249
+  dps: 853.94128
+  tps: 606.29831
  }
 }
 dps_results: {
@@ -519,98 +519,98 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 903.72625
-  tps: 641.64564
+  dps: 911.93624
+  tps: 647.47473
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 185.24918
-  tps: 131.52692
+  dps: 192.30395
+  tps: 136.53581
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 168.88781
-  tps: 119.91034
+  dps: 175.94258
+  tps: 124.91923
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 354.13845
-  tps: 251.4383
+  dps: 373.67409
+  tps: 265.30861
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 82.30631
-  tps: 58.43748
+  dps: 87.13977
+  tps: 61.86924
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 73.02381
-  tps: 51.8469
+  dps: 77.85727
+  tps: 55.27866
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 159.08049
-  tps: 112.94715
+  dps: 165.84464
+  tps: 117.7497
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 189.98786
-  tps: 134.89138
+  dps: 197.34631
+  tps: 140.11588
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 173.62649
-  tps: 123.27481
+  dps: 180.98494
+  tps: 128.4993
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 373.69569
-  tps: 265.32394
+  dps: 394.31
+  tps: 279.9601
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 84.17099
-  tps: 59.7614
+  dps: 89.10867
+  tps: 63.26716
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 74.88849
-  tps: 53.17083
+  dps: 79.82617
+  tps: 56.67658
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 166.67849
-  tps: 118.34173
+  dps: 173.7295
+  tps: 123.34795
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 704.51994
-  tps: 500.20916
+  dps: 714.46481
+  tps: 507.27001
  }
 }
