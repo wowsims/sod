@@ -747,6 +747,7 @@ const spellIDsToShowBuffs = new Set([
 	439472, // https://www.wowhead.com/classic/spell=439472/numbing-poison
 	1214279, // https://www.wowhead.com/classic/spell=1214279/spell-blasting
 	1218345, // https://www.wowhead.com/classic/spell=1218345/glaciate
+	1218587, // https://www.wowhead.com/classic/spell=1218587/critical-aim
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';
