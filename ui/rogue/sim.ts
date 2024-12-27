@@ -109,7 +109,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		),
 
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes[Phase.Phase5],
+		consumes: Presets.DefaultConsumes[Phase.Phase6],
 		// Default talents.
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
