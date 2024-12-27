@@ -1,7 +1,6 @@
 package rogue
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -312,8 +311,6 @@ var ItemSetBloodfangBattlearmor = core.NewItemSet(core.ItemSet{
 				return
 			}
 			initarmor := rogue.BaseEquipStats()[stats.Armor]
-
-			fmt.Println(initarmor)
 
 			rogue.RegisterAura(core.Aura{
 				Label: "S03 - Item - T2 - Rogue - Tank 4P Bonus",

@@ -6,6 +6,41 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+type APLValueAutoTimeSinceLast struct {
+	DefaultAPLValueImpl
+	unit     *Unit
+	autoType proto.APLValueAutoTimeSinceLast_AttackType
+}
+
+func (rot *APLRotation) newValueAutoTimeSinceLast(config *proto.APLValueAutoTimeSinceLast) APLValue {
+	return &APLValueAutoTimeSinceLast{
+		unit:     rot.unit,
+		autoType: config.AutoType,
+	}
+}
+func (value *APLValueAutoTimeSinceLast) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeDuration
+}
+func (value *APLValueAutoTimeSinceLast) GetDuration(sim *Simulation) time.Duration {
+	duration := time.Duration(0)
+	switch value.autoType {
+	case proto.APLValueAutoTimeSinceLast_Melee:
+		return max(duration, sim.CurrentTime-value.unit.AutoAttacks.LastAutoAt())
+	case proto.APLValueAutoTimeSinceLast_MainHand:
+		return max(duration, sim.CurrentTime-value.unit.AutoAttacks.LastMainhandAutoAt())
+	case proto.APLValueAutoTimeSinceLast_OffHand:
+		return max(duration, sim.CurrentTime-value.unit.AutoAttacks.LastOffhandAutoAt())
+	case proto.APLValueAutoTimeSinceLast_Ranged:
+		return max(duration, sim.CurrentTime-value.unit.AutoAttacks.LastRangedAutoAt())
+	default:
+		// defaults to Any
+		return max(duration, sim.CurrentTime-value.unit.AutoAttacks.LastAnyAutoAt())
+	}
+}
+func (value *APLValueAutoTimeSinceLast) String() string {
+	return "Auto Time Since Last"
+}
+
 type APLValueAutoTimeToNext struct {
 	DefaultAPLValueImpl
 	unit     *Unit

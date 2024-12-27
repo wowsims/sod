@@ -148,7 +148,7 @@ func (eb *energyBar) onEnergyGain(sim *Simulation, crossedThreshold bool) {
 	}
 
 	if !sim.Options.Interactive && crossedThreshold {
-		eb.unit.Rotation.DoNextAction(sim)
+		eb.unit.ReactToEvent(sim)
 	}
 }
 

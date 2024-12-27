@@ -11,7 +11,7 @@ type APLValueGCDIsReady struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueGCDIsReady(config *proto.APLValueGCDIsReady) APLValue {
+func (rot *APLRotation) newValueGCDIsReady(_ *proto.APLValueGCDIsReady) APLValue {
 	return &APLValueGCDIsReady{
 		unit: rot.unit,
 	}
@@ -20,7 +20,7 @@ func (value *APLValueGCDIsReady) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
 }
 func (value *APLValueGCDIsReady) GetBool(sim *Simulation) bool {
-	return value.unit.GCD.IsReady(sim)
+	return value.unit.GCD.IsReady(sim) || (value.unit.GCD.TimeToReady(sim) <= MaxSpellQueueWindow)
 }
 func (value *APLValueGCDIsReady) String() string {
 	return "GCD Is Ready"
@@ -31,7 +31,7 @@ type APLValueGCDTimeToReady struct {
 	unit *Unit
 }
 
-func (rot *APLRotation) newValueGCDTimeToReady(config *proto.APLValueGCDTimeToReady) APLValue {
+func (rot *APLRotation) newValueGCDTimeToReady(_ *proto.APLValueGCDTimeToReady) APLValue {
 	return &APLValueGCDTimeToReady{
 		unit: rot.unit,
 	}
