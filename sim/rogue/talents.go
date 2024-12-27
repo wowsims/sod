@@ -74,7 +74,7 @@ func (rogue *Rogue) applyMurder() {
 		})
 	} else if rogue.Consumes.MiscConsumes != nil && rogue.Consumes.MiscConsumes.DraughtOfTheSands {
 		rogue.Env.RegisterPostFinalizeEffect(func() {
-			multiplier := 1.03
+			multiplier := 1.02
 			for _, t := range rogue.Env.Encounter.Targets {
 				for _, at := range rogue.AttackTables[t.UnitIndex] {
 					at.DamageDealtMultiplier *= multiplier
