@@ -51,8 +51,8 @@ var RuneOverrides = []*proto.UIRune{
 var ShoulderRuneClassAllowlist = map[proto.Class]bool{
 	proto.Class_ClassDruid: true,
 	// proto.Class_ClassHunter:  true,
-	proto.Class_ClassMage: true,
-	// proto.Class_ClassPaladin: true,
+	proto.Class_ClassMage:    true,
+	proto.Class_ClassPaladin: true,
 	proto.Class_ClassPriest:  true,
 	proto.Class_ClassRogue:   true,
 	proto.Class_ClassShaman:  true,
