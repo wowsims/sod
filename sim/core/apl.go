@@ -190,6 +190,10 @@ func (apl *APLRotation) DoNextAction(sim *Simulation) {
 		return
 	}
 
+	if apl.shouldInterruptChannel(sim) {
+		apl.unit.ChanneledDot.Cancel(sim)
+	}
+
 	if apl.unit.IsChanneling(sim) && !apl.allowCastWhileChanneling {
 		return
 	}
