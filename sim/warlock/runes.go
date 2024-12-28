@@ -269,18 +269,22 @@ func (warlock *Warlock) applyDanceOfTheWicked() {
 	}
 
 	actionId := core.ActionID{SpellID: 412800}
-	dodgeModifier := warlock.NewDynamicStatDependency(stats.SpellCrit, stats.Dodge, 1)
+	critDelta := 0.0
 
+	// DoTW snapshot your current crit each time it procs so we want to store the delta from each proc
 	dotwAura := warlock.GetOrRegisterAura(core.Aura{
-		Label:    "Dance of the Wicked Proc",
 		ActionID: actionId,
+		Label:    "Dance of the Wicked Proc",
 		Duration: 15 * time.Second,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.EnableDynamicStatDep(sim, dodgeModifier)
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			critDelta = 0
+		},
+		OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+			critDelta = warlock.GetStat(stats.SpellCrit) - critDelta
+			warlock.AddStatDynamic(sim, stats.Dodge, critDelta)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.DisableDynamicStatDep(sim, dodgeModifier)
+			warlock.AddStatDynamic(sim, stats.Dodge, -critDelta)
 		},
 	})
 
@@ -290,19 +294,13 @@ func (warlock *Warlock) applyDanceOfTheWicked() {
 	}
 
 	handler := func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if !spell.ProcMask.Matches(core.ProcMaskDirect) {
-			return
-		}
+		if spell.ProcMask.Matches(core.ProcMaskDirect) && result.DidCrit() {
+			dotwAura.Activate(sim)
+			warlock.AddMana(sim, warlock.MaxMana()*0.02, manaMetric)
 
-		if !result.DidCrit() {
-			return
-		}
-
-		dotwAura.Activate(sim)
-
-		warlock.AddMana(sim, warlock.MaxMana()*0.02, manaMetric)
-		if warlock.ActivePet != nil {
-			warlock.ActivePet.AddMana(sim, warlock.ActivePet.MaxMana()*0.02, warlock.ActivePet.DanceOfTheWickedManaMetrics)
+			if warlock.ActivePet != nil {
+				warlock.ActivePet.AddMana(sim, warlock.ActivePet.MaxMana()*0.02, warlock.ActivePet.DanceOfTheWickedManaMetrics)
+			}
 		}
 	}
 
