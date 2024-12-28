@@ -255,7 +255,7 @@ enum ExcludedZones {
 	// ZoneBlackwingLair = 2677;
 	// ZoneRuinsOfAQ = 3428;
 	// ZoneTempleOfAQ = 3429;
-	ZoneNaxxramas = 3456;
+	// ZoneNaxxramas = 3456;
 }
 
 // Next tag: 24

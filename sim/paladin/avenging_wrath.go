@@ -22,7 +22,7 @@ func (paladin *Paladin) registerAvengingWrath() {
 	})
 	core.RegisterPercentDamageModifierEffect(AvengingWrathAura, 1.2)
 
-	AvengingWrath := paladin.RegisterSpell(core.SpellConfig{
+	paladin.avengingWrath = paladin.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | SpellFlag_Forbearance,
 
@@ -41,7 +41,7 @@ func (paladin *Paladin) registerAvengingWrath() {
 	})
 
 	paladin.AddMajorCooldown(core.MajorCooldown{
-		Spell: AvengingWrath,
+		Spell: paladin.avengingWrath,
 		Type:  core.CooldownTypeDPS,
 	})
 }

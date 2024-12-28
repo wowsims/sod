@@ -142,7 +142,7 @@ func init() {
 		mage.RegisterAura(core.Aura{
 			Label: "Decreased Frozen Orb Cooldown",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				mage.FrozenOrb.CD.Duration -= time.Second * 10
+				mage.FrozenOrb.CD.FlatModifier -= time.Second * 10
 			},
 		})
 	})

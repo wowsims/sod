@@ -35,7 +35,7 @@ func (warrior *Warrior) applyTAQDamage2PBonus() {
 	warrior.RegisterAura(core.Aura{
 		Label: "S03 - Item - TAQ - Warrior - Damage 2P Bonus",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.DeathWish.CD.Duration /= 2
+			warrior.DeathWish.CD.Multiplier -= 50
 		},
 	})
 }
@@ -157,7 +157,7 @@ func (warrior *Warrior) applyRAQTank3PBonus() {
 	warrior.RegisterAura(core.Aura{
 		Label: "S03 - Item - RAQ - Warrior - Tank 3P Bonus",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.Shockwave.CD.Duration /= 2
+			warrior.Shockwave.CD.Multiplier -= 50
 		},
 	})
 }

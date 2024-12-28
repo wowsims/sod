@@ -469,7 +469,7 @@ func (warrior *Warrior) registerLastStandCD() {
 	healthMetrics := warrior.NewHealthMetrics(actionID)
 
 	var bonusHealth float64
-	lastStandAura := warrior.RegisterAura(core.Aura{
+	warrior.LastStandAura = warrior.RegisterAura(core.Aura{
 		Label:    "Last Stand",
 		ActionID: actionID,
 		Duration: time.Second * 20,
@@ -494,7 +494,7 @@ func (warrior *Warrior) registerLastStandCD() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			lastStandAura.Activate(sim)
+			warrior.LastStandAura.Activate(sim)
 		},
 	})
 

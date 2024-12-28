@@ -8,7 +8,6 @@ import (
 )
 
 func (paladin *Paladin) registerLayOnHands() {
-
 	minLevels := []int32{50, 30, 10}
 	idx := slices.IndexFunc(minLevels, func(level int32) bool {
 		return paladin.Level >= level
@@ -25,7 +24,8 @@ func (paladin *Paladin) registerLayOnHands() {
 	actionID := core.ActionID{SpellID: spellID}
 	layOnHandsManaMetrics := paladin.NewManaMetrics(actionID)
 	layOnHandsHealthMetrics := paladin.NewHealthMetrics(actionID)
-	layOnHands := paladin.RegisterSpell(core.SpellConfig{
+
+	paladin.layOnHands = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagAPL | core.SpellFlagMCD,
@@ -48,7 +48,7 @@ func (paladin *Paladin) registerLayOnHands() {
 	})
 
 	paladin.AddMajorCooldown(core.MajorCooldown{
-		Spell:    layOnHands,
+		Spell:    paladin.layOnHands,
 		Priority: core.CooldownPriorityBloodlust,
 		Type:     core.CooldownTypeSurvival,
 		ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {

@@ -9,9 +9,10 @@ import (
 
 // TODO: Classic Update
 func (warrior *Warrior) RegisterShieldWallCD() {
-	if warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
+	if warrior.Level < 28 || warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
 		return
 	}
+
 	duration := time.Duration(10+[]float64{0, 3, 5}[warrior.Talents.ImprovedShieldWall]) * time.Second
 	//This is the inverse of the tooltip since it is a damage TAKEN coefficient
 	damageTaken := 0.25
@@ -31,7 +32,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 
 	cooldownDur := time.Minute * 30
 
-	swSpell := warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
+	warrior.ShieldWall = warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
 		ActionID: actionID,
 
 		Cast: core.CastConfig{
@@ -54,7 +55,7 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: swSpell.Spell,
+		Spell: warrior.ShieldWall.Spell,
 		Type:  core.CooldownTypeSurvival,
 	})
 }

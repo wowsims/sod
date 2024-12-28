@@ -242,7 +242,7 @@ func (warrior *Warrior) applyZGGladiator3PBonus() {
 	warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.ShieldSlam.CD.Duration -= time.Second * 2
+			warrior.ShieldSlam.CD.FlatModifier -= time.Second * 2
 		},
 	})
 }
@@ -268,13 +268,13 @@ func (warrior *Warrior) applyZGGladiator5PBonus() {
 			oldOnGain := ee.OnGain
 			ee.OnGain = func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 				oldOnGain(ee, sim)
-				warrior.Bloodrage.CD.Duration -= time.Second * 30
+				warrior.Bloodrage.CD.FlatModifier -= time.Second * 30
 			}
 
 			oldOnExpire := ee.OnExpire
 			ee.OnExpire = func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 				oldOnExpire(ee, sim)
-				warrior.Bloodrage.CD.Duration += time.Second * 30
+				warrior.Bloodrage.CD.FlatModifier += time.Second * 30
 			}
 		},
 	})

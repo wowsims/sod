@@ -197,7 +197,7 @@ func (shaman *Shaman) applyStormEarthAndFire() {
 					continue
 				}
 
-				spell.CD.Duration /= 2
+				spell.CD.Multiplier -= 50
 			}
 
 			for _, spell := range shaman.FlameShock {

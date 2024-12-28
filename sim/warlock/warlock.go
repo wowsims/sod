@@ -68,6 +68,7 @@ type Warlock struct {
 	Haunt              *core.Spell
 	Immolate           []*core.Spell
 	Incinerate         *core.Spell
+	InfernalArmor      *core.Spell
 	LifeTap            []*core.Spell
 	SearingPain        []*core.Spell
 	ShadowBolt         []*core.Spell
@@ -102,25 +103,26 @@ type Warlock struct {
 	DebuffSpells      []*core.Spell
 	SummonDemonSpells []*core.Spell
 
+	AmplifyCurseAura        *core.Aura
+	BackdraftAura           *core.Aura
+	defendersResolveAura    *core.Aura
+	DecimationAura          *core.Aura
+	DemonicGraceAura        *core.Aura
 	DemonicKnowledgeAura    *core.Aura
 	HauntDebuffAuras        core.AuraArray
 	ImmolationAura          *core.Spell
+	ImprovedShadowBoltAuras core.AuraArray
 	IncinerateAura          *core.Aura
+	MarkOfChaosAuras        core.AuraArray
+	MasterDemonologistAura  *core.Aura
 	Metamorphosis           *core.Spell
 	MetamorphosisAura       *core.Aura
-	ShadowTranceAura        *core.Aura
 	PyroclasmAura           *core.Aura
-	DemonicGraceAura        *core.Aura
-	AmplifyCurseAura        *core.Aura
-	BackdraftAura           *core.Aura
-	ImprovedShadowBoltAuras core.AuraArray
-	MarkOfChaosAuras        core.AuraArray
-	SoulLinkAura            *core.Aura
-	DecimationAura          *core.Aura
-	MasterDemonologistAura  *core.Aura
-	zilaGularAura           *core.Aura
 	shadowSparkAura         *core.Aura
-	defendersResolveAura    *core.Aura
+	ShadowTranceAura        *core.Aura
+	SoulLinkAura            *core.Aura
+	VengeanceAura           *core.Aura
+	zilaGularAura           *core.Aura
 
 	// The sum total of demonic pact spell power * seconds.
 	DPSPAggregate float64

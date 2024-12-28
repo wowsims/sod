@@ -133,7 +133,7 @@ func (druid *Druid) applyT1Balance6PBonus() {
 	druid.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			druid.Starfall.CD.Duration /= 2
+			druid.Starfall.CD.Multiplier -= 50
 		},
 	})
 }
