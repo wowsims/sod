@@ -269,22 +269,24 @@ func (warlock *Warlock) applyDanceOfTheWicked() {
 	}
 
 	actionId := core.ActionID{SpellID: 412800}
-	critDelta := 0.0
+	lastCritSnapshot := 0.0
 
-	// DoTW snapshot your current crit each time it procs so we want to store the delta from each proc
+	// DoTW snapshot your current crit each time it procs so we want to add the delta between the last and current snapshot
 	dotwAura := warlock.GetOrRegisterAura(core.Aura{
 		ActionID: actionId,
 		Label:    "Dance of the Wicked Proc",
 		Duration: 15 * time.Second,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			critDelta = 0
+			lastCritSnapshot = 0
 		},
 		OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
-			critDelta = warlock.GetStat(stats.SpellCrit) - critDelta
-			warlock.AddStatDynamic(sim, stats.Dodge, critDelta)
+			newCritSnapshot := warlock.GetStat(stats.SpellCrit)
+			warlock.AddStatDynamic(sim, stats.Dodge, newCritSnapshot-lastCritSnapshot)
+			fmt.Println(sim.CurrentTime, "Current Crit:", warlock.GetStat(stats.SpellCrit), "Old Crit:", lastCritSnapshot, "Delta:", warlock.GetStat(stats.SpellCrit)-lastCritSnapshot)
+			lastCritSnapshot = newCritSnapshot
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.AddStatDynamic(sim, stats.Dodge, -critDelta)
+			warlock.AddStatDynamic(sim, stats.Dodge, -lastCritSnapshot)
 		},
 	})
 
