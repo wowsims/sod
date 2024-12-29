@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 # Usage example:
-# python3 ./tools/scrape_enchant_descriptions.py ./sim/core/items/all_enchants.go ./assets/enchants/descriptions.json
+# python3 ./tools/scrape_enchant_descriptions.py ./tools/database/enchant_overrides.go ./assets/enchants/descriptions.json
 
 import json
 import re
