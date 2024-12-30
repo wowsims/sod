@@ -282,7 +282,6 @@ func (warlock *Warlock) applyDanceOfTheWicked() {
 		OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
 			newCritSnapshot := warlock.GetStat(stats.SpellCrit)
 			warlock.AddStatDynamic(sim, stats.Dodge, newCritSnapshot-lastCritSnapshot)
-			fmt.Println(sim.CurrentTime, "Current Crit:", warlock.GetStat(stats.SpellCrit), "Old Crit:", lastCritSnapshot, "Delta:", warlock.GetStat(stats.SpellCrit)-lastCritSnapshot)
 			lastCritSnapshot = newCritSnapshot
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
