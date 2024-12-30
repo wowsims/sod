@@ -1279,42 +1279,8 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=234987/neretzek-the-blood-drinker
 	// Chance on hit: Steals 171 to 193 life from target enemy.
-	itemhelpers.CreateWeaponProcSpell(NeretzekBloodDrinker, "Neretzek, The Blood Drinker", 0.8, func(character *core.Character) *core.Spell { // PPM based on old ppm from Armamaments discord
-		actionID := core.ActionID{SpellID: 1214208}
-		healthMetrics := character.NewHealthMetrics(actionID)
-		return character.RegisterSpell(core.SpellConfig{
-			ActionID:         actionID,
-			SpellSchool:      core.SpellSchoolShadow,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-			BonusCoefficient: 1.0, /// TBD - Best guess based on similarity to shadowstrike
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, sim.Roll(171, 193), spell.OutcomeMagicHit)
-				character.GainHealth(sim, result.Damage, healthMetrics)
-			},
-		})
-	})
-
-	// https://www.wowhead.com/classic/item=233647/neretzek-the-blood-drinker
-	// Chance on hit: Steals 171 to 193 life from target enemy.
-	itemhelpers.CreateWeaponProcSpell(NeretzekBloodDrinkerVoidTouched, "Neretzek, The Blood Drinker", 0.8, func(character *core.Character) *core.Spell { // PPM based on old ppm from Armamaments discord
-		actionID := core.ActionID{SpellID: 1214208}
-		healthMetrics := character.NewHealthMetrics(actionID)
-		return character.RegisterSpell(core.SpellConfig{
-			ActionID:         actionID,
-			SpellSchool:      core.SpellSchoolShadow,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, sim.Roll(171, 193), spell.OutcomeMagicHit)
-				character.GainHealth(sim, result.Damage, healthMetrics)
-			},
-		})
-	})
+	itemhelpers.CreateWeaponProcSpell(NeretzekBloodDrinker, "Neretzek, The Blood Drinker", 0.8, neretzekBloodDrinkerEffect)
+	itemhelpers.CreateWeaponProcSpell(NeretzekBloodDrinkerVoidTouched, "Neretzek, The Blood Drinker", 0.8, neretzekBloodDrinkerEffect)
 
 	itemhelpers.CreateWeaponCoHProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
@@ -3292,6 +3258,23 @@ func manslayerOfTheQirajiAura(character *core.Character) *core.Aura {
 				icd.Use(sim)
 				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1214927}, spell)
 			}
+		},
+	})
+}
+
+func neretzekBloodDrinkerEffect(character *core.Character) *core.Spell { // PPM based on old ppm from Armamaments discord
+	actionID := core.ActionID{SpellID: 1214208}
+	healthMetrics := character.NewHealthMetrics(actionID)
+	return character.RegisterSpell(core.SpellConfig{
+		ActionID:         actionID,
+		SpellSchool:      core.SpellSchoolShadow,
+		DefenseType:      core.DefenseTypeMagic,
+		ProcMask:         core.ProcMaskEmpty,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealDamage(sim, target, sim.Roll(171, 193), spell.OutcomeMagicHit)
+			character.GainHealth(sim, result.Damage, healthMetrics)
 		},
 	})
 }

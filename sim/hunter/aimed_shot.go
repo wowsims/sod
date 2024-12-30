@@ -13,8 +13,6 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 	manaCost := [7]float64{0, 75, 115, 160, 210, 260, 310}[rank]
 	level := [7]int{0, 0, 28, 36, 44, 52, 60}[rank]
 
-	has2PDragonStalkerPursuit := hunter.HasSetBonus(ItemSetDragonstalkerPursuit, 2)
-
 	return core.SpellConfig{
 		SpellCode:     SpellCode_HunterAimedShot,
 		ActionID:      core.ActionID{SpellID: spellId},
@@ -65,9 +63,6 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 				hunter.AmmoDamageBonus +
 				baseDamage
 
-			if has2PDragonStalkerPursuit && (target.HasActiveAuraWithTag("ImmolationTrap") || hunter.HasActiveAuraWithTag("ExplosiveTrap")) {
-				baseDamage *= 1.20
-			}
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealDamage(sim, result)
