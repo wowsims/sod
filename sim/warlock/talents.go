@@ -621,16 +621,17 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 ///////////////////////////////////////////////////////////////////////////
 
 func (warlock *Warlock) applyImprovedShadowBolt() {
-	if warlock.Talents.ImprovedShadowBolt == 0 {
-		return
-	}
-
 	hasShadowflameRune := warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame)
 
+	// These debuffs get used by the T2.5 DPS 2p bonus and don't require the ISB talent, so always initialize them
 	stackCount := core.TernaryInt32(hasShadowflameRune, core.ISBNumStacksShadowflame, core.ISBNumStacksBase)
 	warlock.ImprovedShadowBoltAuras = warlock.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		return core.ImprovedShadowBoltAura(unit, warlock.Talents.ImprovedShadowBolt)
 	})
+
+	if warlock.Talents.ImprovedShadowBolt == 0 {
+		return
+	}
 
 	warlock.improvedShadowBoltSpellCodes = []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockShadowflame}
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
