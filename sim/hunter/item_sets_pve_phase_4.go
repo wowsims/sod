@@ -113,13 +113,16 @@ func (hunter *Hunter) applyT1Melee4PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			// Just adding 3% damage to assume the hunter is tracking their target's type
 			hunter.PseudoStats.DamageDealtMultiplier *= 1.03
 		},
-	})
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.PseudoStats.DamageDealtMultiplier /= 1.03
+		},
+	}))
 }
 
 // Mongoose Bite also activates for 5 sec whenever your target Parries or Blocks or when your melee attack misses.
@@ -165,13 +168,16 @@ func (hunter *Hunter) applyT1Ranged4PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			// Just adding 3% damage to assume the hunter is tracking their target's type
 			hunter.PseudoStats.DamageDealtMultiplier *= 1.03
 		},
-	})
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hunter.PseudoStats.DamageDealtMultiplier /= 1.03
+		},
+	}))
 }
 
 // Your next Shot ability within 12 sec after Aimed Shot deals 20% more damage.

@@ -23,11 +23,83 @@ func (paladin *Paladin) ApplyRunes() {
 	paladin.applyPurifyingPower()
 	paladin.registerAegis()
 	paladin.registerAvengersShield()
+
+	paladin.applyShoulderRuneEffect()
 }
 
 func (paladin *Paladin) registerFanaticism() {
 	if paladin.hasRune(proto.PaladinRune_RuneHeadFanaticism) {
 		paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += 18
+	}
+}
+
+func (paladin *Paladin) applyShoulderRuneEffect() {
+
+	if paladin.Equipment.Shoulders().Rune == int32(proto.PaladinRune_PaladinRuneNone) {
+		return
+	}
+
+	switch paladin.Equipment.Shoulders().Rune {
+	// Prot
+	case int32(proto.PaladinRune_RuneShouldersPristineBlocker):
+		paladin.applyPaladinT1Prot2P()
+	case int32(proto.PaladinRune_RuneShouldersLightwarden):
+		paladin.applyPaladinT1Prot4P()
+	case int32(proto.PaladinRune_RuneShouldersRadiantDefender):
+		paladin.applyPaladinT1Prot6P()
+	case int32(proto.PaladinRune_RuneShouldersShieldbearer):
+		paladin.applyPaladinT2Prot2P()
+	case int32(proto.PaladinRune_RuneShouldersBastion):
+		paladin.applyPaladinT2Prot4P()
+	case int32(proto.PaladinRune_RuneShouldersReckoner):
+		paladin.applyPaladinT2Prot6P()
+	case int32(proto.PaladinRune_RuneShouldersIronclad):
+		paladin.applyPaladinTAQProt2P()
+	case int32(proto.PaladinRune_RuneShouldersGuardian):
+		paladin.applyPaladinTAQProt4P()
+
+	// Holy
+	case int32(proto.PaladinRune_RuneShouldersPeacekeeper):
+		paladin.applyPaladinT1Holy2P()
+	case int32(proto.PaladinRune_RuneShouldersRefinedPaladin):
+		paladin.applyPaladinT1Holy4P()
+	case int32(proto.PaladinRune_RuneShouldersExemplar):
+		paladin.applyPaladinT1Holy6P()
+	case int32(proto.PaladinRune_RuneShouldersInquisitor):
+		paladin.applyPaladinT2Holy2P()
+	case int32(proto.PaladinRune_RuneShouldersSovereign):
+		paladin.applyPaladinT2Holy4P()
+	case int32(proto.PaladinRune_RuneShouldersDominus):
+		paladin.applyPaladinT2Holy6P()
+	case int32(proto.PaladinRune_RuneShouldersVindicator):
+		paladin.applyPaladinTAQHoly2P()
+	case int32(proto.PaladinRune_RuneShouldersAltruist):
+		paladin.applyPaladinTAQHoly4P()
+
+	// Ret
+	case int32(proto.PaladinRune_RuneShouldersArbiter):
+		paladin.applyPaladinT1Ret2P()
+	// T2 4P for ret is missing because it is the same as 4P for Holy
+	case int32(proto.PaladinRune_RuneShouldersSealbearer):
+		paladin.applyPaladinT1Ret6P()
+	case int32(proto.PaladinRune_RuneShouldersJusticar):
+		paladin.applyPaladinT2Ret2P()
+	case int32(proto.PaladinRune_RuneShouldersJudicator):
+		paladin.applyPaladinT2Ret4P()
+	case int32(proto.PaladinRune_RuneShouldersAscendant):
+		paladin.applyPaladinT2Ret6P()
+	case int32(proto.PaladinRune_RuneShouldersRetributor):
+		paladin.applyPaladinTAQRet2P()
+	case int32(proto.PaladinRune_RuneShouldersExcommunicator):
+		paladin.applyPaladinTAQRet4P()
+	case int32(proto.PaladinRune_RuneShouldersTemplar):
+		paladin.applyPaladinRAQ3P()
+
+	// ZG (Shockadin)
+	case int32(proto.PaladinRune_RuneShouldersLightbringer):
+		paladin.applyPaladinZG3P()
+	case int32(proto.PaladinRune_RuneShouldersExile):
+		paladin.applyPaladinZG5P()
 	}
 }
 

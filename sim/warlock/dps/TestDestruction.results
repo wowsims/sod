@@ -589,8 +589,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Phase1-Lvl25-AllItems-DeathmistRaiment"
  value: {
-  dps: 87.00926
-  tps: 45.91668
+  dps: 84.05227
+  tps: 43.79292
  }
 }
 dps_results: {

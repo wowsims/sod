@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -1.04823
+  weights: -0.81917
   weights: 0
-  weights: 1.87756
-  weights: 0
-  weights: 0
+  weights: 1.79047
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 10.32575
-  weights: 23.46321
+  weights: 0
+  weights: 0
+  weights: 10.54789
+  weights: 23.45789
   weights: 0
   weights: 0
   weights: 0
@@ -396,9 +396,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.65107
+  weights: -0.61377
   weights: 0
-  weights: 3.05307
+  weights: 2.98404
   weights: 0
   weights: 0
   weights: 0
@@ -445,18 +445,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.02472
+  weights: -8.11003
   weights: 0
-  weights: 4.3263
-  weights: 0
-  weights: 0
+  weights: -2.41076
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 28.89265
-  weights: 24.95792
+  weights: 0
+  weights: 0
+  weights: 47.74205
+  weights: 24.12905
   weights: 0
   weights: 0
   weights: 0
@@ -643,40 +643,40 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 661.3179
-  tps: 453.77095
+  dps: 665.12342
+  tps: 457.63773
   hps: 270.875
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 980.24922
-  tps: 771.07815
+  dps: 980.84201
+  tps: 771.67586
   hps: 263.09207
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 3667.56238
-  tps: 3473.65916
+  dps: 3668.55437
+  tps: 3474.90529
   hps: 777.64186
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 644.97648
-  tps: 446.58336
+  dps: 645.8627
+  tps: 447.49654
   hps: 272.49613
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 3724.70771
-  tps: 3534.96649
+  dps: 3726.36292
+  tps: 3536.58867
   hps: 777.21859
  }
 }
@@ -691,8 +691,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1682.46293
-  tps: 1459.77588
+  dps: 1682.81663
+  tps: 1460.1186
   hps: 384.87365
  }
 }
@@ -707,241 +707,241 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3780.51411
-  tps: 3588.7931
-  hps: 782.29823
+  dps: 3781.22843
+  tps: 3589.60729
+  hps: 782.30242
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 3761.75055
-  tps: 4967.76866
-  hps: 786.35126
+  dps: 3763.75518
+  tps: 4979.26437
+  hps: 786.42465
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3761.75055
-  tps: 3570.37044
-  hps: 786.35126
+  dps: 3763.75518
+  tps: 3572.82118
+  hps: 786.42465
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3553.89683
-  tps: 3332.60652
+  dps: 3565.15378
+  tps: 3344.11127
   hps: 703.55193
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1766.19089
-  tps: 3184.02222
+  dps: 1766.02099
+  tps: 3195.91837
   hps: 416.46534
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1766.19089
-  tps: 1700.8908
+  dps: 1766.02099
+  tps: 1701.34483
   hps: 416.46534
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1699.36791
-  tps: 1607.63537
+  dps: 1700.29137
+  tps: 1609.5674
   hps: 377.02401
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3759.09866
-  tps: 3567.48197
+  dps: 3760.51811
+  tps: 3568.81976
   hps: 793.04076
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1061.30476
-  tps: 741.81397
+  dps: 1062.73215
+  tps: 742.96768
   hps: 251.25233
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 685.63026
-  tps: 436.78323
+  dps: 686.71525
+  tps: 437.6591
   hps: 241.88918
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1060.95016
-  tps: 742.53144
+  dps: 1063.13298
+  tps: 744.29343
   hps: 249.91993
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 3982.49272
-  tps: 3059.99059
+  dps: 3982.31624
+  tps: 3059.9714
   hps: 789.03722
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 675.32353
-  tps: 438.95909
+  dps: 676.9565
+  tps: 440.27726
   hps: 237.12557
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 4146.64541
-  tps: 3189.37973
+  dps: 4148.99309
+  tps: 3191.24758
   hps: 854.83854
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1061.30476
-  tps: 741.81397
+  dps: 1062.73215
+  tps: 742.96768
   hps: 251.25233
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1861.89131
-  tps: 1380.01006
+  dps: 1862.70268
+  tps: 1380.75578
   hps: 357.31465
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1833.49375
-  tps: 1359.7658
+  dps: 1834.47805
+  tps: 1360.65774
   hps: 364.37985
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 3980.44809
-  tps: 3059.8528
+  dps: 3980.3078
+  tps: 3059.83361
   hps: 789.03722
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4180.03363
-  tps: 3212.54524
-  hps: 851.81323
+  dps: 4181.22564
+  tps: 3213.5297
+  hps: 851.81158
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 4142.64941
-  tps: 4216.52344
+  dps: 4144.81896
+  tps: 4218.31002
   hps: 843.62185
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 4142.64941
-  tps: 3186.21652
+  dps: 4144.81896
+  tps: 3187.92837
   hps: 843.62185
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 4071.61127
-  tps: 3266.32219
+  dps: 4095.40447
+  tps: 3285.43541
   hps: 793.72141
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 1839.13917
-  tps: 2520.4761
-  hps: 408.85822
+  dps: 1839.51344
+  tps: 2522.80207
+  hps: 408.81012
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1839.13917
-  tps: 1430.68214
-  hps: 408.85822
+  dps: 1839.51344
+  tps: 1431.08307
+  hps: 408.81012
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 1819.19108
-  tps: 1478.32408
+  dps: 1822.27994
+  tps: 1480.79516
   hps: 364.13866
  }
 }
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4162.55171
-  tps: 3202.61921
+  dps: 4164.92132
+  tps: 3204.49166
   hps: 850.4873
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 751.31712
-  tps: 668.15813
+  dps: 751.0694
+  tps: 667.92008
   hps: 233.24317
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 350.03273
-  tps: 267.58617
+  dps: 349.9268
+  tps: 267.48713
   hps: 239.63198
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 745.97212
-  tps: 666.26501
+  dps: 745.66915
+  tps: 665.96798
   hps: 230.60037
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 4452.05812
-  tps: 4308.78999
-  hps: 959.31949
+  dps: 4423.25309
+  tps: 4281.1046
+  hps: 977.58543
  }
 }
 dps_results: {
@@ -955,104 +955,104 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 4483.65952
-  tps: 4334.86846
-  hps: 969.43493
+  dps: 4461.17449
+  tps: 4310.9078
+  hps: 1031.2504
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 751.31712
-  tps: 668.15813
+  dps: 751.0694
+  tps: 667.92008
   hps: 233.24317
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1017.15132
-  tps: 924.73958
+  dps: 1017.01966
+  tps: 924.6105
   hps: 292.43015
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1004.35353
-  tps: 913.17642
+  dps: 1004.14289
+  tps: 912.96991
   hps: 297.99763
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 4476.0991
-  tps: 4332.95434
-  hps: 939.26576
+  dps: 4463.21248
+  tps: 4320.27983
+  hps: 990.42856
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 4511.57599
-  tps: 4367.02487
-  hps: 964.24634
+  dps: 4490.21852
+  tps: 4346.42679
+  hps: 1006.7553
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 4517.30073
-  tps: 5657.64738
-  hps: 967.49925
+  dps: 4478.71181
+  tps: 5693.79415
+  hps: 1012.87259
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 4517.30073
-  tps: 4374.2179
-  hps: 967.49925
+  dps: 4478.71181
+  tps: 4334.67808
+  hps: 1012.87259
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 4169.62811
-  tps: 3950.71365
-  hps: 857.70126
+  dps: 4116.82417
+  tps: 3896.89638
+  hps: 863.75332
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 2041.42181
-  tps: 3402.6998
-  hps: 499.11369
+  dps: 2033.40919
+  tps: 3456.81111
+  hps: 508.15875
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 2041.42181
-  tps: 1998.05135
-  hps: 499.11369
+  dps: 2033.40919
+  tps: 1991.56594
+  hps: 508.15875
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 1954.31843
-  tps: 1860.52403
-  hps: 460.45966
+  dps: 1936.14543
+  tps: 1841.66065
+  hps: 452.14846
  }
 }
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4536.94416
-  tps: 4391.44075
-  hps: 983.07888
+  dps: 4497.66412
+  tps: 4353.35733
+  hps: 1017.88092
  }
 }
