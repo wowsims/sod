@@ -333,7 +333,6 @@ export class ActionId {
 			case 'Slam':
 			case 'Windfury Weapon':
 			case 'Holy Strength': // Weapon - Crusader Enchant
-			case 'Life Steal': // Weapon - Lifestealing Enchant
 				if (this.tag === 1) {
 					name = `${name} (Main-Hand)`;
 				} else if (this.tag === 2) {
