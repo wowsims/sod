@@ -34,6 +34,7 @@ func NewTankWarrior(character *core.Character, options *proto.Player) *TankWarri
 
 	war := &TankWarrior{
 		Warrior: warrior.NewWarrior(character, options.TalentsString, warrior.WarriorInputs{
+			Stance:         warOptions.Options.Stance,
 			StanceSnapshot: warOptions.Options.StanceSnapshot,
 		}),
 		Options: warOptions.Options,
