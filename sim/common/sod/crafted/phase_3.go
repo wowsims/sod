@@ -96,13 +96,14 @@ func init() {
 		}
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 446620},
-			Name:       "Echoes of the Damned",
-			Callback:   core.CallbackOnCastComplete,
-			ProcMask:   core.ProcMaskMeleeOrRanged,
-			ProcChance: 0.3,
-			ICD:        time.Second * 40,
-			Handler:    handler,
+			ActionID:          core.ActionID{SpellID: 446620},
+			Name:              "Echoes of the Damned",
+			Callback:          core.CallbackOnCastComplete,
+			ProcMask:          core.ProcMaskMeleeOrRanged,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			ProcChance:        0.3,
+			ICD:               time.Second * 40,
+			Handler:           handler,
 		})
 	})
 
@@ -239,12 +240,13 @@ func echoesOfDreadEffect(agent core.Agent) {
 	}
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		ActionID:   core.ActionID{SpellID: 446579},
-		Name:       "Echoes of Dread",
-		Callback:   core.CallbackOnCastComplete,
-		ProcMask:   core.ProcMaskMelee,
-		ProcChance: 0.3,
-		ICD:        time.Second * 40,
-		Handler:    handler,
+		ActionID:          core.ActionID{SpellID: 446579},
+		Name:              "Echoes of Dread",
+		Callback:          core.CallbackOnSpellHitDealt,
+		ProcMask:          core.ProcMaskMelee,
+		SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+		ProcChance:        0.3,
+		ICD:               time.Second * 40,
+		Handler:           handler,
 	})
 }

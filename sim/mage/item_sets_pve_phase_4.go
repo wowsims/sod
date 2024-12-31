@@ -24,7 +24,7 @@ var ItemSetSorcerersRegalia = core.NewItemSet(core.ItemSet{
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
 				Name:       "S03 - Mana Proc on Cast - Magister's Regalia",
-				Callback:   core.CallbackOnSpellHitDealt,
+				Callback:   core.CallbackOnCastComplete,
 				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
 				ProcChance: 0.06,

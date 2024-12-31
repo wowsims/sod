@@ -197,8 +197,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.26285
-  weights: 1.71883
+  weights: 3.20864
+  weights: 2.6689
   weights: 0
   weights: 0
   weights: 0
@@ -214,9 +214,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.92724
+  weights: 1.00157
   weights: 0
-  weights: 22.49344
+  weights: 27.15425
   weights: 0
   weights: 0
   weights: 0
@@ -400,50 +400,50 @@ dps_results: {
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 2715.62994
-  tps: 2252.88762
+  dps: 2720.42797
+  tps: 2258.84387
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 1662.50805
-  tps: 1409.09944
+  dps: 1656.93555
+  tps: 1403.01423
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 1986.44062
-  tps: 1671.25019
+  dps: 1993.81836
+  tps: 1677.33027
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 1969.98686
-  tps: 1658.60081
+  dps: 1956.09328
+  tps: 1645.44747
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 1986.44062
-  tps: 1671.25019
+  dps: 1993.81836
+  tps: 1677.33027
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 2926.67742
-  tps: 2428.11444
+  dps: 2927.42797
+  tps: 2428.88546
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4491.06144
-  tps: 3404.00852
+  dps: 4486.69802
+  tps: 3400.38726
  }
 }
 dps_results: {
@@ -617,8 +617,8 @@ dps_results: {
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3703.86244
-  tps: 2787.99996
+  dps: 3687.79396
+  tps: 2775.66168
  }
 }
 dps_results: {

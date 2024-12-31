@@ -401,12 +401,13 @@ var ItemSetSpidersKiss = core.NewItemSet(core.ItemSet{
 			character := agent.GetCharacter()
 			procAura := character.NewTemporaryStatsAura("Spider's Kiss", core.ActionID{SpellID: 17333}, stats.Stats{stats.Armor: -100}, time.Second*10)
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				ActionID:   core.ActionID{SpellID: 446570},
-				Name:       "Echoes of the Depraved",
-				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskMelee,
-				ProcChance: 0.05,
+				ActionID:          core.ActionID{SpellID: 446570},
+				Name:              "Echoes of the Depraved",
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ProcChance:        0.05,
 				Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 					procAura.Activate(sim)
 				},
@@ -462,12 +463,13 @@ var ItemSetSpiritOfEskhandar = core.NewItemSet(core.ItemSet{
 		4: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:       "Call of Eskhandar Trigger",
-				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskMelee,
-				ProcChance: 1,
-				ICD:        time.Minute * 1,
+				Name:              "Call of Eskhandar Trigger",
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ProcChance:        1,
+				ICD:               time.Minute * 1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					for _, petAgent := range character.PetAgents {
 						if eskhandar, ok := petAgent.(*guardians.Eskhandar); ok {
@@ -488,12 +490,13 @@ var ItemSetCoreHoundsCall = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:       "Core Hound's Call Trigger",
-				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskMelee,
-				ProcChance: 1,
-				ICD:        time.Minute * 1,
+				Name:              "Core Hound's Call Trigger",
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ProcChance:        1,
+				ICD:               time.Minute * 1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					for _, petAgent := range character.PetAgents {
 						if coreHound, ok := petAgent.(*guardians.CoreHound); ok {
@@ -519,12 +522,12 @@ var ItemSetCoreHoundsCall = core.NewItemSet(core.ItemSet{
 				},
 			})
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:       "Magmadar's Return Trigger",
-				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskMelee,
-				ProcChance: 1,
-				ICD:        time.Minute * 1,
+				Name:              "Magmadar's Return Trigger",
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ICD:               time.Minute * 1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					procAura.Activate(sim)
 				},

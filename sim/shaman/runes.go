@@ -441,16 +441,20 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	ppmm := shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
 	shaman.maelstromWeaponPPMM = &ppmm
 
-	// This aura is hidden, just applies stacks of the proc aura.
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: "Maelstrom Weapon Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskMeleeDamageProc) && shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:              "Maelstrom Weapon Trigger",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee,
+		SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+		CanProcFromProcs:  true,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
 				shaman.MaelstromWeaponAura.Activate(sim)
 				shaman.MaelstromWeaponAura.AddStack(sim)
 			}
 		},
-	}))
+	})
 }
 
 func (shaman *Shaman) applyPowerSurge() {

@@ -396,7 +396,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.67622
+  weights: -0.71157
   weights: 0
   weights: 1.34473
   weights: 0
@@ -407,7 +407,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 12.10516
+  weights: 12.06666
   weights: 0
   weights: 0
   weights: 0
@@ -785,99 +785,99 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1276.3597
-  tps: 909.46581
+  dps: 1276.24852
+  tps: 909.38799
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 2938.13026
-  tps: 2389.36563
+  dps: 2938.4971
+  tps: 2389.62242
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 1268.87487
-  tps: 904.58313
+  dps: 1268.27837
+  tps: 904.16558
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-FullBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 1330.11659
-  tps: 955.67709
+  dps: 1327.77119
+  tps: 954.03531
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-NoBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1194.07717
-  tps: 1046.85276
+  dps: 1194.3812
+  tps: 1047.06559
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-NoBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 573.76286
-  tps: 412.5327
+  dps: 573.53061
+  tps: 412.37012
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Gnome-p3_fire-Fire-p3_fire-NoBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 793.4264
-  tps: 573.40406
+  dps: 793.92277
+  tps: 573.75151
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 2821.44991
-  tps: 2317.53366
+  dps: 2822.14656
+  tps: 2318.02131
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 1273.87004
-  tps: 907.80411
+  dps: 1273.24998
+  tps: 907.37007
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-FullBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 1351.22421
-  tps: 971.34935
+  dps: 1350.53813
+  tps: 970.86909
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-NoBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1157.896
-  tps: 1020.72891
+  dps: 1158.19867
+  tps: 1020.94077
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-NoBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 555.15588
-  tps: 399.45199
+  dps: 554.77142
+  tps: 399.18287
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-Settings-Troll-p3_fire-Fire-p3_fire-NoBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 800.08838
-  tps: 578.08578
+  dps: 800.68132
+  tps: 578.50084
  }
 }
 dps_results: {
  key: "TestFire-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1279.50267
-  tps: 911.79095
+  dps: 1279.16921
+  tps: 911.55753
  }
 }
 dps_results: {
@@ -932,15 +932,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1981.45173
-  tps: 1298.95096
+  dps: 1980.0383
+  tps: 1298.0493
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 791.29152
-  tps: 753.27231
+  dps: 793.41579
+  tps: 755.44308
  }
 }
 dps_results: {
@@ -1093,15 +1093,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase5-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 2764.46296
-  tps: 1634.93359
+  dps: 2762.82619
+  tps: 1633.95766
  }
 }
 dps_results: {
  key: "TestFire-Phase5-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 1187.62316
-  tps: 865.45843
+  dps: 1187.72747
+  tps: 865.62648
  }
 }
 dps_results: {
@@ -1254,15 +1254,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase6-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 3541.68519
-  tps: 2505.02548
+  dps: 3539.23808
+  tps: 2503.3125
  }
 }
 dps_results: {
  key: "TestFire-Phase6-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 1078.54938
-  tps: 778.91603
+  dps: 1075.20069
+  tps: 776.57561
  }
 }
 dps_results: {

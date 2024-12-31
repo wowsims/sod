@@ -681,7 +681,7 @@ func init() {
 				Aura: core.Aura{
 					Label: "Fiery War Axe Fireball",
 				},
-				TickLength:    2 * time.Second,
+				TickLength:    time.Second * 2,
 				NumberOfTicks: 3,
 
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -1679,7 +1679,7 @@ func init() {
 				Aura: core.Aura{
 					Label: "Purged By Fire",
 				},
-				TickLength:    2 * time.Second,
+				TickLength:    time.Second * 2,
 				NumberOfTicks: 5,
 
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -1761,7 +1761,7 @@ func init() {
 	// 			Aura: core.Aura{
 	// 				Label: "Fireball (Hand of Ragnaros)",
 	// 			},
-	// 			TickLength:    2 * time.Second,
+	// 			TickLength:    time.Second * 2,
 	// 			NumberOfTicks: 5,
 
 	// 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -1836,7 +1836,7 @@ func init() {
 				Aura: core.Aura{
 					Label: "Fireball (Sulfuron Hammer)",
 				},
-				TickLength:    2 * time.Second,
+				TickLength:    time.Second * 2,
 				NumberOfTicks: 4,
 
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -2388,9 +2388,9 @@ func init() {
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskRanged,
-			ProcChance:        0.02,
-			ICD:               2 * time.Second,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			ProcChance:        0.02,
+			ICD:               time.Second * 2,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				// Extra ranged attacks do not reset the swing timer confirmed by Zirene
 				character.AutoAttacks.StoreExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
@@ -2404,25 +2404,16 @@ func init() {
 			return
 		}
 
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Second * 2,
-		}
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Hand of Justice",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
-					return
-				}
-				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && icd.IsReady(sim) && sim.Proc(0.02, "HandOfJustice") {
-					icd.Use(sim)
-					aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 15600}, spell)
-				}
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Hand of Justice Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			ProcChance:        0.02,
+			ICD:               time.Second * 2,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				spell.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 15600}, spell)
 			},
 		})
 	})
@@ -2982,11 +2973,12 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
-			Name:       "Spell Blasting Trigger",
-			Callback:   core.CallbackOnSpellHitDealt,
-			Outcome:    core.OutcomeLanded,
-			ProcMask:   core.ProcMaskSpellDamage,
-			ProcChance: 0.05,
+			Name:             "Spell Blasting Trigger",
+			Callback:         core.CallbackOnSpellHitDealt,
+			Outcome:          core.OutcomeLanded,
+			ProcMask:         core.ProcMaskSpellDamage,
+			CanProcFromProcs: true,
+			ProcChance:       0.05,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 			},

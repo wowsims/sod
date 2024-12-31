@@ -41,6 +41,7 @@ const (
 	SpellCode_ShamanSearingTotem
 	SpellCode_ShamanSearingTotemAttack
 	SpellCode_ShamanStormstrike
+	SpellCode_ShamanStormstrikeHit
 )
 
 // Indexes into NextTotemDrops for self buffs

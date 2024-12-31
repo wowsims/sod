@@ -229,7 +229,6 @@ func (paladin *Paladin) applyPaladinT1Prot2P() {
 }
 
 func (paladin *Paladin) applyPaladinT1Prot4P() {
-
 	bonusLabel := "S03 - Item - T1 - Paladin - Protection 4P Bonus"
 
 	if paladin.HasAura(bonusLabel) {
@@ -395,7 +394,6 @@ func (paladin *Paladin) applyPaladinT2Prot4P() {
 }
 
 func (paladin *Paladin) applyPaladinT2Prot6P() {
-
 	bonusLabel := "S03 - Item - T2 - Paladin - Protection 6P Bonus"
 
 	if paladin.HasAura(bonusLabel) {

@@ -103,7 +103,7 @@ func (shaman *Shaman) applyTAQTank2PBonus() {
 		return
 	}
 
-	affectedSpellCodess := []int32{SpellCode_ShamanStormstrike, SpellCode_ShamanLavaBurst, SpellCode_ShamanMoltenBlast}
+	affectedSpellCodess := []int32{SpellCode_ShamanStormstrikeHit, SpellCode_ShamanLavaBurst, SpellCode_ShamanMoltenBlast}
 
 	buffAura := shaman.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213934},
@@ -265,10 +265,15 @@ func (shaman *Shaman) applyTAQEnhancement4PBonus() {
 		},
 	})
 
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == shaman.StormstrikeMH || spell == shaman.StormstrikeOH || spell == shaman.LavaLash || spell == shaman.LavaBurst) {
+	var affectedSpellCodes = []int32{SpellCode_ShamanStormstrikeHit, SpellCode_ShamanLavaLash, SpellCode_ShamanLavaBurst}
+
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:             label,
+		Callback:         core.CallbackOnSpellHitDealt,
+		Outcome:          core.OutcomeCrit,
+		CanProcFromProcs: true,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
 				return
 			}
 
@@ -282,7 +287,7 @@ func (shaman *Shaman) applyTAQEnhancement4PBonus() {
 
 			burnSpell.Cast(sim, result.Target)
 		},
-	}))
+	})
 }
 
 var ItemSetGiftOfTheGatheringStorm = core.NewItemSet(core.ItemSet{
