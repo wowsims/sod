@@ -1217,13 +1217,7 @@ export class Player<SpecType extends Spec> {
 		}
 
 		if (Player.ARMOR_SLOTS.includes(slot)) {
-			itemData = filterItems(itemData, item => {
-				if (!filters.armorTypes.includes(item.armorType)) {
-					return false;
-				}
-
-				return true;
-			});
+			itemData = filterItems(itemData, item => filters.armorTypes.includes(item.armorType))
 		} else if (Player.WEAPON_SLOTS.includes(slot)) {
 			itemData = filterItems(itemData, item => {
 				if (!filters.weaponTypes.includes(item.weaponType)) {
