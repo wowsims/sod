@@ -37,7 +37,7 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 	}
 
 	return core.SpellConfig{
-		SpellCode: SpellCode_HunterVolley,
+		SpellCode:   SpellCode_HunterVolley,
 		ActionID:    core.ActionID{SpellID: spellId},
 		SpellSchool: core.SpellSchoolArcane,
 		ProcMask:    core.ProcMaskSpellDamage,
@@ -47,7 +47,7 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost:   manaCost,
 			Multiplier: manaCostModifer,
 		},
 		Cast: core.CastConfig{
@@ -90,7 +90,6 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 			if hasImprovedVolley {
 				spell.CD.Reset()
 			}
-			hunter.Unit.AutoAttacks.DelayRangedUntil(sim, sim.CurrentTime+(time.Second*6))
 			spell.AOEDot().Apply(sim)
 		},
 	}

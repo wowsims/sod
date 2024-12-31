@@ -171,7 +171,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, slots []proto.ItemSlot) {
 	}
 
 	if character.AutoAttacks.AutoSwingMelee && meleeWeaponSwapped && sim.CurrentTime > 0 {
-		character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
+		character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, true, false)
 	}
 
 	// If GCD is ready then use the GCD, otherwise we assume it's being used along side a spell.

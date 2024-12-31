@@ -855,46 +855,46 @@ func (aa *AutoAttacks) StoreExtraRangedAttack(sim *Simulation, attacks int32, ac
 }
 
 // StopMeleeUntil should be used whenever a non-melee spell is cast. It stops melee, then restarts it
-// at end of cast, but with a reset swing timer (as if swings had just landed).
-func (aa *AutoAttacks) StopMeleeUntil(sim *Simulation, readyAt time.Duration, desyncOH bool) {
+// at end of cast. If resetSwingTimer is true then the swing timer(s) will also be reset.
+func (aa *AutoAttacks) StopMeleeUntil(sim *Simulation, readyAt time.Duration, resetSwingTimer bool, desyncOH bool) {
 	if !aa.AutoSwingMelee { // if not auto swinging, don't auto restart.
 		return
 	}
 
-	aa.mh.swingAt = readyAt + aa.mh.curSwingDuration
+	aa.mh.swingAt = readyAt
+	if resetSwingTimer {
+		aa.mh.swingAt += aa.mh.curSwingDuration
+	}
+
 	sim.rescheduleWeaponAttack(aa.mh.swingAt)
 
 	if aa.IsDualWielding {
-		aa.oh.swingAt = readyAt + aa.oh.curSwingDuration
+		aa.oh.swingAt = readyAt
+		if resetSwingTimer {
+			aa.mh.swingAt += aa.oh.curSwingDuration
+		}
+
 		if desyncOH {
 			// Used by warrior to desync offhand after unglyphed Shattering Throw.
 			aa.oh.swingAt += aa.oh.curSwingDuration / 2
 		}
+
 		sim.rescheduleWeaponAttack(aa.oh.swingAt)
 	}
 }
 
-// Delays all swing timers for the specified amount. Only used by Slam.
-func (aa *AutoAttacks) DelayMeleeBy(sim *Simulation, delay time.Duration) {
-	if delay <= 0 {
-		return
-	}
-
-	aa.mh.swingAt += delay
-	sim.rescheduleWeaponAttack(aa.mh.swingAt)
-
-	if aa.IsDualWielding {
-		aa.oh.swingAt += delay
-		sim.rescheduleWeaponAttack(aa.oh.swingAt)
-	}
-}
-
-func (aa *AutoAttacks) DelayRangedUntil(sim *Simulation, readyAt time.Duration) {
-	if readyAt <= aa.ranged.swingAt {
+// StopRangedUntil should be used whenever a non-ranged spell is cast. It stops ranged, then restarts it
+// at end of cast. If resetSwingTimer is true then the swing timer(s) will also be reset.
+func (aa *AutoAttacks) StopRangedUntil(sim *Simulation, readyAt time.Duration, resetSwingTimer bool) {
+	if !aa.AutoSwingRanged { // if not auto swinging, don't auto restart.
 		return
 	}
 
 	aa.ranged.swingAt = readyAt
+	if resetSwingTimer {
+		aa.ranged.swingAt += aa.ranged.curSwingDuration
+	}
+
 	sim.rescheduleWeaponAttack(aa.ranged.swingAt)
 }
 

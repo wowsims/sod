@@ -30,7 +30,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 	cooldown := time.Second * 8
 	manaCost := .10
 
-	flags := SpellFlagShaman
+	flags := SpellFlagShaman | core.SpellFlagDoesNotResetSwingTimersIfInstant
 	if !isOverload {
 		flags |= core.SpellFlagAPL | SpellFlagMaelstrom
 	}
@@ -64,17 +64,10 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 				Duration: cooldown,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
 				if hasMaelstromWeaponRune {
 					stacks := shaman.MaelstromWeaponAura.GetStacks()
 					spell.SetMetricsSplit(stacks)
-
-					if stacks > 0 {
-						return
-					}
 				}
-
-				shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
 			},
 		},
 

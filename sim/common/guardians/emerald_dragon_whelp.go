@@ -75,7 +75,7 @@ func (whelp *EmeraldDragonWhelp) ExecuteCustomRotation(sim *core.Simulation) {
 		// If we dont do this the timeline cast time visual for the spell never ends because we
 		// dont support hardcast interrupts
 		if sim.CurrentTime+whelp.acidSpit.CastTime() >= whelp.disabledAt {
-			whelp.AutoAttacks.StopMeleeUntil(sim, whelp.disabledAt, false)
+			whelp.AutoAttacks.StopMeleeUntil(sim, whelp.disabledAt, true, false)
 		} else {
 			whelp.acidSpit.Cast(sim, whelp.CurrentTarget)
 		}
@@ -104,7 +104,7 @@ func (whelp *EmeraldDragonWhelp) registerAcidSpitSpell() {
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
 		// All of the casts and hits in the above log had the same damage so it would seem debuffs are ignored
-		Flags: core.SpellFlagIgnoreModifiers | core.SpellFlagResetAttackSwing,
+		Flags: core.SpellFlagIgnoreModifiers,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: 90,

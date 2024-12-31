@@ -52,7 +52,7 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 		SpellSchool:  core.SpellSchoolNature,
 		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellHealing,
-		Flags:        core.SpellFlagHelpful | core.SpellFlagAPL | SpellFlagMaelstrom | SpellFlagShaman,
+		Flags:        core.SpellFlagHelpful | core.SpellFlagAPL | core.SpellFlagDoesNotResetSwingTimersIfInstant | SpellFlagMaelstrom | SpellFlagShaman,
 		MetricSplits: 6,
 
 		RequiredLevel: level,
@@ -68,17 +68,10 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 				CastTime: time.Millisecond * time.Duration(castTime),
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
 				if hasMaelstromWeaponRune {
 					stacks := shaman.MaelstromWeaponAura.GetStacks()
 					spell.SetMetricsSplit(stacks)
-
-					if stacks > 0 {
-						return
-					}
 				}
-
-				shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
 			},
 		},
 

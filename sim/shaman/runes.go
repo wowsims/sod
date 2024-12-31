@@ -429,11 +429,16 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 			for _, spell := range affectedSpells {
 				spell.CastTimeMultiplier -= float64(multDiff) / 100
 				spell.Cost.Multiplier -= multDiff
+
+				if newStacks == 5 {
+					spell.Flags |= core.SpellFlagDoesNotResetSwingTimers
+				}
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Flags.Matches(SpellFlagMaelstrom) {
 				shaman.MaelstromWeaponAura.Deactivate(sim)
+				spell.Flags ^= core.SpellFlagDoesNotResetSwingTimers
 			}
 		},
 	})

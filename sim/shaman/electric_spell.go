@@ -22,7 +22,7 @@ const (
 func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost float64, baseCastTime time.Duration, isOverload bool) core.SpellConfig {
 	hasMaelstromWeaponRune := shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon)
 
-	flags := SpellFlagShaman | SpellFlagLightning
+	flags := core.SpellFlagDoesNotResetSwingTimersIfInstant | SpellFlagShaman | SpellFlagLightning
 	if !isOverload {
 		flags |= core.SpellFlagAPL | SpellFlagMaelstrom
 	}
@@ -46,17 +46,10 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 				GCD:      core.GCDDefault,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
 				if hasMaelstromWeaponRune {
 					stacks := shaman.MaelstromWeaponAura.GetStacks()
 					spell.SetMetricsSplit(stacks)
-
-					if stacks > 0 {
-						return
-					}
 				}
-
-				shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
 			},
 		},
 

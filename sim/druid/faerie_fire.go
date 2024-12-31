@@ -57,7 +57,7 @@ func (druid *Druid) registerFaerieFireSpell() {
 			return core.FaerieFireFeralAura(target, level)
 		})
 	}
-	flags |= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
+	flags |= core.SpellFlagAPL
 
 	druid.FaerieFire = druid.RegisterSpell(formMask, core.SpellConfig{
 		SpellCode:   spellCode,
@@ -86,7 +86,7 @@ func (druid *Druid) registerFaerieFireSpell() {
 			}
 
 			if druid.InForm(Humanoid | Moonkin) {
-				druid.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, false)
+				druid.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime, true, false)
 			}
 		},
 

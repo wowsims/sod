@@ -55,7 +55,7 @@ func (druid *Druid) applyStarsurge() {
 		SpellSchool: core.SpellSchoolArcane,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagOmen | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | core.SpellFlagAPL,
+		Flags:       SpellFlagOmen | core.SpellFlagBinary | core.SpellFlagAPL,
 
 		MissileSpeed: 24,
 

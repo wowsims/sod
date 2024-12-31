@@ -30,7 +30,7 @@ func (druid *Druid) registerSunfireHumanoidSpell(baseDamageLow float64, baseDama
 
 	config := druid.getSunfireBaseSpellConfig(
 		actionID,
-		core.SpellFlagResetAttackSwing,
+		core.SpellFlagNone,
 		func(sim *core.Simulation, _ *core.Spell) float64 {
 			return sim.Roll(baseDamageLow, baseDamageHigh)
 		},

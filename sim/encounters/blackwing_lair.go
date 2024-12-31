@@ -265,7 +265,7 @@ func (ai *VaelastraszTheCorruptAI) registerSpells() {
 				Duration: time.Second * 9,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				spell.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, false)
+				spell.Unit.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+cast.CastTime, true, false)
 			},
 		},
 		Dot: core.DotConfig{

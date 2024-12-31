@@ -134,7 +134,7 @@ func (unit *Unit) applySpellPushback() {
 				aura.Unit.SetGCDTimer(sim, aura.Unit.Hardcast.Expires)
 
 				// Update Swing timer
-				aura.Unit.AutoAttacks.StopMeleeUntil(sim, aura.Unit.Hardcast.Expires, false)
+				aura.Unit.AutoAttacks.StopMeleeUntil(sim, aura.Unit.Hardcast.Expires, true, false)
 			}
 		},
 	})
@@ -224,12 +224,6 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			return spell.castFailureHelper(sim, "casting/channeling while moving not allowed!")
 		}
 
-		// Non melee casts
-		if spell.Flags.Matches(SpellFlagResetAttackSwing) && spell.Unit.AutoAttacks.enabled {
-			restartMeleeAt := sim.CurrentTime + spell.CurCast.CastTime
-			spell.Unit.AutoAttacks.StopMeleeUntil(sim, restartMeleeAt, false)
-		}
-
 		// Castable-while-casting spells
 		if spell.Flags.Matches(SpellFlagCastWhileCasting) {
 			// Queue cast-while-casting spells to cast 750 ms into the next hard-cast
@@ -262,13 +256,21 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 
 		// Hardcasts
 		if spell.CurCast.CastTime > 0 {
+			castCompletesAt := sim.CurrentTime + spell.CurCast.CastTime
+
 			if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 				spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s, Effective Time = %s)",
 					spell.ActionID, max(0, spell.CurCast.Cost), spell.CurCast.CastTime, spell.CurCast.EffectiveTime())
 			}
 
+			if spell.Unit.AutoAttacks.enabled {
+				resetSwingTimer := !spell.Flags.Matches(SpellFlagDoesNotResetSwingTimers) || (spell.Flags.Matches(SpellFlagDoesNotResetSwingTimersIfInstant) && spell.CurCast.CastTime > 0)
+				spell.Unit.AutoAttacks.StopMeleeUntil(sim, castCompletesAt, resetSwingTimer, false)
+				spell.Unit.AutoAttacks.StopRangedUntil(sim, castCompletesAt, resetSwingTimer)
+			}
+
 			spell.Unit.Hardcast = Hardcast{
-				Expires:  sim.CurrentTime + spell.CurCast.CastTime,
+				Expires:  castCompletesAt,
 				ActionID: spell.ActionID,
 				OnComplete: func(sim *Simulation, target *Unit) {
 					spell.LastCastAt = sim.CurrentTime
@@ -286,6 +288,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 					}
 
 					spell.applyEffects(sim, target)
+					spell.Unit.AutoAttacks.EnableAutoSwing(sim)
 
 					if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
 						spell.Unit.OnCastComplete(sim, spell)

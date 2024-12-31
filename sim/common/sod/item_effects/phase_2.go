@@ -230,7 +230,7 @@ func init() {
 				if sim.RandomFloat("Gyromatic Experiment 420b") > 0.95 {
 					chickenAura.Activate(sim)
 					character.WaitUntil(sim, chickenAura.ExpiresAt())
-					character.AutoAttacks.DelayMeleeBy(sim, time.Second*5)
+					character.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+time.Second*5, true, false)
 				} else {
 					hasteAura.Activate(sim)
 				}

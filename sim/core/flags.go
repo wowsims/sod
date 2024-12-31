@@ -167,37 +167,38 @@ func (se SpellFlag) Matches(other SpellFlag) bool {
 }
 
 const (
-	SpellFlagNone                    SpellFlag = 0
-	SpellFlagIgnoreResists           SpellFlag = 1 << iota // skip spell resist/armor
-	SpellFlagIgnoreTargetModifiers                         // skip target damage modifiers
-	SpellFlagIgnoreAttackerModifiers                       // skip attacker damage modifiers
-	SpellFlagBinary                                        // Does not do partial resists or blocks and could need a different hit roll.
-	SpellFlagChanneled                                     // Spell is channeled
-	SpellFlagDisease                                       // Spell is categorized as disease
-	SpellFlagPoison                                        // Spell is categorized as poison
-	SpellFlagHelpful                                       // For healing spells / buffs.
-	SpellFlagMeleeMetrics                                  // Marks a spell as a melee ability for metrics.
-	SpellFlagNoOnCastComplete                              // Disables the OnCastComplete callback.
-	SpellFlagNoMetrics                                     // Disables metrics for a spell.
-	SpellFlagNoLogs                                        // Disables logs for a spell.
-	SpellFlagAPL                                           // Indicates this spell can be used from an APL rotation.
-	SpellFlagMCD                                           // Indicates this spell is a MajorCooldown.
-	SpellFlagNoOnDamageDealt                               // Disables OnSpellHitDealt and OnPeriodicDamageDealt aura callbacks for this spell.
-	SpellFlagPrepullOnly                                   // Indicates this spell should only be used during prepull. Not enforced, just a signal for the APL UI.
-	SpellFlagEncounterOnly                                 // Indicates this spell should only be used during the encounter (not prepull). Not enforced, just a signal for the APL UI.
-	SpellFlagPotion                                        // Indicates this spell is a potion spell.
-	SpellFlagOffensiveEquipment                            // Indicates this spell is an offensive equippable item activation spell
-	SpellFlagDefensiveEquipment                            // Indicates this spell a defensive equippable item activation spell
-	SpellFlagResetAttackSwing                              // Indicates this spell resets the melee swing timer.
-	SpellFlagCastTimeNoGCD                                 // Indicates this spell is off the GCD (e.g. hunter's Auto Shot)
-	SpellFlagCastWhileCasting                              // Indicates this spell can be cast while another spell is being cast (e.g. mage's Fire Blast with Overheat rune)
-	SpellFlagCastWhileChanneling                           // Indicates this spell can be cast while another spell is being channeled (e.g. spriest's T2.5 4pc set bonus)
-	SpellFlagPureDot                                       // Indicates this spell is a dot with no initial damage component
-	SpellFlagPassiveSpell                                  // Indicates this spell is applied/cast as a result of another spell
-	SpellFlagSuppressWeaponProcs                           // Indicates this spell cannot proc weapon chance on hits or enchants
-	SpellFlagSuppressEquipProcs                            // Indicates this spell cannot proc Equip procs
-	SpellFlagBatchStopAttackMacro                          // Indicates this spell is being cast in a Macro with a stopattack following it
-	SpellFlagNotAProc                                      // Indicates the proc is not treated as a proc (Seal of Command)
+	SpellFlagNone                             SpellFlag = 0
+	SpellFlagIgnoreResists                    SpellFlag = 1 << iota // skip spell resist/armor
+	SpellFlagIgnoreTargetModifiers                                  // skip target damage modifiers
+	SpellFlagIgnoreAttackerModifiers                                // skip attacker damage modifiers
+	SpellFlagBinary                                                 // Does not do partial resists or blocks and could need a different hit roll.
+	SpellFlagChanneled                                              // Spell is channeled
+	SpellFlagDisease                                                // Spell is categorized as disease
+	SpellFlagPoison                                                 // Spell is categorized as poison
+	SpellFlagHelpful                                                // For healing spells / buffs.
+	SpellFlagMeleeMetrics                                           // Marks a spell as a melee ability for metrics.
+	SpellFlagNoOnCastComplete                                       // Disables the OnCastComplete callback.
+	SpellFlagNoMetrics                                              // Disables metrics for a spell.
+	SpellFlagNoLogs                                                 // Disables logs for a spell.
+	SpellFlagAPL                                                    // Indicates this spell can be used from an APL rotation.
+	SpellFlagMCD                                                    // Indicates this spell is a MajorCooldown.
+	SpellFlagNoOnDamageDealt                                        // Disables OnSpellHitDealt and OnPeriodicDamageDealt aura callbacks for this spell.
+	SpellFlagPrepullOnly                                            // Indicates this spell should only be used during prepull. Not enforced, just a signal for the APL UI.
+	SpellFlagEncounterOnly                                          // Indicates this spell should only be used during the encounter (not prepull). Not enforced, just a signal for the APL UI.
+	SpellFlagPotion                                                 // Indicates this spell is a potion spell.
+	SpellFlagOffensiveEquipment                                     // Indicates this spell is an offensive equippable item activation spell
+	SpellFlagDefensiveEquipment                                     // Indicates this spell a defensive equippable item activation spell
+	SpellFlagDoesNotResetSwingTimers                                // Indicates this spell does not reset swing timers.
+	SpellFlagDoesNotResetSwingTimersIfInstant                       // Indicates this spell does not reset swing timers but only if instant cast.
+	SpellFlagCastTimeNoGCD                                          // Indicates this spell is off the GCD (e.g. hunter's Auto Shot)
+	SpellFlagCastWhileCasting                                       // Indicates this spell can be cast while another spell is being cast (e.g. mage's Fire Blast with Overheat rune)
+	SpellFlagCastWhileChanneling                                    // Indicates this spell can be cast while another spell is being channeled (e.g. spriest's T2.5 4pc set bonus)
+	SpellFlagPureDot                                                // Indicates this spell is a dot with no initial damage component
+	SpellFlagPassiveSpell                                           // Indicates this spell is applied/cast as a result of another spell
+	SpellFlagSuppressWeaponProcs                                    // Indicates this spell cannot proc weapon chance on hits or enchants
+	SpellFlagSuppressEquipProcs                                     // Indicates this spell cannot proc Equip procs
+	SpellFlagBatchStopAttackMacro                                   // Indicates this spell is being cast in a Macro with a stopattack following it
+	SpellFlagNotAProc                                               // Indicates the proc is not treated as a proc (Seal of Command)
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1

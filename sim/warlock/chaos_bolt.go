@@ -23,7 +23,7 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
+		Flags:       core.SpellFlagAPL | WarlockFlagDestruction,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.07,
