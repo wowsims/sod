@@ -38,8 +38,9 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 				GCD:      core.GCDDefault,
 				CastTime: time.Millisecond * 500,
 			},
-			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				cast.CastTime = spell.CastTime()
+				hunter.AutoAttacks.CancelAutoSwing(sim)
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CD: core.Cooldown{
@@ -70,6 +71,8 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 
 				target = sim.Environment.NextTargetUnit(target)
 			}
+
+			hunter.AutoAttacks.EnableAutoSwing(sim)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				for _, result := range results {
