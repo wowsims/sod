@@ -130,15 +130,15 @@ export class UnitMetadata {
 		newAuras = newAuras.sort((a, b) => stringComparator(a.id.name, b.id.name));
 
 		let anyUpdates = false;
-		if (metadata.name != this.name) {
+		if (metadata.name !== this.name) {
 			this.name = metadata.name;
 			anyUpdates = true;
 		}
-		if (newSpells.length != this.spells.length || newSpells.some((newSpell, i) => !newSpell.id.equals(this.spells[i].id))) {
+		if (newSpells.length !== this.spells.length || newSpells.some((newSpell, i) => !newSpell.id.equals(this.spells[i].id))) {
 			this.spells = newSpells;
 			anyUpdates = true;
 		}
-		if (newAuras.length != this.auras.length || newAuras.some((newAura, i) => !newAura.id.equals(this.auras[i].id))) {
+		if (newAuras.length !== this.auras.length || newAuras.some((newAura, i) => !newAura.id.equals(this.auras[i].id))) {
 			this.auras = newAuras;
 			anyUpdates = true;
 		}
@@ -167,7 +167,7 @@ export class UnitMetadataList {
 
 		const anyUpdates = await Promise.all(newMetadatas.map((metadata, i) => this.metadatas[i].update(metadata)));
 
-		return oldLen != this.metadatas.length || anyUpdates.some(v => v);
+		return oldLen !== this.metadatas.length || anyUpdates.some(v => v);
 	}
 
 	asList(): Array<UnitMetadata> {
@@ -361,10 +361,10 @@ export class Player<SpecType extends Spec> {
 	}
 
 	isSpec<T extends Spec>(spec: T): this is Player<T> {
-		return this.spec == spec;
+		return this.spec === spec;
 	}
 	isClass<T extends Class>(clazz: T): this is Player<ClassSpecs<T>> {
-		return this.getClass() == clazz;
+		return this.getClass() === clazz;
 	}
 
 	getParty(): Party | null {
@@ -377,7 +377,7 @@ export class Player<SpecType extends Spec> {
 
 	// Returns this player's index within its party [0-4].
 	getPartyIndex(): number {
-		if (this.party == null) {
+		if (this.party === null) {
 			throw new Error("Can't get party index for player without a party!");
 		}
 
@@ -386,7 +386,7 @@ export class Player<SpecType extends Spec> {
 
 	// Returns this player's index within its raid [0-24].
 	getRaidIndex(): number {
-		if (this.party == null) {
+		if (this.party === null) {
 			throw new Error("Can't get raid index for player without a party!");
 		}
 
@@ -395,7 +395,7 @@ export class Player<SpecType extends Spec> {
 
 	// This should only ever be called from party.
 	setParty(newParty: Party | null) {
-		if (newParty == null) {
+		if (newParty === null) {
 			this.party = null;
 			this.raid = null;
 		} else {
@@ -405,11 +405,11 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getOtherPartyMembers(): Array<Player<any>> {
-		if (this.party == null) {
+		if (this.party === null) {
 			return [];
 		}
 
-		return this.party.getPlayers().filter(player => player != null && player != this) as Array<Player<any>>;
+		return this.party.getPlayers().filter(player => player !== null && player !== this) as Array<Player<any>>;
 	}
 
 	// Returns all items that this player can wear in the given slot.
@@ -486,7 +486,7 @@ export class Player<SpecType extends Spec> {
 		try {
 			const result = await this.sim.statWeights(this, epStats, epPseudoStats, epReferenceStat, onProgress);
 			if (result.error) {
-				if (result.error.type == ErrorOutcomeType.ErrorOutcomeAborted) {
+				if (result.error.type === ErrorOutcomeType.ErrorOutcomeAborted) {
 					new Toast({
 						variant: 'info',
 						body: 'Statweight sim cancelled.',
@@ -535,7 +535,7 @@ export class Player<SpecType extends Spec> {
 		return this.name;
 	}
 	setName(eventID: EventID, newName: string) {
-		if (newName != this.name) {
+		if (newName !== this.name) {
 			this.name = newName;
 			this.nameChangeEmitter.emit(eventID);
 		}
@@ -553,7 +553,7 @@ export class Player<SpecType extends Spec> {
 		return this.race;
 	}
 	setRace(eventID: EventID, newRace: Race) {
-		if (newRace != this.race) {
+		if (newRace !== this.race) {
 			this.race = newRace;
 			this.raceChangeEmitter.emit(eventID);
 		}
@@ -562,7 +562,7 @@ export class Player<SpecType extends Spec> {
 		return this.level;
 	}
 	setLevel(eventID: EventID, newLevel: number) {
-		if (newLevel != this.level) {
+		if (newLevel !== this.level) {
 			this.level = newLevel;
 			this.levelChangeEmitter.emit(eventID);
 		}
@@ -572,7 +572,7 @@ export class Player<SpecType extends Spec> {
 		return this.profession1;
 	}
 	setProfession1(eventID: EventID, newProfession: Profession) {
-		if (newProfession != this.profession1) {
+		if (newProfession !== this.profession1) {
 			this.profession1 = newProfession;
 			this.professionChangeEmitter.emit(eventID);
 		}
@@ -581,13 +581,13 @@ export class Player<SpecType extends Spec> {
 		return this.profession2;
 	}
 	setProfession2(eventID: EventID, newProfession: Profession) {
-		if (newProfession != this.profession2) {
+		if (newProfession !== this.profession2) {
 			this.profession2 = newProfession;
 			this.professionChangeEmitter.emit(eventID);
 		}
 	}
 	getProfessions(): Array<Profession> {
-		return [this.profession1, this.profession2].filter(p => p != Profession.ProfessionUnknown);
+		return [this.profession1, this.profession2].filter(p => p !== Profession.ProfessionUnknown);
 	}
 	setProfessions(eventID: EventID, newProfessions: Array<Profession>) {
 		TypedEvent.freezeAllAndDo(() => {
@@ -660,7 +660,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setEnableItemSwap(eventID: EventID, newEnableItemSwap: boolean) {
-		if (newEnableItemSwap == this.enableItemSwap) return;
+		if (newEnableItemSwap === this.enableItemSwap) return;
 
 		this.enableItemSwap = newEnableItemSwap;
 		this.itemSwapChangeEmitter.emit(eventID);
@@ -721,7 +721,7 @@ export class Player<SpecType extends Spec> {
 
 		const hasOffhandWeapon = this.getGear().getEquippedItem(ItemSlot.ItemSlotOffHand)?.item.weaponSpeed !== undefined;
 		// Due to warrior HS bug, hit cap for crit cap calculation should be 8% instead of 27%
-		const meleeHitCap = hasOffhandWeapon && this.spec != Spec.SpecWarrior ? 27.0 : 8.0;
+		const meleeHitCap = hasOffhandWeapon && this.spec !== Spec.SpecWarrior ? 27.0 : 8.0;
 		const dodgeCap = 6.5;
 		const parryCap = this.getInFrontOfTarget() ? 14.0 : 0;
 		const expertiseCap = dodgeCap + parryCap;
@@ -817,7 +817,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getRotationType(): APLRotationType {
-		if (this.aplRotation.type == APLRotationType.TypeUnknown) {
+		if (this.aplRotation.type === APLRotationType.TypeUnknown) {
 			return APLRotationType.TypeAPL;
 		} else {
 			return this.aplRotation.type;
@@ -825,17 +825,17 @@ export class Player<SpecType extends Spec> {
 	}
 
 	hasSimpleRotationGenerator(): boolean {
-		return this.simpleRotationGenerator != null;
+		return this.simpleRotationGenerator !== null;
 	}
 
 	getResolvedAplRotation(): APLRotation {
 		const type = this.getRotationType();
-		if (type == APLRotationType.TypeAuto && this.autoRotationGenerator) {
+		if (type === APLRotationType.TypeAuto && this.autoRotationGenerator) {
 			// Clone to avoid modifying preset rotations, which are often returned directly.
 			const rot = APLRotation.clone(this.autoRotationGenerator(this));
 			rot.type = APLRotationType.TypeAuto;
 			return rot;
-		} else if (type == APLRotationType.TypeSimple && this.simpleRotationGenerator) {
+		} else if (type === APLRotationType.TypeSimple && this.simpleRotationGenerator) {
 			// Clone to avoid modifying preset rotations, which are often returned directly.
 			const simpleRot = this.getSimpleRotation();
 			const rot = APLRotation.clone(this.simpleRotationGenerator(this, simpleRot, this.getSimpleCooldowns()));
@@ -848,7 +848,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	getTalents(): SpecTalents<SpecType> {
-		if (this.talents == null) {
+		if (this.talents === null) {
 			this.talents = playerTalentStringToProto(this.spec, this.talentsString) as SpecTalents<SpecType>;
 		}
 		return this.talents!;
@@ -859,7 +859,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setTalentsString(eventID: EventID, newTalentsString: string) {
-		if (newTalentsString == this.talentsString) return;
+		if (newTalentsString === this.talentsString) return;
 
 		this.talentsString = newTalentsString;
 		this.talents = null;
@@ -894,7 +894,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setReactionTime(eventID: EventID, newReactionTime: number) {
-		if (newReactionTime == this.reactionTime) return;
+		if (newReactionTime === this.reactionTime) return;
 
 		this.reactionTime = newReactionTime;
 		this.miscOptionsChangeEmitter.emit(eventID);
@@ -905,7 +905,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setChannelClipDelay(eventID: EventID, newChannelClipDelay: number) {
-		if (newChannelClipDelay == this.channelClipDelay) return;
+		if (newChannelClipDelay === this.channelClipDelay) return;
 
 		this.channelClipDelay = newChannelClipDelay;
 		this.miscOptionsChangeEmitter.emit(eventID);
@@ -916,7 +916,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setInFrontOfTarget(eventID: EventID, newInFrontOfTarget: boolean) {
-		if (newInFrontOfTarget == this.inFrontOfTarget) return;
+		if (newInFrontOfTarget === this.inFrontOfTarget) return;
 
 		this.inFrontOfTarget = newInFrontOfTarget;
 		this.inFrontOfTargetChangeEmitter.emit(eventID);
@@ -927,7 +927,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setDistanceFromTarget(eventID: EventID, newDistanceFromTarget: number) {
-		if (newDistanceFromTarget == this.distanceFromTarget) return;
+		if (newDistanceFromTarget === this.distanceFromTarget) return;
 
 		this.distanceFromTarget = newDistanceFromTarget;
 		this.distanceFromTargetChangeEmitter.emit(eventID);
@@ -936,13 +936,13 @@ export class Player<SpecType extends Spec> {
 	setDefaultHealingParams(hm: HealingModel) {
 		const boss = this.sim.encounter.primaryTarget;
 		const dualWield = boss.dualWield;
-		if (hm.cadenceSeconds == 0) {
+		if (hm.cadenceSeconds === 0) {
 			hm.cadenceSeconds = 1.5 * boss.swingSpeed;
 			if (dualWield) {
 				hm.cadenceSeconds /= 2;
 			}
 		}
-		if (hm.hps == 0) {
+		if (hm.hps === 0) {
 			hm.hps = (0.175 * boss.minBaseDamage) / boss.swingSpeed;
 			if (dualWield) {
 				hm.hps *= 1.5;
@@ -953,7 +953,7 @@ export class Player<SpecType extends Spec> {
 	enableHealing() {
 		this.healingEnabled = true;
 		const hm = this.getHealingModel();
-		if (hm.cadenceSeconds == 0 || hm.hps == 0) {
+		if (hm.cadenceSeconds === 0 || hm.hps === 0) {
 			this.setDefaultHealingParams(hm);
 			this.setHealingModel(0, hm);
 		}
@@ -981,7 +981,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setIsbUsingShadowflame(eventID: EventID, newValue: boolean) {
-		if (newValue == this.isbUsingShadowflame) return;
+		if (newValue === this.isbUsingShadowflame) return;
 
 		this.isbUsingShadowflame = newValue;
 		this.changeEmitter.emit(eventID);
@@ -992,7 +992,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setIsbSbFrequency(eventID: EventID, newIsbSbFrequency: number) {
-		if (newIsbSbFrequency == this.isbSbFrequency) return;
+		if (newIsbSbFrequency === this.isbSbFrequency) return;
 
 		this.isbSbFrequency = newIsbSbFrequency;
 		this.changeEmitter.emit(eventID);
@@ -1003,7 +1003,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setIsbCrit(eventID: EventID, newIsbCrit: number) {
-		if (newIsbCrit == this.isbCrit) return;
+		if (newIsbCrit === this.isbCrit) return;
 
 		this.isbCrit = newIsbCrit;
 		this.changeEmitter.emit(eventID);
@@ -1014,7 +1014,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setIsbWarlocks(eventID: EventID, newIsbWarlocks: number) {
-		if (newIsbWarlocks == this.isbWarlocks) return;
+		if (newIsbWarlocks === this.isbWarlocks) return;
 
 		this.isbWarlocks = newIsbWarlocks;
 		this.changeEmitter.emit(eventID);
@@ -1025,14 +1025,14 @@ export class Player<SpecType extends Spec> {
 	}
 
 	setIsbSpriests(eventID: EventID, newIsbSpriests: number) {
-		if (newIsbSpriests == this.isbSpriests) return;
+		if (newIsbSpriests === this.isbSpriests) return;
 
 		this.isbSpriests = newIsbSpriests;
 		this.changeEmitter.emit(eventID);
 	}
 
 	computeStatsEP(stats?: Stats): number {
-		if (stats == undefined) {
+		if (stats === undefined) {
 			return 0;
 		}
 		return stats.computeEP(this.epWeights);
@@ -1059,7 +1059,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	computeItemEP(item: Item, slot: ItemSlot): number {
-		if (item == null) return 0;
+		if (item === null) return 0;
 
 		const cached = this.itemEPCache[slot].get(item.id);
 		if (cached !== undefined) return cached;
@@ -1067,11 +1067,11 @@ export class Player<SpecType extends Spec> {
 		let itemStats = new Stats(item.stats);
 		if (item.weaponSpeed > 0) {
 			const weaponDps = getWeaponDPS(item);
-			if (slot == ItemSlot.ItemSlotMainHand) {
+			if (slot === ItemSlot.ItemSlotMainHand) {
 				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatMainHandDps, weaponDps);
-			} else if (slot == ItemSlot.ItemSlotOffHand) {
+			} else if (slot === ItemSlot.ItemSlotOffHand) {
 				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatOffHandDps, weaponDps);
-			} else if (slot == ItemSlot.ItemSlotRanged) {
+			} else if (slot === ItemSlot.ItemSlotRanged) {
 				itemStats = itemStats.withPseudoStat(PseudoStat.PseudoStatRangedDps, weaponDps);
 			}
 		}
@@ -1105,14 +1105,14 @@ export class Player<SpecType extends Spec> {
 		const langPrefix = lang ? lang + '.' : '';
 		parts.push(`domain=${langPrefix}classic`);
 
-		if (equippedItem.enchant != null) {
+		if (equippedItem.enchant !== null) {
 			parts.push('ench=' + equippedItem.enchant.effectId);
 		}
 		parts.push(
 			'pcs=' +
 				this.gear
 					.asArray()
-					.filter(ei => ei != null)
+					.filter(ei => ei !== null)
 					.map(ei => ei!.item.id)
 					.join(':'),
 		);
@@ -1141,80 +1141,79 @@ export class Player<SpecType extends Spec> {
 			return itemData.filter(itemElem => filterFunc(getItemFunc(itemElem)));
 		};
 
-		if (filters.minIlvl != 0) {
+		if (filters.minIlvl !== 0) {
 			itemData = filterItems(itemData, item => item.ilvl >= filters.minIlvl);
 		}
-		if (filters.maxIlvl != 0) {
+		if (filters.maxIlvl !== 0) {
 			itemData = filterItems(itemData, item => item.ilvl <= filters.maxIlvl);
 		}
 
-		if (filters.factionRestriction != UIItem_FactionRestriction.UNSPECIFIED) {
+		if (filters.factionRestriction !== UIItem_FactionRestriction.UNSPECIFIED) {
 			itemData = filterItems(
 				itemData,
-				item => item.factionRestriction == filters.factionRestriction || item.factionRestriction == UIItem_FactionRestriction.UNSPECIFIED,
+				item => item.factionRestriction === filters.factionRestriction || item.factionRestriction === UIItem_FactionRestriction.UNSPECIFIED,
 			);
 		}
 
 		if (!filters.sources.includes(SourceFilterOption.SourceCrafting)) {
-			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'crafted'));
+			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind === 'crafted'));
 		}
 
 		if (!filters.sources.includes(SourceFilterOption.SourceQuest)) {
-			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'quest'));
+			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind === 'quest'));
 		}
 
 		if (!filters.sources.includes(SourceFilterOption.SourceReputation)) {
-			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'rep'));
+			itemData = filterItems(itemData, item => !item.sources.some(itemSrc => itemSrc.source.oneofKind === 'rep'));
 		}
 
 		if (!filters.sources.includes(SourceFilterOption.SourceDungeon)) {
+			const zoneIds: Array<number> = [];
+
 			for (const zoneName in DungeonFilterOption) {
 				const zoneId = DungeonFilterOption[zoneName];
 
-				if (typeof zoneId == 'number') {
-					itemData = filterItems(
-						itemData,
-						item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId),
-					);
+				if (typeof zoneId === 'number' && zoneId !== 0 && !filters.raids.includes(zoneId)) {
+					zoneIds.push(zoneId)
 				}
 			}
+
+			itemData = filterItems(
+				itemData,
+				item => !item.sources.some(itemSrc => itemSrc.source.oneofKind === 'drop' && zoneIds.includes(itemSrc.source.drop.zoneId)),
+			);
 		}
 
 		if (!filters.sources.includes(SourceFilterOption.SourceRaid)) {
 			const zoneIds: Array<number> = [];
+
 			for (const zoneName in RaidFilterOption) {
 				const zoneId = RaidFilterOption[zoneName];
 
-				if (typeof zoneId == 'number' && zoneId != 0) {
+				if (typeof zoneId === 'number' && zoneId !== 0) {
 					zoneIds.push(zoneId);
 				}
 			}
 
 			itemData = filterItems(
 				itemData,
-				item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && zoneIds.includes(itemSrc.source.drop.zoneId)),
+				item => !item.sources.some(itemSrc => itemSrc.source.oneofKind === 'drop' && zoneIds.includes(itemSrc.source.drop.zoneId)),
 			);
 		}
 
 		for (const zoneName in ExcludedZones) {
 			const zoneId = ExcludedZones[zoneName];
 
-			if (typeof zoneId == 'number' && zoneId != 0) {
+			if (typeof zoneId === 'number' && zoneId !== 0) {
 				itemData = filterItems(
 					itemData,
-					item => !item.sources.some(itemSrc => itemSrc.source.oneofKind == 'drop' && itemSrc.source.drop.zoneId == zoneId),
+					item => !item.sources.some(itemSrc => itemSrc.source.oneofKind === 'drop' && itemSrc.source.drop.zoneId === zoneId),
 				);
 			}
 		}
 
 		if (!filters.sources.includes(SourceFilterOption.SourceWorldBOE)) {
-			for (const zoneName in RaidFilterOption) {
-				const zoneId = RaidFilterOption[zoneName];
-
-				if (typeof zoneId == 'number') {
-					itemData = filterItems(itemData, item => item.randomSuffixOptions.length == 0);
-				}
-			}
+			itemData = filterItems(itemData, item => item.randomSuffixOptions.length === 0);
 		}
 
 		if (Player.ARMOR_SLOTS.includes(slot)) {
@@ -1230,15 +1229,15 @@ export class Player<SpecType extends Spec> {
 				if (!filters.weaponTypes.includes(item.weaponType)) {
 					return false;
 				}
-				if (!filters.oneHandedWeapons && item.handType != HandType.HandTypeTwoHand) {
+				if (!filters.oneHandedWeapons && item.handType !== HandType.HandTypeTwoHand) {
 					return false;
 				}
-				if (!filters.twoHandedWeapons && item.handType == HandType.HandTypeTwoHand) {
+				if (!filters.twoHandedWeapons && item.handType === HandType.HandTypeTwoHand) {
 					return false;
 				}
 
-				const minSpeed = slot == ItemSlot.ItemSlotMainHand ? filters.minMhWeaponSpeed : filters.minOhWeaponSpeed;
-				const maxSpeed = slot == ItemSlot.ItemSlotMainHand ? filters.maxMhWeaponSpeed : filters.maxOhWeaponSpeed;
+				const minSpeed = slot === ItemSlot.ItemSlotMainHand ? filters.minMhWeaponSpeed : filters.minOhWeaponSpeed;
+				const maxSpeed = slot === ItemSlot.ItemSlotMainHand ? filters.maxMhWeaponSpeed : filters.maxOhWeaponSpeed;
 				if (minSpeed > 0 && item.weaponSpeed < minSpeed) {
 					return false;
 				}
@@ -1248,7 +1247,7 @@ export class Player<SpecType extends Spec> {
 
 				return true;
 			});
-		} else if (slot == ItemSlot.ItemSlotRanged) {
+		} else if (slot === ItemSlot.ItemSlotRanged) {
 			itemData = filterItems(itemData, item => {
 				if (!filters.rangedWeaponTypes.includes(item.rangedWeaponType)) {
 					return false;
@@ -1289,7 +1288,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	makeUnitReference(): UnitReference {
-		if (this.party == null) {
+		if (this.party === null) {
 			return emptyUnitReference();
 		} else {
 			return newUnitReference(this.getRaidIndex());
@@ -1303,7 +1302,7 @@ export class Player<SpecType extends Spec> {
 	}
 
 	toProto(forExport?: boolean, forSimming?: boolean, exportCategories?: Array<SimSettingCategories>): PlayerProto {
-		const exportCategory = (cat: SimSettingCategories) => !exportCategories || exportCategories.length == 0 || exportCategories.includes(cat);
+		const exportCategory = (cat: SimSettingCategories) => !exportCategories || exportCategories.length === 0 || exportCategories.includes(cat);
 
 		const gear = this.getGear();
 		const aplRotation = forSimming ? this.getResolvedAplRotation() : this.aplRotation;
@@ -1365,10 +1364,10 @@ export class Player<SpecType extends Spec> {
 	}
 
 	fromProto(eventID: EventID, proto: PlayerProto, includeCategories?: Array<SimSettingCategories>) {
-		const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length == 0 || includeCategories.includes(cat);
+		const loadCategory = (cat: SimSettingCategories) => !includeCategories || includeCategories.length === 0 || includeCategories.includes(cat);
 
 		// For backwards compatibility with legacy rotations (removed on 2024/01/15).
-		if (proto.rotation?.type == APLRotationType.TypeLegacy) {
+		if (proto.rotation?.type === APLRotationType.TypeLegacy) {
 			proto.rotation.type = APLRotationType.TypeAuto;
 		}
 
@@ -1384,7 +1383,7 @@ export class Player<SpecType extends Spec> {
 				this.setTalentsString(eventID, proto.talentsString);
 			}
 			if (loadCategory(SimSettingCategories.Rotation)) {
-				if (proto.rotation?.type == APLRotationType.TypeUnknown || proto.rotation?.type == APLRotationType.TypeLegacy) {
+				if (proto.rotation?.type === APLRotationType.TypeUnknown || proto.rotation?.type === APLRotationType.TypeLegacy) {
 					if (!proto.rotation) {
 						proto.rotation = APLRotation.create();
 					}
