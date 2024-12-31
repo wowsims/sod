@@ -242,7 +242,7 @@ func (shaman *Shaman) applyTAQEnhancement4PBonus() {
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
