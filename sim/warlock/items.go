@@ -297,12 +297,13 @@ func init() {
 
 		actionID := core.ActionID{ItemID: TheBlackBook}
 		duration := time.Second * 30
-		affectedPet := warlock.ActivePet
 
 		statDeps := map[string]*stats.StatDependency{}
 		for _, pet := range warlock.BasePets {
 			statDeps[pet.Name] = pet.NewDynamicMultiplyStat(stats.Armor, 2)
 		}
+
+		var affectedPet *WarlockPet
 
 		buffAura := warlock.RegisterAura(core.Aura{
 			ActionID: actionID,

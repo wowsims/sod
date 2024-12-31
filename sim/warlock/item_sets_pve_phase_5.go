@@ -191,7 +191,7 @@ func (warlock *Warlock) applyT2Damage2PBonus() {
 		return
 	}
 
-	core.MakePermanent(warlock.RegisterAura(core.Aura{
+	warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.Spellbook {
@@ -200,11 +200,18 @@ func (warlock *Warlock) applyT2Damage2PBonus() {
 				}
 			}
 
-			if warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
-				warlock.Felguard.PseudoStats.DamageDealtMultiplier *= 1.10
+			if !warlock.HasRune(proto.WarlockRune_RuneBracerSummonFelguard) {
+				return
 			}
+
+			warlock.Felguard.ApplyOnPetEnable(func(sim *core.Simulation) {
+				warlock.Felguard.PseudoStats.DamageDealtMultiplier *= 1.10
+			})
+			warlock.Felguard.ApplyOnPetDisable(func(sim *core.Simulation, isSacrifice bool) {
+				warlock.Felguard.PseudoStats.DamageDealtMultiplier /= 1.10
+			})
 		},
-	}))
+	})
 }
 
 // Periodic damage from your Shadowflame, Unstable Affliction, and Curse of Agony spells and damage done by your Felguard have a 4% chance to grant the Shadow Trance effect.

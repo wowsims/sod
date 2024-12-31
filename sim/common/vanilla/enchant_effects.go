@@ -124,7 +124,7 @@ func init() {
 	})
 
 	// Weapon - Fiery Weapon
-	core.NewEnchantEffect(803, func(agent core.Agent) {
+	core.AddWeaponEffect(803, func(agent core.Agent, _ proto.ItemSlot) {
 		character := agent.GetCharacter()
 
 		procMask := character.GetProcMaskForEnchant(803)
@@ -147,12 +147,8 @@ func init() {
 			},
 		})
 
-		aura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Fiery Weapon",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
+		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "Fiery Weapon",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
@@ -166,7 +162,7 @@ func init() {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
-		})
+		}))
 
 		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(803, 6.0, &ppmm, aura)
 	})
@@ -255,7 +251,6 @@ func init() {
 	core.AddWeaponEffect(1898, func(agent core.Agent, slot proto.ItemSlot) {
 		character := agent.GetCharacter()
 
-		isMH := slot == proto.ItemSlot_ItemSlotMainHand
 		procMask := character.GetProcMaskForEnchant(1898)
 		ppmm := character.AutoAttacks.NewPPMManager(6.66, procMask)
 
@@ -263,7 +258,7 @@ func init() {
 		procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 20004}.WithTag(core.TernaryInt32(isMH, 1, 2)),
+			ActionID:    core.ActionID{SpellID: 20004},
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    procMaskOnAuto,

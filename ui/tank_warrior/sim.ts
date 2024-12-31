@@ -109,7 +109,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [WarriorInputs.ShoutPicker<Spec.SpecTankWarrior>(), WarriorInputs.StancePicker<Spec.SpecTankWarrior>()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [BuffDebuffInputs.SpellScorchDebuff],
+	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

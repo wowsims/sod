@@ -264,9 +264,9 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 
 	result := spell.NewResult(target)
 	result.Damage = baseDamage
+	result.Damage *= attackerMultiplier
 
 	if sim.Log == nil {
-		result.Damage *= attackerMultiplier
 		result.applyResistances(sim, spell, isPeriodic, attackTable)
 		result.applyTargetModifiers(spell, attackTable, isPeriodic)
 
@@ -286,7 +286,6 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 
 		spell.ApplyPostOutcomeDamageModifiers(sim, result)
 	} else {
-		result.Damage *= attackerMultiplier
 		afterAttackMods := result.Damage
 		result.applyResistances(sim, spell, isPeriodic, attackTable)
 		afterResistances := result.Damage
