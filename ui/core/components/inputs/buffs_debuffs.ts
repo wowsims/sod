@@ -760,7 +760,7 @@ export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput({
 	values: [
 		makeTristateDebuffInput({
 			actionId: () => ActionId.fromSpellId(6343),
-			impId: ActionId.fromSpellId(12666),
+			impId: ActionId.fromSpellId(403219),
 			fieldName: 'thunderClap',
 		}),
 		makeMultistateMultiplierDebuffInput({
