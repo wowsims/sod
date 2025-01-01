@@ -75,6 +75,7 @@ type Mage struct {
 	BlastWave               []*core.Spell
 	Blizzard                []*core.Spell
 	DeepFreeze              *core.Spell
+	Evocation               *core.Spell
 	Fireball                []*core.Spell
 	FireBlast               []*core.Spell
 	Flamestrike             []*core.Spell
@@ -108,16 +109,18 @@ type Mage struct {
 	MageArmorAura       *core.Aura
 	MissileBarrageAura  *core.Aura
 	MoltenArmorAura     *core.Aura
+	FrozenAuras         core.AuraArray
 	WintersChillAuras   core.AuraArray
 
+	ArcaneBlastDamageMultiplier     float64
 	ArcaneBlastMissileBarrageChance float64
 	BonusFireballDoTAmount          float64
 	FingersOfFrostProcChance        float64
+	FireballMissileActive           bool // Whether Fireball has been cast but has not hit to avoid chain-casting
 
-	// Variables for telling the mage to try to maintain the Fireball DoT with T2 Fire 6pc
-	ArcaneBlastDamageMultiplier float64
-	FireballMissileActive       bool // Whether Fireball has been cast but has not hit to avoid chain-casting
-	MaintainFireballDoT         bool
+	// Special functions that need to be able to be overwritten by certain effects
+	isTargetFrozen func(target *core.Unit) bool
+	procIgnite     func(sim *core.Simulation, result *core.SpellResult)
 }
 
 // Agent is a generic way to access underlying mage on any of the agents.

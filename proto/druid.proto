@@ -6,120 +6,145 @@ option go_package = "./proto";
 import "common.proto";
 
 message DruidTalents {
-	// Balance
-	int32 improved_wrath = 1;
-	bool natures_grasp = 2;
-	int32 improved_natures_grasp = 3;
-	int32 improved_entangling_roots = 4;
-	int32 improved_moonfire = 5;
-	int32 natural_weapons = 6;
-	int32 natural_shapeshifter = 7;
-	int32 improved_thorns = 8;
-	bool omen_of_clarity = 9;
-	int32 natures_reach = 10;
-	int32 vengeance = 11;
-	int32 improved_starfire = 12;
-	bool natures_grace = 13;
-	int32 moonglow = 14;
-	int32 moonfury = 15;
-	bool moonkin_form = 16;
+    // Balance
+    int32 improved_wrath = 1;
+    bool natures_grasp = 2;
+    int32 improved_natures_grasp = 3;
+    int32 improved_entangling_roots = 4;
+    int32 improved_moonfire = 5;
+    int32 natural_weapons = 6;
+    int32 natural_shapeshifter = 7;
+    int32 improved_thorns = 8;
+    bool omen_of_clarity = 9;
+    int32 natures_reach = 10;
+    int32 vengeance = 11;
+    int32 improved_starfire = 12;
+    bool natures_grace = 13;
+    int32 moonglow = 14;
+    int32 moonfury = 15;
+    bool moonkin_form = 16;
 
-	// Feral Combat
-	int32 ferocity = 17;
-	int32 feral_aggression = 18;
-	int32 feral_instinct = 19;
-	int32 brutal_impact = 20;
-	int32 thick_hide = 21;
-	int32 feline_swiftness = 22;
-	bool feral_charge = 23;
-	int32 sharpened_claws = 24;
-	int32 improved_shred = 25;
-	int32 predatory_strikes = 26;
-	int32 blood_frenzy = 27;
-	int32 primal_fury = 28;
-	int32 savage_fury = 29;
-	bool faerie_fire_feral = 30;
-	int32 heart_of_the_wild = 31;
-	bool leader_of_the_pack = 32;
+    // Feral Combat
+    int32 ferocity = 17;
+    int32 feral_aggression = 18;
+    int32 feral_instinct = 19;
+    int32 brutal_impact = 20;
+    int32 thick_hide = 21;
+    int32 feline_swiftness = 22;
+    bool feral_charge = 23;
+    int32 sharpened_claws = 24;
+    int32 improved_shred = 25;
+    int32 predatory_strikes = 26;
+    int32 blood_frenzy = 27;
+    int32 primal_fury = 28;
+    int32 savage_fury = 29;
+    bool faerie_fire_feral = 30;
+    int32 heart_of_the_wild = 31;
+    bool leader_of_the_pack = 32;
 
-	// Restoration
-	int32 improved_mark_of_the_wild = 33;
-	int32 furor = 34;
-	int32 improved_healing_touch = 35;
-	int32 natures_focus = 36;
-	int32 improved_enrage = 37;
-	int32 reflection = 38;
-	bool insect_swarm = 39;
-	int32 subtlety = 40;
-	int32 tranquil_spirit = 41;
-	int32 improved_rejuvenation = 42;
-	bool natures_swiftness = 43;
-	int32 gift_of_nature = 44;
-	int32 improved_tranquility = 45;
-	int32 improved_regrowth = 46;
-	bool swiftmend = 47;
+    // Restoration
+    int32 improved_mark_of_the_wild = 33;
+    int32 furor = 34;
+    int32 improved_healing_touch = 35;
+    int32 natures_focus = 36;
+    int32 improved_enrage = 37;
+    int32 reflection = 38;
+    bool insect_swarm = 39;
+    int32 subtlety = 40;
+    int32 tranquil_spirit = 41;
+    int32 improved_rejuvenation = 42;
+    bool natures_swiftness = 43;
+    int32 gift_of_nature = 44;
+    int32 improved_tranquility = 45;
+    int32 improved_regrowth = 46;
+    bool swiftmend = 47;
 }
 
 enum DruidRune {
-	DruidRuneNone = 0;
+    DruidRuneNone = 0;
 
-	RuneHelmGaleWinds				= 417135;
-	RuneHelmGore					= 417145;
-	RuneHelmImprovedBarkskin		= 431388;
+    RuneHelmGaleWinds                   = 417135;
+    RuneHelmGore                        = 417145;
+    RuneHelmImprovedBarkskin            = 431388;
 
-	RuneCloakImprovedSwipe			= 439510;
-	RuneCloakTreeofLife				= 439733;
-	RuneCloakStarfall				= 439748;
+    RuneShouldersAnimalisticExpertise   = 1220368;
+    RuneShouldersAstralAscendant        = 1220362;
+    RuneShouldersBarbaric               = 1220342;
+    RuneShouldersBeast                  = 1220307;
+    RuneShouldersClaw                   = 1220338;
+    RuneShouldersCometcaller            = 1220364;
+    RuneShouldersExsanguinator          = 1220346;
+    RuneShouldersForest                 = 1220366;
+    RuneShouldersFrenetic               = 1220344;
+    RuneShouldersFurious                = 1220312;
+    RuneShouldersGraceful               = 1220360;
+    RuneShouldersIlluminator            = 1220332;
+    RuneShouldersKeepers                = 1220356;
+    RuneShouldersLacerator              = 1220310;
+    RuneShouldersLunatic                = 1220350;
+    RuneShouldersMangler                = 1220314;
+    RuneShouldersNight                  = 1220355;
+    RuneShouldersPredatoryInstincts     = 1220334;
+    RuneShouldersPrideful               = 1220340;
+    RuneShouldersRipper                 = 1220336;
+    RuneShouldersShifter                = 1220303;
+    RuneShouldersStarcaller             = 1220352;
+    RuneShouldersTerritorial            = 1220305;
+    RuneShouldersWrathful               = 1220358;
 
-	RuneChestFuryOfStormrage		= 414799;
-	RuneChestLivingSeed				= 414677;
-	RuneChestSurvivalOfTheFittest	= 411115;
-	RuneChestWildStrikes			= 407977;
+    RuneCloakImprovedSwipe              = 439510;
+    RuneCloakTreeofLife                 = 439733;
+    RuneCloakStarfall                   = 439748;
 
-	RuneBracersEfflorescence		= 417149;
-	RuneBracersElunesFires			= 414719;
-	RuneBracersImpFrenziedRegen		= 431389;
+    RuneChestFuryOfStormrage            = 414799;
+    RuneChestLivingSeed                 = 414677;
+    RuneChestSurvivalOfTheFittest       = 411115;
+    RuneChestWildStrikes                = 407977;
 
-	RuneHandsMangle					= 407995;
-	RuneHandsSunfire				= 414684;
-	RuneHandsWildGrowth				= 408120;
-	RuneHandsSkullBash				= 410176;
+    RuneBracersEfflorescence            = 417149;
+    RuneBracersElunesFires              = 414719;
+    RuneBracersImpFrenziedRegen         = 431389;
 
-	RuneBeltBerserk					= 417141;
-	RuneBeltEclipse					= 408248;
-	RuneBeltNourish					= 408247;
+    RuneHandsMangle                     = 407995;
+    RuneHandsSunfire                    = 414684;
+    RuneHandsWildGrowth                 = 408120;
+    RuneHandsSkullBash                  = 410176;
 
-	RuneLegsStarsurge				= 417157;
-	RuneLegsSavageRoar				= 407988;
-	RuneLegsLifebloom				= 409824;
-	RuneLegsLacerate				= 414644;
+    RuneBeltBerserk                     = 417141;
+    RuneBeltEclipse                     = 408248;
+    RuneBeltNourish                     = 408247;
 
-	RuneFeetDreamstate				= 408258;
-	RuneFeetKingOfTheJungle			= 417046;
-	RuneFeetSurvivalInstincts		= 408024;
+    RuneLegsStarsurge                   = 417157;
+    RuneLegsSavageRoar                  = 407988;
+    RuneLegsLifebloom                   = 409824;
+    RuneLegsLacerate                    = 414644;
+
+    RuneFeetDreamstate                  = 408258;
+    RuneFeetKingOfTheJungle             = 417046;
+    RuneFeetSurvivalInstincts           = 408024;
 }
 
 message BalanceDruid {
   message Rotation {
-	}
+    }
 
   message Options {
     UnitReference innervate_target = 1;
-	float okf_uptime = 2;
+    float okf_uptime = 2;
   }
   Options options = 3;
 }
 
 message FeralDruid {
   message Rotation {
-		bool maintain_faerie_fire = 1;
-		int32 min_combos_for_rip = 2;
-		float max_wait_time = 3;
-		float preroar_duration = 4;
-		bool precast_tigers_fury = 5;
-		bool use_shred_trick = 6;
+        bool maintain_faerie_fire = 1;
+        int32 min_combos_for_rip = 2;
+        float max_wait_time = 3;
+        float preroar_duration = 4;
+        bool precast_tigers_fury = 5;
+        bool use_shred_trick = 6;
   }
-	Rotation rotation = 1;
+    Rotation rotation = 1;
 
   message Options {
     UnitReference innervate_target = 1;
@@ -131,15 +156,15 @@ message FeralDruid {
 
 message FeralTankDruid {
   message Rotation {
-		// Minimum rage to queue HS or Cleave.
-		int32 maul_rage_threshold = 1;
-		bool maintain_demoralizing_roar = 2;
-		double lacerate_time = 3;
+        // Minimum rage to queue HS or Cleave.
+        int32 maul_rage_threshold = 1;
+        bool maintain_demoralizing_roar = 2;
+        double lacerate_time = 3;
   }
 
   message Options {
     UnitReference innervate_target = 1;
-		double starting_rage = 2;
+        double starting_rage = 2;
   }
   Options options = 3;
 }

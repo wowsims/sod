@@ -13,6 +13,9 @@ func (druid *Druid) ApplyRunes() {
 	druid.applyGaleWinds()
 	druid.applyGore()
 
+	// Shoulder
+	druid.applyShoulderRuneEffect()
+
 	// Cloak
 	druid.registerStarfallCD()
 	druid.registerSwipeCatSpell()
@@ -39,6 +42,68 @@ func (druid *Druid) ApplyRunes() {
 	// Feet
 	druid.applyDreamstate()
 	druid.applyKingOfTheJungle()
+}
+
+func (druid *Druid) applyShoulderRuneEffect() {
+	if druid.Equipment.Shoulders().Rune == int32(proto.DruidRune_DruidRuneNone) {
+		return
+	}
+
+	switch druid.Equipment.Shoulders().Rune {
+	// Balance
+	case int32(proto.DruidRune_RuneShouldersLunatic):
+		druid.applyT1Balance4PBonus()
+	case int32(proto.DruidRune_RuneShouldersStarcaller):
+		druid.applyT1Balance6PBonus()
+	case int32(proto.DruidRune_RuneShouldersNight):
+		druid.applyT2Balance2PBonus()
+	case int32(proto.DruidRune_RuneShouldersKeepers):
+		druid.applyT2Balance4PBonus()
+	case int32(proto.DruidRune_RuneShouldersWrathful):
+		druid.applyT2Balance6PBonus()
+	case int32(proto.DruidRune_RuneShouldersCometcaller):
+		druid.applyZGBalance3PBonus()
+	case int32(proto.DruidRune_RuneShouldersForest):
+		druid.applyZGBalance5PBonus()
+	case int32(proto.DruidRune_RuneShouldersGraceful):
+		druid.applyTAQBalance2PBonus()
+	case int32(proto.DruidRune_RuneShouldersAstralAscendant):
+		druid.applyTAQBalance4PBonus()
+
+	// Cat
+	case int32(proto.DruidRune_RuneShouldersIlluminator):
+		druid.applyT1Feral2PBonus()
+	case int32(proto.DruidRune_RuneShouldersPredatoryInstincts):
+		druid.applyT1Feral4PBonus()
+	case int32(proto.DruidRune_RuneShouldersRipper):
+		druid.applyT1Feral6PBonus()
+	case int32(proto.DruidRune_RuneShouldersClaw):
+		druid.applyT2Feral2PBonus()
+	case int32(proto.DruidRune_RuneShouldersPrideful):
+		druid.applyT2Feral4PBonus()
+	case int32(proto.DruidRune_RuneShouldersBarbaric):
+		druid.applyT2Feral6PBonus()
+	case int32(proto.DruidRune_RuneShouldersFrenetic):
+		druid.applyTAQFeral2PBonus()
+	case int32(proto.DruidRune_RuneShouldersExsanguinator):
+		druid.applyTAQFeral4PBonus()
+	case int32(proto.DruidRune_RuneShouldersAnimalisticExpertise):
+		druid.applyRAQFeral3PBonus()
+
+	// Guardian
+	case int32(proto.DruidRune_RuneShouldersShifter):
+		druid.applyT1Guardian6PBonus()
+	case int32(proto.DruidRune_RuneShouldersTerritorial):
+		druid.applyT2Guardian2PBonus()
+	case int32(proto.DruidRune_RuneShouldersBeast):
+		druid.applyT2Guardian4PBonus()
+	case int32(proto.DruidRune_RuneShouldersLacerator):
+		druid.applyT2Guardian6PBonus()
+	case int32(proto.DruidRune_RuneShouldersFurious):
+		druid.applyTAQGuardian2PBonus()
+	case int32(proto.DruidRune_RuneShouldersMangler):
+		druid.applyTAQGuardian4PBonus()
+	}
 }
 
 func (druid *Druid) applyGaleWinds() {
@@ -240,7 +305,7 @@ func (druid *Druid) applyElunesFires() {
 const (
 	ElunesFires_BonusMoonfireTime = time.Second * 6
 	ElunesFires_BonusSunfireTime  = time.Second * 3
-	ElunesFires_BonusRipTime      = time.Second * 1
+	ElunesFires_BonusRipTime      = time.Second * 2
 )
 
 func (druid *Druid) tryElunesFiresMoonfireExtension(sim *core.Simulation, unit *core.Unit) {

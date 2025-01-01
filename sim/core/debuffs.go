@@ -243,7 +243,8 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 
 	// Atk spd reduction
 	if debuffs.ThunderClap != proto.TristateEffect_TristateEffectMissing {
-		MakePermanent(ThunderClapAura(target, 8205, time.Second*22, GetTristateValueInt32(debuffs.ThunderClap, 10, 16)))
+		// +6% from Furious Thunder rune
+		MakePermanent(ThunderClapAura(target, 8205, time.Second*10, GetTristateValueInt32(debuffs.ThunderClap, 10, 16)))
 	}
 	if debuffs.Waylay {
 		MakePermanent(WaylayAura(target))
@@ -1030,7 +1031,7 @@ func HomunculiArmorAura(target *Unit, playerLevel int32) *Aura {
 }
 
 func HomunculiAttackPowerAura(target *Unit, playerLevel int32) *Aura {
-	ap := float64(190 + 3*(playerLevel-1))
+	ap := float64(190 - 3*(60-playerLevel))
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Demoralize (Homunculus)",

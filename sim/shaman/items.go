@@ -316,7 +316,7 @@ func init() {
 			return
 		}
 
-		affectedSpells := []*core.Spell{}
+		var affectedSpells []*core.Spell
 
 		buffAura := shaman.RegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 470272},
@@ -325,7 +325,7 @@ func init() {
 			MaxStacks: 5,
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				affectedSpells = core.FilterSlice(shaman.ChainLightning, func(spell *core.Spell) bool { return spell != nil })
-				affectedSpells = core.FilterSlice(shaman.ChainLightningOverload, func(spell *core.Spell) bool { return spell != nil })
+				affectedSpells = append(affectedSpells, core.FilterSlice(shaman.ChainLightningOverload, func(spell *core.Spell) bool { return spell != nil })...)
 			},
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 				oldStackValue := 0.20 * float64(oldStacks)
@@ -577,19 +577,20 @@ func init() {
 		shaman.RegisterAura(core.Aura{
 			Label: "Improved Stormstrike/Windfury Weapon",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells := core.FilterSlice(
-					core.Flatten(
-						[][]*core.Spell{
-							{shaman.StormstrikeMH},
-							{shaman.StormstrikeOH},
-							{shaman.WindfuryWeaponMH},
-							{shaman.WindfuryWeaponOH},
-						},
-					),
-					func(spell *core.Spell) bool { return spell != nil },
-				)
+				for _, spell := range []*core.Spell{shaman.StormstrikeMH, shaman.StormstrikeOH} {
+					if spell == nil {
+						continue
+					}
 
-				for _, spell := range affectedSpells {
+					// In-game testing seems to be only a base points mod for Stormstrike
+					spell.BaseDamageMultiplierAdditive += 0.03
+				}
+
+				for _, spell := range []*core.Spell{shaman.WindfuryWeaponMH, shaman.WindfuryWeaponOH} {
+					if spell == nil {
+						continue
+					}
+
 					spell.DamageMultiplierAdditive += 0.03
 				}
 			},

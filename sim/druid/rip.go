@@ -77,7 +77,6 @@ func (druid *Druid) registerRipSpell() {
 }
 
 func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
-	has4PCenarionCunning := druid.HasSetBonus(ItemSetCenarionCunning, 4)
 	energyCost := 30.0
 
 	return core.SpellConfig{
@@ -121,7 +120,7 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				if has4PCenarionCunning {
+				if druid.AllowRakeRipDoTCrits {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				} else {
 					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)

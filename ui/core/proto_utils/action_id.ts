@@ -332,7 +332,7 @@ export class ActionId {
 			case 'Whirlwind':
 			case 'Slam':
 			case 'Windfury Weapon':
-			case 'Holy Strength': // Crusader Enchant
+			case 'Holy Strength': // Weapon - Crusader Enchant
 				if (this.tag === 1) {
 					name = `${name} (Main-Hand)`;
 				} else if (this.tag === 2) {
@@ -747,6 +747,7 @@ const spellIDsToShowBuffs = new Set([
 	439472, // https://www.wowhead.com/classic/spell=439472/numbing-poison
 	1214279, // https://www.wowhead.com/classic/spell=1214279/spell-blasting
 	1218345, // https://www.wowhead.com/classic/spell=1218345/glaciate
+	1218587, // https://www.wowhead.com/classic/spell=1218587/critical-aim
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';

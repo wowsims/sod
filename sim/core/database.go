@@ -175,6 +175,10 @@ func (equipment *Equipment) Head() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotHead]
 }
 
+func (equipment *Equipment) Shoulders() *Item {
+	return &equipment[proto.ItemSlot_ItemSlotShoulder]
+}
+
 func (equipment *Equipment) Hands() *Item {
 	return &equipment[proto.ItemSlot_ItemSlotHands]
 }

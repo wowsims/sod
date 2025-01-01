@@ -176,6 +176,24 @@ func TestFire(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassMage,
+			Phase:      6,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceGnome},
+
+			Talents:     Phase6TalentsFire,
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p6_fire"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p6_fire"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase6Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -234,6 +252,24 @@ func TestFrost(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassMage,
+			Phase:      6,
+			Level:      60,
+			Race:       proto.Race_RaceTroll,
+			OtherRaces: []proto.Race{proto.Race_RaceGnome},
+
+			Talents:     phase6talentsfrost,
+			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p6_frost"),
+			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p6_spellfrost"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase6Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -254,6 +290,9 @@ var Phase4TalentsFrost = "-0550320003021-2035020310035105"
 var Phase5TalentsArcane = "2500550010031531--2035020310004"
 var Phase5TalentsFire = "21-5052300123033151-203500031"
 var phase5talentsfrost = "250025001002--05350203100351051"
+
+var Phase6TalentsFire = "-0552323121033151-203500031"
+var phase6talentsfrost = "005055001--20350203110351351"
 
 var PlayerOptionsArcane = &proto.Player_Mage{
 	Mage: &proto.Mage{
@@ -336,6 +375,19 @@ var Phase5Consumes = core.ConsumesCombo{
 		Food:           proto.Food_FoodRunnTumTuberSurprise,
 		MainHandImbue:  proto.WeaponImbue_BrilliantWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
+	},
+}
+
+var Phase6Consumes = core.ConsumesCombo{
+	Label: "P6-Consumes",
+	Consumes: &proto.Consumes{
+		DefaultPotion:  proto.Potions_MajorManaPotion,
+		Flask:          proto.Flask_FlaskOfAncientKnowledge,
+		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		FrostPowerBuff: proto.FrostPowerBuff_ElixirOfFrostPower,
+		Food:           proto.Food_FoodDarkclawBisque,
+		MainHandImbue:  proto.WeaponImbue_EnchantedRepellent,
+		SpellPowerBuff: proto.SpellPowerBuff_ElixirOfTheMageLord,
 	},
 }
 

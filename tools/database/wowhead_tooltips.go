@@ -334,17 +334,26 @@ func (item WowheadItemResponse) GetRequiresLevel() int {
 	return level
 }
 
-var reqClassRegex = regexp.MustCompile(`Requires (Druid|Hunter|Mage|Paladin|Priest|Rogue|Shaman|Warlock|Warrior)`)
+var allClassesRegex = regexp.MustCompile(`(Druid|Hunter|Mage|Paladin|Priest|Rogue|Shaman|Warlock|Warrior)`)
+var reqClassRegex = regexp.MustCompile(`Requires\s(Druid|Hunter|Mage|Paladin|Priest|Rogue|Shaman|Warlock|Warrior)`)
+var reqClassesRegex = regexp.MustCompile(`Classes:\s((?:.+?(Druid|Hunter|Mage|Paladin|Priest|Rogue|Shaman|Warlock|Warrior)<\/a>(?:,\s)?)+)`)
 
-func (item WowheadItemResponse) GetRequiredClass() proto.Class {
-	class := item.GetTooltipRegexString(reqClassRegex, 1)
-
-	if class == "" {
-		return proto.Class_ClassUnknown
+func (item WowheadItemResponse) GetRequiredClasses() []proto.Class {
+	if singleClass := item.GetTooltipRegexString(reqClassRegex, 1); singleClass != "" {
+		className := "Class" + singleClass
+		return []proto.Class{proto.Class(proto.Class_value[className])}
 	}
 
-	className := "Class" + class
-	return proto.Class(proto.Class_value[className])
+	if multiClasses := item.GetTooltipRegexString(reqClassesRegex, 1); multiClasses != "" {
+		classes := []proto.Class{}
+		for _, classMatch := range allClassesRegex.FindAllStringSubmatch(multiClasses, -1) {
+			className := classMatch[1]
+			classes = append(classes, proto.Class(proto.Class_value["Class"+className]))
+		}
+		return classes
+	}
+
+	return []proto.Class{}
 }
 
 var reqSlotRegex = regexp.MustCompile(`Requires (Back|Belt|Bracer|Chest|Cloak|Boots|Feet|Gloves|Hands|Head|Helm|Legs|Pants|Ring|Shoulder|Trinket|Waist|Wrist)`)

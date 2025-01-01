@@ -760,7 +760,7 @@ export const MeleeAttackSpeedDebuff = InputHelpers.makeMultiIconInput({
 	values: [
 		makeTristateDebuffInput({
 			actionId: () => ActionId.fromSpellId(6343),
-			impId: ActionId.fromSpellId(12666),
+			impId: ActionId.fromSpellId(403219),
 			fieldName: 'thunderClap',
 		}),
 		makeMultistateMultiplierDebuffInput({
@@ -1128,7 +1128,7 @@ export const MISC_BUFFS_CONFIG = [
 	{
 		config: PowerInfusion,
 		picker: IconPicker,
-		stats: [Stat.StatMP5, Stat.StatSpellPower],
+		stats: [],
 	},
 	{
 		config: BattleSquawkBuff,
@@ -1275,7 +1275,7 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: SpellScorchDebuff,
 		picker: IconPicker,
-		stats: [Stat.StatFirePower],
+		stats: [],
 	},
 	{
 		config: SpellWintersChillDebuff,
@@ -1285,7 +1285,7 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: NatureSpellDamageDebuff,
 		picker: MultiIconPicker,
-		stats: [Stat.StatNaturePower, Stat.StatArcanePower],
+		stats: [],
 	},
 	{
 		config: SpellShadowWeavingDebuff,
@@ -1295,12 +1295,12 @@ export const DEBUFFS_CONFIG = [
 	{
 		config: WarlockCursesConfig,
 		picker: MultiIconPicker,
-		stats: [Stat.StatSpellPower],
+		stats: [],
 	},
 	{
 		config: OccultPoison,
 		picker: IconPicker,
-		stats: [Stat.StatSpellPower],
+		stats: [],
 	},
 
 	// Defensive
@@ -1353,12 +1353,12 @@ export const MISC_DEBUFFS_CONFIG = [
 	{
 		config: MekkatorqueFistDebuff,
 		picker: IconPicker,
-		stats: [Stat.StatSpellPower],
+		stats: [],
 	},
 	{
 		config: SerpentsStrikerFistDebuff,
 		picker: IconPicker,
-		stats: [Stat.StatNaturePower, Stat.StatHolyPower],
+		stats: [],
 	},
 	{
 		config: CurseOfVulnerability,

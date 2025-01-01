@@ -288,24 +288,25 @@ func (warlock *Warlock) applyMasterDemonologist() {
 		return
 	}
 
+	warlock.masterDemonologistMultiplier = 1
+
 	hasMetaRune := warlock.HasRune(proto.WarlockRune_RuneHandsMetamorphosis)
 
 	points := float64(warlock.Talents.MasterDemonologist)
-	bonusMultiplier := 1 + warlock.masterDemonologistBonus
-	damageDealtMultiplier := 1 + (0.02 * points * bonusMultiplier)
-	damageTakenMultiplier := 1 - (0.02 * points * bonusMultiplier)
-	threatMultiplier := 1 + (core.TernaryFloat64(hasMetaRune, 0.04*points, -0.04*points) * bonusMultiplier)
-	bonusResistance := 2 * points * bonusMultiplier
+	damageDealtPointsMultiplier := 0.02 * points
+	damageTakenPointsMultiplier := 0.02 * points
+	threatPointsMultiplier := core.TernaryFloat64(hasMetaRune, 0.04, -0.04) * points
+	resistancePointsMultiplier := 2 * points
 
 	impConfig := core.Aura{
 		Label:    "Master Demonologist (Imp)",
 		ActionID: core.ActionID{SpellID: 23825, Tag: 1},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
+			aura.Unit.PseudoStats.ThreatMultiplier *= 1 + (threatPointsMultiplier * warlock.masterDemonologistMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
+			aura.Unit.PseudoStats.ThreatMultiplier /= 1 + (threatPointsMultiplier * warlock.masterDemonologistMultiplier)
 		},
 	}
 
@@ -314,10 +315,10 @@ func (warlock *Warlock) applyMasterDemonologist() {
 		ActionID: core.ActionID{SpellID: 23825, Tag: 2},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMultiplier
+			aura.Unit.PseudoStats.DamageTakenMultiplier *= 1 - (damageTakenPointsMultiplier * warlock.masterDemonologistMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier /= damageTakenMultiplier
+			aura.Unit.PseudoStats.DamageTakenMultiplier /= 1 - (damageTakenPointsMultiplier * warlock.masterDemonologistMultiplier)
 		},
 	}
 
@@ -326,10 +327,10 @@ func (warlock *Warlock) applyMasterDemonologist() {
 		ActionID: core.ActionID{SpellID: 23825, Tag: 3},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= damageDealtMultiplier
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1 + (damageDealtPointsMultiplier * warlock.masterDemonologistMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= damageDealtMultiplier
+			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1 + (damageDealtPointsMultiplier * warlock.masterDemonologistMultiplier)
 		},
 	}
 
@@ -338,10 +339,10 @@ func (warlock *Warlock) applyMasterDemonologist() {
 		ActionID: core.ActionID{SpellID: 23825, Tag: 4},
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddResistancesDynamic(sim, bonusResistance)
+			aura.Unit.AddResistancesDynamic(sim, resistancePointsMultiplier*warlock.masterDemonologistMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddResistancesDynamic(sim, -bonusResistance)
+			aura.Unit.AddResistancesDynamic(sim, -resistancePointsMultiplier*warlock.masterDemonologistMultiplier)
 		},
 	}
 
@@ -399,16 +400,16 @@ func (warlock *Warlock) applyMasterDemonologist() {
 			ActionID: core.ActionID{SpellID: 23825, Tag: 5},
 			Duration: core.NeverExpires,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
-				aura.Unit.PseudoStats.DamageTakenMultiplier *= damageTakenMultiplier
-				aura.Unit.PseudoStats.DamageDealtMultiplier *= damageDealtMultiplier
-				aura.Unit.AddResistancesDynamic(sim, bonusResistance)
+				aura.Unit.PseudoStats.ThreatMultiplier *= 1 + (threatPointsMultiplier * warlock.masterDemonologistMultiplier)
+				aura.Unit.PseudoStats.DamageTakenMultiplier *= 1 - (damageTakenPointsMultiplier * warlock.masterDemonologistMultiplier)
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= 1 + (damageDealtPointsMultiplier * warlock.masterDemonologistMultiplier)
+				aura.Unit.AddResistancesDynamic(sim, resistancePointsMultiplier*warlock.masterDemonologistMultiplier)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
-				aura.Unit.PseudoStats.DamageTakenMultiplier /= damageTakenMultiplier
-				aura.Unit.PseudoStats.DamageDealtMultiplier /= damageDealtMultiplier
-				aura.Unit.AddResistancesDynamic(sim, -bonusResistance)
+				aura.Unit.PseudoStats.ThreatMultiplier /= 1 + (threatPointsMultiplier * warlock.masterDemonologistMultiplier)
+				aura.Unit.PseudoStats.DamageTakenMultiplier /= 1 - (damageTakenPointsMultiplier * warlock.masterDemonologistMultiplier)
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= 1 + (damageDealtPointsMultiplier * warlock.masterDemonologistMultiplier)
+				aura.Unit.AddResistancesDynamic(sim, -resistancePointsMultiplier*warlock.masterDemonologistMultiplier)
 			},
 		}
 
@@ -620,16 +621,17 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 ///////////////////////////////////////////////////////////////////////////
 
 func (warlock *Warlock) applyImprovedShadowBolt() {
-	if warlock.Talents.ImprovedShadowBolt == 0 {
-		return
-	}
-
 	hasShadowflameRune := warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame)
 
+	// These debuffs get used by the T2.5 DPS 2p bonus and don't require the ISB talent, so always initialize them
 	stackCount := core.TernaryInt32(hasShadowflameRune, core.ISBNumStacksShadowflame, core.ISBNumStacksBase)
 	warlock.ImprovedShadowBoltAuras = warlock.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		return core.ImprovedShadowBoltAura(unit, warlock.Talents.ImprovedShadowBolt)
 	})
+
+	if warlock.Talents.ImprovedShadowBolt == 0 {
+		return
+	}
 
 	warlock.improvedShadowBoltSpellCodes = []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockShadowflame}
 	core.MakePermanent(warlock.RegisterAura(core.Aura{

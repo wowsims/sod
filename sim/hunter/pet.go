@@ -185,12 +185,7 @@ func (hp *HunterPet) Initialize() {
 	hp.specialAbility = hp.NewPetAbility(hp.config.SpecialAbility, true)
 	hp.focusDump = hp.NewPetAbility(hp.config.FocusDump, false)
 
-	maxFocus := core.MaxFocus
-	if hp.hunterOwner.HasSetBonus(StrikersProwess, 2) {
-		maxFocus += 50
-	}
-
-	hp.EnableFocusBar(maxFocus, 1, func(sim *core.Simulation) {
+	hp.EnableFocusBar(core.MaxFocus, 1, func(sim *core.Simulation) {
 		if hp.GCD.IsReady(sim) {
 			hp.OnGCDReady(sim)
 		}

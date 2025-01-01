@@ -50,8 +50,8 @@ func (druid *Druid) applyStarsurge() {
 	})
 
 	druid.Starsurge = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		ActionID:    actionID,
 		SpellCode:   SpellCode_DruidStarsurge,
+		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolArcane,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,

@@ -679,10 +679,11 @@ export const ZANZA_BUFF_CONSUMES_CONFIG: ConsumableStatOption<ZanzaBuff>[] = [
 export const makeZanzaBuffConsumesInput = makeConsumeInputFactory({ consumesFieldName: 'zanzaBuff' });
 
 export const DraughtOfTheSands = makeBooleanMiscConsumeInput({
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 235497, minLevel: 55 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: player.getClass() === Class.ClassHunter ? 235497 : 235825, minLevel: 55 }]),
 	fieldName: 'draughtOfTheSands',
-	showWhen: player => player.getClass() === Class.ClassHunter,
+	showWhen: player => player.getClass() === Class.ClassHunter || player.getClass() === Class.ClassRogue,
 })
+
 export const Catnip = makeBooleanMiscConsumeInput({
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
 	fieldName: 'catnip',

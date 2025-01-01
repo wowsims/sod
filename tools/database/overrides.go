@@ -514,12 +514,12 @@ var DenyListNameRegexes = []*regexp.Regexp{
 	// regexp.MustCompile(`Belt of [A-Za-z]+ Heads`),
 
 	// Naxx
-	regexp.MustCompile(`Icebane`),
-	regexp.MustCompile(`Icy Scale`),
-	regexp.MustCompile(`Polar`),
-	regexp.MustCompile(`Glacial`),
-	regexp.MustCompile(`Mark of the Champion`),
-	regexp.MustCompile(`Atiesh`),
+	// regexp.MustCompile(`Icebane`),
+	// regexp.MustCompile(`Icy Scale`),
+	// regexp.MustCompile(`Polar`),
+	// regexp.MustCompile(`Glacial`),
+	// regexp.MustCompile(`Mark of the Champion`),
+	// regexp.MustCompile(`Atiesh`),
 }
 
 // Data can easily be found here:

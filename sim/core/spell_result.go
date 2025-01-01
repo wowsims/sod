@@ -264,9 +264,9 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 
 	result := spell.NewResult(target)
 	result.Damage = baseDamage
+	result.Damage *= attackerMultiplier
 
 	if sim.Log == nil {
-		result.Damage *= attackerMultiplier
 		result.applyResistances(sim, spell, isPeriodic, attackTable)
 		result.applyTargetModifiers(spell, attackTable, isPeriodic)
 
@@ -286,7 +286,6 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 
 		spell.ApplyPostOutcomeDamageModifiers(sim, result)
 	} else {
-		result.Damage *= attackerMultiplier
 		afterAttackMods := result.Damage
 		result.applyResistances(sim, spell, isPeriodic, attackTable)
 		afterResistances := result.Damage
@@ -333,7 +332,7 @@ func (spell *Spell) calcDamageInternal(sim *Simulation, target *Unit, baseDamage
 	return result
 }
 func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
-	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType]) * spell.ImpactDamageMultiplierAdditive
+	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType], false)
 
 	baseDamage *= spell.BaseDamageMultiplierAdditive
 
@@ -346,7 +345,7 @@ func (spell *Spell) CalcDamage(sim *Simulation, target *Unit, baseDamage float64
 func (spell *Spell) CalcPeriodicDamage(sim *Simulation, target *Unit, baseDamage float64, outcomeApplier OutcomeApplier) *SpellResult {
 	baseDamage *= spell.BaseDamageMultiplierAdditive
 
-	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType]) * spell.PeriodicDamageMultiplierAdditive
+	attackerMultiplier := spell.AttackerDamageMultiplier(spell.Unit.AttackTables[target.UnitIndex][spell.CastType], true)
 	dot := spell.DotOrAOEDot(target)
 	attackerMultiplier *= dot.DamageMultiplier
 
@@ -372,7 +371,7 @@ func (dot *Dot) Snapshot(target *Unit, baseDamage float64, isRollover bool) {
 		if dot.Spell.Flags.Matches(SpellFlagHelpful) {
 			dot.SnapshotAttackerMultiplier = dot.Spell.CasterHealingMultiplier()
 		} else {
-			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable) * dot.Spell.PeriodicDamageMultiplierAdditive
+			dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 		}
 
 		dot.SnapshotAttackerMultiplier *= dot.DamageMultiplier
@@ -530,7 +529,7 @@ func (dot *Dot) SnapshotHeal(target *Unit, baseHealing float64, isRollover bool)
 		}
 
 		attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+		dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 		dot.SnapshotAttackerMultiplier *= dot.DamageMultiplier
 
 		dot.SnapshotCritChance = dot.Spell.SpellCritChance(target)
@@ -596,10 +595,11 @@ func (spell *Spell) WaitTravelTime(sim *Simulation, callback func(*Simulation)) 
 }
 
 // Returns the combined attacker modifiers.
-func (spell *Spell) AttackerDamageMultiplier(attackTable *AttackTable) float64 {
+func (spell *Spell) AttackerDamageMultiplier(attackTable *AttackTable, isPeriodic bool) float64 {
 	return spell.attackerDamageMultiplierInternal(attackTable) *
 		spell.DamageMultiplier *
-		spell.DamageMultiplierAdditive
+		spell.DamageMultiplierAdditive *
+		TernaryFloat64(isPeriodic, spell.PeriodicDamageMultiplierAdditive, spell.ImpactDamageMultiplierAdditive)
 }
 func (spell *Spell) attackerDamageMultiplierInternal(attackTable *AttackTable) float64 {
 	if spell.Flags.Matches(SpellFlagIgnoreAttackerModifiers) {

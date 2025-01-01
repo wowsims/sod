@@ -46,6 +46,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
+		Stat.StatDodge,
 	],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -77,6 +78,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
+		Stat.StatDodge,
 		// Resistances
 		Stat.StatShadowResistance,
 	],

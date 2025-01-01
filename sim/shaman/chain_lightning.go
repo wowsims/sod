@@ -44,7 +44,6 @@ func (shaman *Shaman) registerChainLightningSpell() {
 func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer, isOverload bool) core.SpellConfig {
 	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 	hasCoherenceRune := shaman.HasRune(proto.ShamanRune_RuneCloakCoherence)
-	hasStormEarthAndFireRune := shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire)
 
 	spellId := ChainLightningSpellId[rank]
 	baseDamageLow := ChainLightningBaseDamage[rank][0]
@@ -54,9 +53,6 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 	level := ChainLightningLevel[rank]
 
 	cooldown := time.Second * 6
-	if hasStormEarthAndFireRune {
-		cooldown /= 2
-	}
 	castTime := time.Millisecond * 2500
 
 	bounceCoef := .7 // 30% reduction per bounce

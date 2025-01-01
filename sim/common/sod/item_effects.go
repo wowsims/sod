@@ -98,11 +98,10 @@ func StormhammerChainLightningProcAura(agent core.Agent) {
 		ProcMask:   core.ProcMaskSpellDamage,
 		ProcChance: .1,
 		Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
-			if !icd.IsReady(sim) {
-				return
+			if icd.IsReady(sim) {
+				procSpell.Cast(sim, result.Target)
+				icd.Use(sim)
 			}
-			procSpell.Cast(sim, result.Target)
-			icd.Use(sim)
 		},
 	})
 }

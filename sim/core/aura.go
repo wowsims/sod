@@ -18,6 +18,7 @@ type OnInit func(aura *Aura, sim *Simulation)
 type OnReset func(aura *Aura, sim *Simulation)
 type OnDoneIteration func(aura *Aura, sim *Simulation)
 type OnGain func(aura *Aura, sim *Simulation)
+type OnRefresh func(aura *Aura, sim *Simulation)
 type OnExpire func(aura *Aura, sim *Simulation)
 type OnStacksChange func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32)
 type OnStatsChange func(aura *Aura, sim *Simulation, oldStats stats.Stats, newStats stats.Stats)
@@ -89,6 +90,7 @@ type Aura struct {
 	OnReset         OnReset
 	OnDoneIteration OnDoneIteration
 	OnGain          OnGain
+	OnRefresh       OnRefresh
 	OnExpire        OnExpire
 	OnStacksChange  OnStacksChange // Invoked when the number of stacks of this aura changes.
 	OnStatsChange   OnStatsChange  // Invoked when the stats of this aura owner changes.
@@ -178,6 +180,10 @@ func (aura *Aura) Refresh(sim *Simulation) {
 
 	if sim.Log != nil && aura.IsActive() && !aura.ActionID.IsEmptyAction() {
 		aura.Unit.Log(sim, "Aura refreshed: %s", aura.ActionID)
+	}
+
+	if aura.OnRefresh != nil {
+		aura.OnRefresh(aura, sim)
 	}
 }
 
@@ -272,6 +278,19 @@ func (aura *Aura) ApplyOnGain(newOnGain OnGain) {
 		aura.OnGain = func(aura *Aura, sim *Simulation) {
 			oldOnGain(aura, sim)
 			newOnGain(aura, sim)
+		}
+	}
+}
+
+// Adds a handler to be called OnRefresh, in addition to any current handlers.
+func (aura *Aura) ApplyOnRefresh(newOnRefresh OnRefresh) {
+	oldOnRefresh := aura.OnRefresh
+	if oldOnRefresh == nil {
+		aura.OnRefresh = newOnRefresh
+	} else {
+		aura.OnRefresh = func(aura *Aura, sim *Simulation) {
+			oldOnRefresh(aura, sim)
+			newOnRefresh(aura, sim)
 		}
 	}
 }

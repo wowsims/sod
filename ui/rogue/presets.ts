@@ -356,7 +356,7 @@ export const DefaultTalents = DefaultTalentsCombat;
 //                                Encounters
 ///////////////////////////////////////////////////////////////////////////
 export const PresetBuildBackstab = PresetUtils.makePresetBuild('Backstab', {
-	gear: DefaultGearBackstab,
+	gear: P6GearBackstab,
 	talents: P6BackstabTalent,
 	rotation: ROTATION_PRESET_BACKSTAB_DPS_P6,
 	encounter: PresetUtils.makePresetEncounter(
@@ -366,7 +366,7 @@ export const PresetBuildBackstab = PresetUtils.makePresetBuild('Backstab', {
 });
 
 export const PresetBuildBackstabIEA = PresetUtils.makePresetBuild('Backstab IEA', {
-	gear: DefaultGearBackstab,
+	gear: P6GearBackstab,
 	talents: P6BackstabIEATalent,
 	rotation: ROTATION_PRESET_BACKSTAB_IEA_P6,
 	encounter: PresetUtils.makePresetEncounter(
@@ -458,7 +458,7 @@ export const P4Consumes = Consumes.create({
 	defaultConjured: Conjured.ConjuredRogueThistleTea,
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
-	flask: Flask.FlaskOfAncientKnowledge,
+	flask: Flask.FlaskOfSupremePower,
 	food: Food.FoodGrilledSquid,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	miscConsumes: {
@@ -471,14 +471,32 @@ export const P4Consumes = Consumes.create({
 });
 
 export const P5Consumes = Consumes.create({
+	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	attackPowerBuff: AttackPowerBuff.JujuMight,
+	defaultConjured: Conjured.ConjuredRogueThistleTea,
+	dragonBreathChili: true,
+	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
+	flask: Flask.FlaskOfSupremePower,
+	food: Food.FoodGrilledSquid,
+	mainHandImbue: WeaponImbue.WildStrikes,
+	offHandImbue: WeaponImbue.ElementalSharpeningStone,
+	spellPowerBuff: SpellPowerBuff.GreaterArcaneElixir,
+	strengthBuff: StrengthBuff.JujuPower,
+	zanzaBuff: ZanzaBuff.GroundScorpokAssay,
+});
+
+export const P6Consumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultConjured: Conjured.ConjuredRogueThistleTea,
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
-	flask: Flask.FlaskOfAncientKnowledge,
-	food: Food.FoodGrilledSquid,
+	flask: Flask.FlaskOfMadness,
+	food: Food.FoodSmokedDesertDumpling,
 	mainHandImbue: WeaponImbue.WildStrikes,
+	miscConsumes: {
+		draughtOfTheSands: true,
+	},
 	offHandImbue: WeaponImbue.ElementalSharpeningStone,
 	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	strengthBuff: StrengthBuff.JujuPower,
@@ -491,6 +509,7 @@ export const DefaultConsumes = {
 	[Phase.Phase3]: P3Consumes,
 	[Phase.Phase4]: P4Consumes,
 	[Phase.Phase5]: P5Consumes,
+	[Phase.Phase6]: P6Consumes,
 };
 
 export const DefaultRaidBuffs = RaidBuffs.create({

@@ -56,6 +56,10 @@ func (fb *focusBar) MaxFocus() float64 {
 	return fb.maxFocus
 }
 
+func (fb *focusBar) IncreaseMaxFocus(value float64) {
+	fb.maxFocus += value
+}
+
 func (fb *focusBar) CurrentFocusPerTick() float64 {
 	return fb.focusPerTick * fb.focusRegenMultiplier
 }

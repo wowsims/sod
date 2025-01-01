@@ -7,8 +7,6 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-const ShamanMoltenBlastResetChance = .10
-
 func (shaman *Shaman) applyMoltenBlast() {
 	if !shaman.HasRune(proto.ShamanRune_RuneHandsMoltenBlast) {
 		return
@@ -21,6 +19,8 @@ func (shaman *Shaman) applyMoltenBlast() {
 	cooldown := time.Second * 6
 	manaCost := .18
 	targetCount := int32(10)
+
+	flameShockResetChance := 0.10
 
 	numHits := min(targetCount, shaman.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
@@ -65,4 +65,13 @@ func (shaman *Shaman) applyMoltenBlast() {
 			}
 		},
 	})
+
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: "Molten Blast Reset Trigger",
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if sim.Proc(flameShockResetChance, "Molten Blast Reset") {
+				shaman.MoltenBlast.CD.Reset()
+			}
+		},
+	}))
 }

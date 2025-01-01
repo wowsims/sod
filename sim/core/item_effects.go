@@ -17,7 +17,7 @@ import (
 type ApplyEffect func(agent Agent)
 
 // Function for applying permanent effects to an agent's weapon
-type ApplyWeaponEffect func(Agent, proto.ItemSlot)
+type ApplyWeaponEffect func(agent Agent, slot proto.ItemSlot)
 
 var itemEffects = map[int32]ApplyEffect{}
 var weaponEffects = map[int32]ApplyWeaponEffect{}

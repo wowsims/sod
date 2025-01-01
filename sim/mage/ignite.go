@@ -15,31 +15,6 @@ func (mage *Mage) applyIgnite() {
 		return
 	}
 
-	mage.RegisterAura(core.Aura{
-		Label:    "Ignite Talent",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
-				return
-			}
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) && result.DidCrit() {
-				mage.procIgnite(sim, result)
-			}
-		},
-		// TODO: Classic verify mechanics match for rune based Living Bomb
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
-				return
-			}
-			if mage.LivingBomb != nil && result.DidCrit() {
-				mage.procIgnite(sim, result)
-			}
-		},
-	})
-
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
 		SpellCode:   SpellCode_MageIgnite,
 		ActionID:    core.ActionID{SpellID: 12654},
@@ -70,15 +45,29 @@ func (mage *Mage) applyIgnite() {
 			spell.Dot(target).ApplyOrReset(sim)
 		},
 	})
-}
 
-func (mage *Mage) procIgnite(sim *core.Simulation, result *core.SpellResult) {
-	dot := mage.Ignite.Dot(result.Target)
+	igniteMultiplier := 0.08 * float64(mage.Talents.Ignite)
 
-	newDamage := result.Damage * 0.08 * float64(mage.Talents.Ignite)
-	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
+	mage.procIgnite = func(sim *core.Simulation, result *core.SpellResult) {
+		dot := mage.Ignite.Dot(result.Target)
 
-	dot.Snapshot(result.Target, (outstandingDamage+newDamage)/float64(IgniteTicks), false)
+		newDamage := result.Damage * igniteMultiplier
+		outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
-	mage.Ignite.Cast(sim, result.Target)
+		dot.Snapshot(result.Target, (outstandingDamage+newDamage)/float64(IgniteTicks), false)
+
+		mage.Ignite.Cast(sim, result.Target)
+	}
+
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Ignite Trigger",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+				return
+			}
+			if spell.SpellSchool.Matches(core.SpellSchoolFire) && result.DidCrit() {
+				mage.procIgnite(sim, result)
+			}
+		},
+	}))
 }

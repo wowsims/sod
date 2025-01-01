@@ -70,6 +70,24 @@ func TestDualWieldWarrior(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassWarrior,
+			Phase:      6,
+			Level:      60,
+			Race:       proto.Race_RaceOrc,
+			OtherRaces: []proto.Race{proto.Race_RaceHuman},
+
+			Talents:     P6FuryDWTalents,
+			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_6_dw"),
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_6_dw"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase6Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Fury", SpecOptions: PlayerOptionsFury},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -113,6 +131,24 @@ func TestTwoHandedWarrior(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassWarrior,
+			Phase:      6,
+			Level:      60,
+			Race:       proto.Race_RaceOrc,
+			OtherRaces: []proto.Race{proto.Race_RaceHuman},
+
+			Talents:     P6Fury2HTalents,
+			GearSet:     core.GetGearSet("../../../ui/warrior/gear_sets", "phase_6_2h"),
+			Rotation:    core.GetAplRotation("../../../ui/warrior/apls", "phase_6_2h"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase6Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "Arms", SpecOptions: PlayerOptionsArms},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -120,6 +156,8 @@ var P2ArmsTalents = "303050213525100001"
 var P2FuryTalents = "-05050005405010051"
 var P3ArmsTalents = "303050213520105001-0505"
 var P4FuryTalents = "20305020302-05050005525010051"
+var P6Fury2HTalents = "20305020332-05052005005012051"
+var P6FuryDWTalents = "30315020302-55000005505010051"
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "P1-Consumes",
@@ -163,6 +201,21 @@ var Phase4Consumes = core.ConsumesCombo{
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
 		DefaultPotion:     proto.Potions_MightyRagePotion,
 		DragonBreathChili: true,
+		Food:              proto.Food_FoodSmokedDesertDumpling,
+		MainHandImbue:     proto.WeaponImbue_WildStrikes,
+		OffHandImbue:      proto.WeaponImbue_ElementalSharpeningStone,
+		StrengthBuff:      proto.StrengthBuff_JujuPower,
+	},
+}
+
+var Phase6Consumes = core.ConsumesCombo{
+	Label: "P6-Consumes",
+	Consumes: &proto.Consumes{
+		AgilityElixir:     proto.AgilityElixir_ElixirOfTheHoneyBadger,
+		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
+		DefaultPotion:     proto.Potions_MightyRagePotion,
+		DragonBreathChili: true,
+		Flask:             proto.Flask_FlaskOfMadness,
 		Food:              proto.Food_FoodSmokedDesertDumpling,
 		MainHandImbue:     proto.WeaponImbue_WildStrikes,
 		OffHandImbue:      proto.WeaponImbue_ElementalSharpeningStone,

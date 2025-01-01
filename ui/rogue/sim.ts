@@ -109,7 +109,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		),
 
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes[Phase.Phase5],
+		consumes: Presets.DefaultConsumes[Phase.Phase6],
 		// Default talents.
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
@@ -131,10 +131,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.SpellCritBuff,
 		BuffDebuffInputs.SpellShadowWeavingDebuff,
-		BuffDebuffInputs.NatureSpellDamageDebuff,
-		BuffDebuffInputs.MekkatorqueFistDebuff,
-		BuffDebuffInputs.SpellScorchDebuff,
-		BuffDebuffInputs.PowerInfusion,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
