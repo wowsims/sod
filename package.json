@@ -2,6 +2,12 @@
 	"name": "sod",
 	"version": "0.1.0",
 	"private": true,
+	"engines": {
+		"node": ">=20"
+	},
+	"volta": {
+		"node": "20.11.1"
+	},
 	"scripts": {
 		"build": "bazel build //...",
 		"test": "bazel test //...",
