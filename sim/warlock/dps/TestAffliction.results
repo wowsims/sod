@@ -691,9 +691,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1682.81663
-  tps: 1460.1186
-  hps: 384.87365
+  dps: 1682.31712
+  tps: 1459.98569
+  hps: 384.83717
  }
 }
 dps_results: {
@@ -827,9 +827,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase5-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1862.70268
-  tps: 1380.75578
-  hps: 357.31465
+  dps: 1861.87282
+  tps: 1380.35713
+  hps: 357.20286
  }
 }
 dps_results: {
@@ -971,9 +971,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1017.01966
-  tps: 924.6105
-  hps: 292.43015
+  dps: 1016.62564
+  tps: 924.32264
+  hps: 292.25496
  }
 }
 dps_results: {

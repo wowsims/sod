@@ -246,8 +246,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.36962
-  weights: 1.64641
+  weights: 2.3729
+  weights: 1.13652
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.0324
-  weights: 4.40538
-  weights: 27.33923
+  weights: 1.01318
+  weights: 6.36019
+  weights: 24.33836
   weights: 0
   weights: 0
   weights: 0
@@ -295,8 +295,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.71274
-  weights: 1.60697
+  weights: 2.99244
+  weights: 1.56361
   weights: 0
   weights: 0
   weights: 0
@@ -312,9 +312,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.89685
-  weights: 33.54616
-  weights: 28.91102
+  weights: 0.85177
+  weights: 34.07497
+  weights: 27.67404
   weights: 0
   weights: 0
   weights: 0
@@ -498,50 +498,50 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 2838.16363
-  tps: 2446.84573
+  dps: 2845.62459
+  tps: 2452.52314
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 2091.66454
-  tps: 1843.81436
+  dps: 2072.28436
+  tps: 1824.3828
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 2476.72938
-  tps: 2140.4297
+  dps: 2462.44628
+  tps: 2128.70774
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 2445.42348
-  tps: 2114.82185
+  dps: 2444.45369
+  tps: 2114.95116
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 2476.72938
-  tps: 2140.4297
+  dps: 2462.44628
+  tps: 2128.70774
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 3023.62142
-  tps: 2599.52764
+  dps: 3030.07382
+  tps: 2604.05986
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3910.82729
-  tps: 3062.71505
+  dps: 3910.86152
+  tps: 3063.10075
  }
 }
 dps_results: {
@@ -631,57 +631,57 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3029.20742
-  tps: 2381.31633
+  dps: 3041.76337
+  tps: 2392.40441
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 3263.70938
-  tps: 2798.09928
+  dps: 3287.83657
+  tps: 2815.86935
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 2213.78724
-  tps: 1935.15098
+  dps: 2199.5549
+  tps: 1922.33877
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 2689.23659
-  tps: 2309.40467
+  dps: 2690.0234
+  tps: 2309.38491
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 2647.96124
-  tps: 2275.98318
+  dps: 2677.35971
+  tps: 2299.81557
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 2689.23659
-  tps: 2309.40467
+  dps: 2690.0234
+  tps: 2309.38491
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 3491.70202
-  tps: 2988.27928
+  dps: 3508.56499
+  tps: 2999.98601
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4562.04304
-  tps: 3553.80587
+  dps: 4564.01036
+  tps: 3555.09736
  }
 }
 dps_results: {
@@ -855,8 +855,8 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3622.24049
-  tps: 2805.05699
+  dps: 3630.3795
+  tps: 2816.16341
  }
 }
 dps_results: {

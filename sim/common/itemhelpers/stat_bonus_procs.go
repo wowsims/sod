@@ -8,18 +8,19 @@ import (
 )
 
 type ProcStatBonusEffect struct {
-	Name       string
-	ID         int32
-	AuraID     int32
-	Bonus      stats.Stats
-	Duration   time.Duration
-	Callback   core.AuraCallback
-	ProcMask   core.ProcMask
-	Outcome    core.HitOutcome
-	Harmful    bool
-	ProcChance float64
-	PPM        float64
-	ICD        time.Duration
+	Name             string
+	ID               int32
+	AuraID           int32
+	Bonus            stats.Stats
+	Duration         time.Duration
+	Callback         core.AuraCallback
+	ProcMask         core.ProcMask
+	CanProcFromProcs bool // Can Proc From Procs flag
+	Outcome          core.HitOutcome
+	Harmful          bool
+	ProcChance       float64
+	PPM              float64
+	ICD              time.Duration
 
 	// For ignoring a hardcoded spell.
 	IgnoreSpellID int32
@@ -48,16 +49,17 @@ func newProcStatBonusEffect(config ProcStatBonusEffect) {
 		}
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{ItemID: config.ID},
-			Name:       config.Name,
-			Callback:   config.Callback,
-			ProcMask:   config.ProcMask,
-			Outcome:    config.Outcome,
-			Harmful:    config.Harmful,
-			ProcChance: config.ProcChance,
-			PPM:        config.PPM,
-			ICD:        config.ICD,
-			Handler:    handler,
+			ActionID:         core.ActionID{ItemID: config.ID},
+			Name:             config.Name,
+			Callback:         config.Callback,
+			ProcMask:         config.ProcMask,
+			CanProcFromProcs: config.CanProcFromProcs,
+			Outcome:          config.Outcome,
+			Harmful:          config.Harmful,
+			ProcChance:       config.ProcChance,
+			PPM:              config.PPM,
+			ICD:              config.ICD,
+			Handler:          handler,
 		})
 		procAura.Icd = triggerAura.Icd
 	})

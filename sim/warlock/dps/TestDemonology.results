@@ -400,8 +400,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 3228.42143
-  tps: 1490.13015
+  dps: 3228.44807
+  tps: 1490.15147
  }
 }
 dps_results: {
@@ -520,8 +520,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 2933.00973
-  tps: 1896.9497
+  dps: 2932.9827
+  tps: 1896.9232
  }
 }
 dps_results: {

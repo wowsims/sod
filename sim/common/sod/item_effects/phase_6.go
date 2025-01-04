@@ -190,12 +190,13 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
-			Name:       "Swarming Thoughts Trigger",
-			Callback:   core.CallbackOnSpellHitDealt,
-			Outcome:    core.OutcomeLanded,
-			ProcMask:   core.ProcMaskSpellDamage,
-			ProcChance: 1.00,
-			ICD:        time.Second * 15,
+			Name:             "Swarming Thoughts Trigger",
+			Callback:         core.CallbackOnSpellHitDealt,
+			Outcome:          core.OutcomeLanded,
+			ProcMask:         core.ProcMaskSpellDamage,
+			CanProcFromProcs: true,
+			ProcChance:       1.00,
+			ICD:              time.Second * 15,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 			},
@@ -309,12 +310,13 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
-			Name:       "Resolve of the Battleguard Trigger",
-			Callback:   core.CallbackOnSpellHitDealt,
-			Outcome:    core.OutcomeLanded,
-			ProcMask:   core.ProcMaskSpellDamage,
-			ProcChance: 1.00,
-			ICD:        time.Second * 15,
+			Name:             "Resolve of the Battleguard Trigger",
+			Callback:         core.CallbackOnSpellHitDealt,
+			Outcome:          core.OutcomeLanded,
+			ProcMask:         core.ProcMaskSpellDamage,
+			CanProcFromProcs: true,
+			ProcChance:       1.00,
+			ICD:              time.Second * 15,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 			},

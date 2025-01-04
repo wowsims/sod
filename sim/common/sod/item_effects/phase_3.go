@@ -59,11 +59,12 @@ func init() {
 
 		procAura := character.NewTemporaryStatsAura("Roar of the Dream", core.ActionID{SpellID: 446706}, stats.Stats{stats.SpellDamage: 66}, time.Second*10)
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 446705},
-			Name:       "Roar of the Dream Trigger",
-			Callback:   core.CallbackOnCastComplete,
-			ProcMask:   core.ProcMaskSpellOrSpellProc,
-			ProcChance: 0.05,
+			ActionID:         core.ActionID{SpellID: 446705},
+			Name:             "Roar of the Dream Trigger",
+			Callback:         core.CallbackOnCastComplete,
+			ProcMask:         core.ProcMaskSpellDamage,
+			CanProcFromProcs: true,
+			ProcChance:       0.05,
 			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 				procAura.Activate(sim)
 			},
@@ -298,13 +299,14 @@ func init() {
 		}
 
 		hitAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID: core.ActionID{SpellID: 446392},
-			Name:     "DMC Decay Spell Hit",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
-			PPM:      7.0, // Estimate from log
-			Handler:  handler,
+			ActionID:          core.ActionID{SpellID: 446392},
+			Name:              "DMC Decay Spell Hit",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee | core.ProcMaskRanged,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			PPM:               7.0, // Estimate from log
+			Handler:           handler,
 		})
 		hitAura.Icd = &icd
 
@@ -385,13 +387,14 @@ func init() {
 		}
 
 		hitAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID: core.ActionID{SpellID: 446389},
-			Name:     "Sandstorm Spell Hit",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee | core.ProcMaskRanged,
-			PPM:      10.0, // Estimate from log
-			Handler:  handler,
+			ActionID:          core.ActionID{SpellID: 446389},
+			Name:              "Sandstorm Spell Hit",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee | core.ProcMaskRanged,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			PPM:               10.0, // Estimate from log
+			Handler:           handler,
 		})
 		hitAura.Icd = &icd
 
@@ -438,12 +441,13 @@ func init() {
 		procMask := character.GetProcMaskForItem(DragonsCry)
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Emerald Dragon Whelp Proc",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: procMask,
-			PPM:      1.0, // Reported by armaments discord
-			ICD:      time.Minute * 1,
+			Name:              "Emerald Dragon Whelp Proc",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			PPM:               1.0, // Reported by armaments discord
+			ICD:               time.Minute * 1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				for _, petAgent := range character.PetAgents {
 					if whelp, ok := petAgent.(*guardians.EmeraldDragonWhelp); ok {

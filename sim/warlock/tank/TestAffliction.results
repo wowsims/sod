@@ -320,8 +320,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1653.65934
-  tps: 3285.8463
+  dps: 1653.06869
+  tps: 3285.53754
  }
 }
 dps_results: {

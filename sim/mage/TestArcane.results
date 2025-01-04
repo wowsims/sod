@@ -638,15 +638,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1526.48854
-  tps: 1546.2207
+  dps: 1525.8735
+  tps: 1545.60566
  }
 }
 dps_results: {
  key: "TestArcane-Phase4-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 731.61619
-  tps: 763.0493
+  dps: 739.13505
+  tps: 772.01787
  }
 }
 dps_results: {
@@ -799,15 +799,15 @@ dps_results: {
 dps_results: {
  key: "TestArcane-Phase5-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1429.38013
-  tps: 870.46751
+  dps: 1428.398
+  tps: 869.87823
  }
 }
 dps_results: {
  key: "TestArcane-Phase5-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 998.2521
-  tps: 939.90433
+  dps: 999.56193
+  tps: 941.39622
  }
 }
 dps_results: {
