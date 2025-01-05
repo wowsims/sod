@@ -175,8 +175,8 @@ func (druid *Druid) applyPrimalFury() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(core.OutcomeCrit) && sim.Proc(procChance, "Primal Fury") {
 				druid.AddRage(sim, 5, rageMetrics)
-			},
-		}
+			}
+		},
 	})
 }
 
@@ -208,7 +208,7 @@ func (druid *Druid) applyFuror() {
 	if druid.Talents.Furor == 0 {
 		return
 	}
-	print("HIT")
+
 	spellID := []int32{0, 17056, 17058, 17059, 17060, 17061}[druid.Talents.Furor]
 
 	druid.FurorAura = druid.RegisterAura(core.Aura{

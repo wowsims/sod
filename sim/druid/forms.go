@@ -381,7 +381,7 @@ func (druid *Druid) registerBearFormSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			rageDelta := core.TernaryInt32(hasWolfheadBonus, 5, 0) - druid.CurrentRage()
+			rageDelta := core.TernaryFloat64(hasWolfheadBonus, 5, 0) - druid.CurrentRage()
 			if sim.Proc(furorProcChance, "Furor") {
 				rageDelta += 10
 			}

@@ -11,7 +11,7 @@ func (druid *Druid) applyBerserk() {
 	if !druid.HasRune(proto.DruidRune_RuneBeltBerserk) {
 		return
 	}
-	hasMangle := druid.HasRune(DruidRune_RuneHandsMangle)
+	hasMangle := druid.HasRune(proto.DruidRune_RuneHandsMangle)
 
 	actionId := core.ActionID{SpellID: 417141}
 	var affectedSpells []*DruidSpell
