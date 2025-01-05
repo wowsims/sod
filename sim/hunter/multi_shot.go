@@ -38,8 +38,9 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 				GCD:      core.GCDDefault,
 				CastTime: time.Millisecond * 500,
 			},
-			ModifyCast: func(_ *core.Simulation, spell *core.Spell, cast *core.Cast) {
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				cast.CastTime = spell.CastTime()
+				hunter.AutoAttacks.CancelAutoSwing(sim)
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 			CD: core.Cooldown{
@@ -61,24 +62,24 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			curTarget := target
-
 			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 				baseDamage := baseDamage +
 					hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +
 					hunter.AmmoDamageBonus
 
-				results[hitIndex] = spell.CalcDamage(sim, curTarget, baseDamage, spell.OutcomeRangedHitAndCrit)
+				results[hitIndex] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
-				curTarget = sim.Environment.NextTargetUnit(curTarget)
+				target = sim.Environment.NextTargetUnit(target)
 			}
 
+			hunter.AutoAttacks.EnableAutoSwing(sim)
+
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					spell.DealDamage(sim, results[hitIndex])
+				for _, result := range results {
+					spell.DealDamage(sim, result)
 
 					if hasSerpentSpread {
-						serpentStingAura := hunter.SerpentSting.Dot(curTarget)
+						serpentStingAura := hunter.SerpentSting.Dot(result.Target)
 						serpentStingTicks := serpentStingAura.NumberOfTicks
 						if serpentStingAura.IsActive() {
 							// If less then 4 ticks are left then we rollover with a 4 tick duration
@@ -91,8 +92,6 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 						}
 						serpentStingAura.NumberOfTicks = serpentStingTicks
 					}
-
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
 				}
 			})
 

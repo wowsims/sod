@@ -10,6 +10,8 @@ import (
 )
 
 func (hunter *Hunter) ApplyRunes() {
+	hunter.applyShoulderRuneEffect()
+
 	if hunter.HasRune(proto.HunterRune_RuneChestLoneWolf) && hunter.pet == nil {
 		hunter.PseudoStats.DamageDealtMultiplier *= 1.30
 	}
@@ -50,6 +52,54 @@ func (hunter *Hunter) ApplyRunes() {
 	hunter.applyImprovedVolley()
 	hunter.applyTNT()
 	hunter.applyResourcefulness()
+}
+
+func (hunter *Hunter) applyShoulderRuneEffect() {
+	if hunter.Equipment.Shoulders().Rune == int32(proto.HunterRune_HunterRuneNone) {
+		return
+	}
+
+	switch hunter.Equipment.Shoulders().Rune {
+	// Melee
+	case int32(proto.HunterRune_RuneShouldersHuntsman):
+		hunter.applyT1Melee2PBonus()
+	case int32(proto.HunterRune_RuneShouldersRetaliator):
+		hunter.applyT1Melee6PBonus()
+	case int32(proto.HunterRune_RuneShouldersEchoes):
+		hunter.applyT2Melee2PBonus()
+	case int32(proto.HunterRune_RuneShouldersLethalLasher):
+		hunter.applyT2Melee4PBonus()
+	case int32(proto.HunterRune_RuneShouldersKineticist):
+		hunter.applyT2Melee6PBonus()
+	case int32(proto.HunterRune_RuneShouldersStrategist):
+		hunter.applyTAQMelee2PBonus()
+	case int32(proto.HunterRune_RuneShouldersDeadlyStriker):
+		hunter.applyTAQMelee4PBonus()
+
+	// Ranged
+	case int32(proto.HunterRune_RuneShouldersPreyseeker):
+		hunter.applyT1Ranged4PBonus()
+	case int32(proto.HunterRune_RuneShouldersSharpshooter):
+		hunter.applyT1Ranged6PBonus()
+	case int32(proto.HunterRune_RuneShouldersHazardHarrier):
+		hunter.applyT2Ranged2PBonus()
+	case int32(proto.HunterRune_RuneShouldersAlternator):
+		hunter.applyT2Ranged4PBonus()
+	case int32(proto.HunterRune_RuneShouldersToxinologist):
+		hunter.applyT2Ranged6PBonus()
+	case int32(proto.HunterRune_RuneShouldersBountyHunter):
+		hunter.applyTAQRanged2PBonus()
+	case int32(proto.HunterRune_RuneShouldersTrickShooter):
+		hunter.applyTAQRanged4PBonus()
+
+	// Beastmaster
+	case int32(proto.HunterRune_RuneShouldersBeastTender):
+		hunter.applyZGBeastmaster3PBonus()
+	case int32(proto.HunterRune_RuneShouldersHoundMaster):
+		hunter.applyZGBeastmaster5PBonus()
+	case int32(proto.HunterRune_RuneshouldersAlphaTamer):
+		hunter.applyRAQBeastmastery5PBonus()
+	}
 }
 
 // TODO: 2024-06-13 - Rune seemingly replaced with Wyvern Strike

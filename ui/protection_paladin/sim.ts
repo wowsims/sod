@@ -168,10 +168,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellScorchDebuff,
-		BuffDebuffInputs.NatureSpellDamageDebuff],
-
+	includeBuffDebuffInputs: [],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

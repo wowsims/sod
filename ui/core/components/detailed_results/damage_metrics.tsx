@@ -27,7 +27,7 @@ export class DamageMetricsTable extends MetricsTable<ActionMetrics> {
 				};
 			}),
 			{
-				name: 'Damage done',
+				name: 'Damage Done',
 				headerCellClass: 'text-center metrics-table-cell--primary-metric',
 				columnClass: 'metrics-table-cell--primary-metric',
 				getValue: (metric: ActionMetrics) => metric.avgDamage,

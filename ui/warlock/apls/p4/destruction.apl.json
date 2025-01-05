@@ -24,6 +24,7 @@
     {"action":{"condition":{"and":{"vals":[{"not":{"val":{"runeIsEquipped":{"runeId":{"spellId":427713}}}}},{"not":{"val":{"runeIsEquipped":{"runeId":{"spellId":426320}}}}},{"or":{"vals":[{"not":{"val":{"runeIsEquipped":{"runeId":{"spellId":440870}}}}},{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":440870}}},{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},{"not":{"val":{"isExecutePhase":{"threshold":"E35"}}}}]}}]}}]}},"multidot":{"spellId":{"spellId":11668,"rank":7},"maxDots":1,"maxOverlap":{"const":{"val":"0ms"}}}}},
     {"action":{"condition":{"and":{"vals":[{"not":{"val":{"runeIsEquipped":{"runeId":{"spellId":427713}}}}},{"or":{"vals":[{"not":{"val":{"runeIsEquipped":{"runeId":{"spellId":440870}}}}},{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":440870}}},{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"6s"}}}},{"not":{"val":{"isExecutePhase":{"threshold":"E35"}}}}]}}]}}]}},"multidot":{"spellId":{"spellId":11672,"rank":6},"maxDots":1,"maxOverlap":{"const":{"val":"0ms"}}}}},
     {"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"10%"}}}},"castSpell":{"spellId":{"spellId":11689,"rank":6}}}},
-    {"action":{"castSpell":{"spellId":{"spellId":412758}}}}
+    {"action":{"castSpell":{"spellId":{"spellId":412758}}}},
+    {"action":{"condition":{"const":{"val":"false"}},"castSpell":{"spellId":{"spellId":20572}}}}
   ]
 }

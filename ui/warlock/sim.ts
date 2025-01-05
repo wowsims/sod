@@ -120,6 +120,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	// },
 
 	defaults: {
+		race: Presets.OtherDefaults.race,
+
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 
@@ -193,6 +195,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase7],
+			...Presets.TalentPresets[Phase.Phase6],
 			...Presets.TalentPresets[Phase.Phase5],
 			...Presets.TalentPresets[Phase.Phase4],
 			...Presets.TalentPresets[Phase.Phase3],
@@ -201,6 +205,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase7],
+			...Presets.APLPresets[Phase.Phase6],
 			...Presets.APLPresets[Phase.Phase5],
 			...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
@@ -210,6 +216,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase7],
+			...Presets.GearPresets[Phase.Phase6],
 			...Presets.GearPresets[Phase.Phase5],
 			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],
@@ -217,7 +225,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 			...Presets.GearPresets[Phase.Phase1],
 		],
 		// Preset builds (gear, talents, APL) that the user can quickly select.
-		builds: [Presets.PresetBuildAff, Presets.PresetBuildDestro],
+		builds: [Presets.PresetBuildAff, Presets.PresetBuildDemo, Presets.PresetBuildDestro],
 	},
 
 	autoRotation: player => {

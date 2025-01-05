@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"fmt"
 	"slices"
 	"time"
 
@@ -160,6 +161,8 @@ func (mage *Mage) applyFrostTalents() {
 			}
 		})
 	}
+
+	mage.applyShatter()
 }
 
 func (mage *Mage) applyArcaneConcentration() {
@@ -332,7 +335,7 @@ func (mage *Mage) applyImprovedFireBlast() {
 
 	mage.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode == SpellCode_MageFireBlast {
-			spell.CD.Duration -= cdReduction
+			spell.CD.FlatModifier -= cdReduction
 		}
 	})
 }
@@ -523,6 +526,45 @@ func (mage *Mage) applyImprovedBlizzard() {
 	})
 }
 
+func (mage *Mage) applyShatter() {
+	mage.FrozenAuras = core.FilterSlice(
+		mage.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+			return unit.RegisterAura(core.Aura{
+				Label:    fmt.Sprintf("Shatter (%s)", mage.LogLabel()),
+				Duration: core.NeverExpires,
+			})
+		}),
+		func(aura *core.Aura) bool { return aura != nil },
+	)
+
+	mage.isTargetFrozen = func(target *core.Unit) bool {
+		return mage.FrozenAuras.Get(target).IsActive()
+	}
+
+	if mage.Talents.Shatter == 0 {
+		return
+	}
+
+	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
+
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagMage) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+			oldApplyEffects := spell.ApplyEffects
+			spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spellBonusCrit := 0.0
+
+				if mage.isTargetFrozen(target) {
+					spellBonusCrit += bonusCrit
+				}
+
+				spell.BonusCritRating += spellBonusCrit
+				oldApplyEffects(sim, target, spell)
+				spell.BonusCritRating -= spellBonusCrit
+			}
+		}
+	})
+}
+
 func (mage *Mage) applyWintersChill() {
 	if mage.Talents.WintersChill == 0 {
 		return
@@ -542,13 +584,6 @@ func (mage *Mage) applyWintersChill() {
 
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Winters Chill Trigger",
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) && sim.Proc(procChance, "Winters Chill") {
-				aura := mage.WintersChillAuras.Get(result.Target)
-				aura.Activate(sim)
-				aura.AddStack(sim)
-			}
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) && sim.Proc(procChance, "Winters Chill") {
 				aura := mage.WintersChillAuras.Get(result.Target)

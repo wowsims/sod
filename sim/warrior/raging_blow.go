@@ -7,7 +7,7 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-// A ferocious strike that deals 100% weapon damage, but can only be used while Enrage, Berserker Rage, or Bloodrage is active.
+// A ferocious strike that deals 115% weapon damage, but can only be used while Enrage, Berserker Rage, or Bloodrage is active.
 // Raging blow cooldown is reduced by 1 second when you use another melee ability while enraged.
 func (warrior *Warrior) registerRagingBlow() {
 	if !warrior.HasRune(proto.WarriorRune_RuneRagingBlow) {
@@ -59,7 +59,7 @@ func (warrior *Warrior) registerRagingBlow() {
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
+			baseDamage := 1.15 * spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	})

@@ -60,7 +60,7 @@ var ItemSetMalevolentProphetsVestments = core.NewItemSet(core.ItemSet{
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
 				ActionID:   core.ActionID{SpellID: 449919},
-				Name:       "Malelovance",
+				Name:       "Malevolence",
 				Callback:   core.CallbackOnSpellHitDealt,
 				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskSpellDamage,
@@ -261,9 +261,9 @@ var ItemSetWailingBerserkersPlateArmor = core.NewItemSet(core.ItemSet{
 			c := agent.GetCharacter()
 
 			handler := func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-				c.AutoAttacks.ExtraMHAttackProc(sim , 1, core.ActionID{SpellID: 449970}, spell)
+				c.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 449970}, spell)
 			}
-			
+
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
 				ActionID:          core.ActionID{SpellID: 449970},
 				Name:              "Extra Attack",
@@ -297,13 +297,14 @@ var ItemSetBanishedMartyrsFullPlate = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   core.ActionID{SpellID: 449974},
-				Name:       "Stalwart Block",
-				Callback:   core.CallbackOnSpellHitTaken,
-				ProcMask:   core.ProcMaskMelee,
-				Outcome:    core.OutcomeBlock,
-				ProcChance: 1,
-				Handler:    handler,
+				ActionID:          core.ActionID{SpellID: 449974},
+				Name:              "Stalwart Block",
+				Callback:          core.CallbackOnSpellHitTaken,
+				ProcMask:          core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				Outcome:           core.OutcomeBlock,
+				ProcChance:        1,
+				Handler:           handler,
 			})
 		},
 	},
@@ -370,14 +371,15 @@ var ItemSetSerpentsAscension = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				ActionID:   core.ActionID{SpellID: 446233},
-				Name:       "Serpent's Ascension",
-				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskMeleeOrRanged,
-				ProcChance: 0.03,
-				ICD:        time.Second * 120,
-				Handler:    handler,
+				ActionID:          core.ActionID{SpellID: 446233},
+				Name:              "Serpent's Ascension",
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMeleeOrRanged,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ProcChance:        0.03,
+				ICD:               time.Second * 120,
+				Handler:           handler,
 			})
 		},
 	},

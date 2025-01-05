@@ -22,7 +22,7 @@ func (druid *Druid) registerStarfallCD() {
 	spellCoefSplash := 0.127
 
 	numberOfTicks := core.TernaryInt32(druid.Env.GetNumTargets() > 1, 20, 10)
-	tickLength := time.Second
+	tickLength := core.Ternary(druid.Env.GetNumTargets() > 1, time.Millisecond*500, time.Second)
 	cooldown := time.Second * 90
 
 	druid.StarfallSplash = druid.RegisterSpell(Any, core.SpellConfig{
@@ -99,8 +99,9 @@ func (druid *Druid) registerStarfallCD() {
 			},
 			NumberOfTicks: numberOfTicks,
 			TickLength:    tickLength,
+			IsAOE:         true,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				druid.StarfallTick.Cast(sim, target)
+				druid.StarfallTick.Cast(sim, druid.CurrentTarget)
 			},
 		},
 
@@ -108,7 +109,7 @@ func (druid *Druid) registerStarfallCD() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Dot(target).Apply(sim)
+			spell.AOEDot().Apply(sim)
 		},
 	})
 

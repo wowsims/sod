@@ -33,6 +33,7 @@ type ProcTrigger struct {
 	Duration          time.Duration
 	Callback          AuraCallback
 	ProcMask          ProcMask
+	CanProcFromProcs  bool // Can Proc From Procs flag
 	SpellFlagsExclude SpellFlag
 	SpellFlags        SpellFlag
 	Outcome           HitOutcome
@@ -67,6 +68,9 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 			return
 		}
 		if config.ProcMask != ProcMaskUnknown && !spell.ProcMask.Matches(config.ProcMask) {
+			return
+		}
+		if !config.CanProcFromProcs && spell.ProcMask.Matches(ProcMaskProc) {
 			return
 		}
 		if config.Outcome != OutcomeEmpty && !result.Outcome.Matches(config.Outcome) {

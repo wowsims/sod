@@ -13,7 +13,10 @@ func (mage *Mage) ApplyRunes() {
 	// Helm
 	mage.registerDeepFreezeSpell()
 
-	// CLoak
+	// Shoulders
+	mage.applyShoulderRuneEffect()
+
+	// Cloak
 	mage.registerArcaneBarrageSpell()
 	mage.applyOverheat()
 	mage.registerFrozenOrbCD()
@@ -47,6 +50,44 @@ func (mage *Mage) ApplyRunes() {
 	mage.applySpellPower()
 }
 
+func (mage *Mage) applyShoulderRuneEffect() {
+	if mage.Equipment.Shoulders().Rune == int32(proto.MageRune_MageRuneNone) {
+		return
+	}
+
+	switch mage.Equipment.Shoulders().Rune {
+	// Damage
+	case int32(proto.MageRune_RuneShouldersElementalist):
+		mage.applyT1Damage4PBonus()
+	case int32(proto.MageRune_RuneShouldersMagicalArmorer):
+		mage.applyT1Damage6PBonus()
+	case int32(proto.MageRune_RuneShouldersKindler):
+		mage.applyT2Damage2PBonus()
+	case int32(proto.MageRune_RuneShouldersFieryConvergence):
+		mage.applyT2Damage4PBonus()
+	case int32(proto.MageRune_RuneShouldersPerpetualBlaze):
+		mage.applyT2Damage6PBonus()
+	case int32(proto.MageRune_RuneShouldersWintersGrasp):
+		mage.applyZGFrost3PBonus()
+	case int32(proto.MageRune_RuneShouldersCryomancer):
+		mage.applyZGFrost5PBonus()
+	case int32(proto.MageRune_RuneShouldersPyromaniac):
+		mage.applyTAQFire2PBonus()
+	case int32(proto.MageRune_RuneShouldersIgniter):
+		mage.applyTAQFire4PBonus()
+	case int32(proto.MageRune_RuneShouldersTorcher):
+		mage.applyRAQFire3PBonus()
+
+	// Healer
+	case int32(proto.MageRune_RuneShouldersPrecognitive):
+		mage.applyT2Healer2PBonus()
+	case int32(proto.MageRune_RuneShouldersArcanist):
+		mage.applyT2Healer4PBonus()
+	case int32(proto.MageRune_RuneShouldersSpellbinder):
+		mage.applyTAQArcane2PBonus()
+	}
+}
+
 func (mage *Mage) applyOverheat() {
 	if !mage.HasRune(proto.MageRune_RuneCloakOverheat) {
 		return
@@ -55,7 +96,7 @@ func (mage *Mage) applyOverheat() {
 	mage.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode == SpellCode_MageFireBlast {
 			spell.BonusCritRating += 100 * core.SpellCritRatingPerCritChance
-			spell.CD.Duration += time.Second * 7
+			spell.CD.Duration = time.Second * 15
 			spell.Flags |= core.SpellFlagCastTimeNoGCD | core.SpellFlagCastWhileCasting
 			spell.DefaultCast.GCD = 0
 		}
@@ -154,36 +195,20 @@ func (mage *Mage) applyFingersOfFrost() {
 	}
 
 	mage.FingersOfFrostProcChance += 0.25
-	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
-
-	var affectedSpells []*core.Spell
 
 	mage.FingersOfFrostAura = mage.RegisterAura(core.Aura{
 		Label:     "Fingers of Frost Proc",
 		ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneChestFingersOfFrost)},
 		Duration:  time.Second * 15,
 		MaxStacks: 2,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(mage.Spellbook, func(spell *core.Spell) bool {
-				return spell.Flags.Matches(SpellFlagMage) && spell.ProcMask.Matches(core.ProcMaskSpellDamage)
-			})
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.BonusCritRating += bonusCrit
-			}
-
-			if mage.IceLance != nil {
-				mage.IceLance.DamageMultiplier *= 4.0
+			for _, aura := range mage.FrozenAuras {
+				aura.Activate(sim)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.BonusCritRating -= bonusCrit
-			}
-
-			if mage.IceLance != nil {
-				mage.IceLance.DamageMultiplier /= 4.0
+			for _, aura := range mage.FrozenAuras {
+				aura.Deactivate(sim)
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -197,11 +222,11 @@ func (mage *Mage) applyFingersOfFrost() {
 			}
 
 			if aura.GetStacks() == 1 {
-				// Fingers of Frost can be batched with 2x FFBs into Deep Freeze
+				// Fingers of Frost can be batched with a casted spell into an instant
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {
-						if aura.IsActive() {
+						if aura.IsActive() && aura.GetStacks() == 1 {
 							aura.RemoveStack(sim)
 						}
 					},
@@ -215,7 +240,8 @@ func (mage *Mage) applyFingersOfFrost() {
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Fingers of Frost Trigger",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagChillSpell) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && sim.RandomFloat("Fingers of Frost") < mage.FingersOfFrostProcChance {
+			// Only Blizzard ticks proc
+			if spell.SpellCode == SpellCode_MageBlizzard && spell.Flags.Matches(SpellFlagChillSpell) && sim.RandomFloat("Fingers of Frost") < mage.FingersOfFrostProcChance {
 				mage.FingersOfFrostAura.Activate(sim)
 				mage.FingersOfFrostAura.SetStacks(sim, 2)
 			}
@@ -422,7 +448,8 @@ func (mage *Mage) applyBrainFreeze() {
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Brain Freeze Trigger",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagChillSpell) && result.Landed() && sim.Proc(procChance, "Brain Freeze") {
+			// Only Blizzard ticks proc
+			if spell.SpellCode == SpellCode_MageBlizzard && spell.Flags.Matches(SpellFlagChillSpell) && sim.Proc(procChance, "Brain Freeze") {
 				procAura.Activate(sim)
 			}
 		},

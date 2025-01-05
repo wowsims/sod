@@ -1,7 +1,6 @@
 package druid
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"

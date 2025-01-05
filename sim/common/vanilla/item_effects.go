@@ -290,34 +290,34 @@ func init() {
 			},
 		})
 
+		// This isn't explicit in-game but using a safe value that will likely never be hit
+		numFistOfShahramAuras := 8
+		fistOfShahramAuras := []*core.Aura{}
+		for i := 0; i < numFistOfShahramAuras; i++ {
+			fistOfShahramAuras = append(fistOfShahramAuras, character.GetOrRegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 16601},
+				Label:    fmt.Sprintf("Fist of Shahram (%d)", i),
+				Duration: time.Second * 8,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					character.MultiplyAttackSpeed(sim, 1.3)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					character.MultiplyAttackSpeed(sim, 1/(1.3))
+				},
+			}))
+		}
+
 		fistOfShahram := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 16601},
 			SpellSchool: core.SpellSchoolArcane,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				counter := 0
-
-				for counter < 10 {
-					fistOfShahramAura := character.GetOrRegisterAura(core.Aura{
-						ActionID: core.ActionID{SpellID: 16601},
-						Label:    fmt.Sprintf("Fist of Shahram (%d)", counter),
-						Duration: time.Second * 8,
-						OnGain: func(aura *core.Aura, sim *core.Simulation) {
-							character.MultiplyAttackSpeed(sim, 1.3)
-						},
-						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-							character.MultiplyAttackSpeed(sim, 1/(1.3))
-						},
-					})
-
-					if !fistOfShahramAura.IsActive() {
-						fistOfShahramAura.Activate(sim)
+				for i := 0; i < numFistOfShahramAuras; i++ {
+					if aura := fistOfShahramAuras[i]; !aura.IsActive() {
+						aura.Activate(sim)
 						break
 					}
-
-					counter += 1
-
 				}
 			},
 		})
@@ -352,6 +352,31 @@ func init() {
 			},
 		})
 
+		// This isn't explicit in-game but using a safe value that will likely never be hit
+		numWillOfShahramAuras := 8
+		willOfShahramAuras := []*core.Aura{}
+		willOfShahramStats := stats.Stats{
+			stats.Agility:   50,
+			stats.Intellect: 50,
+			stats.Stamina:   50,
+			stats.Spirit:    50,
+			stats.Strength:  50,
+		}
+
+		for i := 0; i < numWillOfShahramAuras; i++ {
+			willOfShahramAuras = append(willOfShahramAuras, character.GetOrRegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 16598},
+				Label:    fmt.Sprintf("Will of Shahram (%d)", i),
+				Duration: time.Second * 20,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					character.AddStatsDynamic(sim, willOfShahramStats)
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					character.AddStatsDynamic(sim, willOfShahramStats.Invert())
+				},
+			}))
+		}
+
 		willOfShahram := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 16598},
 			SpellSchool: core.SpellSchoolArcane,
@@ -359,36 +384,11 @@ func init() {
 			ProcMask:    core.ProcMaskEmpty,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				counter := 0
-
-				stats := stats.Stats{
-					stats.Agility:   50,
-					stats.Intellect: 50,
-					stats.Stamina:   50,
-					stats.Spirit:    50,
-					stats.Strength:  50,
-				}
-
-				for counter < 10 {
-					willOfShahram := character.GetOrRegisterAura(core.Aura{
-						ActionID: core.ActionID{SpellID: 16598},
-						Label:    fmt.Sprintf("Will of Shahram (%d)", counter),
-						Duration: time.Second * 20,
-						OnGain: func(aura *core.Aura, sim *core.Simulation) {
-							character.AddStatsDynamic(sim, stats)
-						},
-						OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-							character.AddStatsDynamic(sim, stats.Multiply(-1.0))
-						},
-					})
-
-					if !willOfShahram.IsActive() {
-						willOfShahram.Activate(sim)
+				for i := 0; i < numWillOfShahramAuras; i++ {
+					if aura := willOfShahramAuras[i]; !aura.IsActive() {
+						aura.Activate(sim)
 						break
 					}
-
-					counter += 1
-
 				}
 			},
 		})
@@ -685,7 +685,7 @@ func init() {
 				Aura: core.Aura{
 					Label: "Fiery War Axe Fireball",
 				},
-				TickLength:    2 * time.Second,
+				TickLength:    time.Second * 2,
 				NumberOfTicks: 3,
 
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -1283,43 +1283,8 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=234987/neretzek-the-blood-drinker
 	// Chance on hit: Steals 171 to 193 life from target enemy.
-	itemhelpers.CreateWeaponProcSpell(NeretzekBloodDrinker, "Neretzek, The Blood Drinker", 0.8, func(character *core.Character) *core.Spell { // PPM based on old ppm from Armamaments discord
-		actionID := core.ActionID{SpellID: 1214208}
-		healthMetrics := character.NewHealthMetrics(actionID)
-		return character.RegisterSpell(core.SpellConfig{
-			ActionID:         actionID,
-			SpellSchool:      core.SpellSchoolShadow,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-			BonusCoefficient: 1.0, /// TBD - Best guess based on similarity to shadowstrike
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, sim.Roll(171, 193), spell.OutcomeMagicHit)
-				character.GainHealth(sim, result.Damage, healthMetrics)
-			},
-		})
-	})
-
-	// https://www.wowhead.com/classic/item=233647/neretzek-the-blood-drinker
-	// Chance on hit: Steals 171 to 193 life from target enemy.
-	itemhelpers.CreateWeaponProcSpell(NeretzekBloodDrinkerVoidTouched, "Neretzek, The Blood Drinker", 0.8, func(character *core.Character) *core.Spell { // PPM based on old ppm from Armamaments discord
-		actionID := core.ActionID{SpellID: 1214208}
-		healthMetrics := character.NewHealthMetrics(actionID)
-		return character.RegisterSpell(core.SpellConfig{
-			ActionID:         actionID,
-			SpellSchool:      core.SpellSchoolShadow,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-			BonusCoefficient: 1.0, // TBD - Best guess based on similarity to shadowstrike
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, sim.Roll(171, 193), spell.OutcomeMagicHit)
-				character.GainHealth(sim, result.Damage, healthMetrics)
-			},
-		})
-	})
+	itemhelpers.CreateWeaponProcSpell(NeretzekBloodDrinker, "Neretzek, The Blood Drinker", 0.8, neretzekBloodDrinkerEffect)
+	itemhelpers.CreateWeaponProcSpell(NeretzekBloodDrinkerVoidTouched, "Neretzek, The Blood Drinker", 0.8, neretzekBloodDrinkerEffect)
 
 	itemhelpers.CreateWeaponCoHProcDamage(Nightblade, "Nightblade", 1.0, 18211, core.SpellSchoolShadow, 125, 150, 0, core.DefenseTypeMagic)
 
@@ -1718,7 +1683,7 @@ func init() {
 				Aura: core.Aura{
 					Label: "Purged By Fire",
 				},
-				TickLength:    2 * time.Second,
+				TickLength:    time.Second * 2,
 				NumberOfTicks: 5,
 
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -1800,7 +1765,7 @@ func init() {
 	// 			Aura: core.Aura{
 	// 				Label: "Fireball (Hand of Ragnaros)",
 	// 			},
-	// 			TickLength:    2 * time.Second,
+	// 			TickLength:    time.Second * 2,
 	// 			NumberOfTicks: 5,
 
 	// 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -1875,7 +1840,7 @@ func init() {
 				Aura: core.Aura{
 					Label: "Fireball (Sulfuron Hammer)",
 				},
-				TickLength:    2 * time.Second,
+				TickLength:    time.Second * 2,
 				NumberOfTicks: 4,
 
 				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
@@ -2442,9 +2407,9 @@ func init() {
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskRanged,
-			ProcChance:        0.02,
-			ICD:               2 * time.Second,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			ProcChance:        0.02,
+			ICD:               time.Second * 2,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				// Extra ranged attacks do not reset the swing timer confirmed by Zirene
 				character.AutoAttacks.StoreExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
@@ -2458,25 +2423,16 @@ func init() {
 			return
 		}
 
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Second * 2,
-		}
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Hand of Justice",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
-					return
-				}
-				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && icd.IsReady(sim) && sim.Proc(0.02, "HandOfJustice") {
-					icd.Use(sim)
-					aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 15600}, spell)
-				}
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Hand of Justice Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			ProcChance:        0.02,
+			ICD:               time.Second * 2,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				spell.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 15600}, spell)
 			},
 		})
 	})
@@ -3036,11 +2992,12 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
-			Name:       "Spell Blasting Trigger",
-			Callback:   core.CallbackOnSpellHitDealt,
-			Outcome:    core.OutcomeLanded,
-			ProcMask:   core.ProcMaskSpellDamage,
-			ProcChance: 0.05,
+			Name:             "Spell Blasting Trigger",
+			Callback:         core.CallbackOnSpellHitDealt,
+			Outcome:          core.OutcomeLanded,
+			ProcMask:         core.ProcMaskSpellDamage,
+			CanProcFromProcs: true,
+			ProcChance:       0.05,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 			},
@@ -3340,6 +3297,23 @@ func DamageShieldWithThreatMod(character *core.Character, spellID int32, damage 
 		ProcMask: core.ProcMaskMelee,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			procSpell.Cast(sim, spell.Unit)
+		},
+	})
+}
+
+func neretzekBloodDrinkerEffect(character *core.Character) *core.Spell { // PPM based on old ppm from Armamaments discord
+	actionID := core.ActionID{SpellID: 1214208}
+	healthMetrics := character.NewHealthMetrics(actionID)
+	return character.RegisterSpell(core.SpellConfig{
+		ActionID:         actionID,
+		SpellSchool:      core.SpellSchoolShadow,
+		DefenseType:      core.DefenseTypeMagic,
+		ProcMask:         core.ProcMaskEmpty,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealDamage(sim, target, sim.Roll(171, 193), spell.OutcomeMagicHit)
+			character.GainHealth(sim, result.Damage, healthMetrics)
 		},
 	})
 }

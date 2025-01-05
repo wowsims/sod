@@ -11,6 +11,8 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 		return
 	}
 
+	numTargets := min(2, warrior.Env.GetNumTargets())
+
 	// Procs from auto attacks and most abilities https://www.wowhead.com/classic/spell=12723/sweeping-strikes
 	var curDmg float64
 	hitSchoolDamagWithValue := warrior.RegisterSpell(AnyStance, core.SpellConfig{
@@ -61,7 +63,6 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 			}
 
 			var spellToUse *WarriorSpell
-
 			if spell.SpellCode == SpellCode_WarriorWhirlwindMH || (spell.SpellCode == SpellCode_WarriorExecute && !sim.IsExecutePhase20()) {
 				spellToUse = hitSpecialNormalized
 			} else {
@@ -70,11 +71,13 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 				spellToUse = hitSchoolDamagWithValue
 			}
 
-			spellToUse.Cast(sim, warrior.Env.NextTargetUnit(result.Target))
-			spellToUse.SpellMetrics[result.Target.UnitIndex].Casts--
-			if aura.GetStacks() > 0 {
-				aura.RemoveStack(sim)
+			if numTargets > 1 {
+				target := warrior.Env.NextTargetUnit(result.Target)
+				spellToUse.Cast(sim, target)
+				spellToUse.SpellMetrics[target.UnitIndex].Casts--
 			}
+
+			aura.RemoveStack(sim)
 		},
 	})
 

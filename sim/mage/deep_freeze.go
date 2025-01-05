@@ -25,7 +25,7 @@ func (mage *Mage) registerDeepFreezeSpell() {
 		SpellSchool: core.SpellSchoolFrost,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | SpellFlagChillSpell | core.SpellFlagAPL,
+		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

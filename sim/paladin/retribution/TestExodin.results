@@ -99,12 +99,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestExodin-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.08944
-  weights: 1.32219
+  weights: 2.09204
+  weights: 0.93862
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.71332
+  weights: 0.71587
   weights: 0
   weights: 0
   weights: 0
@@ -112,13 +112,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 9.64458
-  weights: 1.75293
+  weights: 9.0492
+  weights: 2.24297
   weights: 0
   weights: 0
-  weights: 0.86341
+  weights: 0.86448
   weights: 0
-  weights: 20.55232
+  weights: 25.72435
   weights: 0
   weights: 0
   weights: 0
@@ -148,12 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestExodin-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.92389
-  weights: 1.33437
+  weights: 2.9302
+  weights: 1.28625
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.9338
+  weights: 0.93307
   weights: 0
   weights: 0
   weights: 0
@@ -161,13 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 17.35673
-  weights: 2.74674
+  weights: 8.94438
+  weights: 2.18643
   weights: 0
   weights: 0
-  weights: 1.05063
+  weights: 1.05289
   weights: 0
-  weights: 31.40756
+  weights: 25.77599
   weights: 0
   weights: 0
   weights: 0
@@ -197,43 +197,43 @@ stat_weights_results: {
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1364.96806
-  tps: 1400.16796
+  dps: 1361.13826
+  tps: 1396.31172
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-AllItems-Hero'sBrand-231328"
  value: {
-  dps: 3262.34247
-  tps: 3294.89201
+  dps: 3276.06496
+  tps: 3308.10764
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1365.11214
-  tps: 1401.16748
+  dps: 1361.28234
+  tps: 1397.31274
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1464.15123
-  tps: 1501.5096
+  dps: 1459.93475
+  tps: 1497.24317
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-AllItems-LibramofDraconicDestruction-221457"
  value: {
-  dps: 3307.06545
-  tps: 3339.12982
+  dps: 3312.9158
+  tps: 3345.10222
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 1608.39591
-  tps: 1646.14201
+  dps: 1611.68725
+  tps: 1649.49284
  }
 }
 dps_results: {
@@ -246,29 +246,29 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1240.02823
-  tps: 1276.52587
+  dps: 1236.21041
+  tps: 1272.68029
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
  value: {
-  dps: 1443.71624
-  tps: 1481.57599
+  dps: 1443.77434
+  tps: 1481.54149
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-AllItems-ZandalarFreethinker'sBreastplate-231329"
  value: {
-  dps: 1691.82984
-  tps: 1729.68007
+  dps: 1691.37941
+  tps: 1729.1364
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3290.301
-  tps: 3322.29344
+  dps: 3292.275
+  tps: 3324.31814
  }
 }
 dps_results: {
@@ -358,50 +358,50 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2722.03995
-  tps: 2756.83955
+  dps: 2735.31524
+  tps: 2770.43384
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1700.08414
-  tps: 1735.86231
+  dps: 1718.13579
+  tps: 1753.86678
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-Hero'sBrand-231328"
  value: {
-  dps: 4603.81751
-  tps: 4642.86408
+  dps: 4649.39947
+  tps: 4687.44132
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1700.36844
-  tps: 1736.9658
+  dps: 1718.48135
+  tps: 1755.01363
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1821.15375
-  tps: 1858.97342
+  dps: 1840.14516
+  tps: 1877.87903
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-LibramofDraconicDestruction-221457"
  value: {
-  dps: 4689.53104
-  tps: 4728.05491
+  dps: 4724.77518
+  tps: 4762.4636
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 1988.31531
-  tps: 2026.21129
+  dps: 1997.9368
+  tps: 2035.86598
  }
 }
 dps_results: {
@@ -414,29 +414,29 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1538.71107
-  tps: 1575.69119
+  dps: 1538.58764
+  tps: 1575.49637
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
  value: {
-  dps: 1838.29441
-  tps: 1876.37952
+  dps: 1852.52022
+  tps: 1890.58341
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-ZandalarFreethinker'sBreastplate-231329"
  value: {
-  dps: 2115.91618
-  tps: 2153.99378
+  dps: 2133.32791
+  tps: 2171.38486
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4677.8119
-  tps: 4715.85566
+  dps: 4678.39316
+  tps: 4716.39644
  }
 }
 dps_results: {
@@ -526,7 +526,7 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3848.65749
-  tps: 3890.40868
+  dps: 3861.68938
+  tps: 3903.8602
  }
 }

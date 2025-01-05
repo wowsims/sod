@@ -112,11 +112,12 @@ var ItemSetVolcanicArmor = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:       "Firebolt Trigger (Volcanic Armor)",
-				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskMelee,
-				ProcChance: .05,
+				Name:              "Firebolt Trigger (Volcanic Armor)",
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ProcChance:        .05,
 				Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 					procSpell.Cast(sim, result.Target)
 				},

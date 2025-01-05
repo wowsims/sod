@@ -41,11 +41,11 @@ type SpellConfig struct {
 
 	CritDamageBonus float64
 
-	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage
-	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full spell damage
-	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full spell damage
-	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to full non-periodic spell damage
-	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to full spell periodic damage
+	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
+	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
+	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full Direct and Periodic spell damage.      Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
+	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
+	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -109,8 +109,8 @@ type Spell struct {
 	Cost *SpellCost // Cost for the spell.
 
 	DefaultCast        Cast // Default cast parameters with all static effects applied.
-	CD                 Cooldown
-	SharedCD           Cooldown
+	CD                 *SpellCooldown
+	SharedCD           *SpellCooldown
 	ExtraCastCondition CanCastCondition
 
 	castTimeFn func(spell *Spell) time.Duration // allows to override CastTime()
@@ -140,11 +140,11 @@ type Spell struct {
 	BonusCritRating    float64
 	CastTimeMultiplier float64
 
-	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage
-	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full spell damage
-	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full spell damage
-	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to full non-periodic spell damage
-	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to full spell periodic damage
+	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
+	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
+	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full Direct and Periodic spell damage.      Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
+	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
+	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -200,9 +200,11 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	} else if config.DamageMultiplierAdditive != 0 && config.DamageMultiplier == 0 {
 		config.DamageMultiplier = 1
 	}
+
 	if config.ImpactDamageMultiplierAdditive == 0 {
 		config.ImpactDamageMultiplierAdditive = 1
 	}
+
 	if config.PeriodicDamageMultiplierAdditive == 0 {
 		config.PeriodicDamageMultiplierAdditive = 1
 	}
@@ -249,8 +251,8 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		SchoolBaseIndices: config.SpellSchool.GetBaseIndices(),
 
 		DefaultCast:        config.Cast.DefaultCast,
-		CD:                 config.Cast.CD,
-		SharedCD:           config.Cast.SharedCD,
+		CD:                 newSpellCooldown(config.Cast.CD),
+		SharedCD:           newSpellCooldown(config.Cast.SharedCD),
 		ExtraCastCondition: config.ExtraCastCondition,
 
 		castTimeFn: config.Cast.CastTime,
@@ -692,4 +694,29 @@ func (sc *SpellCost) GetCurrentCost() float64 {
 
 func (spell *Spell) IssueRefund(sim *Simulation) {
 	spell.Cost.IssueRefund(sim, spell)
+}
+
+type SpellCooldown struct {
+	*Cooldown
+
+	FlatModifier time.Duration // Flat value added to base cooldown before pct mods
+	Multiplier   int32         // Multiplier for cooldown duration, stored as an int, e.g. 0.5 is stored as 50
+}
+
+func newSpellCooldown(cd Cooldown) *SpellCooldown {
+	return &SpellCooldown{
+		Cooldown:     &cd,
+		FlatModifier: 0,
+		Multiplier:   100,
+	}
+}
+
+func (cd *SpellCooldown) ApplyCooldownModifiers(duration time.Duration) time.Duration {
+	duration = max(0, duration+cd.FlatModifier)
+	return max(0, time.Duration(float64(duration)*float64(cd.Multiplier)/100))
+}
+
+// Get cooldown after all modifiers.
+func (cd *SpellCooldown) GetCurrentDuration() time.Duration {
+	return cd.ApplyCooldownModifiers(cd.Duration)
 }

@@ -330,13 +330,14 @@ var ItemSetTheElements = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
-				Name:       "Item - The Furious Storm Proc (MH Auto)",
-				Callback:   core.CallbackOnSpellHitDealt,
-				Outcome:    core.OutcomeLanded,
-				ProcMask:   core.ProcMaskMeleeMHAuto,
-				ProcChance: 0.06,
-				Handler:    handler,
+				ActionID:          actionID,
+				Name:              "Item - The Furious Storm Proc (MH Auto)",
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMeleeMHAuto,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ProcChance:        0.06,
+				Handler:           handler,
 			})
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
 				ActionID:   actionID,
@@ -429,12 +430,13 @@ var ItemSetBattlegearOfValor = core.NewItemSet(core.ItemSet{
 			rageMetrics := c.NewRageMetrics(core.ActionID{SpellID: 450589})
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID: actionID,
-				Name:     "S03 - Warrior Armor Heal Trigger - Battlegear of Valor",
-				Callback: core.CallbackOnSpellHitDealt,
-				Outcome:  core.OutcomeLanded,
-				ProcMask: core.ProcMaskMelee,
-				PPM:      1,
+				ActionID:          actionID,
+				Name:              "S03 - Warrior Armor Heal Trigger - Battlegear of Valor",
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				PPM:               1,
 				Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 					c.GainHealth(sim, sim.Roll(88, 132), healthMetrics)
 					if c.HasRageBar() {

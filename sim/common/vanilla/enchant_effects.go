@@ -11,6 +11,24 @@ import (
 func init() {
 	core.AddEffectsToTest = false
 
+	///////////////////////////////////////////////////////////////////////////
+	//                        All effects ordered by ID
+	///////////////////////////////////////////////////////////////////////////
+
+	// Ranged Scopes
+	core.AddWeaponEffect(32, func(agent core.Agent, _ proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.Ranged()
+		w.BaseDamageMin += 2
+		w.BaseDamageMax += 2
+	})
+
+	// Accurate Scope
+	core.AddWeaponEffect(33, func(agent core.Agent, _ proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.Ranged()
+		w.BaseDamageMin += 3
+		w.BaseDamageMax += 3
+	})
+
 	// Weapon - Fiery Blaze
 	core.NewEnchantEffect(36, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -91,8 +109,22 @@ func init() {
 		w.BaseDamageMax += 1
 	})
 
+	// Deadly Scope
+	core.AddWeaponEffect(663, func(agent core.Agent, _ proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.Ranged()
+		w.BaseDamageMin += 5
+		w.BaseDamageMax += 5
+	})
+
+	// Sniper Scope
+	core.AddWeaponEffect(664, func(agent core.Agent, _ proto.ItemSlot) {
+		w := agent.GetCharacter().AutoAttacks.Ranged()
+		w.BaseDamageMin += 7
+		w.BaseDamageMax += 7
+	})
+
 	// Weapon - Fiery Weapon
-	core.NewEnchantEffect(803, func(agent core.Agent) {
+	core.AddWeaponEffect(803, func(agent core.Agent, _ proto.ItemSlot) {
 		character := agent.GetCharacter()
 
 		procMask := character.GetProcMaskForEnchant(803)
@@ -115,12 +147,8 @@ func init() {
 			},
 		})
 
-		aura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Fiery Weapon",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
+		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "Fiery Weapon",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
@@ -134,7 +162,7 @@ func init() {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
-		})
+		}))
 
 		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(803, 6.0, &ppmm, aura)
 	})
@@ -179,6 +207,18 @@ func init() {
 		}
 	})
 
+	// Boots - Minor Speed
+	core.NewEnchantEffect(911, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		character.RegisterAura(core.Aura{
+			Label: "Minor Speed",
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				character.AddMoveSpeedModifier(&core.ActionID{SpellID: 13889}, 1.08)
+			},
+		})
+	})
+
 	// Gloves - Minor Haste
 	// Effect #931 explicitly does NOT affect ranged attack speed
 	core.NewEnchantEffect(931, func(agent core.Agent) {
@@ -197,7 +237,7 @@ func init() {
 		w.BaseDamageMax += 3
 	})
 
-	// Superior Striking
+	// Weapon - Superior Striking
 	core.AddWeaponEffect(1897, func(agent core.Agent, slot proto.ItemSlot) {
 		w := agent.GetCharacter().AutoAttacks.MH()
 		if slot == proto.ItemSlot_ItemSlotOffHand {
@@ -205,6 +245,48 @@ func init() {
 		}
 		w.BaseDamageMin += 5
 		w.BaseDamageMax += 5
+	})
+
+	// Weapon - Lifestealing
+	core.AddWeaponEffect(1898, func(agent core.Agent, slot proto.ItemSlot) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForEnchant(1898)
+		ppmm := character.AutoAttacks.NewPPMManager(6.66, procMask)
+
+		procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee proc combo
+		procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 20004},
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    procMaskOnAuto,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 30, spell.OutcomeMagicHitAndCrit)
+			},
+		})
+
+		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "Lifestealing Weapon",
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && !spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) && ppmm.Proc(sim, spell.ProcMask, "Lifestealing Weapon") {
+					if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
+						procSpell.ProcMask = procMaskOnSpecial
+					} else {
+						procSpell.ProcMask = procMaskOnAuto
+					}
+					procSpell.Cast(sim, result.Target)
+				}
+			},
+		}))
+
+		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(1898, 6.66, &ppmm, aura)
 	})
 
 	// TODO: Crusader, Mongoose, and Executioner could also be modelled as AddWeaponEffect instead
@@ -245,57 +327,10 @@ func init() {
 		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(1900, 1.0, &ppmm, aura)
 	})
 
-	// Ranged Scopes
-	core.AddWeaponEffect(32, func(agent core.Agent, _ proto.ItemSlot) {
-		w := agent.GetCharacter().AutoAttacks.Ranged()
-		w.BaseDamageMin += 2
-		w.BaseDamageMax += 2
-	})
-
-	// Accurate Scope
-	core.AddWeaponEffect(33, func(agent core.Agent, _ proto.ItemSlot) {
-		w := agent.GetCharacter().AutoAttacks.Ranged()
-		w.BaseDamageMin += 3
-		w.BaseDamageMax += 3
-	})
-
-	// Deadly Scope
-	core.AddWeaponEffect(663, func(agent core.Agent, _ proto.ItemSlot) {
-		w := agent.GetCharacter().AutoAttacks.Ranged()
-		w.BaseDamageMin += 5
-		w.BaseDamageMax += 5
-	})
-
-	// Sniper Scope
-	core.AddWeaponEffect(664, func(agent core.Agent, _ proto.ItemSlot) {
-		w := agent.GetCharacter().AutoAttacks.Ranged()
-		w.BaseDamageMin += 7
-		w.BaseDamageMax += 7
-	})
-
 	// Biznicks 247x128 Accurascope
 	core.AddWeaponEffect(2523, func(agent core.Agent, _ proto.ItemSlot) {
 		character := agent.GetCharacter()
 		character.AddBonusRangedHitRating(3)
-	})
-
-	// Obsidian Scope
-	core.AddWeaponEffect(7657, func(agent core.Agent, _ proto.ItemSlot) {
-		w := agent.GetCharacter().AutoAttacks.Ranged()
-		w.BaseDamageMin += 10
-		w.BaseDamageMax += 10
-	})
-
-	// Boots - Minor Speed
-	core.NewEnchantEffect(911, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		character.RegisterAura(core.Aura{
-			Label: "Minor Speed",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddMoveSpeedModifier(&core.ActionID{SpellID: 13889}, 1.08)
-			},
-		})
 	})
 
 	// Gloves - Libram of Rapidity
@@ -307,17 +342,7 @@ func init() {
 		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 	})
 
-	core.NewEnchantEffect(2621, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		character.RegisterAura(core.Aura{
-			Label: "Subtlety",
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.ThreatMultiplier /= 1.02
-			},
-		})
-	})
-
+	// Gloves - Threat
 	core.NewEnchantEffect(2613, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -329,34 +354,14 @@ func init() {
 		})
 	})
 
-	core.NewEnchantEffect(7649, func(agent core.Agent) {
+	// Cloak - Subtlety
+	core.NewEnchantEffect(2621, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		actionID := core.ActionID{SpellID: 1213833}
 
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 20, spell.OutcomeMagicHit)
-			},
-		})
-
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Thorns +20",
-			Duration: core.NeverExpires,
+		character.RegisterAura(core.Aura{
+			Label: "Subtlety",
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
-					procSpell.Cast(sim, spell.Unit)
-				}
+				character.PseudoStats.ThreatMultiplier /= 1.02
 			},
 		})
 	})

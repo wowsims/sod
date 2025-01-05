@@ -325,6 +325,7 @@ func (druid *Druid) registerBearFormSpell() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.form = Humanoid
 			druid.SetCurrentPowerBar(core.ManaBar)
+
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
 			druid.PseudoStats.ThreatMultiplier -= .3 + .03*float64(druid.Talents.FeralInstinct)

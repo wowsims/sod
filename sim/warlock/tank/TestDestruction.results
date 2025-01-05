@@ -393,8 +393,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestDestruction-Phase1-Lvl25-AllItems-DeathmistRaiment"
  value: {
-  dps: 105.62966
-  tps: 68.98748
+  dps: 103.09843
+  tps: 66.276
  }
 }
 dps_results: {
@@ -456,8 +456,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase2-Lvl40-AllItems-DeathmistRaiment"
  value: {
-  dps: 140.0094
-  tps: 86.74117
+  dps: 140.05078
+  tps: 88.46778
  }
 }
 dps_results: {
@@ -642,8 +642,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1700.20643
-  tps: 3540.30238
+  dps: 1699.68611
+  tps: 3540.14176
  }
 }
 dps_results: {
