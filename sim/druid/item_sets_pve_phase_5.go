@@ -260,7 +260,7 @@ func (druid *Druid) applyT2Guardian2PBonus() {
 		Label:    "2P Cleave Buff",
 		Duration: time.Second * 6,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && (spell.SpellCode == SpellCode_DruidSwipeBear) {
+			if result.Landed() && (spell.SpellCode == SpellCode_DruidMaul) {
 				curDmg = result.Damage / result.ResistanceMultiplier
 				cleaveHit.Cast(sim, druid.Env.NextTargetUnit(result.Target))
 				cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
@@ -271,11 +271,8 @@ func (druid *Druid) applyT2Guardian2PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "S03 - Item - T2 - Druid - Guardian 2P Bonus",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.SpellCode == SpellCode_DruidMaul {
+			if result.Landed() && spell.SpellCode == SpellCode_DruidSwipeBear {
 				cleaveAura.Activate(sim)
-				curDmg = result.Damage / result.ResistanceMultiplier
-				cleaveHit.Cast(sim, druid.Env.NextTargetUnit(result.Target))
-				cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
 			}
 		},
 	}))

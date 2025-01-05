@@ -303,7 +303,7 @@ func (druid *Druid) registerBearFormSpell() {
 			}
 			druid.form = Bear
 			druid.SetCurrentPowerBar(core.RageBar)
-			//druid.PrimalFuryAura.Activate(sim)
+			druid.PrimalFuryAura.Activate(sim)
 
 			druid.AutoAttacks.SetMH(clawWeapon)
 
@@ -333,7 +333,7 @@ func (druid *Druid) registerBearFormSpell() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.form = Humanoid
 			druid.SetCurrentPowerBar(core.ManaBar)
-			//druid.PrimalFuryAura.Disable(sim)
+			druid.PrimalFuryAura.Deactivate(sim)
 
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 

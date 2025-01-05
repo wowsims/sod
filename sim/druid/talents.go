@@ -165,23 +165,18 @@ func (druid *Druid) applyPrimalFury() {
 	procChance := []float64{0, 0.5, 1}[druid.Talents.PrimalFury]
 	actionID := core.ActionID{SpellID: 16959}
 	rageMetrics := druid.NewRageMetrics(actionID)
-	// cpMetrics := druid.NewComboPointMetrics(actionID)
 
-	druid.RegisterAura(core.Aura{
+	druid.PrimalFuryAura = druid.RegisterAura(core.Aura{
 		Label:    "Primal Fury",
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if druid.InForm(Bear) {
-				if result.Outcome.Matches(core.OutcomeCrit) {
-					if sim.Proc(procChance, "Primal Fury") {
-						druid.AddRage(sim, 5, rageMetrics)
-					}
-				}
-			}
-		},
+			if result.Outcome.Matches(core.OutcomeCrit) && sim.Proc(procChance, "Primal Fury") {
+				druid.AddRage(sim, 5, rageMetrics)
+			},
+		}
 	})
 }
 
@@ -213,7 +208,7 @@ func (druid *Druid) applyFuror() {
 	if druid.Talents.Furor == 0 {
 		return
 	}
-
+	print("HIT")
 	spellID := []int32{0, 17056, 17058, 17059, 17060, 17061}[druid.Talents.Furor]
 
 	druid.FurorAura = druid.RegisterAura(core.Aura{
