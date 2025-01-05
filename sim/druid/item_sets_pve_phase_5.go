@@ -5,7 +5,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -237,55 +236,79 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 
 // Swipe(Bear) also causes your Maul to hit 1 additional target for the next 6 sec.
 func (druid *Druid) applyT2Guardian2PBonus() {
-	label := "S03 - Item - T2 - Druid - Guardian 2P Bonus"
-	if druid.HasAura(label) {
+	if druid.Env.GetNumTargets() == 1 {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
+	var curDmg float64
+
+	cleaveHit := druid.RegisterSpell(Bear, core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 467217},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, curDmg, spell.OutcomeAlwaysHit)
 		},
 	})
+
+	cleaveAura := druid.RegisterAura(core.Aura{
+		Label:    "2P Cleave Buff",
+		Duration: time.Second * 6,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && (spell.SpellCode == SpellCode_DruidSwipeBear) {
+				curDmg = result.Damage / result.ResistanceMultiplier
+				cleaveHit.Cast(sim, druid.Env.NextTargetUnit(result.Target))
+				cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
+			}
+		},
+	})
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label: "S03 - Item - T2 - Druid - Guardian 2P Bonus",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.SpellCode == SpellCode_DruidMaul {
+				cleaveAura.Activate(sim)
+				curDmg = result.Damage / result.ResistanceMultiplier
+				cleaveHit.Cast(sim, druid.Env.NextTargetUnit(result.Target))
+				cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
+			}
+		},
+	}))
 }
 
 // Your Mangle(Bear), Swipe(Bear), Maul, and Lacerate abilities gain 5% increased critical strike chance against targets afflicted by your Lacerate.
 func (druid *Druid) applyT2Guardian4PBonus() {
-	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
-		return
-	}
-
-	label := "S03 - Item - T2 - Druid - Guardian 4P Bonus"
-	if druid.HasAura(label) {
-		return
-	}
-
-	druid.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
-		},
-	})
+	druid.FuryOfStormrageCritRatingBonus = 5 * core.SpellCritRatingPerCritChance
 }
 
 // Your Swipe now spreads your Lacerate from your primary target to other targets it strikes.
 func (druid *Druid) applyT2Guardian6PBonus() {
-	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
-		return
-	}
+	// if druid.Env.GetNumTargets() == 1 {
+	// 	return
+	// }
 
-	label := "S03 - Item - T2 - Druid - Guardian 6P Bonus"
-	if druid.HasAura(label) {
-		return
-	}
+	// targetCount := core.TernaryInt32(druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe), 10, 3)
+	// numHits := min(targetCount, druid.Env.GetNumTargets())
+	// results := make([]*core.SpellResult, numHits)
 
-	druid.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
-		},
-	})
+	// core.MakePermanent(druid.RegisterAura(core.Aura{
+	// 	Label: "S03 - Item - T2 - Druid - Guardian 6P Bonus",
+	// 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	// 		if spell.SpellCode == SpellCode_DruidSwipeBear {
+	// 			// TODO: Troubleshoot - Saeyon
+	// 			for _, cleaveMob := range results {
+	// 				druid.LacerateBleed.Cast(sim, cleaveMob.Target)
+	// 				druid.LacerateBleed.Dot(cleaveMob.Target).SetStacks(sim, druid.LacerateBleed.Dot(result.Target).GetStacks())
+	//              // Bleed duration needs to match the original DOT duration
+	// 			}
+	// 		}
+	// 	},
+	// }))
 }
 
 var ItemSetBountyOfStormrage = core.NewItemSet(core.ItemSet{

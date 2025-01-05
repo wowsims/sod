@@ -265,11 +265,17 @@ func (druid *Druid) registerCatFormSpell() {
 
 func (druid *Druid) registerBearFormSpell() {
 	actionID := core.ActionID{SpellID: core.TernaryInt32(druid.Level < 40, 5487, 9634)}
+	feralSkillCoefficient := float64((druid.PseudoStats.FeralCombatSkill + 300) / 5)
 
 	statBonus := druid.GetFormShiftStats().Add(stats.Stats{
-		stats.AttackPower: 3 * float64(druid.Level),
-		stats.Health:      core.TernaryFloat64(druid.Level < 40, (18*float64(druid.Level))-160, (32*float64(druid.Level))-680),
+		stats.AttackPower: 3 * feralSkillCoefficient,
+		stats.Health:      core.TernaryFloat64(druid.Level < 40, (18*feralSkillCoefficient)-160, (32*feralSkillCoefficient)-680),
 	})
+
+	hasWolfheadBonus := false
+	if head := druid.Equipment.Head(); head != nil && (head.ID == WolfsheadHelm || head.Enchant.EffectID == sod.WolfsheadTrophy) {
+		hasWolfheadBonus = true
+	}
 
 	feralApDep := druid.NewDynamicStatDependency(stats.FeralAttackPower, stats.AttackPower, 1)
 
@@ -280,7 +286,7 @@ func (druid *Druid) registerBearFormSpell() {
 
 	sotfdtm := 1.0
 	if druid.HasRune(proto.DruidRune_RuneChestSurvivalOfTheFittest) {
-		sotfdtm = 0.80
+		sotfdtm = 0.81
 	}
 
 	clawWeapon := druid.GetBearWeapon()
@@ -297,9 +303,11 @@ func (druid *Druid) registerBearFormSpell() {
 			}
 			druid.form = Bear
 			druid.SetCurrentPowerBar(core.RageBar)
+			//druid.PrimalFuryAura.Activate(sim)
 
 			druid.AutoAttacks.SetMH(clawWeapon)
 
+			druid.PseudoStats.ThreatMultiplier += druid.CenarionRageThreatBonus
 			druid.PseudoStats.ThreatMultiplier += .3 + .03*float64(druid.Talents.FeralInstinct)
 			druid.PseudoStats.DamageTakenMultiplier *= sotfdtm
 
@@ -325,9 +333,11 @@ func (druid *Druid) registerBearFormSpell() {
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.form = Humanoid
 			druid.SetCurrentPowerBar(core.ManaBar)
+			//druid.PrimalFuryAura.Disable(sim)
 
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
+			druid.PseudoStats.ThreatMultiplier -= druid.CenarionRageThreatBonus
 			druid.PseudoStats.ThreatMultiplier -= .3 + .03*float64(druid.Talents.FeralInstinct)
 			druid.PseudoStats.DamageTakenMultiplier /= sotfdtm
 
@@ -371,7 +381,7 @@ func (druid *Druid) registerBearFormSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			rageDelta := 0 - druid.CurrentRage()
+			rageDelta := core.TernaryInt32(hasWolfheadBonus, 5, 0) - druid.CurrentRage()
 			if sim.Proc(furorProcChance, "Furor") {
 				rageDelta += 10
 			}

@@ -65,6 +65,8 @@ func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
 func (druid *Druid) newMaulSpellConfig(maulRank MaulRankInfo) core.SpellConfig {
 	flatBaseDamage := maulRank.damage
 	rageCost := 15 - float64(druid.Talents.Ferocity)
+	hasLacerate := druid.HasRune(proto.DruidRune_RuneLegsLacerate)
+	hasGore := druid.HasRune(proto.DruidRune_RuneHelmGore)
 
 	switch druid.Ranged().ID {
 	case IdolOfBrutality:
@@ -97,7 +99,7 @@ func (druid *Druid) newMaulSpellConfig(maulRank MaulRankInfo) core.SpellConfig {
 			baseDamage := flatBaseDamage + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
 			dotBonusCrit := 0.0
-			if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+			if hasLacerate && druid.LacerateBleed.Dot(target).GetStacks() > 0 {
 				dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
 			}
 
@@ -109,7 +111,7 @@ func (druid *Druid) newMaulSpellConfig(maulRank MaulRankInfo) core.SpellConfig {
 				spell.IssueRefund(sim)
 			}
 
-			if druid.HasRune(proto.DruidRune_RuneHelmGore) && sim.Proc(0.15, "Gore") {
+			if hasGore && sim.Proc(0.15, "Gore") {
 				druid.AddRage(sim, 10.0, rageMetrics)
 				druid.MangleBear.CD.Reset()
 			}

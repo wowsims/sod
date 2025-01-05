@@ -11,6 +11,7 @@ func (druid *Druid) applyBerserk() {
 	if !druid.HasRune(proto.DruidRune_RuneBeltBerserk) {
 		return
 	}
+	hasMangle := druid.HasRune(DruidRune_RuneHandsMangle)
 
 	actionId := core.ActionID{SpellID: 417141}
 	var affectedSpells []*DruidSpell
@@ -64,6 +65,9 @@ func (druid *Druid) applyBerserk() {
 			IgnoreHaste: true,
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			if hasMangle {
+				druid.MangleBear.CD.Reset()
+			}
 			druid.BerserkAura.Activate(sim)
 		},
 	})

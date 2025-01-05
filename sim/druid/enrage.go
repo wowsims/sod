@@ -11,7 +11,7 @@ func (druid *Druid) registerEnrageSpell() {
 	actionID := core.ActionID{SpellID: 5229}
 	rageMetrics := druid.NewRageMetrics(actionID)
 
-	instantRage := []float64{0, 5, 10}[druid.Talents.ImprovedEnrage]
+	instantRage := []float64{20, 25, 30}[druid.Talents.ImprovedEnrage]
 	initarmor := druid.BaseEquipStats()[stats.Armor]
 	hasCenarionRage4Piece := druid.HasSetBonus(ItemSetCenarionRage, 4)
 
@@ -51,7 +51,7 @@ func (druid *Druid) registerEnrageSpell() {
 				Period:   time.Second * 1,
 				OnAction: func(sim *core.Simulation) {
 					if druid.EnrageAura.IsActive() {
-						druid.AddRage(sim, 2, rageMetrics)
+						druid.AddRage(sim, 1, rageMetrics)
 					}
 				},
 			})

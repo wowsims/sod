@@ -4,6 +4,7 @@ import (
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
+	"time"
 )
 
 var ItemSetFeralheartRaiment = core.NewItemSet(core.ItemSet{
@@ -225,7 +226,8 @@ var ItemSetCenarionRage = core.NewItemSet(core.ItemSet{
 		},
 		// Reduces the cooldown of Enrage by 30 sec and it no longer reduces your armor.
 		4: func(agent core.Agent) {
-			// TODO: Enrage
+			druid := agent.(DruidAgent).GetDruid()
+			druid.Enrage.CD.Duration -= time.Second * 30
 		},
 		6: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
@@ -236,17 +238,7 @@ var ItemSetCenarionRage = core.NewItemSet(core.ItemSet{
 
 // Bear Form and Dire Bear Form increase all threat you generate by an additional 20%, and Cower now removes all your threat against the target but has a 20 sec longer cooldown.
 func (druid *Druid) applyT1Guardian6PBonus() {
-	label := "S03 - Item - T1 - Druid - Guardian 6P Bonus"
-	if druid.HasAura(label) {
-		return
-	}
-
-	druid.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
-		},
-	})
+	druid.CenarionRageThreatBonus = .2
 }
 
 var ItemSetCenarionBounty = core.NewItemSet(core.ItemSet{
