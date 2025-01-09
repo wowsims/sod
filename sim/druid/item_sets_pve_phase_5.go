@@ -223,12 +223,12 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 	Name: "Fury of Stormrage",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
 			druid.applyT2Guardian2PBonus()
 			core.MakePermanent(druid.RegisterAura(core.Aura{
 				ActionID: core.ActionID{SpellID: 467216},
 				Label:    "S03 - Item - T2 - Druid - Guardian 2P Bonus",
 			}))
-			druid := agent.(DruidAgent).GetDruid()
 		},
 		4: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
