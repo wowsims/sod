@@ -188,6 +188,9 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			spec: player.spec,
 			knownIssues: config.knownIssues,
 			simStatus: simLaunchStatuses[player.spec],
+			noticeText: (
+				<span>Check out the <a href='https://docs.google.com/spreadsheets/d/e/2PACX-1vSv0YUDDBJMTZVbN-kS0XbpZcyfDHakebXLKcKwAzgs3MYqHBbmr92SkaPPQZ2tEDAgNcmuYscgodtV/pubhtml' target='_blank' rel='noreferrer'>WoWSims Phase 6 Sim DPS Spreadsheet</a> for up-to-date community builds!</span>
+			),
 		});
 		this.rootElem.classList.add('individual-sim-ui');
 		this.player = player;

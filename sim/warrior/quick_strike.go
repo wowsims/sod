@@ -37,7 +37,7 @@ func (warrior *Warrior) registerQuickStrike() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(0.25, 0.35) * spell.MeleeAttackPower()
+			baseDamage := sim.Roll(0.30, 0.40) * spell.MeleeAttackPower()
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 

@@ -4,12 +4,9 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (rogue *Rogue) registerSinisterStrikeSpell() {
-	hasSaberSlash := rogue.HasRune(proto.RogueRune_RuneSaberSlash)
-
 	flatDamageBonus := map[int32]float64{
 		25: 15,
 		40: 33,
@@ -52,17 +49,8 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
 
-			oldMultiplier := spell.DamageMultiplier
-			if hasSaberSlash {
-				if dot := rogue.saberSlashTick.Dot(target); dot.IsActive() {
-					spell.DamageMultiplier *= rogue.saberSlashMultiplier(dot.GetStacks())
-				}
-			}
-
 			baseDamage := flatDamageBonus + spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-
-			spell.DamageMultiplier = oldMultiplier
 
 			if result.Landed() {
 				rogue.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())

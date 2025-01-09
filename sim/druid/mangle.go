@@ -15,6 +15,7 @@ func (druid *Druid) registerMangleBearSpell() {
 
 	idolMultiplier := 1.0
 	rageCostReduction := float64(druid.Talents.Ferocity)
+	hasLacerate := druid.HasRune(proto.DruidRune_RuneLegsLacerate)
 
 	switch druid.Ranged().ID {
 	case IdolOfUrsinPower:
@@ -50,13 +51,14 @@ func (druid *Druid) registerMangleBearSpell() {
 		},
 		// TODO: Berserk 3 target mangle cleave - Saeyon
 
-		DamageMultiplier: 1.6 * (1 + 0.1*float64(druid.Talents.SavageFury)) * idolMultiplier,
-		ThreatMultiplier: 1.5,
+		DamageMultiplier:         1.6 * idolMultiplier,
+		DamageMultiplierAdditive: 1 + 0.1*float64(druid.Talents.SavageFury),
+		ThreatMultiplier:         1.5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			dotBonusCrit := 0.0
-			if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+			if hasLacerate && druid.LacerateBleed.Dot(target).GetStacks() > 0 {
 				dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
 			}
 
@@ -115,7 +117,8 @@ func (druid *Druid) registerMangleCatSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplierAdditive: (1 + 0.1*float64(druid.Talents.SavageFury)) * weaponMulti,
+		DamageMultiplier:         1 * weaponMulti,
+		DamageMultiplierAdditive: 1 + 0.1*float64(druid.Talents.SavageFury),
 		ThreatMultiplier:         1,
 		BonusCoefficient:         1,
 

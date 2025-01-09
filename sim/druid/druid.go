@@ -118,6 +118,7 @@ type Druid struct {
 	ImprovedFaerieFireAuras  core.AuraArray
 	FrenziedRegenerationAura *core.Aura
 	FurorAura                *core.Aura
+	PrimalFuryAura           *core.Aura
 	FuryOfStormrageAura      *core.Aura
 	InsectSwarmAuras         core.AuraArray
 	MaulQueueAura            *core.Aura
@@ -137,8 +138,10 @@ type Druid struct {
 	SavageRoarDurationTable [6]time.Duration
 
 	// Extra data used for various calculations and overrides
+	AllowRakeRipDoTCrits              bool // From T1 Feral 4p bonus
 	FerociousBiteExcessEnergyOverride bool // When true, disables the excess energy consumption of Ferocious bite
 	FuryOfStormrageCritRatingBonus    float64
+	CenarionRageThreatBonus           float64
 	// Sunfire/Moonfire modifiers applied when in Moonkin form
 	MoonfireDotMultiplier float64
 	ShredPositionOverride bool

@@ -1,6 +1,7 @@
 package item_effects
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/sod"
@@ -78,9 +79,37 @@ func init() {
 	// 		  (2.1s cooldown)
 	core.NewItemEffect(ObsidianChampion, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		vanilla.StrengthOfTheChampionAura(character)
-		vanilla.EnrageAura446327(character)
+
 		ObsidianEdgedAura(ObsidianChampion, agent)
+
+		strengthAura := vanilla.StrengthOfTheChampionAura(character)
+		enrageAura := vanilla.EnrageAura446327(character)
+
+		procMask := character.GetProcMaskForItem(ObsidianChampion)
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Obsidian Champion (Strength)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				strengthAura.Activate(sim)
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Obsidian Champion (Enrage)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          procMask,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			PPM:               1, // Estimated based on data from WoW Armaments Discord
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				enrageAura.Activate(sim)
+			},
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=233801/obsidian-defender
@@ -161,12 +190,13 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
-			Name:       "Swarming Thoughts Trigger",
-			Callback:   core.CallbackOnSpellHitDealt,
-			Outcome:    core.OutcomeLanded,
-			ProcMask:   core.ProcMaskSpellDamage,
-			ProcChance: 1.00,
-			ICD:        time.Second * 15,
+			Name:             "Swarming Thoughts Trigger",
+			Callback:         core.CallbackOnSpellHitDealt,
+			Outcome:          core.OutcomeLanded,
+			ProcMask:         core.ProcMaskSpellDamage,
+			CanProcFromProcs: true,
+			ProcChance:       1.00,
+			ICD:              time.Second * 15,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 			},
@@ -280,12 +310,13 @@ func init() {
 		})
 
 		core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
-			Name:       "Resolve of the Battleguard Trigger",
-			Callback:   core.CallbackOnSpellHitDealt,
-			Outcome:    core.OutcomeLanded,
-			ProcMask:   core.ProcMaskSpellDamage,
-			ProcChance: 1.00,
-			ICD:        time.Second * 15,
+			Name:             "Resolve of the Battleguard Trigger",
+			Callback:         core.CallbackOnSpellHitDealt,
+			Outcome:          core.OutcomeLanded,
+			ProcMask:         core.ProcMaskSpellDamage,
+			CanProcFromProcs: true,
+			ProcChance:       1.00,
+			ICD:              time.Second * 15,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 			},
@@ -451,7 +482,7 @@ func TimewornSpellAura(agent core.Agent) {
 		return
 	}
 
-	castSpeedMultiplier := 1 / (1 - 0.02*float64(character.PseudoStats.TimewornBonus))
+	castSpeedMultiplier := math.Pow((1 + 0.02), float64(character.PseudoStats.TimewornBonus))
 
 	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213398},

@@ -12,10 +12,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 		return
 	}
 
-	ssProcSpell := make([]*core.Spell, 10)
-	for i := 1; i <= 9; i++ {
-		ssProcSpell[i] = hunter.chimeraShotSerpentStingSpell(i)
-	}
+	hunter.SerpentStingChimeraShot = hunter.chimeraShotSerpentStingSpell(hunter.SerpentSting.Rank)
 
 	hunter.ChimeraShot = hunter.RegisterSpell(core.SpellConfig{
 		SpellCode:    SpellCode_HunterChimeraShot,
@@ -60,7 +57,7 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 
 				if result.Landed() {
 					if hunter.SerpentSting.Dot(target).IsActive() {
-						ssProcSpell[hunter.SerpentSting.Rank].Cast(sim, target)
+						hunter.SerpentStingChimeraShot.Cast(sim, target)
 						hunter.SerpentSting.Dot(target).Rollover(sim)
 					}
 				}

@@ -4,126 +4,147 @@ package proto;
 option go_package = "./proto";
 
 message RogueTalents {
-	// Assassination
-	int32 improved_eviscerate = 1;
-	int32 remorseless_attacks = 2;
-	int32 malice = 3;
-	int32 ruthlessness = 4;
-	int32 murder = 5;
-	int32 improved_slice_and_dice = 6;
-	bool relentless_strikes = 7;
-	int32 improved_expose_armor = 8;
-	int32 lethality = 9;
-	int32 vile_poisons = 10;
-	int32 improved_poisons = 11;
-	bool cold_blood = 12;
-	int32 improved_kidney_shot = 13;
-	int32 seal_fate = 14;
-	bool vigor = 15;
+    // Assassination
+    int32 improved_eviscerate = 1;
+    int32 remorseless_attacks = 2;
+    int32 malice = 3;
+    int32 ruthlessness = 4;
+    int32 murder = 5;
+    int32 improved_slice_and_dice = 6;
+    bool relentless_strikes = 7;
+    int32 improved_expose_armor = 8;
+    int32 lethality = 9;
+    int32 vile_poisons = 10;
+    int32 improved_poisons = 11;
+    bool cold_blood = 12;
+    int32 improved_kidney_shot = 13;
+    int32 seal_fate = 14;
+    bool vigor = 15;
 
-	// Combat
-	int32 improved_gouge = 16;
-	int32 improved_sinister_strike = 17;
-	int32 lightning_reflexes = 18;
-	int32 improved_backstab = 19;
-	int32 deflection = 20;
-	int32 precision = 21;
-	int32 endurance = 22;
-	bool riposte = 23;
-	int32 improved_sprint = 24;
-	int32 improved_kick = 25;
-	int32 dagger_specialization = 26;
-	int32 dual_wield_specialization = 27;
-	int32 mace_specialization = 28;
-	bool blade_flurry = 29;
-	int32 sword_specialization = 30;
-	int32 fist_weapon_specialization = 31;
-	int32 weapon_expertise = 32;
-	int32 aggression = 33;
-	bool adrenaline_rush = 34;
+    // Combat
+    int32 improved_gouge = 16;
+    int32 improved_sinister_strike = 17;
+    int32 lightning_reflexes = 18;
+    int32 improved_backstab = 19;
+    int32 deflection = 20;
+    int32 precision = 21;
+    int32 endurance = 22;
+    bool riposte = 23;
+    int32 improved_sprint = 24;
+    int32 improved_kick = 25;
+    int32 dagger_specialization = 26;
+    int32 dual_wield_specialization = 27;
+    int32 mace_specialization = 28;
+    bool blade_flurry = 29;
+    int32 sword_specialization = 30;
+    int32 fist_weapon_specialization = 31;
+    int32 weapon_expertise = 32;
+    int32 aggression = 33;
+    bool adrenaline_rush = 34;
 
-	// Subtlety
-	int32 master_of_deception = 35;
-	int32 opportunity = 36;
-	int32 sleight_of_hand = 37;
-	int32 elusiveness = 38;
-	int32 camouflage = 39;
-	int32 initiative = 40;
-	bool ghostly_strike = 41;
-	int32 improved_ambush = 42;
-	int32 setup = 43;
-	int32 improved_sap = 44;
-	int32 serrated_blades = 45;
-	int32 heightened_senses = 46;
-	bool preparation = 47;
-	int32 dirty_deeds = 48;
-	bool hemorrhage = 49;
-	int32 deadliness = 50;
-	bool premeditation = 51;
+    // Subtlety
+    int32 master_of_deception = 35;
+    int32 opportunity = 36;
+    int32 sleight_of_hand = 37;
+    int32 elusiveness = 38;
+    int32 camouflage = 39;
+    int32 initiative = 40;
+    bool ghostly_strike = 41;
+    int32 improved_ambush = 42;
+    int32 setup = 43;
+    int32 improved_sap = 44;
+    int32 serrated_blades = 45;
+    int32 heightened_senses = 46;
+    bool preparation = 47;
+    int32 dirty_deeds = 48;
+    bool hemorrhage = 49;
+    int32 deadliness = 50;
+    bool premeditation = 51;
 }
 
 enum RogueRune {
-	RogueRuneNone = 0;
+    RogueRuneNone               = 0;
 
-	// Helm
-	RuneFocusedAttacks			= 432256;
-	RuneCombatPotency			= 432259;
-	RuneHonorAmongThieves		= 432264;
+    // Helm
+    RuneFocusedAttacks          = 432256;
+    RuneCombatPotency           = 432259;
+    RuneHonorAmongThieves       = 432264;
 
-	// Cloak
-	RuneFanOfKnives				= 409240;
-	RuneCrimsonTempest			= 412096;
-	RuneBlunderbuss				= 436564;
+    // Shoulders
+    RuneShouldersAvoidant       = 1219994;
+    RuneShouldersBlackBelt      = 1220023;
+    RuneShouldersBloodthirsty   = 1220030;
+    RuneShouldersButcher        = 1220002;
+    RuneShouldersEfficient      = 1220014;
+    RuneShouldersEquilibrist    = 1220020;
+    RuneShouldersExecutioner    = 1219998;
+    RuneShouldersFencer         = 1220026;
+    RuneShouldersKnifeJuggler   = 1220016;
+    RuneShouldersOpportunist    = 1220000;
+    RuneShouldersPhantom        = 1220004;
+    RuneShouldersPoisedBrawler  = 1220022;
+    RuneShouldersScoundrel      = 1220006;
+    RuneShouldersShadowMaster   = 1220018;
+    RuneShouldersShivSavant     = 1220010;
+    RuneShouldersStalker        = 1220012;
+    RuneShouldersSwashbuckler   = 1220028;
+    RuneShouldersThrillSeeker   = 1220008;
+    RuneShouldersToxicologist   = 1219996;
 
-	// Chest
-	RuneQuickDraw				= 398196;
-	RuneDeadlyBrew				= 399965;
-	RuneJustAFleshWound			= 400014;
-	RuneSlaughterFromTheShadows	= 424925;
+    // Cloak
+    RuneFanOfKnives             = 409240;
+    RuneCrimsonTempest          = 412096;
+    RuneBlunderbuss             = 436564;
 
-	// Bracers
-	RuneCutToTheChase			= 432271;
-	RuneUnfairAdvantage			= 432273;
-	RuneCarnage					= 432276;
+    // Chest
+    RuneQuickDraw               = 398196;
+    RuneDeadlyBrew              = 399965;
+    RuneJustAFleshWound         = 400014;
+    RuneSlaughterFromTheShadows = 424925;
 
-	// Gloves
-	RuneMutilate				= 399956;
-	RuneShadowstrike			= 399985;
-	RuneSaberSlash				= 424785;
-	RuneMainGauche				= 424919;
-	RuneCutthroat				= 462708;
+    // Bracers
+    RuneCutToTheChase           = 432271;
+    RuneUnfairAdvantage         = 432273;
+    RuneCarnage                 = 432276;
 
-	// Waist
-	RuneShurikenToss			= 399986;
-	RuneShadowstep				= 400101;
-	RunePoisonedKnife			= 425012;
+    // Gloves
+    RuneMutilate                = 399956;
+    RuneShadowstrike            = 399985;
+    RuneSaberSlash              = 424785;
+    RuneMainGauche              = 424919;
+    RuneCutthroat               = 462708;
 
-	// Legs
-	RuneEnvenom					= 399963;
-	RuneBetweenTheEyes			= 400009;
-	RuneBladeDance				= 400012;
-	
-	// Boots
-	RuneRollingWithThePunches	= 400016;
-	RuneWaylay					= 408700;
-	RuneMasterOfSubtlety		= 425096;
+    // Waist
+    RuneShurikenToss            = 399986;
+    RuneShadowstep              = 400101;
+    RunePoisonedKnife           = 425012;
+
+    // Legs
+    RuneEnvenom                 = 399963;
+    RuneBetweenTheEyes          = 400009;
+    RuneBladeDance              = 400012;
+    
+    // Boots
+    RuneRollingWithThePunches   = 400016;
+    RuneWaylay                  = 408700;
+    RuneMasterOfSubtlety        = 425096;
 }
 
 message RogueOptions {
-	int32 HonorAmongThievesCritRate = 1;
-	bool pkSwap = 2;
+    int32 HonorAmongThievesCritRate = 1;
+    bool pkSwap = 2;  
 }
 
 message Rogue {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	RogueOptions options = 2;
+    RogueOptions options = 2;
 }
 
 message TankRogue {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	RogueOptions options = 2;
+    RogueOptions options = 2;
 }

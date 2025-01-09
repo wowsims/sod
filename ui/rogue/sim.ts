@@ -6,7 +6,7 @@ import { Player } from '../core/player.js';
 import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat, Target, WeaponType } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
-import { HonorOfThievesCritRate } from './inputs';
+import { HonorOfThievesCritRate, pkSwap } from './inputs';
 import * as Presets from './presets.js';
 
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
@@ -65,11 +65,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -113,7 +109,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		),
 
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes[Phase.Phase5],
+		consumes: Presets.DefaultConsumes[Phase.Phase6],
 		// Default talents.
 		talents: Presets.DefaultTalents.data,
 		// Default spec-specific settings.
@@ -135,15 +131,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	includeBuffDebuffInputs: [
 		BuffDebuffInputs.SpellCritBuff,
 		BuffDebuffInputs.SpellShadowWeavingDebuff,
-		BuffDebuffInputs.NatureSpellDamageDebuff,
-		BuffDebuffInputs.MekkatorqueFistDebuff,
-		BuffDebuffInputs.SpellScorchDebuff,
-		BuffDebuffInputs.PowerInfusion,
 	],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget, HonorOfThievesCritRate],
+		inputs: [OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget, HonorOfThievesCritRate, pkSwap],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -153,22 +145,25 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
-			...Presets.TalentPresets[Phase.Phase5],
-			//...Presets.TalentPresets[Phase.Phase4], Removed due to duplication with P5
+			...Presets.TalentPresets[Phase.Phase6],
+			//...Presets.TalentPresets[Phase.Phase5], Cleaner to show current phase
+			//...Presets.TalentPresets[Phase.Phase4],
 			...Presets.TalentPresets[Phase.Phase3],
 			...Presets.TalentPresets[Phase.Phase2],
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
-			...Presets.APLPresets[Phase.Phase5],
-			//...Presets.APLPresets[Phase.Phase4], Removed due to duplication with P5
+			...Presets.APLPresets[Phase.Phase6],
+			//...Presets.APLPresets[Phase.Phase5], Cleaner to show current phase
+			//...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
 			...Presets.APLPresets[Phase.Phase2],
 			...Presets.APLPresets[Phase.Phase1],
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase6],
 			...Presets.GearPresets[Phase.Phase5],
 			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],

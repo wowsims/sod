@@ -14,23 +14,24 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 1719}
+	warrior.recklessnessDamageTakenMultiplier = 1.20
 
 	reckAura := warrior.RegisterAura(core.Aura{
 		Label:    "Recklessness",
 		ActionID: actionID,
 		Duration: time.Second * 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageTakenMultiplier *= 1.2
+			warrior.PseudoStats.DamageTakenMultiplier *= warrior.recklessnessDamageTakenMultiplier
 			warrior.AddStatDynamic(sim, stats.MeleeCrit, 50*core.CritRatingPerCritChance)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageTakenMultiplier /= 1.2
+			warrior.PseudoStats.DamageTakenMultiplier /= warrior.recklessnessDamageTakenMultiplier
 			warrior.AddStatDynamic(sim, stats.MeleeCrit, -50*core.CritRatingPerCritChance)
 
 		},
 	})
 
-	Recklessness := warrior.RegisterSpell(BerserkerStance, core.SpellConfig{
+	warrior.Recklessness = warrior.RegisterSpell(BerserkerStance, core.SpellConfig{
 		ActionID: actionID,
 		Cast: core.CastConfig{
 			IgnoreHaste: true,
@@ -49,7 +50,7 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
-		Spell: Recklessness.Spell,
+		Spell: warrior.Recklessness.Spell,
 		Type:  core.CooldownTypeDPS,
 	})
 }

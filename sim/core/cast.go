@@ -178,7 +178,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 				return spell.castFailureHelper(sim, "still on cooldown for %s, curTime = %s", spell.CD.TimeToReady(sim), sim.CurrentTime)
 			}
 
-			spell.CD.Set(sim.CurrentTime + spell.CurCast.CastTime + spell.CD.Duration)
+			spell.CD.Set(sim.CurrentTime + spell.CurCast.CastTime + spell.CD.GetCurrentDuration())
 		}
 
 		if config.SharedCD.Timer != nil {
@@ -341,7 +341,7 @@ func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 				return spell.castFailureHelper(sim, "still on cooldown for %s, curTime = %s", spell.CD.TimeToReady(sim), sim.CurrentTime)
 			}
 
-			spell.CD.Set(sim.CurrentTime + spell.CD.Duration)
+			spell.CD.Set(sim.CurrentTime + spell.CD.GetCurrentDuration())
 		}
 
 		if spell.SharedCD.Timer != nil {

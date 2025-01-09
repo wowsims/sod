@@ -11,7 +11,7 @@ func (druid *Druid) registerLacerateSpell() {
 	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
 		return
 	}
-	initialDamageMul := 1.0
+	initialDamageMul := 0.0
 	hasGore := druid.HasRune(proto.DruidRune_RuneHelmGore)
 
 	switch druid.Ranged().ID {
@@ -44,7 +44,7 @@ func (druid *Druid) registerLacerateSpell() {
 		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2 * float64(druid.LacerateBleed.Dot(target).GetStacks()) * initialDamageMul)
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2*float64(druid.LacerateBleed.Dot(target).GetStacks()) + initialDamageMul)
 			berserking := druid.BerserkAura.IsActive()
 
 			dotBonusCrit := 0.0
@@ -76,7 +76,7 @@ func (druid *Druid) registerLacerateBleedSpell() {
 	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
 		return
 	}
-	tickDamage := 20.0
+	tickDamage := 29.8312
 
 	switch druid.Ranged().ID {
 	case IdolOfCruelty:
@@ -107,7 +107,7 @@ func (druid *Druid) registerLacerateBleedSpell() {
 
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
+					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable, true)
 				}
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {

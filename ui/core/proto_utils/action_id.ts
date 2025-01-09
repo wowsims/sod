@@ -332,7 +332,7 @@ export class ActionId {
 			case 'Whirlwind':
 			case 'Slam':
 			case 'Windfury Weapon':
-			case 'Holy Strength': // Crusader Enchant
+			case 'Holy Strength': // Weapon - Crusader Enchant
 				if (this.tag === 1) {
 					name = `${name} (Main-Hand)`;
 				} else if (this.tag === 2) {
@@ -478,7 +478,7 @@ export class ActionId {
 				break;
 			// Temporary until real debuff is implemented
 			case 'Ice Lance':
-				if (this.tag === 1) name = 'Glaciate'
+				if (this.tag > 0) name = `${name} (${this.tag} Stacks)`
 				break;
 			default:
 				if (this.tag) {
@@ -743,10 +743,11 @@ const spellIDsToShowBuffs = new Set([
 	461252, // https://www.wowhead.com/classic/spell=461252/shadowflame-fury
 	461270, // https://www.wowhead.com/classic/spell=461270/magmadars-return
 	461615, // https://www.wowhead.com/classic/spell=461615/mark-of-chaos
-	456393, // https://www.wowhead.com/classic/spell=456393/stalked
-	1214279, // https://www.wowhead.com/classic/spell=1214279/spell-blasting
 	439473, // https://www.wowhead.com/classic/spell=439473/atrophic-poison
 	439472, // https://www.wowhead.com/classic/spell=439472/numbing-poison
+	1214279, // https://www.wowhead.com/classic/spell=1214279/spell-blasting
+	1218345, // https://www.wowhead.com/classic/spell=1218345/glaciate
+	1218587, // https://www.wowhead.com/classic/spell=1218587/critical-aim
 ]);
 
 export const defaultTargetIcon = 'https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg';

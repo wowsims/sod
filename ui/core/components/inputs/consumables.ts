@@ -679,10 +679,11 @@ export const ZANZA_BUFF_CONSUMES_CONFIG: ConsumableStatOption<ZanzaBuff>[] = [
 export const makeZanzaBuffConsumesInput = makeConsumeInputFactory({ consumesFieldName: 'zanzaBuff' });
 
 export const DraughtOfTheSands = makeBooleanMiscConsumeInput({
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 235497, minLevel: 55 }]),
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: player.getClass() === Class.ClassHunter ? 235497 : 235825, minLevel: 55 }]),
 	fieldName: 'draughtOfTheSands',
-	showWhen: player => player.getClass() === Class.ClassHunter,
+	showWhen: player => player.getClass() === Class.ClassHunter || player.getClass() === Class.ClassRogue,
 })
+
 export const Catnip = makeBooleanMiscConsumeInput({
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
 	fieldName: 'catnip',
@@ -1053,7 +1054,7 @@ export const EnchantedRepellent = (slot: ItemSlot): ConsumableInputConfig<Weapon
 export const BrilliantWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 20749, minLevel: 45 }]),
-		value: WeaponImbue.EnchantedRepellent,
+		value: WeaponImbue.BrilliantWizardOil,
 		showWhen: player => {
 			const weapon = player.getEquippedItem(slot);
 			return !weapon || isWeapon(weapon.item.weaponType);

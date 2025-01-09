@@ -10,6 +10,8 @@ import (
 
 func (rogue *Rogue) ApplyRunes() {
 	// Apply runes here :)
+	rogue.applyShoulderRuneEffect()
+
 	if rogue.HasRune(proto.RogueRune_RuneDeadlyBrew) {
 		rogue.applyDeadlyBrewInstant()
 		rogue.applyDeadlyBrewDeadly()
@@ -41,6 +43,55 @@ func (rogue *Rogue) ApplyRunes() {
 	rogue.registerFanOfKnives()
 	rogue.registerCrimsonTempestSpell()
 	rogue.applySlaughterfromtheShadows()
+}
+
+func (rogue *Rogue) applyShoulderRuneEffect() {
+	if rogue.Equipment.Shoulders().Rune == int32(proto.RogueRune_RogueRuneNone) {
+		return
+	}
+
+	switch rogue.Equipment.Shoulders().Rune {
+	// Damage
+	case int32(proto.RogueRune_RuneShouldersAvoidant):
+	case int32(proto.HunterRune_RuneShouldersToxinologist):
+		rogue.applyT1Damage4PBonus()
+	case int32(proto.RogueRune_RuneShouldersExecutioner):
+		rogue.applyT1Damage6PBonus()
+	case int32(proto.RogueRune_RuneShouldersOpportunist):
+		rogue.applyT2Damage2PBonus()
+	case int32(proto.RogueRune_RuneShouldersButcher):
+		rogue.applyT2Damage4PBonus()
+	case int32(proto.RogueRune_RuneShouldersPhantom):
+		rogue.applyT2Damage6PBonus()
+	case int32(proto.RogueRune_RuneShouldersShivSavant):
+		rogue.applyZGDagger3PBonus()
+	case int32(proto.RogueRune_RuneShouldersStalker):
+		rogue.applyZGDagger5PBonus()
+	case int32(proto.RogueRune_RuneShouldersScoundrel):
+		rogue.applyTAQDamage2PBonus()
+	case int32(proto.RogueRune_RuneShouldersThrillSeeker):
+		rogue.applyTAQDamage4PBonus()
+	case int32(proto.RogueRune_RuneShouldersEfficient):
+		rogue.applyRAQDamage3PBonus()
+
+	// Tank
+	case int32(proto.RogueRune_RuneShouldersKnifeJuggler):
+		rogue.applyT1Tank2PBonus()
+	case int32(proto.RogueRune_RuneShouldersShadowMaster):
+		rogue.applyT1Tank4PBonus()
+	case int32(proto.RogueRune_RuneShouldersEquilibrist):
+		rogue.applyT1Tank6PBonus()
+	case int32(proto.RogueRune_RuneShouldersPoisedBrawler):
+		rogue.applyT2Tank2PBonus()
+	case int32(proto.RogueRune_RuneShouldersBlackBelt):
+		rogue.applyT2Tank4PBonus()
+	case int32(proto.RogueRune_RuneShouldersFencer):
+		rogue.applyT2Tank6PBonus()
+	case int32(proto.RogueRune_RuneShouldersSwashbuckler):
+		rogue.applyTAQTank2PBonus()
+	case int32(proto.RogueRune_RuneShouldersBloodthirsty):
+		rogue.applyTAQTank4PBonus()
+	}
 }
 
 func (rogue *Rogue) applyCombatPotency() {
@@ -299,20 +350,16 @@ func (rogue *Rogue) applyJustAFleshWound() {
 
 	// 1% Physical DR gained for 8 defense over max
 
-	rogue.RegisterAura(core.Aura{
+	rogue.JustAFleshWoundAura = core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label:    "Just a Flesh Wound",
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneJustAFleshWound)},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.EnableDynamicStatDep(sim, statDep)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.DisableDynamicStatDep(sim, statDep)
 		},
-	})
+	}))
 }
 
 func (rogue *Rogue) applyRollingWithThePunches() {

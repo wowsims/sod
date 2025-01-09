@@ -59,23 +59,30 @@ func (rogue *Rogue) applyRuthlessness() {
 
 // Murder talent
 func (rogue *Rogue) applyMurder() {
-	if rogue.Talents.Murder == 0 {
-		return
-	}
-
-	// post finalize, since attack tables need to be setup
-	rogue.Env.RegisterPostFinalizeEffect(func() {
-		for _, t := range rogue.Env.Encounter.Targets {
-			switch t.MobType {
-			case proto.MobType_MobTypeHumanoid, proto.MobType_MobTypeGiant, proto.MobType_MobTypeBeast, proto.MobType_MobTypeDragonkin:
-				multiplier := []float64{1, 1.01, 1.02}[rogue.Talents.Murder]
+	if rogue.Talents.Murder > 0 {
+		rogue.Env.RegisterPostFinalizeEffect(func() {
+			for _, t := range rogue.Env.Encounter.Targets {
+				switch t.MobType {
+				case proto.MobType_MobTypeHumanoid, proto.MobType_MobTypeGiant, proto.MobType_MobTypeBeast, proto.MobType_MobTypeDragonkin:
+					multiplier := []float64{1, 1.01, 1.02}[rogue.Talents.Murder]
+					for _, at := range rogue.AttackTables[t.UnitIndex] {
+						at.DamageDealtMultiplier *= multiplier
+						at.CritMultiplier *= multiplier
+					}
+				}
+			}
+		})
+	} else if rogue.Consumes.MiscConsumes != nil && rogue.Consumes.MiscConsumes.DraughtOfTheSands {
+		rogue.Env.RegisterPostFinalizeEffect(func() {
+			multiplier := 1.02
+			for _, t := range rogue.Env.Encounter.Targets {
 				for _, at := range rogue.AttackTables[t.UnitIndex] {
 					at.DamageDealtMultiplier *= multiplier
 					at.CritMultiplier *= multiplier
 				}
 			}
-		}
-	})
+		})
+	}
 }
 
 func (rogue *Rogue) applyRelentlessStrikes() {
@@ -399,9 +406,9 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 	})
 
 	rogue.AdrenalineRush = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_RogueAdrenalineRush,
-		ActionID: 	 AdrenalineRushActionID,
-		Cast: 		 core.CastConfig{
+		SpellCode: SpellCode_RogueAdrenalineRush,
+		ActionID:  AdrenalineRushActionID,
+		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,
 			},

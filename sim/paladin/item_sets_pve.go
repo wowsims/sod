@@ -8,6 +8,38 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+// Soul Related Set Bonus IDs
+const (
+	PaladinT1Prot2P  = 456536
+	PaladinT1Prot4P  = 456538
+	PaladinT1Prot6P  = 456541
+	PaladinT2Prot2P  = 467531
+	PaladinT2Prot4P  = 467532
+	PaladinT2Prot6P  = 467536
+	PaladinTAQProt2P = 1213410
+	PaladinTAQProt4P = 1213413
+	PaladinT1Holy2P  = 456488
+	PaladinT1Holy4P  = 457323
+	PaladinT1Holy6P  = 456492
+	PaladinT2Holy2P  = 467506
+	PaladinT2Holy4P  = 467507
+	PaladinT2Holy6P  = 467513
+	PaladinTAQHoly2P = 1213349
+	PaladinTAQHoly4P = 1213353
+	PaladinT1Ret2P   = 456494
+	PaladinT1Ret4P   = 456489
+	PaladinT1Ret6P   = 456533
+	PaladinT2Ret2P   = 467518
+	PaladinT2Ret4P   = 467526
+	PaladinT2Ret6P   = 467529
+	PaladinTAQRet2P  = 1213397
+	PaladinTAQRet4P  = 1213406
+	PaladinZG2P      = 468401
+	PaladinZG3P      = 468428
+	PaladinZG5P      = 468431
+	PaladinRAQ3P     = 1213467
+)
+
 ///////////////////////////////////////////////////////////////////////////
 //                            SoD Phase 3 Item Sets
 ///////////////////////////////////////////////////////////////////////////
@@ -98,119 +130,30 @@ var ItemSetSoulforgeArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
+var ItemSetLawbringerMercy = core.NewItemSet(core.ItemSet{
+	Name: "Lawbringer Mercy",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Holy2P() },
+		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Holy4P() },
+		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Holy6P() },
+	},
+})
+
 var ItemSetLawbringerRadiance = core.NewItemSet(core.ItemSet{
 	Name: "Lawbringer Radiance",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			// No need to model
-			//(2) Set : Your Judgement of Light and Judgement of Wisdom also grant the effects of Judgement of the Crusader.
-		},
-		4: func(agent core.Agent) {
-			character := agent.GetCharacter()
-			character.AddStat(stats.MeleeCrit, 2)
-			character.AddStat(stats.SpellCrit, 2)
-		},
-		6: func(agent core.Agent) {
-			// Implemented in Paladin.go
-			paladin := agent.(PaladinAgent).GetPaladin()
-			core.MakePermanent(paladin.RegisterAura(core.Aura{
-				Label: "S03 - Item - T1 - Paladin - Retribution 6P Bonus",
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					paladin.lingerDuration = time.Second * 6
-					paladin.enableMultiJudge = true
-				},
-			}))
-		},
+		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Ret2P() },
+		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Ret4P() },
+		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Ret6P() },
 	},
 })
 
 var ItemSetLawbringerWill = core.NewItemSet(core.ItemSet{
 	Name: "Lawbringer Will",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			// (2) Set: Increases the block value of your shield by 30.
-			character := agent.GetCharacter()
-			character.AddStat(stats.BlockValue, 30)
-		},
-		4: func(agent core.Agent) {
-			// (4) Set: Heal for 189 to 211 when you Block. (ICD: 3.5s)
-			// Note: The heal does not scale with healing/spell power, but can crit.
-			paladin := agent.(PaladinAgent).GetPaladin()
-			c := agent.GetCharacter()
-			actionID := core.ActionID{SpellID: 456540}
-
-			bastionOfLight := paladin.RegisterSpell(core.SpellConfig{
-				ActionID:         actionID,
-				SpellSchool:      core.SpellSchoolHoly,
-				DefenseType:      core.DefenseTypeMagic,
-				ProcMask:         core.ProcMaskSpellHealing,
-				Flags:            core.SpellFlagHelpful,
-				DamageMultiplier: 1,
-				ThreatMultiplier: 1,
-				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					baseHeal := sim.Roll(189, 211)
-					spell.CalcAndDealHealing(sim, target, baseHeal, spell.OutcomeHealingCrit)
-				},
-			})
-
-			handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				bastionOfLight.Cast(sim, result.Target)
-			}
-
-			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   actionID,
-				Name:       "S03 - Item - T1 - Paladin - Protection 4P Bonus",
-				Callback:   core.CallbackOnSpellHitTaken,
-				Outcome:    core.OutcomeBlock,
-				ProcChance: 1.0,
-				ICD:        time.Millisecond * 3500,
-				Handler:    handler,
-			})
-		},
-		6: func(agent core.Agent) {
-
-			paladin := agent.(PaladinAgent).GetPaladin()
-
-			paladin.RegisterAura(core.Aura{
-				Label: "S03 - Item - T1 - Paladin - Protection 6P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					auras := paladin.holyShieldAura
-					procs := paladin.holyShieldProc
-					blockBonus := 30.0 * core.BlockRatingPerBlockChance
-
-					for i, values := range HolyShieldValues {
-
-						if paladin.Level < values.level {
-							break
-						}
-
-						damage := values.damage
-
-						// Holy Shield's damage is increased by 80% of shield block value.
-						procs[i].ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-							sbv := paladin.BlockValue() * 0.8
-							// Reminder: Holy Shield can crit, but does not miss.
-							spell.CalcAndDealDamage(sim, target, (damage + sbv), spell.OutcomeMagicCrit)
-						}
-
-						// Holy Shield aura no longer has stacks...
-						auras[i].MaxStacks = 0
-
-						// ...and does not set stacks on gain...
-						auras[i].OnGain = func(aura *core.Aura, sim *core.Simulation) {
-							paladin.AddStatDynamic(sim, stats.Block, blockBonus)
-						}
-
-						// ...or remove stacks on block.
-						auras[i].OnSpellHitTaken = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-							if result.DidBlock() {
-								procs[i].Cast(sim, spell.Unit)
-							}
-						}
-					}
-				},
-			})
-		},
+		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Prot2P() },
+		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Prot4P() },
+		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Prot6P() },
 	},
 })
 
@@ -221,215 +164,36 @@ var ItemSetLawbringerWill = core.NewItemSet(core.ItemSet{
 var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 	Name: "Freethinker's Armor",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			c := agent.GetCharacter()
-			c.AddStats(stats.Stats{
-				stats.HolyPower: 14,
-			})
-		},
-		3: func(agent core.Agent) {
-			// Increases damage done by your holy shock spell by 50%
-			paladin := agent.GetCharacter()
-			paladin.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_PaladinHolyShock {
-					//Damage multiplier is Additive with Infusion of Light rather than multiplicitive
-					spell.DamageMultiplierAdditive += 0.5
-				}
-			})
-		},
-		5: func(agent core.Agent) {
-			// Reduce cooldown of Exorcism by 3 seconds
-			paladin := agent.(PaladinAgent).GetPaladin()
-			paladin.RegisterAura(core.Aura{
-				Label: "S03 - Item - ZG - Paladin - Caster 5P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range paladin.exorcism {
-						spell.CD.Duration -= time.Second * 3
-						spell.DamageMultiplierAdditive += 0.5
-					}
-				},
-			})
-		},
+		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinZG2P() },
+		3: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinZG3P() },
+		5: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinZG5P() },
 	},
 })
 
 var ItemSetMercifulJudgement = core.NewItemSet(core.ItemSet{
 	Name: "Merciful Judgement",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			//Increases critical strike chance of holy shock spell by 5%
-			paladin := agent.GetCharacter()
-			paladin.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_PaladinHolyShock {
-					spell.BonusCritRating += 5.0
-				}
-			})
-		},
-		4: func(agent core.Agent) {
-			//Increases damage done by your Consecration spell by 50%
-			paladin := agent.GetCharacter()
-			paladin.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_PaladinConsecration {
-					spell.AOEDot().DamageMultiplier += 0.5
-				}
-			})
-		},
-		6: func(agent core.Agent) {
-			// While you are not your Beacon of Light target, your Beacon of Light target is also healed by 100% of the damage you deal
-			// with Consecration, Exorcism, Holy Shock, Holy Wrath, and Hammer of Wrath
-			// No need to Sim
-		},
+		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Holy2P() },
+		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Holy4P() },
+		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Holy6P() },
 	},
 })
 
 var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 	Name: "Radiant Judgement",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			// 2 pieces: Increases damage done by your damaging Judgements by 20% and your Judgements no longer consume your Seals on the target.
-			paladin := agent.(PaladinAgent).GetPaladin()
-			paladin.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Paladin - Retribution 2P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, judgeSpells := range paladin.allJudgeSpells {
-						for _, judgeRankSpell := range judgeSpells {
-							judgeRankSpell.DamageMultiplierAdditive += 0.2
-						}
-					}
-
-					paladin.consumeSealsOnJudge = false
-				},
-			})
-		},
-		4: func(agent core.Agent) {
-			// 4 pieces: Reduces the cooldown on your Judgement ability by 5 seconds.
-			paladin := agent.(PaladinAgent).GetPaladin()
-			paladin.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Paladin - Retribution 4P Bonus",
-
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					paladin.judgement.CD.Duration -= 5 * time.Second
-					paladin.enableMultiJudge = false // Even though this is baseline in phase 5, we set it here to avoid breaking P4
-				},
-			})
-		},
-		6: func(agent core.Agent) {
-			// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
-			paladin := agent.(PaladinAgent).GetPaladin()
-
-			t2Judgement6pcAura := paladin.GetOrRegisterAura(core.Aura{
-				Label:     "Swift Judgement",
-				ActionID:  core.ActionID{SpellID: 467530},
-				Duration:  time.Second * 8,
-				MaxStacks: 5,
-
-				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-					aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.0 + (float64(oldStacks) * 0.01))
-					aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.0 + (float64(newStacks) * 0.01))
-				},
-			})
-
-			paladin.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Paladin - Retribution 6P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					originalApplyEffects := paladin.judgement.ApplyEffects
-
-					// Wrap the apply Judgement ApplyEffects with more Effects
-					paladin.judgement.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						originalApplyEffects(sim, target, spell)
-						// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
-						t2Judgement6pcAura.Activate(sim)
-						t2Judgement6pcAura.AddStack(sim)
-					}
-				},
-			})
-		},
+		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Ret2P() },
+		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Ret4P() },
+		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Ret6P() },
 	},
 })
 
 var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 	Name: "Wilfull Judgement",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			//Increases the bonus chance to block from Holy Shield by 10%
-			paladin := agent.(PaladinAgent).GetPaladin()
-			if !paladin.Talents.HolyShield {
-				return
-			}
-
-			blockBonus := 40.0 * core.BlockRatingPerBlockChance
-			numCharges := int32(4)
-
-			paladin.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Paladin - Protection 2P Bonus",
-				OnInit: func(_ *core.Aura, _ *core.Simulation) {
-					for i, hsAura := range paladin.holyShieldAura {
-						if paladin.Level < HolyShieldValues[i].level {
-							break
-						}
-						hsAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-							aura.SetStacks(sim, numCharges)
-							paladin.AddStatDynamic(sim, stats.Block, blockBonus)
-						}
-						hsAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-							paladin.AddStatDynamic(sim, stats.Block, -blockBonus)
-						}
-					}
-				},
-			})
-		},
-		4: func(agent core.Agent) {
-			//You take 10% reduced damage while Holy Shield is active.
-			paladin := agent.(PaladinAgent).GetPaladin()
-			if !paladin.Talents.HolyShield {
-				return
-			}
-
-			paladin.RegisterAura(core.Aura{
-				Label: "S03 - Item - T2 - Paladin - Protection 4P Bonus",
-				OnInit: func(_ *core.Aura, _ *core.Simulation) {
-					for i, hsAura := range paladin.holyShieldAura {
-						if hsAura == nil || paladin.Level < HolyShieldValues[i].level {
-							break
-						}
-						oldOnGain := hsAura.OnGain
-						oldOnExpire := hsAura.OnExpire
-
-						hsAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-							oldOnGain(aura, sim)
-							paladin.PseudoStats.DamageTakenMultiplier *= 0.9
-						}
-						hsAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-							oldOnExpire(aura, sim)
-							paladin.PseudoStats.DamageTakenMultiplier /= 0.9
-						}
-					}
-				},
-			})
-		},
-		6: func(agent core.Agent) {
-			// Your Reckoning Talent now has a 20% chance per talent point to trigger when
-			// you block.
-			paladin := agent.(PaladinAgent).GetPaladin()
-			if paladin.Talents.Reckoning == 0 {
-				return
-			}
-
-			actionID := core.ActionID{SpellID: 20178} // Reckoning proc ID
-			procChance := 0.2 * float64(paladin.Talents.Reckoning)
-
-			handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				paladin.AutoAttacks.ExtraMHAttack(sim, 1, actionID, spell.ActionID)
-			}
-
-			core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-				Name:       "Item - T2 - Paladin - Protection 6P Bonus",
-				Callback:   core.CallbackOnSpellHitTaken,
-				Outcome:    core.OutcomeBlock,
-				ProcChance: procChance,
-				Handler:    handler,
-			})
-		},
+		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Prot2P() },
+		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Prot4P() },
+		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Prot6P() },
 	},
 })
 
@@ -440,47 +204,8 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 var ItemSetAvengersRadiance = core.NewItemSet(core.ItemSet{
 	Name: "Avenger's Radiance",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			paladin := agent.(PaladinAgent).GetPaladin()
-			if !paladin.hasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
-				return
-			}
-
-			paladin.OnSpellRegistered(func(spell *core.Spell) {
-				//"S03 - Item - TAQ - Paladin - Retribution 2P Bonus",
-				if spell.SpellCode == SpellCode_PaladinCrusaderStrike {
-					// 2 Set: Increases Crusader Strike Damage by 50%
-					spell.DamageMultiplier += 0.5
-				}
-			})
-		},
-		4: func(agent core.Agent) {
-			paladin := agent.(PaladinAgent).GetPaladin()
-
-			buffAura := paladin.GetOrRegisterAura(core.Aura{
-				Label:     "Excommunication",
-				ActionID:  core.ActionID{SpellID: 1217927},
-				Duration:  time.Second * 20,
-				MaxStacks: 3,
-				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-					for _, exorcism := range paladin.exorcism {
-						exorcism.DamageMultiplierAdditive += 0.4 * float64(newStacks-oldStacks)
-					}
-				},
-			})
-
-			core.MakePermanent(paladin.RegisterAura(core.Aura{
-				Label: "S03 - Item - TAQ - Paladin - Retribution 4P Bonus",
-				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
-						buffAura.Activate(sim)
-						buffAura.AddStack(sim)
-					} else if spell.SpellCode == SpellCode_PaladinExorcism {
-						buffAura.Deactivate(sim)
-					}
-				},
-			}))
-		},
+		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinTAQRet2P() },
+		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinTAQRet4P() },
 	},
 })
 
@@ -488,30 +213,541 @@ var ItemSetBattlegearOfEternalJustice = core.NewItemSet(core.ItemSet{
 	Name: "Battlegear of Eternal Justice",
 	Bonuses: map[int32]core.ApplyEffect{
 		// Crusader Strike now unleashes the judgement effect of your seals, but does not consume the seal
-		3: func(agent core.Agent) {
-			paladin := agent.(PaladinAgent).GetPaladin()
+		3: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinRAQ3P() },
+	},
+})
+
+func (paladin *Paladin) applyPaladinT1Prot2P() {
+	bonusLabel := "S03 - Item - T1 - Paladin - Protection 2P Bonus"
+
+	if duplicateBonusCheckAndCreate(paladin, PaladinT1Prot2P, bonusLabel) {
+		return
+	}
+
+	// (2) Set: Increases the block value of your shield by 30.
+	paladin.AddStat(stats.BlockValue, 30)
+}
+
+func (paladin *Paladin) applyPaladinT1Prot4P() {
+	bonusLabel := "S03 - Item - T1 - Paladin - Protection 4P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	// (4) Set: Heal for 189 to 211 when you Block. (ICD: 3.5s)
+	// Note: The heal does not scale with healing/spell power, but can crit.
+	actionID := core.ActionID{SpellID: 456540}
+
+	bastionOfLight := paladin.RegisterSpell(core.SpellConfig{
+		ActionID:         actionID,
+		SpellSchool:      core.SpellSchoolHoly,
+		DefenseType:      core.DefenseTypeMagic,
+		ProcMask:         core.ProcMaskSpellHealing,
+		Flags:            core.SpellFlagHelpful,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseHeal := sim.Roll(189, 211)
+			spell.CalcAndDealHealing(sim, target, baseHeal, spell.OutcomeHealingCrit)
+		},
+	})
+
+	handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		bastionOfLight.Cast(sim, result.Target)
+	}
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:       bonusLabel,
+		ActionID:   core.ActionID{SpellID: PaladinT1Prot4P},
+		Callback:   core.CallbackOnSpellHitTaken,
+		Outcome:    core.OutcomeBlock,
+		ProcChance: 1.0,
+		ICD:        time.Millisecond * 3500,
+		Handler:    handler,
+	})
+}
+
+func (paladin *Paladin) applyPaladinT1Prot6P() {
+
+	bonusLabel := "S03 - Item - T1 - Paladin - Protection 6P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT1Prot6P},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			auras := paladin.holyShieldAura
+			procs := paladin.holyShieldProc
+			blockBonus := 30.0 * core.BlockRatingPerBlockChance
+
+			for i, values := range HolyShieldValues {
+
+				if paladin.Level < values.level {
+					break
+				}
+
+				damage := values.damage
+
+				// Holy Shield's damage is increased by 80% of shield block value.
+				procs[i].ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					sbv := paladin.BlockValue() * 0.8
+					// Reminder: Holy Shield can crit, but does not miss.
+					spell.CalcAndDealDamage(sim, target, (damage + sbv), spell.OutcomeMagicCrit)
+				}
+
+				// Holy Shield aura no longer has stacks...
+				auras[i].MaxStacks = 0
+
+				// ...and does not set stacks on gain...
+				auras[i].OnGain = func(aura *core.Aura, sim *core.Simulation) {
+					paladin.AddStatDynamic(sim, stats.Block, blockBonus)
+				}
+
+				// ...or remove stacks on block.
+				auras[i].OnSpellHitTaken = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if result.DidBlock() {
+						procs[i].Cast(sim, spell.Unit)
+					}
+				}
+			}
+		},
+	})
+}
+
+func (paladin *Paladin) applyPaladinT2Prot2P() {
+
+	bonusLabel := "S03 - Item - T2 - Paladin - Protection 2P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	//Increases the bonus chance to block from Holy Shield by 10%
+	if !paladin.Talents.HolyShield {
+		return
+	}
+
+	blockBonus := 40.0 * core.BlockRatingPerBlockChance
+
+	paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT2Prot2P},
+		OnInit: func(_ *core.Aura, _ *core.Simulation) {
+			for i, hsAura := range paladin.holyShieldAura {
+				if paladin.Level < HolyShieldValues[i].level {
+					break
+				}
+				oldOnGain := hsAura.OnGain
+				hsAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+					oldOnGain(aura, sim)
+					paladin.AddStatDynamic(sim, stats.Block, blockBonus)
+				}
+				oldOnExpire := hsAura.OnExpire
+				hsAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+					oldOnExpire(aura, sim)
+					paladin.AddStatDynamic(sim, stats.Block, -blockBonus)
+				}
+			}
+		},
+	})
+}
+
+func (paladin *Paladin) applyPaladinT2Prot4P() {
+
+	bonusLabel := "S03 - Item - T2 - Paladin - Protection 4P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	//You take 10% reduced damage while Holy Shield is active.
+	if !paladin.Talents.HolyShield {
+		return
+	}
+
+	paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT2Prot4P},
+		OnInit: func(_ *core.Aura, _ *core.Simulation) {
+			for i, hsAura := range paladin.holyShieldAura {
+				if hsAura == nil || paladin.Level < HolyShieldValues[i].level {
+					break
+				}
+				oldOnGain := hsAura.OnGain
+				oldOnExpire := hsAura.OnExpire
+
+				hsAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+					oldOnGain(aura, sim)
+					paladin.PseudoStats.DamageTakenMultiplier *= 0.9
+				}
+				hsAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+					oldOnExpire(aura, sim)
+					paladin.PseudoStats.DamageTakenMultiplier /= 0.9
+				}
+			}
+		},
+	})
+}
+
+func (paladin *Paladin) applyPaladinT2Prot6P() {
+	bonusLabel := "S03 - Item - T2 - Paladin - Protection 6P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	// Your Reckoning Talent now has a 20% chance per talent point to trigger when
+	// you block.
+	if paladin.Talents.Reckoning == 0 {
+		return
+	}
+
+	actionID := core.ActionID{SpellID: 20178} // Reckoning proc ID
+	procChance := 0.2 * float64(paladin.Talents.Reckoning)
+
+	handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		paladin.AutoAttacks.ExtraMHAttack(sim, 1, actionID, spell.ActionID)
+	}
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:       bonusLabel,
+		ActionID:   core.ActionID{SpellID: PaladinT2Prot6P},
+		Callback:   core.CallbackOnSpellHitTaken,
+		Outcome:    core.OutcomeBlock,
+		ProcChance: procChance,
+		Handler:    handler,
+	})
+}
+
+func (paladin *Paladin) applyPaladinTAQProt2P() {
+	// Empty Function (Not Implemented)
+}
+
+func (paladin *Paladin) applyPaladinTAQProt4P() {
+	// Empty Function (Not Implemented)
+}
+
+func (paladin *Paladin) applyPaladinT1Holy2P() {
+	//(Not Implemented)
+}
+
+func (paladin *Paladin) applyPaladinT1Holy4P() {
+
+	bonusLabel := "S03 - Item - T1 - Paladin - Holy 4P Bonus"
+
+	if duplicateBonusCheckAndCreate(paladin, PaladinT1Holy4P, bonusLabel) {
+		return
+	}
+
+	paladin.AddStat(stats.MeleeCrit, 2)
+	paladin.AddStat(stats.SpellCrit, 2)
+}
+
+func (paladin *Paladin) applyPaladinT1Holy6P() {
+	//(Not Implemented)
+}
+
+func (paladin *Paladin) applyPaladinT2Holy2P() {
+
+	bonusLabel := "S03 - Item - T2 - Paladin - Holy 2P Bonus"
+
+	if duplicateBonusCheckAndCreate(paladin, PaladinT2Holy2P, bonusLabel) {
+		return
+	}
+
+	//Increases critical strike chance of holy shock spell by 5%
+	paladin.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_PaladinHolyShock {
+			spell.BonusCritRating += 5.0
+		}
+	})
+}
+
+func (paladin *Paladin) applyPaladinT2Holy4P() {
+
+	bonusLabel := "S03 - Item - T2 - Paladin - Holy 4P Bonus"
+
+	if duplicateBonusCheckAndCreate(paladin, PaladinT2Holy4P, bonusLabel) {
+		return
+	}
+
+	//Increases damage done by your Consecration spell by 50%
+	paladin.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_PaladinConsecration {
+			spell.AOEDot().DamageMultiplier += 0.5
+		}
+	})
+}
+
+func (paladin *Paladin) applyPaladinT2Holy6P() {
+	// While you are not your Beacon of Light target, your Beacon of Light target is also healed by 100% of the damage you deal
+	// with Consecration, Exorcism, Holy Shock, Holy Wrath, and Hammer of Wrath
+	// No need to Sim
+}
+
+func (paladin *Paladin) applyPaladinTAQHoly2P() {
+	//(Not Implemented)
+}
+
+func (paladin *Paladin) applyPaladinTAQHoly4P() {
+	//(Not Implemented)
+}
+
+func (paladin *Paladin) applyPaladinT1Ret2P() {
+	// No need to model
+	//(2) Set : Your Judgement of Light and Judgement of Wisdom also grant the effects of Judgement of the Crusader.
+}
+
+func (paladin *Paladin) applyPaladinT1Ret4P() {
+	bonusLabel := "S03 - Item - T1 - Paladin - Retribution 4P Bonus"
+
+	if duplicateBonusCheckAndCreate(paladin, PaladinT1Ret4P, bonusLabel) {
+		return
+	}
+
+	paladin.AddStat(stats.MeleeCrit, 2)
+	paladin.AddStat(stats.SpellCrit, 2)
+}
+
+func (paladin *Paladin) applyPaladinT1Ret6P() {
+	bonusLabel := "S03 - Item - T1 - Paladin - Retribution 6P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT1Ret6P},
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.lingerDuration = time.Second * 6
+			paladin.enableMultiJudge = true // Implemented in Paladin.go
+		},
+	}))
+}
+
+func (paladin *Paladin) applyPaladinT2Ret2P() {
+	bonusLabel := "S03 - Item - T2 - Paladin - Retribution 2P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	// 2 pieces: Increases damage done by your damaging Judgements by 20% and your Judgements no longer consume your Seals on the target.
+	paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT2Ret2P},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			for _, judgeSpells := range paladin.allJudgeSpells {
+				for _, judgeRankSpell := range judgeSpells {
+					judgeRankSpell.DamageMultiplierAdditive += 0.2
+				}
+			}
+
+			paladin.consumeSealsOnJudge = false
+		},
+	})
+}
+
+func (paladin *Paladin) applyPaladinT2Ret4P() {
+	bonusLabel := "S03 - Item - T2 - Paladin - Retribution 4P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	// 4 pieces: Reduces the cooldown on your Judgement ability by 5 seconds.
+	paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT2Ret4P},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.judgement.CD.FlatModifier -= 5 * time.Second
+		},
+	})
+}
+
+func (paladin *Paladin) applyPaladinT2Ret6P() {
+	bonusLabel := "S03 - Item - T2 - Paladin - Retribution 6P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
+	t2Judgement6pcAura := paladin.GetOrRegisterAura(core.Aura{
+		Label:     "Swift Judgement",
+		ActionID:  core.ActionID{SpellID: 467530},
+		Duration:  time.Second * 8,
+		MaxStacks: 5,
+
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= (1.0 + (float64(oldStacks) * 0.01))
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= (1.0 + (float64(newStacks) * 0.01))
+		},
+	})
+
+	paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT2Ret6P},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			originalApplyEffects := paladin.judgement.ApplyEffects
+
+			// Wrap the apply Judgement ApplyEffects with more Effects
+			paladin.judgement.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				originalApplyEffects(sim, target, spell)
+				// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
+				t2Judgement6pcAura.Activate(sim)
+				t2Judgement6pcAura.AddStack(sim)
+			}
+		},
+	})
+}
+
+func (paladin *Paladin) applyPaladinTAQRet2P() {
+
+	bonusLabel := "S03 - Item - TAQ - Paladin - Retribution 2P Bonus"
+
+	if duplicateBonusCheckAndCreate(paladin, PaladinTAQRet2P, bonusLabel) {
+		return
+	}
+
+	if !paladin.hasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
+		return
+	}
+
+	paladin.OnSpellRegistered(func(spell *core.Spell) {
+		//"S03 - Item - TAQ - Paladin - Retribution 2P Bonus",
+		if spell.SpellCode == SpellCode_PaladinCrusaderStrike {
+			// 2 Set: Increases Crusader Strike Damage by 50%
+			spell.DamageMultiplier += 0.5
+		}
+	})
+}
+
+func (paladin *Paladin) applyPaladinTAQRet4P() {
+	bonusLabel := "S03 - Item - TAQ - Paladin - Retribution 4P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	buffAura := paladin.GetOrRegisterAura(core.Aura{
+		Label:     "Excommunication",
+		ActionID:  core.ActionID{SpellID: 1217927},
+		Duration:  time.Second * 20,
+		MaxStacks: 3,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			for _, exorcism := range paladin.exorcism {
+				exorcism.DamageMultiplierAdditive += 0.4 * float64(newStacks-oldStacks)
+			}
+		},
+	})
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinTAQRet4P},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
+				buffAura.Activate(sim)
+				buffAura.AddStack(sim)
+			} else if spell.SpellCode == SpellCode_PaladinExorcism {
+				buffAura.Deactivate(sim)
+			}
+		},
+	}))
+}
+
+func (paladin *Paladin) applyPaladinZG2P() {
+	// No soul provides this bonus
+	paladin.AddStats(stats.Stats{
+		stats.HolyPower: 14,
+	})
+}
+
+func (paladin *Paladin) applyPaladinZG3P() {
+	bonusLabel := "S03 - Item - ZG - Paladin - Caster 3P Bonus"
+
+	if duplicateBonusCheckAndCreate(paladin, PaladinZG3P, bonusLabel) {
+		return
+	}
+
+	paladin.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_PaladinHolyShock {
+			//Damage multiplier is Additive with Infusion of Light rather than multiplicitive
+			spell.DamageMultiplierAdditive += 0.5
+		}
+	})
+}
+
+func (paladin *Paladin) applyPaladinZG5P() {
+	bonusLabel := "S03 - Item - ZG - Paladin - Caster 5P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinZG5P},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range paladin.exorcism {
+				spell.CD.FlatModifier -= time.Second * 3
+				spell.DamageMultiplierAdditive += 0.5
+			}
+		},
+	})
+}
+
+func (paladin *Paladin) applyPaladinRAQ3P() {
+	bonusLabel := "S03 - Item - RAQ - Paladin - Retribution 3P Bonus"
+
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	aura := core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinRAQ3P},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+
 			if !paladin.hasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
 				return
 			}
 
-			paladin.RegisterAura(core.Aura{
-				Label: "S03 - Item - RAQ - Paladin - Retribution 3P Bonus",
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					originalApplyEffects := paladin.crusaderStrike.ApplyEffects
-					extraApplyEffects := paladin.judgement.ApplyEffects
+			originalApplyEffects := paladin.crusaderStrike.ApplyEffects
+			extraApplyEffects := paladin.judgement.ApplyEffects
 
-					// Wrap the apply Crusader Strike ApplyEffects with more Effects
-					paladin.crusaderStrike.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						originalApplyEffects(sim, target, spell)
-						consumeSealsOnJudgeSaved := paladin.consumeSealsOnJudge // Save current value
-						paladin.consumeSealsOnJudge = false                     // Set to not consume seals
-						if paladin.currentSeal.IsActive() {
-							extraApplyEffects(sim, target, paladin.judgement)
-						}
-						paladin.consumeSealsOnJudge = consumeSealsOnJudgeSaved // Restore saved value
-					}
-				},
-			})
+			// Wrap the apply Crusader Strike ApplyEffects with more Effects
+			paladin.crusaderStrike.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				originalApplyEffects(sim, target, spell)
+				consumeSealsOnJudgeSaved := paladin.consumeSealsOnJudge // Save current value
+				paladin.consumeSealsOnJudge = false                     // Set to not consume seals
+				if paladin.currentSeal.IsActive() {
+					extraApplyEffects(sim, target, paladin.judgement)
+				}
+				paladin.consumeSealsOnJudge = consumeSealsOnJudgeSaved // Restore saved value
+			}
 		},
-	},
-})
+	}
+
+	paladin.RegisterAura(aura)
+}
+
+func duplicateBonusCheckAndCreate(agent core.Agent, bonusID int32, bonusString string) bool {
+	paladin := agent.(PaladinAgent).GetPaladin()
+
+	if paladin.HasAura(bonusString) {
+		return true // Do not apply bonus aura more than once (Due to Soul)
+	}
+
+	paladin.RegisterAura(core.Aura{
+		Label:    bonusString,
+		ActionID: core.ActionID{SpellID: bonusID},
+	})
+
+	return false
+}

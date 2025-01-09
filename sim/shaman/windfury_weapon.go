@@ -73,49 +73,34 @@ func (shaman *Shaman) RegisterWindfuryImbue(procMask core.ProcMask) {
 		shaman.OffHand().TempEnchant = enchantId
 	}
 
-	var proc = 0.2
+	var procChance = 0.2
 	if procMask == core.ProcMaskMelee {
-		proc = 0.36
-	}
-
-	icd := core.Cooldown{
-		Timer:    shaman.NewTimer(),
-		Duration: icdDuration,
+		procChance = 0.36
 	}
 
 	shaman.WindfuryWeaponMH = shaman.newWindfuryImbueSpell(true)
 	shaman.WindfuryWeaponOH = shaman.newWindfuryImbueSpell(false)
 
-	aura := shaman.RegisterAura(core.Aura{
-		Label:    "Windfury Imbue",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(procMask) || spell.Flags.Matches(core.SpellFlagSuppressEquipProcs) {
-				return
-			}
-
-			if !icd.IsReady(sim) {
-				return
-			}
-
-			if sim.RandomFloat("Windfury Imbue") < proc {
-				icd.Use(sim)
-
-				if spell.IsMH() {
-					shaman.WindfuryWeaponMH.Cast(sim, result.Target)
-					shaman.WindfuryWeaponMH.Cast(sim, result.Target)
-				} else {
-					shaman.WindfuryWeaponOH.Cast(sim, result.Target)
-					shaman.WindfuryWeaponOH.Cast(sim, result.Target)
-				}
+	triggerAura := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:              "Windfury Trigger",
+		Callback:          core.CallbackOnSpellHitDealt,
+		ProcMask:          procMask,
+		Outcome:           core.OutcomeLanded,
+		SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+		ProcChance:        procChance,
+		ICD:               icdDuration,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.IsMH() {
+				shaman.WindfuryWeaponMH.Cast(sim, result.Target)
+				shaman.WindfuryWeaponMH.Cast(sim, result.Target)
+			} else {
+				shaman.WindfuryWeaponOH.Cast(sim, result.Target)
+				shaman.WindfuryWeaponOH.Cast(sim, result.Target)
 			}
 		},
 	})
 
-	shaman.RegisterOnItemSwapWithImbue(enchantId, &procMask, aura)
+	shaman.RegisterOnItemSwapWithImbue(enchantId, &procMask, triggerAura)
 }
 
 func (shaman *Shaman) ApplyWindfuryImbue(procMask core.ProcMask) {

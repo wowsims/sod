@@ -9,7 +9,7 @@ import (
 
 // Blood Frenzy
 // Rend can now be used in Berserker stance, Rend's damage is increased by 100%,
-// and Rend deals additional damage equal to 3% of your Attack Power each time it deals damage.
+// and Rend deals additional damage equal to 4% of your Attack Power each time it deals damage.
 
 func (warrior *Warrior) registerRendSpell() {
 	hasBloodFrenzyRune := warrior.HasRune(proto.WarriorRune_RuneBloodFrenzy)
@@ -62,7 +62,7 @@ func (warrior *Warrior) registerRendSpell() {
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
 				damage := baseDamage
 				if hasBloodFrenzyRune {
-					damage += .03 * dot.Spell.MeleeAttackPower()
+					damage += .04 * dot.Spell.MeleeAttackPower()
 				}
 
 				dot.Snapshot(target, damage, isRollover)

@@ -1,6 +1,7 @@
 package mage
 
 import (
+	"fmt"
 	"slices"
 	"time"
 
@@ -111,6 +112,7 @@ func (mage *Mage) applyFireTalents() {
 func (mage *Mage) applyFrostTalents() {
 	mage.registerColdSnapCD()
 	mage.registerIceBarrierSpell()
+	mage.applyImprovedBlizzard()
 	mage.applyWintersChill()
 
 	// Elemental Precision
@@ -159,6 +161,8 @@ func (mage *Mage) applyFrostTalents() {
 			}
 		})
 	}
+
+	mage.applyShatter()
 }
 
 func (mage *Mage) applyArcaneConcentration() {
@@ -331,7 +335,7 @@ func (mage *Mage) applyImprovedFireBlast() {
 
 	mage.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode == SpellCode_MageFireBlast {
-			spell.CD.Duration -= cdReduction
+			spell.CD.FlatModifier -= cdReduction
 		}
 	})
 }
@@ -507,6 +511,57 @@ func (mage *Mage) registerColdSnapCD() {
 	mage.AddMajorCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
+	})
+}
+
+func (mage *Mage) applyImprovedBlizzard() {
+	if mage.Talents.ImprovedBlizzard == 0 {
+		return
+	}
+
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_MageBlizzard {
+			spell.Flags |= SpellFlagChillSpell
+		}
+	})
+}
+
+func (mage *Mage) applyShatter() {
+	mage.FrozenAuras = core.FilterSlice(
+		mage.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+			return unit.RegisterAura(core.Aura{
+				Label:    fmt.Sprintf("Shatter (%s)", mage.LogLabel()),
+				Duration: core.NeverExpires,
+			})
+		}),
+		func(aura *core.Aura) bool { return aura != nil },
+	)
+
+	mage.isTargetFrozen = func(target *core.Unit) bool {
+		return mage.FrozenAuras.Get(target).IsActive()
+	}
+
+	if mage.Talents.Shatter == 0 {
+		return
+	}
+
+	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
+
+	mage.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Flags.Matches(SpellFlagMage) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+			oldApplyEffects := spell.ApplyEffects
+			spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spellBonusCrit := 0.0
+
+				if mage.isTargetFrozen(target) {
+					spellBonusCrit += bonusCrit
+				}
+
+				spell.BonusCritRating += spellBonusCrit
+				oldApplyEffects(sim, target, spell)
+				spell.BonusCritRating -= spellBonusCrit
+			}
+		}
 	})
 }
 

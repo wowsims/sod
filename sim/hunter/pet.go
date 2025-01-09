@@ -155,10 +155,11 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	hp.AddStatDependency(stats.Agility, stats.MeleeCrit, core.CritPerAgiAtLevel[proto.Class_ClassWarrior][int(hp.Level)]*core.CritRatingPerCritChance)
 	hp.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassWarrior][int(hp.Level)]*core.SpellCritRatingPerCritChance)
 
-	// Ranged Weapon Specialization adds 3% hit and 0.5% expertise
-	hasRangedWeaponSpecialization := hunter.HasRune(proto.HunterRune(proto.RingRune_RuneRingRangedWeaponSpecialization))
-	if hasRangedWeaponSpecialization {
+	// Having any ring rune grants the pet 3% physical hit, 6% spell hit, and 0.5% expertise
+	hasRingRune := hunter.Equipment.Finger1().Rune > 0 && hunter.Equipment.Finger2().Rune > 0
+	if hasRingRune {
 		hp.AddStat(stats.MeleeHit, 3*core.MeleeHitRatingPerHitChance)
+		hp.AddStat(stats.SpellHit, 6*core.SpellHitRatingPerHitChance)
 		hp.AddStat(stats.Expertise, 0.5*core.ExpertiseRatingPerExpertiseChance)
 	}
 
@@ -184,12 +185,7 @@ func (hp *HunterPet) Initialize() {
 	hp.specialAbility = hp.NewPetAbility(hp.config.SpecialAbility, true)
 	hp.focusDump = hp.NewPetAbility(hp.config.FocusDump, false)
 
-	maxFocus := core.MaxFocus
-	if hp.hunterOwner.HasSetBonus(StrikersProwess, 2) {
-		maxFocus += 50
-	}
-
-	hp.EnableFocusBar(maxFocus, 1, func(sim *core.Simulation) {
+	hp.EnableFocusBar(core.MaxFocus, 1, func(sim *core.Simulation) {
 		if hp.GCD.IsReady(sim) {
 			hp.OnGCDReady(sim)
 		}

@@ -27,18 +27,20 @@ const (
 	SpellCode_RogueBladeDance
 	SpellCode_RogueBladeFlurry
 	SpellCode_RogueCrimsonTempest
+	SpellCode_RogueDeadlyPoisonTick
 	SpellCode_RogueEnvenom
 	SpellCode_RogueEviscerate
 	SpellCode_RogueExposeArmor
 	SpellCode_RogueGarrote
 	SpellCode_RogueGhostlyStrike
 	SpellCode_RogueHemorrhage
+	SpellCode_RogueInstantPoison
 	SpellCode_RogueMainGauche
 	SpellCode_RogueMutilate
+	SpellCode_RogueOccultPoisonTick
 	SpellCode_RoguePoisonedKnife
 	SpellCode_RogueRupture
 	SpellCode_RogueSaberSlash
-	SpellCode_RogueSaberSlashDoT
 	SpellCode_RogueShadowStrike
 	SpellCode_RogueSinisterStrike
 	SpellCode_RogueSliceandDice
@@ -72,7 +74,6 @@ type Rogue struct {
 	Shiv                *core.Spell
 	SinisterStrike      *core.Spell
 	SaberSlash          *core.Spell
-	saberSlashTick      *core.Spell
 	MainGauche          *core.Spell
 	Shadowstep          *core.Spell
 	Preparation         *core.Spell
@@ -116,21 +117,21 @@ type Rogue struct {
 	cutthroatBonusChance         float64
 
 	AdrenalineRushAura            *core.Aura
+	BladeDanceAura                *core.Aura
 	BladeFlurryAura               *core.Aura
+	CutthroatProcAura             *core.Aura
 	EnvenomAura                   *core.Aura
 	ExposeArmorAuras              core.AuraArray
 	EvasionAura                   *core.Aura
-	BladeDanceAura                *core.Aura
-	SliceAndDiceAura              *core.Aura
+	JustAFleshWoundAura           *core.Aura
 	MasterOfSubtletyAura          *core.Aura
-	ShadowstepAura                *core.Aura
-	ShadowDanceAura               *core.Aura
-	StealthAura                   *core.Aura
-	WaylayAuras                   core.AuraArray
 	RollingWithThePunchesAura     *core.Aura
 	RollingWithThePunchesProcAura *core.Aura
-	CutthroatProcAura             *core.Aura
-	VanishAura                    *core.Aura
+	ShadowstepAura                *core.Aura
+	ShadowDanceAura               *core.Aura
+	SliceAndDiceAura              *core.Aura
+	StealthAura                   *core.Aura
+	WaylayAuras                   core.AuraArray
 
 	HonorAmongThieves *core.Aura
 

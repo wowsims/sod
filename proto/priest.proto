@@ -6,130 +6,142 @@ option go_package = "./proto";
 import "common.proto";
 
 message PriestTalents {
-	// Discipline
-	int32 unbreakable_will = 1;
-	int32 wand_specialization = 2;
-	int32 silent_resolve = 3;
-	int32 improved_power_word_fortitude = 4;
-	int32 improved_power_word_shield = 5;
-	int32 martyrdom = 6;
-	bool inner_focus = 7;
-	int32 meditation = 8;
-	int32 improved_inner_fire = 9;
-	int32 mental_agility = 10;
-	int32 improved_mana_burn = 11;
-	int32 mental_strength = 12;
-	bool divine_spirit = 13;
-	int32 force_of_will = 14;
-	bool power_infusion = 15;
+    // Discipline
+    int32 unbreakable_will = 1;
+    int32 wand_specialization = 2;
+    int32 silent_resolve = 3;
+    int32 improved_power_word_fortitude = 4;
+    int32 improved_power_word_shield = 5;
+    int32 martyrdom = 6;
+    bool inner_focus = 7;
+    int32 meditation = 8;
+    int32 improved_inner_fire = 9;
+    int32 mental_agility = 10;
+    int32 improved_mana_burn = 11;
+    int32 mental_strength = 12;
+    bool divine_spirit = 13;
+    int32 force_of_will = 14;
+    bool power_infusion = 15;
 
-	// Holy
-	int32 healing_focus = 16;
-	int32 improved_renew = 17;
-	int32 holy_specialization = 18;
-	int32 spell_warding = 19;
-	int32 divine_fury = 20;
-	bool holy_nova = 21;
-	int32 blessed_recovery = 22;
-	int32 inspiration = 23;
-	int32 holy_reach = 24;
-	int32 improved_healing = 25;
-	int32 searing_light = 26;
-	int32 improved_prayer_of_healing = 27;
-	bool spirit_of_redemption = 28;
-	int32 spiritual_guidance = 29;
-	int32 spiritual_healing = 30;
-	bool lightwell = 31;
+    // Holy
+    int32 healing_focus = 16;
+    int32 improved_renew = 17;
+    int32 holy_specialization = 18;
+    int32 spell_warding = 19;
+    int32 divine_fury = 20;
+    bool holy_nova = 21;
+    int32 blessed_recovery = 22;
+    int32 inspiration = 23;
+    int32 holy_reach = 24;
+    int32 improved_healing = 25;
+    int32 searing_light = 26;
+    int32 improved_prayer_of_healing = 27;
+    bool spirit_of_redemption = 28;
+    int32 spiritual_guidance = 29;
+    int32 spiritual_healing = 30;
+    bool lightwell = 31;
 
-	// Shadow
-	int32 spirit_tap = 32;
-	int32 blackout = 33;
-	int32 shadow_affinity = 34;
-	int32 improved_shadow_word_pain = 35;
-	int32 shadow_focus = 36;
-	int32 improved_psychic_scream = 37;
-	int32 improved_mind_blast = 38;
-	bool mind_flay = 39;
-	int32 improved_fade = 40;
-	int32 shadow_reach = 41;
-	int32 shadow_weaving = 42;
-	bool silence = 43;
-	bool vampiric_embrace = 44;
-	int32 improved_vampiric_embrace = 45;
-	int32 darkness = 46;
-	bool shadowform = 47;
+    // Shadow
+    int32 spirit_tap = 32;
+    int32 blackout = 33;
+    int32 shadow_affinity = 34;
+    int32 improved_shadow_word_pain = 35;
+    int32 shadow_focus = 36;
+    int32 improved_psychic_scream = 37;
+    int32 improved_mind_blast = 38;
+    bool mind_flay = 39;
+    int32 improved_fade = 40;
+    int32 shadow_reach = 41;
+    int32 shadow_weaving = 42;
+    bool silence = 43;
+    bool vampiric_embrace = 44;
+    int32 improved_vampiric_embrace = 45;
+    int32 darkness = 46;
+    bool shadowform = 47;
 }
 
 enum PriestRune {
-	PriestRuneNone = 0;
+    PriestRuneNone = 0;
 
-	RuneHelmDivineAegis 		= 431622;
-	RuneHelmEyeOfTheVoid 		= 402789;
-	RuneHelmPainAndSuffering 	= 413251;
+    RuneHelmDivineAegis             = 431622;
+    RuneHelmEyeOfTheVoid            = 402789;
+    RuneHelmPainAndSuffering        = 413251;
 
-	RuneCloakBindingHeal		= 401937;
-	RuneCloakSoulWarding		= 402000;
-	RuneCloakVampiricTouch		= 402668;
+    RuneShouldersContemnor          = 1220138;
+    RuneShouldersDeathdealer        = 1220130;
+    RuneShouldersFaithful           = 1220112;
+    RuneShouldersMindBreaker        = 1220128;
+    RuneShouldersPenitent           = 1220122;
+    RuneShouldersPlaguebringer      = 1220140;
+    RuneShouldersRefinedPriest      = 1220108;
+    RuneShouldersSerendipitous      = 1220114;
+    RuneShouldersSpiritFont         = 1220132;
+    RuneShouldersUnwaveringDefiler  = 1220136;
+    RuneShouldersZealot             = 1220134;
 
-	RuneChestSerendipity	 	= 413248;
-	RuneChestStrengthOfSoul		= 415739;
-	RuneChestTwistedFaith    	= 425198;
+    RuneCloakBindingHeal            = 401937;
+    RuneCloakSoulWarding            = 402000;
+    RuneCloakVampiricTouch          = 402668;
 
-	RuneBracersDespair 			= 431670;
-	RuneBracersSurgeOfLight 	= 431664;
-	RuneBracersVoidZone 		= 431681;
+    RuneChestSerendipity            = 413248;
+    RuneChestStrengthOfSoul         = 415739;
+    RuneChestTwistedFaith           = 425198;
 
-	RuneHandsCircleOfHealing	= 401946;
-	RuneHandsMindSear			= 413259;
-	RuneHandsPenance			= 402174;
-	RuneHandsShadowWordDeath 	= 401955;
+    RuneBracersDespair              = 431670;
+    RuneBracersSurgeOfLight         = 431664;
+    RuneBracersVoidZone             = 431681;
 
-	RuneWaistEmpoweredRenew		= 425266;
-	RuneWaistMindSpike			= 431655;
-	RuneWaistRenewedHope 		= 425280;
+    RuneHandsCircleOfHealing        = 401946;
+    RuneHandsMindSear               = 413259;
+    RuneHandsPenance                = 402174;
+    RuneHandsShadowWordDeath        = 401955;
 
-	RuneLegsHomunculi			= 402799;
-	RuneLegsPowerWordBarrier	= 425207;
-	RuneLegsPrayerOfMending		= 401859;
-	RuneLegsSharedPain			= 401969;
+    RuneWaistEmpoweredRenew         = 425266;
+    RuneWaistMindSpike              = 431655;
+    RuneWaistRenewedHope            = 425280;
 
-	RuneFeetDispersion			= 425294;
-	RuneFeetPainSuppression		= 402004;
-	RuneFeetSpiritOfTheRedeemer	= 425284;
-	RuneFeetVoidPlague			= 425204;
+    RuneLegsHomunculi               = 402799;
+    RuneLegsPowerWordBarrier        = 425207;
+    RuneLegsPrayerOfMending         = 401859;
+    RuneLegsSharedPain              = 401969;
+
+    RuneFeetDispersion              = 425294;
+    RuneFeetPainSuppression         = 402004;
+    RuneFeetSpiritOfTheRedeemer     = 425284;
+    RuneFeetVoidPlague              = 425204;
 }
 
 message ShadowPriest {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	message Options {
-		enum Armor {
-			NoArmor = 0;
-			InnerFire = 1;
-		}
+    message Options {
+        enum Armor {
+            NoArmor = 0;
+            InnerFire = 1;
+        }
 
-		bool use_shadowfiend = 1;
-		Armor armor = 2;
-		bool use_mind_blast = 4;
-		bool use_shadow_word_death = 5;
-		UnitReference power_infusion_target = 6;
-		double latency = 7 [deprecated = true]; // Latency between actions
-	}
-	Options options = 3;
+        bool use_shadowfiend = 1;
+        Armor armor = 2;
+        bool use_mind_blast = 4;
+        bool use_shadow_word_death = 5;
+        UnitReference power_infusion_target = 6;
+        double latency = 7 [deprecated = true]; // Latency between actions
+    }
+    Options options = 3;
 }
 
 message HealingPriest {
-	message Rotation {
-	}
+    message Rotation {
+    }
 
-	message Options {
-		bool use_inner_fire = 3;
-		bool use_shadowfiend = 1;
-		UnitReference power_infusion_target = 2;
+    message Options {
+        bool use_inner_fire = 3;
+        bool use_shadowfiend = 1;
+        UnitReference power_infusion_target = 2;
 
-		// Number of times for rapture to proc each minute, ie when a PWS is fully absorbed.
-		double raptures_per_minute = 4;
-	}
-	Options options = 3;
+        // Number of times for rapture to proc each minute, ie when a PWS is fully absorbed.
+        double raptures_per_minute = 4;
+    }
+    Options options = 3;
 }

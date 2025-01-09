@@ -12,8 +12,6 @@ func (rogue *Rogue) registerBlunderbussSpell() {
 	if !rogue.HasRune(proto.RogueRune_RuneBlunderbuss) {
 		return
 	}
-	
-	activate2PcBonuses := rogue.HasSetBonus(ItemSetNightSlayerBattlearmor, 2)  && rogue.HasAura("Blade Dance") && rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
 
 	results := make([]*core.SpellResult, min(4, rogue.Env.GetNumTargets()))
 
@@ -25,7 +23,7 @@ func (rogue *Rogue) registerBlunderbussSpell() {
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagCarnage,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   20 - core.TernaryFloat64(activate2PcBonuses, 20, 0),
+			Cost:   20,
 			Refund: 0,
 		},
 		Cast: core.CastConfig{
@@ -40,7 +38,7 @@ func (rogue *Rogue) registerBlunderbussSpell() {
 		},
 
 		DamageMultiplier: 1,
-		ThreatMultiplier: core.TernaryFloat64(activate2PcBonuses, 4, 2), //2x base modifier up to 4x with 2pc
+		ThreatMultiplier: 2,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)

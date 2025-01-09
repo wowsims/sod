@@ -140,7 +140,7 @@ func (value *APLValueWarlockShouldRefreshCorruption) GetBool(sim *core.Simulatio
 	snapshotMult := dot.SnapshotAttackerMultiplier * (snapshotCrit*(dot.Spell.CritMultiplier(attackTable)-1) + 1)
 
 	curCrit := dot.Spell.SpellCritChance(target)
-	curDmg := dot.Spell.AttackerDamageMultiplier(attackTable) * (curCrit*(dot.Spell.CritMultiplier(attackTable)-1) + 1)
+	curDmg := dot.Spell.AttackerDamageMultiplier(attackTable, true) * (curCrit*(dot.Spell.CritMultiplier(attackTable)-1) + 1)
 
 	relDmgInc := curDmg / snapshotMult
 

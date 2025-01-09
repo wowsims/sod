@@ -4,6 +4,8 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 type FrenziedRegenerationRankInfo struct {
@@ -65,6 +67,7 @@ func (druid *Druid) newFrenziedRegenSpellConfig(frenziedRegenRank FrenziedRegene
 	actionID := core.ActionID{SpellID: frenziedRegenRank.id}
 	healthMetrics := druid.NewHealthMetrics(actionID)
 	rageMetrics := druid.NewRageMetrics(actionID)
+	hasImprovedFrenziedRegen := druid.HasRune(proto.DruidRune_RuneBracersImpFrenziedRegen)
 
 	cdTimer := druid.NewTimer()
 	cd := time.Minute * 3
@@ -87,7 +90,7 @@ func (druid *Druid) newFrenziedRegenSpellConfig(frenziedRegenRank FrenziedRegene
 				Period:   time.Second * 1,
 				OnAction: func(sim *core.Simulation) {
 					rageDumped := min(druid.CurrentRage(), 10.0)
-					healthGained := rageDumped * frenziedRegenRank.rageConversion * druid.PseudoStats.HealingTakenMultiplier
+					healthGained := core.TernaryFloat64(hasImprovedFrenziedRegen, druid.GetStat(stats.Health)*.1, rageDumped*frenziedRegenRank.rageConversion*druid.PseudoStats.HealingTakenMultiplier)
 
 					if druid.FrenziedRegenerationAura.IsActive() {
 						druid.SpendRage(sim, rageDumped, rageMetrics)

@@ -15,12 +15,12 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 	hasDualWieldSpecRune := shaman.HasRune(proto.ShamanRune_RuneChestDualWieldSpec)
 
 	shaman.StormstrikeMH = shaman.newStormstrikeHitSpell(true)
-	shaman.StormstrikeMH.SpellCode = SpellCode_ShamanStormstrike
 	if hasDualWieldSpecRune {
 		shaman.StormstrikeOH = shaman.newStormstrikeHitSpell(false)
 	}
 
 	shaman.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_ShamanStormstrike,
 		ActionID:    core.ActionID{SpellID: 17364},
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
@@ -50,14 +50,14 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 	})
 }
 
-// Only the main-hand hit triggers procs / the debuff
 func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 	procMask := core.ProcMaskMeleeMHSpecial
 	flags := core.SpellFlagMeleeMetrics
 	damageMultiplier := 1.0
 	damageFunc := shaman.MHWeaponDamage
 	if !isMH {
-		procMask = core.ProcMaskMeleeOHSpecial
+		// Only the main-hand hit triggers procs / the debuff
+		procMask = core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc | core.ProcMaskMeleeDamageProc
 		flags |= core.SpellFlagNoOnCastComplete
 		damageMultiplier = shaman.AutoAttacks.OHConfig().DamageMultiplier
 		damageFunc = shaman.OHWeaponDamage
@@ -68,6 +68,7 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 	})
 
 	return shaman.RegisterSpell(core.SpellConfig{
+		SpellCode:   SpellCode_ShamanStormstrikeHit,
 		ActionID:    core.ActionID{SpellID: 17364}.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,

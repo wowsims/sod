@@ -93,12 +93,13 @@ var ItemSetPrimalBlessing = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				Name:       "Primal Blessing Trigger",
-				Callback:   core.CallbackOnSpellHitDealt,
-				ProcMask:   core.ProcMaskMeleeOrRanged,
-				Outcome:    core.OutcomeLanded,
-				ProcChance: 0.05,
-				ICD:        time.Second * 72,
+				Name:              "Primal Blessing Trigger",
+				Callback:          core.CallbackOnSpellHitDealt,
+				ProcMask:          core.ProcMaskMeleeOrRanged,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				Outcome:           core.OutcomeLanded,
+				ProcChance:        0.05,
+				ICD:               time.Second * 72,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					aura.Activate(sim)
 				},

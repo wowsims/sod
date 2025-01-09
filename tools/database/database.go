@@ -191,9 +191,25 @@ func (db *WowDatabase) AddRune(id int32, tooltip WowheadItemResponse) {
 		Id:             id,
 		Name:           tooltip.GetName(),
 		Icon:           tooltip.GetIcon(),
-		ClassAllowlist: []proto.Class{tooltip.GetRequiredClass()},
+		ClassAllowlist: tooltip.GetRequiredClasses(),
 		Type:           tooltip.GetRequiredItemSlot(),
-		RequiresLevel:  int32(tooltip.GetRequiresLevel()),
+	}
+}
+
+func (db *WowDatabase) AddShoulderRune(id int32, tooltip WowheadItemResponse) {
+	if tooltip.GetName() == "" || tooltip.GetIcon() == "" {
+		return
+	}
+	if runeOverrideNames[tooltip.GetName()] != nil {
+		return
+	}
+
+	db.Runes[id] = &proto.UIRune{
+		Id:             id,
+		Name:           tooltip.GetName(),
+		Icon:           tooltip.GetIcon(),
+		ClassAllowlist: tooltip.GetRequiredClasses(),
+		Type:           proto.ItemType_ItemTypeShoulder,
 	}
 }
 

@@ -21,13 +21,15 @@ func (mage *Mage) registerIceLanceSpell() {
 	manaCost := 0.08
 
 	mage.IceLance = mage.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_MageIceLance,
-		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneHandsIceLance)},
-		SpellSchool:  core.SpellSchoolFrost,
-		DefenseType:  core.DefenseTypeMagic,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | core.SpellFlagAPL,
+		SpellCode:   SpellCode_MageIceLance,
+		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneHandsIceLance)},
+		SpellSchool: core.SpellSchoolFrost,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskSpellDamage,
+		Flags:       SpellFlagMage | core.SpellFlagAPL,
+
 		MissileSpeed: 38,
+		MetricSplits: 6,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -35,6 +37,11 @@ func (mage *Mage) registerIceLanceSpell() {
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
+			},
+			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				if glaciateAura := mage.GlaciateAuras.Get(mage.CurrentTarget); glaciateAura != nil {
+					spell.SetMetricsSplit(glaciateAura.GetStacks())
+				}
 			},
 		},
 
@@ -44,10 +51,31 @@ func (mage *Mage) registerIceLanceSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
+
+			damageMultiplier := 1.0
+			if mage.isTargetFrozen(target) {
+				damageMultiplier = 4.0
+			}
+
+			var glaciateAura *core.Aura
+			modifier := 0.0
+			if glaciateAura = mage.GlaciateAuras.Get(target); glaciateAura.IsActive() {
+				modifier += 0.20 * float64(glaciateAura.GetStacks())
+			}
+
+			spell.DamageMultiplier *= damageMultiplier
+			spell.DamageMultiplierAdditive += modifier
+
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+			spell.DamageMultiplier /= damageMultiplier
+			spell.DamageMultiplierAdditive -= modifier
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
+				if result.Landed() && glaciateAura != nil {
+					glaciateAura.Deactivate(sim)
+				}
 			})
 		},
 	})
@@ -58,32 +86,12 @@ func (mage *Mage) registerIceLanceSpell() {
 
 	mage.GlaciateAuras = mage.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
 		return unit.RegisterAura(core.Aura{
-			ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneHandsIceLance), Tag: 1}, // Temp ID
+			ActionID:  core.ActionID{SpellID: 1218345},
 			Label:     "Glaciate",
 			Duration:  time.Second * 15,
 			MaxStacks: 5,
 		})
 	})
-
-	oldApplyEffects := mage.IceLance.ApplyEffects
-	mage.IceLance.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-		var glaciateAura *core.Aura
-		modifier := 0.0
-
-		if glaciateAura = mage.GlaciateAuras.Get(target); glaciateAura.IsActive() {
-			modifier += 0.20 * float64(glaciateAura.GetStacks())
-		}
-
-		spell.DamageMultiplierAdditive += modifier
-		oldApplyEffects(sim, target, spell)
-		spell.DamageMultiplierAdditive -= modifier
-
-		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
-			if glaciateAura != nil {
-				glaciateAura.Deactivate(sim)
-			}
-		})
-	}
 
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Glaciate Trigger",
