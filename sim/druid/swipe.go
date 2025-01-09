@@ -5,51 +5,86 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
-const SwipeRanks = 5
+type SwipeRankInfo struct {
+	id     int32
+	level  int32
+	damage float64
+}
 
-var SwipeSpellId = [SwipeRanks + 1]int32{0, 779, 780, 769, 9754, 9908}
-var SwipeBaseDamage = [SwipeRanks + 1]float64{0, 18, 25, 36, 60, 83}
-var SwipeLevel = [SwipeRanks + 1]int{0, 16, 24, 34, 44, 54}
+var swipeSpells = []SwipeRankInfo{
+	{
+		id:     779,
+		level:  16,
+		damage: 18.0,
+	},
+	{
+		id:     780,
+		level:  24,
+		damage: 25.0,
+	},
+	{
+		id:     769,
+		level:  34,
+		damage: 36.0,
+	},
+	{
+		id:     9754,
+		level:  44,
+		damage: 60.0,
+	},
+	{
+		id:     9908,
+		level:  54,
+		damage: 83.0,
+	},
+}
+
+func (druid *Druid) registerSwipeBearSpell() {
+	// Add highest available rank for level.
+	for rank := len(swipeSpells) - 1; rank >= 0; rank-- {
+		if druid.Level >= swipeSpells[rank].level {
+			config := druid.newSwipeBearSpellConfig(swipeSpells[rank])
+			druid.SwipeBear = druid.RegisterSpell(Bear, config)
+			break
+		}
+	}
+}
 
 // See https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
 // Modifies Threat +101%:
-const SwipeThreatMultiplier = 2.0
+const SwipeThreatMultiplier = 3.5
 
-func (druid *Druid) registerSwipeBearSpell() {
+func (druid *Druid) newSwipeBearSpellConfig(swipeRank SwipeRankInfo) core.SpellConfig {
 	hasImprovedSwipeRune := druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe)
+	baseMultiplier := 1.0
 
-	rank := map[int32]int{
-		25: 2,
-		40: 3,
-		50: 4,
-		60: 5,
-	}[druid.Level]
-
-	level := SwipeLevel[rank]
-	spellID := SwipeSpellId[rank]
-	baseDamage := SwipeBaseDamage[rank]
+	baseDamage := swipeRank.damage
 
 	rageCost := 20 - float64(druid.Talents.Ferocity)
 	targetCount := core.TernaryInt32(hasImprovedSwipeRune, 10, 3)
 	numHits := min(targetCount, druid.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
+	hasGore := druid.HasRune(proto.DruidRune_RuneHelmGore)
+	hasLacerate := druid.HasRune(proto.DruidRune_RuneLegsLacerate)
 
 	switch druid.Ranged().ID {
 	case IdolOfBrutality:
 		rageCost -= 3
+	case IdolOfUrsinPower:
+		baseMultiplier += .03
 	}
+	rageMetrics := druid.NewRageMetrics(core.ActionID{SpellID: swipeRank.id})
 
-	druid.SwipeBear = druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
+	return core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: swipeRank.id},
 		SpellSchool: core.SpellSchoolPhysical,
+		SpellCode:   SpellCode_DruidSwipeBear,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-
-		Rank:          rank,
-		RequiredLevel: level,
 
 		RageCost: core.RageCostOptions{
 			Cost: 20 - float64(druid.Talents.Ferocity),
@@ -62,21 +97,34 @@ func (druid *Druid) registerSwipeBearSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: 1 + 0.1*float64(druid.Talents.SavageFury),
-		ThreatMultiplier: SwipeThreatMultiplier,
+		BaseDamageMultiplierAdditive: baseMultiplier,
+		DamageMultiplierAdditive:     1 + 0.1*float64(druid.Talents.SavageFury),
+		ThreatMultiplier:             SwipeThreatMultiplier,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDamage + spell.MeleeAttackPower()*0.1
 			for idx := range results {
+				dotBonusCrit := 0.0
+				if hasLacerate && druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+					dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
+				}
+				spell.BonusCritRating += dotBonusCrit
+				damage := baseDamage + .1*druid.GetStat(stats.AttackPower)
 				results[idx] = spell.CalcDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
+				spell.BonusCritRating -= dotBonusCrit
+
 				target = sim.Environment.NextTargetUnit(target)
 			}
 
 			for _, result := range results {
 				spell.DealDamage(sim, result)
 			}
+
+			if hasGore && sim.Proc(0.15, "Gore") {
+				druid.AddRage(sim, 10.0, rageMetrics)
+				druid.MangleBear.CD.Reset()
+			}
 		},
-	})
+	}
 }
 
 func (druid *Druid) registerSwipeCatSpell() {
