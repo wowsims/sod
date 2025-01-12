@@ -706,6 +706,7 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		Unique:        item.GetUnique(),
 		Heroic:        item.IsHeroic(),
 		Timeworn:      item.IsTimeworn(),
+		Sanctified:    item.IsSanctified(),
 
 		RequiredProfession: item.GetRequiredProfession(),
 		SetName:            item.GetItemSetName(),
@@ -764,6 +765,12 @@ var timewornRegexp = regexp.MustCompile(`<span style=\"color: #[0-9A-F]{6}\">Tim
 
 func (item WowheadItemResponse) IsTimeworn() bool {
 	return timewornRegexp.MatchString(item.Tooltip)
+}
+
+var sanctifiedRegexp = regexp.MustCompile(`<span style=\"color: #[0-9A-F]{6}\">Sanctified<\/span>`)
+
+func (item WowheadItemResponse) IsSanctified() bool {
+	return sanctifiedRegexp.MatchString(item.Tooltip)
 }
 
 func (item WowheadItemResponse) GetRequiredProfession() proto.Profession {

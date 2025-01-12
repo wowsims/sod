@@ -1179,6 +1179,8 @@ func ThornsAura(character *Character, points int32) *Aura {
 	actionID := ActionID{SpellID: spellID}
 	damage := float64(baseDamage) * (1 + 0.25*float64(points))
 
+	character.PseudoStats.ThornsDamage += damage
+
 	procSpell := character.RegisterSpell(SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: SpellSchoolNature,

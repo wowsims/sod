@@ -1,6 +1,7 @@
 package item_effects
 
 import (
+	"fmt"
 	"math"
 	"time"
 
@@ -12,9 +13,20 @@ import (
 )
 
 const (
-	LeggingsOfImmersion   = 233505
-	RingOfSwarmingThought = 233507
-	RobesOfTheBattleguard = 233575
+	RazorspikeBattleplate    = 233492
+	LeggingsOfImmersion      = 233505
+	RingOfSwarmingThought    = 233507
+	RobesOfTheBattleguard    = 233575
+	RazorspikeShoulderplates = 233793
+	RazorspikeHeadcage       = 233795
+	RazorbrambleShoulderpads = 233804
+	RazorbrambleCowl         = 233808
+	RazorbrambleLeathers     = 233813
+	VampiricCowl             = 233826
+	VampiricShawl            = 233833
+	VampiricRobe             = 233837
+	TunedForceReactiveDisk   = 233988
+	LodestoneOfRetaliation   = 233992
 
 	// Obsidian Weapons
 	ObsidianChampion    = 233490
@@ -168,6 +180,17 @@ func init() {
 	})
 
 	///////////////////////////////////////////////////////////////////////////
+	//                                 Trinkets
+	///////////////////////////////////////////////////////////////////////////
+
+	// https://www.wowhead.com/classic/item=233992/lodestone-of-retaliation
+	// Equip: When struck in combat inflicts 80 Nature damage to the attacker.
+	// Causes twice as much threat as damage dealt.
+	core.NewItemEffect(LodestoneOfRetaliation, func(agent core.Agent) {
+		thornsNatureDamageEffect(agent, LodestoneOfRetaliation, "Lodestone of Retaliation", 80)
+	})
+
+	///////////////////////////////////////////////////////////////////////////
 	//                                 Rings
 	///////////////////////////////////////////////////////////////////////////
 
@@ -291,6 +314,48 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=233808/razorbramble-cowl
+	// Equip: When struck in combat inflicts 100 Nature damage to the attacker.
+	// Causes twice as much threat as damage dealt.
+	core.NewItemEffect(RazorbrambleCowl, func(agent core.Agent) {
+		thornsNatureDamageEffect(agent, RazorbrambleCowl, "Razorbramble Cowl", 100)
+	})
+
+	// https://www.wowhead.com/classic/item=233813/razorbramble-leathers
+	// Equip: When struck in combat inflicts 100 Nature damage to the attacker.
+	// Causes twice as much threat as damage dealt.
+	core.NewItemEffect(RazorbrambleLeathers, func(agent core.Agent) {
+		thornsNatureDamageEffect(agent, RazorbrambleLeathers, "Razorbramble Leathers", 100)
+	})
+
+	// https://www.wowhead.com/classic/item=233804/razorbramble-shoulderpads
+	// Equip: When struck in combat inflicts 80 Nature damage to the attacker.
+	// Causes twice as much threat as damage dealt.
+	core.NewItemEffect(RazorbrambleShoulderpads, func(agent core.Agent) {
+		thornsNatureDamageEffect(agent, RazorbrambleShoulderpads, "Razorbramble Shoulderpads", 80)
+	})
+
+	// https://www.wowhead.com/classic/item=233492/razorspike-battleplate
+	// Equip: When struck in combat inflicts 100 Nature damage to the attacker.
+	// Causes twice as much threat as damage dealt.
+	core.NewItemEffect(RazorspikeBattleplate, func(agent core.Agent) {
+		thornsNatureDamageEffect(agent, RazorspikeBattleplate, "Razorspike Battleplate", 100)
+	})
+
+	// https://www.wowhead.com/classic/item=233795/razorspike-headcage
+	// Equip: When struck in combat inflicts 100 Nature damage to the attacker.
+	// Causes twice as much threat as damage dealt.
+	core.NewItemEffect(RazorspikeHeadcage, func(agent core.Agent) {
+		thornsNatureDamageEffect(agent, RazorspikeHeadcage, "Razorspike Headcage", 100)
+	})
+
+	// https://www.wowhead.com/classic/item=233793/razorspike-shoulderplates
+	// Equip: When struck in combat inflicts 80 Nature damage to the attacker.
+	// Causes twice as much threat as damage dealt.
+	core.NewItemEffect(RazorspikeShoulderplates, func(agent core.Agent) {
+		thornsNatureDamageEffect(agent, RazorspikeShoulderplates, "Razorspike Shoulderplates", 80)
+	})
+
 	// https://www.wowhead.com/classic/item=233575/robes-of-the-battleguard
 	// Your damaging non-periodic spells increase your spell damage by 20 for 15 sec.
 	// If the target is player controlled, gain 120 spell penetration for 15 sec instead.
@@ -321,6 +386,103 @@ func init() {
 				buffAura.Activate(sim)
 			},
 		})
+	})
+
+	// https://www.wowhead.com/classic/item=233988/tuned-force-reactive-disk
+	// Equip: When the shield blocks it releases an electrical charge that damages all nearby enemies. (1s cooldown)
+	// Use: Charge up the energy within the shield for 3 sec to deal 450 to 750 Nature damage to all nearby enemies. After use, the shield needs 10 sec to recharge. (2 Min Cooldown)
+	core.NewItemEffect(TunedForceReactiveDisk, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: TunedForceReactiveDisk},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, 35, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		procTriggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Force Reactive Disk",
+			Callback: core.CallbackOnSpellHitTaken,
+			ProcMask: core.ProcMaskMelee,
+			Outcome:  core.OutcomeBlock,
+			ICD:      time.Second,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, spell.Unit)
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1213967},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				sim.AddPendingAction(&core.PendingAction{
+					NextActionAt: sim.CurrentTime + time.Second*3,
+					OnAction: func(sim *core.Simulation) {
+						for _, aoeTarget := range sim.Encounter.TargetUnits {
+							spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(450, 750), spell.OutcomeMagicHitAndCrit)
+						}
+
+						spell.CD.Use(sim)
+
+						procTriggerAura.Deactivate(sim)
+						sim.AddPendingAction(&core.PendingAction{
+							NextActionAt: sim.CurrentTime + time.Second*10,
+							OnAction: func(sim *core.Simulation) {
+								procTriggerAura.Activate(sim)
+							},
+						})
+					},
+				})
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=233826/vampiric-cowl
+	// Equip: When struck in combat has a 20% chance of stealing 50 life from target enemy. (Proc chance: 20%)
+	core.NewItemEffect(VampiricCowl, func(agent core.Agent) {
+		vampiricDrainLifeEffect(agent, VampiricCowl, "Vampiric Cowl", 50)
+	})
+
+	// https://www.wowhead.com/classic/item=233833/vampiric-shawl
+	// Equip: When struck in combat has a 20% chance of stealing 40 life from target enemy. (Proc chance: 20%)
+	core.NewItemEffect(VampiricShawl, func(agent core.Agent) {
+		vampiricDrainLifeEffect(agent, VampiricShawl, "Vampiric Shawl", 40)
+	})
+
+	// https://www.wowhead.com/classic/item=233837/vampiric-robe
+	// Equip: When struck in combat has a 20% chance of stealing 50 life from target enemy. (Proc chance: 20%)
+	core.NewItemEffect(VampiricRobe, func(agent core.Agent) {
+		vampiricDrainLifeEffect(agent, VampiricRobe, "Vampiric Robe", 50)
 	})
 
 	core.AddEffectsToTest = true
@@ -533,6 +695,67 @@ func TimewornStrikeAura(agent core.Agent) {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Extra ranged attacks do not reset the swing timer confirmed by Zirene
 			character.AutoAttacks.StoreExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
+		},
+	})
+}
+
+func thornsNatureDamageEffect(agent core.Agent, itemID int32, itemName string, damage float64) {
+	character := agent.GetCharacter()
+	character.PseudoStats.ThornsDamage += damage
+
+	procSpell := character.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{ItemID: itemID},
+		SpellSchool: core.SpellSchoolNature,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 2,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
+		},
+	})
+
+	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+		Label: fmt.Sprintf("Damage Shield Dmg +%f (%s)", damage, itemName),
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+				procSpell.Cast(sim, spell.Unit)
+			}
+		},
+	}))
+}
+
+func vampiricDrainLifeEffect(agent core.Agent, itemID int32, itemName string, damage float64) {
+	character := agent.GetCharacter()
+
+	actionID := core.ActionID{ItemID: itemID}
+	healthMetrics := character.NewHealthMetrics(actionID)
+	drainLifeSpell := character.RegisterSpell(core.SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeAlwaysHit)
+			character.GainHealth(sim, result.Damage, healthMetrics)
+		},
+	})
+
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:       fmt.Sprintf("Drain Life Trigger (%s)", itemName),
+		Callback:   core.CallbackOnSpellHitTaken,
+		Outcome:    core.OutcomeLanded,
+		ProcMask:   core.ProcMaskMelee,
+		ProcChance: 0.20,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			drainLifeSpell.Cast(sim, spell.Unit)
 		},
 	})
 }

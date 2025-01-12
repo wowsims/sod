@@ -39,7 +39,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatMP5,
 	],
 	epPseudoStats: [
-		PseudoStat.BonusPhysicalDamage,
+		PseudoStat.PseudoStatBonusPhysicalDamage,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
@@ -62,7 +62,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatMP5,
 	],
 	displayPseudoStats: [
-		PseudoStat.BonusPhysicalDamage,
+		PseudoStat.PseudoStatBonusPhysicalDamage,
 	],
 
 	defaults: {
