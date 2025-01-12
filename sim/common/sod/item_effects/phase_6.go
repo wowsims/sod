@@ -22,6 +22,9 @@ const (
 	RazorbrambleShoulderpads = 233804
 	RazorbrambleCowl         = 233808
 	RazorbrambleLeathers     = 233813
+	VampiricCowl             = 233826
+	VampiricShawl            = 233833
+	VampiricRobe             = 233837
 	TunedForceReactiveDisk   = 233988
 	LodestoneOfRetaliation   = 233992
 
@@ -464,6 +467,24 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=233826/vampiric-cowl
+	// Equip: When struck in combat has a 20% chance of stealing 50 life from target enemy. (Proc chance: 20%)
+	core.NewItemEffect(VampiricCowl, func(agent core.Agent) {
+		vampiricDrainLifeEffect(agent, VampiricCowl, "Vampiric Cowl", 50)
+	})
+
+	// https://www.wowhead.com/classic/item=233833/vampiric-shawl
+	// Equip: When struck in combat has a 20% chance of stealing 40 life from target enemy. (Proc chance: 20%)
+	core.NewItemEffect(VampiricShawl, func(agent core.Agent) {
+		vampiricDrainLifeEffect(agent, VampiricShawl, "Vampiric Shawl", 40)
+	})
+
+	// https://www.wowhead.com/classic/item=233837/vampiric-robe
+	// Equip: When struck in combat has a 20% chance of stealing 50 life from target enemy. (Proc chance: 20%)
+	core.NewItemEffect(VampiricRobe, func(agent core.Agent) {
+		vampiricDrainLifeEffect(agent, VampiricRobe, "Vampiric Robe", 50)
+	})
+
 	core.AddEffectsToTest = true
 }
 
@@ -704,4 +725,37 @@ func thornsNatureDamageEffect(agent core.Agent, itemID int32, itemName string, d
 			}
 		},
 	}))
+}
+
+func vampiricDrainLifeEffect(agent core.Agent, itemID int32, itemName string, damage float64) {
+	character := agent.GetCharacter()
+
+	actionID := core.ActionID{ItemID: itemID}
+	healthMetrics := character.NewHealthMetrics(actionID)
+	drainLifeSpell := character.RegisterSpell(core.SpellConfig{
+		ActionID:    actionID,
+		SpellSchool: core.SpellSchoolShadow,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeAlwaysHit)
+			character.GainHealth(sim, result.Damage, healthMetrics)
+		},
+	})
+
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:       fmt.Sprintf("Drain Life Trigger (%s)", itemName),
+		Callback:   core.CallbackOnSpellHitTaken,
+		Outcome:    core.OutcomeLanded,
+		ProcMask:   core.ProcMaskMelee,
+		ProcChance: 0.20,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			drainLifeSpell.Cast(sim, spell.Unit)
+		},
+	})
 }
