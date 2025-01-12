@@ -50,6 +50,7 @@ const (
 	ThrashBlade                     = 17705
 	SatyrsLash                      = 17752
 	MarkOfTheChosen                 = 17774
+	ForceReactiveDisk               = 18168
 	RazorGauntlets                  = 18326
 	Nightfall                       = 19169
 	EbonHand                        = 19170
@@ -2910,6 +2911,40 @@ func init() {
 	})
 	core.NewItemEffect(DrillborerDiskMolten, func(agent core.Agent) {
 		thornsArcaneDamageEffect(agent, DrillborerDiskMolten, "Drillborer Disk (Molten)", 3)
+	})
+
+	// https://www.wowhead.com/classic/item=18168/force-reactive-disk
+	// Equip: When the shield blocks it releases an electrical charge that damages all nearby enemies. (1s cooldown)
+	core.NewItemEffect(ForceReactiveDisk, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: ForceReactiveDisk},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, 25, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Force Reactive Disk",
+			Callback: core.CallbackOnSpellHitTaken,
+			ProcMask: core.ProcMaskMelee,
+			Outcome:  core.OutcomeBlock,
+			ICD:      time.Second,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, spell.Unit)
+			},
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=11669/naglering

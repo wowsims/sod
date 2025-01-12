@@ -22,6 +22,7 @@ const (
 	RazorbrambleShoulderpads = 233804
 	RazorbrambleCowl         = 233808
 	RazorbrambleLeathers     = 233813
+	TunedForceReactiveDisk   = 233988
 	LodestoneOfRetaliation   = 233992
 
 	// Obsidian Weapons
@@ -381,6 +382,85 @@ func init() {
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=233988/tuned-force-reactive-disk
+	// Equip: When the shield blocks it releases an electrical charge that damages all nearby enemies. (1s cooldown)
+	// Use: Charge up the energy within the shield for 3 sec to deal 450 to 750 Nature damage to all nearby enemies. After use, the shield needs 10 sec to recharge. (2 Min Cooldown)
+	core.NewItemEffect(TunedForceReactiveDisk, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: TunedForceReactiveDisk},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, 35, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		procTriggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Force Reactive Disk",
+			Callback: core.CallbackOnSpellHitTaken,
+			ProcMask: core.ProcMaskMelee,
+			Outcome:  core.OutcomeBlock,
+			ICD:      time.Second,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, spell.Unit)
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1213967},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				sim.AddPendingAction(&core.PendingAction{
+					NextActionAt: sim.CurrentTime + time.Second*3,
+					OnAction: func(sim *core.Simulation) {
+						for _, aoeTarget := range sim.Encounter.TargetUnits {
+							spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(450, 750), spell.OutcomeMagicHitAndCrit)
+						}
+
+						spell.CD.Use(sim)
+
+						procTriggerAura.Deactivate(sim)
+						sim.AddPendingAction(&core.PendingAction{
+							NextActionAt: sim.CurrentTime + time.Second*10,
+							OnAction: func(sim *core.Simulation) {
+								procTriggerAura.Activate(sim)
+							},
+						})
+					},
+				})
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
 		})
 	})
 
