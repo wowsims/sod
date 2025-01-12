@@ -44,6 +44,7 @@ const (
 	SerpentSlicer                   = 13035
 	TheNeedler                      = 13060
 	SealOfTheDawn                   = 13209
+	CloudkeeperLegplates            = 14554
 	JoonhosMercy                    = 17054
 	Deathbringer                    = 17068
 	ViskagTheBloodletter            = 17075
@@ -2903,6 +2904,10 @@ func init() {
 		character := agent.GetCharacter()
 		BlazefuryTriggerAura(character, 7712, core.SpellSchoolFire, 2)
 	})
+
+	// https://www.wowhead.com/classic/item=14554/cloudkeeper-legplates
+	// Use: Increases Attack Power by 100 for 30 sec. (15 Min Cooldown)
+	core.NewSimpleStatOffensiveTrinketEffect(CloudkeeperLegplates, stats.Stats{stats.AttackPower: 100, stats.RangedAttackPower: 100}, time.Second*30, time.Minute*15)
 
 	// https://www.wowhead.com/classic/item=228266/drillborer-disk
 	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.

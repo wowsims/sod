@@ -191,6 +191,7 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			character.PseudoStats.GunsSkill += ps[proto.PseudoStat_PseudoStatGunsSkill]
 			character.PseudoStats.BonusPhysicalDamage += ps[proto.PseudoStat_PseudoStatBonusPhysicalDamage]
 			character.PseudoStats.TimewornBonus += int32(ps[proto.PseudoStat_PseudoStatTimewornBonus])
+			character.PseudoStats.SanctifiedBonus += int32(ps[proto.PseudoStat_PseudoStatSanctifiedBonus])
 		}
 	}
 
@@ -267,6 +268,8 @@ func (character *Character) applyEquipment() {
 	for _, item := range character.Equipment {
 		if item.Timeworn {
 			character.PseudoStats.TimewornBonus += 1
+		} else if item.Sanctified {
+			character.PseudoStats.SanctifiedBonus += 1
 		}
 
 		character.PseudoStats.BonusPhysicalDamage += item.BonusPhysicalDamage
@@ -613,6 +616,8 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatRangedDps:            character.AutoAttacks.Ranged().DPS(),
 		proto.PseudoStat_PseudoStatBonusPhysicalDamage:  float64(character.PseudoStats.BonusPhysicalDamage),
 		proto.PseudoStat_PseudoStatBlockValueMultiplier: character.PseudoStats.BlockValueMultiplier,
+		proto.PseudoStat_PseudoStatThornsDamage:         character.PseudoStats.ThornsDamage,
+
 		proto.PseudoStat_PseudoStatAxesSkill:            float64(character.PseudoStats.AxesSkill),
 		proto.PseudoStat_PseudoStatSwordsSkill:          float64(character.PseudoStats.SwordsSkill),
 		proto.PseudoStat_PseudoStatMacesSkill:           float64(character.PseudoStats.MacesSkill),
@@ -640,8 +645,8 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: float64(character.PseudoStats.RangedSpeedMultiplier),
 		proto.PseudoStat_PseudoStatBlockValuePerStrength: float64(character.PseudoStats.BlockValuePerStrength),
 
-		proto.PseudoStat_PseudoStatTimewornBonus: float64(character.PseudoStats.TimewornBonus),
-		proto.PseudoStat_PseudoStatThornsDamage:  character.PseudoStats.ThornsDamage,
+		proto.PseudoStat_PseudoStatTimewornBonus:   float64(character.PseudoStats.TimewornBonus),
+		proto.PseudoStat_PseudoStatSanctifiedBonus: float64(character.PseudoStats.SanctifiedBonus),
 	}
 }
 

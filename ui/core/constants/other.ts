@@ -41,6 +41,7 @@ export const GLOBAL_DISPLAY_STATS = [
 
 export const GLOBAL_DISPLAY_PSEUDO_STATS = [
 	PseudoStat.PseudoStatTimewornBonus,
+	PseudoStat.PseudoStatSanctifiedBonus,
 ];
 
 export const GLOBAL_EP_STATS = [
@@ -51,6 +52,7 @@ export const GLOBAL_EP_STATS = [
 
 export const GLOBAL_EP_PSEUDOSTATS = [
 	PseudoStat.PseudoStatTimewornBonus,
+	PseudoStat.PseudoStatSanctifiedBonus,
 ];
 
 export enum SortDirection {

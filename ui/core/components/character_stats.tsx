@@ -92,6 +92,7 @@ const statGroups = new Map<string, Array<DisplayStat>>([
 		[
 			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatThornsDamage), notEditable: true},
 			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatTimewornBonus), notEditable: true},
+			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSanctifiedBonus), notEditable: true},
 		]
 	],
 ])

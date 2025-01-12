@@ -1098,6 +1098,10 @@ export class Player<SpecType extends Spec> {
 			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatTimewornBonus)
 		}
 
+		if (item.sanctified) {
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatSanctifiedBonus)
+		}
+
 		this.itemEPCache[slot].set(item.id, ep);
 		return ep;
 	}
