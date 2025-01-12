@@ -80,6 +80,7 @@ const (
 	FiendishMachete                 = 228056 // 18310
 	RefinedArcaniteChampion         = 228125
 	TalismanOfEphemeralPower        = 228255 // 18820
+	DrillborerDisk                  = 228266 // 17066
 	GutgoreRipper                   = 228267 // 17071
 	Shadowstrike                    = 228272 // 17074
 	Thunderstrike                   = 228273 // 17223
@@ -106,6 +107,7 @@ const (
 	SeepingWillow                   = 228666 // 12969
 	DraconicInfusedEmblem           = 228678 // 22268
 	QuelSerrar                      = 228679 // 18348
+	DrillborerDiskMolten            = 228702
 	HandOfJustice                   = 228722 // 11815
 	Felstriker                      = 228757 // 12590
 	GutgoreRipperMolten             = 229372
@@ -2899,34 +2901,19 @@ func init() {
 		BlazefuryTriggerAura(character, 7712, core.SpellSchoolFire, 2)
 	})
 
+	// https://www.wowhead.com/classic/item=228266/drillborer-disk
+	// When struck in combat inflicts 3 Arcane damage to the attacker.
+	core.NewItemEffect(DrillborerDisk, func(agent core.Agent) {
+		thornsArcaneDamageEffect(agent, DrillborerDisk, "Drillborer Disk", 3)
+	})
+	core.NewItemEffect(DrillborerDiskMolten, func(agent core.Agent) {
+		thornsArcaneDamageEffect(agent, DrillborerDiskMolten, "Drillborer Disk (Molten)", 3)
+	})
+
 	// https://www.wowhead.com/classic/item=11669/naglering
 	// When struck in combat inflicts 3 Arcane damage to the attacker.
 	core.NewItemEffect(Naglering, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		character.PseudoStats.ThornsDamage += 3
-
-		procSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{ItemID: Naglering},
-			SpellSchool: core.SpellSchoolArcane,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 3, spell.OutcomeMagicHit)
-			},
-		})
-
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label: "Thorns (Naglering)",
-			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
-					procSpell.Cast(sim, spell.Unit)
-				}
-			},
-		}))
+		thornsArcaneDamageEffect(agent, Naglering, "Naglering", 3)
 	})
 
 	// https://www.wowhead.com/classic/item=1168/skullflame-shield
@@ -3146,6 +3133,34 @@ func dreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell {
 			procAuras.Get(target).Activate(sim)
 		},
 	})
+}
+
+func thornsArcaneDamageEffect(agent core.Agent, itemID int32, itemName string, damage float64) {
+	character := agent.GetCharacter()
+	character.PseudoStats.ThornsDamage += damage
+
+	procSpell := character.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{ItemID: itemID},
+		SpellSchool: core.SpellSchoolArcane,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
+		},
+	})
+
+	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+		Label: fmt.Sprintf("Thorns (%s)", itemName),
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+				procSpell.Cast(sim, spell.Unit)
+			}
+		},
+	}))
 }
 
 func eskhandarsRightClawAura(character *core.Character) *core.Aura {
