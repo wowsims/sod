@@ -407,7 +407,11 @@ func init() {
 			MaxStacks: 2,
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell.Flags.Matches(SpellFlagShot) || spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) && spell.CD.Timer != nil {
-					spell.CD.Reset()
+					if spell.SpellCode == SpellCode_HunterRaptorStrike {
+						spell.CD.QueueReset(sim.CurrentTime)
+					} else {
+						spell.CD.Reset()
+					}
 					aura.RemoveStack(sim)
 				}
 			},

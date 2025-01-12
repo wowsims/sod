@@ -41,6 +41,11 @@ func (timer *Timer) Set(t time.Duration) {
 	*timer = Timer(t)
 }
 
+// Niche reset meant to be used for attack queued abilities that can be reset. Avoids a queued ability going off twice during thrashes like Wild Strikes.
+func (timer *Timer) QueueReset(t time.Duration) {
+	*timer = Timer(t + (time.Millisecond * 50))
+}
+
 func (timer *Timer) Reset() {
 	*timer = Timer(startingCDTime)
 }

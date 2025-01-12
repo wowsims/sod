@@ -63,8 +63,10 @@ func (hunter *Hunter) applyNaxxramasMelee4PBonus() {
 			spellsToReset = append(spellsToReset, hunter.MongooseBite)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.Flags.Matches(SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite) && result.DidCrit() {
-				for _, spell := range spellsToReset {
+			if (spell.Flags.Matches(SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite || spell.SpellCode == SpellCode_HunterRaptorStrikeHit) && result.DidCrit() {
+				if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
+					hunter.RaptorStrike.CD.QueueReset(sim.CurrentTime)
+				} else {
 					spell.CD.Reset()
 				}
 			}
