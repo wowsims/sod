@@ -2347,13 +2347,14 @@ func init() {
 	// Equip: When struck in combat inflicts 50 Fire damage to the attacker.
 	core.NewItemEffect(EssenceOfThePureFlame, func(agent core.Agent) {
 		character := agent.GetCharacter()
+		character.PseudoStats.ThornsDamage += 50
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 461694},
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -2902,7 +2903,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=228266/drillborer-disk
-	// When struck in combat inflicts 3 Arcane damage to the attacker.
+	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
 	core.NewItemEffect(DrillborerDisk, func(agent core.Agent) {
 		thornsArcaneDamageEffect(agent, DrillborerDisk, "Drillborer Disk", 3)
 	})
@@ -2911,7 +2912,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=11669/naglering
-	// When struck in combat inflicts 3 Arcane damage to the attacker.
+	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
 	core.NewItemEffect(Naglering, func(agent core.Agent) {
 		thornsArcaneDamageEffect(agent, Naglering, "Naglering", 3)
 	})

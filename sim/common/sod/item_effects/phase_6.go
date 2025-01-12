@@ -180,7 +180,7 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 
 	// https://www.wowhead.com/classic/item=233992/lodestone-of-retaliation
-	// When struck in combat inflicts 80 Nature damage to the attacker.
+	// Equip: When struck in combat inflicts 80 Nature damage to the attacker.
 	// Causes twice as much threat as damage dealt.
 	core.NewItemEffect(LodestoneOfRetaliation, func(agent core.Agent) {
 		thornsNatureDamageEffect(agent, LodestoneOfRetaliation, "Lodestone of Retaliation", 80)
@@ -311,42 +311,42 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=233808/razorbramble-cowl
-	// When struck in combat inflicts 100 Nature damage to the attacker.
+	// Equip: When struck in combat inflicts 100 Nature damage to the attacker.
 	// Causes twice as much threat as damage dealt.
 	core.NewItemEffect(RazorbrambleCowl, func(agent core.Agent) {
 		thornsNatureDamageEffect(agent, RazorbrambleCowl, "Razorbramble Cowl", 100)
 	})
 
 	// https://www.wowhead.com/classic/item=233813/razorbramble-leathers
-	// When struck in combat inflicts 100 Nature damage to the attacker.
+	// Equip: When struck in combat inflicts 100 Nature damage to the attacker.
 	// Causes twice as much threat as damage dealt.
 	core.NewItemEffect(RazorbrambleLeathers, func(agent core.Agent) {
 		thornsNatureDamageEffect(agent, RazorbrambleLeathers, "Razorbramble Leathers", 100)
 	})
 
 	// https://www.wowhead.com/classic/item=233804/razorbramble-shoulderpads
-	// When struck in combat inflicts 80 Nature damage to the attacker.
+	// Equip: When struck in combat inflicts 80 Nature damage to the attacker.
 	// Causes twice as much threat as damage dealt.
 	core.NewItemEffect(RazorbrambleShoulderpads, func(agent core.Agent) {
 		thornsNatureDamageEffect(agent, RazorbrambleShoulderpads, "Razorbramble Shoulderpads", 80)
 	})
 
 	// https://www.wowhead.com/classic/item=233492/razorspike-battleplate
-	// When struck in combat inflicts 100 Nature damage to the attacker.
+	// Equip: When struck in combat inflicts 100 Nature damage to the attacker.
 	// Causes twice as much threat as damage dealt.
 	core.NewItemEffect(RazorspikeBattleplate, func(agent core.Agent) {
 		thornsNatureDamageEffect(agent, RazorspikeBattleplate, "Razorspike Battleplate", 100)
 	})
 
 	// https://www.wowhead.com/classic/item=233795/razorspike-headcage
-	// When struck in combat inflicts 100 Nature damage to the attacker.
+	// Equip: When struck in combat inflicts 100 Nature damage to the attacker.
 	// Causes twice as much threat as damage dealt.
 	core.NewItemEffect(RazorspikeHeadcage, func(agent core.Agent) {
 		thornsNatureDamageEffect(agent, RazorspikeHeadcage, "Razorspike Headcage", 100)
 	})
 
 	// https://www.wowhead.com/classic/item=233793/razorspike-shoulderplates
-	// When struck in combat inflicts 80 Nature damage to the attacker.
+	// Equip: When struck in combat inflicts 80 Nature damage to the attacker.
 	// Causes twice as much threat as damage dealt.
 	core.NewItemEffect(RazorspikeShoulderplates, func(agent core.Agent) {
 		thornsNatureDamageEffect(agent, RazorspikeShoulderplates, "Razorspike Shoulderplates", 80)
