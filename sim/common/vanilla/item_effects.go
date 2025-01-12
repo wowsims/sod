@@ -50,6 +50,7 @@ const (
 	ThrashBlade                     = 17705
 	SatyrsLash                      = 17752
 	MarkOfTheChosen                 = 17774
+	RazorGauntlets                  = 18326
 	Nightfall                       = 19169
 	EbonHand                        = 19170
 	RuneOfTheDawn                   = 19812
@@ -2915,6 +2916,12 @@ func init() {
 	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
 	core.NewItemEffect(Naglering, func(agent core.Agent) {
 		thornsArcaneDamageEffect(agent, Naglering, "Naglering", 3)
+	})
+
+	// https://www.wowhead.com/classic/item=18326/razor-gauntlets
+	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
+	core.NewItemEffect(RazorGauntlets, func(agent core.Agent) {
+		thornsArcaneDamageEffect(agent, RazorGauntlets, "Razor Gauntlets", 3)
 	})
 
 	// https://www.wowhead.com/classic/item=1168/skullflame-shield
