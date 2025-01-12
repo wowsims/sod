@@ -67,6 +67,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 	displayPseudoStats: [
 		PseudoStat.PseudoStatThornsDamage,
 	],
+	
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
