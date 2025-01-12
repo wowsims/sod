@@ -34,6 +34,7 @@ const (
 	Firebreather                    = 10797
 	VilerendSlicer                  = 11603
 	HookfangShanker                 = 11635
+	Naglering                       = 11669
 	LinkensSwordOfMastery           = 11902
 	SearingNeedle                   = 12531
 	PipsSkinner                     = 12709
@@ -2896,6 +2897,36 @@ func init() {
 	core.NewItemEffect(BlazefuryMedallion, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		BlazefuryTriggerAura(character, 7712, core.SpellSchoolFire, 2)
+	})
+
+	// https://www.wowhead.com/classic/item=11669/naglering
+	// When struck in combat inflicts 3 Arcane damage to the attacker.
+	core.NewItemEffect(Naglering, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.PseudoStats.ThornsDamage += 3
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: Naglering},
+			SpellSchool: core.SpellSchoolArcane,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 3, spell.OutcomeMagicHit)
+			},
+		})
+
+		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "Thorns (Naglering)",
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+					procSpell.Cast(sim, spell.Unit)
+				}
+			},
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=1168/skullflame-shield

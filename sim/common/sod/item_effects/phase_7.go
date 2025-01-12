@@ -35,7 +35,7 @@ func init() {
 		})
 
 		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label: "Splintered Shieldd",
+			Label: "Splintered Shield",
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
 					procSpell.Cast(sim, spell.Unit)
