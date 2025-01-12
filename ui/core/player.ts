@@ -1077,7 +1077,7 @@ export class Player<SpecType extends Spec> {
 		}
 
 		// Add pseudo stats that should be included in item EP.
-		itemStats = itemStats.addPseudoStat(PseudoStat.BonusPhysicalDamage, item.bonusPhysicalDamage);
+		itemStats = itemStats.addPseudoStat(PseudoStat.PseudoStatBonusPhysicalDamage, item.bonusPhysicalDamage);
 
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
@@ -1092,6 +1092,10 @@ export class Player<SpecType extends Spec> {
 		// unique items are slightly worse than non-unique because you can have only one.
 		if (item.unique) {
 			ep -= 0.01;
+		}
+
+		if (item.timeworn) {
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatTimewornBonus)
 		}
 
 		this.itemEPCache[slot].set(item.id, ep);

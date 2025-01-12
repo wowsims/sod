@@ -127,15 +127,15 @@ enum Stat {
 // between the UI and backend.
 //
 // It's also OK to include things here which aren't in the PseudoStats struct.
-// NextIndex: 32
+// NextIndex: 33
 enum PseudoStat {
 	PseudoStatMainHandDps = 0;
 	PseudoStatOffHandDps = 1;
 	PseudoStatRangedDps = 2;
 	PseudoStatBlockValueMultiplier = 3;
-	PseudoStatDodge = 4;
-	PseudoStatParry = 5;
-	BonusPhysicalDamage = 31;
+	PseudoStatDodge = 4 [deprecated = true];
+	PseudoStatParry = 5 [deprecated = true];
+	PseudoStatBonusPhysicalDamage = 31;
 
 	// Melee Weapon Skill
 	PseudoStatUnarmedSkill = 6;
@@ -170,7 +170,8 @@ enum PseudoStat {
 	PseudoStatBlockValuePerStrength = 29;
 
 	// Special Pseudostats
-	TimewornBonus = 30;
+	PseudoStatTimewornBonus = 30;
+	PseudoStatThornsDamage = 32;
 }
 
 message UnitStats {

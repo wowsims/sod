@@ -88,9 +88,21 @@ func init() {
 	})
 
 	// Sharpened Chitin Armor Kit
+	// Permanently cause an item worn on the chest, legs, hands or feet to cause 20 Nature damage to the attacker when struck in combat.
+	// Only usable on items level 45 and above.
 	core.NewEnchantEffect(7649, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		actionID := core.ActionID{SpellID: 1213833}
+		actionID := core.ActionID{ItemID: 233803}
+
+		damage := 20.0
+		numEnchants := 0
+		for _, item := range character.Equipment {
+			if item.Enchant.EffectID == 7649 {
+				numEnchants++
+			}
+		}
+
+		character.PseudoStats.ThornsDamage += damage * float64(numEnchants)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
@@ -102,22 +114,20 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.CalcAndDealDamage(sim, target, 20, spell.OutcomeMagicHit)
+				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
 			},
 		})
 
-		character.GetOrRegisterAura(core.Aura{
-			Label:    "Thorns +20",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
+		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "Thorns +20",
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
-					procSpell.Cast(sim, spell.Unit)
+					for i := 0; i < numEnchants; i++ {
+						procSpell.Cast(sim, spell.Unit)
+					}
 				}
 			},
-		})
+		}))
 	})
 
 	// Obsidian Scope

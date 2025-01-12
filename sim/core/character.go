@@ -189,8 +189,8 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			character.PseudoStats.BowsSkill += ps[proto.PseudoStat_PseudoStatBowsSkill]
 			character.PseudoStats.CrossbowsSkill += ps[proto.PseudoStat_PseudoStatCrossbowsSkill]
 			character.PseudoStats.GunsSkill += ps[proto.PseudoStat_PseudoStatGunsSkill]
-			character.PseudoStats.BonusPhysicalDamage += ps[proto.PseudoStat_BonusPhysicalDamage]
-			character.PseudoStats.TimewornBonus += int32(ps[proto.PseudoStat_TimewornBonus])
+			character.PseudoStats.BonusPhysicalDamage += ps[proto.PseudoStat_PseudoStatBonusPhysicalDamage]
+			character.PseudoStats.TimewornBonus += int32(ps[proto.PseudoStat_PseudoStatTimewornBonus])
 		}
 	}
 
@@ -271,7 +271,6 @@ func (character *Character) applyEquipment() {
 
 		character.PseudoStats.BonusPhysicalDamage += item.BonusPhysicalDamage
 	}
-
 }
 
 func (character *Character) addUniversalStatDependencies() {
@@ -612,6 +611,7 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatMainHandDps:          character.AutoAttacks.MH().DPS(),
 		proto.PseudoStat_PseudoStatOffHandDps:           character.AutoAttacks.OH().DPS(),
 		proto.PseudoStat_PseudoStatRangedDps:            character.AutoAttacks.Ranged().DPS(),
+		proto.PseudoStat_PseudoStatBonusPhysicalDamage:  float64(character.PseudoStats.BonusPhysicalDamage),
 		proto.PseudoStat_PseudoStatBlockValueMultiplier: character.PseudoStats.BlockValueMultiplier,
 		proto.PseudoStat_PseudoStatAxesSkill:            float64(character.PseudoStats.AxesSkill),
 		proto.PseudoStat_PseudoStatSwordsSkill:          float64(character.PseudoStats.SwordsSkill),
@@ -640,8 +640,8 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: float64(character.PseudoStats.RangedSpeedMultiplier),
 		proto.PseudoStat_PseudoStatBlockValuePerStrength: float64(character.PseudoStats.BlockValuePerStrength),
 
-		proto.PseudoStat_TimewornBonus:       float64(character.PseudoStats.TimewornBonus),
-		proto.PseudoStat_BonusPhysicalDamage: float64(character.PseudoStats.BonusPhysicalDamage),
+		proto.PseudoStat_PseudoStatTimewornBonus: float64(character.PseudoStats.TimewornBonus),
+		proto.PseudoStat_PseudoStatThornsDamage:  character.PseudoStats.ThornsDamage,
 	}
 }
 

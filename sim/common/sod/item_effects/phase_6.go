@@ -12,9 +12,13 @@ import (
 )
 
 const (
-	LeggingsOfImmersion   = 233505
-	RingOfSwarmingThought = 233507
-	RobesOfTheBattleguard = 233575
+	RazorspikeBattleplate    = 233492
+	LeggingsOfImmersion      = 233505
+	RingOfSwarmingThought    = 233507
+	RobesOfTheBattleguard    = 233575
+	RazorspikeShoulderplates = 233793
+	RazorspikeHeadcage       = 233795
+	LodestoneOfRetaliation   = 233992
 
 	// Obsidian Weapons
 	ObsidianChampion    = 233490
@@ -168,6 +172,41 @@ func init() {
 	})
 
 	///////////////////////////////////////////////////////////////////////////
+	//                                 Trinkets
+	///////////////////////////////////////////////////////////////////////////
+
+	// https://www.wowhead.com/classic/item=233992/lodestone-of-retaliation
+	// When struck in combat inflicts 80 Nature damage to the attacker.
+	// Causes twice as much threat as damage dealt.
+	core.NewItemEffect(LodestoneOfRetaliation, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.PseudoStats.ThornsDamage += 80
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: LodestoneOfRetaliation},
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 2,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 80, spell.OutcomeMagicHit)
+			},
+		})
+
+		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "Damage Shield Dmg +80 (Lodestone of Retaliation)",
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+					procSpell.Cast(sim, spell.Unit)
+				}
+			},
+		}))
+	})
+
+	///////////////////////////////////////////////////////////////////////////
 	//                                 Rings
 	///////////////////////////////////////////////////////////////////////////
 
@@ -289,6 +328,99 @@ func init() {
 				}
 			},
 		})
+	})
+
+	// https://www.wowhead.com/classic/item=233492/razorspike-battleplate
+	// When struck in combat inflicts 100 Nature damage to the attacker.
+	// Causes twice as much threat as damage dealt.
+	core.NewItemEffect(RazorspikeBattleplate, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.PseudoStats.ThornsDamage += 100
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: RazorspikeBattleplate},
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 2,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 100, spell.OutcomeMagicHit)
+			},
+		})
+
+		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "Damage Shield Dmg +100 (Razorspike Battleplate)",
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+					procSpell.Cast(sim, spell.Unit)
+				}
+			},
+		}))
+	})
+
+	// https://www.wowhead.com/classic/item=233795/razorspike-headcage
+	// When struck in combat inflicts 100 Nature damage to the attacker.
+	// Causes twice as much threat as damage dealt.
+	core.NewItemEffect(RazorspikeHeadcage, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.PseudoStats.ThornsDamage += 100
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: RazorspikeHeadcage},
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 2,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 100, spell.OutcomeMagicHit)
+			},
+		})
+
+		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "Damage Shield Dmg +100 (Razorspike Headcage)",
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+					procSpell.Cast(sim, spell.Unit)
+				}
+			},
+		}))
+	})
+
+	// https://www.wowhead.com/classic/item=233793/razorspike-shoulderplates
+	// When struck in combat inflicts 80 Nature damage to the attacker.
+	// Causes twice as much threat as damage dealt.
+	core.NewItemEffect(RazorspikeShoulderplates, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		character.PseudoStats.ThornsDamage += 80
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: RazorspikeShoulderplates},
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 2,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 80, spell.OutcomeMagicHit)
+			},
+		})
+
+		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label: "Damage Shield Dmg +80 (Razorspike Shoulderplates)",
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+					procSpell.Cast(sim, spell.Unit)
+				}
+			},
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=233575/robes-of-the-battleguard

@@ -471,6 +471,8 @@ type PseudoStats struct {
 
 	// Tracks the number of Timeworn items equipped for Bronze Signet bonuses
 	TimewornBonus int32
+	// Tracks the cumulative amount of Thorns damage from various effects purely for UI display
+	ThornsDamage float64
 
 	///////////////////////////////////////////////////
 	// Effects that apply when this unit is the target.
