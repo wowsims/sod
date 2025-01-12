@@ -83,7 +83,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 		// Resistances
 		Stat.StatShadowResistance,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [
+		PseudoStat.PseudoStatThornsDamage,
+	],
 	
 	defaults: {
 		race: Race.RaceTroll,
