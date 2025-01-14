@@ -5,27 +5,38 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
-/* TODO: Bear mangle
 func (druid *Druid) registerMangleBearSpell() {
-	if !druid.Talents.Mangle {
+	if !druid.HasRune(proto.DruidRune_RuneHandsMangle) {
 		return
 	}
 
+	idolMultiplier := 1.0
+	rageCostReduction := float64(druid.Talents.Ferocity)
+	hasLacerate := druid.HasRune(proto.DruidRune_RuneLegsLacerate)
+
+	switch druid.Ranged().ID {
+	case IdolOfUrsinPower:
+		idolMultiplier += .03
+	case IdolOfBrutality:
+		rageCostReduction += 3
+	}
+
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
-	durReduction := (0.5) * float64(druid.Talents.ImprovedMangle)
+	apProcAura := core.DefendersResolveAttackPower(druid.GetCharacter())
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
-		SpellCode:   SpellCode_DruidMangleBear
-		ActionID:    core.ActionID{SpellID: 48564},
+		ActionID:    core.ActionID{SpellID: 407995},
+		SpellCode:   SpellCode_DruidMangleBear,
 		SpellSchool: core.SpellSchoolPhysical,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   20 - float64(druid.Talents.Ferocity),
+			Cost:   15 - rageCostReduction,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -35,22 +46,34 @@ func (druid *Druid) registerMangleBearSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Duration(float64(time.Second) * (6 - durReduction)),
+				Duration: time.Second * 6,
 			},
 		},
+		// TODO: Berserk 3 target mangle cleave - Saeyon
 
-		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * 1.15
-		ThreatMultiplier: core.TernaryFloat64(druid.HasSetBonus(ItemSetThunderheartHarness, 2), 1.15, 1),
+		DamageMultiplier:         1.6 * idolMultiplier,
+		DamageMultiplierAdditive: 1 + 0.1*float64(druid.Talents.SavageFury),
+		ThreatMultiplier:         1.5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 299/1.15 +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+			dotBonusCrit := 0.0
+			if hasLacerate && druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+				dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
+			}
 
+			spell.BonusCritRating += dotBonusCrit
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			spell.BonusCritRating -= dotBonusCrit
 
 			if result.Landed() {
 				mangleAuras.Get(target).Activate(sim)
+				if stacks := int32(druid.GetStat(stats.Defense)); stacks > 0 {
+					apProcAura.Activate(sim)
+					if apProcAura.GetStacks() != stacks {
+						apProcAura.SetStacks(sim, stacks)
+					}
+				}
 			} else {
 				spell.IssueRefund(sim)
 			}
@@ -62,8 +85,7 @@ func (druid *Druid) registerMangleBearSpell() {
 
 		RelatedAuras: []core.AuraArray{mangleAuras},
 	})
-        }
-*/
+}
 
 func (druid *Druid) registerMangleCatSpell() {
 	if !druid.HasRune(proto.DruidRune_RuneHandsMangle) {
@@ -95,9 +117,10 @@ func (druid *Druid) registerMangleCatSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * weaponMulti,
-		ThreatMultiplier: 1,
-		BonusCoefficient: 1,
+		DamageMultiplier:         1 * weaponMulti,
+		DamageMultiplierAdditive: 1 + 0.1*float64(druid.Talents.SavageFury),
+		ThreatMultiplier:         1,
+		BonusCoefficient:         1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())

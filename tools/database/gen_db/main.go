@@ -432,12 +432,11 @@ func GetAllRotationSpellIds() map[string][]int32 {
 			Level:     60,
 			Equipment: &proto.EquipmentSpec{},
 		}, &proto.Player_BalanceDruid{BalanceDruid: &proto.BalanceDruid{Options: &proto.BalanceDruid_Options{}}}), nil, nil, nil)},
-		// TODO: Druid Tank Sim
-		// {Name: "druid tank", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
-		// 	Class:     proto.Class_ClassDruid,
-		// 	Level:     60,
-		// 	Equipment: &proto.EquipmentSpec{},
-		// }, &proto.Player_FeralTankDruid{FeralTankDruid: &proto.FeralTankDruid{Options: &proto.FeralTankDruid_Options{}}}), nil, nil, nil)},
+		{Name: "druid tank", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
+			Class:     proto.Class_ClassDruid,
+			Level:     60,
+			Equipment: &proto.EquipmentSpec{},
+		}, &proto.Player_FeralTankDruid{FeralTankDruid: &proto.FeralTankDruid{Options: &proto.FeralTankDruid_Options{}}}), nil, nil, nil)},
 		{Name: "elemental", Raid: core.SinglePlayerRaidProto(core.WithSpec(&proto.Player{
 			Class:     proto.Class_ClassShaman,
 			Level:     60,

@@ -138,7 +138,7 @@ func (druid *Druid) applyTAQFeral4PBonus() {
 		ActionID: core.ActionID{SpellID: 1213174}, // Tracking in APL
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
+			if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.MangleBear.Spell || spell == druid.FerociousBite.Spell) {
 				return
 			}
 
@@ -183,15 +183,33 @@ var ItemSetGenesisFury = core.NewItemSet(core.ItemSet{
 
 // Each time you Dodge while in Dire Bear Form, you gain 10% increased damage on your next Mangle or Swipe, stacking up to 5 times.
 func (druid *Druid) applyTAQGuardian2PBonus() {
-	label := "S03 - Item - TAQ - Druid - Guardian 2P Bonus"
-	if druid.HasAura(label) {
-		return
-	}
+	druid.Tank2PieceAqProcAura = druid.RegisterAura(core.Aura{
+		Label:     "Guardian 2P Bonus Proc",
+		ActionID:  core.ActionID{SpellID: 1213188},
+		Duration:  time.Second * 10,
+		MaxStacks: 5,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			druid.MangleBear.DamageMultiplierAdditive += 0.1 * float64(newStacks-oldStacks)
+			druid.SwipeBear.DamageMultiplierAdditive += 0.1 * float64(newStacks-oldStacks)
+		},
+	})
 
-	druid.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
+	druid.Tank2PieceAqAura = druid.RegisterAura(core.Aura{
+		Label:    "S03 - Item - TAQ - Druid - Guardian 2P Bonus",
+		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+		},
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if druid.form == Bear && spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeDodge) {
+				druid.Tank2PieceAqProcAura.Activate(sim)
+				druid.Tank2PieceAqProcAura.AddStack(sim)
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.SpellCode == SpellCode_DruidMangleBear || spell.SpellCode == SpellCode_DruidSwipeBear {
+				druid.Tank2PieceAqProcAura.SetStacks(sim, 0)
+			}
 		},
 	})
 }
@@ -201,17 +219,10 @@ func (druid *Druid) applyTAQGuardian4PBonus() {
 	if !druid.HasRune(proto.DruidRune_RuneHandsMangle) {
 		return
 	}
-
-	label := "S03 - Item - TAQ - Druid - Guardian 4P Bonus"
-	if druid.HasAura(label) {
-		return
-	}
-
-	druid.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
-		},
+	druid.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.SpellCode == SpellCode_DruidMangleBear {
+			spell.CD.Duration -= 1500 * time.Millisecond
+		}
 	})
 }
 

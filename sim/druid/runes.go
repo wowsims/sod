@@ -28,8 +28,8 @@ func (druid *Druid) ApplyRunes() {
 	druid.applyElunesFires()
 
 	// Hands
-	druid.applyMangle()
 	druid.registerSunfireSpell()
+	druid.applyMangle()
 
 	// Belt
 	druid.applyBerserk()
@@ -38,6 +38,8 @@ func (druid *Druid) ApplyRunes() {
 	// Legs
 	druid.applyStarsurge()
 	druid.applySavageRoar()
+	druid.registerLacerateBleedSpell()
+	druid.registerLacerateSpell()
 
 	// Feet
 	druid.applyDreamstate()
@@ -335,7 +337,7 @@ func (druid *Druid) tryElunesFiresRipExtension(sim *core.Simulation, unit *core.
 }
 
 func (druid *Druid) applyMangle() {
-	//druid.registerMangleBearSpell()
+	druid.registerMangleBearSpell()
 	druid.registerMangleCatSpell()
 }
 
