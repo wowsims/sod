@@ -113,7 +113,8 @@ func (druid *Druid) applyNaxxramasFeral2PBonus() {
 	}
 
 	druid.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1218476}, // Tracking in APL
+		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, dot := range druid.Rake.Dots() {
 				if dot == nil {
@@ -135,7 +136,8 @@ func (druid *Druid) applyNaxxramasFeral4PBonus() {
 	}
 
 	druid.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1218477}, // Tracking in APL
+		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			druid.TigersFury.CD.Multiplier -= 50
 		},
@@ -168,7 +170,8 @@ func (druid *Druid) applyNaxxramasFeral6PBonus() {
 	})
 
 	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1218478}, // Tracking in APL
+		Label:    label,
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.SpellSchool.Matches(core.SpellSchoolPhysical) && result.Target.MobType == proto.MobType_MobTypeUndead {
 				buffAura.Activate(sim)

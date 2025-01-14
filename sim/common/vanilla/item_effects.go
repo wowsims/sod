@@ -34,6 +34,7 @@ const (
 	Firebreather                    = 10797
 	VilerendSlicer                  = 11603
 	HookfangShanker                 = 11635
+	Naglering                       = 11669
 	LinkensSwordOfMastery           = 11902
 	SearingNeedle                   = 12531
 	PipsSkinner                     = 12709
@@ -43,12 +44,15 @@ const (
 	SerpentSlicer                   = 13035
 	TheNeedler                      = 13060
 	SealOfTheDawn                   = 13209
+	CloudkeeperLegplates            = 14554
 	JoonhosMercy                    = 17054
 	Deathbringer                    = 17068
 	ViskagTheBloodletter            = 17075
 	ThrashBlade                     = 17705
 	SatyrsLash                      = 17752
 	MarkOfTheChosen                 = 17774
+	ForceReactiveDisk               = 18168
+	RazorGauntlets                  = 18326
 	Nightfall                       = 19169
 	EbonHand                        = 19170
 	RuneOfTheDawn                   = 19812
@@ -79,6 +83,7 @@ const (
 	FiendishMachete                 = 228056 // 18310
 	RefinedArcaniteChampion         = 228125
 	TalismanOfEphemeralPower        = 228255 // 18820
+	DrillborerDisk                  = 228266 // 17066
 	GutgoreRipper                   = 228267 // 17071
 	Shadowstrike                    = 228272 // 17074
 	Thunderstrike                   = 228273 // 17223
@@ -105,6 +110,7 @@ const (
 	SeepingWillow                   = 228666 // 12969
 	DraconicInfusedEmblem           = 228678 // 22268
 	QuelSerrar                      = 228679 // 18348
+	DrillborerDiskMolten            = 228702
 	HandOfJustice                   = 228722 // 11815
 	Felstriker                      = 228757 // 12590
 	GutgoreRipperMolten             = 229372
@@ -2348,13 +2354,14 @@ func init() {
 	// Equip: When struck in combat inflicts 50 Fire damage to the attacker.
 	core.NewItemEffect(EssenceOfThePureFlame, func(agent core.Agent) {
 		character := agent.GetCharacter()
+		character.PseudoStats.ThornsDamage += 50
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 461694},
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -2917,6 +2924,65 @@ func init() {
 		BlazefuryTriggerAura(character, 7712, core.SpellSchoolFire, 2)
 	})
 
+	// https://www.wowhead.com/classic/item=14554/cloudkeeper-legplates
+	// Use: Increases Attack Power by 100 for 30 sec. (15 Min Cooldown)
+	core.NewSimpleStatOffensiveTrinketEffect(CloudkeeperLegplates, stats.Stats{stats.AttackPower: 100, stats.RangedAttackPower: 100}, time.Second*30, time.Minute*15)
+
+	// https://www.wowhead.com/classic/item=228266/drillborer-disk
+	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
+	core.NewItemEffect(DrillborerDisk, func(agent core.Agent) {
+		thornsArcaneDamageEffect(agent, DrillborerDisk, "Drillborer Disk", 3)
+	})
+	core.NewItemEffect(DrillborerDiskMolten, func(agent core.Agent) {
+		thornsArcaneDamageEffect(agent, DrillborerDiskMolten, "Drillborer Disk (Molten)", 3)
+	})
+
+	// https://www.wowhead.com/classic/item=18168/force-reactive-disk
+	// Equip: When the shield blocks it releases an electrical charge that damages all nearby enemies. (1s cooldown)
+	core.NewItemEffect(ForceReactiveDisk, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: ForceReactiveDisk},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, 25, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Force Reactive Disk",
+			Callback: core.CallbackOnSpellHitTaken,
+			ProcMask: core.ProcMaskMelee,
+			Outcome:  core.OutcomeBlock,
+			ICD:      time.Second,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, spell.Unit)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=11669/naglering
+	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
+	core.NewItemEffect(Naglering, func(agent core.Agent) {
+		thornsArcaneDamageEffect(agent, Naglering, "Naglering", 3)
+	})
+
+	// https://www.wowhead.com/classic/item=18326/razor-gauntlets
+	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
+	core.NewItemEffect(RazorGauntlets, func(agent core.Agent) {
+		thornsArcaneDamageEffect(agent, RazorGauntlets, "Razor Gauntlets", 3)
+	})
+
 	// https://www.wowhead.com/classic/item=1168/skullflame-shield
 	// Equip: When struck in combat has a 3% chance of stealing 35 life from target enemy. (Proc chance: 3%)
 	// Equip: When struck in combat has a 1% chance of dealing 75 to 125 Fire damage to all targets around you. (Proc chance: 1%)
@@ -2926,11 +2992,16 @@ func init() {
 		drainLifeActionID := core.ActionID{SpellID: 18817}
 		healthMetrics := character.NewHealthMetrics(drainLifeActionID)
 		drainLifeSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:         drainLifeActionID,
-			SpellSchool:      core.SpellSchoolShadow,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
+			ActionID:    drainLifeActionID,
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
 			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			BonusCoefficient: 1,
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcAndDealDamage(sim, target, 35, spell.OutcomeAlwaysHit)
 				character.GainHealth(sim, result.Damage, healthMetrics)
@@ -2938,12 +3009,15 @@ func init() {
 		})
 
 		flamestrikeSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: 18818},
-			SpellSchool:      core.SpellSchoolFire,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
+			ActionID:    core.ActionID{SpellID: 18818},
+			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(75, 125), spell.OutcomeMagicHit)
@@ -3134,6 +3208,34 @@ func dreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell {
 			procAuras.Get(target).Activate(sim)
 		},
 	})
+}
+
+func thornsArcaneDamageEffect(agent core.Agent, itemID int32, itemName string, damage float64) {
+	character := agent.GetCharacter()
+	character.PseudoStats.ThornsDamage += damage
+
+	procSpell := character.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{ItemID: itemID},
+		SpellSchool: core.SpellSchoolArcane,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
+		},
+	})
+
+	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+		Label: fmt.Sprintf("Thorns (%s)", itemName),
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+				procSpell.Cast(sim, spell.Unit)
+			}
+		},
+	}))
 }
 
 func eskhandarsRightClawAura(character *core.Character) *core.Aura {
