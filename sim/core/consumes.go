@@ -193,6 +193,7 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 			character.AddStats(stats.Stats{
 				stats.MeleeCrit: 2 * CritRatingPerCritChance,
 			})
+			character.AddBonusRangedCritRating(-2.0)
 		case proto.WeaponImbue_BlackfathomSharpeningStone:
 			character.AddStats(stats.Stats{
 				stats.MeleeHit: 2 * MeleeHitRatingPerHitChance,
