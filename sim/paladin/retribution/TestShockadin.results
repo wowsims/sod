@@ -99,12 +99,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin-Phase2-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.71804
-  weights: 0.1204
+  weights: 0.70601
+  weights: 0.28845
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.18035
+  weights: 0.17705
   weights: 0
   weights: 0
   weights: 0
@@ -112,13 +112,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.77931
-  weights: 0.17672
+  weights: 1.7557
+  weights: 0.14881
   weights: 0
   weights: 0
-  weights: 0.29671
-  weights: 5.15293
-  weights: 4.57561
+  weights: 0.29174
+  weights: 4.96932
+  weights: 3.85636
   weights: 0
   weights: 0
   weights: 0
@@ -197,106 +197,106 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-AllItems-SoulforgeArmor"
  value: {
-  dps: 384.17911
-  tps: 403.88708
+  dps: 369.24527
+  tps: 387.82786
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 512.17379
-  tps: 536.51048
+  dps: 503.66748
+  tps: 527.66666
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 838.8563
-  tps: 1117.56083
+  dps: 836.04231
+  tps: 1115.67415
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 185.1478
-  tps: 199.05128
+  dps: 185.61047
+  tps: 199.60605
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 221.45363
-  tps: 237.31136
+  dps: 219.98889
+  tps: 236.07215
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 362.28698
-  tps: 547.23326
+  dps: 356.49276
+  tps: 542.06596
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 94.07194
-  tps: 103.31925
+  dps: 93.88811
+  tps: 103.16677
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 128.2035
-  tps: 139.13372
+  dps: 126.95559
+  tps: 138.04255
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 857.58017
-  tps: 1136.60003
+  dps: 838.58713
+  tps: 1119.40564
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 185.22552
-  tps: 199.18558
+  dps: 183.62444
+  tps: 197.61998
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 223.88305
-  tps: 239.7692
+  dps: 220.81724
+  tps: 236.95912
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 369.29209
-  tps: 555.56937
+  dps: 368.29652
+  tps: 554.96189
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 94.24734
-  tps: 103.5612
+  dps: 94.94843
+  tps: 104.2817
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 130.81641
-  tps: 141.80714
+  dps: 127.31895
+  tps: 138.47466
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 480.57571
-  tps: 504.7627
+  dps: 471.99113
+  tps: 495.56328
  }
 }
 dps_results: {
