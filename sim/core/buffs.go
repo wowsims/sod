@@ -2647,7 +2647,7 @@ func DefendersResolveAttackPower(character *Character) *Aura {
 		Label:    "Defender's Resolve (Attack Power)",
 		Duration: time.Second * 15,
 		// Each stack corresponds to 4 AP. Handles a max of 500 Defense
-		MaxStacks: 200,
+		MaxStacks: 500,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
 			aura.Unit.AddStatDynamic(sim, stats.AttackPower, float64(4*(newStacks-oldStacks)))
 		},
@@ -2660,7 +2660,7 @@ func DefendersResolveSpellDamage(character *Character, spellDamageAmount int32) 
 		Label:    "Defender's Resolve (Spell Damage)",
 		Duration: time.Second * 15,
 		// Each stack corresponds to 2 SP. Handles a max of 500 Defense
-		MaxStacks: 200,
+		MaxStacks: 500,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
 			aura.Unit.AddStatDynamic(sim, stats.SpellDamage, float64(spellDamageAmount*(newStacks-oldStacks)))
 		},
