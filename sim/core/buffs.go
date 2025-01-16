@@ -796,6 +796,19 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		BattleSquawkAura(&character.Unit, numBattleSquawks)
 	}
 
+	if raidBuffs.AtieshCastSpeedBuff {
+		AtieshCastSpeedEffect(&character.Unit)
+	}
+	if raidBuffs.AtieshHealingBuff {
+		AtieshHealingEffect(&character.Unit)
+	}
+	if raidBuffs.AtieshSpellCritBuff {
+		AtieshSpellCritEffect(&character.Unit)
+	}
+	if raidBuffs.AtieshSpellPowerBuff {
+		AtieshSpellPowerEffect(&character.Unit)
+	}
+
 	// World Buffs
 	ApplyDragonslayerBuffs(&character.Unit, individualBuffs)
 
@@ -2634,7 +2647,7 @@ func DefendersResolveAttackPower(character *Character) *Aura {
 		Label:    "Defender's Resolve (Attack Power)",
 		Duration: time.Second * 15,
 		// Each stack corresponds to 4 AP. Handles a max of 500 Defense
-		MaxStacks: 200,
+		MaxStacks: 500,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
 			aura.Unit.AddStatDynamic(sim, stats.AttackPower, float64(4*(newStacks-oldStacks)))
 		},
@@ -2647,9 +2660,117 @@ func DefendersResolveSpellDamage(character *Character, spellDamageAmount int32) 
 		Label:    "Defender's Resolve (Spell Damage)",
 		Duration: time.Second * 15,
 		// Each stack corresponds to 2 SP. Handles a max of 500 Defense
-		MaxStacks: 200,
+		MaxStacks: 500,
 		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
 			aura.Unit.AddStatDynamic(sim, stats.SpellDamage, float64(spellDamageAmount*(newStacks-oldStacks)))
 		},
 	})
+}
+
+// Equip: Increases spell casting speed of all party members within 30 yards by 2%. This specific effect does not stack from multiple sources.
+func AtieshCastSpeedEffect(unit *Unit) {
+	label := "Atiesh Greatstaff of the Guardian (Cast Speed)"
+
+	if unit.HasAura(label) {
+		return
+	}
+
+	MakePermanent(unit.RegisterAura(Aura{
+		Label: label,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.MultiplyCastSpeed(1.02)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.MultiplyCastSpeed(1 / 1.02)
+		},
+	}))
+}
+
+// Equip: Increases healing done by up to 62 and damage done by up to 19 for all magical spells and effects of all party members within 30. This specific effect does not stack from multiple sources.
+func AtieshHealingEffect(unit *Unit) {
+	label := "Atiesh Greatstaff of the Guardian (Spell Crit)"
+
+	if unit.HasAura(label) {
+		return
+	}
+
+	stats := stats.Stats{
+		stats.HealingPower: 62,
+		stats.SpellDamage:  19,
+	}
+
+	MakePermanent(unit.RegisterAura(Aura{
+		Label:      label,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStats(stats)
+			} else {
+				aura.Unit.AddStatsDynamic(sim, stats)
+			}
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStats(stats.Invert())
+			} else {
+				aura.Unit.AddStatsDynamic(sim, stats.Invert())
+			}
+		},
+	}))
+}
+
+// Equip: Increases the spell critical chance of all party members within 30 yards by 2%. This specific effect does not stack from multiple sources.
+func AtieshSpellCritEffect(unit *Unit) {
+	label := "Atiesh Greatstaff of the Guardian (Spell Crit)"
+
+	if unit.HasAura(label) {
+		return
+	}
+
+	MakePermanent(unit.RegisterAura(Aura{
+		Label:      label,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStat(stats.SpellCrit, 2*SpellCritRatingPerCritChance)
+			} else {
+				aura.Unit.AddStatDynamic(sim, stats.SpellCrit, 2*SpellCritRatingPerCritChance)
+			}
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStat(stats.SpellCrit, -2*SpellCritRatingPerCritChance)
+			} else {
+				aura.Unit.AddStatDynamic(sim, stats.SpellCrit, -2*SpellCritRatingPerCritChance)
+			}
+		},
+	}))
+}
+
+// Equip: Increases damage and healing done by magical spells and effects of all party members within 30 yards by up to 33. This specific effect does not stack from multiple sources.
+func AtieshSpellPowerEffect(unit *Unit) {
+	label := "Atiesh Greatstaff of the Guardian (Spell Power)"
+
+	if unit.HasAura(label) {
+		return
+	}
+
+	MakePermanent(unit.RegisterAura(Aura{
+		Label:      label,
+		BuildPhase: CharacterBuildPhaseBuffs,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStat(stats.SpellPower, 33)
+			} else {
+				aura.Unit.AddStatDynamic(sim, stats.SpellPower, 33)
+			}
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				aura.Unit.AddStat(stats.SpellPower, -33)
+			} else {
+				aura.Unit.AddStatDynamic(sim, stats.SpellPower, -33)
+			}
+		},
+	}))
 }

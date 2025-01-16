@@ -8,6 +8,12 @@ import (
 const (
 	BulwarkOfIre = 235868
 
+	// Atiesh
+	AtieshSpellPower = 236398
+	AtieshHealing    = 236399
+	AtieshCastSpeed  = 236400
+	AtieshSpellCrit  = 236401
+
 	// Seals of the Dawn
 	SquiresSealOfTheDawnDamage    = 236356
 	KnightsSealOfTheDawnDamage    = 236357
@@ -72,6 +78,26 @@ func init() {
 	core.NewItemEffect(CrusadersSealOfTheDawnTanking, sanctifiedTankingEffect)
 	core.NewItemEffect(CommandersSealOfTheDawnTanking, sanctifiedTankingEffect)
 	core.NewItemEffect(HighlordsSSealOfTheDawnTanking, sanctifiedTankingEffect)
+
+	///////////////////////////////////////////////////////////////////////////
+	//                                 Weapons
+	///////////////////////////////////////////////////////////////////////////
+	// https://www.wowhead.com/classic/item=236400/atiesh-greatstaff-of-the-guardian
+	core.NewItemEffect(AtieshCastSpeed, func(agent core.Agent) {
+		core.AtieshCastSpeedEffect(&agent.GetCharacter().Unit)
+	})
+	// https://www.wowhead.com/classic/item=236399/atiesh-greatstaff-of-the-guardian
+	core.NewItemEffect(AtieshHealing, func(agent core.Agent) {
+		core.AtieshHealingEffect(&agent.GetCharacter().Unit)
+	})
+	// https://www.wowhead.com/classic/item=236401/atiesh-greatstaff-of-the-guardian
+	core.NewItemEffect(AtieshSpellCrit, func(agent core.Agent) {
+		core.AtieshSpellCritEffect(&agent.GetCharacter().Unit)
+	})
+	// https://www.wowhead.com/classic/item=236398/atiesh-greatstaff-of-the-guardian
+	core.NewItemEffect(AtieshSpellPower, func(agent core.Agent) {
+		core.AtieshSpellPowerEffect(&agent.GetCharacter().Unit)
+	})
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Other

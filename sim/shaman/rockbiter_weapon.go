@@ -11,6 +11,7 @@ const RockbiterWeaponRanks = 7
 
 var RockbiterWeaponEnchantId = [RockbiterWeaponRanks + 1]int32{0, 29, 6, 1, 503, 1663, 683, 1664}
 var RockbiterWeaponBonusAP = [RockbiterWeaponRanks + 1]float64{0, 50, 79, 118, 138, 319, 490, 653}
+var RockbiterWeaponBonusTPS = [RockbiterWeaponRanks + 1]float64{0, 6, 10, 16, 27, 41, 55, 72}
 var RockbiterWeaponLevel = [RockbiterWeaponRanks + 1]int32{0, 1, 8, 16, 24, 34, 44, 54}
 
 var RockbiterWeaponRankByLevel = map[int32]int32{
@@ -27,17 +28,27 @@ func (shaman *Shaman) RegisterRockbiterImbue(procMask core.ProcMask) {
 
 	rank := RockbiterWeaponRankByLevel[shaman.Level]
 	enchantId := RockbiterWeaponEnchantId[rank]
+	bonusThreat := RockbiterWeaponBonusTPS[rank]
 
 	duration := time.Minute * 5
 
-	if procMask.Matches(core.ProcMaskMeleeMH) {
+	hasMHImbue := procMask.Matches(core.ProcMaskMeleeMH)
+	hasOHImbue := procMask.Matches(core.ProcMaskMeleeOH)
+
+	if hasMHImbue {
 		shaman.MainHand().TempEnchant = enchantId
+		shaman.AutoAttacks.MHConfig().FlatThreatBonus += bonusThreat * shaman.AutoAttacks.MH().SwingSpeed
 	}
-	if procMask.Matches(core.ProcMaskMeleeOH) {
+	if hasOHImbue {
 		shaman.OffHand().TempEnchant = enchantId
+		shaman.AutoAttacks.MHConfig().FlatThreatBonus += bonusThreat * shaman.AutoAttacks.OH().SwingSpeed
 	}
 
-	// TODO: Rockbiter +threat
+	shaman.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.ProcMask.Matches(procMask) {
+			spell.FlatThreatBonus += bonusThreat
+		}
+	})
 
 	aura := shaman.RegisterAura(core.Aura{
 		Label:    "Rockbiter Imbue",
