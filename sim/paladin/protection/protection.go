@@ -30,7 +30,6 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 
 	prot := &ProtectionPaladin{
 		Paladin:                         pal,
-		primarySeal:                     protOptions.PrimarySeal,
 		righteousFury:                   protOptions.RighteousFury,
 		IsUsingDivineStormStopAttack:    protOptions.IsUsingDivineStormStopAttack,
 		IsUsingJudgementStopAttack:      protOptions.IsUsingJudgementStopAttack,
@@ -49,7 +48,6 @@ func NewProtectionPaladin(character *core.Character, options *proto.Player) *Pro
 type ProtectionPaladin struct {
 	*paladin.Paladin
 
-	primarySeal                     proto.PaladinSeal
 	righteousFury                   bool
 	IsUsingDivineStormStopAttack    bool
 	IsUsingJudgementStopAttack      bool

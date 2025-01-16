@@ -159,6 +159,7 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerStopAttackMacros()
 
 	paladin.ResetCurrentPaladinAura()
+	paladin.ResetPrimarySeal(paladin.Options.PrimarySeal)
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
