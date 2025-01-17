@@ -209,7 +209,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			return Presets.APLP5SealStacking6CF.rotation.rotation!;
 		}
 
-		return Presets.APLTwisting4DR.rotation.rotation!;
+		return Presets.APLTwisting.rotation.rotation!;
 	},
 
 	raidSimPresets: [

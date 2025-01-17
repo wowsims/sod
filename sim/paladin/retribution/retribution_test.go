@@ -94,7 +94,7 @@ func TestRetribution(t *testing.T) {
 
 			Talents:     Phase456RetTalents,
 			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5-twisting"),
-			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5p6p7-twist-4DR"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5p6p7-twist"),
 			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "P5 Twist", SpecOptions: PlayerOptionsSealofMartyrdom},
@@ -112,7 +112,7 @@ func TestRetribution(t *testing.T) {
 
 			Talents:     Phase456RetTalents,
 			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p6-twisting"),
-			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5p6p7-twist-4DR"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5p6p7-twist"),
 			Buffs:       core.FullBuffsPhase6,
 			Consumes:    Phase6Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "P6 Twist", SpecOptions: PlayerOptionsSealofMartyrdom},

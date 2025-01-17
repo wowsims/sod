@@ -32,7 +32,7 @@ import APLP3RetJson from './apls/p3-ret.apl.json';
 import APLP5ExodinJson from './apls/p5-exodin-6CF-2DR.apl.json';
 import APLP5SealStackingJson from './apls/p5-seal-stacking-6CF-2DR.apl.json';
 import APLShockadinJson from './apls/p5-shockadin.apl.json';
-import APLTwistingJson from './apls/p5p6p7-twist-4DR.apl.json';
+import APLTwistingJson from './apls/p5p6p7-twist.apl.json';
 import APLP6OneHandJson from './apls/p6-1h-3AQ10.apl.json';
 import APLP6ExodinJson from './apls/p6-exodin.apl.json';
 import Phase1RetGearJson from './gear_sets/p1-ret.gear.json';
@@ -128,7 +128,7 @@ export const APLP6Exodin = PresetUtils.makePresetAPLRotation('P6 Exodin', APLP6E
 export const APLP6OneHand = PresetUtils.makePresetAPLRotation('P6 1H Ret', APLP6OneHandJson, {
 	customCondition: player => player.getLevel() === 60,
 });
-export const APLTwisting4DR = PresetUtils.makePresetAPLRotation('Twist 4DR', APLTwistingJson, {
+export const APLTwisting = PresetUtils.makePresetAPLRotation('Twist', APLTwistingJson, {
 	customCondition: player => player.getLevel() === 60,
 });
 
@@ -138,7 +138,7 @@ export const APLPresets = {
 	[Phase.Phase3]: [APLP3Ret],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [APLP5Exodin6CF, APLShockadin, APLP5SealStacking6CF],
-	[Phase.Phase6]: [APLTwisting4DR, APLP6Exodin, APLP6OneHand],
+	[Phase.Phase6]: [APLTwisting, APLP6Exodin, APLP6OneHand],
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
@@ -188,7 +188,7 @@ export const TalentPresets = {
 	[Phase.Phase6]: [RetTalents],
 };
 
-export const PresetBuildTwisting = PresetUtils.makePresetBuild('Twisting', { gear: Phase6TwistingGear, talents: RetTalents, rotation: APLTwisting4DR });
+export const PresetBuildTwisting = PresetUtils.makePresetBuild('Twisting', { gear: Phase6TwistingGear, talents: RetTalents, rotation: APLTwisting });
 export const PresetBuildP5SealStacking = PresetUtils.makePresetBuild('P5 Seal Stacking', { gear: Phase5SealStackingGear, talents: RetTalents, rotation: APLP5SealStacking6CF });
 export const PresetBuildP5Exodin = PresetUtils.makePresetBuild('P5 Exodin', { gear: Phase5ExodinGear, talents: RetTalents, rotation: APLP5Exodin6CF });
 export const PresetBuildP5Shockadin = PresetUtils.makePresetBuild('P5 Shockadin', { gear: Phase5ShockadinGear, talents: ShockadinTalents, rotation: APLShockadin });
