@@ -53,6 +53,7 @@ type Paladin struct {
 	primarySeal        *core.Spell // the seal configured in options, available via "Cast Primary Seal"
 	primaryPaladinAura proto.PaladinAura
 	currentPaladinAura *core.Aura
+	sanctityAura       *core.Aura
 
 	currentSeal      *core.Aura
 	prevSeal         *core.Aura
@@ -233,7 +234,11 @@ func (paladin *Paladin) registerStopAttackMacros() {
 func (paladin *Paladin) ResetCurrentPaladinAura() {
 	paladin.currentPaladinAura = nil
 	if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
-		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
+		if paladin.sanctityAura == nil {
+			paladin.sanctityAura = core.SanctityAuraAura(paladin.GetCharacter())
+		}
+
+		paladin.currentPaladinAura = paladin.sanctityAura
 	}
 }
 
