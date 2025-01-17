@@ -292,14 +292,17 @@ var PlayerOptionsSealofRighteousness = &proto.Player_RetributionPaladin{
 }
 
 var optionsSealOfCommand = &proto.PaladinOptions{
+	Aura:        proto.PaladinAura_SanctityAura,
 	PrimarySeal: proto.PaladinSeal_Command,
 }
 
 var optionsSealOfMartyrdom = &proto.PaladinOptions{
+	Aura:        proto.PaladinAura_SanctityAura,
 	PrimarySeal: proto.PaladinSeal_Martyrdom,
 }
 
 var optionsSealOfRighteousness = &proto.PaladinOptions{
+	Aura:        proto.PaladinAura_SanctityAura,
 	PrimarySeal: proto.PaladinSeal_Righteousness,
 }
 
