@@ -33,16 +33,7 @@ func (hunter *Hunter) ApplyRunes() {
 		hunter.AutoAttacks.OHConfig().DamageMultiplier *= 1.5
 	}
 
-	if hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes) {
-		hunter.AddStat(stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
-		if hunter.pet != nil {
-			hunter.pet.AddStat(stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
-		}
-		if hunter.FlankingStrike != nil {
-			hunter.FlankingStrike.CD.Multiplier = 50
-		}
-	}
-
+	hunter.applyCatlikeReflexes()
 	hunter.applySniperTraining()
 	hunter.applyCobraStrikes()
 	hunter.applyExposeWeakness()
@@ -440,6 +431,27 @@ func (hunter *Hunter) applyHitAndRun() {
 				hunter.Unit.RemoveMoveSpeedModifier(&aura.ActionID)
 			},
 		})
+	}
+}
+
+func (hunter *Hunter) applyCatlikeReflexes() {
+	if hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes) {
+		label := "Catlike Reflexes"
+		if hunter.HasAura(label) {
+			return
+		}
+		core.MakePermanent(hunter.RegisterAura(core.Aura{
+			Label: label,
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.AddStatDynamic(sim, stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
+				if hunter.pet != nil {
+					hunter.pet.AddStat(stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
+				}
+				if hunter.FlankingStrike != nil {
+					hunter.FlankingStrike.CD.Multiplier = 50
+				}
+			},
+		}))
 	}
 }
 
