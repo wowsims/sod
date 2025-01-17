@@ -70,7 +70,7 @@ character_stats_results: {
   final_stats: 1233.604
   final_stats: 3
   final_stats: 26.53165
-  final_stats: 53
+  final_stats: 3
   final_stats: 0
   final_stats: 0
   final_stats: 2101.24
@@ -295,8 +295,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestFeral-Phase2-Lvl40-StatWeights-Default"
  value: {
-  weights: 1.17987
-  weights: 1.12475
+  weights: 0.98971
+  weights: 1.05302
   weights: 0
   weights: 0
   weights: 0
@@ -312,9 +312,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.51571
-  weights: 6.58216
-  weights: 6.41389
+  weights: 0.43259
+  weights: 4.87186
+  weights: 5.45987
   weights: 0
   weights: 0
   weights: 0
@@ -764,15 +764,15 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Phase2-Lvl40-AllItems-FeralheartRaiment"
  value: {
-  dps: 648.16961
-  tps: 473.75685
+  dps: 536.85931
+  tps: 391.70435
  }
 }
 dps_results: {
  key: "TestFeral-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 973.37518
-  tps: 711.21693
+  dps: 823.85449
+  tps: 600.67871
  }
 }
 dps_results: {
@@ -1030,8 +1030,8 @@ dps_results: {
 dps_results: {
  key: "TestFeral-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 617.95234
-  tps: 442.74672
+  dps: 486.91357
+  tps: 348.71109
  }
 }
 dps_results: {
