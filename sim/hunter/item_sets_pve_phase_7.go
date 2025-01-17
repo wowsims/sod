@@ -86,6 +86,7 @@ func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 		MaxStacks: 35,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			hunter.AddStatDynamic(sim, stats.MeleeCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
+			hunter.AddStatDynamic(sim, stats.SpellCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
 		},
 	})
 
@@ -176,6 +177,7 @@ func (hunter *Hunter) applyNaxxramasRanged6PBonus() {
 		MaxStacks: 35,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			hunter.AddStatDynamic(sim, stats.MeleeCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
+			hunter.AddStatDynamic(sim, stats.SpellCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
 		},
 	})
 
