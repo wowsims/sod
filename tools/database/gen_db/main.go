@@ -303,7 +303,7 @@ func simmableItemFilter(_ int32, item *proto.UIItem) bool {
 		return true
 	}
 
-	if item.Quality < proto.ItemQuality_ItemQualityUncommon {
+	if item.Quality < proto.ItemQuality_ItemQualityUncommon && item.Ilvl != 61 { // Fix for Rank 1 and 2 Seal of the Dawn trinkets
 		return false
 	} else if item.Quality == proto.ItemQuality_ItemQualityArtifact {
 		return false
