@@ -1,9 +1,8 @@
-import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, HandType, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as RetributionPaladinInputs from './inputs.js';
@@ -13,12 +12,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssClass: 'retribution-paladin-sim-ui',
 	cssScheme: 'paladin',
 	// List any known bugs / issues here and they'll be shown on the site.
-	knownIssues: [
-		`Judgement of the Crusader is currently not implemented; users can manually award themselves the relevant spellpower amount
-		for a dps gain that will be slightly inflated given JotC does not benefit from source damage modifiers.`,
-		`Be aware that not all item and weapon enchants are currently implemented in the sim, which make some notable Retribution
-		weapons like Pendulum of Doom and The Jackhammer undervalued.`,
-	],
+	knownIssues: [],
 	warnings: [
 		(simUI: IndividualSimUI<Spec.SpecRetributionPaladin>) => {
 			return {
@@ -54,11 +48,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-		PseudoStat.PseudoStatTimewornBonus,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier, PseudoStat.PseudoStatTimewornBonus],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -84,7 +74,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		Stat.StatMP5,
 	],
 	displayPseudoStats: [],
-	
+
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
@@ -131,7 +121,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget, RetributionPaladinInputs.CrusaderStrikeStopAttack, RetributionPaladinInputs.JudgementStopAttack, RetributionPaladinInputs.DivineStormStopAttack],
+		inputs: [
+			OtherInputs.TankAssignment,
+			OtherInputs.InFrontOfTarget,
+			RetributionPaladinInputs.CrusaderStrikeStopAttack,
+			RetributionPaladinInputs.JudgementStopAttack,
+			RetributionPaladinInputs.DivineStormStopAttack,
+		],
 	},
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -140,6 +136,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	presets: {
 		rotations: [
+			...Presets.APLPresets[Phase.Phase6],
 			...Presets.APLPresets[Phase.Phase5],
 			...Presets.APLPresets[Phase.Phase4],
 			...Presets.APLPresets[Phase.Phase3],
@@ -148,6 +145,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		],
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase6],
 			...Presets.TalentPresets[Phase.Phase5],
 			...Presets.TalentPresets[Phase.Phase4],
 			...Presets.TalentPresets[Phase.Phase3],
@@ -156,16 +154,62 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase6],
 			...Presets.GearPresets[Phase.Phase5],
 			...Presets.GearPresets[Phase.Phase4],
 			...Presets.GearPresets[Phase.Phase3],
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
+		builds: [
+			Presets.PresetBuildTwisting,
+			Presets.PresetBuildP5SealStacking,
+			Presets.PresetBuildP5Exodin,
+			Presets.PresetBuildP5Shockadin,
+			Presets.PresetBuildP6Exodin,
+		],
 	},
 
 	autoRotation: player => {
-		return Presets.DefaultAPLs[player.getLevel()].rotation.rotation!;
+		const level = player.getLevel();
+		if (level < 60) {
+			return Presets.DefaultAPLs[level].rotation.rotation!;
+		}
+
+		if (player.getTalents().holyShock) {
+			return Presets.APLShockadin.rotation.rotation!;
+		}
+
+		const gear = player.getGear();
+		const itemSlots = gear.getItemSlots();
+		let coreForgedCount = 0;
+		for (let i = 0; i < itemSlots.length; i++) {
+			const item = gear.getEquippedItem(itemSlots[i]);
+			if (!item) continue;
+			if (item.item.setName === 'Lawbringer Radiance') {
+				coreForgedCount++;
+			}
+		}
+
+		const mainHand = gear.getEquippedItem(ItemSlot.ItemSlotMainHand);
+
+		if (mainHand?.item) {
+			if (mainHand.item.handType == HandType.HandTypeOneHand) {
+				return Presets.APLP6OneHand.rotation.rotation!;
+			} else if (mainHand.item.weaponSpeed < 3) {
+				if (coreForgedCount >= 6) {
+					return Presets.APLP5Exodin6CF.rotation.rotation!;
+				} else {
+					return Presets.APLP6Exodin.rotation.rotation!;
+				}
+			}
+		}
+
+		if (coreForgedCount >= 6) {
+			return Presets.APLP5SealStacking6CF.rotation.rotation!;
+		}
+
+		return Presets.APLTwisting4DR.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -187,7 +231,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 				[Faction.Unknown]: {},
 				[Faction.Alliance]: {
 					1: Presets.GearPresets[Phase.Phase1][0].gear,
-					2: Presets.GearPresets[Phase.Phase1][0].gear,
+					2: Presets.GearPresets[Phase.Phase2][0].gear,
+					3: Presets.GearPresets[Phase.Phase3][0].gear,
+					4: Presets.GearPresets[Phase.Phase5][0].gear,
+					5: Presets.GearPresets[Phase.Phase5][0].gear,
+					6: Presets.GearPresets[Phase.Phase6][0].gear,
 				},
 				[Faction.Horde]: {},
 			},
