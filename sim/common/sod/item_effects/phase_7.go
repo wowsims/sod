@@ -183,9 +183,6 @@ func sanctifiedDamageEffect(spellID int32, multiplier float64) core.ApplyEffect 
 			Label:    "Seal of the Dawn (Damage)",
 			ActionID: core.ActionID{SpellID: spellID},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				if sim.Log != nil {
-					character.Log(sim, "Seal of the Dawn (Damage): %0.03f", damageMultiplier)
-				}
 				character.PseudoStats.DamageDealtMultiplier *= damageMultiplier
 				character.EnableDynamicStatDep(sim, healthDep)
 			},
