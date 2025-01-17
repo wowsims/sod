@@ -755,6 +755,7 @@ class EpWeightsMenu extends BaseModal {
 				PseudoStat.PseudoStatRangedDps, 
 				PseudoStat.PseudoStatBonusPhysicalDamage,
 				PseudoStat.PseudoStatTimewornBonus,
+				PseudoStat.PseudoStatSanctifiedBonus,
 			].includes(stat.getPseudoStat());
 		}
 	});

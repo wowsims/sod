@@ -1,6 +1,8 @@
 package item_effects
 
 import (
+	"math"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -168,7 +170,7 @@ func init() {
 
 // Equip: Unlocks your potential while inside Naxxramas.
 // Increasing your damage by X% and your health by X% for each piece of Sanctified armor equipped.
-func sanctifiedDamageEffect(spellID int32, multiplier float64) core.ApplyEffect {
+func sanctifiedDamageEffect(spellID int32, percentIncrease float64) core.ApplyEffect {
 	return func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -176,19 +178,31 @@ func sanctifiedDamageEffect(spellID int32, multiplier float64) core.ApplyEffect 
 			return
 		}
 
-		damageMultiplier := 1.0 + (multiplier/100.0)*float64(character.PseudoStats.SanctifiedBonus)
+		sanctifiedBonus := math.Min(12, float64(character.PseudoStats.SanctifiedBonus))
+		multiplier := 1.0 + percentIncrease/100.0*sanctifiedBonus
 		healthDep := character.NewDynamicMultiplyStat(stats.Health, multiplier)
 
 		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label:    "Seal of the Dawn (Damage)",
-			ActionID: core.ActionID{SpellID: spellID},
+			Label:      "Seal of the Dawn (Damage)",
+			ActionID:   core.ActionID{SpellID: spellID},
+			BuildPhase: core.CharacterBuildPhaseGear,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.DamageDealtMultiplier *= damageMultiplier
-				character.EnableDynamicStatDep(sim, healthDep)
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDep)
+				} else {
+					character.EnableDynamicStatDep(sim, healthDep)
+				}
+
+				character.PseudoStats.DamageDealtMultiplier *= multiplier
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.DamageDealtMultiplier /= damageMultiplier
-				character.DisableDynamicStatDep(sim, healthDep)
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDep)
+				} else {
+					character.DisableDynamicStatDep(sim, healthDep)
+				}
+
+				character.PseudoStats.DamageDealtMultiplier /= multiplier
 			},
 		}))
 	}
@@ -196,7 +210,7 @@ func sanctifiedDamageEffect(spellID int32, multiplier float64) core.ApplyEffect 
 
 // Equip: Unlocks your potential while inside Naxxramas.
 // Increasing your healing and shielding by X% and your health by X% for each piece of Sanctified armor equipped.
-func sanctifiedHealingEffect(spellID int32, multiplier float64) core.ApplyEffect {
+func sanctifiedHealingEffect(spellID int32, percentIncrease float64) core.ApplyEffect {
 	return func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -204,19 +218,31 @@ func sanctifiedHealingEffect(spellID int32, multiplier float64) core.ApplyEffect
 			return
 		}
 
-		calculatedMultiplier := 1.0 + (multiplier/100.0)*float64(character.PseudoStats.SanctifiedBonus)
+		sanctifiedBonus := math.Min(12, float64(character.PseudoStats.SanctifiedBonus))
+		multiplier := 1.0 + percentIncrease/100.0*sanctifiedBonus
 		healthDep := character.NewDynamicMultiplyStat(stats.Health, multiplier)
 
 		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label:    "Seal of the Dawn (Healing)",
-			ActionID: core.ActionID{SpellID: spellID},
+			Label:      "Seal of the Dawn (Healing)",
+			ActionID:   core.ActionID{SpellID: spellID},
+			BuildPhase: core.CharacterBuildPhaseGear,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.HealingDealtMultiplier *= calculatedMultiplier
-				character.EnableDynamicStatDep(sim, healthDep)
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDep)
+				} else {
+					character.EnableDynamicStatDep(sim, healthDep)
+				}
+
+				character.PseudoStats.HealingDealtMultiplier *= multiplier
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.HealingDealtMultiplier /= calculatedMultiplier
-				character.DisableDynamicStatDep(sim, healthDep)
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDep)
+				} else {
+					character.DisableDynamicStatDep(sim, healthDep)
+				}
+
+				character.PseudoStats.HealingDealtMultiplier /= multiplier
 			},
 		}))
 	}
@@ -224,7 +250,7 @@ func sanctifiedHealingEffect(spellID int32, multiplier float64) core.ApplyEffect
 
 // Equip: Unlocks your potential while inside Naxxramas.
 // Increasing your threat caused by X%, your damage by Y%, and your health by Y% for each piece of Sanctified armor equipped.
-func sanctifiedTankingEffect(spellID int32, threatMultiplier float64, damageAndHealthMultiplier float64) core.ApplyEffect {
+func sanctifiedTankingEffect(spellID int32, threatPercentIncrease float64, damageHealthPercentIncrease float64) core.ApplyEffect {
 	return func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -232,22 +258,34 @@ func sanctifiedTankingEffect(spellID int32, threatMultiplier float64, damageAndH
 			return
 		}
 
-		calculatedThreatMultiplier := 1.0 + (threatMultiplier/100.0)*float64(character.PseudoStats.SanctifiedBonus)
-		calculatedDamageAndHealthMultiplier := 1.0 + (damageAndHealthMultiplier/100.0)*float64(character.PseudoStats.SanctifiedBonus)
-		healthDep := character.NewDynamicMultiplyStat(stats.Health, damageAndHealthMultiplier)
+		sanctifiedBonus := math.Min(12, float64(character.PseudoStats.SanctifiedBonus))
+		damageHealthMultiplier := 1.0 + damageHealthPercentIncrease/100.0*sanctifiedBonus
+		threatMultiplier := 1.0 + threatPercentIncrease/100.0*sanctifiedBonus
+		healthDep := character.NewDynamicMultiplyStat(stats.Health, damageHealthMultiplier)
 
 		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label:    "Seal of the Dawn (Tanking)",
-			ActionID: core.ActionID{SpellID: spellID},
+			Label:      "Seal of the Dawn (Tanking)",
+			ActionID:   core.ActionID{SpellID: spellID},
+			BuildPhase: core.CharacterBuildPhaseGear,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.ThreatMultiplier *= calculatedThreatMultiplier
-				character.PseudoStats.DamageDealtMultiplier *= calculatedDamageAndHealthMultiplier
-				character.EnableDynamicStatDep(sim, healthDep)
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDep)
+				} else {
+					character.EnableDynamicStatDep(sim, healthDep)
+				}
+
+				character.PseudoStats.ThreatMultiplier *= threatMultiplier
+				character.PseudoStats.DamageDealtMultiplier *= damageHealthMultiplier
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.ThreatMultiplier /= calculatedThreatMultiplier
-				character.PseudoStats.DamageDealtMultiplier /= calculatedDamageAndHealthMultiplier
-				character.DisableDynamicStatDep(sim, healthDep)
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDep)
+				} else {
+					character.DisableDynamicStatDep(sim, healthDep)
+				}
+
+				character.PseudoStats.ThreatMultiplier /= threatMultiplier
+				character.PseudoStats.DamageDealtMultiplier /= damageHealthMultiplier
 			},
 		}))
 	}
