@@ -60,13 +60,13 @@ func (hunter *Hunter) applyNaxxramasMelee4PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.RaptorStrike != nil {
-				hunter.RaptorStrike.CD.Duration -= time.Second
+				hunter.RaptorStrike.CD.FlatModifier -= time.Second
 			}
 			if hunter.WyvernStrike != nil {
-				hunter.WyvernStrike.CD.Duration -= time.Second
+				hunter.WyvernStrike.CD.FlatModifier -= time.Second * 2
 			}
 			if hunter.FlankingStrike != nil {
-				hunter.FlankingStrike.CD.Duration -= time.Second * 8
+				hunter.FlankingStrike.CD.FlatModifier -= time.Second * 8
 			}
 		},
 	}))
@@ -148,16 +148,16 @@ func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.ChimeraShot != nil {
-				hunter.ChimeraShot.CD.Duration -= time.Millisecond * 1500
+				hunter.ChimeraShot.CD.FlatModifier -= time.Millisecond * 1500
 			}
 			if hunter.ExplosiveShot != nil {
-				hunter.ExplosiveShot.CD.Duration -= time.Millisecond * 1500 
+				hunter.ExplosiveShot.CD.FlatModifier -= time.Millisecond * 1500 
 			}
 			if hunter.AimedShot != nil {
-				hunter.AimedShot.CD.Duration -= time.Millisecond * 1500 
+				hunter.AimedShot.CD.FlatModifier -= time.Millisecond * 1500 
 			}
 			if hunter.KillShot != nil {
-				hunter.KillShot.CD.Duration -= time.Millisecond * 3000 
+				hunter.KillShot.CD.FlatModifier -= time.Second * 3 
 			}
 		},
 	}))
