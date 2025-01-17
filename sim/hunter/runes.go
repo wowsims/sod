@@ -38,6 +38,9 @@ func (hunter *Hunter) ApplyRunes() {
 		if hunter.pet != nil {
 			hunter.pet.AddStat(stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
 		}
+		if hunter.FlankingStrike != nil {
+			hunter.FlankingStrike.CD.Multiplier = 50
+		}
 	}
 
 	hunter.applySniperTraining()
