@@ -437,9 +437,6 @@ func (hunter *Hunter) applyHitAndRun() {
 func (hunter *Hunter) applyCatlikeReflexes() {
 	if hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes) {
 		label := "Catlike Reflexes"
-		if hunter.HasAura(label) {
-			return
-		}
 		core.MakePermanent(hunter.RegisterAura(core.Aura{
 			Label: label,
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -448,7 +445,7 @@ func (hunter *Hunter) applyCatlikeReflexes() {
 					hunter.pet.AddStat(stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
 				}
 				if hunter.FlankingStrike != nil {
-					hunter.FlankingStrike.CD.Multiplier = 50
+					hunter.FlankingStrike.CD.Multiplier -= 50
 				}
 			},
 		}))
