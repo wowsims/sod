@@ -189,8 +189,8 @@ var critRegex2 = regexp.MustCompile(`Improves your chance to get a critical stri
 var spellCritRegex = regexp.MustCompile(`Improves your chance to get a critical strike with spells by ([0-9]+)%\.`)
 var meleeCritRegex = regexp.MustCompile(`Improves your chance to get a critical strike by ([0-9]+)%\.`)
 var hasteRegex = regexp.MustCompile(`Improves your haste by ([0-9]+)%\.`)
-var spellHasteRegex = regexp.MustCompile(`Increases your casting speed of non-channeled spells by ([0-9]+)%.`)
-var meleeHasteRegex = regexp.MustCompile(`Increases your attack speed by ([0-9]+)%.`)
+var spellHasteRegex = regexp.MustCompile(`Increases your casting speed of non-channeled spells by ([0-9]+)%\.`)
+var meleeHasteRegex = regexp.MustCompile(`Increases your attack speed by ([0-9]+)%\.`)
 
 var spellPenetrationRegex = regexp.MustCompile(`Decreases the magical resistances of your spell targets by ([0-9]+)\.`)
 var mp5Regex = regexp.MustCompile(`Restores ([0-9]+) mana per 5 sec\.`)
