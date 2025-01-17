@@ -91,7 +91,7 @@ func init() {
 	core.NewItemEffect(CrusadersSealOfTheDawnTanking, sanctifiedTankingEffect(1223374, 6.25, 18.75))
 	core.NewItemEffect(CommandersSealOfTheDawnTanking, sanctifiedTankingEffect(1223375, 6.67, 21.67))
 	core.NewItemEffect(HighlordsSSealOfTheDawnTanking, sanctifiedTankingEffect(1223376, 7.08, 25.0))
-	
+
 	// https://www.wowhead.com/classic/item=236351/mark-of-the-champion
 	core.NewItemEffect(236351, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -99,7 +99,7 @@ func init() {
 			character.PseudoStats.MobTypeSpellPower += 89
 		}
 	})
-	
+
 	// https://www.wowhead.com/classic/item=236352/mark-of-the-champion
 	core.NewItemEffect(236352, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -204,18 +204,18 @@ func sanctifiedHealingEffect(spellID int32, multiplier float64) core.ApplyEffect
 			return
 		}
 
-		multiplier = 1.0 + (multiplier/100.0)*float64(character.PseudoStats.SanctifiedBonus)
+		calculatedMultiplier := 1.0 + (multiplier/100.0)*float64(character.PseudoStats.SanctifiedBonus)
 		healthDep := character.NewDynamicMultiplyStat(stats.Health, multiplier)
 
 		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 			Label:    "Seal of the Dawn (Healing)",
 			ActionID: core.ActionID{SpellID: spellID},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.HealingDealtMultiplier *= multiplier
+				character.PseudoStats.HealingDealtMultiplier *= calculatedMultiplier
 				character.EnableDynamicStatDep(sim, healthDep)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.HealingDealtMultiplier /= multiplier
+				character.PseudoStats.HealingDealtMultiplier /= calculatedMultiplier
 				character.DisableDynamicStatDep(sim, healthDep)
 			},
 		}))
@@ -232,21 +232,21 @@ func sanctifiedTankingEffect(spellID int32, threatMultiplier float64, damageAndH
 			return
 		}
 
-		threatMultiplier = 1.0 + (threatMultiplier/100.0)*float64(character.PseudoStats.SanctifiedBonus)
-		damageAndHealthMultiplier = 1.0 + (damageAndHealthMultiplier/100.0)*float64(character.PseudoStats.SanctifiedBonus)
+		calculatedThreatMultiplier := 1.0 + (threatMultiplier/100.0)*float64(character.PseudoStats.SanctifiedBonus)
+		calculatedDamageAndHealthMultiplier := 1.0 + (damageAndHealthMultiplier/100.0)*float64(character.PseudoStats.SanctifiedBonus)
 		healthDep := character.NewDynamicMultiplyStat(stats.Health, damageAndHealthMultiplier)
 
 		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 			Label:    "Seal of the Dawn (Tanking)",
 			ActionID: core.ActionID{SpellID: spellID},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.ThreatMultiplier *= threatMultiplier
-				character.PseudoStats.DamageDealtMultiplier *= damageAndHealthMultiplier
+				character.PseudoStats.ThreatMultiplier *= calculatedThreatMultiplier
+				character.PseudoStats.DamageDealtMultiplier *= calculatedDamageAndHealthMultiplier
 				character.EnableDynamicStatDep(sim, healthDep)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.ThreatMultiplier /= threatMultiplier
-				character.PseudoStats.DamageDealtMultiplier /= damageAndHealthMultiplier
+				character.PseudoStats.ThreatMultiplier /= calculatedThreatMultiplier
+				character.PseudoStats.DamageDealtMultiplier /= calculatedDamageAndHealthMultiplier
 				character.DisableDynamicStatDep(sim, healthDep)
 			},
 		}))
