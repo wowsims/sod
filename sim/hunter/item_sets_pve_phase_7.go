@@ -45,7 +45,7 @@ func (hunter *Hunter) applyNaxxramasMelee2PBonus() {
 	})
 }
 
-// Your critical strikes with Strike abilities and Mongoose Bite have a 100% chance to reset the cooldown on those abilities.
+// Reduces the cooldown on your Wyvern Strike ability by 2 sec, reduces the cooldown on your raptor strike ability by 1 sec, and reduces the cooldown on your Flanking Strike ability by 8sec.
 func (hunter *Hunter) applyNaxxramasMelee4PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Melee 4P Bonus"
 	if hunter.HasAura(label) {
@@ -59,14 +59,14 @@ func (hunter *Hunter) applyNaxxramasMelee4PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			//spellsToReset = hunter.Strikes
-			//spellsToReset = append(spellsToReset, hunter.MongooseBite)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.Flags.Matches(SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite) && result.DidCrit() {
-				spell.CD.Reset()
-			} else if spell.SpellCode == SpellCode_HunterRaptorStrikeHit && result.DidCrit() {
-				hunter.RaptorStrike.CD.QueueReset(sim.CurrentTime)
+			if hunter.RaptorStrike != nil {
+				hunter.RaptorStrike.CD.Duration -= time.Second
+			}
+			if hunter.WyvernStrike != nil {
+				hunter.WyvernStrike.CD.Duration -= time.Second
+			}
+			if hunter.FlankingStrike != nil {
+				hunter.FlankingStrike.CD.Duration -= time.Second * 8
 			}
 		},
 	}))
@@ -137,27 +137,26 @@ func (hunter *Hunter) applyNaxxramasRanged2PBonus() {
 	})
 }
 
-// Your critical strikes with Shot abilities have a 100% chance to reset the cooldown on those Shot abilities.
+// Reduces the cooldown on your Chimera Shot, Explosive Shot, and Aimed Shot abilities by 1.5 sec and reduces the cooldown on your Kill Shot ability by 3sec.
 func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Ranged 4P Bonus"
 	if hunter.HasAura(label) {
 		return
 	}
-
-	// Not entirely sure how this will work so taking some liberties
-	// Assume that it resets all of them when one crits
-	var spellsToReset []*core.Spell
-
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			spellsToReset = core.FilterSlice(hunter.Shots, func(spell *core.Spell) bool { return spell.CD.Duration > 0 })
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagShot) && result.DidCrit() {
-				for _, spell := range spellsToReset {
-					spell.CD.Reset()
-				}
+			if hunter.ChimeraShot != nil {
+				hunter.ChimeraShot.CD.Duration -= time.Millisecond * 1500
+			}
+			if hunter.ExplosiveShot != nil {
+				hunter.ExplosiveShot.CD.Duration -= time.Millisecond * 1500 
+			}
+			if hunter.AimedShot != nil {
+				hunter.AimedShot.CD.Duration -= time.Millisecond * 1500 
+			}
+			if hunter.KillShot != nil {
+				hunter.KillShot.CD.Duration -= time.Millisecond * 3000 
 			}
 		},
 	}))
