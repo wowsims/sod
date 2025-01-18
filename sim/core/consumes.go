@@ -146,7 +146,7 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 			})
 		case proto.WeaponImbue_BlessedWizardOil:
 			if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
-				character.PseudoStats.MobTypeSpellPower += 100
+				character.PseudoStats.MobTypeSpellPower += 60
 			}
 
 		// Mana Oils
