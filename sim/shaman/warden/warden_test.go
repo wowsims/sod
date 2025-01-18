@@ -52,7 +52,7 @@ var Phase4Consumes = core.ConsumesCombo{
 		FirePowerBuff:     proto.FirePowerBuff_ElixirOfGreaterFirepower,
 		Flask:             proto.Flask_FlaskOfTheTitans,
 		Food:              proto.Food_FoodBlessSunfruit,
-		MainHandImbue:     proto.WeaponImbue_WindfuryWeapon,
+		MainHandImbue:     proto.WeaponImbue_RockbiterWeapon,
 		OffHandImbue:      proto.WeaponImbue_ConductiveShieldCoating,
 		SpellPowerBuff:    proto.SpellPowerBuff_GreaterArcaneElixir,
 		StrengthBuff:      proto.StrengthBuff_JujuPower,

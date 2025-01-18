@@ -150,7 +150,9 @@ var ItemDenyList = map[int32]struct{}{
 	21208:  {}, // Signet Ring of the Bronze Dragonflight
 	21209:  {}, // Signet Ring of the Bronze Dragonflight
 	21210:  {}, // Signet Ring of the Bronze Dragonflight
+	22631:  {}, // https://www.wowhead.com/classic/item=22631/atiesh-greatstaff-of-the-guardian
 	22736:  {}, // Andonisus, Reaper of Souls
+	23207:  {}, // Mark of the Champion (Spellpower, old)
 	34576:  {}, // Battlemaster's Cruelty
 	34577:  {}, // Battlemaster's Depreavity
 	34578:  {}, // Battlemaster's Determination

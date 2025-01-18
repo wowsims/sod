@@ -3,6 +3,8 @@ package paladin
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
+	"github.com/wowsims/sod/sim/common/sod/item_effects"
 	"github.com/wowsims/sod/sim/common/vanilla"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
@@ -31,9 +33,17 @@ const (
 	LibramOfTheExorcist                  = 234475
 	LibramOfSanctity                     = 234476
 	LibramOfRighteousness                = 234477
+	ClaymoreOfUnholyMight                = 236299
 )
 
 func init() {
+	core.AddEffectsToTest = false
+
+	// https://www.wowhead.com/classic/item=236299/claymore-of-unholy-might
+	// Chance on hit: Increases the wielder's Strength by 400, but they also take 20% more damage from all sources for 8 sec.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcAura(ClaymoreOfUnholyMight, "Claymore of Unholy Might", 1.0, item_effects.UnholyMightAura)
+
 	core.NewSimpleStatOffensiveTrinketEffect(SanctifiedOrb, stats.Stats{stats.MeleeCrit: 3 * core.CritRatingPerCritChance, stats.SpellCrit: 3 * core.CritRatingPerCritChance}, time.Second*25, time.Minute*3)
 
 	core.NewItemEffect(LibramDiscardedTenetsOfTheSilverHand, func(agent core.Agent) {
@@ -305,6 +315,7 @@ func init() {
 		})
 	})
 
+	core.AddEffectsToTest = true
 }
 
 // https://www.wowhead.com/classic/spell=465414/crusaders-zeal

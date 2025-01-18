@@ -4,6 +4,16 @@
 	flex-direction: column;
 	align-items: center;
 
+	&.dragfrom {
+		background-color: color-mix(in srgb, var(--bs-body-bg) 80%, transparent);
+		filter: opacity(0.5);
+		cursor: move;
+	}
+
+	&.draggable:has(> .list-picker-item-header .list-picker-item-popover.hover) {
+		background-color: color-mix(in srgb, var(--bs-primary) 5%, transparent);
+	}
+	
 	&:not(:last-child) {
 		margin-bottom: calc(2 * var(--spacer-3));
 	}
@@ -32,7 +42,6 @@
 					padding: 0;
 					border: 0;
 					margin: 0;
-					flex: 0;
 				}
 			}
 
@@ -61,7 +70,20 @@
 
 				.list-picker-item-action {
 					margin-left: var(--spacer-2);
+
+					&.list-picker-item-move {
+						cursor: move;
+					}
 				}
+				
+				.list-picker-item-popover:popover-open {
+					inset: unset;
+					position: relative;
+					background-color: color-mix(in srgb, var(--bs-body-bg) 80%, transparent);
+					border: 1px solid black;
+					border-radius: 5px;
+					padding: 5px 10px;
+ 				}
 			}
 
 			.target-input-picker-root {

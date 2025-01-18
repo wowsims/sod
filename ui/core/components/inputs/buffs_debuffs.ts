@@ -449,10 +449,28 @@ export const SpellIncreaseBuff = withLabel(
 );
 
 // Misc Buffs
+export const AtieshCastSpeedBuff = makeBooleanRaidBuffInput({
+	actionId: () => ActionId.fromSpellId(1219557),
+	fieldName: 'atieshCastSpeedBuff',
+});
+export const AtieshHealingBuff = makeBooleanRaidBuffInput({
+	actionId: () => ActionId.fromSpellId(1219553),
+	fieldName: 'atieshHealingBuff',
+});
+export const AtieshSpellCritBuff = makeBooleanRaidBuffInput({
+	actionId: () => ActionId.fromSpellId(1219558),
+	fieldName: 'atieshSpellCritBuff',
+});
+export const AtieshSpellPowerBuff = makeBooleanRaidBuffInput({
+	actionId: () => ActionId.fromSpellId(1219552),
+	fieldName: 'atieshSpellPowerBuff',
+});
+
 export const ImprovedStoneskinWindwall = makeBooleanRaidBuffInput({
-	actionId: player => player.getMatchingSpellActionId([{ id: 457544, minLevel: 60 }]),
+	actionId: () => ActionId.fromSpellId(457544),
 	fieldName: 'improvedStoneskinWindwall',
 });
+
 export const RetributionAura = makeTristateRaidBuffInput({
 	actionId: player =>
 		player.getMatchingSpellActionId([
@@ -1100,6 +1118,26 @@ export const RAID_BUFFS_CONFIG = [
 ] as PickerStatOptions[];
 
 export const MISC_BUFFS_CONFIG = [
+	{
+		config: AtieshSpellPowerBuff,
+		picker: IconPicker,
+		stats: [],
+	},
+	{
+		config: AtieshSpellCritBuff,
+		picker: IconPicker,
+		stats: [],
+	},
+	{
+		config: AtieshCastSpeedBuff,
+		picker: IconPicker,
+		stats: [],
+	},
+	{
+		config: AtieshHealingBuff,
+		picker: IconPicker,
+		stats: [],
+	},
 	{
 		config: ImprovedStoneskinWindwall,
 		picker: IconPicker,

@@ -15,7 +15,7 @@ import * as InputHelpers from './components/input_helpers';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
 import { addStatWeightsAction } from './components/stat_weights_action';
-import { GLOBAL_DISPLAY_PSEUDO_STATS, GLOBAL_DISPLAY_STATS, GLOBAL_EP_STATS, LEVEL_THRESHOLDS } from './constants/other';
+import { GLOBAL_DISPLAY_PSEUDO_STATS, GLOBAL_DISPLAY_STATS, GLOBAL_EP_PSEUDOSTATS, GLOBAL_EP_STATS, LEVEL_THRESHOLDS } from './constants/other';
 import * as Tooltips from './constants/tooltips';
 import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
@@ -330,7 +330,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private addSidebarComponents() {
 		this.raidSimResultsManager = addRaidSimAction(this);
-		addStatWeightsAction(this, this.individualConfig.epStats.concat(GLOBAL_EP_STATS), this.individualConfig.epPseudoStats, this.individualConfig.epReferenceStat);
+		addStatWeightsAction(this, this.individualConfig.epStats.concat(GLOBAL_EP_STATS), GLOBAL_EP_PSEUDOSTATS.concat(this.individualConfig.epPseudoStats ?? []), this.individualConfig.epReferenceStat);
 
 		const displayStats: UnitStat[] = [];
 

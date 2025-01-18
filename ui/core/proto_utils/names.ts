@@ -167,7 +167,7 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatMP5, 'Mana Per 5 Sec'],
 	[Stat.StatSpellHit, 'Spell Hit'],
 	[Stat.StatSpellCrit, 'Spell Crit'],
-	[Stat.StatSpellHaste, 'Spell Haste'],
+	[Stat.StatSpellHaste, 'Casting Speed'],
 	[Stat.StatSpellPenetration, 'Spell Pen'],
 	[Stat.StatAttackPower, 'Attack Power'],
 	[Stat.StatFeralAttackPower, 'Feral AP'],
@@ -207,8 +207,10 @@ export const pseudoStatNames: Map<PseudoStat, string> = new Map([
 	[PseudoStat.PseudoStatOffHandDps, 'Off Hand DPS'],
 	[PseudoStat.PseudoStatRangedDps, 'Ranged DPS'],
 	[PseudoStat.PseudoStatBlockValueMultiplier, 'Block Value Multiplier'],
-	[PseudoStat.TimewornBonus, 'Timeworn Pieces'],
-	[PseudoStat.BonusPhysicalDamage, 'Bonus Weapon Damage'],
+	[PseudoStat.PseudoStatTimewornBonus, 'Timeworn Pieces'],
+	[PseudoStat.PseudoStatSanctifiedBonus, 'Sanctified Pieces'],
+	[PseudoStat.PseudoStatBonusPhysicalDamage, 'Bonus Weapon Damage'],
+	[PseudoStat.PseudoStatThornsDamage, 'Total Thorns Damage'],
 ]);
 
 export function getClassStatName(stat: Stat, playerClass: Class): string {

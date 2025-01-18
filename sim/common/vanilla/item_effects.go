@@ -34,6 +34,7 @@ const (
 	Firebreather                    = 10797
 	VilerendSlicer                  = 11603
 	HookfangShanker                 = 11635
+	Naglering                       = 11669
 	LinkensSwordOfMastery           = 11902
 	SearingNeedle                   = 12531
 	PipsSkinner                     = 12709
@@ -43,20 +44,22 @@ const (
 	SerpentSlicer                   = 13035
 	TheNeedler                      = 13060
 	SealOfTheDawn                   = 13209
+	CloudkeeperLegplates            = 14554
 	JoonhosMercy                    = 17054
 	Deathbringer                    = 17068
 	ViskagTheBloodletter            = 17075
 	ThrashBlade                     = 17705
 	SatyrsLash                      = 17752
 	MarkOfTheChosen                 = 17774
+	ForceReactiveDisk               = 18168
+	RazorGauntlets                  = 18326
 	Nightfall                       = 19169
 	EbonHand                        = 19170
 	RuneOfTheDawn                   = 19812
 	ZandalariHeroBadge              = 19948
 	ZandalariHeroMedallion          = 19949
 	ZandalariHeroCharm              = 19950
-	MarkOfTheChampionPhys           = 23206
-	MarkOfTheChampionSpell          = 23207
+	CorruptedAshbringer             = 22691
 	BlisteringRagehammer            = 220569 // 10626
 	SulfurasHandOfRagnaros          = 227683 // 17182
 	SulfuronHammer                  = 227684 // 17193
@@ -79,6 +82,7 @@ const (
 	FiendishMachete                 = 228056 // 18310
 	RefinedArcaniteChampion         = 228125
 	TalismanOfEphemeralPower        = 228255 // 18820
+	DrillborerDisk                  = 228266 // 17066
 	GutgoreRipper                   = 228267 // 17071
 	Shadowstrike                    = 228272 // 17074
 	Thunderstrike                   = 228273 // 17223
@@ -105,6 +109,7 @@ const (
 	SeepingWillow                   = 228666 // 12969
 	DraconicInfusedEmblem           = 228678 // 22268
 	QuelSerrar                      = 228679 // 18348
+	DrillborerDiskMolten            = 228702
 	HandOfJustice                   = 228722 // 11815
 	Felstriker                      = 228757 // 12590
 	GutgoreRipperMolten             = 229372
@@ -132,10 +137,12 @@ const (
 	ScarabBrooch                    = 233601 // 21625
 	KalimdorsRevenge                = 233621
 	JomGabbar                       = 233627 // 23570
+	TheBurrowersShield              = 233628 // 23558
 	NeretzekBloodDrinker            = 233647
 	Speedstone                      = 233990
 	ManslayerOfTheQiraji            = 234067
 	EyeOfMoam                       = 234080 // 21473
+	FetishOfChitinousSpikes         = 234092 // 21488
 	DarkmoonCardHeroism             = 234176 // 19287
 	DarkmoonCardBlueDragon          = 234177 // 19288
 	DarkmoonCardMaelstrom           = 234178 // 19289
@@ -144,6 +151,14 @@ const (
 	KalimdorsRevengeVoidTouched     = 234981
 	NeretzekBloodDrinkerVoidTouched = 234987
 	ManslayerOfTheQirajiVoidTouched = 234990
+	MisplacedServoArm               = 236221 // 23221
+	KissOfTheSpider                 = 236268 // 22954
+	WarmthOfForgiveness             = 236320 // 23027
+	TheRestrainedEssenceOfSapphiron = 236331 // 23046
+	SlayersCrest                    = 236334 // 23041
+	GlyphOfDeflection               = 236337 // 23040
+	MarkOfTheChampionSpell          = 236351 // 23207
+	MarkOfTheChampionPhys           = 236352 // 23206
 )
 
 func init() {
@@ -486,6 +501,31 @@ func init() {
 	// Chance on hit: Blasts a target for 160 to 250 Frost damage.
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponCoHProcDamage(Chillpike, "Chillpike", 1.0, 19260, core.SpellSchoolFrost, 160, 90, 0, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=22691/corrupted-ashbringer#same-model-as
+	// Chance on hit: Steals 185 to 215 life from target enemy.
+	// Proc rate taken from Classic 2019 testing
+	// It was reported in Vanilla to scale with Spell Damage but during 2019 it was reported NOT to
+	itemhelpers.CreateWeaponProcSpell(CorruptedAshbringer, "Corrupted Ashbringer", 1.6, func(character *core.Character) *core.Spell {
+		actionID := core.ActionID{SpellID: 29155}
+		healthMetrics := character.NewHealthMetrics(actionID)
+
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealDamage(sim, target, sim.Roll(185, 215), spell.OutcomeMagicHit)
+				character.GainHealth(sim, result.Damage, healthMetrics)
+			},
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=17068/deathbringer
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 110 to 140 Shadow damage.
@@ -1272,6 +1312,52 @@ func init() {
 				for numHits := 0; numHits < maxHits; numHits++ {
 					spell.CalcAndDealDamage(sim, target, sim.Roll(105, 145), spell.OutcomeMagicHitAndCrit)
 					target = character.Env.NextTargetUnit(target)
+				}
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=236221/misplaced-servo-arm
+	// Equip: Chance to discharge electricity causing 250 to 300 Nature damage to your target.
+	// If dual-wielding, your other weapon can proc the Misplaced Servo Arm when it strikes as well.
+	// Chance-on-hit for the other weapon is determined by it's base weapon speed, set to 2PPM.
+	// Same interaction when dual-wielding two Misplaced Servo Arms, one melee from one Arm has a chance to proc both Arms.
+	// Assuming same PPM as in Classic for now
+	core.NewItemEffect(MisplacedServoArm, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 1220535}
+		label := "Electric Discharge Trigger"
+		ppm := 2.0
+		procMask := character.GetProcMaskForItem(MisplacedServoArm)
+		if procMask == core.ProcMaskMelee {
+			ppm = 4.0
+		}
+		ppmm := character.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
+
+		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, sim.Roll(250, 300), spell.OutcomeMagicHitAndCrit)
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              label,
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if ppmm.Proc(sim, spell.ProcMask, label) {
+					procSpell.Cast(sim, result.Target)
 				}
 			},
 		})
@@ -2344,13 +2430,14 @@ func init() {
 	// Equip: When struck in combat inflicts 50 Fire damage to the attacker.
 	core.NewItemEffect(EssenceOfThePureFlame, func(agent core.Agent) {
 		character := agent.GetCharacter()
+		character.PseudoStats.ThornsDamage += 50
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 461694},
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -2374,6 +2461,66 @@ func init() {
 	// https://www.wowhead.com/classic/item=234080/eye-of-moam
 	// Use: Increases damage done by magical spells and effects by up to 150, and decreases the magical resistances of your spell targets by 100 for 30 sec. (3 Min Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(EyeOfMoam, stats.Stats{stats.SpellDamage: 150, stats.SpellPenetration: 100}, time.Second*30, time.Minute*3)
+
+	// https://www.wowhead.com/classic/item=234092/fetish-of-chitinous-spikes#see-also
+	// Use: Spikes sprout from you causing 150 Nature damage to attackers when hit.  Lasts 30 sec. (3 Min Cooldown)
+	// "Ouch"
+	core.NewItemEffect(FetishOfChitinousSpikes, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{ItemID: FetishOfChitinousSpikes}
+
+		thornSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1214263},
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 150, spell.OutcomeMagicHit)
+			},
+		})
+
+		thornsAura := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Chitinous Spikes",
+			Duration: time.Second * 30,
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() {
+					thornSpell.Cast(sim, spell.Unit)
+				}
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 3,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				thornsAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=236337/glyph-of-deflection
+	// Use: Increases the block value of your shield by 400 for 20 sec. (2 Min Cooldown)
+	core.NewSimpleStatDefensiveTrinketEffect(GlyphOfDeflection, stats.Stats{stats.BlockValue: 400}, time.Second*20, time.Minute*2)
 
 	// https://www.wowhead.com/classic/item=227990/hand-of-injustice
 	// Equip: 2% chance on ranged hit to gain 1 extra attack. (Proc chance: 2%, 2s cooldown)
@@ -2502,23 +2649,72 @@ func init() {
 		})
 	})
 
-	// Not yet in SoD
-	// core.NewItemEffect(MarkOfTheChampionPhys, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
+	// https://www.wowhead.com/classic/item=236268/kiss-of-the-spider
+	// Use: Increases your attack speed by 20% for 15 sec. (1 Min, 30 Sec Cooldown)
+	core.NewItemEffect(KissOfTheSpider, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{ItemID: KissOfTheSpider}
 
-	// 	if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-	// 		character.PseudoStats.MobTypeAttackPower += 150
-	// 	}
-	// })
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Kiss of the Spider",
+			Duration: time.Second * 15,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.20)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1/1.20)
+			},
+		})
 
-	// core.NewItemEffect(MarkOfTheChampionSpell, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-	// 	if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-	// 		character.PseudoStats.MobTypeSpellPower += 85
-	// 	}
-	// })
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: time.Second * 90,
+				},
+			},
 
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=236352/mark-of-the-champion
+	// Equip: +157 Attack Power when fighting Undead and Demons.
+	core.NewItemEffect(MarkOfTheChampionPhys, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon || character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
+			character.PseudoStats.MobTypeAttackPower += 157
+		}
+	})
+
+	// https://www.wowhead.com/classic/item=236351/mark-of-the-champion
+	// Equip: Increases damage done to Undead and Demons by magical spells and effects by up to 89.
+	core.NewItemEffect(MarkOfTheChampionSpell, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon || character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
+			character.PseudoStats.MobTypeSpellPower += 89
+		}
+	})
+
+	// https://www.wowhead.com/classic/item=23046/the-restrained-essence-of-sapphiron
+	// Use: Increases damage and healing done by magical spells and effects by up to 180 for 20 sec. (2 Min Cooldown)
+	core.NewSimpleStatOffensiveTrinketEffect(TheRestrainedEssenceOfSapphiron, stats.Stats{stats.SpellPower: 180}, time.Second*20, time.Minute*2)
+
+	// https://www.wowhead.com/classic/item=17774/mark-of-the-chosen
+	// Equip: Has a 2% chance when struck in combat of increasing all stats by 25 for 1 min. (Proc chance: 2%)
 	core.NewItemEffect(MarkOfTheChosen, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		statIncrease := float64(25)
@@ -2574,6 +2770,8 @@ func init() {
 		}
 	})
 
+	// https://www.wowhead.com/classic/item=233601/scarab-brooch
+	// Use: Your magical heals provide the target with a shield that absorbs damage equal to 15% of the amount healed for 30 sec. (3 Min Cooldown)
 	core.NewItemEffect(ScarabBrooch, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{ItemID: ScarabBrooch}
@@ -2660,6 +2858,10 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=236334/slayers-crest
+	// Use: Increases Attack Power by 280 for 20 sec. (2 Min Cooldown)
+	core.NewSimpleStatOffensiveTrinketEffect(SlayersCrest, stats.Stats{stats.AttackPower: 280, stats.RangedAttackPower: 280}, time.Second*20, time.Minute*2)
+
 	// https://www.wowhead.com/classic/item=228576/smolderwebs-eye#see-also
 	// Use: Poisons target for 20 Nature damage every 2 sec for 20 sec. (2 Min Cooldown)
 	core.NewItemEffect(SmolderwebsEye, func(agent core.Agent) {
@@ -2723,6 +2925,83 @@ func init() {
 	// https://www.wowhead.com/classic/item=228255/talisman-of-ephemeral-power
 	// Use: Increases damage and healing done by magical spells and effects by up to 184 for 15 sec. (1 Min, 30 Sec Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(TalismanOfEphemeralPower, stats.Stats{stats.SpellPower: 184}, time.Second*15, time.Second*90)
+
+	// https://www.wowhead.com/classic/item=233628/the-burrowers-shell#see-also
+	// Use: Absorbs 1200 damage.  Lasts 20 sec. (2 Min Cooldown)
+	core.NewItemEffect(TheBurrowersShield, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		shieldSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1213375},
+			SpellSchool: core.SpellSchoolHoly,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			Shield: core.ShieldConfig{
+				Aura: core.Aura{
+					Label:    "The Burrower's Shield",
+					Duration: time.Second * 20,
+				},
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: TheBurrowersShield},
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				shieldSpell.Shield(spell.Unit).Apply(sim, 1200)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeSurvival,
+			Spell: spell,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=236320/warmth-of-forgiveness
+	// Use: Restores 6000 mana. (3 Min Cooldown)
+	core.NewItemEffect(WarmthOfForgiveness, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{ItemID: WarmthOfForgiveness}
+		manaMetrics := character.NewManaMetrics(actionID)
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(), // Doesn't share the trinket timer
+					Duration: time.Minute * 3,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				character.AddMana(sim, 6000, manaMetrics)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=19948/zandalarian-hero-badge
 	// Increases your armor by 2000 and defense skill by 30 for 20 sec.
@@ -2898,6 +3177,65 @@ func init() {
 		BlazefuryTriggerAura(character, 7712, core.SpellSchoolFire, 2)
 	})
 
+	// https://www.wowhead.com/classic/item=14554/cloudkeeper-legplates
+	// Use: Increases Attack Power by 100 for 30 sec. (15 Min Cooldown)
+	core.NewSimpleStatOffensiveTrinketEffect(CloudkeeperLegplates, stats.Stats{stats.AttackPower: 100, stats.RangedAttackPower: 100}, time.Second*30, time.Minute*15)
+
+	// https://www.wowhead.com/classic/item=228266/drillborer-disk
+	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
+	core.NewItemEffect(DrillborerDisk, func(agent core.Agent) {
+		thornsArcaneDamageEffect(agent, DrillborerDisk, "Drillborer Disk", 3)
+	})
+	core.NewItemEffect(DrillborerDiskMolten, func(agent core.Agent) {
+		thornsArcaneDamageEffect(agent, DrillborerDiskMolten, "Drillborer Disk (Molten)", 3)
+	})
+
+	// https://www.wowhead.com/classic/item=18168/force-reactive-disk
+	// Equip: When the shield blocks it releases an electrical charge that damages all nearby enemies. (1s cooldown)
+	core.NewItemEffect(ForceReactiveDisk, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: ForceReactiveDisk},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, 25, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Force Reactive Disk",
+			Callback: core.CallbackOnSpellHitTaken,
+			ProcMask: core.ProcMaskMelee,
+			Outcome:  core.OutcomeBlock,
+			ICD:      time.Second,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, spell.Unit)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=11669/naglering
+	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
+	core.NewItemEffect(Naglering, func(agent core.Agent) {
+		thornsArcaneDamageEffect(agent, Naglering, "Naglering", 3)
+	})
+
+	// https://www.wowhead.com/classic/item=18326/razor-gauntlets
+	// Equip: When struck in combat inflicts 3 Arcane damage to the attacker.
+	core.NewItemEffect(RazorGauntlets, func(agent core.Agent) {
+		thornsArcaneDamageEffect(agent, RazorGauntlets, "Razor Gauntlets", 3)
+	})
+
 	// https://www.wowhead.com/classic/item=1168/skullflame-shield
 	// Equip: When struck in combat has a 3% chance of stealing 35 life from target enemy. (Proc chance: 3%)
 	// Equip: When struck in combat has a 1% chance of dealing 75 to 125 Fire damage to all targets around you. (Proc chance: 1%)
@@ -2907,11 +3245,16 @@ func init() {
 		drainLifeActionID := core.ActionID{SpellID: 18817}
 		healthMetrics := character.NewHealthMetrics(drainLifeActionID)
 		drainLifeSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:         drainLifeActionID,
-			SpellSchool:      core.SpellSchoolShadow,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
+			ActionID:    drainLifeActionID,
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
 			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			BonusCoefficient: 1,
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcAndDealDamage(sim, target, 35, spell.OutcomeAlwaysHit)
 				character.GainHealth(sim, result.Damage, healthMetrics)
@@ -2919,12 +3262,15 @@ func init() {
 		})
 
 		flamestrikeSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: 18818},
-			SpellSchool:      core.SpellSchoolFire,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
+			ActionID:    core.ActionID{SpellID: 18818},
+			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(75, 125), spell.OutcomeMagicHit)
@@ -3095,17 +3441,30 @@ func dreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell {
 		})
 	})
 
-	character.GetOrRegisterAura(core.Aura{
+	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 		Label:      "Cursed Blade",
 		ActionID:   core.ActionID{SpellID: 462228},
-		Duration:   core.NeverExpires,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				character.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
+			} else {
+				character.AddStatDynamic(sim, stats.MeleeCrit, 2*core.CritRatingPerCritChance)
+			}
+
 			character.PseudoStats.MeleeSpeedMultiplier *= 1.05
-			character.AddStatDynamic(sim, stats.MeleeCrit, 2*core.CritRatingPerCritChance)
 		},
-	})
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				character.AddStat(stats.MeleeCrit, -2*core.CritRatingPerCritChance)
+			} else {
+				character.AddStatDynamic(sim, stats.MeleeCrit, -2*core.CritRatingPerCritChance)
+			}
+
+			character.PseudoStats.MeleeSpeedMultiplier /= 1.05
+
+		},
+	}))
 
 	return character.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
@@ -3115,6 +3474,34 @@ func dreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell {
 			procAuras.Get(target).Activate(sim)
 		},
 	})
+}
+
+func thornsArcaneDamageEffect(agent core.Agent, itemID int32, itemName string, damage float64) {
+	character := agent.GetCharacter()
+	character.PseudoStats.ThornsDamage += damage
+
+	procSpell := character.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{ItemID: itemID},
+		SpellSchool: core.SpellSchoolArcane,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagBinary | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHit)
+		},
+	})
+
+	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+		Label: fmt.Sprintf("Thorns (%s)", itemName),
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
+				procSpell.Cast(sim, spell.Unit)
+			}
+		},
+	}))
 }
 
 func eskhandarsRightClawAura(character *core.Character) *core.Aura {

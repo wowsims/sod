@@ -1,91 +1,98 @@
+import clsx from 'clsx';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
-import { PseudoStat, Spec, Stat } from '../proto/common.js';
+import { Class, PseudoStat, Spec, Stat } from '../proto/common.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
 import { NumberPicker } from './number_picker';
 
 export type StatMods = { talents?: Stats; buffs?: Stats };
+export type DisplayStat = {
+	stat: UnitStat,
+	notEditable?: boolean
+}
 
-const statGroups = new Map<string, Array<UnitStat>>([
+const statGroups = new Map<string, Array<DisplayStat>>([
 	[
 		'Primary',
 		[
-			UnitStat.fromStat(Stat.StatHealth),
-			UnitStat.fromStat(Stat.StatMana),
+			{stat: UnitStat.fromStat(Stat.StatHealth)},
+			{stat: UnitStat.fromStat(Stat.StatMana)},
 		],
 	],
 	[
 		'Attributes',
 		[
-			UnitStat.fromStat(Stat.StatStrength),
-			UnitStat.fromStat(Stat.StatAgility),
-			UnitStat.fromStat(Stat.StatStamina),
-			UnitStat.fromStat(Stat.StatIntellect),
-			UnitStat.fromStat(Stat.StatSpirit),
+			{stat: UnitStat.fromStat(Stat.StatStrength)},
+			{stat: UnitStat.fromStat(Stat.StatAgility)},
+			{stat: UnitStat.fromStat(Stat.StatStamina)},
+			{stat: UnitStat.fromStat(Stat.StatIntellect)},
+			{stat: UnitStat.fromStat(Stat.StatSpirit)},
 		]
 	],
 	[
 		'Physical',
 		[
-			UnitStat.fromStat(Stat.StatAttackPower),
-			UnitStat.fromStat(Stat.StatFeralAttackPower),
-			UnitStat.fromStat(Stat.StatRangedAttackPower),
-			UnitStat.fromStat(Stat.StatMeleeHit),
-			UnitStat.fromStat(Stat.StatExpertise),
-			UnitStat.fromStat(Stat.StatMeleeCrit),
-			UnitStat.fromStat(Stat.StatMeleeHaste),
-			UnitStat.fromPseudoStat(PseudoStat.BonusPhysicalDamage),
+			{stat: UnitStat.fromStat(Stat.StatAttackPower)},
+			{stat: UnitStat.fromStat(Stat.StatFeralAttackPower)},
+			{stat: UnitStat.fromStat(Stat.StatRangedAttackPower)},
+			{stat: UnitStat.fromStat(Stat.StatMeleeHit)},
+			{stat: UnitStat.fromStat(Stat.StatExpertise)},
+			{stat: UnitStat.fromStat(Stat.StatMeleeCrit)},
+			{stat: UnitStat.fromStat(Stat.StatMeleeHaste)},
+			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatBonusPhysicalDamage)},
 		]
 	],
 	[
 		'Spell',
 		[
-			UnitStat.fromStat(Stat.StatSpellPower),
-			UnitStat.fromStat(Stat.StatSpellDamage),
-			UnitStat.fromStat(Stat.StatArcanePower),
-			UnitStat.fromStat(Stat.StatFirePower),
-			UnitStat.fromStat(Stat.StatFrostPower),
-			UnitStat.fromStat(Stat.StatHolyPower),
-			UnitStat.fromStat(Stat.StatNaturePower),
-			UnitStat.fromStat(Stat.StatShadowPower),
-			UnitStat.fromStat(Stat.StatSpellHit),
-			UnitStat.fromStat(Stat.StatSpellCrit),
-			UnitStat.fromStat(Stat.StatSpellHaste),
-			UnitStat.fromStat(Stat.StatSpellPenetration),
-			UnitStat.fromStat(Stat.StatMP5),
+			{stat: UnitStat.fromStat(Stat.StatSpellPower)},
+			{stat: UnitStat.fromStat(Stat.StatSpellDamage)},
+			{stat: UnitStat.fromStat(Stat.StatArcanePower)},
+			{stat: UnitStat.fromStat(Stat.StatFirePower)},
+			{stat: UnitStat.fromStat(Stat.StatFrostPower)},
+			{stat: UnitStat.fromStat(Stat.StatHolyPower)},
+			{stat: UnitStat.fromStat(Stat.StatNaturePower)},
+			{stat: UnitStat.fromStat(Stat.StatShadowPower)},
+			{stat: UnitStat.fromStat(Stat.StatSpellHit)},
+			{stat: UnitStat.fromStat(Stat.StatSpellCrit)},
+			{stat: UnitStat.fromStat(Stat.StatSpellHaste)},
+			{stat: UnitStat.fromStat(Stat.StatSpellPenetration)},
+			{stat: UnitStat.fromStat(Stat.StatMP5)},
 		]
 	],
 	[
 		'Defense',
 		[
-			UnitStat.fromStat(Stat.StatArmor),
-			UnitStat.fromStat(Stat.StatBonusArmor),
-			UnitStat.fromStat(Stat.StatDefense),
-			UnitStat.fromStat(Stat.StatDodge),
-			UnitStat.fromStat(Stat.StatParry),
-			UnitStat.fromStat(Stat.StatBlock),
-			UnitStat.fromStat(Stat.StatBlockValue),
+			{stat: UnitStat.fromStat(Stat.StatArmor)},
+			{stat: UnitStat.fromStat(Stat.StatBonusArmor)},
+			{stat: UnitStat.fromStat(Stat.StatDefense)},
+			{stat: UnitStat.fromStat(Stat.StatDodge)},
+			{stat: UnitStat.fromStat(Stat.StatParry)},
+			{stat: UnitStat.fromStat(Stat.StatBlock)},
+			{stat: UnitStat.fromStat(Stat.StatBlockValue)},
 		]
 	],
 	[
 		'Resistance',
 		[
-			UnitStat.fromStat(Stat.StatArcaneResistance),
-			UnitStat.fromStat(Stat.StatFireResistance),
-			UnitStat.fromStat(Stat.StatFrostResistance),
-			UnitStat.fromStat(Stat.StatNatureResistance),
-			UnitStat.fromStat(Stat.StatShadowResistance),
+			{stat: UnitStat.fromStat(Stat.StatArcaneResistance)},
+			{stat: UnitStat.fromStat(Stat.StatFireResistance)},
+			{stat: UnitStat.fromStat(Stat.StatFrostResistance)},
+			{stat: UnitStat.fromStat(Stat.StatNatureResistance)},
+			{stat: UnitStat.fromStat(Stat.StatShadowResistance)},
 		]
 	],
 	[
 		'Misc',
 		[
-			UnitStat.fromPseudoStat(PseudoStat.TimewornBonus),
+			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatThornsDamage), notEditable: true},
+			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatTimewornBonus), notEditable: true},
+			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSanctifiedBonus), notEditable: true},
 		]
 	],
 ])
@@ -121,12 +128,13 @@ export class CharacterStats extends Component {
 
 		this.valueElems = [];
 		statGroups.forEach((groupedStats, _) => {
-			const filteredStats = groupedStats.filter(stat => displayStats.find(displayStat => displayStat.equals(stat)));
+			const filteredStats = groupedStats.filter(stat => displayStats.find(displayStat => displayStat.equals(stat.stat)));
 
 			if (!filteredStats.length) return;
 
 			const body = <tbody></tbody>;
-			filteredStats.forEach(stat => {
+			filteredStats.forEach(displayStat => {
+				const { stat } = displayStat
 				this.stats.push(stat);
 
 				const statName = stat.getName(player.getClass());
@@ -134,7 +142,7 @@ export class CharacterStats extends Component {
 				const row = (
 					<tr className="character-stats-table-row">
 						<td className="character-stats-table-label">{statName}</td>
-						<td className="character-stats-table-value">{this.bonusStatsLink(stat)}</td>
+						<td className="character-stats-table-value">{this.bonusStatsLink(displayStat)}</td>
 					</tr>
 				);
 				body.appendChild(row);
@@ -440,10 +448,12 @@ export class CharacterStats extends Component {
 			} else if (stat === Stat.StatMeleeCrit || stat === Stat.StatSpellCrit) {
 				displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
 			} else if (stat === Stat.StatMeleeHaste) {
-				// Melee Haste doesn't actually exist in vanilla so use the melee speed pseudostat
-				displayStr = `${(deltaStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier) * 100).toFixed(2)}%`;
+				displayStr = `${(100 * deltaStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier)).toFixed(2)}%`;
+				if (player.isClass(Class.ClassHunter)) {
+					displayStr += ` / ${(100 * deltaStats.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier)).toFixed(2)}%`
+				}
 			} else if (stat === Stat.StatSpellHaste) {
-				displayStr = `${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%`;
+				displayStr = `${(100 * deltaStats.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier)).toFixed(2)}%`;
 			} else if (stat === Stat.StatArmorPenetration) {
 				displayStr = `${rawValue} (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
 			} else if (stat === Stat.StatExpertise) {
@@ -487,8 +497,9 @@ export class CharacterStats extends Component {
 		return debuffStats;
 	}
 
-	private bonusStatsLink(stat: UnitStat): HTMLElement {
-		const statName = stat.getName(this.player.getClass());
+	private bonusStatsLink(displayStat: DisplayStat): HTMLElement {
+		const { stat, notEditable } = displayStat;
+		const statName = displayStat.stat.getName(this.player.getClass());
 		const linkRef = ref<HTMLAnchorElement>();
 		const iconRef = ref<HTMLDivElement>();
 
@@ -496,7 +507,7 @@ export class CharacterStats extends Component {
 			<a
 				ref={linkRef}
 				href="javascript:void(0)"
-				className="add-bonus-stats text-white ms-2"
+				className={clsx("add-bonus-stats text-white ms-2", notEditable && "invisible")}
 				dataset={{ bsToggle: 'popover' }}
 				attributes={{ role: 'button' }}>
 				<i ref={iconRef} className="fas fa-plus-minus"></i>
