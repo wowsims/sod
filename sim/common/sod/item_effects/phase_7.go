@@ -2,6 +2,7 @@ package item_effects
 
 import (
 	"math"
+	"time"
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -274,4 +275,20 @@ func sanctifiedTankingEffect(spellID int32, threatPercentIncrease float64, damag
 			},
 		}))
 	}
+}
+
+func UnholyMightAura(character *core.Character) *core.Aura {
+	return character.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 1220668},
+		Label:    "Unholy Might",
+		Duration: time.Second * 8,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.Strength, 400)
+			character.PseudoStats.DamageTakenMultiplier *= 1.20
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Unit.AddStatDynamic(sim, stats.Strength, -400)
+			character.PseudoStats.DamageTakenMultiplier /= 1.20
+		},
+	})
 }

@@ -104,13 +104,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-Phase4-Lvl60-AllItems-Hero'sBrand-231328"
- value: {
-  dps: 1692.48093
-  tps: 3424.97994
- }
-}
-dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
   dps: 1310.04906
@@ -125,13 +118,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-Phase4-Lvl60-AllItems-LibramofDraconicDestruction-221457"
- value: {
-  dps: 1719.142
-  tps: 3482.49535
- }
-}
-dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
   dps: 1480.16542
@@ -139,31 +125,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestProtection-Phase4-Lvl60-AllItems-SanctifiedOrb-20512"
- value: {
-  dps: 1719.142
-  tps: 3482.49535
- }
-}
-dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-SoulforgeArmor"
  value: {
   dps: 1117.96862
   tps: 1689.22632
- }
-}
-dps_results: {
- key: "TestProtection-Phase4-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
- value: {
-  dps: 1496.08664
-  tps: 3040.52826
- }
-}
-dps_results: {
- key: "TestProtection-Phase4-Lvl60-AllItems-ZandalarFreethinker'sBreastplate-231329"
- value: {
-  dps: 1667.62362
-  tps: 3384.30959
  }
 }
 dps_results: {
