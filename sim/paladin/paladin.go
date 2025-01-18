@@ -156,6 +156,9 @@ func (paladin *Paladin) Initialize() {
 	paladin.enableMultiJudge = false // Was previously true in Phase 4 but disabled in Phase 5
 	paladin.lingerDuration = time.Millisecond * 400
 	paladin.consumeSealsOnJudge = true
+	if paladin.Options.Aura == proto.PaladinAura_SanctityAura || paladin.HasAura("Sanctity Aura") {
+		paladin.sanctityAura = core.SanctityAuraAura(paladin.GetCharacter())
+	}
 
 	paladin.registerStopAttackMacros()
 
@@ -234,10 +237,6 @@ func (paladin *Paladin) registerStopAttackMacros() {
 func (paladin *Paladin) ResetCurrentPaladinAura() {
 	paladin.currentPaladinAura = nil
 	if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
-		if paladin.sanctityAura == nil {
-			paladin.sanctityAura = core.SanctityAuraAura(paladin.GetCharacter())
-		}
-
 		paladin.currentPaladinAura = paladin.sanctityAura
 	}
 }
