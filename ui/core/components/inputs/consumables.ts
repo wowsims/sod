@@ -205,12 +205,17 @@ export const makeEncanthedSigilInput = makeConsumeInputFactory({ consumesFieldNa
 export const SapperGoblinSapper: ConsumableInputConfig<SapperExplosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 10646, minLevel: 50 }]),
 	showWhen: player => player.hasProfession(Profession.Engineering),
-	value: SapperExplosive.SapperFumigator,
+	value: SapperExplosive.SapperGoblinSapper,
 };
 
 export const SapperFumigator: ConsumableInputConfig<SapperExplosive> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 233985, minLevel: 60 }]),
 	value: SapperExplosive.SapperFumigator,
+};
+
+export const ExplosiveStratholmeHolyWater: ConsumableInputConfig<Explosive> = {
+	actionId: () => ActionId.fromItemId(13180),
+	value: Explosive.ExplosiveStratholmeHolyWater,
 };
 
 export const ExplosiveObsidianBomb: ConsumableInputConfig<Explosive> = {
@@ -254,6 +259,7 @@ export const ExplosiveHighYieldRadiationBomb: ConsumableInputConfig<Explosive> =
 };
 
 export const EXPLOSIVES_CONFIG: ConsumableStatOption<Explosive>[] = [
+	{ config: ExplosiveStratholmeHolyWater, stats: [] },
 	{ config: ExplosiveObsidianBomb, stats: [] },
 	{ config: ExplosiveEzThroRadiationBomb, stats: [] },
 	{ config: ExplosiveHighYieldRadiationBomb, stats: [] },

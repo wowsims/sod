@@ -331,6 +331,7 @@ enum Explosive {
 	ExplosiveHighYieldRadiationBomb = 5;
 	ExplosiveGoblinLandMine = 6;
 	ExplosiveObsidianBomb = 7;
+	ExplosiveStratholmeHolyWater = 8;
 }
 
 // NextIndex: 28

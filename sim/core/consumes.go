@@ -942,6 +942,7 @@ var EzThroRadiationBombActionID = ActionID{ItemID: 215168}
 var HighYieldRadiationBombActionID = ActionID{ItemID: 215127}
 var GoblinLandMineActionID = ActionID{ItemID: 4395}
 var ObsidianBombActionID = ActionID{ItemID: 233986}
+var StratholmeHolyWaterActionID = ActionID{ItemID: 13180}
 
 func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	character := agent.GetCharacter()
@@ -954,9 +955,11 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	sharedTimer := character.NewTimer()
 
 	if hasSapper {
-		if consumes.SapperExplosive != proto.SapperExplosive_SapperFumigator && !character.HasProfession(proto.Profession_Engineering) {
+		nonEngiSappers := []proto.SapperExplosive{proto.SapperExplosive_SapperFumigator}
+		if !character.HasProfession(proto.Profession_Engineering) && !slices.Contains(nonEngiSappers, consumes.SapperExplosive) {
 			return
 		}
+
 		var sapperSpell *Spell
 		switch consumes.SapperExplosive {
 		case proto.SapperExplosive_SapperGoblinSapper:
@@ -981,13 +984,15 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 
 	if hasFiller {
 		// Update this list with explosives that don't require engi
-		nonEngiExplosives := []proto.Explosive{proto.Explosive_ExplosiveEzThroRadiationBomb, proto.Explosive_ExplosiveObsidianBomb}
-		if !character.HasProfession(proto.Profession_Engineering) || !slices.Contains(nonEngiExplosives, consumes.FillerExplosive) {
+		nonEngiExplosives := []proto.Explosive{proto.Explosive_ExplosiveEzThroRadiationBomb, proto.Explosive_ExplosiveObsidianBomb, proto.Explosive_ExplosiveStratholmeHolyWater}
+		if !character.HasProfession(proto.Profession_Engineering) && !slices.Contains(nonEngiExplosives, consumes.FillerExplosive) {
 			return
 		}
 
 		var filler *Spell
 		switch consumes.FillerExplosive {
+		case proto.Explosive_ExplosiveStratholmeHolyWater:
+			filler = character.newStratholmeHolyWaterSpell(sharedTimer)
 		case proto.Explosive_ExplosiveObsidianBomb:
 			filler = character.newObisidianBombSpell(sharedTimer)
 		case proto.Explosive_ExplosiveSolidDynamite:
@@ -1032,7 +1037,7 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 		SpellSchool: school,
 		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagCastTimeNoGCD,
+		Flags:       SpellFlagCastTimeNoGCD | SpellFlagIgnoreAttackerModifiers,
 
 		Cast: CastConfig{
 			DefaultCast: defaultCast,
@@ -1055,24 +1060,38 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(minDamage, maxDamage) * sim.Encounter.AOECapMultiplier()
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(minDamage, maxDamage), spell.OutcomeMagicHitAndCrit)
 			}
 
 			if isSapper {
-				baseDamage := sim.Roll(selfMinDamage, selfMaxDamage)
-				spell.CalcAndDealDamage(sim, &character.Unit, baseDamage, spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, &character.Unit, sim.Roll(minDamage, maxDamage), spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	}
-}
-func (character *Character) newSapperSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, SapperActionID, SpellSchoolFire, 450, 750, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 375, 625))
 }
 
 // Needs testing for Silithid interaction if in raid
 func (character *Character) newFumigatorSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, FumigatorActionID, SpellSchoolFire, 650, 950, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 475, 725))
+}
+func (character *Character) newSapperSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, SapperActionID, SpellSchoolFire, 450, 750, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 375, 625))
+}
+
+func (character *Character) newStratholmeHolyWaterSpell(sharedTimer *Timer) *Spell {
+	config := character.newBasicExplosiveSpellConfig(sharedTimer, StratholmeHolyWaterActionID, SpellSchoolHoly, 438, 438, Cooldown{}, 0, 0)
+	config.BonusCoefficient = 1
+	config.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
+		for _, aoeTarget := range sim.Encounter.TargetUnits {
+			if aoeTarget.MobType != proto.MobType_MobTypeUndead {
+				spell.DamageMultiplier = 0
+			}
+			spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(438, 438), spell.OutcomeMagicHitAndCrit)
+			spell.DamageMultiplier = 1
+		}
+	}
+
+	return character.GetOrRegisterSpell(config)
 }
 func (character *Character) newObisidianBombSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, ObsidianBombActionID, SpellSchoolFire, 530, 670, Cooldown{}, 0, 0))
@@ -1153,9 +1172,7 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(minDamage, maxDamage) * sim.Encounter.AOECapMultiplier()
-
-				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+				result := spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(minDamage, maxDamage), spell.OutcomeMagicHitAndCrit)
 
 				if result.Landed() {
 					spell.Dot(aoeTarget).Apply(sim)
