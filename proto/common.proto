@@ -989,6 +989,8 @@ enum EnchantType {
 	EnchantTypeShield = 2;
 	EnchantTypeKit = 3;
 	EnchantTypeStaff = 4;
+	// New in SoD
+	EnchantTypeOffHand = 5;
 }
 
 // Contains only the Enchant info needed by the sim.

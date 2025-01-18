@@ -1665,15 +1665,12 @@ export function getEligibleEnchantSlots(enchant: Enchant): Array<ItemSlot> {
 
 export function enchantAppliesToItem(enchant: Enchant, item: Item): boolean {
 	const sharedSlots = intersection(getEligibleEnchantSlots(enchant), getEligibleItemSlots(item));
-	if (sharedSlots.length == 0) return false;
+	if (sharedSlots.length === 0) return false;
 
-	if (enchant.enchantType == EnchantType.EnchantTypeTwoHand && item.handType != HandType.HandTypeTwoHand) return false;
-
-	if ((enchant.enchantType == EnchantType.EnchantTypeShield) != (item.weaponType == WeaponType.WeaponTypeShield)) return false;
-
-	if (enchant.enchantType == EnchantType.EnchantTypeStaff && item.weaponType != WeaponType.WeaponTypeStaff) return false;
-
-	if (item.weaponType == WeaponType.WeaponTypeOffHand) return false;
+	if (item.handType === HandType.HandTypeTwoHand && enchant.enchantType !== EnchantType.EnchantTypeTwoHand) return false;
+	if (item.weaponType === WeaponType.WeaponTypeShield && enchant.enchantType !== EnchantType.EnchantTypeShield) return false;
+	if (item.weaponType === WeaponType.WeaponTypeOffHand && enchant.enchantType !== EnchantType.EnchantTypeOffHand) return false;
+	if (item.weaponType === WeaponType.WeaponTypeStaff && enchant.enchantType !== EnchantType.EnchantTypeStaff) return false;
 
 	if (sharedSlots.includes(ItemSlot.ItemSlotRanged)) {
 		if (
