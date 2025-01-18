@@ -9,7 +9,9 @@ import (
 )
 
 const (
-	BulwarkOfIre = 235868
+	BulwarkOfIre       = 235868
+	OlReliable         = 235891
+	BladeOfInquisition = 237512
 
 	// Atiesh
 	AtieshSpellPower = 236398
@@ -56,6 +58,102 @@ func init() {
 	core.AddEffectsToTest = false
 
 	///////////////////////////////////////////////////////////////////////////
+	//                                 Weapons
+	///////////////////////////////////////////////////////////////////////////
+
+	// https://www.wowhead.com/classic/item=236400/atiesh-greatstaff-of-the-guardian
+	core.NewItemEffect(AtieshCastSpeed, func(agent core.Agent) {
+		core.AtieshCastSpeedEffect(&agent.GetCharacter().Unit)
+	})
+	// https://www.wowhead.com/classic/item=236399/atiesh-greatstaff-of-the-guardian
+	core.NewItemEffect(AtieshHealing, func(agent core.Agent) {
+		core.AtieshHealingEffect(&agent.GetCharacter().Unit)
+	})
+	// https://www.wowhead.com/classic/item=236401/atiesh-greatstaff-of-the-guardian
+	core.NewItemEffect(AtieshSpellCrit, func(agent core.Agent) {
+		core.AtieshSpellCritEffect(&agent.GetCharacter().Unit)
+	})
+	// https://www.wowhead.com/classic/item=236398/atiesh-greatstaff-of-the-guardian
+	core.NewItemEffect(AtieshSpellPower, func(agent core.Agent) {
+		core.AtieshSpellPowerEffect(&agent.GetCharacter().Unit)
+	})
+
+	// https://www.wowhead.com/classic/item=237512/blade-of-inquisition
+	// Equip: Chance on hit to Increase your Strength by 250 and movement speed by 15% for 15 sec. (15s cooldown)
+	// TODO: PPM assumed and needs testing
+	core.NewItemEffect(BladeOfInquisition, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(BladeOfInquisition)
+		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1223342},
+			Label:    "Scarlet Inquisition",
+			Duration: time.Second * 15,
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Blade of Inquisition",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			ICD:               time.Second * 15,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if ppmm.Proc(sim, spell.ProcMask, "Scarlet Inquisition") {
+					buffAura.Activate(sim)
+				}
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=235891/ol-reliable
+	// Use: Smash the corpse of a fallen friend or foe, dealing 588 damage to nearby enemies. (2 Min Cooldown)
+	core.NewItemEffect(OlReliable, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		damageSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1219043},
+			SpellSchool: core.SpellSchoolPhysical,
+			DefenseType: core.DefenseTypeMelee,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, 588, spell.OutcomeMeleeSpecialHitAndCrit)
+				}
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: OlReliable},
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				damageSpell.Cast(sim, target)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+		})
+	})
+
+	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
 
@@ -94,27 +192,6 @@ func init() {
 	core.NewItemEffect(CrusadersSealOfTheDawnTanking, sanctifiedTankingEffect(1223374, 6.25, 18.75))
 	core.NewItemEffect(CommandersSealOfTheDawnTanking, sanctifiedTankingEffect(1223375, 6.67, 21.67))
 	core.NewItemEffect(HighlordsSSealOfTheDawnTanking, sanctifiedTankingEffect(1223376, 7.08, 25.0))
-
-	///////////////////////////////////////////////////////////////////////////
-	//                                 Weapons
-	///////////////////////////////////////////////////////////////////////////
-
-	// https://www.wowhead.com/classic/item=236400/atiesh-greatstaff-of-the-guardian
-	core.NewItemEffect(AtieshCastSpeed, func(agent core.Agent) {
-		core.AtieshCastSpeedEffect(&agent.GetCharacter().Unit)
-	})
-	// https://www.wowhead.com/classic/item=236399/atiesh-greatstaff-of-the-guardian
-	core.NewItemEffect(AtieshHealing, func(agent core.Agent) {
-		core.AtieshHealingEffect(&agent.GetCharacter().Unit)
-	})
-	// https://www.wowhead.com/classic/item=236401/atiesh-greatstaff-of-the-guardian
-	core.NewItemEffect(AtieshSpellCrit, func(agent core.Agent) {
-		core.AtieshSpellCritEffect(&agent.GetCharacter().Unit)
-	})
-	// https://www.wowhead.com/classic/item=236398/atiesh-greatstaff-of-the-guardian
-	core.NewItemEffect(AtieshSpellPower, func(agent core.Agent) {
-		core.AtieshSpellPowerEffect(&agent.GetCharacter().Unit)
-	})
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Other
