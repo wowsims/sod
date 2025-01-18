@@ -39,6 +39,10 @@ func (mage *Mage) registerIceLanceSpell() {
 				GCD: core.GCDDefault,
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
+				if !hasWintersChillTalent {
+					return
+				}
+
 				if glaciateAura := mage.GlaciateAuras.Get(mage.CurrentTarget); glaciateAura != nil {
 					spell.SetMetricsSplit(glaciateAura.GetStacks())
 				}
