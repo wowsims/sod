@@ -4,7 +4,6 @@ import (
 	"math"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -58,6 +57,7 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets
 	///////////////////////////////////////////////////////////////////////////
+
 	// https://www.wowhead.com/classic/item=236356/squires-seal-of-the-dawn
 	core.NewItemEffect(AspirantsSealOfTheDawnDamage, sanctifiedDamageEffect(1219539, 0.83))
 	core.NewItemEffect(InitiatesSealOfTheDawnDamage, sanctifiedDamageEffect(1223348, 2.92))
@@ -94,25 +94,10 @@ func init() {
 	core.NewItemEffect(CommandersSealOfTheDawnTanking, sanctifiedTankingEffect(1223375, 6.67, 21.67))
 	core.NewItemEffect(HighlordsSSealOfTheDawnTanking, sanctifiedTankingEffect(1223376, 7.08, 25.0))
 
-	// https://www.wowhead.com/classic/item=236351/mark-of-the-champion
-	core.NewItemEffect(236351, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon || character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
-			character.PseudoStats.MobTypeSpellPower += 89
-		}
-	})
-
-	// https://www.wowhead.com/classic/item=236352/mark-of-the-champion
-	core.NewItemEffect(236352, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon || character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
-			character.PseudoStats.MobTypeAttackPower += 157
-		}
-	})
-
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
+
 	// https://www.wowhead.com/classic/item=236400/atiesh-greatstaff-of-the-guardian
 	core.NewItemEffect(AtieshCastSpeed, func(agent core.Agent) {
 		core.AtieshCastSpeedEffect(&agent.GetCharacter().Unit)

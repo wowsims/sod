@@ -59,8 +59,6 @@ const (
 	ZandalariHeroBadge              = 19948
 	ZandalariHeroMedallion          = 19949
 	ZandalariHeroCharm              = 19950
-	MarkOfTheChampionPhys           = 23206
-	MarkOfTheChampionSpell          = 23207
 	BlisteringRagehammer            = 220569 // 10626
 	SulfurasHandOfRagnaros          = 227683 // 17182
 	SulfuronHammer                  = 227684 // 17193
@@ -138,10 +136,12 @@ const (
 	ScarabBrooch                    = 233601 // 21625
 	KalimdorsRevenge                = 233621
 	JomGabbar                       = 233627 // 23570
+	TheBurrowersShield              = 233628 // 23558
 	NeretzekBloodDrinker            = 233647
 	Speedstone                      = 233990
 	ManslayerOfTheQiraji            = 234067
 	EyeOfMoam                       = 234080 // 21473
+	FetishOfChitinousSpikes         = 234092 // 21488
 	DarkmoonCardHeroism             = 234176 // 19287
 	DarkmoonCardBlueDragon          = 234177 // 19288
 	DarkmoonCardMaelstrom           = 234178 // 19289
@@ -150,6 +150,13 @@ const (
 	KalimdorsRevengeVoidTouched     = 234981
 	NeretzekBloodDrinkerVoidTouched = 234987
 	ManslayerOfTheQirajiVoidTouched = 234990
+	KissOfTheSpider                 = 236268 // 22954
+	WarmthOfForgiveness             = 236320 // 23027
+	TheRestrainedEssenceOfSapphiron = 236331 // 23046
+	SlayersCrest                    = 236334 // 23041
+	GlyphOfDeflection               = 236337 // 23040
+	MarkOfTheChampionSpell          = 236351 // 23207
+	MarkOfTheChampionPhys           = 236352 // 23206
 )
 
 func init() {
@@ -2382,6 +2389,66 @@ func init() {
 	// Use: Increases damage done by magical spells and effects by up to 150, and decreases the magical resistances of your spell targets by 100 for 30 sec. (3 Min Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(EyeOfMoam, stats.Stats{stats.SpellDamage: 150, stats.SpellPenetration: 100}, time.Second*30, time.Minute*3)
 
+	// https://www.wowhead.com/classic/item=234092/fetish-of-chitinous-spikes#see-also
+	// Use: Spikes sprout from you causing 150 Nature damage to attackers when hit.  Lasts 30 sec. (3 Min Cooldown)
+	// "Ouch"
+	core.NewItemEffect(FetishOfChitinousSpikes, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{ItemID: FetishOfChitinousSpikes}
+
+		thornSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1214263},
+			SpellSchool: core.SpellSchoolNature,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 150, spell.OutcomeMagicHit)
+			},
+		})
+
+		thornsAura := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Chitinous Spikes",
+			Duration: time.Second * 30,
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Landed() {
+					thornSpell.Cast(sim, spell.Unit)
+				}
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 3,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				thornsAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=236337/glyph-of-deflection
+	// Use: Increases the block value of your shield by 400 for 20 sec. (2 Min Cooldown)
+	core.NewSimpleStatDefensiveTrinketEffect(GlyphOfDeflection, stats.Stats{stats.BlockValue: 400}, time.Second*20, time.Minute*2)
+
 	// https://www.wowhead.com/classic/item=227990/hand-of-injustice
 	// Equip: 2% chance on ranged hit to gain 1 extra attack. (Proc chance: 2%, 2s cooldown)
 	core.NewItemEffect(HandOfInjustice, func(agent core.Agent) {
@@ -2509,23 +2576,72 @@ func init() {
 		})
 	})
 
-	// Not yet in SoD
-	// core.NewItemEffect(MarkOfTheChampionPhys, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
+	// https://www.wowhead.com/classic/item=236268/kiss-of-the-spider
+	// Use: Increases your attack speed by 20% for 15 sec. (1 Min, 30 Sec Cooldown)
+	core.NewItemEffect(KissOfTheSpider, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{ItemID: KissOfTheSpider}
 
-	// 	if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-	// 		character.PseudoStats.MobTypeAttackPower += 150
-	// 	}
-	// })
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Kiss of the Spider",
+			Duration: time.Second * 15,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1.20)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.MultiplyAttackSpeed(sim, 1/1.20)
+			},
+		})
 
-	// core.NewItemEffect(MarkOfTheChampionSpell, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-	// 	if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead || character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-	// 		character.PseudoStats.MobTypeSpellPower += 85
-	// 	}
-	// })
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: time.Second * 90,
+				},
+			},
 
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=236352/mark-of-the-champion
+	// Equip: +157 Attack Power when fighting Undead and Demons.
+	core.NewItemEffect(MarkOfTheChampionPhys, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon || character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
+			character.PseudoStats.MobTypeAttackPower += 157
+		}
+	})
+
+	// https://www.wowhead.com/classic/item=236351/mark-of-the-champion
+	// Equip: Increases damage done to Undead and Demons by magical spells and effects by up to 89.
+	core.NewItemEffect(MarkOfTheChampionSpell, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon || character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
+			character.PseudoStats.MobTypeSpellPower += 89
+		}
+	})
+
+	// https://www.wowhead.com/classic/item=23046/the-restrained-essence-of-sapphiron
+	// Use: Increases damage and healing done by magical spells and effects by up to 180 for 20 sec. (2 Min Cooldown)
+	core.NewSimpleStatOffensiveTrinketEffect(TheRestrainedEssenceOfSapphiron, stats.Stats{stats.SpellPower: 180}, time.Second*20, time.Minute*2)
+
+	// https://www.wowhead.com/classic/item=17774/mark-of-the-chosen
+	// Equip: Has a 2% chance when struck in combat of increasing all stats by 25 for 1 min. (Proc chance: 2%)
 	core.NewItemEffect(MarkOfTheChosen, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		statIncrease := float64(25)
@@ -2581,6 +2697,8 @@ func init() {
 		}
 	})
 
+	// https://www.wowhead.com/classic/item=233601/scarab-brooch
+	// Use: Your magical heals provide the target with a shield that absorbs damage equal to 15% of the amount healed for 30 sec. (3 Min Cooldown)
 	core.NewItemEffect(ScarabBrooch, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{ItemID: ScarabBrooch}
@@ -2667,6 +2785,10 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic/item=236334/slayers-crest
+	// Use: Increases Attack Power by 280 for 20 sec. (2 Min Cooldown)
+	core.NewSimpleStatOffensiveTrinketEffect(SlayersCrest, stats.Stats{stats.AttackPower: 280, stats.RangedAttackPower: 280}, time.Second*20, time.Minute*2)
+
 	// https://www.wowhead.com/classic/item=228576/smolderwebs-eye#see-also
 	// Use: Poisons target for 20 Nature damage every 2 sec for 20 sec. (2 Min Cooldown)
 	core.NewItemEffect(SmolderwebsEye, func(agent core.Agent) {
@@ -2730,6 +2852,83 @@ func init() {
 	// https://www.wowhead.com/classic/item=228255/talisman-of-ephemeral-power
 	// Use: Increases damage and healing done by magical spells and effects by up to 184 for 15 sec. (1 Min, 30 Sec Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(TalismanOfEphemeralPower, stats.Stats{stats.SpellPower: 184}, time.Second*15, time.Second*90)
+
+	// https://www.wowhead.com/classic/item=233628/the-burrowers-shell#see-also
+	// Use: Absorbs 1200 damage.  Lasts 20 sec. (2 Min Cooldown)
+	core.NewItemEffect(TheBurrowersShield, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		shieldSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1213375},
+			SpellSchool: core.SpellSchoolHoly,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			Shield: core.ShieldConfig{
+				Aura: core.Aura{
+					Label:    "The Burrower's Shield",
+					Duration: time.Second * 20,
+				},
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: TheBurrowersShield},
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				shieldSpell.Shield(spell.Unit).Apply(sim, 1200)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeSurvival,
+			Spell: spell,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=236320/warmth-of-forgiveness
+	// Use: Restores 6000 mana. (3 Min Cooldown)
+	core.NewItemEffect(WarmthOfForgiveness, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{ItemID: WarmthOfForgiveness}
+		manaMetrics := character.NewManaMetrics(actionID)
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(), // Doesn't share the trinket timer
+					Duration: time.Minute * 3,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				character.AddMana(sim, 6000, manaMetrics)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: spell,
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=19948/zandalarian-hero-badge
 	// Increases your armor by 2000 and defense skill by 30 for 20 sec.
