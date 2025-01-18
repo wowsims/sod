@@ -150,6 +150,7 @@ const (
 	KalimdorsRevengeVoidTouched     = 234981
 	NeretzekBloodDrinkerVoidTouched = 234987
 	ManslayerOfTheQirajiVoidTouched = 234990
+	MisplacedServoArm               = 236221 // 23221
 	KissOfTheSpider                 = 236268 // 22954
 	WarmthOfForgiveness             = 236320 // 23027
 	TheRestrainedEssenceOfSapphiron = 236331 // 23046
@@ -1285,6 +1286,52 @@ func init() {
 				for numHits := 0; numHits < maxHits; numHits++ {
 					spell.CalcAndDealDamage(sim, target, sim.Roll(105, 145), spell.OutcomeMagicHitAndCrit)
 					target = character.Env.NextTargetUnit(target)
+				}
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=236221/misplaced-servo-arm
+	// Equip: Chance to discharge electricity causing 250 to 300 Nature damage to your target.
+	// If dual-wielding, your other weapon can proc the Misplaced Servo Arm when it strikes as well.
+	// Chance-on-hit for the other weapon is determined by it's base weapon speed, set to 2PPM.
+	// Same interaction when dual-wielding two Misplaced Servo Arms, one melee from one Arm has a chance to proc both Arms.
+	// Assuming same PPM as in Classic for now
+	core.NewItemEffect(MisplacedServoArm, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: 1220535}
+		label := "Electric Discharge Trigger"
+		ppm := 2.0
+		procMask := character.GetProcMaskForItem(MisplacedServoArm)
+		if procMask == core.ProcMaskMelee {
+			ppm = 4.0
+		}
+		ppmm := character.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
+
+		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, sim.Roll(250, 300), spell.OutcomeMagicHitAndCrit)
+			},
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              label,
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if ppmm.Proc(sim, spell.ProcMask, label) {
+					procSpell.Cast(sim, result.Target)
 				}
 			},
 		})
