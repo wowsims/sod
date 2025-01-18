@@ -505,15 +505,15 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-AllItems-BloodCorruptedLeathers"
  value: {
-  dps: 1161.46005
-  tps: 824.63663
+  dps: 1164.62268
+  tps: 826.8821
  }
 }
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-AllItems-DarkmantleArmor"
  value: {
-  dps: 962.0195
-  tps: 683.03384
+  dps: 962.18015
+  tps: 683.1479
  }
 }
 dps_results: {

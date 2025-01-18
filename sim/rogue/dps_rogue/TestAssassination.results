@@ -505,8 +505,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-AllItems-BloodCorruptedLeathers"
  value: {
-  dps: 853.94128
-  tps: 606.29831
+  dps: 855.10167
+  tps: 607.12218
  }
 }
 dps_results: {
