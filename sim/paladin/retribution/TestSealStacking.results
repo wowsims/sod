@@ -104,13 +104,6 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSealStacking-Phase5-Lvl60-AllItems-Hero'sBrand-231328"
- value: {
-  dps: 4739.63882
-  tps: 4786.95684
- }
-}
-dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
   dps: 1736.69631
@@ -132,31 +125,10 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestSealStacking-Phase5-Lvl60-AllItems-SanctifiedOrb-20512"
- value: {
-  dps: 4662.3391
-  tps: 4710.38788
- }
-}
-dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-SoulforgeArmor"
  value: {
   dps: 1561.08057
   tps: 1599.4539
- }
-}
-dps_results: {
- key: "TestSealStacking-Phase5-Lvl60-AllItems-ZandalarFreethinker'sBelt-231330"
- value: {
-  dps: 2662.83661
-  tps: 2698.08641
- }
-}
-dps_results: {
- key: "TestSealStacking-Phase5-Lvl60-AllItems-ZandalarFreethinker'sBreastplate-231329"
- value: {
-  dps: 2805.87073
-  tps: 2837.55315
  }
 }
 dps_results: {
