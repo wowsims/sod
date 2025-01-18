@@ -710,11 +710,11 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	if raidBuffs.AspectOfTheLion {
 		HeartOfTheLionAura(character)
 	} else if individualBuffs.BlessingOfKings && isAlliance {
-		MakePermanent(BlessingOfKingsAura(character))
+		BlessingOfKingsAura(character)
 	}
 
 	if raidBuffs.SanctityAura && isAlliance {
-		MakePermanent(SanctityAuraAura(character))
+		SanctityAuraAura(character)
 	}
 
 	// TODO: Classic
@@ -746,9 +746,9 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.HornOfLordaeron && isAlliance {
-		MakePermanent(HornOfLordaeronAura(&character.Unit, level))
+		HornOfLordaeronAura(&character.Unit, level)
 	} else if individualBuffs.BlessingOfMight != proto.TristateEffect_TristateEffectMissing && isAlliance {
-		MakePermanent(BlessingOfMightAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfMight, 0, 5), level))
+		BlessingOfMightAura(&character.Unit, GetTristateValueInt32(individualBuffs.BlessingOfMight, 0, 5), level)
 	}
 
 	if raidBuffs.DemonicPact > 0 {
@@ -903,7 +903,16 @@ func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuf
 }
 
 func SanctityAuraAura(character *Character) *Aura {
-	aura := MakePermanent(character.GetOrRegisterAura(Aura{
+	if character.Level < 30 {
+		return nil
+	}
+
+	aura := character.GetAura("Sanctity Aura")
+	if aura != nil {
+		return aura
+	}
+
+	aura = MakePermanent(character.GetOrRegisterAura(Aura{
 		Label:    "Sanctity Aura",
 		ActionID: ActionID{SpellID: 20218},
 	}))
@@ -2210,16 +2219,6 @@ func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, au
 			aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.AttackPower: -bonusAP})
 		},
 	})
-
-	MakePermanent(character.GetOrRegisterAura(Aura{
-		Label:     "Extra Attacks  (Main Hand)", // Tracks Stored Extra Attacks from all sources
-		ActionID:  ActionID{SpellID: 21919},     // Thrash ID
-		Duration:  NeverExpires,
-		MaxStacks: 4, // Max is 4 extra attacks stored - more can proc after
-		OnInit: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AutoAttacks.mh.extraAttacksAura = aura
-		},
-	}))
 
 	icd := Cooldown{
 		Timer:    character.NewTimer(),
