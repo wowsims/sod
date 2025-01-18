@@ -682,7 +682,7 @@ export const DraughtOfTheSands = makeBooleanMiscConsumeInput({
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: player.getClass() === Class.ClassHunter ? 235497 : 235825, minLevel: 55 }]),
 	fieldName: 'draughtOfTheSands',
 	showWhen: player => player.getClass() === Class.ClassHunter || player.getClass() === Class.ClassRogue,
-})
+});
 
 export const Catnip = makeBooleanMiscConsumeInput({
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 213407, minLevel: 20 }]),
@@ -1041,6 +1041,16 @@ export const WildStrikes: ConsumableInputConfig<WeaponImbue> = {
 // Other Imbues
 
 // Wizard Oils
+export const BlessedWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 23123, minLevel: 50 }]),
+		value: WeaponImbue.BlessedWizardOil,
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || weapon.item.weaponType != WeaponType.WeaponTypeOffHand;
+		},
+	};
+};
 export const EnchantedRepellent = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 233996, minLevel: 60 }]),
@@ -1136,6 +1146,16 @@ export const BlackfathomManaOil = (slot: ItemSlot): ConsumableInputConfig<Weapon
 };
 
 // Sharpening Stones
+export const ConsecratedSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 23122, minLevel: 50 }]),
+		value: WeaponImbue.ConsecratedSharpeningStone,
+		showWhen: player => {
+			const weapon = player.getEquippedItem(slot);
+			return !weapon || isWeapon(weapon.item.weaponType);
+		},
+	};
+};
 export const ElementalSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 18262, minLevel: 50 }]),
@@ -1256,6 +1276,7 @@ const ROGUE_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 ];
 
 const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [
+	{ config: BlessedWizardOil(slot), stats: [Stat.StatSpellPower] },
 	{ config: EnchantedRepellent(slot), stats: [Stat.StatSpellPower] },
 	{ config: MagnificentTrollshine(slot), stats: [Stat.StatSpellPower] },
 	{ config: ConductiveShieldCoating(slot), stats: [Stat.StatSpellPower] },
@@ -1269,6 +1290,7 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 	{ config: MinorManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
 	{ config: BlackfathomManaOil(slot), stats: [Stat.StatSpellPower, Stat.StatMP5] },
 
+	{ config: ConsecratedSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: ElementalSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: DenseSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: SolidSharpeningStone(slot), stats: [Stat.StatAttackPower] },
