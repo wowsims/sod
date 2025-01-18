@@ -589,13 +589,9 @@ func init() {
 		})
 	})
 
-	core.NewItemEffect(ScalebaneGreataxe, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.PseudoStats.MobTypeAttackPower += 117
-		}
-	})
+	// https://www.wowhead.com/classic/item=220965/scalebane-greataxe
+	// Equip: +117 Attack Power when fighting Dragonkin.
+	core.NewMobTypeAttackPowerEffect(ScalebaneGreataxe, []proto.MobType{proto.MobType_MobTypeDragonkin}, 117)
 
 	core.AddEffectsToTest = true
 }

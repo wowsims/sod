@@ -113,6 +113,7 @@ func (impl *APLActionCatOptimalRotationAction) Finalize(*core.APLRotation)      
 func (impl *APLActionCatOptimalRotationAction) GetNextAction(*core.Simulation) *core.APLAction {
 	return nil
 }
+func (impl *APLActionCatOptimalRotationAction) GetSpellFromAction() *core.Spell { return nil }
 
 func (cat *FeralDruid) newActionCatOptimalRotationAction(_ *core.APLRotation, config *proto.APLActionCatOptimalRotationAction) core.APLActionImpl {
 	cat.setupRotation(config)

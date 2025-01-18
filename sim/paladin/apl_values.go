@@ -63,6 +63,9 @@ func (x *APLActionCastPaladinPrimarySeal) GetInnerActions() []*core.APLAction   
 func (x *APLActionCastPaladinPrimarySeal) GetAPLValues() []core.APLValue                  { return nil }
 func (x *APLActionCastPaladinPrimarySeal) Finalize(*core.APLRotation)                     {}
 func (x *APLActionCastPaladinPrimarySeal) GetNextAction(*core.Simulation) *core.APLAction { return nil }
+func (x *APLActionCastPaladinPrimarySeal) GetSpellFromAction() *core.Spell {
+	return x.paladin.primarySeal
+}
 
 func (paladin *Paladin) newActionPaladinPrimarySealAction(_ *core.APLRotation, _ *proto.APLActionCastPaladinPrimarySeal) core.APLActionImpl {
 	return &APLActionCastPaladinPrimarySeal{

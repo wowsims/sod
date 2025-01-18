@@ -1,7 +1,7 @@
 import * as InputHelpers from '../core/components/input_helpers.js';
 import { Player } from '../core/player.js';
 import { Spec } from '../core/proto/common.js';
-import { PaladinSeal, PaladinAura } from '../core/proto/paladin.js';
+import { PaladinAura,PaladinSeal } from '../core/proto/paladin.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { TypedEvent } from '../core/typed_event.js';
 
@@ -13,12 +13,6 @@ export const AuraSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.Spec
  	values: [
  		{ value: PaladinAura.NoPaladinAura, tooltip: 'No Aura' },
  		{ actionId: () => ActionId.fromSpellId(20218), value: PaladinAura.SanctityAura },
- 		//{ actionId: () => ActionId.fromSpellId(10299), value: PaladinAura.DevotionAura },
- 		//{ actionId: () => ActionId.fromSpellId(10299), value: PaladinAura.RetributionAura },
- 		//{ actionId: () => ActionId.fromSpellId(19746), value: PaladinAura.ConcentrationAura },
- 		//{ actionId: () => ActionId.fromSpellId(19888), value: PaladinAura.FrostResistanceAura },
- 		//{ actionId: () => ActionId.fromSpellId(19892), value: PaladinAura.ShadowResistanceAura },
- 		//{ actionId: () => ActionId.fromSpellId(19891), value: PaladinAura.FireResistanceAura },
  	],
 });
 
