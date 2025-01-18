@@ -45,12 +45,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=228486/treants-bane
 	// Equip: +75 Attack Power when fighting Elementals.
-	core.NewItemEffect(TreantsBane, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeElemental {
-			character.PseudoStats.MobTypeAttackPower += 75
-		}
-	})
+	core.NewMobTypeAttackPowerEffect(TreantsBane, []proto.MobType{proto.MobType_MobTypeElemental}, 75)
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Trinkets

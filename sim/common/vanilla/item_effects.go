@@ -990,33 +990,13 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=231273/grileks-carver
 	// +141 Attack Power when fighting Dragonkin.
-	core.NewItemEffect(GrileksCarver, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.PseudoStats.MobTypeAttackPower += 141
-		}
-	})
-	core.NewItemEffect(GrileksCarverBloodied, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.PseudoStats.MobTypeAttackPower += 141
-		}
-	})
+	core.NewMobTypeAttackPowerEffect(GrileksCarver, []proto.MobType{proto.MobType_MobTypeDragonkin}, 141)
+	core.NewMobTypeAttackPowerEffect(GrileksCarverBloodied, []proto.MobType{proto.MobType_MobTypeDragonkin}, 141)
 
 	// https://www.wowhead.com/classic/item=231274/grileks-grinder
 	// +60 Attack Power when fighting Dragonkin.
-	core.NewItemEffect(GrileksGrinder, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.PseudoStats.MobTypeAttackPower += 60
-		}
-	})
-	core.NewItemEffect(GrileksGrinderBloodied, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.PseudoStats.MobTypeAttackPower += 60
-		}
-	})
+	core.NewMobTypeAttackPowerEffect(GrileksGrinder, []proto.MobType{proto.MobType_MobTypeDragonkin}, 60)
+	core.NewMobTypeAttackPowerEffect(GrileksGrinderBloodied, []proto.MobType{proto.MobType_MobTypeDragonkin}, 60)
 
 	itemhelpers.CreateWeaponCoHProcDamage(GryphonRidersStormhammer, "Gryphon Rider's Stormhammer", 1.0, 18081, core.SpellSchoolNature, 91, 34, 0, core.DefenseTypeMagic)
 
@@ -1393,18 +1373,8 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=231277/pitchfork-of-madness
 	// +141 Attack Power when fighting Demons.
-	core.NewItemEffect(PitchforkOfMadness, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.PseudoStats.MobTypeAttackPower += 141
-		}
-	})
-	core.NewItemEffect(PitchforkOfMadnessBloodied, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon {
-			character.PseudoStats.MobTypeAttackPower += 141
-		}
-	})
+	core.NewMobTypeAttackPowerEffect(PitchforkOfMadness, []proto.MobType{proto.MobType_MobTypeDemon}, 141)
+	core.NewMobTypeAttackPowerEffect(PitchforkOfMadnessBloodied, []proto.MobType{proto.MobType_MobTypeDemon}, 141)
 
 	// https://www.wowhead.com/classic/item=228679/quelserrar
 	// Chance on hit: When active, grants the wielder 25 defense and 300 armor for 10 sec.
@@ -2173,18 +2143,8 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=231272/tigules-harpoon
 	// +99 Attack Power when fighting Beasts.
-	core.NewItemEffect(TigulesHarpoon, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
-			character.PseudoStats.MobTypeAttackPower += 99
-		}
-	})
-	core.NewItemEffect(TigulesHarpoonBloodied, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
-			character.PseudoStats.MobTypeAttackPower += 99
-		}
-	})
+	core.NewMobTypeAttackPowerEffect(TigulesHarpoon, []proto.MobType{proto.MobType_MobTypeBeast}, 99)
+	core.NewMobTypeAttackPowerEffect(TigulesHarpoonBloodied, []proto.MobType{proto.MobType_MobTypeBeast}, 99)
 
 	// https://www.wowhead.com/classic/item=228347/typhoon
 	// Chance on hit: Grants an extra attack on your next swing.
@@ -2693,21 +2653,11 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=236352/mark-of-the-champion
 	// Equip: +157 Attack Power when fighting Undead and Demons.
-	core.NewItemEffect(MarkOfTheChampionPhys, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon || character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
-			character.PseudoStats.MobTypeAttackPower += 157
-		}
-	})
+	core.NewMobTypeAttackPowerEffect(MarkOfTheChampionPhys, []proto.MobType{proto.MobType_MobTypeUndead, proto.MobType_MobTypeDemon}, 157)
 
 	// https://www.wowhead.com/classic/item=236351/mark-of-the-champion
 	// Equip: Increases damage done to Undead and Demons by magical spells and effects by up to 89.
-	core.NewItemEffect(MarkOfTheChampionSpell, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon || character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
-			character.PseudoStats.MobTypeSpellPower += 89
-		}
-	})
+	core.NewMobTypeSpellPowerEffect(MarkOfTheChampionSpell, []proto.MobType{proto.MobType_MobTypeUndead, proto.MobType_MobTypeDemon}, 89)
 
 	// https://www.wowhead.com/classic/item=23046/the-restrained-essence-of-sapphiron
 	// Use: Increases damage and healing done by magical spells and effects by up to 180 for 20 sec. (2 Min Cooldown)
@@ -2762,13 +2712,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=19812/rune-of-the-dawn
 	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
-	core.NewItemEffect(RuneOfTheDawn, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
-			character.AddStat(stats.SpellDamage, 48)
-		}
-	})
+	core.NewMobTypeSpellPowerEffect(RuneOfTheDawn, []proto.MobType{proto.MobType_MobTypeUndead}, 48)
 
 	// https://www.wowhead.com/classic/item=233601/scarab-brooch
 	// Use: Your magical heals provide the target with a shield that absorbs damage equal to 15% of the amount healed for 30 sec. (3 Min Cooldown)
@@ -2905,14 +2849,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=13209/seal-of-the-dawn
 	// Equip: +81 Attack Power when fighting Undead.
-	core.NewItemEffect(SealOfTheDawn, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
-			character.AddStat(stats.AttackPower, 81)
-			character.AddStat(stats.AttackPower, 81)
-		}
-	})
+	core.NewMobTypeAttackPowerEffect(SealOfTheDawn, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
 
 	// https://www.wowhead.com/classic/item=233990/speedstone
 	// Increases your attack speed by 2%.

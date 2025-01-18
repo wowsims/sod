@@ -116,13 +116,9 @@ func init() {
 	//                                 Leather
 	///////////////////////////////////////////////////////////////////////////
 
-	// Machinist's Gloves
-	core.NewItemEffect(MachinistsGloves, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeMechanical {
-			character.PseudoStats.MobTypeAttackPower += 30
-		}
-	})
+	// https://www.wowhead.com/classic/item=213319/machinists-gloves
+	// Equip: +30 Attack Power when fighting Mechanical units.
+	core.NewMobTypeAttackPowerEffect(MachinistsGloves, []proto.MobType{proto.MobType_MobTypeMechanical}, 30)
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Mail

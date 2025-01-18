@@ -149,3 +149,22 @@ func NewSimpleStatDefensiveTrinketEffect(itemID int32, bonus stats.Stats, durati
 		}
 	}, nil)
 }
+
+// TODO: These should ideally be done at the AttackTable level
+func NewMobTypeAttackPowerEffect(itemID int32, mobTypes []proto.MobType, bonus float64) {
+	NewItemEffect(itemID, func(agent Agent) {
+		character := agent.GetCharacter()
+		if slices.Contains(mobTypes, character.CurrentTarget.MobType) {
+			character.PseudoStats.MobTypeAttackPower += bonus
+		}
+	})
+}
+
+func NewMobTypeSpellPowerEffect(itemID int32, mobTypes []proto.MobType, bonus float64) {
+	NewItemEffect(itemID, func(agent Agent) {
+		character := agent.GetCharacter()
+		if slices.Contains(mobTypes, character.CurrentTarget.MobType) {
+			character.PseudoStats.MobTypeSpellPower += bonus
+		}
+	})
+}

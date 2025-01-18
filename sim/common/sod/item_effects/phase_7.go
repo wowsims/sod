@@ -5,13 +5,53 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
 const (
-	BulwarkOfIre       = 235868
-	OlReliable         = 235891
-	BladeOfInquisition = 237512
+	BulwarkOfIre                     = 235868
+	OlReliable                       = 235891
+	TunicOfUndeadSlaying             = 236707
+	BreastplateOfUndeadSlaying       = 236708
+	ChestguardOfUndeadSlaying        = 236709
+	WristguardsOfUndeadSlaying       = 236710
+	WristwrapsOfUndeadSlaying        = 236711
+	BracersOfUndeadSlaying           = 236712
+	HandwrapsOfUndeadSlaying         = 236713
+	GauntletsOfUndeadSlaying         = 236714
+	HandguardsOfUndeadSlaying        = 236715
+	BracersOfUndeadCleansing         = 236716
+	GlovesOfUndeadCleansing          = 236717
+	RobeofUndeadCleansing            = 236718
+	BracersOfUndeadPurificationCloth = 236719
+	GlovesOfUndeadPurification       = 236720
+	RobeOfUndeadPurification         = 236721
+	BracersOfUndeadWardingCloth      = 236722
+	GlovesOfUndeadWarding            = 236723
+	RobeOfUndeadWarding              = 236724
+	WristwrapsOfUndeadCleansing      = 236725
+	HandwrapsOfUndeadCleansing       = 236726
+	TunicOfUndeadCleansing           = 236727
+	WristwrapsOfUndeadWarding        = 236731
+	HandwrapsOfUndeadWarding         = 236732
+	TunicOfUndeadWarding             = 236733
+	WristguardsOfUndeadCleansing     = 236734
+	HandguardsOfUndeadCleansing      = 236735
+	ChestguardOfUndeadCleansing      = 236736
+	WristguardsOfUndeadWarding       = 236737
+	HandguardsOfUndeadWarding        = 236738
+	ChestguardOfUndeadWarding        = 236739
+	WristguardsOfUndeadPurification  = 236740
+	HandguardsOfUndeadPurification   = 236741
+	ChestguardOfUndeadPurification   = 236742
+	BracersOfUndeadPurificationPlate = 236743
+	GauntletsOfUndeadPurification    = 236744
+	BreastplateOfUndeadPurification  = 236745
+	BracersOfUndeadWardingPlate      = 236746
+	GauntletsOfUndeadWarding         = 236747
+	BreastplateOfUndeadWarding       = 236748
+	BladeOfInquisition               = 237512
 
 	// Atiesh
 	AtieshSpellPower = 236398
@@ -197,6 +237,42 @@ func init() {
 	//                                 Other
 	///////////////////////////////////////////////////////////////////////////
 
+	// https://www.wowhead.com/classic/item=236716/bracers-of-undead-cleansing
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
+	core.NewMobTypeSpellPowerEffect(BracersOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
+
+	// https://www.wowhead.com/classic/item=236719/bracers-of-undead-purification
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
+	core.NewMobTypeSpellPowerEffect(BracersOfUndeadPurificationCloth, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
+
+	// https://www.wowhead.com/classic/item=236743/bracers-of-undead-purification
+	// +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(BracersOfUndeadPurificationPlate, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+
+	// https://www.wowhead.com/classic/item=236712/bracers-of-undead-slaying
+	// +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(BracersOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+
+	// https://www.wowhead.com/classic/item=236722/bracers-of-undead-warding
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
+	core.NewMobTypeSpellPowerEffect(BracersOfUndeadWardingCloth, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
+
+	// https://www.wowhead.com/classic/item=236746/bracers-of-undead-warding
+	// +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(BracersOfUndeadWardingPlate, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+
+	// https://www.wowhead.com/classic/item=236745/breastplate-of-undead-purification
+	// +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(BreastplateOfUndeadPurification, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
+
+	// https://www.wowhead.com/classic/item=236708/breastplate-of-undead-slaying
+	// +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(BreastplateOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
+
+	// https://www.wowhead.com/classic/item=236748/breastplate-of-undead-warding
+	// +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(BreastplateOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
+
 	// https://www.wowhead.com/classic/item=235868/bulwark-of-ire
 	// Deal 100 Shadow damage to melee attackers.
 	// Causes twice as much threat as damage dealt.
@@ -227,6 +303,126 @@ func init() {
 			},
 		}))
 	})
+
+	// https://www.wowhead.com/classic/item=236736/chestguard-of-undead-cleansing
+	// Equip: +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(ChestguardOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
+
+	// https://www.wowhead.com/classic/item=236742/chestguard-of-undead-purification
+	// Equip: +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(ChestguardOfUndeadPurification, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
+
+	// https://www.wowhead.com/classic/item=236709/chestguard-of-undead-slaying
+	// Equip: +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(ChestguardOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
+
+	// https://www.wowhead.com/classic/item=236739/chestguard-of-undead-warding
+	// Equip: +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(ChestguardOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
+
+	// https://www.wowhead.com/classic/item=236744/gauntlets-of-undead-purification
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(GauntletsOfUndeadPurification, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+
+	// https://www.wowhead.com/classic/item=236714/gauntlets-of-undead-slaying
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(GauntletsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+
+	// https://www.wowhead.com/classic/item=236738/handguards-of-undead-warding
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(GauntletsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+
+	// https://www.wowhead.com/classic/item=236717/gloves-of-undead-cleansing
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 35.
+	core.NewMobTypeSpellPowerEffect(GlovesOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 35)
+
+	// https://www.wowhead.com/classic/item=236720/gloves-of-undead-purification
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 35.
+	core.NewMobTypeSpellPowerEffect(GlovesOfUndeadPurification, []proto.MobType{proto.MobType_MobTypeUndead}, 35)
+
+	// https://www.wowhead.com/classic/item=236723/gloves-of-undead-warding
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 35.
+	core.NewMobTypeSpellPowerEffect(GlovesOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 35)
+
+	// https://www.wowhead.com/classic/item=236735/handguards-of-undead-cleansing
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(HandguardsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+
+	// https://www.wowhead.com/classic/item=236741/handguards-of-undead-purification
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(HandguardsOfUndeadPurification, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+
+	// https://www.wowhead.com/classic/item=236715/handguards-of-undead-slaying
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(HandguardsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+
+	// https://www.wowhead.com/classic/item=236738/handguards-of-undead-warding
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(HandguardsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+
+	// https://www.wowhead.com/classic/item=236726/handwraps-of-undead-cleansing
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(HandwrapsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+
+	// https://www.wowhead.com/classic/item=236713/handwraps-of-undead-slaying
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(HandwrapsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+
+	// https://www.wowhead.com/classic/item=236732/handwraps-of-undead-warding
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(HandwrapsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+
+	// https://www.wowhead.com/classic/item=236718/robe-of-undead-cleansing/
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
+	core.NewMobTypeSpellPowerEffect(RobeofUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 48)
+
+	// https://www.wowhead.com/classic/item=236721/robe-of-undead-purification
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
+	core.NewMobTypeSpellPowerEffect(RobeOfUndeadPurification, []proto.MobType{proto.MobType_MobTypeUndead}, 48)
+
+	// https://www.wowhead.com/classic/item=236724/robe-of-undead-warding
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
+	core.NewMobTypeSpellPowerEffect(RobeOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 48)
+
+	// https://www.wowhead.com/classic/item=236727/tunic-of-undead-cleansing
+	// Equip: +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(TunicOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
+
+	// https://www.wowhead.com/classic/item=236707/tunic-of-undead-slaying
+	// Equip: +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(TunicOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
+
+	// https://www.wowhead.com/classic/item=236733/tunic-of-undead-warding
+	// Equip: +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(TunicOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
+
+	// https://www.wowhead.com/classic/item=236734/wristguards-of-undead-cleansing
+	// Equip: +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(WristguardsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+
+	// https://www.wowhead.com/classic/item=236740/wristguards-of-undead-purification
+	// Equip: +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(WristguardsOfUndeadPurification, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+
+	// https://www.wowhead.com/classic/item=236710/wristguards-of-undead-slaying
+	// Equip: +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(WristguardsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+
+	// https://www.wowhead.com/classic/item=236737/wristguards-of-undead-warding
+	// Equip: +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(WristguardsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+
+	// https://www.wowhead.com/classic/item=236725/wristwraps-of-undead-cleansing
+	// Equip: +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(WristwrapsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+
+	// https://www.wowhead.com/classic/item=236711/wristwraps-of-undead-slaying
+	// Equip: +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(WristwrapsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+
+	// https://www.wowhead.com/classic/item=236732/handwraps-of-undead-warding
+	// Equip: +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(WristwrapsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
 
 	core.AddEffectsToTest = true
 }
