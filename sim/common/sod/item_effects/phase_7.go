@@ -439,31 +439,45 @@ func sanctifiedDamageEffect(spellID int32, percentIncrease float64) core.ApplyEf
 
 		sanctifiedBonus := math.Min(12, float64(character.PseudoStats.SanctifiedBonus))
 		multiplier := 1.0 + percentIncrease/100.0*sanctifiedBonus
-		healthDep := character.NewDynamicMultiplyStat(stats.Health, multiplier)
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label:      "Seal of the Dawn (Damage)",
-			ActionID:   core.ActionID{SpellID: spellID},
-			BuildPhase: core.CharacterBuildPhaseGear,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDep)
-				} else {
-					character.EnableDynamicStatDep(sim, healthDep)
+		units := []*core.Unit{&character.Unit}
+		if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
+			for _, pet := range character.Pets {
+				if pet.IsGuardian() {
+					return
 				}
 
-				character.PseudoStats.DamageDealtMultiplier *= multiplier
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDep)
-				} else {
-					character.DisableDynamicStatDep(sim, healthDep)
-				}
+				units = append(units, &pet.Unit)
+			}
+		}
 
-				character.PseudoStats.DamageDealtMultiplier /= multiplier
-			},
-		}))
+		for _, unit := range units {
+			healthDep := unit.NewDynamicMultiplyStat(stats.Health, multiplier)
+
+			core.MakePermanent(unit.GetOrRegisterAura(core.Aura{
+				Label:      "Seal of the Dawn (Damage)",
+				ActionID:   core.ActionID{SpellID: spellID},
+				BuildPhase: core.CharacterBuildPhaseGear,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+						aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDep)
+					} else {
+						aura.Unit.EnableDynamicStatDep(sim, healthDep)
+					}
+
+					aura.Unit.PseudoStats.DamageDealtMultiplier *= multiplier
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+						aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDep)
+					} else {
+						aura.Unit.DisableDynamicStatDep(sim, healthDep)
+					}
+
+					aura.Unit.PseudoStats.DamageDealtMultiplier /= multiplier
+				},
+			}))
+		}
 	}
 }
 
@@ -479,31 +493,45 @@ func sanctifiedHealingEffect(spellID int32, percentIncrease float64) core.ApplyE
 
 		sanctifiedBonus := math.Min(12, float64(character.PseudoStats.SanctifiedBonus))
 		multiplier := 1.0 + percentIncrease/100.0*sanctifiedBonus
-		healthDep := character.NewDynamicMultiplyStat(stats.Health, multiplier)
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label:      "Seal of the Dawn (Healing)",
-			ActionID:   core.ActionID{SpellID: spellID},
-			BuildPhase: core.CharacterBuildPhaseGear,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDep)
-				} else {
-					character.EnableDynamicStatDep(sim, healthDep)
+		units := []*core.Unit{&character.Unit}
+		if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
+			for _, pet := range character.Pets {
+				if pet.IsGuardian() {
+					return
 				}
 
-				character.PseudoStats.HealingDealtMultiplier *= multiplier
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDep)
-				} else {
-					character.DisableDynamicStatDep(sim, healthDep)
-				}
+				units = append(units, &pet.Unit)
+			}
+		}
 
-				character.PseudoStats.HealingDealtMultiplier /= multiplier
-			},
-		}))
+		for _, unit := range units {
+			healthDep := unit.NewDynamicMultiplyStat(stats.Health, multiplier)
+
+			core.MakePermanent(unit.GetOrRegisterAura(core.Aura{
+				Label:      "Seal of the Dawn (Healing)",
+				ActionID:   core.ActionID{SpellID: spellID},
+				BuildPhase: core.CharacterBuildPhaseGear,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+						aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDep)
+					} else {
+						aura.Unit.EnableDynamicStatDep(sim, healthDep)
+					}
+
+					aura.Unit.PseudoStats.HealingDealtMultiplier *= multiplier
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+						aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDep)
+					} else {
+						aura.Unit.DisableDynamicStatDep(sim, healthDep)
+					}
+
+					aura.Unit.PseudoStats.HealingDealtMultiplier /= multiplier
+				},
+			}))
+		}
 	}
 }
 
@@ -520,33 +548,47 @@ func sanctifiedTankingEffect(spellID int32, threatPercentIncrease float64, damag
 		sanctifiedBonus := math.Min(12, float64(character.PseudoStats.SanctifiedBonus))
 		damageHealthMultiplier := 1.0 + damageHealthPercentIncrease/100.0*sanctifiedBonus
 		threatMultiplier := 1.0 + threatPercentIncrease/100.0*sanctifiedBonus
-		healthDep := character.NewDynamicMultiplyStat(stats.Health, damageHealthMultiplier)
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label:      "Seal of the Dawn (Tanking)",
-			ActionID:   core.ActionID{SpellID: spellID},
-			BuildPhase: core.CharacterBuildPhaseGear,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDep)
-				} else {
-					character.EnableDynamicStatDep(sim, healthDep)
+		units := []*core.Unit{&character.Unit}
+		if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
+			for _, pet := range character.Pets {
+				if pet.IsGuardian() {
+					return
 				}
 
-				character.PseudoStats.ThreatMultiplier *= threatMultiplier
-				character.PseudoStats.DamageDealtMultiplier *= damageHealthMultiplier
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDep)
-				} else {
-					character.DisableDynamicStatDep(sim, healthDep)
-				}
+				units = append(units, &pet.Unit)
+			}
+		}
 
-				character.PseudoStats.ThreatMultiplier /= threatMultiplier
-				character.PseudoStats.DamageDealtMultiplier /= damageHealthMultiplier
-			},
-		}))
+		for _, unit := range units {
+			healthDep := unit.NewDynamicMultiplyStat(stats.Health, damageHealthMultiplier)
+
+			core.MakePermanent(unit.GetOrRegisterAura(core.Aura{
+				Label:      "Seal of the Dawn (Tanking)",
+				ActionID:   core.ActionID{SpellID: spellID},
+				BuildPhase: core.CharacterBuildPhaseGear,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+						aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDep)
+					} else {
+						aura.Unit.EnableDynamicStatDep(sim, healthDep)
+					}
+
+					aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
+					aura.Unit.PseudoStats.DamageDealtMultiplier *= damageHealthMultiplier
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+						aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDep)
+					} else {
+						aura.Unit.DisableDynamicStatDep(sim, healthDep)
+					}
+
+					aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
+					aura.Unit.PseudoStats.DamageDealtMultiplier /= damageHealthMultiplier
+				},
+			}))
+		}
 	}
 }
 
