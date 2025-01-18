@@ -272,6 +272,15 @@ func (character *Character) applyEquipment() {
 			character.PseudoStats.SanctifiedBonus += 1
 		}
 
+		if item.Stats[stats.MeleeHaste] != 0 {
+			character.PseudoStats.MeleeSpeedMultiplier *= 1 + item.Stats[stats.MeleeHaste]*HasteRatingPerHastePercent/100
+			character.PseudoStats.RangedSpeedMultiplier *= 1 + item.Stats[stats.MeleeHaste]*HasteRatingPerHastePercent/100
+		}
+
+		if item.Stats[stats.SpellHaste] != 0 {
+			character.MultiplyCastSpeed(1 + item.Stats[stats.SpellHaste]*HasteRatingPerHastePercent/100)
+		}
+
 		character.PseudoStats.BonusPhysicalDamage += item.BonusPhysicalDamage
 	}
 }
@@ -643,6 +652,7 @@ func (character *Character) GetPseudoStatsProto() []float64 {
 
 		proto.PseudoStat_PseudoStatMeleeSpeedMultiplier:  float64(character.PseudoStats.MeleeSpeedMultiplier),
 		proto.PseudoStat_PseudoStatRangedSpeedMultiplier: float64(character.PseudoStats.RangedSpeedMultiplier),
+		proto.PseudoStat_PseudoStatCastSpeedMultiplier:   float64(character.PseudoStats.CastSpeedMultiplier),
 		proto.PseudoStat_PseudoStatBlockValuePerStrength: float64(character.PseudoStats.BlockValuePerStrength),
 
 		proto.PseudoStat_PseudoStatTimewornBonus:   float64(character.PseudoStats.TimewornBonus),

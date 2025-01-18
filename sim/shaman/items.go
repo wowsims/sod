@@ -4,6 +4,8 @@ import (
 	"slices"
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
+	"github.com/wowsims/sod/sim/common/sod/item_effects"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -14,8 +16,8 @@ const (
 	TotemOfRage               = 22395
 	TotemOfTheStorm           = 23199
 	TotemOfSustaining         = 23200
-	CarvedDriftwoodIcon       = 209575
 	TotemOfInvigoratingFlame  = 215436
+	AncestralBloodstormBeacon = 216615
 	TotemOfTormentedAncestry  = 220607
 	TerrestrisTank            = 224279
 	TotemOfThunder            = 228176
@@ -31,6 +33,7 @@ const (
 	TotemOfThunderousStrikes  = 234478
 	TotemOfFlowingMagma       = 234479
 	TotemOfPyroclasticThunder = 234480
+	TotemOfUnholyMight        = 237577
 )
 
 func init() {
@@ -38,9 +41,39 @@ func init() {
 
 	// Keep these ordered by name
 
-	core.NewItemEffect(CarvedDriftwoodIcon, func(agent core.Agent) {
+	// https://www.wowhead.com/classic/item=216615/ancestral-bloodstorm-beacon
+	// Use: Unleash a delayed explosion of blood and nature, causing 150 Plague damage to all targets within 10 yards. (5 Min Cooldown)
+	core.NewItemEffect(AncestralBloodstormBeacon, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		character.AddStat(stats.MP5, 2)
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 436413},
+			SpellSchool: core.SpellSchoolNature | core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagAPL | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 5,
+				},
+			},
+
+			DamageMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, 150, spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    spell,
+			Priority: core.CooldownPriorityLow,
+			Type:     core.CooldownTypeDPS,
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=230273/natural-alignment-crystal
@@ -357,6 +390,24 @@ func init() {
 		}))
 	})
 
+	// https://www.wowhead.com/classic/item=228178/totem-of-earthen-vitality
+	// Equip: While a Shield is equipped, your melee attacks with Rockbiter Weapon restore 2% of your total mana.
+	core.NewItemEffect(TotemOfEarthenVitality, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+
+		manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 461299})
+		core.MakePermanent(shaman.RegisterAura(core.Aura{
+			Label:    "Totem of Earthen Vitality Trigger",
+			Duration: core.NeverExpires,
+			OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto) || !result.Landed() || shaman.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
+					return
+				}
+				shaman.AddMana(sim, shaman.MaxMana()*.02, manaMetrics)
+			},
+		}))
+	})
+
 	// https://www.wowhead.com/classic/item=234479/totem-of-flowing-magma
 	// Increases the damage of Flame Shock and Molten Blast by 3%.
 	core.NewItemEffect(TotemOfFlowingMagma, func(agent core.Agent) {
@@ -378,6 +429,18 @@ func init() {
 					spell.DamageMultiplierAdditive += 0.03
 				}
 			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=215436/totem-of-invigorating-flame
+	// Equip: Reduces the mana cost of your Flame Shock spell by 10.
+	core.NewItemEffect(TotemOfInvigoratingFlame, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_ShamanFlameShock {
+				spell.Cost.FlatModifier -= 10
+			}
 		})
 	})
 
@@ -403,6 +466,56 @@ func init() {
 
 				for _, spell := range affectedSpells {
 					spell.DamageMultiplierAdditive += 0.03
+				}
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=228177/totem-of-raging-fire
+	// Equip: Your Stormstrike spell causes you to gain 24 attack power for 12 sec. (More effective with a two - handed weapon).
+	core.NewItemEffect(TotemOfRagingFire, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		procAura1H := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: TotemOfRagingFire}.WithTag(1),
+			Label:    "Totem of Raging Fire (1H)",
+			Duration: time.Second * 12,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.AttackPower, 24)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.AttackPower, -24)
+			},
+		})
+		// TODO: Verify 2H value
+		procAura2H := shaman.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: TotemOfRagingFire}.WithTag(2),
+			Label:    "Totem of Raging Fire (2H)",
+			Duration: time.Second * 12,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.AttackPower, 48)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.AddStatDynamic(sim, stats.AttackPower, -48)
+			},
+		})
+
+		shaman.RegisterAura(core.Aura{
+			Label:    "Totem of Raging Fire Trigger",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell.SpellCode != SpellCode_ShamanStormstrike {
+					return
+				}
+
+				if shaman.MainHand().HandType == proto.HandType_HandTypeOneHand {
+					procAura2H.Deactivate(sim)
+					procAura1H.Activate(sim)
+				} else if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+					procAura1H.Deactivate(sim)
+					procAura2H.Activate(sim)
 				}
 			},
 		})
@@ -444,6 +557,19 @@ func init() {
 		}))
 	})
 
+	// https://www.wowhead.com/classic/item=23200/totem-of-sustaining
+	// Equip: Increases healing done by Lesser Healing Wave by up to 53.
+	core.NewItemEffect(TotemOfSustaining, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+		shaman.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.SpellCode == SpellCode_ShamanLesserHealingWave {
+				spell.BonusDamage += 53
+			}
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=232409/totem-of-the-elements
+	// Equip: Your Elemental Focus talent now has a maximum of 2 charges, and is set to 2 charges when it triggers.
 	core.NewItemEffect(TotemOfTheElements, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 		if !shaman.Talents.ElementalFocus {
@@ -466,61 +592,6 @@ func init() {
 			if spell.SpellCode == SpellCode_ShamanLightningBolt || spell.SpellCode == SpellCode_ShamanChainLightning {
 				spell.BonusDamage += 33
 			}
-		})
-	})
-
-	// https://www.wowhead.com/classic/item=23200/totem-of-sustaining
-	// Equip: Increases healing done by Lesser Healing Wave by up to 53.
-	core.NewItemEffect(TotemOfSustaining, func(agent core.Agent) {
-		shaman := agent.(ShamanAgent).GetShaman()
-		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_ShamanLesserHealingWave {
-				spell.BonusDamage += 53
-			}
-		})
-	})
-
-	core.NewItemEffect(TotemOfInvigoratingFlame, func(agent core.Agent) {
-		shaman := agent.(ShamanAgent).GetShaman()
-
-		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_ShamanFlameShock {
-				spell.Cost.FlatModifier -= 10
-			}
-		})
-	})
-
-	// Ancestral Bloodstorm Beacon
-	core.NewItemEffect(216615, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		spell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 436413},
-			SpellSchool: core.SpellSchoolNature | core.SpellSchoolShadow,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagAPL | core.SpellFlagOffensiveEquipment,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 5,
-				},
-			},
-
-			DamageMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				for _, aoeTarget := range sim.Encounter.TargetUnits {
-					spell.CalcAndDealDamage(sim, aoeTarget, 150, spell.OutcomeMagicHitAndCrit)
-				}
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    spell,
-			Priority: core.CooldownPriorityLow,
-			Type:     core.CooldownTypeDPS,
 		})
 	})
 
@@ -599,73 +670,10 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic/item=228177/totem-of-raging-fire
-	// Equip: Your Stormstrike spell causes you to gain 24 attack power for 12 sec. (More effective with a two - handed weapon).
-	core.NewItemEffect(TotemOfRagingFire, func(agent core.Agent) {
-		shaman := agent.(ShamanAgent).GetShaman()
-		procAura1H := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{ItemID: TotemOfRagingFire}.WithTag(1),
-			Label:    "Totem of Raging Fire (1H)",
-			Duration: time.Second * 12,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 24)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -24)
-			},
-		})
-		// TODO: Verify 2H value
-		procAura2H := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{ItemID: TotemOfRagingFire}.WithTag(2),
-			Label:    "Totem of Raging Fire (2H)",
-			Duration: time.Second * 12,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 48)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -48)
-			},
-		})
-
-		shaman.RegisterAura(core.Aura{
-			Label:    "Totem of Raging Fire Trigger",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.SpellCode != SpellCode_ShamanStormstrike {
-					return
-				}
-
-				if shaman.MainHand().HandType == proto.HandType_HandTypeOneHand {
-					procAura2H.Deactivate(sim)
-					procAura1H.Activate(sim)
-				} else if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-					procAura1H.Deactivate(sim)
-					procAura2H.Activate(sim)
-				}
-			},
-		})
-	})
-
-	// https://www.wowhead.com/classic/item=228178/totem-of-earthen-vitality
-	// Equip: While a Shield is equipped, your melee attacks with Rockbiter Weapon restore 2% of your total mana.
-	core.NewItemEffect(TotemOfEarthenVitality, func(agent core.Agent) {
-		shaman := agent.(ShamanAgent).GetShaman()
-
-		manaMetrics := shaman.NewManaMetrics(core.ActionID{SpellID: 461299})
-		core.MakePermanent(shaman.RegisterAura(core.Aura{
-			Label:    "Totem of Earthen Vitality Trigger",
-			Duration: core.NeverExpires,
-			OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto) || !result.Landed() || shaman.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
-					return
-				}
-				shaman.AddMana(sim, shaman.MaxMana()*.02, manaMetrics)
-			},
-		}))
-	})
+	// https://www.wowhead.com/classic/item=237577/totem-of-unholy-might
+	// Chance on hit: Increases the wielder's Strength by 400, but they also take 20% more damage from all sources for 8 sec.
+	// TODO: Proc rate assumed and needs testing
+	itemhelpers.CreateWeaponProcAura(TotemOfUnholyMight, "Totem of Unholy Might", 1.0, item_effects.UnholyMightAura)
 
 	// https://www.wowhead.com/classic/item=231281/wushoolays-charm-of-spirits
 	// Use: Increases the damage dealt by your Lightning Shield spell by 100% for 20 sec. (2 Min Cooldown)

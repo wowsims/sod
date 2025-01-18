@@ -167,7 +167,7 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatMP5, 'Mana Per 5 Sec'],
 	[Stat.StatSpellHit, 'Spell Hit'],
 	[Stat.StatSpellCrit, 'Spell Crit'],
-	[Stat.StatSpellHaste, 'Spell Haste'],
+	[Stat.StatSpellHaste, 'Casting Speed'],
 	[Stat.StatSpellPenetration, 'Spell Pen'],
 	[Stat.StatAttackPower, 'Attack Power'],
 	[Stat.StatFeralAttackPower, 'Feral AP'],
