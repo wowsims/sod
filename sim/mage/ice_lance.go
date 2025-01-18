@@ -59,8 +59,10 @@ func (mage *Mage) registerIceLanceSpell() {
 
 			var glaciateAura *core.Aura
 			modifier := 0.0
-			if glaciateAura = mage.GlaciateAuras.Get(target); glaciateAura.IsActive() {
-				modifier += 0.20 * float64(glaciateAura.GetStacks())
+			if hasWintersChillTalent {
+				if glaciateAura = mage.GlaciateAuras.Get(target); glaciateAura.IsActive() {
+					modifier += 0.20 * float64(glaciateAura.GetStacks())
+				}
 			}
 
 			spell.DamageMultiplier *= damageMultiplier
