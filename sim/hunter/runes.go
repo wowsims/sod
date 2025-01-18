@@ -33,13 +33,7 @@ func (hunter *Hunter) ApplyRunes() {
 		hunter.AutoAttacks.OHConfig().DamageMultiplier *= 1.5
 	}
 
-	if hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes) {
-		hunter.AddStat(stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
-		if hunter.pet != nil {
-			hunter.pet.AddStat(stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
-		}
-	}
-
+	hunter.applyCatlikeReflexes()
 	hunter.applySniperTraining()
 	hunter.applyCobraStrikes()
 	hunter.applyExposeWeakness()
@@ -438,6 +432,50 @@ func (hunter *Hunter) applyHitAndRun() {
 			},
 		})
 	}
+}
+
+func (hunter *Hunter) applyCatlikeReflexes() {
+	if !hunter.HasRune(proto.HunterRune_RuneHelmCatlikeReflexes) {
+		return
+	}
+	label := "Catlike Reflexes"
+
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: label,
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			if hunter.FlankingStrike != nil {
+				hunter.FlankingStrike.CD.Multiplier -= 50
+			}
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+			  hunter.AddStat(stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
+				if hunter.pet != nil {
+					hunter.pet.AddStat(stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
+				}
+			} else {
+				hunter.AddStatDynamic(sim, stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
+				if hunter.pet != nil {
+					hunter.pet.AddStatDynamic(sim, stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
+				}
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+			  hunter.AddStat(stats.Dodge, -20*core.DodgeRatingPerDodgeChance)
+				if hunter.pet != nil {
+					hunter.pet.AddStat(stats.Dodge, -9*core.DodgeRatingPerDodgeChance)
+				}
+			} else {
+				hunter.AddStatDynamic(sim, stats.Dodge, -20*core.DodgeRatingPerDodgeChance)
+				if hunter.pet != nil {
+					hunter.pet.AddStatDynamic(sim, stats.Dodge, -9*core.DodgeRatingPerDodgeChance)
+				}
+			}
+		},
+	}))
 }
 
 func (hunter *Hunter) applyImprovedVolley() {
