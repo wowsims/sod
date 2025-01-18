@@ -53,7 +53,7 @@ func (rogue *Rogue) applyShoulderRuneEffect() {
 	switch rogue.Equipment.Shoulders().Rune {
 	// Damage
 	case int32(proto.RogueRune_RuneShouldersAvoidant):
-	case int32(proto.HunterRune_RuneShouldersToxinologist):
+	case int32(proto.RogueRune_RuneShouldersToxicologist):
 		rogue.applyT1Damage4PBonus()
 	case int32(proto.RogueRune_RuneShouldersExecutioner):
 		rogue.applyT1Damage6PBonus()

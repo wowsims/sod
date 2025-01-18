@@ -96,6 +96,10 @@ func init() {
 
 			w.BaseDamageMin += 2
 			w.BaseDamageMax += 2
+
+			w = character.AutoAttacks.Ranged()
+			w.BaseDamageMin += 2
+			w.BaseDamageMax += 2
 		}
 	})
 
@@ -189,6 +193,10 @@ func init() {
 
 			w.BaseDamageMin += 6
 			w.BaseDamageMax += 6
+
+			w = character.AutoAttacks.Ranged()
+			w.BaseDamageMin += 6
+			w.BaseDamageMax += 6
 		}
 	})
 
@@ -202,6 +210,10 @@ func init() {
 				w = character.AutoAttacks.OH()
 			}
 
+			w.BaseDamageMin += 6
+			w.BaseDamageMax += 6
+
+			w = character.AutoAttacks.Ranged()
 			w.BaseDamageMin += 6
 			w.BaseDamageMax += 6
 		}
@@ -225,6 +237,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
+		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 	})
 
 	// Weapon - Striking

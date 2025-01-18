@@ -340,7 +340,7 @@ func (unit *Unit) SpellGCD() time.Duration {
 }
 
 func (unit *Unit) updateCastSpeed() {
-	unit.CastSpeed = (1 / (unit.PseudoStats.CastSpeedMultiplier * (1 + (unit.stats[stats.SpellHaste] / (HasteRatingPerHastePercent * 100)))))
+	unit.CastSpeed = (1 / unit.PseudoStats.CastSpeedMultiplier)
 }
 
 func (unit *Unit) MultiplyCastSpeed(amount float64) {
@@ -355,7 +355,7 @@ func (unit *Unit) ApplyCastSpeedForSpell(dur time.Duration, spell *Spell) time.D
 }
 
 func (unit *Unit) SwingSpeed() float64 {
-	return unit.PseudoStats.MeleeSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / 100))
+	return unit.PseudoStats.MeleeSpeedMultiplier
 }
 
 func (unit *Unit) Armor() float64 {
@@ -373,7 +373,7 @@ func (unit *Unit) ArmorPenetrationPercentage(armorPenRating float64) float64 {
 }
 
 func (unit *Unit) RangedSwingSpeed() float64 {
-	return unit.PseudoStats.RangedSpeedMultiplier * (1 + (unit.stats[stats.MeleeHaste] / (HasteRatingPerHastePercent * 100)))
+	return unit.PseudoStats.RangedSpeedMultiplier
 }
 
 // MultiplyMeleeSpeed will alter the attack speed multiplier and change swing speed of all autoattack swings in progress.
@@ -406,6 +406,14 @@ func (unit *Unit) AddBonusRangedHitRating(amount float64) {
 	unit.OnSpellRegistered(func(spell *Spell) {
 		if spell.ProcMask.Matches(ProcMaskRanged) {
 			spell.BonusHitRating += amount
+		}
+	})
+}
+
+func (unit *Unit) AddBonusRangedCritRating(amount float64) {
+	unit.OnSpellRegistered(func(spell *Spell) {
+		if spell.ProcMask.Matches(ProcMaskRanged) {
+			spell.BonusCritRating += amount
 		}
 	})
 }

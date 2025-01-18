@@ -127,15 +127,16 @@ enum Stat {
 // between the UI and backend.
 //
 // It's also OK to include things here which aren't in the PseudoStats struct.
-// NextIndex: 32
+// NextIndex: 35
 enum PseudoStat {
 	PseudoStatMainHandDps = 0;
 	PseudoStatOffHandDps = 1;
 	PseudoStatRangedDps = 2;
 	PseudoStatBlockValueMultiplier = 3;
-	PseudoStatDodge = 4;
-	PseudoStatParry = 5;
-	BonusPhysicalDamage = 31;
+	PseudoStatDodge = 4 [deprecated = true];
+	PseudoStatParry = 5 [deprecated = true];
+	PseudoStatBonusPhysicalDamage = 31;
+	PseudoStatThornsDamage = 32;
 
 	// Melee Weapon Skill
 	PseudoStatUnarmedSkill = 6;
@@ -167,10 +168,12 @@ enum PseudoStat {
 
 	PseudoStatMeleeSpeedMultiplier = 27;
 	PseudoStatRangedSpeedMultiplier = 28;
+	PseudoStatCastSpeedMultiplier = 34;
 	PseudoStatBlockValuePerStrength = 29;
 
 	// Special Pseudostats
-	TimewornBonus = 30;
+	PseudoStatTimewornBonus = 30;
+	PseudoStatSanctifiedBonus = 33;
 }
 
 message UnitStats {
@@ -610,8 +613,11 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
-// NextIndex: 44
+// NextIndex: 48
 message RaidBuffs {
+	reserved 42;
+	reserved "flowing_waters_sigil";
+
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
 
@@ -679,8 +685,12 @@ message RaidBuffs {
 	bool sanctity_aura = 36;
 	int32 battle_squawk = 37;
 	bool improved_stoneskin_windwall = 40;
-	bool flowing_waters_sigil = 42;
 	bool spirit_of_the_alpha = 43;
+
+	bool atiesh_cast_speed_buff = 44;
+	bool atiesh_healing_buff = 45;
+	bool atiesh_spell_crit_buff = 46;
+	bool atiesh_spell_power_buff = 47;
 }
 
 // Buffs that affect a single party.
@@ -941,7 +951,7 @@ message SimDatabase {
 }
 
 // Contains only the Item info needed by the sim.
-// NextIndex: 21
+// NextIndex: 22
 message SimItem {
 	int32 id = 1;
 	int32 requires_level = 16;
@@ -966,6 +976,7 @@ message SimItem {
 	repeated double weapon_skills = 15;
 
 	bool timeworn = 19;
+	bool sanctified = 21;
 }
 
 // Extra enum for describing which items are eligible for an enchant, when

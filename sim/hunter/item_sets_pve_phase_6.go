@@ -76,19 +76,20 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 	},
 })
 
+const TAQRanged2PBonusLabel = "S03 - Item - TAQ - Hunter - Ranged 2P Bonus"
+
 // Increases Kill Shot damage by 50% against non-player targets.
 func (hunter *Hunter) applyTAQRanged2PBonus() {
 	if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
 		return
 	}
 
-	label := "S03 - Item - TAQ - Hunter - Ranged 2P Bonus"
-	if hunter.HasAura(label) {
+	if hunter.HasAura(TAQRanged2PBonusLabel) {
 		return
 	}
 
 	hunter.RegisterAura(core.Aura{
-		Label: label,
+		Label: TAQRanged2PBonusLabel,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			hunter.KillShot.DamageMultiplierAdditive += 0.20
 		},
@@ -123,7 +124,6 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 	}
 
 	clonedShot := hunter.RegisterSpell(clonedShotConfig)
-	clonedShot.DamageMultiplierAdditive += 0.20 // Add the 2p bonus 20%
 
 	hunter.RegisterAura(core.Aura{
 		Label: label,
@@ -132,6 +132,10 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 
 			if !hunter.HasRune(proto.HunterRune_RuneHelmRapidKilling) {
 				return
+			}
+
+			if hunter.HasAura(TAQRanged2PBonusLabel) {
+				clonedShot.DamageMultiplierAdditive += 0.20 // Add the 2p bonus 20%
 			}
 
 			oldApplyEffects := hunter.KillShot.ApplyEffects
