@@ -29,6 +29,9 @@ import { SavedTalents } from '../core/proto/ui.js';
 import APLP1RetJson from './apls/p1-ret.apl.json';
 import APLP2RetJson from './apls/p2-ret.apl.json';
 import APLP3RetJson from './apls/p3-ret.apl.json';
+import APLP4ExodinJson from './apls/p4-exodin.apl.json';
+import APLP4Exodin6PcT1Json from './apls/p4-exodin-6pcT1.apl.json';
+import APLP4Twisting6PcT1Json from './apls/p4-twisting-6pcT1.apl.json';
 import APLP5ExodinJson from './apls/p5-exodin-6CF-2DR.apl.json';
 import APLP5SealStackingJson from './apls/p5-seal-stacking-6CF-2DR.apl.json';
 import APLShockadinJson from './apls/p5-shockadin.apl.json';
@@ -39,6 +42,10 @@ import Phase1RetGearJson from './gear_sets/p1-ret.gear.json';
 import Phase2RetSoCGearJson from './gear_sets/p2-retsoc.gear.json';
 import Phase2RetSoMGearJson from './gear_sets/p2-retsom.gear.json';
 import Phase3RetSoMGearJson from './gear_sets/p3-retsom.gear.json';
+import Phase4ExodinGearJson from './gear_sets/p4-exodin.gear.json';
+import Phase4Exodin6PcT1GearJson from './gear_sets/p4-exodin-6pcT1.gear.json';
+import Phase4TwistingGearJson from './gear_sets/p4-twist.gear.json';
+import Phase4Twisting6PcT1GearJson from './gear_sets/p4-twisting-6pcT1.gear.json';
 import Phase5ExodinGearJson from './gear_sets/p5-exodin.gear.json';
 import Phase5SealStackingGearJson from './gear_sets/p5-seal-stacking.gear.json';
 import Phase5ShockadinGearJson from './gear_sets/p5-shockadin.gear.json';
@@ -67,6 +74,18 @@ export const Phase2RetSoMGear = PresetUtils.makePresetGear('P2 SoM', Phase2RetSo
 export const Phase3RetSoMGear = PresetUtils.makePresetGear('P3 SoM', Phase3RetSoMGearJson, {
 	customCondition: player => player.getLevel() == 50,
 });
+export const Phase4TwistGear = PresetUtils.makePresetGear('P4 Twist', Phase4TwistingGearJson, {
+	customCondition: player => player.getLevel() == 60,
+});
+export const Phase4Twist6pT1Gear = PresetUtils.makePresetGear('P4 Twist 6pT1', Phase4Twisting6PcT1GearJson, {
+	customCondition: player => player.getLevel() == 60,
+});
+export const Phase4ExodinGear = PresetUtils.makePresetGear('P4 Exodin', Phase4ExodinGearJson, {
+	customCondition: player => player.getLevel() == 60,
+});
+export const Phase4Exodin6pT1Gear = PresetUtils.makePresetGear('P4 Exodin 6pT1', Phase4Exodin6PcT1GearJson, {
+	customCondition: player => player.getLevel() == 60,
+});
 export const Phase5ExodinGear = PresetUtils.makePresetGear('P5 Exodin', Phase5ExodinGearJson, {
 	customCondition: player => player.getLevel() == 60,
 });
@@ -93,7 +112,7 @@ export const GearPresets = {
 	[Phase.Phase1]: [Phase1RetGear],
 	[Phase.Phase2]: [Phase2RetSoCGear, Phase2RetSoMGear],
 	[Phase.Phase3]: [Phase3RetSoMGear],
-	[Phase.Phase4]: [],
+	[Phase.Phase4]: [Phase4TwistGear, Phase4Twist6pT1Gear, Phase4ExodinGear, Phase4Exodin6pT1Gear],
 	[Phase.Phase5]: [Phase5TwistingGear, Phase5ExodinGear, Phase5SealStackingGear, Phase5ShockadinGear],
 	[Phase.Phase6]: [Phase6TwistingGear, Phase6ExodinGear, Phase6OneHandGear],
 };
@@ -112,6 +131,15 @@ export const APLP2Ret = PresetUtils.makePresetAPLRotation('P2 Ret/Shockadin', AP
 });
 export const APLP3Ret = PresetUtils.makePresetAPLRotation('P3 Ret/Shockadin', APLP3RetJson, {
 	customCondition: player => player.getLevel() === 50,
+});
+export const APLP4RetTwist6pT1 = PresetUtils.makePresetAPLRotation('P4 Twist 6pT1', APLP4Twisting6PcT1Json, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const APLP4RetExodin = PresetUtils.makePresetAPLRotation('P4 Exodin', APLP4ExodinJson, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const APLP4RetExodin6pT1 = PresetUtils.makePresetAPLRotation('P4 Exodin 6pT1', APLP4Exodin6PcT1Json, {
+	customCondition: player => player.getLevel() === 60,
 });
 export const APLP5Exodin6CF = PresetUtils.makePresetAPLRotation('P5 Exodin 6CF', APLP5ExodinJson, {
 	customCondition: player => player.getLevel() === 60,
@@ -136,7 +164,7 @@ export const APLPresets = {
 	[Phase.Phase1]: [APLP1Ret],
 	[Phase.Phase2]: [APLP2Ret],
 	[Phase.Phase3]: [APLP3Ret],
-	[Phase.Phase4]: [],
+	[Phase.Phase4]: [APLP4RetTwist6pT1, APLP4RetExodin, APLP4RetExodin6pT1],
 	[Phase.Phase5]: [APLP5Exodin6CF, APLShockadin, APLP5SealStacking6CF],
 	[Phase.Phase6]: [APLTwisting, APLP6Exodin, APLP6OneHand],
 };

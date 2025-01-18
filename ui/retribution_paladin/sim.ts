@@ -233,7 +233,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 					1: Presets.GearPresets[Phase.Phase1][0].gear,
 					2: Presets.GearPresets[Phase.Phase2][0].gear,
 					3: Presets.GearPresets[Phase.Phase3][0].gear,
-					4: Presets.GearPresets[Phase.Phase5][0].gear,
+					4: Presets.GearPresets[Phase.Phase4][0].gear,
 					5: Presets.GearPresets[Phase.Phase5][0].gear,
 					6: Presets.GearPresets[Phase.Phase6][0].gear,
 				},

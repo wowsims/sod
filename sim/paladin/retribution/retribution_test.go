@@ -72,11 +72,11 @@ func TestRetribution(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
 			Talents:  Phase456RetTalents,
-			GearSet:  core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p4-twisting-6CF"),
-			Rotation: core.GetAplRotation("../../../ui/retribution_paladin/apls", "p4-twisting-6CF"),
+			GearSet:  core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p4-twisting-6pcT1"),
+			Rotation: core.GetAplRotation("../../../ui/retribution_paladin/apls", "p4-twisting-6pcT1"),
 
 			OtherGearSets:  []core.GearSetCombo{core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p4-twist")},
-			OtherRotations: []core.RotationCombo{core.GetAplRotation("../../../ui/retribution_paladin/apls", "p4-ret")},
+			OtherRotations: []core.RotationCombo{core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5p6p7-twist")},
 			Buffs:          core.FullBuffsPhase5,
 			Consumes:       Phase4Consumes,
 			SpecOptions:    core.SpecOptionsCombo{Label: "P4 Twist", SpecOptions: PlayerOptionsSealofMartyrdom},
@@ -134,8 +134,8 @@ func TestExodin(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
 			Talents:     Phase456RetTalents,
-			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p4-exodin-6CF"),
-			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p4-exodin-6CF"),
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p4-exodin-6pcT1"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p4-exodin-6pcT1"),
 			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "P4 Exodin", SpecOptions: PlayerOptionsSealofMartyrdom},
