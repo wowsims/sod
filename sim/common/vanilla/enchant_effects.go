@@ -54,6 +54,9 @@ func init() {
 			},
 		})
 
+		procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee proc combo
+		procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
+
 		aura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Fiery Blaze",
 			Duration: core.NeverExpires,
@@ -66,6 +69,11 @@ func init() {
 				}
 
 				if sim.RandomFloat("Fiery Blaze") < procChance {
+					if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
+						procSpell.ProcMask = procMaskOnSpecial
+					} else {
+						procSpell.ProcMask = procMaskOnAuto
+					}
 					procSpell.Cast(sim, result.Target)
 				}
 			},
