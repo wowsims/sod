@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
-import { PseudoStat, Spec, Stat } from '../proto/common.js';
+import { Class, PseudoStat, Spec, Stat } from '../proto/common.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
@@ -448,10 +448,12 @@ export class CharacterStats extends Component {
 			} else if (stat === Stat.StatMeleeCrit || stat === Stat.StatSpellCrit) {
 				displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
 			} else if (stat === Stat.StatMeleeHaste) {
-				// Melee Haste doesn't actually exist in vanilla so use the melee speed pseudostat
-				displayStr = `${(deltaStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier) * 100).toFixed(2)}%`;
+				displayStr = `${(100 * deltaStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier)).toFixed(2)}%`;
+				if (player.isClass(Class.ClassHunter)) {
+					displayStr += ` / ${(100 * deltaStats.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier)).toFixed(2)}%`
+				}
 			} else if (stat === Stat.StatSpellHaste) {
-				displayStr = `${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%`;
+				displayStr = `${(100 * deltaStats.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier)).toFixed(2)}%`;
 			} else if (stat === Stat.StatArmorPenetration) {
 				displayStr = `${rawValue} (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
 			} else if (stat === Stat.StatExpertise) {

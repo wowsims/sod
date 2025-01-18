@@ -237,6 +237,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
+		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 	})
 
 	// Weapon - Striking

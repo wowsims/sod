@@ -295,12 +295,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase2-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.66066
-  weights: 0.3795
+  weights: 0.64885
+  weights: 0.57221
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.2217
+  weights: 0.2197
   weights: 0
   weights: 0
   weights: 0
@@ -308,13 +308,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.74055
-  weights: 0.08283
+  weights: 1.46641
+  weights: 0.10899
   weights: 0
   weights: 0
-  weights: 0.3003
-  weights: 5.10188
-  weights: 5.19765
+  weights: 0.29493
+  weights: 4.32268
+  weights: 5.70451
   weights: 0
   weights: 0
   weights: 0
@@ -344,12 +344,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase3-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.13609
-  weights: 1.55335
+  weights: 1.01071
+  weights: 0.51335
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.2796
+  weights: 0.27914
   weights: 0
   weights: 0
   weights: 0
@@ -357,13 +357,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.68319
-  weights: 0.46655
+  weights: 3.21878
+  weights: 0.49979
   weights: 0
   weights: 0
-  weights: 0.4303
-  weights: 13.06961
-  weights: 9.77188
+  weights: 0.40217
+  weights: 12.61108
+  weights: 7.541
   weights: 0
   weights: 0
   weights: 0
@@ -596,15 +596,15 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase2-Lvl40-AllItems-SoulforgeArmor"
  value: {
-  dps: 325.60669
-  tps: 333.41375
+  dps: 318.54113
+  tps: 326.23866
  }
 }
 dps_results: {
  key: "TestRetribution-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 548.61548
-  tps: 562.12304
+  dps: 540.20819
+  tps: 553.70724
  }
 }
 dps_results: {
@@ -694,22 +694,22 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 514.43962
-  tps: 527.77771
+  dps: 509.18735
+  tps: 522.57844
  }
 }
 dps_results: {
  key: "TestRetribution-Phase3-Lvl50-AllItems-SoulforgeArmor"
  value: {
-  dps: 733.93401
-  tps: 768.73884
+  dps: 721.03797
+  tps: 755.71448
  }
 }
 dps_results: {
  key: "TestRetribution-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1135.85164
-  tps: 1174.58204
+  dps: 1115.19178
+  tps: 1153.44222
  }
 }
 dps_results: {
@@ -799,8 +799,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1072.23675
-  tps: 1110.48566
+  dps: 1051.94789
+  tps: 1089.70882
  }
 }
 dps_results: {

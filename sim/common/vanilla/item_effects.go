@@ -3169,17 +3169,30 @@ func dreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell {
 		})
 	})
 
-	character.GetOrRegisterAura(core.Aura{
+	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 		Label:      "Cursed Blade",
 		ActionID:   core.ActionID{SpellID: 462228},
-		Duration:   core.NeverExpires,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				character.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
+			} else {
+				character.AddStatDynamic(sim, stats.MeleeCrit, 2*core.CritRatingPerCritChance)
+			}
+
 			character.PseudoStats.MeleeSpeedMultiplier *= 1.05
-			character.AddStatDynamic(sim, stats.MeleeCrit, 2*core.CritRatingPerCritChance)
 		},
-	})
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
+				character.AddStat(stats.MeleeCrit, -2*core.CritRatingPerCritChance)
+			} else {
+				character.AddStatDynamic(sim, stats.MeleeCrit, -2*core.CritRatingPerCritChance)
+			}
+
+			character.PseudoStats.MeleeSpeedMultiplier /= 1.05
+
+		},
+	}))
 
 	return character.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
