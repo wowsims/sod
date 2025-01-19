@@ -57,7 +57,7 @@ func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range paladin.holyWrath {
 				spell.CastTimeMultiplier -= 1
-				spell.CD.Multiplier -= 60
+				spell.CD.Multiplier *= 0.4
 			}
 		},
 	})
@@ -80,9 +80,19 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 				oldApplyEffects := spell.ApplyEffects
 				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					critChanceBonus := 0.0
+
 					if target.MobType == proto.MobType_MobTypeUndead {
-						critChanceBonus = paladin.GetStat(stats.SpellCrit) / 100
+						if spell.SpellCode == SpellCode_PaladinExorcism {
+							critChanceBonus = 1.0
+						} else {
+							critChanceBonus = spell.SpellCritChance(target)
+							if paladin.hasRune(proto.PaladinRune_RuneHeadWrath) {
+								critChanceBonus += paladin.GetStat(stats.MeleeCrit) / 100
+							}
+						}
 					}
+					
+					critChanceBonus = min(critChanceBonus, 1.0)
 
 					spell.DamageMultiplierAdditive += critChanceBonus
 					oldApplyEffects(sim, target, spell)

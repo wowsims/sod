@@ -265,11 +265,11 @@ func (paladin *Paladin) applyPurifyingPower() {
 		Label: "Purifying Power",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range paladin.exorcism {
-				spell.CD.Multiplier -= 50
+				spell.CD.Multiplier *= 0.5
 			}
 
 			for _, spell := range paladin.holyWrath {
-				spell.CD.Multiplier -= 50
+				spell.CD.Multiplier *= 0.5
 			}
 		},
 	})

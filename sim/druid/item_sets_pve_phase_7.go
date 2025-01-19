@@ -139,7 +139,7 @@ func (druid *Druid) applyNaxxramasFeral4PBonus() {
 		ActionID: core.ActionID{SpellID: 1218477}, // Tracking in APL
 		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			druid.TigersFury.CD.Multiplier -= 50
+			druid.TigersFury.CD.Multiplier *= 0.5
 		},
 	})
 }
