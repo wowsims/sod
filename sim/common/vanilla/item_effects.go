@@ -533,10 +533,9 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=230271/drake-talon-cleaver
 	// Chance on hit: Delivers a fatal wound for 300 damage.
-	// Original proc rate 1.0 increased to approximately 1.60 in SoD phase 5
-	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
+	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaver, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee)
 	// https://www.wowhead.com/classic/item=232562/drake-talon-cleaver
-	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaverShadowflame, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee) // TBD confirm 1 ppm in SoD
+	itemhelpers.CreateWeaponCoHProcDamage(DrakeTalonCleaverShadowflame, "Drake Talon Cleaver", 1.0, 467167, core.SpellSchoolPhysical, 300, 0, 0.0, core.DefenseTypeMelee)
 
 	// https://www.wowhead.com/classic/item=228410/dreadblade-of-the-destructor
 	// https://www.wowhead.com/classic/item=228498/dreadblade-of-the-destructor
