@@ -57,7 +57,7 @@ func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range paladin.holyWrath {
 				spell.CastTimeMultiplier -= 1
-				spell.CD.Multiplier -= 60
+				spell.CD.Multiplier *= 0.4
 			}
 		},
 	})

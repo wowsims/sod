@@ -60,13 +60,13 @@ func (warrior *Warrior) applyNaxxramasDamage4PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if warrior.Bloodthirst != nil {
-				warrior.Bloodthirst.CD.Multiplier -= 25
+				warrior.Bloodthirst.CD.Multiplier *= 0.75
 			}
 			if warrior.MortalStrike != nil {
-				warrior.MortalStrike.CD.Multiplier -= 25
+				warrior.MortalStrike.CD.Multiplier *= 0.75
 			}
 			if warrior.ShieldSlam != nil {
-				warrior.ShieldSlam.CD.Multiplier -= 25
+				warrior.ShieldSlam.CD.Multiplier *= 0.75
 			}
 		},
 	})

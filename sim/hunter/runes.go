@@ -446,7 +446,7 @@ func (hunter *Hunter) applyCatlikeReflexes() {
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.FlankingStrike != nil {
-				hunter.FlankingStrike.CD.Multiplier -= 50
+				hunter.FlankingStrike.CD.Multiplier *= 0.5
 			}
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
