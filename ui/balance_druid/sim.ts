@@ -4,7 +4,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, ItemSlot, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, ItemSlot, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
 // import * as DruidInputs from './inputs.js';
@@ -28,8 +28,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		Stat.StatNaturePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
+	],
+	epPseudoStats: [
+		PseudoStat.PseudoStatCastSpeedMultiplier,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -47,10 +49,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		Stat.StatNaturePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [
+		PseudoStat.PseudoStatCastSpeedMultiplier,
+	],
 	
 	defaults: {
 		// Default equipped gear.
@@ -65,9 +68,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 			[Stat.StatNaturePower]: 0.38,
 			[Stat.StatSpellHit]: 11.75,
 			[Stat.StatSpellCrit]: 7.5,
-			[Stat.StatSpellHaste]: 0.8,
 			[Stat.StatMP5]: 0.0,
 			[Stat.StatFireResistance]: 0.5,
+		}, {
+			[PseudoStat.PseudoStatCastSpeedMultiplier]: 6.09,
+			[PseudoStat.PseudoStatTimewornBonus]: 9.08,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

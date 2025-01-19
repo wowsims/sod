@@ -560,9 +560,6 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 				aura.Unit.AddStats(bonusStats)
 			} else {
 				aura.Unit.AddStatsDynamic(sim, bonusStats)
-				if config.ExtraOnGain != nil {
-					config.ExtraOnGain(ee.Aura, sim)
-				}
 			}
 
 			for _, dep := range statDeps {
@@ -572,15 +569,16 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 					ee.Aura.Unit.EnableDynamicStatDep(sim, dep)
 				}
 			}
+
+			if config.ExtraOnGain != nil {
+				config.ExtraOnGain(ee.Aura, sim)
+			}
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
 				aura.Unit.AddStats(bonusStats.Multiply(-1))
 			} else {
 				aura.Unit.AddStatsDynamic(sim, bonusStats.Multiply(-1))
-				if config.ExtraOnExpire != nil {
-					config.ExtraOnExpire(ee.Aura, sim)
-				}
 			}
 
 			for _, dep := range statDeps {
@@ -589,6 +587,10 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 				} else {
 					ee.Aura.Unit.DisableDynamicStatDep(sim, dep)
 				}
+			}
+
+			if config.ExtraOnExpire != nil {
+				config.ExtraOnExpire(ee.Aura, sim)
 			}
 		},
 	})
@@ -987,28 +989,34 @@ func HeartOfTheLionAura(character *Character) *Aura {
 		ActionID:   ActionID{SpellID: 409583},
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.AttackPower, modAP)
-			character.AddStatDynamic(sim, stats.RangedAttackPower, modAP)
-
 			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				character.AddStat(stats.AttackPower, modAP)
+				character.AddStat(stats.RangedAttackPower, modAP)
+
 				for _, dep := range statDeps {
 					aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
 				}
 			} else {
+				character.AddStatDynamic(sim, stats.AttackPower, modAP)
+				character.AddStatDynamic(sim, stats.RangedAttackPower, modAP)
+
 				for _, dep := range statDeps {
 					aura.Unit.EnableDynamicStatDep(sim, dep)
 				}
 			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.AddStatDynamic(sim, stats.AttackPower, -modAP)
-			character.AddStatDynamic(sim, stats.RangedAttackPower, -modAP)
-
 			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				character.AddStat(stats.AttackPower, -modAP)
+				character.AddStat(stats.RangedAttackPower, -modAP)
+
 				for _, dep := range statDeps {
 					aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
 				}
 			} else {
+				character.AddStatDynamic(sim, stats.AttackPower, -modAP)
+				character.AddStatDynamic(sim, stats.RangedAttackPower, -modAP)
+
 				for _, dep := range statDeps {
 					aura.Unit.DisableDynamicStatDep(sim, dep)
 				}
@@ -1058,14 +1066,23 @@ func DevotionAuraAura(unit *Unit, points int32) *Aura {
 	updateStats = updateStats.Multiply(1 + .125*float64(points))
 
 	return unit.RegisterAura(Aura{
-		Label:    "Devotion Aura",
-		ActionID: ActionID{SpellID: spellID},
-		Duration: NeverExpires,
+		Label:      "Devotion Aura",
+		ActionID:   ActionID{SpellID: spellID},
+		Duration:   NeverExpires,
+		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, updateStats)
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				unit.AddStats(updateStats)
+			} else {
+				unit.AddStatsDynamic(sim, updateStats)
+			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+				unit.AddStats(updateStats.Multiply(-1))
+			} else {
+				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
+			}
 		},
 	})
 }
@@ -1931,14 +1948,10 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 	return aura.NewExclusiveEffect("SpellPowerBonus", false, ExclusiveEffect{
 		Priority: spellPowerBonus,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.SpellPower: ee.Priority,
-			})
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.SpellPower: ee.Priority})
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.SpellPower: -ee.Priority,
-			})
+			ee.Aura.Unit.AddStatsDynamic(sim, stats.Stats{stats.SpellPower: -ee.Priority})
 		},
 	})
 }
@@ -2032,8 +2045,9 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 
 func SpiritOfTheAlphaAura(unit *Unit) *Aura {
 	return MakePermanent(unit.GetOrRegisterAura(Aura{
-		Label:    "Spirit of the Alpha",
-		ActionID: ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
+		Label:      "Spirit of the Alpha",
+		ActionID:   ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
+		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.ThreatMultiplier *= 1.45
 		},
@@ -2061,8 +2075,9 @@ func TrueshotAura(unit *Unit) *Aura {
 	}[level]
 
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Trueshot Aura",
-		ActionID: ActionID{SpellID: spellID},
+		Label:      "Trueshot Aura",
+		ActionID:   ActionID{SpellID: spellID},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2088,7 +2103,6 @@ func BlessingOfMightAura(unit *Unit, impBomPts int32, level int32) *Aura {
 	aura := MakePermanent(unit.GetOrRegisterAura(Aura{
 		Label:      "Blessing of Might",
 		ActionID:   ActionID{SpellID: spellID},
-		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
@@ -2106,8 +2120,9 @@ func HornOfLordaeronAura(unit *Unit, level int32) *Aura {
 	updateStats := BuffSpellByLevel[HornOfLordaeron][level]
 
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Horn Of Lordaeron",
-		ActionID: ActionID{SpellID: 425600},
+		Label:      "Horn Of Lordaeron",
+		ActionID:   ActionID{SpellID: 425600},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2310,8 +2325,9 @@ func ApplyDragonslayerBuffs(unit *Unit, buffs *proto.IndividualBuffs) {
 
 func ApplyRallyingCryOfTheDragonslayer(unit *Unit, category string) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Rallying Cry of the Dragonslayer",
-		ActionID: ActionID{SpellID: 22888},
+		Label:      "Rallying Cry of the Dragonslayer",
+		ActionID:   ActionID{SpellID: 22888},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2329,8 +2345,9 @@ func ApplyRallyingCryOfTheDragonslayer(unit *Unit, category string) {
 func ApplyValorOfAzeroth(unit *Unit, category string) {
 	bonusAP := float64(unit.Level) * 1.5
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Valor of Azeroth",
-		ActionID: ActionID{SpellID: 461475},
+		Label:      "Valor of Azeroth",
+		ActionID:   ActionID{SpellID: 461475},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2347,8 +2364,9 @@ func ApplyValorOfAzeroth(unit *Unit, category string) {
 
 func ApplySpiritOfZandalar(unit *Unit) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Spirit of Zandalar",
-		ActionID: ActionID{SpellID: 24425},
+		Label:      "Spirit of Zandalar",
+		ActionID:   ActionID{SpellID: 24425},
+		BuildPhase: CharacterBuildPhaseBuffs,
 		OnInit: func(aura *Aura, sim *Simulation) {
 			unit.AddMoveSpeedModifier(&aura.ActionID, 1.10)
 		},
@@ -2368,8 +2386,9 @@ func ApplySpiritOfZandalar(unit *Unit) {
 
 func ApplySongflowerSerenade(unit *Unit) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Songflower Serenade",
-		ActionID: ActionID{SpellID: 15366},
+		Label:      "Songflower Serenade",
+		ActionID:   ActionID{SpellID: 15366},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2398,8 +2417,9 @@ func ApplyWarchiefsBuffs(unit *Unit, buffs *proto.IndividualBuffs, isAlliance bo
 
 func ApplyWarchiefsBlessing(unit *Unit, category string) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Warchief's Blessing",
-		ActionID: ActionID{SpellID: 16609},
+		Label:      "Warchief's Blessing",
+		ActionID:   ActionID{SpellID: 16609},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2419,8 +2439,9 @@ func ApplyWarchiefsBlessing(unit *Unit, category string) {
 
 func ApplyMightOfStormwind(unit *Unit, category string) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Might of Stormwind",
-		ActionID: ActionID{SpellID: 460940},
+		Label:      "Might of Stormwind",
+		ActionID:   ActionID{SpellID: 460940},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2440,8 +2461,9 @@ func ApplyMightOfStormwind(unit *Unit, category string) {
 
 func ApplyFengusFerocity(unit *Unit) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Fengus' Ferocity",
-		ActionID: ActionID{SpellID: 22817},
+		Label:      "Fengus' Ferocity",
+		ActionID:   ActionID{SpellID: 22817},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2455,8 +2477,9 @@ func ApplyFengusFerocity(unit *Unit) {
 
 func ApplyMoldarsMoxie(unit *Unit) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Moldar's Moxie",
-		ActionID: ActionID{SpellID: 22818},
+		Label:      "Moldar's Moxie",
+		ActionID:   ActionID{SpellID: 22818},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2469,8 +2492,9 @@ func ApplyMoldarsMoxie(unit *Unit) {
 
 func ApplySlipkiksSavvy(unit *Unit) {
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Slip'kik's Savvy",
-		ActionID: ActionID{SpellID: 22820},
+		Label:      "Slip'kik's Savvy",
+		ActionID:   ActionID{SpellID: 22820},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2530,8 +2554,9 @@ func ApplySaygesFortunes(character *Character, fortune proto.SaygesFortune) {
 	}
 
 	aura := MakePermanent(character.RegisterAura(Aura{
-		Label:    label,
-		ActionID: ActionID{SpellID: spellID},
+		Label:      label,
+		ActionID:   ActionID{SpellID: spellID},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, config)
@@ -2543,8 +2568,9 @@ func ApplyFervorOfTheTempleExplorer(unit *Unit) {
 	}
 
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Fervor of the Temple Explorer",
-		ActionID: ActionID{SpellID: 446695},
+		Label:      "Fervor of the Temple Explorer",
+		ActionID:   ActionID{SpellID: 446695},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2569,8 +2595,9 @@ func ApplySparkOfInspiration(unit *Unit) {
 	}
 
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Spark of Inspiration",
-		ActionID: ActionID{SpellID: 438536},
+		Label:      "Spark of Inspiration",
+		ActionID:   ActionID{SpellID: 438536},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2596,8 +2623,9 @@ func ApplyBoonOfBlackfathom(unit *Unit) {
 	}
 
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Boon of Blackfathom",
-		ActionID: ActionID{SpellID: 430947},
+		Label:      "Boon of Blackfathom",
+		ActionID:   ActionID{SpellID: 430947},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{
@@ -2619,8 +2647,9 @@ func ApplyAshenvaleRallyingCry(unit *Unit) {
 	}
 
 	aura := MakePermanent(unit.RegisterAura(Aura{
-		Label:    "Ashenvale Rallying Cry",
-		ActionID: ActionID{SpellID: 430352},
+		Label:      "Ashenvale Rallying Cry",
+		ActionID:   ActionID{SpellID: 430352},
+		BuildPhase: CharacterBuildPhaseBuffs,
 	}))
 
 	makeExclusiveBuff(aura, BuffConfig{

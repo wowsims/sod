@@ -190,6 +190,11 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			character.PseudoStats.CrossbowsSkill += ps[proto.PseudoStat_PseudoStatCrossbowsSkill]
 			character.PseudoStats.GunsSkill += ps[proto.PseudoStat_PseudoStatGunsSkill]
 			character.PseudoStats.BonusPhysicalDamage += ps[proto.PseudoStat_PseudoStatBonusPhysicalDamage]
+
+			character.PseudoStats.MeleeSpeedMultiplier *= 1 + ps[proto.PseudoStat_PseudoStatMeleeSpeedMultiplier]/100
+			character.PseudoStats.RangedSpeedMultiplier *= 1 + ps[proto.PseudoStat_PseudoStatRangedSpeedMultiplier]/100
+			character.PseudoStats.CastSpeedMultiplier *= 1 + ps[proto.PseudoStat_PseudoStatCastSpeedMultiplier]/100
+
 			character.PseudoStats.TimewornBonus += int32(ps[proto.PseudoStat_PseudoStatTimewornBonus])
 			character.PseudoStats.SanctifiedBonus += int32(ps[proto.PseudoStat_PseudoStatSanctifiedBonus])
 		}

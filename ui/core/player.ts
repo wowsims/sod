@@ -1079,6 +1079,11 @@ export class Player<SpecType extends Spec> {
 		// Add pseudo stats that should be included in item EP.
 		itemStats = itemStats.addPseudoStat(PseudoStat.PseudoStatBonusPhysicalDamage, item.bonusPhysicalDamage);
 
+		if (item.stats[Stat.StatSpellHaste] > 0) {
+			itemStats = itemStats.addPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier, item.stats[Stat.StatSpellHaste]);
+			itemStats = itemStats.addStat(Stat.StatSpellHaste, item.stats[Stat.StatSpellHaste]);
+		}
+
 		// For random suffix items, use the suffix option with the highest EP for the purposes of ranking items in the picker.
 		let maxSuffixEP = 0;
 
@@ -1092,6 +1097,15 @@ export class Player<SpecType extends Spec> {
 		// unique items are slightly worse than non-unique because you can have only one.
 		if (item.unique) {
 			ep -= 0.01;
+		}
+
+		if (item.stats[Stat.StatMeleeHaste] > 0) {
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier) * item.stats[Stat.StatMeleeHaste]
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier) * item.stats[Stat.StatMeleeHaste]
+		}
+
+		if (item.stats[Stat.StatSpellHaste] > 0) {
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier) * item.stats[Stat.StatSpellHaste]
 		}
 
 		if (item.timeworn) {

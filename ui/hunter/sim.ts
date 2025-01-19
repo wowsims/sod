@@ -29,7 +29,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatRangedAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
 		// Spell
 		Stat.StatSpellPower,
@@ -44,6 +43,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		PseudoStat.PseudoStatOffHandDps,
 		PseudoStat.PseudoStatRangedDps,
 		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+		PseudoStat.PseudoStatRangedSpeedMultiplier,
 	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAgility,
@@ -61,7 +61,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatRangedAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
 		// Spell
 		Stat.StatSpellDamage,
@@ -70,7 +69,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+		PseudoStat.PseudoStatRangedSpeedMultiplier,
+	],
 	
 	defaults: {
 		race: Presets.OtherDefaults.race,
@@ -79,26 +81,29 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatStrength]: 0.3,
-				[Stat.StatAgility]: 0.64,
+				[Stat.StatStrength]: 0.12,
+				[Stat.StatAgility]: 1.00,
 				[Stat.StatStamina]: 0.0,
 				[Stat.StatIntellect]: 0.02,
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatRangedAttackPower]: 1.0,
-				[Stat.StatMeleeHit]: 3.29,
-				[Stat.StatMeleeCrit]: 4.45,
-				[Stat.StatSpellPower]: 0.03,
+				[Stat.StatMeleeHit]: 15.00,
+				[Stat.StatMeleeCrit]: 10.22,
+				[Stat.StatExpertise]: 4.13,
+				[Stat.StatSpellPower]: 0.11,
 				[Stat.StatNaturePower]: 0.01,
-				[Stat.StatArcanePower]: 0.01,
-				[Stat.StatSpellCrit]: 0.01,
+				[Stat.StatArcanePower]: 0.10,
+				[Stat.StatSpellCrit]: 0.02,
 				[Stat.StatMP5]: 0.05,
 				[Stat.StatFireResistance]: 0.5,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 2.11,
-				[PseudoStat.PseudoStatOffHandDps]: 1.39,
-				[PseudoStat.PseudoStatRangedDps]: 6.32,
-				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 1.39,
+				[PseudoStat.PseudoStatMainHandDps]: 3.00,
+				[PseudoStat.PseudoStatOffHandDps]: 1.66,
+				[PseudoStat.PseudoStatRangedDps]: 2.61,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 3.92,
+				[PseudoStat.PseudoStatRangedSpeedMultiplier]: 1.43,
+				[PseudoStat.PseudoStatTimewornBonus]: 11.06,
 			},
 		),
 		// Default consumes settings.

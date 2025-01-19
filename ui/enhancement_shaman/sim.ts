@@ -34,7 +34,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatNaturePower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
 	epPseudoStats: [
@@ -58,15 +57,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatExpertise,
-		Stat.StatMeleeHaste,
 		// Spell
 		Stat.StatSpellDamage,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+	],
 	
 	defaults: {
 		race: Race.RaceOrc,
@@ -84,7 +83,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 				[Stat.StatNaturePower]: 0.37,
 				[Stat.StatSpellHit]: 0.03, //default EP assumes cap
 				[Stat.StatSpellCrit]: 7.54,
-				[Stat.StatSpellHaste]: 2.97,
 				[Stat.StatMP5]: 0.01,
 				[Stat.StatAttackPower]: 1.0,
 				[Stat.StatMeleeHit]: 22.53,
@@ -95,7 +93,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 4.86,
 				[PseudoStat.PseudoStatOffHandDps]: 5.55,
-				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 5.81,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 16.04,
 				[PseudoStat.PseudoStatTimewornBonus]: 9.00,
 			},
 		),
