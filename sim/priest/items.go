@@ -10,6 +10,7 @@ import (
 const (
 	// Keep these ordered by ID
 	CassandrasTome = 231509
+	BandOfFaith    = 236112
 )
 
 func init() {
@@ -69,6 +70,18 @@ func init() {
 		priest.AddMajorCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=236112/band-of-faith
+	// Equip: Increases the damage dealt by your damage over time spells by 2%.
+	core.NewItemEffect(BandOfFaith, func(agent core.Agent) {
+		priest := agent.(PriestAgent).GetPriest()
+
+		priest.OnSpellRegistered(func(spell *core.Spell) {
+			if spell.Flags.Matches(SpellFlagPriest) {
+				spell.PeriodicDamageMultiplierAdditive += .02
+			}
 		})
 	})
 
