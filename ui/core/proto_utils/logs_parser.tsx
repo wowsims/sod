@@ -1134,37 +1134,42 @@ export class ExtraAttackLog extends SimLog {
 	readonly attacksText: string;
 	readonly attackID: ActionId;
 	readonly triggerID: ActionId;
+	readonly gainedOrStored: string;
+	readonly numStoredText: string;
 
-	constructor(params: SimLogParams, attacks: number, attacksText: string, attackID: ActionId, triggerID: ActionId) {
+	constructor(params: SimLogParams, attacks: number, attacksText: string, attackID: ActionId, triggerID: ActionId, stored: boolean, numStoredText: string) {
 		super(params);
 		this.attacks = attacks;
 		this.attacksText = attacksText;
 		this.attackID = attackID;
 		this.triggerID = triggerID;
+		this.gainedOrStored = stored ? 'Stored' : 'Gained';
+		this.numStoredText = numStoredText;
 	}
 
 	toHTML(includeTimestamp = true) {
 		return this.cacheOutput(includeTimestamp, () => {
 			return (
 				<>
-					{this.toPrefix(includeTimestamp)} Gained {this.attacks} extra {this.attacksText} from {this.newActionIdLink(this.attackID)} triggered by{' '}
-					{this.newActionIdLink(this.triggerID)}.
+					{this.toPrefix(includeTimestamp)} {this.gainedOrStored} {this.attacks} extra {this.attacksText} from {this.newActionIdLink(this.attackID)} triggered by{' '}
+					{this.newActionIdLink(this.triggerID)}{this.numStoredText}.
 				</>
 			);
 		});
 	}
 
 	static parse(params: SimLogParams): Promise<ExtraAttackLog> | null {
-		const match = params.raw.match(/gained ([0-9]+) extra (?:main-hand|off-hand|ranged) (attacks?) from ({.*?}) triggered by ({.*?})/);
+		const match = params.raw.match(/(Gained|Stored) ([0-9]+) extra (?:main-hand|off-hand|ranged) (attacks?) from ({.*?}) triggered by ({.*?})(.*)/);
 		if (match) {
-			return ActionId.fromLogString(match[3])
+			return ActionId.fromLogString(match[4])
 				.fill(params.source?.index)
 				.then(attackID => {
-					return ActionId.fromLogString(match[4])
+					return ActionId.fromLogString(match[5])
 						.fill(params.source?.index)
 						.then(triggerID => {
 							params.actionId = attackID;
-							return new ExtraAttackLog(params, parseInt(match[1]), match[2], attackID, triggerID);
+							const stored = match[1] == 'Stored';
+							return new ExtraAttackLog(params, parseInt(match[2]), match[3], attackID, triggerID, stored, match[6]);
 						});
 				});
 		} else {

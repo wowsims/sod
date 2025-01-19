@@ -33,6 +33,7 @@ const (
 	TotemOfThunderousStrikes  = 234478
 	TotemOfFlowingMagma       = 234479
 	TotemOfPyroclasticThunder = 234480
+	SignetOfTheEarthshatterer = 236176
 	TotemOfUnholyMight        = 237577
 )
 
@@ -123,6 +124,21 @@ func init() {
 			Spell:    spell,
 			Priority: core.CooldownPriorityBloodlust,
 			Type:     core.CooldownTypeDPS,
+		})
+	})
+
+	core.NewItemEffect(SignetOfTheEarthshatterer, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Signet of the Earthshatterer Trigger",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskMelee,
+			ProcChance: 0.02,
+			ICD:        time.Millisecond * 200,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1223010}, spell)
+			},
 		})
 	})
 
