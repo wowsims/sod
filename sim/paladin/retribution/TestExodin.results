@@ -99,12 +99,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestExodin-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.09986
-  weights: 0.96233
+  weights: 2.08679
+  weights: 2.19231
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.71969
+  weights: 0.71682
   weights: 0
   weights: 0
   weights: 0
@@ -112,13 +112,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 9.18913
-  weights: 2.2732
+  weights: 9.89803
+  weights: 2.08129
   weights: 0
   weights: 0
-  weights: 0.86771
+  weights: 0.86231
   weights: 0
-  weights: 25.95191
+  weights: 23.27979
   weights: 0
   weights: 0
   weights: 0
@@ -232,8 +232,8 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3340.97986
-  tps: 3373.03383
+  dps: 3326.85633
+  tps: 3358.84496
  }
 }
 dps_results: {
@@ -323,8 +323,8 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2775.07294
-  tps: 2810.20472
+  dps: 2782.5048
+  tps: 2816.8729
  }
 }
 dps_results: {

@@ -225,9 +225,10 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		// Non melee casts
-		if spell.Flags.Matches(SpellFlagResetAttackSwing) && spell.Unit.AutoAttacks.enabled {
-			restartMeleeAt := sim.CurrentTime + spell.CurCast.CastTime
-			spell.Unit.AutoAttacks.StopMeleeUntil(sim, restartMeleeAt, false)
+		if spell.Flags.Matches(SpellFlagResetAttackSwing) && spell.Unit.AutoAttacks.anyEnabled() {
+			restartSwingAt := sim.CurrentTime + spell.CurCast.CastTime
+			spell.Unit.AutoAttacks.StopMeleeUntil(sim, restartSwingAt, false)
+			spell.Unit.AutoAttacks.StopRangedUntil(sim, restartSwingAt)
 		}
 
 		// Castable-while-casting spells

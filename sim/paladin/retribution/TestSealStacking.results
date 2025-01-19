@@ -50,12 +50,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestSealStacking-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 3.1285
-  weights: 2.24239
+  weights: 3.08894
+  weights: 1.93918
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.52713
+  weights: 0.52114
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 9.34467
-  weights: 0.84399
+  weights: 10.62188
+  weights: 0.93891
   weights: 0
   weights: 0
-  weights: 1.12415
+  weights: 1.10993
   weights: 0
-  weights: 33.692
+  weights: 35.36726
   weights: 0
   weights: 0
   weights: 0
@@ -134,8 +134,8 @@ dps_results: {
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4780.6579
-  tps: 4828.47348
+  dps: 4722.28159
+  tps: 4770.83617
  }
 }
 dps_results: {
@@ -225,7 +225,7 @@ dps_results: {
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3871.34575
-  tps: 3920.72381
+  dps: 3789.60499
+  tps: 3839.113
  }
 }

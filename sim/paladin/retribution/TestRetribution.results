@@ -540,12 +540,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase6-Lvl60-StatWeights-Default"
  value: {
-  weights: 3.53901
-  weights: 3.13661
+  weights: 3.60765
+  weights: 3.18371
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.29337
+  weights: 0.2872
   weights: 0
   weights: 0
   weights: 0
@@ -553,13 +553,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.85356
-  weights: 0.36737
+  weights: 2.74114
+  weights: 0.57707
   weights: 0
   weights: 0
-  weights: 1.27354
-  weights: 2.75881
-  weights: 48.1001
+  weights: 1.30751
+  weights: 3.03827
+  weights: 47.84583
   weights: 0
   weights: 0
   weights: 0
@@ -1471,9 +1471,9 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 5874.96939
-  tps: 5921.93681
-  dtps: 3.00592
+  dps: 5799.78396
+  tps: 5846.14208
+  dtps: 3.02503
  }
 }
 dps_results: {
@@ -1563,8 +1563,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5353.95431
-  tps: 5400.14237
+  dps: 5283.94491
+  tps: 5329.4561
   dtps: 2.73857
  }
 }

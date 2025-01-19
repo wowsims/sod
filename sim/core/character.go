@@ -383,31 +383,13 @@ func (character *Character) clearBuildPhaseAuras(phase CharacterBuildPhase) {
 
 // Apply effects from all equipped core.
 func (character *Character) applyItemEffects(agent Agent) {
-	for slot, eq := range character.Equipment {
-		if applyItemEffect, ok := itemEffects[eq.ID]; ok {
-			applyItemEffect(agent)
-		}
+	registeredItemEffects := make(map[int32]bool)
+	registeredItemEnchantEffects := make(map[int32]bool)
 
-		if applyEnchantEffect, ok := enchantEffects[eq.Enchant.EffectID]; ok {
-			applyEnchantEffect(agent)
-		}
-
-		if applyWeaponEffect, ok := weaponEffects[eq.Enchant.EffectID]; ok {
-			applyWeaponEffect(agent, proto.ItemSlot(slot))
-		}
-	}
+	character.Equipment.applyItemEffects(agent, registeredItemEffects, registeredItemEnchantEffects)
 
 	if character.ItemSwap.IsEnabled() {
-		offset := int(proto.ItemSlot_ItemSlotMainHand)
-		for i, item := range character.ItemSwap.unEquippedItems {
-			if applyEnchantEffect, ok := enchantEffects[item.Enchant.EffectID]; ok {
-				applyEnchantEffect(agent)
-			}
-
-			if applyWeaponEffect, ok := weaponEffects[item.Enchant.EffectID]; ok {
-				applyWeaponEffect(agent, proto.ItemSlot(offset+i))
-			}
-		}
+		character.ItemSwap.unEquippedItems.applyItemEffects(agent, registeredItemEffects, registeredItemEnchantEffects)
 	}
 }
 
@@ -436,7 +418,7 @@ func (character *Character) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 	}
 }
 
-func (character *Character) initialize(agent Agent) {
+func (character *Character) initialize(_ Agent) {
 	character.majorCooldownManager.initialize(character)
 	character.ItemSwap.initialize(character)
 
@@ -513,6 +495,8 @@ func (character *Character) reset(sim *Simulation, agent Agent) {
 	character.CurrentTarget = character.defaultTarget
 
 	agent.Reset(sim)
+
+	character.ItemSwap.reset(sim)
 
 	for _, petAgent := range character.PetAgents {
 		petAgent.GetPet().reset(sim, petAgent)
@@ -609,6 +593,8 @@ func (character *Character) getProcMaskFor(pred func(weapon *Item) bool) ProcMas
 }
 
 func (character *Character) doneIteration(sim *Simulation) {
+	character.ItemSwap.doneIteration(sim)
+
 	// Need to do pets first, so we can add their results to the owners.
 	for _, pet := range character.Pets {
 		pet.doneIteration(sim)
