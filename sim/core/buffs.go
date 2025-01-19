@@ -2687,7 +2687,7 @@ func AtieshCastSpeedEffect(unit *Unit) {
 
 // Equip: Increases healing done by up to 62 and damage done by up to 19 for all magical spells and effects of all party members within 30. This specific effect does not stack from multiple sources.
 func AtieshHealingEffect(unit *Unit) {
-	label := "Atiesh Greatstaff of the Guardian (Spell Crit)"
+	label := "Atiesh Greatstaff of the Guardian (Healing)"
 
 	if unit.HasAura(label) {
 		return
