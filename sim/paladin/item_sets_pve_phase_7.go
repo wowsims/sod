@@ -82,14 +82,19 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 					critChanceBonus := 0.0
 
 					if target.MobType == proto.MobType_MobTypeUndead {
+						critChanceBonus = paladin.GetStat(stats.SpellCrit) / 100.0 + paladin.GetSchoolBonusCritChance(spell) / 100.0
+						/*
+						// TODO: This most likely only uses sheet spell crit and doesn't care about spell specific crit unfortunately, verify!
+						// Meaning this 6pc is quite a bit worse than the T2.5 4pc, but who's counting?
 						if spell.SpellCode == SpellCode_PaladinExorcism {
 							critChanceBonus = 1.0
 						} else {
 							critChanceBonus = spell.SpellCritChance(target)
 							if paladin.hasRune(proto.PaladinRune_RuneHeadWrath) {
-								critChanceBonus += paladin.GetStat(stats.MeleeCrit) / 100
+								critChanceBonus += paladin.GetStat(stats.MeleeCrit) / 100.0
 							}
 						}
+						*/
 					}
 					
 					critChanceBonus = min(critChanceBonus, 1.0)
