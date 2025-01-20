@@ -36,7 +36,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+	],
 	// Reference stat against which to caluclate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats seciont, at the bottom of the lef-hand sidebar.
@@ -53,7 +57,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		Stat.StatExpertise,
 		// Spell
 		Stat.StatSpellCrit,
-		Stat.StatMeleeHaste,
 		// Defense
 		Stat.StatDefense,
 		Stat.StatDodge,
@@ -65,6 +68,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 	],
 	displayPseudoStats: [
 		PseudoStat.PseudoStatThornsDamage,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
 	],
 
 	defaults: {

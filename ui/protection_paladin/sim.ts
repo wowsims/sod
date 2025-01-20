@@ -48,7 +48,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
 		// Spell
 		Stat.StatSpellHit,
@@ -67,7 +66,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Resistances
 		Stat.StatShadowResistance,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -83,7 +85,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
 		// Spell
 		Stat.StatSpellHit,
@@ -105,6 +106,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 	],
 	displayPseudoStats: [
 		PseudoStat.PseudoStatThornsDamage,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
 	],
 	
 	defaults: {
@@ -124,7 +126,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 				[Stat.StatAttackPower]: 1.0,
 				[Stat.StatMeleeHit]: 0.0,
 				[Stat.StatMeleeCrit]: 39.75,
-				[Stat.StatMeleeHaste]: -10.92,
 				[Stat.StatMana]: 0.0,
 				[Stat.StatArmor]: 1.0,
 				[Stat.StatDefense]: 29.97,

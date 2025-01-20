@@ -5,7 +5,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, ItemSlot, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { WarlockRune } from '../core/proto/warlock';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
@@ -32,16 +32,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHit,
-		Stat.StatMeleeHaste,
 		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatFirePower,
 		Stat.StatShadowPower,
 		Stat.StatMP5,
+	],
+	epPseudoStats: [
+		PseudoStat.PseudoStatCastSpeedMultiplier,
 	],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -59,7 +60,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHit,
-		Stat.StatMeleeHaste,
 		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
@@ -67,10 +67,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatShadowPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [
+		PseudoStat.PseudoStatCastSpeedMultiplier,
+	],
 	
 	// TODO: Figure out a way to get the stat but right now this comes out wrong
 	// due to pet scaling and player getting some dynamic buffs which we cant get here
@@ -127,17 +128,19 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.18,
-			[Stat.StatSpirit]: 0.54,
+			[Stat.StatIntellect]: 0.32,
+			[Stat.StatSpirit]: 0.63,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellDamage]: 1,
 			[Stat.StatFirePower]: 1,
 			[Stat.StatShadowPower]: 1,
-			[Stat.StatSpellHit]: 0.93,
-			[Stat.StatSpellCrit]: 0.53,
-			[Stat.StatSpellHaste]: 0.81,
+			[Stat.StatSpellHit]: 10.69,
+			[Stat.StatSpellCrit]: 16.93,
 			[Stat.StatStamina]: 0.01,
 			[Stat.StatFireResistance]: 0.5,
+		}, {
+			[PseudoStat.PseudoStatCastSpeedMultiplier]: 3.47,
+			[PseudoStat.PseudoStatTimewornBonus]: 21.59,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

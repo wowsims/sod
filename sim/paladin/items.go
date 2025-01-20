@@ -11,7 +11,6 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-// Libram IDs
 const (
 	SanctifiedOrb                        = 20512
 	LibramOfHope                         = 22401
@@ -33,11 +32,28 @@ const (
 	LibramOfTheExorcist                  = 234475
 	LibramOfSanctity                     = 234476
 	LibramOfRighteousness                = 234477
+	BandOfRedemption                     = 236130
 	ClaymoreOfUnholyMight                = 236299
 )
 
 func init() {
 	core.AddEffectsToTest = false
+
+	core.NewItemEffect(BandOfRedemption, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Band of Redemption Trigger",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskMelee,
+			ProcChance: 0.02,
+			ICD:        time.Millisecond * 200,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1223010}, spell)
+			},
+		})
+		character.ItemSwap.RegisterProc(BandOfRedemption, triggerAura)
+	})
 
 	// https://www.wowhead.com/classic/item=236299/claymore-of-unholy-might
 	// Chance on hit: Increases the wielder's Strength by 400, but they also take 20% more damage from all sources for 8 sec.
@@ -49,14 +65,34 @@ func init() {
 	core.NewItemEffect(LibramDiscardedTenetsOfTheSilverHand, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon || character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
-			character.PseudoStats.MobTypeAttackPower += 15
+			aura := core.MakePermanent(character.RegisterAura(core.Aura{
+				Label: "Libram Discarded Tenets Of The SilverHand",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					character.PseudoStats.MobTypeAttackPower += 15
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					character.PseudoStats.MobTypeAttackPower -= 15
+				},
+			}))
+
+			character.ItemSwap.RegisterProc(LibramDiscardedTenetsOfTheSilverHand, aura)
 		}
 	})
 
 	core.NewItemEffect(LibramOfDraconicDestruction, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
-			character.PseudoStats.MobTypeAttackPower += 36
+			aura := core.MakePermanent(character.RegisterAura(core.Aura{
+				Label: "Libram Of Draconic Destruction",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					character.PseudoStats.MobTypeAttackPower += 36
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					character.PseudoStats.MobTypeAttackPower -= 36
+				},
+			}))
+
+			character.ItemSwap.RegisterProc(LibramOfDraconicDestruction, aura)
 		}
 	})
 
@@ -351,7 +387,7 @@ func init() {
 			}
 		})
 
-		paladin.ItemSwap.RegisterProc(LibramOfSanctity, aura)
+		paladin.ItemSwap.RegisterProc(LibramOfRighteousness, aura)
 	})
 
 	core.AddEffectsToTest = true

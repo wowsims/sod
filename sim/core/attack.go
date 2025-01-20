@@ -836,7 +836,7 @@ func (aa *AutoAttacks) ExtraMHAttack(sim *Simulation, attacks int32, actionID Ac
 	}
 	if sim.Log != nil {
 		attacksText := Ternary(attacks == 1, "attack", "attacks")
-		aa.mh.unit.Log(sim, "gained %d extra main-hand %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
+		aa.mh.unit.Log(sim, "Gained %d extra main-hand %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
 	}
 
 	aa.mh.swingAt = sim.CurrentTime
@@ -857,7 +857,8 @@ func (aa *AutoAttacks) StoreExtraMHAttack(sim *Simulation, attacks int32, action
 	aa.mh.extraAttacksAura.AddStacks(sim, attacks)
 
 	if sim.Log != nil {
-		aa.mh.unit.Log(sim, "stored %d extra main-hand attacks from %s triggered by %s, total is %d", attacks, actionID, triggerAction, aa.mh.extraAttacksStored)
+		attacksText := Ternary(attacks == 1, "attack", "attacks")
+		aa.mh.unit.Log(sim, "Stored %d extra main-hand %s from %s triggered by %s, %d total attacks stored", attacks, attacksText, actionID, triggerAction, aa.mh.extraAttacksAura.GetStacks())
 	}
 }
 
@@ -868,7 +869,7 @@ func (aa *AutoAttacks) ExtraOHAttack(sim *Simulation, attacks int32, actionID Ac
 	}
 	if sim.Log != nil {
 		attacksText := Ternary(attacks == 1, "attack", "attacks")
-		aa.oh.unit.Log(sim, "gained %d extra off-hand %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
+		aa.oh.unit.Log(sim, "Gained %d extra off-hand %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
 	}
 	aa.oh.swingAt = sim.CurrentTime + SpellBatchWindow
 	aa.oh.spell.SetMetricsSplit(1)
@@ -881,7 +882,7 @@ func (aa *AutoAttacks) ExtraOHAttack(sim *Simulation, attacks int32, actionID Ac
 func (aa *AutoAttacks) ExtraRangedAttack(sim *Simulation, attacks int32, actionID ActionID, triggerAction ActionID) {
 	if sim.Log != nil {
 		attacksText := Ternary(attacks == 1, "attack", "attacks")
-		aa.mh.unit.Log(sim, "gained %d extra ranged %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
+		aa.mh.unit.Log(sim, "Gained %d extra ranged %s from %s triggered by %s", attacks, attacksText, actionID, triggerAction)
 	}
 	aa.ranged.swingAt = sim.CurrentTime + SpellBatchWindow
 	aa.ranged.spell.SetMetricsSplit(1)
@@ -901,7 +902,8 @@ func (aa *AutoAttacks) StoreExtraRangedAttack(sim *Simulation, attacks int32, ac
 	aa.ranged.extraAttacksAura.AddStacks(sim, attacks)
 
 	if sim.Log != nil {
-		aa.ranged.unit.Log(sim, "stored %d extra main-hand attacks from %s triggered by %s, total is %d", attacks, actionID, triggerAction, aa.mh.extraAttacksStored)
+		attacksText := Ternary(attacks == 1, "attack", "attacks")
+		aa.ranged.unit.Log(sim, "Stored %d extra main-hand %s from %s triggered by %s, %d total attacks stored", attacks, attacksText, actionID, triggerAction, aa.mh.extraAttacksAura.GetStacks())
 	}
 }
 

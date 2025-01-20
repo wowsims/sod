@@ -106,24 +106,6 @@ func (mage *Mage) applyNaxxramasDamage6PBonus() {
 			mage.isTargetFrozen = func(target *core.Unit) bool {
 				return (sim.IsExecutePhase20() && target.MobType == proto.MobType_MobTypeUndead) || oldIsTargetFrozen(target)
 			}
-
-			if mage.FingersOfFrostAura != nil {
-				oldOnExpire := mage.FingersOfFrostAura.OnExpire
-				mage.FingersOfFrostAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-					// Don't allow FoF to disable the Frozen debuffs on undead mobs below 20%
-					if sim.IsExecutePhase20() {
-						for _, target := range mage.Env.Encounter.TargetUnits {
-							if target.MobType != proto.MobType_MobTypeUndead {
-								mage.FrozenAuras.Get(target).Deactivate(sim)
-							}
-						}
-
-						return
-					}
-
-					oldOnExpire(aura, sim)
-				}
-			}
 		},
 	})
 }
