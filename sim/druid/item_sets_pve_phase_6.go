@@ -197,12 +197,8 @@ func (druid *Druid) applyTAQGuardian2PBonus() {
 		},
 	})
 
-	druid.Tank2PieceAqAura = druid.RegisterAura(core.Aura{
+	druid.Tank2PieceAqAura = core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label:    "S03 - Item - TAQ - Druid - Guardian 2P Bonus",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if druid.form == Bear && spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeDodge) {
 				druid.Tank2PieceAqProcAura.Activate(sim)
@@ -214,7 +210,7 @@ func (druid *Druid) applyTAQGuardian2PBonus() {
 				druid.Tank2PieceAqProcAura.SetStacks(sim, 0)
 			}
 		},
-	})
+	}))
 }
 
 // Reduces the cooldown on Mangle (Bear) by 1.5 sec.
