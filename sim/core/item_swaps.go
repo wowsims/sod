@@ -46,10 +46,10 @@ func (character *Character) enableItemSwap(itemSwap *proto.ItemSwap) {
 
 	for idx, itemSpec := range itemSwap.Items {
 		itemSlot := proto.ItemSlot(idx)
-		if !slices.Contains(AllWeaponSlots(), itemSlot) {
+		hasItemSwap[itemSlot] = itemSpec != nil && itemSpec.Id != 0
+		if !slices.Contains(AllWeaponSlots(), itemSlot) && hasItemSwap[itemSlot] {
 			panic(fmt.Sprintf("Slot %d is not supported. Currently only Mainhand, Offhand and Ranged are supported.", itemSlot))
 		}
-		hasItemSwap[itemSlot] = itemSpec != nil && itemSpec.Id != 0
 		swapItems[itemSlot] = toItem(itemSpec)
 	}
 
