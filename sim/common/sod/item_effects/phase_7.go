@@ -119,29 +119,33 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=237512/blade-of-inquisition
 	// Equip: Chance on hit to Increase your Strength by 250 and movement speed by 15% for 15 sec. (15s cooldown)
-	// TODO: PPM assumed and needs testing
+	// TODO: Verify proc chance, a 15% chance lines up pretty well with the uptime of similar buffs like Crusader
+	// Equip-procs with ICDs don't use PPM so we're just guessing that the 100% stated in the db files is incorrect
 	core.NewItemEffect(BladeOfInquisition, func(agent core.Agent) {
 		character := agent.GetCharacter()
-
-		procMask := character.GetProcMaskForItem(BladeOfInquisition)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
 
 		buffAura := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1223342},
 			Label:    "Scarlet Inquisition",
 			Duration: time.Second * 15,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatDynamic(sim, stats.Strength, 250)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Unit.AddStatDynamic(sim, stats.Strength, -250)
+			},
 		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Blade of Inquisition",
+			Name:              "Blade of Inquisition Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			ProcMask:          character.GetProcMaskForItem(BladeOfInquisition),
 			ICD:               time.Second * 15,
+			ProcChance:        0.15,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if ppmm.Proc(sim, spell.ProcMask, "Scarlet Inquisition") {
-					buffAura.Activate(sim)
-				}
+				buffAura.Activate(sim)
 			},
 		})
 	})
