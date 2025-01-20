@@ -55,7 +55,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 		Stat.StatSpellCrit,
 		Stat.StatShadowResistance,
 	],
-	displayPseudoStats: [PseudoStat.PseudoStatMainHandDps],
+	displayPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	
 	defaults: {
 		// Default equipped gear.
