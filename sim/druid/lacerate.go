@@ -44,19 +44,16 @@ func (druid *Druid) registerLacerateSpell() {
 		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2*float64(druid.LacerateBleed.Dot(target).GetStacks()) + initialDamageMul)
+			activeStacks := druid.LacerateBleed.Dot(target).GetStacks() + 1
+			activeStacks = core.TernaryInt32(activeStacks > 5, 5, activeStacks)
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2*float64(activeStacks) + initialDamageMul)
 			berserking := druid.BerserkAura.IsActive()
 
-			dotBonusCrit := 0.0
-			if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
-				dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
-			}
-
-			spell.BonusCritRating += dotBonusCrit
+			spell.BonusCritRating += druid.FuryOfStormrageCritRatingBonus
 			spell.Cost.FlatModifier -= core.TernaryInt32(berserking, 10, 0)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			spell.Cost.FlatModifier += core.TernaryInt32(berserking, 10, 0)
-			spell.BonusCritRating -= dotBonusCrit
+			spell.BonusCritRating -= druid.FuryOfStormrageCritRatingBonus
 
 			if result.Landed() {
 				druid.LacerateBleed.Cast(sim, target)

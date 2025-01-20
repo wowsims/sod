@@ -19,6 +19,7 @@ var TalentTreeSizes = [3]int{16, 16, 15}
 const (
 	SpellCode_DruidNone int32 = iota
 
+	SpellCode_DruidEnrage
 	SpellCode_DruidFaerieFire
 	SpellCode_DruidFaerieFireFeral
 	SpellCode_DruidFerociousBite
