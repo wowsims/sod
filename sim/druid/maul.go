@@ -49,7 +49,12 @@ var maulSpells = []MaulRankInfo{
 	},
 }
 
-func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
+func (druid *Druid) registerMaulSpell() {
+	queuedRealismICD := &core.Cooldown{
+		Timer:    bear.NewTimer(),
+		Duration: core.SpellBatchWindow * 10,
+	}
+
 	// Add highest available rank for level.
 	for rank := len(maulSpells) - 1; rank >= 0; rank-- {
 		if druid.Level >= maulSpells[rank].level {
@@ -59,7 +64,7 @@ func (druid *Druid) registerMaulSpell(realismICD *core.Cooldown) {
 		}
 	}
 
-	druid.MaulQueue = druid.makeQueueSpellsAndAura(druid.Maul, realismICD)
+	druid.MaulQueue = druid.makeQueueSpellsAndAura(druid.Maul, queuedRealismICD)
 }
 
 func (druid *Druid) newMaulSpellConfig(maulRank MaulRankInfo) core.SpellConfig {

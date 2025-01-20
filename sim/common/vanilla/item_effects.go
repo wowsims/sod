@@ -133,11 +133,7 @@ const (
 	KalimdorsRevenge                = 233621
 	JomGabbar                       = 233627 // 23570
 	NeretzekBloodDrinker            = 233647
-	RazorbrambleShoulderpads        = 233804
-	RazorbrambleCowl                = 233808
-	RazorbrambleLeathers            = 233813
 	Speedstone                      = 233990
-	LodestoneofRetaliation          = 233992
 	ManslayerOfTheQiraji            = 234067
 	EyeOfMoam                       = 234080 // 21473
 	DarkmoonCardHeroism             = 234176 // 19287
@@ -2373,21 +2369,6 @@ func init() {
 				procSpell.Cast(sim, spell.Unit)
 			},
 		})
-	})
-
-	// https://www.wowhead.com/classic/item=228293/essence-of-the-pure-flame
-	// Equip: When struck in combat inflicts 100 Nature damage to the attacker.  Causes twice as much threat as damage dealt.
-	core.NewItemEffect(RazorbrambleLeathers, func(agent core.Agent) {
-		DamageShieldWithThreatMod(agent.GetCharacter(), 1213813, 100, 2, "Damage Shield Razorbramble Leathers")
-	})
-	core.NewItemEffect(RazorbrambleShoulderpads, func(agent core.Agent) {
-		DamageShieldWithThreatMod(agent.GetCharacter(), 1213816, 80, 2, "Damage Shield Razorbramble Shoulderpads")
-	})
-	core.NewItemEffect(RazorbrambleCowl, func(agent core.Agent) {
-		DamageShieldWithThreatMod(agent.GetCharacter(), 1213813, 100, 2, "Damage Shield Razorbramble Cowl")
-	})
-	core.NewItemEffect(LodestoneofRetaliation, func(agent core.Agent) {
-		DamageShieldWithThreatMod(agent.GetCharacter(), 1213816, 80, 2, "Damage Shield Lodestone of Retaliation")
 	})
 
 	// https://www.wowhead.com/classic/item=234080/eye-of-moam

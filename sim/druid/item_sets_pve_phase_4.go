@@ -227,7 +227,7 @@ var ItemSetCenarionRage = core.NewItemSet(core.ItemSet{
 		// Reduces the cooldown of Enrage by 30 sec and it no longer reduces your armor.
 		4: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
-			druid.Enrage.CD.Duration -= time.Second * 30
+			druid.Enrage.CD.FlatModifier -= time.Second * 30
 		},
 		6: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()

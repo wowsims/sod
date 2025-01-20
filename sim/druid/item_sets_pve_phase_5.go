@@ -236,7 +236,7 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 
 // Swipe(Bear) also causes your Maul to hit 1 additional target for the next 6 sec.
 func (druid *Druid) applyT2Guardian2PBonus() {
-	if druid.Env.GetNumTargets() == 1 {
+	if druid.Env.GetNumTargets() == 1 || druid.HasAura("S03 - Item - T2 - Druid - Guardian 2P Bonus") {
 		return
 	}
 
