@@ -319,6 +319,9 @@ func init() {
 			Handler:    handler,
 		})
 		castAura.Icd = &icd
+
+		character.ItemSwap.RegisterProc(DarkmoonCardDecay, hitAura)
+		character.ItemSwap.RegisterProc(DarkmoonCardDecay, castAura)
 	})
 
 	core.NewItemEffect(DarkmoonCardSandstorm, func(agent core.Agent) {
@@ -398,7 +401,7 @@ func init() {
 		})
 		hitAura.Icd = &icd
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		castAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID:   core.ActionID{SpellID: 446389},
 			Name:       "Sandstorm Spell Cast",
 			Callback:   core.CallbackOnCastComplete,
@@ -406,6 +409,9 @@ func init() {
 			ProcChance: 0.30,
 			Handler:    handler,
 		})
+
+		character.ItemSwap.RegisterProc(DarkmoonCardSandstorm, hitAura)
+		character.ItemSwap.RegisterProc(DarkmoonCardSandstorm, castAura)
 	})
 
 	core.NewSimpleStatOffensiveTrinketEffect(RoarOfTheGuardian, stats.Stats{stats.AttackPower: 70, stats.RangedAttackPower: 70}, time.Second*20, time.Minute*5)
@@ -438,15 +444,13 @@ func init() {
 	core.NewItemEffect(DragonsCry, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(DragonsCry)
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(DragonsCry, 1.0, 0)
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Emerald Dragon Whelp Proc",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
-			PPM:               1.0, // Reported by armaments discord
+			DPM:               dpm, // Reported by armaments discord
 			ICD:               time.Minute * 1,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				for _, petAgent := range character.PetAgents {
@@ -457,33 +461,27 @@ func init() {
 				}
 			},
 		})
+
+		character.ItemSwap.RegisterProc(DragonsCry, triggerAura)
 	})
 
 	core.NewItemEffect(CobraFangClaw, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(CobraFangClaw)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(CobraFangClaw, 1.0, 0)
 
-		character.RegisterAura(core.Aura{
-			Label:    "Cobra Fang Claw Thrash",
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Cobra Fang Claw Extra Attack",
 			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() {
-					return
-				}
-				if !spell.ProcMask.Matches(procMask) {
-					return
-				}
-
-				if ppmm.Proc(sim, procMask, "Cobra Fang Claw Extra Attack") {
-					character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 220588}, spell)
-				}
+			Outcome:  core.OutcomeLanded,
+			Callback: core.CallbackOnSpellHitDealt,
+			DPM:      dpm,
+			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 220588}, spell)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(CobraFangClaw, triggerAura)
 	})
 
 	serpentsStrikerEffect := func(character *core.Character) *core.Spell {
@@ -531,14 +529,17 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label: "Bloodthirst Crossbow Proc Aura",
-			OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskRanged) {
-					thirstForBlood.Cast(sim, result.Target)
-				}
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Bloodthirst Crossbow Proc Aura",
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: core.ProcMaskRanged,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				thirstForBlood.Cast(sim, result.Target)
 			},
-		}))
+		})
+
+		character.ItemSwap.RegisterProc(BloodthirstCrossbow, triggerAura)
 	})
 
 	itemhelpers.CreateWeaponProcSpell(FistOfStone, "Fist of Stone", 1.0, func(character *core.Character) *core.Spell {
@@ -573,20 +574,20 @@ func init() {
 			},
 		})
 
-		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Damage > 0 {
-				procSpell.Cast(sim, character.CurrentTarget)
-			}
-		}
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			ActionID:   core.ActionID{SpellID: 21978},
 			Name:       "Engulfing Shadows",
 			Callback:   core.CallbackOnSpellHitDealt,
 			ProcMask:   core.ProcMaskSpellDamage,
 			ProcChance: .10,
-			Handler:    handler,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if result.Damage > 0 {
+					procSpell.Cast(sim, character.CurrentTarget)
+				}
+			},
 		})
+
+		character.ItemSwap.RegisterProc(BladeOfEternalDarkness, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=220965/scalebane-greataxe

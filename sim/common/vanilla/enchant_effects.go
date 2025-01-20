@@ -33,9 +33,6 @@ func init() {
 	core.NewEnchantEffect(36, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForEnchant(36)
-		procChance := 0.15
-
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 6296},
 			SpellSchool: core.SpellSchoolFire,
@@ -50,28 +47,22 @@ func init() {
 					damage := sim.Roll(9, 13)
 					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMagicHitAndCrit)
 				}
-
 			},
 		})
 
-		aura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Fiery Blaze",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || !spell.ProcMask.Matches(procMask) || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
-					return
-				}
-
-				if sim.RandomFloat("Fiery Blaze") < procChance {
-					procSpell.Cast(sim, result.Target)
-				}
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Fiery Blaze",
+			Duration:   core.NeverExpires,
+			Callback:   core.CallbackOnSpellHitDealt,
+			SpellFlags: core.SpellFlagSuppressWeaponProcs,
+			Outcome:    core.OutcomeLanded,
+			DPM:        character.AutoAttacks.NewDynamicProcManagerForEnchant(4074, 0, 0.15),
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, result.Target)
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffect(36, aura)
+		character.ItemSwap.RegisterEnchantProc(36, triggerAura)
 	})
 
 	// Weapon - Lesser Striking
@@ -131,8 +122,7 @@ func init() {
 	core.AddWeaponEffect(803, func(agent core.Agent, _ proto.ItemSlot) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForEnchant(803)
-		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(803, 6.0, 0)
 
 		procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee proc combo
 		procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
@@ -157,7 +147,7 @@ func init() {
 				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
 				}
-				if ppmm.Proc(sim, spell.ProcMask, "Fiery Weapon") {
+				if dpm.Proc(sim, spell.ProcMask, "Fiery Weapon") {
 					if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
 						procSpell.ProcMask = procMaskOnSpecial
 					} else {
@@ -168,7 +158,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(803, 6.0, &ppmm, aura)
+		character.ItemSwap.RegisterEnchantProc(803, aura)
 	})
 
 	// Weapon - Greater Striking
@@ -223,12 +213,14 @@ func init() {
 	core.NewEnchantEffect(911, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.RegisterAura(core.Aura{
+		aura := character.RegisterAura(core.Aura{
 			Label: "Minor Speed",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				character.AddMoveSpeedModifier(&core.ActionID{SpellID: 13889}, 1.08)
 			},
 		})
+
+		character.ItemSwap.RegisterEnchantProc(911, aura)
 	})
 
 	// Gloves - Minor Haste
@@ -264,8 +256,7 @@ func init() {
 	core.AddWeaponEffect(1898, func(agent core.Agent, slot proto.ItemSlot) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForEnchant(1898)
-		ppmm := character.AutoAttacks.NewPPMManager(6.66, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(1898, 6.66, 0)
 
 		procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee proc combo
 		procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
@@ -288,7 +279,7 @@ func init() {
 		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 			Label: "Lifestealing Weapon",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && !spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) && ppmm.Proc(sim, spell.ProcMask, "Lifestealing Weapon") {
+				if result.Landed() && !spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) && dpm.Proc(sim, spell.ProcMask, "Lifestealing Weapon") {
 					if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
 						procSpell.ProcMask = procMaskOnSpecial
 					} else {
@@ -299,7 +290,7 @@ func init() {
 			},
 		}))
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(1898, 6.66, &ppmm, aura)
+		character.ItemSwap.RegisterEnchantProc(1898, aura)
 	})
 
 	// TODO: Crusader, Mongoose, and Executioner could also be modelled as AddWeaponEffect instead
@@ -309,8 +300,7 @@ func init() {
 	core.NewEnchantEffect(1900, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForEnchant(1900)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(1900, 1.0, 0)
 
 		// -4 str per level over 60
 		strBonus := 100.0 - 4.0*float64(character.Level-60)
@@ -327,7 +317,7 @@ func init() {
 				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
 				}
-				if ppmm.Proc(sim, spell.ProcMask, "Crusader") {
+				if dpm.Proc(sim, spell.ProcMask, "Crusader") {
 					if spell.IsMH() {
 						mhAura.Activate(sim)
 					} else {
@@ -337,7 +327,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(1900, 1.0, &ppmm, aura)
+		character.ItemSwap.RegisterEnchantProc(1900, aura)
 	})
 
 	// Biznicks 247x128 Accurascope

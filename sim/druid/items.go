@@ -375,7 +375,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Rae'lar Damage Trigger",
 			Callback: core.CallbackOnSpellHitDealt,
 			ProcMask: core.ProcMaskWhiteHit,
@@ -384,6 +384,8 @@ func init() {
 				lifesteal.Cast(sim, result.Target)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(Raelar, triggerAura)
 	})
 
 	core.NewItemEffect(RitualistsHammer, func(agent core.Agent) {

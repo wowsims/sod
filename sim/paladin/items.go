@@ -128,8 +128,8 @@ func init() {
 
 	core.NewItemEffect(HammerOfTheLightbringer, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		vanilla.BlazefuryTriggerAura(character, 465412, core.SpellSchoolHoly, 4)
-		crusadersZealAura465414(character)
+		vanilla.BlazefuryTriggerAura(character, HammerOfTheLightbringer, 465412, core.SpellSchoolHoly, 4)
+		crusadersZealAura465414(character, HammerOfTheLightbringer)
 	})
 
 	// https://www.wowhead.com/classic/item=229806/truthbearer
@@ -137,7 +137,7 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(Truthbearer1H, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		crusadersZealAura465414(character)
+		crusadersZealAura465414(character, Truthbearer1H)
 	})
 
 	// https://www.wowhead.com/classic/item=229749/truthbearer
@@ -145,8 +145,8 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(Truthbearer2H, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		vanilla.BlazefuryTriggerAura(character, 465412, core.SpellSchoolHoly, 4)
-		crusadersZealAura465414(character)
+		vanilla.BlazefuryTriggerAura(character, Truthbearer2H, 465412, core.SpellSchoolHoly, 4)
+		crusadersZealAura465414(character, Truthbearer2H)
 	})
 
 	core.NewItemEffect(ZandalarFreethinkersBreastplate, func(agent core.Agent) {
@@ -238,11 +238,10 @@ func init() {
 			},
 		})
 
-		paladin.RegisterAura(core.Aura{
+		procAura := paladin.RegisterAura(core.Aura{
 			Label:    "Libram Of Wrath Trigger",
 			Duration: core.NeverExpires,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-
 				aura.Activate(sim)
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -252,6 +251,8 @@ func init() {
 				}
 			},
 		})
+
+		paladin.ItemSwap.RegisterProc(LibramOfWrath, procAura)
 	})
 
 	core.NewItemEffect(LibramOfTheDevoted, func(agent core.Agent) {
@@ -260,7 +261,7 @@ func init() {
 		actionID := core.ActionID{SpellID: 461309}
 		devotedMetrics := paladin.NewManaMetrics(actionID)
 
-		core.MakePermanent(paladin.RegisterAura(core.Aura{
+		procAura := core.MakePermanent(paladin.RegisterAura(core.Aura{
 			Label: "Libram of the Devoted Trigger",
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.DidBlock() {
@@ -269,16 +270,30 @@ func init() {
 				}
 			},
 		}))
+
+		paladin.ItemSwap.RegisterProc(LibramOfTheDevoted, procAura)
 	})
 
 	core.NewItemEffect(LibramOfTheExorcist, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
+
+		aura := core.MakePermanent(paladin.RegisterAura(core.Aura{
+			Label: "Libram of the Exorcist",
+		}))
+
 		paladin.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_PaladinCrusaderStrike || spell.SpellCode == SpellCode_PaladinExorcism {
 				// Increases the damage of Exorcism and Crusader Strike by 3%.
-				spell.DamageMultiplierAdditive += 0.03
+				aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+					spell.DamageMultiplierAdditive += 0.03
+				})
+				aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+					spell.DamageMultiplierAdditive -= 0.03
+				})
 			}
 		})
+
+		paladin.ItemSwap.RegisterProc(LibramOfTheDevoted, aura)
 	})
 
 	core.NewItemEffect(LibramOfSanctity, func(agent core.Agent) {
@@ -289,12 +304,22 @@ func init() {
 			Label:    "Libram of Sanctity",
 			Duration: time.Minute,
 		}))
+
 		core.ExclusiveHolyDamageDealtAura(buffAura, 1.1)
+
+		aura := core.MakePermanent(paladin.RegisterAura(core.Aura{
+			Label: "Libram of Sanctity",
+		}))
 
 		paladin.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_PaladinHolyShock {
 				// Increases the damage of Holy Shock by 3%, and your Shock and Awe buff now also grants 10% increased Holy Damage. (This effect does not stack with Sanctity Aura).
-				spell.DamageMultiplierAdditive += 0.03
+				aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+					spell.DamageMultiplierAdditive += 0.03
+				})
+				aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+					spell.DamageMultiplierAdditive -= 0.03
+				})
 
 				originalApplyEffects := spell.ApplyEffects
 				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -303,16 +328,30 @@ func init() {
 				}
 			}
 		})
+
+		paladin.ItemSwap.RegisterProc(LibramOfSanctity, buffAura)
+		paladin.ItemSwap.RegisterProc(LibramOfSanctity, aura)
 	})
 
 	core.NewItemEffect(LibramOfRighteousness, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
+		aura := core.MakePermanent(paladin.RegisterAura(core.Aura{
+			Label: "Libram of Righteousness",
+		}))
+
 		paladin.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.SpellCode == SpellCode_PaladinHammerOfTheRighteous || spell.SpellCode == SpellCode_PaladinShieldOfRighteousness {
 				// Increases the damage of Hammer of the Righteous and Shield of Righteousness by 3%.
-				spell.DamageMultiplierAdditive += 0.03
+				aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+					spell.DamageMultiplierAdditive += 0.03
+				})
+				aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+					spell.DamageMultiplierAdditive -= 0.03
+				})
 			}
 		})
+
+		paladin.ItemSwap.RegisterProc(LibramOfSanctity, aura)
 	})
 
 	core.AddEffectsToTest = true
@@ -322,7 +361,7 @@ func init() {
 // Used by:
 // - https://www.wowhead.com/classic/item=229806/truthbearer and
 // - https://www.wowhead.com/classic/item=229749/truthbearer
-func crusadersZealAura465414(character *core.Character) *core.Aura {
+func crusadersZealAura465414(character *core.Character, itemID int32) *core.Aura {
 	procAura := character.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 465414},
 		Label:    "Crusader's Zeal",
@@ -343,7 +382,7 @@ func crusadersZealAura465414(character *core.Character) *core.Aura {
 		},
 	})
 
-	return core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:              "Truthbearer (Crusader's Zeal)",
 		Callback:          core.CallbackOnSpellHitDealt,
 		Outcome:           core.OutcomeLanded,
@@ -354,4 +393,8 @@ func crusadersZealAura465414(character *core.Character) *core.Aura {
 			procAura.Activate(sim)
 		},
 	})
+
+	character.ItemSwap.RegisterProc(itemID, triggerAura)
+
+	return triggerAura
 }

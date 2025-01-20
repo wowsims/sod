@@ -7,14 +7,14 @@ import (
 )
 
 // Create a simple weapon proc that deals damage.
-func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
+func CreateWeaponProcDamage(itemID int32, itemName string, ppm float64, spellID int32, school core.SpellSchool,
 	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType, spellFlagExclude core.SpellFlag) {
 
-	core.NewItemEffect(itemId, func(agent core.Agent) {
+	core.NewItemEffect(itemID, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		sc := core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: spellId},
+			ActionID:    core.ActionID{SpellID: spellID},
 			SpellSchool: school,
 			DefenseType: defType,
 			ProcMask:    core.ProcMaskEmpty,
@@ -55,10 +55,9 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 		}
 
 		procSpell := character.RegisterSpell(sc)
-		procMask := character.GetProcMaskForItem(itemId)
-		ppmm := character.AutoAttacks.NewPPMManager(ppm, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0)
 
-		character.GetOrRegisterAura(core.Aura{
+		aura := character.GetOrRegisterAura(core.Aura{
 			Label:    fmt.Sprintf("%s Proc Aura", itemName),
 			Duration: core.NeverExpires,
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -68,11 +67,13 @@ func CreateWeaponProcDamage(itemId int32, itemName string, ppm float64, spellId 
 				if spell.Flags.Matches(spellFlagExclude) { // This check is needed because it doesn't use aura_helpers ApplyProcTriggerCallback
 					return
 				}
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, aura.Label) {
+				if result.Landed() && dpm.Proc(sim, spell.ProcMask, aura.Label) {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
 		})
+
+		character.ItemSwap.RegisterProc(itemID, aura)
 	})
 }
 
@@ -98,46 +99,48 @@ func CreateWeaponProcSpell(itemId int32, itemName string, ppm float64, procSpell
 		procSpell := procSpellGenerator(character)
 		procSpell.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
 
-		procMask := character.GetProcMaskForItem(itemId)
-		ppmm := character.AutoAttacks.NewPPMManager(ppm, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemId, ppm, 0)
 		procLabel := itemName + " Proc"
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 			Label: itemName + " Proc Aura",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
 				}
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, procLabel) {
+				if result.Landed() && dpm.Proc(sim, spell.ProcMask, procLabel) {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(itemId, aura)
 	})
 }
 
 // Create a weapon proc for a custom aura.
-func CreateWeaponProcAura(itemId int32, itemName string, ppm float64, procAuraGenerator func(character *core.Character) *core.Aura) {
-	core.NewItemEffect(itemId, func(agent core.Agent) {
+func CreateWeaponProcAura(itemID int32, itemName string, ppm float64, procAuraGenerator func(character *core.Character) *core.Aura) {
+	core.NewItemEffect(itemID, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		procAura := procAuraGenerator(character)
 
-		procMask := character.GetProcMaskForItem(itemId)
-		ppmm := character.AutoAttacks.NewPPMManager(ppm, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0)
 		procLabel := itemName + " Proc"
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 			Label:    itemName + " Proc Aura",
 			Duration: core.NeverExpires,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
 					return
 				}
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, procLabel) {
+				if result.Landed() && dpm.Proc(sim, spell.ProcMask, procLabel) {
 					procAura.Activate(sim)
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(itemID, aura)
 	})
 }

@@ -174,7 +174,18 @@ func init() {
 	core.NewItemEffect(SignetOfBeasts, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 		if hunter.pet != nil {
-			hunter.pet.PseudoStats.DamageDealtMultiplierAdditive += 0.01
+			damageMulti := 0.01
+			procAura := core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
+				Label: "Increased Hunter Pet Damage (Signet of Beasts)",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.pet.PseudoStats.DamageDealtMultiplierAdditive += damageMulti
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					hunter.pet.PseudoStats.DamageDealtMultiplierAdditive -= damageMulti
+				},
+			}))
+
+			hunter.ItemSwap.RegisterProc(SignetOfBeasts, procAura)
 		}
 	})
 
@@ -368,7 +379,8 @@ func init() {
 				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			},
 		})
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Peregrine Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -380,6 +392,8 @@ func init() {
 				peregrineOHAttack.Cast(sim, result.Target)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(Peregrine, triggerAura)
 	})
 
 	itemhelpers.CreateWeaponProcAura(Kestrel, "Kestrel", 1, func(character *core.Character) *core.Aura {
@@ -523,7 +537,19 @@ func init() {
 			return
 		}
 
-		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.02
+		damageMulti := 1.02
+		procAura := core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
+			Label:    "Increased Pet Damage +2% (Cloak of the Unseen Path)",
+			ActionID: core.ActionID{SpellID: 468270},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.pet.PseudoStats.DamageDealtMultiplier *= damageMulti
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.pet.PseudoStats.DamageDealtMultiplier *= 1 / damageMulti
+			},
+		}))
+
+		hunter.ItemSwap.RegisterProc(CloakOfTheUnseenPath, procAura)
 	})
 
 	core.NewItemEffect(ScytheOfTheUnseenPath, func(a core.Agent) {
@@ -531,8 +557,19 @@ func init() {
 		if hunter.pet == nil {
 			return
 		}
+		damageMulti := 1.03
+		procAura := core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
+			Label:    "Increased Pet Damage +3% (Scythe of the Unseen Path)",
+			ActionID: core.ActionID{SpellID: 468268},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.pet.PseudoStats.DamageDealtMultiplier *= damageMulti
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.pet.PseudoStats.DamageDealtMultiplier *= 1 / damageMulti
+			},
+		}))
 
-		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.03
+		hunter.ItemSwap.RegisterProc(CloakOfTheUnseenPath, procAura)
 	})
 
 	core.NewItemEffect(SignetOfTheUnseenPath, func(a core.Agent) {
@@ -541,19 +578,35 @@ func init() {
 			return
 		}
 
-		hunter.pet.PseudoStats.DamageDealtMultiplier *= 1.02
+		damageMulti := 1.02
+		procAura := core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
+			Label:    "Increased Pet Damage +2% (Signet of the Unseen Path)",
+			ActionID: core.ActionID{SpellID: 468270},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.pet.PseudoStats.DamageDealtMultiplier *= damageMulti
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.pet.PseudoStats.DamageDealtMultiplier *= 1 / damageMulti
+			},
+		}))
+
+		hunter.ItemSwap.RegisterProc(SignetOfTheUnseenPath, procAura)
 	})
 }
 
-func (hunter *Hunter) newBloodlashProcItem(bonusStrength float64, spellId int32) {
-	procAura := hunter.NewTemporaryStatsAura("Bloodlash", core.ActionID{SpellID: spellId}, stats.Stats{stats.Strength: bonusStrength}, time.Second*15)
-	ppm := hunter.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
-	core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
-		Label: "Bloodlash Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && ppm.Proc(sim, spell.ProcMask, "Bloodlash Proc") {
-				procAura.Activate(sim)
-			}
+func (hunter *Hunter) newBloodlashProcItem(bonusStrength float64, spellID int32) {
+	procAura := hunter.NewTemporaryStatsAura("Bloodlash", core.ActionID{SpellID: spellID}, stats.Stats{stats.Strength: bonusStrength}, time.Second*15)
+	dpm := hunter.AutoAttacks.NewPPMManager(1.0, core.ProcMaskMeleeOrRanged)
+
+	aura := core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+		Name:     "Bloodlash Proc",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		DPM:      dpm,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procAura.Activate(sim)
 		},
-	}))
+	})
+
+	hunter.ItemSwap.RegisterProc(BloodlashBow, aura)
 }

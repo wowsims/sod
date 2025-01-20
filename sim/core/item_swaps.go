@@ -3,6 +3,7 @@ package core
 import (
 	"fmt"
 	"slices"
+	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -107,37 +108,141 @@ func (character *Character) RegisterItemSwapCallback(slots []proto.ItemSlot, cal
 	}
 }
 
-// Helper for handling Effects that use PPMManager to toggle the aura on/off
-func (swap *ItemSwap) RegisterOnSwapItemForEffectWithPPMManager(effectID int32, ppm float64, ppmm *PPMManager, aura *Aura) {
-	slots := swap.EligibleSlotsForEffect(effectID)
-	character := swap.character
-	character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
-		procMask := character.GetProcMaskForEnchant(effectID)
-		*ppmm = character.AutoAttacks.NewPPMManager(ppm, procMask)
-
-		if ppmm.Chance(procMask) == 0 {
-			aura.Deactivate(sim)
-		} else {
-			aura.Activate(sim)
-		}
-	})
-
+// Helper for handling Item Effects that use the itemID to toggle the aura on and off
+// This will also get the eligible slots for the item
+func (swap *ItemSwap) RegisterProc(itemID int32, aura *Aura) {
+	slots := swap.EligibleSlotsForItem(itemID)
+	swap.RegisterProcWithSlots(itemID, aura, slots)
 }
 
-// Helper for handling Effects that use the effectID to toggle the aura on and off
-func (swap *ItemSwap) RegisterOnSwapItemForEffect(effectID int32, aura *Aura) {
-	slots := swap.EligibleSlotsForEffect(effectID)
-	character := swap.character
-	character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
-		procMask := character.GetProcMaskForEnchant(effectID)
+// Helper for handling Item Effects that use the itemID to toggle the aura on and off
+func (swap *ItemSwap) RegisterProcWithSlots(itemID int32, aura *Aura, slots []proto.ItemSlot) {
+	swap.registerProcInternal(ItemSwapProcConfig{
+		ItemID: itemID,
+		Aura:   aura,
+		Slots:  slots,
+	})
+}
 
-		if procMask == ProcMaskUnknown {
-			aura.Deactivate(sim)
+// Helper for handling Enchant Effects that use the effectID to toggle the aura on and off
+func (swap *ItemSwap) RegisterEnchantProc(effectID int32, aura *Aura) {
+	slots := swap.EligibleSlotsForEffect(effectID)
+	swap.RegisterEnchantProcWithSlots(effectID, aura, slots)
+}
+func (swap *ItemSwap) RegisterEnchantProcWithSlots(effectID int32, aura *Aura, slots []proto.ItemSlot) {
+	swap.registerProcInternal(ItemSwapProcConfig{
+		EnchantId: effectID,
+		Aura:      aura,
+		Slots:     slots,
+	})
+}
+
+type ItemSwapProcConfig struct {
+	ItemID    int32
+	EnchantId int32
+	Aura      *Aura
+	Slots     []proto.ItemSlot
+}
+
+func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
+	isItemProc := config.ItemID != 0
+	isEnchantEffectProc := config.EnchantId != 0
+
+	// Enchant effects such as Weapon/Back do not trigger an ICD
+	shouldUpdateIcd := isItemProc && (config.Aura.Icd != nil)
+
+	character := swap.character
+	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot) {
+		isItemSlotMatch := false
+
+		if isItemProc {
+			isItemSlotMatch = character.hasItemEquipped(config.ItemID, config.Slots)
+		} else if isEnchantEffectProc {
+			isItemSlotMatch = character.hasEnchantEquipped(config.EnchantId, config.Slots)
+		}
+
+		if isItemSlotMatch {
+			if !config.Aura.IsActive() {
+				config.Aura.Activate(sim)
+			}
+			if shouldUpdateIcd {
+				config.Aura.Icd.Use(sim)
+			}
 		} else {
-			aura.Activate(sim)
+			config.Aura.Deactivate(sim)
+			if shouldUpdateIcd {
+				// This is a hack to block ActivateAura APL
+				// actions from executing for unequipped items.
+				config.Aura.Icd.Set(NeverExpires)
+			}
 		}
 	})
 }
+
+// Helper for handling Item On Use effects to set a 30s cd on the related spell.
+func (swap *ItemSwap) RegisterActive(itemID int32) {
+	slots := swap.EligibleSlotsForItem(itemID)
+	itemActionID := ActionID{ItemID: itemID}
+	character := swap.character
+
+	character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
+		spell := character.GetSpell(itemActionID)
+		if spell == nil {
+			return
+		}
+
+		aura := character.GetAuraByID(spell.ActionID)
+		if aura.IsActive() {
+			aura.Deactivate(sim)
+		}
+
+		hasItemEquipped := character.hasItemEquipped(itemID, slots)
+		if !hasItemEquipped {
+			spell.Flags |= SpellFlagSwapped
+			return
+		}
+
+		spell.Flags &= ^SpellFlagSwapped
+
+		if !swap.initialized {
+			return
+		}
+
+		spell.CD.Set(sim.CurrentTime + max(spell.CD.TimeToReady(sim), time.Second*30))
+	})
+}
+
+// // Helper for handling Effects that use PPMManager to toggle the aura on/off
+// func (swap *ItemSwap) RegisterOnSwapItemForEffectWithPPMManager(effectID int32, ppm float64, dpm *DynamicProcManager, aura *Aura) {
+// 	slots := swap.EligibleSlotsForEffect(effectID)
+// 	character := swap.character
+// 	character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
+// 		procMask := character.GetDynamicProcMaskForWeaponEnchant(effectID)
+// 		*dpm = character.AutoAttacks.NewPPMManager(ppm, procMask)
+
+// 		if dpm.Chance(procMask) == 0 {
+// 			aura.Deactivate(sim)
+// 		} else {
+// 			aura.Activate(sim)
+// 		}
+// 	})
+
+// }
+
+// // Helper for handling Effects that use the effectID to toggle the aura on and off
+// func (swap *ItemSwap) RegisterOnSwapItemForEffect(effectID int32, aura *Aura) {
+// 	slots := swap.EligibleSlotsForEffect(effectID)
+// 	character := swap.character
+// 	character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
+// 		procMask := character.GetDynamicProcMaskForWeaponEnchant(effectID)
+
+// 		if procMask == ProcMaskUnknown {
+// 			aura.Deactivate(sim)
+// 		} else {
+// 			aura.Activate(sim)
+// 		}
+// 	})
+// }
 
 func (swap *ItemSwap) IsEnabled() bool {
 	return swap.character != nil && len(swap.slots) > 0

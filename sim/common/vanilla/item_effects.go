@@ -420,7 +420,7 @@ func init() {
 		})
 
 		castableSpells := []*core.Spell{curseOfShahram, mightOfShahram, fistOfShahram, blessingOfShahram, willOfShahram, flamesOfShahram}
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Summon Shahram",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -432,6 +432,8 @@ func init() {
 				castableSpells[spellIdx].Cast(sim, result.Target)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(BlackbladeOfShahram, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=228603/blackhand-doomsaw
@@ -664,18 +666,20 @@ func init() {
 			return aura
 		})
 
-		procMask := character.GetProcMaskForItem(FangOfTheCrystalSpider)
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(FangOfTheCrystalSpider, 1, 0)
+
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Fang of the Crystal Spider Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1,
+			DPM:               dpm,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				debuffAuras.Get(result.Target).Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(FangOfTheCrystalSpider, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=12590/felstriker
@@ -685,27 +689,24 @@ func init() {
 		character := agent.GetCharacter()
 
 		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
-		procMask := character.GetProcMaskForItem(Felstriker)
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(Felstriker, 0.6, 0)
+
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Felstriker Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               0.6,
+			DPM:               dpm,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				effectAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(Felstriker, aura)
 	})
 
-	core.NewItemEffect(FiendishMachete, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeElemental {
-			character.PseudoStats.MobTypeAttackPower += 36
-		}
-	})
+	core.NewMobTypeAttackPowerEffect(FiendishMachete, []proto.MobType{proto.MobType_MobTypeElemental}, 36)
 
 	itemhelpers.CreateWeaponProcSpell(FieryWarAxe, "Fiery War Axe", 1.0, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
@@ -839,7 +840,6 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(Frightalon, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		procMask := character.GetProcMaskForItem(Frightalon)
 
 		debuffAuraArray := character.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
 			return target.GetOrRegisterAura(core.Aura{
@@ -867,17 +867,19 @@ func init() {
 			})
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(Frightalon, 1, 0)
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Frightalon Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1.0,
+			DPM:               dpm,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				debuffAuraArray.Get(result.Target).Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(Frightalon, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=227994/frightskull-shaft
@@ -941,7 +943,7 @@ func init() {
 			return aura
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Frostguard",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -952,6 +954,8 @@ func init() {
 				debuffAuras.Get(result.Target).Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(Frostguard, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=228029/gravestone-war-axe
@@ -1143,7 +1147,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		debuffTriggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Hardened Frostguard",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -1155,7 +1159,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		spellTriggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Hardened Frostguard",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -1166,6 +1170,9 @@ func init() {
 				novaSpell.Cast(sim, result.Target)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(Frostguard, debuffTriggerAura)
+		character.ItemSwap.RegisterProc(Frostguard, spellTriggerAura)
 	})
 
 	itemhelpers.CreateWeaponProcSpell(HookfangShanker, "Hookfang Shanker", 1.0, func(character *core.Character) *core.Spell {
@@ -1263,7 +1270,8 @@ func init() {
 			return
 		}
 
-		manslayerOfTheQirajiAura(character)
+		aura := manslayerOfTheQirajiAura(character)
+		character.ItemSwap.RegisterProc(ManslayerOfTheQiraji, aura)
 	})
 
 	core.NewItemEffect(ManslayerOfTheQirajiVoidTouched, func(agent core.Agent) {
@@ -1273,7 +1281,8 @@ func init() {
 			return
 		}
 
-		manslayerOfTheQirajiAura(character)
+		aura := manslayerOfTheQirajiAura(character)
+		character.ItemSwap.RegisterProc(ManslayerOfTheQirajiVoidTouched, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=12794/masterwork-stormhammer
@@ -1307,12 +1316,11 @@ func init() {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 1220535}
 		label := "Electric Discharge Trigger"
-		ppm := 2.0
-		procMask := character.GetProcMaskForItem(MisplacedServoArm)
-		if procMask == core.ProcMaskMelee {
-			ppm = 4.0
-		}
-		ppmm := character.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
+
+		// Register 2 PPM for MH and 4 PPM for MH+OH
+		// This is needed due to Item Swap
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(MisplacedServoArm, 2.0, 0)
+		dpmDualWield := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(MisplacedServoArm, 4.0, 0)
 
 		procSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
@@ -1329,18 +1337,26 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              label,
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if ppmm.Proc(sim, spell.ProcMask, label) {
+				var actualProcManager *core.DynamicProcManager
+				if spell.ProcMask.Matches(core.ProcMaskMelee) {
+					actualProcManager = dpmDualWield
+				} else {
+					actualProcManager = dpm
+				}
+				if actualProcManager.Proc(sim, spell.ProcMask, label) {
 					procSpell.Cast(sim, result.Target)
 				}
 			},
 		})
+
+		character.ItemSwap.RegisterProc(MisplacedServoArm, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=234987/neretzek-the-blood-drinker
@@ -1361,9 +1377,28 @@ func init() {
 	core.NewItemEffect(PipsSkinner, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		if character.CurrentTarget.MobType == proto.MobType_MobTypeBeast {
-			character.PseudoStats.MobTypeAttackPower += 45
-		}
+		targetWasBeast := false
+		procAura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label:    "Beast Slaying 45",
+			ActionID: core.ActionID{SpellID: 18067},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				targetIsBeast := character.CurrentTarget.MobType == proto.MobType_MobTypeBeast
+				if targetIsBeast {
+					targetWasBeast = targetIsBeast
+					character.PseudoStats.MobTypeAttackPower += 45
+				}
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				if targetWasBeast {
+					character.PseudoStats.MobTypeAttackPower -= 45
+				}
+			},
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				targetWasBeast = false
+			},
+		}))
+
+		character.ItemSwap.RegisterProc(Frostguard, procAura)
 	})
 
 	// https://www.wowhead.com/classic/item=228296/perditions-blade
@@ -1466,32 +1501,36 @@ func init() {
 		character := agent.GetCharacter()
 
 		strengthAura := StrengthOfTheChampionAura(character)
-		procMask := character.GetProcMaskForItem(RefinedArcaniteChampion)
 		enrageAura := EnrageAura446327(character)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		ppm := 1.0 // Estimated based on data from WoW Armaments Discord
+		strDpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(RefinedArcaniteChampion, ppm, 0)
+		enrageDpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(RefinedArcaniteChampion, ppm, 0)
+
+		strengthProcTrigger := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Refined Arcanite Champion (Strength)",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1, // Estimated based on data from WoW Armaments Discord
+			DPM:               strDpm,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				strengthAura.Activate(sim)
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		enrageProcTrigger := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Refined Arcanite Champion (Enrage)",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1, // Estimated based on data from WoW Armaments Discord
+			DPM:               enrageDpm,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				enrageAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(RefinedArcaniteChampion, strengthProcTrigger)
+		character.ItemSwap.RegisterProc(RefinedArcaniteChampion, enrageProcTrigger)
 	})
 
 	// https://www.wowhead.com/classic/item=228543/runeblade-of-baron-rivendare
@@ -1501,7 +1540,7 @@ func init() {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 17625}
 		healthMetrics := character.NewHealthMetrics(actionID)
-		character.RegisterAura(core.Aura{
+		aura := character.RegisterAura(core.Aura{
 			ActionID: actionID,
 			Label:    "Unholy Aura",
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
@@ -1514,6 +1553,8 @@ func init() {
 				})
 			},
 		})
+
+		character.ItemSwap.RegisterProc(RunebladeOfBaronRivendare, aura)
 	})
 
 	itemhelpers.CreateWeaponCoHProcDamage(SatyrsLash, "Satyr's Lash", 1.0, 18205, core.SpellSchoolShadow, 55, 30, 0, core.DefenseTypeMagic)
@@ -1639,14 +1680,13 @@ func init() {
 	// Equip: Drains target for 2 Shadow damage every 1 sec and transfers it to the caster. Lasts for 30 sec.
 	// Estimated based on data from WoW Armaments Discord
 	itemhelpers.CreateWeaponProcSpell(SkullforgeReaver, "Skullforge Reaver", 1.7, func(character *core.Character) *core.Spell {
-		procMask := character.GetProcMaskForItem(SkullforgeReaver)
 		actionID := core.ActionID{SpellID: 17484}
 		healthMetrics := character.NewHealthMetrics(actionID)
 		return character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    procMask,
+			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagPureDot,
 			Dot: core.DotConfig{
 				NumberOfTicks: 30,
@@ -1692,7 +1732,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		immolationProcTrigger := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Immolation (Hand of Ragnaros)",
 			Callback:   core.CallbackOnSpellHitTaken,
 			Outcome:    core.OutcomeLanded,
@@ -1756,7 +1796,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		purgedByFireProcTrigger := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Purged by Fire Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -1767,6 +1807,9 @@ func init() {
 				purgedByFireSpell.Cast(sim, result.Target)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(SulfurasHandOfRagnaros, immolationProcTrigger)
+		character.ItemSwap.RegisterProc(SulfurasHandOfRagnaros, purgedByFireProcTrigger)
 	})
 
 	// https://www.wowhead.com/classic/item=17182/sulfuras-hand-of-ragnaros
@@ -1869,7 +1912,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		immolationProcTrigger := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Immolation (Hand of Ragnaros)",
 			Callback: core.CallbackOnSpellHitTaken,
 			Outcome:  core.OutcomeLanded,
@@ -1912,7 +1955,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		sulfuranHammerProcTrigger := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Sulfuron Hammer Trigger",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
@@ -1922,6 +1965,9 @@ func init() {
 				fireballSpell.Cast(sim, result.Target)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(SulfuronHammer, immolationProcTrigger)
+		character.ItemSwap.RegisterProc(SulfuronHammer, sulfuranHammerProcTrigger)
 	})
 
 	// https://www.wowhead.com/classic/item=227832/tempered-black-amnesty
@@ -2042,8 +2088,7 @@ func init() {
 	core.NewItemEffect(Thunderfury, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(Thunderfury)
-		ppmm := character.AutoAttacks.NewPPMManager(6.0, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(Thunderfury, 6.0, 0)
 		thunderfuryASAuras := character.NewEnemyAuraArray(core.ThunderfuryASAura)
 		procActionID := core.ActionID{SpellID: 21992}
 
@@ -2102,15 +2147,17 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+		triggerAura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 			Label: "Thunderfury Trigger",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && ppmm.Proc(sim, spell.ProcMask, "Thunderfury") {
+				if result.Landed() && dpm.Proc(sim, spell.ProcMask, "Thunderfury") {
 					singleTargetSpell.Cast(sim, result.Target)
 					bounceSpell.Cast(sim, result.Target)
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(Thunderfury, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=228273/thunderstrike
@@ -2151,17 +2198,19 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(Typhoon, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(Typhoon, 1.0, 0)
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Typhoon Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			ProcMask:          core.ProcMaskMelee,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1.0,
+			DPM:               dpm,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 461985}, spell)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(Typhoon, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=13183/venomspitter
@@ -2305,7 +2354,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Aura of the Blue Dragon Trigger",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -2314,6 +2363,8 @@ func init() {
 				procAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(DarkmoonCardBlueDragon, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=19287/darkmoon-card-heroism
@@ -2334,7 +2385,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Heroism Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -2345,6 +2396,8 @@ func init() {
 				procSpell.Cast(sim, spell.Unit)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(DarkmoonCardHeroism, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=19289/darkmoon-card-maelstrom
@@ -2369,7 +2422,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Lightning Strike Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -2380,6 +2433,8 @@ func init() {
 				procSpell.Cast(sim, result.Target)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(DarkmoonCardMaelstrom, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=234462/earthstrike
@@ -2407,7 +2462,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Fiery Aura Proc",
 			Callback: core.CallbackOnSpellHitTaken,
 			Outcome:  core.OutcomeLanded,
@@ -2416,6 +2471,8 @@ func init() {
 				procSpell.Cast(sim, spell.Unit)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(EssenceOfThePureFlame, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=234080/eye-of-moam
@@ -2490,7 +2547,7 @@ func init() {
 			return
 		}
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Hand of Injustice Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -2503,6 +2560,8 @@ func init() {
 				character.AutoAttacks.StoreExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(HandOfInjustice, triggerAura)
 	})
 
 	core.NewItemEffect(HandOfJustice, func(agent core.Agent) {
@@ -2511,7 +2570,7 @@ func init() {
 			return
 		}
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Hand of Justice Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -2523,6 +2582,8 @@ func init() {
 				spell.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 15600}, spell)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(HandOfJustice, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=228599/heart-of-wyrmthalak
@@ -2541,7 +2602,7 @@ func init() {
 				spell.CalcAndDealDamage(sim, target, sim.Roll(120, 180), spell.OutcomeMagicHitAndCrit)
 			},
 		})
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Heart of Wyrmthalak Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -2552,6 +2613,8 @@ func init() {
 				spell.Cast(sim, result.Target)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(HeartOfWyrmthalak, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=233627/jom-gabbar
@@ -2668,7 +2731,6 @@ func init() {
 	core.NewItemEffect(MarkOfTheChosen, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		statIncrease := float64(25)
-		markProcChance := 0.02
 
 		procAura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Mark of the Chosen Effect",
@@ -2694,14 +2756,18 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label: "Mark of the Chosen",
-			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) && sim.RandomFloat("Mark of the Chosen") < markProcChance {
-					procAura.Activate(sim)
-				}
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Mark of the Chosen",
+			Callback:   core.CallbackOnSpellHitTaken,
+			ProcMask:   core.ProcMaskMelee,
+			Outcome:    core.OutcomeLanded,
+			ProcChance: 0.02,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procAura.Activate(sim)
 			},
-		}))
+		})
+
+		character.ItemSwap.RegisterProc(MarkOfTheChosen, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=231271/nat-pagles-broken-reel
@@ -2855,8 +2921,24 @@ func init() {
 	// Increases your attack speed by 2%.
 	core.NewItemEffect(Speedstone, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		character.PseudoStats.MeleeSpeedMultiplier *= 1.02
-		character.PseudoStats.RangedSpeedMultiplier *= 1.02
+
+		hasteMulti := 1.02
+
+		procAura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+			Label:    "Haste",
+			ActionID: core.ActionID{SpellID: 1213971},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.MeleeSpeedMultiplier *= hasteMulti
+				character.PseudoStats.RangedSpeedMultiplier *= hasteMulti
+
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.MeleeSpeedMultiplier *= 1 / hasteMulti
+				character.PseudoStats.RangedSpeedMultiplier *= 1 / hasteMulti
+			},
+		}))
+
+		character.ItemSwap.RegisterProc(Frostguard, procAura)
 	})
 
 	// https://www.wowhead.com/classic/item=228255/talisman-of-ephemeral-power
@@ -3111,7 +3193,7 @@ func init() {
 	// Equip: Adds 2 fire damage to your melee attacks.
 	core.NewItemEffect(BlazefuryMedallion, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		BlazefuryTriggerAura(character, 7712, core.SpellSchoolFire, 2)
+		BlazefuryTriggerAura(character, BlazefuryMedallion, 7712, core.SpellSchoolFire, 2)
 	})
 
 	// https://www.wowhead.com/classic/item=14554/cloudkeeper-legplates
@@ -3149,7 +3231,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Force Reactive Disk",
 			Callback: core.CallbackOnSpellHitTaken,
 			ProcMask: core.ProcMaskMelee,
@@ -3159,6 +3241,8 @@ func init() {
 				procSpell.Cast(sim, spell.Unit)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(ForceReactiveDisk, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=11669/naglering
@@ -3215,7 +3299,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		drainLifeTriggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Drain Life Trigger",
 			Callback:   core.CallbackOnSpellHitTaken,
 			Outcome:    core.OutcomeLanded,
@@ -3226,7 +3310,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		flameStrikeTriggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Flamestrike Trigger",
 			Callback:   core.CallbackOnSpellHitTaken,
 			Outcome:    core.OutcomeLanded,
@@ -3236,6 +3320,9 @@ func init() {
 				flamestrikeSpell.Cast(sim, spell.Unit)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(SkullflameShield, drainLifeTriggerAura)
+		character.ItemSwap.RegisterProc(SkullflameShield, flameStrikeTriggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=234463/wrath-of-cenarius
@@ -3255,7 +3342,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
 			Name:             "Spell Blasting Trigger",
 			Callback:         core.CallbackOnSpellHitDealt,
 			Outcome:          core.OutcomeLanded,
@@ -3266,6 +3353,8 @@ func init() {
 				buffAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(SkullflameShield, triggerAura)
 	})
 
 	core.AddEffectsToTest = true
@@ -3291,7 +3380,7 @@ func EnrageAura446327(character *core.Character) *core.Aura {
 	})
 }
 
-func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool core.SpellSchool, damage float64) {
+func BlazefuryTriggerAura(character *core.Character, itemID int32, spellID int32, spellSchool core.SpellSchool, damage float64) {
 	if character.GetSpell(core.ActionID{SpellID: spellID}) != nil {
 		return
 	}
@@ -3310,7 +3399,7 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 		},
 	})
 
-	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:              fmt.Sprintf("Blazefury Trigger (%d)", spellID),
 		Callback:          core.CallbackOnSpellHitDealt,
 		Outcome:           core.OutcomeLanded,
@@ -3325,6 +3414,8 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 			procSpell.Cast(sim, result.Target)
 		},
 	})
+
+	character.ItemSwap.RegisterProc(itemID, triggerAura)
 }
 
 // TODO: This is treated as a buff, NOT a debuff in-game
@@ -3399,7 +3490,6 @@ func dreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell {
 			}
 
 			character.PseudoStats.MeleeSpeedMultiplier /= 1.05
-
 		},
 	}))
 
@@ -3431,7 +3521,7 @@ func thornsArcaneDamageEffect(agent core.Agent, itemID int32, itemName string, d
 		},
 	})
 
-	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+	procAura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 		Label: fmt.Sprintf("Thorns (%s)", itemName),
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
@@ -3439,6 +3529,8 @@ func thornsArcaneDamageEffect(agent core.Agent, itemID int32, itemName string, d
 			}
 		},
 	}))
+
+	character.ItemSwap.RegisterProc(itemID, procAura)
 }
 
 func eskhandarsRightClawAura(character *core.Character) *core.Aura {

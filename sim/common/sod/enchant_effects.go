@@ -84,7 +84,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterOnSwapItemForEffect(7210, aura)
+		character.ItemSwap.RegisterEnchantProc(7210, aura)
 	})
 
 	// Sharpened Chitin Armor Kit
@@ -118,16 +118,19 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label: "Thorns +20",
-			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
-					for i := 0; i < numEnchants; i++ {
-						procSpell.Cast(sim, spell.Unit)
-					}
+		procAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Thorns +20",
+			Callback: core.CallbackOnSpellHitTaken,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: core.ProcMaskMelee,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				for i := 0; i < numEnchants; i++ {
+					procSpell.Cast(sim, spell.Unit)
 				}
 			},
-		}))
+		})
+
+		character.ItemSwap.RegisterEnchantProc(7649, procAura)
 	})
 
 	// Obsidian Scope

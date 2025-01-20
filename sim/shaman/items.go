@@ -529,13 +529,13 @@ func init() {
 			return
 		}
 
-		core.MakePermanent(shaman.RegisterAura(core.Aura{
+		aura := core.MakePermanent(shaman.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 470081},
 			Label:    "Totem of Raging Storms",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				oldPPMM := shaman.maelstromWeaponPPMM
 				newPPMM := shaman.AutoAttacks.NewPPMManager(oldPPMM.GetPPM()*2, core.ProcMaskMelee)
-				shaman.maelstromWeaponPPMM = &newPPMM
+				shaman.maelstromWeaponPPMM = newPPMM
 
 				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 					Period:          time.Second * 2,
@@ -548,13 +548,15 @@ func init() {
 						}
 
 						if !aura.IsActive() {
-							shaman.maelstromWeaponPPMM = &newPPMM
+							shaman.maelstromWeaponPPMM = newPPMM
 							aura.Activate(sim)
 						}
 					},
 				})
 			},
 		}))
+
+		shaman.ItemSwap.RegisterProc(TotemOfRelentlessThunder, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=23200/totem-of-sustaining

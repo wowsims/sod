@@ -438,8 +438,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		},
 	})
 
-	ppmm := shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
-	shaman.maelstromWeaponPPMM = &ppmm
+	shaman.maelstromWeaponPPMM = shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
 
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:              "Maelstrom Weapon Trigger",

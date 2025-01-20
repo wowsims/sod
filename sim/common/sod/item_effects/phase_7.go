@@ -102,19 +102,27 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=236400/atiesh-greatstaff-of-the-guardian
 	core.NewItemEffect(AtieshCastSpeed, func(agent core.Agent) {
-		core.AtieshCastSpeedEffect(&agent.GetCharacter().Unit)
+		character := agent.GetCharacter()
+		aura := core.AtieshCastSpeedEffect(&character.Unit)
+		character.ItemSwap.RegisterProc(AtieshCastSpeed, aura)
 	})
 	// https://www.wowhead.com/classic/item=236399/atiesh-greatstaff-of-the-guardian
 	core.NewItemEffect(AtieshHealing, func(agent core.Agent) {
-		core.AtieshHealingEffect(&agent.GetCharacter().Unit)
+		character := agent.GetCharacter()
+		aura := core.AtieshHealingEffect(&character.Unit)
+		character.ItemSwap.RegisterProc(AtieshHealing, aura)
 	})
 	// https://www.wowhead.com/classic/item=236401/atiesh-greatstaff-of-the-guardian
 	core.NewItemEffect(AtieshSpellCrit, func(agent core.Agent) {
-		core.AtieshSpellCritEffect(&agent.GetCharacter().Unit)
+		character := agent.GetCharacter()
+		aura := core.AtieshSpellCritEffect(&character.Unit)
+		character.ItemSwap.RegisterProc(AtieshSpellCrit, aura)
 	})
 	// https://www.wowhead.com/classic/item=236398/atiesh-greatstaff-of-the-guardian
 	core.NewItemEffect(AtieshSpellPower, func(agent core.Agent) {
-		core.AtieshSpellPowerEffect(&agent.GetCharacter().Unit)
+		character := agent.GetCharacter()
+		aura := core.AtieshSpellPowerEffect(&character.Unit)
+		character.ItemSwap.RegisterProc(AtieshSpellPower, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=237512/blade-of-inquisition
@@ -123,8 +131,7 @@ func init() {
 	core.NewItemEffect(BladeOfInquisition, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(BladeOfInquisition)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(BladeOfInquisition, 1.0, 0)
 
 		buffAura := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1223342},
@@ -132,18 +139,19 @@ func init() {
 			Duration: time.Second * 15,
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Blade of Inquisition",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			ICD:               time.Second * 15,
+			DPM:               dpm,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if ppmm.Proc(sim, spell.ProcMask, "Scarlet Inquisition") {
-					buffAura.Activate(sim)
-				}
+				buffAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(BladeOfInquisition, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=235891/ol-reliable
@@ -197,40 +205,40 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 
 	// https://www.wowhead.com/classic/item=236356/squires-seal-of-the-dawn
-	core.NewItemEffect(AspirantsSealOfTheDawnDamage, sanctifiedDamageEffect(1219539, 0.83))
-	core.NewItemEffect(InitiatesSealOfTheDawnDamage, sanctifiedDamageEffect(1223348, 2.92))
-	core.NewItemEffect(SquiresSealOfTheDawnDamage, sanctifiedDamageEffect(1223349, 4.17))
-	core.NewItemEffect(KnightsSealOfTheDawnDamage, sanctifiedDamageEffect(1223350, 6.67))
-	core.NewItemEffect(TemplarsSealOfTheDawnDamage, sanctifiedDamageEffect(1223351, 8.33))
-	core.NewItemEffect(ChampionsSealOfTheDawnDamage, sanctifiedDamageEffect(1223352, 12.08))
-	core.NewItemEffect(VanguardsSealOfTheDawnDamage, sanctifiedDamageEffect(1223353, 14.17))
-	core.NewItemEffect(CrusadersSealOfTheDawnDamage, sanctifiedDamageEffect(1223354, 18.75))
-	core.NewItemEffect(CommandersSealOfTheDawnDamage, sanctifiedDamageEffect(1223355, 21.67))
-	core.NewItemEffect(HighlordsSSealOfTheDawnDamage, sanctifiedDamageEffect(1223357, 25.0))
+	core.NewItemEffect(AspirantsSealOfTheDawnDamage, sanctifiedDamageEffect(AspirantsSealOfTheDawnDamage, 1219539, 0.83))
+	core.NewItemEffect(InitiatesSealOfTheDawnDamage, sanctifiedDamageEffect(InitiatesSealOfTheDawnDamage, 1223348, 2.92))
+	core.NewItemEffect(SquiresSealOfTheDawnDamage, sanctifiedDamageEffect(SquiresSealOfTheDawnDamage, 1223349, 4.17))
+	core.NewItemEffect(KnightsSealOfTheDawnDamage, sanctifiedDamageEffect(KnightsSealOfTheDawnDamage, 1223350, 6.67))
+	core.NewItemEffect(TemplarsSealOfTheDawnDamage, sanctifiedDamageEffect(TemplarsSealOfTheDawnDamage, 1223351, 8.33))
+	core.NewItemEffect(ChampionsSealOfTheDawnDamage, sanctifiedDamageEffect(ChampionsSealOfTheDawnDamage, 1223352, 12.08))
+	core.NewItemEffect(VanguardsSealOfTheDawnDamage, sanctifiedDamageEffect(VanguardsSealOfTheDawnDamage, 1223353, 14.17))
+	core.NewItemEffect(CrusadersSealOfTheDawnDamage, sanctifiedDamageEffect(CrusadersSealOfTheDawnDamage, 1223354, 18.75))
+	core.NewItemEffect(CommandersSealOfTheDawnDamage, sanctifiedDamageEffect(CommandersSealOfTheDawnDamage, 1223355, 21.67))
+	core.NewItemEffect(HighlordsSSealOfTheDawnDamage, sanctifiedDamageEffect(HighlordsSSealOfTheDawnDamage, 1223357, 25.0))
 
 	// https://www.wowhead.com/classic/item=236383/squires-seal-of-the-dawn
-	core.NewItemEffect(AspirantsSealOfTheDawnHealing, sanctifiedHealingEffect(1219548, 0.83))
-	core.NewItemEffect(InitiatesSealOfTheDawnHealing, sanctifiedHealingEffect(1223379, 2.92))
-	core.NewItemEffect(SquiresSealOfTheDawnHealing, sanctifiedHealingEffect(1223380, 4.17))
-	core.NewItemEffect(KnightsSealOfTheDawnHealing, sanctifiedHealingEffect(1223381, 6.67))
-	core.NewItemEffect(TemplarsSealOfTheDawnHealing, sanctifiedHealingEffect(1223382, 8.33))
-	core.NewItemEffect(ChampionsSealOfTheDawnHealing, sanctifiedHealingEffect(1223383, 12.08))
-	core.NewItemEffect(VanguardsSealOfTheDawnHealing, sanctifiedHealingEffect(1223384, 14.17))
-	core.NewItemEffect(CrusadersSealOfTheDawnHealing, sanctifiedHealingEffect(1223385, 18.75))
-	core.NewItemEffect(CommandersSealOfTheDawnHealing, sanctifiedHealingEffect(1223386, 21.67))
-	core.NewItemEffect(HighlordsSSealOfTheDawnHealing, sanctifiedHealingEffect(1223387, 25.0))
+	core.NewItemEffect(AspirantsSealOfTheDawnHealing, sanctifiedHealingEffect(AspirantsSealOfTheDawnHealing, 1219548, 0.83))
+	core.NewItemEffect(InitiatesSealOfTheDawnHealing, sanctifiedHealingEffect(InitiatesSealOfTheDawnHealing, 1223379, 2.92))
+	core.NewItemEffect(SquiresSealOfTheDawnHealing, sanctifiedHealingEffect(SquiresSealOfTheDawnHealing, 1223380, 4.17))
+	core.NewItemEffect(KnightsSealOfTheDawnHealing, sanctifiedHealingEffect(KnightsSealOfTheDawnHealing, 1223381, 6.67))
+	core.NewItemEffect(TemplarsSealOfTheDawnHealing, sanctifiedHealingEffect(TemplarsSealOfTheDawnHealing, 1223382, 8.33))
+	core.NewItemEffect(ChampionsSealOfTheDawnHealing, sanctifiedHealingEffect(ChampionsSealOfTheDawnHealing, 1223383, 12.08))
+	core.NewItemEffect(VanguardsSealOfTheDawnHealing, sanctifiedHealingEffect(VanguardsSealOfTheDawnHealing, 1223384, 14.17))
+	core.NewItemEffect(CrusadersSealOfTheDawnHealing, sanctifiedHealingEffect(CrusadersSealOfTheDawnHealing, 1223385, 18.75))
+	core.NewItemEffect(CommandersSealOfTheDawnHealing, sanctifiedHealingEffect(CommandersSealOfTheDawnHealing, 1223386, 21.67))
+	core.NewItemEffect(HighlordsSSealOfTheDawnHealing, sanctifiedHealingEffect(HighlordsSSealOfTheDawnHealing, 1223387, 25.0))
 
 	// https://www.wowhead.com/classic/item=236394/squires-seal-of-the-dawn
-	core.NewItemEffect(AspirantsSealOfTheDawnTanking, sanctifiedTankingEffect(1220514, 2.08, 0.83))
-	core.NewItemEffect(InitiatesSealOfTheDawnTanking, sanctifiedTankingEffect(1223367, 2.92, 2.92))
-	core.NewItemEffect(SquiresSealOfTheDawnTanking, sanctifiedTankingEffect(1223368, 3.33, 4.17))
-	core.NewItemEffect(KnightsSealOfTheDawnTanking, sanctifiedTankingEffect(1223370, 3.75, 6.67))
-	core.NewItemEffect(TemplarsSealOfTheDawnTanking, sanctifiedTankingEffect(1223371, 4.17, 8.33))
-	core.NewItemEffect(ChampionsSealOfTheDawnTanking, sanctifiedTankingEffect(1223372, 5.0, 12.08))
-	core.NewItemEffect(VanguardsSealOfTheDawnTanking, sanctifiedTankingEffect(1223373, 5.42, 14.17))
-	core.NewItemEffect(CrusadersSealOfTheDawnTanking, sanctifiedTankingEffect(1223374, 6.25, 18.75))
-	core.NewItemEffect(CommandersSealOfTheDawnTanking, sanctifiedTankingEffect(1223375, 6.67, 21.67))
-	core.NewItemEffect(HighlordsSSealOfTheDawnTanking, sanctifiedTankingEffect(1223376, 7.08, 25.0))
+	core.NewItemEffect(AspirantsSealOfTheDawnTanking, sanctifiedTankingEffect(AspirantsSealOfTheDawnTanking, 1220514, 2.08, 0.83))
+	core.NewItemEffect(InitiatesSealOfTheDawnTanking, sanctifiedTankingEffect(InitiatesSealOfTheDawnTanking, 1223367, 2.92, 2.92))
+	core.NewItemEffect(SquiresSealOfTheDawnTanking, sanctifiedTankingEffect(SquiresSealOfTheDawnTanking, 1223368, 3.33, 4.17))
+	core.NewItemEffect(KnightsSealOfTheDawnTanking, sanctifiedTankingEffect(KnightsSealOfTheDawnTanking, 1223370, 3.75, 6.67))
+	core.NewItemEffect(TemplarsSealOfTheDawnTanking, sanctifiedTankingEffect(TemplarsSealOfTheDawnTanking, 1223371, 4.17, 8.33))
+	core.NewItemEffect(ChampionsSealOfTheDawnTanking, sanctifiedTankingEffect(ChampionsSealOfTheDawnTanking, 1223372, 5.0, 12.08))
+	core.NewItemEffect(VanguardsSealOfTheDawnTanking, sanctifiedTankingEffect(VanguardsSealOfTheDawnTanking, 1223373, 5.42, 14.17))
+	core.NewItemEffect(CrusadersSealOfTheDawnTanking, sanctifiedTankingEffect(CrusadersSealOfTheDawnTanking, 1223374, 6.25, 18.75))
+	core.NewItemEffect(CommandersSealOfTheDawnTanking, sanctifiedTankingEffect(CommandersSealOfTheDawnTanking, 1223375, 6.67, 21.67))
+	core.NewItemEffect(HighlordsSSealOfTheDawnTanking, sanctifiedTankingEffect(HighlordsSSealOfTheDawnTanking, 1223376, 7.08, 25.0))
 
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Other
@@ -293,7 +301,7 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 			Label: "Splintered Shield",
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
@@ -301,6 +309,8 @@ func init() {
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(BulwarkOfIre, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=236736/chestguard-of-undead-cleansing
@@ -430,7 +440,7 @@ const MaxSanctifiedBonus = 12
 
 // Equip: Unlocks your potential while inside Naxxramas.
 // Increasing your damage by X% and your health by X% for each piece of Sanctified armor equipped.
-func sanctifiedDamageEffect(spellID int32, percentIncrease float64) core.ApplyEffect {
+func sanctifiedDamageEffect(itemID int32, spellID int32, percentIncrease float64) core.ApplyEffect {
 	return func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -439,7 +449,7 @@ func sanctifiedDamageEffect(spellID int32, percentIncrease float64) core.ApplyEf
 			multiplier := 1.0
 			healthDeps := buildSanctifiedHealthDeps(unit, percentIncrease)
 
-			core.MakePermanent(unit.GetOrRegisterAura(core.Aura{
+			aura := core.MakePermanent(unit.GetOrRegisterAura(core.Aura{
 				Label:      "Seal of the Dawn (Damage)",
 				ActionID:   core.ActionID{SpellID: spellID},
 				BuildPhase: core.CharacterBuildPhaseGear,
@@ -466,13 +476,15 @@ func sanctifiedDamageEffect(spellID int32, percentIncrease float64) core.ApplyEf
 					aura.Unit.PseudoStats.DamageDealtMultiplier /= multiplier
 				},
 			}))
+
+			character.ItemSwap.RegisterProc(itemID, aura)
 		}
 	}
 }
 
 // Equip: Unlocks your potential while inside Naxxramas.
 // Increasing your healing and shielding by X% and your health by X% for each piece of Sanctified armor equipped.
-func sanctifiedHealingEffect(spellID int32, percentIncrease float64) core.ApplyEffect {
+func sanctifiedHealingEffect(itemID int32, spellID int32, percentIncrease float64) core.ApplyEffect {
 	return func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -481,7 +493,7 @@ func sanctifiedHealingEffect(spellID int32, percentIncrease float64) core.ApplyE
 			multiplier := 1.0
 			healthDeps := buildSanctifiedHealthDeps(unit, percentIncrease)
 
-			core.MakePermanent(unit.GetOrRegisterAura(core.Aura{
+			aura := core.MakePermanent(unit.GetOrRegisterAura(core.Aura{
 				Label:      "Seal of the Dawn (Healing)",
 				ActionID:   core.ActionID{SpellID: spellID},
 				BuildPhase: core.CharacterBuildPhaseGear,
@@ -508,13 +520,15 @@ func sanctifiedHealingEffect(spellID int32, percentIncrease float64) core.ApplyE
 					aura.Unit.PseudoStats.HealingDealtMultiplier /= multiplier
 				},
 			}))
+
+			character.ItemSwap.RegisterProc(itemID, aura)
 		}
 	}
 }
 
 // Equip: Unlocks your potential while inside Naxxramas.
 // Increasing your threat caused by X%, your damage by Y%, and your health by Y% for each piece of Sanctified armor equipped.
-func sanctifiedTankingEffect(spellID int32, threatPercentIncrease float64, damageHealthPercentIncrease float64) core.ApplyEffect {
+func sanctifiedTankingEffect(itemID int32, spellID int32, threatPercentIncrease float64, damageHealthPercentIncrease float64) core.ApplyEffect {
 	return func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -535,7 +549,7 @@ func sanctifiedTankingEffect(spellID int32, threatPercentIncrease float64, damag
 			threatMultiplier := 1.0
 			healthDeps := buildSanctifiedHealthDeps(unit, damageHealthPercentIncrease)
 
-			core.MakePermanent(unit.GetOrRegisterAura(core.Aura{
+			aura := core.MakePermanent(unit.GetOrRegisterAura(core.Aura{
 				Label:      "Seal of the Dawn (Tanking)",
 				ActionID:   core.ActionID{SpellID: spellID},
 				BuildPhase: core.CharacterBuildPhaseGear,
@@ -565,6 +579,8 @@ func sanctifiedTankingEffect(spellID int32, threatPercentIncrease float64, damag
 					aura.Unit.PseudoStats.DamageDealtMultiplier /= damageHealthMultiplier
 				},
 			}))
+
+			character.ItemSwap.RegisterProc(itemID, aura)
 		}
 	}
 }
@@ -609,3 +625,5 @@ func UnholyMightAura(character *core.Character) *core.Aura {
 		},
 	})
 }
+
+// Atiesh Helpers

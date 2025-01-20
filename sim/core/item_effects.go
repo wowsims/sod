@@ -174,17 +174,43 @@ func NewSimpleStatDefensiveTrinketEffect(itemID int32, bonus stats.Stats, durati
 func NewMobTypeAttackPowerEffect(itemID int32, mobTypes []proto.MobType, bonus float64) {
 	NewItemEffect(itemID, func(agent Agent) {
 		character := agent.GetCharacter()
-		if slices.Contains(mobTypes, character.CurrentTarget.MobType) {
-			character.PseudoStats.MobTypeAttackPower += bonus
+
+		if !slices.Contains(mobTypes, character.CurrentTarget.MobType) {
+			return
 		}
+
+		aura := MakePermanent(character.GetOrRegisterAura(Aura{
+			Label: fmt.Sprintf("Mob Type Attack Power Bonus - %s", character.CurrentTarget.MobType),
+			OnGain: func(aura *Aura, sim *Simulation) {
+				character.PseudoStats.MobTypeAttackPower += bonus
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				character.PseudoStats.MobTypeAttackPower -= bonus
+			},
+		}))
+
+		character.ItemSwap.RegisterProc(itemID, aura)
 	})
 }
 
 func NewMobTypeSpellPowerEffect(itemID int32, mobTypes []proto.MobType, bonus float64) {
 	NewItemEffect(itemID, func(agent Agent) {
 		character := agent.GetCharacter()
-		if slices.Contains(mobTypes, character.CurrentTarget.MobType) {
-			character.PseudoStats.MobTypeSpellPower += bonus
+
+		if !slices.Contains(mobTypes, character.CurrentTarget.MobType) {
+			return
 		}
+
+		aura := MakePermanent(character.GetOrRegisterAura(Aura{
+			Label: fmt.Sprintf("Mob type Spell Power Bonus - %s", character.CurrentTarget.MobType),
+			OnGain: func(aura *Aura, sim *Simulation) {
+				character.PseudoStats.MobTypeSpellPower += bonus
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				character.PseudoStats.MobTypeSpellPower -= bonus
+			},
+		}))
+
+		character.ItemSwap.RegisterProc(itemID, aura)
 	})
 }

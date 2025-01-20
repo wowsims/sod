@@ -287,7 +287,7 @@ func (druid *Druid) applyOmenOfClarity() {
 		},
 	})
 
-	ppmm := druid.AutoAttacks.NewPPMManager(2.0, core.ProcMaskMelee)
+	dpm := druid.AutoAttacks.NewPPMManager(2.0, core.ProcMaskMelee)
 	icd := core.Cooldown{
 		Timer:    druid.NewTimer(),
 		Duration: time.Second * 10,
@@ -304,7 +304,7 @@ func (druid *Druid) applyOmenOfClarity() {
 				return
 			}
 			// TODO: Phase 3 "and non-instant spell casts" but we need to find out how the procs work for those
-			if spell.ProcMask.Matches(core.ProcMaskMelee) && ppmm.ProcWithWeaponSpecials(sim, spell.ProcMask, "Omen of Clarity") {
+			if spell.ProcMask.Matches(core.ProcMaskMelee) && dpm.ProcWithWeaponSpecials(sim, spell.ProcMask, "Omen of Clarity") {
 				icd.Use(sim)
 				druid.ClearcastingAura.Activate(sim)
 			}
