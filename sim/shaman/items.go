@@ -392,8 +392,10 @@ func init() {
 					core.Flatten(
 						[][]*core.Spell{
 							shaman.LightningBolt,
+							shaman.LightningBoltOverload,
 							shaman.ChainLightning,
-							{shaman.LavaBurst},
+							shaman.ChainLightningOverload,
+							{shaman.LavaBurst, shaman.LavaBurstOverload},
 						},
 					),
 					func(spell *core.Spell) bool { return spell != nil },

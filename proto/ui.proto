@@ -44,7 +44,7 @@ message UIFaction {
 // Contains all information about an Item needed by the UI.
 // Generally this will include everything needed by the sim, plus some
 // additional data for displaying / filtering.
-// NextIndex: 32
+// NextIndex: 33
 message UIItem {
 	int32 id = 1;
 	string name = 2;
@@ -73,6 +73,7 @@ message UIItem {
 	bool unique = 19;
 	bool heroic = 20;
 	bool timeworn = 30;
+	bool sanctified = 32;
 
 	// Classes that are allowed to use the item. Empty indicates no special class restrictions.
 	repeated Class class_allowlist = 21;

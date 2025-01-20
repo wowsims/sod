@@ -169,6 +169,9 @@ func (druid *Druid) applyT2Feral4PBonus() {
 	druid.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			if druid.form != Cat {
+				return
+			}
 			oldOnGain := druid.TigersFuryAura.OnGain
 			druid.TigersFuryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 				oldOnGain(aura, sim)
@@ -222,14 +225,26 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
 			druid.applyT2Guardian2PBonus()
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 467216},
+				Label:    "S03 - Item - T2 - Druid - Guardian 2P Bonus",
+			}))
 		},
 		4: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
 			druid.applyT2Guardian4PBonus()
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 467221},
+				Label:    "S03 - Item - T2 - Druid - Guardian 4P Bonus",
+			}))
 		},
 		6: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
 			druid.applyT2Guardian6PBonus()
+			core.MakePermanent(druid.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 467227},
+				Label:    "S03 - Item - T2 - Druid - Guardian 6P Bonus",
+			}))
 		},
 	},
 })

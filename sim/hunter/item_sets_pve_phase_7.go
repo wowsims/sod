@@ -54,19 +54,19 @@ func (hunter *Hunter) applyNaxxramasMelee4PBonus() {
 
 	// Not entirely sure how this will work so taking some liberties
 	// Assume that it resets all of them when one crits
-	var spellsToReset []*core.Spell
+	//var spellsToReset []*core.Spell
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			spellsToReset = hunter.Strikes
-			spellsToReset = append(spellsToReset, hunter.MongooseBite)
+			//spellsToReset = hunter.Strikes
+			//spellsToReset = append(spellsToReset, hunter.MongooseBite)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if (spell.Flags.Matches(SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite) && result.DidCrit() {
-				for _, spell := range spellsToReset {
-					spell.CD.Reset()
-				}
+				spell.CD.Reset()
+			} else if spell.SpellCode == SpellCode_HunterRaptorStrikeHit && result.DidCrit() {
+				hunter.RaptorStrike.CD.QueueReset(sim.CurrentTime)
 			}
 		},
 	}))

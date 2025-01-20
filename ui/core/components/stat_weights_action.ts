@@ -753,7 +753,8 @@ class EpWeightsMenu extends BaseModal {
 				PseudoStat.PseudoStatMainHandDps, 
 				PseudoStat.PseudoStatOffHandDps, 
 				PseudoStat.PseudoStatRangedDps, 
-				PseudoStat.BonusPhysicalDamage
+				PseudoStat.PseudoStatBonusPhysicalDamage,
+				PseudoStat.PseudoStatTimewornBonus,
 			].includes(stat.getPseudoStat());
 		}
 	});

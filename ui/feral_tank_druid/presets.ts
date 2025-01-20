@@ -28,10 +28,8 @@ import {
 } from '../core/proto/druid.js';
 
 import * as PresetUtils from '../core/preset_utils.js';
-
-import Phase5Gear from './gear_sets/phase_5.gear.json';
-
-import Phase5APL from './apls/phase_5.apl.json';
+import Phase6APL from './apls/phase_6.apl.json';
+import Phase6Gear from './gear_sets/phase_6.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -41,7 +39,7 @@ import Phase5APL from './apls/phase_5.apl.json';
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const P5Gear = PresetUtils.makePresetGear('Phase 5', Phase5Gear);
+export const P5Gear = PresetUtils.makePresetGear('Phase 6', Phase6Gear);
 
 export const GearPresets = {
   [Phase.Phase1]: [P5Gear],
@@ -58,7 +56,7 @@ export const DefaultGear = GearPresets[Phase.Phase5][0];
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const APLPhase5 = PresetUtils.makePresetAPLRotation('Phase 5', Phase5APL, { customCondition: player => player.getLevel() === 60 });
+export const APLPhase5 = PresetUtils.makePresetAPLRotation('Phase 6', Phase6APL, { customCondition: player => player.getLevel() === 60 });
 
 export const APLPresets = {
   [Phase.Phase1]: [APLPhase5],

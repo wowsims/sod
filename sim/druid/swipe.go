@@ -61,7 +61,7 @@ func (druid *Druid) newSwipeBearSpellConfig(swipeRank SwipeRankInfo) core.SpellC
 	hasImprovedSwipeRune := druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe)
 	baseMultiplier := 1.0
 
-	baseDamage := swipeRank.damage + .1*druid.GetStat(stats.AttackPower)
+	baseDamage := swipeRank.damage
 
 	rageCost := 20 - float64(druid.Talents.Ferocity)
 	targetCount := core.TernaryInt32(hasImprovedSwipeRune, 10, 3)
@@ -107,9 +107,9 @@ func (druid *Druid) newSwipeBearSpellConfig(swipeRank SwipeRankInfo) core.SpellC
 				if hasLacerate && druid.LacerateBleed.Dot(target).GetStacks() > 0 {
 					dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
 				}
-
 				spell.BonusCritRating += dotBonusCrit
-				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				damage := baseDamage + .1*druid.GetStat(stats.AttackPower)
+				results[idx] = spell.CalcDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 				spell.BonusCritRating -= dotBonusCrit
 
 				target = sim.Environment.NextTargetUnit(target)
