@@ -133,17 +133,7 @@ func init() {
 
 		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(BladeOfInquisition, 1.0, 0)
 
-		buffAura := character.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 1223342},
-			Label:    "Scarlet Inquisition",
-			Duration: time.Second * 15,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.AddStatDynamic(sim, stats.Strength, 250)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.AddStatDynamic(sim, stats.Strength, -250)
-			},
-		})
+		buffAura := character.NewTemporaryStatsAura("Scarlet Inquisition", core.ActionID{SpellID: 1223342}, stats.Stats{stats.Strength: 250}, time.Second*15)
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Blade of Inquisition Trigger",
@@ -152,6 +142,7 @@ func init() {
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 			ICD:               time.Second * 15,
 			DPM:               dpm,
+			DPMProcType:       core.DPMProcNoWeaponSpecials,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 			},
@@ -464,21 +455,11 @@ func sanctifiedDamageEffect(itemID int32, spellID int32, percentIncrease float64
 					multiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-						aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
-					} else {
-						aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-					}
-
+					aura.Unit.EnableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 					aura.Unit.PseudoStats.DamageDealtMultiplier *= multiplier
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-						aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
-					} else {
-						aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-					}
-
+					aura.Unit.DisableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 					aura.Unit.PseudoStats.DamageDealtMultiplier /= multiplier
 				},
 			}))
@@ -508,21 +489,11 @@ func sanctifiedHealingEffect(itemID int32, spellID int32, percentIncrease float6
 					multiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-						aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
-					} else {
-						aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-					}
-
+					aura.Unit.EnableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 					aura.Unit.PseudoStats.HealingDealtMultiplier *= multiplier
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-						aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
-					} else {
-						aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-					}
-
+					aura.Unit.DisableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 					aura.Unit.PseudoStats.HealingDealtMultiplier /= multiplier
 				},
 			}))
@@ -565,22 +536,12 @@ func sanctifiedTankingEffect(itemID int32, spellID int32, threatPercentIncrease 
 					threatMultiplier = 1.0 + threatPercentIncrease/100.0*float64(sanctifiedBonus)
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-						aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
-					} else {
-						aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-					}
-
+					aura.Unit.EnableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 					aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
 					aura.Unit.PseudoStats.DamageDealtMultiplier *= damageHealthMultiplier
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-						aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
-					} else {
-						aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-					}
-
+					aura.Unit.DisableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 					aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
 					aura.Unit.PseudoStats.DamageDealtMultiplier /= damageHealthMultiplier
 				},
@@ -622,14 +583,12 @@ func UnholyMightAura(character *core.Character) *core.Aura {
 		Label:    "Unholy Might",
 		Duration: time.Second * 8,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.Strength, 400)
 			character.PseudoStats.DamageTakenMultiplier *= 1.20
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.Strength, -400)
 			character.PseudoStats.DamageTakenMultiplier /= 1.20
 		},
-	})
+	}).AttachStatBuff(stats.Strength, 400)
 }
 
 // Atiesh Helpers

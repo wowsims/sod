@@ -125,8 +125,6 @@ func init() {
 	core.AddWeaponEffect(803, func(agent core.Agent, _ proto.ItemSlot) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(803, 6.0, 0)
-
 		procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee proc combo
 		procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
 
@@ -144,24 +142,20 @@ func init() {
 			},
 		})
 
-		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label: "Fiery Weapon",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
-					return
-				}
-				if dpm.Proc(sim, spell.ProcMask, "Fiery Weapon") {
-					if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
-						procSpell.ProcMask = procMaskOnSpecial
-					} else {
-						procSpell.ProcMask = procMaskOnAuto
-					}
-					procSpell.Cast(sim, result.Target)
-				}
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Fiery Weapon",
+			Callback:          core.CallbackOnSpellHitDealt,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			Outcome:           core.OutcomeLanded,
+			DPM:               character.AutoAttacks.NewDynamicProcManagerForEnchant(803, 6.0, 0),
+			DPMProcType:       core.DPMProcNoWeaponSpecials,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.ProcMask = core.Ternary(spell.ProcMask.Matches(core.ProcMaskMeleeSpecial), procMaskOnSpecial, procMaskOnAuto)
+				procSpell.Cast(sim, result.Target)
 			},
-		}))
+		})
 
-		character.ItemSwap.RegisterEnchantProc(803, aura)
+		character.ItemSwap.RegisterEnchantProc(803, triggerAura)
 	})
 
 	// Weapon - Greater Striking
@@ -259,8 +253,6 @@ func init() {
 	core.AddWeaponEffect(1898, func(agent core.Agent, slot proto.ItemSlot) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(1898, 6.66, 0)
-
 		procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee proc combo
 		procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
 
@@ -279,21 +271,20 @@ func init() {
 			},
 		})
 
-		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label: "Lifestealing Weapon",
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if result.Landed() && !spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) && dpm.Proc(sim, spell.ProcMask, "Lifestealing Weapon") {
-					if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
-						procSpell.ProcMask = procMaskOnSpecial
-					} else {
-						procSpell.ProcMask = procMaskOnAuto
-					}
-					procSpell.Cast(sim, result.Target)
-				}
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Lifestealing Weapon",
+			Callback:          core.CallbackOnSpellHitDealt,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			Outcome:           core.OutcomeLanded,
+			DPM:               character.AutoAttacks.NewDynamicProcManagerForEnchant(1898, 6.66, 0),
+			DPMProcType:       core.DPMProcNoWeaponSpecials,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.ProcMask = core.Ternary(spell.ProcMask.Matches(core.ProcMaskMeleeSpecial), procMaskOnSpecial, procMaskOnAuto)
+				procSpell.Cast(sim, result.Target)
 			},
-		}))
+		})
 
-		character.ItemSwap.RegisterEnchantProc(1898, aura)
+		character.ItemSwap.RegisterEnchantProc(1898, triggerAura)
 	})
 
 	// TODO: Crusader, Mongoose, and Executioner could also be modelled as AddWeaponEffect instead
@@ -316,6 +307,7 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			DPM:               dpm,
+			DPMProcType:       core.DPMProcNoWeaponSpecials,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.IsMH() {
 					mhAura.Activate(sim)

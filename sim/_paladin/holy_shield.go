@@ -37,11 +37,7 @@ func (paladin *Paladin) registerHolyShieldSpell() {
 		Duration:  time.Second * 10,
 		MaxStacks: numCharges,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.AddStatDynamic(sim, stats.Block, blockBonus)
 			aura.SetStacks(sim, numCharges)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.AddStatDynamic(sim, stats.Block, -blockBonus)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidBlock() {
@@ -49,7 +45,7 @@ func (paladin *Paladin) registerHolyShieldSpell() {
 				aura.RemoveStack(sim)
 			}
 		},
-	})
+	}).AttachStatBuff(stats.Block, blockBonus)
 
 	paladin.HolyShield = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,

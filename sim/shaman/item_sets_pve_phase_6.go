@@ -147,21 +147,13 @@ func (shaman *Shaman) applyTAQTank4PBonus() {
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.MultiplyStat(stats.Health, healthMultiplier)
-			} else {
-				aura.Unit.EnableDynamicStatDep(sim, statDep)
-			}
+			aura.Unit.EnableBuildPhaseStatDep(sim, statDep)
 
 			shaman.PseudoStats.DamageDealtMultiplier *= damageMultiplier
 			shaman.PseudoStats.ThreatMultiplier *= threatMultiplier
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.MultiplyStat(stats.Health, 1/healthMultiplier)
-			} else {
-				aura.Unit.DisableDynamicStatDep(sim, statDep)
-			}
+			aura.Unit.DisableBuildPhaseStatDep(sim, statDep)
 
 			shaman.PseudoStats.DamageDealtMultiplier /= damageMultiplier
 			shaman.PseudoStats.ThreatMultiplier /= threatMultiplier

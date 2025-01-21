@@ -86,17 +86,7 @@ func init() {
 
 		duration := time.Second * 15
 
-		aura := character.RegisterAura(core.Aura{
-			ActionID: core.ActionID{ItemID: WoodcarvedMoonstalker},
-			Label:    "Woodcarved Moonstalker",
-			Duration: duration,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.Strength, 60)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.Strength, -60)
-			},
-		})
+		aura := character.NewTemporaryStatsAura("Woodcarved Moonstalker", core.ActionID{ItemID: WoodcarvedMoonstalker}, stats.Stats{stats.Strength: 60}, duration)
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: WoodcarvedMoonstalker},

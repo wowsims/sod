@@ -258,21 +258,7 @@ func (shaman *Shaman) applyNaxxramasTank2PBonus() {
 				spell.BonusHitRating += 100 * core.SpellHitRatingPerHitChance
 			}
 		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachBuildPhaseStatsBuff(bonusStats))
 }
 
 // Increases the damage taken reduction from your Shamanistic Rage ability by an additional 15% and during Shamanistic Rage your attack speed and spellcasting speed are increased by 30%.
@@ -289,22 +275,8 @@ func (shaman *Shaman) applyNaxxramasTank4PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.shamanisticRageDRMultiplier += shamRageDRBonus
-
-			oldOnGain := shaman.ShamanisticRageAura.OnGain
-			shaman.ShamanisticRageAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnGain(aura, sim)
-
-				shaman.MultiplyAttackSpeed(sim, attackCastSpeedBonus)
-				shaman.MultiplyCastSpeed(attackCastSpeedBonus)
-			}
-
-			oldOnExpire := shaman.ShamanisticRageAura.OnExpire
-			shaman.ShamanisticRageAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnExpire(aura, sim)
-
-				shaman.MultiplyAttackSpeed(sim, 1/attackCastSpeedBonus)
-				shaman.MultiplyCastSpeed(1 / attackCastSpeedBonus)
-			}
+			shaman.ShamanisticRageAura.AttachMultiplyAttackSpeed(&shaman.Unit, attackCastSpeedBonus)
+			shaman.ShamanisticRageAura.AttachMultiplyCastSpeed(&shaman.Unit, attackCastSpeedBonus)
 		},
 	})
 }

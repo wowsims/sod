@@ -193,17 +193,11 @@ func init() {
 	core.NewItemEffect(GyromaticExperiment420b, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		hasteAura := character.GetOrRegisterAura(core.Aura{
+		hasteAura := character.RegisterAura(core.Aura{
 			Label:    "Gyromatic Experiment 420b",
 			ActionID: core.ActionID{SpellID: 435899},
 			Duration: time.Second * 20,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.05)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.0/1.05)
-			},
-		})
+		}).AttachMultiplyAttackSpeed(&character.Unit, 1.05)
 
 		chickenAura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Cluck Cluck??",
@@ -313,12 +307,6 @@ func init() {
 			Label:    "Spicy!",
 			ActionID: actionID,
 			Duration: time.Second * 30,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.04)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1/1.04)
-			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if !spell.ProcMask.Matches(core.ProcMaskMelee) {
 					return
@@ -328,7 +316,7 @@ func init() {
 					fireStrike.Cast(sim, spell.Unit.CurrentTarget)
 				}
 			},
-		})
+		}).AttachMultiplyAttackSpeed(&character.Unit, 1.04)
 
 		spicy := character.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,

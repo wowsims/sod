@@ -25,6 +25,14 @@ const (
 	CallbackOnCastComplete
 )
 
+type DPMProcType uint16
+
+const (
+	DPMProcWithWeaponSpecials DPMProcType = 0
+
+	DPMProcNoWeaponSpecials DPMProcType = 1 << iota
+)
+
 type ProcHandler func(sim *Simulation, spell *Spell, result *SpellResult)
 type ProcExtraCondition func(sim *Simulation, spell *Spell, result *SpellResult) bool
 
@@ -42,6 +50,7 @@ type ProcTrigger struct {
 	ProcChance        float64
 	PPM               float64
 	DPM               *DynamicProcManager
+	DPMProcType       DPMProcType // Will use ProcWithWeaponSpecials by default. Used to override default DPM Proc check.
 	ICD               time.Duration
 	Handler           ProcHandler
 	ExtraCondition    ProcExtraCondition
@@ -96,8 +105,12 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 		}
 		if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
 			return
-		} else if dpm != nil && !dpm.ProcWithWeaponSpecials(sim, spell.ProcMask, config.Name) {
-			return
+		} else if dpm != nil {
+			if config.DPMProcType == DPMProcNoWeaponSpecials && !dpm.Proc(sim, spell.ProcMask, config.Name) {
+				return
+			} else if config.DPMProcType == DPMProcWithWeaponSpecials && !dpm.ProcWithWeaponSpecials(sim, spell.ProcMask, config.Name) {
+				return
+			}
 		}
 
 		if icd.Duration != 0 {
@@ -284,4 +297,136 @@ func ApplyFixedUptimeAura(aura *Aura, uptime float64, tickLength time.Duration, 
 			},
 		})
 	})
+}
+
+// Creates a new ProcTriggerAura that is dependent on a parent Aura being active
+// This should only be used if the dependent Aura is:
+// 1. On the a different Unit than parent Aura is registered to (usually the Character)
+// 2. You need to register multiple dependent Aura's for the same Unit
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) MakeDependentProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
+	oldExtraCondition := config.ExtraCondition
+	config.ExtraCondition = func(sim *Simulation, spell *Spell, result *SpellResult) bool {
+		return parentAura.IsActive() && ((oldExtraCondition == nil) || oldExtraCondition(sim, spell, result))
+	}
+
+	aura := MakeProcTriggerAura(unit, config)
+
+	return aura
+}
+
+// Attaches a ProcTrigger to a parent Aura
+// Preffered use-case.
+// For non standard use-cases see: MakeDependentProcTriggerAura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachProcTrigger(config ProcTrigger) *Aura {
+	ApplyProcTriggerCallback(parentAura.Unit, parentAura, config)
+
+	return parentAura
+}
+
+// DISABLED - Cata SpellMods are not yet migrated
+// Attaches a SpellMod to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+// func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) {
+// 	parentAuraDep := parentAura.Unit.AddDynamicMod(spellModConfig)
+
+// 	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+// 		parentAuraDep.Activate()
+// 	})
+
+// 	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+// 		parentAuraDep.Deactivate()
+// 	})
+
+// return parentAura
+// }
+
+// Attaches a StatDependency to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachStatDependency(statDep *stats.StatDependency) *Aura {
+
+	parentAura.ApplyOnGain(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.EnableBuildPhaseStatDep(sim, statDep)
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.DisableBuildPhaseStatDep(sim, statDep)
+	})
+
+	return parentAura
+}
+
+// Adds Stats to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) *Aura {
+	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddStatsDynamic(sim, stats)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddStatsDynamic(sim, stats.Invert())
+	})
+
+	return parentAura
+}
+
+// Adds Stats to a parent Aura during build phase
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachBuildPhaseStatsBuff(stats stats.Stats) *Aura {
+	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddBuildPhaseStatsDynamic(sim, stats)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddBuildPhaseStatsDynamic(sim, stats.Invert())
+	})
+
+	return parentAura
+}
+
+// Adds a Stat to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachStatBuff(stat stats.Stat, value float64) *Aura {
+	statsToAdd := stats.Stats{}
+	statsToAdd[stat] = value
+	parentAura.AttachStatsBuff(statsToAdd)
+
+	return parentAura
+}
+
+// Adds a Stat to a parent Aura during build phase
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachBuildPhaseStatBuff(stat stats.Stat, value float64) *Aura {
+	statsToAdd := stats.Stats{}
+	statsToAdd[stat] = value
+	parentAura.AttachBuildPhaseStatsBuff(statsToAdd)
+
+	return parentAura
+}
+
+// Adds a Attack Speed Multiplier to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachMultiplyAttackSpeed(unit *Unit, value float64) *Aura {
+	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		unit.MultiplyAttackSpeed(sim, value)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		unit.MultiplyAttackSpeed(sim, 1/value)
+	})
+	return parentAura
+}
+
+// Adds a Cast Speed Multiplier Stat to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachMultiplyCastSpeed(unit *Unit, value float64) *Aura {
+	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		unit.MultiplyCastSpeed(value)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		unit.MultiplyCastSpeed(1 / value)
+	})
+	return parentAura
 }

@@ -22,14 +22,11 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 		Duration: time.Second * 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.DamageTakenMultiplier *= warrior.recklessnessDamageTakenMultiplier
-			warrior.AddStatDynamic(sim, stats.MeleeCrit, 50*core.CritRatingPerCritChance)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.PseudoStats.DamageTakenMultiplier /= warrior.recklessnessDamageTakenMultiplier
-			warrior.AddStatDynamic(sim, stats.MeleeCrit, -50*core.CritRatingPerCritChance)
-
 		},
-	})
+	}).AttachStatBuff(stats.MeleeCrit, 50*core.CritRatingPerCritChance)
 
 	warrior.Recklessness = warrior.RegisterSpell(BerserkerStance, core.SpellConfig{
 		ActionID: actionID,

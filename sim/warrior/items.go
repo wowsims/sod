@@ -125,17 +125,7 @@ func init() {
 		actionID := core.ActionID{ItemID: GrileksCharmOFMight}
 		rageMetrics := warrior.NewRageMetrics(actionID)
 
-		aura := warrior.RegisterAura(core.Aura{
-			ActionID: actionID,
-			Label:    "Gri'lek's Guard",
-			Duration: time.Second * 20,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				warrior.AddStatDynamic(sim, stats.BlockValue, 200)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				warrior.AddStatDynamic(sim, stats.BlockValue, -200)
-			},
-		})
+		aura := warrior.NewTemporaryStatsAura("Gri'lek's Guard", actionID, stats.Stats{stats.BlockValue: 200}, time.Second*20)
 
 		spell := warrior.Character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,

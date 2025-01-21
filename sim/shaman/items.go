@@ -146,44 +146,9 @@ func init() {
 	core.NewItemEffect(TerrestrisEle, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 
-		boonOfEarth := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 469208},
-			Label:    "Boon of Earth",
-			Duration: time.Minute * 2,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.MeleeCrit, 1*core.CritRatingPerCritChance)
-				shaman.AddStatDynamic(sim, stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.MeleeCrit, -1*core.CritRatingPerCritChance)
-				shaman.AddStatDynamic(sim, stats.SpellCrit, -1*core.SpellCritRatingPerCritChance)
-			},
-		})
-
-		boonOfFire := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 469209},
-			Label:    "Boon of Fire",
-			Duration: time.Minute * 2,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.SpellDamage, 16)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.SpellDamage, -16)
-			},
-		})
-
-		boonOfWater := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 469210},
-			Label:    "Boon of Water",
-			Duration: time.Minute * 2,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.HealingPower, 31)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.HealingPower, 31)
-			},
-		})
-
+		boonOfEarth := shaman.NewTemporaryStatsAura("Boon of Earth", core.ActionID{SpellID: 469208}, stats.Stats{stats.MeleeCrit: 1 * core.CritRatingPerCritChance, stats.SpellCrit: 1 * core.SpellCritRatingPerCritChance}, time.Minute*2)
+		boonOfFire := shaman.NewTemporaryStatsAura("Boon of Fire", core.ActionID{SpellID: 469209}, stats.Stats{stats.SpellDamage: 16}, time.Minute*2)
+		boonOfWater := shaman.NewTemporaryStatsAura("Boon of Water", core.ActionID{SpellID: 469210}, stats.Stats{stats.HealingPower: 31}, time.Minute*2)
 		boonOfAir := shaman.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 452456},
 			Label:    "Boon of Air",
@@ -235,17 +200,7 @@ func init() {
 	core.NewItemEffect(TerrestrisTank, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 
-		boonOfEarth := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 452464},
-			Label:    "Boon of Earth",
-			Duration: time.Minute * 2,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.Block, 3*core.BlockRatingPerBlockChance)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.Block, 31*core.BlockRatingPerBlockChance)
-			},
-		})
+		boonOfEarth := shaman.NewTemporaryStatsAura("Boon of Earth", core.ActionID{SpellID: 452464}, stats.Stats{stats.Block: 3 * core.BlockRatingPerBlockChance}, time.Minute*2)
 
 		fireExplosion := shaman.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 453085},
@@ -491,29 +446,9 @@ func init() {
 	// Equip: Your Stormstrike spell causes you to gain 24 attack power for 12 sec. (More effective with a two - handed weapon).
 	core.NewItemEffect(TotemOfRagingFire, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		procAura1H := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{ItemID: TotemOfRagingFire}.WithTag(1),
-			Label:    "Totem of Raging Fire (1H)",
-			Duration: time.Second * 12,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 24)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -24)
-			},
-		})
+		procAura1H := shaman.NewTemporaryStatsAura("Totem of Raging Fire (1H)", core.ActionID{ItemID: TotemOfRagingFire}.WithTag(1), stats.Stats{stats.AttackPower: 24}, time.Second*12)
 		// TODO: Verify 2H value
-		procAura2H := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{ItemID: TotemOfRagingFire}.WithTag(2),
-			Label:    "Totem of Raging Fire (2H)",
-			Duration: time.Second * 12,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, 48)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.AttackPower, -48)
-			},
-		})
+		procAura2H := shaman.NewTemporaryStatsAura("Totem of Raging Fire (2H)", core.ActionID{ItemID: TotemOfRagingFire}.WithTag(2), stats.Stats{stats.AttackPower: 48}, time.Second*12)
 
 		shaman.RegisterAura(core.Aura{
 			Label:    "Totem of Raging Fire Trigger",

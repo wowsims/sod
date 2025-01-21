@@ -136,18 +136,12 @@ func (shaman *Shaman) applyT2Tank2PBonus() {
 		ActionID: core.ActionID{SpellID: 467891},
 		Label:    "Shield Block",
 		Duration: time.Second * 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.AddStatDynamic(sim, stats.Block, 30*core.BlockRatingPerBlockChance)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.AddStatDynamic(sim, stats.Block, -30*core.BlockRatingPerBlockChance)
-		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 			if result.DidBlock() {
 				aura.Deactivate(sim)
 			}
 		},
-	})
+	}).AttachStatBuff(stats.Block, 30*core.BlockRatingPerBlockChance)
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
@@ -449,21 +443,7 @@ func (shaman *Shaman) applyZGTank3PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachBuildPhaseStatsBuff(bonusStats))
 }
 
 // Increases the chance to trigger your Power Surge rune by an additional 5%.

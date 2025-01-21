@@ -166,14 +166,7 @@ func (warlock *Warlock) applyBackdraft() {
 		Label:    "Backdraft",
 		ActionID: core.ActionID{SpellID: 427714},
 		Duration: time.Second * 15,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.MultiplyCastSpeed(1.3)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.MultiplyCastSpeed(1 / 1.3)
-		},
-	})
+	}).AttachMultiplyCastSpeed(&warlock.Unit, 1.3)
 }
 
 func (warlock *Warlock) applyDecimation() {

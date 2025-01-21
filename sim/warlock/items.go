@@ -33,22 +33,19 @@ func init() {
 			Label:    "Massive Destruction",
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.AddStatDynamic(sim, stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
-				warlock.AddStatDynamic(sim, stats.MeleeCrit, 10*core.CritRatingPerCritChance)
-
 				affectedPet = warlock.ActivePet
 				if affectedPet != nil {
 					affectedPet.MultiplyAttackSpeed(sim, 1.50)
 				}
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.AddStatDynamic(sim, stats.SpellCrit, -10*core.SpellCritRatingPerCritChance)
-				warlock.AddStatDynamic(sim, stats.MeleeCrit, -10*core.CritRatingPerCritChance)
-
 				if affectedPet != nil {
 					affectedPet.MultiplyAttackSpeed(sim, 1/1.50)
 				}
 			},
+		}).AttachStatsBuff(stats.Stats{
+			stats.SpellCrit: 10 * core.SpellCritRatingPerCritChance,
+			stats.MeleeCrit: 10 * core.CritRatingPerCritChance,
 		})
 
 		spell := warlock.RegisterSpell(core.SpellConfig{

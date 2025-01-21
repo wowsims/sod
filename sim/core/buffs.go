@@ -556,18 +556,10 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 	aura.NewExclusiveEffect(config.Category, false, ExclusiveEffect{
 		Priority: totalStats,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
+			aura.Unit.AddBuildPhaseStatsDynamic(sim, bonusStats)
 
 			for _, dep := range statDeps {
-				if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
-				} else {
-					ee.Aura.Unit.EnableDynamicStatDep(sim, dep)
-				}
+				aura.Unit.EnableBuildPhaseStatDep(sim, dep)
 			}
 
 			if config.ExtraOnGain != nil {
@@ -575,18 +567,10 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 			}
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStats(bonusStats.Multiply(-1))
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Multiply(-1))
-			}
+			aura.Unit.AddBuildPhaseStatsDynamic(sim, bonusStats.Invert())
 
 			for _, dep := range statDeps {
-				if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
-				} else {
-					ee.Aura.Unit.DisableDynamicStatDep(sim, dep)
-				}
+				ee.Aura.Unit.DisableBuildPhaseStatDep(sim, dep)
 			}
 
 			if config.ExtraOnExpire != nil {
@@ -950,25 +934,13 @@ func BlessingOfKingsAura(character *Character) *Aura {
 		ActionID:   ActionID{SpellID: 20217},
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				for _, dep := range statDeps {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
-				}
-			} else {
-				for _, dep := range statDeps {
-					aura.Unit.EnableDynamicStatDep(sim, dep)
-				}
+			for _, dep := range statDeps {
+				aura.Unit.EnableBuildPhaseStatDep(sim, dep)
 			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				for _, dep := range statDeps {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
-				}
-			} else {
-				for _, dep := range statDeps {
-					aura.Unit.DisableDynamicStatDep(sim, dep)
-				}
+			for _, dep := range statDeps {
+				aura.Unit.DisableBuildPhaseStatDep(sim, dep)
 			}
 		},
 	}))
@@ -984,42 +956,24 @@ func HeartOfTheLionAura(character *Character) *Aura {
 		character.NewDynamicMultiplyStat(stats.Spirit, 1.10),
 	}
 
+	bonusStats := stats.Stats{stats.AttackPower: modAP, stats.RangedAttackPower: modAP}
+
 	return MakePermanent(character.RegisterAura(Aura{
 		Label:      "Heart of the Lion",
 		ActionID:   ActionID{SpellID: 409583},
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				character.AddStat(stats.AttackPower, modAP)
-				character.AddStat(stats.RangedAttackPower, modAP)
+			character.AddBuildPhaseStatsDynamic(sim, bonusStats)
 
-				for _, dep := range statDeps {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
-				}
-			} else {
-				character.AddStatDynamic(sim, stats.AttackPower, modAP)
-				character.AddStatDynamic(sim, stats.RangedAttackPower, modAP)
-
-				for _, dep := range statDeps {
-					aura.Unit.EnableDynamicStatDep(sim, dep)
-				}
+			for _, dep := range statDeps {
+				aura.Unit.EnableBuildPhaseStatDep(sim, dep)
 			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				character.AddStat(stats.AttackPower, -modAP)
-				character.AddStat(stats.RangedAttackPower, -modAP)
+			character.AddBuildPhaseStatsDynamic(sim, bonusStats.Invert())
 
-				for _, dep := range statDeps {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
-				}
-			} else {
-				character.AddStatDynamic(sim, stats.AttackPower, -modAP)
-				character.AddStatDynamic(sim, stats.RangedAttackPower, -modAP)
-
-				for _, dep := range statDeps {
-					aura.Unit.DisableDynamicStatDep(sim, dep)
-				}
+			for _, dep := range statDeps {
+				aura.Unit.DisableBuildPhaseStatDep(sim, dep)
 			}
 		},
 	}))
@@ -1070,21 +1024,7 @@ func DevotionAuraAura(unit *Unit, points int32) *Aura {
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats)
-			} else {
-				unit.AddStatsDynamic(sim, updateStats)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats.Multiply(-1))
-			} else {
-				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
-			}
-		},
-	})
+	}).AttachBuildPhaseStatsBuff(updateStats)
 }
 
 func StoneskinTotemAura(unit *Unit, points int32) *Aura {
@@ -1957,61 +1897,43 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 }
 
 func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
+	label := "Strength of Earth Totem"
 	rank := LevelToBuffRank[StrengthOfEarth][level]
 	spellID := []int32{0, 8075, 8160, 8161, 10442, 25361}[rank]
 	duration := time.Minute * 2
 	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier).Floor()
 
-	aura := unit.GetOrRegisterAura(Aura{
-		Label:      "Strength of Earth Totem",
+	aura := unit.GetAura(label)
+	if aura != nil {
+		return aura
+	}
+
+	return unit.RegisterAura(Aura{
+		Label:      label,
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats)
-			} else {
-				unit.AddStatsDynamic(sim, updateStats)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats.Multiply(-1))
-			} else {
-				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
-			}
-		},
-	})
-	return aura
+	}).AttachBuildPhaseStatsBuff(updateStats)
 }
 
 func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
+	label := "Grace of Air Totem"
 	rank := LevelToBuffRank[GraceOfAir][level]
 	spellID := []int32{0, 8835, 10627, 25359}[rank]
 	duration := time.Minute * 2
 	updateStats := BuffSpellByLevel[GraceOfAir][level].Multiply(multiplier).Floor()
 
-	aura := unit.GetOrRegisterAura(Aura{
-		Label:      "Grace of Air Totem",
+	aura := unit.GetAura(label)
+	if aura != nil {
+		return aura
+	}
+
+	return unit.RegisterAura(Aura{
+		Label:      label,
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats)
-			} else {
-				unit.AddStatsDynamic(sim, updateStats)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats.Multiply(-1))
-			} else {
-				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
-			}
-		},
-	})
-	return aura
+	}).AttachBuildPhaseStatsBuff(updateStats)
 }
 
 const BattleShoutRanks = 7
@@ -2021,26 +1943,25 @@ var BattleShoutBaseAP = [BattleShoutRanks + 1]float64{0, 20, 40, 57, 93, 138, 19
 var BattleShoutLevel = [BattleShoutRanks + 1]int{0, 1, 12, 22, 32, 42, 52, 60}
 
 func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *Aura {
+	label := "Battle Shout"
 	rank := LevelToBuffRank[BattleShout][unit.Level]
 	spellId := BattleShoutSpellId[rank]
 	baseAP := BattleShoutBaseAP[rank]
+	stats := stats.Stats{
+		stats.AttackPower: math.Floor(baseAP * (1 + 0.05*float64(impBattleShout))),
+	}
 
-	return unit.GetOrRegisterAura(Aura{
-		Label:      "Battle Shout",
+	aura := unit.GetAura(label)
+	if aura != nil {
+		return aura
+	}
+
+	return unit.RegisterAura(Aura{
+		Label:      label,
 		ActionID:   ActionID{SpellID: spellId},
 		Duration:   time.Duration(float64(time.Minute*2) * (1 + 0.1*float64(boomingVoicePts))),
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: math.Floor(baseAP * (1 + 0.05*float64(impBattleShout))),
-			})
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: -1 * math.Floor(baseAP*(1+0.05*float64(impBattleShout))),
-			})
-		},
-	})
+	}).AttachBuildPhaseStatsBuff(stats)
 }
 
 func SpiritOfTheAlphaAura(unit *Unit) *Aura {
@@ -2734,21 +2655,7 @@ func AtieshHealingEffect(unit *Unit) *Aura {
 		ActionID:   ActionID{SpellID: 1219553},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStats(stats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, stats)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStats(stats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, stats.Invert())
-			}
-		},
-	}))
+	}).AttachBuildPhaseStatsBuff(stats))
 }
 
 // Equip: Increases the spell critical chance of all party members within 30 yards by 2%. This specific effect does not stack from multiple sources.
@@ -2759,25 +2666,13 @@ func AtieshSpellCritEffect(unit *Unit) *Aura {
 		return unit.GetAura(label)
 	}
 
+	stats := stats.Stats{stats.SpellCrit: 2 * SpellCritRatingPerCritChance}
+
 	return MakePermanent(unit.RegisterAura(Aura{
 		ActionID:   ActionID{SpellID: 1219558},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(stats.SpellCrit, 2*SpellCritRatingPerCritChance)
-			} else {
-				aura.Unit.AddStatDynamic(sim, stats.SpellCrit, 2*SpellCritRatingPerCritChance)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(stats.SpellCrit, -2*SpellCritRatingPerCritChance)
-			} else {
-				aura.Unit.AddStatDynamic(sim, stats.SpellCrit, -2*SpellCritRatingPerCritChance)
-			}
-		},
-	}))
+	}).AttachBuildPhaseStatsBuff(stats))
 }
 
 // Equip: Increases damage and healing done by magical spells and effects of all party members within 30 yards by up to 33. This specific effect does not stack from multiple sources.
@@ -2788,23 +2683,11 @@ func AtieshSpellPowerEffect(unit *Unit) *Aura {
 		return unit.GetAura(label)
 	}
 
+	stats := stats.Stats{stats.SpellPower: 33}
+
 	return MakePermanent(unit.RegisterAura(Aura{
 		ActionID:   ActionID{SpellID: 1219552},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(stats.SpellPower, 33)
-			} else {
-				aura.Unit.AddStatDynamic(sim, stats.SpellPower, 33)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(stats.SpellPower, -33)
-			} else {
-				aura.Unit.AddStatDynamic(sim, stats.SpellPower, -33)
-			}
-		},
-	}))
+	}).AttachBuildPhaseStatsBuff(stats))
 }

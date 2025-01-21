@@ -514,13 +514,8 @@ var ItemSetCoreHoundsCall = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 461270},
 				Label:    "Magmadar's Return",
 				Duration: time.Second * 20,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					character.MultiplyAttackSpeed(sim, 1.1)
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					character.MultiplyAttackSpeed(sim, 1/1.1)
-				},
-			})
+			}).AttachMultiplyAttackSpeed(&character.Unit, 1.1)
+
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 				Name:              "Magmadar's Return Trigger",
 				Callback:          core.CallbackOnSpellHitDealt,

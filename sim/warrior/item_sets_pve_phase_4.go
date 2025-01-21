@@ -197,6 +197,7 @@ func (warrior *Warrior) applyT1Damage6PBonus() {
 			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.10
 		},
 	})
+
 	defenseAura := warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 457814},
 		Label:    "Defense Forecast",
@@ -208,17 +209,8 @@ func (warrior *Warrior) applyT1Damage6PBonus() {
 			warrior.PseudoStats.DamageTakenMultiplier /= 0.90
 		},
 	})
-	berserkAura := warrior.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 457817},
-		Label:    "Berserker Forecast",
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.MeleeCrit, 10*core.CritRatingPerCritChance)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.MeleeCrit, -10*core.CritRatingPerCritChance)
-		},
-	})
+
+	berserkAura := warrior.NewTemporaryStatsAura("Berserker Forecast", core.ActionID{SpellID: 457817}, stats.Stats{stats.MeleeCrit: 10 * core.CritRatingPerCritChance}, duration)
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,

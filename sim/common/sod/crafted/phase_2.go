@@ -19,19 +19,17 @@ func init() {
 		character := agent.GetCharacter()
 		actionId := core.ActionID{SpellID: 437327}
 
-		buffAura := character.GetOrRegisterAura(core.Aura{
+		buffAura := character.RegisterAura(core.Aura{
 			Label:    "Charged Inspiration",
 			ActionID: actionId,
 			Duration: time.Second * 12,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellPower, 50)
 				character.PseudoStats.SchoolCostMultiplier.AddToMagicSchools(-50)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellPower, -50)
 				character.PseudoStats.SchoolCostMultiplier.AddToMagicSchools(50)
 			},
-		})
+		}).AttachStatBuff(stats.SpellPower, 50)
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionId,
@@ -59,19 +57,11 @@ func init() {
 	// Hyperconductive Goldwrap
 	core.NewItemEffect(215115, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		buffAuraCrit := character.GetOrRegisterAura(core.Aura{
+		buffAuraCrit := character.RegisterAura(core.Aura{
 			Label:    "Coin Flip: Crit",
 			ActionID: core.ActionID{SpellID: 437698},
 			Duration: time.Second * 30,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.MeleeCrit, 3)
-				character.AddStatDynamic(sim, stats.SpellCrit, 3)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.MeleeCrit, -3)
-				character.AddStatDynamic(sim, stats.SpellCrit, -3)
-			},
-		})
+		}).AttachStatsBuff(stats.Stats{stats.MeleeCrit: 3, stats.SpellCrit: 3})
 
 		buffAuraMs := character.GetOrRegisterAura(core.Aura{
 			Label:    "Coin Flip: Movement Speed",
@@ -182,19 +172,17 @@ func init() {
 		character := agent.GetCharacter()
 		actionId := core.ActionID{SpellID: 437357}
 
-		buffAura := character.GetOrRegisterAura(core.Aura{
+		buffAura := character.RegisterAura(core.Aura{
 			Label:    "Gneuromantic Meditation",
 			ActionID: actionId,
 			Duration: time.Second * 20,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellPower, 50)
 				character.PseudoStats.ForceFullSpiritRegen = true
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellPower, -50)
 				character.PseudoStats.ForceFullSpiritRegen = false
 			},
-		})
+		}).AttachStatBuff(stats.SpellPower, 50)
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionId,
@@ -233,17 +221,11 @@ func init() {
 		character := agent.GetCharacter()
 		actionId := core.ActionID{SpellID: 437362}
 
-		buffAura := character.GetOrRegisterAura(core.Aura{
+		buffAura := character.RegisterAura(core.Aura{
 			Label:    "Hyperconductive Shock",
 			ActionID: actionId,
 			Duration: time.Second * 10,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyCastSpeed(1.2)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyCastSpeed(1 / 1.2)
-			},
-		})
+		}).AttachMultiplyCastSpeed(&character.Unit, 1.2)
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionId,
@@ -300,17 +282,11 @@ func init() {
 		character := agent.GetCharacter()
 		actionId := core.ActionID{SpellID: 437377}
 
-		buffAura := character.GetOrRegisterAura(core.Aura{
+		buffAura := character.RegisterAura(core.Aura{
 			Label:    "Intense Concentration",
 			ActionID: actionId,
 			Duration: time.Second * 10,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.2)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.0/1.2)
-			},
-		})
+		}).AttachMultiplyAttackSpeed(&character.Unit, 1.2)
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionId,

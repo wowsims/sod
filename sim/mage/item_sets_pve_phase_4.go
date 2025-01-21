@@ -171,11 +171,7 @@ func (mage *Mage) applyT1Damage6PBonus() {
 			case proto.Mage_Options_MageArmor:
 				mage.PseudoStats.SpiritRegenRateCasting += bonusSpiritRegenRateCasting
 			case proto.Mage_Options_MoltenArmor:
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-					mage.AddStat(stats.SpellPower, bonusSpellPower)
-				} else {
-					mage.AddStatDynamic(sim, stats.SpellPower, bonusSpellPower)
-				}
+				mage.AddBuildPhaseStatDynamic(sim, stats.SpellPower, bonusSpellPower)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -185,11 +181,7 @@ func (mage *Mage) applyT1Damage6PBonus() {
 			case proto.Mage_Options_MageArmor:
 				mage.PseudoStats.SpiritRegenRateCasting -= bonusSpiritRegenRateCasting
 			case proto.Mage_Options_MoltenArmor:
-				if mage.Options.Armor == proto.Mage_Options_MoltenArmor && aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-					mage.AddStat(stats.SpellPower, -bonusSpellPower)
-				} else {
-					mage.AddStatDynamic(sim, stats.SpellPower, -bonusSpellPower)
-				}
+				mage.AddBuildPhaseStatDynamic(sim, stats.SpellPower, -bonusSpellPower)
 			}
 		},
 	}))

@@ -107,18 +107,12 @@ func (paladin *Paladin) applyRedoubt() {
 		ActionID:  actionID,
 		Duration:  time.Second * 10,
 		MaxStacks: 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.AddStatDynamic(sim, stats.Block, bonusBlockRating)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.AddStatDynamic(sim, stats.Block, -bonusBlockRating)
-		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidBlock() {
 				aura.RemoveStack(sim)
 			}
 		},
-	})
+	}).AttachStatBuff(stats.Block, bonusBlockRating)
 
 	paladin.RegisterAura(core.Aura{
 		Label:    "Redoubt",

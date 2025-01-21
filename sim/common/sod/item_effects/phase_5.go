@@ -227,17 +227,7 @@ func init() {
 func makeWillOfWarlookOnUseEffect(character *core.Character, itemID int32) {
 	actionID := core.ActionID{ItemID: itemID}
 
-	buffAura := character.RegisterAura(core.Aura{
-		ActionID: actionID,
-		Label:    "Serpentine Spirit",
-		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.AddStatDynamic(sim, stats.Spirit, 200)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.AddStatDynamic(sim, stats.Spirit, -200)
-		},
-	})
+	buffAura := character.NewTemporaryStatsAura("Serpentine Spirit", actionID, stats.Stats{stats.Spirit: 200}, time.Second*20)
 
 	spell := character.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
@@ -312,65 +302,11 @@ func clawOfChromaggusEffect(character *core.Character, itemID int32) {
 
 	duration := time.Second * 10
 
-	arcaneAura := character.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467410},
-		Label:    "Brood Boon: Bronze",
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.ArcanePower, 50)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.ArcanePower, -50)
-		},
-	})
-
-	fireAura := character.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467414},
-		Label:    "Brood Boon: Red",
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.FirePower, 50)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.FirePower, -50)
-		},
-	})
-
-	frostAura := character.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467412},
-		Label:    "Brood Boon: Blue",
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.FrostPower, 50)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.FrostPower, -50)
-		},
-	})
-
-	natureAura := character.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467413},
-		Label:    "Brood Boon: Green",
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.NaturePower, 50)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.NaturePower, -50)
-		},
-	})
-
-	shadowAura := character.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467411},
-		Label:    "Brood Boon: Black",
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.ShadowPower, 50)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.ShadowPower, -50)
-		},
-	})
+	arcaneAura := character.NewTemporaryStatsAura("Brood Boon: Bronze", core.ActionID{SpellID: 467410}, stats.Stats{stats.ArcanePower: 50}, duration)
+	fireAura := character.NewTemporaryStatsAura("Brood Boon: Red", core.ActionID{SpellID: 467414}, stats.Stats{stats.FirePower: 50}, duration)
+	frostAura := character.NewTemporaryStatsAura("Brood Boon: Blue", core.ActionID{SpellID: 467412}, stats.Stats{stats.FrostPower: 50}, duration)
+	natureAura := character.NewTemporaryStatsAura("Brood Boon: Green", core.ActionID{SpellID: 467413}, stats.Stats{stats.NaturePower: 50}, duration)
+	shadowAura := character.NewTemporaryStatsAura("Brood Boon: Black", core.ActionID{SpellID: 467411}, stats.Stats{stats.ShadowPower: 50}, duration)
 
 	arcaneRangeMax := 0.0 + arcaneChance
 	fireRangeMax := arcaneRangeMax + fireChance

@@ -99,24 +99,11 @@ func (druid *Druid) applyT1Balance4PBonus() {
 		stats.SpellHit: 3 * core.SpellHitRatingPerHitChance,
 	}
 
-	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label:      label,
-		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	core.MakePermanent(
+		druid.RegisterAura(core.Aura{
+			Label:      label,
+			BuildPhase: core.CharacterBuildPhaseBuffs,
+		}).AttachBuildPhaseStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on Starfall by 50%.

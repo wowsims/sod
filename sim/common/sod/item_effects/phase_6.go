@@ -204,17 +204,7 @@ func init() {
 	// (15s cooldown)
 	core.NewItemEffect(RingOfSwarmingThought, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		buffAura := character.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 474148},
-			Label:    "Swarming Thoughts",
-			Duration: time.Second * 15,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellDamage, 15)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellDamage, -15)
-			},
-		})
+		buffAura := character.NewTemporaryStatsAura("Swarming Thoughts", core.ActionID{SpellID: 474148}, stats.Stats{stats.SpellDamage: 15}, time.Second*15)
 
 		aura := core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
 			Name:             "Swarming Thoughts Trigger",
@@ -360,17 +350,7 @@ func init() {
 	// (Proc chance: 50%, 5s cooldown)
 	core.NewItemEffect(LeggingsOfImmersion, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		buffAura := character.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 474126},
-			Label:    "Immersed",
-			Duration: time.Second * 10,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellDamage, 40)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellDamage, -40)
-			},
-		})
+		buffAura := character.NewTemporaryStatsAura("Immersed", core.ActionID{SpellID: 474126}, stats.Stats{stats.SpellDamage: 40}, time.Second*10)
 
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
@@ -440,17 +420,7 @@ func init() {
 	// (15s cooldown)
 	core.NewItemEffect(RobesOfTheBattleguard, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		buffAura := character.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 1213241},
-			Label:    "Resolve of the Battleguard",
-			Duration: time.Second * 15,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellDamage, 20)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.SpellDamage, -20)
-			},
-		})
+		buffAura := character.NewTemporaryStatsAura("Resolve of the Battleguard", core.ActionID{SpellID: 1213241}, stats.Stats{stats.SpellDamage: 20}, time.Second*15)
 
 		triggerAura := core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
 			Name:             "Resolve of the Battleguard Trigger",
@@ -662,18 +632,10 @@ func TimewornExpertiseAura(agent core.Agent, itemID int32) {
 		Label:      "Timeworn Expertise Aura",
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(stats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, stats)
-			}
+			aura.Unit.AddBuildPhaseStatsDynamic(sim, stats)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(stats.Multiply(-1))
-			} else {
-				aura.Unit.AddStatsDynamic(sim, stats.Multiply(-1))
-			}
+			aura.Unit.AddBuildPhaseStatsDynamic(sim, stats.Invert())
 		},
 	}))
 

@@ -401,21 +401,19 @@ func init() {
 		actionID := core.ActionID{ItemID: WushoolaysCharmOfNature}
 		duration := time.Second * 20
 
+		// TODO: healing dealt multiplier?
 		aura := character.RegisterAura(core.Aura{
 			ActionID: actionID,
 			Label:    "Aligned with Nature",
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.10)
-				// TODO: healing dealt multiplier?
-				character.AddStatDynamic(sim, stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.10)
-				// TODO: healing dealt multiplier?
-				character.AddStatDynamic(sim, stats.SpellCrit, -10*core.SpellCritRatingPerCritChance)
 			},
-		})
+			// TODO: healing dealt multiplier?
+		}).AttachStatBuff(stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
