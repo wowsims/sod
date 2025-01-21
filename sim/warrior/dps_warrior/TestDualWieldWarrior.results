@@ -344,8 +344,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-StatWeights-Default"
  value: {
-  weights: 3.64638
-  weights: 4.1997
+  weights: 4.50542
+  weights: 2.10941
   weights: 0
   weights: 0
   weights: 0
@@ -361,9 +361,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.39873
-  weights: 15.75984
-  weights: 41.73877
+  weights: 1.39801
+  weights: 14.97995
+  weights: 37.16359
   weights: 0
   weights: 0
   weights: 0
@@ -862,50 +862,50 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 3579.88699
-  tps: 3009.13205
+  dps: 3552.7797
+  tps: 2985.69898
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 2206.71277
-  tps: 1875.69906
+  dps: 2177.15656
+  tps: 1849.44781
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 2840.17925
-  tps: 2393.80241
+  dps: 2782.27111
+  tps: 2346.49931
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 2804.54272
-  tps: 2365.88927
+  dps: 2754.10543
+  tps: 2323.05276
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 2840.17925
-  tps: 2393.80241
+  dps: 2782.27111
+  tps: 2346.49931
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 3803.83077
-  tps: 3192.25589
+  dps: 3741.98611
+  tps: 3140.09061
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 5838.90795
-  tps: 4756.83032
+  dps: 5770.55072
+  tps: 4700.25222
  }
 }
 dps_results: {
@@ -995,7 +995,7 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4988.97068
-  tps: 4057.98562
+  dps: 4912.00696
+  tps: 3990.11534
  }
 }

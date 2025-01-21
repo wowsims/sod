@@ -260,17 +260,12 @@ export const TalentsFrostfirePhase4 = PresetUtils.makePresetTalents('P4 Frostfir
 	customCondition: player => player.getLevel() === 60,
 });
 
-// P5
-export const TalentsFrostPhase5 = PresetUtils.makePresetTalents('P5 Spellfrost', SavedTalents.create({ talentsString: '250025001002--05350203100351051' }), {
-	customCondition: player => player.getLevel() === 60,
-});
-
 // P6
 // No new arcane build
 export const TalentsFirePhase6 = PresetUtils.makePresetTalents('P6 Fire', SavedTalents.create({ talentsString: '-0552323121033151-203500031' }), {
 	customCondition: player => player.getLevel() === 60,
 });
-export const TalentsFrostPhase6 = PresetUtils.makePresetTalents('P6 Spellfrost', SavedTalents.create({ talentsString: '005055001--20350203110351351' }), {
+export const TalentsFrostPhase6 = PresetUtils.makePresetTalents('P5/6 Spellfrost', SavedTalents.create({ talentsString: '005005001--20353203112351351' }), {
 	customCondition: player => player.getLevel() === 60,
 });
 
@@ -279,7 +274,7 @@ export const TalentPresets = {
 	[Phase.Phase2]: [TalentsArcanePhase2, TalentsFirePhase2, TalentsFirePhase2],
 	[Phase.Phase3]: [TalentsArcanePhase3, TalentsFirePhase3, TalentsFrostPhase3],
 	[Phase.Phase4]: [TalentsArcanePhase4_5, TalentsFirePhase4_5, TalentsFrostfirePhase4],
-	[Phase.Phase5]: [TalentsArcanePhase4_5, TalentsFirePhase4_5, TalentsFrostPhase5],
+	[Phase.Phase5]: [TalentsArcanePhase4_5, TalentsFirePhase4_5],
 	[Phase.Phase6]: [TalentsFirePhase6, TalentsFrostPhase6],
 	[Phase.Phase7]: [],
 };

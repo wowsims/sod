@@ -50,6 +50,9 @@ func init() {
 			},
 		})
 
+		procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee proc combo
+		procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
+
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Fiery Blaze",
 			Duration:   core.NeverExpires,
@@ -58,6 +61,7 @@ func init() {
 			Outcome:    core.OutcomeLanded,
 			DPM:        character.AutoAttacks.NewDynamicProcManagerForEnchant(4074, 0, 0.15),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.ProcMask = core.Ternary(spell.ProcMask.Matches(core.ProcMaskMeleeSpecial), procMaskOnSpecial, procMaskOnAuto)
 				procSpell.Cast(sim, result.Target)
 			},
 		})

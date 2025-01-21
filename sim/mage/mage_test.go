@@ -289,10 +289,10 @@ var Phase4TalentsFrost = "-0550320003021-2035020310035105"
 
 var Phase5TalentsArcane = "2500550010031531--2035020310004"
 var Phase5TalentsFire = "21-5052300123033151-203500031"
-var phase5talentsfrost = "250025001002--05350203100351051"
+var phase5talentsfrost = "005005001--20353203112351351"
 
 var Phase6TalentsFire = "-0552323121033151-203500031"
-var phase6talentsfrost = "005055001--20350203110351351"
+var phase6talentsfrost = "005005001--20353203112351351"
 
 var PlayerOptionsArcane = &proto.Player_Mage{
 	Mage: &proto.Mage{

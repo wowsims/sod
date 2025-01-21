@@ -127,12 +127,11 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=237512/blade-of-inquisition
 	// Equip: Chance on hit to Increase your Strength by 250 and movement speed by 15% for 15 sec. (15s cooldown)
-	// TODO: Verify proc chance, a 15% chance lines up pretty well with the uptime of similar buffs like Crusader
-	// Equip-procs with ICDs don't use PPM so we're just guessing that the 100% stated in the db files is incorrect
+	// TODO: Verify proc chance, 1ppm for now
 	core.NewItemEffect(BladeOfInquisition, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(BladeOfInquisition, 0, 0.15)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(BladeOfInquisition, 1.0, 0)
 
 		buffAura := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1223342},

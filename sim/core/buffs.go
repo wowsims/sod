@@ -2704,7 +2704,9 @@ func AtieshCastSpeedEffect(unit *Unit) *Aura {
 	}
 
 	return MakePermanent(unit.RegisterAura(Aura{
-		Label: label,
+		ActionID:   ActionID{SpellID: 1219557},
+		Label:      label,
+		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.MultiplyCastSpeed(1.02)
 		},
@@ -2729,6 +2731,7 @@ func AtieshHealingEffect(unit *Unit) *Aura {
 	}
 
 	return MakePermanent(unit.RegisterAura(Aura{
+		ActionID:   ActionID{SpellID: 1219553},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
@@ -2757,6 +2760,7 @@ func AtieshSpellCritEffect(unit *Unit) *Aura {
 	}
 
 	return MakePermanent(unit.RegisterAura(Aura{
+		ActionID:   ActionID{SpellID: 1219558},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
@@ -2785,6 +2789,7 @@ func AtieshSpellPowerEffect(unit *Unit) *Aura {
 	}
 
 	return MakePermanent(unit.RegisterAura(Aura{
+		ActionID:   ActionID{SpellID: 1219552},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {

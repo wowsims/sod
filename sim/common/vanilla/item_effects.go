@@ -139,7 +139,6 @@ const (
 	JomGabbar                       = 233627 // 23570
 	TheBurrowersShield              = 233628 // 23558
 	NeretzekBloodDrinker            = 233647
-	Speedstone                      = 233990
 	ManslayerOfTheQiraji            = 234067
 	EyeOfMoam                       = 234080 // 21473
 	FetishOfChitinousSpikes         = 234092 // 21488
@@ -2915,30 +2914,6 @@ func init() {
 	// https://www.wowhead.com/classic/item=13209/seal-of-the-dawn
 	// Equip: +81 Attack Power when fighting Undead.
 	core.NewMobTypeAttackPowerEffect(SealOfTheDawn, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
-
-	// https://www.wowhead.com/classic/item=233990/speedstone
-	// Increases your attack speed by 2%.
-	core.NewItemEffect(Speedstone, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		hasteMulti := 1.02
-
-		procAura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label:    "Haste",
-			ActionID: core.ActionID{SpellID: 1213971},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.MeleeSpeedMultiplier *= hasteMulti
-				character.PseudoStats.RangedSpeedMultiplier *= hasteMulti
-
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.MeleeSpeedMultiplier *= 1 / hasteMulti
-				character.PseudoStats.RangedSpeedMultiplier *= 1 / hasteMulti
-			},
-		}))
-
-		character.ItemSwap.RegisterProc(Frostguard, procAura)
-	})
 
 	// https://www.wowhead.com/classic/item=228255/talisman-of-ephemeral-power
 	// Use: Increases damage and healing done by magical spells and effects by up to 184 for 15 sec. (1 Min, 30 Sec Cooldown)
