@@ -747,6 +747,20 @@ func (c *Character) ApplyRingRunes() {
 	}
 
 	// Weapon Skill Specializations
+	// Generic spell used for a catch-all weapon skill rune to help avoid user confusion
+	if c.HasRuneById(29088) {
+		c.AxeSpecializationAura()
+		c.DaggerSpecializationAura()
+		c.FistWeaponSpecializationAura()
+		c.MaceSpecializationAura()
+		c.PoleWeaponSpecializationAura()
+		c.GunSpecializationAura()
+		c.BowSpecializationAura()
+		c.CrossbowSpecializationAura()
+		c.ThrownSpecializationAura()
+		c.SwordSpecializationAura()
+	}
+
 	if c.HasRuneById(int32(proto.RingRune_RuneRingAxeSpecialization)) {
 		c.AxeSpecializationAura()
 	}
