@@ -109,7 +109,7 @@ func (paladin *Paladin) applyReckoning() {
 		ProcMask:   core.ProcMaskMeleeOrRanged,
 		ProcChance: procChance,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
+			paladin.AutoAttacks.ExtraMHAttackProc(sim, 1, procID, spell)
 		},
 	})
 }

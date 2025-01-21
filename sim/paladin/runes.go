@@ -284,44 +284,48 @@ func (paladin *Paladin) registerAegis() {
 	// The SBV bonus is additive with Shield Specialization.
 	paladin.PseudoStats.BlockValueMultiplier += 0.3
 
-	// Redoubt now has a 10% chance to trigger on any melee or ranged attack against
-	// you, and always triggers on your melee critical strikes.
-	paladin.RegisterAura(core.Aura{
-		Label:    "Redoubt Aegis Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && result.Landed() {
-				if sim.Proc(0.1, "Aegis Attack") {
+	if paladin.Talents.Redoubt > 0 {
+		// Redoubt now has a 10% chance to trigger on any melee or ranged attack against
+		// you, and always triggers on your melee critical strikes.
+		paladin.RegisterAura(core.Aura{
+			Label:    "Redoubt Aegis Trigger",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && result.Landed() {
+					if sim.Proc(0.1, "Aegis Attack") {
+						paladin.redoubtAura.Activate(sim)
+						paladin.redoubtAura.SetStacks(sim, 5)
+					}
+				}
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskMelee) && result.DidCrit() {
 					paladin.redoubtAura.Activate(sim)
 					paladin.redoubtAura.SetStacks(sim, 5)
 				}
-			}
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.DidCrit() {
-				paladin.redoubtAura.Activate(sim)
-				paladin.redoubtAura.SetStacks(sim, 5)
-			}
-		},
-	})
+			},
+		})
+	}
 
-	// Reckoning now also procs on any melee or ranged attack against you with (2% * talent points) chance
-	procID := core.ActionID{SpellID: 20178} // reckoning proc id
-	procChance := 0.02 * float64(paladin.Talents.Reckoning)
+	if paladin.Talents.Reckoning > 0 {
+		// Reckoning now also procs on any melee or ranged attack against you with (2% * talent points) chance
+		procID := core.ActionID{SpellID: 20178} // reckoning proc id
+		procChance := 0.02 * float64(paladin.Talents.Reckoning)
 
-	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:       "Reckoning Aegis Trigger",
-		Callback:   core.CallbackOnSpellHitTaken,
-		ProcMask:   core.ProcMaskMeleeOrRanged,
-		Outcome:    core.OutcomeLanded,
-		ProcChance: procChance,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
-		},
-	})
+		core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+			Name:       "Reckoning Aegis Trigger",
+			Callback:   core.CallbackOnSpellHitTaken,
+			ProcMask:   core.ProcMaskMeleeOrRanged,
+			Outcome:    core.OutcomeLanded ^ core.OutcomeCrit,
+			ProcChance: procChance,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				paladin.AutoAttacks.ExtraMHAttackProc(sim, 1, procID, spell)
+			},
+		})
+	}
 }
 
 func (paladin *Paladin) registerMalleableProtection() {
