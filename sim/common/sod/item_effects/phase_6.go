@@ -357,7 +357,7 @@ func init() {
 			Duration: time.Second * 5,
 		}
 
-		triggerAura := core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Immersed Trigger",
 			Callback: core.CallbackOnSpellHitDealt,
 			ProcMask: core.ProcMaskSpellDamage,

@@ -108,33 +108,27 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(character.RegisterAura(core.Aura{
-			Label: "Gla'sir Damage Trigger",
-			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Damage") {
-					damageSpell.Cast(sim, result.Target)
-				}
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Gla'sir Damage",
+			Callback:   core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeCrit,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: 0.15,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				damageSpell.Cast(sim, result.Target)
 			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Damage") {
-					damageSpell.Cast(sim, result.Target)
-				}
-			},
-		}))
+		})
 
-		core.MakePermanent(character.RegisterAura(core.Aura{
-			Label: "Gla'sir Heal Trigger",
-			OnPeriodicHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Heal") {
-					healSpell.Cast(sim, result.Target)
-				}
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Gla'sir Heal",
+			Callback:   core.CallbackOnPeriodicHealDealt | core.CallbackOnHealDealt,
+			Outcome:    core.OutcomeCrit,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: 0.15,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				healSpell.Cast(sim, result.Target)
 			},
-			OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Heal") {
-					healSpell.Cast(sim, result.Target)
-				}
-			},
-		}))
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=23198/idol-of-brutality

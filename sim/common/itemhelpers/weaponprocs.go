@@ -55,21 +55,16 @@ func CreateWeaponProcDamage(itemID int32, itemName string, ppm float64, spellID 
 		}
 
 		procSpell := character.RegisterSpell(sc)
-		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0)
 
-		aura := character.GetOrRegisterAura(core.Aura{
-			Label:    fmt.Sprintf("%s Proc Aura", itemName),
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(spellFlagExclude) { // This check is needed because it doesn't use aura_helpers ApplyProcTriggerCallback
-					return
-				}
-				if result.Landed() && dpm.Proc(sim, spell.ProcMask, aura.Label) {
-					procSpell.Cast(sim, result.Target)
-				}
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              fmt.Sprintf("%s Proc Aura", itemName),
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			DPM:               character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0),
+			DPMProcType:       core.DPMProcNoWeaponSpecials,
+			SpellFlagsExclude: spellFlagExclude,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, result.Target)
 			},
 		})
 
@@ -78,22 +73,22 @@ func CreateWeaponProcDamage(itemID int32, itemName string, ppm float64, spellID 
 }
 
 // Creates a weapon proc for "Chance on Hit" weapon effects
-func CreateWeaponCoHProcDamage(itemId int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
+func CreateWeaponCoHProcDamage(itemID int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
 	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType) {
 
-	CreateWeaponProcDamage(itemId, itemName, ppm, spellId, school, dmgMin, dmgRange, bonusCoef, defType, core.SpellFlagSuppressWeaponProcs)
+	CreateWeaponProcDamage(itemID, itemName, ppm, spellId, school, dmgMin, dmgRange, bonusCoef, defType, core.SpellFlagSuppressWeaponProcs)
 }
 
 // Creates a weapon proc for "Equip" weapon effects
-func CreateWeaponEquipProcDamage(itemId int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
+func CreateWeaponEquipProcDamage(itemID int32, itemName string, ppm float64, spellId int32, school core.SpellSchool,
 	dmgMin float64, dmgRange float64, bonusCoef float64, defType core.DefenseType) {
 
-	CreateWeaponProcDamage(itemId, itemName, ppm, spellId, school, dmgMin, dmgRange, bonusCoef, defType, core.SpellFlagSuppressEquipProcs)
+	CreateWeaponProcDamage(itemID, itemName, ppm, spellId, school, dmgMin, dmgRange, bonusCoef, defType, core.SpellFlagSuppressEquipProcs)
 }
 
 // Create a weapon proc using a custom spell.
-func CreateWeaponProcSpell(itemId int32, itemName string, ppm float64, procSpellGenerator func(character *core.Character) *core.Spell) {
-	core.NewItemEffect(itemId, func(agent core.Agent) {
+func CreateWeaponProcSpell(itemID int32, itemName string, ppm float64, procSpellGenerator func(character *core.Character) *core.Spell) {
+	core.NewItemEffect(itemID, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		procSpell := procSpellGenerator(character)
@@ -103,7 +98,7 @@ func CreateWeaponProcSpell(itemId int32, itemName string, ppm float64, procSpell
 			Name:              itemName + " Proc",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			DPM:               character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemId, ppm, 0),
+			DPM:               character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0),
 			DPMProcType:       core.DPMProcNoWeaponSpecials,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -111,7 +106,7 @@ func CreateWeaponProcSpell(itemId int32, itemName string, ppm float64, procSpell
 			},
 		})
 
-		character.ItemSwap.RegisterProc(itemId, aura)
+		character.ItemSwap.RegisterProc(itemID, aura)
 	})
 }
 
@@ -123,20 +118,18 @@ func CreateWeaponProcAura(itemID int32, itemName string, ppm float64, procAuraGe
 		procAura := procAuraGenerator(character)
 
 		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0)
-		procLabel := itemName + " Proc"
 
-		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-			Label:    itemName + " Proc Aura",
-			Duration: core.NeverExpires,
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
-					return
-				}
-				if result.Landed() && dpm.Proc(sim, spell.ProcMask, procLabel) {
-					procAura.Activate(sim)
-				}
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              itemName + " Proc",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			DPM:               dpm,
+			DPMProcType:       core.DPMProcNoWeaponSpecials,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procAura.Activate(sim)
 			},
-		}))
+		})
 
 		character.ItemSwap.RegisterProc(itemID, aura)
 	})

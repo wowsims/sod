@@ -491,12 +491,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 3.38991
-  weights: 2.80794
+  weights: 3.40601
+  weights: 2.80218
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.28196
+  weights: 0.28173
   weights: 0
   weights: 0
   weights: 0
@@ -504,13 +504,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.308
-  weights: 0.4551
+  weights: 4.39136
+  weights: 0.45264
   weights: 0
   weights: 0
-  weights: 1.21839
-  weights: 2.75101
-  weights: 41.14123
+  weights: 1.23443
+  weights: 2.93974
+  weights: 40.92337
   weights: 0
   weights: 0
   weights: 0
@@ -1300,43 +1300,43 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 2272.55189
-  tps: 2297.30412
+  dps: 2265.96185
+  tps: 2290.71334
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 2272.55189
-  tps: 2297.66848
+  dps: 2265.96185
+  tps: 2291.07842
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 2415.35807
-  tps: 2441.2166
+  dps: 2408.76803
+  tps: 2434.62986
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 3648.12715
-  tps: 3681.40629
+  dps: 3627.84519
+  tps: 3661.0514
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 2076.08166
-  tps: 2099.55148
+  dps: 2070.21522
+  tps: 2093.68916
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 5009.50947
-  tps: 5056.20802
+  dps: 4982.03898
+  tps: 5028.73566
  }
 }
 dps_results: {
@@ -1424,8 +1424,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4111.38667
-  tps: 4156.94702
+  dps: 4086.9425
+  tps: 4132.53003
  }
 }
 dps_results: {
