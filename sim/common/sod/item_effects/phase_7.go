@@ -119,10 +119,17 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=237512/blade-of-inquisition
 	// Equip: Chance on hit to Increase your Strength by 250 and movement speed by 15% for 15 sec. (15s cooldown)
-	// TODO: Verify proc chance, a 15% chance lines up pretty well with the uptime of similar buffs like Crusader
-	// Equip-procs with ICDs don't use PPM so we're just guessing that the 100% stated in the db files is incorrect
+	// TODO: Verify proc chance, 1ppm for now
 	core.NewItemEffect(BladeOfInquisition, func(agent core.Agent) {
 		character := agent.GetCharacter()
+
+		procMask := character.GetProcMaskForItem(BladeOfInquisition)
+		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Second * 15,
+		}
 
 		buffAura := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1223342},
@@ -141,11 +148,12 @@ func init() {
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
-			ProcMask:          character.GetProcMaskForItem(BladeOfInquisition),
-			ICD:               time.Second * 15,
-			ProcChance:        0.15,
+			ProcMask:          procMask,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				buffAura.Activate(sim)
+				if icd.IsReady(sim) && ppmm.Proc(sim, procMask, "Scarlet Inquisition") {
+					icd.Use(sim)
+					buffAura.Activate(sim)
+				}
 			},
 		})
 	})
