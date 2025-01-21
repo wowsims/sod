@@ -45,4 +45,6 @@ var RuneOverrides = []*proto.UIRune{
 	// Hunter
 	// As of 2024-06-13 Cobra Slayer is being missed by the scraper because the rune engraving ability is missing "Engrave Rune" in the name
 	{Id: 458393, Name: "Engrave Gloves - Cobra Slayer", Icon: "spell_nature_guardianward", Type: proto.ItemType_ItemTypeHands, ClassAllowlist: []proto.Class{proto.Class_ClassHunter}},
+
+	{Id: 29088, Name: "Engrave Ring - All Weapon Skills (Not Real)", Icon: "ability_hunter_swiftstrike", Type: proto.ItemType_ItemTypeFinger, ClassAllowlist: []proto.Class{proto.Class_ClassHunter, proto.Class_ClassPaladin, proto.Class_ClassRogue, proto.Class_ClassShaman, proto.Class_ClassWarrior}},
 }
