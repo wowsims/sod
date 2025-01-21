@@ -51,7 +51,7 @@ stat_weights_results: {
  key: "TestSealStacking-Phase5-Lvl60-StatWeights-Default"
  value: {
   weights: 3.08894
-  weights: 1.93918
+  weights: 1.92021
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 10.62188
-  weights: 0.93891
+  weights: 10.68614
+  weights: 0.9353
   weights: 0
   weights: 0
   weights: 1.10993
   weights: 0
-  weights: 35.36726
+  weights: 35.33886
   weights: 0
   weights: 0
   weights: 0
@@ -99,43 +99,43 @@ stat_weights_results: {
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1723.29999
-  tps: 1762.09338
+  dps: 1757.64787
+  tps: 1797.11007
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1736.69631
-  tps: 1776.14093
+  dps: 1743.25908
+  tps: 1782.85633
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1823.82412
-  tps: 1863.43107
+  dps: 1829.20588
+  tps: 1868.84573
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2582.89785
-  tps: 2637.90446
+  dps: 2577.76742
+  tps: 2632.69817
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1561.08057
-  tps: 1599.4539
+  dps: 1557.87647
+  tps: 1596.36207
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4722.28159
-  tps: 4770.83617
+  dps: 4705.58234
+  tps: 4754.13399
  }
 }
 dps_results: {
@@ -225,7 +225,7 @@ dps_results: {
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3789.60499
-  tps: 3839.113
+  dps: 3780.24501
+  tps: 3829.74092
  }
 }

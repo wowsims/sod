@@ -105,6 +105,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	otherInputs: {
 		inputs: [WarriorInputs.StartingRage<Spec.SpecWarrior>(), WarriorInputs.StanceSnapshot<Spec.SpecWarrior>(), OtherInputs.InFrontOfTarget],
 	},
+	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: true,

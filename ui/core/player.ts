@@ -1,7 +1,9 @@
+import { ItemSwapSettings } from './components/individual_sim_ui/item_swap_picker';
 import Toast from './components/toast';
 import { getLanguageCode } from './constants/lang.js';
 import * as Mechanics from './constants/mechanics.js';
 import { LEVEL_THRESHOLDS } from './constants/other.js';
+import { SimSettingCategories } from './constants/sim-settings';
 import { simLaunchStatuses } from './launched_sims.js';
 import { MAX_PARTY_SIZE, Party } from './party.js';
 import {
@@ -71,7 +73,7 @@ import {
 	withSpecProto,
 } from './proto_utils/utils.js';
 import { Raid } from './raid.js';
-import { Sim, SimSettingCategories } from './sim.js';
+import { Sim } from './sim.js';
 import { playerTalentStringToProto } from './talents/factory.js';
 import { EventID, TypedEvent } from './typed_event.js';
 import { stringComparator } from './utils.js';
@@ -231,8 +233,7 @@ export class Player<SpecType extends Spec> {
 	private bonusStats: Stats = new Stats();
 	private gear: Gear = new Gear({});
 	//private bulkEquipmentSpec: BulkEquipmentSpec = BulkEquipmentSpec.create();
-	private enableItemSwap = false;
-	private itemSwapGear: ItemSwapGear = new ItemSwapGear({});
+	itemSwapSettings: ItemSwapSettings;
 	private race: Race;
 	private level: number;
 	private profession1: Profession = 0;
@@ -275,7 +276,6 @@ export class Player<SpecType extends Spec> {
 	readonly consumesChangeEmitter = new TypedEvent<void>('PlayerConsumes');
 	readonly bonusStatsChangeEmitter = new TypedEvent<void>('PlayerBonusStats');
 	readonly gearChangeEmitter = new TypedEvent<void>('PlayerGear');
-	readonly itemSwapChangeEmitter = new TypedEvent<void>('PlayerItemSwap');
 	readonly professionChangeEmitter = new TypedEvent<void>('PlayerProfession');
 	readonly raceChangeEmitter = new TypedEvent<void>('PlayerRace');
 	readonly levelChangeEmitter = new TypedEvent<void>('PlayerLevel');
@@ -322,6 +322,8 @@ export class Player<SpecType extends Spec> {
 			this.itemEPCache[i] = new Map();
 		}
 
+		this.itemSwapSettings = new ItemSwapSettings(this);
+
 		this.changeEmitter = TypedEvent.onAny(
 			[
 				this.nameChangeEmitter,
@@ -329,7 +331,6 @@ export class Player<SpecType extends Spec> {
 				this.consumesChangeEmitter,
 				this.bonusStatsChangeEmitter,
 				this.gearChangeEmitter,
-				this.itemSwapChangeEmitter,
 				this.professionChangeEmitter,
 				this.raceChangeEmitter,
 				this.levelChangeEmitter,
@@ -653,36 +654,6 @@ export class Player<SpecType extends Spec> {
 
 		this.gear = newGear;
 		this.gearChangeEmitter.emit(eventID);
-	}
-
-	getEnableItemSwap(): boolean {
-		return this.enableItemSwap;
-	}
-
-	setEnableItemSwap(eventID: EventID, newEnableItemSwap: boolean) {
-		if (newEnableItemSwap === this.enableItemSwap) return;
-
-		this.enableItemSwap = newEnableItemSwap;
-		this.itemSwapChangeEmitter.emit(eventID);
-	}
-
-	equipItemSwapitem(eventID: EventID, slot: ItemSlot, newItem: EquippedItem | null) {
-		this.setItemSwapGear(eventID, this.itemSwapGear.withEquippedItem(slot, newItem, this.canDualWield2H()));
-	}
-
-	getItemSwapItem(slot: ItemSlot): EquippedItem | null {
-		return this.itemSwapGear.getEquippedItem(slot);
-	}
-
-	getItemSwapGear(): ItemSwapGear {
-		return this.itemSwapGear;
-	}
-
-	setItemSwapGear(eventID: EventID, newItemSwapGear: ItemSwapGear) {
-		if (newItemSwapGear.equals(this.itemSwapGear)) return;
-
-		this.itemSwapGear = newItemSwapGear;
-		this.itemSwapChangeEmitter.emit(eventID);
 	}
 
 	/*
@@ -1100,20 +1071,20 @@ export class Player<SpecType extends Spec> {
 		}
 
 		if (item.stats[Stat.StatMeleeHaste] > 0) {
-			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier) * item.stats[Stat.StatMeleeHaste]
-			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier) * item.stats[Stat.StatMeleeHaste]
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier) * item.stats[Stat.StatMeleeHaste];
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier) * item.stats[Stat.StatMeleeHaste];
 		}
 
 		if (item.stats[Stat.StatSpellHaste] > 0) {
-			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier) * item.stats[Stat.StatSpellHaste]
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier) * item.stats[Stat.StatSpellHaste];
 		}
 
 		if (item.timeworn) {
-			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatTimewornBonus)
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatTimewornBonus);
 		}
 
 		if (item.sanctified) {
-			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatSanctifiedBonus)
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatSanctifiedBonus);
 		}
 
 		this.itemEPCache[slot].set(item.id, ep);
@@ -1196,7 +1167,7 @@ export class Player<SpecType extends Spec> {
 				const zoneId = DungeonFilterOption[zoneName];
 
 				if (typeof zoneId === 'number' && zoneId !== 0 && !filters.raids.includes(zoneId)) {
-					zoneIds.push(zoneId)
+					zoneIds.push(zoneId);
 				}
 			}
 
@@ -1239,7 +1210,7 @@ export class Player<SpecType extends Spec> {
 		}
 
 		if (Player.ARMOR_SLOTS.includes(slot)) {
-			itemData = filterItems(itemData, item => filters.armorTypes.includes(item.armorType))
+			itemData = filterItems(itemData, item => filters.armorTypes.includes(item.armorType));
 		} else if (Player.WEAPON_SLOTS.includes(slot)) {
 			itemData = filterItems(itemData, item => {
 				if (!filters.weaponTypes.includes(item.weaponType)) {
@@ -1313,7 +1284,7 @@ export class Player<SpecType extends Spec> {
 
 	private toDatabase(): SimDatabase {
 		const dbGear = this.getGear().toDatabase();
-		const dbItemSwapGear = this.getItemSwapGear().toDatabase();
+		const dbItemSwapGear = this.itemSwapSettings.getGear().toDatabase();
 		return Database.mergeSimDatabases(dbGear, dbItemSwapGear);
 	}
 
@@ -1331,8 +1302,8 @@ export class Player<SpecType extends Spec> {
 			PlayerProto.mergePartial(player, {
 				equipment: gear.asSpec(),
 				bonusStats: this.getBonusStats().toProto(),
-				enableItemSwap: this.getEnableItemSwap(),
-				itemSwap: this.getItemSwapGear().toProto(),
+				enableItemSwap: this.itemSwapSettings.getEnableItemSwap(),
+				itemSwap: this.itemSwapSettings.toProto(),
 			});
 		}
 		if (exportCategory(SimSettingCategories.Talents)) {
@@ -1390,8 +1361,12 @@ export class Player<SpecType extends Spec> {
 		TypedEvent.freezeAllAndDo(() => {
 			if (loadCategory(SimSettingCategories.Gear)) {
 				this.setGear(eventID, proto.equipment ? this.sim.db.lookupEquipmentSpec(proto.equipment) : new Gear({}));
-				this.setEnableItemSwap(eventID, proto.enableItemSwap);
-				this.setItemSwapGear(eventID, proto.itemSwap ? this.sim.db.lookupItemSwap(proto.itemSwap) : new ItemSwapGear({}));
+				this.itemSwapSettings.setItemSwapSettings(
+					eventID,
+					proto.enableItemSwap,
+					proto.itemSwap ? this.sim.db.lookupItemSwap(proto.itemSwap) : new ItemSwapGear({}),
+					Stats.fromProto(proto.itemSwap?.prepullBonusStats),
+				);
 				this.setBonusStats(eventID, Stats.fromProto(proto.bonusStats || UnitStats.create()));
 				//this.setBulkEquipmentSpec(eventID, BulkEquipmentSpec.create()); // Do not persist the bulk equipment settings.
 			}
@@ -1441,8 +1416,6 @@ export class Player<SpecType extends Spec> {
 
 	applySharedDefaults(eventID: EventID) {
 		TypedEvent.freezeAllAndDo(() => {
-			this.setEnableItemSwap(eventID, false);
-			this.setItemSwapGear(eventID, new ItemSwapGear({}));
 			this.setReactionTime(eventID, 200);
 			this.setInFrontOfTarget(eventID, isTankSpec(this.spec));
 			this.setHealingModel(

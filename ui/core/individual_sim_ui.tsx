@@ -7,7 +7,6 @@ import * as IconInputs from './components/icon_inputs';
 import * as Importers from './components/importers';
 import { BulkTab } from './components/individual_sim_ui/bulk_tab';
 import { GearTab } from './components/individual_sim_ui/gear_tab';
-import { ItemSwapConfig } from './components/individual_sim_ui/item_swap_picker';
 import { RotationTab } from './components/individual_sim_ui/rotation_tab';
 import { SettingsTab } from './components/individual_sim_ui/settings_tab';
 import { TalentsTab } from './components/individual_sim_ui/talents_tab';
@@ -16,6 +15,7 @@ import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_a
 import { SavedDataConfig } from './components/saved_data_manager';
 import { addStatWeightsAction } from './components/stat_weights_action';
 import { GLOBAL_DISPLAY_PSEUDO_STATS, GLOBAL_DISPLAY_STATS, GLOBAL_EP_PSEUDOSTATS, GLOBAL_EP_STATS, LEVEL_THRESHOLDS } from './constants/other';
+import { SimSettingCategories } from './constants/sim-settings';
 import * as Tooltips from './constants/tooltips';
 import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
@@ -31,6 +31,7 @@ import {
 	HandType,
 	IndividualBuffs,
 	ItemSlot,
+	ItemSwap,
 	PartyBuffs,
 	Profession,
 	PseudoStat,
@@ -40,11 +41,9 @@ import {
 	Stat,
 } from './proto/common';
 import { IndividualSimSettings, SavedTalents } from './proto/ui';
-import { ItemSwapGear } from './proto_utils/gear';
 import { professionNames } from './proto_utils/names';
 import { Stats, UnitStat } from './proto_utils/stats';
 import { getTalentPoints, isHealingSpec, isTankSpec, SpecOptions, SpecRotation, specToEligibleRaces, specToLocalStorageKey } from './proto_utils/utils';
-import { SimSettingCategories } from './sim';
 import { SimUI, SimWarning } from './sim_ui';
 import { EventID, TypedEvent } from './typed_event';
 
@@ -120,6 +119,8 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		debuffs: Debuffs;
 
 		other?: OtherDefaults;
+
+		itemSwap?: ItemSwap;
 	};
 
 	playerInputs?: InputSection;
@@ -132,7 +133,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 	otherInputs: InputSection;
 	// Currently, many classes don't support item swapping, and only in certain slots.
 	// So enable it only where it is supported.
-	itemSwapConfig?: ItemSwapConfig;
+	itemSwapSlots?: Array<ItemSlot>;
 
 	// For when extra sections are needed (e.g. Shaman totems)
 	customSections?: Array<(parentElem: HTMLElement, simUI: IndividualSimUI<SpecType>) => ContentBlock>;
@@ -189,7 +190,16 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			knownIssues: config.knownIssues,
 			simStatus: simLaunchStatuses[player.spec],
 			noticeText: (
-				<span>Check out the <a href='https://docs.google.com/spreadsheets/d/e/2PACX-1vSv0YUDDBJMTZVbN-kS0XbpZcyfDHakebXLKcKwAzgs3MYqHBbmr92SkaPPQZ2tEDAgNcmuYscgodtV/pubhtml' target='_blank' rel='noreferrer'>WoWSims Phase 6 Sim DPS Spreadsheet</a> for up-to-date community builds!</span>
+				<span>
+					Check out the{' '}
+					<a
+						href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSv0YUDDBJMTZVbN-kS0XbpZcyfDHakebXLKcKwAzgs3MYqHBbmr92SkaPPQZ2tEDAgNcmuYscgodtV/pubhtml"
+						target="_blank"
+						rel="noreferrer">
+						WoWSims Phase 6 Sim DPS Spreadsheet
+					</a>{' '}
+					for up-to-date community builds!
+				</span>
 			),
 		});
 		this.rootElem.classList.add('individual-sim-ui');
@@ -199,7 +209,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.prevEpIterations = 0;
 		this.prevEpSimResult = null;
 
-		if ((config.itemSwapConfig?.itemSlots || []).length > 0 && !itemSwapEnabledSpecs.includes(player.spec)) {
+		if ((config.itemSwapSlots || []).length > 0 && !itemSwapEnabledSpecs.includes(player.spec)) {
 			itemSwapEnabledSpecs.push(player.spec);
 		}
 
@@ -304,7 +314,6 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 					console.warn('Failed to parse saved settings: ' + e);
 				}
 			}
-
 			// Loading from link needs to happen after loading saved settings, so that partial link imports
 			// (e.g. rotation only) include the previous settings for other categories.
 			try {
@@ -330,13 +339,18 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private addSidebarComponents() {
 		this.raidSimResultsManager = addRaidSimAction(this);
-		addStatWeightsAction(this, this.individualConfig.epStats.concat(GLOBAL_EP_STATS), GLOBAL_EP_PSEUDOSTATS.concat(this.individualConfig.epPseudoStats ?? []), this.individualConfig.epReferenceStat);
+		addStatWeightsAction(
+			this,
+			this.individualConfig.epStats.concat(GLOBAL_EP_STATS),
+			GLOBAL_EP_PSEUDOSTATS.concat(this.individualConfig.epPseudoStats ?? []),
+			this.individualConfig.epReferenceStat,
+		);
 
 		const displayStats: UnitStat[] = [];
 
 		this.individualConfig.displayStats.forEach(s => displayStats.push(UnitStat.fromStat(s)));
 		GLOBAL_DISPLAY_STATS.forEach(s => displayStats.push(UnitStat.fromStat(s)));
-		
+
 		this.individualConfig.displayPseudoStats.forEach(ps => displayStats.push(UnitStat.fromPseudoStat(ps)));
 		GLOBAL_DISPLAY_PSEUDO_STATS.forEach(ps => displayStats.push(UnitStat.fromPseudoStat(ps)));
 
@@ -412,7 +426,13 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.player.setRace(eventID, this.individualConfig.defaults.race ?? specToEligibleRaces[this.player.spec][0]);
 			this.player.setLevel(eventID, LEVEL_THRESHOLDS[simLaunchStatuses[this.player.spec].phase]);
 			this.player.setGear(eventID, this.sim.db.lookupEquipmentSpec(this.individualConfig.defaults.gear));
-			this.player.setItemSwapGear(eventID, new ItemSwapGear({}));
+			if (this.individualConfig.defaults.itemSwap) {
+				this.player.itemSwapSettings.setItemSwapSettings(
+					eventID,
+					true,
+					this.sim.db.lookupItemSwap(this.individualConfig.defaults.itemSwap || ItemSwap.create()),
+				);
+			}
 			this.player.setConsumes(eventID, this.individualConfig.defaults.consumes);
 			this.player.setTalentsString(eventID, this.individualConfig.defaults.talents.talentsString);
 			this.player.setSpecOptions(eventID, this.individualConfig.defaults.specOptions);

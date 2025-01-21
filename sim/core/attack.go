@@ -976,9 +976,10 @@ func (aa *AutoAttacks) NextRangedAttackAt() time.Duration {
 }
 
 type DynamicProcManager struct {
-	ppm         float64
-	procMasks   []ProcMask
-	procChances []float64
+	ppm             float64
+	fixedProcChance float64
+	procMasks       []ProcMask
+	procChances     []float64
 
 	// For feral druids, certain PPM effects use their equipped weapon speed
 	// instead of their paw attack speed.
@@ -1078,7 +1079,7 @@ func (aa *AutoAttacks) newDynamicProcManager(ppm float64, fixedProcChance float6
 		return DynamicProcManager{}
 	}
 
-	dpm := DynamicProcManager{ppm: ppm, procMasks: make([]ProcMask, 0, 2), procChances: make([]float64, 0, 2)}
+	dpm := DynamicProcManager{ppm: ppm, fixedProcChance: fixedProcChance, procMasks: make([]ProcMask, 0, 2), procChances: make([]float64, 0, 2)}
 
 	mergeOrAppend := func(speed float64, mask ProcMask) {
 		if speed == 0 || mask == 0 {
@@ -1107,8 +1108,8 @@ func (aa *AutoAttacks) newDynamicProcManager(ppm float64, fixedProcChance float6
 	}
 
 	character := aa.mh.agent.GetCharacter()
-	if procMask.Matches(ProcMaskMeleeMH) {
-		if character != nil {
+	if character != nil {
+		if procMask.Matches(ProcMaskMeleeMH) {
 			if mhWeapon := character.GetMHWeapon(); mhWeapon != nil {
 				if fixedProcChance != 0 {
 					dpm.mhSpecialProcChance = fixedProcChance
@@ -1117,9 +1118,7 @@ func (aa *AutoAttacks) newDynamicProcManager(ppm float64, fixedProcChance float6
 				}
 			}
 		}
-	}
-	if procMask.Matches(ProcMaskMeleeOH) {
-		if character != nil {
+		if procMask.Matches(ProcMaskMeleeOH) {
 			if ohWeapon := character.GetOHWeapon(); ohWeapon != nil {
 				if fixedProcChance != 0 {
 					dpm.ohSpecialProcChance = fixedProcChance

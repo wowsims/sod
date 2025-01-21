@@ -2,6 +2,7 @@ import { default as pako } from 'pako';
 import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics';
+import { SimSettingCategories } from '../constants/sim-settings';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { RaidSimRequest } from '../proto/api';
 import { PseudoStat, Spec, Stat } from '../proto/common';
@@ -9,7 +10,6 @@ import { IndividualSimSettings } from '../proto/ui';
 import { classNames, raceNames } from '../proto_utils/names';
 import { UnitStat } from '../proto_utils/stats';
 import { specNames } from '../proto_utils/utils';
-import { SimSettingCategories } from '../sim';
 import { SimUI } from '../sim_ui';
 import { EventID, TypedEvent } from '../typed_event';
 import { arrayEquals, downloadString, getEnumValues, jsonStringifyWithFlattenedPaths } from '../utils';

@@ -54,12 +54,11 @@ func init() {
 		procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "Fiery Blaze",
-			Duration:   core.NeverExpires,
-			Callback:   core.CallbackOnSpellHitDealt,
-			SpellFlags: core.SpellFlagSuppressWeaponProcs,
-			Outcome:    core.OutcomeLanded,
-			DPM:        character.AutoAttacks.NewDynamicProcManagerForEnchant(4074, 0, 0.15),
+			Name:              "Fiery Blaze",
+			Callback:          core.CallbackOnSpellHitDealt,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			Outcome:           core.OutcomeLanded,
+			DPM:               character.AutoAttacks.NewDynamicProcManagerForEnchant(36, 0, 0.15),
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.ProcMask = core.Ternary(spell.ProcMask.Matches(core.ProcMaskMeleeSpecial), procMaskOnSpecial, procMaskOnAuto)
 				procSpell.Cast(sim, result.Target)
@@ -311,22 +310,17 @@ func init() {
 		mhAura := character.NewTemporaryStatsAura("Crusader Enchant MH", core.ActionID{SpellID: 20007, Tag: 1}, stats.Stats{stats.Strength: strBonus}, time.Second*15)
 		ohAura := character.NewTemporaryStatsAura("Crusader Enchant OH", core.ActionID{SpellID: 20007, Tag: 2}, stats.Stats{stats.Strength: strBonus}, time.Second*15)
 
-		aura := character.GetOrRegisterAura(core.Aura{
-			Label:    "Crusader Enchant",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !result.Landed() || spell.Flags.Matches(core.SpellFlagSuppressWeaponProcs) {
-					return
-				}
-				if dpm.Proc(sim, spell.ProcMask, "Crusader") {
-					if spell.IsMH() {
-						mhAura.Activate(sim)
-					} else {
-						ohAura.Activate(sim)
-					}
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Crusader",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			DPM:               dpm,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.IsMH() {
+					mhAura.Activate(sim)
+				} else {
+					ohAura.Activate(sim)
 				}
 			},
 		})

@@ -6,6 +6,7 @@ import { Player } from '../../player';
 import { Consumes, Debuffs, HealingModel, IndividualBuffs, ItemSwap, PartyBuffs, Profession, RaidBuffs, Spec } from '../../proto/common';
 import { SavedEncounter, SavedSettings } from '../../proto/ui';
 import { professionNames, raceNames } from '../../proto_utils/names';
+import { Stats } from '../../proto_utils/stats';
 import { specToEligibleRaces } from '../../proto_utils/utils';
 import { EventID, TypedEvent } from '../../typed_event';
 import { getEnumValues } from '../../utils';
@@ -197,9 +198,9 @@ export class SettingsTab extends SimTab {
 			inputs => !inputs.extraCssClasses || !inputs.extraCssClasses?.includes('within-raid-sim-hide'),
 		);
 
-		const itemSwapConfig = this.simUI.individualConfig.itemSwapConfig;
+		const swapSlots = this.simUI.individualConfig.itemSwapSlots || [];
 
-		if (settings.length || itemSwapConfig?.itemSlots.length) {
+		if (settings.length || swapSlots?.length) {
 			const contentBlock = new ContentBlock(this.column2, 'other-settings', {
 				header: { title: 'Other' },
 			});
@@ -211,8 +212,10 @@ export class SettingsTab extends SimTab {
 				});
 			}
 
-			if (itemSwapConfig?.itemSlots.length) {
-				new ItemSwapPicker(contentBlock.bodyElement, this.simUI, this.simUI.player, itemSwapConfig);
+			if (swapSlots.length > 0) {
+				const _itemSwapPicker = new ItemSwapPicker(contentBlock.bodyElement, this.simUI, this.simUI.player, {
+					itemSlots: swapSlots,
+				});
 			}
 		}
 	}
@@ -333,25 +336,8 @@ export class SettingsTab extends SimTab {
 			label: 'Settings',
 			header: { title: 'Saved Settings' },
 			storageKey: this.simUI.getSavedSettingsStorageKey(),
-			getData: (simUI: IndividualSimUI<any>) => {
-				const player = simUI.player;
-				return SavedSettings.create({
-					raidBuffs: simUI.sim.raid.getBuffs(),
-					partyBuffs: player.getParty()?.getBuffs() || PartyBuffs.create(),
-					playerBuffs: player.getBuffs(),
-					debuffs: simUI.sim.raid.getDebuffs(),
-					consumes: player.getConsumes(),
-					race: player.getRace(),
-					level: player.getLevel(),
-					professions: player.getProfessions(),
-					enableItemSwap: player.getEnableItemSwap(),
-					itemSwap: player.getItemSwapGear().toProto(),
-					reactionTimeMs: player.getReactionTime(),
-					channelClipDelayMs: player.getChannelClipDelay(),
-					inFrontOfTarget: player.getInFrontOfTarget(),
-					distanceFromTarget: player.getDistanceFromTarget(),
-					healingModel: player.getHealingModel(),
-				});
+			getData: () => {
+				return this.getCurrentSavedSettings();
 			},
 			setData: (eventID: EventID, simUI: IndividualSimUI<any>, newSettings: SavedSettings) => {
 				TypedEvent.freezeAllAndDo(() => {
@@ -366,8 +352,12 @@ export class SettingsTab extends SimTab {
 					simUI.player.setConsumes(eventID, newSettings.consumes || Consumes.create());
 					simUI.player.setRace(eventID, newSettings.race);
 					simUI.player.setProfessions(eventID, newSettings.professions);
-					simUI.player.setEnableItemSwap(eventID, newSettings.enableItemSwap);
-					simUI.player.setItemSwapGear(eventID, simUI.sim.db.lookupItemSwap(newSettings.itemSwap || ItemSwap.create()));
+					simUI.player.itemSwapSettings.setItemSwapSettings(
+						eventID,
+						newSettings.enableItemSwap,
+						simUI.sim.db.lookupItemSwap(newSettings.itemSwap || ItemSwap.create()),
+						Stats.fromProto(newSettings.itemSwap?.prepullBonusStats),
+					);
 					simUI.player.setReactionTime(eventID, newSettings.reactionTimeMs);
 					simUI.player.setChannelClipDelay(eventID, newSettings.channelClipDelayMs);
 					simUI.player.setInFrontOfTarget(eventID, newSettings.inFrontOfTarget);
@@ -383,7 +373,7 @@ export class SettingsTab extends SimTab {
 				this.simUI.player.consumesChangeEmitter,
 				this.simUI.player.raceChangeEmitter,
 				this.simUI.player.professionChangeEmitter,
-				this.simUI.player.itemSwapChangeEmitter,
+				this.simUI.player.itemSwapSettings.changeEmitter,
 				this.simUI.player.miscOptionsChangeEmitter,
 				this.simUI.player.inFrontOfTargetChangeEmitter,
 				this.simUI.player.distanceFromTargetChangeEmitter,
@@ -397,6 +387,26 @@ export class SettingsTab extends SimTab {
 		this.simUI.sim.waitForInit().then(() => {
 			savedEncounterManager.loadUserData();
 			savedSettingsManager.loadUserData();
+		});
+	}
+
+	getCurrentSavedSettings() {
+		return SavedSettings.create({
+			raidBuffs: this.simUI.sim.raid.getBuffs(),
+			partyBuffs: this.simUI.player.getParty()?.getBuffs() || PartyBuffs.create(),
+			playerBuffs: this.simUI.player.getBuffs(),
+			debuffs: this.simUI.sim.raid.getDebuffs(),
+			consumes: this.simUI.player.getConsumes(),
+			race: this.simUI.player.getRace(),
+			level: this.simUI.player.getLevel(),
+			professions: this.simUI.player.getProfessions(),
+			enableItemSwap: this.simUI.player.itemSwapSettings.getEnableItemSwap(),
+			itemSwap: this.simUI.player.itemSwapSettings.toProto(),
+			reactionTimeMs: this.simUI.player.getReactionTime(),
+			channelClipDelayMs: this.simUI.player.getChannelClipDelay(),
+			inFrontOfTarget: this.simUI.player.getInFrontOfTarget(),
+			distanceFromTarget: this.simUI.player.getDistanceFromTarget(),
+			healingModel: this.simUI.player.getHealingModel(),
 		});
 	}
 
