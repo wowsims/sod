@@ -307,7 +307,6 @@ func init() {
 			Outcome:           core.OutcomeLanded,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			DPM:               dpm,
-			DPMProcType:       core.DPMProcNoWeaponSpecials,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.IsMH() {
 					mhAura.Activate(sim)
