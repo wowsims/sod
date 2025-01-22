@@ -2634,11 +2634,11 @@ func init() {
 	core.NewItemEffect(KissOfTheSpider, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{ItemID: KissOfTheSpider}
-
+		duration := time.Second * 15
 		buffAura := character.RegisterAura(core.Aura{
 			ActionID: actionID,
 			Label:    "Kiss of the Spider",
-			Duration: time.Second * 15,
+			Duration: duration,
 		}).AttachMultiplyAttackSpeed(&character.Unit, 1.20)
 
 		spell := character.RegisterSpell(core.SpellConfig{
@@ -2649,8 +2649,12 @@ func init() {
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
-					Timer:    character.GetOffensiveTrinketCD(),
+					Timer:    character.NewTimer(),
 					Duration: time.Second * 90,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
 				},
 			},
 

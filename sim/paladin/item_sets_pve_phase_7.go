@@ -151,7 +151,9 @@ func (paladin *Paladin) applyNaxxramasProtection4PBonus() {
 	paladin.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO: Divine Protection
+			if paladin.divineProtection != nil {
+				paladin.divineProtection.CD.FlatModifier -= time.Minute * 3
+			}
 
 			if paladin.avengingWrath != nil {
 				paladin.avengingWrath.CD.FlatModifier -= time.Minute * 2
@@ -170,7 +172,7 @@ func (paladin *Paladin) applyNaxxramasProtection6PBonus() {
 	paladin.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
+			// Implemented in righteous_fury.go
 		},
 	})
 }

@@ -1714,6 +1714,9 @@ func registerMildlyIrradiatedRejuvCD(agent Agent, consumes *proto.Consumes) {
 		})
 		character.AddMajorCooldown(MajorCooldown{
 			Type: CooldownTypeDPS,
+			ShouldActivate: func(sim *Simulation, character *Character) bool {
+				return !character.IsShapeshifted()
+			},
 			Spell: character.GetOrRegisterSpell(SpellConfig{
 				ActionID: actionID,
 				Flags:    SpellFlagNoOnCastComplete,
@@ -1721,6 +1724,9 @@ func registerMildlyIrradiatedRejuvCD(agent Agent, consumes *proto.Consumes) {
 					CD: Cooldown{
 						Timer:    character.NewTimer(),
 						Duration: time.Minute * 2,
+					},
+					ModifyCast: func(sim *Simulation, _ *Spell, _ *Cast) {
+						character.CancelShapeshift(sim)
 					},
 				},
 				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {
