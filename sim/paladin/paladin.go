@@ -85,6 +85,7 @@ type Paladin struct {
 	holyShieldProc [3]*core.Spell
 	redoubtAura    *core.Aura
 	holyWrath      []*core.Spell
+	divineProtection *core.Spell
 
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
