@@ -55,7 +55,7 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 		time.Millisecond*time.Duration(castTime),
 		isOverload,
 	)
-	spell.SpellCode = SpellCode_ShamanLightningBolt
+	spell.ClassSpellMask = ClassSpellMask_ShamanLightningBolt
 	spell.MissileSpeed = 20
 	spell.RequiredLevel = level
 	spell.Rank = rank

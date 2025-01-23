@@ -1,7 +1,6 @@
 package priest
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -109,7 +108,7 @@ func (priest *Priest) applyInspiration() {
 			aura.Activate(sim)
 		},
 		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if slices.Contains([]int32{SpellCode_PriestFlashHeal, SpellCode_PriestHeal, SpellCode_PriestGreaterHeal}, spell.SpellCode) {
+			if spell.Matches(ClassSpellMask_PriestFlashHeal | ClassSpellMask_PriestHeal | ClassSpellMask_PriestGreaterHeal) {
 				auras[result.Target.UnitIndex].Activate(sim)
 			}
 		},
@@ -124,7 +123,7 @@ func (priest *Priest) applySearingLight() {
 	modifier := 0.05 * float64(priest.Talents.SearingLight)
 
 	priest.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_PriestSmite || spell.SpellCode == SpellCode_PriestHolyFire {
+		if spell.Matches(ClassSpellMask_PriestSmite | ClassSpellMask_PriestHolyFire) {
 			spell.DamageMultiplierAdditive += modifier
 		}
 	})

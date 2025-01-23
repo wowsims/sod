@@ -133,27 +133,45 @@ var ItemSetSoulforgeArmor = core.NewItemSet(core.ItemSet{
 var ItemSetLawbringerMercy = core.NewItemSet(core.ItemSet{
 	Name: "Lawbringer Mercy",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Holy2P() },
-		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Holy4P() },
-		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Holy6P() },
+		2: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT1Holy2P()
+		},
+		4: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT1Holy4P()
+		},
+		6: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT1Holy6P()
+		},
 	},
 })
 
 var ItemSetLawbringerRadiance = core.NewItemSet(core.ItemSet{
 	Name: "Lawbringer Radiance",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Ret2P() },
-		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Ret4P() },
-		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Ret6P() },
+		2: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT1Ret2P()
+		},
+		4: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT1Ret4P()
+		},
+		6: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT1Ret6P()
+		},
 	},
 })
 
 var ItemSetLawbringerWill = core.NewItemSet(core.ItemSet{
 	Name: "Lawbringer Will",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Prot2P() },
-		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Prot4P() },
-		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT1Prot6P() },
+		2: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT1Prot2P()
+		},
+		4: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT1Prot4P()
+		},
+		6: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT1Prot6P()
+		},
 	},
 })
 
@@ -173,27 +191,45 @@ var ItemSetFreethinkersArmor = core.NewItemSet(core.ItemSet{
 var ItemSetMercifulJudgement = core.NewItemSet(core.ItemSet{
 	Name: "Merciful Judgement",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Holy2P() },
-		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Holy4P() },
-		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Holy6P() },
+		2: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT2Holy2P()
+		},
+		4: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT2Holy4P()
+		},
+		6: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT2Holy6P()
+		},
 	},
 })
 
 var ItemSetRadiantJudgement = core.NewItemSet(core.ItemSet{
 	Name: "Radiant Judgement",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Ret2P() },
-		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Ret4P() },
-		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Ret6P() },
+		2: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT2Ret2P()
+		},
+		4: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT2Ret4P()
+		},
+		6: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT2Ret6P()
+		},
 	},
 })
 
 var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 	Name: "Wilfull Judgement",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Prot2P() },
-		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Prot4P() },
-		6: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinT2Prot6P() },
+		2: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT2Prot2P()
+		},
+		4: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT2Prot4P()
+		},
+		6: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinT2Prot6P()
+		},
 	},
 })
 
@@ -204,8 +240,12 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 var ItemSetAvengersRadiance = core.NewItemSet(core.ItemSet{
 	Name: "Avenger's Radiance",
 	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinTAQRet2P() },
-		4: func(agent core.Agent) { agent.(PaladinAgent).GetPaladin().applyPaladinTAQRet4P() },
+		2: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinTAQRet2P()
+		},
+		4: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinTAQRet4P()
+		},
 	},
 })
 
@@ -461,7 +501,7 @@ func (paladin *Paladin) applyPaladinT2Holy2P() {
 
 	//Increases critical strike chance of holy shock spell by 5%
 	paladin.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_PaladinHolyShock {
+		if spell.Matches(ClassSpellMask_PaladinHolyShock) {
 			spell.BonusCritRating += 5.0
 		}
 	})
@@ -476,10 +516,10 @@ func (paladin *Paladin) applyPaladinT2Holy4P() {
 	}
 
 	//Increases damage done by your Consecration spell by 50%
-	paladin.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_PaladinConsecration {
-			spell.DamageMultiplierAdditive += 0.5
-		}
+	paladin.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_PaladinConsecration,
+		FloatValue: 0.5,
 	})
 }
 
@@ -538,19 +578,20 @@ func (paladin *Paladin) applyPaladinT2Ret2P() {
 	}
 
 	// 2 pieces: Increases damage done by your damaging Judgements by 20% and your Judgements no longer consume your Seals on the target.
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label:    bonusLabel,
 		ActionID: core.ActionID{SpellID: PaladinT2Ret2P},
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, judgeSpells := range paladin.allJudgeSpells {
-				for _, judgeRankSpell := range judgeSpells {
-					judgeRankSpell.DamageMultiplierAdditive += 0.2
-				}
-			}
-
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			paladin.consumeSealsOnJudge = false
 		},
-	})
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.consumeSealsOnJudge = true
+		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_PaladinJudgements,
+		FloatValue: 0.2,
+	}))
 }
 
 func (paladin *Paladin) applyPaladinT2Ret4P() {
@@ -561,13 +602,14 @@ func (paladin *Paladin) applyPaladinT2Ret4P() {
 	}
 
 	// 4 pieces: Reduces the cooldown on your Judgement ability by 5 seconds.
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label:    bonusLabel,
 		ActionID: core.ActionID{SpellID: PaladinT2Ret4P},
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.judgement.CD.FlatModifier -= 5 * time.Second
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_PaladinJudgement,
+		TimeValue: -5 * time.Second,
+	}))
 }
 
 func (paladin *Paladin) applyPaladinT2Ret6P() {
@@ -619,12 +661,10 @@ func (paladin *Paladin) applyPaladinTAQRet2P() {
 		return
 	}
 
-	paladin.OnSpellRegistered(func(spell *core.Spell) {
-		//"S03 - Item - TAQ - Paladin - Retribution 2P Bonus",
-		if spell.SpellCode == SpellCode_PaladinCrusaderStrike {
-			// 2 Set: Increases Crusader Strike Damage by 50%
-			spell.DamageMultiplierAdditive += 0.5
-		}
+	paladin.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_PaladinCrusaderStrike,
+		FloatValue: 0.5,
 	})
 }
 
@@ -635,15 +675,24 @@ func (paladin *Paladin) applyPaladinTAQRet4P() {
 		return
 	}
 
+	damageMod := paladin.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PaladinExorcism,
+	})
+
 	buffAura := paladin.GetOrRegisterAura(core.Aura{
 		Label:     "Excommunication",
 		ActionID:  core.ActionID{SpellID: 1217927},
 		Duration:  time.Second * 20,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			for _, exorcism := range paladin.exorcism {
-				exorcism.DamageMultiplierAdditive += 0.4 * float64(newStacks-oldStacks)
-			}
+			damageMod.UpdateFloatValue(0.4 * float64(newStacks))
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
 		},
 	})
 
@@ -654,7 +703,7 @@ func (paladin *Paladin) applyPaladinTAQRet4P() {
 			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
 				buffAura.Activate(sim)
 				buffAura.AddStack(sim)
-			} else if spell.SpellCode == SpellCode_PaladinExorcism {
+			} else if spell.Matches(ClassSpellMask_PaladinExorcism) {
 				buffAura.Deactivate(sim)
 			}
 		},
@@ -675,11 +724,10 @@ func (paladin *Paladin) applyPaladinZG3P() {
 		return
 	}
 
-	paladin.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_PaladinHolyShock {
-			//Damage multiplier is Additive with Infusion of Light rather than multiplicitive
-			spell.DamageMultiplierAdditive += 0.5
-		}
+	paladin.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_PaladinHolyShock,
+		FloatValue: 0.5,
 	})
 }
 
@@ -690,15 +738,16 @@ func (paladin *Paladin) applyPaladinZG5P() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
-		Label:    bonusLabel,
-		ActionID: core.ActionID{SpellID: PaladinZG5P},
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range paladin.exorcism {
-				spell.CD.FlatModifier -= time.Second * 3
-				spell.DamageMultiplierAdditive += 0.5
-			}
-		},
+	paladin.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_PaladinExorcism,
+		FloatValue: 0.5,
+	})
+
+	paladin.AddStaticMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_PaladinExorcism,
+		TimeValue: -time.Second * 3,
 	})
 }
 

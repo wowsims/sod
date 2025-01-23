@@ -41,12 +41,12 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 	})
 
 	spellConfig := core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolShadow,
-		SpellCode:   SpellCode_WarlockDrainLife,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagAffliction | WarlockFlagHaunt,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolShadow,
+		ClassSpellMask: ClassSpellMask_WarlockDrainLife,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagAffliction | WarlockFlagHaunt,
 
 		RequiredLevel: level,
 		Rank:          rank,

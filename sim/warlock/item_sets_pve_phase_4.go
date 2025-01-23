@@ -149,7 +149,7 @@ func (warlock *Warlock) applyT1Damage6PBonus() {
 
 	core.MakePermanent(warlock6pt1Aura)
 	warlock6pt1Aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if spell.SpellCode == SpellCode_WarlockIncinerate && result.Landed() && sim.Proc(.04, "T1 6P Incinerate Proc") {
+		if spell.Matches(ClassSpellMask_WarlockIncinerate) && result.Landed() && sim.Proc(.04, "T1 6P Incinerate Proc") {
 			warlock.DecimationAura.Activate(sim)
 		}
 	}
@@ -243,7 +243,7 @@ func (warlock *Warlock) applyT1Tank6PBonus() {
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_WarlockSoulFire {
+			if spell.Matches(ClassSpellMask_WarlockSoulFire) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -257,7 +257,7 @@ func (warlock *Warlock) applyT1Tank6PBonus() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.SpellCode == SpellCode_WarlockShadowCleave && icd.IsReady(sim) && sim.Proc(0.2, "Soul Fire! Proc") {
+			if result.Landed() && spell.Matches(ClassSpellMask_WarlockShadowCleave) && icd.IsReady(sim) && sim.Proc(0.2, "Soul Fire! Proc") {
 				procAura.Activate(sim)
 				icd.Use(sim)
 			}

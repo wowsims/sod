@@ -39,9 +39,10 @@ func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 
 	paladin.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.divineStorm.DamageMultiplierAdditive += 1.0
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_PaladinDivineStorm,
+		FloatValue: 1,
 	})
 }
 
@@ -71,40 +72,37 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	classSpellMasks := ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath | ClassSpellMask_PaladinDivineStorm | ClassSpellMask_PaladinCrusaderStrike
+	damageMod := paladin.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: classSpellMasks,
+	})
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := paladin.exorcism
-			affectedSpells = append(affectedSpells, paladin.holyWrath...)
-			if paladin.crusaderStrike != nil {
-				affectedSpells = append(affectedSpells, paladin.crusaderStrike)
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if !spell.Matches(classSpellMasks) {
+				return
 			}
-			if paladin.divineStorm != nil {
-				affectedSpells = append(affectedSpells, paladin.divineStorm)
-			}
+			critChanceBonus := 0.0
 
-			for _, spell := range affectedSpells {
-				oldApplyEffects := spell.ApplyEffects
-				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					critChanceBonus := 0.0
-
-					if target.MobType == proto.MobType_MobTypeUndead {
-						if spell.SpellCode == SpellCode_PaladinExorcism || spell.SpellCode == SpellCode_PaladinHolyWrath {
-							critChanceBonus = paladin.GetStat(stats.SpellCrit)/100.0 + paladin.GetSchoolBonusCritChance(spell)/100.0
-						} else {
-							critChanceBonus = paladin.GetStat(stats.MeleeCrit) / 100.0
-						}
-					}
-
-					critChanceBonus = min(critChanceBonus, 1.0)
-
-					spell.DamageMultiplierAdditive += critChanceBonus
-					oldApplyEffects(sim, target, spell)
-					spell.DamageMultiplierAdditive -= critChanceBonus
+			if target.MobType == proto.MobType_MobTypeUndead {
+				if spell.Matches(ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath) {
+					critChanceBonus = paladin.GetStat(stats.SpellCrit)/100.0 + paladin.GetSchoolBonusCritChance(spell)/100.0
+				} else {
+					critChanceBonus = paladin.GetStat(stats.MeleeCrit) / 100.0
 				}
 			}
+			critChanceBonus = min(critChanceBonus, 1)
+			damageMod.UpdateFloatValue(critChanceBonus)
 		},
-	})
+	}))
 }
 
 var ItemSetRedemptionBulwark = core.NewItemSet(core.ItemSet{

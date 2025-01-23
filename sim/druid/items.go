@@ -1,7 +1,6 @@
 package druid
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/sod"
@@ -148,11 +147,13 @@ func init() {
 	core.NewItemEffect(IdolOfCelestialFocus, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 
-		druid.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_DruidStarfallTick || spell.SpellCode == SpellCode_DruidStarfallSplash {
-				spell.DamageMultiplierAdditive += 0.10
-			}
-		})
+		core.MakePermanent(druid.RegisterAura(core.Aura{
+			Label: "Idol of Celestial Focus",
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash,
+			FloatValue: 0.10,
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=232391/idol-of-feline-focus
@@ -169,7 +170,7 @@ func init() {
 			ActionID: actionID,
 			Label:    "Idol of Feline Focus",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.SpellCode == SpellCode_DruidFerociousBite && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeMiss|core.OutcomeParry) {
+				if spell.Matches(ClassSpellMask_DruidFerociousBite) && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeMiss|core.OutcomeParry) {
 					druid.AddEnergy(sim, 30, energyMetrics)
 				}
 			},
@@ -183,7 +184,7 @@ func init() {
 
 		// TODO: Claw is not implemented
 		druid.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_DruidRake || spell.SpellCode == SpellCode_DruidMangleCat {
+			if spell.Matches(ClassSpellMask_DruidRake | ClassSpellMask_DruidMangleCat) {
 				spell.Cost.FlatModifier -= 3
 			}
 		})
@@ -193,9 +194,8 @@ func init() {
 	// Equip: Increases the damage of your Moonfire spell by up to 33.
 	core.NewItemEffect(IdolOfTheMoon, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
-		affectedSpellCodes := []int32{SpellCode_DruidMoonfire, SpellCode_DruidSunfire, SpellCode_DruidStarfallSplash, SpellCode_DruidStarfallTick}
 		druid.OnSpellRegistered(func(spell *core.Spell) {
-			if slices.Contains(affectedSpellCodes, spell.SpellCode) {
+			if spell.Matches(ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidStarfallSplash | ClassSpellMask_DruidStarfallTick) {
 				spell.BonusDamage += 33
 			}
 		})
@@ -211,7 +211,7 @@ func init() {
 	core.NewItemEffect(IdolOfExsanguinationCat, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 		druid.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_DruidRake || spell.SpellCode == SpellCode_DruidRip {
+			if spell.Matches(ClassSpellMask_DruidRake | ClassSpellMask_DruidRip) {
 				spell.Cost.FlatModifier -= 5
 			}
 		})
@@ -227,47 +227,28 @@ func init() {
 	// Increases the damage of Ferocious Bite and Shred by 3%.
 	core.NewItemEffect(IdolOfFelineFerocity, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
-		druid.RegisterAura(core.Aura{
-			Label: "Improved Shred/Ferocious Bite",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells := core.FilterSlice(
-					[]*DruidSpell{
-						druid.FerociousBite,
-						druid.Shred,
-					},
-					func(spell *DruidSpell) bool { return spell != nil },
-				)
 
-				for _, spell := range affectedSpells {
-					spell.DamageMultiplierAdditive += 0.03
-				}
-			},
-		})
+		core.MakePermanent(druid.RegisterAura(core.Aura{
+			Label: "Improved Shred/Ferocious Bite",
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidShred,
+			FloatValue: 0.03,
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=234474/idol-of-sidereal-wrath
 	// Increases the damage of Moonfire and Wrath by 3%.
 	core.NewItemEffect(IdolOfSiderealWrath, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
-		druid.RegisterAura(core.Aura{
-			Label: "Improved Wrath/Moonfire",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells := core.FilterSlice(
-					core.Flatten(
-						[][]*DruidSpell{
-							druid.Wrath,
-							druid.Moonfire,
-							{druid.Sunfire, druid.Starsurge, druid.StarfallSplash, druid.StarfallTick},
-						},
-					),
-					func(spell *DruidSpell) bool { return spell != nil },
-				)
 
-				for _, spell := range affectedSpells {
-					spell.DamageMultiplierAdditive += 0.03
-				}
-			},
-		})
+		core.MakePermanent(druid.RegisterAura(core.Aura{
+			Label: "Improved Wrath/Moonfire",
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  ClassSpellMask_DruidWrath | ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidStarsurge | ClassSpellMask_DruidStarfallSplash | ClassSpellMask_DruidStarfallTick,
+			FloatValue: 0.03,
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=228180/idol-of-the-swarm
@@ -304,24 +285,14 @@ func init() {
 	// Increases the damage of Swipe and Mangle by 3%.
 	core.NewItemEffect(IdolOfUrsinPower, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
-		druid.RegisterAura(core.Aura{
-			Label: "Improved Wrath/Moonfire",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells := core.FilterSlice(
-					[]*DruidSpell{
-						druid.SwipeBear,
-						druid.SwipeCat,
-						druid.MangleBear,
-						druid.MangleCat,
-					},
-					func(spell *DruidSpell) bool { return spell != nil },
-				)
 
-				for _, spell := range affectedSpells {
-					spell.DamageMultiplierAdditive += 0.03
-				}
-			},
-		})
+		core.MakePermanent(druid.RegisterAura(core.Aura{
+			Label: "Improved Swipe/Mangle",
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  ClassSpellMask_DruidSwipeBear | ClassSpellMask_DruidSwipeCat | ClassSpellMask_DruidMangleBear | ClassSpellMask_DruidMangleCat,
+			FloatValue: 0.03,
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=227183/knight-lieutenants-dragonhide-grips

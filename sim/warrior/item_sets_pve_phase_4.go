@@ -112,7 +112,7 @@ func (warrior *Warrior) applyT1Damage2PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if slices.Contains(StanceCodes, spell.SpellCode) {
+			if spell.Matches(StanceCodes) {
 				tacticianAura.Activate(sim)
 			}
 		},
@@ -158,7 +158,7 @@ func (warrior *Warrior) applyT1Damage4PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if slices.Contains(StanceCodes, spell.SpellCode) {
+			if spell.Matches(StanceCodes) {
 				switch warrior.PreviousStance {
 				case BattleStance:
 					battleStanceAura.Activate(sim)
@@ -223,14 +223,14 @@ func (warrior *Warrior) applyT1Damage6PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			switch spell.SpellCode {
-			case SpellCode_WarriorStanceBattle:
+			switch spell.ClassSpellMask {
+			case ClassSpellMask_WarriorStanceBattle:
 				battleAura.Activate(sim)
-			case SpellCode_WarriorStanceGladiator:
+			case ClassSpellMask_WarriorStanceGladiator:
 				battleAura.Activate(sim)
-			case SpellCode_WarriorStanceDefensive:
+			case ClassSpellMask_WarriorStanceDefensive:
 				defenseAura.Activate(sim)
-			case SpellCode_WarriorStanceBerserker:
+			case ClassSpellMask_WarriorStanceBerserker:
 				berserkAura.Activate(sim)
 			}
 		},

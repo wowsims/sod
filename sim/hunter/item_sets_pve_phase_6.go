@@ -28,18 +28,23 @@ func (hunter *Hunter) applyTAQMelee2PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.WyvernStrike != nil {
-				hunter.WyvernStrike.PeriodicDamageMultiplierAdditive += 0.50
-			}
-
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.pet != nil {
 				hunter.pet.IncreaseMaxFocus(50)
 			}
 		},
-	})
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if hunter.pet != nil {
+				hunter.pet.DecreaseMaxFocus(50)
+			}
+		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PeriodicDamageDone_Flat,
+		ClassMask:  ClassSpellMask_HunterWyvernStrike,
+		FloatValue: 0.50,
+	}))
 }
 
 // Increases the Impact Damage of Mongoose Bite and all Strikes by 15%
@@ -49,17 +54,13 @@ func (hunter *Hunter) applyTAQMelee4PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range hunter.Strikes {
-				spell.ImpactDamageMultiplierAdditive += 0.15
-			}
-			hunter.RaptorStrikeMH.ImpactDamageMultiplierAdditive += 0.15
-			hunter.RaptorStrikeOH.ImpactDamageMultiplierAdditive += 0.15
-			hunter.MongooseBite.ImpactDamageMultiplierAdditive += 0.15
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_ImpactDamageDone_Flat,
+		ClassMask:  ClassSpellMask_HunterShots | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterMongooseBite,
+		FloatValue: 0.15,
+	}))
 }
 
 var StrikersPursuit = core.NewItemSet(core.ItemSet{
@@ -88,12 +89,13 @@ func (hunter *Hunter) applyTAQRanged2PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: TAQRanged2PBonusLabel,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.KillShot.DamageMultiplierAdditive += 0.20
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_HunterKillShot,
+		FloatValue: 0.20,
+	}))
 }
 
 // Kill Shot's cooldown is reduced by 50%.
@@ -132,10 +134,6 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 
 			if !hunter.HasRune(proto.HunterRune_RuneHelmRapidKilling) {
 				return
-			}
-
-			if hunter.HasAura(TAQRanged2PBonusLabel) {
-				clonedShot.DamageMultiplierAdditive += 0.20 // Add the 2p bonus 20%
 			}
 
 			oldApplyEffects := hunter.KillShot.ApplyEffects

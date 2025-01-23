@@ -61,13 +61,13 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 	rogue.CrimsonTempestBleed = rogue.makeCrimsonTempestHitSpell()
 
 	rogue.CrimsonTempest = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_RogueCrimsonTempest,
-		ActionID:     core.ActionID{SpellID: 412096},
-		SpellSchool:  core.SpellSchoolPhysical,
-		DefenseType:  core.DefenseTypeMelee,
-		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        rogue.finisherFlags(),
-		MetricSplits: 6,
+		ClassSpellMask: ClassSpellMask_RogueCrimsonTempest,
+		ActionID:       core.ActionID{SpellID: 412096},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          rogue.finisherFlags(),
+		MetricSplits:   6,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,

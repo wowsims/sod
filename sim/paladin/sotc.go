@@ -56,6 +56,8 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagMeleeMetrics,
 
+			ClassSpellMask: ClassSpellMask_PaladinJudgementOfTheCrusader,
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 				debuffs.Get(target).Activate(sim)

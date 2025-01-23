@@ -12,37 +12,36 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		return
 	}
 
-	var affectedSpells []*core.Spell
+	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ProcMask:   core.ProcMaskMelee,
+		FloatValue: 0,
+	})
 
 	hunter.FlankingStrikeAura = hunter.GetOrRegisterAura(core.Aura{
 		Label:     "Flanking Strike Buff",
 		ActionID:  core.ActionID{SpellID: 415320},
 		MaxStacks: 3,
 		Duration:  time.Second * 10,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(hunter.Spellbook, func(spell *core.Spell) bool {
-				return spell.ProcMask.Matches(core.ProcMaskMelee)
-			})
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += 0.08 * float64(newStacks-oldStacks)
-			}
+			damageMod.UpdateFloatValue(0.08 * float64(newStacks))
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Deactivate()
 		},
 	})
 
-	FlankingStrikeResetCodes := map[int32]bool{
-		SpellCode_HunterPetBite: true, SpellCode_HunterPetClaw: true, SpellCode_HunterPetLightningBreath: true, SpellCode_HunterPetLavaBreath: true, SpellCode_HunterPetScorpidPoison: true,
-	}
-
 	if hunter.pet != nil {
 		hunter.pet.flankingStrike = hunter.pet.GetOrRegisterSpell(core.SpellConfig{
-			SpellCode:   SpellCode_HunterPetFlankingStrike,
-			ActionID:    core.ActionID{SpellID: 415320},
-			SpellSchool: core.SpellSchoolPhysical,
-			DefenseType: core.DefenseTypeMelee,
-			ProcMask:    core.ProcMaskMeleeMHSpecial,
-			Flags:       core.SpellFlagMeleeMetrics,
+			ClassSpellMask: ClassSpellMask_HunterPetFlankingStrike,
+			ActionID:       core.ActionID{SpellID: 415320},
+			SpellSchool:    core.SpellSchoolPhysical,
+			DefenseType:    core.DefenseTypeMelee,
+			ProcMask:       core.ProcMaskMeleeMHSpecial,
+			Flags:          core.SpellFlagMeleeMetrics,
 
 			DamageMultiplier: 1,
 			BonusCoefficient: 1,
@@ -54,30 +53,24 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			},
 		})
 
-		hunter.pet.RegisterAura(core.Aura{
-			Label:    "Flanking Strike Refresh",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if FlankingStrikeResetCodes[spell.SpellCode] {
-					if sim.RandomFloat("Flanking Strike Refresh") < 0.50 {
-						hunter.FlankingStrike.CD.Set(sim.CurrentTime)
-					}
-				}
+		core.MakeProcTriggerAura(&hunter.pet.Unit, core.ProcTrigger{
+			Name:           "Flanking Strike Refresh",
+			ClassSpellMask: ClassSpellMask_HunterPetBite | ClassSpellMask_HunterPetClaw | ClassSpellMask_HunterPetLightningBreath | ClassSpellMask_HunterPetLavaBreath | ClassSpellMask_HunterPetScorpidPoison,
+			ProcChance:     0.50,
+			Callback:       core.CallbackOnCastComplete,
+			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+				hunter.FlankingStrike.CD.Set(sim.CurrentTime)
 			},
 		})
 	}
 
 	hunter.FlankingStrike = hunter.GetOrRegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_HunterFlankingStrike,
-		ActionID:    core.ActionID{SpellID: 415320},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagStrike,
+		ClassSpellMask: ClassSpellMask_HunterFlankingStrike,
+		ActionID:       core.ActionID{SpellID: 415320},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagStrike,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.015,

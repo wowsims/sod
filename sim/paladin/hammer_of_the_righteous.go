@@ -18,12 +18,12 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 	results := make([]*core.SpellResult, min(3, paladin.Env.GetNumTargets()))
 
 	paladin.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.PaladinRune_RuneWristHammerOfTheRighteous)},
-		SpellSchool: core.SpellSchoolHoly,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
-		SpellCode:   SpellCode_PaladinHammerOfTheRighteous,
+		ActionID:       core.ActionID{SpellID: int32(proto.PaladinRune_RuneWristHammerOfTheRighteous)},
+		SpellSchool:    core.SpellSchoolHoly,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
+		ClassSpellMask: ClassSpellMask_PaladinHammerOfTheRighteous,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,

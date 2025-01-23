@@ -38,11 +38,11 @@ func (mage *Mage) newBlizzardSpellConfig(rank int) core.SpellConfig {
 	spellCoeff := .042
 
 	return core.SpellConfig{
-		SpellCode:   SpellCode_MageBlizzard,
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellSchool: core.SpellSchoolFrost,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagChanneled | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_MageBlizzard,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolFrost,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,

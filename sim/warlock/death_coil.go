@@ -28,15 +28,15 @@ func (warlock *Warlock) getDeathCoilBaseConfig(rank int) core.SpellConfig {
 	})
 
 	return core.SpellConfig{
-		SpellCode:     SpellCode_WarlockDeathCoil,
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolShadow,
-		DefenseType:   core.DefenseTypeMagic,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagAffliction,
-		RequiredLevel: level,
-		Rank:          rank,
-		MissileSpeed:  24,
+		ClassSpellMask: ClassSpellMask_WarlockDeathCoil,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagAffliction,
+		RequiredLevel:  level,
+		Rank:           rank,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,

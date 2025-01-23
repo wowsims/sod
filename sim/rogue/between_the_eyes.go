@@ -16,13 +16,13 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 	comboDamageBonus := rogue.baseRuneAbilityDamageCombo()
 
 	rogue.BetweenTheEyes = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_RogueBetweentheEyes,
-		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneBetweenTheEyes)},
-		SpellSchool:  core.SpellSchoolPhysical,
-		DefenseType:  core.DefenseTypeRanged,
-		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        rogue.finisherFlags(),
-		MetricSplits: 6,
+		ClassSpellMask: ClassSpellMask_RogueBetweentheEyes,
+		ActionID:       core.ActionID{SpellID: int32(proto.RogueRune_RuneBetweenTheEyes)},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeRanged,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          rogue.finisherFlags(),
+		MetricSplits:   6,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,

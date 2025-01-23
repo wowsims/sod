@@ -68,12 +68,12 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 	canOverload := !isOverload && hasOverloadRune
 
 	spell := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellCode:   SpellCode_ShamanChainHeal,
-		DefenseType: core.DefenseTypeMagic,
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       flags,
+		ActionID:       core.ActionID{SpellID: spellId},
+		ClassSpellMask: ClassSpellMask_ShamanChainHeal,
+		DefenseType:    core.DefenseTypeMagic,
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskSpellHealing,
+		Flags:          flags,
 
 		RequiredLevel: level,
 		Rank:          rank,

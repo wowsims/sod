@@ -16,16 +16,16 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 	level := [10]int{0, 4, 10, 18, 26, 34, 42, 50, 58, 60}[rank]
 
 	return core.SpellConfig{
-		SpellCode:     SpellCode_HunterSerpentSting,
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolNature,
-		DefenseType:   core.DefenseTypeRanged,
-		ProcMask:      core.ProcMaskRangedSpecial,
-		Flags:         core.SpellFlagAPL | core.SpellFlagPureDot | core.SpellFlagPoison | SpellFlagSting,
-		CastType:      proto.CastType_CastTypeRanged,
-		Rank:          rank,
-		RequiredLevel: level,
-		MissileSpeed:  24,
+		ClassSpellMask: ClassSpellMask_HunterSerpentSting,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolNature,
+		DefenseType:    core.DefenseTypeRanged,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagAPL | core.SpellFlagPureDot | core.SpellFlagPoison | SpellFlagSting,
+		CastType:       proto.CastType_CastTypeRanged,
+		Rank:           rank,
+		RequiredLevel:  level,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -80,14 +80,14 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 	baseDamage := [10]float64{0, 20, 40, 80, 140, 210, 290, 385, 490, 555}[rank]
 	spellCoeff := [10]float64{0, .4, .625, .925, 1, 1, 1, 1, 1, 1}[rank]
 	return hunter.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_HunterChimeraSerpent,
-		ActionID:     core.ActionID{SpellID: 409493},
-		SpellSchool:  core.SpellSchoolNature,
-		CastType:     proto.CastType_CastTypeRanged,
-		DefenseType:  core.DefenseTypeRanged,
-		ProcMask:     core.ProcMaskRangedProc | core.ProcMaskRangedDamageProc,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
-		MissileSpeed: 24,
+		ClassSpellMask: ClassSpellMask_HunterChimeraSerpent,
+		ActionID:       core.ActionID{SpellID: 409493},
+		SpellSchool:    core.SpellSchoolNature,
+		CastType:       proto.CastType_CastTypeRanged,
+		DefenseType:    core.DefenseTypeRanged,
+		ProcMask:       core.ProcMaskRangedProc | core.ProcMaskRangedDamageProc,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
+		MissileSpeed:   24,
 
 		BonusCritRating: 1,
 

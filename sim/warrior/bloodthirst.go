@@ -12,12 +12,12 @@ func (warrior *Warrior) registerBloodthirstSpell(cdTimer *core.Timer) {
 	}
 
 	warrior.Bloodthirst = warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		SpellCode:   SpellCode_WarriorBloodthirst,
-		ActionID:    core.ActionID{SpellID: 23894},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
+		ClassSpellMask: ClassSpellMask_WarriorBloodthirst,
+		ActionID:       core.ActionID{SpellID: 23894},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
 			Cost:   30,

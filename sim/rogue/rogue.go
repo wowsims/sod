@@ -18,32 +18,32 @@ const (
 )
 
 const (
-	SpellCode_RogueNone int32 = iota
+	ClassSpellMask_RogueNone int64 = 0
 
-	SpellCode_RogueAmbush
-	SpellCode_RogueAdrenalineRush
-	SpellCode_RogueBackstab
-	SpellCode_RogueBetweentheEyes
-	SpellCode_RogueBladeDance
-	SpellCode_RogueBladeFlurry
-	SpellCode_RogueCrimsonTempest
-	SpellCode_RogueDeadlyPoisonTick
-	SpellCode_RogueEnvenom
-	SpellCode_RogueEviscerate
-	SpellCode_RogueExposeArmor
-	SpellCode_RogueGarrote
-	SpellCode_RogueGhostlyStrike
-	SpellCode_RogueHemorrhage
-	SpellCode_RogueInstantPoison
-	SpellCode_RogueMainGauche
-	SpellCode_RogueMutilate
-	SpellCode_RogueOccultPoisonTick
-	SpellCode_RoguePoisonedKnife
-	SpellCode_RogueRupture
-	SpellCode_RogueSaberSlash
-	SpellCode_RogueShadowStrike
-	SpellCode_RogueSinisterStrike
-	SpellCode_RogueSliceandDice
+	ClassSpellMask_RogueAmbush int64 = 1 << iota
+	ClassSpellMask_RogueAdrenalineRush
+	ClassSpellMask_RogueBackstab
+	ClassSpellMask_RogueBetweentheEyes
+	ClassSpellMask_RogueBladeDance
+	ClassSpellMask_RogueBladeFlurry
+	ClassSpellMask_RogueCrimsonTempest
+	ClassSpellMask_RogueDeadlyPoisonTick
+	ClassSpellMask_RogueEnvenom
+	ClassSpellMask_RogueEviscerate
+	ClassSpellMask_RogueExposeArmor
+	ClassSpellMask_RogueGarrote
+	ClassSpellMask_RogueGhostlyStrike
+	ClassSpellMask_RogueHemorrhage
+	ClassSpellMask_RogueInstantPoison
+	ClassSpellMask_RogueMainGauche
+	ClassSpellMask_RogueMutilate
+	ClassSpellMask_RogueOccultPoisonTick
+	ClassSpellMask_RoguePoisonedKnife
+	ClassSpellMask_RogueRupture
+	ClassSpellMask_RogueSaberSlash
+	ClassSpellMask_RogueShadowStrike
+	ClassSpellMask_RogueSinisterStrike
+	ClassSpellMask_RogueSliceandDice
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}

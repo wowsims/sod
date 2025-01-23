@@ -17,14 +17,14 @@ func (warlock *Warlock) registerShadowBurnBaseConfig(rank int) core.SpellConfig 
 	spellCoeff := 0.429
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellCode:     SpellCode_WarlockShadowburn,
-		SpellSchool:   core.SpellSchoolShadow,
-		DefenseType:   core.DefenseTypeMagic,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagDestruction,
-		RequiredLevel: level,
-		Rank:          rank,
+		ActionID:       core.ActionID{SpellID: spellId},
+		ClassSpellMask: ClassSpellMask_WarlockShadowburn,
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagDestruction,
+		RequiredLevel:  level,
+		Rank:           rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,

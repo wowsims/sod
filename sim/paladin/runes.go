@@ -206,7 +206,7 @@ func (paladin *Paladin) registerShockAndAwe() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode != SpellCode_PaladinHolyShock {
+			if !spell.Matches(ClassSpellMask_PaladinHolyShock) {
 				return
 			}
 			shockAndAweAura.Activate(sim)
@@ -261,18 +261,14 @@ func (paladin *Paladin) applyPurifyingPower() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: "Purifying Power",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range paladin.exorcism {
-				spell.CD.Multiplier *= 0.5
-			}
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath,
+		Kind:       core.SpellMod_Cooldown_Multi_Pct,
+		FloatValue: -0.5,
+	}))
 
-			for _, spell := range paladin.holyWrath {
-				spell.CD.Multiplier *= 0.5
-			}
-		},
-	})
 }
 
 func (paladin *Paladin) registerAegis() {
@@ -335,7 +331,7 @@ func (paladin *Paladin) registerMalleableProtection() {
 	// Activating Holy Shield now grants 4 AP for each point of defense above paladin.Level * 5
 	defendersResolveAPAura := core.DefendersResolveAttackPower(paladin.GetCharacter())
 	handler := func(spell *core.Spell) {
-		if spell.SpellCode != SpellCode_PaladinHolyShield {
+		if !spell.Matches(ClassSpellMask_PaladinHolyShield) {
 			return
 		}
 		oldEffects := spell.ApplyEffects

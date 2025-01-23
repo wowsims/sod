@@ -16,12 +16,12 @@ func (mage *Mage) applyIgnite() {
 	}
 
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_MageIgnite,
-		ActionID:    core.ActionID{SpellID: 12654},
-		SpellSchool: core.SpellSchoolFire,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagMage,
+		ClassSpellMask: ClassSpellMask_MageIgnite,
+		ActionID:       core.ActionID{SpellID: 12654},
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

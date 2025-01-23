@@ -204,7 +204,7 @@ func init() {
 			ActionID: core.ActionID{SpellID: 469237},
 			Label:    "Staff of Inferno",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.SpellCode == SpellCode_MageBlastWave && result.Landed() {
+				if spell.Matches(ClassSpellMask_MageBlastWave) && result.Landed() {
 					aura := mage.ImprovedScorchAuras.Get(result.Target)
 					aura.Activate(sim)
 					aura.SetStacks(sim, 5)

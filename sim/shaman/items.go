@@ -1,7 +1,6 @@
 package shaman
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/itemhelpers"
@@ -389,7 +388,7 @@ func init() {
 				}
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.SpellCode == SpellCode_ShamanChainLightning {
+				if spell.Matches(ClassSpellMask_ShamanChainLightning) {
 					aura.Deactivate(sim)
 				}
 			},
@@ -454,7 +453,7 @@ func init() {
 		shaman := agent.(ShamanAgent).GetShaman()
 
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_ShamanFlameShock {
+			if spell.Matches(ClassSpellMask_ShamanFlameShock) {
 				spell.Cost.FlatModifier -= 10
 			}
 		})
@@ -522,7 +521,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.SpellCode != SpellCode_ShamanStormstrike {
+				if !spell.Matches(ClassSpellMask_ShamanStormstrike) {
 					return
 				}
 
@@ -578,7 +577,7 @@ func init() {
 	core.NewItemEffect(TotemOfSustaining, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_ShamanLesserHealingWave {
+			if spell.Matches(ClassSpellMask_ShamanLesserHealingWave) {
 				spell.BonusDamage += 53
 			}
 		})
@@ -605,7 +604,7 @@ func init() {
 	core.NewItemEffect(TotemOfTheStorm, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_ShamanLightningBolt || spell.SpellCode == SpellCode_ShamanChainLightning {
+			if spell.Matches(ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning) {
 				spell.BonusDamage += 33
 			}
 		})
@@ -628,7 +627,7 @@ func init() {
 				aura.Activate(sim)
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.SpellCode == SpellCode_ShamanFlameShock {
+				if spell.Matches(ClassSpellMask_ShamanFlameShock) {
 					procAura.Activate(sim)
 				}
 			},
@@ -640,9 +639,9 @@ func init() {
 	// Acts as extra 30 spellpower for shocks.
 	core.NewItemEffect(TotemOfRage, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		affectedSpellCodes := []int32{SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
+		affectedSpellClassMasks := ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if slices.Contains(affectedSpellCodes, spell.SpellCode) {
+			if spell.Matches(affectedSpellClassMasks) {
 				spell.BonusDamage += 30
 			}
 		})
@@ -653,7 +652,7 @@ func init() {
 	core.NewItemEffect(TotemOfThunder, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_ShamanLightningBolt {
+			if spell.Matches(ClassSpellMask_ShamanLightningBolt) {
 				spell.DefaultCast.CastTime -= time.Millisecond * 100
 			}
 		})

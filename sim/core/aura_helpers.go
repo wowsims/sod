@@ -23,6 +23,7 @@ const (
 	CallbackOnHealDealt
 	CallbackOnPeriodicHealDealt
 	CallbackOnCastComplete
+	CallbackOnApplyEffects
 )
 
 type ProcHandler func(sim *Simulation, spell *Spell, result *SpellResult)
@@ -36,12 +37,15 @@ type ProcTrigger struct {
 	CanProcFromProcs  bool // Can Proc From Procs flag
 	SpellFlagsExclude SpellFlag
 	SpellFlags        SpellFlag
+	SpellSchool       SpellSchool
 	Outcome           HitOutcome
 	Harmful           bool
 	ProcChance        float64
 	PPM               float64
 	ICD               time.Duration
 	Handler           ProcHandler
+	ClassSpellMask    int64
+	ExtraCondition    ProcExtraCondition
 }
 
 func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
@@ -62,6 +66,12 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 	handler := config.Handler
 	callback := func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 		if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
+			return
+		}
+		if config.ClassSpellMask > 0 && !spell.Matches(config.ClassSpellMask) {
+			return
+		}
+		if config.SpellSchool > 0 && !spell.SpellSchool.Matches(config.SpellSchool) {
 			return
 		}
 		if config.SpellFlagsExclude != SpellFlagNone && spell.Flags.Matches(config.SpellFlagsExclude) {
@@ -118,6 +128,12 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 			if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
 				return
 			}
+			if config.ClassSpellMask > 0 && !spell.Matches(config.ClassSpellMask) {
+				return
+			}
+			if config.SpellSchool > 0 && !spell.SpellSchool.Matches(config.SpellSchool) {
+				return
+			}
 			if config.ProcMask != ProcMaskUnknown && !spell.ProcMask.Matches(config.ProcMask) {
 				return
 			}
@@ -135,6 +151,36 @@ func ApplyProcTriggerCallback(unit *Unit, aura *Aura, config ProcTrigger) {
 				icd.Use(sim)
 			}
 			handler(sim, spell, nil)
+		}
+	}
+	if config.Callback.Matches(CallbackOnApplyEffects) {
+		procAura.OnApplyEffects = func(aura *Aura, sim *Simulation, target *Unit, spell *Spell) {
+			if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
+				return
+			}
+			if config.ClassSpellMask > 0 && !spell.Matches(config.ClassSpellMask) {
+				return
+			}
+			if config.SpellSchool > 0 && !spell.SpellSchool.Matches(config.SpellSchool) {
+				return
+			}
+			if config.ProcMask != ProcMaskUnknown && !spell.ProcMask.Matches(config.ProcMask) {
+				return
+			}
+			if config.SpellFlagsExclude != SpellFlagNone && spell.Flags.Matches(config.SpellFlagsExclude) {
+				return
+			}
+			if icd.Duration != 0 && !icd.IsReady(sim) {
+				return
+			}
+			if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
+				return
+			}
+
+			if icd.Duration != 0 {
+				icd.Use(sim)
+			}
+			handler(sim, spell, &SpellResult{Target: target})
 		}
 	}
 }
@@ -272,4 +318,135 @@ func ApplyFixedUptimeAura(aura *Aura, uptime float64, tickLength time.Duration, 
 			},
 		})
 	})
+}
+
+// Creates a new ProcTriggerAura that is dependent on a parent Aura being active
+// This should only be used if the dependent Aura is:
+// 1. On the a different Unit than parent Aura is registered to (usually the Character)
+// 2. You need to register multiple dependent Aura's for the same Unit
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) MakeDependentProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
+	oldExtraCondition := config.ExtraCondition
+	config.ExtraCondition = func(sim *Simulation, spell *Spell, result *SpellResult) bool {
+		return parentAura.IsActive() && ((oldExtraCondition == nil) || oldExtraCondition(sim, spell, result))
+	}
+
+	aura := MakeProcTriggerAura(unit, config)
+
+	return aura
+}
+
+// Attaches a ProcTrigger to a parent Aura
+// Preffered use-case.
+// For non standard use-cases see: MakeDependentProcTriggerAura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachProcTrigger(config ProcTrigger) *Aura {
+	ApplyProcTriggerCallback(parentAura.Unit, parentAura, config)
+
+	return parentAura
+}
+
+// Attaches a SpellMod to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) *Aura {
+	parentAuraDep := parentAura.Unit.AddDynamicMod(spellModConfig)
+
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		parentAuraDep.Activate()
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		parentAuraDep.Deactivate()
+	})
+
+	return parentAura
+}
+
+// Attaches a StatDependency to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachStatDependency(statDep *stats.StatDependency) *Aura {
+
+	parentAura.ApplyOnGain(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.EnableBuildPhaseStatDep(sim, statDep)
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
+		parentAura.Unit.DisableBuildPhaseStatDep(sim, statDep)
+	})
+
+	return parentAura
+}
+
+// Adds Stats to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) *Aura {
+	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddStatsDynamic(sim, stats)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddStatsDynamic(sim, stats.Invert())
+	})
+
+	return parentAura
+}
+
+// Adds Stats to a parent Aura during build phase
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachBuildPhaseStatsBuff(stats stats.Stats) *Aura {
+	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddBuildPhaseStatsDynamic(sim, stats)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		aura.Unit.AddBuildPhaseStatsDynamic(sim, stats.Invert())
+	})
+
+	return parentAura
+}
+
+// Adds a Stat to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachStatBuff(stat stats.Stat, value float64) *Aura {
+	statsToAdd := stats.Stats{}
+	statsToAdd[stat] = value
+	parentAura.AttachStatsBuff(statsToAdd)
+
+	return parentAura
+}
+
+// Adds a Stat to a parent Aura during build phase
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachBuildPhaseStatBuff(stat stats.Stat, value float64) *Aura {
+	statsToAdd := stats.Stats{}
+	statsToAdd[stat] = value
+	parentAura.AttachBuildPhaseStatsBuff(statsToAdd)
+
+	return parentAura
+}
+
+// Adds a Attack Speed Multiplier to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachMultiplyAttackSpeed(unit *Unit, value float64) *Aura {
+	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		unit.MultiplyAttackSpeed(sim, value)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		unit.MultiplyAttackSpeed(sim, 1/value)
+	})
+	return parentAura
+}
+
+// Adds a Cast Speed Multiplier Stat to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachMultiplyCastSpeed(unit *Unit, value float64) *Aura {
+	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		unit.MultiplyCastSpeed(value)
+	})
+
+	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		unit.MultiplyCastSpeed(1 / value)
+	})
+	return parentAura
 }

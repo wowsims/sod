@@ -19,28 +19,28 @@ const (
 )
 
 const (
-	SpellCode_WarlockNone int32 = iota
+	ClassSpellMask_WarlockNone int64 = 0
 
-	SpellCode_WarlockChaosBolt
-	SpellCode_WarlockConflagrate
-	SpellCode_WarlockCorruption
-	SpellCode_WarlockCurseOfAgony
-	SpellCode_WarlockCurseOfDoom
-	SpellCode_WarlockDeathCoil
-	SpellCode_WarlockDemonicSacrifice
-	SpellCode_WarlockDrainLife
-	SpellCode_WarlockDrainSoul
-	SpellCode_WarlockHaunt
-	SpellCode_WarlockImmolate
-	SpellCode_WarlockIncinerate
-	SpellCode_WarlockLifeTap
-	SpellCode_WarlockSearingPain
-	SpellCode_WarlockShadowflame
-	SpellCode_WarlockShadowCleave
-	SpellCode_WarlockShadowBolt
-	SpellCode_WarlockShadowburn
-	SpellCode_WarlockSoulFire
-	SpellCode_WarlockUnstableAffliction
+	ClassSpellMask_WarlockChaosBolt int64 = 1 << iota
+	ClassSpellMask_WarlockConflagrate
+	ClassSpellMask_WarlockCorruption
+	ClassSpellMask_WarlockCurseOfAgony
+	ClassSpellMask_WarlockCurseOfDoom
+	ClassSpellMask_WarlockDeathCoil
+	ClassSpellMask_WarlockDemonicSacrifice
+	ClassSpellMask_WarlockDrainLife
+	ClassSpellMask_WarlockDrainSoul
+	ClassSpellMask_WarlockHaunt
+	ClassSpellMask_WarlockImmolate
+	ClassSpellMask_WarlockIncinerate
+	ClassSpellMask_WarlockLifeTap
+	ClassSpellMask_WarlockSearingPain
+	ClassSpellMask_WarlockShadowflame
+	ClassSpellMask_WarlockShadowCleave
+	ClassSpellMask_WarlockShadowBolt
+	ClassSpellMask_WarlockShadowburn
+	ClassSpellMask_WarlockSoulFire
+	ClassSpellMask_WarlockUnstableAffliction
 )
 
 type Warlock struct {
@@ -131,7 +131,6 @@ type Warlock struct {
 	demonicKnowledgeSp           float64
 	maintainBuffsOnSacrifice     bool    // Whether to disable the Master Demonologist and Demonic Sacrifice buffs when sacrificing/summoning pets. Used by TAQ 4pc
 	masterDemonologistMultiplier float64 // Bonus multiplier applied to the Master Demonologist talent
-	improvedShadowBoltSpellCodes []int32 // List of spells that proc ISB
 	nightfallProcChance          float64
 	// For effects that buff the damage of shadow bolt for each active Warlock effect on the target, e.g. 2pc DPS 6pc
 	shadowBoltActiveEffectModifierPer float64

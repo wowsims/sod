@@ -13,54 +13,59 @@ import (
 var TalentTreeSizes = [3]int{16, 14, 16}
 
 const (
-	SpellFlagShot   = core.SpellFlagAgentReserved1
-	SpellFlagStrike = core.SpellFlagAgentReserved2
-	SpellFlagSting  = core.SpellFlagAgentReserved3
-	SpellFlagTrap   = core.SpellFlagAgentReserved4
+	SpellFlagStrike = core.SpellFlagAgentReserved1
+	SpellFlagSting  = core.SpellFlagAgentReserved2
 )
 
 const (
-	SpellCode_HunterNone int32 = iota
+	ClassSpellMask_HunterNone int64 = 0
 
 	// Shots
-	SpellCode_HunterAimedShot
-	SpellCode_HunterArcaneShot
-	SpellCode_HunterChimeraShot
-	SpellCode_HunterExplosiveShot
-	SpellCode_HunterKillShot
-	SpellCode_HunterMultiShot
-	SpellCode_HunterSteadyShot
+	ClassSpellMask_HunterAimedShot int64 = 1 << iota
+	ClassSpellMask_HunterArcaneShot
+	ClassSpellMask_HunterChimeraShot
+	ClassSpellMask_HunterExplosiveShot
+	ClassSpellMask_HunterKillShot
+	ClassSpellMask_HunterMultiShot
+	ClassSpellMask_HunterSteadyShot
 
 	// Strikes
-	SpellCode_HunterFlankingStrike
-	SpellCode_HunterRaptorStrike
-	SpellCode_HunterRaptorStrikeHit
-	SpellCode_HunterWyvernStrike
+	ClassSpellMask_HunterFlankingStrike
+	ClassSpellMask_HunterRaptorStrike
+	ClassSpellMask_HunterRaptorStrikeHit
+	ClassSpellMask_HunterWyvernStrike
 
 	// Stings
-	SpellCode_HunterSerpentSting
+	ClassSpellMask_HunterSerpentSting
 
 	// Traps
-	SpellCode_HunterExplosiveTrap
-	SpellCode_HunterFreezingTrap
-	SpellCode_HunterImmolationTrap
+	ClassSpellMask_HunterExplosiveTrap
+	ClassSpellMask_HunterFreezingTrap
+	ClassSpellMask_HunterImmolationTrap
 
 	// Other
-	SpellCode_HunterCarve
-	SpellCode_HunterCarveHit
-	SpellCode_HunterMongooseBite
-	SpellCode_HunterWingClip
-	SpellCode_HunterVolley
-	SpellCode_HunterChimeraSerpent
+	ClassSpellMask_HunterCarve
+	ClassSpellMask_HunterCarveHit
+	ClassSpellMask_HunterMongooseBite
+	ClassSpellMask_HunterWingClip
+	ClassSpellMask_HunterVolley
+	ClassSpellMask_HunterChimeraSerpent
 
 	// Pet Spells
-	SpellCode_HunterPetFlankingStrike
-	SpellCode_HunterPetClaw
-	SpellCode_HunterPetBite
-	SpellCode_HunterPetLightningBreath
-	SpellCode_HunterPetLavaBreath
-	SpellCode_HunterPetScreech
-	SpellCode_HunterPetScorpidPoison
+	ClassSpellMask_HunterPetFlankingStrike
+	ClassSpellMask_HunterPetClaw
+	ClassSpellMask_HunterPetBite
+	ClassSpellMask_HunterPetLightningBreath
+	ClassSpellMask_HunterPetLavaBreath
+	ClassSpellMask_HunterPetScreech
+	ClassSpellMask_HunterPetScorpidPoison
+
+	ClassSpellMask_HunterLast
+	ClassSpellMask_HunterAll = ClassSpellMask_HunterLast<<1 - 1
+
+	ClassSpellMask_HunterTraps   = ClassSpellMask_HunterExplosiveTrap | ClassSpellMask_HunterFreezingTrap | ClassSpellMask_HunterImmolationTrap
+	ClassSpellMask_HunterShots   = ClassSpellMask_HunterAimedShot | ClassSpellMask_HunterArcaneShot | ClassSpellMask_HunterChimeraShot | ClassSpellMask_HunterExplosiveShot | ClassSpellMask_HunterKillShot | ClassSpellMask_HunterMultiShot | ClassSpellMask_HunterSteadyShot
+	ClassSpellMask_HunterStrikes = ClassSpellMask_HunterFlankingStrike | ClassSpellMask_HunterRaptorStrike | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterWyvernStrike
 )
 
 func RegisterHunter() {
@@ -178,7 +183,7 @@ func (hunter *Hunter) AddPartyBuffs(_ *proto.PartyBuffs) {
 
 func (hunter *Hunter) Initialize() {
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagShot) {
+		if spell.Matches(ClassSpellMask_HunterShots) {
 			hunter.Shots = append(hunter.Shots, spell)
 		}
 	})

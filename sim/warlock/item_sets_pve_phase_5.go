@@ -1,7 +1,6 @@
 package warlock
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -50,12 +49,12 @@ func (warlock *Warlock) applyT2Tank2PBonus() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarlockLifeTap {
+			if spell.Matches(ClassSpellMask_WarlockLifeTap) {
 				warlock.GainHealth(sim, result.Damage, healthMetrics[spell.Rank])
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_WarlockLifeTap && warlock.CurrentTarget != nil {
+			if spell.Matches(ClassSpellMask_WarlockLifeTap) && warlock.CurrentTarget != nil {
 				// Enemy hit can partially resist and cannot crit
 				spell.Flags &= ^core.SpellFlagBinary
 				spell.DamageMultiplier /= 2
@@ -93,7 +92,7 @@ func (warlock *Warlock) applyT2Tank4PBonus() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarlockShadowburn && result.Landed() {
+			if spell.Matches(ClassSpellMask_WarlockShadowburn) && result.Landed() {
 				healAmount := warlock.MaxHealth() * 0.15
 				healingSpell.CalcAndDealHealing(sim, healingSpell.Unit, healAmount, healingSpell.OutcomeHealing)
 			}
@@ -141,7 +140,7 @@ func (warlock *Warlock) applyT2Tank6PBonus() {
 			currentShieldAmount = 0.0
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if currentShieldAmount <= 0 || result.Damage <= 0 || spell.SpellCode == SpellCode_WarlockLifeTap {
+			if currentShieldAmount <= 0 || result.Damage <= 0 || spell.Matches(ClassSpellMask_WarlockLifeTap) {
 				return
 			}
 
@@ -223,11 +222,11 @@ func (warlock *Warlock) applyT2Damage4PBonus() {
 
 	procChance := 0.04
 
-	affectedSpellCodes := []int32{SpellCode_WarlockCurseOfAgony, SpellCode_WarlockShadowflame, SpellCode_WarlockUnstableAffliction}
+	affectedSpellClassMasks := ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockShadowflame | ClassSpellMask_WarlockUnstableAffliction
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if slices.Contains(affectedSpellCodes, spell.SpellCode) && sim.Proc(procChance, "Proc Shadow Trance") {
+			if spell.Matches(affectedSpellClassMasks) && sim.Proc(procChance, "Proc Shadow Trance") {
 				warlock.ShadowTranceAura.Activate(sim)
 			}
 		},

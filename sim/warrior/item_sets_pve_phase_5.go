@@ -37,7 +37,7 @@ func (warrior *Warrior) applyT2Damage2PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarriorOverpower && result.DidCrit() {
+			if spell.Matches(ClassSpellMask_WarriorOverpower) && result.DidCrit() {
 				if dot := warrior.Rend.Dot(result.Target); dot.IsActive() {
 					dot.Refresh(sim)
 				}
@@ -89,7 +89,7 @@ func (warrior *Warrior) applyT2Damage6PBonus() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarriorSlamMH && result.Landed() {
+			if spell.Matches(ClassSpellMask_WarriorSlamMH) && result.Landed() {
 				for _, spell := range affectedSpells {
 					spell.CD.Reset()
 				}
@@ -154,7 +154,7 @@ func (warrior *Warrior) applyT2Protection4PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarriorRevenge {
+			if spell.Matches(ClassSpellMask_WarriorRevenge) {
 				flurryAura.Activate(sim)
 				flurryAura.SetStacks(sim, 3)
 			}

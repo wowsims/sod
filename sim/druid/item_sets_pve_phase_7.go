@@ -28,22 +28,13 @@ var ItemSetDreamwalkerEclipse = core.NewItemSet(core.ItemSet{
 
 // Your Moonfire and Sunfire deal 20% more damage.
 func (druid *Druid) applyNaxxramasBalance2PBonus() {
-	label := "S03 - Item - Naxxramas - Druid - Balance 2P Bonus"
-	if druid.HasAura(label) {
-		return
-	}
 
 	druid.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range druid.Moonfire {
-				spell.DamageMultiplierAdditive += 0.20
-			}
-
-			if druid.Sunfire != nil {
-				druid.Sunfire.DamageMultiplierAdditive += 0.20
-			}
-		},
+		Label: "S03 - Item - Naxxramas - Druid - Balance 2P Bonus",
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusDamage_Flat,
+		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire,
+		FloatValue: 0.20,
 	})
 }
 
@@ -80,7 +71,7 @@ func (druid *Druid) applyNaxxramasBalance6PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if starfallDot := druid.Starfall.AOEDot(); starfallDot.IsActive() && result.Target.MobType == proto.MobType_MobTypeUndead && spell.SpellCode == SpellCode_DruidStarsurge && result.Landed() {
+			if starfallDot := druid.Starfall.AOEDot(); starfallDot.IsActive() && result.Target.MobType == proto.MobType_MobTypeUndead && spell.Matches(ClassSpellMask_DruidStarsurge) && result.Landed() {
 				starfallDot.Refresh(sim)
 			}
 		},
