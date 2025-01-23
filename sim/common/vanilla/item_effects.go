@@ -641,7 +641,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=228350/eskhandars-right-claw
-	// Chance on hit: Increases your attack speed by 30% for 5 sec.
+	// Chance on hit: Increases your attack speed by 25% for 5 sec.
 	// Original proc rate 1.0 lowered to 0.6 in SoD phase 5
 	itemhelpers.CreateWeaponProcAura(EskhandarsRightClaw, "Eskhandar's Right Claw", 0.6, eskhandarsRightClawAura)
 	itemhelpers.CreateWeaponProcAura(EskhandarsRightClawMolten, "Eskhandar's Right Claw (Molten)", 0.6, eskhandarsRightClawAura)
@@ -3441,10 +3441,10 @@ func eskhandarsRightClawAura(character *core.Character) *core.Aura {
 		ActionID: core.ActionID{SpellID: 22640},
 		Duration: time.Second * 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.MultiplyAttackSpeed(sim, 1.3)
+			character.MultiplyAttackSpeed(sim, 1.25)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.MultiplyAttackSpeed(sim, 1/1.3)
+			character.MultiplyAttackSpeed(sim, 1/1.25)
 		},
 	})
 }

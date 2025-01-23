@@ -246,8 +246,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.3729
-  weights: 1.13652
+  weights: 2.073
+  weights: 1.98004
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.01318
-  weights: 6.36019
-  weights: 24.33836
+  weights: 0.68512
+  weights: 7.55778
+  weights: 26.42668
   weights: 0
   weights: 0
   weights: 0
@@ -498,50 +498,50 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 2845.62459
-  tps: 2452.52314
+  dps: 2841.31754
+  tps: 2448.4859
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 2072.28436
-  tps: 1824.3828
+  dps: 2092.9543
+  tps: 1842.96783
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 2462.44628
-  tps: 2128.70774
+  dps: 2473.26501
+  tps: 2136.99166
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 2444.45369
-  tps: 2114.95116
+  dps: 2425.12054
+  tps: 2098.51063
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 2462.44628
-  tps: 2128.70774
+  dps: 2473.26501
+  tps: 2136.99166
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 3030.07382
-  tps: 2604.05986
+  dps: 3032.61464
+  tps: 2605.41786
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3910.86152
-  tps: 3063.10075
+  dps: 3888.23827
+  tps: 3045.66989
  }
 }
 dps_results: {
@@ -631,8 +631,8 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3041.76337
-  tps: 2392.40441
+  dps: 3026.14415
+  tps: 2374.34148
  }
 }
 dps_results: {
