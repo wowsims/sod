@@ -254,12 +254,14 @@ func (druid *Druid) applyNaxxramasGuardian4PBonus() {
 }
 
 // When you take damage from an Undead enemy, the remaining duration of your active Frenzied Regeneration is reset to 10 sec.
+// In addition, Frenzied Regeneration will never consume your last 15 Rage to generate healing.
 func (druid *Druid) applyNaxxramasGuardian6PBonus() {
 	label := "S03 - Item - Naxxramas - Druid - Guardian 6P Bonus"
 	if druid.HasAura(label) {
 		return
 	}
 
+	// TODO: Implement rage part when Frenzied Regeneration is implemented
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
