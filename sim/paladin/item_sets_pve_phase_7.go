@@ -76,8 +76,12 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells := paladin.exorcism
 			affectedSpells = append(affectedSpells, paladin.holyWrath...)
-			affectedSpells = append(affectedSpells, paladin.crusaderStrike)
-			affectedSpells = append(affectedSpells, paladin.divineStorm)
+			if paladin.crusaderStrike != nil {
+				affectedSpells = append(affectedSpells, paladin.crusaderStrike)
+			}
+			if paladin.divineStorm != nil {
+				affectedSpells = append(affectedSpells, paladin.divineStorm)
+			}
 
 			for _, spell := range affectedSpells {
 				oldApplyEffects := spell.ApplyEffects
