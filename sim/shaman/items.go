@@ -687,7 +687,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=237577/totem-of-unholy-might
-	// Chance on hit: Increases the wielder's Strength by 400, but they also take 20% more damage from all sources for 8 sec.
+	// Chance on hit: Increases the wielder's Strength by 350, but they also take 5% more damage from all sources for 8 sec.
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcAura(TotemOfUnholyMight, "Totem of Unholy Might", 1.0, item_effects.UnholyMightAura)
 
