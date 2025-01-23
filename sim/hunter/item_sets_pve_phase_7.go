@@ -26,7 +26,7 @@ var ItemSetCryptstalkerProwess = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Wyvern Strike deals 20% more initial damage.
+// Your Wyvern Strike and Mongoose Bite deal 20% more initial damage.
 func (hunter *Hunter) applyNaxxramasMelee2PBonus() {
 	if !hunter.HasRune(proto.HunterRune_RuneBootsWyvernStrike) || !hunter.Talents.WyvernSting {
 		return
@@ -41,6 +41,7 @@ func (hunter *Hunter) applyNaxxramasMelee2PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			hunter.WyvernStrike.ImpactDamageMultiplierAdditive += 0.20
+			hunter.MongooseBite.DamageMultiplierAdditive += 0.20
 		},
 	})
 }

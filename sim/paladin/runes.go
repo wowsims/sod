@@ -378,7 +378,7 @@ func (paladin *Paladin) registerMalleableProtection() {
 		},
 	})
 
-	divine_protection := paladin.RegisterSpell(core.SpellConfig{
+	paladin.divineProtection = paladin.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL | SpellFlag_Forbearance,
 		ManaCost: core.ManaCostOptions{
@@ -399,7 +399,7 @@ func (paladin *Paladin) registerMalleableProtection() {
 	})
 
 	paladin.AddMajorCooldown(core.MajorCooldown{
-		Spell:    divine_protection,
+		Spell:    paladin.divineProtection,
 		Priority: core.CooldownPriorityDrums, // Primary defensive cooldown
 		Type:     core.CooldownTypeSurvival,
 	})

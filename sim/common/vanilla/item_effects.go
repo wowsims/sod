@@ -818,7 +818,7 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcSpell(FlurryAxe, "Flurry Axe", 1.0, func(character *core.Character) *core.Spell {
+	itemhelpers.CreateWeaponProcSpell(FlurryAxe, "Flurry Axe", 1.9, func(character *core.Character) *core.Spell {
 		return character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{SpellID: 18797},
 			SpellSchool:      core.SpellSchoolPhysical,
@@ -2612,11 +2612,11 @@ func init() {
 	core.NewItemEffect(KissOfTheSpider, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{ItemID: KissOfTheSpider}
-
+		duration := time.Second * 15
 		buffAura := character.RegisterAura(core.Aura{
 			ActionID: actionID,
 			Label:    "Kiss of the Spider",
-			Duration: time.Second * 15,
+			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.MultiplyAttackSpeed(sim, 1.20)
 			},
@@ -2633,8 +2633,12 @@ func init() {
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
-					Timer:    character.GetOffensiveTrinketCD(),
+					Timer:    character.NewTimer(),
 					Duration: time.Second * 90,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
 				},
 			},
 

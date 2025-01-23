@@ -26,7 +26,7 @@ var ItemSetRedemptionWarplate = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Increases the damage done by your Divine Storm ability by 20%.
+// Increases the damage done by your Divine Storm ability by 100%.
 func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 	if !paladin.hasRune(proto.PaladinRune_RuneChestDivineStorm) {
 		return
@@ -40,12 +40,12 @@ func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 	paladin.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.divineStorm.DamageMultiplierAdditive += 0.20
+			paladin.divineStorm.DamageMultiplierAdditive += 1.0
 		},
 	})
 }
 
-// Reduces the cast time of your Holy Wrath ability by 100% and reduces the cooldown of your Holy Wrath ability by 60%.
+// Reduces the cast time of your Holy Wrath ability by 100% and reduces the cooldown and mana cost of your Holy Wrath ability by 75%.
 func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 	label := "S03 - Item - Naxxramas - Paladin - Retribution 4P Bonus"
 	if paladin.HasAura(label) {
@@ -57,13 +57,14 @@ func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range paladin.holyWrath {
 				spell.CastTimeMultiplier -= 1
-				spell.CD.Multiplier *= 0.4
+				spell.CD.Multiplier *= 0.25
+				spell.Cost.Multiplier -= 75
 			}
 		},
 	})
 }
 
-// Your Exorcism and Holy Wrath abilities deal increased damage to Undead equal to their critical strike chance.
+// Your Crusader Strike, Divine Storm, Exorcism and Holy Wrath abilities deal increased damage to Undead equal to their critical strike chance.
 func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 	label := "S03 - Item - Naxxramas - Paladin - Retribution 6P Bonus"
 	if paladin.HasAura(label) {
@@ -75,6 +76,8 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells := paladin.exorcism
 			affectedSpells = append(affectedSpells, paladin.holyWrath...)
+			affectedSpells = append(affectedSpells, paladin.crusaderStrike)
+			affectedSpells = append(affectedSpells, paladin.divineStorm)
 
 			for _, spell := range affectedSpells {
 				oldApplyEffects := spell.ApplyEffects
@@ -82,19 +85,11 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 					critChanceBonus := 0.0
 
 					if target.MobType == proto.MobType_MobTypeUndead {
-						critChanceBonus = paladin.GetStat(stats.SpellCrit)/100.0 + paladin.GetSchoolBonusCritChance(spell)/100.0
-						/*
-							// TODO: This most likely only uses sheet spell crit and doesn't care about spell specific crit unfortunately, verify!
-							// Meaning this 6pc is quite a bit worse than the T2.5 4pc, but who's counting?
-							if spell.SpellCode == SpellCode_PaladinExorcism {
-								critChanceBonus = 1.0
-							} else {
-								critChanceBonus = spell.SpellCritChance(target)
-								if paladin.hasRune(proto.PaladinRune_RuneHeadWrath) {
-									critChanceBonus += paladin.GetStat(stats.MeleeCrit) / 100.0
-								}
-							}
-						*/
+						if spell.SpellCode == SpellCode_PaladinExorcism || spell.SpellCode == SpellCode_PaladinHolyWrath {
+							critChanceBonus = paladin.GetStat(stats.SpellCrit)/100.0 + paladin.GetSchoolBonusCritChance(spell)/100.0
+						} else {
+							critChanceBonus = paladin.GetStat(stats.MeleeCrit) / 100.0
+						}
 					}
 
 					critChanceBonus = min(critChanceBonus, 1.0)
@@ -165,7 +160,9 @@ func (paladin *Paladin) applyNaxxramasProtection4PBonus() {
 	paladin.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO: Divine Protection
+			if paladin.divineProtection != nil {
+				paladin.divineProtection.CD.FlatModifier -= time.Minute * 3
+			}
 
 			if paladin.avengingWrath != nil {
 				paladin.avengingWrath.CD.FlatModifier -= time.Minute * 2
@@ -184,7 +181,7 @@ func (paladin *Paladin) applyNaxxramasProtection6PBonus() {
 	paladin.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
+			// Implemented in righteous_fury.go
 		},
 	})
 }
