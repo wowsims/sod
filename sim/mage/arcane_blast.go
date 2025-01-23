@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -16,7 +15,8 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		return
 	}
 
-	hasLivingFlameRune := mage.HasRune(proto.MageRune_RuneLegsLivingFlame)
+	// Spells that consume Arcane Blast stacks
+	affectedSpells := ClassSpellMask_MageArcaneBarrage | ClassSpellMask_MageArcaneExplosion | ClassSpellMask_MageArcaneSurge | ClassSpellMask_MageBalefireBolt | ClassSpellMask_MageSpellfrostBolt
 
 	baseLowDamage := mage.baseRuneAbilityDamage() * 4.53
 	baseHighDamage := mage.baseRuneAbilityDamage() * 5.27
@@ -26,60 +26,58 @@ func (mage *Mage) registerArcaneBlastSpell() {
 
 	mage.ArcaneBlastDamageMultiplier = 0.15
 
-	additiveDamageAffectedSpells := []*core.Spell{}
-	// Purposefully excluded living flame and arcane missiles ticks because we manually disable the arcane blast aura after the final tick
-	affectedSpellCodes := []int32{
-		SpellCode_MageArcaneBarrage, SpellCode_MageArcaneExplosion, SpellCode_MageArcaneSurge, SpellCode_MageBalefireBolt, SpellCode_MageSpellfrostBolt,
-	}
+	abDamageModFlat := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_MageArcaneBlastAuraFlat,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0,
+	})
+	abDamageModPct := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_MageArcaneBlastAuraPct,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 0,
+	})
+
+	abCostMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_MageArcaneBlast,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  0,
+	})
 
 	mage.ArcaneBlastAura = mage.GetOrRegisterAura(core.Aura{
 		Label:     "Arcane Blast Aura",
 		ActionID:  core.ActionID{SpellID: 400573},
 		Duration:  time.Second * 6,
 		MaxStacks: 4,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			additiveDamageAffectedSpells = core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					mage.ArcaneExplosion,
-					mage.ArcaneMissilesTickSpell,
-					{mage.ArcaneSurge},
-					{mage.SpellfrostBolt},
-					{mage.BalefireBolt},
-				}),
-				func(spell *core.Spell) bool { return spell != nil },
-			)
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			mage.ArcaneBlast.Cost.Multiplier -= 175 * oldStacks
-			mage.ArcaneBlast.Cost.Multiplier += 175 * newStacks
-
-			oldMultiplier := mage.ArcaneBlastDamageMultiplier * float64(oldStacks)
-			newMultiplier := mage.ArcaneBlastDamageMultiplier * float64(newStacks)
-			core.Each(additiveDamageAffectedSpells, func(spell *core.Spell) {
-				spell.DamageMultiplierAdditive -= oldMultiplier
-				spell.DamageMultiplierAdditive += newMultiplier
-			})
-
-			if hasLivingFlameRune {
-				// Living Flame is the only spell buffed multiplicatively for whatever reason
-				mage.LivingFlame.DamageMultiplier /= 1 + oldMultiplier
-				mage.LivingFlame.DamageMultiplier *= 1 + newMultiplier
-			}
+			abCostMod.UpdateIntValue(175 * int64(newStacks))
+			newDamageMultiplier := mage.ArcaneBlastDamageMultiplier * float64(newStacks)
+			abDamageModFlat.UpdateFloatValue(newDamageMultiplier)
+			abDamageModPct.UpdateFloatValue(newDamageMultiplier)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagMage) && slices.Contains(affectedSpellCodes, spell.SpellCode) {
+			if spell.Matches(ClassSpellMask_MageAll) && spell.Matches(affectedSpells) {
 				aura.Deactivate(sim)
 			}
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			abCostMod.Activate()
+			abDamageModFlat.Activate()
+			abDamageModPct.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			abCostMod.Deactivate()
+			abDamageModFlat.Deactivate()
+			abDamageModPct.Deactivate()
 		},
 	})
 
 	mage.ArcaneBlast = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 400574},
-		SpellCode:   SpellCode_MageArcaneBlast,
-		SpellSchool: core.SpellSchoolArcane,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 400574},
+		ClassSpellMask: ClassSpellMask_MageArcaneBlast,
+		SpellSchool:    core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -98,7 +96,6 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-
 			mage.ArcaneBlastAura.Activate(sim)
 			mage.ArcaneBlastAura.AddStack(sim)
 		},

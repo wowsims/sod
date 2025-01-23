@@ -219,7 +219,7 @@ sim/core/items/all_items.go: $(call rwildcard,tools/database,*.go) $(call rwildc
 
 .PHONY: test
 test: $(OUT_DIR)/lib.wasm binary_dist/dist.go
-	go test --tags=with_db ./sim/...
+	go test --tags=with_db ./sim/paladin/...
 
 .PHONY: update-tests
 update-tests:

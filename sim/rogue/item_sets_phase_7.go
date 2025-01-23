@@ -44,12 +44,12 @@ func (rogue *Rogue) applyNaxxramasDamage2PBonus() {
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_RogueDeadlyPoisonTick || spell.SpellCode == SpellCode_RogueOccultPoisonTick) && result.Landed() {
+			if spell.Matches(ClassSpellMask_RogueDeadlyPoisonTick|ClassSpellMask_RogueOccultPoisonTick) && result.Landed() {
 				rogue.GainHealth(sim, result.Damage*0.05, healthMetrics)
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_RogueInstantPoison && result.Landed() {
+			if spell.Matches(ClassSpellMask_RogueInstantPoison) && result.Landed() {
 				rogue.GainHealth(sim, result.Damage*0.05, healthMetrics)
 			}
 		},

@@ -37,13 +37,13 @@ func (warlock *Warlock) registerHauntSpell() {
 	})
 
 	warlock.Haunt = warlock.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_WarlockHaunt,
-		ActionID:     actionID,
-		SpellSchool:  core.SpellSchoolShadow,
-		DefenseType:  core.DefenseTypeMagic,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        core.SpellFlagAPL | core.SpellFlagBinary | core.SpellFlagResetAttackSwing | WarlockFlagAffliction,
-		MissileSpeed: 20,
+		ClassSpellMask: ClassSpellMask_WarlockHaunt,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagBinary | core.SpellFlagResetAttackSwing | WarlockFlagAffliction,
+		MissileSpeed:   20,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.12,

@@ -37,12 +37,13 @@ func (hunter *Hunter) applyNaxxramasMelee2PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.WyvernStrike.ImpactDamageMultiplierAdditive += 0.20
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_HunterWyvernStrike,
+		FloatValue: 0.20,
+	}))
 }
 
 // Reduces the cooldown on your Wyvern Strike ability by 2 sec, reduces the cooldown on your raptor strike ability by 1 sec, and reduces the cooldown on your Flanking Strike ability by 8sec.
@@ -126,16 +127,13 @@ func (hunter *Hunter) applyNaxxramasRanged2PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.SerpentSting.DamageMultiplierAdditive += 0.20
-
-			if hunter.SerpentStingChimeraShot != nil {
-				hunter.SerpentStingChimeraShot.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterChimeraShot,
+		FloatValue: 0.20,
+	}))
 }
 
 // Reduces the cooldown on your Chimera Shot, Explosive Shot, and Aimed Shot abilities by 1.5 sec and reduces the cooldown on your Kill Shot ability by 3sec.
@@ -151,13 +149,13 @@ func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 				hunter.ChimeraShot.CD.FlatModifier -= time.Millisecond * 1500
 			}
 			if hunter.ExplosiveShot != nil {
-				hunter.ExplosiveShot.CD.FlatModifier -= time.Millisecond * 1500 
+				hunter.ExplosiveShot.CD.FlatModifier -= time.Millisecond * 1500
 			}
 			if hunter.AimedShot != nil {
-				hunter.AimedShot.CD.FlatModifier -= time.Millisecond * 1500 
+				hunter.AimedShot.CD.FlatModifier -= time.Millisecond * 1500
 			}
 			if hunter.KillShot != nil {
-				hunter.KillShot.CD.FlatModifier -= time.Second * 3 
+				hunter.KillShot.CD.FlatModifier -= time.Second * 3
 			}
 		},
 	}))

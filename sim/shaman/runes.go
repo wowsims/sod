@@ -1,7 +1,6 @@
 package shaman
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -139,7 +138,7 @@ func (shaman *Shaman) applyBurn() {
 	}
 
 	shaman.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_ShamanFlameShock {
+		if spell.Matches(ClassSpellMask_ShamanFlameShock) {
 			spell.DamageMultiplierAdditive += BurnFlameShockDamageBonus
 		}
 	})
@@ -283,7 +282,7 @@ func (shaman *Shaman) applyShieldMastery() {
 		},
 	})
 
-	affectedSpellcodes := []int32{SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
+	affectedSpellClassMasks := ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Shield Mastery Trigger",
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -293,7 +292,7 @@ func (shaman *Shaman) applyShieldMastery() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && slices.Contains(affectedSpellcodes, spell.SpellCode) {
+			if result.Landed() && spell.Matches(affectedSpellClassMasks) {
 				if stacks := int32(shaman.GetStat(stats.Defense)); stacks > 0 {
 					//Aura.Activate takes care of refreshing if the aura is already active
 					defendersResolveAura.Activate(sim)
@@ -480,7 +479,7 @@ func (shaman *Shaman) applyPowerSurge() {
 			core.Each(affectedDamageSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if (spell.SpellCode == SpellCode_ShamanLavaBurst || spell.SpellCode == SpellCode_ShamanChainLightning) && !spell.ProcMask.Matches(core.ProcMaskSpellDamageProc) {
+			if spell.Matches(ClassSpellMask_ShamanLavaBurst|ClassSpellMask_ShamanChainLightning) && !spell.ProcMask.Matches(core.ProcMaskSpellDamageProc) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -505,7 +504,7 @@ func (shaman *Shaman) applyPowerSurge() {
 			core.Each(affectedHealSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_ShamanChainHeal && !spell.ProcMask.Matches(core.ProcMaskSpellDamageProc) {
+			if spell.Matches(ClassSpellMask_ShamanChainHeal) && !spell.ProcMask.Matches(core.ProcMaskSpellDamageProc) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -521,12 +520,12 @@ func (shaman *Shaman) applyPowerSurge() {
 			shaman.DisableDynamicStatDep(sim, statDep)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_ShamanFlameShock && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
+			if spell.Matches(ClassSpellMask_ShamanFlameShock) && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
 				shaman.PowerSurgeDamageAura.Activate(sim)
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_ShamanFlameShock && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
+			if spell.Matches(ClassSpellMask_ShamanFlameShock) && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
 				shaman.PowerSurgeDamageAura.Activate(sim)
 			}
 		},

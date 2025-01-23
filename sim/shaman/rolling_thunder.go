@@ -1,8 +1,6 @@
 package shaman
 
 import (
-	"slices"
-
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -30,7 +28,7 @@ func (shaman *Shaman) registerRollingThunder() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if shaman.ActiveShield == nil || shaman.ActiveShield.SpellCode != SpellCode_ShamanLightningShield {
+			if shaman.ActiveShield == nil || shaman.ActiveShield.ClassSpellMask != ClassSpellMask_ShamanLightningShield {
 				return
 			}
 
@@ -46,7 +44,7 @@ func (shaman *Shaman) registerRollingThunder() {
 		},
 	})
 
-	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning}
+	affectedSpellClassMasks := ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Rolling Thunder Trigger",
@@ -58,13 +56,13 @@ func (shaman *Shaman) registerRollingThunder() {
 			}
 		},
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if shaman.ActiveShield == nil || shaman.ActiveShield.SpellCode != SpellCode_ShamanLightningShield {
+			if shaman.ActiveShield == nil || shaman.ActiveShield.ClassSpellMask != ClassSpellMask_ShamanLightningShield {
 				return
 			}
 
-			if spell.SpellCode == SpellCode_ShamanEarthShock && shaman.ActiveShieldAura.GetStacks() > 3 {
+			if spell.Matches(ClassSpellMask_ShamanEarthShock) && shaman.ActiveShieldAura.GetStacks() > 3 {
 				shaman.RollingThunder.Cast(sim, result.Target)
-			} else if slices.Contains(affectedSpellCodes, spell.SpellCode) && sim.Proc(procChance, "Rolling Thunder") {
+			} else if spell.Matches(affectedSpellClassMasks) && sim.Proc(procChance, "Rolling Thunder") {
 				shaman.ActiveShieldAura.AddStack(sim)
 			}
 		},

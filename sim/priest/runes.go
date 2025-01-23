@@ -1,7 +1,6 @@
 package priest
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -126,7 +125,7 @@ func (priest *Priest) applyPainAndSuffering() {
 
 	priest.PainAndSufferingDoTSpells = []*core.Spell{}
 
-	affectedSpellcodes := []int32{SpellCode_PriestMindBlast, SpellCode_PriestMindFlay, SpellCode_PriestMindSpike}
+	affectedSpellClassMasks := ClassSpellMask_PriestMindBlast | ClassSpellMask_PriestMindFlay | ClassSpellMask_PriestMindSpike
 	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: "Pain and Suffering Trigger",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -144,7 +143,7 @@ func (priest *Priest) applyPainAndSuffering() {
 			)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if slices.Contains(affectedSpellcodes, spell.SpellCode) && result.Landed() {
+			if spell.Matches(affectedSpellClassMasks) && result.Landed() {
 				target := result.Target
 
 				var dotToRollover *core.Dot
@@ -195,12 +194,12 @@ func (priest *Priest) applySurgeOfLight() {
 			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-			if spell.SpellCode == SpellCode_PriestSmite {
+			if spell.Matches(ClassSpellMask_PriestSmite) {
 				aura.Deactivate(sim)
 			}
 		},
 		OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-			if spell.SpellCode == SpellCode_PriestFlashHeal {
+			if spell.Matches(ClassSpellMask_PriestFlashHeal) {
 				aura.Deactivate(sim)
 			}
 		},

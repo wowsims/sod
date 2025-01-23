@@ -157,7 +157,7 @@ func (druid *Druid) applyT1Feral2PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_DruidFaerieFire || spell.SpellCode == SpellCode_DruidFaerieFireFeral) && result.Landed() {
+			if spell.Matches(ClassSpellMask_DruidFaerieFire|ClassSpellMask_DruidFaerieFireFeral) && result.Landed() {
 				druid.ImprovedFaerieFireAuras.Get(result.Target).Activate(sim)
 			}
 		},

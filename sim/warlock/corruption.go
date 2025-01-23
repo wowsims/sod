@@ -23,14 +23,14 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
 	return core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolShadow,
-		SpellCode:     SpellCode_WarlockCorruption,
-		ProcMask:      core.ProcMaskSpellDamage,
-		DefenseType:   core.DefenseTypeMagic,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction | WarlockFlagHaunt,
-		Rank:          rank,
-		RequiredLevel: level,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolShadow,
+		ClassSpellMask: ClassSpellMask_WarlockCorruption,
+		ProcMask:       core.ProcMaskSpellDamage,
+		DefenseType:    core.DefenseTypeMagic,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction | WarlockFlagHaunt,
+		Rank:           rank,
+		RequiredLevel:  level,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,

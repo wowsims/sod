@@ -150,8 +150,8 @@ var ItemSetStormshroudArmor = core.NewItemSet(core.ItemSet{
 	Name: "Stormshroud Armor",
 	Bonuses: map[int32]core.ApplyEffect{
 		// 5% chance of dealing 15 to 25 Nature damage on a successful melee attack.
-		2: func(a core.Agent) {
-			char := a.GetCharacter()
+		2: func(agent core.Agent) {
+			char := agent.GetCharacter()
 			proc := char.RegisterSpell(core.SpellConfig{
 				ActionID:    core.ActionID{SpellID: 18980},
 				SpellSchool: core.SpellSchoolNature,
@@ -183,8 +183,8 @@ var ItemSetStormshroudArmor = core.NewItemSet(core.ItemSet{
 			})
 		},
 		// 2% chance on melee attack of restoring 30 energy.
-		3: func(a core.Agent) {
-			char := a.GetCharacter()
+		3: func(agent core.Agent) {
+			char := agent.GetCharacter()
 			if !char.HasEnergyBar() {
 				return
 			}
@@ -215,9 +215,9 @@ var ItemSetStormshroudArmor = core.NewItemSet(core.ItemSet{
 
 		},
 		// +14 Attack Power.
-		4: func(a core.Agent) {
-			a.GetCharacter().AddStat(stats.AttackPower, 14)
-			a.GetCharacter().AddStat(stats.RangedAttackPower, 14)
+		4: func(agent core.Agent) {
+			agent.GetCharacter().AddStat(stats.AttackPower, 14)
+			agent.GetCharacter().AddStat(stats.RangedAttackPower, 14)
 		},
 	},
 })

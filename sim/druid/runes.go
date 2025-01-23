@@ -1,7 +1,6 @@
 package druid
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -203,7 +202,7 @@ func (druid *Druid) applyEclipse() {
 			})
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode != SpellCode_DruidWrath && spell.SpellCode != SpellCode_DruidStarsurge {
+			if !spell.Matches(ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarsurge) {
 				return
 			}
 
@@ -234,7 +233,7 @@ func (druid *Druid) applyEclipse() {
 			})
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode != SpellCode_DruidStarfire {
+			if !spell.Matches(ClassSpellMask_DruidStarfire) {
 				return
 			}
 
@@ -250,17 +249,17 @@ func (druid *Druid) applyEclipse() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains([]int32{SpellCode_DruidWrath, SpellCode_DruidStarfire, SpellCode_DruidStarsurge}, spell.SpellCode) || !result.Landed() {
+			if !spell.Matches(ClassSpellMask_DruidWrath|ClassSpellMask_DruidStarfire|ClassSpellMask_DruidStarsurge) || !result.Landed() {
 				return
 			}
 
-			if spell.SpellCode == SpellCode_DruidWrath || spell.SpellCode == SpellCode_DruidStarsurge {
+			if spell.Matches(ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarsurge) {
 				druid.LunarEclipseProcAura.Activate(sim)
 				// Solar gives 1 stack of lunar bonus
 				druid.LunarEclipseProcAura.AddStack(sim)
 			}
 
-			if spell.SpellCode == SpellCode_DruidStarfire || spell.SpellCode == SpellCode_DruidStarsurge {
+			if spell.Matches(ClassSpellMask_DruidStarfire | ClassSpellMask_DruidStarsurge) {
 				druid.SolarEclipseProcAura.Activate(sim)
 				// Lunar gives 2 staacks of solar bonus
 				druid.SolarEclipseProcAura.AddStacks(sim, 2)
@@ -287,15 +286,15 @@ func (druid *Druid) applyElunesFires() {
 				return
 			}
 
-			switch spell.SpellCode {
-			case SpellCode_DruidWrath:
+			switch spell.ClassSpellMask {
+			case ClassSpellMask_DruidWrath:
 				druid.tryElunesFiresSunfireExtension(sim, result.Target)
-			case SpellCode_DruidStarfire:
+			case ClassSpellMask_DruidStarfire:
 				druid.tryElunesFiresMoonfireExtension(sim, result.Target)
-			case SpellCode_DruidStarsurge: // Starsurge now benefits from the effects of Wrath and Starfire
+			case ClassSpellMask_DruidStarsurge: // Starsurge now benefits from the effects of Wrath and Starfire
 				druid.tryElunesFiresSunfireExtension(sim, result.Target)
 				druid.tryElunesFiresMoonfireExtension(sim, result.Target)
-			case SpellCode_DruidShred:
+			case ClassSpellMask_DruidShred:
 				druid.tryElunesFiresRipExtension(sim, result.Target)
 			}
 		},
@@ -377,7 +376,7 @@ func (druid *Druid) applyDreamstate() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Dreamstate Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() || spell.SpellCode == SpellCode_DruidStarsurge {
+			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() || spell.Matches(ClassSpellMask_DruidStarsurge) {
 				druid.DreamstateManaRegenAura.Activate(sim)
 				dreamstateAuras.Get(result.Target).Activate(sim)
 			}

@@ -2,7 +2,6 @@ package shaman
 
 import (
 	"fmt"
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -86,10 +85,10 @@ func (shaman *Shaman) applyConcussion() {
 	}
 
 	multiplier := 0.01 * float64(shaman.Talents.Concussion)
-	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning, SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
+	affectedSpellClassMasks := ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning | ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock
 
 	shaman.OnSpellRegistered(func(spell *core.Spell) {
-		if slices.Contains(affectedSpellCodes, spell.SpellCode) {
+		if spell.Matches(affectedSpellClassMasks) {
 			spell.DamageMultiplierAdditive += multiplier
 		}
 	})
@@ -103,13 +102,11 @@ func (shaman *Shaman) applyCallOfFlame() {
 	multiplier := 0.05 * float64(shaman.Talents.CallOfFlame)
 
 	shaman.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == 0 {
+		if spell.ClassSpellMask == 0 {
 			return
 		}
 
-		if spell.SpellCode == SpellCode_ShamanSearingTotemAttack ||
-			spell.SpellCode == SpellCode_ShamanFireNovaTotemAttack ||
-			spell.SpellCode == SpellCode_ShamanFireNova {
+		if spell.Matches(ClassSpellMask_ShamanSearingTotemAttack | ClassSpellMask_ShamanFireNovaTotemAttack | ClassSpellMask_ShamanFireNova) {
 			spell.DamageMultiplierAdditive += multiplier
 		}
 	})

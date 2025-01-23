@@ -30,13 +30,13 @@ func (paladin *Paladin) registerAvengersShield() {
 	highDamage := 448 * paladin.baseRuneAbilityDamage() / 100
 
 	paladin.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: int32(proto.PaladinRune_RuneLegsAvengersShield)},
-		SpellCode:    SpellCode_PaladinAvengersShield,
-		SpellSchool:  core.SpellSchoolHoly,
-		DefenseType:  core.DefenseTypeRanged, // Crits as if melee for 200%
-		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary,
-		MissileSpeed: 35, // Verified from game files using WoW tools.
+		ActionID:       core.ActionID{SpellID: int32(proto.PaladinRune_RuneLegsAvengersShield)},
+		ClassSpellMask: ClassSpellMask_PaladinAvengersShield,
+		SpellSchool:    core.SpellSchoolHoly,
+		DefenseType:    core.DefenseTypeRanged, // Crits as if melee for 200%
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary,
+		MissileSpeed:   35, // Verified from game files using WoW tools.
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.26,
 		},

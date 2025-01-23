@@ -71,7 +71,7 @@ func (druid *Druid) applyNaturesGrace() {
 			for _, spell := range affectedSpells {
 				spell.DefaultCast.CastTime -= time.Millisecond * 500
 
-				if spell.SpellCode == SpellCode_DruidWrath {
+				if spell.Matches(ClassSpellMask_DruidWrath) {
 					spell.DefaultCast.GCD -= time.Millisecond * 500
 				}
 			}
@@ -80,7 +80,7 @@ func (druid *Druid) applyNaturesGrace() {
 			for _, spell := range affectedSpells {
 				spell.DefaultCast.CastTime += time.Millisecond * 500
 
-				if spell.SpellCode == SpellCode_DruidWrath {
+				if spell.Matches(ClassSpellMask_DruidWrath) {
 					spell.DefaultCast.GCD += time.Millisecond * 500
 				}
 			}
@@ -281,7 +281,7 @@ func (druid *Druid) applyOmenOfClarity() {
 			}
 
 			// Hotfix 2024-04-13 Starsurge does not consume clearcasting
-			if spell.Flags.Matches(SpellFlagOmen) && spell.SpellCode != SpellCode_DruidStarsurge && spell.DefaultCast.Cost > 0 {
+			if spell.Flags.Matches(SpellFlagOmen) && !spell.Matches(ClassSpellMask_DruidStarsurge) && spell.DefaultCast.Cost > 0 {
 				aura.Deactivate(sim)
 			}
 		},
@@ -317,29 +317,13 @@ func (druid *Druid) applyMoonfury() {
 		return
 	}
 
-	multiplier := 0.02 * float64(druid.Talents.Moonfury)
-
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Moonfury",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := core.FilterSlice(
-				core.Flatten(
-					[][]*DruidSpell{
-						druid.Wrath,
-						druid.Starfire,
-						druid.Moonfire,
-						{druid.Starsurge},
-						{druid.Sunfire},
-					},
-				),
-				func(spell *DruidSpell) bool { return spell != nil },
-			)
-
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += multiplier
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarfire | ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidStarsurge | ClassSpellMask_DruidSunfire,
+		FloatValue: 0.02 * float64(druid.Talents.Moonfury),
+	}))
 }
 
 func (druid *Druid) applyImprovedMoonfire() {
@@ -347,30 +331,19 @@ func (druid *Druid) applyImprovedMoonfire() {
 		return
 	}
 
-	damageMultiplier := 0.02 * float64(druid.Talents.ImprovedMoonfire)
-	bonusCrit := 2 * float64(druid.Talents.ImprovedMoonfire) * core.SpellCritRatingPerCritChance
+	affectedSpells := ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Improved moonfire",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := core.FilterSlice(
-				core.Flatten(
-					[][]*DruidSpell{
-						druid.Moonfire,
-						{druid.Sunfire},
-						{druid.StarfallTick},
-						{druid.StarfallSplash},
-					},
-				),
-				func(spell *DruidSpell) bool { return spell != nil },
-			)
-
-			for _, spell := range affectedSpells {
-				spell.BaseDamageMultiplierAdditive += damageMultiplier
-				spell.BonusCritRating += bonusCrit
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BaseDamageDone_Flat,
+		ClassMask:  affectedSpells,
+		FloatValue: 0.02 * float64(druid.Talents.ImprovedMoonfire),
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		ClassMask:  affectedSpells,
+		FloatValue: 2 * float64(druid.Talents.ImprovedMoonfire) * core.SpellCritRatingPerCritChance,
+	}))
 }
 
 func (druid *Druid) applyVengeance() {

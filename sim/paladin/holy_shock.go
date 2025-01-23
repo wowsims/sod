@@ -64,7 +64,7 @@ func (paladin *Paladin) registerHolyShock() {
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,
 
-			SpellCode: SpellCode_PaladinHolyShock,
+			ClassSpellMask: ClassSpellMask_PaladinHolyShock,
 
 			ManaCost: core.ManaCostOptions{
 				FlatCost:   rank.manaCost,

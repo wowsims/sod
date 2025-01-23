@@ -86,7 +86,7 @@ func (shaman *Shaman) applyT1Elemental4PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_ShamanLightningBolt && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.35, "Power Surge") {
+			if spell.Matches(ClassSpellMask_ShamanLightningBolt) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.35, "Power Surge") {
 				shaman.PowerSurgeDamageAura.Activate(sim)
 			}
 		},
@@ -108,7 +108,7 @@ func (shaman *Shaman) applyT1Elemental6PBonus() {
 			flameShockSpells = core.FilterSlice(shaman.FlameShock, func(spell *core.Spell) bool { return spell != nil })
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode != SpellCode_ShamanLavaBurst {
+			if !spell.Matches(ClassSpellMask_ShamanLavaBurst) {
 				return
 			}
 

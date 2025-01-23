@@ -72,7 +72,7 @@ func (priest *Priest) applyT2Shadow4PBonus() {
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_PriestShadowWordPain && sim.Proc(procChance, "Proc Spirit Tap") {
+			if spell.Matches(ClassSpellMask_PriestShadowWordPain) && sim.Proc(procChance, "Proc Spirit Tap") {
 				priest.SpiritTapAura.Activate(sim)
 			}
 		},

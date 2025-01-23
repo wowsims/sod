@@ -7,7 +7,7 @@ import (
 )
 
 func (druid *Druid) registerFaerieFireSpell() {
-	spellCode := SpellCode_DruidFaerieFire
+	spellClassMask := ClassSpellMask_DruidFaerieFire
 	actionID := core.ActionID{SpellID: map[int32]int32{
 		25: 770,
 		40: 778,
@@ -39,7 +39,7 @@ func (druid *Druid) registerFaerieFireSpell() {
 	})
 
 	if druid.InForm(Cat|Bear) && druid.Talents.FaerieFireFeral {
-		spellCode = SpellCode_DruidFaerieFireFeral
+		spellClassMask = ClassSpellMask_DruidFaerieFireFeral
 		actionID = core.ActionID{SpellID: map[int32]int32{
 			40: 17390,
 			50: 17391,
@@ -60,11 +60,11 @@ func (druid *Druid) registerFaerieFireSpell() {
 	flags |= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
 
 	druid.FaerieFire = druid.RegisterSpell(formMask, core.SpellConfig{
-		SpellCode:   spellCode,
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolNature,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       flags,
+		ClassSpellMask: spellClassMask,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolNature,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          flags,
 
 		ManaCost: manaCostOptions,
 		Cast: core.CastConfig{

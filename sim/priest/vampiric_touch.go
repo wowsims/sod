@@ -40,12 +40,12 @@ func (priest *Priest) registerVampiricTouchSpell() {
 	})
 
 	priest.VampiricTouch = priest.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_PriestVampiricTouch,
-		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneCloakVampiricTouch)},
-		SpellSchool: core.SpellSchoolShadow,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagPureDot,
+		ClassSpellMask: ClassSpellMask_PriestVampiricTouch,
+		ActionID:       core.ActionID{SpellID: int32(proto.PriestRune_RuneCloakVampiricTouch)},
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

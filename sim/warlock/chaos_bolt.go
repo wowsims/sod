@@ -18,12 +18,12 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 	baseHighDamage := warlock.baseRuneAbilityDamage() * 6.62
 
 	warlock.ChaosBolt = warlock.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_WarlockChaosBolt,
-		ActionID:    core.ActionID{SpellID: 403629},
-		SpellSchool: core.SpellSchoolFire,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
+		ClassSpellMask: ClassSpellMask_WarlockChaosBolt,
+		ActionID:       core.ActionID{SpellID: 403629},
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.07,

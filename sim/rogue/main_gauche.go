@@ -69,12 +69,12 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 	})
 
 	rogue.MainGauche = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_RogueMainGauche,
-		ActionID:    mainGaucheAura.ActionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeOHSpecial,
-		Flags:       rogue.builderFlags(),
+		ClassSpellMask: ClassSpellMask_RogueMainGauche,
+		ActionID:       mainGaucheAura.ActionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		Flags:          rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{15, 12, 10}[rogue.Talents.ImprovedSinisterStrike],

@@ -100,7 +100,7 @@ func init() {
 		//Increases critical strike chance of holy shock spell by 2%
 		paladin := agent.GetCharacter()
 		paladin.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_PaladinHolyShock {
+			if spell.Matches(ClassSpellMask_PaladinHolyShock) {
 				spell.BonusCritRating += 2.0
 			}
 		})
@@ -245,50 +245,58 @@ func init() {
 	//Equip: Your Holy Shock spell reduces the cast time and mana cost of your next Holy Wrath spell cast within 15 sec by 20%, and increases its damage by 20%. Stacking up to 5 times.
 	core.NewItemEffect(LibramOfWrath, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
-		holyWrathSpells := []*core.Spell{}
+
+		costMod := paladin.AddDynamicMod(core.SpellModConfig{
+			Kind:      core.SpellMod_PowerCost_Pct,
+			ClassMask: ClassSpellMask_PaladinHolyWrath,
+		})
+		castMod := paladin.AddDynamicMod(core.SpellModConfig{
+			Kind:      core.SpellMod_CastTime_Pct,
+			ClassMask: ClassSpellMask_PaladinHolyWrath,
+		})
+		damageMod := paladin.AddDynamicMod(core.SpellModConfig{
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_PaladinHolyWrath,
+		})
 
 		buffAura := paladin.RegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 470246},
 			Label:     "Libram Of Wrath Buff",
 			Duration:  time.Second * 15,
 			MaxStacks: 5,
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				holyWrathSpells = core.FilterSlice(paladin.holyWrath, func(spell *core.Spell) bool { return spell != nil })
-			},
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				core.Each(holyWrathSpells, func(spell *core.Spell) {
-					spell.CastTimeMultiplier += (0.2 * float64(oldStacks))
-					spell.Cost.Multiplier += int32(100.0 * (0.2 * float64(oldStacks)))
-					spell.DamageMultiplierAdditive -= (0.2 * float64(oldStacks))
-
-					spell.CastTimeMultiplier -= (0.2 * float64(newStacks))
-					spell.Cost.Multiplier -= int32(100.0 * (0.2 * float64(newStacks)))
-					spell.DamageMultiplierAdditive += (0.2 * float64(newStacks))
-
-				})
+				castMod.UpdateFloatValue(-0.2 * float64(newStacks))
+				costMod.UpdateIntValue(-int64(100.0 * (0.2 * float64(newStacks))))
+				damageMod.UpdateFloatValue(0.2 * float64(newStacks))
+			},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				castMod.Activate()
+				costMod.Activate()
+				damageMod.Activate()
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				castMod.Deactivate()
+				costMod.Deactivate()
+				damageMod.Deactivate()
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.SpellCode == SpellCode_PaladinHolyWrath {
+				if spell.Matches(ClassSpellMask_PaladinHolyWrath) {
 					aura.Deactivate(sim)
 				}
 			},
 		})
 
-		procAura := paladin.RegisterAura(core.Aura{
-			Label:    "Libram Of Wrath Trigger",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.SpellCode == SpellCode_PaladinHolyShock {
-					buffAura.Activate(sim)
-					buffAura.AddStack(sim)
-				}
+		triggerAura := core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+			Name:           "Libram Of Wrath Trigger",
+			ClassSpellMask: ClassSpellMask_PaladinHolyShock,
+			Callback:       core.CallbackOnCastComplete,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				buffAura.Activate(sim)
+				buffAura.AddStack(sim)
 			},
 		})
 
-		paladin.ItemSwap.RegisterProc(LibramOfWrath, procAura)
+		paladin.ItemSwap.RegisterProc(LibramOfWrath, triggerAura)
 	})
 
 	core.NewItemEffect(LibramOfTheDevoted, func(agent core.Agent) {
@@ -318,7 +326,7 @@ func init() {
 		}))
 
 		paladin.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_PaladinCrusaderStrike || spell.SpellCode == SpellCode_PaladinExorcism {
+			if spell.Matches(ClassSpellMask_PaladinCrusaderStrike | ClassSpellMask_PaladinExorcism) {
 				// Increases the damage of Exorcism and Crusader Strike by 3%.
 				aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 					spell.DamageMultiplierAdditive += 0.03
@@ -329,7 +337,7 @@ func init() {
 			}
 		})
 
-		paladin.ItemSwap.RegisterProc(LibramOfTheDevoted, aura)
+		paladin.ItemSwap.RegisterProc(LibramOfTheExorcist, aura)
 	})
 
 	core.NewItemEffect(LibramOfSanctity, func(agent core.Agent) {
@@ -344,28 +352,24 @@ func init() {
 		core.ExclusiveHolyDamageDealtAura(buffAura, 1.1)
 
 		aura := core.MakePermanent(paladin.RegisterAura(core.Aura{
-			Label: "Libram of Sanctity",
+			Label: "Improved Holy Shock",
+		}).AttachSpellMod(core.SpellModConfig{
+			// Increases the damage of Holy Shock by 3%, and your Shock and Awe buff now also grants 10% increased Holy Damage. (This effect does not stack with Sanctity Aura).
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  ClassSpellMask_PaladinHolyShock,
+			FloatValue: 0.03,
 		}))
 
-		paladin.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_PaladinHolyShock {
-				// Increases the damage of Holy Shock by 3%, and your Shock and Awe buff now also grants 10% increased Holy Damage. (This effect does not stack with Sanctity Aura).
-				aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-					spell.DamageMultiplierAdditive += 0.03
-				})
-				aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-					spell.DamageMultiplierAdditive -= 0.03
-				})
-
-				originalApplyEffects := spell.ApplyEffects
-				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					originalApplyEffects(sim, target, spell)
-					buffAura.Activate(sim)
-				}
-			}
+		triggerAura := core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+			Name:           "Improved Holy Shock Trigger",
+			ClassSpellMask: ClassSpellMask_PaladinHolyShock,
+			Callback:       core.CallbackOnCastComplete,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				buffAura.Activate(sim)
+			},
 		})
 
-		paladin.ItemSwap.RegisterProc(LibramOfSanctity, buffAura)
+		paladin.ItemSwap.RegisterProc(LibramOfSanctity, triggerAura)
 		paladin.ItemSwap.RegisterProc(LibramOfSanctity, aura)
 	})
 
@@ -373,19 +377,11 @@ func init() {
 		paladin := agent.(PaladinAgent).GetPaladin()
 		aura := core.MakePermanent(paladin.RegisterAura(core.Aura{
 			Label: "Libram of Righteousness",
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  ClassSpellMask_PaladinHammerOfTheRighteous | ClassSpellMask_PaladinShieldOfRighteousness,
+			FloatValue: 0.03,
 		}))
-
-		paladin.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellCode == SpellCode_PaladinHammerOfTheRighteous || spell.SpellCode == SpellCode_PaladinShieldOfRighteousness {
-				// Increases the damage of Hammer of the Righteous and Shield of Righteousness by 3%.
-				aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-					spell.DamageMultiplierAdditive += 0.03
-				})
-				aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-					spell.DamageMultiplierAdditive -= 0.03
-				})
-			}
-		})
 
 		paladin.ItemSwap.RegisterProc(LibramOfRighteousness, aura)
 	})

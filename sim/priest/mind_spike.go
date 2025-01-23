@@ -28,12 +28,12 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 	})
 
 	return core.SpellConfig{
-		SpellCode:   SpellCode_PriestMindSpike,
-		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneWaistMindSpike)},
-		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFrost,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagPriest | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_PriestMindSpike,
+		ActionID:       core.ActionID{SpellID: int32(proto.PriestRune_RuneWaistMindSpike)},
+		SpellSchool:    core.SpellSchoolShadow | core.SpellSchoolFrost,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagPriest | core.SpellFlagAPL,
 		// TODO: Verify missile speed
 		MissileSpeed: 20,
 

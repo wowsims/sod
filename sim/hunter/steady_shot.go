@@ -13,14 +13,14 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 	}
 
 	hunter.SteadyShot = hunter.GetOrRegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_HunterSteadyShot,
-		ActionID:     core.ActionID{SpellID: 437123},
-		SpellSchool:  core.SpellSchoolPhysical,
-		DefenseType:  core.DefenseTypeRanged,
-		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagShot,
-		CastType:     proto.CastType_CastTypeRanged,
-		MissileSpeed: 24,
+		ClassSpellMask: ClassSpellMask_HunterSteadyShot,
+		ActionID:       core.ActionID{SpellID: 437123},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeRanged,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		CastType:       proto.CastType_CastTypeRanged,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.05,

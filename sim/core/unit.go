@@ -580,6 +580,16 @@ func (unit *Unit) GetSpellsMatchingSchool(school SpellSchool) []*Spell {
 	return spells
 }
 
+func (unit *Unit) GetSpellsMatchingClassMask(spellClassMask int64) []*Spell {
+	var spells []*Spell
+	for _, spell := range unit.Spellbook {
+		if spell.Matches(spellClassMask) {
+			spells = append(spells, spell)
+		}
+	}
+	return spells
+}
+
 func (unit *Unit) GetUnit(ref *proto.UnitReference) *Unit {
 	return unit.Env.GetUnit(ref, unit)
 }

@@ -42,9 +42,9 @@ func (paladin *Paladin) registerHammerOfWrath() {
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 			CastType:    proto.CastType_CastTypeRanged,
 
-			Rank:          i + 1,
-			RequiredLevel: int(rank.level),
-			SpellCode:     SpellCode_PaladinHammerOfWrath,
+			Rank:           i + 1,
+			RequiredLevel:  int(rank.level),
+			ClassSpellMask: ClassSpellMask_PaladinHammerOfWrath,
 
 			ManaCost: core.ManaCostOptions{
 				FlatCost: rank.manaCost,

@@ -53,7 +53,8 @@ func (paladin *Paladin) registerExorcism() {
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,
 
-			SpellCode: SpellCode_PaladinExorcism,
+			ClassSpellMask: ClassSpellMask_PaladinExorcism,
+
 			ManaCost: core.ManaCostOptions{
 				FlatCost:   rank.manaCost,
 				Multiplier: core.TernaryInt32(paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar), 20, 100),

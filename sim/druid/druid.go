@@ -17,25 +17,28 @@ const (
 var TalentTreeSizes = [3]int{16, 16, 15}
 
 const (
-	SpellCode_DruidNone int32 = iota
+	ClassSpellMask_DruidNone int64 = 0
 
-	SpellCode_DruidFaerieFire
-	SpellCode_DruidFaerieFireFeral
-	SpellCode_DruidFerociousBite
-	SpellCode_DruidInsectSwarm
-	SpellCode_DruidMangleCat
-	SpellCode_DruidMangleBear
-	SpellCode_DruidMoonfire
-	SpellCode_DruidRake
-	SpellCode_DruidRip
-	SpellCode_DruidShred
-	SpellCode_DruidStarfire
-	SpellCode_DruidStarsurge
-	SpellCode_DruidWrath
-	SpellCode_DruidStarfall
-	SpellCode_DruidStarfallTick
-	SpellCode_DruidStarfallSplash
-	SpellCode_DruidSunfire
+	ClassSpellMask_DruidFaerieFire int64 = 1 << iota
+	ClassSpellMask_DruidFaerieFireFeral
+	ClassSpellMask_DruidFerociousBite
+	ClassSpellMask_DruidInsectSwarm
+	ClassSpellMask_DruidSwipeCat
+	ClassSpellMask_DruidSwipeBear
+	ClassSpellMask_DruidMangleCat
+	ClassSpellMask_DruidMangleBear
+	ClassSpellMask_DruidMoonfire
+	ClassSpellMask_DruidRake
+	ClassSpellMask_DruidRip
+	ClassSpellMask_DruidShred
+	ClassSpellMask_DruidStarfire
+	ClassSpellMask_DruidStarsurge
+	ClassSpellMask_DruidWrath
+	ClassSpellMask_DruidStarfall
+	ClassSpellMask_DruidStarfallTick
+	ClassSpellMask_DruidStarfallSplash
+	ClassSpellMask_DruidSunfire
+	ClassSpellMask_DruidHurricane
 )
 
 type Druid struct {

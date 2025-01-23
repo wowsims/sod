@@ -54,7 +54,7 @@ func (warlock *Warlock) applyTAQDamage2PBonus() {
 
 	core.MakePermanent(aura)
 	aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if result.Landed() && result.DidCrit() && spell.SpellCode == SpellCode_WarlockChaosBolt {
+		if result.Landed() && result.DidCrit() && spell.Matches(ClassSpellMask_WarlockChaosBolt) {
 			isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
 			isbAura.Activate(sim)
 			// This set always uses 30 stacks
@@ -87,7 +87,7 @@ func (warlock *Warlock) applyTAQDamage4PBonus() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarlockConflagrate && result.Landed() {
+			if spell.Matches(ClassSpellMask_WarlockConflagrate) && result.Landed() {
 				buffAura.Activate(sim)
 				buffAura.AddStack(sim)
 			}
@@ -172,7 +172,7 @@ func (warlock *Warlock) applyRAQTank3PBonus() {
 		Label:    "Spreading Pain",
 		Duration: time.Second * 6,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarlockSearingPain {
+			if spell.Matches(ClassSpellMask_WarlockSearingPain) {
 				aura.Deactivate(sim)
 				spell.ApplyEffects(sim, warlock.Env.NextTargetUnit(result.Target), spell)
 			}
@@ -182,7 +182,7 @@ func (warlock *Warlock) applyRAQTank3PBonus() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_WarlockShadowCleave {
+			if spell.Matches(ClassSpellMask_WarlockShadowCleave) {
 				buffAura.Activate(sim)
 			}
 		},

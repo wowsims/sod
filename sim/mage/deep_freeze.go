@@ -21,11 +21,12 @@ func (mage *Mage) registerDeepFreezeSpell() {
 	hasFingersOfFrostRune := mage.HasRune(proto.MageRune_RuneChestFingersOfFrost)
 
 	mage.DeepFreeze = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneHelmDeepFreeze)},
-		SpellSchool: core.SpellSchoolFrost,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: int32(proto.MageRune_RuneHelmDeepFreeze)},
+		ClassSpellMask: ClassSpellMask_MageDeepFreeze,
+		SpellSchool:    core.SpellSchoolFrost,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

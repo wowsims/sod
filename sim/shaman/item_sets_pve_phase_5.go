@@ -1,7 +1,6 @@
 package shaman
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -146,7 +145,7 @@ func (shaman *Shaman) applyT2Tank2PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_ShamanFlameShock {
+			if spell.Matches(ClassSpellMask_ShamanFlameShock) {
 				shieldBlockAura.Activate(sim)
 			}
 		},
@@ -284,7 +283,7 @@ func (shaman *Shaman) applyT2Enhancement6PBonus() {
 		return
 	}
 
-	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning}
+	affectedSpellClassMasks := ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(t26pAura *core.Aura, sim *core.Simulation) {
@@ -310,7 +309,7 @@ func (shaman *Shaman) applyT2Enhancement6PBonus() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Tested and it doesn't proc from overloads
-			if slices.Contains(affectedSpellCodes, spell.SpellCode) && !spell.ProcMask.Matches(core.ProcMaskSpellProc) && result.Landed() {
+			if spell.Matches(affectedSpellClassMasks) && !spell.ProcMask.Matches(core.ProcMaskSpellProc) && result.Landed() {
 				shaman.ActiveShieldAura.AddStack(sim)
 			}
 		},
@@ -372,7 +371,7 @@ func (shaman *Shaman) applyT2Restoration4PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_ShamanChainLightning {
+			if spell.Matches(ClassSpellMask_ShamanChainLightning) {
 				shaman.GainHealth(sim, result.Damage, healthMetrics)
 			}
 		},

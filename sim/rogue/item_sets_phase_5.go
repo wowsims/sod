@@ -65,7 +65,7 @@ func (rogue *Rogue) applyT2Damage2PBonus() {
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_RogueAmbush || spell.SpellCode == SpellCode_RogueGarrote) && result.Landed() {
+			if (spell.Matches(ClassSpellMask_RogueAmbush | ClassSpellMask_RogueGarrote)) && result.Landed() {
 				clearcastingAura.Activate(sim)
 			}
 		},
@@ -83,7 +83,7 @@ func (rogue *Rogue) applyT2Damage4PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range rogue.Spellbook {
-				if spell.Flags.Matches(SpellFlagBuilder) && (spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) || spell.SpellCode == SpellCode_RogueMainGauche || spell.SpellCode == SpellCode_RoguePoisonedKnife) {
+				if spell.Flags.Matches(SpellFlagBuilder) && (spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) || spell.Matches(ClassSpellMask_RogueMainGauche|ClassSpellMask_RoguePoisonedKnife)) {
 					spell.DamageMultiplierAdditive += 0.20
 				}
 			}

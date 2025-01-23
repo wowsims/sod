@@ -151,7 +151,7 @@ func (priest *Priest) applyT1Shadow6PBonus() {
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_PriestMindFlay {
+			if spell.Matches(ClassSpellMask_PriestMindFlay) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -160,7 +160,7 @@ func (priest *Priest) applyT1Shadow6PBonus() {
 	core.MakePermanent(priest.GetOrRegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_PriestMindBlast && result.DidCrit() {
+			if spell.Matches(ClassSpellMask_PriestMindBlast) && result.DidCrit() {
 				buffAura.Activate(sim)
 			}
 		},

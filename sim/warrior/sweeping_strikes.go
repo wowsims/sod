@@ -63,7 +63,7 @@ func (warrior *Warrior) registerSweepingStrikesCD() {
 			}
 
 			var spellToUse *WarriorSpell
-			if spell.SpellCode == SpellCode_WarriorWhirlwindMH || (spell.SpellCode == SpellCode_WarriorExecute && !sim.IsExecutePhase20()) {
+			if spell.Matches(ClassSpellMask_WarriorWhirlwindMH) || (spell.Matches(ClassSpellMask_WarriorExecute) && !sim.IsExecutePhase20()) {
 				spellToUse = hitSpecialNormalized
 			} else {
 				curDmg = result.Damage

@@ -25,14 +25,14 @@ func (warlock *Warlock) getLifeTapBaseConfig(rank int) core.SpellConfig {
 	}
 
 	return core.SpellConfig{
-		ActionID:      actionID,
-		SpellSchool:   core.SpellSchoolShadow,
-		SpellCode:     SpellCode_WarlockLifeTap,
-		DefenseType:   core.DefenseTypeMagic,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagAffliction,
-		RequiredLevel: level,
-		Rank:          rank,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolShadow,
+		ClassSpellMask: ClassSpellMask_WarlockLifeTap,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagAffliction,
+		RequiredLevel:  level,
+		Rank:           rank,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

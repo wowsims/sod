@@ -14,19 +14,20 @@ const (
 )
 
 const (
-	SpellCode_PriestNone int32 = iota
+	ClassSpellMask_PriestNone int64 = 0
 
-	SpellCode_PriestDevouringPlague
-	SpellCode_PriestFlashHeal
-	SpellCode_PriestGreaterHeal
-	SpellCode_PriestHeal
-	SpellCode_PriestHolyFire
-	SpellCode_PriestMindBlast
-	SpellCode_PriestMindFlay
-	SpellCode_PriestMindSpike
-	SpellCode_PriestShadowWordPain
-	SpellCode_PriestSmite
-	SpellCode_PriestVampiricTouch
+	ClassSpellMask_PriestDevouringPlague int64 = 1 << iota
+	ClassSpellMask_PriestFlashHeal
+	ClassSpellMask_PriestGreaterHeal
+	ClassSpellMask_PriestHeal
+	ClassSpellMask_PriestHolyFire
+	ClassSpellMask_PriestMindBlast
+	ClassSpellMask_PriestMindFlay
+	ClassSpellMask_PriestMindSpike
+	ClassSpellMask_PriestShadowWordPain
+	ClassSpellMask_PriestSmite
+	ClassSpellMask_PriestVampiricTouch
+	ClassSpellMask_PriestVoidPlague
 )
 
 type Priest struct {
