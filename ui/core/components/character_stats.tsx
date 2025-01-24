@@ -450,7 +450,8 @@ export class CharacterStats extends Component {
 				const baseSpellPower = Math.round(deltaStats.getStat(Stat.StatSpellPower) + deltaStats.getStat(Stat.StatSpellDamage));
 				displayStr = baseSpellPower + schoolDamage + ` (+${schoolDamage})`;
 				break;
-			case Stat.StatMeleeCrit || stat === Stat.StatSpellCrit:
+			case Stat.StatMeleeCrit:
+			case Stat.StatSpellCrit:
 				displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
 				break;
 			case Stat.StatArmorPenetration:
