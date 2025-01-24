@@ -203,7 +203,7 @@ export const StaminaBuff = InputHelpers.makeMultiIconInput({
 					{ id: 1244, minLevel: 12, maxLevel: 23 },
 					{ id: 1245, minLevel: 24, maxLevel: 35 },
 					{ id: 2791, minLevel: 36, maxLevel: 47 },
-					{ id: 10937, minLevel: 48, maxLevel: 60 },
+					{ id: 10937, minLevel: 48, maxLevel: 59 },
 					{ id: 10938, minLevel: 60 },
 				]),
 			impId: ActionId.fromSpellId(14767),
