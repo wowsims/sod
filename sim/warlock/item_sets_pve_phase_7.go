@@ -37,7 +37,10 @@ func (warlock *Warlock) applyNaxxramasDamage2PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells := warlock.Corruption
-			affectedSpells = append(affectedSpells, warlock.Incinerate)
+			if warlock.Incinerate != nil {
+				affectedSpells = append(affectedSpells, warlock.Incinerate)
+			}
+
 			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive += 0.20
 			}
