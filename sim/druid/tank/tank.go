@@ -37,6 +37,7 @@ func NewFeralTankDruid(character *core.Character, options *proto.Player) *FeralT
 		bear.SelfBuffs.InnervateTarget = tankOptions.Options.InnervateTarget
 	}
 
+	bear.EnableEnergyBar(100.0)
 	bear.EnableRageBar(core.RageBarOptions{
 		StartingRage:          bear.Options.StartingRage,
 		DamageDealtMultiplier: 1,
@@ -81,6 +82,7 @@ func (bear *FeralTankDruid) Initialize() {
 		Duration: core.SpellBatchWindow * 10,
 	}
 	bear.RegisterFeralTankSpells(queuedRealismICD)
+	bear.RegisterFeralCatSpells()
 }
 
 func (bear *FeralTankDruid) Reset(sim *core.Simulation) {

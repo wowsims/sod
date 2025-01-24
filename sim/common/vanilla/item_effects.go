@@ -2462,21 +2462,6 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic/item=228293/essence-of-the-pure-flame
-	// Equip: When struck in combat inflicts 100 Nature damage to the attacker.  Causes twice as much threat as damage dealt.
-	core.NewItemEffect(RazorbrambleLeathers, func(agent core.Agent) {
-		DamageShieldWithThreatMod(agent.GetCharacter(), 1213813, 100, 2, "Damage Shield Razorbramble Leathers")
-	})
-	core.NewItemEffect(RazorbrambleShoulderpads, func(agent core.Agent) {
-		DamageShieldWithThreatMod(agent.GetCharacter(), 1213816, 80, 2, "Damage Shield Razorbramble Shoulderpads")
-	})
-	core.NewItemEffect(RazorbrambleCowl, func(agent core.Agent) {
-		DamageShieldWithThreatMod(agent.GetCharacter(), 1213813, 100, 2, "Damage Shield Razorbramble Cowl")
-	})
-	core.NewItemEffect(LodestoneofRetaliation, func(agent core.Agent) {
-		DamageShieldWithThreatMod(agent.GetCharacter(), 1213816, 80, 2, "Damage Shield Lodestone of Retaliation")
-	})
-
 	// https://www.wowhead.com/classic/item=234080/eye-of-moam
 	// Use: Increases damage done by magical spells and effects by up to 150, and decreases the magical resistances of your spell targets by 100 for 30 sec. (3 Min Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(EyeOfMoam, stats.Stats{stats.SpellDamage: 150, stats.SpellPenetration: 100}, time.Second*30, time.Minute*3)

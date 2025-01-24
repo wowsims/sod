@@ -157,7 +157,6 @@ func (druid *Druid) registerCatFormSpell() {
 			}
 
 			if !druid.Env.MeasuringStats {
-				druid.AutoAttacks.SetReplaceMHSwing(nil)
 				druid.AutoAttacks.EnableAutoSwing(sim)
 				druid.manageCooldownsEnabled()
 				druid.UpdateManaRegenRates()
@@ -302,6 +301,7 @@ func (druid *Druid) registerBearFormSpell() {
 				druid.CancelShapeshift(sim)
 			}
 			druid.form = Bear
+			druid.SetShapeshift(aura)
 			druid.SetCurrentPowerBar(core.RageBar)
 			druid.PrimalFuryAura.Activate(sim)
 
@@ -332,6 +332,7 @@ func (druid *Druid) registerBearFormSpell() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.form = Humanoid
+			druid.SetShapeshift(nil)
 			druid.SetCurrentPowerBar(core.ManaBar)
 			druid.PrimalFuryAura.Deactivate(sim)
 
@@ -345,13 +346,13 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.AddStatsDynamic(sim, statBonus.Invert())
 			druid.RemoveDynamicEquipScaling(sim, stats.Armor, core.TernaryFloat64(druid.Level < 40, 1.8, 4.6))
 			druid.RemoveDynamicEquipScaling(sim, stats.Armor, 1+.02*float64(druid.Talents.ThickHide))
+			druid.DisableDynamicStatDep(sim, feralApDep)
 
 			if hotwDep != nil {
 				druid.DisableDynamicStatDep(sim, hotwDep)
 			}
 
 			if !druid.Env.MeasuringStats {
-				druid.AutoAttacks.SetReplaceMHSwing(nil)
 				druid.AutoAttacks.EnableAutoSwing(sim)
 
 				druid.manageCooldownsEnabled()

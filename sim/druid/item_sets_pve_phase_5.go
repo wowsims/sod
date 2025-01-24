@@ -169,9 +169,6 @@ func (druid *Druid) applyT2Feral4PBonus() {
 	druid.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if druid.form != Cat {
-				return
-			}
 			oldOnGain := druid.TigersFuryAura.OnGain
 			druid.TigersFuryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 				oldOnGain(aura, sim)

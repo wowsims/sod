@@ -138,11 +138,17 @@ func (druid *Druid) applyTAQFeral4PBonus() {
 		ActionID: core.ActionID{SpellID: 1213174}, // Tracking in APL
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if druid.form != Cat {
+			if !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
-			if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.MangleBear.Spell || spell == druid.FerociousBite.Spell) {
-				return
+			if druid.form == Cat {
+				if !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
+					return
+				}
+			} else if druid.form == Bear {
+				if spell != druid.MangleBear.Spell {
+					return
+				}
 			}
 
 			dot := toothAndClawSpell.Dot(result.Target)
