@@ -413,7 +413,7 @@ func sanctifiedDamageEffect(spellID int32, percentIncrease float64) core.ApplyEf
 				ActionID:   core.ActionID{SpellID: spellID},
 				BuildPhase: core.CharacterBuildPhaseGear,
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					sanctifiedBonus = min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus)
+					sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
 					multiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -455,7 +455,7 @@ func sanctifiedHealingEffect(spellID int32, percentIncrease float64) core.ApplyE
 				ActionID:   core.ActionID{SpellID: spellID},
 				BuildPhase: core.CharacterBuildPhaseGear,
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					sanctifiedBonus = min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus)
+					sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
 					multiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
 				},
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -509,7 +509,7 @@ func sanctifiedTankingEffect(spellID int32, threatPercentIncrease float64, damag
 				ActionID:   core.ActionID{SpellID: spellID},
 				BuildPhase: core.CharacterBuildPhaseGear,
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					sanctifiedBonus = min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus)
+					sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
 					damageHealthMultiplier = 1.0 + damageHealthPercentIncrease/100.0*float64(sanctifiedBonus)
 					threatMultiplier = 1.0 + threatPercentIncrease/100.0*float64(sanctifiedBonus)
 				},
