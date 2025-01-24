@@ -769,10 +769,11 @@ func (item WowheadItemResponse) IsTimeworn() bool {
 	return timewornRegexp.MatchString(item.Tooltip)
 }
 
-var sanctifiedRegexp = regexp.MustCompile(`<span style=\"color: #[0-9A-F]{6}\">Sanctified<\/span>`)
+var sanctifiedRegexp1 = regexp.MustCompile(`<span style=\"color: #[0-9A-F]{6}\">Sanctified<\/span>`)
+var sanctifiedRegexp2 = regexp.MustCompile(`<a href=\"\/classic\/spell=1223973\/sanctified-1\" class=\"q2\">Counts as a Sanctified item.<\/a>`)
 
 func (item WowheadItemResponse) IsSanctified() bool {
-	return sanctifiedRegexp.MatchString(item.Tooltip)
+	return sanctifiedRegexp1.MatchString(item.Tooltip) || sanctifiedRegexp2.MatchString(item.Tooltip)
 }
 
 func (item WowheadItemResponse) GetRequiredProfession() proto.Profession {
