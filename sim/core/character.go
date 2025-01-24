@@ -190,6 +190,11 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 			character.PseudoStats.CrossbowsSkill += ps[proto.PseudoStat_PseudoStatCrossbowsSkill]
 			character.PseudoStats.GunsSkill += ps[proto.PseudoStat_PseudoStatGunsSkill]
 			character.PseudoStats.BonusPhysicalDamage += ps[proto.PseudoStat_PseudoStatBonusPhysicalDamage]
+
+			character.PseudoStats.MeleeSpeedMultiplier *= 1 + ps[proto.PseudoStat_PseudoStatMeleeSpeedMultiplier]/100
+			character.PseudoStats.RangedSpeedMultiplier *= 1 + ps[proto.PseudoStat_PseudoStatRangedSpeedMultiplier]/100
+			character.PseudoStats.CastSpeedMultiplier *= 1 + ps[proto.PseudoStat_PseudoStatCastSpeedMultiplier]/100
+
 			character.PseudoStats.TimewornBonus += int32(ps[proto.PseudoStat_PseudoStatTimewornBonus])
 			character.PseudoStats.SanctifiedBonus += int32(ps[proto.PseudoStat_PseudoStatSanctifiedBonus])
 		}
@@ -742,6 +747,20 @@ func (c *Character) ApplyRingRunes() {
 	}
 
 	// Weapon Skill Specializations
+	// Generic spell used for a catch-all weapon skill rune to help avoid user confusion
+	if c.HasRuneById(29088) {
+		c.AxeSpecializationAura()
+		c.DaggerSpecializationAura()
+		c.FistWeaponSpecializationAura()
+		c.MaceSpecializationAura()
+		c.PoleWeaponSpecializationAura()
+		c.GunSpecializationAura()
+		c.BowSpecializationAura()
+		c.CrossbowSpecializationAura()
+		c.ThrownSpecializationAura()
+		c.SwordSpecializationAura()
+	}
+
 	if c.HasRuneById(int32(proto.RingRune_RuneRingAxeSpecialization)) {
 		c.AxeSpecializationAura()
 	}

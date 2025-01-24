@@ -88,9 +88,10 @@ func (action *APLActionResetSequence) String() string {
 
 type APLActionStrictSequence struct {
 	defaultAPLActionImpl
-	unit       *Unit
-	subactions []*APLAction
-	curIdx     int
+	unit             *Unit
+	subactions       []*APLAction
+	curIdx           int
+	requiresGCDCheck bool
 
 	subactionSpells []*Spell
 }
@@ -105,8 +106,9 @@ func (rot *APLRotation) newActionStrictSequence(config *proto.APLActionStrictSeq
 	}
 
 	return &APLActionStrictSequence{
-		unit:       rot.unit,
-		subactions: subactions,
+		unit:             rot.unit,
+		subactions:       subactions,
+		requiresGCDCheck: false,
 	}
 }
 func (action *APLActionStrictSequence) GetInnerActions() []*APLAction {
@@ -117,12 +119,19 @@ func (action *APLActionStrictSequence) Finalize(rot *APLRotation) {
 		subaction.impl.Finalize(rot)
 		action.subactionSpells = append(action.subactionSpells, subaction.GetAllSpells()...)
 	}
+
+	for _, spell := range action.subactionSpells {
+		if spell.DefaultCast.GCD > 0 {
+			action.requiresGCDCheck = true
+			break
+		}
+	}
 }
 func (action *APLActionStrictSequence) Reset(*Simulation) {
 	action.curIdx = 0
 }
 func (action *APLActionStrictSequence) IsReady(sim *Simulation) bool {
-	if !action.unit.GCD.IsReady(sim) {
+	if action.requiresGCDCheck && !action.unit.GCD.IsReady(sim) {
 		return false
 	}
 	if !action.subactions[0].IsReady(sim) {

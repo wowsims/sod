@@ -9,15 +9,31 @@ import (
 )
 
 const (
-	DiamondFlask        = 20130
-	Exsanguinar         = 216497
-	SuzerainDefender    = 224280
-	GrileksCharmOFMight = 231286
-	RageOfMugamba       = 231350
+	DiamondFlask         = 20130
+	Exsanguinar          = 216497
+	SuzerainDefender     = 224280
+	GrileksCharmOFMight  = 231286
+	RageOfMugamba        = 231350
+	BandOfTheDreadnaught = 236022
 )
 
 func init() {
 	core.AddEffectsToTest = false
+
+	core.NewItemEffect(BandOfTheDreadnaught, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Band of the Dreadnaught Trigger",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskMelee,
+			ProcChance: 0.02,
+			ICD:        time.Millisecond * 200,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1223010}, spell)
+			},
+		})
+	})
 
 	core.NewItemEffect(DiamondFlask, func(agent core.Agent) {
 		character := agent.GetCharacter()

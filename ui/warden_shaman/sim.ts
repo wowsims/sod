@@ -37,7 +37,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 		Stat.StatNaturePower,
 		Stat.StatSpellCrit,
 		Stat.StatSpellHit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 		// Defense
 		Stat.StatArmor,
@@ -48,7 +47,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 		Stat.StatParry,
 		Stat.StatDodge,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+		PseudoStat.PseudoStatCastSpeedMultiplier,
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -64,13 +68,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
 		// Spell
 		Stat.StatSpellDamage,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 		// Defense
 		Stat.StatArmor,
@@ -85,6 +87,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 	],
 	displayPseudoStats: [
 		PseudoStat.PseudoStatThornsDamage,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+		PseudoStat.PseudoStatCastSpeedMultiplier,
 	],
 	
 	defaults: {
@@ -103,7 +107,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 				[Stat.StatNaturePower]: 0.48,
 				[Stat.StatSpellHit]: 0.03, //default EP assumes cap
 				[Stat.StatSpellCrit]: 1.94,
-				[Stat.StatSpellHaste]: 2.97,
 				[Stat.StatMP5]: 0.01,
 				[Stat.StatAttackPower]: 1.0,
 				[Stat.StatMeleeHit]: 9.62,

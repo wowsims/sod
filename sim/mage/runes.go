@@ -241,15 +241,15 @@ func (mage *Mage) applyFingersOfFrost() {
 		Label: "Fingers of Frost Trigger",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Only Blizzard ticks proc
-			if spell.SpellCode == SpellCode_MageBlizzard && spell.Flags.Matches(SpellFlagChillSpell) && sim.RandomFloat("Fingers of Frost") < mage.FingersOfFrostProcChance {
+			if spell.SpellCode == SpellCode_MageBlizzard && spell.Flags.Matches(SpellFlagChillSpell) && sim.Proc(mage.FingersOfFrostProcChance, "Fingers of Frost") {
 				mage.FingersOfFrostAura.Activate(sim)
-				mage.FingersOfFrostAura.SetStacks(sim, 2)
+				mage.FingersOfFrostAura.SetStacks(sim, mage.FingersOfFrostAura.MaxStacks)
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagChillSpell) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && sim.RandomFloat("Fingers of Frost") < mage.FingersOfFrostProcChance {
+			if spell.Flags.Matches(SpellFlagChillSpell) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && sim.Proc(mage.FingersOfFrostProcChance, "Fingers of Frost") {
 				mage.FingersOfFrostAura.Activate(sim)
-				mage.FingersOfFrostAura.SetStacks(sim, 2)
+				mage.FingersOfFrostAura.SetStacks(sim, mage.FingersOfFrostAura.MaxStacks)
 			}
 		},
 	}))

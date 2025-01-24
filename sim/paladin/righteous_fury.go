@@ -11,6 +11,7 @@ func (paladin *Paladin) registerRighteousFury() {
 	}
 	horRune := proto.PaladinRune_RuneHandsHandOfReckoning
 	hasHoR := paladin.hasRune(horRune)
+	has6pcT3 := paladin.HasSetBonus(ItemSetRedemptionBulwark, 6)
 
 	actionID := core.ActionID{SpellID: core.TernaryInt32(hasHoR, int32(horRune), 25780)}
 
@@ -35,7 +36,13 @@ func (paladin *Paladin) registerRighteousFury() {
 		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			incomingDamage := result.Damage
 			if (paladin.CurrentHealth()-incomingDamage)/paladin.MaxHealth() <= 0.35 {
-				result.Damage -= (paladin.MaxHealth()*0.35 - (paladin.CurrentHealth() - incomingDamage)) * rfDamageReduction
+				damageReduction := rfDamageReduction
+
+				if has6pcT3 && spell.Unit.MobType == proto.MobType_MobTypeUndead {
+					damageReduction = 0.5
+				}
+
+				result.Damage -= (paladin.MaxHealth()*0.35 - (paladin.CurrentHealth() - incomingDamage)) * damageReduction
 				if sim.Log != nil {
 					paladin.Log(sim, "Righteous Fury absorbs %d damage", int32(incomingDamage-result.Damage))
 				}

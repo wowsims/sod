@@ -27,7 +27,7 @@ var ItemSetBonescytheArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Instant Poison deals 20% more damage. You heal for 5% of all damage done by your Poisons.
+// Your Ambush and Instant Poison deal 20% more damage. You heal for 5% of all damage done by your Poisons.
 func (rogue *Rogue) applyNaxxramasDamage2PBonus() {
 	label := "S03 - Item - Naxxramas - Rogue - Damage 2P Bonus"
 	if rogue.HasAura(label) {
@@ -39,6 +39,7 @@ func (rogue *Rogue) applyNaxxramasDamage2PBonus() {
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.Ambush.DamageMultiplierAdditive += 0.20
 			for _, spell := range rogue.InstantPoison {
 				spell.DamageMultiplierAdditive += 0.20
 			}
@@ -158,7 +159,7 @@ func (rogue *Rogue) applyNaxxramasTank2PBonus() {
 	}))
 }
 
-// Reduces the cooldown on your Evasion ability by 3 min and reduces the cooldown on your Blade Flurry ability by 1 min.
+// Reduces the cooldown on your Evasion ability by 2 min and reduces the cooldown on your Blade Flurry ability by 1 min.
 func (rogue *Rogue) applyNaxxramasTank4PBonus() {
 	label := "S03 - Item - Naxxramas - Rogue - Tank 4P Bonus"
 	if rogue.HasAura(label) {
@@ -168,7 +169,7 @@ func (rogue *Rogue) applyNaxxramasTank4PBonus() {
 	rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.Evasion.CD.FlatModifier -= time.Minute * 3
+			rogue.Evasion.CD.FlatModifier -= time.Minute * 2
 
 			if rogue.BladeFlurry != nil {
 				rogue.BladeFlurry.CD.FlatModifier -= time.Minute

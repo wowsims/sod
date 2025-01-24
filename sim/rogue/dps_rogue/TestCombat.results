@@ -27,7 +27,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 1069.4
+  final_stats: 1413.15
   final_stats: 295.2
   final_stats: 0
   final_stats: 5
@@ -41,7 +41,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 10
-  final_stats: 141
+  final_stats: 484.75
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -76,7 +76,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 1536.6
+  final_stats: 2167.85
   final_stats: 538.8
   final_stats: 0
   final_stats: 5
@@ -90,7 +90,7 @@ character_stats_results: {
   final_stats: 40
   final_stats: 35
   final_stats: 40
-  final_stats: 263
+  final_stats: 894.25
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -125,7 +125,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 3306.66
+  final_stats: 4225.41
   final_stats: 1702.83
   final_stats: 0
   final_stats: 5
@@ -139,7 +139,7 @@ character_stats_results: {
   final_stats: 110
   final_stats: 119
   final_stats: 60
-  final_stats: 384
+  final_stats: 1302.75
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -505,15 +505,15 @@ dps_results: {
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-AllItems-BloodCorruptedLeathers"
  value: {
-  dps: 1161.46005
-  tps: 824.63663
+  dps: 1164.62268
+  tps: 826.8821
  }
 }
 dps_results: {
  key: "TestCombat-Phase5-Lvl60-AllItems-DarkmantleArmor"
  value: {
-  dps: 962.0195
-  tps: 683.03384
+  dps: 962.18015
+  tps: 683.1479
  }
 }
 dps_results: {

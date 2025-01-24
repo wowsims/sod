@@ -26,7 +26,7 @@ var ItemSetPlagueheartRaiment = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Increases periodic damage done by your Corruption ability by 20%.
+// Increases the damage done by your Incinerate and Corruption abilities by 20%.
 func (warlock *Warlock) applyNaxxramasDamage2PBonus() {
 	label := "S03 - Item - Naxxramas - Warlock - Damage 2P Bonus"
 	if warlock.HasAura(label) {
@@ -36,7 +36,12 @@ func (warlock *Warlock) applyNaxxramasDamage2PBonus() {
 	warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.Corruption {
+			affectedSpells := warlock.Corruption
+			if warlock.Incinerate != nil {
+				affectedSpells = append(affectedSpells, warlock.Incinerate)
+			}
+
+			for _, spell := range affectedSpells {
 				spell.DamageMultiplierAdditive += 0.20
 			}
 		},

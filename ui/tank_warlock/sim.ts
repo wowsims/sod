@@ -32,13 +32,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHit,
-		Stat.StatMeleeHaste,
 		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatFirePower,
 		Stat.StatShadowPower,
 		Stat.StatMP5,
@@ -47,6 +45,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatBonusArmor,
 		Stat.StatDefense,
 		Stat.StatDodge,
+	],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+		PseudoStat.PseudoStatCastSpeedMultiplier,
 	],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -64,7 +66,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeCrit,
 		Stat.StatMeleeHit,
-		Stat.StatMeleeHaste,
 		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
@@ -72,7 +73,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatShadowPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 		// Defense
 		Stat.StatArmor,
@@ -84,6 +84,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 	],
 	displayPseudoStats: [
 		PseudoStat.PseudoStatThornsDamage,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+		PseudoStat.PseudoStatCastSpeedMultiplier,
 	],
 	
 	defaults: {
@@ -100,7 +102,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			[Stat.StatShadowPower]: 1,
 			[Stat.StatSpellHit]: 0.93,
 			[Stat.StatSpellCrit]: 0.53,
-			[Stat.StatSpellHaste]: 0.81,
 			[Stat.StatStamina]: 0.01,
 			[Stat.StatDefense]: 1.5,
 			[Stat.StatFireResistance]: 0.5,

@@ -11,7 +11,6 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-// Libram IDs
 const (
 	SanctifiedOrb                        = 20512
 	LibramOfHope                         = 22401
@@ -33,14 +32,30 @@ const (
 	LibramOfTheExorcist                  = 234475
 	LibramOfSanctity                     = 234476
 	LibramOfRighteousness                = 234477
+	BandOfRedemption                     = 236130
 	ClaymoreOfUnholyMight                = 236299
 )
 
 func init() {
 	core.AddEffectsToTest = false
 
+	core.NewItemEffect(BandOfRedemption, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Band of Redemption Trigger",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskMelee,
+			ProcChance: 0.02,
+			ICD:        time.Millisecond * 200,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1223010}, spell)
+			},
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=236299/claymore-of-unholy-might
-	// Chance on hit: Increases the wielder's Strength by 400, but they also take 20% more damage from all sources for 8 sec.
+	// Chance on hit: Increases the wielder's Strength by 350, but they also take 5% more damage from all sources for 8 sec.
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponProcAura(ClaymoreOfUnholyMight, "Claymore of Unholy Might", 1.0, item_effects.UnholyMightAura)
 

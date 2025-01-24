@@ -14,6 +14,7 @@ const (
 	TheBlackBook                = 230238
 	HazzarahsCharmOfDestruction = 231284
 	KezansUnstoppableTaint      = 231346
+	PlagueheartRing             = 236067
 )
 
 func init() {
@@ -286,6 +287,19 @@ func init() {
 					warlock.Felguard.primaryAbility.CD.FlatModifier -= time.Second * 2
 				}
 			},
+		})
+	})
+
+	// https://www.wowhead.com/classic/item=236067/plagueheart-ring
+	// Equip: Increases the damage dealt by your damage over time spells by 2%.
+	core.NewItemEffect(PlagueheartRing, func(agent core.Agent) {
+		priest := agent.(WarlockAgent).GetWarlock()
+
+		priest.OnSpellRegistered(func(spell *core.Spell) {
+			// Unlike the Priest ring, the Warlock ring doesn't seem to affect channels https://www.wowhead.com/classic/spell=1222974/damage-over-time-increase
+			if spell.Flags.Matches(SpellFlagWarlock) && !spell.Flags.Matches(core.SpellFlagChanneled) {
+				spell.PeriodicDamageMultiplierAdditive += .02
+			}
 		})
 	})
 

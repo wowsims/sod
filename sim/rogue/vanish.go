@@ -13,9 +13,6 @@ func (rogue *Rogue) registerVanishSpell() {
 		Flags:       core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
-			DefaultCast: core.Cast{
-				GCD: 0,
-			},
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    rogue.NewTimer(),

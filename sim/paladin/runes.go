@@ -265,11 +265,11 @@ func (paladin *Paladin) applyPurifyingPower() {
 		Label: "Purifying Power",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range paladin.exorcism {
-				spell.CD.Multiplier -= 50
+				spell.CD.Multiplier *= 0.5
 			}
 
 			for _, spell := range paladin.holyWrath {
-				spell.CD.Multiplier -= 50
+				spell.CD.Multiplier *= 0.5
 			}
 		},
 	})
@@ -284,44 +284,48 @@ func (paladin *Paladin) registerAegis() {
 	// The SBV bonus is additive with Shield Specialization.
 	paladin.PseudoStats.BlockValueMultiplier += 0.3
 
-	// Redoubt now has a 10% chance to trigger on any melee or ranged attack against
-	// you, and always triggers on your melee critical strikes.
-	paladin.RegisterAura(core.Aura{
-		Label:    "Redoubt Aegis Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && result.Landed() {
-				if sim.Proc(0.1, "Aegis Attack") {
+	if paladin.Talents.Redoubt > 0 {
+		// Redoubt now has a 10% chance to trigger on any melee or ranged attack against
+		// you, and always triggers on your melee critical strikes.
+		paladin.RegisterAura(core.Aura{
+			Label:    "Redoubt Aegis Trigger",
+			Duration: core.NeverExpires,
+			OnReset: func(aura *core.Aura, sim *core.Simulation) {
+				aura.Activate(sim)
+			},
+			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeOrRanged) && result.Landed() {
+					if sim.Proc(0.1, "Aegis Attack") {
+						paladin.redoubtAura.Activate(sim)
+						paladin.redoubtAura.SetStacks(sim, 5)
+					}
+				}
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskMelee) && result.DidCrit() {
 					paladin.redoubtAura.Activate(sim)
 					paladin.redoubtAura.SetStacks(sim, 5)
 				}
-			}
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.DidCrit() {
-				paladin.redoubtAura.Activate(sim)
-				paladin.redoubtAura.SetStacks(sim, 5)
-			}
-		},
-	})
+			},
+		})
+	}
 
-	// Reckoning now also procs on any melee or ranged attack against you with (2% * talent points) chance
-	procID := core.ActionID{SpellID: 20178} // reckoning proc id
-	procChance := 0.02 * float64(paladin.Talents.Reckoning)
+	if paladin.Talents.Reckoning > 0 {
+		// Reckoning now also procs on any melee or ranged attack against you with (2% * talent points) chance
+		procID := core.ActionID{SpellID: 20178} // reckoning proc id
+		procChance := 0.02 * float64(paladin.Talents.Reckoning)
 
-	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-		Name:       "Reckoning Aegis Trigger",
-		Callback:   core.CallbackOnSpellHitTaken,
-		ProcMask:   core.ProcMaskMeleeOrRanged,
-		Outcome:    core.OutcomeLanded,
-		ProcChance: procChance,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			paladin.AutoAttacks.ExtraMHAttack(sim, 1, procID, spell.ActionID)
-		},
-	})
+		core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+			Name:       "Reckoning Aegis Trigger",
+			Callback:   core.CallbackOnSpellHitTaken,
+			ProcMask:   core.ProcMaskMeleeOrRanged,
+			Outcome:    core.OutcomeLanded ^ core.OutcomeCrit,
+			ProcChance: procChance,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				paladin.AutoAttacks.ExtraMHAttackProc(sim, 1, procID, spell)
+			},
+		})
+	}
 }
 
 func (paladin *Paladin) registerMalleableProtection() {
@@ -374,7 +378,7 @@ func (paladin *Paladin) registerMalleableProtection() {
 		},
 	})
 
-	divine_protection := paladin.RegisterSpell(core.SpellConfig{
+	paladin.divineProtection = paladin.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagAPL | SpellFlag_Forbearance,
 		ManaCost: core.ManaCostOptions{
@@ -395,7 +399,7 @@ func (paladin *Paladin) registerMalleableProtection() {
 	})
 
 	paladin.AddMajorCooldown(core.MajorCooldown{
-		Spell:    divine_protection,
+		Spell:    paladin.divineProtection,
 		Priority: core.CooldownPriorityDrums, // Primary defensive cooldown
 		Type:     core.CooldownTypeSurvival,
 	})

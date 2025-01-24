@@ -33,13 +33,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		Stat.StatFeralAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
 		// Spell
 		Stat.StatMP5,
 	],
 	epPseudoStats: [
 		PseudoStat.PseudoStatBonusPhysicalDamage,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
@@ -63,6 +63,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 	],
 	displayPseudoStats: [
 		PseudoStat.PseudoStatBonusPhysicalDamage,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
 	],
 
 	defaults: {
@@ -71,19 +72,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatStrength]: 2.38,
-				[Stat.StatAgility]: 2.35,
+				[Stat.StatStrength]: 3.04,
+				[Stat.StatAgility]: 3.33,
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatFeralAttackPower]: 1,
 				[Stat.StatMeleeHit]: 24.46,
-				[Stat.StatMeleeCrit]: 16.67,
+				[Stat.StatMeleeCrit]: 31.33,
 				[Stat.StatMana]: 0.04,
 				[Stat.StatIntellect]: 0.67,
 				[Stat.StatSpirit]: 0.08,
 				[Stat.StatMP5]: 0.46,
 				[Stat.StatFireResistance]: 0.5,
 			},
-			{},
+			{
+				[PseudoStat.PseudoStatBonusPhysicalDamage]: 11.40,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 11.73,
+				[PseudoStat.PseudoStatTimewornBonus]: 8.55,
+			},
 		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

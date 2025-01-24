@@ -29,7 +29,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationDruid, {
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -42,7 +41,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationDruid, {
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
 	displayPseudoStats: [],
@@ -56,7 +54,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationDruid, {
 			[Stat.StatSpirit]: 0.34,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.69,
-			[Stat.StatSpellHaste]: 0.77,
 			[Stat.StatMP5]: 0.00,
 		}),
 		// Default consumes settings.

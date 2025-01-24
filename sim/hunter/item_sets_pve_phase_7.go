@@ -26,12 +26,8 @@ var ItemSetCryptstalkerProwess = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Wyvern Strike deals 20% more initial damage.
+// Your Wyvern Strike and Mongoose Bite deal 20% more initial damage.
 func (hunter *Hunter) applyNaxxramasMelee2PBonus() {
-	if !hunter.HasRune(proto.HunterRune_RuneBootsWyvernStrike) || !hunter.Talents.WyvernSting {
-		return
-	}
-
 	label := "S03 - Item - Naxxramas - Hunter - Melee 2P Bonus"
 	if hunter.HasAura(label) {
 		return
@@ -40,7 +36,10 @@ func (hunter *Hunter) applyNaxxramasMelee2PBonus() {
 	hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.WyvernStrike.ImpactDamageMultiplierAdditive += 0.20
+			if hunter.WyvernStrike != nil {
+				hunter.WyvernStrike.ImpactDamageMultiplierAdditive += 0.20
+			}
+			hunter.MongooseBite.ImpactDamageMultiplierAdditive += 0.20
 		},
 	})
 }
@@ -151,13 +150,13 @@ func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 				hunter.ChimeraShot.CD.FlatModifier -= time.Millisecond * 1500
 			}
 			if hunter.ExplosiveShot != nil {
-				hunter.ExplosiveShot.CD.FlatModifier -= time.Millisecond * 1500 
+				hunter.ExplosiveShot.CD.FlatModifier -= time.Millisecond * 1500
 			}
 			if hunter.AimedShot != nil {
-				hunter.AimedShot.CD.FlatModifier -= time.Millisecond * 1500 
+				hunter.AimedShot.CD.FlatModifier -= time.Millisecond * 1500
 			}
 			if hunter.KillShot != nil {
-				hunter.KillShot.CD.FlatModifier -= time.Second * 3 
+				hunter.KillShot.CD.FlatModifier -= time.Second * 3
 			}
 		},
 	}))

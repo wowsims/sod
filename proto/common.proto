@@ -331,6 +331,7 @@ enum Explosive {
 	ExplosiveHighYieldRadiationBomb = 5;
 	ExplosiveGoblinLandMine = 6;
 	ExplosiveObsidianBomb = 7;
+	ExplosiveStratholmeHolyWater = 8;
 }
 
 // NextIndex: 28
@@ -530,7 +531,7 @@ enum MageScroll {
 	MageScrollFrostProtection = 5;
 }
 
-// NextIndex: 33
+// NextIndex: 35
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
@@ -541,6 +542,7 @@ enum WeaponImbue {
 	WizardOil = 20;
 	BrilliantWizardOil = 2;
 	EnchantedRepellent = 30;
+	BlessedWizardOil = 33;
 
 	MinorManaOil = 15;
 	LesserManaOil = 16;
@@ -552,6 +554,7 @@ enum WeaponImbue {
 	DenseSharpeningStone = 3;
 	ElementalSharpeningStone = 4;
 	BlackfathomSharpeningStone = 6;
+	ConsecratedSharpeningStone = 34;
 
 	// Weightstones
 	SolidWeightstone = 18;
@@ -987,6 +990,8 @@ enum EnchantType {
 	EnchantTypeShield = 2;
 	EnchantTypeKit = 3;
 	EnchantTypeStaff = 4;
+	// New in SoD
+	EnchantTypeOffHand = 5;
 }
 
 // Contains only the Enchant info needed by the sim.

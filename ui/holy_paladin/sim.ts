@@ -15,7 +15,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 	knownIssues: [],
 
 	// All stats for which EP should be calculated.
-	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatSpellHaste, Stat.StatMP5],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -26,7 +26,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
 	displayPseudoStats: [],
@@ -40,7 +39,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHolyPaladin, {
 			[Stat.StatSpirit]: 0.34,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.69,
-			[Stat.StatSpellHaste]: 0.77,
 			[Stat.StatMP5]: 0.0,
 		}),
 		// Default consumes settings.

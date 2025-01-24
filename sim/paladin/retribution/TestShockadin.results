@@ -27,7 +27,7 @@ character_stats_results: {
   final_stats: 2177.15
   final_stats: 0
   final_stats: 0
-  final_stats: 2316.6
+  final_stats: 2947.85
   final_stats: 294
   final_stats: 0
   final_stats: 5
@@ -41,7 +41,7 @@ character_stats_results: {
   final_stats: 40
   final_stats: 35
   final_stats: 40
-  final_stats: 263
+  final_stats: 894.25
   final_stats: 0
   final_stats: 14
   final_stats: 69
@@ -76,7 +76,7 @@ character_stats_results: {
   final_stats: 7765.0925
   final_stats: 0
   final_stats: 0
-  final_stats: 8513.13
+  final_stats: 9431.88
   final_stats: 810
   final_stats: 0
   final_stats: 5
@@ -90,7 +90,7 @@ character_stats_results: {
   final_stats: 90
   final_stats: 100
   final_stats: 60
-  final_stats: 384
+  final_stats: 1302.75
   final_stats: 73
   final_stats: 65
   final_stats: 0
@@ -209,87 +209,87 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-LongMultiTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
   dps: 839.03321
   tps: 1117.4187
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-LongSingleTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
   dps: 184.79518
   tps: 198.68546
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-ShortSingleTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
   dps: 221.04753
   tps: 236.83925
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-LongMultiTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 363.50405
-  tps: 548.47098
+  dps: 395.28289
+  tps: 580.24982
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-LongSingleTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 93.80621
-  tps: 103.05455
+  dps: 102.95064
+  tps: 112.19899
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-ShortSingleTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Dwarf-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-NoBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 128.00928
-  tps: 138.91103
+  dps: 140.46145
+  tps: 151.3632
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-LongMultiTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
   dps: 861.099
   tps: 1139.92474
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-LongSingleTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
   dps: 184.52332
   tps: 198.46461
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-FullBuffs-P2-Consumes-ShortSingleTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
   dps: 223.47804
   tps: 239.2978
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-LongMultiTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 370.43922
-  tps: 556.60261
+  dps: 402.93784
+  tps: 589.10123
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-LongSingleTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 94.11611
-  tps: 103.42428
+  dps: 103.29759
+  tps: 112.60576
  }
 }
 dps_results: {
- key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2retsom-P2 Seal of Martyrdom Shockadin-p2ret-NoBuffs-P2-Consumes-ShortSingleTarget"
+ key: "TestShockadin-Phase2-Lvl40-Settings-Human-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-NoBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 130.62293
-  tps: 141.58519
+  dps: 143.30975
+  tps: 154.272
  }
 }
 dps_results: {
@@ -342,87 +342,87 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-LongMultiTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
   dps: 3753.72737
   tps: 4534.88227
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-LongSingleTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
   dps: 1632.78555
   tps: 1672.18546
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-ShortSingleTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
   dps: 2704.58106
   tps: 2776.13017
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P5-Consumes-LongMultiTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 1098.36369
-  tps: 1366.86051
+  dps: 1208.20005
+  tps: 1476.69688
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P5-Consumes-LongSingleTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 544.42138
-  tps: 558.14414
+  dps: 598.86352
+  tps: 612.58627
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P5-Consumes-ShortSingleTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 1301.13021
-  tps: 1330.80355
+  dps: 1431.24323
+  tps: 1460.91657
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-LongMultiTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
   dps: 3804.49005
   tps: 4602.28495
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-LongSingleTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
   dps: 1657.60359
   tps: 1697.50558
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-FullBuffs-P5-Consumes-ShortSingleTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
   dps: 2706.69208
   tps: 2777.85952
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P5-Consumes-LongMultiTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 1112.62264
-  tps: 1383.28614
+  dps: 1223.88491
+  tps: 1494.5484
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P5-Consumes-LongSingleTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 548.27259
-  tps: 561.94118
+  dps: 603.09985
+  tps: 616.76844
  }
 }
 dps_results: {
- key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5shockadin-P5 Seal of Righteousness Shockadin-p5Shockadin-NoBuffs-P5-Consumes-ShortSingleTarget"
+ key: "TestShockadin-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 1304.67967
-  tps: 1334.35301
+  dps: 1435.14764
+  tps: 1464.82098
  }
 }
 dps_results: {
