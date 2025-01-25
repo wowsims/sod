@@ -14,6 +14,7 @@ import {
 	Flask,
 	Food,
 	FrostPowerBuff,
+	HandType,
 	HealthElixir,
 	ItemSlot,
 	MageScroll,
@@ -1194,6 +1195,15 @@ export const ConsecratedSharpeningStone = (slot: ItemSlot): ConsumableInputConfi
 		},
 	};
 };
+export const WeightedConsecratedSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
+	return {
+		actionId: player => player.getMatchingItemActionId([{ id: 237810, minLevel: 50 }]),
+		value: WeaponImbue.WeightedConsecratedSharpeningStone,
+		showWhen: player => {
+			return player.getEquippedItem(slot)?.item.handType === HandType.HandTypeTwoHand;
+		},
+	};
+};
 export const ElementalSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
 		actionId: player => player.getMatchingItemActionId([{ id: 18262, minLevel: 50 }]),
@@ -1329,6 +1339,7 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 	{ config: BlackfathomManaOil(slot), stats: [Stat.StatSpellPower, Stat.StatMP5] },
 
 	{ config: ConsecratedSharpeningStone(slot), stats: [Stat.StatAttackPower] },
+	{ config: WeightedConsecratedSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: ElementalSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: DenseSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: SolidSharpeningStone(slot), stats: [Stat.StatAttackPower] },
