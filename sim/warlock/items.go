@@ -381,7 +381,7 @@ func init() {
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    warlock.NewTimer(),
-					Duration: time.Minute * 5,
+					Duration: time.Minute * 2,
 				},
 			},
 

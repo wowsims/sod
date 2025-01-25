@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.74076
+  weights: -1.33289
   weights: 0
-  weights: 1.82595
-  weights: 0
-  weights: 0
+  weights: 1.86628
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 10.48248
-  weights: 22.98624
+  weights: 0
+  weights: 0
+  weights: 10.97752
+  weights: 23.02487
   weights: 0
   weights: 0
   weights: 0
@@ -675,8 +675,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 3666.51283
-  tps: 3476.73858
+  dps: 3669.52948
+  tps: 3479.75522
   hps: 777.21859
  }
 }
@@ -707,24 +707,24 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3721.59654
-  tps: 3529.97539
-  hps: 782.30242
+  dps: 3726.68628
+  tps: 3535.06752
+  hps: 782.24273
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 3703.82141
-  tps: 4919.3306
+  dps: 3706.02637
+  tps: 4921.53555
   hps: 786.42465
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3703.82141
-  tps: 3512.88741
+  dps: 3706.02637
+  tps: 3515.09236
   hps: 786.42465
  }
 }
@@ -739,16 +739,16 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1739.17135
-  tps: 3169.06874
+  dps: 1740.94634
+  tps: 3170.84372
   hps: 416.46534
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-affliction-Affliction Warlock-affliction-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1739.17135
-  tps: 1674.49519
+  dps: 1740.94634
+  tps: 1676.27018
   hps: 416.46534
  }
 }
@@ -763,8 +763,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3700.39097
-  tps: 3508.69262
+  dps: 3702.63079
+  tps: 3510.93244
   hps: 793.04076
  }
 }
@@ -987,9 +987,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 4457.9772
-  tps: 4315.1472
-  hps: 990.42856
+  dps: 4453.66565
+  tps: 4310.72064
+  hps: 981.4537
  }
 }
 dps_results: {
