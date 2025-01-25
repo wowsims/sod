@@ -1338,8 +1338,8 @@ const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[]
 	{ config: MinorManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
 	{ config: BlackfathomManaOil(slot), stats: [Stat.StatSpellPower, Stat.StatMP5] },
 
-	{ config: ConsecratedSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: WeightedConsecratedSharpeningStone(slot), stats: [Stat.StatAttackPower] },
+	{ config: ConsecratedSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: ElementalSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: DenseSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: SolidSharpeningStone(slot), stats: [Stat.StatAttackPower] },
