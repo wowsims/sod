@@ -68,7 +68,6 @@ func (druid *Druid) newSwipeBearSpellConfig(swipeRank SwipeRankInfo) core.SpellC
 	numHits := min(targetCount, druid.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
 	hasGore := druid.HasRune(proto.DruidRune_RuneHelmGore)
-	hasLacerate := druid.HasRune(proto.DruidRune_RuneLegsLacerate)
 
 	switch druid.Ranged().ID {
 	case IdolOfBrutality:
@@ -102,17 +101,11 @@ func (druid *Druid) newSwipeBearSpellConfig(swipeRank SwipeRankInfo) core.SpellC
 		ThreatMultiplier:             SwipeThreatMultiplier,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			damage := baseDamage + .1*druid.GetStat(stats.AttackPower)
 			for idx := range results {
-				dotBonusCrit := 0.0
-				if hasLacerate && druid.LacerateBleed.Dot(target).GetStacks() > 0 {
-					dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
-				}
-				spell.BonusCritRating += dotBonusCrit
-				damage := baseDamage + .1*druid.GetStat(stats.AttackPower)
 				results[idx] = spell.CalcDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
-				spell.BonusCritRating -= dotBonusCrit
-
 				target = sim.Environment.NextTargetUnit(target)
+
 			}
 
 			for _, result := range results {

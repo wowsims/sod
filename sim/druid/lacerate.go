@@ -41,28 +41,33 @@ func (druid *Druid) registerLacerateSpell() {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 3.33,
-		// TODO: Berserk 3 target lacerate cleave - Saeyon
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			activeStacks := druid.LacerateBleed.Dot(target).GetStacks() + 1
-			activeStacks = core.TernaryInt32(activeStacks > 5, 5, activeStacks)
-			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2*float64(activeStacks) + initialDamageMul)
 			berserking := druid.BerserkAura.IsActive()
+			targetCount := core.TernaryInt32(berserking, 3, 1)
+			numHits := min(targetCount, druid.Env.GetNumTargets())
+			results := make([]*core.SpellResult, numHits)
 
-			spell.BonusCritRating += druid.FuryOfStormrageCritRatingBonus
-			spell.Cost.FlatModifier -= core.TernaryInt32(berserking, 10, 0)
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			spell.Cost.FlatModifier += core.TernaryInt32(berserking, 10, 0)
-			spell.BonusCritRating -= druid.FuryOfStormrageCritRatingBonus
+			for idx := range results {
+				activeStacks := druid.LacerateBleed.Dot(target).GetStacks() + 1
+				activeStacks = core.TernaryInt32(activeStacks > 5, 5, activeStacks)
+				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2*float64(activeStacks) + initialDamageMul)
 
-			if result.Landed() {
-				druid.LacerateBleed.Cast(sim, target)
+				spell.Cost.FlatModifier -= core.TernaryInt32(berserking, 10, 0)
+				results[idx] = spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				spell.Cost.FlatModifier += core.TernaryInt32(berserking, 10, 0)
 
-				if hasGore && sim.Proc(0.15, "Gore") {
-					druid.AddRage(sim, 10.0, rageMetrics)
-					druid.MangleBear.CD.Reset()
+				if results[idx].Landed() {
+					druid.LacerateBleed.Cast(sim, target)
+
+					if hasGore && sim.Proc(0.15, "Gore") {
+						druid.AddRage(sim, 10.0, rageMetrics)
+						druid.MangleBear.CD.Reset()
+					}
 				}
-			} else {
+				target = sim.Environment.NextTargetUnit(target)
+			}
+			if !berserking && !results[0].Landed() {
 				spell.IssueRefund(sim)
 			}
 		},

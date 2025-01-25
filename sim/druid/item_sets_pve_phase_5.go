@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -222,26 +223,14 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 		2: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
 			druid.applyT2Guardian2PBonus()
-			core.MakePermanent(druid.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 467216},
-				Label:    "S03 - Item - T2 - Druid - Guardian 2P Bonus",
-			}))
 		},
 		4: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
 			druid.applyT2Guardian4PBonus()
-			core.MakePermanent(druid.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 467221},
-				Label:    "S03 - Item - T2 - Druid - Guardian 4P Bonus",
-			}))
 		},
 		6: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
 			druid.applyT2Guardian6PBonus()
-			core.MakePermanent(druid.RegisterAura(core.Aura{
-				ActionID: core.ActionID{SpellID: 467227},
-				Label:    "S03 - Item - T2 - Druid - Guardian 6P Bonus",
-			}))
 		},
 	},
 })
@@ -252,31 +241,14 @@ func (druid *Druid) applyT2Guardian2PBonus() {
 		return
 	}
 
-	var curDmg float64
-
-	cleaveHit := druid.RegisterSpell(Bear, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 467217},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, curDmg, spell.OutcomeAlwaysHit)
-		},
-	})
-
 	cleaveAura := druid.RegisterAura(core.Aura{
 		Label:    "2P Cleave Buff",
 		Duration: time.Second * 6,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && (spell.SpellCode == SpellCode_DruidMaul) {
-				curDmg = result.Damage / result.ResistanceMultiplier
-				cleaveHit.Cast(sim, druid.Env.NextTargetUnit(result.Target))
-				cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
-			}
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.FuryOfStormrageMaulCleave = true
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.FuryOfStormrageMaulCleave = false
 		},
 	})
 
@@ -292,32 +264,61 @@ func (druid *Druid) applyT2Guardian2PBonus() {
 
 // Your Mangle(Bear), Swipe(Bear), Maul, and Lacerate abilities gain 5% increased critical strike chance against targets afflicted by your Lacerate.
 func (druid *Druid) applyT2Guardian4PBonus() {
-	druid.FuryOfStormrageCritRatingBonus = 5 * core.SpellCritRatingPerCritChance
+	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
+		return
+	}
+
+	label := "S03 - Item - T2 - Druid - Guardian 4P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
+
+	druid.RegisterAura(core.Aura{
+		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range []*DruidSpell{druid.MangleBear, druid.SwipeBear, druid.Maul, druid.Lacerate} {
+				if spell == nil {
+					continue
+				}
+
+				oldApplyEffects := spell.ApplyEffects
+				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					bonusCrit := 0.0
+					if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+						bonusCrit = 5 * core.CritRatingPerCritChance
+					}
+
+					spell.BonusCritRating += bonusCrit
+					oldApplyEffects(sim, target, spell)
+					spell.BonusCritRating -= bonusCrit
+				}
+			}
+		},
+	})
 }
 
 // Your Swipe now spreads your Lacerate from your primary target to other targets it strikes.
 func (druid *Druid) applyT2Guardian6PBonus() {
-	// if druid.Env.GetNumTargets() == 1 {
-	// 	return
-	// }
+	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
+		return
+	}
+	druid.FuryOfStormrageLacerateSpread = true
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label: "S03 - Item - T2 - Druid - Guardian 6P Bonus",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.SpellCode == SpellCode_DruidSwipeBear && result.Landed() && result.Target != druid.CurrentTarget {
+				currentTargetDoT := druid.LacerateBleed.Dot(druid.CurrentTarget)
+				if !currentTargetDoT.IsActive() {
+					return
+				}
 
-	// targetCount := core.TernaryInt32(druid.HasRune(proto.DruidRune_RuneCloakImprovedSwipe), 10, 3)
-	// numHits := min(targetCount, druid.Env.GetNumTargets())
-	// results := make([]*core.SpellResult, numHits)
-
-	// core.MakePermanent(druid.RegisterAura(core.Aura{
-	// 	Label: "S03 - Item - T2 - Druid - Guardian 6P Bonus",
-	// 	OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 		if spell.SpellCode == SpellCode_DruidSwipeBear {
-	// 			// TODO: Troubleshoot - Saeyon
-	// 			for _, cleaveMob := range results {
-	// 				druid.LacerateBleed.Cast(sim, cleaveMob.Target)
-	// 				druid.LacerateBleed.Dot(cleaveMob.Target).SetStacks(sim, druid.LacerateBleed.Dot(result.Target).GetStacks())
-	//              // Bleed duration needs to match the original DOT duration
-	// 			}
-	// 		}
-	// 	},
-	// }))
+				targetDoT := druid.LacerateBleed.Dot(result.Target)
+				targetDoT.Apply(sim)
+				targetDoT.SetStacks(sim, currentTargetDoT.GetStacks())
+				targetDoT.UpdateExpires(sim, currentTargetDoT.ExpiresAt())
+			}
+		},
+	}))
 }
 
 var ItemSetBountyOfStormrage = core.NewItemSet(core.ItemSet{

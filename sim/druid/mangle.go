@@ -15,7 +15,6 @@ func (druid *Druid) registerMangleBearSpell() {
 
 	idolMultiplier := 1.0
 	rageCostReduction := float64(druid.Talents.Ferocity)
-	hasLacerate := druid.HasRune(proto.DruidRune_RuneLegsLacerate)
 
 	switch druid.Ranged().ID {
 	case IdolOfUrsinPower:
@@ -49,33 +48,35 @@ func (druid *Druid) registerMangleBearSpell() {
 				Duration: time.Second * 6,
 			},
 		},
-		// TODO: Berserk 3 target mangle cleave - Saeyon
-
 		DamageMultiplier:         1.6 * idolMultiplier,
 		DamageMultiplierAdditive: 1 + 0.1*float64(druid.Talents.SavageFury),
 		ThreatMultiplier:         1.5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			berserking := druid.BerserkAura.IsActive()
+			targetCount := core.TernaryInt32(berserking, 3, 1)
+			numHits := min(targetCount, druid.Env.GetNumTargets())
+			results := make([]*core.SpellResult, numHits)
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			dotBonusCrit := 0.0
-			if hasLacerate && druid.LacerateBleed.Dot(target).GetStacks() > 0 {
-				dotBonusCrit = druid.FuryOfStormrageCritRatingBonus
-			}
 
-			spell.BonusCritRating += dotBonusCrit
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-			spell.BonusCritRating -= dotBonusCrit
+			for idx := range results {
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			if result.Landed() {
-				mangleAuras.Get(target).Activate(sim)
-				if stacks := int32(druid.GetStat(stats.Defense)); stacks > 0 {
-					apProcAura.Activate(sim)
-					if apProcAura.GetStacks() != stacks {
-						apProcAura.SetStacks(sim, stacks)
+				if results[idx].Landed() {
+					mangleAuras.Get(target).Activate(sim)
+					if stacks := int32(druid.GetStat(stats.Defense)); stacks > 0 {
+						apProcAura.Activate(sim)
+						if apProcAura.GetStacks() != stacks {
+							apProcAura.SetStacks(sim, stacks)
+						}
 					}
+				} else if targetCount == 1 {
+					// Miss in single target mode
+					spell.IssueRefund(sim)
 				}
-			} else {
-				spell.IssueRefund(sim)
+				// Deal damage here, after Defender's Resolve
+				spell.DealDamage(sim, results[idx])
+				target = sim.Environment.NextTargetUnit(target)
 			}
 
 			if druid.BerserkAura.IsActive() {

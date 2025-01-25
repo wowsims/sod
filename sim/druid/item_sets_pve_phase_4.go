@@ -229,7 +229,7 @@ var ItemSetCenarionRage = core.NewItemSet(core.ItemSet{
 			druid := agent.(DruidAgent).GetDruid()
 			druid.OnSpellRegistered(func(spell *core.Spell) {
 				if spell.SpellCode == SpellCode_DruidEnrage {
-					spell.CD.Duration -= time.Second * 30
+					spell.CD.FlatModifier -= time.Second * 30
 				}
 			})
 		},
