@@ -567,10 +567,10 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 			}
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			aura.Unit.AddBuildPhaseStatsDynamic(sim, bonusStats.Invert())
+			aura.Unit.AddBuildPhaseStatsDynamic(sim, bonusStats.Multiply(-1))
 
 			for _, dep := range statDeps {
-				ee.Aura.Unit.EnableBuildPhaseStatDep(sim, dep)
+				ee.Aura.Unit.DisableBuildPhaseStatDep(sim, dep)
 			}
 
 			if config.ExtraOnExpire != nil {
@@ -1024,7 +1024,13 @@ func DevotionAuraAura(unit *Unit, points int32) *Aura {
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseBuffs,
-	}).AttachStatsBuff(updateStats)
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats.Multiply(-1))
+		},
+	})
 }
 
 func StoneskinTotemAura(unit *Unit, points int32) *Aura {
@@ -1907,7 +1913,13 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
-	}).AttachStatsBuff(updateStats)
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats.Multiply(-1))
+		},
+	})
 	return aura
 }
 
@@ -1922,7 +1934,13 @@ func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
-	}).AttachStatsBuff(updateStats)
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats.Multiply(-1))
+		},
+	})
 	return aura
 }
 

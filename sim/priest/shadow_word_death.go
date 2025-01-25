@@ -20,11 +20,12 @@ func (priest *Priest) registerShadowWordDeathSpell() {
 	cooldown := time.Second * 12
 
 	priest.ShadowWordDeath = priest.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 401955},
-		SpellSchool: core.SpellSchoolShadow,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagPriest | core.SpellFlagBinary | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 401955},
+		ClassSpellMask: ClassSpellMask_PriestShadowWordDeath,
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagBinary | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

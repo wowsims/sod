@@ -37,13 +37,13 @@ func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Flat,
 		ClassMask:  ClassSpellMask_PaladinDivineStorm,
 		FloatValue: 1,
-	})
+	}))
 }
 
 // Reduces the cast time of your Holy Wrath ability by 100% and reduces the cooldown and mana cost of your Holy Wrath ability by 75%.

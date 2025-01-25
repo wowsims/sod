@@ -159,7 +159,7 @@ func (priest *Priest) applyT2Healer4PBonus() {
 		Duration: core.NeverExpires, // TODO: Verify duration
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells = core.FilterSlice(priest.Spellbook, func(spell *core.Spell) bool {
-				return spell.Flags.Matches(SpellFlagPriest) && spell.DefaultCast.CastTime < time.Second*10
+				return spell.Matches(ClassSpellMask_PriestAll) && spell.DefaultCast.CastTime < time.Second*10
 			})
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
@@ -221,11 +221,11 @@ func (priest *Priest) applyZGDiscipline3PBonus() {
 		return
 	}
 
-	priest.RegisterAura(core.Aura{
+	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			priest.Penance.CD.FlatModifier -= time.Second * 6
-			priest.PenanceHeal.CD.FlatModifier -= time.Second * 6
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_PriestPenance,
+		TimeValue: time.Second * 6,
+	}))
 }

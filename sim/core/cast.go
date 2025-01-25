@@ -238,6 +238,13 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 				OnAction: func(sim *Simulation) {
 					spell.LastCastAt = sim.CurrentTime
 
+					if spell.Cost != nil {
+						if !spell.Cost.MeetsRequirement(sim, spell) {
+							spell.castFailureHelper(sim, spell.Cost.CostFailureReason(sim, spell))
+							return
+						}
+					}
+
 					if sim.Log != nil && !spell.Flags.Matches(SpellFlagNoLogs) {
 						spell.Unit.Log(sim, "Casting %s (Cost = %0.03f, Cast Time = %s, Effective Time = %s)",
 							spell.ActionID, max(0, spell.CurCast.Cost), spell.CurCast.CastTime, spell.CurCast.EffectiveTime())

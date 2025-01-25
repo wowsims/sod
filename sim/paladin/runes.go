@@ -266,7 +266,7 @@ func (paladin *Paladin) applyPurifyingPower() {
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath,
 		Kind:       core.SpellMod_Cooldown_Multi_Pct,
-		FloatValue: -0.5,
+		FloatValue: 0.5,
 	}))
 
 }

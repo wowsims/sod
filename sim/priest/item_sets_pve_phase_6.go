@@ -29,7 +29,6 @@ func (priest *Priest) applyTAQShadow2PBonus() {
 	if priest.HasAura(label) {
 		return
 	}
-
 	priest.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {

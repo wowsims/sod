@@ -29,13 +29,13 @@ var ItemSetDreamwalkerEclipse = core.NewItemSet(core.ItemSet{
 // Your Moonfire and Sunfire deal 20% more damage.
 func (druid *Druid) applyNaxxramasBalance2PBonus() {
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "S03 - Item - Naxxramas - Druid - Balance 2P Bonus",
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusDamage_Flat,
 		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire,
 		FloatValue: 0.20,
-	})
+	}))
 }
 
 // The cooldown of your Starsurge spell is reduced by 1.5 sec.

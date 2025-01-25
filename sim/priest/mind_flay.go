@@ -40,7 +40,7 @@ func (priest *Priest) registerMindFlay() {
 
 func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.SpellConfig {
 	ticks := tickIdx
-	flags := SpellFlagPriest | core.SpellFlagChanneled | core.SpellFlagBinary
+	flags := core.SpellFlagChanneled | core.SpellFlagBinary
 	if tickIdx == 0 {
 		ticks = 3
 		flags |= core.SpellFlagAPL

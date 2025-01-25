@@ -33,7 +33,7 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 		SpellSchool:    core.SpellSchoolShadow | core.SpellSchoolFrost,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagPriest | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 		// TODO: Verify missile speed
 		MissileSpeed: 20,
 

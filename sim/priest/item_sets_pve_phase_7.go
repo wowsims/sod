@@ -33,18 +33,13 @@ func (priest *Priest) applyNaxxramasShadow2PBonus() {
 		return
 	}
 
-	priest.RegisterAura(core.Aura{
+	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range priest.ShadowWordPain {
-				if spell == nil {
-					continue
-				}
-
-				spell.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_PriestShadowWordPain,
+		FloatValue: 0.20,
+	}))
 }
 
 // Reduces the cooldown on your Mind Blast ability by 1.0 sec.
@@ -54,13 +49,13 @@ func (priest *Priest) applyNaxxramasShadow4PBonus() {
 		return
 	}
 
-	priest.RegisterAura(core.Aura{
+	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
 		ClassMask: ClassSpellMask_PriestMindBlast,
 		TimeValue: -time.Second,
-	})
+	}))
 }
 
 // Your Mind Flay, Mind Blast, and Mind Spike abilities deal increased damage to Undead targets equal to their critical strike chance.
@@ -70,35 +65,28 @@ func (priest *Priest) applyNaxxramasShadow6PBonus() {
 		return
 	}
 
-	priest.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := core.Flatten([][]*core.Spell{
-				priest.MindBlast,
-				{priest.MindSpike},
-			})
+	classSpellMasks := ClassSpellMask_PriestMindBlast | ClassSpellMask_PriestMindSpike
 
-			if priest.HasRune(proto.PriestRune_RuneBracersDespair) {
-				affectedSpells = append(affectedSpells, core.Flatten(priest.MindFlay)...)
+	if priest.HasRune(proto.PriestRune_RuneBracersDespair) {
+		classSpellMasks |= ClassSpellMask_PriestMindFlay
+	}
+
+	damageMod := priest.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: classSpellMasks,
+	})
+
+	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
+		Name:           label,
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: classSpellMasks,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			critChanceBonus := 0.0
+			if result.Target.MobType == proto.MobType_MobTypeUndead {
+				critChanceBonus = priest.GetStat(stats.SpellCrit) / 100
 			}
 
-			for _, spell := range affectedSpells {
-				if spell == nil {
-					continue
-				}
-
-				oldApplyEffects := spell.ApplyEffects
-				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					critChanceBonus := 0.0
-					if target.MobType == proto.MobType_MobTypeUndead {
-						critChanceBonus = priest.GetStat(stats.SpellCrit) / 100
-					}
-
-					spell.DamageMultiplierAdditive += critChanceBonus
-					oldApplyEffects(sim, target, spell)
-					spell.DamageMultiplierAdditive -= critChanceBonus
-				}
-			}
+			damageMod.UpdateFloatValue(critChanceBonus)
 		},
 	})
 }
@@ -130,11 +118,11 @@ func (priest *Priest) applyNaxxramasHealer2PBonus() {
 		return
 	}
 
-	priest.RegisterAura(core.Aura{
+	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			priest.Penance.CD.Multiplier *= 0.75
-			priest.PenanceHeal.CD.Multiplier *= 0.75
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multi_Pct,
+		ClassMask:  ClassSpellMask_PriestPenance,
+		FloatValue: 0.75,
+	}))
 }

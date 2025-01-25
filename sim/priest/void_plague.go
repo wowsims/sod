@@ -32,7 +32,7 @@ func (priest *Priest) registerVoidPlagueSpell() {
 		SpellSchool:    core.SpellSchoolShadow,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
+		Flags:          core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

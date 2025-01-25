@@ -10,31 +10,35 @@ SpellMod implementation.
 */
 
 type SpellModConfig struct {
-	ClassMask    int64
-	Kind         SpellModType
-	School       SpellSchool
-	ProcMask     ProcMask
-	IntValue     int64
-	TimeValue    time.Duration
-	FloatValue   float64
-	KeyValue     string
-	ApplyCustom  SpellModApply
-	RemoveCustom SpellModRemove
+	ClassMask         int64
+	Kind              SpellModType
+	School            SpellSchool
+	SpellFlags        SpellFlag
+	SpellFlagsExclude SpellFlag
+	ProcMask          ProcMask
+	IntValue          int64
+	TimeValue         time.Duration
+	FloatValue        float64
+	KeyValue          string
+	ApplyCustom       SpellModApply
+	RemoveCustom      SpellModRemove
 }
 
 type SpellMod struct {
-	ClassMask      int64
-	Kind           SpellModType
-	School         SpellSchool
-	ProcMask       ProcMask
-	floatValue     float64
-	intValue       int64
-	timeValue      time.Duration
-	keyValue       string
-	Apply          SpellModApply
-	Remove         SpellModRemove
-	IsActive       bool
-	AffectedSpells []*Spell
+	ClassMask         int64
+	Kind              SpellModType
+	School            SpellSchool
+	SpellFlags        SpellFlag
+	SpellFlagsExclude SpellFlag
+	ProcMask          ProcMask
+	floatValue        float64
+	intValue          int64
+	timeValue         time.Duration
+	keyValue          string
+	Apply             SpellModApply
+	Remove            SpellModRemove
+	IsActive          bool
+	AffectedSpells    []*Spell
 }
 
 type SpellModApply func(mod *SpellMod, spell *Spell)
@@ -47,7 +51,7 @@ type SpellModFunctions struct {
 func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 	functions := spellModMap[config.Kind]
 	if functions == nil {
-		panic("SpellMod " + strconv.Itoa(int(config.Kind)) + " not implmented")
+		panic("SpellMod " + strconv.Itoa(int(config.Kind)) + " not implemented")
 	}
 
 	var applyFn SpellModApply
@@ -66,17 +70,19 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 	}
 
 	mod := &SpellMod{
-		ClassMask:  config.ClassMask,
-		Kind:       config.Kind,
-		School:     config.School,
-		ProcMask:   config.ProcMask,
-		floatValue: config.FloatValue,
-		intValue:   config.IntValue,
-		timeValue:  config.TimeValue,
-		keyValue:   config.KeyValue,
-		Apply:      applyFn,
-		Remove:     removeFn,
-		IsActive:   false,
+		ClassMask:         config.ClassMask,
+		Kind:              config.Kind,
+		School:            config.School,
+		SpellFlags:        config.SpellFlags,
+		SpellFlagsExclude: config.SpellFlagsExclude,
+		ProcMask:          config.ProcMask,
+		floatValue:        config.FloatValue,
+		intValue:          config.IntValue,
+		timeValue:         config.TimeValue,
+		keyValue:          config.KeyValue,
+		Apply:             applyFn,
+		Remove:            removeFn,
+		IsActive:          false,
 	}
 
 	unit.OnSpellRegistered(func(spell *Spell) {
@@ -106,15 +112,23 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 		return false
 	}
 
+	if mod.SpellFlags > 0 && !spell.Flags.Matches(mod.SpellFlags) {
+		return false
+	}
+
+	if mod.SpellFlagsExclude > 0 && spell.Flags.Matches(mod.SpellFlagsExclude) {
+		return false
+	}
+
 	if mod.ClassMask > 0 && !spell.Matches(mod.ClassMask) {
 		return false
 	}
 
-	if mod.School > 0 && !mod.School.Matches(spell.SpellSchool) {
+	if mod.School > 0 && !spell.SpellSchool.Matches(mod.School) {
 		return false
 	}
 
-	if mod.ProcMask > 0 && !mod.ProcMask.Matches(spell.ProcMask) {
+	if mod.ProcMask > 0 && !spell.ProcMask.Matches(mod.ProcMask) {
 		return false
 	}
 
@@ -499,11 +513,11 @@ func removeCooldownMultiplierFlat(mod *SpellMod, spell *Spell) {
 }
 
 func applyCooldownMultiplierPct(mod *SpellMod, spell *Spell) {
-	spell.CD.Multiplier *= 1 + mod.floatValue
+	spell.CD.Multiplier *= mod.floatValue
 }
 
 func removeCooldownMultiplierPct(mod *SpellMod, spell *Spell) {
-	spell.CD.Multiplier /= 1 + mod.floatValue
+	spell.CD.Multiplier /= mod.floatValue
 }
 
 func applyCastTimePercent(mod *SpellMod, spell *Spell) {

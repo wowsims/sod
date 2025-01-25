@@ -45,7 +45,7 @@ func (priest *Priest) registerVampiricTouchSpell() {
 		SpellSchool:    core.SpellSchoolShadow,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagPureDot,
+		Flags:          core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

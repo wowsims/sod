@@ -118,7 +118,7 @@ func (mage *Mage) applyBurnout() {
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: ClassSpellMask_MageAll,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			spell.Unit.SpendMana(sim, spell.Unit.BaseMana*0.01, metric)
+			spell.Unit.SpendMana(sim, min(spell.Unit.BaseMana*0.01, mage.CurrentMana()), metric)
 		},
 	})
 }
@@ -257,27 +257,35 @@ func (mage *Mage) applyHotStreak() {
 
 	actionID := core.ActionID{SpellID: 48108}
 
-	pyroblastSpells := []*core.Spell{}
-	triggerSpellClassMasks := ClassSpellMask_MageFireball | ClassSpellMask_MageFrostfireBolt | ClassSpellMask_MageBalefireBolt | ClassSpellMask_MageFireBlast | ClassSpellMask_MageScorch | ClassSpellMask_MageLivingBombExplosion
+	triggerSpellClassMasks := ClassSpellMask_MageFireball |
+		ClassSpellMask_MageFrostfireBolt |
+		ClassSpellMask_MageBalefireBolt |
+		ClassSpellMask_MageFireBlast |
+		ClassSpellMask_MageScorch |
+		ClassSpellMask_MageLivingBombExplosion
+
+	castTimeMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  ClassSpellMask_MagePyroblast,
+		FloatValue: -1,
+	})
+	costMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: ClassSpellMask_MagePyroblast,
+		IntValue:  -100,
+	})
 
 	mage.HotStreakAura = mage.RegisterAura(core.Aura{
 		Label:    "Hot Streak",
 		ActionID: actionID,
 		Duration: time.Second * 10,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			pyroblastSpells = core.FilterSlice(mage.Pyroblast, func(spell *core.Spell) bool { return spell != nil })
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(pyroblastSpells, func(spell *core.Spell) {
-				spell.CastTimeMultiplier -= 1
-				spell.Cost.Multiplier -= 100
-			})
+			castTimeMod.Activate()
+			costMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(pyroblastSpells, func(spell *core.Spell) {
-				spell.CastTimeMultiplier += 1
-				spell.Cost.Multiplier += 100
-			})
+			castTimeMod.Deactivate()
+			costMod.Deactivate()
 		},
 	})
 

@@ -10,10 +10,6 @@ import (
 var TalentTreeSizes = [3]int{15, 16, 16}
 
 const (
-	SpellFlagPriest = core.SpellFlagAgentReserved1
-)
-
-const (
 	ClassSpellMask_PriestNone int64 = 0
 
 	ClassSpellMask_PriestDevouringPlague int64 = 1 << iota
@@ -23,17 +19,39 @@ const (
 	ClassSpellMask_PriestHolyFire
 	ClassSpellMask_PriestMindBlast
 	ClassSpellMask_PriestMindFlay
+	ClassSpellMask_PriestMindSear
 	ClassSpellMask_PriestMindSpike
 	ClassSpellMask_PriestShadowWordPain
+	ClassSpellMask_PriestShadowWordDeath
 	ClassSpellMask_PriestSmite
 	ClassSpellMask_PriestVampiricTouch
 	ClassSpellMask_PriestVoidPlague
+	ClassSpellMask_PriestVoidZone
+	ClassSpellMask_PriestDispersion
+	ClassSpellMask_PriestShadowFiend
+	ClassSpellMask_PriestVampiricEmbrace
+
+	ClassSpellMask_PriestPenanceDamage
+	ClassSpellMask_PriestPenanceHeal
+	ClassSpellMask_PriestPenance = ClassSpellMask_PriestPenanceDamage | ClassSpellMask_PriestPenanceHeal
 
 	ClassSpellMask_PriestLast
 	ClassSpellMask_PriestAll = ClassSpellMask_PriestLast<<1 - 1
 
 	ClassSpellMask_PriestDevouringPlagueDots = ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestVoidPlague |
 		ClassSpellMask_PriestVampiricTouch
+
+	PriestSpellInstant = ClassSpellMask_PriestDevouringPlague |
+		ClassSpellMask_PriestMindFlay |
+		ClassSpellMask_PriestMindSear |
+		ClassSpellMask_PriestShadowWordPain |
+		ClassSpellMask_PriestShadowWordDeath |
+		ClassSpellMask_PriestVoidPlague |
+		ClassSpellMask_PriestVoidZone |
+		ClassSpellMask_PriestDispersion |
+		ClassSpellMask_PriestShadowFiend |
+		ClassSpellMask_PriestVampiricEmbrace |
+		ClassSpellMask_PriestPenance
 )
 
 type Priest struct {

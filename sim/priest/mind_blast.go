@@ -45,7 +45,7 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 		SpellSchool:    core.SpellSchoolShadow,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagPriest | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,

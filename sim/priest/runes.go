@@ -227,7 +227,7 @@ func (priest *Priest) applyDespair() {
 	}
 
 	priest.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagPriest) && !spell.Flags.Matches(core.SpellFlagHelpful) {
+		if spell.Matches(ClassSpellMask_PriestAll) && !spell.Flags.Matches(core.SpellFlagHelpful) {
 			spell.CritDamageBonus += 1
 		}
 	})

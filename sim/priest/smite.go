@@ -42,7 +42,7 @@ func (priest *Priest) getSmiteBaseConfig(rank int) core.SpellConfig {
 		SpellSchool:    core.SpellSchoolHoly,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagPriest | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,

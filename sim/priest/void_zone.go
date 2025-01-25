@@ -24,11 +24,12 @@ func (priest *Priest) registerVoidZoneSpell() {
 	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
 	priest.VoidZone = priest.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneBracersVoidZone)},
-		SpellSchool: core.SpellSchoolShadow,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagPureDot,
+		ActionID:       core.ActionID{SpellID: int32(proto.PriestRune_RuneBracersVoidZone)},
+		ClassSpellMask: ClassSpellMask_PriestVoidZone,
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
