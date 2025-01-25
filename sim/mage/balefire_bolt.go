@@ -57,14 +57,13 @@ func (mage *Mage) registerBalefireBoltSpell() {
 	})
 
 	mage.BalefireBolt = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneBracersBalefireBolt)},
-		SpellCode:   SpellCode_MageBalefireBolt,
-		SpellSchool: core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
-		// TODO: Verify missile speed
-		MissileSpeed: 28,
+		SpellCode:    SpellCode_MageBalefireBolt,
+		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneBracersBalefireBolt)},
+		SpellSchool:  core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost,
+		DefenseType:  core.DefenseTypeMagic,
+		ProcMask:     core.ProcMaskSpellDamage,
+		Flags:        SpellFlagMage | core.SpellFlagAPL,
+		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

@@ -39,6 +39,7 @@ const (
 	SpellCode_WarlockShadowCleave
 	SpellCode_WarlockShadowBolt
 	SpellCode_WarlockShadowburn
+	SpellCode_WarlockSiphonLife
 	SpellCode_WarlockSoulFire
 	SpellCode_WarlockUnstableAffliction
 )
