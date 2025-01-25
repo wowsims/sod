@@ -1,10 +1,11 @@
 package druid
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
-	"time"
 )
 
 var ItemSetFeralheartRaiment = core.NewItemSet(core.ItemSet{
@@ -227,11 +228,7 @@ var ItemSetCenarionRage = core.NewItemSet(core.ItemSet{
 		// Reduces the cooldown of Enrage by 30 sec and it no longer reduces your armor.
 		4: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
-			druid.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_DruidEnrage {
-					spell.CD.FlatModifier -= time.Second * 30
-				}
-			})
+			druid.applyT1Guardian4PBonus()
 		},
 		6: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
@@ -240,9 +237,54 @@ var ItemSetCenarionRage = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// Reduces the cooldown of Enrage by 30 sec and it no longer reduces your armor.
+func (druid *Druid) applyT1Guardian4PBonus() {
+	label := "S03 - Item - T1 - Druid - Guardian 4P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 456328}, // Tracking in APL
+		Label:    label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			druid.Enrage.CD.FlatModifier -= time.Second * 30
+
+			oldOnGain := druid.EnrageAura.OnGain
+			druid.EnrageAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+				preArmor := druid.GetStat(stats.Armor)
+				oldOnGain(aura, sim)
+				postArmor := druid.GetStat(stats.Armor)
+				druid.AddStatDynamic(sim, stats.Armor, preArmor-postArmor)
+			}
+		},
+	}))
+}
+
 // Bear Form and Dire Bear Form increase all threat you generate by an additional 20%, and Cower now removes all your threat against the target but has a 20 sec longer cooldown.
 func (druid *Druid) applyT1Guardian6PBonus() {
-	druid.CenarionRageThreatBonus = .2
+	label := "S03 - Item - T1 - Druid - Guardian 6P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 456332}, // Tracking in APL
+		Label:    label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			oldOnGain := druid.BearFormAura.OnGain
+			druid.BearFormAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+				oldOnGain(aura, sim)
+				druid.PseudoStats.ThreatMultiplier += 0.20
+			}
+
+			oldOnExpire := druid.BearFormAura.OnExpire
+			druid.BearFormAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+				oldOnExpire(aura, sim)
+				druid.PseudoStats.ThreatMultiplier -= 0.20
+			}
+		},
+	}))
 }
 
 var ItemSetCenarionBounty = core.NewItemSet(core.ItemSet{
