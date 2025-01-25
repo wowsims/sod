@@ -642,16 +642,16 @@ export const SEAL_OF_THE_DAWN_CONSUMES_CONFIG: ConsumableStatOption<SealOfTheDaw
 	{ config: { actionId: () => ActionId.fromItemId(236355), value: SealOfTheDawn.SealOfTheDawnDamageR2 }, stats: [] },
 	{ config: { actionId: () => ActionId.fromItemId(236354), value: SealOfTheDawn.SealOfTheDawnDamageR1 }, stats: [] },
 
-	{ config: { actionId: () => ActionId.fromItemId(236374), value: SealOfTheDawn.SealOfTheDawnTankR10 }, stats: [Stat.StatDefense] },
-	{ config: { actionId: () => ActionId.fromItemId(236375), value: SealOfTheDawn.SealOfTheDawnTankR9 }, stats: [Stat.StatDefense] },
-	{ config: { actionId: () => ActionId.fromItemId(236376), value: SealOfTheDawn.SealOfTheDawnTankR8 }, stats: [Stat.StatDefense] },
-	{ config: { actionId: () => ActionId.fromItemId(236378), value: SealOfTheDawn.SealOfTheDawnTankR7 }, stats: [Stat.StatDefense] },
-	{ config: { actionId: () => ActionId.fromItemId(236379), value: SealOfTheDawn.SealOfTheDawnTankR6 }, stats: [Stat.StatDefense] },
-	{ config: { actionId: () => ActionId.fromItemId(236380), value: SealOfTheDawn.SealOfTheDawnTankR5 }, stats: [Stat.StatDefense] },
-	{ config: { actionId: () => ActionId.fromItemId(236382), value: SealOfTheDawn.SealOfTheDawnTankR4 }, stats: [Stat.StatDefense] },
-	{ config: { actionId: () => ActionId.fromItemId(236383), value: SealOfTheDawn.SealOfTheDawnTankR3 }, stats: [Stat.StatDefense] },
-	{ config: { actionId: () => ActionId.fromItemId(236384), value: SealOfTheDawn.SealOfTheDawnTankR2 }, stats: [Stat.StatDefense] },
-	{ config: { actionId: () => ActionId.fromItemId(236385), value: SealOfTheDawn.SealOfTheDawnTankR1 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236386), value: SealOfTheDawn.SealOfTheDawnTankR10 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236388), value: SealOfTheDawn.SealOfTheDawnTankR9 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236389), value: SealOfTheDawn.SealOfTheDawnTankR8 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236390), value: SealOfTheDawn.SealOfTheDawnTankR7 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236391), value: SealOfTheDawn.SealOfTheDawnTankR6 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236392), value: SealOfTheDawn.SealOfTheDawnTankR5 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236393), value: SealOfTheDawn.SealOfTheDawnTankR4 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236394), value: SealOfTheDawn.SealOfTheDawnTankR3 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236395), value: SealOfTheDawn.SealOfTheDawnTankR2 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236396), value: SealOfTheDawn.SealOfTheDawnTankR1 }, stats: [Stat.StatDefense] },
 
 ];
 export const makeSealOfTheDawnConsumesInput = makeConsumeInputFactory({ consumesFieldName: 'sealOfTheDawn', numColumns: 11, showWhen: player => player.getLevel() === 60 });
