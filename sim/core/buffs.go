@@ -556,18 +556,10 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 	aura.NewExclusiveEffect(config.Category, false, ExclusiveEffect{
 		Priority: totalStats,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
+			aura.Unit.AddBuildPhaseStatsDynamic(sim, bonusStats)
 
 			for _, dep := range statDeps {
-				if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
-				} else {
-					ee.Aura.Unit.EnableDynamicStatDep(sim, dep)
-				}
+				ee.Aura.Unit.EnableBuildPhaseStatDep(sim, dep)
 			}
 
 			if config.ExtraOnGain != nil {
@@ -575,18 +567,10 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 			}
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStats(bonusStats.Multiply(-1))
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Multiply(-1))
-			}
+			aura.Unit.AddBuildPhaseStatsDynamic(sim, bonusStats.Invert())
 
 			for _, dep := range statDeps {
-				if ee.Aura.Unit.Env.MeasuringStats && ee.Aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
-				} else {
-					ee.Aura.Unit.DisableDynamicStatDep(sim, dep)
-				}
+				ee.Aura.Unit.EnableBuildPhaseStatDep(sim, dep)
 			}
 
 			if config.ExtraOnExpire != nil {
@@ -950,25 +934,13 @@ func BlessingOfKingsAura(character *Character) *Aura {
 		ActionID:   ActionID{SpellID: 20217},
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				for _, dep := range statDeps {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
-				}
-			} else {
-				for _, dep := range statDeps {
-					aura.Unit.EnableDynamicStatDep(sim, dep)
-				}
+			for _, dep := range statDeps {
+				aura.Unit.EnableBuildPhaseStatDep(sim, dep)
 			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				for _, dep := range statDeps {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
-				}
-			} else {
-				for _, dep := range statDeps {
-					aura.Unit.DisableDynamicStatDep(sim, dep)
-				}
+			for _, dep := range statDeps {
+				aura.Unit.DisableBuildPhaseStatDep(sim, dep)
 			}
 		},
 	}))
@@ -989,37 +961,19 @@ func HeartOfTheLionAura(character *Character) *Aura {
 		ActionID:   ActionID{SpellID: 409583},
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				character.AddStat(stats.AttackPower, modAP)
-				character.AddStat(stats.RangedAttackPower, modAP)
+			character.AddBuildPhaseStatDynamic(sim, stats.AttackPower, modAP)
+			character.AddBuildPhaseStatDynamic(sim, stats.RangedAttackPower, modAP)
 
-				for _, dep := range statDeps {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(dep)
-				}
-			} else {
-				character.AddStatDynamic(sim, stats.AttackPower, modAP)
-				character.AddStatDynamic(sim, stats.RangedAttackPower, modAP)
-
-				for _, dep := range statDeps {
-					aura.Unit.EnableDynamicStatDep(sim, dep)
-				}
+			for _, dep := range statDeps {
+				aura.Unit.EnableBuildPhaseStatDep(sim, dep)
 			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				character.AddStat(stats.AttackPower, -modAP)
-				character.AddStat(stats.RangedAttackPower, -modAP)
+			character.AddBuildPhaseStatDynamic(sim, stats.AttackPower, -modAP)
+			character.AddBuildPhaseStatDynamic(sim, stats.RangedAttackPower, -modAP)
 
-				for _, dep := range statDeps {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(dep)
-				}
-			} else {
-				character.AddStatDynamic(sim, stats.AttackPower, -modAP)
-				character.AddStatDynamic(sim, stats.RangedAttackPower, -modAP)
-
-				for _, dep := range statDeps {
-					aura.Unit.DisableDynamicStatDep(sim, dep)
-				}
+			for _, dep := range statDeps {
+				aura.Unit.DisableBuildPhaseStatDep(sim, dep)
 			}
 		},
 	}))
@@ -1070,21 +1024,7 @@ func DevotionAuraAura(unit *Unit, points int32) *Aura {
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats)
-			} else {
-				unit.AddStatsDynamic(sim, updateStats)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats.Multiply(-1))
-			} else {
-				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
-			}
-		},
-	})
+	}).AttachStatsBuff(updateStats)
 }
 
 func StoneskinTotemAura(unit *Unit, points int32) *Aura {
@@ -1967,21 +1907,7 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats)
-			} else {
-				unit.AddStatsDynamic(sim, updateStats)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats.Multiply(-1))
-			} else {
-				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
-			}
-		},
-	})
+	}).AttachStatsBuff(updateStats)
 	return aura
 }
 
@@ -1996,21 +1922,7 @@ func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats)
-			} else {
-				unit.AddStatsDynamic(sim, updateStats)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				unit.AddStats(updateStats.Multiply(-1))
-			} else {
-				unit.AddStatsDynamic(sim, updateStats.Multiply(-1))
-			}
-		},
-	})
+	}).AttachStatsBuff(updateStats)
 	return aura
 }
 
@@ -2025,20 +1937,20 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 	spellId := BattleShoutSpellId[rank]
 	baseAP := BattleShoutBaseAP[rank]
 
+	bonusStats := stats.Stats{
+		stats.AttackPower: math.Floor(baseAP * (1 + 0.05*float64(impBattleShout))),
+	}
+
 	return unit.GetOrRegisterAura(Aura{
 		Label:      "Battle Shout",
 		ActionID:   ActionID{SpellID: spellId},
 		Duration:   time.Duration(float64(time.Minute*2) * (1 + 0.1*float64(boomingVoicePts))),
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: math.Floor(baseAP * (1 + 0.05*float64(impBattleShout))),
-			})
+			aura.Unit.AddStatsDynamic(sim, bonusStats)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, stats.Stats{
-				stats.AttackPower: -1 * math.Floor(baseAP*(1+0.05*float64(impBattleShout))),
-			})
+			aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
 		},
 	})
 }
@@ -2733,21 +2645,7 @@ func AtieshHealingEffect(unit *Unit) {
 		ActionID:   ActionID{SpellID: 1219553},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStats(stats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, stats)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStats(stats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, stats.Invert())
-			}
-		},
-	}))
+	}).AttachStatsBuff(stats))
 }
 
 // Equip: Increases the spell critical chance of all party members within 30 yards by 2%. This specific effect does not stack from multiple sources.
@@ -2762,21 +2660,7 @@ func AtieshSpellCritEffect(unit *Unit) {
 		ActionID:   ActionID{SpellID: 1219558},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(stats.SpellCrit, 2*SpellCritRatingPerCritChance)
-			} else {
-				aura.Unit.AddStatDynamic(sim, stats.SpellCrit, 2*SpellCritRatingPerCritChance)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(stats.SpellCrit, -2*SpellCritRatingPerCritChance)
-			} else {
-				aura.Unit.AddStatDynamic(sim, stats.SpellCrit, -2*SpellCritRatingPerCritChance)
-			}
-		},
-	}))
+	}).AttachStatBuff(stats.SpellCrit, 2*SpellCritRatingPerCritChance))
 }
 
 // Equip: Increases damage and healing done by magical spells and effects of all party members within 30 yards by up to 33. This specific effect does not stack from multiple sources.
@@ -2791,19 +2675,5 @@ func AtieshSpellPowerEffect(unit *Unit) {
 		ActionID:   ActionID{SpellID: 1219552},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(stats.SpellPower, 33)
-			} else {
-				aura.Unit.AddStatDynamic(sim, stats.SpellPower, 33)
-			}
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-				aura.Unit.AddStat(stats.SpellPower, -33)
-			} else {
-				aura.Unit.AddStatDynamic(sim, stats.SpellPower, -33)
-			}
-		},
-	}))
+	}).AttachStatBuff(stats.SpellPower, 33))
 }

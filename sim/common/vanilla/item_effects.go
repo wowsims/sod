@@ -3377,23 +3377,14 @@ func dreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell {
 		ActionID:   core.ActionID{SpellID: 462228},
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				character.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
-			} else {
-				character.AddStatDynamic(sim, stats.MeleeCrit, 2*core.CritRatingPerCritChance)
-			}
+			character.AddBuildPhaseStatDynamic(sim, stats.MeleeCrit, 2*core.CritRatingPerCritChance)
 
 			character.PseudoStats.MeleeSpeedMultiplier *= 1.05
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				character.AddStat(stats.MeleeCrit, -2*core.CritRatingPerCritChance)
-			} else {
-				character.AddStatDynamic(sim, stats.MeleeCrit, -2*core.CritRatingPerCritChance)
-			}
+			character.AddBuildPhaseStatDynamic(sim, stats.MeleeCrit, -2*core.CritRatingPerCritChance)
 
 			character.PseudoStats.MeleeSpeedMultiplier /= 1.05
-
 		},
 	}))
 

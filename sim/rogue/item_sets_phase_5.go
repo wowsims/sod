@@ -234,20 +234,7 @@ func (rogue *Rogue) applyZGDagger3PBonus() {
 
 		core.MakePermanent(aura)
 		aura.BuildPhase = core.CharacterBuildPhaseBuffs
-		aura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		}
-		aura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		}
+		aura.AttachStatsBuff(bonusStats)
 	}
 
 	switch procMask {

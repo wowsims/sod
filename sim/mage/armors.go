@@ -31,25 +31,9 @@ func (mage *Mage) applyFrostIceArmor() {
 	mage.IceArmorAura = core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label:    "Ice Armor",
 		ActionID: core.ActionID{SpellID: spellID},
-		// BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				mage.AddStat(stats.BonusArmor, armor)
-				mage.AddStat(stats.FrostResistance, frostRes)
-			} else {
-				mage.AddStatDynamic(sim, stats.Armor, armor)
-				mage.AddStatDynamic(sim, stats.FrostResistance, frostRes)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				mage.AddStat(stats.BonusArmor, -1*armor)
-				mage.AddStat(stats.FrostResistance, -1*frostRes)
-			} else {
-				mage.AddStatDynamic(sim, stats.Armor, -1*armor)
-				mage.AddStatDynamic(sim, stats.FrostResistance, -1*frostRes)
-			}
-		},
+	}).AttachStatsBuff(stats.Stats{
+		stats.Armor:           armor,
+		stats.FrostResistance: frostRes,
 	}))
 }
 
@@ -76,21 +60,11 @@ func (mage *Mage) applyMageArmor() {
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			mage.PseudoStats.SpiritRegenRateCasting += .3
-
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				mage.AddResistances(spellRes)
-			} else {
-				mage.AddResistancesDynamic(sim, spellRes)
-			}
+			mage.AddBuildPhaseResistancesDynamic(sim, spellRes)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			mage.PseudoStats.SpiritRegenRateCasting -= .3
-
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				mage.AddResistances(-1 * spellRes)
-			} else {
-				mage.AddResistancesDynamic(sim, -1*spellRes)
-			}
+			mage.AddBuildPhaseResistancesDynamic(sim, -1*spellRes)
 		},
 	}))
 }
@@ -106,19 +80,5 @@ func (mage *Mage) applyMoltenArmor() {
 		Label:      "Molten Armor",
 		ActionID:   core.ActionID{SpellID: int32(proto.MageRune_RuneBracersMoltenArmor)},
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				mage.AddStat(stats.SpellCrit, crit)
-			} else {
-				mage.AddStatDynamic(sim, stats.SpellCrit, crit)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				mage.AddStat(stats.SpellCrit, -crit)
-			} else {
-				mage.AddStatDynamic(sim, stats.SpellCrit, -crit)
-			}
-		},
-	}))
+	}).AttachStatBuff(stats.SpellCrit, crit))
 }

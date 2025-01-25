@@ -758,21 +758,11 @@ func sanctifiedDamageEffect(character *Character, spellID int32, percentIncrease
 				aura.SetStacks(sim, sanctifiedBonus)
 			},
 			OnGain: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
-
+				aura.Unit.EnableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 				aura.Unit.PseudoStats.DamageDealtMultiplier *= multiplier
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
-
+				aura.Unit.DisableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 				aura.Unit.PseudoStats.DamageDealtMultiplier /= multiplier
 			},
 		})
@@ -802,21 +792,11 @@ func sanctifiedHealingEffect(character *Character, spellID int32, percentIncreas
 				aura.SetStacks(sim, sanctifiedBonus)
 			},
 			OnGain: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
-
+				aura.Unit.EnableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 				aura.Unit.PseudoStats.HealingDealtMultiplier *= multiplier
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
-
+				aura.Unit.DisableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 				aura.Unit.PseudoStats.HealingDealtMultiplier /= multiplier
 			},
 		})
@@ -848,21 +828,13 @@ func sanctifiedTankingEffect(character *Character, spellID int32, threatPercentI
 				aura.SetStacks(sim, sanctifiedBonus)
 			},
 			OnGain: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
+				aura.Unit.EnableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 
 				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
 				aura.Unit.PseudoStats.DamageDealtMultiplier *= damageHealthMultiplier
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
+				aura.Unit.DisableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 
 				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
 				aura.Unit.PseudoStats.DamageDealtMultiplier /= damageHealthMultiplier

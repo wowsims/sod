@@ -258,21 +258,7 @@ func (shaman *Shaman) applyNaxxramasTank2PBonus() {
 				spell.BonusHitRating += 100 * core.SpellHitRatingPerHitChance
 			}
 		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Increases the damage taken reduction from your Shamanistic Rage ability by an additional 15% and during Shamanistic Rage your attack speed and spellcasting speed are increased by 30%.
