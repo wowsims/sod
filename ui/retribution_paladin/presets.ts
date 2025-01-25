@@ -236,7 +236,6 @@ export const DefaultOptions = RetributionPaladinOptions.create({
 export const DefaultConsumes = Consumes.create({
 	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
-	boglingRoot: false,
 	defaultConjured: Conjured.ConjuredDemonicRune,
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
@@ -248,6 +247,9 @@ export const DefaultConsumes = Consumes.create({
 	mainHandImbue: WeaponImbue.WildStrikes,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
+	miscConsumes: {
+		boglingRoot: true
+	},
 	offHandImbue: WeaponImbue.EnchantedRepellent,
 	sapperExplosive: SapperExplosive.SapperFumigator,
 	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,

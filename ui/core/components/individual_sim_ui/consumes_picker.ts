@@ -242,6 +242,11 @@ export class ConsumesPicker extends Component {
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
 		const miscConsumesElem = this.rootElem.querySelector('.consumes-misc') as HTMLElement;
 
+		const sealOfTheDawnOptions = ConsumablesInputs.makeSealOfTheDawnConsumesInput(
+			relevantStatOptions(ConsumablesInputs.SEAL_OF_THE_DAWN_CONSUMES_CONFIG, this.simUI),
+			'Seal of the Dawn Buffs',
+		);
+
 		const zanzaBuffOptions = ConsumablesInputs.makeZanzaBuffConsumesInput(
 			relevantStatOptions(ConsumablesInputs.ZANZA_BUFF_CONSUMES_CONFIG, this.simUI),
 			'Zanza Buffs',
@@ -251,6 +256,7 @@ export class ConsumesPicker extends Component {
 		const miscDefensiveConsumesOptions = relevantStatOptions(ConsumablesInputs.MISC_DEFENSIVE_CONSUMES_CONFIG, this.simUI);
 
 		const pickers = [
+			buildIconInput(miscConsumesElem, this.simUI.player, sealOfTheDawnOptions),
 			buildIconInput(miscConsumesElem, this.simUI.player, zanzaBuffOptions),
 			buildIconInput(miscConsumesElem, this.simUI.player, mageScrollOptions),
 			ConsumablesInputs.makeMiscOffensiveConsumesInput(miscConsumesElem, this.simUI.player, this.simUI, miscOffensiveConsumesOptions),
