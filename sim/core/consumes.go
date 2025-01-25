@@ -24,6 +24,7 @@ func applyConsumeEffects(agent Agent) {
 	applyDefensiveBuffConsumes(character, consumes)
 	applyPhysicalBuffConsumes(character, consumes)
 	applySpellBuffConsumes(character, consumes)
+	applySealOfTheDawnBuffConsumes(character, consumes)
 	applyZanzaBuffConsumes(character, consumes)
 	applyMiscConsumes(character, consumes.MiscConsumes)
 	applyEnchantingConsumes(character, consumes)
@@ -655,6 +656,244 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 			})
 		}
 	}
+}
+
+///////////////////////////////////////////////////////////////////////////
+//                             Seal of the Dawn Buff Consumes
+///////////////////////////////////////////////////////////////////////////
+
+func applySealOfTheDawnBuffConsumes(character *Character, consumes *proto.Consumes) {
+	if consumes.SealOfTheDawn == proto.SealOfTheDawn_SealOfTheDawnUnknown {
+		return
+	}
+
+	switch consumes.SealOfTheDawn {
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR1:
+		sanctifiedDamageEffect(character, 1219539, 1.25)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR2:
+		sanctifiedDamageEffect(character, 1223348, 4.38)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR3:
+		sanctifiedDamageEffect(character, 1223349, 6.25)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR4:
+		sanctifiedDamageEffect(character, 1223350, 10.0)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR5:
+		sanctifiedDamageEffect(character, 1223351, 12.5)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR6:
+		sanctifiedDamageEffect(character, 1223352, 18.13)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR7:
+		sanctifiedDamageEffect(character, 1223353, 21.25)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR8:
+		sanctifiedDamageEffect(character, 1223354, 28.13)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR9:
+		sanctifiedDamageEffect(character, 1223355, 32.5)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR10:
+		sanctifiedDamageEffect(character, 1223357, 37.5)
+
+	case proto.SealOfTheDawn_SealOfTheDawnTankR1:
+		sanctifiedTankingEffect(character, 1220514, 3.13, 1.25)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR2:
+		sanctifiedTankingEffect(character, 1223367, 4.38, 4.38)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR3:
+		sanctifiedTankingEffect(character, 1223368, 5.0, 6.25)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR4:
+		sanctifiedTankingEffect(character, 1223370, 5.63, 10)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR5:
+		sanctifiedTankingEffect(character, 1223371, 6.25, 12.5)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR6:
+		sanctifiedTankingEffect(character, 1223372, 7.5, 18.13)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR7:
+		sanctifiedTankingEffect(character, 1223373, 8.13, 21.25)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR8:
+		sanctifiedTankingEffect(character, 1223374, 9.38, 28.13)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR9:
+		sanctifiedTankingEffect(character, 1223375, 10.0, 32.5)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR10:
+		sanctifiedTankingEffect(character, 1223376, 10.63, 37.5)
+
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR1:
+		sanctifiedHealingEffect(character, 1219548, 1.25)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR2:
+		sanctifiedHealingEffect(character, 1223379, 4.38)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR3:
+		sanctifiedHealingEffect(character, 1223380, 6.25)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR4:
+		sanctifiedHealingEffect(character, 1223381, 10.0)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR5:
+		sanctifiedHealingEffect(character, 1223382, 12.5)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR6:
+		sanctifiedHealingEffect(character, 1223383, 18.13)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR7:
+		sanctifiedHealingEffect(character, 1223384, 21.25)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR8:
+		sanctifiedHealingEffect(character, 1223385, 28.13)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR9:
+		sanctifiedHealingEffect(character, 1223386, 32.5)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR10:
+		sanctifiedHealingEffect(character, 1223387, 37.5)
+	}
+}
+
+const MaxSanctifiedBonus = 8
+
+// Equip: Unlocks your potential while inside Naxxramas.
+// Increasing your damage by X% and your health by X% for each piece of Sanctified armor equipped.
+func sanctifiedDamageEffect(character *Character, spellID int32, percentIncrease float64) {
+	for _, unit := range getSanctifiedUnits(character) {
+		sanctifiedBonus := int32(0)
+		multiplier := 1.0
+		healthDeps := buildSanctifiedHealthDeps(unit, percentIncrease)
+
+		unit.GetOrRegisterAura(Aura{
+			Label:      "Seal of the Dawn (Damage)",
+			ActionID:   ActionID{SpellID: spellID},
+			BuildPhase: CharacterBuildPhaseGear,
+			Duration:   NeverExpires,
+			MaxStacks:  MaxSanctifiedBonus,
+			OnInit: func(aura *Aura, sim *Simulation) {
+				sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
+				multiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
+			},
+			OnReset: func(aura *Aura, sim *Simulation) {
+				aura.Activate(sim)
+				aura.SetStacks(sim, sanctifiedBonus)
+			},
+			OnGain: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= multiplier
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= multiplier
+			},
+		})
+	}
+}
+
+// Equip: Unlocks your potential while inside Naxxramas.
+// Increasing your healing and shielding by X% and your health by X% for each piece of Sanctified armor equipped.
+func sanctifiedHealingEffect(character *Character, spellID int32, percentIncrease float64) {
+	for _, unit := range getSanctifiedUnits(character) {
+		sanctifiedBonus := int32(0)
+		multiplier := 1.0
+		healthDeps := buildSanctifiedHealthDeps(unit, percentIncrease)
+
+		unit.GetOrRegisterAura(Aura{
+			Label:      "Seal of the Dawn (Healing)",
+			ActionID:   ActionID{SpellID: spellID},
+			BuildPhase: CharacterBuildPhaseGear,
+			Duration:   NeverExpires,
+			MaxStacks:  MaxSanctifiedBonus,
+			OnInit: func(aura *Aura, sim *Simulation) {
+				sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
+				multiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
+			},
+			OnReset: func(aura *Aura, sim *Simulation) {
+				aura.Activate(sim)
+				aura.SetStacks(sim, sanctifiedBonus)
+			},
+			OnGain: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.HealingDealtMultiplier *= multiplier
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.HealingDealtMultiplier /= multiplier
+			},
+		})
+	}
+}
+
+// Equip: Unlocks your potential while inside Naxxramas.
+// Increasing your threat caused by X%, your damage by Y%, and your health by Y% for each piece of Sanctified armor equipped.
+func sanctifiedTankingEffect(character *Character, spellID int32, threatPercentIncrease float64, damageHealthPercentIncrease float64) {
+	for _, unit := range getSanctifiedUnits(character) {
+		sanctifiedBonus := int32(0)
+		damageHealthMultiplier := 1.0
+		threatMultiplier := 1.0
+		healthDeps := buildSanctifiedHealthDeps(unit, damageHealthPercentIncrease)
+
+		unit.GetOrRegisterAura(Aura{
+			Label:      "Seal of the Dawn (Tanking)",
+			ActionID:   ActionID{SpellID: spellID},
+			BuildPhase: CharacterBuildPhaseGear,
+			Duration:   NeverExpires,
+			MaxStacks:  MaxSanctifiedBonus,
+			OnInit: func(aura *Aura, sim *Simulation) {
+				sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
+				damageHealthMultiplier = 1.0 + damageHealthPercentIncrease/100.0*float64(sanctifiedBonus)
+				threatMultiplier = 1.0 + threatPercentIncrease/100.0*float64(sanctifiedBonus)
+			},
+			OnReset: func(aura *Aura, sim *Simulation) {
+				aura.Activate(sim)
+				aura.SetStacks(sim, sanctifiedBonus)
+			},
+			OnGain: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= damageHealthMultiplier
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= damageHealthMultiplier
+			},
+		})
+	}
+}
+
+// Gets all units that the Sanctified buff should apply to. This includes the player and Hunter/Warlock pets
+func getSanctifiedUnits(character *Character) []*Unit {
+	units := []*Unit{&character.Unit}
+	if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
+		for _, pet := range character.Pets {
+			if pet.IsGuardian() {
+				continue
+			}
+
+			units = append(units, &pet.Unit)
+		}
+	}
+
+	return units
+}
+
+func buildSanctifiedHealthDeps(unit *Unit, percentIncrease float64) []*stats.StatDependency {
+	healthDeps := []*stats.StatDependency{}
+	for i := 0; i < MaxSanctifiedBonus+1; i++ {
+		healthDeps = append(healthDeps, unit.NewDynamicMultiplyStat(stats.Health, 1.0+percentIncrease/100.0*float64(i)))
+	}
+
+	return healthDeps
 }
 
 ///////////////////////////////////////////////////////////////////////////

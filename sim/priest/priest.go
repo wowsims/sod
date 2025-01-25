@@ -28,6 +28,12 @@ const (
 	ClassSpellMask_PriestSmite
 	ClassSpellMask_PriestVampiricTouch
 	ClassSpellMask_PriestVoidPlague
+
+	ClassSpellMask_PriestLast
+	ClassSpellMask_PriestAll = ClassSpellMask_PriestLast<<1 - 1
+
+	ClassSpellMask_PriestDevouringPlagueDots = ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestVoidPlague |
+		ClassSpellMask_PriestVampiricTouch
 )
 
 type Priest struct {

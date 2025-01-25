@@ -153,31 +153,40 @@ func (mage *Mage) applyRAQFire3PBonus() {
 	perEffectModifier := 0.03
 	maxModifier := 0.09
 
-	mage.RegisterAura(core.Aura{
+	classSpellMasks := ClassSpellMask_MageFireball | ClassSpellMask_MageFrostfireBolt | ClassSpellMask_MageBalefireBolt
+	damageMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: classSpellMasks,
+	})
+
+	var dotSpells []*core.Spell
+	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			dotSpells := core.FilterSlice(mage.Spellbook, func(spell *core.Spell) bool {
+			dotSpells = core.FilterSlice(mage.Spellbook, func(spell *core.Spell) bool {
 				return spell.Matches(ClassSpellMask_MageAll) && spell.SpellSchool.Matches(core.SpellSchoolFire) && len(spell.Dots()) > 0
 			})
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Deactivate()
+		},
+		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if !spell.Matches(classSpellMasks) {
+				return
+			}
+			modifier := 0.0
 
-			affectedSpells := mage.GetSpellsMatchingClassMask(ClassSpellMask_MageFireball | ClassSpellMask_MageFrostfireBolt | ClassSpellMask_MageBalefireBolt)
-			for _, spell := range affectedSpells {
-				oldApplyEffects := spell.ApplyEffects
-				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					modifier := 0.0
-
-					for _, spell := range dotSpells {
-						if spell.Dot(target).IsActive() {
-							modifier += perEffectModifier
-						}
-					}
-
-					modifier = min(maxModifier, modifier)
-					spell.DamageMultiplierAdditive += modifier
-					oldApplyEffects(sim, target, spell)
-					spell.DamageMultiplierAdditive -= modifier
+			for _, spell := range dotSpells {
+				if spell.Dot(target).IsActive() {
+					modifier += perEffectModifier
 				}
 			}
+
+			modifier = min(maxModifier, modifier)
+			damageMod.UpdateFloatValue(modifier)
 		},
-	})
+	}))
 }

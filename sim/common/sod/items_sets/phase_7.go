@@ -173,3 +173,24 @@ var ItemSetBattlegearOfUndeadWarding = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Other
+///////////////////////////////////////////////////////////////////////////
+
+var ItemSetKharonsDecree = core.NewItemSet(core.ItemSet{
+	Name: "Kharon's Decree",
+	Bonuses: map[int32]core.ApplyEffect{
+		// The damage dealt by Creeping Darkness is increased by 100%.
+		2: func(agent core.Agent) {
+			character := agent.GetCharacter()
+
+			character.RegisterAura(core.Aura{
+				Label: "Kharon's Decree",
+				OnInit: func(aura *core.Aura, sim *core.Simulation) {
+					character.GetSpell(core.ActionID{SpellID: 1219020}).DamageMultiplierAdditive += 1.0
+				},
+			})
+		},
+	},
+})

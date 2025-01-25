@@ -21,6 +21,7 @@ import {
 	Potions,
 	Profession,
 	SapperExplosive,
+	SealOfTheDawn,
 	ShadowPowerBuff,
 	Spec,
 	SpellPowerBuff,
@@ -60,6 +61,7 @@ export interface ConsumableStatOption<T> extends ItemStatOption<T> {
 
 export interface ConsumeInputFactoryArgs<T extends number> {
 	consumesFieldName: keyof Consumes;
+	numColumns?: number;
 	// Additional callback if logic besides syncing consumes is required
 	onSet?: (eventactionId: EventID, player: Player<any>, newValue: T) => void;
 	showWhen?: (player: Player<any>) => boolean;
@@ -72,7 +74,10 @@ function makeConsumeInputFactory<T extends number>(
 		return {
 			type: 'iconEnum',
 			tooltip: tooltip,
-			numColumns: options.length > 11 ? 4 : options.length > 8 ? 3 : options.length > 5 ? 2 : 1,
+			numColumns: args.numColumns ? args.numColumns :
+				options.length > 11 ? 4 :
+				options.length > 8 ? 3 :
+				options.length > 5 ? 2 : 1,
 			values: [{ value: 0 } as unknown as IconEnumValueConfig<Player<any>, T>].concat(
 				options.map(option => {
 					return {
@@ -623,6 +628,33 @@ export const makeStrengthConsumeInput = makeConsumeInputFactory({ consumesFieldN
 ///////////////////////////////////////////////////////////////////////////
 //                                 Misc Throughput Consumes
 ///////////////////////////////////////////////////////////////////////////
+
+// Seal of the Dawn Consumes
+export const SEAL_OF_THE_DAWN_CONSUMES_CONFIG: ConsumableStatOption<SealOfTheDawn>[] = [
+	{ config: { actionId: () => ActionId.fromItemId(236364), value: SealOfTheDawn.SealOfTheDawnDamageR10 }, stats: [] },
+	{ config: { actionId: () => ActionId.fromItemId(236363), value: SealOfTheDawn.SealOfTheDawnDamageR9 }, stats: [] },
+	{ config: { actionId: () => ActionId.fromItemId(236362), value: SealOfTheDawn.SealOfTheDawnDamageR8 }, stats: [] },
+	{ config: { actionId: () => ActionId.fromItemId(236361), value: SealOfTheDawn.SealOfTheDawnDamageR7 }, stats: [] },
+	{ config: { actionId: () => ActionId.fromItemId(236360), value: SealOfTheDawn.SealOfTheDawnDamageR6 }, stats: [] },
+	{ config: { actionId: () => ActionId.fromItemId(236358), value: SealOfTheDawn.SealOfTheDawnDamageR5 }, stats: [] },
+	{ config: { actionId: () => ActionId.fromItemId(236357), value: SealOfTheDawn.SealOfTheDawnDamageR4 }, stats: [] },
+	{ config: { actionId: () => ActionId.fromItemId(236356), value: SealOfTheDawn.SealOfTheDawnDamageR3 }, stats: [] },
+	{ config: { actionId: () => ActionId.fromItemId(236355), value: SealOfTheDawn.SealOfTheDawnDamageR2 }, stats: [] },
+	{ config: { actionId: () => ActionId.fromItemId(236354), value: SealOfTheDawn.SealOfTheDawnDamageR1 }, stats: [] },
+
+	{ config: { actionId: () => ActionId.fromItemId(236386), value: SealOfTheDawn.SealOfTheDawnTankR10 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236388), value: SealOfTheDawn.SealOfTheDawnTankR9 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236389), value: SealOfTheDawn.SealOfTheDawnTankR8 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236390), value: SealOfTheDawn.SealOfTheDawnTankR7 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236391), value: SealOfTheDawn.SealOfTheDawnTankR6 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236392), value: SealOfTheDawn.SealOfTheDawnTankR5 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236393), value: SealOfTheDawn.SealOfTheDawnTankR4 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236394), value: SealOfTheDawn.SealOfTheDawnTankR3 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236395), value: SealOfTheDawn.SealOfTheDawnTankR2 }, stats: [Stat.StatDefense] },
+	{ config: { actionId: () => ActionId.fromItemId(236396), value: SealOfTheDawn.SealOfTheDawnTankR1 }, stats: [Stat.StatDefense] },
+
+];
+export const makeSealOfTheDawnConsumesInput = makeConsumeInputFactory({ consumesFieldName: 'sealOfTheDawn', numColumns: 11, showWhen: player => player.getLevel() === 60 });
 
 // Blasted Lands Consumes
 export const ROIDS: ConsumableInputConfig<ZanzaBuff> = {

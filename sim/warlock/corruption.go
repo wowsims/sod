@@ -60,7 +60,7 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 				dot.Snapshot(target, baseDamage, isRollover)
 				if !isRollover {
 					if warlock.zilaGularAura.IsActive() {
-						dot.SnapshotAttackerMultiplier *= 1.25
+						dot.SnapshotAttackerMultiplier *= 1.10
 						warlock.zilaGularAura.Deactivate(sim)
 					}
 				}

@@ -485,6 +485,43 @@ enum FrostPowerBuff {
 	ElixirOfFrostPower = 1;
 }
 
+enum SealOfTheDawn {
+	SealOfTheDawnUnknown = 0;
+
+	SealOfTheDawnDamageR1 = 1;
+	SealOfTheDawnDamageR2 = 2;
+	SealOfTheDawnDamageR3 = 3;
+	SealOfTheDawnDamageR4 = 4;
+	SealOfTheDawnDamageR5 = 5;
+	SealOfTheDawnDamageR6 = 6;
+	SealOfTheDawnDamageR7 = 7;
+	SealOfTheDawnDamageR8 = 8;
+	SealOfTheDawnDamageR9 = 9;
+	SealOfTheDawnDamageR10 = 10;
+
+	SealOfTheDawnTankR1 = 11;
+	SealOfTheDawnTankR2 = 12;
+	SealOfTheDawnTankR3 = 13;
+	SealOfTheDawnTankR4 = 14;
+	SealOfTheDawnTankR5 = 15;
+	SealOfTheDawnTankR6 = 16;
+	SealOfTheDawnTankR7 = 17;
+	SealOfTheDawnTankR8 = 18;
+	SealOfTheDawnTankR9 = 19;
+	SealOfTheDawnTankR10 = 20;
+
+	SealOfTheDawnHealingR1 = 21;
+	SealOfTheDawnHealingR2 = 22;
+	SealOfTheDawnHealingR3 = 23;
+	SealOfTheDawnHealingR4 = 24;
+	SealOfTheDawnHealingR5 = 25;
+	SealOfTheDawnHealingR6 = 26;
+	SealOfTheDawnHealingR7 = 27;
+	SealOfTheDawnHealingR8 = 28;
+	SealOfTheDawnHealingR9 = 29;
+	SealOfTheDawnHealingR10 = 30;
+}
+
 enum ZanzaBuff {
 	ZanzaBuffUnknown = 0;
 	SpiritOfZanza = 1;
@@ -741,8 +778,11 @@ message IndividualBuffs {
 	bool fervor_of_the_temple_explorer = 18;
 }
 
-// NextIndex: 34
+// NextIndex: 36
 message Consumes {
+	reserved 19, 25;
+	reserved "atalai_mojo", "bogling_root";
+
 	Flask flask = 1;
 	Food food = 2;
 	AgilityElixir agility_elixir = 5;
@@ -767,14 +807,12 @@ message Consumes {
 	PetMiscConsumes pet_misc_consumes = 33;
 	bool dragon_breath_chili = 24;
 	MiscConsumes misc_consumes = 26;
+	SealOfTheDawn seal_of_the_dawn = 35;
 	ZanzaBuff zanza_buff = 27;
 	ArmorElixir armor_elixir = 28;
 	HealthElixir health_elixir = 29;
 	Alcohol alcohol = 30;
 	MageScroll mage_scroll = 32;
-
-	AtalaiMojo atalai_mojo = 25 [deprecated=true];
-	bool bogling_root = 19 [deprecated=true];
 }
 
 // NextIndex: 44

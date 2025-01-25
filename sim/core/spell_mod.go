@@ -255,9 +255,13 @@ const (
 	// Uses: IntValue
 	SpellMod_DotNumberOfTicks_Flat
 
-	// Add/substrct to the base tick frequency
+	// Add/substract to the base tick frequency
 	// Uses: TimeValue
 	SpellMod_DotTickLength_Flat
+
+	// Increases or decreases the base tick frequency by % amount. +50% = 0.5
+	// Uses: FloatValue
+	SpellMod_DotTickLength_Pct
 
 	// Add/subtract to the casts gcd
 	// Uses: TimeValue
@@ -375,6 +379,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_DotTickLength_Flat: {
 		Apply:  applyDotTickLengthFlat,
 		Remove: removeDotTickLengthFlat,
+	},
+
+	SpellMod_DotTickLength_Pct: {
+		Apply:  applyDotTickLengthPercent,
+		Remove: removeDotTickLengthPercent,
 	},
 
 	SpellMod_GlobalCooldown_Flat: {
@@ -578,6 +587,33 @@ func removeDotTickLengthFlat(mod *SpellMod, spell *Spell) {
 	}
 	if spell.aoeDot != nil {
 		spell.aoeDot.TickLength -= mod.timeValue
+	}
+}
+
+func applyDotTickLengthPercent(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.TickLength = time.Duration(float64(dot.TickLength) * mod.floatValue)
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.TickLength = time.Duration(float64(spell.aoeDot.TickLength) * mod.floatValue)
+	}
+}
+
+func removeDotTickLengthPercent(mod *SpellMod, spell *Spell) {
+	if spell.dots != nil {
+		for _, dot := range spell.dots {
+			if dot != nil {
+				dot.TickLength = time.Duration(float64(dot.TickLength) / mod.floatValue)
+			}
+		}
+	}
+	if spell.aoeDot != nil {
+		spell.aoeDot.TickLength = time.Duration(float64(spell.aoeDot.TickLength) / mod.floatValue)
+
 	}
 }
 

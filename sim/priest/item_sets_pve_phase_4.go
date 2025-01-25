@@ -1,8 +1,6 @@
 package priest
 
 import (
-	"time"
-
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -129,40 +127,29 @@ func (priest *Priest) applyT1Shadow6PBonus() {
 		return
 	}
 
-	damageModifier := 0.50
-	durationDivisor := time.Duration(2)
+	damageMod := priest.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_PriestMindFlay,
+		FloatValue: 0.50,
+	})
 
-	var affectedSpells []*core.Spell
+	dotLengthMod := priest.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DotTickLength_Pct,
+		ClassMask:  ClassSpellMask_PriestMindFlay,
+		FloatValue: 0.50,
+	})
 
 	buffAura := priest.GetOrRegisterAura(core.Aura{
 		Label:    "Melting Faces",
 		ActionID: core.ActionID{SpellID: 456549},
 		Duration: core.NeverExpires,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
-				core.Flatten(priest.MindFlay),
-				func(spell *core.Spell) bool { return spell != nil },
-			)
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += damageModifier
-				for _, dot := range spell.Dots() {
-					if dot != nil {
-						dot.TickLength /= durationDivisor
-					}
-				}
-			}
+			damageMod.Activate()
+			dotLengthMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive -= damageModifier
-				for _, dot := range spell.Dots() {
-					if dot != nil {
-						dot.TickLength *= durationDivisor
-					}
-				}
-			}
+			damageMod.Deactivate()
+			dotLengthMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_PriestMindFlay) {
@@ -171,12 +158,13 @@ func (priest *Priest) applyT1Shadow6PBonus() {
 		},
 	})
 
-	core.MakePermanent(priest.GetOrRegisterAura(core.Aura{
-		Label: label,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_PriestMindBlast) && result.DidCrit() {
-				buffAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_PriestMindBlast,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeCrit,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			buffAura.Activate(sim)
 		},
-	}))
+	})
 }

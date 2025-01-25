@@ -124,7 +124,6 @@ func (priest *Priest) applyPainAndSuffering() {
 	}
 
 	priest.PainAndSufferingDoTSpells = []*core.Spell{}
-
 	affectedSpellClassMasks := ClassSpellMask_PriestMindBlast | ClassSpellMask_PriestMindFlay | ClassSpellMask_PriestMindSpike
 	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: "Pain and Suffering Trigger",

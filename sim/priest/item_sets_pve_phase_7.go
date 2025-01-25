@@ -56,15 +56,10 @@ func (priest *Priest) applyNaxxramasShadow4PBonus() {
 
 	priest.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range priest.MindBlast {
-				if spell == nil {
-					continue
-				}
-
-				spell.CD.FlatModifier -= time.Second
-			}
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_PriestMindBlast,
+		TimeValue: -time.Second,
 	})
 }
 

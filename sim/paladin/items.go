@@ -295,11 +295,12 @@ func init() {
 
 	core.NewItemEffect(LibramOfTheExorcist, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
-		paladin.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_PaladinCrusaderStrike | ClassSpellMask_PaladinExorcism) {
-				// Increases the damage of Exorcism and Crusader Strike by 3%.
-				spell.DamageMultiplierAdditive += 0.03
-			}
+
+		// Increases the damage of Exorcism and Crusader Strike by 3%.
+		paladin.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Flat,
+			ClassMask:  ClassSpellMask_PaladinCrusaderStrike | ClassSpellMask_PaladinExorcism,
+			FloatValue: 0.03,
 		})
 	})
 

@@ -84,7 +84,7 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 			damageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Activate()
+			damageMod.Deactivate()
 		},
 		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if !spell.Matches(classSpellMasks) {
