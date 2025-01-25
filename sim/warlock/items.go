@@ -188,10 +188,10 @@ func init() {
 			Duration: harvestDemonDuration,
 			// Not doing anything for this one
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.30
+				warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.15
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1.30
+				warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= 1.15
 			},
 		})
 
@@ -201,10 +201,10 @@ func init() {
 			Duration: harvestDemonDuration,
 			// Not doing anything for this one
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.30
+				warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.15
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.30
+				warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.15
 			},
 		})
 
