@@ -1,0 +1,30 @@
+{
+  "type": "TypeAPL",
+  "simple": {
+    "cooldowns": {
+      "hpPercentForDefensives": 0.2
+    }
+  },
+  "prepullActions": [
+    {"action":{"castSpell":{"spellId":{"otherId":"OtherActionPotion"}}},"doAtValue":{"const":{"val":"-0s"}}},
+    {"action":{"castSpell":{"spellId":{"spellId":9634}}},"doAtValue":{"const":{"val":"-0s"}}},
+    {"action":{"castSpell":{"spellId":{"spellId":5229}}},"doAtValue":{"const":{"val":"-0s"}}}
+  ],
+  "priorityList": [
+    {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":407988}}}}},{"cmp":{"op":"OpGe","lhs":{"currentComboPoints":{}},"rhs":{"const":{"val":"2"}}}}]}},"castSpell":{"spellId":{"spellId":407988}}}},
+    {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":9904,"rank":4}}}}}]}},"castSpell":{"spellId":{"spellId":417045}}}},
+    {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"currentComboPoints":{}},"rhs":{"const":{"val":"2"}}}},{"spellIsKnown":{"spellId":{"spellId":407988}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":407988}}}}}]}},"castSpell":{"spellId":{"spellId":409828}}}},
+    {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":9904,"rank":4}}}}}]}},"castSpell":{"spellId":{"spellId":9904,"rank":4}}}},
+    {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":9904,"rank":4}}}}}]}},"castSpell":{"spellId":{"spellId":768}}}},
+    {"action":{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":9634}}}}},"castSpell":{"spellId":{"spellId":9634}}}},
+    {"action":{"condition":{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":456328}}}}},"cancelAura":{"auraId":{"spellId":5229}}}},
+    {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":414647}}},"rhs":{"const":{"val":"6"}}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":414647}}},"rhs":{"const":{"val":"5"}}}}]}},"castSpell":{"spellId":{"spellId":414644}}}},
+    {"action":{"condition":{"and":{"vals":[{"gcdIsReady":{}},{"cmp":{"op":"OpGt","lhs":{"spellTimeToReady":{"spellId":{"spellId":407995}}},"rhs":{"const":{"val":"0"}}}},{"or":{"vals":[{"and":{"vals":[{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":414647}}},"rhs":{"const":{"val":"5"}}}},{"auraIsActive":{"auraId":{}}}]}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":467221}}}}}]}}]}},"castSpell":{"spellId":{"spellId":417141}}}},
+    {"action":{"condition":{"spellIsReady":{"spellId":{"spellId":407995}}},"castSpell":{"spellId":{"spellId":407995}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":414644}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":9908,"rank":5}}}},
+    {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"currentRage":{}},"rhs":{"const":{"val":"30"}}}},"castSpell":{"spellId":{"spellId":9881,"tag":1,"rank":7}}}},
+    {"action":{"castSpell":{"spellId":{"itemId":213407}}}},
+    {"action":{"castSpell":{"spellId":{"otherId":"OtherActionOffensiveEquip"}}}}
+  ]
+}
