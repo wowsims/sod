@@ -127,12 +127,10 @@ func (priest *Priest) applySearingLight() {
 		return
 	}
 
-	modifier := 0.05 * float64(priest.Talents.SearingLight)
-
-	priest.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Matches(ClassSpellMask_PriestSmite | ClassSpellMask_PriestHolyFire) {
-			spell.DamageMultiplierAdditive += modifier
-		}
+	priest.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_PriestSmite | ClassSpellMask_PriestHolyFire,
+		FloatValue: 0.05 * float64(priest.Talents.SearingLight),
 	})
 }
 

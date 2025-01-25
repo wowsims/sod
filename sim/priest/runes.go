@@ -84,36 +84,26 @@ func (priest *Priest) applyTwistedFaith() {
 		return
 	}
 
-	priest.RegisterAura(core.Aura{
-		Label: "Twisted Faith",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := core.Flatten(priest.MindFlay)
-			affectedSpells = core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					affectedSpells,
-					priest.MindBlast,
-				}), func(spell *core.Spell) bool { return spell != nil },
-			)
+	damageMod := priest.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_PriestMindFlay | ClassSpellMask_PriestMindBlast,
+		FloatValue: 0.50,
+	})
 
-			swpSpells := core.FilterSlice(priest.ShadowWordPain, func(spell *core.Spell) bool { return spell != nil })
+	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
+		Name:           "Twisted Faith",
+		ClassSpellMask: ClassSpellMask_PriestMindFlay | ClassSpellMask_PriestMindBlast,
+		Callback:       core.CallbackOnApplyEffects,
+		Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			swpSpells := priest.GetSpellsMatchingClassMask(ClassSpellMask_PriestShadowWordPain)
 
-			for _, spell := range affectedSpells {
-				oldApplyEffects := spell.ApplyEffects
-				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					modifier := 0.0
-
-					for _, spell := range swpSpells {
-						if spell.Dot(target).IsActive() {
-							modifier += 0.50
-							break
-						}
-					}
-
-					spell.DamageMultiplierAdditive += modifier
-					oldApplyEffects(sim, target, spell)
-					spell.DamageMultiplierAdditive -= modifier
+			for _, spell := range swpSpells {
+				if spell.CurDot().IsActive() {
+					damageMod.Activate()
+					return
 				}
 			}
+			damageMod.Deactivate()
 		},
 	})
 }
