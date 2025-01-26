@@ -150,13 +150,13 @@ func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 				hunter.ChimeraShot.CD.FlatModifier -= time.Millisecond * 1500
 			}
 			if hunter.ExplosiveShot != nil {
-				hunter.ExplosiveShot.CD.FlatModifier -= time.Millisecond * 1500
+				hunter.ExplosiveShot.CD.FlatModifier -= time.Millisecond * 1500 
 			}
 			if hunter.AimedShot != nil {
-				hunter.AimedShot.CD.FlatModifier -= time.Millisecond * 1500
+				hunter.AimedShot.CD.FlatModifier -= time.Millisecond * 1500 
 			}
 			if hunter.KillShot != nil {
-				hunter.KillShot.CD.FlatModifier -= time.Second * 3
+				hunter.KillShot.CD.FlatModifier -= time.Second * 3 
 			}
 		},
 	}))

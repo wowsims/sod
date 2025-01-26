@@ -74,17 +74,17 @@ type Paladin struct {
 	holyShockCooldown *core.Cooldown
 	exorcismCooldown  *core.Cooldown
 
-	avengingWrath    *core.Spell
-	crusaderStrike   *core.Spell
-	divineStorm      *core.Spell
-	exorcism         []*core.Spell
-	judgement        *core.Spell
-	layOnHands       *core.Spell
-	rv               *core.Spell
-	holyShieldAura   [3]*core.Aura
-	holyShieldProc   [3]*core.Spell
-	redoubtAura      *core.Aura
-	holyWrath        []*core.Spell
+	avengingWrath  *core.Spell
+	crusaderStrike *core.Spell
+	divineStorm    *core.Spell
+	exorcism       []*core.Spell
+	judgement      *core.Spell
+	layOnHands     *core.Spell
+	rv             *core.Spell
+	holyShieldAura [3]*core.Aura
+	holyShieldProc [3]*core.Spell
+	redoubtAura    *core.Aura
+	holyWrath      []*core.Spell
 	divineProtection *core.Spell
 
 	// highest rank seal spell if available

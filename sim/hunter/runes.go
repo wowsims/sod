@@ -440,8 +440,9 @@ func (hunter *Hunter) applyCatlikeReflexes() {
 	}
 	label := "Catlike Reflexes"
 
+
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
-		Label:      label,
+		Label: label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.FlankingStrike != nil {
@@ -450,7 +451,7 @@ func (hunter *Hunter) applyCatlikeReflexes() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				hunter.AddStat(stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
+			  hunter.AddStat(stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
 				if hunter.pet != nil {
 					hunter.pet.AddStat(stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
 				}
@@ -463,7 +464,7 @@ func (hunter *Hunter) applyCatlikeReflexes() {
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				hunter.AddStat(stats.Dodge, -20*core.DodgeRatingPerDodgeChance)
+			  hunter.AddStat(stats.Dodge, -20*core.DodgeRatingPerDodgeChance)
 				if hunter.pet != nil {
 					hunter.pet.AddStat(stats.Dodge, -9*core.DodgeRatingPerDodgeChance)
 				}

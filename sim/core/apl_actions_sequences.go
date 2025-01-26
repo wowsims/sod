@@ -88,9 +88,9 @@ func (action *APLActionResetSequence) String() string {
 
 type APLActionStrictSequence struct {
 	defaultAPLActionImpl
-	unit             *Unit
-	subactions       []*APLAction
-	curIdx           int
+	unit            *Unit
+	subactions      []*APLAction
+	curIdx          int
 	requiresGCDCheck bool
 
 	subactionSpells []*Spell
@@ -106,8 +106,8 @@ func (rot *APLRotation) newActionStrictSequence(config *proto.APLActionStrictSeq
 	}
 
 	return &APLActionStrictSequence{
-		unit:             rot.unit,
-		subactions:       subactions,
+		unit:            rot.unit,
+		subactions:      subactions,
 		requiresGCDCheck: false,
 	}
 }

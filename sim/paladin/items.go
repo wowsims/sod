@@ -38,7 +38,7 @@ const (
 
 func init() {
 	core.AddEffectsToTest = false
-
+	
 	core.NewItemEffect(BandOfRedemption, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
