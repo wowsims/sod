@@ -2,6 +2,7 @@ package core
 
 import (
 	"fmt"
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -167,23 +168,19 @@ func (rot *APLRotation) allPrepullActions() []*APLAction {
 }
 
 func (rot *APLRotation) reset(sim *Simulation) {
-	rot.allowCastWhileCasting = false
-	rot.allowCastWhileChanneling = false
 	rot.controllingActions = nil
 	rot.inLoop = false
 	rot.interruptChannelIf = nil
 	rot.allowChannelRecastOnInterrupt = false
+
+	rot.allowCastWhileChanneling = slices.ContainsFunc(rot.unit.Spellbook, func(spell *Spell) bool {
+		return spell.Flags.Matches(SpellFlagCastWhileChanneling)
+	})
+	rot.allowCastWhileCasting = slices.ContainsFunc(rot.unit.Spellbook, func(spell *Spell) bool {
+		return spell.Flags.Matches(SpellFlagCastWhileCasting)
+	})
+
 	for _, action := range rot.allAPLActions() {
-		if spell := action.impl.GetSpellFromAction(); spell != nil {
-			if spell.Flags.Matches(SpellFlagCastWhileCasting) {
-				rot.allowCastWhileCasting = true
-			}
-
-			if spell.Flags.Matches(SpellFlagCastWhileChanneling) {
-				rot.allowCastWhileChanneling = true
-			}
-		}
-
 		action.impl.Reset(sim)
 	}
 }
