@@ -188,7 +188,7 @@ func init() {
 			return
 		}
 
-		core.MakePermanent(mage.RegisterAura(core.Aura{
+		aura := core.MakePermanent(mage.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 469237},
 			Label:    "Staff of Inferno",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -199,6 +199,8 @@ func init() {
 				}
 			},
 		}))
+
+		mage.ItemSwap.RegisterProc(StaffOfInferno, aura)
 	})
 
 	core.NewItemEffect(StaffOfOrder, func(agent core.Agent) {
@@ -207,7 +209,7 @@ func init() {
 			return
 		}
 
-		core.MakePermanent(mage.RegisterAura(core.Aura{
+		aura := core.MakePermanent(mage.RegisterAura(core.Aura{
 			Label: "Staff of Order",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.SpellSchool == core.SpellSchoolArcane && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.Landed() {
@@ -215,6 +217,8 @@ func init() {
 				}
 			},
 		}))
+
+		mage.ItemSwap.RegisterProc(StaffOfOrder, aura)
 	})
 
 	core.NewItemEffect(StaffOfRime, func(agent core.Agent) {
@@ -225,7 +229,7 @@ func init() {
 
 		statsAura := mage.NewTemporaryStatsAura("Staff of Rime", core.ActionID{SpellID: 469238}, stats.Stats{stats.FrostPower: 100}, time.Minute)
 
-		mage.RegisterAura(core.Aura{
+		aura := mage.RegisterAura(core.Aura{
 			Label: "Staff of Rime Dummy",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				for _, aura := range mage.IceBarrierAuras {
@@ -247,6 +251,8 @@ func init() {
 				}
 			},
 		})
+
+		mage.ItemSwap.RegisterProc(StaffOfRime, aura)
 	})
 
 	core.AddEffectsToTest = true

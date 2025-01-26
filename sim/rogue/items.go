@@ -79,7 +79,7 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(rogue.RegisterAura(core.Aura{
+		aura := core.MakePermanent(rogue.RegisterAura(core.Aura{
 			Label: "Shadowflame Fury Trigger",
 			OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell.Matches(ClassSpellMask_RogueBladeFlurry) {
@@ -88,6 +88,8 @@ func init() {
 				}
 			},
 		}))
+
+		rogue.ItemSwap.RegisterProc(ShadowflameSword, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=224122/dream-eater
@@ -95,14 +97,21 @@ func init() {
 	core.NewItemEffect(DreamEater, func(agent core.Agent) {
 		rogue := agent.(RogueAgent).GetRogue()
 
+		aura := core.MakePermanent(rogue.RegisterAura(core.Aura{
+			Label:    "Dream Eater Dummy",
+			ActionID: core.ActionID{ItemID: DreamEater},
+		}))
+
 		cpMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 451439})
 		rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
-			if spell.Matches(ClassSpellMask_RogueBetweentheEyes | ClassSpellMask_RogueCrimsonTempest | ClassSpellMask_RogueEnvenom | ClassSpellMask_RogueEviscerate | ClassSpellMask_RogueRupture) {
+			if aura.IsActive() && spell.Matches(ClassSpellMask_RogueBetweentheEyes|ClassSpellMask_RogueCrimsonTempest|ClassSpellMask_RogueEnvenom|ClassSpellMask_RogueEviscerate|ClassSpellMask_RogueRupture) {
 				if sim.Proc(0.2*float64(comboPoints), "Dream Eater") {
 					rogue.AddEnergy(sim, 10, cpMetrics)
 				}
 			}
 		})
+
+		rogue.ItemSwap.RegisterProc(ShadowflameSword, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=231287/renatakis-charm-of-trickery

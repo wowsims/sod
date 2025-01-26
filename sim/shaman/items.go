@@ -160,6 +160,11 @@ func init() {
 			},
 		})
 
+		aura := shaman.RegisterAura(core.Aura{
+			Label:    "Terrestris Elemental Dummy",
+			ActionID: core.ActionID{ItemID: TerrestrisEle},
+		})
+
 		core.MakePermanent(shaman.RegisterAura(core.Aura{
 			Label: "Terrestris Boon Trigger",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -167,32 +172,42 @@ func init() {
 					oldApplyEffects := spell.ApplyEffects
 					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 						oldApplyEffects(sim, target, spell)
-						boonOfEarth.Activate(sim)
+						if aura.IsActive() {
+							boonOfEarth.Activate(sim)
+						}
 					}
 				})
 				core.Each(shaman.FireTotems, func(spell *core.Spell) {
 					oldApplyEffects := spell.ApplyEffects
 					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 						oldApplyEffects(sim, target, spell)
-						boonOfFire.Activate(sim)
+						if aura.IsActive() {
+							boonOfFire.Activate(sim)
+						}
 					}
 				})
 				core.Each(shaman.WaterTotems, func(spell *core.Spell) {
 					oldApplyEffects := spell.ApplyEffects
 					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 						oldApplyEffects(sim, target, spell)
-						boonOfWater.Activate(sim)
+						if aura.IsActive() {
+							boonOfWater.Activate(sim)
+						}
 					}
 				})
 				core.Each(shaman.AirTotems, func(spell *core.Spell) {
 					oldApplyEffects := spell.ApplyEffects
 					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 						oldApplyEffects(sim, target, spell)
-						boonOfAir.Activate(sim)
+						if aura.IsActive() {
+							boonOfAir.Activate(sim)
+						}
 					}
 				})
 			},
 		}))
+
+		shaman.ItemSwap.RegisterProc(TerrestrisEle, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=224279/terrestris
@@ -268,6 +283,11 @@ func init() {
 			},
 		})
 
+		aura := shaman.RegisterAura(core.Aura{
+			Label:    "Terrestris Warden Dummy",
+			ActionID: core.ActionID{ItemID: TerrestrisTank},
+		})
+
 		core.MakePermanent(shaman.RegisterAura(core.Aura{
 			Label: "Terrestris Boon Trigger",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -275,32 +295,42 @@ func init() {
 					oldApplyEffects := spell.ApplyEffects
 					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 						oldApplyEffects(sim, target, spell)
-						boonOfEarth.Activate(sim)
+						if aura.IsActive() {
+							boonOfEarth.Activate(sim)
+						}
 					}
 				})
 				core.Each(shaman.FireTotems, func(spell *core.Spell) {
 					oldApplyEffects := spell.ApplyEffects
 					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 						oldApplyEffects(sim, target, spell)
-						boonOfFire.Activate(sim)
+						if aura.IsActive() {
+							boonOfFire.Activate(sim)
+						}
 					}
 				})
 				core.Each(shaman.WaterTotems, func(spell *core.Spell) {
 					oldApplyEffects := spell.ApplyEffects
 					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 						oldApplyEffects(sim, target, spell)
-						boonOfWater.Activate(sim)
+						if aura.IsActive() {
+							boonOfWater.Activate(sim)
+						}
 					}
 				})
 				core.Each(shaman.AirTotems, func(spell *core.Spell) {
 					oldApplyEffects := spell.ApplyEffects
 					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 						oldApplyEffects(sim, target, spell)
-						boonOfAir.Activate(sim)
+						if aura.IsActive() {
+							boonOfAir.Activate(sim)
+						}
 					}
 				})
 			},
 		}))
+
+		shaman.ItemSwap.RegisterProc(TerrestrisTank, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=232416/totem-of-astral-flow

@@ -571,7 +571,7 @@ func init() {
 			},
 		}))
 
-		hunter.ItemSwap.RegisterProc(CloakOfTheUnseenPath, procAura)
+		hunter.ItemSwap.RegisterProc(ScytheOfTheUnseenPath, procAura)
 	})
 
 	core.NewItemEffect(SignetOfTheUnseenPath, func(a core.Agent) {
