@@ -43,10 +43,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+	],
 
 	defaults: {
 		race: Presets.OtherDefaults.race,
@@ -60,12 +61,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatMeleeHit]: 28.67,
 				[Stat.StatMeleeCrit]: 25.1,
+				[Stat.StatExpertise]: 57.47,
 				[Stat.StatFireResistance]: 0.5,
 			},
 			{
 				[PseudoStat.PseudoStatMainHandDps]: 11.92,
 				[PseudoStat.PseudoStatOffHandDps]: 4.69,
-				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 4.69,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 26.51,
 			},
 		),
 		// Default consumes settings.

@@ -24,6 +24,7 @@ func applyConsumeEffects(agent Agent) {
 	applyDefensiveBuffConsumes(character, consumes)
 	applyPhysicalBuffConsumes(character, consumes)
 	applySpellBuffConsumes(character, consumes)
+	applySealOfTheDawnBuffConsumes(character, consumes)
 	applyZanzaBuffConsumes(character, consumes)
 	applyMiscConsumes(character, consumes.MiscConsumes)
 	applyEnchantingConsumes(character, consumes)
@@ -144,6 +145,10 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 				stats.SpellPower: 45,
 				stats.SpellCrit:  1 * SpellCritRatingPerCritChance,
 			})
+		case proto.WeaponImbue_BlessedWizardOil:
+			if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
+				character.PseudoStats.MobTypeSpellPower += 60
+			}
 
 		// Mana Oils
 		case proto.WeaponImbue_MinorManaOil:
@@ -198,6 +203,14 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 			character.AddStats(stats.Stats{
 				stats.MeleeHit: 2 * MeleeHitRatingPerHitChance,
 			})
+		case proto.WeaponImbue_ConsecratedSharpeningStone:
+			if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
+				character.PseudoStats.MobTypeAttackPower += 100
+			}
+		case proto.WeaponImbue_WeightedConsecratedSharpeningStone:
+			if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
+				character.PseudoStats.MobTypeAttackPower += 200
+			}
 
 		// Weightstones
 		case proto.WeaponImbue_SolidWeightstone:
@@ -650,6 +663,244 @@ func applySpellBuffConsumes(character *Character, consumes *proto.Consumes) {
 }
 
 ///////////////////////////////////////////////////////////////////////////
+//                             Seal of the Dawn Buff Consumes
+///////////////////////////////////////////////////////////////////////////
+
+func applySealOfTheDawnBuffConsumes(character *Character, consumes *proto.Consumes) {
+	if consumes.SealOfTheDawn == proto.SealOfTheDawn_SealOfTheDawnUnknown {
+		return
+	}
+
+	switch consumes.SealOfTheDawn {
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR1:
+		sanctifiedDamageEffect(character, 1219539, 1.25)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR2:
+		sanctifiedDamageEffect(character, 1223348, 4.38)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR3:
+		sanctifiedDamageEffect(character, 1223349, 6.25)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR4:
+		sanctifiedDamageEffect(character, 1223350, 10.0)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR5:
+		sanctifiedDamageEffect(character, 1223351, 12.5)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR6:
+		sanctifiedDamageEffect(character, 1223352, 18.13)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR7:
+		sanctifiedDamageEffect(character, 1223353, 21.25)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR8:
+		sanctifiedDamageEffect(character, 1223354, 28.13)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR9:
+		sanctifiedDamageEffect(character, 1223355, 32.5)
+	case proto.SealOfTheDawn_SealOfTheDawnDamageR10:
+		sanctifiedDamageEffect(character, 1223357, 37.5)
+
+	case proto.SealOfTheDawn_SealOfTheDawnTankR1:
+		sanctifiedTankingEffect(character, 1220514, 3.13, 1.25)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR2:
+		sanctifiedTankingEffect(character, 1223367, 4.38, 4.38)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR3:
+		sanctifiedTankingEffect(character, 1223368, 5.0, 6.25)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR4:
+		sanctifiedTankingEffect(character, 1223370, 5.63, 10)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR5:
+		sanctifiedTankingEffect(character, 1223371, 6.25, 12.5)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR6:
+		sanctifiedTankingEffect(character, 1223372, 7.5, 18.13)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR7:
+		sanctifiedTankingEffect(character, 1223373, 8.13, 21.25)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR8:
+		sanctifiedTankingEffect(character, 1223374, 9.38, 28.13)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR9:
+		sanctifiedTankingEffect(character, 1223375, 10.0, 32.5)
+	case proto.SealOfTheDawn_SealOfTheDawnTankR10:
+		sanctifiedTankingEffect(character, 1223376, 10.63, 37.5)
+
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR1:
+		sanctifiedHealingEffect(character, 1219548, 1.25)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR2:
+		sanctifiedHealingEffect(character, 1223379, 4.38)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR3:
+		sanctifiedHealingEffect(character, 1223380, 6.25)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR4:
+		sanctifiedHealingEffect(character, 1223381, 10.0)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR5:
+		sanctifiedHealingEffect(character, 1223382, 12.5)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR6:
+		sanctifiedHealingEffect(character, 1223383, 18.13)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR7:
+		sanctifiedHealingEffect(character, 1223384, 21.25)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR8:
+		sanctifiedHealingEffect(character, 1223385, 28.13)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR9:
+		sanctifiedHealingEffect(character, 1223386, 32.5)
+	case proto.SealOfTheDawn_SealOfTheDawnHealingR10:
+		sanctifiedHealingEffect(character, 1223387, 37.5)
+	}
+}
+
+const MaxSanctifiedBonus = 8
+
+// Equip: Unlocks your potential while inside Naxxramas.
+// Increasing your damage by X% and your health by X% for each piece of Sanctified armor equipped.
+func sanctifiedDamageEffect(character *Character, spellID int32, percentIncrease float64) {
+	for _, unit := range getSanctifiedUnits(character) {
+		sanctifiedBonus := int32(0)
+		multiplier := 1.0
+		healthDeps := buildSanctifiedHealthDeps(unit, percentIncrease)
+
+		unit.GetOrRegisterAura(Aura{
+			Label:      "Seal of the Dawn (Damage)",
+			ActionID:   ActionID{SpellID: spellID},
+			BuildPhase: CharacterBuildPhaseGear,
+			Duration:   NeverExpires,
+			MaxStacks:  MaxSanctifiedBonus,
+			OnInit: func(aura *Aura, sim *Simulation) {
+				sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
+				multiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
+			},
+			OnReset: func(aura *Aura, sim *Simulation) {
+				aura.Activate(sim)
+				aura.SetStacks(sim, sanctifiedBonus)
+			},
+			OnGain: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= multiplier
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= multiplier
+			},
+		})
+	}
+}
+
+// Equip: Unlocks your potential while inside Naxxramas.
+// Increasing your healing and shielding by X% and your health by X% for each piece of Sanctified armor equipped.
+func sanctifiedHealingEffect(character *Character, spellID int32, percentIncrease float64) {
+	for _, unit := range getSanctifiedUnits(character) {
+		sanctifiedBonus := int32(0)
+		multiplier := 1.0
+		healthDeps := buildSanctifiedHealthDeps(unit, percentIncrease)
+
+		unit.GetOrRegisterAura(Aura{
+			Label:      "Seal of the Dawn (Healing)",
+			ActionID:   ActionID{SpellID: spellID},
+			BuildPhase: CharacterBuildPhaseGear,
+			Duration:   NeverExpires,
+			MaxStacks:  MaxSanctifiedBonus,
+			OnInit: func(aura *Aura, sim *Simulation) {
+				sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
+				multiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
+			},
+			OnReset: func(aura *Aura, sim *Simulation) {
+				aura.Activate(sim)
+				aura.SetStacks(sim, sanctifiedBonus)
+			},
+			OnGain: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.HealingDealtMultiplier *= multiplier
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.HealingDealtMultiplier /= multiplier
+			},
+		})
+	}
+}
+
+// Equip: Unlocks your potential while inside Naxxramas.
+// Increasing your threat caused by X%, your damage by Y%, and your health by Y% for each piece of Sanctified armor equipped.
+func sanctifiedTankingEffect(character *Character, spellID int32, threatPercentIncrease float64, damageHealthPercentIncrease float64) {
+	for _, unit := range getSanctifiedUnits(character) {
+		sanctifiedBonus := int32(0)
+		damageHealthMultiplier := 1.0
+		threatMultiplier := 1.0
+		healthDeps := buildSanctifiedHealthDeps(unit, damageHealthPercentIncrease)
+
+		unit.GetOrRegisterAura(Aura{
+			Label:      "Seal of the Dawn (Tanking)",
+			ActionID:   ActionID{SpellID: spellID},
+			BuildPhase: CharacterBuildPhaseGear,
+			Duration:   NeverExpires,
+			MaxStacks:  MaxSanctifiedBonus,
+			OnInit: func(aura *Aura, sim *Simulation) {
+				sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
+				damageHealthMultiplier = 1.0 + damageHealthPercentIncrease/100.0*float64(sanctifiedBonus)
+				threatMultiplier = 1.0 + threatPercentIncrease/100.0*float64(sanctifiedBonus)
+			},
+			OnReset: func(aura *Aura, sim *Simulation) {
+				aura.Activate(sim)
+				aura.SetStacks(sim, sanctifiedBonus)
+			},
+			OnGain: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= damageHealthMultiplier
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
+					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
+				} else {
+					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
+				}
+
+				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= damageHealthMultiplier
+			},
+		})
+	}
+}
+
+// Gets all units that the Sanctified buff should apply to. This includes the player and Hunter/Warlock pets
+func getSanctifiedUnits(character *Character) []*Unit {
+	units := []*Unit{&character.Unit}
+	if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
+		for _, pet := range character.Pets {
+			if pet.IsGuardian() {
+				continue
+			}
+
+			units = append(units, &pet.Unit)
+		}
+	}
+
+	return units
+}
+
+func buildSanctifiedHealthDeps(unit *Unit, percentIncrease float64) []*stats.StatDependency {
+	healthDeps := []*stats.StatDependency{}
+	for i := 0; i < MaxSanctifiedBonus+1; i++ {
+		healthDeps = append(healthDeps, unit.NewDynamicMultiplyStat(stats.Health, 1.0+percentIncrease/100.0*float64(i)))
+	}
+
+	return healthDeps
+}
+
+///////////////////////////////////////////////////////////////////////////
 //                             Zanza-esque Consumes
 ///////////////////////////////////////////////////////////////////////////
 
@@ -934,6 +1185,7 @@ var EzThroRadiationBombActionID = ActionID{ItemID: 215168}
 var HighYieldRadiationBombActionID = ActionID{ItemID: 215127}
 var GoblinLandMineActionID = ActionID{ItemID: 4395}
 var ObsidianBombActionID = ActionID{ItemID: 233986}
+var StratholmeHolyWaterActionID = ActionID{ItemID: 13180}
 
 func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	character := agent.GetCharacter()
@@ -946,9 +1198,11 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	sharedTimer := character.NewTimer()
 
 	if hasSapper {
-		if consumes.SapperExplosive != proto.SapperExplosive_SapperFumigator && !character.HasProfession(proto.Profession_Engineering) {
+		nonEngiSappers := []proto.SapperExplosive{proto.SapperExplosive_SapperFumigator}
+		if !character.HasProfession(proto.Profession_Engineering) && !slices.Contains(nonEngiSappers, consumes.SapperExplosive) {
 			return
 		}
+
 		var sapperSpell *Spell
 		switch consumes.SapperExplosive {
 		case proto.SapperExplosive_SapperGoblinSapper:
@@ -973,13 +1227,15 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 
 	if hasFiller {
 		// Update this list with explosives that don't require engi
-		nonEngiExplosives := []proto.Explosive{proto.Explosive_ExplosiveEzThroRadiationBomb, proto.Explosive_ExplosiveObsidianBomb}
-		if !character.HasProfession(proto.Profession_Engineering) || !slices.Contains(nonEngiExplosives, consumes.FillerExplosive) {
+		nonEngiExplosives := []proto.Explosive{proto.Explosive_ExplosiveEzThroRadiationBomb, proto.Explosive_ExplosiveObsidianBomb, proto.Explosive_ExplosiveStratholmeHolyWater}
+		if !character.HasProfession(proto.Profession_Engineering) && !slices.Contains(nonEngiExplosives, consumes.FillerExplosive) {
 			return
 		}
 
 		var filler *Spell
 		switch consumes.FillerExplosive {
+		case proto.Explosive_ExplosiveStratholmeHolyWater:
+			filler = character.newStratholmeHolyWaterSpell(sharedTimer)
 		case proto.Explosive_ExplosiveObsidianBomb:
 			filler = character.newObisidianBombSpell(sharedTimer)
 		case proto.Explosive_ExplosiveSolidDynamite:
@@ -1007,31 +1263,83 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 	}
 }
 
-// Creates a spell object for the common explosive case.
-// TODO: create 10s delay on Goblin Landmine cast to damage
-func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, actionID ActionID, school SpellSchool, minDamage float64, maxDamage float64, cooldown Cooldown, selfMinDamage float64, selfMaxDamage float64) SpellConfig {
-	isSapper := actionID.SameAction(SapperActionID) || actionID.SameAction(FumigatorActionID)
+type ExplosiveConfig struct {
+	ActionID     ActionID
+	SpellSchool  SpellSchool
+	MissileSpeed float64
 
+	SharedTimer *Timer
+	Cooldown    time.Duration
+	CastTime    time.Duration
+
+	// Land Mines have a 10s "arming time" before they hit
+	TriggerDelay time.Duration
+
+	OnHitAction OnHitAction
+
+	MinDamage     float64
+	MaxDamage     float64
+	SelfMinDamage float64
+	SelfMaxDamage float64
+}
+
+type OnHitAction func(sim *Simulation, spell *Spell, result *SpellResult)
+
+func (character *Character) applyExplosiveDamage(sim *Simulation, spell *Spell, explosiveConfig ExplosiveConfig) {
+	for _, aoeTarget := range sim.Encounter.TargetUnits {
+		result := spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(explosiveConfig.MinDamage, explosiveConfig.MaxDamage), spell.OutcomeMagicHitAndCrit)
+
+		if explosiveConfig.OnHitAction != nil {
+			explosiveConfig.OnHitAction(sim, spell, result)
+		}
+	}
+
+	if explosiveConfig.SelfMinDamage > 0 && explosiveConfig.SelfMaxDamage > 0 {
+		spell.CalcAndDealDamage(sim, &character.Unit, sim.Roll(explosiveConfig.SelfMinDamage, explosiveConfig.SelfMaxDamage), spell.OutcomeMagicHitAndCrit)
+	}
+}
+
+func (character *Character) castExplosive(sim *Simulation, spell *Spell, explosiveConfig ExplosiveConfig) {
+	if explosiveConfig.MissileSpeed > 0 {
+		spell.WaitTravelTime(sim, func(sim *Simulation) {
+			character.applyExplosiveDamage(sim, spell, explosiveConfig)
+		})
+	} else {
+		character.applyExplosiveDamage(sim, spell, explosiveConfig)
+	}
+}
+
+// Creates a spell object for the common explosive case.
+func (character *Character) newBasicExplosiveSpellConfig(explosiveConfig ExplosiveConfig) SpellConfig {
 	var defaultCast Cast
-	if !isSapper {
+	if explosiveConfig.CastTime > 0 {
 		defaultCast = Cast{
-			CastTime: time.Second,
+			CastTime: explosiveConfig.CastTime,
+		}
+	}
+
+	cooldownConfig := Cooldown{}
+	if explosiveConfig.Cooldown > 0 {
+		cooldownConfig = Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: explosiveConfig.Cooldown,
 		}
 	}
 
 	return SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: school,
-		DefenseType: DefenseTypeMagic,
-		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagCastTimeNoGCD,
+		ActionID:     explosiveConfig.ActionID,
+		SpellSchool:  explosiveConfig.SpellSchool,
+		DefenseType:  DefenseTypeMagic,
+		ProcMask:     ProcMaskEmpty,
+		Flags:        SpellFlagCastTimeNoGCD | SpellFlagIgnoreAttackerModifiers,
+		MissileSpeed: explosiveConfig.MissileSpeed,
 
 		Cast: CastConfig{
 			DefaultCast: defaultCast,
-			CD:          cooldown,
+			CD:          cooldownConfig,
 			IgnoreHaste: true,
 			SharedCD: Cooldown{
-				Timer:    sharedTimer,
+				Timer:    explosiveConfig.SharedTimer,
 				Duration: time.Minute,
 			},
 			ModifyCast: func(sim *Simulation, _ *Spell, _ *Cast) {
@@ -1046,59 +1354,152 @@ func (character *Character) newBasicExplosiveSpellConfig(sharedTimer *Timer, act
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(minDamage, maxDamage) * sim.Encounter.AOECapMultiplier()
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if explosiveConfig.TriggerDelay > 0 {
+				StartDelayedAction(sim, DelayedActionOptions{
+					DoAt: sim.CurrentTime + explosiveConfig.TriggerDelay,
+					OnAction: func(sim *Simulation) {
+						character.castExplosive(sim, spell, explosiveConfig)
+					},
+				})
+				return
 			}
 
-			if isSapper {
-				baseDamage := sim.Roll(selfMinDamage, selfMaxDamage)
-				spell.CalcAndDealDamage(sim, &character.Unit, baseDamage, spell.OutcomeMagicHitAndCrit)
-			}
+			character.castExplosive(sim, spell, explosiveConfig)
 		},
 	}
-}
-func (character *Character) newSapperSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, SapperActionID, SpellSchoolFire, 450, 750, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 375, 625))
 }
 
 // Needs testing for Silithid interaction if in raid
 func (character *Character) newFumigatorSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, FumigatorActionID, SpellSchoolFire, 650, 950, Cooldown{Timer: character.NewTimer(), Duration: time.Minute * 5}, 475, 725))
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(ExplosiveConfig{
+		ActionID:      FumigatorActionID,
+		SpellSchool:   SpellSchoolFire,
+		SharedTimer:   sharedTimer,
+		Cooldown:      time.Minute * 5,
+		MinDamage:     650,
+		MaxDamage:     950,
+		SelfMinDamage: 475,
+		SelfMaxDamage: 725,
+	}))
+}
+func (character *Character) newSapperSpell(sharedTimer *Timer) *Spell {
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(ExplosiveConfig{
+		ActionID:      SapperActionID,
+		SpellSchool:   SpellSchoolFire,
+		SharedTimer:   sharedTimer,
+		Cooldown:      time.Minute * 5,
+		MinDamage:     450,
+		MaxDamage:     750,
+		SelfMinDamage: 375,
+		SelfMaxDamage: 625,
+	}))
+}
+
+func (character *Character) newStratholmeHolyWaterSpell(sharedTimer *Timer) *Spell {
+	explosiveConfig := ExplosiveConfig{
+		ActionID:    StratholmeHolyWaterActionID,
+		SpellSchool: SpellSchoolHoly,
+		SharedTimer: sharedTimer,
+		MinDamage:   438,
+		MaxDamage:   562,
+	}
+	config := character.newBasicExplosiveSpellConfig(explosiveConfig)
+	config.BonusCoefficient = 1
+	config.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
+		for _, aoeTarget := range sim.Encounter.TargetUnits {
+			damageMultiplier := spell.DamageMultiplier
+			additiveMultiplier := spell.DamageMultiplierAdditive
+			if aoeTarget.MobType != proto.MobType_MobTypeUndead {
+				spell.DamageMultiplier = 0
+				spell.DamageMultiplierAdditive = 0
+			}
+			spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(explosiveConfig.MinDamage, explosiveConfig.MaxDamage), spell.OutcomeMagicHitAndCrit)
+			spell.DamageMultiplier = damageMultiplier
+			spell.DamageMultiplierAdditive = additiveMultiplier
+		}
+	}
+
+	return character.GetOrRegisterSpell(config)
 }
 func (character *Character) newObisidianBombSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, ObsidianBombActionID, SpellSchoolFire, 530, 670, Cooldown{}, 0, 0))
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(ExplosiveConfig{
+		ActionID:     ObsidianBombActionID,
+		SpellSchool:  SpellSchoolFire,
+		MissileSpeed: 14,
+		SharedTimer:  sharedTimer,
+		CastTime:     time.Second,
+		MinDamage:    530,
+		MaxDamage:    670,
+	}))
 }
 func (character *Character) newSolidDynamiteSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, SolidDynamiteActionID, SpellSchoolFire, 213, 287, Cooldown{}, 0, 0))
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(ExplosiveConfig{
+		ActionID:     SolidDynamiteActionID,
+		SpellSchool:  SpellSchoolFire,
+		MissileSpeed: 14,
+		SharedTimer:  sharedTimer,
+		CastTime:     time.Second,
+		MinDamage:    213,
+		MaxDamage:    287,
+	}))
 }
 func (character *Character) newDenseDynamiteSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, DenseDynamiteActionID, SpellSchoolFire, 340, 460, Cooldown{}, 0, 0))
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(ExplosiveConfig{
+		ActionID:     DenseDynamiteActionID,
+		SpellSchool:  SpellSchoolFire,
+		MissileSpeed: 14,
+		SharedTimer:  sharedTimer,
+		CastTime:     time.Second,
+		MinDamage:    340,
+		MaxDamage:    460,
+	}))
 }
 func (character *Character) newThoriumGrenadeSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, ThoriumGrenadeActionID, SpellSchoolFire, 300, 500, Cooldown{}, 0, 0))
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(ExplosiveConfig{
+		ActionID:     ThoriumGrenadeActionID,
+		SpellSchool:  SpellSchoolFire,
+		MissileSpeed: 25,
+		SharedTimer:  sharedTimer,
+		CastTime:     time.Second,
+		MinDamage:    300,
+		MaxDamage:    500,
+	}))
 }
 func (character *Character) newGoblinLandMineSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(sharedTimer, GoblinLandMineActionID, SpellSchoolFire, 394, 506, Cooldown{}, 0, 0))
+	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(ExplosiveConfig{
+		ActionID:     GoblinLandMineActionID,
+		SpellSchool:  SpellSchoolFire,
+		SharedTimer:  sharedTimer,
+		TriggerDelay: time.Second * 10,
+		MinDamage:    394,
+		MaxDamage:    506,
+	}))
 }
 
 // Creates a spell object for the common explosive case.
-func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, actionID ActionID, minDamage float64, maxDamage float64, dotDamage float64, cooldown Cooldown) SpellConfig {
+func (character *Character) newRadiationBombSpellConfig(dotDamage float64, explosiveConfig ExplosiveConfig) SpellConfig {
+	explosiveConfig.OnHitAction = func(sim *Simulation, spell *Spell, result *SpellResult) {
+		if result.Landed() {
+			spell.Dot(result.Target).Apply(sim)
+		}
+	}
+
 	return SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: SpellSchoolFire,
-		DefenseType: DefenseTypeMagic,
-		ProcMask:    ProcMaskEmpty,
-		Flags:       SpellFlagCastTimeNoGCD,
+		ActionID:     explosiveConfig.ActionID,
+		SpellSchool:  explosiveConfig.SpellSchool,
+		DefenseType:  DefenseTypeMagic,
+		ProcMask:     ProcMaskEmpty,
+		Flags:        SpellFlagCastTimeNoGCD,
+		MissileSpeed: explosiveConfig.MissileSpeed,
 
 		Cast: CastConfig{
 			DefaultCast: Cast{
-				CastTime: time.Second,
+				CastTime: explosiveConfig.CastTime,
 			},
 			IgnoreHaste: true,
-			CD:          cooldown,
+			CD:          Cooldown{},
 			SharedCD: Cooldown{
-				Timer:    sharedTimer,
+				Timer:    explosiveConfig.SharedTimer,
 				Duration: time.Minute,
 			},
 		},
@@ -1113,7 +1514,7 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 		// Also doesn't apply to bosses or something.
 		Dot: DotConfig{
 			Aura: Aura{
-				Label: actionID.String(),
+				Label: explosiveConfig.ActionID.String(),
 			},
 
 			NumberOfTicks: 5,
@@ -1144,23 +1545,33 @@ func (character *Character) newRadiationBombSpellConfig(sharedTimer *Timer, acti
 		},
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
-			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				baseDamage := sim.Roll(minDamage, maxDamage) * sim.Encounter.AOECapMultiplier()
-
-				result := spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
-
-				if result.Landed() {
-					spell.Dot(aoeTarget).Apply(sim)
-				}
-			}
+			spell.WaitTravelTime(sim, func(simulation *Simulation) {
+				character.castExplosive(sim, spell, explosiveConfig)
+			})
 		},
 	}
 }
 func (character *Character) newEzThroRadiationBombSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newRadiationBombSpellConfig(sharedTimer, EzThroRadiationBombActionID, 112, 188, 10, Cooldown{}))
+	return character.GetOrRegisterSpell(character.newRadiationBombSpellConfig(10, ExplosiveConfig{
+		ActionID:     EzThroRadiationBombActionID,
+		SpellSchool:  SpellSchoolFire,
+		MissileSpeed: 14,
+		SharedTimer:  sharedTimer,
+		CastTime:     time.Millisecond * 1500,
+		MinDamage:    112,
+		MaxDamage:    188,
+	}))
 }
 func (character *Character) newHighYieldRadiationBombSpell(sharedTimer *Timer) *Spell {
-	return character.GetOrRegisterSpell(character.newRadiationBombSpellConfig(sharedTimer, HighYieldRadiationBombActionID, 150, 250, 25, Cooldown{}))
+	return character.GetOrRegisterSpell(character.newRadiationBombSpellConfig(25, ExplosiveConfig{
+		ActionID:     HighYieldRadiationBombActionID,
+		SpellSchool:  SpellSchoolFire,
+		MissileSpeed: 25,
+		SharedTimer:  sharedTimer,
+		CastTime:     time.Second,
+		MinDamage:    150,
+		MaxDamage:    250,
+	}))
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1551,6 +1962,9 @@ func registerMildlyIrradiatedRejuvCD(agent Agent, consumes *proto.Consumes) {
 		})
 		character.AddMajorCooldown(MajorCooldown{
 			Type: CooldownTypeDPS,
+			ShouldActivate: func(sim *Simulation, character *Character) bool {
+				return !character.IsShapeshifted()
+			},
 			Spell: character.GetOrRegisterSpell(SpellConfig{
 				ActionID: actionID,
 				Flags:    SpellFlagNoOnCastComplete,
@@ -1558,6 +1972,9 @@ func registerMildlyIrradiatedRejuvCD(agent Agent, consumes *proto.Consumes) {
 					CD: Cooldown{
 						Timer:    character.NewTimer(),
 						Duration: time.Minute * 2,
+					},
+					ModifyCast: func(sim *Simulation, _ *Spell, _ *Cast) {
+						character.CancelShapeshift(sim)
 					},
 				},
 				ApplyEffects: func(sim *Simulation, _ *Unit, _ *Spell) {

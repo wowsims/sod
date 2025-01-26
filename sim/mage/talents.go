@@ -102,7 +102,7 @@ func (mage *Mage) applyFireTalents() {
 		bonusDamageMultiplierAdditive := 0.02 * float64(mage.Talents.FirePower)
 		mage.OnSpellRegistered(func(spell *core.Spell) {
 			// Fire Power buffs pretty much all mage fire spells EXCEPT ignite
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) && spell != mage.Ignite {
+			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) && spell.SpellCode != SpellCode_MageIgnite {
 				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
 			}
 		})
@@ -112,6 +112,7 @@ func (mage *Mage) applyFireTalents() {
 func (mage *Mage) applyFrostTalents() {
 	mage.registerColdSnapCD()
 	mage.registerIceBarrierSpell()
+	mage.applyFrostbite()
 	mage.applyImprovedBlizzard()
 	mage.applyWintersChill()
 
@@ -476,6 +477,41 @@ func (mage *Mage) registerCombustionCD() {
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
 	})
+}
+
+// While bosses Immune Frostbite itself, procs still trigger Fingers of Frost
+func (mage *Mage) applyFrostbite() {
+	if mage.Talents.Frostbite == 0 {
+		return
+	}
+
+	frostbiteSpell := mage.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 12494},
+		SpellSchool: core.SpellSchoolFrost,
+		ProcMask:    core.ProcMaskSpellDamage, // Considered a harmful effect
+		Flags:       SpellFlagChillSpell | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+		},
+	})
+
+	procChance := 0.05 * float64(mage.Talents.Frostbite)
+
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Frostbite Trigger",
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// Only Blizzard ticks proc
+			if spell.SpellCode == SpellCode_MageBlizzard && spell.Flags.Matches(SpellFlagChillSpell) && sim.Proc(procChance, "Frostbite") {
+				frostbiteSpell.Cast(sim, result.Target)
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Flags.Matches(SpellFlagChillSpell) && sim.Proc(procChance, "Frostbite") {
+				frostbiteSpell.Cast(sim, result.Target)
+			}
+		},
+	}))
 }
 
 func (mage *Mage) registerColdSnapCD() {

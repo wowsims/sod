@@ -61,6 +61,8 @@ func (action *APLAction) GetAllSpells() []*Spell {
 			spells = append(spells, impl.spell)
 		} else if impl, ok := a.impl.(*APLActionMultishield); ok {
 			spells = append(spells, impl.spell)
+		} else if spell := a.impl.GetSpellFromAction(); spell != nil {
+			spells = append(spells, spell)
 		}
 	}
 	return spells
@@ -77,6 +79,9 @@ func (action *APLAction) String() string {
 type APLActionImpl interface {
 	// Returns all inner APL Actions.
 	GetInnerActions() []*APLAction
+
+	// Returns the spell from this action, if any exists.
+	GetSpellFromAction() *Spell
 
 	// Returns all APLValues used by this Action (but not by inner Actions).
 	GetAPLValues() []APLValue
@@ -109,6 +114,7 @@ func (impl defaultAPLActionImpl) GetAPLValues() []APLValue             { return 
 func (impl defaultAPLActionImpl) Finalize(*APLRotation)                {}
 func (impl defaultAPLActionImpl) Reset(*Simulation)                    {}
 func (impl defaultAPLActionImpl) GetNextAction(*Simulation) *APLAction { return nil }
+func (impl defaultAPLActionImpl) GetSpellFromAction() *Spell           { return nil }
 
 func (rot *APLRotation) newAPLAction(config *proto.APLAction) *APLAction {
 	if config == nil {

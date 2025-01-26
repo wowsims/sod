@@ -147,7 +147,7 @@ func (druid *Druid) applyT2Feral2PBonus() {
 					continue
 				}
 
-				dot.NumberOfTicks += 2
+				dot.NumberOfTicks += int32(6 / dot.TickLength.Seconds())
 				dot.RecomputeAuraDuration()
 				oldOnSnapshot := dot.OnSnapshot
 				dot.OnSnapshot = func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {

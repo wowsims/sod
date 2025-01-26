@@ -76,7 +76,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 
 				if !isRollover {
 					if warlock.zilaGularAura.IsActive() {
-						dot.SnapshotAttackerMultiplier *= 1.25
+						dot.SnapshotAttackerMultiplier *= 1.10
 						warlock.zilaGularAura.Deactivate(sim)
 					}
 				}

@@ -127,7 +127,7 @@ enum Stat {
 // between the UI and backend.
 //
 // It's also OK to include things here which aren't in the PseudoStats struct.
-// NextIndex: 34
+// NextIndex: 35
 enum PseudoStat {
 	PseudoStatMainHandDps = 0;
 	PseudoStatOffHandDps = 1;
@@ -168,6 +168,7 @@ enum PseudoStat {
 
 	PseudoStatMeleeSpeedMultiplier = 27;
 	PseudoStatRangedSpeedMultiplier = 28;
+	PseudoStatCastSpeedMultiplier = 34;
 	PseudoStatBlockValuePerStrength = 29;
 
 	// Special Pseudostats
@@ -330,6 +331,7 @@ enum Explosive {
 	ExplosiveHighYieldRadiationBomb = 5;
 	ExplosiveGoblinLandMine = 6;
 	ExplosiveObsidianBomb = 7;
+	ExplosiveStratholmeHolyWater = 8;
 }
 
 // NextIndex: 28
@@ -483,6 +485,43 @@ enum FrostPowerBuff {
 	ElixirOfFrostPower = 1;
 }
 
+enum SealOfTheDawn {
+	SealOfTheDawnUnknown = 0;
+
+	SealOfTheDawnDamageR1 = 1;
+	SealOfTheDawnDamageR2 = 2;
+	SealOfTheDawnDamageR3 = 3;
+	SealOfTheDawnDamageR4 = 4;
+	SealOfTheDawnDamageR5 = 5;
+	SealOfTheDawnDamageR6 = 6;
+	SealOfTheDawnDamageR7 = 7;
+	SealOfTheDawnDamageR8 = 8;
+	SealOfTheDawnDamageR9 = 9;
+	SealOfTheDawnDamageR10 = 10;
+
+	SealOfTheDawnTankR1 = 11;
+	SealOfTheDawnTankR2 = 12;
+	SealOfTheDawnTankR3 = 13;
+	SealOfTheDawnTankR4 = 14;
+	SealOfTheDawnTankR5 = 15;
+	SealOfTheDawnTankR6 = 16;
+	SealOfTheDawnTankR7 = 17;
+	SealOfTheDawnTankR8 = 18;
+	SealOfTheDawnTankR9 = 19;
+	SealOfTheDawnTankR10 = 20;
+
+	SealOfTheDawnHealingR1 = 21;
+	SealOfTheDawnHealingR2 = 22;
+	SealOfTheDawnHealingR3 = 23;
+	SealOfTheDawnHealingR4 = 24;
+	SealOfTheDawnHealingR5 = 25;
+	SealOfTheDawnHealingR6 = 26;
+	SealOfTheDawnHealingR7 = 27;
+	SealOfTheDawnHealingR8 = 28;
+	SealOfTheDawnHealingR9 = 29;
+	SealOfTheDawnHealingR10 = 30;
+}
+
 enum ZanzaBuff {
 	ZanzaBuffUnknown = 0;
 	SpiritOfZanza = 1;
@@ -529,7 +568,7 @@ enum MageScroll {
 	MageScrollFrostProtection = 5;
 }
 
-// NextIndex: 33
+// NextIndex: 36
 enum WeaponImbue {
 	// Weapon Oils
 	WeaponImbueUnknown = 0;
@@ -540,6 +579,7 @@ enum WeaponImbue {
 	WizardOil = 20;
 	BrilliantWizardOil = 2;
 	EnchantedRepellent = 30;
+	BlessedWizardOil = 33;
 
 	MinorManaOil = 15;
 	LesserManaOil = 16;
@@ -551,6 +591,8 @@ enum WeaponImbue {
 	DenseSharpeningStone = 3;
 	ElementalSharpeningStone = 4;
 	BlackfathomSharpeningStone = 6;
+	ConsecratedSharpeningStone = 34;
+	WeightedConsecratedSharpeningStone = 35;
 
 	// Weightstones
 	SolidWeightstone = 18;
@@ -737,8 +779,11 @@ message IndividualBuffs {
 	bool fervor_of_the_temple_explorer = 18;
 }
 
-// NextIndex: 34
+// NextIndex: 36
 message Consumes {
+	reserved 19, 25;
+	reserved "atalai_mojo", "bogling_root";
+
 	Flask flask = 1;
 	Food food = 2;
 	AgilityElixir agility_elixir = 5;
@@ -763,14 +808,12 @@ message Consumes {
 	PetMiscConsumes pet_misc_consumes = 33;
 	bool dragon_breath_chili = 24;
 	MiscConsumes misc_consumes = 26;
+	SealOfTheDawn seal_of_the_dawn = 35;
 	ZanzaBuff zanza_buff = 27;
 	ArmorElixir armor_elixir = 28;
 	HealthElixir health_elixir = 29;
 	Alcohol alcohol = 30;
 	MageScroll mage_scroll = 32;
-
-	AtalaiMojo atalai_mojo = 25 [deprecated=true];
-	bool bogling_root = 19 [deprecated=true];
 }
 
 // NextIndex: 44
@@ -986,6 +1029,8 @@ enum EnchantType {
 	EnchantTypeShield = 2;
 	EnchantTypeKit = 3;
 	EnchantTypeStaff = 4;
+	// New in SoD
+	EnchantTypeOffHand = 5;
 }
 
 // Contains only the Enchant info needed by the sim.

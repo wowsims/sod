@@ -58,14 +58,17 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
-		Stat.StatMeleeHaste,
 		Stat.StatExpertise,
 		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 	],
-	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
+	epPseudoStats: [
+		PseudoStat.PseudoStatMainHandDps,
+		PseudoStat.PseudoStatOffHandDps,
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+	],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -79,12 +82,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatExpertise,
-		Stat.StatMeleeHaste,
 		// Spell
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [
+		PseudoStat.PseudoStatMeleeSpeedMultiplier,
+	],
 
 	defaults: {
 		// Default equipped gear.
@@ -92,19 +96,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatAgility]: 2.51,
-				[Stat.StatStrength]: 1.31,
+				[Stat.StatAgility]: 2.24,
+				[Stat.StatStrength]: 1.36,
 				[Stat.StatAttackPower]: 1.0,
+				[Stat.StatMeleeHit]: 19.43,
+				[Stat.StatMeleeCrit]: 16.32,
+				[Stat.StatExpertise]: 53.02,
 				[Stat.StatSpellCrit]: 0.12,
 				[Stat.StatSpellHit]: 11.94,
-				[Stat.StatMeleeHit]: 19.43,
-				[Stat.StatMeleeCrit]: 26.72,
 				[Stat.StatFireResistance]: 0.5,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 9.86,
-				[PseudoStat.PseudoStatOffHandDps]: 1.02,
-				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 5.0,
+				[PseudoStat.PseudoStatMainHandDps]: 3.19,
+				[PseudoStat.PseudoStatOffHandDps]: 2.08,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 13.38,
+				[PseudoStat.PseudoStatTimewornBonus]: 53.01,
 			},
 		),
 

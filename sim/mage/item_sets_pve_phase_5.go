@@ -84,7 +84,7 @@ func (mage *Mage) applyT2Damage4PBonus() {
 	})
 }
 
-// Your Fireball's periodic effect gains increased damage over its duration equal to 20% of its impact damage.
+// Your Fireball's periodic effect gains increased damage over its duration equal to 100% of its impact damage.
 func (mage *Mage) applyT2Damage6PBonus() {
 	label := "S03 - Item - T2 - Mage - Damage 6P Bonus"
 	if mage.HasAura(label) {
@@ -96,7 +96,8 @@ func (mage *Mage) applyT2Damage6PBonus() {
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.SpellCode == SpellCode_MageFireball && result.Landed() {
-				mage.BonusFireballDoTAmount += result.Damage * 1.00 / float64(spell.Dot(result.Target).NumberOfTicks)
+				// Tested that this is calculated using the fireball damage WITHOUT defender mods (debuffs)
+				mage.BonusFireballDoTAmount += result.DamagePostAttacker * 1.00 / float64(spell.Dot(result.Target).NumberOfTicks)
 			}
 		},
 	}))

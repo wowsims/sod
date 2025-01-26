@@ -27,6 +27,10 @@ var ItemSetGenesisEclipse = core.NewItemSet(core.ItemSet{
 
 // Your Nature's Grace talent gains 1 additional charge each time it triggers.
 func (druid *Druid) applyTAQBalance2PBonus() {
+	if !druid.Talents.NaturesGrace {
+		return
+	}
+
 	label := "S03 - Item - TAQ - Druid - Balance 2P Bonus"
 	if druid.HasAura(label) {
 		return

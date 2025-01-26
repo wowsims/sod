@@ -42,7 +42,7 @@ func (warlock *Warlock) applyTAQDamage2PBonus() {
 			}
 
 			if warlock.ChaosBolt != nil {
-				warlock.ChaosBolt.CD.Multiplier -= 50
+				warlock.ChaosBolt.CD.Multiplier *= 0.5
 				warlock.ChaosBolt.DamageMultiplierAdditive += 0.10
 			}
 		},

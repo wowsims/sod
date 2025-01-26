@@ -27,10 +27,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatNaturePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	epPseudoStats: [],
+	epPseudoStats: [
+		PseudoStat.PseudoStatCastSpeedMultiplier,
+	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -47,10 +48,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatFirePower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [
+		PseudoStat.PseudoStatCastSpeedMultiplier,
+	],
 
 	defaults: {
 		race: Race.RaceTroll,
@@ -65,12 +67,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			[Stat.StatNaturePower]: 0.7,
 			[Stat.StatSpellHit]: 20.08,
 			[Stat.StatSpellCrit]: 17.91,
-			[Stat.StatSpellHaste]: 17.16,
 			[Stat.StatMP5]: 0.02,
 			[Stat.StatStrength]: 0.01,
 			[Stat.StatAttackPower]: 0.01,
 			[Stat.StatFireResistance]: 0.5,
 		}, {
+			[PseudoStat.PseudoStatCastSpeedMultiplier]: 19.64,
 			[PseudoStat.PseudoStatTimewornBonus]: 35.74,
 		}),
 		// Default consumes settings.

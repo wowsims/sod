@@ -138,8 +138,8 @@ func (priest *Priest) applyNaxxramasHealer2PBonus() {
 	priest.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			priest.Penance.CD.Multiplier -= 25
-			priest.PenanceHeal.CD.Multiplier -= 25
+			priest.Penance.CD.Multiplier *= 0.75
+			priest.PenanceHeal.CD.Multiplier *= 0.75
 		},
 	})
 }

@@ -43,7 +43,8 @@ const statGroups = new Map<string, Array<DisplayStat>>([
 			{stat: UnitStat.fromStat(Stat.StatMeleeHit)},
 			{stat: UnitStat.fromStat(Stat.StatExpertise)},
 			{stat: UnitStat.fromStat(Stat.StatMeleeCrit)},
-			{stat: UnitStat.fromStat(Stat.StatMeleeHaste)},
+			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier)},
+			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier)},
 			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatBonusPhysicalDamage)},
 		]
 	],
@@ -60,7 +61,7 @@ const statGroups = new Map<string, Array<DisplayStat>>([
 			{stat: UnitStat.fromStat(Stat.StatShadowPower)},
 			{stat: UnitStat.fromStat(Stat.StatSpellHit)},
 			{stat: UnitStat.fromStat(Stat.StatSpellCrit)},
-			{stat: UnitStat.fromStat(Stat.StatSpellHaste)},
+			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier)},
 			{stat: UnitStat.fromStat(Stat.StatSpellPenetration)},
 			{stat: UnitStat.fromStat(Stat.StatMP5)},
 		]
@@ -91,8 +92,8 @@ const statGroups = new Map<string, Array<DisplayStat>>([
 		'Misc',
 		[
 			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatThornsDamage), notEditable: true},
-			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatTimewornBonus), notEditable: true},
-			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSanctifiedBonus), notEditable: true},
+			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatTimewornBonus)},
+			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSanctifiedBonus)},
 		]
 	],
 ])
@@ -422,51 +423,73 @@ export class CharacterStats extends Component {
 		if (unitStat.isStat()) {
 			const stat = unitStat.getStat();
 
-			if (stat === Stat.StatBlockValue) {
+			switch (stat) {
+			case Stat.StatBlockValue:
 				const mult = stats.getPseudoStat(PseudoStat.PseudoStatBlockValueMultiplier) || 1;
 				const perStr = Math.max(0, stats.getPseudoStat(PseudoStat.PseudoStatBlockValuePerStrength) * deltaStats.getStat(Stat.StatStrength) - 1);
 				displayStr = String(Math.round((rawValue * mult) + perStr));
-			} else if (stat === Stat.StatMeleeHit) {
+				break;
+			case Stat.StatMeleeHit:
 				displayStr = `${(rawValue / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
-			} else if (stat === Stat.StatSpellHit) {
+				break;
+			case Stat.StatSpellHit:
 				displayStr = `${(rawValue / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
-			} else if (stat === Stat.StatSpellDamage) {
-				const spDmg = Math.round(rawValue);
-				const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower));
-				displayStr = baseSp + spDmg + ` (+${spDmg})`;
-			} else if (
-				stat === Stat.StatArcanePower ||
-				stat === Stat.StatFirePower ||
-				stat === Stat.StatFrostPower ||
-				stat === Stat.StatHolyPower ||
-				stat === Stat.StatNaturePower ||
-				stat === Stat.StatShadowPower
-			) {
-				const spDmg = Math.round(rawValue);
-				const baseSp = Math.round(deltaStats.getStat(Stat.StatSpellPower) + deltaStats.getStat(Stat.StatSpellDamage));
-				displayStr = baseSp + spDmg + ` (+${spDmg})`;
-			} else if (stat === Stat.StatMeleeCrit || stat === Stat.StatSpellCrit) {
+				break;
+			case Stat.StatSpellDamage:
+				const statSpellDamage = Math.round(rawValue);
+				const statSpellPower = Math.round(deltaStats.getStat(Stat.StatSpellPower));
+				displayStr = statSpellPower + statSpellDamage + ` (+${statSpellDamage})`;
+				break;
+			case Stat.StatArcanePower:
+			case Stat.StatFirePower:
+			case Stat.StatFrostPower:
+			case Stat.StatHolyPower:
+			case Stat.StatNaturePower:
+			case Stat.StatShadowPower:
+				const schoolDamage = Math.round(rawValue);
+				const baseSpellPower = Math.round(deltaStats.getStat(Stat.StatSpellPower) + deltaStats.getStat(Stat.StatSpellDamage));
+				displayStr = baseSpellPower + schoolDamage + ` (+${schoolDamage})`;
+				break;
+			case Stat.StatMeleeCrit:
+			case Stat.StatSpellCrit:
 				displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
-			} else if (stat === Stat.StatMeleeHaste) {
-				// Melee Haste doesn't actually exist in vanilla so use the melee speed pseudostat
-				displayStr = `${(deltaStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier) * 100).toFixed(2)}%`;
-			} else if (stat === Stat.StatSpellHaste) {
-				displayStr = `${(rawValue / Mechanics.HASTE_RATING_PER_HASTE_PERCENT).toFixed(2)}%`;
-			} else if (stat === Stat.StatArmorPenetration) {
+				break;
+			case Stat.StatArmorPenetration:
 				displayStr = `${rawValue} (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
-			} else if (stat === Stat.StatExpertise) {
+				break;
+			case Stat.StatExpertise:
 				// It's just like crit and hit in SoD.
 				displayStr = `${rawValue}%`;
-			} else if (stat === Stat.StatDefense) {
+				break;
+			case Stat.StatDefense:
 				displayStr = `${(player.getLevel() * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)}`;
-			} else if (stat === Stat.StatBlock) {
+				break;
+			case Stat.StatBlock:
 				displayStr = `${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%`;
-			} else if (stat === Stat.StatDodge) {
+				break;
+			case Stat.StatDodge:
 				displayStr = `${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%`;
-			} else if (stat === Stat.StatParry) {
+				break;
+			case Stat.StatParry:
 				displayStr = `${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%`;
-			} else if (stat === Stat.StatResilience) {
+				break;
+			case Stat.StatResilience:
 				displayStr = `${rawValue} (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
+				break;
+			}
+		} else {
+			const pseudoStat = unitStat.getPseudoStat();
+
+			switch (pseudoStat) {
+				case PseudoStat.PseudoStatMeleeSpeedMultiplier:
+					displayStr = `${(100 * deltaStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier)).toFixed(2)}%`;
+					break;
+				case PseudoStat.PseudoStatRangedSpeedMultiplier:
+					displayStr = `${(100 * deltaStats.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier)).toFixed(2)}%`;
+					break;
+				case PseudoStat.PseudoStatCastSpeedMultiplier:
+					displayStr = `${(100 * deltaStats.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier)).toFixed(2)}%`;
+					break;
 			}
 		}
 		

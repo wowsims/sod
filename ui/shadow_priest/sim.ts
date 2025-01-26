@@ -28,8 +28,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatHolyPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
+	],
+	epPseudoStats: [
+		PseudoStat.PseudoStatCastSpeedMultiplier,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
@@ -49,7 +51,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [],
+	displayPseudoStats: [
+		PseudoStat.PseudoStatCastSpeedMultiplier,
+	],
 	
 	modifyDisplayStats: (player: Player<Spec.SpecShadowPriest>) => {
 		let stats = new Stats();
@@ -72,9 +76,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			[Stat.StatShadowPower]: 1,
 			[Stat.StatSpellHit]: 5.51,
 			[Stat.StatSpellCrit]: 5.99, // Averaged between using and not using Despair for dot crits
-			[Stat.StatSpellHaste]: 1.65,
 			[Stat.StatMP5]: 0.0,
 			[Stat.StatFireResistance]: 0.5,
+		}, {
+			[PseudoStat.PseudoStatCastSpeedMultiplier]: 1.73,
+			[PseudoStat.PseudoStatTimewornBonus]: 26.08,
 		}),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,

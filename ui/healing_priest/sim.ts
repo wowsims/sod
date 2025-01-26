@@ -31,7 +31,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
@@ -44,7 +43,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 		Stat.StatSpirit,
 		Stat.StatSpellPower,
 		Stat.StatSpellCrit,
-		Stat.StatSpellHaste,
 		Stat.StatMP5,
 	],
 	displayPseudoStats: [],
@@ -58,7 +56,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 			[Stat.StatSpirit]: 1.63,
 			[Stat.StatSpellPower]: 1,
 			[Stat.StatSpellCrit]: 0.75,
-			[Stat.StatSpellHaste]: 0.28,
 			[Stat.StatMP5]: 2.05,
 		}),
 		// Default consumes settings.

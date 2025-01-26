@@ -53,6 +53,7 @@ type Paladin struct {
 	primarySeal        *core.Spell // the seal configured in options, available via "Cast Primary Seal"
 	primaryPaladinAura proto.PaladinAura
 	currentPaladinAura *core.Aura
+	sanctityAura       *core.Aura
 
 	currentSeal      *core.Aura
 	prevSeal         *core.Aura
@@ -84,6 +85,7 @@ type Paladin struct {
 	holyShieldProc [3]*core.Spell
 	redoubtAura    *core.Aura
 	holyWrath      []*core.Spell
+	divineProtection *core.Spell
 
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
@@ -155,10 +157,14 @@ func (paladin *Paladin) Initialize() {
 	paladin.enableMultiJudge = false // Was previously true in Phase 4 but disabled in Phase 5
 	paladin.lingerDuration = time.Millisecond * 400
 	paladin.consumeSealsOnJudge = true
+	if paladin.Options.Aura == proto.PaladinAura_SanctityAura || paladin.HasAura("Sanctity Aura") {
+		paladin.sanctityAura = core.SanctityAuraAura(paladin.GetCharacter())
+	}
 
 	paladin.registerStopAttackMacros()
 
 	paladin.ResetCurrentPaladinAura()
+	paladin.ResetPrimarySeal(paladin.Options.PrimarySeal)
 }
 
 func (paladin *Paladin) Reset(_ *core.Simulation) {
@@ -232,7 +238,7 @@ func (paladin *Paladin) registerStopAttackMacros() {
 func (paladin *Paladin) ResetCurrentPaladinAura() {
 	paladin.currentPaladinAura = nil
 	if paladin.primaryPaladinAura == proto.PaladinAura_SanctityAura {
-		paladin.currentPaladinAura = core.SanctityAuraAura(paladin.GetCharacter())
+		paladin.currentPaladinAura = paladin.sanctityAura
 	}
 }
 

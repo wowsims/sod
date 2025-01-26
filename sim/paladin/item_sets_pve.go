@@ -478,7 +478,7 @@ func (paladin *Paladin) applyPaladinT2Holy4P() {
 	//Increases damage done by your Consecration spell by 50%
 	paladin.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.SpellCode == SpellCode_PaladinConsecration {
-			spell.AOEDot().DamageMultiplier += 0.5
+			spell.DamageMultiplierAdditive += 0.5
 		}
 	})
 }
@@ -623,7 +623,7 @@ func (paladin *Paladin) applyPaladinTAQRet2P() {
 		//"S03 - Item - TAQ - Paladin - Retribution 2P Bonus",
 		if spell.SpellCode == SpellCode_PaladinCrusaderStrike {
 			// 2 Set: Increases Crusader Strike Damage by 50%
-			spell.DamageMultiplier += 0.5
+			spell.DamageMultiplierAdditive += 0.5
 		}
 	})
 }
