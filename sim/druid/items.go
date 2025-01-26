@@ -15,6 +15,7 @@ const (
 	IdolOfFerocity                   = 22397
 	IdolOfTheMoon                    = 23197
 	IdolOfBrutality                  = 23198
+	IdolOfCruelty                    = 232424
 	IdolMindExpandingMushroom        = 209576
 	Catnip                           = 213407
 	IdolOfWrath                      = 216490

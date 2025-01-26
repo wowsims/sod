@@ -2409,7 +2409,7 @@ func init() {
 			Name:     "Fiery Aura Proc",
 			Callback: core.CallbackOnSpellHitTaken,
 			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee, // TODO: Unsure if this means melee attacks or all attacks
+			ProcMask: core.ProcMaskMelee,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, spell.Unit)
 			},
@@ -3568,6 +3568,34 @@ func manslayerOfTheQirajiAura(character *core.Character) *core.Aura {
 				icd.Use(sim)
 				aura.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1214927}, spell)
 			}
+		},
+	})
+}
+
+func DamageShieldWithThreatMod(character *core.Character, spellID int32, damage float64, threatMod float64, procName string) {
+
+	procSpell := character.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellID},
+		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: threatMod,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeAlwaysHit)
+		},
+	})
+
+	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:     procName,
+		Callback: core.CallbackOnSpellHitTaken,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procSpell.Cast(sim, spell.Unit)
 		},
 	})
 }

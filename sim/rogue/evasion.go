@@ -4,14 +4,14 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/stats"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 func (rogue *Rogue) RegisterEvasionSpell() {
 	//Used to double evasion due it ignoring the dynamic -50% dodge suppresion aura from JAFW
 	hasJAFW := rogue.HasRune(proto.RogueRune_RuneJustAFleshWound)
-		
+
 	rogue.EvasionAura = rogue.RegisterAura(core.Aura{
 		Label:    "Evasion",
 		ActionID: core.ActionID{SpellID: 5277},
