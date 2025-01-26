@@ -33,19 +33,13 @@ func (warlock *Warlock) applyNaxxramasDamage2PBonus() {
 		return
 	}
 
-	warlock.RegisterAura(core.Aura{
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := warlock.Corruption
-			if warlock.Incinerate != nil {
-				affectedSpells = append(affectedSpells, warlock.Incinerate)
-			}
-
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockCorruption,
+		FloatValue: 0.20,
+	}))
 }
 
 // Your non-periodic critical strikes cause your active Corruption, Immolate, Shadowflame, and Unstable Affliction spells on the target to immediately deal one pulse of their damage to the target.

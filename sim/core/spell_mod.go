@@ -108,6 +108,7 @@ func (unit *Unit) AddDynamicMod(config SpellModConfig) *SpellMod {
 }
 
 func shouldApply(spell *Spell, mod *SpellMod) bool {
+
 	if spell.Flags.Matches(SpellFlagNoSpellMods) {
 		return false
 	}

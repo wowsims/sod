@@ -36,25 +36,19 @@ func (rogue *Rogue) applyNaxxramasDamage2PBonus() {
 
 	healthMetrics := rogue.NewHealthMetrics(core.ActionID{SpellID: 1219261})
 
-	core.MakePermanent(rogue.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.Ambush.DamageMultiplierAdditive += 0.20
-			for _, spell := range rogue.InstantPoison {
-				spell.DamageMultiplierAdditive += 0.20
-			}
+	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueInstantPoison,
+		Callback:       core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			rogue.GainHealth(sim, result.Damage*0.05, healthMetrics)
 		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_RogueDeadlyPoisonTick|ClassSpellMask_RogueOccultPoisonTick) && result.Landed() {
-				rogue.GainHealth(sim, result.Damage*0.05, healthMetrics)
-			}
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_RogueInstantPoison) && result.Landed() {
-				rogue.GainHealth(sim, result.Damage*0.05, healthMetrics)
-			}
-		},
-	}))
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_RogueAmbush | ClassSpellMask_RogueInstantPoison,
+		FloatValue: 0.20,
+	})
 }
 
 // You have a 100% chance gain 1 Energy each time you deal periodic Nature or Bleed damage.
@@ -66,14 +60,14 @@ func (rogue *Rogue) applyNaxxramasDamage4PBonus() {
 
 	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 1219288})
 
-	core.MakePermanent(rogue.RegisterAura(core.Aura{
-		Label: label,
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellSchool.Matches(core.SpellSchoolPhysical) || spell.SpellSchool.Matches(core.SpellSchoolNature) {
-				rogue.AddEnergy(sim, 1, energyMetrics)
-			}
+	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+		Name:        label,
+		SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolNature,
+		Callback:    core.CallbackOnPeriodicDamageDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			rogue.AddEnergy(sim, 1, energyMetrics)
 		},
-	}))
+	})
 }
 
 // You gain 1% increased damage to Undead for 30 sec per Combo Point you spend, stacking up to 25 times.

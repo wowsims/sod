@@ -32,18 +32,13 @@ func (rogue *Rogue) applyTAQDamage2PBonus() {
 		return
 	}
 
-	rogue.RegisterAura(core.Aura{
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if rogue.SaberSlash != nil {
-				rogue.SaberSlash.DamageMultiplierAdditive += 0.20
-			}
-			if rogue.Mutilate != nil {
-				rogue.MutilateMH.DamageMultiplierAdditive += 0.20
-				rogue.MutilateOH.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
+		FloatValue: 0.20,
+	}))
 }
 
 // Reduces the cooldown on Adrenaline Rush by 4 minutes.

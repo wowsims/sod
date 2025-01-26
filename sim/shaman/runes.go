@@ -137,10 +137,10 @@ func (shaman *Shaman) applyBurn() {
 		shaman.AddStatDependency(stats.Intellect, stats.SpellDamage, 1.50)
 	}
 
-	shaman.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Matches(ClassSpellMask_ShamanFlameShock) {
-			spell.DamageMultiplierAdditive += BurnFlameShockDamageBonus
-		}
+	shaman.AddStaticMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_ShamanFlameShock,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: BurnFlameShockDamageBonus,
 	})
 
 	// Other parts of burn are handled in flame_shock.go

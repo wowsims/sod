@@ -227,49 +227,17 @@ func (priest *Priest) applyDarkness() {
 
 	multiplier := 0.02 * float64(priest.Talents.Darkness)
 
-	priest.RegisterAura(core.Aura{
+	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: "Darkness",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			baseDamageAffectedSpells := core.FilterSlice(
-				core.Flatten(
-					[][]*core.Spell{
-						priest.MindBlast,
-						priest.DevouringPlague,
-						priest.MindSearTicks,
-						{priest.ShadowWordDeath},
-					},
-				),
-				func(spell *core.Spell) bool { return spell != nil },
-			)
-
-			fullDamageAffectedSpells := core.FilterSlice(
-				core.Flatten(
-					[][]*core.Spell{
-						priest.ShadowWordPain,
-						{priest.VoidPlague},
-						{priest.MindSpike},
-						{priest.VoidZone},
-					},
-				),
-				func(spell *core.Spell) bool { return spell != nil },
-			)
-
-			for _, spells := range priest.MindFlay {
-				fullDamageAffectedSpells = append(
-					fullDamageAffectedSpells,
-					core.FilterSlice(spells, func(spell *core.Spell) bool { return spell != nil })...,
-				)
-			}
-
-			for _, spell := range baseDamageAffectedSpells {
-				spell.BaseDamageMultiplierAdditive += multiplier
-			}
-
-			for _, spell := range fullDamageAffectedSpells {
-				spell.DamageMultiplier *= 1 + multiplier
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BaseDamageDone_Flat,
+		ClassMask:  ClassSpellMask_PriestMindBlast | ClassSpellMask_PriestDevouringPlague | ClassSpellMask_PriestMindSear | ClassSpellMask_PriestShadowWordDeath,
+		FloatValue: multiplier,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestVoidPlague | ClassSpellMask_PriestMindSpike | ClassSpellMask_PriestVoidZone | ClassSpellMask_PriestMindFlay,
+		FloatValue: multiplier,
+	}))
 }
 
 func (priest *Priest) registerInnerFocus() {

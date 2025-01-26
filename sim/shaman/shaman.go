@@ -34,6 +34,8 @@ const (
 	ClassSpellMask_ShamanLesserHealingWave
 	ClassSpellMask_ShamanLightningBolt
 	ClassSpellMask_ShamanLightningShield
+	ClassSpellMask_ShamanLightningShieldProc
+	ClassSpellMask_ShamanRollingThunder
 	ClassSpellMask_ShamanLavaBurst
 	ClassSpellMask_ShamanMagmaTotem
 	ClassSpellMask_ShamanMagmaTotemAttack
@@ -42,6 +44,7 @@ const (
 	ClassSpellMask_ShamanSearingTotemAttack
 	ClassSpellMask_ShamanStormstrike
 	ClassSpellMask_ShamanStormstrikeHit
+	ClassSpellMask_ShamanWindFury
 )
 
 // Indexes into NextTotemDrops for self buffs

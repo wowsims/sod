@@ -34,33 +34,25 @@ func (warlock *Warlock) applyTAQDamage2PBonus() {
 		return
 	}
 
-	aura := warlock.RegisterAura(core.Aura{
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.ShadowBolt {
-				spell.DamageMultiplierAdditive += 0.10
-			}
-
-			if warlock.ChaosBolt != nil {
-				warlock.ChaosBolt.CD.Multiplier *= 0.5
-				warlock.ChaosBolt.DamageMultiplierAdditive += 0.10
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && result.DidCrit() && spell.Matches(ClassSpellMask_WarlockChaosBolt) {
+				isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
+				isbAura.Activate(sim)
+				// This set always uses 30 stacks
+				isbAura.SetStacks(sim, core.ISBNumStacksShadowflame)
 			}
 		},
-	})
-
-	if !warlock.HasRune(proto.WarlockRune_RuneHandsChaosBolt) {
-		return
-	}
-
-	core.MakePermanent(aura)
-	aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if result.Landed() && result.DidCrit() && spell.Matches(ClassSpellMask_WarlockChaosBolt) {
-			isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
-			isbAura.Activate(sim)
-			// This set always uses 30 stacks
-			isbAura.SetStacks(sim, core.ISBNumStacksShadowflame)
-		}
-	}
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_WarlockChaosBolt | ClassSpellMask_WarlockShadowBolt,
+		FloatValue: 0.10,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multi_Pct,
+		ClassMask:  ClassSpellMask_WarlockChaosBolt,
+		FloatValue: 0.5,
+	}))
 }
 
 // Each time you hit a target with Conflagrate, you gain 5% increased Fire damage for 20 sec, stacking up to 2 times.

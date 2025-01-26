@@ -395,23 +395,13 @@ func (shaman *Shaman) applyT2Restoration6PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			spells := core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					shaman.ChainHeal,
-					shaman.ChainHealOverload,
-					shaman.ChainLightning,
-					shaman.ChainLightningOverload,
-				}), func(spell *core.Spell) bool { return spell != nil },
-			)
-
-			for _, spell := range spells {
-				spell.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanChainLightning,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0.20,
+	}))
 }
 
 var ItemSetAugursRegalia = core.NewItemSet(core.ItemSet{

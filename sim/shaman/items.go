@@ -364,33 +364,36 @@ func init() {
 			return
 		}
 
-		var affectedSpells []*core.Spell
+		damageMod := shaman.AddDynamicMod(core.SpellModConfig{
+			ClassMask: ClassSpellMask_ShamanChainLightning,
+			Kind:      core.SpellMod_DamageDone_Flat,
+		})
+		castTimeMod := shaman.AddDynamicMod(core.SpellModConfig{
+			ClassMask: ClassSpellMask_ShamanChainLightning,
+			Kind:      core.SpellMod_CastTime_Pct,
+		})
 
 		buffAura := shaman.RegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 470272},
 			Label:     "Totem of Conductive Currents",
 			Duration:  time.Second * 15,
 			MaxStacks: 5,
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells = core.FilterSlice(shaman.ChainLightning, func(spell *core.Spell) bool { return spell != nil })
-				affectedSpells = append(affectedSpells, core.FilterSlice(shaman.ChainLightningOverload, func(spell *core.Spell) bool { return spell != nil })...)
-			},
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				oldStackValue := 0.20 * float64(oldStacks)
-				newStackValue := 0.20 * float64(newStacks)
-
-				for _, spell := range affectedSpells {
-					spell.DamageMultiplierAdditive -= oldStackValue
-					spell.DamageMultiplierAdditive += newStackValue
-
-					spell.CastTimeMultiplier += oldStackValue
-					spell.CastTimeMultiplier -= newStackValue
-				}
+				damageMod.UpdateFloatValue(0.20 * float64(newStacks))
+				castTimeMod.UpdateFloatValue(0.20 * float64(newStacks))
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell.Matches(ClassSpellMask_ShamanChainLightning) {
 					aura.Deactivate(sim)
 				}
+			},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				damageMod.Activate()
+				castTimeMod.Activate()
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				damageMod.Deactivate()
+				castTimeMod.Deactivate()
 			},
 		})
 
@@ -427,24 +430,14 @@ func init() {
 	// Increases the damage of Flame Shock and Molten Blast by 3%.
 	core.NewItemEffect(TotemOfFlowingMagma, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		shaman.RegisterAura(core.Aura{
-			Label: "Improved Flame Shock/Molten Blast",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells := core.FilterSlice(
-					core.Flatten(
-						[][]*core.Spell{
-							shaman.FlameShock,
-							{shaman.MoltenBlast},
-						},
-					),
-					func(spell *core.Spell) bool { return spell != nil },
-				)
 
-				for _, spell := range affectedSpells {
-					spell.DamageMultiplierAdditive += 0.03
-				}
-			},
-		})
+		core.MakePermanent(shaman.RegisterAura(core.Aura{
+			Label: "Improved Flame Shock/Molten Blast",
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:  ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanMoltenBlast,
+			Kind:       core.SpellMod_DamageDone_Flat,
+			FloatValue: 0.03,
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=215436/totem-of-invigorating-flame
@@ -463,27 +456,14 @@ func init() {
 	// Increases the damage of Lightning Bolt, Chain Lightning, and Lava Burst by 3%.
 	core.NewItemEffect(TotemOfPyroclasticThunder, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		shaman.RegisterAura(core.Aura{
-			Label: "Improved Lightning Bolt/Lava Burst",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells := core.FilterSlice(
-					core.Flatten(
-						[][]*core.Spell{
-							shaman.LightningBolt,
-							shaman.LightningBoltOverload,
-							shaman.ChainLightning,
-							shaman.ChainLightningOverload,
-							{shaman.LavaBurst, shaman.LavaBurstOverload},
-						},
-					),
-					func(spell *core.Spell) bool { return spell != nil },
-				)
 
-				for _, spell := range affectedSpells {
-					spell.DamageMultiplierAdditive += 0.03
-				}
-			},
-		})
+		core.MakePermanent(shaman.RegisterAura(core.Aura{
+			Label: "Improved Lightning Bolt/Lava Burst",
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:  ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning | ClassSpellMask_ShamanLavaBurst,
+			Kind:       core.SpellMod_DamageDone_Flat,
+			FloatValue: 0.03,
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=228177/totem-of-raging-fire
@@ -662,27 +642,19 @@ func init() {
 	// Increases the damage of Stormstrike and Windfury Weapon by 3%.
 	core.NewItemEffect(TotemOfThunderousStrikes, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		shaman.RegisterAura(core.Aura{
+
+		core.MakePermanent(shaman.RegisterAura(core.Aura{
 			Label: "Improved Stormstrike/Windfury Weapon",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range []*core.Spell{shaman.StormstrikeMH, shaman.StormstrikeOH} {
-					if spell == nil {
-						continue
-					}
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:  ClassSpellMask_ShamanStormstrikeHit,
+			Kind:       core.SpellMod_BaseDamageDone_Flat,
+			FloatValue: 0.03,
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:  ClassSpellMask_ShamanWindFury,
+			Kind:       core.SpellMod_DamageDone_Flat,
+			FloatValue: 0.03,
+		}))
 
-					// In-game testing seems to be only a base points mod for Stormstrike
-					spell.BaseDamageMultiplierAdditive += 0.03
-				}
-
-				for _, spell := range []*core.Spell{shaman.WindfuryWeaponMH, shaman.WindfuryWeaponOH} {
-					if spell == nil {
-						continue
-					}
-
-					spell.DamageMultiplierAdditive += 0.03
-				}
-			},
-		})
 	})
 
 	// https://www.wowhead.com/classic/item=237577/totem-of-unholy-might
@@ -698,31 +670,14 @@ func init() {
 		duration := time.Second * 20
 		actionID := core.ActionID{ItemID: WushoolaysCharmOfSpirits}
 
-		var affectedSpells []*core.Spell
-
 		aura := shaman.RegisterAura(core.Aura{
 			ActionID: actionID,
 			Label:    "Wushoolay's Charm of Spirits",
 			Duration: time.Second * 20,
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells = core.FilterSlice(
-					core.Flatten([][]*core.Spell{
-						shaman.LightningShieldProcs,
-						{shaman.RollingThunder},
-					}),
-					func(spell *core.Spell) bool { return spell != nil },
-				)
-			},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range affectedSpells {
-					spell.DamageMultiplierAdditive += 1.0
-				}
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range affectedSpells {
-					spell.DamageMultiplierAdditive -= 1.0
-				}
-			},
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:  ClassSpellMask_ShamanLightningShieldProc | ClassSpellMask_ShamanRollingThunder,
+			Kind:       core.SpellMod_DamageDone_Flat,
+			FloatValue: 1,
 		})
 
 		spell := shaman.RegisterSpell(core.SpellConfig{

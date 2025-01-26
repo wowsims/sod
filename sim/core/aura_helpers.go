@@ -392,7 +392,41 @@ func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) *Aura {
 		aura.Unit.AddStatsDynamic(sim, stats.Invert())
 	})
 
+	if parentAura.IsActive() {
+		parentAura.Unit.AddStats(stats)
+	}
+
 	return parentAura
+}
+
+// Attaches a multiplicative PseudoStat buff to a parent Aura
+func (parentAura *Aura) AttachMultiplicativePseudoStatBuff(fieldPointer *float64, multiplier float64) {
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		*fieldPointer *= multiplier
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		*fieldPointer /= multiplier
+	})
+
+	if parentAura.IsActive() {
+		*fieldPointer *= multiplier
+	}
+}
+
+// Attaches an additive PseudoStat buff to a parent Aura
+func (parentAura *Aura) AttachAdditivePseudoStatBuff(fieldPointer *float64, bonus float64) {
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		*fieldPointer += bonus
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		*fieldPointer -= bonus
+	})
+
+	if parentAura.IsActive() {
+		*fieldPointer += bonus
+	}
 }
 
 // Adds Stats to a parent Aura during build phase

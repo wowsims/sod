@@ -41,6 +41,14 @@ const (
 	ClassSpellMask_WarlockShadowburn
 	ClassSpellMask_WarlockSoulFire
 	ClassSpellMask_WarlockUnstableAffliction
+	ClassSpellMask_WarlockSiphonLife
+
+	ClassSpellMask_WarlockRainOfFire
+	ClassSpellMask_WarlockImmolationAura
+	ClassSpellMask_WarlockImmolationAuraProc
+
+	ClassSpellMask_WarlockLast
+	ClassSpellMask_WarlockAll = ClassSpellMask_WarlockLast<<1 - 1
 )
 
 type Warlock struct {
@@ -248,8 +256,4 @@ func (warlock *Warlock) OnGCDReady(_ *core.Simulation) {
 // Agent is a generic way to access underlying warlock on any of the agents.
 type WarlockAgent interface {
 	GetWarlock() *Warlock
-}
-
-func isWarlockSpell(spell *core.Spell) bool {
-	return spell.Flags.Matches(WarlockFlagAffliction) || spell.Flags.Matches(WarlockFlagDemonology) || spell.Flags.Matches(WarlockFlagDestruction)
 }

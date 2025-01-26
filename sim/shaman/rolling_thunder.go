@@ -18,11 +18,12 @@ func (shaman *Shaman) registerRollingThunder() {
 
 	// Casts handled in lightning_shield.go
 	shaman.RollingThunder = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagShaman | SpellFlagLightning,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_ShamanRollingThunder,
+		SpellSchool:    core.SpellSchoolNature,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          SpellFlagShaman | SpellFlagLightning,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

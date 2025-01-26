@@ -79,16 +79,18 @@ func (rogue *Rogue) applyT2Damage4PBonus() {
 		return
 	}
 
-	rogue.RegisterAura(core.Aura{
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range rogue.Spellbook {
-				if spell.Flags.Matches(SpellFlagBuilder) && (spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) || spell.Matches(ClassSpellMask_RogueMainGauche|ClassSpellMask_RoguePoisonedKnife)) {
-					spell.DamageMultiplierAdditive += 0.20
-				}
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		SpellFlags: SpellFlagBuilder,
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		FloatValue: 0.20,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_RogueMainGauche | ClassSpellMask_RoguePoisonedKnife,
+		FloatValue: 0.20,
+	}))
 }
 
 // Reduces cooldown on vanish to 1 minute

@@ -197,22 +197,18 @@ func (shaman *Shaman) applyTAQEnhancement2PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if shaman.StormstrikeMH != nil {
-				shaman.StormstrikeMH.DamageMultiplierAdditive += core.TernaryFloat64(shaman.HasRune(proto.ShamanRune_RuneChestTwoHandedMastery), 1.00, 0.50)
-			}
-
-			if shaman.StormstrikeOH != nil {
-				shaman.StormstrikeOH.DamageMultiplierAdditive += 0.50
-			}
-
-			if shaman.LavaLash != nil {
-				shaman.LavaLash.DamageMultiplierAdditive += 0.50
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_ShamanLavaLash,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0.50,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanStormstrikeHit,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		// TODO: ItemSwap - Make this a dynamic value based on the weapon type.
+		FloatValue: core.TernaryFloat64(shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand, 1.00, 0.50),
+	}))
 }
 
 // Your Stormstrike, Lava Lash, and Lava Burst critical strikes cause your target to burn for 30% of the damage done over 4 sec.

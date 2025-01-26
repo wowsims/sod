@@ -55,11 +55,12 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 	}
 
 	shaman.LightningShieldProcs[rank] = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: procSpellId},
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagShaman | SpellFlagLightning,
+		ActionID:       core.ActionID{SpellID: procSpellId},
+		ClassSpellMask: ClassSpellMask_ShamanLightningShieldProc,
+		SpellSchool:    core.SpellSchoolNature,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagShaman | SpellFlagLightning,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

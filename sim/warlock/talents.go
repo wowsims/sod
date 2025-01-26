@@ -153,20 +153,8 @@ func (warlock *Warlock) applyNightfall() {
 		ActionID: core.ActionID{SpellID: 17941},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.ShadowBolt {
-				spell.CastTimeMultiplier -= 1
-			}
 			for _, spell := range warlock.ShadowCleave {
 				spell.CD.Reset()
-				spell.DamageMultiplierAdditive += 1.0
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.ShadowBolt {
-				spell.CastTimeMultiplier += 1
-			}
-			for _, spell := range warlock.ShadowCleave {
-				spell.DamageMultiplierAdditive -= 1.0
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -175,6 +163,14 @@ func (warlock *Warlock) applyNightfall() {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  ClassSpellMask_WarlockShadowBolt,
+		FloatValue: -1,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_WarlockShadowCleave,
+		FloatValue: 1,
 	})
 
 	if warlock.Talents.Nightfall <= 0 {
@@ -201,14 +197,14 @@ func (warlock *Warlock) applyShadowMastery() {
 	}
 
 	// These spells have their base damage modded instead
-	// Apply Aura: Modifies Spell Effectiveness (8)
-	excludedSpellClassMasks := ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockDeathCoil | ClassSpellMask_WarlockDrainLife | ClassSpellMask_WarlockDrainSoul
+	excludedClassMasks := ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockDeathCoil | ClassSpellMask_WarlockDrainLife | ClassSpellMask_WarlockDrainSoul
 
-	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		// Shadow Mastery applies a base damage modifier to all dots / channeled spells instead
-		if spell.SpellSchool.Matches(core.SpellSchoolShadow) && isWarlockSpell(spell) && !spell.Matches(excludedSpellClassMasks) {
-			spell.DamageMultiplierAdditive += warlock.shadowMasteryBonus()
-		}
+	// Apply Aura: Modifies Spell Effectiveness (8)
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		School:     core.SpellSchoolShadow,
+		ClassMask:  ClassSpellMask_WarlockAll ^ excludedClassMasks,
+		FloatValue: warlock.shadowMasteryBonus(),
 	})
 }
 
@@ -721,10 +717,10 @@ func (warlock *Warlock) applyEmberstorm() {
 		return
 	}
 
-	points := float64(warlock.Talents.Emberstorm)
-	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellSchool.Matches(core.SpellSchoolFire) && isWarlockSpell(spell) {
-			spell.DamageMultiplierAdditive += 0.02 * points
-		}
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		School:     core.SpellSchoolFire,
+		ClassMask:  ClassSpellMask_WarlockAll,
+		FloatValue: 0.02 * float64(warlock.Talents.Emberstorm),
 	})
 }
