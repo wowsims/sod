@@ -2,11 +2,12 @@ package encounters
 
 import (
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/encounters/naxxramas"
 )
 
 func init() {
 	// TODO: Classic encounters?
-	// naxxramas.Register()
+	naxxramas.Register()
 	addLevel25("SoD")
 	addLevel40("SoD")
 	addGnomereganMechanical("SoD")
