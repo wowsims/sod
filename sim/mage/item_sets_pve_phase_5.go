@@ -35,7 +35,7 @@ func (mage *Mage) applyT2Damage2PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range mage.Spellbook {
-				if spell.SpellSchool == core.SpellSchoolFire && spell.Flags.Matches(SpellFlagMage) {
+				if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Matches(ClassSpellMask_MageAll) {
 					spell.ThreatMultiplier *= .80
 				}
 			}
@@ -54,30 +54,30 @@ func (mage *Mage) applyT2Damage4PBonus() {
 		return
 	}
 
+	damageMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_MagePyroblast,
+		FloatValue: 0.20,
+	})
+
 	mage.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			fireballSpells := core.FilterSlice(mage.Fireball, func(spell *core.Spell) bool { return spell != nil })
+			fireballSpells := mage.GetSpellsMatchingClassMask(ClassSpellMask_MageFireball)
+			pyroBlastSpells := mage.GetSpellsMatchingClassMask(ClassSpellMask_MagePyroblast)
 
-			for _, spell := range mage.Pyroblast {
-				if spell == nil {
-					continue
-				}
-
+			for _, spell := range pyroBlastSpells {
 				oldApplyEffects := spell.ApplyEffects
 				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					modifier := 0.0
-
 					for _, spell := range fireballSpells {
 						if spell.Dot(target).IsActive() {
-							modifier += 0.20
+							damageMod.Activate()
 							break
 						}
 					}
 
-					spell.DamageMultiplierAdditive += modifier
 					oldApplyEffects(sim, target, spell)
-					spell.DamageMultiplierAdditive -= modifier
+					damageMod.Deactivate()
 				}
 			}
 		},
@@ -95,7 +95,7 @@ func (mage *Mage) applyT2Damage6PBonus() {
 		ActionID: core.ActionID{SpellID: 467399},
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_MageFireball && result.Landed() {
+			if spell.Matches(ClassSpellMask_MageFireball) && result.Landed() {
 				// Tested that this is calculated using the fireball damage WITHOUT defender mods (debuffs)
 				mage.BonusFireballDoTAmount += result.DamagePostAttacker * 1.00 / float64(spell.Dot(result.Target).NumberOfTicks)
 			}
@@ -131,7 +131,7 @@ func (mage *Mage) applyT2Healer2PBonus() {
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_MageArcaneMissilesTick && result.Landed() {
+			if spell.Matches(ClassSpellMask_MageArcaneMissilesTick) && result.Landed() {
 				mage.AddMana(sim, mage.ArcaneMissiles[spell.Rank].Cost.BaseCost*0.1, manaMetrics)
 			}
 		},
@@ -202,19 +202,11 @@ func (mage *Mage) applyZGFrost5PBonus() {
 		return
 	}
 
-	mage.RegisterAura(core.Aura{
+	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					mage.Frostbolt,
-					{mage.SpellfrostBolt},
-				}), func(spell *core.Spell) bool { return spell != nil },
-			)
-
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += 0.65
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_MageFrostbolt | ClassSpellMask_MageSpellfrostBolt,
+		FloatValue: 0.65,
+	}))
 }

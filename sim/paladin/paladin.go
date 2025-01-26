@@ -17,21 +17,35 @@ const (
 )
 
 const (
-	SpellCode_PaladinNone = iota
+	ClassSpellMask_PaladinNone int64 = 0
 
-	SpellCode_PaladinExorcism
-	SpellCode_PaladinHolyShock
-	SpellCode_PaladinHolyWrath
-	SpellCode_PaladinJudgementOfCommand
-	SpellCode_PaladinConsecration
-	SpellCode_PaladinAvengersShield
-	SpellCode_PaladinHolyShield
-	SpellCode_PaladinHolyShieldProc
-	SpellCode_PaladinLayOnHands
-	SpellCode_PaladinHammerOfWrath
-	SpellCode_PaladinCrusaderStrike
-	SpellCode_PaladinHammerOfTheRighteous
-	SpellCode_PaladinShieldOfRighteousness
+	ClassSpellMask_PaladinExorcism int64 = 1 << iota
+	ClassSpellMask_PaladinHolyShock
+	ClassSpellMask_PaladinHolyWrath
+	ClassSpellMask_PaladinConsecration
+	ClassSpellMask_PaladinAvengersShield
+	ClassSpellMask_PaladinHolyShield
+	ClassSpellMask_PaladinHolyShieldProc
+	ClassSpellMask_PaladinLayOnHands
+	ClassSpellMask_PaladinHammerOfWrath
+	ClassSpellMask_PaladinCrusaderStrike
+	ClassSpellMask_PaladinHammerOfTheRighteous
+	ClassSpellMask_PaladinShieldOfRighteousness
+	ClassSpellMask_PaladinDivineStorm
+
+	ClassSpellMask_PaladinJudgement // Judgement dummy spell
+
+	ClassSpellMask_PaladinJudgementOfCommand
+	ClassSpellMask_PaladinJudgementOfMartyrdom
+	ClassSpellMask_PaladinJudgementOfRighteousness
+	ClassSpellMask_PaladinJudgementOfTheCrusader
+
+	ClassSpellMask_PaladinLast
+	ClassSpellMask_PaladinAll = ClassSpellMask_PaladinLast<<1 - 1
+
+	// Judgements
+	ClassSpellMask_PaladinJudgements = ClassSpellMask_PaladinJudgementOfCommand | ClassSpellMask_PaladinJudgementOfMartyrdom |
+		ClassSpellMask_PaladinJudgementOfRighteousness | ClassSpellMask_PaladinJudgementOfTheCrusader
 )
 
 type SealJudgeCode uint8
@@ -74,17 +88,17 @@ type Paladin struct {
 	holyShockCooldown *core.Cooldown
 	exorcismCooldown  *core.Cooldown
 
-	avengingWrath  *core.Spell
-	crusaderStrike *core.Spell
-	divineStorm    *core.Spell
-	exorcism       []*core.Spell
-	judgement      *core.Spell
-	layOnHands     *core.Spell
-	rv             *core.Spell
-	holyShieldAura [3]*core.Aura
-	holyShieldProc [3]*core.Spell
-	redoubtAura    *core.Aura
-	holyWrath      []*core.Spell
+	avengingWrath    *core.Spell
+	crusaderStrike   *core.Spell
+	divineStorm      *core.Spell
+	exorcism         []*core.Spell
+	judgement        *core.Spell
+	layOnHands       *core.Spell
+	rv               *core.Spell
+	holyShieldAura   [3]*core.Aura
+	holyShieldProc   [3]*core.Spell
+	redoubtAura      *core.Aura
+	holyWrath        []*core.Spell
 	divineProtection *core.Spell
 
 	// highest rank seal spell if available

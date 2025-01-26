@@ -22,10 +22,11 @@ func (priest *Priest) registerShadowfiendSpell() {
 	})
 
 	priest.Shadowfiend = priest.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagPriest | core.SpellFlagAPL,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_PriestShadowFiend,
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -222,13 +223,7 @@ func (shadowfiend *Shadowfiend) registerShadowCrawlSpell() {
 		Label:    "Shadowcrawl",
 		ActionID: actionID,
 		Duration: time.Second * 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shadowfiend.PseudoStats.DamageDealtMultiplier *= 1.15
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shadowfiend.PseudoStats.DamageDealtMultiplier /= 1.15
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&shadowfiend.PseudoStats.DamageDealtMultiplier, 1.15)
 
 	shadowfiend.Shadowcrawl = shadowfiend.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,

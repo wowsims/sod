@@ -2,7 +2,6 @@ package shaman
 
 import (
 	"fmt"
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -85,13 +84,11 @@ func (shaman *Shaman) applyConcussion() {
 		return
 	}
 
-	multiplier := 0.01 * float64(shaman.Talents.Concussion)
-	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning, SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
-
-	shaman.OnSpellRegistered(func(spell *core.Spell) {
-		if slices.Contains(affectedSpellCodes, spell.SpellCode) {
-			spell.DamageMultiplierAdditive += multiplier
-		}
+	shaman.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning |
+			ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0.01 * float64(shaman.Talents.Concussion),
 	})
 }
 
@@ -100,18 +97,10 @@ func (shaman *Shaman) applyCallOfFlame() {
 		return
 	}
 
-	multiplier := 0.05 * float64(shaman.Talents.CallOfFlame)
-
-	shaman.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == 0 {
-			return
-		}
-
-		if spell.SpellCode == SpellCode_ShamanSearingTotemAttack ||
-			spell.SpellCode == SpellCode_ShamanFireNovaTotemAttack ||
-			spell.SpellCode == SpellCode_ShamanFireNova {
-			spell.DamageMultiplierAdditive += multiplier
-		}
+	shaman.AddStaticMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_ShamanSearingTotemAttack | ClassSpellMask_ShamanFireNovaTotemAttack | ClassSpellMask_ShamanFireNova,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0.05 * float64(shaman.Talents.CallOfFlame),
 	})
 }
 
@@ -122,29 +111,23 @@ func (shaman *Shaman) applyElementalFocus() {
 
 	shaman.elementalFocusProcChance = 0.1
 
-	var affectedSpells []*core.Spell
+	costMod := shaman.AddDynamicMod(core.SpellModConfig{
+		SpellFlags: SpellFlagShaman,
+		ProcMask:   core.ProcMaskSpellDamage,
+		Kind:       core.SpellMod_PowerCost_Pct,
+		IntValue:   -100,
+	})
 
 	shaman.ClearcastingAura = shaman.RegisterAura(core.Aura{
 		Label:     "Clearcasting",
 		ActionID:  core.ActionID{SpellID: 16246},
 		Duration:  time.Second * 15,
 		MaxStacks: 1,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = shaman.getClearcastingSpells()
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) {
-				if spell.Cost != nil {
-					spell.Cost.Multiplier -= 100
-				}
-			})
+			costMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) {
-				if spell.Cost != nil {
-					spell.Cost.Multiplier += 100
-				}
-			})
+			costMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			if newStacks == 0 {
@@ -176,15 +159,6 @@ func (shaman *Shaman) applyElementalFocus() {
 
 func (shaman *Shaman) isShamanDamagingSpell(spell *core.Spell) bool {
 	return spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellDamage)
-}
-
-func (shaman *Shaman) getClearcastingSpells() []*core.Spell {
-	return core.FilterSlice(
-		shaman.Spellbook,
-		func(spell *core.Spell) bool {
-			return spell != nil && shaman.isShamanDamagingSpell(spell)
-		},
-	)
 }
 
 func (shaman *Shaman) applyElementalDevastation() {

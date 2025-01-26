@@ -18,7 +18,7 @@ func init() {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 428489}
 
-		buffAura := character.GetOrRegisterAura(core.Aura{
+		buffAura := character.RegisterAura(core.Aura{
 			Label:    "Planar Shift",
 			ActionID: actionID,
 			Duration: time.Second * 6,
@@ -71,13 +71,7 @@ func init() {
 			Label:    "Void Madness",
 			ActionID: actionID,
 			Duration: time.Second * 10,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.ThreatMultiplier *= 1.2
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.ThreatMultiplier /= 1.2
-			},
-		})
+		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.ThreatMultiplier, 1.2)
 
 		ee := NewSodCraftedAttackSpeedEffect(buffAura, 1.1)
 

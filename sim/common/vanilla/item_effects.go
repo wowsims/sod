@@ -631,7 +631,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=228350/eskhandars-right-claw
-	// Chance on hit: Increases your attack speed by 30% for 5 sec.
+	// Chance on hit: Increases your attack speed by 25% for 5 sec.
 	// Original proc rate 1.0 lowered to 0.6 in SoD phase 5
 	itemhelpers.CreateWeaponProcAura(EskhandarsRightClaw, "Eskhandar's Right Claw", 0.6, eskhandarsRightClawAura)
 	itemhelpers.CreateWeaponProcAura(EskhandarsRightClawMolten, "Eskhandar's Right Claw (Molten)", 0.6, eskhandarsRightClawAura)
@@ -802,8 +802,8 @@ func init() {
 		})
 	})
 
-	itemhelpers.CreateWeaponProcSpell(FlurryAxe, "Flurry Axe", 1.0, func(character *core.Character) *core.Spell {
-		return character.RegisterSpell(core.SpellConfig{
+	itemhelpers.CreateWeaponProcSpell(FlurryAxe, "Flurry Axe", 1.9, func(character *core.Character) *core.Spell {
+		return character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{SpellID: 18797},
 			SpellSchool:      core.SpellSchoolPhysical,
 			DefenseType:      core.DefenseTypeMelee,
@@ -2303,13 +2303,7 @@ func init() {
 			Label:    "Aura of the Blue Dragon",
 			ActionID: actionID,
 			Duration: time.Second * 15,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.SpiritRegenRateCasting += 1
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.SpiritRegenRateCasting -= 1
-			},
-		})
+		}).AttachAdditivePseudoStatBuff(&character.PseudoStats.SpiritRegenRateCasting, 1)
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Aura of the Blue Dragon Trigger",
@@ -3456,13 +3450,7 @@ func eskhandarsRightClawAura(character *core.Character) *core.Aura {
 		Label:    "Eskhandar's Rage",
 		ActionID: core.ActionID{SpellID: 22640},
 		Duration: time.Second * 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.MultiplyAttackSpeed(sim, 1.3)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.MultiplyAttackSpeed(sim, 1/(1.3))
-		},
-	})
+	}).AttachMultiplyAttackSpeed(&character.Unit, 1.25)
 }
 
 func gutgoreRipperEffect(character *core.Character) *core.Spell {

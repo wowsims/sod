@@ -26,7 +26,7 @@ var ItemSetRedemptionWarplate = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Increases the damage done by your Divine Storm ability by 20%.
+// Increases the damage done by your Divine Storm ability by 100%.
 func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 	if !paladin.hasRune(proto.PaladinRune_RuneChestDivineStorm) {
 		return
@@ -37,15 +37,16 @@ func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.divineStorm.DamageMultiplierAdditive += 0.20
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_PaladinDivineStorm,
+		FloatValue: 1,
+	}))
 }
 
-// Reduces the cast time of your Holy Wrath ability by 100% and reduces the cooldown of your Holy Wrath ability by 60%.
+// Reduces the cast time of your Holy Wrath ability by 100% and reduces the cooldown and mana cost of your Holy Wrath ability by 75%.
 func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 	label := "S03 - Item - Naxxramas - Paladin - Retribution 4P Bonus"
 	if paladin.HasAura(label) {
@@ -57,55 +58,51 @@ func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range paladin.holyWrath {
 				spell.CastTimeMultiplier -= 1
-				spell.CD.Multiplier *= 0.4
+				spell.CD.Multiplier *= 0.25
+				spell.Cost.Multiplier -= 75
 			}
 		},
 	})
 }
 
-// Your Exorcism and Holy Wrath abilities deal increased damage to Undead equal to their critical strike chance.
+// Your Crusader Strike, Divine Storm, Exorcism and Holy Wrath abilities deal increased damage to Undead equal to their critical strike chance.
 func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 	label := "S03 - Item - Naxxramas - Paladin - Retribution 6P Bonus"
 	if paladin.HasAura(label) {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	classSpellMasks := ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath | ClassSpellMask_PaladinDivineStorm | ClassSpellMask_PaladinCrusaderStrike
+	damageMod := paladin.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: classSpellMasks,
+	})
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := paladin.exorcism
-			affectedSpells = append(affectedSpells, paladin.holyWrath...)
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Deactivate()
+		},
+		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if !spell.Matches(classSpellMasks) {
+				return
+			}
+			critChanceBonus := 0.0
 
-			for _, spell := range affectedSpells {
-				oldApplyEffects := spell.ApplyEffects
-				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					critChanceBonus := 0.0
-
-					if target.MobType == proto.MobType_MobTypeUndead {
-						critChanceBonus = paladin.GetStat(stats.SpellCrit)/100.0 + paladin.GetSchoolBonusCritChance(spell)/100.0
-						/*
-							// TODO: This most likely only uses sheet spell crit and doesn't care about spell specific crit unfortunately, verify!
-							// Meaning this 6pc is quite a bit worse than the T2.5 4pc, but who's counting?
-							if spell.SpellCode == SpellCode_PaladinExorcism {
-								critChanceBonus = 1.0
-							} else {
-								critChanceBonus = spell.SpellCritChance(target)
-								if paladin.hasRune(proto.PaladinRune_RuneHeadWrath) {
-									critChanceBonus += paladin.GetStat(stats.MeleeCrit) / 100.0
-								}
-							}
-						*/
-					}
-
-					critChanceBonus = min(critChanceBonus, 1.0)
-
-					spell.DamageMultiplierAdditive += critChanceBonus
-					oldApplyEffects(sim, target, spell)
-					spell.DamageMultiplierAdditive -= critChanceBonus
+			if target.MobType == proto.MobType_MobTypeUndead {
+				if spell.Matches(ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath) {
+					critChanceBonus = paladin.GetStat(stats.SpellCrit)/100.0 + paladin.GetSchoolBonusCritChance(spell)/100.0
+				} else {
+					critChanceBonus = paladin.GetStat(stats.MeleeCrit) / 100.0
 				}
 			}
+			critChanceBonus = min(critChanceBonus, 1)
+			damageMod.UpdateFloatValue(critChanceBonus)
 		},
-	})
+	}))
 }
 
 var ItemSetRedemptionBulwark = core.NewItemSet(core.ItemSet{
@@ -138,7 +135,7 @@ func (paladin *Paladin) applyNaxxramasProtection2PBonus() {
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-	}).AttachBuildPhaseStatsBuff(bonusStats))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on your Divine Protection ability by 3 min and reduces the cooldown on your Avenging Wrath ability by 2 min.

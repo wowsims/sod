@@ -45,12 +45,12 @@ func (warrior *Warrior) registerSlamSpell() {
 	}
 
 	warrior.Slam = warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		SpellCode:   SpellCode_WarriorSlam,
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
+		ClassSpellMask: ClassSpellMask_WarriorSlam,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RequiredLevel: requiredLevel,
 
@@ -111,12 +111,12 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 	}
 
 	return warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		SpellCode:   core.Ternary(isMH, SpellCode_WarriorSlamMH, SpellCode_WarriorSlamOH),
-		ActionID:    core.ActionID{SpellID: spellID}.WithTag(int32(core.Ternary(isMH, 1, 2))),
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    procMask,
-		Flags:       flags,
+		ClassSpellMask: core.Ternary(isMH, ClassSpellMask_WarriorSlamMH, ClassSpellMask_WarriorSlamOH),
+		ActionID:       core.ActionID{SpellID: spellID}.WithTag(int32(core.Ternary(isMH, 1, 2))),
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       procMask,
+		Flags:          flags,
 
 		CritDamageBonus: warrior.impale(),
 		FlatThreatBonus: 1 * requiredLevel,

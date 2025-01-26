@@ -1,7 +1,6 @@
 package warrior
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -287,7 +286,7 @@ func (warrior *Warrior) applyBloodSurge() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// removed even if slam doesn't land
-			if spell.SpellCode == SpellCode_WarriorSlamMH {
+			if spell.Matches(ClassSpellMask_WarriorSlamMH) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -332,7 +331,7 @@ func (warrior *Warrior) applyTasteForBlood() {
 		Label:    "Taste for Blood",
 		Duration: time.Second * 9,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_WarriorOverpower {
+			if spell.Matches(ClassSpellMask_WarriorOverpower) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -346,7 +345,7 @@ func (warrior *Warrior) applyTasteForBlood() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "Taste for Blood Trigger",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarriorRend && icd.IsReady(sim) {
+			if spell.Matches(ClassSpellMask_WarriorRend) && icd.IsReady(sim) {
 				icd.Use(sim)
 				warrior.TasteForBloodAura.Activate(sim)
 			}
@@ -371,7 +370,7 @@ func (warrior *Warrior) applySuddenDeath() {
 		ActionID: core.ActionID{SpellID: 440114},
 		Duration: time.Second * 10,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.SpellCode == SpellCode_WarriorExecute { // removed only when landed
+			if result.Landed() && spell.Matches(ClassSpellMask_WarriorExecute) { // removed only when landed
 				warrior.AddRage(sim, minRageKept, rageMetrics)
 				aura.Deactivate(sim)
 			}
@@ -416,7 +415,7 @@ func (warrior *Warrior) applyFreshMeat() {
 	})
 
 	var damagedUnits map[int32]bool
-	affectedSpellCodes := []int32{SpellCode_WarriorBloodthirst, SpellCode_WarriorMortalStrike, SpellCode_WarriorShieldSlam}
+	affectedSpellClassMasks := ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorMortalStrike | ClassSpellMask_WarriorShieldSlam
 
 	warrior.RegisterAura(core.Aura{
 		Label:    "Fresh Meat Trigger",
@@ -426,7 +425,7 @@ func (warrior *Warrior) applyFreshMeat() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
+			if !spell.Matches(affectedSpellClassMasks) {
 				return
 			}
 
@@ -502,7 +501,7 @@ func (warrior *Warrior) applySwordAndBoard() {
 			warrior.ShieldSlam.Cost.Multiplier += 100
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_WarriorShieldSlam {
+			if spell.Matches(ClassSpellMask_WarriorShieldSlam) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -515,7 +514,7 @@ func (warrior *Warrior) applySwordAndBoard() {
 				return
 			}
 
-			if spell.SpellCode != SpellCode_WarriorRevenge && spell.SpellCode != SpellCode_WarriorDevastate {
+			if !spell.Matches(ClassSpellMask_WarriorRevenge | ClassSpellMask_WarriorDevastate) {
 				return
 			}
 

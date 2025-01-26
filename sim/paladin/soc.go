@@ -72,7 +72,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
 			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlag_RV,
 
-			SpellCode: SpellCode_PaladinJudgementOfCommand, // used in judgement.go
+			ClassSpellMask: ClassSpellMask_PaladinJudgementOfCommand, // used in judgement.go
 
 			DamageMultiplier: paladin.getWeaponSpecializationModifier(),
 			ThreatMultiplier: 1,

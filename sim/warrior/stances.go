@@ -23,7 +23,7 @@ func (stance Stance) Matches(other Stance) bool {
 	return (stance & other) != 0
 }
 
-var StanceCodes = []int32{SpellCode_WarriorStanceBattle, SpellCode_WarriorStanceDefensive, SpellCode_WarriorStanceBerserker, SpellCode_WarriorStanceGladiator}
+var StanceCodes = ClassSpellMask_WarriorStanceBattle | ClassSpellMask_WarriorStanceDefensive | ClassSpellMask_WarriorStanceBerserker | ClassSpellMask_WarriorStanceGladiator
 
 const stanceEffectCategory = "Stance"
 
@@ -32,20 +32,20 @@ func (warrior *Warrior) StanceMatches(other Stance) bool {
 }
 
 func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD *core.Timer) *WarriorSpell {
-	spellCode := map[Stance]int32{
-		BattleStance:    SpellCode_WarriorStanceBattle,
-		DefensiveStance: SpellCode_WarriorStanceDefensive,
-		BerserkerStance: SpellCode_WarriorStanceBerserker,
-		GladiatorStance: SpellCode_WarriorStanceGladiator,
+	SpellClassMask := map[Stance]int64{
+		BattleStance:    ClassSpellMask_WarriorStanceBattle,
+		DefensiveStance: ClassSpellMask_WarriorStanceDefensive,
+		BerserkerStance: ClassSpellMask_WarriorStanceBerserker,
+		GladiatorStance: ClassSpellMask_WarriorStanceGladiator,
 	}[stance]
 	actionID := aura.ActionID
 	maxRetainedRage := 5 * float64(warrior.Talents.TacticalMastery)
 	rageMetrics := warrior.NewRageMetrics(actionID)
 
 	stanceSpell := warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		SpellCode: spellCode,
-		ActionID:  actionID,
-		Flags:     core.SpellFlagAPL,
+		ClassSpellMask: SpellClassMask,
+		ActionID:       actionID,
+		Flags:          core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

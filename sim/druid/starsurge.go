@@ -21,27 +21,25 @@ func (druid *Druid) applyStarsurge() {
 	starfireAuraModifier := 0.80
 	starfireAuraDuration := time.Second * 15
 
+	damageMod := druid.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_DruidStarfire,
+		FloatValue: starfireAuraModifier,
+	})
+
 	starfireDamageAura := druid.RegisterAura(core.Aura{
 		Label:     "Starsurge",
 		ActionID:  actionID,
 		Duration:  starfireAuraDuration,
 		MaxStacks: 1,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(druid.Starfire, func(spell *DruidSpell) {
-				if spell != nil {
-					spell.DamageMultiplierAdditive += starfireAuraModifier
-				}
-			})
+			damageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(druid.Starfire, func(spell *DruidSpell) {
-				if spell != nil {
-					spell.DamageMultiplierAdditive -= starfireAuraModifier
-				}
-			})
+			damageMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode != SpellCode_DruidStarfire {
+			if !spell.Matches(ClassSpellMask_DruidStarfire) {
 				return
 			}
 
@@ -50,12 +48,12 @@ func (druid *Druid) applyStarsurge() {
 	})
 
 	druid.Starsurge = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		SpellCode:   SpellCode_DruidStarsurge,
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolArcane,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagOmen | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_DruidStarsurge,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagOmen | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | core.SpellFlagAPL,
 
 		MissileSpeed: 24,
 

@@ -221,7 +221,7 @@ func (paladin *Paladin) applyImprovedLayOnHands() {
 				paladin.RemoveDynamicEquipScaling(sim, stats.Armor, armorMultiplier)
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.SpellCode == SpellCode_PaladinLayOnHands {
+				if spell.Matches(ClassSpellMask_PaladinLayOnHands) {
 					aura.Activate(sim)
 				}
 			},

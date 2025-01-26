@@ -593,26 +593,18 @@ func ObsidianEdgedAura(itemID int32, agent core.Agent) {
 // Increases the damage dealt by all of your damage over time spells by 3% per piece of Timeworn armor equipped.
 func TimewornDecayAura(agent core.Agent, itemID int32) {
 	character := agent.GetCharacter()
-	if character.PseudoStats.TimewornBonus == 0 {
+	label := "Timeworn Decay Aura"
+
+	if character.PseudoStats.TimewornBonus == 0 || character.HasAura(label) {
 		return
 	}
 
 	aura := core.MakePermanent(character.RegisterAura(core.Aura{
-		Label: "Timeworn Decay Aura",
+		Label: label,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PeriodicDamageDone_Flat,
+		FloatValue: 0.03 * float64(character.PseudoStats.TimewornBonus),
 	}))
-
-	multiplier := 0.03 * float64(character.PseudoStats.TimewornBonus)
-
-	character.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode != 0 && len(spell.Dots()) > 0 {
-			aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-				spell.PeriodicDamageMultiplierAdditive += multiplier
-			})
-			aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-				spell.PeriodicDamageMultiplierAdditive -= multiplier
-			})
-		}
-	})
 
 	character.ItemSwap.RegisterProc(itemID, aura)
 }
@@ -621,23 +613,18 @@ func TimewornDecayAura(agent core.Agent, itemID int32) {
 // Reduces the chance for your attacks to be dodged or parried by 1% per piece of Timeworn armor equipped.
 func TimewornExpertiseAura(agent core.Agent, itemID int32) {
 	character := agent.GetCharacter()
-	if character.PseudoStats.TimewornBonus == 0 {
+	label := "Timeworn Expertise Aura"
+	if character.PseudoStats.TimewornBonus == 0 || character.HasAura(label) {
 		return
 	}
 
 	stats := stats.Stats{stats.Expertise: float64(character.PseudoStats.TimewornBonus) * core.ExpertiseRatingPerExpertiseChance}
 
-	aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+	aura := core.MakePermanent(character.RegisterAura(core.Aura{
 		ActionID:   core.ActionID{SpellID: 1214218},
-		Label:      "Timeworn Expertise Aura",
+		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddBuildPhaseStatsDynamic(sim, stats)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddBuildPhaseStatsDynamic(sim, stats.Invert())
-		},
-	}))
+	}).AttachStatsBuff(stats))
 
 	character.ItemSwap.RegisterProc(itemID, aura)
 }
@@ -646,15 +633,16 @@ func TimewornExpertiseAura(agent core.Agent, itemID int32) {
 // Increases the effectiveness of your healing and shielding spells by 2% per piece of Timeworn armor equipped.
 func TimewornHealing(agent core.Agent, itemID int32) {
 	character := agent.GetCharacter()
-	if character.PseudoStats.TimewornBonus == 0 {
+	label := "Timeworn Healing Aura"
+	if character.PseudoStats.TimewornBonus == 0 || character.HasAura(label) {
 		return
 	}
 
 	healShieldMultiplier := 1 + 0.02*float64(character.PseudoStats.TimewornBonus)
 
-	aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+	aura := core.MakePermanent(character.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213405},
-		Label:    "Timeworn Healing Aura",
+		Label:    label,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			character.PseudoStats.HealingDealtMultiplier *= healShieldMultiplier
 			character.PseudoStats.ShieldDealtMultiplier *= healShieldMultiplier
@@ -672,7 +660,8 @@ func TimewornHealing(agent core.Agent, itemID int32) {
 // While Metamorphosis or Way of Earth is active, increases the effectiveness of your Fire damage spells by 3% per piece of Timeworn armor equipped.
 func TimewornPyromancyAura(agent core.Agent, itemID int32) {
 	character := agent.GetCharacter()
-	if character.PseudoStats.TimewornBonus == 0 {
+	label := "Timeworn Pyromancy Aura"
+	if character.PseudoStats.TimewornBonus == 0 || character.HasAura(label) {
 		return
 	}
 
@@ -683,16 +672,10 @@ func TimewornPyromancyAura(agent core.Agent, itemID int32) {
 
 	fireMultiplier := 1 + 0.03*float64(character.PseudoStats.TimewornBonus)
 
-	aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+	aura := core.MakePermanent(character.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1215404},
-		Label:    "Timeworn Pyromancy Aura",
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= fireMultiplier
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] /= fireMultiplier
-		},
-	}))
+		Label:    label,
+	}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], fireMultiplier))
 
 	character.ItemSwap.RegisterProc(itemID, aura)
 }
@@ -701,7 +684,8 @@ func TimewornPyromancyAura(agent core.Agent, itemID int32) {
 // Increases the casting speed of your spells by 2% per piece of Timeworn armor equipped.
 func TimewornSpellAura(agent core.Agent, itemID int32) {
 	character := agent.GetCharacter()
-	if character.PseudoStats.TimewornBonus == 0 {
+	label := "Timeworn Spell Aura"
+	if character.PseudoStats.TimewornBonus == 0 || character.HasAura(label) {
 		return
 	}
 
@@ -709,14 +693,8 @@ func TimewornSpellAura(agent core.Agent, itemID int32) {
 
 	aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213398},
-		Label:    "Timeworn Spell Aura",
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.MultiplyCastSpeed(castSpeedMultiplier)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.MultiplyCastSpeed(1 / castSpeedMultiplier)
-		},
-	}))
+		Label:    label,
+	}).AttachMultiplyCastSpeed(&character.Unit, castSpeedMultiplier))
 
 	character.ItemSwap.RegisterProc(itemID, aura)
 }

@@ -68,12 +68,12 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 	energyCost := 40 - float64(druid.Talents.Ferocity)
 
 	return core.SpellConfig{
-		SpellCode:   SpellCode_DruidRake,
-		ActionID:    core.ActionID{SpellID: rakeRank.id},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagBinary | core.SpellFlagAPL | SpellFlagOmen | SpellFlagBuilder,
+		ClassSpellMask: ClassSpellMask_DruidRake,
+		ActionID:       core.ActionID{SpellID: rakeRank.id},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagBinary | core.SpellFlagAPL | SpellFlagOmen | SpellFlagBuilder,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   energyCost,
@@ -93,6 +93,12 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Rake",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					druid.BleedsActive++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					druid.BleedsActive--
+				},
 			},
 			NumberOfTicks: 3,
 			TickLength:    time.Second * 3,

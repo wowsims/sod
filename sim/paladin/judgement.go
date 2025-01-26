@@ -17,6 +17,8 @@ func (paladin *Paladin) registerJudgement() {
 		ProcMask:    core.ProcMaskEmpty,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagCastTimeNoGCD,
 
+		ClassSpellMask: ClassSpellMask_PaladinJudgement,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.06,
 			Multiplier: paladin.benediction(),
@@ -35,7 +37,7 @@ func (paladin *Paladin) registerJudgement() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, _ *core.Spell) {
 
 			// Phase 1-3
-			//if paladin.currentJudgement.SpellCode == SpellCode_PaladinJudgementOfCommand {
+			//if paladin.currentJudgement.SpellClassMask == ClassSpellMask_PaladinJudgementOfCommand {
 			//	spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
 			//} else {
 			//	paladin.currentJudgement.Cast(sim, target)

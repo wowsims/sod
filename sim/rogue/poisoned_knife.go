@@ -18,12 +18,12 @@ func (rogue *Rogue) registerPoisonedKnife() {
 
 	// Poisoned Knife /might/ scale with BonusWeaponDamage, if it's using https://www.wowhead.com/classic/spell=425013/poisoned-knife
 	rogue.PoisonedKnife = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_RoguePoisonedKnife,
-		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RunePoisonedKnife)},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeOHSpecial,
-		Flags:       rogue.builderFlags(),
+		ClassSpellMask: ClassSpellMask_RoguePoisonedKnife,
+		ActionID:       core.ActionID{SpellID: int32(proto.RogueRune_RunePoisonedKnife)},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		Flags:          rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{25, 22, 20}[rogue.Talents.ImprovedSinisterStrike],

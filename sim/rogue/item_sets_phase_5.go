@@ -65,7 +65,7 @@ func (rogue *Rogue) applyT2Damage2PBonus() {
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_RogueAmbush || spell.SpellCode == SpellCode_RogueGarrote) && result.Landed() {
+			if (spell.Matches(ClassSpellMask_RogueAmbush | ClassSpellMask_RogueGarrote)) && result.Landed() {
 				clearcastingAura.Activate(sim)
 			}
 		},
@@ -79,16 +79,18 @@ func (rogue *Rogue) applyT2Damage4PBonus() {
 		return
 	}
 
-	rogue.RegisterAura(core.Aura{
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range rogue.Spellbook {
-				if spell.Flags.Matches(SpellFlagBuilder) && (spell.ProcMask.Matches(core.ProcMaskMeleeMHSpecial) || spell.SpellCode == SpellCode_RogueMainGauche || spell.SpellCode == SpellCode_RoguePoisonedKnife) {
-					spell.DamageMultiplierAdditive += 0.20
-				}
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		SpellFlags: SpellFlagBuilder,
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		FloatValue: 0.20,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_RogueMainGauche | ClassSpellMask_RoguePoisonedKnife,
+		FloatValue: 0.20,
+	}))
 }
 
 // Reduces cooldown on vanish to 1 minute
@@ -234,8 +236,7 @@ func (rogue *Rogue) applyZGDagger3PBonus() {
 
 		core.MakePermanent(aura)
 		aura.BuildPhase = core.CharacterBuildPhaseBuffs
-
-		aura.AttachBuildPhaseStatsBuff(bonusStats)
+		aura.AttachStatsBuff(bonusStats)
 	}
 
 	switch procMask {

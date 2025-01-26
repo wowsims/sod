@@ -26,11 +26,11 @@ func (druid *Druid) registerStarfallCD() {
 	cooldown := time.Second * 90
 
 	druid.StarfallSplash = druid.RegisterSpell(Any, core.SpellConfig{
-		SpellCode:   SpellCode_DruidStarfallSplash,
-		ActionID:    actionID.WithTag(2),
-		SpellSchool: core.SpellSchoolArcane,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
+		ClassSpellMask: ClassSpellMask_DruidStarfallSplash,
+		ActionID:       actionID.WithTag(2),
+		SpellSchool:    core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskEmpty,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -49,12 +49,12 @@ func (druid *Druid) registerStarfallCD() {
 	})
 
 	druid.StarfallTick = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		SpellCode:   SpellCode_DruidStarfallTick,
-		ActionID:    actionID.WithTag(1),
-		SpellSchool: core.SpellSchoolArcane,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage, // Shown to proc things in-game
-		Flags:       core.SpellFlagBinary,
+		ClassSpellMask: ClassSpellMask_DruidStarfallTick,
+		ActionID:       actionID.WithTag(1),
+		SpellSchool:    core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage, // Shown to proc things in-game
+		Flags:          core.SpellFlagBinary,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -73,11 +73,11 @@ func (druid *Druid) registerStarfallCD() {
 	})
 
 	druid.Starfall = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		SpellCode:   SpellCode_DruidStarfall,
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL | SpellFlagOmen,
+		ClassSpellMask: ClassSpellMask_DruidStarfall,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL | SpellFlagOmen,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.39,

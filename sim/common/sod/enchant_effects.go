@@ -102,8 +102,6 @@ func init() {
 			}
 		}
 
-		character.PseudoStats.ThornsDamage += damage * float64(numEnchants)
-
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
 			SpellSchool: core.SpellSchoolNature,
@@ -128,7 +126,7 @@ func init() {
 					procSpell.Cast(sim, spell.Unit)
 				}
 			},
-		})
+		}).AttachAdditivePseudoStatBuff(&character.PseudoStats.ThornsDamage, damage*float64(numEnchants))
 
 		character.ItemSwap.RegisterEnchantProc(7649, procAura)
 	})

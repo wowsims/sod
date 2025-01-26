@@ -38,13 +38,13 @@ func (mage *Mage) getFrostboltConfig(rank int) core.SpellConfig {
 	level := FrostboltLevel[rank]
 
 	return core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: spellId},
-		SpellCode:    SpellCode_MageFrostbolt,
-		SpellSchool:  core.SpellSchoolFrost,
-		DefenseType:  core.DefenseTypeMagic,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | SpellFlagChillSpell | core.SpellFlagBinary | core.SpellFlagAPL,
-		MissileSpeed: 28,
+		ActionID:       core.ActionID{SpellID: spellId},
+		ClassSpellMask: ClassSpellMask_MageFrostbolt,
+		SpellSchool:    core.SpellSchoolFrost,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagChillSpell | core.SpellFlagBinary | core.SpellFlagAPL,
+		MissileSpeed:   28,
 
 		RequiredLevel: level,
 		Rank:          rank,

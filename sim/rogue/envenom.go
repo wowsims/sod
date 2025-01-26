@@ -27,13 +27,13 @@ func (rogue *Rogue) registerEnvenom() {
 	})
 
 	rogue.Envenom = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_RogueEnvenom,
-		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneEnvenom)},
-		SpellSchool:  core.SpellSchoolNature,
-		DefenseType:  core.DefenseTypeMelee,
-		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagIgnoreResists | core.SpellFlagPoison,
-		MetricSplits: 6,
+		ClassSpellMask: ClassSpellMask_RogueEnvenom,
+		ActionID:       core.ActionID{SpellID: int32(proto.RogueRune_RuneEnvenom)},
+		SpellSchool:    core.SpellSchoolNature,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagIgnoreResists | core.SpellFlagPoison,
+		MetricSplits:   6,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,

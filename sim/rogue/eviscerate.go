@@ -39,13 +39,13 @@ func (rogue *Rogue) registerEviscerate() {
 	cutToTheChase := rogue.HasRune(proto.RogueRune_RuneCutToTheChase)
 
 	rogue.Eviscerate = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_RogueEviscerate,
-		ActionID:     core.ActionID{SpellID: spellID},
-		SpellSchool:  core.SpellSchoolPhysical,
-		DefenseType:  core.DefenseTypeMelee,
-		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        rogue.finisherFlags() | SpellFlagColdBlooded,
-		MetricSplits: 6,
+		ClassSpellMask: ClassSpellMask_RogueEviscerate,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          rogue.finisherFlags() | SpellFlagColdBlooded,
+		MetricSplits:   6,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,

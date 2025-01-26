@@ -1,7 +1,6 @@
 package warlock
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -154,28 +153,24 @@ func (warlock *Warlock) applyNightfall() {
 		ActionID: core.ActionID{SpellID: 17941},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.ShadowBolt {
-				spell.CastTimeMultiplier -= 1
-			}
 			for _, spell := range warlock.ShadowCleave {
 				spell.CD.Reset()
-				spell.DamageMultiplierAdditive += 1.0
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.ShadowBolt {
-				spell.CastTimeMultiplier += 1
-			}
-			for _, spell := range warlock.ShadowCleave {
-				spell.DamageMultiplierAdditive -= 1.0
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// Check if the shadowbolt was instant cast and not a normal one
-			if (spell.SpellCode == SpellCode_WarlockShadowBolt && spell.CurCast.CastTime == 0) || spell.SpellCode == SpellCode_WarlockShadowCleave {
+			if (spell.Matches(ClassSpellMask_WarlockShadowBolt) && spell.CurCast.CastTime == 0) || spell.Matches(ClassSpellMask_WarlockShadowCleave) {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  ClassSpellMask_WarlockShadowBolt,
+		FloatValue: -1,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_WarlockShadowCleave,
+		FloatValue: 1,
 	})
 
 	if warlock.Talents.Nightfall <= 0 {
@@ -189,7 +184,7 @@ func (warlock *Warlock) applyNightfall() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "Nightfall Hidden Aura",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_WarlockCorruption || spell.SpellCode == SpellCode_WarlockDrainLife || (hasSoulSiphonRune && spell.SpellCode == SpellCode_WarlockDrainSoul)) && sim.Proc(warlock.nightfallProcChance, "Nightfall") {
+			if (spell.Matches(ClassSpellMask_WarlockCorruption|ClassSpellMask_WarlockDrainLife) || (hasSoulSiphonRune && spell.Matches(ClassSpellMask_WarlockDrainSoul))) && sim.Proc(warlock.nightfallProcChance, "Nightfall") {
 				warlock.ShadowTranceAura.Activate(sim)
 			}
 		},
@@ -202,14 +197,14 @@ func (warlock *Warlock) applyShadowMastery() {
 	}
 
 	// These spells have their base damage modded instead
-	// Apply Aura: Modifies Spell Effectiveness (8)
-	excludedSpellCodes := []int32{SpellCode_WarlockCurseOfAgony, SpellCode_WarlockDeathCoil, SpellCode_WarlockDrainLife, SpellCode_WarlockDrainSoul}
+	excludedClassMasks := ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockDeathCoil | ClassSpellMask_WarlockDrainLife | ClassSpellMask_WarlockDrainSoul
 
-	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		// Shadow Mastery applies a base damage modifier to all dots / channeled spells instead
-		if spell.SpellSchool.Matches(core.SpellSchoolShadow) && isWarlockSpell(spell) && !slices.Contains(excludedSpellCodes, spell.SpellCode) {
-			spell.DamageMultiplierAdditive += warlock.shadowMasteryBonus()
-		}
+	// Apply Aura: Modifies Spell Effectiveness (8)
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		School:     core.SpellSchoolShadow,
+		ClassMask:  ClassSpellMask_WarlockAll ^ excludedClassMasks,
+		FloatValue: warlock.shadowMasteryBonus(),
 	})
 }
 
@@ -580,10 +575,10 @@ func (warlock *Warlock) applyDemonicSacrifice() {
 	}
 
 	warlock.GetOrRegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_WarlockDemonicSacrifice,
-		ActionID:    core.ActionID{SpellID: 18788},
-		SpellSchool: core.SpellSchoolShadow,
-		Flags:       core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_WarlockDemonicSacrifice,
+		ActionID:       core.ActionID{SpellID: 18788},
+		SpellSchool:    core.SpellSchoolShadow,
+		Flags:          core.SpellFlagAPL,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return warlock.ActivePet != nil
@@ -633,7 +628,7 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 		return
 	}
 
-	warlock.improvedShadowBoltSpellCodes = []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockShadowflame}
+	improvedShadowBoltSpellClassMasks := ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockShadowCleave | ClassSpellMask_WarlockShadowflame
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "ISB Trigger",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -643,7 +638,7 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 			warlock.DebuffSpells = append(warlock.DebuffSpells, warlock.ShadowBolt...)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && result.DidCrit() && slices.Contains(warlock.improvedShadowBoltSpellCodes, spell.SpellCode) {
+			if result.Landed() && result.DidCrit() && spell.Matches(improvedShadowBoltSpellClassMasks) {
 				isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
 				isbAura.Activate(sim)
 				isbAura.SetStacks(sim, stackCount)
@@ -671,9 +666,9 @@ func (warlock *Warlock) applyBane() {
 
 	points := time.Duration(warlock.Talents.Bane)
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_WarlockShadowBolt || spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame {
+		if spell.Matches(ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockImmolate | ClassSpellMask_WarlockShadowflame) {
 			spell.DefaultCast.CastTime -= time.Millisecond * 100 * points
-		} else if spell.SpellCode == SpellCode_WarlockSoulFire {
+		} else if spell.Matches(ClassSpellMask_WarlockSoulFire) {
 			spell.DefaultCast.CastTime -= time.Millisecond * 400 * points
 		}
 	})
@@ -700,7 +695,7 @@ func (warlock *Warlock) applyImprovedImmolate() {
 	modifier := 0.05 * float64(warlock.Talents.ImprovedImmolate)
 
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_WarlockImmolate || spell.SpellCode == SpellCode_WarlockShadowflame {
+		if spell.Matches(ClassSpellMask_WarlockImmolate | ClassSpellMask_WarlockShadowflame) {
 			spell.ImpactDamageMultiplierAdditive += modifier
 		}
 	})
@@ -722,10 +717,10 @@ func (warlock *Warlock) applyEmberstorm() {
 		return
 	}
 
-	points := float64(warlock.Talents.Emberstorm)
-	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellSchool.Matches(core.SpellSchoolFire) && isWarlockSpell(spell) {
-			spell.DamageMultiplierAdditive += 0.02 * points
-		}
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		School:     core.SpellSchoolFire,
+		ClassMask:  ClassSpellMask_WarlockAll,
+		FloatValue: 0.02 * float64(warlock.Talents.Emberstorm),
 	})
 }

@@ -19,29 +19,32 @@ const (
 )
 
 const (
-	SpellCode_ShamanNone int32 = iota
+	ClassSpellMask_ShamanNone int64 = 0
 
-	SpellCode_ShamanChainHeal
-	SpellCode_ShamanChainLightning
-	SpellCode_ShamanEarthShock
-	SpellCode_ShamanFireNova
-	SpellCode_ShamanFireNovaTotem
-	SpellCode_ShamanFireNovaTotemAttack
-	SpellCode_ShamanFlameShock
-	SpellCode_ShamanFrostShock
-	SpellCode_ShamanHealingWave
-	SpellCode_ShamanLavaLash
-	SpellCode_ShamanLesserHealingWave
-	SpellCode_ShamanLightningBolt
-	SpellCode_ShamanLightningShield
-	SpellCode_ShamanLavaBurst
-	SpellCode_ShamanMagmaTotem
-	SpellCode_ShamanMagmaTotemAttack
-	SpellCode_ShamanMoltenBlast
-	SpellCode_ShamanSearingTotem
-	SpellCode_ShamanSearingTotemAttack
-	SpellCode_ShamanStormstrike
-	SpellCode_ShamanStormstrikeHit
+	ClassSpellMask_ShamanChainHeal int64 = 1 << iota
+	ClassSpellMask_ShamanChainLightning
+	ClassSpellMask_ShamanEarthShock
+	ClassSpellMask_ShamanFireNova
+	ClassSpellMask_ShamanFireNovaTotem
+	ClassSpellMask_ShamanFireNovaTotemAttack
+	ClassSpellMask_ShamanFlameShock
+	ClassSpellMask_ShamanFrostShock
+	ClassSpellMask_ShamanHealingWave
+	ClassSpellMask_ShamanLavaLash
+	ClassSpellMask_ShamanLesserHealingWave
+	ClassSpellMask_ShamanLightningBolt
+	ClassSpellMask_ShamanLightningShield
+	ClassSpellMask_ShamanLightningShieldProc
+	ClassSpellMask_ShamanRollingThunder
+	ClassSpellMask_ShamanLavaBurst
+	ClassSpellMask_ShamanMagmaTotem
+	ClassSpellMask_ShamanMagmaTotemAttack
+	ClassSpellMask_ShamanMoltenBlast
+	ClassSpellMask_ShamanSearingTotem
+	ClassSpellMask_ShamanSearingTotemAttack
+	ClassSpellMask_ShamanStormstrike
+	ClassSpellMask_ShamanStormstrikeHit
+	ClassSpellMask_ShamanWindFury
 )
 
 // Indexes into NextTotemDrops for self buffs

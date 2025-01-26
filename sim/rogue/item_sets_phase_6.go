@@ -32,18 +32,13 @@ func (rogue *Rogue) applyTAQDamage2PBonus() {
 		return
 	}
 
-	rogue.RegisterAura(core.Aura{
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if rogue.SaberSlash != nil {
-				rogue.SaberSlash.DamageMultiplierAdditive += 0.20
-			}
-			if rogue.Mutilate != nil {
-				rogue.MutilateMH.DamageMultiplierAdditive += 0.20
-				rogue.MutilateOH.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
+		FloatValue: 0.20,
+	}))
 }
 
 // Reduces the cooldown on Adrenaline Rush by 4 minutes.
@@ -111,7 +106,7 @@ func (rogue *Rogue) applyTAQTank2PBonus() {
 		Label:    "2P Cleave Buff",
 		Duration: time.Second * 10,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && (spell.SpellCode == SpellCode_RogueSinisterStrike) {
+			if result.Landed() && spell.Matches(ClassSpellMask_RogueSinisterStrike) {
 				curDmg = result.Damage / result.ResistanceMultiplier
 				cleaveHit.Cast(sim, rogue.Env.NextTargetUnit(result.Target))
 				cleaveHit.SpellMetrics[result.Target.UnitIndex].Casts--
@@ -122,7 +117,7 @@ func (rogue *Rogue) applyTAQTank2PBonus() {
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.SpellCode == SpellCode_RogueMainGauche {
+			if result.Landed() && spell.Matches(ClassSpellMask_RogueMainGauche) {
 				cleaveAura.Activate(sim)
 				curDmg = result.Damage / result.ResistanceMultiplier
 				cleaveHit.Cast(sim, rogue.Env.NextTargetUnit(result.Target))
@@ -202,7 +197,7 @@ func (rogue *Rogue) applyTAQTank4PBonus() {
 		Outcome:  core.OutcomeLanded,
 		Duration: time.Second * 15,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_RogueSinisterStrike {
+			if spell.Matches(ClassSpellMask_RogueSinisterStrike) {
 				healAmount = result.Damage * 0.15
 				if rogue.CurrentHealth() < rogue.MaxHealth() {
 					rogue.GainHealth(sim, healAmount, healthMetrics)
@@ -218,7 +213,7 @@ func (rogue *Rogue) applyTAQTank4PBonus() {
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.SpellCode == SpellCode_RogueMainGauche {
+			if result.Landed() && spell.Matches(ClassSpellMask_RogueMainGauche) {
 				activeAura.Activate(sim)
 			}
 		},

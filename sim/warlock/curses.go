@@ -28,14 +28,14 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 	snapshotBaseDmgNoBonus := 0.0
 
 	return core.SpellConfig{
-		SpellCode:     SpellCode_WarlockCurseOfAgony,
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolShadow,
-		DefenseType:   core.DefenseTypeMagic,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction | WarlockFlagHaunt,
-		ProcMask:      core.ProcMaskSpellDamage,
-		RequiredLevel: level,
-		Rank:          rank,
+		ClassSpellMask: ClassSpellMask_WarlockCurseOfAgony,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction | WarlockFlagHaunt,
+		ProcMask:       core.ProcMaskSpellDamage,
+		RequiredLevel:  level,
+		Rank:           rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -76,7 +76,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 
 				if !isRollover {
 					if warlock.zilaGularAura.IsActive() {
-						dot.SnapshotAttackerMultiplier *= 1.25
+						dot.SnapshotAttackerMultiplier *= 1.10
 						warlock.zilaGularAura.Deactivate(sim)
 					}
 				}
@@ -358,12 +358,12 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
 
 	warlock.CurseOfDoom = warlock.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_WarlockCurseOfDoom,
-		ActionID:    core.ActionID{SpellID: 449432}, // New spell created for SoD
-		SpellSchool: core.SpellSchoolShadow,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | WarlockFlagAffliction,
+		ClassSpellMask: ClassSpellMask_WarlockCurseOfDoom,
+		ActionID:       core.ActionID{SpellID: 449432}, // New spell created for SoD
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | WarlockFlagAffliction,
 
 		RequiredLevel: 60,
 

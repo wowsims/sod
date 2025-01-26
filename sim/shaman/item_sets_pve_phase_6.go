@@ -1,7 +1,6 @@
 package shaman
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -103,7 +102,7 @@ func (shaman *Shaman) applyTAQTank2PBonus() {
 		return
 	}
 
-	affectedSpellCodess := []int32{SpellCode_ShamanStormstrikeHit, SpellCode_ShamanLavaBurst, SpellCode_ShamanMoltenBlast}
+	affectedSpellClassMasks := ClassSpellMask_ShamanStormstrikeHit | ClassSpellMask_ShamanLavaBurst | ClassSpellMask_ShamanMoltenBlast
 
 	buffAura := shaman.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213934},
@@ -120,7 +119,7 @@ func (shaman *Shaman) applyTAQTank2PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && slices.Contains(affectedSpellCodess, spell.SpellCode) {
+			if result.Landed() && spell.Matches(affectedSpellClassMasks) {
 				buffAura.Activate(sim)
 			}
 		},
@@ -198,22 +197,18 @@ func (shaman *Shaman) applyTAQEnhancement2PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if shaman.StormstrikeMH != nil {
-				shaman.StormstrikeMH.DamageMultiplierAdditive += core.TernaryFloat64(shaman.HasRune(proto.ShamanRune_RuneChestTwoHandedMastery), 1.00, 0.50)
-			}
-
-			if shaman.StormstrikeOH != nil {
-				shaman.StormstrikeOH.DamageMultiplierAdditive += 0.50
-			}
-
-			if shaman.LavaLash != nil {
-				shaman.LavaLash.DamageMultiplierAdditive += 0.50
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_ShamanLavaLash,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0.50,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanStormstrikeHit,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		// TODO: ItemSwap - Make this a dynamic value based on the weapon type.
+		FloatValue: core.TernaryFloat64(shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand, 1.00, 0.50),
+	}))
 }
 
 // Your Stormstrike, Lava Lash, and Lava Burst critical strikes cause your target to burn for 30% of the damage done over 4 sec.
@@ -257,7 +252,7 @@ func (shaman *Shaman) applyTAQEnhancement4PBonus() {
 		},
 	})
 
-	var affectedSpellCodes = []int32{SpellCode_ShamanStormstrikeHit, SpellCode_ShamanLavaLash, SpellCode_ShamanLavaBurst}
+	affectedSpellClassMasks := ClassSpellMask_ShamanStormstrikeHit | ClassSpellMask_ShamanLavaLash | ClassSpellMask_ShamanLavaBurst
 
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:             label,
@@ -265,7 +260,7 @@ func (shaman *Shaman) applyTAQEnhancement4PBonus() {
 		Outcome:          core.OutcomeCrit,
 		CanProcFromProcs: true,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains(affectedSpellCodes, spell.SpellCode) {
+			if !spell.Matches(affectedSpellClassMasks) {
 				return
 			}
 

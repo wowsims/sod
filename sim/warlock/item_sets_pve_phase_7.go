@@ -26,21 +26,20 @@ var ItemSetPlagueheartRaiment = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Increases periodic damage done by your Corruption ability by 20%.
+// Increases the damage done by your Incinerate and Corruption abilities by 20%.
 func (warlock *Warlock) applyNaxxramasDamage2PBonus() {
 	label := "S03 - Item - Naxxramas - Warlock - Damage 2P Bonus"
 	if warlock.HasAura(label) {
 		return
 	}
 
-	warlock.RegisterAura(core.Aura{
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.Corruption {
-				spell.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockCorruption,
+		FloatValue: 0.20,
+	}))
 }
 
 // Your non-periodic critical strikes cause your active Corruption, Immolate, Shadowflame, and Unstable Affliction spells on the target to immediately deal one pulse of their damage to the target.
@@ -135,7 +134,7 @@ func (warlock *Warlock) applyNaxxramasTank2PBonus() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-	}).AttachBuildPhaseStatsBuff(bonusStats))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on your Infernal Armor ability by 30 sec and reduces the cooldown on your Demonic Grace ability by 10 sec.

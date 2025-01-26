@@ -23,6 +23,7 @@ const (
 	CallbackOnHealDealt
 	CallbackOnPeriodicHealDealt
 	CallbackOnCastComplete
+	CallbackOnApplyEffects
 )
 
 type DPMProcType uint16
@@ -45,6 +46,7 @@ type ProcTrigger struct {
 	CanProcFromProcs  bool // Can Proc From Procs flag
 	SpellFlagsExclude SpellFlag
 	SpellFlags        SpellFlag
+	SpellSchool       SpellSchool
 	Outcome           HitOutcome
 	Harmful           bool
 	ProcChance        float64
@@ -53,6 +55,7 @@ type ProcTrigger struct {
 	DPMProcType       DPMProcType // Will use ProcWithWeaponSpecials by default. Used to override default DPM Proc check.
 	ICD               time.Duration
 	Handler           ProcHandler
+	ClassSpellMask    int64
 	ExtraCondition    ProcExtraCondition
 }
 
@@ -80,6 +83,12 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 	handler := config.Handler
 	callback := func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 		if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
+			return
+		}
+		if config.ClassSpellMask > 0 && !spell.Matches(config.ClassSpellMask) {
+			return
+		}
+		if config.SpellSchool > 0 && !spell.SpellSchool.Matches(config.SpellSchool) {
 			return
 		}
 		if config.SpellFlagsExclude != SpellFlagNone && spell.Flags.Matches(config.SpellFlagsExclude) {
@@ -143,6 +152,12 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 			if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
 				return
 			}
+			if config.ClassSpellMask > 0 && !spell.Matches(config.ClassSpellMask) {
+				return
+			}
+			if config.SpellSchool > 0 && !spell.SpellSchool.Matches(config.SpellSchool) {
+				return
+			}
 			if config.ProcMask != ProcMaskUnknown && !spell.ProcMask.Matches(config.ProcMask) {
 				return
 			}
@@ -160,6 +175,36 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 				icd.Use(sim)
 			}
 			handler(sim, spell, nil)
+		}
+	}
+	if config.Callback.Matches(CallbackOnApplyEffects) {
+		procAura.OnApplyEffects = func(aura *Aura, sim *Simulation, target *Unit, spell *Spell) {
+			if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
+				return
+			}
+			if config.ClassSpellMask > 0 && !spell.Matches(config.ClassSpellMask) {
+				return
+			}
+			if config.SpellSchool > 0 && !spell.SpellSchool.Matches(config.SpellSchool) {
+				return
+			}
+			if config.ProcMask != ProcMaskUnknown && !spell.ProcMask.Matches(config.ProcMask) {
+				return
+			}
+			if config.SpellFlagsExclude != SpellFlagNone && spell.Flags.Matches(config.SpellFlagsExclude) {
+				return
+			}
+			if icd.Duration != 0 && !icd.IsReady(sim) {
+				return
+			}
+			if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
+				return
+			}
+
+			if icd.Duration != 0 {
+				icd.Use(sim)
+			}
+			handler(sim, spell, &SpellResult{Target: target})
 		}
 	}
 }
@@ -325,22 +370,21 @@ func (parentAura *Aura) AttachProcTrigger(config ProcTrigger) *Aura {
 	return parentAura
 }
 
-// DISABLED - Cata SpellMods are not yet migrated
 // Attaches a SpellMod to a parent Aura
 // Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
-// func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) {
-// 	parentAuraDep := parentAura.Unit.AddDynamicMod(spellModConfig)
+func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) *Aura {
+	parentAuraDep := parentAura.Unit.AddDynamicMod(spellModConfig)
 
-// 	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
-// 		parentAuraDep.Activate()
-// 	})
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		parentAuraDep.Activate()
+	})
 
-// 	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
-// 		parentAuraDep.Deactivate()
-// 	})
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		parentAuraDep.Deactivate()
+	})
 
-// return parentAura
-// }
+	return parentAura
+}
 
 // Attaches a StatDependency to a parent Aura
 // Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
@@ -367,6 +411,44 @@ func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) *Aura {
 	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
 		aura.Unit.AddStatsDynamic(sim, stats.Invert())
 	})
+
+	if parentAura.IsActive() {
+		parentAura.Unit.AddStats(stats)
+	}
+
+	return parentAura
+}
+
+// Attaches a multiplicative PseudoStat buff to a parent Aura
+func (parentAura *Aura) AttachMultiplicativePseudoStatBuff(fieldPointer *float64, multiplier float64) *Aura {
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		*fieldPointer *= multiplier
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		*fieldPointer /= multiplier
+	})
+
+	if parentAura.IsActive() {
+		*fieldPointer *= multiplier
+	}
+
+	return parentAura
+}
+
+// Attaches an additive PseudoStat buff to a parent Aura
+func (parentAura *Aura) AttachAdditivePseudoStatBuff(fieldPointer *float64, bonus float64) *Aura {
+	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
+		*fieldPointer += bonus
+	})
+
+	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+		*fieldPointer -= bonus
+	})
+
+	if parentAura.IsActive() {
+		*fieldPointer += bonus
+	}
 
 	return parentAura
 }

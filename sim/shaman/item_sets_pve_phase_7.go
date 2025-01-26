@@ -127,22 +127,13 @@ func (shaman *Shaman) applyNaxxramasEnhancement2PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range shaman.LightningShieldProcs {
-				if spell == nil {
-					continue
-				}
-
-				spell.DamageMultiplierAdditive += 1.00
-			}
-
-			if shaman.RollingThunder != nil {
-				shaman.RollingThunder.DamageMultiplierAdditive += 1.00
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_ShamanLightningShieldProc | ClassSpellMask_ShamanRollingThunder,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 1,
+	}))
 }
 
 // Reduces the cooldown on your Lava Lash and Stormstrike abilities by 1.5 sec.
@@ -258,7 +249,7 @@ func (shaman *Shaman) applyNaxxramasTank2PBonus() {
 				spell.BonusHitRating += 100 * core.SpellHitRatingPerHitChance
 			}
 		},
-	}).AttachBuildPhaseStatsBuff(bonusStats))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Increases the damage taken reduction from your Shamanistic Rage ability by an additional 15% and during Shamanistic Rage your attack speed and spellcasting speed are increased by 30%.

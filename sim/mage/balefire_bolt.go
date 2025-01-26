@@ -23,6 +23,12 @@ func (mage *Mage) registerBalefireBoltSpell() {
 	maxStacks := 5
 	stackMultiplier := 0.20
 
+	damageMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_MageBalefireBolt,
+		Kind:       core.SpellMod_DamageDone_Flat,
+		FloatValue: 0,
+	})
+
 	statDeps := make([]*stats.StatDependency, maxStacks+1) // 5 stacks + zero conditions
 	for i := 1; i < maxStacks+1; i++ {
 		statDeps[i] = mage.NewDynamicMultiplyStat(stats.Spirit, 1.0-stackMultiplier*float64(i))
@@ -34,8 +40,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 		Duration:  buffDuration,
 		MaxStacks: int32(maxStacks),
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			mage.BalefireBolt.DamageMultiplierAdditive -= stackMultiplier * float64(oldStacks)
-			mage.BalefireBolt.DamageMultiplierAdditive += stackMultiplier * float64(newStacks)
+			damageMod.UpdateFloatValue(stackMultiplier * float64(newStacks))
 
 			if oldStacks != 0 {
 				aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
@@ -54,17 +59,23 @@ func (mage *Mage) registerBalefireBoltSpell() {
 				sim.Cleanup()
 			}
 		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Deactivate()
+		},
 	})
 
 	mage.BalefireBolt = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneBracersBalefireBolt)},
-		SpellCode:   SpellCode_MageBalefireBolt,
-		SpellSchool: core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
-		// TODO: Verify missile speed
-		MissileSpeed: 28,
+		ActionID:       core.ActionID{SpellID: int32(proto.MageRune_RuneBracersBalefireBolt)},
+		ClassSpellMask: ClassSpellMask_MageBalefireBolt,
+		SpellSchool:    core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		// https://wago.tools/db2/SpellMisc?build=1.15.6.58658&sort[SpellID]=asc&filter[SpellID]=428878&page=1
+		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

@@ -40,7 +40,7 @@ func (priest *Priest) registerMindFlay() {
 
 func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.SpellConfig {
 	ticks := tickIdx
-	flags := SpellFlagPriest | core.SpellFlagChanneled | core.SpellFlagBinary
+	flags := core.SpellFlagChanneled | core.SpellFlagBinary
 	if tickIdx == 0 {
 		ticks = 3
 		flags |= core.SpellFlagAPL
@@ -58,12 +58,12 @@ func (priest *Priest) newMindFlaySpellConfig(rank int, tickIdx int32) core.Spell
 	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
 	return core.SpellConfig{
-		SpellCode:   SpellCode_PriestMindFlay,
-		ActionID:    core.ActionID{SpellID: spellId}.WithTag(tickIdx),
-		SpellSchool: core.SpellSchoolShadow,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       flags,
+		ClassSpellMask: ClassSpellMask_PriestMindFlay,
+		ActionID:       core.ActionID{SpellID: spellId}.WithTag(tickIdx),
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          flags,
 
 		RequiredLevel: level,
 		Rank:          rank,

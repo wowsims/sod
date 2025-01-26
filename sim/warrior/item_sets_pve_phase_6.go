@@ -55,25 +55,19 @@ func (warrior *Warrior) applyTAQDamage4PBonus() {
 		ActionID: core.ActionID{SpellID: 1214166},
 		Label:    "Bloodythirsty",
 		Duration: time.Second * 3,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageDealtMultiplier *= 1.15
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageDealtMultiplier /= 1.15
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.DamageDealtMultiplier, 1.15)
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_WarriorDeepWounds && warrior.Rend.Dot(result.Target).IsActive()) ||
-				(spell.SpellCode == SpellCode_WarriorRend && warrior.DeepWounds.Dot(result.Target).IsActive()) {
+			if (spell.Matches(ClassSpellMask_WarriorDeepWounds) && warrior.Rend.Dot(result.Target).IsActive()) ||
+				(spell.Matches(ClassSpellMask_WarriorRend) && warrior.DeepWounds.Dot(result.Target).IsActive()) {
 				buffAura.Activate(sim)
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_WarriorDeepWounds && warrior.Rend.Dot(result.Target).IsActive()) ||
-				(spell.SpellCode == SpellCode_WarriorRend && warrior.DeepWounds.Dot(result.Target).IsActive()) {
+			if (spell.Matches(ClassSpellMask_WarriorDeepWounds) && warrior.Rend.Dot(result.Target).IsActive()) ||
+				(spell.Matches(ClassSpellMask_WarriorRend) && warrior.DeepWounds.Dot(result.Target).IsActive()) {
 				buffAura.Activate(sim)
 			}
 		},
@@ -126,7 +120,7 @@ func (warrior *Warrior) applyTAQTank4PBonus() {
 			warrior.ShieldSlam.ThreatMultiplier *= 2
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarriorShieldSlam && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry|core.OutcomeBlock) {
+			if spell.Matches(ClassSpellMask_WarriorShieldSlam) && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry|core.OutcomeBlock) {
 				spell.CD.Reset()
 			}
 		},

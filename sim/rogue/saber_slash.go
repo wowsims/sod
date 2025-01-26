@@ -13,12 +13,12 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 	}
 
 	rogue.SaberSlash = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_RogueSaberSlash,
-		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneSaberSlash)},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       rogue.builderFlags(),
+		ClassSpellMask: ClassSpellMask_RogueSaberSlash,
+		ActionID:       core.ActionID{SpellID: int32(proto.RogueRune_RuneSaberSlash)},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          rogue.builderFlags(),
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{45, 42, 40}[rogue.Talents.ImprovedSinisterStrike],
 			Refund: 0.8,

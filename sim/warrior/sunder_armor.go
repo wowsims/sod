@@ -27,12 +27,12 @@ func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 
 	if warrior.HasRune(proto.WarriorRune_RuneDevastate) {
 		warrior.Devastate = warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
-			SpellCode:   SpellCode_WarriorDevastate,
-			ActionID:    core.ActionID{SpellID: int32(proto.WarriorRune_RuneDevastate)},
-			SpellSchool: core.SpellSchoolPhysical,
-			DefenseType: core.DefenseTypeMelee,
-			ProcMask:    core.ProcMaskMeleeMHSpecial, // TODO check whether this can actually proc stuff or not
-			Flags:       core.SpellFlagMeleeMetrics | SpellFlagOffensive,
+			ClassSpellMask: ClassSpellMask_WarriorDevastate,
+			ActionID:       core.ActionID{SpellID: int32(proto.WarriorRune_RuneDevastate)},
+			SpellSchool:    core.SpellSchoolPhysical,
+			DefenseType:    core.DefenseTypeMelee,
+			ProcMask:       core.ProcMaskMeleeMHSpecial, // TODO check whether this can actually proc stuff or not
+			Flags:          core.SpellFlagMeleeMetrics | SpellFlagOffensive,
 
 			CritDamageBonus:  warrior.impale(),
 			DamageMultiplier: 1.5,

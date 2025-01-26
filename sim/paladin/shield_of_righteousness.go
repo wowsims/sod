@@ -18,12 +18,12 @@ func (paladin *Paladin) registerShieldOfRighteousness() {
 	damage := (179.0 * paladin.baseRuneAbilityDamage() / 100.0) + 20.0
 
 	paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.PaladinRune_RuneCloakShieldOfRighteousness)},
-		SpellSchool: core.SpellSchoolHoly,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		SpellCode:   SpellCode_PaladinShieldOfRighteousness,
+		ActionID:       core.ActionID{SpellID: int32(proto.PaladinRune_RuneCloakShieldOfRighteousness)},
+		SpellSchool:    core.SpellSchoolHoly,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_PaladinShieldOfRighteousness,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,

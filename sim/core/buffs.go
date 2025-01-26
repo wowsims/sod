@@ -559,7 +559,7 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 			aura.Unit.AddBuildPhaseStatsDynamic(sim, bonusStats)
 
 			for _, dep := range statDeps {
-				aura.Unit.EnableBuildPhaseStatDep(sim, dep)
+				ee.Aura.Unit.EnableBuildPhaseStatDep(sim, dep)
 			}
 
 			if config.ExtraOnGain != nil {
@@ -567,7 +567,7 @@ func makeExclusiveBuff(aura *Aura, config BuffConfig) {
 			}
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-			aura.Unit.AddBuildPhaseStatsDynamic(sim, bonusStats.Invert())
+			aura.Unit.AddBuildPhaseStatsDynamic(sim, bonusStats.Multiply(-1))
 
 			for _, dep := range statDeps {
 				ee.Aura.Unit.DisableBuildPhaseStatDep(sim, dep)
@@ -1024,7 +1024,13 @@ func DevotionAuraAura(unit *Unit, points int32) *Aura {
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   NeverExpires,
 		BuildPhase: CharacterBuildPhaseBuffs,
-	}).AttachBuildPhaseStatsBuff(updateStats)
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats.Multiply(-1))
+		},
+	})
 }
 
 func StoneskinTotemAura(unit *Unit, points int32) *Aura {
@@ -1913,7 +1919,14 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
-	}).AttachBuildPhaseStatsBuff(updateStats)
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats.Multiply(-1))
+		},
+	})
+	return aura
 }
 
 func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
@@ -1933,7 +1946,14 @@ func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
-	}).AttachBuildPhaseStatsBuff(updateStats)
+		OnGain: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats)
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			unit.AddBuildPhaseStatsDynamic(sim, updateStats.Multiply(-1))
+		},
+	})
+	return aura
 }
 
 const BattleShoutRanks = 7
@@ -2655,7 +2675,7 @@ func AtieshHealingEffect(unit *Unit) *Aura {
 		ActionID:   ActionID{SpellID: 1219553},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
-	}).AttachBuildPhaseStatsBuff(stats))
+	}).AttachStatsBuff(stats))
 }
 
 // Equip: Increases the spell critical chance of all party members within 30 yards by 2%. This specific effect does not stack from multiple sources.

@@ -26,12 +26,12 @@ func (warlock *Warlock) registerShadowflameSpell() {
 	tickLength := time.Second * 3
 
 	warlock.Shadowflame = warlock.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_WarlockShadowflame,
-		ActionID:    core.ActionID{SpellID: 426320},
-		SpellSchool: core.SpellSchoolFire | core.SpellSchoolShadow,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagAffliction | WarlockFlagDestruction | WarlockFlagHaunt,
+		ClassSpellMask: ClassSpellMask_WarlockShadowflame,
+		ActionID:       core.ActionID{SpellID: 426320},
+		SpellSchool:    core.SpellSchoolFire | core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagAffliction | WarlockFlagDestruction | WarlockFlagHaunt,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.27,

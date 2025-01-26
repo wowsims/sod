@@ -42,12 +42,12 @@ func (priest *Priest) getShadowWordPainConfig(rank int) core.SpellConfig {
 	hasDespairRune := priest.HasRune(proto.PriestRune_RuneBracersDespair)
 
 	return core.SpellConfig{
-		SpellCode:   SpellCode_PriestShadowWordPain,
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellSchool: core.SpellSchoolShadow,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagPureDot,
+		ClassSpellMask: ClassSpellMask_PriestShadowWordPain,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		RequiredLevel: level,
 		Rank:          rank,

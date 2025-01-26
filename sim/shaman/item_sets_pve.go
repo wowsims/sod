@@ -21,7 +21,7 @@ var ItemSetElectromanticStormbringer = core.NewItemSet(core.ItemSet{
 		3: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
 			shaman.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_ShamanLightningBolt {
+				if spell.Matches(ClassSpellMask_ShamanLightningBolt) {
 					spell.DefaultCast.CastTime -= time.Millisecond * 100
 				}
 			})

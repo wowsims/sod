@@ -8,6 +8,7 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+type OnApplyEffects func(aura *Aura, sim *Simulation, target *Unit, spell *Spell)
 type ApplySpellResults func(sim *Simulation, target *Unit, spell *Spell)
 type ExpectedDamageCalculator func(sim *Simulation, target *Unit, spell *Spell, useSnapshot bool) *SpellResult
 type CanCastCondition func(sim *Simulation, target *Unit) bool
@@ -16,17 +17,17 @@ type SpellConfig struct {
 	// See definition of Spell (below) for comments on these.
 	ActionID
 	// Used to identify spells with multiple ranks that need to be referenced
-	SpellCode     int32
-	SpellSchool   SpellSchool
-	DefenseType   DefenseType
-	ProcMask      ProcMask
-	Flags         SpellFlag
-	CastType      proto.CastType
-	MissileSpeed  float64
-	BaseCost      float64
-	MetricSplits  int
-	Rank          int
-	RequiredLevel int
+	ClassSpellMask int64
+	SpellSchool    SpellSchool
+	DefenseType    DefenseType
+	ProcMask       ProcMask
+	Flags          SpellFlag
+	CastType       proto.CastType
+	MissileSpeed   float64
+	BaseCost       float64
+	MetricSplits   int
+	Rank           int
+	RequiredLevel  int
 
 	ManaCost   ManaCostOptions
 	EnergyCost EnergyCostOptions
@@ -77,7 +78,8 @@ type Spell struct {
 	ActionID
 
 	// Used to identify spells with multiple ranks that need to be referenced
-	SpellCode int32
+	// The specific class spell id should be a unique bit
+	ClassSpellMask int64
 
 	// The unit who will perform this spell.
 	Unit *Unit
@@ -237,14 +239,14 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	}
 
 	spell := &Spell{
-		ActionID:     config.ActionID,
-		SpellCode:    config.SpellCode,
-		DefenseType:  config.DefenseType,
-		Unit:         unit,
-		ProcMask:     config.ProcMask,
-		Flags:        config.Flags,
-		CastType:     config.CastType,
-		MissileSpeed: config.MissileSpeed,
+		ActionID:       config.ActionID,
+		ClassSpellMask: config.ClassSpellMask,
+		DefenseType:    config.DefenseType,
+		Unit:           unit,
+		ProcMask:       config.ProcMask,
+		Flags:          config.Flags,
+		CastType:       config.CastType,
+		MissileSpeed:   config.MissileSpeed,
 
 		SpellSchool:       config.SpellSchool,
 		SchoolIndex:       config.SpellSchool.GetSchoolIndex(),
@@ -589,6 +591,13 @@ func (spell *Spell) applyEffects(sim *Simulation, target *Unit) {
 	spell.SpellMetrics[target.UnitIndex].Casts++
 	spell.casts++
 
+	// Not sure if we want to split this flag into its own?
+	// Both are used to optimize away unneccesery calls and 99%
+	// of the time are gonna be used together. For now just in one
+	if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
+		spell.Unit.OnApplyEffects(sim, target, spell)
+	}
+
 	spell.ApplyEffects(sim, target, spell)
 }
 
@@ -645,6 +654,11 @@ func (spell *Spell) TravelTime() time.Duration {
 	} else {
 		return time.Duration(float64(time.Second) * spell.Unit.DistanceFromTarget / spell.MissileSpeed)
 	}
+}
+
+// Returns true if the given mask matches the spell mask
+func (spell *Spell) Matches(mask int64) bool {
+	return spell.ClassSpellMask&mask > 0
 }
 
 type CostType uint8

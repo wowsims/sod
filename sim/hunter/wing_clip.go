@@ -11,14 +11,14 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 	level := [4]int{0, 12, 38, 60}[rank]
 
 	return core.SpellConfig{
-		SpellCode:     SpellCode_HunterWingClip,
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolPhysical,
-		DefenseType:   core.DefenseTypeMelee,
-		ProcMask:      core.ProcMaskMeleeMHSpecial,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary,
-		Rank:          rank,
-		RequiredLevel: level,
+		ClassSpellMask: ClassSpellMask_HunterWingClip,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary,
+		Rank:           rank,
+		RequiredLevel:  level,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,

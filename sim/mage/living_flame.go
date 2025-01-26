@@ -27,12 +27,12 @@ func (mage *Mage) registerLivingFlameSpell() {
 	hasArcaneBlastRune := mage.HasRune(proto.MageRune_RuneHandsArcaneBlast)
 
 	mage.LivingFlame = mage.RegisterSpell(core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
-		SpellCode:    SpellCode_MageLivingFlame,
-		SpellSchool:  core.SpellSchoolArcane | core.SpellSchoolFire,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | core.SpellFlagAPL | core.SpellFlagPureDot,
-		MissileSpeed: 6.02,
+		ActionID:       core.ActionID{SpellID: int32(proto.MageRune_RuneLegsLivingFlame)},
+		ClassSpellMask: ClassSpellMask_MageLivingFlame,
+		SpellSchool:    core.SpellSchoolArcane | core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagPureDot,
+		MissileSpeed:   6.02,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

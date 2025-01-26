@@ -15,14 +15,14 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 	hunter.SerpentStingChimeraShot = hunter.chimeraShotSerpentStingSpell(hunter.SerpentSting.Rank)
 
 	hunter.ChimeraShot = hunter.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_HunterChimeraShot,
-		ActionID:     core.ActionID{SpellID: 409433},
-		SpellSchool:  core.SpellSchoolNature,
-		DefenseType:  core.DefenseTypeRanged,
-		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL | SpellFlagShot,
-		CastType:     proto.CastType_CastTypeRanged,
-		MissileSpeed: 24,
+		ClassSpellMask: ClassSpellMask_HunterChimeraShot,
+		ActionID:       core.ActionID{SpellID: 409433},
+		SpellSchool:    core.SpellSchoolNature,
+		DefenseType:    core.DefenseTypeRanged,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
+		CastType:       proto.CastType_CastTypeRanged,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,

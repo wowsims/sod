@@ -135,7 +135,7 @@ func (warrior *Warrior) applyNaxxramasProtection2PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-	}).AttachBuildPhaseStatsBuff(bonusStats))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on your Shield Wall ability by 3 min and reduces the cooldown on your Recklessness ability by 3 min.

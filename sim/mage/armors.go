@@ -28,15 +28,13 @@ func (mage *Mage) applyFrostIceArmor() {
 		60: 15,
 	}[mage.Level]
 
-	stats := stats.Stats{
-		stats.Armor:           armor,
-		stats.FrostResistance: frostRes,
-	}
-
 	mage.IceArmorAura = core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label:    "Ice Armor",
 		ActionID: core.ActionID{SpellID: spellID},
-	}).AttachBuildPhaseStatsBuff(stats))
+	}).AttachStatsBuff(stats.Stats{
+		stats.Armor:           armor,
+		stats.FrostResistance: frostRes,
+	}))
 }
 
 func (mage *Mage) applyMageArmor() {
@@ -82,5 +80,5 @@ func (mage *Mage) applyMoltenArmor() {
 		Label:      "Molten Armor",
 		ActionID:   core.ActionID{SpellID: int32(proto.MageRune_RuneBracersMoltenArmor)},
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-	}).AttachBuildPhaseStatBuff(stats.SpellCrit, crit))
+	}).AttachStatBuff(stats.SpellCrit, crit))
 }

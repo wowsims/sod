@@ -77,6 +77,8 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ProcMask:    core.ProcMaskSpellDamage,
 			Flags:       core.SpellFlagMeleeMetrics | SpellFlag_RV | core.SpellFlagSuppressWeaponProcs | core.SpellFlagSuppressEquipProcs | core.SpellFlagBinary,
 
+			ClassSpellMask: ClassSpellMask_PaladinJudgementOfRighteousness,
+
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 

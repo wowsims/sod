@@ -22,11 +22,12 @@ func (paladin *Paladin) registerDivineStorm() {
 	healthMetrics := paladin.NewHealthMetrics(core.ActionID{SpellID: int32(proto.PaladinRune_RuneChestDivineStorm)})
 
 	divineStormSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    healthMetrics.ActionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlag_RV,
+		ActionID:       healthMetrics.ActionID,
+		ClassSpellMask: ClassSpellMask_PaladinDivineStorm,
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlag_RV,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.12,
