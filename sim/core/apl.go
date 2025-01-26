@@ -2,7 +2,6 @@ package core
 
 import (
 	"fmt"
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -25,6 +24,8 @@ type APLRotation struct {
 	allowChannelRecastOnInterrupt bool
 	// Checking for cast-while-channeling spells to allow the APL to not evaluate during channels unless absolutely necessary
 	allowCastWhileChanneling bool
+	// Checking for cast-while-casting spells to allow the APL to not evaluate during channels unless absolutely necessary
+	allowCastWhileCasting bool
 
 	// Used inside of actions/value to determine whether they will occur during the prepull or regular rotation.
 	parsingPrepull bool
@@ -166,14 +167,23 @@ func (rot *APLRotation) allPrepullActions() []*APLAction {
 }
 
 func (rot *APLRotation) reset(sim *Simulation) {
+	rot.allowCastWhileCasting = false
+	rot.allowCastWhileChanneling = false
 	rot.controllingActions = nil
 	rot.inLoop = false
 	rot.interruptChannelIf = nil
 	rot.allowChannelRecastOnInterrupt = false
-	rot.allowCastWhileChanneling = slices.ContainsFunc(rot.unit.Spellbook, func(spell *Spell) bool {
-		return spell.Flags.Matches(SpellFlagCastWhileChanneling)
-	})
 	for _, action := range rot.allAPLActions() {
+		if spell := action.impl.GetSpellFromAction(); spell != nil {
+			if spell.Flags.Matches(SpellFlagCastWhileCasting) {
+				rot.allowCastWhileCasting = true
+			}
+
+			if spell.Flags.Matches(SpellFlagCastWhileChanneling) {
+				rot.allowCastWhileChanneling = true
+			}
+		}
+
 		action.impl.Reset(sim)
 	}
 }
