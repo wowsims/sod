@@ -131,8 +131,6 @@ type Druid struct {
 	SolarEclipseProcAura     *core.Aura
 	LunarEclipseProcAura     *core.Aura
 	WildStrikesBuffAura      *core.Aura
-	Tank2PieceAqAura         *core.Aura
-	Tank2PieceAqProcAura     *core.Aura
 
 	BleedCategories         core.ExclusiveCategoryArray
 	SavageRoarDurationTable [6]time.Duration
@@ -253,16 +251,14 @@ func (druid *Druid) RegisterFeralCatSpells() {
 }
 
 // TODO: Classic feral tank
-func (druid *Druid) RegisterFeralTankSpells(realismICD *core.Cooldown) {
+func (druid *Druid) RegisterFeralTankSpells() {
 	// druid.registerBarkskinCD()
 	// druid.registerBerserkCD()
 	druid.registerBearFormSpell()
 	// druid.registerDemoralizingRoarSpell()
 	druid.registerEnrageSpell()
 	druid.registerFrenziedRegenerationCD()
-	// druid.registerRakeSpell()
-	// druid.registerRipSpell()
-	druid.registerMaulSpell(realismICD)
+	druid.registerMaulSpell()
 	// druid.registerSurvivalInstinctsCD()
 	druid.registerSwipeBearSpell()
 }
