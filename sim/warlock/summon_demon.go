@@ -24,11 +24,12 @@ func (warlock *Warlock) registerSummonDemon() {
 
 	// Felguard
 	if warlock.Felguard != nil {
-		warlock.SummonDemonSpells = append(warlock.SummonDemonSpells, warlock.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 427733},
-			SpellSchool: core.SpellSchoolShadow,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagAPL,
+		warlock.RegisterSpell(core.SpellConfig{
+			ActionID:       core.ActionID{SpellID: 427733},
+			SpellSchool:    core.SpellSchoolShadow,
+			ProcMask:       core.ProcMaskEmpty,
+			Flags:          core.SpellFlagAPL,
+			ClassSpellMask: ClassSpellMask_WarlockSummonFelguard,
 
 			ManaCost: core.ManaCostOptions{
 				FlatCost: warlock.BaseMana * 0.80 * (1 - .20*float64(warlock.Talents.MasterSummoner)),
@@ -38,15 +39,16 @@ func (warlock *Warlock) registerSummonDemon() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				warlock.changeActivePet(sim, warlock.Felguard, false)
 			},
-		}))
+		})
 	}
 
 	// Felhunter
-	warlock.SummonDemonSpells = append(warlock.SummonDemonSpells, warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 691},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+	warlock.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 691},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_WarlockSummonFelhunter,
 
 		ManaCost: manaCost,
 		Cast:     cast,
@@ -54,14 +56,15 @@ func (warlock *Warlock) registerSummonDemon() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			warlock.changeActivePet(sim, warlock.Felhunter, false)
 		},
-	}))
+	})
 
 	// Imp
-	warlock.SummonDemonSpells = append(warlock.SummonDemonSpells, warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 688},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+	warlock.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 688},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_WarlockSummonImp,
 
 		ManaCost: manaCost,
 		Cast:     cast,
@@ -69,14 +72,15 @@ func (warlock *Warlock) registerSummonDemon() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			warlock.changeActivePet(sim, warlock.Imp, false)
 		},
-	}))
+	})
 
 	// Succubus
-	warlock.SummonDemonSpells = append(warlock.SummonDemonSpells, warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 712},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+	warlock.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 712},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_WarlockSummonSuccubus,
 
 		ManaCost: manaCost,
 		Cast:     cast,
@@ -84,14 +88,15 @@ func (warlock *Warlock) registerSummonDemon() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			warlock.changeActivePet(sim, warlock.Succubus, false)
 		},
-	}))
+	})
 
 	// Voidwalker
-	warlock.SummonDemonSpells = append(warlock.SummonDemonSpells, warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 697},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+	warlock.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 697},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_WarlockSummonVoidwalker,
 
 		ManaCost: manaCost,
 		Cast:     cast,
@@ -99,5 +104,5 @@ func (warlock *Warlock) registerSummonDemon() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			warlock.changeActivePet(sim, warlock.Voidwalker, false)
 		},
-	}))
+	})
 }
