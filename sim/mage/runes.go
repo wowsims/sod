@@ -136,13 +136,7 @@ func (mage *Mage) applyEnlightenment() {
 		Label:    "Enlightenment (Damage)",
 		ActionID: core.ActionID{SpellID: 412326},
 		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.1
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.1
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&mage.PseudoStats.DamageDealtMultiplier, 1.1)
 
 	// https://www.wowhead.com/classic/spell=412325/enlightenment
 	manaAura := mage.RegisterAura(core.Aura{

@@ -367,24 +367,18 @@ func init() {
 	core.NewEnchantEffect(2613, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.RegisterAura(core.Aura{
+		core.MakePermanent(character.RegisterAura(core.Aura{
 			Label: "Threat +2%",
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.ThreatMultiplier *= 1.02
-			},
-		})
+		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.ThreatMultiplier, 1.02))
 	})
 
 	// Cloak - Subtlety
 	core.NewEnchantEffect(2621, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		character.RegisterAura(core.Aura{
+		core.MakePermanent(character.RegisterAura(core.Aura{
 			Label: "Subtlety",
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.ThreatMultiplier /= 1.02
-			},
-		})
+		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.ThreatMultiplier, 1/1.02))
 	})
 
 	core.AddEffectsToTest = true

@@ -271,9 +271,6 @@ func New(character *core.Character, form DruidForm, selfBuffs SelfBuffs, talents
 	druid.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(druid.Level)]*core.SpellCritRatingPerCritChance)
 	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
-	// Druids get extra melee haste
-	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
-
 	guardians.ConstructGuardians(&druid.Character)
 	druid.t26pcTreants = druid.NewT2Treants()
 

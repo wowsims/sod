@@ -18,13 +18,7 @@ func (druid *Druid) registerBarkskinCD() {
 		Label:    "Barkskin",
 		ActionID: actionId,
 		Duration: time.Second * 12,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.DamageTakenMultiplier *= 0.8
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.DamageTakenMultiplier /= 0.8
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&druid.PseudoStats.DamageTakenMultiplier, 0.8)
 
 	druid.Barkskin = druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID: actionId,

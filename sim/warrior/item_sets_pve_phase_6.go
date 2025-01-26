@@ -55,13 +55,7 @@ func (warrior *Warrior) applyTAQDamage4PBonus() {
 		ActionID: core.ActionID{SpellID: 1214166},
 		Label:    "Bloodythirsty",
 		Duration: time.Second * 3,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageDealtMultiplier *= 1.15
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageDealtMultiplier /= 1.15
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.DamageDealtMultiplier, 1.15)
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
