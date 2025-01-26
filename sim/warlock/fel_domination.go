@@ -1,7 +1,6 @@
 package warlock
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -18,23 +17,19 @@ func (warlock *Warlock) registerFelDominationCD() {
 		ActionID: actionID,
 		Label:    "Fel Domination",
 		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.SummonDemonSpells {
-				spell.DefaultCast.CastTime -= time.Millisecond * 5500
-				spell.Cost.Multiplier -= 50
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.SummonDemonSpells {
-				spell.DefaultCast.CastTime += time.Millisecond * 5500
-				spell.Cost.Multiplier += 50
-			}
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if slices.Contains(warlock.SummonDemonSpells, spell) {
+			if spell.Matches(ClassSpellMask_WarlockSummons) {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: ClassSpellMask_WarlockSummons,
+		IntValue:  -50,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_CastTime_Flat,
+		ClassMask: ClassSpellMask_WarlockSummons,
+		TimeValue: -time.Millisecond * 5500,
 	})
 
 	spell := warlock.RegisterSpell(core.SpellConfig{

@@ -49,6 +49,18 @@ const (
 
 	ClassSpellMask_WarlockLast
 	ClassSpellMask_WarlockAll = ClassSpellMask_WarlockLast<<1 - 1
+
+	ClassSpellMask_WarlockSummonFelguard = ClassSpellMask_WarlockAll << iota
+	ClassSpellMask_WarlockSummonFelhunter
+	ClassSpellMask_WarlockSummonImp
+	ClassSpellMask_WarlockSummonSuccubus
+	ClassSpellMask_WarlockSummonVoidwalker
+
+	ClassSpellMask_WarlockSummons = ClassSpellMask_WarlockSummonFelguard |
+		ClassSpellMask_WarlockSummonFelhunter |
+		ClassSpellMask_WarlockSummonImp |
+		ClassSpellMask_WarlockSummonSuccubus |
+		ClassSpellMask_WarlockSummonVoidwalker
 )
 
 type Warlock struct {
@@ -107,9 +119,8 @@ type Warlock struct {
 	AmplifyCurse             *core.Spell
 
 	// Track all DoT spells for effecrs that add multipliers based on active effects
-	DoTSpells         []*core.Spell
-	DebuffSpells      []*core.Spell
-	SummonDemonSpells []*core.Spell
+	DoTSpells    []*core.Spell
+	DebuffSpells []*core.Spell
 
 	AmplifyCurseAura        *core.Aura
 	BackdraftAura           *core.Aura

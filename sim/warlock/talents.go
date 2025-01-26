@@ -253,29 +253,18 @@ func (warlock *Warlock) applyMasterSummoner() {
 		return
 	}
 
-	castTimeReduction := time.Second * 2 * time.Duration(warlock.Talents.MasterSummoner)
-	costReduction := 20 * warlock.Talents.MasterSummoner
-
 	// Use an aura because the summon spells aren't registered by this point
-	warlock.RegisterAura(core.Aura{
-		Label:    "Master Summoner Hidden Aura",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.SummonDemonSpells {
-				spell.DefaultCast.CastTime -= castTimeReduction
-				spell.Cost.Multiplier -= costReduction
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.SummonDemonSpells {
-				spell.DefaultCast.CastTime += castTimeReduction
-				spell.Cost.Multiplier += costReduction
-			}
-		},
-	})
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Master Summoner Hidden Aura",
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: ClassSpellMask_WarlockSummons,
+		IntValue:  -20 * int64(warlock.Talents.MasterSummoner),
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_CastTime_Flat,
+		ClassMask: ClassSpellMask_WarlockSummons,
+		TimeValue: -time.Second * 2 * time.Duration(warlock.Talents.MasterSummoner),
+	}))
 }
 
 func (warlock *Warlock) applyMasterDemonologist() {
