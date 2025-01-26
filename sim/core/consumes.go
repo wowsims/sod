@@ -207,6 +207,10 @@ func addImbueStats(character *Character, imbue proto.WeaponImbue, isMh bool, sha
 			if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
 				character.PseudoStats.MobTypeAttackPower += 100
 			}
+		case proto.WeaponImbue_WeightedConsecratedSharpeningStone:
+			if character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
+				character.PseudoStats.MobTypeAttackPower += 200
+			}
 
 		// Weightstones
 		case proto.WeaponImbue_SolidWeightstone:

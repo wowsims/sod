@@ -39,9 +39,9 @@ const (
 	ClassSpellMask_WarlockShadowCleave
 	ClassSpellMask_WarlockShadowBolt
 	ClassSpellMask_WarlockShadowburn
+	ClassSpellMask_WarlockSiphonLife
 	ClassSpellMask_WarlockSoulFire
 	ClassSpellMask_WarlockUnstableAffliction
-	ClassSpellMask_WarlockSiphonLife
 
 	ClassSpellMask_WarlockRainOfFire
 	ClassSpellMask_WarlockImmolationAura

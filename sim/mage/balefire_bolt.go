@@ -75,7 +75,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
 		// https://wago.tools/db2/SpellMisc?build=1.15.6.58658&sort[SpellID]=asc&filter[SpellID]=428878&page=1
-		MissileSpeed: 28,
+		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
