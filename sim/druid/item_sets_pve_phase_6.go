@@ -8,9 +8,6 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-var Tank2PieceAqAura *core.Aura
-var Tank2PieceAqProcAura *core.Aura
-
 var ItemSetGenesisEclipse = core.NewItemSet(core.ItemSet{
 	Name: "Genesis Eclipse",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -204,7 +201,7 @@ func (druid *Druid) applyTAQGuardian2PBonus() {
 		return
 	}
 
-	Tank2PieceAqProcAura = druid.RegisterAura(core.Aura{
+	var Tank2PieceAqProcAura = druid.RegisterAura(core.Aura{
 		Label:     "Guardian 2P Bonus Proc",
 		ActionID:  core.ActionID{SpellID: 1213188},
 		Duration:  time.Second * 10,
@@ -217,7 +214,7 @@ func (druid *Druid) applyTAQGuardian2PBonus() {
 		},
 	})
 
-	Tank2PieceAqAura = core.MakePermanent(druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if druid.form == Bear && spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeDodge) {
@@ -227,7 +224,7 @@ func (druid *Druid) applyTAQGuardian2PBonus() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.SpellCode == SpellCode_DruidMangleBear || spell.SpellCode == SpellCode_DruidSwipeBear {
-				Tank2PieceAqProcAura.SetStacks(sim, 0)
+				Tank2PieceAqProcAura.Deactivate(sim)
 			}
 		},
 	}))
