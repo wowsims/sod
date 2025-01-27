@@ -69,6 +69,8 @@ func (ai *ThaddiusAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.registerChainLightning(ai.Target)
 }
 
+const BossGCD = time.Millisecond * 1600
+
 func (ai *ThaddiusAI) Reset(*core.Simulation) {
 }
 
@@ -85,30 +87,35 @@ func (ai *ThaddiusAI) registerChainLightning(target *core.Target) {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    target.NewTimer(),
-				Duration: time.Second * 4,
+				Duration: time.Second * 8,
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := sim.Roll(1850.0, 2250.0) // estimation from logs
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+			if sim.Proc(0.6, "Chain Lightning Target Chance") { // damage and target chance estimated from PTR
+				baseDamage := sim.Roll(1850.0, 2250.0) 
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
+			}
 		},
 	})
 }
 
 func (ai *ThaddiusAI) registerPolarity(target *core.Target) {
 	actionID := core.ActionID{SpellID: 28089}
+	multiplierBonus := 1.0
+	inverseMultiplierBonus := 1.0
+	charactertarget := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
 
-	polarityAura := target.RegisterAura(core.Aura{
+	polarityAura := charactertarget.RegisterAura(core.Aura{
 		Label:    "Polarity Stacks",
 		ActionID: core.ActionID{SpellID: 28059},
 		Duration: time.Minute * 1,
 		MaxStacks: 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			inverseMultiplierBonus = 1 / (1.0 + float64(oldStacks)*0.1)
+			charactertarget.PseudoStats.DamageDealtMultiplier *= inverseMultiplierBonus
+			multiplierBonus = 1.0 + float64(newStacks)*0.1
+			charactertarget.PseudoStats.DamageDealtMultiplier *= multiplierBonus
 		},
 	})
 
@@ -130,8 +137,14 @@ func (ai *ThaddiusAI) registerPolarity(target *core.Target) {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			polarityAura.Deactivate(sim)
 			polarityAura.Activate(sim)
-			polarityAura.SetStacks(sim, int32(ai.polarityStacks)) // need to add delay for damage activation
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt: sim.CurrentTime + time.Second*5,
+				OnAction: func(sim *core.Simulation) {
+					polarityAura.SetStacks(sim, int32(ai.polarityStacks)) // delay for stack activation
+				},
+			})
 		},
 	})
 }
@@ -146,8 +159,12 @@ func (ai *ThaddiusAI) ExecuteCustomRotation(sim *core.Simulation) {
 
 	if ai.Polarity.IsReady(sim) {
 		ai.Polarity.Cast(sim, target)
+		return
 	}
-	if ai.ChainLightning.IsReady(sim) {
-		ai.ChainLightning.Cast(sim, target)
-	}
+	
+		if ai.ChainLightning.IsReady(sim) {
+			ai.Target.WaitUntil(sim, sim.CurrentTime+BossGCD)
+			ai.ChainLightning.Cast(sim, target)
+			return
+		}
 }
