@@ -21,7 +21,7 @@ character_stats_results: {
   final_stats: 1075.86
   final_stats: 2
   final_stats: 18.98613
-  final_stats: 3
+  final_stats: 0
   final_stats: 0
   final_stats: 0
   final_stats: 2177.15
@@ -99,12 +99,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin-Phase2-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.75871
-  weights: 0.22041
+  weights: 0.77274
+  weights: 0.33427
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.18303
+  weights: 0.18458
   weights: 0
   weights: 0
   weights: 0
@@ -112,13 +112,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.73502
-  weights: 0.13658
+  weights: 1.66629
+  weights: 0.16154
   weights: 0
   weights: 0
-  weights: 0.31352
-  weights: 5.58853
-  weights: 4.41498
+  weights: 0.31931
+  weights: 5.67996
+  weights: 4.93287
   weights: 0
   weights: 0
   weights: 0
@@ -197,15 +197,15 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-AllItems-SoulforgeArmor"
  value: {
-  dps: 413.1088
-  tps: 434.46244
+  dps: 423.02732
+  tps: 444.993
  }
 }
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 536.3322
-  tps: 560.76609
+  dps: 546.16947
+  tps: 570.68707
  }
 }
 dps_results: {
@@ -295,8 +295,8 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 507.43859
-  tps: 531.72671
+  dps: 512.71559
+  tps: 537.04384
  }
 }
 dps_results: {
