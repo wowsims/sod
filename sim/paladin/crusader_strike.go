@@ -16,10 +16,11 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		return
 	}
 
-	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: int32(proto.PaladinRune_RuneHandsCrusaderStrike)})
+	actionID := core.ActionID{SpellID: int32(proto.PaladinRune_RuneHandsCrusaderStrike)}
+	manaMetrics := paladin.NewManaMetrics(actionID)
 
 	crusaderStrikeSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    manaMetrics.ActionID,
+		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
