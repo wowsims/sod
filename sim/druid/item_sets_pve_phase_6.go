@@ -218,7 +218,7 @@ func (druid *Druid) applyTAQGuardian2PBonus() {
 	})
 
 	Tank2PieceAqAura = core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: label
+		Label: label,
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if druid.form == Bear && spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeDodge) {
 				Tank2PieceAqProcAura.Activate(sim)
