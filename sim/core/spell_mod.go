@@ -430,7 +430,7 @@ func removeDamageDonePercent(mod *SpellMod, spell *Spell) {
 }
 
 func applyDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplierAdditivePct += +mod.intValue
+	spell.DamageMultiplierAdditivePct += mod.intValue
 }
 
 func removeDamageDoneAdd(mod *SpellMod, spell *Spell) {
