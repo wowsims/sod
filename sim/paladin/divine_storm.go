@@ -17,7 +17,7 @@ func (paladin *Paladin) registerDivineStorm() {
 		return
 	}
 
-	results := make([]*core.SpellResult, min(4, paladin.Env.GetNumTargets()))
+	numTargets := min(4, paladin.Env.GetNumTargets())
 
 	healthMetrics := paladin.NewHealthMetrics(core.ActionID{SpellID: int32(proto.PaladinRune_RuneChestDivineStorm)})
 
@@ -46,6 +46,7 @@ func (paladin *Paladin) registerDivineStorm() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			results := make([]*core.SpellResult, numTargets)
 
 			for idx := range results {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
@@ -53,16 +54,16 @@ func (paladin *Paladin) registerDivineStorm() {
 				target = sim.Environment.NextTargetUnit(target)
 			}
 
-			for _, result := range results {
-				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + core.SpellBatchWindow,
-					OnAction: func(s *core.Simulation) {
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt: sim.CurrentTime + core.SpellBatchWindow,
+				Priority: core.ActionPriorityLow,
+				OnAction: func(sim *core.Simulation) {
+					for _, result := range results {
 						spell.DealDamage(sim, result)
 						paladin.GainHealth(sim, result.Damage*0.25, healthMetrics)
-					},
-				})
-			}
-
+					}
+				},
+			})
 		},
 	})
 

@@ -90,7 +90,15 @@ func (paladin *Paladin) registerSealOfCommand() {
 				dummyJudgeLanded := paladin.judgement.CalcOutcome(sim, target, paladin.judgement.OutcomeMagicHit).Landed()
 
 				outcomeApplier := core.Ternary(dummyJudgeLanded, spell.OutcomeMeleeSpecialCritOnly, spell.OutcomeAlwaysMiss)
-				spell.CalcAndDealDamage(sim, target, baseDamage, outcomeApplier)
+				result := spell.CalcDamage(sim, target, baseDamage, outcomeApplier)
+
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + core.SpellBatchWindow,
+					Priority: core.ActionPriorityLow,
+					OnAction: func(sim *core.Simulation) {
+						spell.DealDamage(sim, result)
+					},
+				})
 			},
 		})
 
@@ -112,6 +120,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + core.SpellBatchWindow,
+					Priority: core.ActionPriorityLow,
 					OnAction: func(s *core.Simulation) {
 						spell.DealDamage(sim, result)
 					},
