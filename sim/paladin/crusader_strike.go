@@ -45,7 +45,8 @@ func (paladin *Paladin) registerCrusaderStrike() {
 
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
 				DoAt: sim.CurrentTime + core.SpellBatchWindow,
-				OnAction: func(s *core.Simulation) {
+				Priority: core.ActionPriorityLow,
+				OnAction: func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 				},
 			})

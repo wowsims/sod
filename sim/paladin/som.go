@@ -28,7 +28,15 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt: sim.CurrentTime + core.SpellBatchWindow,
+				Priority: core.ActionPriorityLow,
+				OnAction: func(sim *core.Simulation) {
+					spell.DealDamage(sim, result)
+				},
+			})
 		},
 	})
 
@@ -44,13 +52,13 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
 				DoAt: sim.CurrentTime + core.SpellBatchWindow,
-				OnAction: func(s *core.Simulation) {
+				Priority: core.ActionPriorityLow,
+				OnAction: func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 
 					// damages the paladin for 10% of rawDamage, then adds 133% of that for everyone in the raid
