@@ -26,6 +26,7 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
 	return core.SpellConfig{
+		SpellCode:     SpellCode_WarlockSiphonLife,
 		ActionID:      actionID,
 		SpellSchool:   core.SpellSchoolShadow,
 		DefenseType:   core.DefenseTypeMagic,

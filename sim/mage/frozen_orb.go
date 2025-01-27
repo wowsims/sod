@@ -33,7 +33,7 @@ func (mage *Mage) registerFrozenOrbCD() {
 		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneCloakFrozenOrb)},
 		SpellSchool: core.SpellSchoolFrost,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL,
+		Flags:       SpellFlagMage | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

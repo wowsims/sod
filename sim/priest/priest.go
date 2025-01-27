@@ -27,6 +27,7 @@ const (
 	SpellCode_PriestShadowWordPain
 	SpellCode_PriestSmite
 	SpellCode_PriestVampiricTouch
+	SpellCode_PriestVoidPlague
 )
 
 type Priest struct {
