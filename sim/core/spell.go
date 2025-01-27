@@ -42,11 +42,11 @@ type SpellConfig struct {
 
 	CritDamageBonus float64
 
-	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
-	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
-	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full Direct and Periodic spell damage.      Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
-	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
-	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
+	BaseDamageMultiplierAdditivePct     int64   // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
+	DamageMultiplier                    float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
+	DamageMultiplierAdditivePct         int64   // Applies an additive multiplier to full Direct and Periodic spell damage.      Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
+	ImpactDamageMultiplierAdditivePct   int64   // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
+	PeriodicDamageMultiplierAdditivePct int64   // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -142,11 +142,11 @@ type Spell struct {
 	BonusCritRating    float64
 	CastTimeMultiplier float64
 
-	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
-	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
-	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full Direct and Periodic spell damage.      Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
-	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
-	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
+	BaseDamageMultiplierAdditivePct     int64   // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
+	DamageMultiplier                    float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
+	DamageMultiplierAdditivePct         int64   // Applies an additive multiplier to full Direct and Periodic spell damage.      Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
+	ImpactDamageMultiplierAdditivePct   int64   // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
+	PeriodicDamageMultiplierAdditivePct int64   // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -192,23 +192,23 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		panic(fmt.Sprintf("Over 200 registered spells when registering %s! There is probably a spell being registered every iteration.", config.ActionID))
 	}
 
-	if config.BaseDamageMultiplierAdditive == 0 {
-		config.BaseDamageMultiplierAdditive = 1
+	if config.BaseDamageMultiplierAdditivePct == 0 {
+		config.BaseDamageMultiplierAdditivePct = 100
 	}
 
 	// Default the other damage multiplier to 1 if only one or the other is set.
-	if config.DamageMultiplier != 0 && config.DamageMultiplierAdditive == 0 {
-		config.DamageMultiplierAdditive = 1
-	} else if config.DamageMultiplierAdditive != 0 && config.DamageMultiplier == 0 {
+	if config.DamageMultiplier != 0 && config.DamageMultiplierAdditivePct == 0 {
+		config.DamageMultiplierAdditivePct = 100
+	} else if config.DamageMultiplierAdditivePct != 0 && config.DamageMultiplier == 0 {
 		config.DamageMultiplier = 1
 	}
 
-	if config.ImpactDamageMultiplierAdditive == 0 {
-		config.ImpactDamageMultiplierAdditive = 1
+	if config.ImpactDamageMultiplierAdditivePct == 0 {
+		config.ImpactDamageMultiplierAdditivePct = 100
 	}
 
-	if config.PeriodicDamageMultiplierAdditive == 0 {
-		config.PeriodicDamageMultiplierAdditive = 1
+	if config.PeriodicDamageMultiplierAdditivePct == 0 {
+		config.PeriodicDamageMultiplierAdditivePct = 100
 	}
 
 	// Default CastSlot to mainhand
@@ -271,11 +271,11 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		CritDamageBonus: 1 + config.CritDamageBonus,
 
-		BaseDamageMultiplierAdditive:     config.BaseDamageMultiplierAdditive,
-		DamageMultiplier:                 config.DamageMultiplier,
-		DamageMultiplierAdditive:         config.DamageMultiplierAdditive,
-		ImpactDamageMultiplierAdditive:   config.ImpactDamageMultiplierAdditive,
-		PeriodicDamageMultiplierAdditive: config.PeriodicDamageMultiplierAdditive,
+		BaseDamageMultiplierAdditivePct:     config.BaseDamageMultiplierAdditivePct,
+		DamageMultiplier:                    config.DamageMultiplier,
+		DamageMultiplierAdditivePct:         config.DamageMultiplierAdditivePct,
+		ImpactDamageMultiplierAdditivePct:   config.ImpactDamageMultiplierAdditivePct,
+		PeriodicDamageMultiplierAdditivePct: config.PeriodicDamageMultiplierAdditivePct,
 
 		BonusCoefficient: config.BonusCoefficient,
 

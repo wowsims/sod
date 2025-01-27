@@ -85,9 +85,9 @@ func (priest *Priest) applyTwistedFaith() {
 	}
 
 	damageMod := priest.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  ClassSpellMask_PriestMindFlay | ClassSpellMask_PriestMindBlast,
-		FloatValue: 0.50,
+		FloatValue: 1.5,
 	})
 
 	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{

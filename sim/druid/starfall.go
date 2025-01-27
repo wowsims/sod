@@ -38,13 +38,13 @@ func (druid *Druid) registerStarfallCD() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Apply the base spell's multipliers to pick up on effects that only affect spells with DoTs
-			spell.DamageMultiplierAdditive += druid.Starfall.PeriodicDamageMultiplierAdditive - 1
+			spell.DamageMultiplierAdditivePct += druid.Starfall.PeriodicDamageMultiplierAdditivePct - 100
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamageSplash, spell.OutcomeMagicHitAndCrit)
 			}
 
-			spell.DamageMultiplierAdditive -= druid.Starfall.PeriodicDamageMultiplierAdditive - 1
+			spell.DamageMultiplierAdditivePct -= druid.Starfall.PeriodicDamageMultiplierAdditivePct - 100
 		},
 	})
 
@@ -64,9 +64,9 @@ func (druid *Druid) registerStarfallCD() {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 
 			// Apply the base spell's multipliers to pick up on effects that only affect spells with DoTs
-			spell.DamageMultiplierAdditive += druid.Starfall.PeriodicDamageMultiplierAdditive - 1
+			spell.DamageMultiplierAdditivePct += druid.Starfall.PeriodicDamageMultiplierAdditivePct - 100
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplierAdditive -= druid.Starfall.PeriodicDamageMultiplierAdditive - 1
+			spell.DamageMultiplierAdditivePct -= druid.Starfall.PeriodicDamageMultiplierAdditivePct - 100
 
 			druid.StarfallSplash.Cast(sim, target)
 		},

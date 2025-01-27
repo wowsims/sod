@@ -398,9 +398,9 @@ func (shaman *Shaman) applyT2Restoration6PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanChainLightning,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.20,
+		ClassMask: ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanChainLightning,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  20,
 	}))
 }
 

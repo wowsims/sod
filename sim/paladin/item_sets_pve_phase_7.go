@@ -40,9 +40,9 @@ func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PaladinDivineStorm,
-		FloatValue: 1,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PaladinDivineStorm,
+		IntValue:  100,
 	}))
 }
 
@@ -74,7 +74,7 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 
 	classSpellMasks := ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath | ClassSpellMask_PaladinDivineStorm | ClassSpellMask_PaladinCrusaderStrike
 	damageMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
+		Kind:      core.SpellMod_DamageDone_Pct,
 		ClassMask: classSpellMasks,
 	})
 
@@ -100,7 +100,7 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 				}
 			}
 			critChanceBonus = min(critChanceBonus, 1)
-			damageMod.UpdateFloatValue(critChanceBonus)
+			damageMod.UpdateFloatValue(1 + critChanceBonus)
 		},
 	}))
 }

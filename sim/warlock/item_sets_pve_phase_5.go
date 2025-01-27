@@ -195,7 +195,7 @@ func (warlock *Warlock) applyT2Damage2PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.Spellbook {
 				if spell.Flags.Matches(SpellFlagWarlock) && len(spell.Dots()) > 0 {
-					spell.PeriodicDamageMultiplierAdditive += 0.10
+					spell.PeriodicDamageMultiplierAdditivePct += 10
 				}
 			}
 
@@ -256,8 +256,8 @@ func (warlock *Warlock) applyT2Damage6PBonus() {
 	warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.shadowBoltActiveEffectModifierPer = 0.10
-			warlock.shadowBoltActiveEffectModifierMax = 0.30
+			warlock.shadowBoltActiveEffectModifierPer = 10
+			warlock.shadowBoltActiveEffectModifierMax = 30
 		},
 	})
 }

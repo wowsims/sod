@@ -186,9 +186,9 @@ func (hunter *Hunter) applyT1Ranged6PBonus() {
 	}
 
 	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterShots,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterShots,
+		IntValue:  20,
 	})
 
 	procAura := hunter.RegisterAura(core.Aura{

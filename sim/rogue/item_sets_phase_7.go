@@ -45,9 +45,9 @@ func (rogue *Rogue) applyNaxxramasDamage2PBonus() {
 			rogue.GainHealth(sim, result.Damage*0.05, healthMetrics)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_RogueAmbush | ClassSpellMask_RogueInstantPoison,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_RogueAmbush | ClassSpellMask_RogueInstantPoison,
+		IntValue:  20,
 	})
 }
 

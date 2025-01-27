@@ -91,9 +91,9 @@ func (druid *Druid) applyTAQFeral2PBonus() {
 	}
 
 	damageMod := druid.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_DruidShred,
-		FloatValue: 0.15,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_DruidShred,
+		IntValue:  15,
 	})
 
 	druid.RegisterAura(core.Aura{

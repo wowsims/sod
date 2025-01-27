@@ -46,7 +46,7 @@ var rakeSpells = []RakeRankInfo{
 // Mod Eff# should be base value only.
 // Modifies Effect #1's Value +126%:
 // Modifies Effect #2's Value +126%:
-const RakeBaseDmgModifier = 1.25
+const RakeBaseDmgModifier = 125
 
 // Rake given 5% AP scaling in SoD
 const RakeAPCoef = 0.05
@@ -86,9 +86,9 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			IgnoreHaste: true,
 		},
 
-		BaseDamageMultiplierAdditive: 1 + RakeBaseDmgModifier,
-		DamageMultiplier:             1 + 0.1*float64(druid.Talents.SavageFury),
-		ThreatMultiplier:             1,
+		BaseDamageMultiplierAdditivePct: 100 + RakeBaseDmgModifier,
+		DamageMultiplier:                1 + 0.1*float64(druid.Talents.SavageFury),
+		ThreatMultiplier:                1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

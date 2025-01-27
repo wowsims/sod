@@ -37,12 +37,13 @@ func (warrior *Warrior) applyNaxxramasDamage2PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.DeepWounds.DamageMultiplierAdditive += 0.20
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_WarriorDeepWounds,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  20,
+	}))
 }
 
 // Reduces the cooldown on your Bloodthirst, Mortal Strike, and Shield Slam abilities by 25%.

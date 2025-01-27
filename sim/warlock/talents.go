@@ -96,10 +96,9 @@ func (warlock *Warlock) applyFirestone() {
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
 
-			DamageMultiplier:         firestoneMulti,
-			ThreatMultiplier:         1,
-			DamageMultiplierAdditive: 1,
-			BonusCoefficient:         spellCoeff,
+			DamageMultiplier: firestoneMulti,
+			ThreatMultiplier: 1,
+			BonusCoefficient: spellCoeff,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := sim.Roll(damageMin, damageMax)
@@ -146,6 +145,20 @@ func (warlock *Warlock) applySuppression() {
 	})
 }
 
+func (warlock *Warlock) applyImprovedDrainLife() {
+	if warlock.Talents.ImprovedDrainLife == 0 {
+		return
+	}
+
+	// Apply Aura: Modifies Spell Effectiveness (8)
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:      core.SpellMod_BaseDamageDone_Flat,
+		School:    core.SpellSchoolShadow,
+		ClassMask: ClassSpellMask_WarlockDrainLife,
+		IntValue:  int64(2 * warlock.Talents.ImprovedDrainLife),
+	})
+}
+
 func (warlock *Warlock) applyNightfall() {
 	// This aura can be procced by some item sets without having it talented
 	warlock.ShadowTranceAura = warlock.RegisterAura(core.Aura{
@@ -168,9 +181,9 @@ func (warlock *Warlock) applyNightfall() {
 		ClassMask:  ClassSpellMask_WarlockShadowBolt,
 		FloatValue: -1,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_WarlockShadowCleave,
-		FloatValue: 1,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_WarlockShadowCleave,
+		IntValue:  100,
 	})
 
 	if warlock.Talents.Nightfall <= 0 {
@@ -197,19 +210,24 @@ func (warlock *Warlock) applyShadowMastery() {
 	}
 
 	// These spells have their base damage modded instead
-	excludedClassMasks := ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockDeathCoil | ClassSpellMask_WarlockDrainLife | ClassSpellMask_WarlockDrainSoul
+	baseModClassMasks := ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockDeathCoil | ClassSpellMask_WarlockDrainLife | ClassSpellMask_WarlockDrainSoul
+
+	// Apply Aura: Modifies Damage/Healing Done and
+	// Apply Aura: Modifies Periodic Damage/Healing Done (22)
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		School:    core.SpellSchoolShadow,
+		ClassMask: ClassSpellMask_WarlockAll ^ baseModClassMasks,
+		IntValue:  int64(2 * warlock.Talents.ShadowMastery),
+	})
 
 	// Apply Aura: Modifies Spell Effectiveness (8)
 	warlock.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		School:     core.SpellSchoolShadow,
-		ClassMask:  ClassSpellMask_WarlockAll ^ excludedClassMasks,
-		FloatValue: warlock.shadowMasteryBonus(),
+		Kind:      core.SpellMod_BaseDamageDone_Flat,
+		School:    core.SpellSchoolShadow,
+		ClassMask: baseModClassMasks,
+		IntValue:  int64(2 * warlock.Talents.ShadowMastery),
 	})
-}
-
-func (warlock *Warlock) shadowMasteryBonus() float64 {
-	return .02 * float64(warlock.Talents.ShadowMastery)
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -681,12 +699,10 @@ func (warlock *Warlock) applyImprovedImmolate() {
 		return
 	}
 
-	modifier := 0.05 * float64(warlock.Talents.ImprovedImmolate)
-
-	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Matches(ClassSpellMask_WarlockImmolate | ClassSpellMask_WarlockShadowflame) {
-			spell.ImpactDamageMultiplierAdditive += modifier
-		}
+	warlock.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_WarlockImmolate | ClassSpellMask_WarlockShadowflame,
+		Kind:      core.SpellMod_ImpactDamageDone_Flat,
+		IntValue:  int64(5 * warlock.Talents.ImprovedImmolate),
 	})
 }
 
@@ -707,9 +723,9 @@ func (warlock *Warlock) applyEmberstorm() {
 	}
 
 	warlock.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		School:     core.SpellSchoolFire,
-		ClassMask:  ClassSpellMask_WarlockAll,
-		FloatValue: 0.02 * float64(warlock.Talents.Emberstorm),
+		Kind:      core.SpellMod_DamageDone_Flat,
+		School:    core.SpellSchoolFire,
+		ClassMask: ClassSpellMask_WarlockAll,
+		IntValue:  int64(2 * warlock.Talents.Emberstorm),
 	})
 }

@@ -55,9 +55,9 @@ func (mage *Mage) applyT2Damage4PBonus() {
 	}
 
 	damageMod := mage.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_MagePyroblast,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_MagePyroblast,
+		IntValue:  20,
 	})
 
 	mage.RegisterAura(core.Aura{
@@ -205,8 +205,8 @@ func (mage *Mage) applyZGFrost5PBonus() {
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_MageFrostbolt | ClassSpellMask_MageSpellfrostBolt,
-		FloatValue: 0.65,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_MageFrostbolt | ClassSpellMask_MageSpellfrostBolt,
+		IntValue:  65,
 	}))
 }

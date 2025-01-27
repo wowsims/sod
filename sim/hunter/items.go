@@ -36,23 +36,23 @@ const (
 	SignetOfTheUnseenPath    = 233422
 )
 
-func applyRaptorStrikeDamageEffect(agent core.Agent, modifier float64) {
+func applyRaptorStrikeDamageEffect(agent core.Agent, modifier int64) {
 	hunter := agent.(HunterAgent).GetHunter()
 
 	hunter.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterRaptorStrikeHit,
-		FloatValue: modifier,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterRaptorStrikeHit,
+		IntValue:  modifier,
 	})
 }
 
-func applyMultiShotDamageEffect(agent core.Agent, modifier float64) {
+func applyMultiShotDamageEffect(agent core.Agent, modifier int64) {
 	hunter := agent.(HunterAgent).GetHunter()
 
 	hunter.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterMultiShot,
-		FloatValue: modifier,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterMultiShot,
+		IntValue:  modifier,
 	})
 }
 
@@ -271,35 +271,35 @@ func init() {
 	})
 
 	core.NewItemEffect(BloodChainGrips, func(agent core.Agent) {
-		applyRaptorStrikeDamageEffect(agent, 0.04)
+		applyRaptorStrikeDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(KnightChainGrips, func(agent core.Agent) {
-		applyRaptorStrikeDamageEffect(agent, 0.04)
+		applyRaptorStrikeDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(GeneralChainGrips, func(agent core.Agent) {
-		applyRaptorStrikeDamageEffect(agent, 0.04)
+		applyRaptorStrikeDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(MarshalChainGrips, func(agent core.Agent) {
-		applyRaptorStrikeDamageEffect(agent, 0.04)
+		applyRaptorStrikeDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(BloodChainVices, func(agent core.Agent) {
-		applyMultiShotDamageEffect(agent, 0.04)
+		applyMultiShotDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(KnightChainVices, func(agent core.Agent) {
-		applyMultiShotDamageEffect(agent, 0.04)
+		applyMultiShotDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(GeneralChainVices, func(agent core.Agent) {
-		applyMultiShotDamageEffect(agent, 0.04)
+		applyMultiShotDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(MarshalChainVices, func(agent core.Agent) {
-		applyMultiShotDamageEffect(agent, 0.04)
+		applyMultiShotDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(MaelstromsWrath, func(a core.Agent) {

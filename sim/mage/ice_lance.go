@@ -21,15 +21,13 @@ func (mage *Mage) registerIceLanceSpell() {
 	manaCost := 0.08
 
 	damageModFlat := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_MageIceLance,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0,
+		ClassMask: ClassSpellMask_MageIceLance,
+		Kind:      core.SpellMod_DamageDone_Flat,
 	})
 
 	damageModPct := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_MageIceLance,
-		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 0,
+		ClassMask: ClassSpellMask_MageIceLance,
+		Kind:      core.SpellMod_DamageDone_Pct,
 	})
 
 	mage.IceLance = mage.RegisterSpell(core.SpellConfig{
@@ -68,16 +66,16 @@ func (mage *Mage) registerIceLanceSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 
-			damageMultiplier := core.TernaryFloat64(mage.isTargetFrozen(target), 3, 0)
 			var glaciateAura *core.Aura
-			modifier := 0.0
+			modifier := int64(0)
 			if hasWintersChillTalent {
 				if glaciateAura = mage.GlaciateAuras.Get(target); hasWintersChillTalent && glaciateAura.IsActive() {
-					modifier += 0.20 * float64(glaciateAura.GetStacks())
+					modifier += int64(20 * glaciateAura.GetStacks())
 				}
 			}
-			damageModPct.UpdateFloatValue(damageMultiplier)
-			damageModFlat.UpdateFloatValue(modifier)
+
+			damageModPct.UpdateFloatValue(core.TernaryFloat64(mage.isTargetFrozen(target), 4, 1))
+			damageModFlat.UpdateIntValue(modifier)
 
 			damageModPct.Activate()
 			damageModFlat.Activate()

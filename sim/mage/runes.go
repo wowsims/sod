@@ -289,12 +289,8 @@ func (mage *Mage) applyHotStreak() {
 		Duration: time.Hour,
 	})
 
-	mage.RegisterAura(core.Aura{
-		Label:    "Hot Streak Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Hot Streak Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.Matches(triggerSpellClassMasks) {
 				return
@@ -313,7 +309,7 @@ func (mage *Mage) applyHotStreak() {
 				mage.HotStreakAura.Activate(sim)
 			} else if mage.HotStreakAura.IsActive() {
 				// When batching a Scorch crit into an instant Pyro, the Pyro consumes Hot Streak before the Scorch hits, so the Scorch re-applies Heating Up
-				// We can replicate this by adding a 1ms delay then checking the state of the auras again.
+				// We can replicate this by adding a batch delay then checking the state of the auras again.
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + core.SpellBatchWindow,
 					OnAction: func(sim *core.Simulation) {
@@ -329,7 +325,7 @@ func (mage *Mage) applyHotStreak() {
 				heatingUpAura.Activate(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (mage *Mage) applyMissileBarrage() {

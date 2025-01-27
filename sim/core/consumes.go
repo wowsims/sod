@@ -1380,14 +1380,14 @@ func (character *Character) newStratholmeHolyWaterSpell(sharedTimer *Timer) *Spe
 	config.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
 		for _, aoeTarget := range sim.Encounter.TargetUnits {
 			damageMultiplier := spell.DamageMultiplier
-			additiveMultiplier := spell.DamageMultiplierAdditive
+			additiveMultiplierPct := spell.DamageMultiplierAdditivePct
 			if aoeTarget.MobType != proto.MobType_MobTypeUndead {
 				spell.DamageMultiplier = 0
-				spell.DamageMultiplierAdditive = 0
+				spell.DamageMultiplierAdditivePct = 0
 			}
 			spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(explosiveConfig.MinDamage, explosiveConfig.MaxDamage), spell.OutcomeMagicHitAndCrit)
 			spell.DamageMultiplier = damageMultiplier
-			spell.DamageMultiplierAdditive = additiveMultiplier
+			spell.DamageMultiplierAdditivePct = additiveMultiplierPct
 		}
 	}
 

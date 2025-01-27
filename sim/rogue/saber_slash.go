@@ -63,10 +63,10 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier:               1,
-		ImpactDamageMultiplierAdditive: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
-		ThreatMultiplier:               1,
-		BonusCoefficient:               1,
+		DamageMultiplier:                  1,
+		ImpactDamageMultiplierAdditivePct: 100 + []int64{0, 2, 4, 6}[rogue.Talents.Aggression],
+		ThreatMultiplier:                  1,
+		BonusCoefficient:                  1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)

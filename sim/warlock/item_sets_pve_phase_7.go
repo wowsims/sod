@@ -36,9 +36,9 @@ func (warlock *Warlock) applyNaxxramasDamage2PBonus() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockCorruption,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockCorruption,
+		IntValue:  20,
 	}))
 }
 

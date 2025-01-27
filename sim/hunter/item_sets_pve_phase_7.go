@@ -36,9 +36,9 @@ func (hunter *Hunter) applyNaxxramasMelee2PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_ImpactDamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterWyvernStrike | ClassSpellMask_HunterMongooseBite,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_ImpactDamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterWyvernStrike | ClassSpellMask_HunterMongooseBite,
+		IntValue:  20,
 	}))
 }
 
@@ -126,9 +126,9 @@ func (hunter *Hunter) applyNaxxramasRanged2PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterChimeraShot,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterChimeraShot,
+		IntValue:  20,
 	}))
 }
 

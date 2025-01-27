@@ -19,7 +19,7 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 	cooldown := time.Minute * 2
 	auraDuration := time.Second * 8
 	damageMod := mage.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
+		Kind:      core.SpellMod_DamageDone_Pct,
 		ClassMask: ClassSpellMask_MageArcaneSurge,
 	})
 
@@ -69,7 +69,7 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamageLow, baseDamageHigh)
 			// Damage increased based on remaining mana up to 300%
-			damageMod.UpdateFloatValue(mage.CurrentManaPercent() * 3)
+			damageMod.UpdateFloatValue(4 * mage.CurrentManaPercent())
 			damageMod.Activate()
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 			damageMod.Deactivate()

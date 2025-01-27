@@ -550,8 +550,8 @@ func TimewornDecayAura(agent core.Agent) {
 	core.MakePermanent(character.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PeriodicDamageDone_Flat,
-		FloatValue: 0.03 * float64(character.PseudoStats.TimewornBonus),
+		Kind:     core.SpellMod_PeriodicDamageDone_Flat,
+		IntValue: int64(3 * character.PseudoStats.TimewornBonus),
 	}))
 
 }

@@ -53,7 +53,7 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
-				activeEffectModifier := 0.0
+				activeEffectModifier := int64(0)
 
 				if warlock.shadowBoltActiveEffectModifierPer > 0 && warlock.shadowBoltActiveEffectModifierMax > 0 {
 					for _, spell := range warlock.DoTSpells {
@@ -75,9 +75,9 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 					activeEffectModifier = min(warlock.shadowBoltActiveEffectModifierMax, activeEffectModifier)
 				}
 
-				spell.DamageMultiplierAdditive += activeEffectModifier
+				spell.DamageMultiplierAdditivePct += activeEffectModifier
 				results[idx] = spell.CalcDamage(sim, target, sim.Roll(baseDamage[0], baseDamage[1]), spell.OutcomeMagicHitAndCrit)
-				spell.DamageMultiplierAdditive -= activeEffectModifier
+				spell.DamageMultiplierAdditivePct -= activeEffectModifier
 
 				target = sim.Environment.NextTargetUnit(target)
 			}

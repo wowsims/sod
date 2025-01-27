@@ -33,18 +33,13 @@ func (shaman *Shaman) applyNaxxramasElemental2PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range shaman.FlameShock {
-				if spell == nil {
-					continue
-				}
-
-				spell.PeriodicDamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanFlameShock,
+		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
+		IntValue:  20,
+	}))
 }
 
 // Reduces the cooldown on your Lava Burst ability by 2 sec.
@@ -130,9 +125,9 @@ func (shaman *Shaman) applyNaxxramasEnhancement2PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_ShamanLightningShieldProc | ClassSpellMask_ShamanRollingThunder,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 1,
+		ClassMask: ClassSpellMask_ShamanLightningShieldProc | ClassSpellMask_ShamanRollingThunder,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  100,
 	}))
 }
 

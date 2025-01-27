@@ -35,9 +35,9 @@ func (rogue *Rogue) applyTAQDamage2PBonus() {
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
+		IntValue:  20,
 	}))
 }
 

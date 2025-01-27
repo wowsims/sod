@@ -28,9 +28,13 @@ var ItemSetDreamwalkerEclipse = core.NewItemSet(core.ItemSet{
 
 // Your Moonfire and Sunfire deal 20% more damage.
 func (druid *Druid) applyNaxxramasBalance2PBonus() {
+	label := "S03 - Item - Naxxramas - Druid - Balance 2P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
 
 	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: "S03 - Item - Naxxramas - Druid - Balance 2P Bonus",
+		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusDamage_Flat,
 		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire,

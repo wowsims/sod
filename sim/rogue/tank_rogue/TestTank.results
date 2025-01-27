@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestTank-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.66352
-  weights: 0.9147
+  weights: 0.6299
+  weights: 0.86444
   weights: 0
   weights: 0
   weights: 0
@@ -67,9 +67,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.52452
-  weights: 15.43785
-  weights: 4.3053
+  weights: 0.49795
+  weights: 15.39591
+  weights: 3.98848
   weights: 0
   weights: 0
   weights: 0
@@ -99,8 +99,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestTank-Phase5-Lvl60-AllItems-BloodCorruptedLeathers"
  value: {
-  dps: 1677.347
-  tps: 1276.00825
+  dps: 1657.59023
+  tps: 1261.98095
  }
 }
 dps_results: {
@@ -113,98 +113,98 @@ dps_results: {
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 1710.75654
-  tps: 4070.65795
+  dps: 1627.04831
+  tps: 3900.93606
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Human-p5_saber-Basic-P5_Saber-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1518.61731
-  tps: 5777.2344
+  dps: 1425.51472
+  tps: 5589.97765
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Human-p5_saber-Basic-P5_Saber-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1057.39009
-  tps: 2837.02343
+  dps: 971.0545
+  tps: 2662.06342
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Human-p5_saber-Basic-P5_Saber-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1107.42986
-  tps: 2843.12428
+  dps: 1013.68565
+  tps: 2657.03951
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Human-p5_saber-Basic-P5_Saber-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 591.7018
-  tps: 2248.17081
+  dps: 555.69461
+  tps: 2174.60247
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Human-p5_saber-Basic-P5_Saber-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 414.55231
-  tps: 1146.61817
+  dps: 381.04833
+  tps: 1077.72484
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Human-p5_saber-Basic-P5_Saber-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 433.41998
-  tps: 1134.74444
+  dps: 396.62845
+  tps: 1060.90058
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Orc-p5_saber-Basic-P5_Saber-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1555.26266
-  tps: 5891.75228
+  dps: 1459.44215
+  tps: 5699.1201
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Orc-p5_saber-Basic-P5_Saber-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1069.86561
-  tps: 2858.72852
+  dps: 982.76857
+  tps: 2682.63482
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Orc-p5_saber-Basic-P5_Saber-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1173.42845
-  tps: 2978.10992
+  dps: 1073.30726
+  tps: 2779.43344
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Orc-p5_saber-Basic-P5_Saber-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 613.18565
-  tps: 2291.1135
+  dps: 575.32729
+  tps: 2213.9909
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Orc-p5_saber-Basic-P5_Saber-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 426.86493
-  tps: 1165.68074
+  dps: 392.20371
+  tps: 1094.81181
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-Settings-Orc-p5_saber-Basic-P5_Saber-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 464.67513
-  tps: 1199.81265
+  dps: 424.81263
+  tps: 1120.32813
  }
 }
 dps_results: {
  key: "TestTank-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1712.75509
-  tps: 4087.31127
+  dps: 1629.97994
+  tps: 3919.4178
  }
 }
