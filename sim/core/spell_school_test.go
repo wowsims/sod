@@ -376,10 +376,10 @@ func SchoolMultiplierArrayHelper[T stats.SchoolValueArrayValues](t *testing.T, c
 
 	spell := &Spell{
 		BaseDamageMultiplierAdditivePct:     100,
-		DamageMultiplier:                    1,
-		DamageMultiplierAdditivePct:         100,
-		ImpactDamageMultiplierAdditivePct:   100,
-		PeriodicDamageMultiplierAdditivePct: 100,
+		damageMultiplier:                    1,
+		damageMultiplierAdditivePct:         100,
+		impactDamageMultiplierAdditivePct:   100,
+		periodicDamageMultiplierAdditivePct: 100,
 		Unit:                                caster,
 	}
 

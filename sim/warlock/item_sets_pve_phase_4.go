@@ -89,7 +89,7 @@ func (warlock *Warlock) applyT1Damage2PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.LifeTap {
-				spell.DamageMultiplier *= 1.5
+				spell.MultiplyMultiplicativeDamageBonus(1.5)
 				spell.ThreatMultiplier *= -1
 			}
 		},

@@ -272,7 +272,7 @@ func (shaman *Shaman) applyT2Enhancement4PBonus() {
 	shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.StormstrikeMH.DamageMultiplier += 0.50
+			shaman.StormstrikeMH.ApplyMultiplicativeDamageBonus(+0.50)
 		},
 	})
 }

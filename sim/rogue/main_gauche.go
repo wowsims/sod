@@ -39,37 +39,37 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier -= 20
 			rogue.SinisterStrike.ThreatMultiplier *= 1.5
-			rogue.SinisterStrike.DamageMultiplier *= 1.5
-			rogue.Eviscerate.DamageMultiplier *= 1.5
+			rogue.SinisterStrike.MultiplyMultiplicativeDamageBonus(1.5)
+			rogue.Eviscerate.MultiplyMultiplicativeDamageBonus(1.5)
 
 			if hasPKRune {
 				rogue.PoisonedKnife.Cost.FlatModifier -= 20
 				rogue.PoisonedKnife.ThreatMultiplier *= 1.5
-				rogue.PoisonedKnife.DamageMultiplier *= 1.5
+				rogue.PoisonedKnife.MultiplyMultiplicativeDamageBonus(1.5)
 			}
 
 			if hasQDRune {
 				rogue.QuickDraw.Cost.FlatModifier -= 20
 				rogue.QuickDraw.ThreatMultiplier *= 1.5
-				rogue.QuickDraw.DamageMultiplier *= 1.5
+				rogue.QuickDraw.MultiplyMultiplicativeDamageBonus(1.5)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier += 20
 			rogue.SinisterStrike.ThreatMultiplier /= 1.5
-			rogue.SinisterStrike.DamageMultiplier /= 1.5
-			rogue.Eviscerate.DamageMultiplier /= 1.5
+			rogue.SinisterStrike.DivideMultiplicativeDamageBonus(1.5)
+			rogue.Eviscerate.DivideMultiplicativeDamageBonus(1.5)
 
 			if hasPKRune {
 				rogue.PoisonedKnife.Cost.FlatModifier += 20
 				rogue.PoisonedKnife.ThreatMultiplier /= 1.5
-				rogue.PoisonedKnife.DamageMultiplier /= 1.5
+				rogue.PoisonedKnife.DivideMultiplicativeDamageBonus(1.5)
 			}
 
 			if hasQDRune {
 				rogue.QuickDraw.Cost.FlatModifier += 20
 				rogue.QuickDraw.ThreatMultiplier /= 1.5
-				rogue.QuickDraw.DamageMultiplier /= 1.5
+				rogue.QuickDraw.DivideMultiplicativeDamageBonus(1.5)
 			}
 		},
 	})

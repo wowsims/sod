@@ -96,25 +96,25 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			targets := sim.Environment.Raid.GetFirstNPlayersOrPets(targetCount)
 			curTarget := targets[0]
-			origMult := spell.DamageMultiplier
+			origMult := spell.GetDamageMultiplier()
 			// TODO: This bounces to most hurt friendly...
 			for hitIndex := 0; hitIndex < len(targets); hitIndex++ {
-				originalDamageMultiplier := spell.DamageMultiplier
+				originalDamageMultiplier := spell.GetDamageMultiplier()
 				if hasRiptideRune && !isOverload && shaman.Riptide.Hot(curTarget).IsActive() {
-					spell.DamageMultiplier *= 1.25
+					spell.MultiplyMultiplicativeDamageBonus(1.25)
 					shaman.Riptide.Hot(curTarget).Deactivate(sim)
 				}
 				spell.CalcAndDealHealing(sim, curTarget, sim.Roll(baseHealingLow, baseHealingHigh), spell.OutcomeHealingCrit)
-				spell.DamageMultiplier = originalDamageMultiplier
+				spell.SetMultiplicativeDamageBonus(originalDamageMultiplier)
 
 				if canOverload && sim.RandomFloat("CH Overload") < ShamanOverloadChance {
 					shaman.ChainHealOverload[rank].Cast(sim, target)
 				}
 
-				spell.DamageMultiplier *= bounceCoef
+				spell.MultiplyMultiplicativeDamageBonus(bounceCoef)
 				curTarget = targets[hitIndex]
 			}
-			spell.DamageMultiplier = origMult
+			spell.SetMultiplicativeDamageBonus(origMult)
 		},
 	}
 

@@ -57,10 +57,10 @@ func (warlock *Warlock) applyT2Tank2PBonus() {
 			if spell.Matches(ClassSpellMask_WarlockLifeTap) && warlock.CurrentTarget != nil {
 				// Enemy hit can partially resist and cannot crit
 				spell.Flags &= ^core.SpellFlagBinary
-				spell.DamageMultiplier /= 2
+				spell.DivideMultiplicativeDamageBonus(2)
 				damageResult := spell.CalcDamage(sim, warlock.CurrentTarget, LifeTapBaseDamage[spell.Rank], spell.OutcomeMagicHit)
 				spell.DealDamage(sim, damageResult)
-				spell.DamageMultiplier *= 2
+				spell.MultiplyMultiplicativeDamageBonus(2)
 				spell.Flags |= core.SpellFlagBinary
 			}
 		},
@@ -195,7 +195,7 @@ func (warlock *Warlock) applyT2Damage2PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.Spellbook {
 				if spell.Flags.Matches(SpellFlagWarlock) && len(spell.Dots()) > 0 {
-					spell.PeriodicDamageMultiplierAdditivePct += 10
+					spell.ApplyAdditivePeriodicDamageBonus(10)
 				}
 			}
 

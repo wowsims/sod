@@ -603,13 +603,12 @@ func (spell *Spell) WaitTravelTime(sim *Simulation, callback func(*Simulation)) 
 
 // Returns the combined attacker modifiers.
 func (spell *Spell) AttackerDamageMultiplier(attackTable *AttackTable, isPeriodic bool) float64 {
-	cumulativeAdditiveMultiplier := float64(TernaryInt64(isPeriodic,
-		spell.DamageMultiplierAdditivePct+spell.PeriodicDamageMultiplierAdditivePct,
-		spell.DamageMultiplierAdditivePct+spell.ImpactDamageMultiplierAdditivePct,
-	)) / 200
+	cumulativeAdditiveMultiplier := TernaryFloat64(isPeriodic,
+		spell.periodicDamageMultiplier,
+		spell.impactDamageMultiplier,
+	)
 
 	return spell.attackerDamageMultiplierInternal(attackTable) *
-		spell.DamageMultiplier *
 		cumulativeAdditiveMultiplier
 }
 func (spell *Spell) attackerDamageMultiplierInternal(attackTable *AttackTable) float64 {
@@ -683,13 +682,12 @@ func (spell *Spell) TargetDamageMultiplier(attackTable *AttackTable, isPeriodic 
 }
 
 func (spell *Spell) CasterHealingMultiplier(isPeriodic bool) float64 {
-	cumulativeAdditiveMultiplier := float64(TernaryInt64(isPeriodic,
-		spell.DamageMultiplierAdditivePct+spell.PeriodicDamageMultiplierAdditivePct,
-		spell.DamageMultiplierAdditivePct+spell.ImpactDamageMultiplierAdditivePct,
-	)) / 200
+	cumulativeAdditiveMultiplier := TernaryFloat64(isPeriodic,
+		spell.periodicDamageMultiplier,
+		spell.impactDamageMultiplier,
+	)
 
 	return spell.Unit.PseudoStats.HealingDealtMultiplier *
-		spell.DamageMultiplier *
 		cumulativeAdditiveMultiplier
 }
 func (spell *Spell) applyTargetHealingModifiers(damage float64, attackTable *AttackTable) float64 {

@@ -75,9 +75,9 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 					activeEffectModifier = min(warlock.shadowBoltActiveEffectModifierMax, activeEffectModifier)
 				}
 
-				spell.DamageMultiplierAdditivePct += activeEffectModifier
+				spell.ApplyAdditiveDamageBonus(activeEffectModifier)
 				results[idx] = spell.CalcDamage(sim, target, sim.Roll(baseDamage[0], baseDamage[1]), spell.OutcomeMagicHitAndCrit)
-				spell.DamageMultiplierAdditivePct -= activeEffectModifier
+				spell.ApplyAdditiveDamageBonus(-activeEffectModifier)
 
 				target = sim.Environment.NextTargetUnit(target)
 			}

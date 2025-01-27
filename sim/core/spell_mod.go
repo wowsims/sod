@@ -422,19 +422,19 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 }
 
 func applyDamageDonePercent(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplier *= mod.floatValue
+	spell.MultiplyMultiplicativeDamageBonus(mod.floatValue)
 }
 
 func removeDamageDonePercent(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplier /= mod.floatValue
+	spell.DivideMultiplicativeDamageBonus(mod.floatValue)
 }
 
 func applyDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplierAdditivePct += +mod.intValue
+	spell.ApplyAdditiveDamageBonus(mod.intValue)
 }
 
 func removeDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplierAdditivePct -= mod.intValue
+	spell.ApplyAdditiveDamageBonus(-mod.intValue)
 }
 
 func applyBaseDamageDoneAdd(mod *SpellMod, spell *Spell) {
@@ -447,22 +447,22 @@ func removeBaseDamageDoneAdd(mod *SpellMod, spell *Spell) {
 
 func applyPeriodicDamageDoneAdd(mod *SpellMod, spell *Spell) {
 	if len(spell.Dots()) > 0 {
-		spell.PeriodicDamageMultiplierAdditivePct += mod.intValue
+		spell.ApplyAdditivePeriodicDamageBonus(mod.intValue)
 	}
 }
 
 func removePeriodicDamageDoneAdd(mod *SpellMod, spell *Spell) {
 	if len(spell.Dots()) > 0 {
-		spell.PeriodicDamageMultiplierAdditivePct -= mod.intValue
+		spell.ApplyAdditivePeriodicDamageBonus(-mod.intValue)
 	}
 }
 
 func applyImpactDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.ImpactDamageMultiplierAdditivePct += mod.intValue
+	spell.ApplyAdditiveImpactDamageBonus(mod.intValue)
 }
 
 func removeImpactDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.ImpactDamageMultiplierAdditivePct -= mod.intValue
+	spell.ApplyAdditiveImpactDamageBonus(-mod.intValue)
 }
 
 func applyCritDamageBonusAdd(mod *SpellMod, spell *Spell) {

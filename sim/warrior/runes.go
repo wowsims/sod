@@ -461,12 +461,12 @@ func (warrior *Warrior) applyWreckingCrew() {
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.DamageMultiplier *= 1.1
+				spell.MultiplyMultiplicativeDamageBonus(1.1)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
-				spell.DamageMultiplier /= 1.1
+				spell.DivideMultiplicativeDamageBonus(1.1)
 			}
 		},
 	})

@@ -60,7 +60,7 @@ func (warrior *Warrior) applyTwoHandedWeaponSpecialization() {
 	multiplier := 1 + 0.01*float64(warrior.Talents.TwoHandedWeaponSpecialization)
 	warrior.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.BonusCoefficient > 0 {
-			spell.DamageMultiplier *= multiplier
+			spell.MultiplyMultiplicativeDamageBonus(multiplier)
 		}
 	})
 }
@@ -73,7 +73,7 @@ func (warrior *Warrior) applyOneHandedWeaponSpecialization() {
 	multiplier := 1 + 0.02*float64(warrior.Talents.OneHandedWeaponSpecialization)
 	warrior.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.BonusCoefficient > 0 {
-			spell.DamageMultiplier *= multiplier
+			spell.MultiplyMultiplicativeDamageBonus(multiplier)
 		}
 	})
 }
@@ -195,7 +195,7 @@ func (warrior *Warrior) applyDualWieldSpecialization() {
 	multiplier := 1 + 0.05*float64(warrior.Talents.DualWieldSpecialization)
 	warrior.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.ProcMask.Matches(core.ProcMaskMeleeOH) && spell.BonusCoefficient > 0 {
-			spell.DamageMultiplier *= multiplier
+			spell.MultiplyMultiplicativeDamageBonus(multiplier)
 		}
 	})
 }
