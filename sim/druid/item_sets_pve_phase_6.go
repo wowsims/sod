@@ -218,7 +218,7 @@ func (druid *Druid) applyTAQGuardian2PBonus() {
 	})
 
 	Tank2PieceAqAura = core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: "S03 - Item - TAQ - Druid - Guardian 2P Bonus",
+		Label: label
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if druid.form == Bear && spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeDodge) {
 				Tank2PieceAqProcAura.Activate(sim)
@@ -239,11 +239,6 @@ func (druid *Druid) applyTAQGuardian4PBonus() {
 		return
 	}
 	druid.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_DruidMangleBear {
-			spell.CD.FlatModifier -= 1500 * time.Millisecond
-		}
-	})
-	druid.OnInit(func(spell *core.Spell) {
 		if spell.SpellCode == SpellCode_DruidMangleBear {
 			spell.CD.FlatModifier -= 1500 * time.Millisecond
 		}

@@ -51,7 +51,7 @@ var maulSpells = []MaulRankInfo{
 
 func (druid *Druid) registerMaulSpell() {
 	queuedRealismICD := &core.Cooldown{
-		Timer:    bear.NewTimer(),
+		Timer:    druid.NewTimer(),
 		Duration: core.SpellBatchWindow * 10,
 	}
 

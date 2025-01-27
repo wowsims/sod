@@ -77,11 +77,7 @@ func (bear *FeralTankDruid) GetDruid() *druid.Druid {
 
 func (bear *FeralTankDruid) Initialize() {
 	bear.Druid.Initialize()
-	queuedRealismICD := &core.Cooldown{
-		Timer:    bear.NewTimer(),
-		Duration: core.SpellBatchWindow * 10,
-	}
-	bear.RegisterFeralTankSpells(queuedRealismICD)
+	bear.RegisterFeralTankSpells()
 	bear.RegisterFeralCatSpells()
 }
 
