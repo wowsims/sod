@@ -683,6 +683,15 @@ func (spell *Spell) DivideMultiplicativeDamageBonus(percent float64) {
 	spell.updatePeriodicDamageMultiplier()
 }
 
+func (spell *Spell) SetAdditiveDamageBonus(percent int64) {
+	if percent == 0 {
+		percent = 100
+	}
+	spell.damageMultiplierAdditivePct = percent
+	spell.updateImpactDamageMultiplier()
+	spell.updatePeriodicDamageMultiplier()
+}
+
 func (spell *Spell) ApplyAdditiveDamageBonus(percent int64) {
 	spell.damageMultiplierAdditivePct += percent
 	spell.updateImpactDamageMultiplier()

@@ -383,6 +383,9 @@ func SchoolMultiplierArrayHelper[T stats.SchoolValueArrayValues](t *testing.T, c
 		Unit:                                caster,
 	}
 
+	spell.updateImpactDamageMultiplier()
+	spell.updatePeriodicDamageMultiplier()
+
 	for schoolIndex1 := stats.SchoolIndexPhysical; schoolIndex1 < stats.SchoolLen; schoolIndex1++ {
 		for schoolIndex2 := stats.SchoolIndexPhysical; schoolIndex2 < stats.SchoolLen; schoolIndex2++ {
 			if schoolIndex2 == schoolIndex1 {

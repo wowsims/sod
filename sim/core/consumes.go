@@ -1383,7 +1383,7 @@ func (character *Character) newStratholmeHolyWaterSpell(sharedTimer *Timer) *Spe
 			additiveMultiplierPct := spell.GetDamageMultiplierAdditive()
 			if aoeTarget.MobType != proto.MobType_MobTypeUndead {
 				spell.SetMultiplicativeDamageBonus(0)
-				spell.ApplyAdditiveDamageBonus(-additiveMultiplierPct)
+				spell.SetAdditiveDamageBonus(0)
 			}
 			spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(explosiveConfig.MinDamage, explosiveConfig.MaxDamage), spell.OutcomeMagicHitAndCrit)
 			spell.SetMultiplicativeDamageBonus(damageMultiplier)
