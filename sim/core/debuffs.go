@@ -774,7 +774,7 @@ func HolySunderAura(target *Unit) *Aura {
 			aura.Unit.stats[stats.Armor] -= 50
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.stats[stats.Armor] -= 50
+			aura.Unit.stats[stats.Armor] += 50
 		},
 	})
 }
