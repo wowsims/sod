@@ -303,7 +303,6 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.form = Bear
 			druid.SetShapeshift(aura)
 			druid.SetCurrentPowerBar(core.RageBar)
-			druid.PrimalFuryAura.Activate(sim)
 
 			druid.AutoAttacks.SetMH(clawWeapon)
 
@@ -334,7 +333,6 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.form = Humanoid
 			druid.SetShapeshift(nil)
 			druid.SetCurrentPowerBar(core.ManaBar)
-			druid.PrimalFuryAura.Deactivate(sim)
 
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
