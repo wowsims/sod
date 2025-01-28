@@ -61,14 +61,13 @@ func (hb *healthBar) GainHealth(sim *Simulation, amount float64, metrics *Resour
 	hb.currentHealth = newHealth
 }
 
-func (hb *healthBar) RemoveHealth(sim *Simulation, amount float64) {
+func (hb *healthBar) RemoveHealth(sim *Simulation, amount float64, metrics *ResourceMetrics) {
 	if amount < 0 {
 		panic("Trying to remove negative health!")
 	}
 
 	oldHealth := hb.currentHealth
 	newHealth := max(oldHealth-amount, 0)
-	metrics := hb.DamageTakenHealthMetrics
 	metrics.AddEvent(-amount, newHealth-oldHealth)
 
 	// TMI calculations need timestamps and Max HP information for each damage taken event
@@ -114,7 +113,7 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if result.Damage > 0 {
-				aura.Unit.RemoveHealth(sim, result.Damage)
+				aura.Unit.RemoveHealth(sim, result.Damage, aura.Unit.NewHealthMetrics(spell.ActionID))
 
 				if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
 					aura.Unit.Metrics.Died = true
@@ -126,7 +125,7 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 		},
 		OnPeriodicDamageTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if result.Damage > 0 {
-				aura.Unit.RemoveHealth(sim, result.Damage)
+				aura.Unit.RemoveHealth(sim, result.Damage, aura.Unit.NewHealthMetrics(spell.ActionID))
 
 				if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
 					aura.Unit.Metrics.Died = true
