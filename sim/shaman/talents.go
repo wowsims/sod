@@ -190,7 +190,7 @@ func (shaman *Shaman) applyElementalFury() {
 
 	shaman.AddStaticMod(core.SpellModConfig{
 		Kind:        core.SpellMod_CritDamageBonus_Flat,
-		SpellFlags:  SpellFlagShaman | SpellFlagTotem,
+		ClassMask:   ClassSpellMask_ShamanAll | ClassSpellMask_ShamanTotems,
 		DefenseType: core.DefenseTypeMagic,
 		FloatValue:  1,
 	})

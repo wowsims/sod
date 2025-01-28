@@ -65,16 +65,14 @@ func (shaman *Shaman) applyTAQElemental4PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range shaman.Spellbook {
-				if spell.Flags.Matches(SpellFlagShaman) && spell.DefenseType == core.DefenseTypeMagic {
-					spell.CritDamageBonus += 0.60
-				}
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:   ClassSpellMask_ShamanAll | ClassSpellMask_ShamanTotems,
+		DefenseType: core.DefenseTypeMagic,
+		Kind:        core.SpellMod_CritDamageBonus_Flat,
+		FloatValue:  0.60,
+	}))
 }
 
 var ItemSetStormcallersResolve = core.NewItemSet(core.ItemSet{
@@ -108,13 +106,7 @@ func (shaman *Shaman) applyTAQTank2PBonus() {
 		ActionID: core.ActionID{SpellID: 1213934},
 		Label:    "Stormbraced",
 		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.90
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.90
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&shaman.Unit.PseudoStats.DamageTakenMultiplier, 0.90)
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
@@ -142,22 +134,18 @@ func (shaman *Shaman) applyTAQTank4PBonus() {
 	healthMultiplier := 1.10
 	statDep := shaman.NewDynamicMultiplyStat(stats.Health, healthMultiplier)
 
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label:      label,
-		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.EnableBuildPhaseStatDep(sim, statDep)
-
-			shaman.PseudoStats.DamageDealtMultiplier *= damageMultiplier
-			shaman.PseudoStats.ThreatMultiplier *= threatMultiplier
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.DisableBuildPhaseStatDep(sim, statDep)
-
-			shaman.PseudoStats.DamageDealtMultiplier /= damageMultiplier
-			shaman.PseudoStats.ThreatMultiplier /= threatMultiplier
-		},
-	}))
+	core.MakePermanent(
+		shaman.RegisterAura(core.Aura{
+			Label:      label,
+			BuildPhase: core.CharacterBuildPhaseBuffs,
+		}).AttachStatDependency(
+			statDep,
+		).AttachMultiplicativePseudoStatBuff(
+			&shaman.PseudoStats.DamageDealtMultiplier, damageMultiplier,
+		).AttachMultiplicativePseudoStatBuff(
+			&shaman.PseudoStats.ThreatMultiplier, threatMultiplier,
+		),
+	)
 }
 
 var ItemSetStormcallersRelief = core.NewItemSet(core.ItemSet{

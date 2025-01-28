@@ -53,12 +53,13 @@ func (shaman *Shaman) applyNaxxramasElemental4PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.LavaBurst.CD.FlatModifier -= time.Second * 2
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_ShamanLavaBurst,
+		TimeValue: -time.Second * 2,
+	}))
 }
 
 // You gain 1% increased damage done to Undead for 30 sec for each time your Overload triggers, stacking up to 25 times.
@@ -142,18 +143,13 @@ func (shaman *Shaman) applyNaxxramasEnhancement4PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if shaman.LavaLash != nil {
-				shaman.LavaLash.CD.FlatModifier -= time.Millisecond * 1500
-			}
-
-			if shaman.Stormstrike != nil {
-				shaman.Stormstrike.CD.FlatModifier -= time.Millisecond * 1500
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_ShamanLavaLash | ClassSpellMask_ShamanStormstrike,
+		TimeValue: -time.Millisecond * 1500,
+	}))
 }
 
 // You gain 1% increased damage done to Undead for 30 sec for each charge of Maelstrom Weapon you earn, stacking up to 25 times.
@@ -228,21 +224,23 @@ func (shaman *Shaman) applyNaxxramasTank2PBonus() {
 
 	bonusStats := stats.Stats{stats.Expertise: 2 * core.ExpertiseRatingPerExpertiseChance}
 
+	hasRune := shaman.HasRune(proto.ShamanRune_RuneLegsWayOfEarth)
+	hitMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusHit_Flat,
+		ClassMask:  ClassSpellMask_ShamanEarthShock,
+		FloatValue: 100 * core.SpellHitRatingPerHitChance,
+	})
+
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if !shaman.HasRune(proto.ShamanRune_RuneLegsWayOfEarth) {
-				return
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			if hasRune {
+				hitMod.Activate()
 			}
-
-			for _, spell := range shaman.EarthShock {
-				if spell == nil {
-					continue
-				}
-
-				spell.BonusHitRating += 100 * core.SpellHitRatingPerHitChance
-			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			hitMod.Deactivate()
 		},
 	}).AttachStatsBuff(bonusStats))
 }

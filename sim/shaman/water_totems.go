@@ -45,6 +45,7 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 	healInterval := time.Second * 2
 
 	config := shaman.newTotemSpellConfig(manaCost, spellId)
+	config.ClassSpellMask = ClassSpellMask_ShamanHealingStreamTotem
 	config.RequiredLevel = level
 	config.Rank = rank
 
@@ -120,6 +121,7 @@ func (shaman *Shaman) newManaSpringTotemSpellConfig(rank int) core.SpellConfig {
 	duration := time.Second * 60
 
 	spell := shaman.newTotemSpellConfig(manaCost, spellId)
+	spell.ClassSpellMask = ClassSpellMask_ShamanManaSpringTotem
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {

@@ -55,6 +55,22 @@ var ItemSetBloodGuardsPulsingMail = core.NewItemSet(core.ItemSet{
 //                            SoD Phase 4 Item Sets
 ///////////////////////////////////////////////////////////////////////////
 
+func (shaman *Shaman) applyPhase4PvP4PBonus() {
+	label := "Shaman Shock Crit Bonus"
+	if shaman.HasAura(label) {
+		return
+	}
+
+	core.MakePermanent(shaman.GetOrRegisterAura(core.Aura{
+		Label:    "Shaman Shock Crit Bonus",
+		ActionID: core.ActionID{SpellID: 22804},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		ClassMask:  ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock,
+		FloatValue: 2 * core.CritRatingPerCritChance,
+	}))
+}
+
 var ItemSetChampionsWartide = core.NewItemSet(core.ItemSet{
 	Name: "Champion's Wartide",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -66,17 +82,7 @@ var ItemSetChampionsWartide = core.NewItemSet(core.ItemSet{
 		// Improves your chance to get a critical strike with all Shock spells by 2%.
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.GetOrRegisterAura(core.Aura{
-				Label:    "Shaman Shock Crit Bonus",
-				ActionID: core.ActionID{SpellID: 22804},
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
-						if spell != nil {
-							spell.BonusCritRating += 2 * core.CritRatingPerCritChance
-						}
-					}
-				},
-			})
+			shaman.applyPhase4PvP4PBonus()
 		},
 		// +20 Stamina.
 		6: func(agent core.Agent) {
@@ -97,17 +103,7 @@ var ItemSetChampionsThunderfist = core.NewItemSet(core.ItemSet{
 		// Improves your chance to get a critical strike with all Shock spells by 2%.
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.GetOrRegisterAura(core.Aura{
-				Label:    "Shaman Shock Crit Bonus",
-				ActionID: core.ActionID{SpellID: 22804},
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
-						if spell != nil {
-							spell.BonusCritRating += 2 * core.CritRatingPerCritChance
-						}
-					}
-				},
-			})
+			shaman.applyPhase4PvP4PBonus()
 		},
 		// +20 Stamina.
 		6: func(agent core.Agent) {
@@ -131,17 +127,7 @@ var ItemSetChampionsEarthshaker = core.NewItemSet(core.ItemSet{
 		// Improves your chance to get a critical strike with all Shock spells by 2%.
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.GetOrRegisterAura(core.Aura{
-				Label:    "Shaman Shock Crit Bonus",
-				ActionID: core.ActionID{SpellID: 22804},
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
-						if spell != nil {
-							spell.BonusCritRating += 2 * core.CritRatingPerCritChance
-						}
-					}
-				},
-			})
+			shaman.applyPhase4PvP4PBonus()
 		},
 		// +20 Stamina.
 		6: func(agent core.Agent) {
@@ -166,17 +152,7 @@ var ItemSetWarlordsWartide = core.NewItemSet(core.ItemSet{
 		// Improves your chance to get a critical strike with all Shock spells by 2%.
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.GetOrRegisterAura(core.Aura{
-				Label:    "Shaman Shock Crit Bonus",
-				ActionID: core.ActionID{SpellID: 22804},
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
-						if spell != nil {
-							spell.BonusCritRating += 2 * core.CritRatingPerCritChance
-						}
-					}
-				},
-			})
+			shaman.applyPhase4PvP4PBonus()
 		},
 		// Increases healing done by spells and effects by up to 44.
 		// Increases healing done by up to 44 and damage done by up to 15 for all magical spells and effects.
@@ -201,17 +177,7 @@ var ItemSetWarlordsThunderfist = core.NewItemSet(core.ItemSet{
 		// Improves your chance to get a critical strike with all Shock spells by 2%.
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.GetOrRegisterAura(core.Aura{
-				Label:    "Shaman Shock Crit Bonus",
-				ActionID: core.ActionID{SpellID: 22804},
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
-						if spell != nil {
-							spell.BonusCritRating += 2 * core.CritRatingPerCritChance
-						}
-					}
-				},
-			})
+			shaman.applyPhase4PvP4PBonus()
 		},
 		// Increases damage and healing done by magical spells and effects by up to 23.
 		6: func(agent core.Agent) {
@@ -232,17 +198,7 @@ var ItemSetWarlordsEarthshaker = core.NewItemSet(core.ItemSet{
 		// Improves your chance to get a critical strike with all Shock spells by 2%.
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.GetOrRegisterAura(core.Aura{
-				Label:    "Shaman Shock Crit Bonus",
-				ActionID: core.ActionID{SpellID: 22804},
-				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					for _, spell := range core.Flatten([][]*core.Spell{shaman.EarthShock, shaman.FlameShock, shaman.FrostShock}) {
-						if spell != nil {
-							spell.BonusCritRating += 2 * core.CritRatingPerCritChance
-						}
-					}
-				},
-			})
+			shaman.applyPhase4PvP4PBonus()
 		},
 		// +40 Attack Power.
 		6: func(agent core.Agent) {

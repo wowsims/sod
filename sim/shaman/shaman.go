@@ -13,9 +13,8 @@ var TalentTreeSizes = [3]int{15, 16, 15}
 
 const (
 	SpellFlagShaman    = core.SpellFlagAgentReserved1
-	SpellFlagTotem     = core.SpellFlagAgentReserved2
-	SpellFlagLightning = core.SpellFlagAgentReserved3
-	SpellFlagMaelstrom = core.SpellFlagAgentReserved4
+	SpellFlagLightning = core.SpellFlagAgentReserved2
+	SpellFlagMaelstrom = core.SpellFlagAgentReserved3
 )
 
 const (
@@ -25,8 +24,6 @@ const (
 	ClassSpellMask_ShamanChainLightning
 	ClassSpellMask_ShamanEarthShock
 	ClassSpellMask_ShamanFireNova
-	ClassSpellMask_ShamanFireNovaTotem
-	ClassSpellMask_ShamanFireNovaTotemAttack
 	ClassSpellMask_ShamanFlameShock
 	ClassSpellMask_ShamanFrostShock
 	ClassSpellMask_ShamanHealingWave
@@ -37,14 +34,44 @@ const (
 	ClassSpellMask_ShamanLightningShieldProc
 	ClassSpellMask_ShamanRollingThunder
 	ClassSpellMask_ShamanLavaBurst
-	ClassSpellMask_ShamanMagmaTotem
-	ClassSpellMask_ShamanMagmaTotemAttack
 	ClassSpellMask_ShamanMoltenBlast
-	ClassSpellMask_ShamanSearingTotem
-	ClassSpellMask_ShamanSearingTotemAttack
 	ClassSpellMask_ShamanStormstrike
 	ClassSpellMask_ShamanStormstrikeHit
 	ClassSpellMask_ShamanWindFury
+	ClassSpellMask_ShamanFireNovaTotemAttack
+	ClassSpellMask_ShamanMagmaTotemAttack
+	ClassSpellMask_ShamanSearingTotemAttack
+	ClassSpellMask_ShamanShamanisticRage
+
+	// Totems should go after this
+	ClassSpellMask_ShamanLast
+
+	// Fire totems
+	ClassSpellMask_ShamanFireNovaTotem
+	ClassSpellMask_ShamanMagmaTotem
+	ClassSpellMask_ShamanSearingTotem
+	// Air totems
+	ClassSpellMask_ShamanWindFuryTotem
+	ClassSpellMask_ShamanGraceOfAirTotem
+	ClassSpellMask_ShamanWindwallTotem
+	// Earth totems
+	ClassSpellMask_ShamanStrengthOfEarthTotem
+	ClassSpellMask_ShamanStoneskinTotem
+	ClassSpellMask_ShamanTremorTotem
+	// Water totems
+	ClassSpellMask_ShamanHealingStreamTotem
+	ClassSpellMask_ShamanManaSpringTotem
+
+	ClassSpellMask_ShamanAll = ClassSpellMask_ShamanLast<<1 - 1
+
+	// Totem groups
+	ClassSpellMask_ShamanFireTotem  = ClassSpellMask_ShamanSearingTotem | ClassSpellMask_ShamanMagmaTotem | ClassSpellMask_ShamanFireNovaTotem
+	ClassSpellMask_ShamanAirTotem   = ClassSpellMask_ShamanWindFuryTotem | ClassSpellMask_ShamanGraceOfAirTotem | ClassSpellMask_ShamanWindwallTotem
+	ClassSpellMask_ShamanEarthTotem = ClassSpellMask_ShamanStrengthOfEarthTotem | ClassSpellMask_ShamanStoneskinTotem | ClassSpellMask_ShamanTremorTotem
+	ClassSpellMask_ShamanWaterTotem = ClassSpellMask_ShamanHealingStreamTotem | ClassSpellMask_ShamanManaSpringTotem
+
+	// All totems
+	ClassSpellMask_ShamanTotems = ClassSpellMask_ShamanFireTotem | ClassSpellMask_ShamanAirTotem | ClassSpellMask_ShamanEarthTotem | ClassSpellMask_ShamanWaterTotem
 )
 
 // Indexes into NextTotemDrops for self buffs
