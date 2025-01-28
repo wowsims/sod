@@ -31,16 +31,14 @@ func (mage *Mage) applyT2Damage2PBonus() {
 		return
 	}
 
-	mage.RegisterAura(core.Aura{
+	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range mage.Spellbook {
-				if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Matches(ClassSpellMask_MageAll) {
-					spell.ThreatMultiplier *= .80
-				}
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Threat_Pct,
+		ClassMask:  ClassSpellMask_MageAll,
+		School:     core.SpellSchoolFire,
+		FloatValue: 0.80,
+	}))
 }
 
 // Your Pyroblast deals 20% increased damage to targets afflicted with your Fireball's periodic effect.
@@ -128,14 +126,15 @@ func (mage *Mage) applyT2Healer2PBonus() {
 	}
 
 	manaMetrics := mage.NewManaMetrics(core.ActionID{SpellID: 467401})
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: label,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_MageArcaneMissilesTick) && result.Landed() {
-				mage.AddMana(sim, mage.ArcaneMissiles[spell.Rank].Cost.BaseCost*0.1, manaMetrics)
-			}
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_MageArcaneMissilesTick,
+		Outcome:        core.OutcomeLanded,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			mage.AddMana(sim, mage.ArcaneMissiles[spell.Rank].Cost.BaseCost*0.1, manaMetrics)
 		},
-	}))
+	})
 }
 
 // Arcane Blast gains a 10% additional change to trigger Missile Barrage, and Missile Barrage now affects Regeneration the same way it affects Arcane Missiles.

@@ -22,11 +22,11 @@ func (mage *Mage) applyArcaneTalents() {
 
 	// Arcane Subtlety
 	if mage.Talents.ArcaneSubtlety > 0 {
-		threatMultiplier := 1 - .20*float64(mage.Talents.ArcaneSubtlety)
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolArcane) && spell.Matches(ClassSpellMask_MageAll) {
-				spell.ThreatMultiplier *= threatMultiplier
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_Threat_Pct,
+			ClassMask:  ClassSpellMask_MageAll,
+			School:     core.SpellSchoolArcane,
+			FloatValue: 1 - .20*float64(mage.Talents.ArcaneSubtlety),
 		})
 	}
 
@@ -80,11 +80,11 @@ func (mage *Mage) applyFireTalents() {
 
 	// Burning Soul
 	if mage.Talents.BurningSoul > 0 {
-		threatMultiplier := 1 - .15*float64(mage.Talents.BurningSoul)
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Matches(ClassSpellMask_MageAll) {
-				spell.ThreatMultiplier *= threatMultiplier
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_Threat_Pct,
+			ClassMask:  ClassSpellMask_MageAll,
+			School:     core.SpellSchoolFire,
+			FloatValue: 1 - .15*float64(mage.Talents.BurningSoul),
 		})
 	}
 
@@ -148,11 +148,11 @@ func (mage *Mage) applyFrostTalents() {
 
 	// Frost Channeling
 	if mage.Talents.FrostChanneling > 0 {
-		threatMultiplier := 1 - .10*float64(mage.Talents.FrostChanneling)
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Matches(ClassSpellMask_MageAll) {
-				spell.ThreatMultiplier *= threatMultiplier
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_Threat_Pct,
+			ClassMask:  ClassSpellMask_MageAll,
+			School:     core.SpellSchoolFrost,
+			FloatValue: 1 - .10*float64(mage.Talents.FrostChanneling),
 		})
 
 		mage.AddStaticMod(core.SpellModConfig{

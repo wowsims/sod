@@ -45,9 +45,10 @@ func (rogue *Rogue) registerFanOfKnives() {
 	results := make([]*core.SpellResult, len(rogue.Env.Encounter.TargetUnits))
 
 	rogue.FanOfKnives = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: FanOfKnivesSpellID},
-		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagCarnage,
+		ActionID:       core.ActionID{SpellID: FanOfKnivesSpellID},
+		ClassSpellMask: SpellClassMask_RogueFanOfKnives,
+		SpellSchool:    core.SpellSchoolPhysical,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagCarnage,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 50,

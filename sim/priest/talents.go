@@ -162,10 +162,11 @@ func (priest *Priest) applyShadowAffinity() {
 		return
 	}
 
-	priest.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Matches(ClassSpellMask_PriestAll) || spell.SpellSchool.Matches(core.SpellSchoolShadow) {
-			spell.ThreatMultiplier *= 1 - 0.08*float64(priest.Talents.ShadowAffinity)
-		}
+	priest.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Threat_Pct,
+		ClassMask:  ClassSpellMask_PriestAll,
+		School:     core.SpellSchoolShadow,
+		FloatValue: 1 - 0.08*float64(priest.Talents.ShadowAffinity),
 	})
 }
 
@@ -174,11 +175,11 @@ func (priest *Priest) applyShadowFocus() {
 		return
 	}
 
-	bonusHit := 2 * float64(priest.Talents.ShadowFocus) * core.SpellHitRatingPerHitChance
-	priest.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Matches(ClassSpellMask_PriestAll) || spell.SpellSchool.Matches(core.SpellSchoolShadow) {
-			spell.BonusHitRating += bonusHit
-		}
+	priest.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusHit_Flat,
+		ClassMask:  ClassSpellMask_PriestAll,
+		School:     core.SpellSchoolShadow,
+		FloatValue: 2 * float64(priest.Talents.ShadowFocus) * core.SpellHitRatingPerHitChance,
 	})
 }
 
@@ -251,22 +252,6 @@ func (priest *Priest) registerInnerFocus() {
 		Label:    "Inner Focus",
 		ActionID: actionID,
 		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range priest.Spellbook {
-				if spell.Matches(ClassSpellMask_PriestAll) && spell.Cost != nil {
-					spell.Cost.Multiplier -= 100
-					spell.BonusCritRating += 25 * core.SpellCritRatingPerCritChance
-				}
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range priest.Spellbook {
-				if spell.Matches(ClassSpellMask_PriestAll) && spell.Cost != nil {
-					spell.Cost.Multiplier += 100
-					spell.BonusCritRating -= 25 * core.SpellCritRatingPerCritChance
-				}
-			}
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_PriestAll) {
 				// Remove the buff and put skill on CD
@@ -275,6 +260,14 @@ func (priest *Priest) registerInnerFocus() {
 				priest.UpdateMajorCooldowns()
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Flat,
+		ClassMask: ClassSpellMask_PriestAll,
+		IntValue:  -100,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		ClassMask:  ClassSpellMask_PriestAll,
+		FloatValue: 25 * core.SpellCritRatingPerCritChance,
 	})
 
 	priest.InnerFocus = priest.RegisterSpell(core.SpellConfig{

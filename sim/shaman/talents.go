@@ -60,11 +60,11 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.AddStat(stats.SpellHit, float64(shaman.Talents.NaturesGuidance))
 
 	if shaman.Talents.HealingGrace > 0 {
-		threatMultiplier := 1 - .05*float64(shaman.Talents.HealingGrace)
-		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) {
-				spell.ThreatMultiplier *= threatMultiplier
-			}
+		shaman.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_Threat_Pct,
+			SpellFlags: SpellFlagShaman,
+			ProcMask:   core.ProcMaskSpellHealing,
+			FloatValue: 1 - .05*float64(shaman.Talents.HealingGrace),
 		})
 	}
 
@@ -188,10 +188,11 @@ func (shaman *Shaman) applyElementalFury() {
 		return
 	}
 
-	shaman.OnSpellRegistered(func(spell *core.Spell) {
-		if (spell.Flags.Matches(SpellFlagShaman) || spell.Flags.Matches(SpellFlagTotem)) && spell.DefenseType == core.DefenseTypeMagic {
-			spell.CritDamageBonus += 1
-		}
+	shaman.AddStaticMod(core.SpellModConfig{
+		Kind:        core.SpellMod_CritDamageBonus_Flat,
+		SpellFlags:  SpellFlagShaman | SpellFlagTotem,
+		DefenseType: core.DefenseTypeMagic,
+		FloatValue:  1,
 	})
 }
 
@@ -205,33 +206,11 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 	cdTimer := shaman.NewTimer()
 	cd := time.Minute * 3
 
-	var affectedSpells []*core.Spell
-
 	emAura := shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Mastery",
 		ActionID: actionID,
 		Duration: core.NeverExpires,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
-				shaman.Spellbook,
-				func(spell *core.Spell) bool { return spell != nil && shaman.isShamanDamagingSpell(spell) },
-			)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) {
-				spell.BonusCritRating += core.CritRatingPerCritChance * 100
-				if spell.Cost != nil {
-					spell.Cost.Multiplier -= 100
-				}
-			})
-		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) {
-				spell.BonusCritRating -= core.CritRatingPerCritChance * 100
-				if spell.Cost != nil {
-					spell.Cost.Multiplier += 100
-				}
-			})
 			shaman.ElementalMastery.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -250,6 +229,16 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 				})
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		SpellFlags: SpellFlagShaman,
+		ProcMask:   core.ProcMaskSpellDamage,
+		FloatValue: core.CritRatingPerCritChance * 100,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		SpellFlags: SpellFlagShaman,
+		ProcMask:   core.ProcMaskSpellDamage,
+		FloatValue: -100,
 	})
 
 	shaman.ElementalMastery = shaman.RegisterSpell(core.SpellConfig{
@@ -280,26 +269,10 @@ func (shaman *Shaman) registerNaturesSwiftnessCD() {
 	cdTimer := shaman.NewTimer()
 	cd := time.Minute * 3
 
-	var affectedSpells []*core.Spell
-
 	nsAura := shaman.RegisterAura(core.Aura{
 		Label:    "Natures Swiftness",
 		ActionID: actionID,
 		Duration: core.NeverExpires,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
-				shaman.Spellbook,
-				func(spell *core.Spell) bool {
-					return spell != nil && spell.SpellSchool.Matches(core.SpellSchoolNature) && spell.DefaultCast.CastTime > 0
-				},
-			)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.SpellSchool.Matches(core.SpellSchoolNature) && spell.DefaultCast.CastTime > 0 {
 				// Remove the buff and put skill on CD
@@ -308,6 +281,10 @@ func (shaman *Shaman) registerNaturesSwiftnessCD() {
 				shaman.UpdateMajorCooldowns()
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		School:     core.SpellSchoolNature,
+		FloatValue: -1,
 	})
 
 	nsSpell := shaman.RegisterSpell(core.SpellConfig{

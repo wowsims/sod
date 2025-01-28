@@ -167,30 +167,19 @@ func (rogue *Rogue) applyT1Tank2PBonus() {
 		return
 	}
 
-	var affectedSpells []*core.Spell
-
+	classSpellMasks := ClassSpellMask_RogueCrimsonTempest | SpellClassMask_RogueBlunderbuss | SpellClassMask_RogueFanOfKnives
 	buffAura := rogue.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 457351},
 		Label:    fmt.Sprintf("Blade Dance (%s)", label),
 		Duration: core.NeverExpires,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
-				[]*core.Spell{rogue.CrimsonTempest, rogue.Blunderbuss, rogue.FanOfKnives},
-				func(spell *core.Spell) bool { return spell != nil },
-			)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.Cost.FlatModifier -= 20
-				spell.ThreatMultiplier *= 2.0
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.Cost.FlatModifier += 20
-				spell.ThreatMultiplier /= 2.0
-			}
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Threat_Pct,
+		ClassMask:  classSpellMasks,
+		FloatValue: 2,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Flat,
+		ClassMask: classSpellMasks,
+		IntValue:  -20,
 	})
 
 	rogue.RegisterAura(core.Aura{

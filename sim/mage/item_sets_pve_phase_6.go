@@ -1,7 +1,6 @@
 package mage
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -29,34 +28,17 @@ func (mage *Mage) applyTAQFire2PBonus() {
 		return
 	}
 
-	var affectedSpells []*core.Spell
-
 	buffAura := mage.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213317},
 		Label:    "Fire Blast",
 		Duration: time.Second * 10,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(mage.Spellbook, func(spell *core.Spell) bool {
-				return spell.Matches(ClassSpellMask_MageAll) && spell.SpellSchool.Matches(core.SpellSchoolFire) && !spell.Flags.Matches(core.SpellFlagPassiveSpell)
-			})
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.BonusCritRating += 50 * core.SpellCritRatingPerCritChance
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.BonusCritRating -= 50 * core.SpellCritRatingPerCritChance
-			}
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
 			if aura.RemainingDuration(sim) == aura.Duration {
 				return
 			}
 
-			if !slices.Contains(affectedSpells, spell) {
+			if !(spell.Matches(ClassSpellMask_MageAll) && spell.SpellSchool.Matches(core.SpellSchoolFire) && !spell.Flags.Matches(core.SpellFlagPassiveSpell)) {
 				return
 			}
 
@@ -69,16 +51,22 @@ func (mage *Mage) applyTAQFire2PBonus() {
 				},
 			})
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:         ClassSpellMask_MageAll,
+		School:            core.SpellSchoolFire,
+		SpellFlagsExclude: core.SpellFlagPassiveSpell,
+		Kind:              core.SpellMod_BonusCrit_Flat,
+		FloatValue:        50 * core.SpellCritRatingPerCritChance,
 	})
 
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: label,
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_MageFireBlast) {
-				buffAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_MageFireBlast,
+		Callback:       core.CallbackOnCastComplete,
+		Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			buffAura.Activate(sim)
 		},
-	}))
+	})
 }
 
 // Increases the damage done by your Ignite talent by 10%.
