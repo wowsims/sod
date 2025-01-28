@@ -26,8 +26,9 @@ func (mage *Mage) registerIceLanceSpell() {
 	})
 
 	damageModPct := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask: ClassSpellMask_MageIceLance,
-		Kind:      core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_MageIceLance,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 1,
 	})
 
 	mage.IceLance = mage.RegisterSpell(core.SpellConfig{

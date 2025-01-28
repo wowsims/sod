@@ -45,12 +45,12 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 			}
 
 			// TODO: Add support for all poison effects (such as chipped bite proc), if they apply ;)
-			oldMultiplier := spell.DamageMultiplier
+			oldMultiplier := spell.GetDamageMultiplier()
 			if rogue.deadlyPoisonTick.Dot(target).IsActive() || rogue.woundPoisonDebuffAuras.Get(target).IsActive() {
-				spell.DamageMultiplier *= 1.2
+				spell.ApplyMultiplicativeDamageBonus(1.2)
 			}
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-			spell.DamageMultiplier = oldMultiplier
+			spell.SetMultiplicativeDamageBonus(oldMultiplier)
 		},
 	})
 }

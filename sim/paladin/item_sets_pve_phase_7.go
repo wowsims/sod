@@ -74,8 +74,9 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 
 	classSpellMasks := ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath | ClassSpellMask_PaladinDivineStorm | ClassSpellMask_PaladinCrusaderStrike
 	damageMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Pct,
-		ClassMask: classSpellMasks,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  classSpellMasks,
+		FloatValue: 1,
 	})
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{

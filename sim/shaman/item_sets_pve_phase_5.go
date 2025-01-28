@@ -271,9 +271,12 @@ func (shaman *Shaman) applyT2Enhancement4PBonus() {
 
 	shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.StormstrikeMH.DamageMultiplier += 0.50
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanStormstrikeHit,
+		// TODO: Verify if this is additive or multiplicative
+		Kind:     core.SpellMod_DamageDone_Flat,
+		ProcMask: core.ProcMaskMeleeMHSpecial,
+		IntValue: 50,
 	})
 }
 

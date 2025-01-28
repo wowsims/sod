@@ -57,10 +57,10 @@ func (warlock *Warlock) applyT2Tank2PBonus() {
 			if spell.Matches(ClassSpellMask_WarlockLifeTap) && warlock.CurrentTarget != nil {
 				// Enemy hit can partially resist and cannot crit
 				spell.Flags &= ^core.SpellFlagBinary
-				spell.DamageMultiplier /= 2
+				spell.ApplyMultiplicativeDamageBonus(1 / 2)
 				damageResult := spell.CalcDamage(sim, warlock.CurrentTarget, LifeTapBaseDamage[spell.Rank], spell.OutcomeMagicHit)
 				spell.DealDamage(sim, damageResult)
-				spell.DamageMultiplier *= 2
+				spell.ApplyMultiplicativeDamageBonus(2)
 				spell.Flags |= core.SpellFlagBinary
 			}
 		},
@@ -195,7 +195,7 @@ func (warlock *Warlock) applyT2Damage2PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.Spellbook {
 				if spell.Flags.Matches(SpellFlagWarlock) && len(spell.Dots()) > 0 {
-					spell.PeriodicDamageMultiplierAdditivePct += 10
+					spell.ApplyAdditivePeriodicDamageBonus(10)
 				}
 			}
 
@@ -256,8 +256,8 @@ func (warlock *Warlock) applyT2Damage6PBonus() {
 	warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.shadowBoltActiveEffectModifierPer = 10
-			warlock.shadowBoltActiveEffectModifierMax = 30
+			warlock.shadowBoltActiveEffectMultiplierPer = 0.10
+			warlock.shadowBoltActiveEffectMultiplierMax = 1.30
 		},
 	})
 }

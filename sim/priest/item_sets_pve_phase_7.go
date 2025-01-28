@@ -72,8 +72,9 @@ func (priest *Priest) applyNaxxramasShadow6PBonus() {
 	}
 
 	damageMod := priest.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Pct,
-		ClassMask: classSpellMasks,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  classSpellMasks,
+		FloatValue: 1,
 	})
 
 	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
