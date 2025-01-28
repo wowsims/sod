@@ -42,11 +42,11 @@ type SpellConfig struct {
 
 	CritDamageBonus float64
 
-	BaseDamageMultiplierAdditivePct     int64   // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
-	DamageMultiplier                    float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
-	DamageMultiplierAdditivePct         int64   // Applies an additive multiplier to full Direct and Periodic spell damage.      Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
-	ImpactDamageMultiplierAdditivePct   int64   // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
-	PeriodicDamageMultiplierAdditivePct int64   // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
+	BaseDamageMultiplierAdditivePct     int64
+	DamageMultiplier                    float64
+	DamageMultiplierAdditivePct         int64
+	ImpactDamageMultiplierAdditivePct   int64
+	PeriodicDamageMultiplierAdditivePct int64
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -142,13 +142,15 @@ type Spell struct {
 	BonusCritRating    float64
 	CastTimeMultiplier float64
 
-	BaseDamageMultiplierAdditivePct     int64   // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
-	damageMultiplier                    float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
-	damageMultiplierAdditivePct         int64
-	impactDamageMultiplierAdditivePct   int64 // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
-	impactDamageMultiplier              float64
-	periodicDamageMultiplierAdditivePct int64 // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
-	periodicDamageMultiplier            float64
+	baseDamageMultiplierAdditivePct     int64 // Stores an integer representation of the Spell's Base Damage Multiplier
+	damageMultiplierAdditivePct         int64 // Stores an integer representation of the Spell's Additive Damage Multiplier before Imapct or Periodic-only bonuses
+	impactDamageMultiplierAdditivePct   int64 // Stores an integer representation of the Spell's Additive Impact Damage Multiplier
+	periodicDamageMultiplierAdditivePct int64 // Stores an integer representation of the Spell's Additive Periodic Damage Multiplier
+
+	baseDamageMultiplier     float64 // Stores the Spell's calculated Base Damage Multiplier
+	damageMultiplier         float64 // Stores the Spell's calculated Damage Multiplier before Imapct or Periodic-only bonuses
+	impactDamageMultiplier   float64 // Stores the Spell's calculated Impact Damage Multiplier
+	periodicDamageMultiplier float64 // Stores the Spell's calculated Damage Multiplier
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -273,7 +275,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		CritDamageBonus: 1 + config.CritDamageBonus,
 
-		BaseDamageMultiplierAdditivePct:     config.BaseDamageMultiplierAdditivePct,
+		baseDamageMultiplierAdditivePct:     config.BaseDamageMultiplierAdditivePct,
 		damageMultiplier:                    config.DamageMultiplier,
 		damageMultiplierAdditivePct:         config.DamageMultiplierAdditivePct,
 		impactDamageMultiplierAdditivePct:   config.ImpactDamageMultiplierAdditivePct,
@@ -292,6 +294,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		RelatedAuras: config.RelatedAuras,
 	}
 
+	spell.updateBaseDamageMultiplier()
 	spell.updateImpactDamageMultiplier()
 	spell.updatePeriodicDamageMultiplier()
 
@@ -659,12 +662,19 @@ func (spell *Spell) Matches(mask int64) bool {
 	return spell.ClassSpellMask&mask > 0
 }
 
+// Applies an additive multiplier to spell base damage. Equivalent to Modifies Spell Effectiveness (8).
+func (spell *Spell) ApplyAdditiveBaseDamageBonus(percent int64) {
+	spell.baseDamageMultiplierAdditivePct += percent
+	spell.updateBaseDamageMultiplier()
+}
+
 func (spell *Spell) SetMultiplicativeDamageBonus(multiplier float64) {
 	spell.damageMultiplier = multiplier
 	spell.updateImpactDamageMultiplier()
 	spell.updatePeriodicDamageMultiplier()
 }
 
+// Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
 func (spell *Spell) ApplyMultiplicativeDamageBonus(multiplier float64) {
 	spell.damageMultiplier *= multiplier
 	spell.updateImpactDamageMultiplier()
@@ -680,20 +690,27 @@ func (spell *Spell) SetAdditiveDamageBonus(percent int64) {
 	spell.updatePeriodicDamageMultiplier()
 }
 
+// Applies an additive multiplier to full Direct and Periodic spell damage. Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
 func (spell *Spell) ApplyAdditiveDamageBonus(percent int64) {
 	spell.damageMultiplierAdditivePct += percent
 	spell.updateImpactDamageMultiplier()
 	spell.updatePeriodicDamageMultiplier()
 }
 
+// Applies an additive multiplier to just Direct spell damage. Equivalent to Modifies Damage/Healing Done.
 func (spell *Spell) ApplyAdditiveImpactDamageBonus(percent int64) {
 	spell.impactDamageMultiplierAdditivePct += percent
 	spell.updateImpactDamageMultiplier()
 }
 
+// Applies an additive multiplier to just Periodic spell dammage. Equivalent to Modifies Periodic Damage/Healing Done (22).
 func (spell *Spell) ApplyAdditivePeriodicDamageBonus(percent int64) {
 	spell.periodicDamageMultiplierAdditivePct += percent
 	spell.updatePeriodicDamageMultiplier()
+}
+
+func (spell *Spell) updateBaseDamageMultiplier() {
+	spell.baseDamageMultiplier = float64(spell.baseDamageMultiplierAdditivePct) / 100.0
 }
 
 func (spell *Spell) updateImpactDamageMultiplier() {
@@ -702,6 +719,10 @@ func (spell *Spell) updateImpactDamageMultiplier() {
 
 func (spell *Spell) updatePeriodicDamageMultiplier() {
 	spell.periodicDamageMultiplier = spell.damageMultiplier * (float64(spell.damageMultiplierAdditivePct+spell.periodicDamageMultiplierAdditivePct) / 200.0)
+}
+
+func (spell *Spell) GetBaseDamageMultiplierAdditive() int64 {
+	return spell.baseDamageMultiplierAdditivePct
 }
 
 func (spell *Spell) GetDamageMultiplier() float64 {

@@ -438,11 +438,11 @@ func removeDamageDoneAdd(mod *SpellMod, spell *Spell) {
 }
 
 func applyBaseDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.BaseDamageMultiplierAdditivePct += mod.intValue
+	spell.ApplyAdditiveBaseDamageBonus(mod.intValue)
 }
 
 func removeBaseDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.BaseDamageMultiplierAdditivePct -= mod.intValue
+	spell.ApplyAdditiveBaseDamageBonus(-mod.intValue)
 }
 
 func applyPeriodicDamageDoneAdd(mod *SpellMod, spell *Spell) {

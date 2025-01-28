@@ -336,7 +336,7 @@ func (druid *Druid) applyImprovedMoonfire() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Improved moonfire",
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_BaseDamageDone_Flat,
+		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: affectedSpells,
 		IntValue:  int64(2 * druid.Talents.ImprovedMoonfire),
 	}).AttachSpellMod(core.SpellModConfig{
