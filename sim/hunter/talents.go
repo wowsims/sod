@@ -193,18 +193,26 @@ func (hunter *Hunter) applyCleverTraps() {
 		return
 	}
 
+	multiplier := 1 + 0.15*float64(hunter.Talents.CleverTraps)
+
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Matches(ClassSpellMask_HunterTraps) {
-			spell.ApplyMultiplicativeDamageBonus(1 + 0.15*float64(hunter.Talents.CleverTraps))
+			spell.ApplyMultiplicativeDamageBonus(multiplier)
 		}
 	})
 }
 
 func (hunter *Hunter) applyEfficiency() {
+	if hunter.Talents.Efficiency == 0 {
+		return
+	}
+
+	costModifier := 2 * hunter.Talents.Efficiency
+
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		// applies to Stings, Shots, Strikes and Volley
-		if spell.Cost != nil && spell.Flags.Matches(SpellFlagSting|SpellFlagStrike) || spell.Matches(ClassSpellMask_HunterShots|ClassSpellMask_HunterVolley) {
-			spell.Cost.Multiplier -= 2 * hunter.Talents.Efficiency
+		if spell.Cost != nil && (spell.Flags.Matches(SpellFlagSting|SpellFlagStrike) || spell.Matches(ClassSpellMask_HunterShots|ClassSpellMask_HunterVolley)) {
+			spell.Cost.FlatModifier -= costModifier
 		}
 	})
 }

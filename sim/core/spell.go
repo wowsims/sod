@@ -196,23 +196,9 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		panic(fmt.Sprintf("Over 200 registered spells when registering %s! There is probably a spell being registered every iteration.", config.ActionID))
 	}
 
-	if config.BaseDamageMultiplierAdditivePct == 0 {
-		config.BaseDamageMultiplierAdditivePct = 100
-	}
-
 	// Default the other damage multiplier to 1 if only one or the other is set.
-	if config.DamageMultiplier != 0 && config.DamageMultiplierAdditivePct == 0 {
-		config.DamageMultiplierAdditivePct = 100
-	} else if config.DamageMultiplierAdditivePct != 0 && config.DamageMultiplier == 0 {
+	if config.DamageMultiplierAdditivePct != 0 && config.DamageMultiplier == 0 {
 		config.DamageMultiplier = 1
-	}
-
-	if config.ImpactDamageMultiplierAdditivePct == 0 {
-		config.ImpactDamageMultiplierAdditivePct = 100
-	}
-
-	if config.PeriodicDamageMultiplierAdditivePct == 0 {
-		config.PeriodicDamageMultiplierAdditivePct = 100
 	}
 
 	// Default CastSlot to mainhand
@@ -682,9 +668,6 @@ func (spell *Spell) ApplyMultiplicativeDamageBonus(multiplier float64) {
 }
 
 func (spell *Spell) SetAdditiveDamageBonus(percent int64) {
-	if percent == 0 {
-		percent = 100
-	}
 	spell.damageMultiplierAdditivePct = percent
 	spell.updateImpactDamageMultiplier()
 	spell.updatePeriodicDamageMultiplier()
@@ -710,15 +693,15 @@ func (spell *Spell) ApplyAdditivePeriodicDamageBonus(percent int64) {
 }
 
 func (spell *Spell) updateBaseDamageMultiplier() {
-	spell.baseDamageMultiplier = float64(spell.baseDamageMultiplierAdditivePct) / 100.0
+	spell.baseDamageMultiplier = float64(100+spell.baseDamageMultiplierAdditivePct) / 100.0
 }
 
 func (spell *Spell) updateImpactDamageMultiplier() {
-	spell.impactDamageMultiplier = spell.damageMultiplier * (float64(spell.damageMultiplierAdditivePct+spell.impactDamageMultiplierAdditivePct-100) / 100.0)
+	spell.impactDamageMultiplier = spell.damageMultiplier * (float64(100+spell.damageMultiplierAdditivePct+spell.impactDamageMultiplierAdditivePct) / 100.0)
 }
 
 func (spell *Spell) updatePeriodicDamageMultiplier() {
-	spell.periodicDamageMultiplier = spell.damageMultiplier * (float64(spell.damageMultiplierAdditivePct+spell.periodicDamageMultiplierAdditivePct-100) / 100.0)
+	spell.periodicDamageMultiplier = spell.damageMultiplier * (float64(100+spell.damageMultiplierAdditivePct+spell.periodicDamageMultiplierAdditivePct) / 100.0)
 }
 
 func (spell *Spell) GetBaseDamageMultiplierAdditive() int64 {
@@ -737,7 +720,7 @@ func (spell *Spell) GetImpactDamageMultiplierAdditive() int64 {
 	return spell.impactDamageMultiplierAdditivePct
 }
 
-func (spell *Spell) GetPeriodicDamageMultiplier() int64 {
+func (spell *Spell) GetPeriodicDamageMultiplierAdditive() int64 {
 	return spell.periodicDamageMultiplierAdditivePct
 }
 

@@ -94,7 +94,7 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		CritDamageBonus: hunter.mortalShots(),
 
 		DamageMultiplier:            0.48,
-		DamageMultiplierAdditivePct: 100 + int64(2*hunter.Talents.ImprovedSerpentSting),
+		DamageMultiplierAdditivePct: 2 * int64(hunter.Talents.ImprovedSerpentSting),
 		ThreatMultiplier:            1,
 		BonusCoefficient:            spellCoeff,
 

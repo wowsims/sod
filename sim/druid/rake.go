@@ -86,7 +86,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			IgnoreHaste: true,
 		},
 
-		BaseDamageMultiplierAdditivePct: 100 + RakeBaseDmgModifier,
+		BaseDamageMultiplierAdditivePct: RakeBaseDmgModifier,
 		DamageMultiplier:                1 + 0.1*float64(druid.Talents.SavageFury),
 		ThreatMultiplier:                1,
 
