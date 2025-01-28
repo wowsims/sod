@@ -126,7 +126,7 @@ func (warlock *Warlock) applyVengeance() {
 			warlock.AddStatsDynamic(sim, stats.Stats{stats.Health: -bonusHealth})
 			healthDiff := warlock.CurrentHealth() - warlock.MaxHealth()
 			if healthDiff > 0 {
-				warlock.RemoveHealth(sim, healthDiff)
+				warlock.RemoveHealth(sim, healthDiff, healthMetrics)
 			}
 		},
 	})

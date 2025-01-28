@@ -20,7 +20,7 @@ func (paladin *Paladin) registerDivineStorm() {
 	numTargets := min(4, paladin.Env.GetNumTargets())
 
 	actionID := core.ActionID{SpellID: int32(proto.PaladinRune_RuneChestDivineStorm)}
-	healthMetrics := paladin.NewHealthMetrics(actionID)
+	healthMetrics := paladin.NewHealthMetrics(core.ActionID{SpellID: 407784})
 
 	divineStormSpell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID,
@@ -62,7 +62,7 @@ func (paladin *Paladin) registerDivineStorm() {
 				OnAction: func(sim *core.Simulation) {
 					for _, result := range results {
 						spell.DealDamage(sim, result)
-						paladin.GainHealth(sim, result.Damage*0.25, healthMetrics)
+						paladin.GainHealth(sim, result.RawDamage()*0.25, healthMetrics)
 					}
 				},
 			})
