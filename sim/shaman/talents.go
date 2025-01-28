@@ -49,10 +49,11 @@ func (shaman *Shaman) ApplyTalents() {
 	// shaman.registerManaTideTotemCD()
 
 	if shaman.Talents.TidalFocus > 0 {
-		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellHealing) && spell.Cost != nil {
-				spell.Cost.Multiplier -= shaman.Talents.TidalFocus
-			}
+		shaman.AddStaticMod(core.SpellModConfig{
+			ClassMask: ClassSpellMask_ShamanAll,
+			ProcMask:  core.ProcMaskSpellHealing,
+			Kind:      core.SpellMod_PowerCost_Pct,
+			IntValue:  -int64(shaman.Talents.TidalFocus),
 		})
 	}
 
@@ -62,7 +63,7 @@ func (shaman *Shaman) ApplyTalents() {
 	if shaman.Talents.HealingGrace > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_Threat_Pct,
-			SpellFlags: SpellFlagShaman,
+			ClassMask:  ClassSpellMask_ShamanAll,
 			ProcMask:   core.ProcMaskSpellHealing,
 			FloatValue: 1 - .05*float64(shaman.Talents.HealingGrace),
 		})
@@ -71,7 +72,7 @@ func (shaman *Shaman) ApplyTalents() {
 	if shaman.Talents.TidalMastery > 0 {
 		critBonus := float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagShaman) && (spell.ProcMask.Matches(core.ProcMaskSpellHealing) ||
+			if spell.Matches(ClassSpellMask_ShamanAll) && (spell.ProcMask.Matches(core.ProcMaskSpellHealing) ||
 				spell.Flags.Matches(SpellFlagLightning)) {
 				spell.BonusCritRating += critBonus
 			}
@@ -112,10 +113,10 @@ func (shaman *Shaman) applyElementalFocus() {
 	shaman.elementalFocusProcChance = 0.1
 
 	costMod := shaman.AddDynamicMod(core.SpellModConfig{
-		SpellFlags: SpellFlagShaman,
-		ProcMask:   core.ProcMaskSpellDamage,
-		Kind:       core.SpellMod_PowerCost_Pct,
-		IntValue:   -100,
+		ClassMask: ClassSpellMask_ShamanAll,
+		ProcMask:  core.ProcMaskSpellDamage,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -100,
 	})
 
 	shaman.ClearcastingAura = shaman.RegisterAura(core.Aura{
@@ -158,7 +159,7 @@ func (shaman *Shaman) applyElementalFocus() {
 }
 
 func (shaman *Shaman) isShamanDamagingSpell(spell *core.Spell) bool {
-	return spell.Flags.Matches(SpellFlagShaman) && spell.ProcMask.Matches(core.ProcMaskSpellDamage)
+	return spell.Matches(ClassSpellMask_ShamanAll) && spell.ProcMask.Matches(core.ProcMaskSpellDamage)
 }
 
 func (shaman *Shaman) applyElementalDevastation() {
@@ -231,12 +232,12 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusCrit_Flat,
-		SpellFlags: SpellFlagShaman,
+		ClassMask:  ClassSpellMask_ShamanAll,
 		ProcMask:   core.ProcMaskSpellDamage,
 		FloatValue: core.CritRatingPerCritChance * 100,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
-		SpellFlags: SpellFlagShaman,
+		ClassMask:  ClassSpellMask_ShamanAll,
 		ProcMask:   core.ProcMaskSpellDamage,
 		FloatValue: -100,
 	})

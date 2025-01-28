@@ -53,7 +53,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 	manaCost := ChainHealManaCost[rank]
 	level := ChainHealLevel[rank]
 
-	flags := core.SpellFlagHelpful | SpellFlagShaman
+	flags := core.SpellFlagHelpful
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}

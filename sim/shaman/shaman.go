@@ -12,9 +12,8 @@ import (
 var TalentTreeSizes = [3]int{15, 16, 15}
 
 const (
-	SpellFlagShaman    = core.SpellFlagAgentReserved1
-	SpellFlagLightning = core.SpellFlagAgentReserved2
-	SpellFlagMaelstrom = core.SpellFlagAgentReserved3
+	SpellFlagLightning = core.SpellFlagAgentReserved1
+	SpellFlagMaelstrom = core.SpellFlagAgentReserved2
 )
 
 const (
@@ -42,6 +41,12 @@ const (
 	ClassSpellMask_ShamanMagmaTotemAttack
 	ClassSpellMask_ShamanSearingTotemAttack
 	ClassSpellMask_ShamanShamanisticRage
+	ClassSpellMask_ShamanWaterShield
+	ClassSpellMask_ShamanFeralSpirit
+	ClassSpellMask_ShamanAncestralAwakening
+	ClassSpellMask_ShamanAncestralGuidance
+	ClassSpellMask_ShamanAncestralGuidanceDamage
+	ClassSpellMask_ShamanAncestralGuidanceHeal
 
 	// Totems should go after this
 	ClassSpellMask_ShamanLast

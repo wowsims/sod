@@ -52,7 +52,7 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 		SpellSchool:    core.SpellSchoolNature,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellHealing,
-		Flags:          core.SpellFlagHelpful | core.SpellFlagAPL | SpellFlagMaelstrom | SpellFlagShaman,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagAPL | SpellFlagMaelstrom,
 		MetricSplits:   6,
 
 		RequiredLevel: level,

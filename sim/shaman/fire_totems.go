@@ -265,7 +265,6 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 		SpellSchool:    core.SpellSchoolFire,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskEmpty,
-		Flags:          SpellFlagShaman,
 
 		DamageMultiplier: 1,
 		BonusCoefficient: spellCoeff,

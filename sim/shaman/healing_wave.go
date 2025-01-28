@@ -48,7 +48,7 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 	manaCost := HealingWaveManaCost[rank]
 	level := HealingWaveLevel[rank]
 
-	flags := core.SpellFlagHelpful | SpellFlagShaman
+	flags := core.SpellFlagHelpful
 	if !isOverload {
 		flags |= core.SpellFlagAPL
 	}
