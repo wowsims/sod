@@ -55,17 +55,18 @@ func (hunter *Hunter) applyNaxxramasMelee4PBonus() {
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.RaptorStrike != nil {
-				hunter.RaptorStrike.CD.FlatModifier -= time.Second
-			}
-			if hunter.WyvernStrike != nil {
-				hunter.WyvernStrike.CD.FlatModifier -= time.Second * 2
-			}
-			if hunter.FlankingStrike != nil {
-				hunter.FlankingStrike.CD.FlatModifier -= time.Second * 8
-			}
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_HunterRaptorStrike,
+		TimeValue: -time.Second,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_HunterWyvernStrike,
+		TimeValue: -time.Second * 2,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_HunterFlankingStrike,
+		TimeValue: -time.Second * 8,
 	}))
 }
 
