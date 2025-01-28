@@ -112,14 +112,13 @@ func (warlock *Warlock) applyTAQTank2PBonus() {
 		return
 	}
 
-	warlock.RegisterAura(core.Aura{
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.ShadowCleave {
-				spell.CD.FlatModifier -= time.Millisecond * 1500
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_WarlockShadowCleave,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Millisecond * 1500,
+	}))
 }
 
 // The effects of your Demonic Sacrifice now persist while you have a Demon pet active, as long as you do not resummon the sacrificed pet.

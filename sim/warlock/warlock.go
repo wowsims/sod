@@ -42,6 +42,8 @@ const (
 	ClassSpellMask_WarlockSiphonLife
 	ClassSpellMask_WarlockSoulFire
 	ClassSpellMask_WarlockUnstableAffliction
+	ClassSpellMask_WarlockInfernalArmor
+	ClassSpellMask_WarlockDemonicGrace
 
 	ClassSpellMask_WarlockRainOfFire
 	ClassSpellMask_WarlockImmolationAura

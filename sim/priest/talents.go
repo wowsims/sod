@@ -253,7 +253,7 @@ func (priest *Priest) registerInnerFocus() {
 		ActionID: actionID,
 		Duration: core.NeverExpires,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_PriestAll) {
+			if spell.Matches(ClassSpellMask_PriestAll ^ ClassSpellMask_PriestInnerFocus) {
 				// Remove the buff and put skill on CD
 				aura.Deactivate(sim)
 				priest.InnerFocus.CD.Use(sim)
@@ -271,8 +271,9 @@ func (priest *Priest) registerInnerFocus() {
 	})
 
 	priest.InnerFocus = priest.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_PriestInnerFocus,
+		Flags:          core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

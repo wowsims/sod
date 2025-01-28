@@ -135,27 +135,21 @@ func (shaman *Shaman) applyT2Tank2PBonus() {
 		ActionID: core.ActionID{SpellID: 467891},
 		Label:    "Shield Block",
 		Duration: time.Second * 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.AddStatDynamic(sim, stats.Block, 30*core.BlockRatingPerBlockChance)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.AddStatDynamic(sim, stats.Block, -30*core.BlockRatingPerBlockChance)
-		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 			if result.DidBlock() {
 				aura.Deactivate(sim)
 			}
 		},
-	})
+	}).AttachStatBuff(stats.Block, 30*core.BlockRatingPerBlockChance)
 
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_ShamanFlameShock) {
-				shieldBlockAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_ShamanFlameShock,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			shieldBlockAura.Activate(sim)
 		},
-	}))
+	})
 }
 
 // Each time you Block, your Block amount is increased by 10% of your Spell Damage for 6 sec, stacking up to 3 times.

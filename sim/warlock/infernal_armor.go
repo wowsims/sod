@@ -31,9 +31,10 @@ func (warlock *Warlock) registerInfernalArmorCD() {
 	})
 
 	warlock.InfernalArmor = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolShadow,
-		Flags:       core.SpellFlagNoOnCastComplete,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_WarlockInfernalArmor,
+		SpellSchool:    core.SpellSchoolShadow,
+		Flags:          core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),

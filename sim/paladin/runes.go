@@ -375,8 +375,9 @@ func (paladin *Paladin) registerMalleableProtection() {
 	})
 
 	paladin.divineProtection = paladin.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL | SpellFlag_Forbearance,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_PaladinDivineProtection,
+		Flags:          core.SpellFlagAPL | SpellFlag_Forbearance,
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
 		},

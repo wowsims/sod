@@ -156,18 +156,17 @@ func (paladin *Paladin) applyNaxxramasProtection4PBonus() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if paladin.divineProtection != nil {
-				paladin.divineProtection.CD.FlatModifier -= time.Minute * 3
-			}
-
-			if paladin.avengingWrath != nil {
-				paladin.avengingWrath.CD.FlatModifier -= time.Minute * 2
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_PaladinDivineProtection,
+		TimeValue: -time.Minute * 3,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_PaladinavengingWrath,
+		TimeValue: -time.Minute * 2,
+	}))
 }
 
 // When damage from an Undead enemy takes you below 35% health, the effect from Hand of Reckoning and Righteous Fury now reduces that damage by 50%.
@@ -208,12 +207,12 @@ func (paladin *Paladin) applyNaxxramasHoly2PBonus() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	// AddMana effect is implemented in lay_on_hands.go:47
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.layOnHands.CD.FlatModifier -= time.Minute * 35
-
-			// TODO: Mana return
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_PaladinLayOnHands,
+		TimeValue: -time.Minute * 35,
+	}))
 }

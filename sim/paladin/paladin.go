@@ -40,6 +40,9 @@ const (
 	ClassSpellMask_PaladinJudgementOfRighteousness
 	ClassSpellMask_PaladinJudgementOfTheCrusader
 
+	ClassSpellMask_PaladinDivineProtection
+	ClassSpellMask_PaladinavengingWrath
+
 	ClassSpellMask_PaladinLast
 	ClassSpellMask_PaladinAll = ClassSpellMask_PaladinLast<<1 - 1
 
