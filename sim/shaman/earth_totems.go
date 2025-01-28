@@ -46,8 +46,7 @@ func (shaman *Shaman) newStrengthOfEarthTotemSpellConfig(rank int) core.SpellCon
 		strengthOfEarthTotemAuras[1] = core.StrengthOfEarthTotemAura(&shaman.SpiritWolves.Unit, shaman.Level, multiplier)
 	}
 
-	spell := shaman.newTotemSpellConfig(manaCost, spellId)
-	spell.ClassSpellMask = ClassSpellMask_ShamanStrengthOfEarthTotem
+	spell := shaman.newTotemSpellConfig(ClassSpellMask_ShamanStrengthOfEarthTotem, spellId, manaCost)
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
@@ -90,8 +89,7 @@ func (shaman *Shaman) newStoneskinTotemSpellConfig(rank int) core.SpellConfig {
 
 	duration := time.Second * 120
 
-	spell := shaman.newTotemSpellConfig(manaCost, spellId)
-	spell.ClassSpellMask = ClassSpellMask_ShamanStoneskinTotem
+	spell := shaman.newTotemSpellConfig(ClassSpellMask_ShamanStoneskinTotem, spellId, manaCost)
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
@@ -109,8 +107,7 @@ func (shaman *Shaman) registerTremorTotemSpell() {
 	duration := time.Second * 120
 	level := 18
 
-	spell := shaman.newTotemSpellConfig(manaCost, spellId)
-	spell.ClassSpellMask = ClassSpellMask_ShamanTremorTotem
+	spell := shaman.newTotemSpellConfig(ClassSpellMask_ShamanTremorTotem, spellId, manaCost)
 	spell.RequiredLevel = level
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 		shaman.TotemExpirations[EarthTotem] = sim.CurrentTime + duration
