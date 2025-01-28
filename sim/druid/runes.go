@@ -176,31 +176,12 @@ func (druid *Druid) applyEclipse() {
 	solarCritBonus := 30.0
 	lunarCastTimeReduction := time.Second * 1
 
-	var affectedSolarSpells []*DruidSpell
-	var affectedLunarSpells []*DruidSpell
-
 	// Solar
 	druid.SolarEclipseProcAura = druid.RegisterAura(core.Aura{
 		Label:     "Solar Eclipse proc",
 		Duration:  time.Second * 15,
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408250},
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSolarSpells = core.FilterSlice(
-				core.Flatten([][]*DruidSpell{druid.Wrath, {druid.Starsurge}}),
-				func(spell *DruidSpell) bool { return spell != nil },
-			)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSolarSpells, func(spell *DruidSpell) {
-				spell.BonusCritRating += solarCritBonus
-			})
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSolarSpells, func(spell *DruidSpell) {
-				spell.BonusCritRating -= solarCritBonus
-			})
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !spell.Matches(ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarsurge) {
 				return
@@ -208,6 +189,10 @@ func (druid *Druid) applyEclipse() {
 
 			aura.RemoveStack(sim)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		ClassMask:  ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarsurge,
+		FloatValue: solarCritBonus,
 	})
 
 	// Lunar
@@ -216,22 +201,6 @@ func (druid *Druid) applyEclipse() {
 		Duration:  time.Second * 15,
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408255},
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedLunarSpells = core.FilterSlice(
-				core.Flatten([][]*DruidSpell{druid.Starfire}),
-				func(spell *DruidSpell) bool { return spell != nil },
-			)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
-				spell.DefaultCast.CastTime -= lunarCastTimeReduction
-			})
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
-				spell.DefaultCast.CastTime += lunarCastTimeReduction
-			})
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if !spell.Matches(ClassSpellMask_DruidStarfire) {
 				return
@@ -239,6 +208,10 @@ func (druid *Druid) applyEclipse() {
 
 			aura.RemoveStack(sim)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_CastTime_Flat,
+		ClassMask: ClassSpellMask_DruidStarfire,
+		TimeValue: -lunarCastTimeReduction,
 	})
 
 	druid.EclipseAura = druid.RegisterAura(core.Aura{

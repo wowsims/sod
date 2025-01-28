@@ -48,25 +48,13 @@ func (druid *Druid) applyTAQBalance4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := core.FilterSlice(
-				core.Flatten(
-					[][]*DruidSpell{
-						druid.Wrath,
-						druid.Starfire,
-						{druid.Starsurge},
-					},
-				),
-				func(spell *DruidSpell) bool { return spell != nil },
-			)
-
-			for _, spell := range affectedSpells {
-				spell.CritDamageBonus += 0.60
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CritDamageBonus_Flat,
+		ClassMask:  ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarfire | ClassSpellMask_DruidStarsurge,
+		FloatValue: 0.60,
+	}))
 }
 
 var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{

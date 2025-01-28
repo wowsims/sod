@@ -130,13 +130,14 @@ func (druid *Druid) applyNaxxramasFeral4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1218477}, // Tracking in APL
 		Label:    label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			druid.TigersFury.CD.Multiplier *= 0.5
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multi_Pct,
+		ClassMask:  ClassSpellMask_DruidTigersFury,
+		FloatValue: 0.5,
+	}))
 }
 
 // Each time you deal Bleed damage to an Undead target, you gain 1% increased damage done to Undead for 30 sec, stacking up to 25 times.

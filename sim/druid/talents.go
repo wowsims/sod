@@ -256,24 +256,10 @@ func (druid *Druid) applyOmenOfClarity() {
 		return
 	}
 
-	var affectedSpells []*core.Spell
 	druid.ClearcastingAura = druid.RegisterAura(core.Aura{
 		Label:    "Clearcasting",
 		ActionID: core.ActionID{SpellID: 16870},
 		Duration: time.Second * 15,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(druid.Spellbook, func(spell *core.Spell) bool { return spell.Flags.Matches(SpellFlagOmen) })
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.Cost.Multiplier -= 100
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.Cost.Multiplier += 100
-			}
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
 			if aura.RemainingDuration(sim) == aura.Duration {
@@ -285,29 +271,22 @@ func (druid *Druid) applyOmenOfClarity() {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_PowerCost_Pct,
+		SpellFlags: SpellFlagOmen,
+		IntValue:   -100,
 	})
 
-	ppmm := druid.AutoAttacks.NewPPMManager(2.0, core.ProcMaskMelee)
-	icd := core.Cooldown{
-		Timer:    druid.NewTimer(),
-		Duration: time.Second * 10,
-	}
-
-	druid.RegisterAura(core.Aura{
-		Label:    "Omen of Clarity",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !icd.IsReady(sim) {
-				return
-			}
-			// TODO: Phase 3 "and non-instant spell casts" but we need to find out how the procs work for those
-			if spell.ProcMask.Matches(core.ProcMaskMelee) && ppmm.ProcWithWeaponSpecials(sim, spell.ProcMask, "Omen of Clarity") {
-				icd.Use(sim)
-				druid.ClearcastingAura.Activate(sim)
-			}
+	// TODO: Phase 3 "and non-instant spell casts" but we need to find out how the procs work for those
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:     "Omen of Clarity",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee,
+		PPM:      2.0,
+		ICD:      time.Second * 10,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			druid.ClearcastingAura.Activate(sim)
 		},
 	})
 }

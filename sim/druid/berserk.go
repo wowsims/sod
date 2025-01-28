@@ -13,43 +13,18 @@ func (druid *Druid) applyBerserk() {
 	}
 
 	actionId := core.ActionID{SpellID: 417141}
-	var affectedSpells []*DruidSpell
+	affectedSpellClassMasks := ClassSpellMask_DruidRip | ClassSpellMask_DruidRake | ClassSpellMask_DruidTigersFury |
+		ClassSpellMask_DruidShred | ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidMangleCat |
+		ClassSpellMask_DruidSwipeCat | ClassSpellMask_DruidSavageRoar
 
 	druid.BerserkAura = druid.RegisterAura(core.Aura{
 		Label:    "Berserk",
 		ActionID: actionId,
 		Duration: time.Second * 15,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice([]*DruidSpell{
-				druid.Rip,
-				// druid.Claw, // If it would exist
-				druid.Rake,
-				druid.TigersFury,
-				druid.Shred,
-				// druid.Ravage, // If it would exist
-				// druid.Pounce, // If it would exist
-				druid.FerociousBite,
-				druid.MangleCat,
-				// druid.Sunfire, // If it would exist
-				// druid.Skullbash, // If it would exist
-				druid.SavageRoar,
-				druid.SwipeCat,
-			}, func(spell *DruidSpell) bool { return spell != nil })
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				if spell.Cost != nil {
-					spell.Cost.Multiplier -= 50
-				}
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				if spell.Cost != nil {
-					spell.Cost.Multiplier += 50
-				}
-			}
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: affectedSpellClassMasks,
+		IntValue:  -50,
 	})
 
 	druid.Berserk = druid.RegisterSpell(Cat|Bear, core.SpellConfig{

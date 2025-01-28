@@ -159,16 +159,12 @@ func (druid *Druid) applyT2Feral4PBonus() {
 	druid.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			oldOnGain := druid.TigersFuryAura.OnGain
-			druid.TigersFuryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnGain(aura, sim)
+			druid.TigersFuryAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 				druid.AddStatsDynamic(sim, stats.Stats{stats.MeleeCrit: 15 * core.CritRatingPerCritChance})
-			}
-			oldOnExpire := druid.TigersFuryAura.OnExpire
-			druid.TigersFuryAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnExpire(aura, sim)
+			})
+			druid.TigersFuryAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 				druid.AddStatsDynamic(sim, stats.Stats{stats.MeleeCrit: -15 * core.CritRatingPerCritChance})
-			}
+			})
 		},
 	})
 }
@@ -304,19 +300,17 @@ func (druid *Druid) applyZGBalance3PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range druid.Starfire {
-				if spell == nil {
-					continue
-				}
-
-				spell.DefaultCast.CastTime -= time.Millisecond * 500
-				spell.DefaultCast.GCD -= time.Millisecond * 500
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_CastTime_Flat,
+		ClassMask: ClassSpellMask_DruidStarfire,
+		TimeValue: -time.Millisecond * 500,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_GlobalCooldown_Flat,
+		ClassMask: ClassSpellMask_DruidStarfire,
+		TimeValue: -time.Millisecond * 500,
+	}))
 }
 
 // Increases the critical strike chance of Wrath by 10%.
@@ -326,16 +320,11 @@ func (druid *Druid) applyZGBalance5PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range druid.Wrath {
-				if spell == nil {
-					continue
-				}
-
-				spell.BonusCritRating += 10 * core.SpellCritRatingPerCritChance
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		ClassMask:  ClassSpellMask_DruidWrath,
+		FloatValue: 10 * core.SpellCritRatingPerCritChance,
+	}))
 }

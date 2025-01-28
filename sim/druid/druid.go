@@ -39,6 +39,17 @@ const (
 	ClassSpellMask_DruidStarfallSplash
 	ClassSpellMask_DruidSunfire
 	ClassSpellMask_DruidHurricane
+	ClassSpellMask_DruidTigersFury
+	ClassSpellMask_DruidSavageRoar
+
+	ClassSpellMask_DruidCatForm
+	ClassSpellMask_DruidBearForm
+	ClassSpellMask_DruidMoonkinForm
+
+	ClassSpellMask_DruidLast
+	ClassSpellMask_DruidAll = ClassSpellMask_DruidLast<<1 - 1
+
+	ClassSpellMask_DruidForms = ClassSpellMask_DruidCatForm | ClassSpellMask_DruidBearForm | ClassSpellMask_DruidMoonkinForm
 )
 
 type Druid struct {
