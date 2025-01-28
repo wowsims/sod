@@ -78,7 +78,7 @@ func (hunter *Hunter) ApplyTalents() {
 		mult := 1 + 0.01*float64(hunter.Talents.RangedWeaponSpecialization)
 		hunter.OnSpellRegistered(func(spell *core.Spell) {
 			if spell.ProcMask.Matches(core.ProcMaskRanged) && !spell.Matches(ClassSpellMask_HunterSerpentSting) {
-				spell.MultiplyMultiplicativeDamageBonus(mult)
+				spell.ApplyMultiplicativeDamageBonus(mult)
 			}
 		})
 	}
@@ -195,7 +195,7 @@ func (hunter *Hunter) applyCleverTraps() {
 
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Matches(ClassSpellMask_HunterTraps) {
-			spell.MultiplyMultiplicativeDamageBonus(1 + 0.15*float64(hunter.Talents.CleverTraps))
+			spell.ApplyMultiplicativeDamageBonus(1 + 0.15*float64(hunter.Talents.CleverTraps))
 		}
 	})
 }

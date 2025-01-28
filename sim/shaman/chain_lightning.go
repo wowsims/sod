@@ -92,7 +92,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			results[hitIndex] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			target = sim.Environment.NextTargetUnit(target)
-			spell.MultiplyMultiplicativeDamageBonus(bounceCoef)
+			spell.ApplyMultiplicativeDamageBonus(bounceCoef)
 		}
 
 		for _, result := range results {

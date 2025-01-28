@@ -659,26 +659,14 @@ func (spell *Spell) Matches(mask int64) bool {
 	return spell.ClassSpellMask&mask > 0
 }
 
-func (spell *Spell) SetMultiplicativeDamageBonus(percent float64) {
-	spell.damageMultiplier = percent
+func (spell *Spell) SetMultiplicativeDamageBonus(multiplier float64) {
+	spell.damageMultiplier = multiplier
 	spell.updateImpactDamageMultiplier()
 	spell.updatePeriodicDamageMultiplier()
 }
 
-func (spell *Spell) ApplyMultiplicativeDamageBonus(percent float64) {
-	spell.damageMultiplier += percent
-	spell.updateImpactDamageMultiplier()
-	spell.updatePeriodicDamageMultiplier()
-}
-
-func (spell *Spell) MultiplyMultiplicativeDamageBonus(percent float64) {
-	spell.damageMultiplier *= percent
-	spell.updateImpactDamageMultiplier()
-	spell.updatePeriodicDamageMultiplier()
-}
-
-func (spell *Spell) DivideMultiplicativeDamageBonus(percent float64) {
-	spell.damageMultiplier /= percent
+func (spell *Spell) ApplyMultiplicativeDamageBonus(multiplier float64) {
+	spell.damageMultiplier *= multiplier
 	spell.updateImpactDamageMultiplier()
 	spell.updatePeriodicDamageMultiplier()
 }

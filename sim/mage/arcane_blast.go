@@ -31,8 +31,9 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		Kind:      core.SpellMod_DamageDone_Flat,
 	})
 	abDamageModPct := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask: ClassSpellMask_MageArcaneBlastAuraPct,
-		Kind:      core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_MageArcaneBlastAuraPct,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 1,
 	})
 
 	abCostMod := mage.AddDynamicMod(core.SpellModConfig{
@@ -47,9 +48,8 @@ func (mage *Mage) registerArcaneBlastSpell() {
 		MaxStacks: 4,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			abCostMod.UpdateIntValue(175 * int64(newStacks))
-			newDamageMultiplier := 1 + mage.ArcaneBlastDamageMultiplier*float64(newStacks)
-			abDamageModFlat.UpdateIntValue(int64(newDamageMultiplier * 100))
-			abDamageModPct.UpdateFloatValue(newDamageMultiplier)
+			abDamageModFlat.UpdateIntValue(int64(mage.ArcaneBlastDamageMultiplier*100) * int64(newStacks))
+			abDamageModPct.UpdateFloatValue((1 + mage.ArcaneBlastDamageMultiplier*float64(newStacks)))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_MageAll) && spell.Matches(affectedSpells) {

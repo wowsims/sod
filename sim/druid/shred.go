@@ -69,7 +69,7 @@ func (druid *Druid) registerShredSpell() {
 
 			oldMultiplier := spell.GetDamageMultiplier()
 			if druid.BleedCategories.Get(target).AnyActive() {
-				spell.MultiplyMultiplicativeDamageBonus(1.3)
+				spell.ApplyMultiplicativeDamageBonus(1.3)
 			}
 
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
@@ -90,7 +90,7 @@ func (druid *Druid) registerShredSpell() {
 
 			oldMultiplier := spell.GetDamageMultiplier()
 			if druid.BleedCategories.Get(target).AnyActive() {
-				spell.MultiplyMultiplicativeDamageBonus(1.3)
+				spell.ApplyMultiplicativeDamageBonus(1.3)
 			}
 
 			baseres := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)

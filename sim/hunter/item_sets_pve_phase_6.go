@@ -151,10 +151,10 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 								damageMultiplier := spell.GetDamageMultiplier()
 								damageMultiplierAdditive := spell.GetDamageMultiplierAdditive() - 100
 
-								clonedShot.MultiplyMultiplicativeDamageBonus(damageMultiplier)
+								clonedShot.ApplyMultiplicativeDamageBonus(damageMultiplier)
 								clonedShot.ApplyAdditiveDamageBonus(damageMultiplierAdditive)
 								clonedShot.Cast(sim, target)
-								clonedShot.DivideMultiplicativeDamageBonus(damageMultiplier)
+								clonedShot.ApplyMultiplicativeDamageBonus(1 / damageMultiplier)
 								clonedShot.ApplyAdditiveDamageBonus(-damageMultiplierAdditive)
 							},
 						})

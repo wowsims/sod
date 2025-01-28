@@ -19,8 +19,9 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 	cooldown := time.Minute * 2
 	auraDuration := time.Second * 8
 	damageMod := mage.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Pct,
-		ClassMask: ClassSpellMask_MageArcaneSurge,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_MageArcaneSurge,
+		FloatValue: 1,
 	})
 
 	manaMetrics := mage.NewManaMetrics(actionID)

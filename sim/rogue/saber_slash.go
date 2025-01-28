@@ -108,9 +108,9 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 						multiplier = rogue.saberSlashMultiplier(dot.GetStacks())
 					}
 
-					spell.MultiplyMultiplicativeDamageBonus(multiplier)
+					spell.ApplyMultiplicativeDamageBonus(multiplier)
 					oldApplyEffects(sim, target, spell)
-					spell.DivideMultiplicativeDamageBonus(multiplier)
+					spell.ApplyMultiplicativeDamageBonus(1 / multiplier)
 				}
 			}
 		},

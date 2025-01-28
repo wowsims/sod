@@ -1040,13 +1040,13 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 			Duration: time.Second * 20,
 			OnGain: func(aura *Aura, sim *Simulation) {
 				aura.Unit.MultiplyMeleeSpeed(sim, 1.03)
-				aura.Unit.AutoAttacks.MHAuto().DivideMultiplicativeDamageBonus(1.03)
-				aura.Unit.AutoAttacks.OHAuto().DivideMultiplicativeDamageBonus(1.03)
+				aura.Unit.AutoAttacks.MHAuto().ApplyMultiplicativeDamageBonus(1 / 1.03)
+				aura.Unit.AutoAttacks.OHAuto().ApplyMultiplicativeDamageBonus(1 / 1.03)
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.03)
-				aura.Unit.AutoAttacks.MHAuto().MultiplyMultiplicativeDamageBonus(1.03)
-				aura.Unit.AutoAttacks.OHAuto().MultiplyMultiplicativeDamageBonus(1.03)
+				aura.Unit.AutoAttacks.MHAuto().ApplyMultiplicativeDamageBonus(1.03)
+				aura.Unit.AutoAttacks.OHAuto().ApplyMultiplicativeDamageBonus(1.03)
 			},
 		})
 		jujuFlurrySpell := character.RegisterSpell(SpellConfig{

@@ -38,13 +38,14 @@ func (druid *Druid) registerStarfallCD() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Apply the base spell's multipliers to pick up on effects that only affect spells with DoTs
-			spell.ApplyAdditiveDamageBonus(druid.Starfall.GetPeriodicDamageMultiplier() - 100)
+			periodicDamageMultiplier := druid.Starfall.GetPeriodicDamageMultiplier() - 100
+			spell.ApplyAdditiveDamageBonus(periodicDamageMultiplier)
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamageSplash, spell.OutcomeMagicHitAndCrit)
 			}
 
-			spell.ApplyAdditiveDamageBonus(-druid.Starfall.GetPeriodicDamageMultiplier() - 100)
+			spell.ApplyAdditiveDamageBonus(-periodicDamageMultiplier)
 		},
 	})
 

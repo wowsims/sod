@@ -422,11 +422,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 }
 
 func applyDamageDonePercent(mod *SpellMod, spell *Spell) {
-	spell.MultiplyMultiplicativeDamageBonus(mod.floatValue)
+	spell.ApplyMultiplicativeDamageBonus(mod.floatValue)
 }
 
 func removeDamageDonePercent(mod *SpellMod, spell *Spell) {
-	spell.DivideMultiplicativeDamageBonus(mod.floatValue)
+	spell.ApplyMultiplicativeDamageBonus(1 / mod.floatValue)
 }
 
 func applyDamageDoneAdd(mod *SpellMod, spell *Spell) {

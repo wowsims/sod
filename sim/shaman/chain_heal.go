@@ -101,7 +101,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 			for hitIndex := 0; hitIndex < len(targets); hitIndex++ {
 				originalDamageMultiplier := spell.GetDamageMultiplier()
 				if hasRiptideRune && !isOverload && shaman.Riptide.Hot(curTarget).IsActive() {
-					spell.MultiplyMultiplicativeDamageBonus(1.25)
+					spell.ApplyMultiplicativeDamageBonus(1.25)
 					shaman.Riptide.Hot(curTarget).Deactivate(sim)
 				}
 				spell.CalcAndDealHealing(sim, curTarget, sim.Roll(baseHealingLow, baseHealingHigh), spell.OutcomeHealingCrit)
@@ -111,7 +111,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 					shaman.ChainHealOverload[rank].Cast(sim, target)
 				}
 
-				spell.MultiplyMultiplicativeDamageBonus(bounceCoef)
+				spell.ApplyMultiplicativeDamageBonus(bounceCoef)
 				curTarget = targets[hitIndex]
 			}
 			spell.SetMultiplicativeDamageBonus(origMult)
