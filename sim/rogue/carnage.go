@@ -30,9 +30,7 @@ func (rogue *Rogue) applyCarnage() {
 					ca := carnageAuras[bleedAura.Unit.UnitIndex]
 					ca.Activate(sim)
 					ca.AddStack(sim)
-				})
-
-				bleedAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 					ca := carnageAuras[bleedAura.Unit.UnitIndex]
 					if ca.IsActive() { // carnage aura might already be expired by doneIteration
 						ca.RemoveStack(sim)

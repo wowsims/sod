@@ -16,7 +16,7 @@ func (unit *Unit) newHardcastAction(sim *Simulation) {
 			NextActionAt: unit.Hardcast.Expires,
 			Priority:     ActionPriorityGCD,
 			OnAction: func(sim *Simulation) {
-				if hc := &unit.Hardcast; hc.Expires != startingCDTime && hc.Expires <= sim.CurrentTime {
+				if hc := &unit.Hardcast; hc.Expires != startingCDTime && !unit.IsCasting(sim) {
 					hc.Expires = startingCDTime
 					if hc.OnComplete != nil {
 						hc.OnComplete(sim, hc.Target)

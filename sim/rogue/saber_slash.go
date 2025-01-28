@@ -64,7 +64,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 		CritDamageBonus: rogue.lethality(),
 
 		DamageMultiplier:                  1,
-		ImpactDamageMultiplierAdditivePct: 100 + []int64{0, 2, 4, 6}[rogue.Talents.Aggression],
+		ImpactDamageMultiplierAdditivePct: []int64{0, 2, 4, 6}[rogue.Talents.Aggression],
 		ThreatMultiplier:                  1,
 		BonusCoefficient:                  1,
 

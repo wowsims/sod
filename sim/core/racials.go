@@ -23,8 +23,7 @@ func applyRaceEffects(agent Agent) {
 		stoneFormAura := character.NewTemporaryStatsAuraWrapped("Stoneform", actionID, stats.Stats{}, time.Second*8, func(aura *Aura) {
 			aura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
 				aura.Unit.EnableDynamicStatDep(sim, statDep)
-			})
-			aura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+			}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
 				aura.Unit.DisableDynamicStatDep(sim, statDep)
 			})
 		})

@@ -77,7 +77,7 @@ func (paladin *Paladin) registerHolyShock() {
 			},
 
 			DamageMultiplier:            1,
-			DamageMultiplierAdditivePct: core.TernaryInt64(hasInfusionOfLight, 150, 100),
+			DamageMultiplierAdditivePct: core.TernaryInt64(hasInfusionOfLight, 50, 0),
 			ThreatMultiplier:            1,
 			BonusCoefficient:            0.429,
 

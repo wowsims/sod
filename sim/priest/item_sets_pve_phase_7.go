@@ -81,13 +81,19 @@ func (priest *Priest) applyNaxxramasShadow6PBonus() {
 		Callback:       core.CallbackOnApplyEffects,
 		ClassSpellMask: classSpellMasks,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			critChanceBonusPct := 100.0
-			if result.Target.MobType == proto.MobType_MobTypeUndead {
-				critChanceBonusPct += priest.GetStat(stats.SpellCrit)
+			if result.Target.MobType != proto.MobType_MobTypeUndead {
+				return
 			}
+
+			critChanceBonusPct := 100.0
+			critChanceBonusPct += priest.GetStat(stats.SpellCrit)
 
 			damageMod.UpdateFloatValue(critChanceBonusPct / 100)
 		},
+	}).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+		damageMod.Activate()
+	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+		damageMod.Deactivate()
 	})
 }
 

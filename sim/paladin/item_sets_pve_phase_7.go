@@ -107,6 +107,10 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 				critChanceBonusPct += paladin.GetStat(stats.MeleeCrit)
 			}
 
+			if spell.Matches(ClassSpellMask_PaladinExorcism) {
+				critChanceBonusPct += 100
+			}
+
 			damageMod.UpdateFloatValue(critChanceBonusPct / 100)
 		},
 	}))

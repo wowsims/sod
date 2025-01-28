@@ -103,6 +103,7 @@ func (priest *Priest) applyTwistedFaith() {
 					return
 				}
 			}
+
 			damageMod.Deactivate()
 		},
 	})
