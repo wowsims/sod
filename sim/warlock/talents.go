@@ -150,7 +150,6 @@ func (warlock *Warlock) applyImprovedDrainLife() {
 		return
 	}
 
-	// Apply Aura: Modifies Spell Effectiveness (8)
 	warlock.AddStaticMod(core.SpellModConfig{
 		Kind:      core.SpellMod_BaseDamageDone_Flat,
 		School:    core.SpellSchoolShadow,
@@ -212,8 +211,6 @@ func (warlock *Warlock) applyShadowMastery() {
 	// These spells have their base damage modded instead
 	baseModClassMasks := ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockDeathCoil | ClassSpellMask_WarlockDrainLife | ClassSpellMask_WarlockDrainSoul
 
-	// Apply Aura: Modifies Damage/Healing Done and
-	// Apply Aura: Modifies Periodic Damage/Healing Done (22)
 	warlock.AddStaticMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		School:    core.SpellSchoolShadow,
@@ -221,7 +218,6 @@ func (warlock *Warlock) applyShadowMastery() {
 		IntValue:  int64(2 * warlock.Talents.ShadowMastery),
 	})
 
-	// Apply Aura: Modifies Spell Effectiveness (8)
 	warlock.AddStaticMod(core.SpellModConfig{
 		Kind:      core.SpellMod_BaseDamageDone_Flat,
 		School:    core.SpellSchoolShadow,
