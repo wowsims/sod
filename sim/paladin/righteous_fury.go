@@ -15,14 +15,14 @@ func (paladin *Paladin) registerRighteousFury() {
 
 	actionID := core.ActionID{SpellID: core.TernaryInt32(hasHoR, int32(horRune), 25780)}
 
-	rfThreatMultiplier := 0.6 + core.TernaryFloat64(hasHoR, 0.2, 0.0)
+	rfThreatMultiplier := 1.6 + core.TernaryFloat64(hasHoR, 0.2, 0.0)
 	// Improved Righteous Fury is multiplicative.
 	rfThreatMultiplier *= 1.0 + []float64{0.0, 0.16, 0.33, 0.5}[paladin.Talents.ImprovedRighteousFury]
 
 	paladin.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_Threat_Pct,
 		School:     core.SpellSchoolHoly,
-		FloatValue: 1.0 + rfThreatMultiplier,
+		FloatValue: rfThreatMultiplier,
 	})
 
 	rfAura := core.MakePermanent(&core.Aura{Label: "Righteous Fury", ActionID: actionID})
