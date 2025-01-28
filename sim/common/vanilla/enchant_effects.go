@@ -248,6 +248,14 @@ func init() {
 		character.PseudoStats.RangedSpeedMultiplier *= 1.01
 	})
 
+	// Weapon - Iron Counterweight
+	// Effect #34 explicitly does NOT affect ranged attack speed
+	core.NewEnchantEffect(34, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		character.PseudoStats.MeleeSpeedMultiplier *= 1.03
+	})
+
 	// Weapon - Striking
 	core.AddWeaponEffect(943, func(agent core.Agent, slot proto.ItemSlot) {
 		w := agent.GetCharacter().AutoAttacks.MH()

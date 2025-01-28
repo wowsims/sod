@@ -86,7 +86,15 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := sim.Roll(minDamage, maxDamage) * improvedSoR
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt:     sim.CurrentTime + core.SpellBatchWindow,
+					Priority: core.ActionPriorityLow,
+					OnAction: func(sim *core.Simulation) {
+						spell.DealDamage(sim, result)
+					},
+				})
 			},
 		})
 
@@ -116,7 +124,15 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				// effectively scales with coeff x 2, and damage dealt multipliers affect half the damage taken bonus
 				baseDamage := damage*improvedSoR + spell.BonusCoefficient*(spell.GetBonusDamage()+target.GetSchoolBonusDamageTaken(spell))
-				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt:     sim.CurrentTime + core.SpellBatchWindow,
+					Priority: core.ActionPriorityLow,
+					OnAction: func(sim *core.Simulation) {
+						spell.DealDamage(sim, result)
+					},
+				})
 			},
 		})
 

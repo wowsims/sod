@@ -66,7 +66,6 @@ func (priest *Priest) applyNaxxramasShadow6PBonus() {
 	}
 
 	classSpellMasks := ClassSpellMask_PriestMindBlast | ClassSpellMask_PriestMindSpike
-
 	if priest.HasRune(proto.PriestRune_RuneBracersDespair) {
 		classSpellMasks |= ClassSpellMask_PriestMindFlay
 	}
@@ -81,12 +80,12 @@ func (priest *Priest) applyNaxxramasShadow6PBonus() {
 		Callback:       core.CallbackOnApplyEffects,
 		ClassSpellMask: classSpellMasks,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			critChanceBonus := 0.0
+			critChanceBonus := 1.0
 			if result.Target.MobType == proto.MobType_MobTypeUndead {
 				critChanceBonus = priest.GetStat(stats.SpellCrit) / 100
 			}
 
-			damageMod.UpdateFloatValue(critChanceBonus)
+			damageMod.UpdateFloatValue(min(critChanceBonus, 1))
 		},
 	})
 }

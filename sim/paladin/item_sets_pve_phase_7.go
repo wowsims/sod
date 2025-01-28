@@ -54,7 +54,8 @@ func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 	}
 
 	paladin.RegisterAura(core.Aura{
-		Label: label,
+		Label:    label,
+		ActionID: core.ActionID{SpellID: PaladinT3Ret4P},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range paladin.holyWrath {
 				spell.CastTimeMultiplier -= 1
@@ -72,6 +73,8 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 		return
 	}
 
+	hasWrathRune := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
+
 	classSpellMasks := ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath | ClassSpellMask_PaladinDivineStorm | ClassSpellMask_PaladinCrusaderStrike
 	damageMod := paladin.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
@@ -87,20 +90,23 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 			damageMod.Deactivate()
 		},
 		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if !spell.Matches(classSpellMasks) {
+			if !spell.Matches(classSpellMasks) || target.MobType != proto.MobType_MobTypeUndead {
 				return
 			}
-			critChanceBonus := 0.0
 
-			if target.MobType == proto.MobType_MobTypeUndead {
-				if spell.Matches(ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath) {
-					critChanceBonus = paladin.GetStat(stats.SpellCrit)/100.0 + paladin.GetSchoolBonusCritChance(spell)/100.0
-				} else {
-					critChanceBonus = paladin.GetStat(stats.MeleeCrit) / 100.0
+			critChanceBonus := 1.0
+
+			if spell.Matches(ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath) {
+				critChanceBonus = paladin.GetStat(stats.SpellCrit)/100.0 + paladin.GetSchoolBonusCritChance(spell)/100.0
+
+				if hasWrathRune {
+					critChanceBonus += paladin.GetStat(stats.MeleeCrit) / 100.0
 				}
+			} else {
+				critChanceBonus = paladin.GetStat(stats.MeleeCrit) / 100.0
 			}
-			critChanceBonus = min(critChanceBonus, 1)
-			damageMod.UpdateFloatValue(critChanceBonus)
+
+			damageMod.UpdateFloatValue(min(critChanceBonus, 1))
 		},
 	}))
 }
