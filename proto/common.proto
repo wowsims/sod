@@ -873,8 +873,6 @@ message Debuffs {
 	bool gift_of_arthas = 9;
 	bool holy_sunder = 44;
 	bool curse_of_vulnerability = 23;
-	bool crystal_yield = 21;
-	int32 ancient_corrosive_poison = 24; // between 0 and 100, represents average uptime percentage
 	bool mekkatorque_fist_debuff = 29;
 	bool serpents_striker_fist_debuff = 30;
 	bool improved_faerie_fire = 36; // Provided by Tier 1 Feral set bonus
