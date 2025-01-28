@@ -262,11 +262,11 @@ func (warrior *Warrior) applyT1Tank6PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.defensiveStanceThreatMultiplier *= 1.10
-			warrior.gladiatorStanceDamageMultiplier *= 1.04
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(
+		&warrior.defensiveStanceThreatMultiplier, 1.10,
+	).AttachMultiplicativePseudoStatBuff(
+		&warrior.gladiatorStanceDamageMultiplier, 1.04,
+	))
 }

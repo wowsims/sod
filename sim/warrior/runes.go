@@ -276,49 +276,40 @@ func (warrior *Warrior) applyBloodSurge() {
 		Label:    "Blood Surge Proc",
 		ActionID: core.ActionID{SpellID: 413399},
 		Duration: time.Second * 15,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.Slam.CastTimeMultiplier -= 1
-			warrior.Slam.Cost.Multiplier -= 100
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.Slam.CastTimeMultiplier += 1
-			warrior.Slam.Cost.Multiplier += 100
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// removed even if slam doesn't land
 			if spell.Matches(ClassSpellMask_WarriorSlamMH) {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  ClassSpellMask_WarriorSlam,
+		FloatValue: -1,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: ClassSpellMask_WarriorSlam,
+		IntValue:  -100,
 	})
 
-	affectedSpells := make(map[*core.Spell]bool)
-
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Blood Surge Trigger",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.Slam == nil {
-				aura.Deactivate(sim)
-				return
-			}
-
-			affectedSpells[warrior.HeroicStrike.Spell] = true
-			affectedSpells[warrior.Whirlwind.Spell] = true
-
-			if warrior.Bloodthirst != nil {
-				affectedSpells[warrior.Bloodthirst.Spell] = true
-			}
-
-			if warrior.HasRune(proto.WarriorRune_RuneQuickStrike) {
-				affectedSpells[warrior.QuickStrike.Spell] = true
-			}
+	procTrigger := core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:           "Blood Surge",
+		ClassSpellMask: ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorWhirlwind | ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorQuickStrike,
+		ProcChance:     0.3,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			warrior.BloodSurgeAura.Activate(sim)
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && affectedSpells[spell] && sim.Proc(0.3, "Blood Surge") {
-				warrior.BloodSurgeAura.Activate(sim)
-			}
-		},
-	}))
+	})
+
+	procTrigger.OnInit = func(aura *core.Aura, sim *core.Simulation) {
+		if warrior.Slam == nil {
+			aura.Deactivate(sim)
+			return
+		}
+	}
+
 }
 
 func (warrior *Warrior) applyTasteForBlood() {
@@ -337,20 +328,15 @@ func (warrior *Warrior) applyTasteForBlood() {
 		},
 	})
 
-	icd := core.Cooldown{
-		Timer:    warrior.NewTimer(),
-		Duration: time.Millisecond * 5800,
-	}
-
-	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Taste for Blood Trigger",
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_WarriorRend) && icd.IsReady(sim) {
-				icd.Use(sim)
-				warrior.TasteForBloodAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:           "Taste for Blood Trigger",
+		ClassSpellMask: ClassSpellMask_WarriorRend,
+		ICD:            time.Millisecond * 5800,
+		Callback:       core.CallbackOnPeriodicDamageDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			warrior.TasteForBloodAura.Activate(sim)
 		},
-	}))
+	})
 }
 
 // Your melee hits have a 10% chance to grant Sudden Death. Sudden Death allows one use of Execute regardless of the target's health state.
@@ -377,20 +363,14 @@ func (warrior *Warrior) applySuddenDeath() {
 		},
 	})
 
-	warrior.RegisterAura(core.Aura{
-		Label:    "Sudden Death Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(core.ProcMaskMelee) {
-				return
-			}
-
-			if sim.Proc(procChance, "Sudden Death") {
-				warrior.SuddenDeathAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:       "Sudden Death",
+		ProcMask:   core.ProcMaskMelee,
+		Outcome:    core.OutcomeLanded,
+		ProcChance: procChance,
+		Callback:   core.CallbackOnPeriodicDamageDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			warrior.SuddenDeathAura.Activate(sim)
 		},
 	})
 }
@@ -406,13 +386,9 @@ func (warrior *Warrior) applyFreshMeat() {
 		ActionID: core.ActionID{SpellID: 14201},
 		Label:    "Enrage (Fresh Meat)",
 		Duration: time.Second * 12,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.1
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.1
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(
+		&warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.1,
+	)
 
 	var damagedUnits map[int32]bool
 	affectedSpellClassMasks := ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorMortalStrike | ClassSpellMask_WarriorShieldSlam
@@ -448,39 +424,23 @@ func (warrior *Warrior) applyWreckingCrew() {
 		return
 	}
 
-	var affectedSpells []*WarriorSpell
 	warrior.WreckingCrewEnrageAura = warrior.RegisterAura(core.Aura{
 		Label:    "Enrage (Wrecking Crew)",
 		ActionID: core.ActionID{SpellID: 427066},
 		Duration: time.Second * 6,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(
-				[]*WarriorSpell{warrior.MortalStrike, warrior.Bloodthirst, warrior.ShieldSlam},
-				func(spell *WarriorSpell) bool { return spell != nil },
-			)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.ApplyMultiplicativeDamageBonus(1.1)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.ApplyMultiplicativeDamageBonus(1 / 1.1)
-			}
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_WarriorMortalStrike | ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorShieldSlam,
+		FloatValue: 1.1,
 	})
 
-	warrior.RegisterAura(core.Aura{
-		Label:    "Wrecking Crew Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeCrit) {
-				warrior.WreckingCrewEnrageAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:     "Wrecking Crew Trigger",
+		Callback: core.CallbackOnSpellHitDealt,
+		ProcMask: core.ProcMaskMelee,
+		Outcome:  core.OutcomeCrit,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			warrior.WreckingCrewEnrageAura.Activate(sim)
 		},
 	})
 }
@@ -490,40 +450,32 @@ func (warrior *Warrior) applySwordAndBoard() {
 		return
 	}
 
-	sabAura := warrior.GetOrRegisterAura(core.Aura{
+	sabAura := warrior.RegisterAura(core.Aura{
 		Label:    "Sword And Board",
 		ActionID: core.ActionID{SpellID: int32(proto.WarriorRune_RuneSwordAndBoard)},
 		Duration: 5 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.ShieldSlam.Cost.Multiplier -= 100
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.ShieldSlam.Cost.Multiplier += 100
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_WarriorShieldSlam) {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: ClassSpellMask_WarriorShieldSlam,
+		IntValue:  -100,
 	})
 
-	core.MakePermanent(warrior.GetOrRegisterAura(core.Aura{
-		Label: "Sword And Board Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() {
-				return
-			}
-
-			if !spell.Matches(ClassSpellMask_WarriorRevenge | ClassSpellMask_WarriorDevastate) {
-				return
-			}
-
-			if sim.Proc(0.3, "Sword And Board") {
-				sabAura.Activate(sim)
-				warrior.ShieldSlam.CD.Reset()
-			}
+	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:           "Sword And Board Trigger",
+		ClassSpellMask: ClassSpellMask_WarriorRevenge | ClassSpellMask_WarriorDevastate,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ProcChance:     0.3,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			sabAura.Activate(sim)
+			warrior.ShieldSlam.CD.Reset()
 		},
-	}))
+	})
 }
 
 // While dual-wielding, your movement speed is increased by 10% and you gain 3% attack speed each time your melee auto-attack strikes the same target as your previous auto-attack, stacking up to 5 times.

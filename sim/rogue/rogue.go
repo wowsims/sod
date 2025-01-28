@@ -46,6 +46,7 @@ const (
 	ClassSpellMask_RogueSliceAndDice
 	SpellClassMask_RogueFanOfKnives
 	SpellClassMask_RogueBlunderbuss
+	SpellClassMask_RogueEvasion
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}

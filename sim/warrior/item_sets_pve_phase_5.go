@@ -78,15 +78,11 @@ func (warrior *Warrior) applyT2Damage6PBonus() {
 		return
 	}
 
-	var affectedSpells []*WarriorSpell
+	var affectedSpells []*core.Spell
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range []*WarriorSpell{warrior.Bloodthirst, warrior.MortalStrike, warrior.ShieldSlam} {
-				if spell != nil {
-					affectedSpells = append(affectedSpells, spell)
-				}
-			}
+			affectedSpells = warrior.GetSpellsMatchingClassMask(ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorMortalStrike | ClassSpellMask_WarriorShieldSlam)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(ClassSpellMask_WarriorSlamMH) && result.Landed() {
@@ -239,12 +235,13 @@ func (warrior *Warrior) applyZGGladiator3PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.ShieldSlam.CD.FlatModifier -= time.Second * 2
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_WarriorShieldSlam,
+		TimeValue: -time.Second * 2,
+	}))
 }
 
 // Reduces the cooldown on your Bloodrage ability by 30 sec while you are in Gladiator Stance.

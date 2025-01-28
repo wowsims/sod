@@ -146,16 +146,17 @@ func (rogue *Rogue) applyNaxxramasTank4PBonus() {
 		return
 	}
 
-	rogue.RegisterAura(core.Aura{
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.Evasion.CD.FlatModifier -= time.Minute * 2
-
-			if rogue.BladeFlurry != nil {
-				rogue.BladeFlurry.CD.FlatModifier -= time.Minute
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: SpellClassMask_RogueEvasion,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Minute * 2,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_RogueBladeFlurry,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Minute,
+	}))
 }
 
 // Any damage from an Undead attacker which would otherwise kill you will instead reduce you to 10% of your maximum health (or your current health, whichever is lower).
@@ -177,13 +178,7 @@ func (rogue *Rogue) applyNaxxramasTank6PBonus() {
 		ActionID: actionID,
 		Label:    fmt.Sprintf("Cheat Death (%s)", label),
 		Duration: time.Second * 3,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.PseudoStats.DamageTakenMultiplier *= 0.10
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.PseudoStats.DamageTakenMultiplier /= 0.10
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&rogue.PseudoStats.DamageTakenMultiplier, 0.10)
 
 	cheatDeathSpell := rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,

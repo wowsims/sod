@@ -57,20 +57,13 @@ func (warrior *Warrior) applyNaxxramasDamage4PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.Bloodthirst != nil {
-				warrior.Bloodthirst.CD.Multiplier *= 0.75
-			}
-			if warrior.MortalStrike != nil {
-				warrior.MortalStrike.CD.Multiplier *= 0.75
-			}
-			if warrior.ShieldSlam != nil {
-				warrior.ShieldSlam.CD.Multiplier *= 0.75
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multi_Pct,
+		ClassMask:  ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorMortalStrike | ClassSpellMask_WarriorShieldSlam,
+		FloatValue: 0.75,
+	}))
 }
 
 // Your melee critical strikes against Undead enemies grant you 1% increased damage done to Undead for 30 sec, stacking up to 25 times.
@@ -153,15 +146,24 @@ func (warrior *Warrior) applyNaxxramasProtection4PBonus() {
 
 	warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.ShieldWall != nil {
-				warrior.ShieldWall.CD.FlatModifier -= time.Minute * 3
-			}
-			if warrior.Recklessness != nil {
-				warrior.Recklessness.CD.FlatModifier -= time.Minute * 3
-				warrior.Recklessness.StanceMask = AnyStance
-				warrior.recklessnessDamageTakenMultiplier = 1
-			}
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_WarriorShieldWall | ClassSpellMask_WarriorRecklesness,
+		TimeValue: -time.Minute * 3,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_WarriorRecklesness,
+		TimeValue: -time.Minute * 3,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Custom,
+		ClassMask: ClassSpellMask_WarriorRecklesness,
+		ApplyCustom: func(_ *core.SpellMod, _ *core.Spell) {
+			warrior.Recklessness.StanceMask = AnyStance
+			warrior.recklessnessDamageTakenMultiplier = 1
+		},
+		RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+			warrior.Recklessness.StanceMask = DefaultRecklessnessStance
+			warrior.recklessnessDamageTakenMultiplier = DefaultRecklessnessDamageTakenMultiplier
 		},
 	})
 }

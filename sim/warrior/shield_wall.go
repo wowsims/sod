@@ -33,8 +33,8 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 	cooldownDur := time.Minute * 30
 
 	warrior.ShieldWall = warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
-		ActionID: actionID,
-
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_WarriorShieldWall,
 		Cast: core.CastConfig{
 			IgnoreHaste: true,
 			CD: core.Cooldown{

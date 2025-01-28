@@ -433,8 +433,9 @@ func (warrior *Warrior) registerDeathWishCD() {
 	core.RegisterPercentDamageModifierEffect(deathWishAura, 1.2)
 
 	warrior.DeathWish = warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagHelpful,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_WarriorDeathWish,
+		Flags:          core.SpellFlagHelpful,
 		RageCost: core.RageCostOptions{
 			Cost: 10,
 		},

@@ -95,10 +95,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 	rogue.RegisterAura(core.Aura{
 		Label: "Saber Slash DoT Damage Amp",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := core.FilterSlice(
-				[]*core.Spell{rogue.SinisterStrike, rogue.SaberSlash, rogue.PoisonedKnife},
-				func(spell *core.Spell) bool { return spell != nil },
-			)
+			affectedSpells := rogue.GetSpellsMatchingClassMask(ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RoguePoisonedKnife)
 
 			for _, spell := range affectedSpells {
 				oldApplyEffects := spell.ApplyEffects
