@@ -22,11 +22,12 @@ func (shaman *Shaman) registerRiptideSpell() {
 	hotCoeff := 0.10
 
 	shaman.Riptide = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneBracersRiptide)},
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: int32(proto.ShamanRune_RuneBracersRiptide)},
+		ClassSpellMask: ClassSpellMask_ShamanRiptide,
+		SpellSchool:    core.SpellSchoolNature,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellHealing,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.18,

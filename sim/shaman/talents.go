@@ -72,8 +72,7 @@ func (shaman *Shaman) ApplyTalents() {
 	if shaman.Talents.TidalMastery > 0 {
 		critBonus := float64(shaman.Talents.TidalMastery) * core.CritRatingPerCritChance
 		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_ShamanAll) && (spell.ProcMask.Matches(core.ProcMaskSpellHealing) ||
-				spell.Flags.Matches(SpellFlagLightning)) {
+			if spell.Matches(ClassSpellMask_ShamanHealingSpell | ClassSpellMask_ShamanLightningSpell) {
 				spell.BonusCritRating += critBonus
 			}
 		})
