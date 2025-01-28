@@ -128,25 +128,14 @@ func (druid *Druid) applyT2Feral2PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467207},
-		Label:    "S03 - Item - T2- Druid - Feral 2P Bonus",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, dot := range druid.Rake.Dots() {
-				if dot == nil {
-					continue
-				}
-
-				dot.NumberOfTicks += int32(6 / dot.TickLength.Seconds())
-				dot.RecomputeAuraDuration()
-				oldOnSnapshot := dot.OnSnapshot
-				dot.OnSnapshot = func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					oldOnSnapshot(sim, target, dot, isRollover)
-					dot.SnapshotAttackerMultiplier *= 1.50
-				}
-			}
-		},
-	})
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 467207}, // Tracking in APL
+		Label:    label,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidRake,
+		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
+		IntValue:  50,
+	}))
 }
 
 // Your critical strike chance is increased by 15% while Tiger's Fury is active.
