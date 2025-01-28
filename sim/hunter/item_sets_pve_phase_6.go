@@ -41,9 +41,9 @@ func (hunter *Hunter) applyTAQMelee2PBonus() {
 			}
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PeriodicDamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterWyvernStrike,
-		FloatValue: 0.50,
+		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterWyvernStrike,
+		IntValue:  50,
 	}))
 }
 
@@ -57,9 +57,9 @@ func (hunter *Hunter) applyTAQMelee4PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_ImpactDamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterShots | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterMongooseBite,
-		FloatValue: 0.15,
+		Kind:      core.SpellMod_ImpactDamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterShots | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterMongooseBite,
+		IntValue:  15,
 	}))
 }
 
@@ -79,7 +79,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 
 const TAQRanged2PBonusLabel = "S03 - Item - TAQ - Hunter - Ranged 2P Bonus"
 
-// Increases Kill Shot damage by 50% against non-player targets.
+// Increases Kill Shot damage by 20% against non-player targets.
 func (hunter *Hunter) applyTAQRanged2PBonus() {
 	if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
 		return
@@ -92,9 +92,9 @@ func (hunter *Hunter) applyTAQRanged2PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: TAQRanged2PBonusLabel,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterKillShot,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterKillShot,
+		IntValue:  20,
 	}))
 }
 
@@ -148,11 +148,14 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 							DoAt: sim.CurrentTime + time.Duration(i*375)*time.Millisecond,
 							OnAction: func(sim *core.Simulation) {
 								// Ensure that the cloned shots get any damage amps from the main Kill Shot ability
-								clonedShot.DamageMultiplier *= spell.DamageMultiplier
-								clonedShot.DamageMultiplierAdditive += spell.DamageMultiplierAdditive - 1
+								damageMultiplier := spell.GetDamageMultiplier()
+								damageMultiplierAdditive := spell.GetDamageMultiplierAdditive() - 100
+
+								clonedShot.ApplyMultiplicativeDamageBonus(damageMultiplier)
+								clonedShot.ApplyAdditiveDamageBonus(damageMultiplierAdditive)
 								clonedShot.Cast(sim, target)
-								clonedShot.DamageMultiplier /= spell.DamageMultiplier
-								clonedShot.DamageMultiplierAdditive -= spell.DamageMultiplierAdditive - 1
+								clonedShot.ApplyMultiplicativeDamageBonus(1 / damageMultiplier)
+								clonedShot.ApplyAdditiveDamageBonus(-damageMultiplierAdditive)
 							},
 						})
 					}

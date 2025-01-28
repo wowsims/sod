@@ -124,7 +124,6 @@ func (shaman *Shaman) applyShoulderRuneEffect() {
 }
 
 var BurnFlameShockTargetCount = int32(5)
-var BurnFlameShockDamageBonus = 1.0
 var BurnFlameShockBonusTicks = int32(2)
 var BurnSpellPowerPerLevel = int32(2)
 
@@ -138,9 +137,9 @@ func (shaman *Shaman) applyBurn() {
 	}
 
 	shaman.AddStaticMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_ShamanFlameShock,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: BurnFlameShockDamageBonus,
+		ClassMask: ClassSpellMask_ShamanFlameShock,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  100,
 	})
 
 	// Other parts of burn are handled in flame_shock.go
@@ -188,7 +187,7 @@ func (shaman *Shaman) applyStormEarthAndFire() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Storm, Earth, and Fire",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range shaman.ChainLightning {
@@ -198,16 +197,12 @@ func (shaman *Shaman) applyStormEarthAndFire() {
 
 				spell.CD.Multiplier *= 0.5
 			}
-
-			for _, spell := range shaman.FlameShock {
-				if spell == nil {
-					continue
-				}
-
-				spell.PeriodicDamageMultiplierAdditive += 0.60
-			}
 		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanFlameShock,
+		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
+		IntValue:  60,
+	}))
 }
 
 func (shaman *Shaman) applyDualWieldSpec() {

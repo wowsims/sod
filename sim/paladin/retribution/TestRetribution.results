@@ -799,9 +799,9 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase3-Lvl50-AllItems-SoulforgeArmor"
  value: {
-  dps: 785.13506
-  tps: 819.88014
-  hps: 10.09421
+  dps: 785.22516
+  tps: 819.98479
+  hps: 10.03045
  }
 }
 dps_results: {

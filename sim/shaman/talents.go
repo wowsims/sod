@@ -87,8 +87,8 @@ func (shaman *Shaman) applyConcussion() {
 	shaman.AddStaticMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning |
 			ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.01 * float64(shaman.Talents.Concussion),
+		Kind:     core.SpellMod_DamageDone_Flat,
+		IntValue: int64(1 * shaman.Talents.Concussion),
 	})
 }
 
@@ -98,9 +98,9 @@ func (shaman *Shaman) applyCallOfFlame() {
 	}
 
 	shaman.AddStaticMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_ShamanSearingTotemAttack | ClassSpellMask_ShamanFireNovaTotemAttack | ClassSpellMask_ShamanFireNova,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.05 * float64(shaman.Talents.CallOfFlame),
+		ClassMask: ClassSpellMask_ShamanSearingTotemAttack | ClassSpellMask_ShamanFireNovaTotemAttack | ClassSpellMask_ShamanFireNova,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(5 * shaman.Talents.CallOfFlame),
 	})
 }
 

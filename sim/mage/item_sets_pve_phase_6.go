@@ -92,12 +92,13 @@ func (mage *Mage) applyTAQFire4PBonus() {
 		return
 	}
 
-	mage.RegisterAura(core.Aura{
+	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			mage.Ignite.PeriodicDamageMultiplierAdditive += 0.10
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_MageIgnite,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  10,
+	}))
 }
 
 var ItemSetEnigmaMoment = core.NewItemSet(core.ItemSet{
@@ -150,13 +151,14 @@ func (mage *Mage) applyRAQFire3PBonus() {
 		return
 	}
 
-	perEffectModifier := 0.03
-	maxModifier := 0.09
+	perEffectMultiplier := 0.03
+	maxMultiplier := 1.09
 
 	classSpellMasks := ClassSpellMask_MageFireball | ClassSpellMask_MageFrostfireBolt | ClassSpellMask_MageBalefireBolt
 	damageMod := mage.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: classSpellMasks,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  classSpellMasks,
+		FloatValue: 1,
 	})
 
 	var dotSpells []*core.Spell
@@ -177,16 +179,16 @@ func (mage *Mage) applyRAQFire3PBonus() {
 			if !spell.Matches(classSpellMasks) {
 				return
 			}
-			modifier := 0.0
+			multiplier := 1.0
 
 			for _, spell := range dotSpells {
 				if spell.Dot(target).IsActive() {
-					modifier += perEffectModifier
+					multiplier += perEffectMultiplier
 				}
 			}
 
-			modifier = min(maxModifier, modifier)
-			damageMod.UpdateFloatValue(modifier)
+			multiplier = min(maxMultiplier, multiplier)
+			damageMod.UpdateFloatValue(multiplier)
 		},
 	}))
 }

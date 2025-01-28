@@ -85,9 +85,9 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 
-			damageMultiplier := 1.0
+			critChanceBonusPct := 100.0
 			if shaman.useLavaBurstCritScaling {
-				damageMultiplier += shaman.GetStat(stats.SpellCrit) / 100.0
+				critChanceBonusPct += shaman.GetStat(stats.SpellCrit)
 			}
 
 			flameShockActive := false
@@ -106,9 +106,9 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 				spell.BonusCritRating += 100.0 * core.SpellCritRatingPerCritChance
 			}
 
-			spell.DamageMultiplier *= damageMultiplier
+			spell.ApplyMultiplicativeDamageBonus(critChanceBonusPct / 100)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier /= damageMultiplier
+			spell.ApplyMultiplicativeDamageBonus(100 / critChanceBonusPct)
 
 			if flameShockActive {
 				spell.BonusCritRating -= 100.0 * core.SpellCritRatingPerCritChance

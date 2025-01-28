@@ -36,10 +36,10 @@ func (hunter *Hunter) applyT2Melee2PBonus() {
 	affectedSpells := ClassSpellMask_HunterAll ^ ClassSpellMask_HunterRaptorStrikeHit ^ ClassSpellMask_HunterRaptorStrike ^ ClassSpellMask_HunterWingClip
 
 	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ProcMask:   procMask,
-		ClassMask:  affectedSpells,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ProcMask:  procMask,
+		ClassMask: affectedSpells,
+		IntValue:  20,
 	})
 
 	procAura := hunter.RegisterAura(core.Aura{
@@ -81,10 +81,10 @@ func (hunter *Hunter) applyT2Melee4PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterRaptorStrike | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterWyvernStrike,
-		ProcMask:   core.ProcMaskMeleeMHSpecial,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterRaptorStrike | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterWyvernStrike,
+		ProcMask:  core.ProcMaskMeleeMHSpecial,
+		IntValue:  20,
 	}))
 }
 
@@ -146,9 +146,8 @@ func (hunter *Hunter) applyT2Ranged2PBonus() {
 	}
 
 	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterAimedShot,
-		FloatValue: 0,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterAimedShot,
 	})
 
 	core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
@@ -171,9 +170,9 @@ func (hunter *Hunter) applyT2Ranged4PBonus() {
 	}
 
 	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterShots,
-		FloatValue: 0.10,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterShots,
+		IntValue:  10,
 	})
 
 	procAura := hunter.RegisterAura(core.Aura{

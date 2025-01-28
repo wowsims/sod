@@ -56,16 +56,16 @@ func (warrior *Warrior) applyT2Damage4PBonus() {
 	warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.HeroicStrike.DamageMultiplier *= 1.25
-			warrior.Overpower.DamageMultiplier *= 1.25
+			warrior.HeroicStrike.ApplyMultiplicativeDamageBonus(1.25)
+			warrior.Overpower.ApplyMultiplicativeDamageBonus(1.25)
 			if warrior.SlamMH != nil {
-				warrior.SlamMH.DamageMultiplier *= 1.25
+				warrior.SlamMH.ApplyMultiplicativeDamageBonus(1.25)
 			}
 			if warrior.SlamOH != nil {
-				warrior.SlamMH.DamageMultiplier *= 1.25
+				warrior.SlamMH.ApplyMultiplicativeDamageBonus(1.25)
 			}
 			if warrior.QuickStrike != nil {
-				warrior.QuickStrike.DamageMultiplier *= 1.25
+				warrior.QuickStrike.ApplyMultiplicativeDamageBonus(1.25)
 			}
 		},
 	})

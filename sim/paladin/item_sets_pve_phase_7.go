@@ -40,9 +40,9 @@ func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PaladinDivineStorm,
-		FloatValue: 1,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PaladinDivineStorm,
+		IntValue:  100,
 	}))
 }
 
@@ -77,8 +77,9 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 
 	classSpellMasks := ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath | ClassSpellMask_PaladinDivineStorm | ClassSpellMask_PaladinCrusaderStrike
 	damageMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: classSpellMasks,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  classSpellMasks,
+		FloatValue: 1,
 	})
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
@@ -94,19 +95,19 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 				return
 			}
 
-			critChanceBonus := 1.0
+			critChanceBonusPct := 100.0
 
 			if spell.Matches(ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath) {
-				critChanceBonus = paladin.GetStat(stats.SpellCrit)/100.0 + paladin.GetSchoolBonusCritChance(spell)/100.0
+				critChanceBonusPct += paladin.GetStat(stats.SpellCrit) + paladin.GetSchoolBonusCritChance(spell)
 
 				if hasWrathRune {
-					critChanceBonus += paladin.GetStat(stats.MeleeCrit) / 100.0
+					critChanceBonusPct += paladin.GetStat(stats.MeleeCrit)
 				}
 			} else {
-				critChanceBonus = paladin.GetStat(stats.MeleeCrit) / 100.0
+				critChanceBonusPct += paladin.GetStat(stats.MeleeCrit)
 			}
 
-			damageMod.UpdateFloatValue(min(critChanceBonus, 1))
+			damageMod.UpdateFloatValue(critChanceBonusPct / 100)
 		},
 	}))
 }

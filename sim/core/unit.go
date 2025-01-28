@@ -140,9 +140,8 @@ type Unit struct {
 	Hardcast Hardcast
 
 	// GCD-related PendingActions.
-	gcdAction              *PendingAction
-	hardcastAction         *PendingAction
-	castWhileCastingAction *PendingAction
+	gcdAction      *PendingAction
+	hardcastAction *PendingAction
 
 	// Cached mana return values per tick.
 	manaTickWhileCasting    float64
