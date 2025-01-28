@@ -85,11 +85,11 @@ func (rogue *Rogue) applyT2Damage4PBonus() {
 		Kind:       core.SpellMod_DamageDone_Flat,
 		SpellFlags: SpellFlagBuilder,
 		ProcMask:   core.ProcMaskMeleeMHSpecial,
-		FloatValue: 0.20,
+		IntValue:   20,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_RogueMainGauche | ClassSpellMask_RoguePoisonedKnife,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_RogueMainGauche | ClassSpellMask_RoguePoisonedKnife,
+		IntValue:  20,
 	}))
 }
 

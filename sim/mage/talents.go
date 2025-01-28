@@ -56,9 +56,9 @@ func (mage *Mage) applyArcaneTalents() {
 	// Arcane Instability
 	if mage.Talents.ArcaneInstability > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_MageAll,
-			FloatValue: .01 * float64(mage.Talents.ArcaneInstability),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_MageAll,
+			IntValue:  int64(1 * mage.Talents.ArcaneInstability),
 		})
 
 		mage.AddStaticMod(core.SpellModConfig{
@@ -101,10 +101,10 @@ func (mage *Mage) applyFireTalents() {
 	// Fire Power
 	if mage.Talents.FirePower > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_MageAll ^ ClassSpellMask_MageIgnite,
-			School:     core.SpellSchoolFire,
-			FloatValue: 0.02 * float64(mage.Talents.FirePower),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_MageAll ^ ClassSpellMask_MageIgnite,
+			School:    core.SpellSchoolFire,
+			IntValue:  int64(2 * mage.Talents.FirePower),
 		})
 	}
 }
@@ -139,10 +139,10 @@ func (mage *Mage) applyFrostTalents() {
 	// Piercing Ice
 	if mage.Talents.PiercingIce > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_MageAll,
-			School:     core.SpellSchoolFrost,
-			FloatValue: 0.02 * float64(mage.Talents.PiercingIce),
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_MageAll,
+			School:    core.SpellSchoolFrost,
+			IntValue:  int64(2 * mage.Talents.PiercingIce),
 		})
 	}
 
@@ -284,9 +284,9 @@ func (mage *Mage) registerArcanePowerCD() {
 		IntValue:  30,
 	})
 	damageMod := mage.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_MageAll,
-		FloatValue: 0.3,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_MageAll,
+		IntValue:  3,
 	})
 
 	mage.ArcanePowerAura = mage.RegisterAura(core.Aura{

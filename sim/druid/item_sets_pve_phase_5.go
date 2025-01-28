@@ -36,9 +36,9 @@ func (druid *Druid) applyT2Balance2PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_DruidHurricane | ClassSpellMask_DruidStarfall | ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash,
-		FloatValue: 0.25,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_DruidHurricane | ClassSpellMask_DruidStarfall | ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash,
+		IntValue:  25,
 	}))
 }
 
@@ -59,7 +59,7 @@ func (druid *Druid) applyT2Balance4PBonus() {
 	}))
 }
 
-// Your Wrath critical strikes have a 30% chance to make your next Starfire instant cast.
+// Your Wrath critical strikes have a 50% chance to make your next Starfire deal 10% increased damage, stacking up to 3 times.
 func (druid *Druid) applyT2Balance6PBonus() {
 	label := "S03 - Item - T2 - Druid - Balance 6P Bonus"
 	if druid.HasAura(label) {
@@ -67,9 +67,8 @@ func (druid *Druid) applyT2Balance6PBonus() {
 	}
 
 	damageMod := druid.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_DruidStarfire,
-		FloatValue: 0,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_DruidStarfire,
 	})
 
 	buffAura := druid.RegisterAura(core.Aura{
@@ -78,7 +77,7 @@ func (druid *Druid) applyT2Balance6PBonus() {
 		Duration:  time.Second * 15,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			damageMod.UpdateFloatValue(0.10 * float64(newStacks))
+			damageMod.UpdateIntValue(int64(10 * newStacks))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_DruidStarfire) {
@@ -177,9 +176,8 @@ func (druid *Druid) applyT2Feral4PBonus() {
 // Your Shred and Mangle(Cat) abilities deal 10% increased damage per your Bleed effect on the target, up to a maximum of 20% increase.
 func (druid *Druid) applyT2Feral6PBonus() {
 	damageMod := druid.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite,
-		FloatValue: 0,
+		Kind:      core.SpellMod_DamageDone_Pct,
+		ClassMask: ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite,
 	})
 
 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
@@ -189,7 +187,7 @@ func (druid *Druid) applyT2Feral6PBonus() {
 		ClassSpellMask: ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			damageMod.Activate()
-			damageMod.UpdateFloatValue(0.10 * float64(druid.BleedsActive))
+			damageMod.UpdateFloatValue(1 + 0.10*float64(druid.BleedsActive))
 		},
 	})
 }

@@ -1040,13 +1040,13 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 			Duration: time.Second * 20,
 			OnGain: func(aura *Aura, sim *Simulation) {
 				aura.Unit.MultiplyMeleeSpeed(sim, 1.03)
-				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier /= 1.03
-				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier /= 1.03
+				aura.Unit.AutoAttacks.MHAuto().ApplyMultiplicativeDamageBonus(1 / 1.03)
+				aura.Unit.AutoAttacks.OHAuto().ApplyMultiplicativeDamageBonus(1 / 1.03)
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.03)
-				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier *= 1.03
-				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier *= 1.03
+				aura.Unit.AutoAttacks.MHAuto().ApplyMultiplicativeDamageBonus(1.03)
+				aura.Unit.AutoAttacks.OHAuto().ApplyMultiplicativeDamageBonus(1.03)
 			},
 		})
 		jujuFlurrySpell := character.RegisterSpell(SpellConfig{
@@ -1379,15 +1379,15 @@ func (character *Character) newStratholmeHolyWaterSpell(sharedTimer *Timer) *Spe
 	config.BonusCoefficient = 1
 	config.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
 		for _, aoeTarget := range sim.Encounter.TargetUnits {
-			damageMultiplier := spell.DamageMultiplier
-			additiveMultiplier := spell.DamageMultiplierAdditive
+			damageMultiplier := spell.GetDamageMultiplier()
+			additiveMultiplierPct := spell.GetDamageMultiplierAdditive()
 			if aoeTarget.MobType != proto.MobType_MobTypeUndead {
-				spell.DamageMultiplier = 0
-				spell.DamageMultiplierAdditive = 0
+				spell.SetMultiplicativeDamageBonus(0)
+				spell.SetAdditiveDamageBonus(0)
 			}
 			spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(explosiveConfig.MinDamage, explosiveConfig.MaxDamage), spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier = damageMultiplier
-			spell.DamageMultiplierAdditive = additiveMultiplier
+			spell.SetMultiplicativeDamageBonus(damageMultiplier)
+			spell.ApplyAdditiveDamageBonus(additiveMultiplierPct)
 		}
 	}
 

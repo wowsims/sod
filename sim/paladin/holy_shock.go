@@ -39,8 +39,6 @@ func (paladin *Paladin) registerHolyShock() {
 		{level: 56, spellID: 20930, manaCost: 325, minDamage: 365, maxDamage: 395},
 	}
 
-	damageMultiplierAdditive := core.TernaryFloat64(hasInfusionOfLight, 1.5, 1.0)
-
 	//hasArtOfWar := paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar)
 	manaCostMultiplier := int32(100) //core.TernaryFloat64(hasArtOfWar, 0.2, 1.0)
 
@@ -78,10 +76,10 @@ func (paladin *Paladin) registerHolyShock() {
 				CD: *paladin.holyShockCooldown,
 			},
 
-			DamageMultiplier:         1,
-			DamageMultiplierAdditive: damageMultiplierAdditive,
-			ThreatMultiplier:         1,
-			BonusCoefficient:         0.429,
+			DamageMultiplier:            1,
+			DamageMultiplierAdditivePct: core.TernaryInt64(hasInfusionOfLight, 150, 100),
+			ThreatMultiplier:            1,
+			BonusCoefficient:            0.429,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				baseDamage := sim.Roll(rank.minDamage, rank.maxDamage)

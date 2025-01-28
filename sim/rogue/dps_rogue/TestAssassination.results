@@ -246,8 +246,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestAssassination-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.34691
-  weights: 0.55775
+  weights: 0.34336
+  weights: 0.55223
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.27424
-  weights: 13.16868
-  weights: 2.57765
+  weights: 0.27143
+  weights: 13.16906
+  weights: 2.50908
   weights: 0
   weights: 0
   weights: 0
@@ -519,98 +519,98 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 911.93624
-  tps: 647.47473
+  dps: 902.1154
+  tps: 640.50193
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 192.30395
-  tps: 136.53581
+  dps: 182.31963
+  tps: 129.44694
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 175.94258
-  tps: 124.91923
+  dps: 165.95826
+  tps: 117.83036
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 373.67409
-  tps: 265.30861
+  dps: 347.69542
+  tps: 246.86375
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 87.13977
-  tps: 61.86924
+  dps: 83.26505
+  tps: 59.11818
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 77.85727
-  tps: 55.27866
+  dps: 73.98255
+  tps: 52.52761
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Human-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 165.84464
-  tps: 117.7497
+  dps: 155.07155
+  tps: 110.1008
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 197.34631
-  tps: 140.11588
+  dps: 186.97954
+  tps: 132.75547
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 180.98494
-  tps: 128.4993
+  dps: 170.61817
+  tps: 121.1389
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 394.31
-  tps: 279.9601
+  dps: 366.7077
+  tps: 260.36247
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 89.10867
-  tps: 63.26716
+  dps: 85.08776
+  tps: 60.41231
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 79.82617
-  tps: 56.67658
+  dps: 75.80526
+  tps: 53.82174
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-Settings-Orc-p5_backstab-No Poisons-P5_Assassination_Backstab-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 173.7295
-  tps: 123.34795
+  dps: 162.3243
+  tps: 115.25025
  }
 }
 dps_results: {
  key: "TestAssassination-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 714.46481
-  tps: 507.27001
+  dps: 704.4505
+  tps: 500.15986
  }
 }

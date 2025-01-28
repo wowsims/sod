@@ -150,9 +150,9 @@ func init() {
 		core.MakePermanent(druid.RegisterAura(core.Aura{
 			Label: "Idol of Celestial Focus",
 		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash,
-			FloatValue: 0.10,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash,
+			IntValue:  10,
 		}))
 	})
 
@@ -231,9 +231,9 @@ func init() {
 		core.MakePermanent(druid.RegisterAura(core.Aura{
 			Label: "Improved Shred/Ferocious Bite",
 		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidShred,
-			FloatValue: 0.03,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidShred,
+			IntValue:  3,
 		}))
 	})
 
@@ -245,9 +245,9 @@ func init() {
 		core.MakePermanent(druid.RegisterAura(core.Aura{
 			Label: "Improved Wrath/Moonfire",
 		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_DruidWrath | ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidStarsurge | ClassSpellMask_DruidStarfallSplash | ClassSpellMask_DruidStarfallTick,
-			FloatValue: 0.03,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_DruidWrath | ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidStarsurge | ClassSpellMask_DruidStarfallSplash | ClassSpellMask_DruidStarfallTick,
+			IntValue:  3,
 		}))
 	})
 
@@ -289,9 +289,9 @@ func init() {
 		core.MakePermanent(druid.RegisterAura(core.Aura{
 			Label: "Improved Swipe/Mangle",
 		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_DruidSwipeBear | ClassSpellMask_DruidSwipeCat | ClassSpellMask_DruidMangleBear | ClassSpellMask_DruidMangleCat,
-			FloatValue: 0.03,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_DruidSwipeBear | ClassSpellMask_DruidSwipeCat | ClassSpellMask_DruidMangleBear | ClassSpellMask_DruidMangleCat,
+			IntValue:  3,
 		}))
 	})
 

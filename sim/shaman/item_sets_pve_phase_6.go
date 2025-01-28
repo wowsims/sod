@@ -200,14 +200,14 @@ func (shaman *Shaman) applyTAQEnhancement2PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_ShamanLavaLash,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.50,
+		ClassMask: ClassSpellMask_ShamanLavaLash,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  50,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanStormstrikeHit,
 		Kind:      core.SpellMod_DamageDone_Flat,
 		// TODO: ItemSwap - Make this a dynamic value based on the weapon type.
-		FloatValue: core.TernaryFloat64(shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand, 1.00, 0.50),
+		IntValue: core.TernaryInt64(shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand, 100, 50),
 	}))
 }
 

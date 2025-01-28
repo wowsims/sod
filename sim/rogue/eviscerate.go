@@ -64,9 +64,9 @@ func (rogue *Rogue) registerEviscerate() {
 			return rogue.ComboPoints() > 0
 		},
 
-		DamageMultiplierAdditive: 1 +
-			[]float64{0, 0.05, 0.10, 0.15}[rogue.Talents.ImprovedEviscerate] +
-			[]float64{0, 0.02, 0.04, 0.06}[rogue.Talents.Aggression],
+		DamageMultiplierAdditivePct: 100 +
+			[]int64{0, 5, 10, 15}[rogue.Talents.ImprovedEviscerate] +
+			[]int64{0, 2, 4, 6}[rogue.Talents.Aggression],
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 

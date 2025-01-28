@@ -80,9 +80,9 @@ func (priest *Priest) applyTAQShadow4PBonus() {
 		ClassMask:  ClassSpellMask_PriestMindSpike,
 		FloatValue: -1,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PriestMindSpike,
-		FloatValue: 0.10,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestMindSpike,
+		IntValue:  10,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Custom,
 		ClassMask: ClassSpellMask_PriestMindSpike,

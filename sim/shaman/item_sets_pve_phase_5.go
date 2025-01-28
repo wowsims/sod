@@ -271,9 +271,12 @@ func (shaman *Shaman) applyT2Enhancement4PBonus() {
 
 	shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.StormstrikeMH.DamageMultiplier += 0.50
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanStormstrikeHit,
+		// TODO: Verify if this is additive or multiplicative
+		Kind:     core.SpellMod_DamageDone_Flat,
+		ProcMask: core.ProcMaskMeleeMHSpecial,
+		IntValue: 50,
 	})
 }
 
@@ -398,9 +401,9 @@ func (shaman *Shaman) applyT2Restoration6PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanChainLightning,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.20,
+		ClassMask: ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanChainLightning,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  20,
 	}))
 }
 

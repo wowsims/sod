@@ -72,9 +72,9 @@ func (priest *Priest) applyForceOfWill() {
 	}
 
 	priest.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PriestAll,
-		FloatValue: 0.01 * float64(priest.Talents.ForceOfWill),
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestAll,
+		IntValue:  int64(1 * priest.Talents.ForceOfWill),
 	})
 	priest.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusCrit_Flat,
@@ -128,9 +128,9 @@ func (priest *Priest) applySearingLight() {
 	}
 
 	priest.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PriestSmite | ClassSpellMask_PriestHolyFire,
-		FloatValue: 0.05 * float64(priest.Talents.SearingLight),
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestSmite | ClassSpellMask_PriestHolyFire,
+		IntValue:  int64(5 * priest.Talents.SearingLight),
 	})
 }
 
@@ -225,18 +225,18 @@ func (priest *Priest) applyDarkness() {
 		return
 	}
 
-	multiplier := 0.02 * float64(priest.Talents.Darkness)
+	modifier := int64(2 * priest.Talents.Darkness)
 
 	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: "Darkness",
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BaseDamageDone_Flat,
-		ClassMask:  ClassSpellMask_PriestMindBlast | ClassSpellMask_PriestDevouringPlague | ClassSpellMask_PriestMindSear | ClassSpellMask_PriestShadowWordDeath,
-		FloatValue: multiplier,
+		Kind:      core.SpellMod_BaseDamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestMindBlast | ClassSpellMask_PriestDevouringPlague | ClassSpellMask_PriestMindSear | ClassSpellMask_PriestShadowWordDeath,
+		IntValue:  modifier,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestVoidPlague | ClassSpellMask_PriestMindSpike | ClassSpellMask_PriestVoidZone | ClassSpellMask_PriestMindFlay,
-		FloatValue: multiplier,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestVoidPlague | ClassSpellMask_PriestMindSpike | ClassSpellMask_PriestVoidZone | ClassSpellMask_PriestMindFlay,
+		IntValue:  modifier,
 	}))
 }
 

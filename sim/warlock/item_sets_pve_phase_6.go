@@ -45,9 +45,9 @@ func (warlock *Warlock) applyTAQDamage2PBonus() {
 			}
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_WarlockChaosBolt | ClassSpellMask_WarlockShadowBolt,
-		FloatValue: 0.10,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_WarlockChaosBolt | ClassSpellMask_WarlockShadowBolt,
+		IntValue:  10,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_Cooldown_Multi_Pct,
 		ClassMask:  ClassSpellMask_WarlockChaosBolt,

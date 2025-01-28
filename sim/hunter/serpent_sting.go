@@ -93,10 +93,10 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 
 		CritDamageBonus: hunter.mortalShots(),
 
-		DamageMultiplier:         0.48,
-		DamageMultiplierAdditive: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier:            0.48,
+		DamageMultiplierAdditivePct: 100 + int64(2*hunter.Talents.ImprovedSerpentSting),
+		ThreatMultiplier:            1,
+		BonusCoefficient:            spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// As of phase 5 the only time serpent sting scales with AP is using the Dragonstalker's Pursuit 6P - this AP scaling doesn't benefit from target AP modifiers

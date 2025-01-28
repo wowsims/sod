@@ -114,9 +114,9 @@ func (priest *Priest) applyT1Shadow6PBonus() {
 	}
 
 	damageMod := priest.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PriestMindFlay,
-		FloatValue: 0.50,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestMindFlay,
+		IntValue:  50,
 	})
 
 	dotLengthMod := priest.AddDynamicMod(core.SpellModConfig{

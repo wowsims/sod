@@ -379,7 +379,7 @@ func init() {
 			Duration:  time.Second * 15,
 			MaxStacks: 5,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				damageMod.UpdateFloatValue(0.20 * float64(newStacks))
+				damageMod.UpdateIntValue(int64(20 * newStacks))
 				castTimeMod.UpdateFloatValue(0.20 * float64(newStacks))
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -434,9 +434,9 @@ func init() {
 		core.MakePermanent(shaman.RegisterAura(core.Aura{
 			Label: "Improved Flame Shock/Molten Blast",
 		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanMoltenBlast,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.03,
+			ClassMask: ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanMoltenBlast,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  3,
 		}))
 	})
 
@@ -460,9 +460,9 @@ func init() {
 		core.MakePermanent(shaman.RegisterAura(core.Aura{
 			Label: "Improved Lightning Bolt/Lava Burst",
 		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning | ClassSpellMask_ShamanLavaBurst,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.03,
+			ClassMask: ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning | ClassSpellMask_ShamanLavaBurst,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  3,
 		}))
 	})
 
@@ -646,13 +646,14 @@ func init() {
 		core.MakePermanent(shaman.RegisterAura(core.Aura{
 			Label: "Improved Stormstrike/Windfury Weapon",
 		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  ClassSpellMask_ShamanStormstrikeHit,
-			Kind:       core.SpellMod_BaseDamageDone_Flat,
-			FloatValue: 0.03,
+			// For whatever reason the Stormstrike damage seems to be additive
+			ClassMask: ClassSpellMask_ShamanStormstrikeHit,
+			Kind:      core.SpellMod_BaseDamageDone_Flat,
+			IntValue:  3,
 		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  ClassSpellMask_ShamanWindFury,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.03,
+			ClassMask: ClassSpellMask_ShamanWindFury,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  3,
 		}))
 
 	})
@@ -675,9 +676,9 @@ func init() {
 			Label:    "Wushoolay's Charm of Spirits",
 			Duration: time.Second * 20,
 		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  ClassSpellMask_ShamanLightningShieldProc | ClassSpellMask_ShamanRollingThunder,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 1,
+			ClassMask: ClassSpellMask_ShamanLightningShieldProc | ClassSpellMask_ShamanRollingThunder,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  100,
 		})
 
 		spell := shaman.RegisterSpell(core.SpellConfig{
