@@ -93,11 +93,12 @@ func (druid *Druid) getSunfireBaseSpellConfig(
 	onResultLanded func(sim *core.Simulation, target *core.Unit, spell *core.Spell),
 ) *core.SpellConfig {
 	return &core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | SpellFlagOmen | additionalFlags,
+		ActionID:       actionID,
+		ClassSpellMask: classMask,
+		SpellSchool:    core.SpellSchoolNature,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | SpellFlagOmen | additionalFlags,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
