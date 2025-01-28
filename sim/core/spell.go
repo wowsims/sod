@@ -714,11 +714,11 @@ func (spell *Spell) updateBaseDamageMultiplier() {
 }
 
 func (spell *Spell) updateImpactDamageMultiplier() {
-	spell.impactDamageMultiplier = spell.damageMultiplier * (float64(spell.damageMultiplierAdditivePct+spell.impactDamageMultiplierAdditivePct) / 200.0)
+	spell.impactDamageMultiplier = spell.damageMultiplier * (float64(spell.damageMultiplierAdditivePct+spell.impactDamageMultiplierAdditivePct-100) / 100.0)
 }
 
 func (spell *Spell) updatePeriodicDamageMultiplier() {
-	spell.periodicDamageMultiplier = spell.damageMultiplier * (float64(spell.damageMultiplierAdditivePct+spell.periodicDamageMultiplierAdditivePct) / 200.0)
+	spell.periodicDamageMultiplier = spell.damageMultiplier * (float64(spell.damageMultiplierAdditivePct+spell.periodicDamageMultiplierAdditivePct-100) / 100.0)
 }
 
 func (spell *Spell) GetBaseDamageMultiplierAdditive() int64 {

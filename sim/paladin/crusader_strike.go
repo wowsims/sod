@@ -16,10 +16,11 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		return
 	}
 
-	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: int32(proto.PaladinRune_RuneHandsCrusaderStrike)})
+	actionID := core.ActionID{SpellID: int32(proto.PaladinRune_RuneHandsCrusaderStrike)}
+	manaMetrics := paladin.NewManaMetrics(actionID)
 
 	crusaderStrikeSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    manaMetrics.ActionID,
+		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -44,8 +45,9 @@ func (paladin *Paladin) registerCrusaderStrike() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + core.SpellBatchWindow,
-				OnAction: func(s *core.Simulation) {
+				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
+				Priority: core.ActionPriorityLow,
+				OnAction: func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 				},
 			})
