@@ -249,14 +249,7 @@ func (druid *Druid) applyT1Guardian4PBonus() {
 		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			druid.Enrage.CD.FlatModifier -= time.Second * 30
-
-			oldOnGain := druid.EnrageAura.OnGain
-			druid.EnrageAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				preArmor := druid.GetStat(stats.Armor)
-				oldOnGain(aura, sim)
-				postArmor := druid.GetStat(stats.Armor)
-				druid.AddStatDynamic(sim, stats.Armor, preArmor-postArmor)
-			}
+			druid.CenarionRageEnrageBonus = true
 		},
 	}))
 }

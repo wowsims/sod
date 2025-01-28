@@ -93,6 +93,8 @@ func (druid *Druid) applyShoulderRuneEffect() {
 		druid.applyRAQFeral3PBonus()
 
 	// Guardian
+	case int32(proto.DruidRune_RuneShoulderFerocious):
+		druid.applyT1Guardian4PBonus()
 	case int32(proto.DruidRune_RuneShouldersShifter):
 		druid.applyT1Guardian6PBonus()
 	case int32(proto.DruidRune_RuneShouldersTerritorial):

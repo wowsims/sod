@@ -141,6 +141,7 @@ type Druid struct {
 	FuryOfStormrageLacerateSpread     bool // When true, spreads Lacerate from main target with Swipe(Bear)
 	FuryOfStormrageMaulCleave         bool // When true, Maul should cleave a second target
 	CenarionRageThreatBonus           float64
+	CenarionRageEnrageBonus           bool
 	// Sunfire/Moonfire modifiers applied when in Moonkin form
 	MoonfireDotMultiplier float64
 	ShredPositionOverride bool
