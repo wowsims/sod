@@ -674,13 +674,6 @@ export const MajorArmorDebuff = InputHelpers.makeMultiIconInput({
 			impId: ActionId.fromSpellId(14169),
 			fieldName: 'sebaciousPoison',
 		}),
-		makeMultistateMultiplierDebuffInput({
-			actionId: () => ActionId.fromSpellId(402818),
-			numStates: 11,
-			multiplier: 10,
-			reverse: true,
-			fieldName: 'homunculi',
-		}),
 	],
 	label: 'Major Armor Penetration',
 });
@@ -974,23 +967,13 @@ export const CurseOfVulnerability = makeBooleanDebuffInput({
 	fieldName: 'curseOfVulnerability',
 });
 export const GiftOfArthas = makeBooleanDebuffInput({
-	actionId: player =>
-		player.getMatchingSpellActionId([
-			// SoD Phase 3?
-			{ id: 11374, minLevel: 41 },
-		]),
+	actionId: player => player.getMatchingSpellActionId([{ id: 11374, minLevel: 41 }]),
 	fieldName: 'giftOfArthas',
 });
-export const CrystalYield = makeBooleanDebuffInput({
-	actionId: player => player.getMatchingSpellActionId([{ id: 15235, minLevel: 47 }]),
-	fieldName: 'crystalYield',
-});
-export const AncientCorrosivePoison = makeMultistateMultiplierDebuffInput({
-	actionId: () => ActionId.fromItemId(209562),
-	numStates: 11,
-	multiplier: 10,
-	reverse: true,
-	fieldName: 'ancientCorrosivePoison',
+export const HolySunder = makeBooleanDebuffInput({
+	actionId: player => player.getMatchingSpellActionId([{ id: 9176, minLevel: 20 }]),
+	fieldName: 'holySunder',
+	showWhen: player => player.getFaction() === Faction.Alliance,
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1409,12 +1392,7 @@ export const MISC_DEBUFFS_CONFIG = [
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},
 	{
-		config: CrystalYield,
-		picker: IconPicker,
-		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
-	},
-	{
-		config: AncientCorrosivePoison,
+		config: HolySunder,
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},

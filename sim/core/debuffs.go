@@ -140,6 +140,10 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(GiftOfArthasAura(target))
 	}
 
+	if debuffs.HolySunder {
+		MakePermanent(HolySunderAura(target))
+	}
+
 	if debuffs.CurseOfVulnerability {
 		MakePermanent(CurseOfVulnerabilityAura(target))
 	}
@@ -757,6 +761,20 @@ func GiftOfArthasAura(target *Unit) *Aura {
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] -= 8
+		},
+	})
+}
+
+func HolySunderAura(target *Unit) *Aura {
+	return target.GetOrRegisterAura(Aura{
+		Label:    "Holy Sunder",
+		ActionID: ActionID{SpellID: 9176},
+		Duration: time.Minute * 1,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.stats[stats.Armor] -= 50
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.stats[stats.Armor] -= 50
 		},
 	})
 }
