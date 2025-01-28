@@ -195,7 +195,7 @@ func init() {
 	core.NewItemEffect(IdolOfTheMoon, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 		druid.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidStarfallSplash | ClassSpellMask_DruidStarfallTick) {
+			if spell.Matches(ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat | ClassSpellMask_DruidStarfallSplash | ClassSpellMask_DruidStarfallTick) {
 				spell.BonusDamage += 33
 			}
 		})

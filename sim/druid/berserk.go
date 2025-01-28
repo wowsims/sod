@@ -13,17 +13,13 @@ func (druid *Druid) applyBerserk() {
 	}
 
 	actionId := core.ActionID{SpellID: 417141}
-	affectedSpellClassMasks := ClassSpellMask_DruidRip | ClassSpellMask_DruidRake | ClassSpellMask_DruidTigersFury |
-		ClassSpellMask_DruidShred | ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidMangleCat |
-		ClassSpellMask_DruidSwipeCat | ClassSpellMask_DruidSavageRoar
-
 	druid.BerserkAura = druid.RegisterAura(core.Aura{
 		Label:    "Berserk",
 		ActionID: actionId,
 		Duration: time.Second * 15,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_PowerCost_Pct,
-		ClassMask: affectedSpellClassMasks,
+		ClassMask: ClassSpellMask_DruidCatFormSpells,
 		IntValue:  -50,
 	})
 

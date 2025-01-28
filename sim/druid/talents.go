@@ -300,7 +300,7 @@ func (druid *Druid) applyMoonfury() {
 		Label: "Moonfury",
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarfire | ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidStarsurge | ClassSpellMask_DruidSunfire,
+		ClassMask: ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarfire | ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidStarsurge | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat,
 		IntValue:  int64(2 * druid.Talents.Moonfury),
 	}))
 }
@@ -310,7 +310,7 @@ func (druid *Druid) applyImprovedMoonfire() {
 		return
 	}
 
-	affectedSpells := ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash
+	affectedSpells := ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat | ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash
 
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Improved moonfire",

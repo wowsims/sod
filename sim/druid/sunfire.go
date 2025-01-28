@@ -29,6 +29,7 @@ func (druid *Druid) registerSunfireHumanoidSpell(baseDamageLow float64, baseDama
 	dotCoeff := .13
 
 	config := druid.getSunfireBaseSpellConfig(
+		ClassSpellMask_DruidSunfire,
 		actionID,
 		core.SpellFlagResetAttackSwing,
 		func(sim *core.Simulation, _ *core.Spell) float64 {
@@ -40,7 +41,6 @@ func (druid *Druid) registerSunfireHumanoidSpell(baseDamageLow float64, baseDama
 		func(_ *core.Simulation, _ *core.Unit, _ *core.Spell) {},
 	)
 
-	config.ClassSpellMask = ClassSpellMask_DruidSunfire
 	config.ManaCost = core.ManaCostOptions{
 		BaseCost: 0.21,
 	}
@@ -60,6 +60,7 @@ func (druid *Druid) registerSunfireCatSpell(baseDamageLow float64, baseDamageHig
 	dotAPCoeff := .104
 
 	config := druid.getSunfireBaseSpellConfig(
+		ClassSpellMask_DruidSunfireCat,
 		actionID,
 		core.SpellFlagNone,
 		func(sim *core.Simulation, spell *core.Spell) float64 {
@@ -83,6 +84,7 @@ func (druid *Druid) registerSunfireCatSpell(baseDamageLow float64, baseDamageHig
 }
 
 func (druid *Druid) getSunfireBaseSpellConfig(
+	classMask int64,
 	actionID core.ActionID,
 	additionalFlags core.SpellFlag,
 	getBaseDamage func(sim *core.Simulation, spell *core.Spell) float64,

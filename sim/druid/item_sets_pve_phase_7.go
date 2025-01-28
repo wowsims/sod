@@ -37,7 +37,7 @@ func (druid *Druid) applyNaxxramasBalance2PBonus() {
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusDamage_Flat,
-		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire,
+		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat,
 		FloatValue: 0.20,
 	}))
 }
