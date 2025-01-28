@@ -137,6 +137,7 @@ func init() {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 435167}
 		manaMetrics := character.NewManaMetrics(actionID)
+		healthMetrics := character.NewHealthMetrics(actionID)
 
 		manaRoll := 0.0
 		dmgRoll := 0.0
@@ -170,7 +171,7 @@ func init() {
 
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					character.AddMana(sim, manaRoll, manaMetrics)
-					character.RemoveHealth(sim, dmgRoll)
+					character.RemoveHealth(sim, dmgRoll, healthMetrics)
 				},
 			},
 

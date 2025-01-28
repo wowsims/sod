@@ -115,6 +115,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		actionId := core.ActionID{SpellID: 437349}
+		healthMetrics := character.NewHealthMetrics(actionId)
 
 		buffAura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Gneuro-Logical Shock",
@@ -145,7 +146,7 @@ func init() {
 				if sim.Log != nil {
 					character.Log(sim, "Took %.1f damage from Gneuro-Logical Shock.", result.Damage)
 				}
-				character.RemoveHealth(sim, result.Damage)
+				character.RemoveHealth(sim, result.Damage, healthMetrics)
 				buffAura.Activate(sim)
 			},
 
@@ -232,6 +233,7 @@ func init() {
 	core.NewItemEffect(215114, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionId := core.ActionID{SpellID: 437362}
+		healthMetrics := character.NewHealthMetrics(actionId)
 
 		buffAura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Hyperconductive Shock",
@@ -263,7 +265,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				result := spell.CalcDamage(sim, &character.Unit, sim.Roll(312, 668), spell.OutcomeAlwaysHit)
-				character.RemoveHealth(sim, result.Damage)
+				character.RemoveHealth(sim, result.Damage, healthMetrics)
 				buffAura.Activate(sim)
 			},
 		})
