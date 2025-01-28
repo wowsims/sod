@@ -176,7 +176,7 @@ func (druid *Druid) applyT2Feral4PBonus() {
 // Your Shred and Mangle(Cat) abilities deal 10% increased damage per your Bleed effect on the target, up to a maximum of 20% increase.
 func (druid *Druid) applyT2Feral6PBonus() {
 	damageMod := druid.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
+		Kind:      core.SpellMod_DamageDone_Pct,
 		ClassMask: ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite,
 	})
 
@@ -187,7 +187,7 @@ func (druid *Druid) applyT2Feral6PBonus() {
 		ClassSpellMask: ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			damageMod.Activate()
-			damageMod.UpdateIntValue(int64(10 * druid.BleedsActive))
+			damageMod.UpdateFloatValue(1 + 0.10*float64(druid.BleedsActive))
 		},
 	})
 }

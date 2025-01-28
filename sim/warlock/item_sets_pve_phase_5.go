@@ -256,8 +256,8 @@ func (warlock *Warlock) applyT2Damage6PBonus() {
 	warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.shadowBoltActiveEffectModifierPer = 10
-			warlock.shadowBoltActiveEffectModifierMax = 30
+			warlock.shadowBoltActiveEffectMultiplierPer = 0.10
+			warlock.shadowBoltActiveEffectMultiplierMax = 1.30
 		},
 	})
 }
