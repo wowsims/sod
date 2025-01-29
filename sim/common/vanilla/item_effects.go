@@ -1305,10 +1305,10 @@ func init() {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 1220535}
 		label := "Electric Discharge Trigger"
-		ppm := 2.0
+		ppm := 1.0
 		procMask := character.GetProcMaskForItem(MisplacedServoArm)
 		if procMask == core.ProcMaskMelee {
-			ppm = 4.0
+			ppm = 2.0
 		}
 		ppmm := character.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
 
