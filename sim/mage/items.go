@@ -75,34 +75,20 @@ func init() {
 		mage := agent.(MageAgent).GetMage()
 
 		duration := time.Second * 20
-		affectedSpells := []*core.Spell{}
 
+		classSpellMasks := ClassSpellMask_MageFrostbolt | ClassSpellMask_MageSpellfrostBolt | ClassSpellMask_MageFrozenOrbTick
 		aura := mage.RegisterAura(core.Aura{
 			ActionID: core.ActionID{ItemID: HazzarahsCharmOfChilledMagic},
 			Label:    "Frost Potency",
 			Duration: duration,
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells = core.FilterSlice(
-					core.Flatten([][]*core.Spell{
-						mage.Frostbolt,
-						{mage.SpellfrostBolt},
-						{mage.FrozenOrbTick},
-					}),
-					func(spell *core.Spell) bool { return spell != nil },
-				)
-			},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range affectedSpells {
-					spell.BonusCritRating += 5 * core.SpellCritRatingPerCritChance
-					spell.CritDamageBonus += 0.50
-				}
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range affectedSpells {
-					spell.BonusCritRating -= 5 * core.SpellCritRatingPerCritChance
-					spell.CritDamageBonus -= 0.50
-				}
-			},
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:  classSpellMasks,
+			Kind:       core.SpellMod_BonusCrit_Flat,
+			FloatValue: 5 * core.SpellCritRatingPerCritChance,
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:  classSpellMasks,
+			Kind:       core.SpellMod_CritDamageBonus_Flat,
+			FloatValue: 0.50,
 		})
 
 		spell := mage.RegisterSpell(core.SpellConfig{
@@ -139,12 +125,13 @@ func init() {
 			return
 		}
 
-		mage.RegisterAura(core.Aura{
+		core.MakePermanent(mage.RegisterAura(core.Aura{
 			Label: "Decreased Frozen Orb Cooldown",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				mage.FrozenOrb.CD.FlatModifier -= time.Second * 10
-			},
-		})
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask: ClassSpellMask_MageFrozenOrb,
+			Kind:      core.SpellMod_Cooldown_Flat,
+			TimeValue: -time.Second * 10,
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=230243/mind-quickening-gem
@@ -159,13 +146,7 @@ func init() {
 			ActionID: actionID,
 			Label:    "Mind Quickening",
 			Duration: duration,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				mage.MultiplyCastSpeed(1.33)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				mage.MultiplyCastSpeed(1 / 1.33)
-			},
-		})
+		}).AttachMultiplyCastSpeed(&mage.Unit, 1.33)
 
 		spell := mage.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
@@ -204,7 +185,7 @@ func init() {
 			ActionID: core.ActionID{SpellID: 469237},
 			Label:    "Staff of Inferno",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.SpellCode == SpellCode_MageBlastWave && result.Landed() {
+				if spell.Matches(ClassSpellMask_MageBlastWave) && result.Landed() {
 					aura := mage.ImprovedScorchAuras.Get(result.Target)
 					aura.Activate(sim)
 					aura.SetStacks(sim, 5)
@@ -239,13 +220,7 @@ func init() {
 			ActionID: core.ActionID{SpellID: 469238},
 			Label:    "Staff of Rime",
 			Duration: time.Minute,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				mage.AddStatDynamic(sim, stats.FrostPower, 100)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				mage.AddStatDynamic(sim, stats.FrostPower, -100)
-			},
-		})
+		}).AttachStatBuff(stats.FrostPower, 100)
 
 		mage.RegisterAura(core.Aura{
 			Label: "Staff of Rime Dummy",

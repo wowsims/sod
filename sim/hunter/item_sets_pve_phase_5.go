@@ -32,31 +32,28 @@ func (hunter *Hunter) applyT2Melee2PBonus() {
 		return
 	}
 
-	affectedSpells := make(map[*core.Spell]bool)
+	procMask := core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeOHSpecial
+	affectedSpells := ClassSpellMask_HunterAll ^ ClassSpellMask_HunterRaptorStrikeHit ^ ClassSpellMask_HunterRaptorStrike ^ ClassSpellMask_HunterWingClip
+
+	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ProcMask:  procMask,
+		ClassMask: affectedSpells,
+		IntValue:  20,
+	})
 
 	procAura := hunter.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 467331},
 		Label:    "Clever Strikes",
 		Duration: time.Second * 5,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range hunter.MeleeSpells {
-				if spell.SpellCode != SpellCode_HunterRaptorStrikeHit && spell.SpellCode != SpellCode_HunterRaptorStrike && spell.SpellCode != SpellCode_HunterWingClip {
-					affectedSpells[spell] = true
-				}
-			}
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += 0.20
-			}
+			damageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for spell := range affectedSpells {
-				spell.DamageMultiplierAdditive -= 0.20
-			}
+			damageMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !affectedSpells[spell] {
+			if !(spell.Matches(affectedSpells) && spell.ProcMask.Matches(procMask)) {
 				return
 			}
 
@@ -67,7 +64,7 @@ func (hunter *Hunter) applyT2Melee2PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
+			if spell.Matches(ClassSpellMask_HunterRaptorStrikeHit) {
 				procAura.Activate(sim)
 			}
 		},
@@ -81,18 +78,14 @@ func (hunter *Hunter) applyT2Melee4PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range []*core.Spell{hunter.RaptorStrike, hunter.RaptorStrikeMH, hunter.WyvernStrike} {
-				if spell == nil {
-					continue
-				}
-
-				spell.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterRaptorStrike | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterWyvernStrike,
+		ProcMask:  core.ProcMaskMeleeMHSpecial,
+		IntValue:  20,
+	}))
 }
 
 // Your periodic damage has a 5% chance to reset the cooldown on one of your Strike abilities.
@@ -152,20 +145,19 @@ func (hunter *Hunter) applyT2Ranged2PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			oldApplyEffects := hunter.AimedShot.ApplyEffects
-			hunter.AimedShot.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				modifier := 0.0
-				if target.HasActiveAuraWithTag("ImmolationTrap") || hunter.HasActiveAuraWithTag("ExplosiveTrap") {
-					modifier += 0.20
-				}
+	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterAimedShot,
+	})
 
-				spell.DamageMultiplierAdditive += modifier
-				oldApplyEffects(sim, target, spell)
-				spell.DamageMultiplierAdditive -= modifier
-			}
+	core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_HunterAimedShot,
+		Callback:       core.CallbackOnApplyEffects,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			hasActiveTrap := result.Target.HasActiveAuraWithTag("ImmolationTrap") || hunter.HasActiveAuraWithTag("ExplosiveTrap")
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hasActiveTrap, 0.20, 0.0))
+			damageMod.Activate()
 		},
 	})
 }
@@ -177,40 +169,38 @@ func (hunter *Hunter) applyT2Ranged4PBonus() {
 		return
 	}
 
-	shotSpells := []*core.Spell{}
+	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterShots,
+		IntValue:  10,
+	})
+
 	procAura := hunter.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 467312},
 		Label:    label + " Proc",
 		Duration: time.Second * 12,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			shotSpells = core.FilterSlice(hunter.Shots, func(s *core.Spell) bool { return s != nil })
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range shotSpells {
-				if spell.SpellCode != hunter.LastShot.SpellCode {
-					spell.DamageMultiplierAdditive += 0.10
-				}
-			}
+			damageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range shotSpells {
-				if spell.SpellCode != hunter.LastShot.SpellCode {
-					spell.DamageMultiplierAdditive -= 0.10
-				}
-			}
+			damageMod.Deactivate()
 		},
 	})
 
-	core.MakePermanent(hunter.RegisterAura(core.Aura{
-		Label: label,
-		OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagShot) {
-				procAura.Deactivate(sim)
-				hunter.LastShot = spell
+	core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_HunterShots,
+		Callback:       core.CallbackOnCastComplete,
+		Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			if hunter.LastShot != nil && !spell.Matches(hunter.LastShot.ClassSpellMask) {
 				procAura.Activate(sim)
+			} else {
+				procAura.Deactivate(sim)
 			}
+
+			hunter.LastShot = spell
 		},
-	}))
+	})
 }
 
 // Your Serpent Sting damage is increased by 25% of your Attack Power over its normal duration.

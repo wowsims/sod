@@ -21,11 +21,5 @@ func (rogue *Rogue) registerMasterOfSubtlety() {
 		Label:    "Master of Subtlety",
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneMasterOfSubtlety)},
 		Duration: effectDuration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.PseudoStats.DamageDealtMultiplier *= 1.1
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.PseudoStats.DamageDealtMultiplier /= 1.1
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&rogue.PseudoStats.DamageDealtMultiplier, 1.1)
 }

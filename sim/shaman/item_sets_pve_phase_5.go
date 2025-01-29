@@ -1,7 +1,6 @@
 package shaman
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -136,27 +135,21 @@ func (shaman *Shaman) applyT2Tank2PBonus() {
 		ActionID: core.ActionID{SpellID: 467891},
 		Label:    "Shield Block",
 		Duration: time.Second * 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.AddStatDynamic(sim, stats.Block, 30*core.BlockRatingPerBlockChance)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.AddStatDynamic(sim, stats.Block, -30*core.BlockRatingPerBlockChance)
-		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
 			if result.DidBlock() {
 				aura.Deactivate(sim)
 			}
 		},
-	})
+	}).AttachStatBuff(stats.Block, 30*core.BlockRatingPerBlockChance)
 
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_ShamanFlameShock {
-				shieldBlockAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_ShamanFlameShock,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			shieldBlockAura.Activate(sim)
 		},
-	}))
+	})
 }
 
 // Each time you Block, your Block amount is increased by 10% of your Spell Damage for 6 sec, stacking up to 3 times.
@@ -272,9 +265,12 @@ func (shaman *Shaman) applyT2Enhancement4PBonus() {
 
 	shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.StormstrikeMH.DamageMultiplier += 0.50
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanStormstrikeHit,
+		// TODO: Verify if this is additive or multiplicative
+		Kind:     core.SpellMod_DamageDone_Flat,
+		ProcMask: core.ProcMaskMeleeMHSpecial,
+		IntValue: 50,
 	})
 }
 
@@ -290,7 +286,7 @@ func (shaman *Shaman) applyT2Enhancement6PBonus() {
 		return
 	}
 
-	affectedSpellCodes := []int32{SpellCode_ShamanLightningBolt, SpellCode_ShamanChainLightning}
+	affectedSpellClassMasks := ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(t26pAura *core.Aura, sim *core.Simulation) {
@@ -316,7 +312,7 @@ func (shaman *Shaman) applyT2Enhancement6PBonus() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Tested and it doesn't proc from overloads
-			if slices.Contains(affectedSpellCodes, spell.SpellCode) && !spell.ProcMask.Matches(core.ProcMaskSpellProc) && result.Landed() {
+			if spell.Matches(affectedSpellClassMasks) && !spell.ProcMask.Matches(core.ProcMaskSpellProc) && result.Landed() {
 				shaman.ActiveShieldAura.AddStack(sim)
 			}
 		},
@@ -378,7 +374,7 @@ func (shaman *Shaman) applyT2Restoration4PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_ShamanChainLightning {
+			if spell.Matches(ClassSpellMask_ShamanChainLightning) {
 				shaman.GainHealth(sim, result.Damage, healthMetrics)
 			}
 		},
@@ -396,23 +392,13 @@ func (shaman *Shaman) applyT2Restoration6PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			spells := core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					shaman.ChainHeal,
-					shaman.ChainHealOverload,
-					shaman.ChainLightning,
-					shaman.ChainLightningOverload,
-				}), func(spell *core.Spell) bool { return spell != nil },
-			)
-
-			for _, spell := range spells {
-				spell.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanChainLightning,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  20,
+	}))
 }
 
 var ItemSetAugursRegalia = core.NewItemSet(core.ItemSet{
@@ -449,21 +435,7 @@ func (shaman *Shaman) applyZGTank3PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Increases the chance to trigger your Power Surge rune by an additional 5%.

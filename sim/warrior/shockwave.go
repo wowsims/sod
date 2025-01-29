@@ -15,11 +15,12 @@ func (warrior *Warrior) registerShockwaveSpell() {
 	apCoef := 0.50
 
 	warrior.Shockwave = warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.WarriorRune_RuneShockwave)},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeRanged,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
+		ActionID:       core.ActionID{SpellID: int32(proto.WarriorRune_RuneShockwave)},
+		ClassSpellMask: ClassSpellMask_WarriorShockwave,
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeRanged,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
 			Cost: 15,

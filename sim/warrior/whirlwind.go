@@ -21,12 +21,12 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 	}
 
 	warrior.Whirlwind = warrior.RegisterSpell(BerserkerStance, core.SpellConfig{
-		SpellCode:   SpellCode_WarriorWhirlwind,
-		ActionID:    core.ActionID{SpellID: 1680},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagAPL | SpellFlagOffensive,
+		ClassSpellMask: ClassSpellMask_WarriorWhirlwind,
+		ActionID:       core.ActionID{SpellID: 1680},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
 			Cost: 25,
@@ -62,12 +62,12 @@ func (warrior *Warrior) newWhirlwindHitSpell(isMH bool) *WarriorSpell {
 	}
 
 	return warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		SpellCode:   core.Ternary(isMH, SpellCode_WarriorWhirlwindMH, SpellCode_WarriorWhirlwindOH),
-		ActionID:    core.ActionID{SpellID: 1680}.WithTag(int32(core.Ternary(isMH, 1, 2))),
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		ClassSpellMask: core.Ternary(isMH, ClassSpellMask_WarriorWhirlwindMH, ClassSpellMask_WarriorWhirlwindOH),
+		ActionID:       core.ActionID{SpellID: 1680}.WithTag(int32(core.Ternary(isMH, 1, 2))),
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       procMask,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		CritDamageBonus: warrior.impale(),
 

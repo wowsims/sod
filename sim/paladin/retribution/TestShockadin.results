@@ -148,12 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestShockadin-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.51274
-  weights: 0.42135
+  weights: 0.51283
+  weights: 0.70707
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.44834
+  weights: 1.44866
   weights: 0
   weights: 0
   weights: 0
@@ -161,13 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.49615
-  weights: 9.5081
+  weights: 2.46912
+  weights: 10.57625
   weights: 0
   weights: 0
-  weights: 0.18424
-  weights: 7.92223
-  weights: 22.70916
+  weights: 0.18427
+  weights: 7.85224
+  weights: 22.60916
   weights: 0
   weights: 0
   weights: 0
@@ -302,43 +302,43 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1927.17298
-  tps: 1981.10358
+  dps: 1927.49225
+  tps: 1981.41542
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1951.73849
-  tps: 2005.21473
+  dps: 1952.55994
+  tps: 2006.05093
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1982.53606
-  tps: 2035.74349
+  dps: 1984.25776
+  tps: 2037.59069
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2895.94956
-  tps: 2982.86214
+  dps: 2897.28582
+  tps: 2984.1319
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1588.74149
-  tps: 1628.42934
+  dps: 1587.32664
+  tps: 1626.99974
  }
 }
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4001.64761
-  tps: 4086.69839
+  dps: 4001.91114
+  tps: 4086.91943
  }
 }
 dps_results: {
@@ -428,7 +428,7 @@ dps_results: {
 dps_results: {
  key: "TestShockadin-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3777.81174
-  tps: 3863.12507
+  dps: 3776.11326
+  tps: 3861.72
  }
 }

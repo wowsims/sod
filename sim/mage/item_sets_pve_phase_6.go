@@ -1,8 +1,6 @@
 package mage
 
 import (
-	"math"
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -30,34 +28,17 @@ func (mage *Mage) applyTAQFire2PBonus() {
 		return
 	}
 
-	var affectedSpells []*core.Spell
-
 	buffAura := mage.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213317},
 		Label:    "Fire Blast",
 		Duration: time.Second * 10,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice(mage.Spellbook, func(spell *core.Spell) bool {
-				return spell.Flags.Matches(SpellFlagMage) && spell.SpellSchool.Matches(core.SpellSchoolFire) && !spell.Flags.Matches(core.SpellFlagPassiveSpell)
-			})
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.BonusCritRating += 50 * core.SpellCritRatingPerCritChance
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.BonusCritRating -= 50 * core.SpellCritRatingPerCritChance
-			}
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			// OnCastComplete is called after OnSpellHitDealt / etc, so don't deactivate if it was just activated.
 			if aura.RemainingDuration(sim) == aura.Duration {
 				return
 			}
 
-			if !slices.Contains(affectedSpells, spell) {
+			if !(spell.Matches(ClassSpellMask_MageAll) && spell.SpellSchool.Matches(core.SpellSchoolFire) && !spell.Flags.Matches(core.SpellFlagPassiveSpell)) {
 				return
 			}
 
@@ -70,16 +51,22 @@ func (mage *Mage) applyTAQFire2PBonus() {
 				},
 			})
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:         ClassSpellMask_MageAll,
+		School:            core.SpellSchoolFire,
+		SpellFlagsExclude: core.SpellFlagPassiveSpell,
+		Kind:              core.SpellMod_BonusCrit_Flat,
+		FloatValue:        50 * core.SpellCritRatingPerCritChance,
 	})
 
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: label,
-		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_MageFireBlast {
-				buffAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_MageFireBlast,
+		Callback:       core.CallbackOnCastComplete,
+		Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			buffAura.Activate(sim)
 		},
-	}))
+	})
 }
 
 // Increases the damage done by your Ignite talent by 10%.
@@ -93,12 +80,13 @@ func (mage *Mage) applyTAQFire4PBonus() {
 		return
 	}
 
-	mage.RegisterAura(core.Aura{
+	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			mage.Ignite.PeriodicDamageMultiplierAdditive += 0.10
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_MageIgnite,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  10,
+	}))
 }
 
 var ItemSetEnigmaMoment = core.NewItemSet(core.ItemSet{
@@ -151,44 +139,44 @@ func (mage *Mage) applyRAQFire3PBonus() {
 		return
 	}
 
-	perEffectModifier := 0.03
-	maxModifier := 0.09
+	perEffectMultiplier := 0.03
+	maxMultiplier := 1.09
 
-	mage.RegisterAura(core.Aura{
+	classSpellMasks := ClassSpellMask_MageFireball | ClassSpellMask_MageFrostfireBolt | ClassSpellMask_MageBalefireBolt
+	damageMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  classSpellMasks,
+		FloatValue: 1,
+	})
+
+	var dotSpells []*core.Spell
+	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			dotSpells := core.FilterSlice(mage.Spellbook, func(spell *core.Spell) bool {
-				return spell.Flags.Matches(SpellFlagMage) && spell.SpellSchool.Matches(core.SpellSchoolFire) && len(spell.Dots()) > 0
+			dotSpells = core.FilterSlice(mage.Spellbook, func(spell *core.Spell) bool {
+				return spell.Matches(ClassSpellMask_MageAll) && spell.SpellSchool.Matches(core.SpellSchoolFire) && len(spell.Dots()) > 0
 			})
+		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Deactivate()
+		},
+		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if !spell.Matches(classSpellMasks) {
+				return
+			}
+			multiplier := 1.0
 
-			affectedSpells := core.FilterSlice(
-				core.Flatten(
-					[][]*core.Spell{
-						mage.Fireball,
-						{mage.FrostfireBolt},
-						{mage.BalefireBolt},
-					},
-				), func(spell *core.Spell) bool { return spell != nil },
-			)
-
-			for _, spell := range affectedSpells {
-				oldApplyEffects := spell.ApplyEffects
-				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					modifier := 0.0
-
-					for _, spell := range dotSpells {
-						if spell.Dot(target).IsActive() {
-							modifier += perEffectModifier
-						}
-					}
-
-					modifier = math.Min(maxModifier, modifier)
-
-					spell.DamageMultiplierAdditive += modifier
-					oldApplyEffects(sim, target, spell)
-					spell.DamageMultiplierAdditive -= modifier
+			for _, spell := range dotSpells {
+				if spell.Dot(target).IsActive() {
+					multiplier += perEffectMultiplier
 				}
 			}
+
+			multiplier = min(maxMultiplier, multiplier)
+			damageMod.UpdateFloatValue(multiplier)
 		},
-	})
+	}))
 }

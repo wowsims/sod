@@ -540,17 +540,19 @@ func ObsidianEdgedAura(itemID int32, agent core.Agent) {
 // Increases the damage dealt by all of your damage over time spells by 3% per piece of Timeworn armor equipped.
 func TimewornDecayAura(agent core.Agent) {
 	character := agent.GetCharacter()
-	if character.PseudoStats.TimewornBonus == 0 {
+	label := "Timeworn Decay Aura"
+
+	if character.PseudoStats.TimewornBonus == 0 || character.HasAura(label) {
 		return
 	}
 
-	multiplier := 0.03 * float64(character.PseudoStats.TimewornBonus)
+	core.MakePermanent(character.RegisterAura(core.Aura{
+		Label: label,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:     core.SpellMod_PeriodicDamageDone_Flat,
+		IntValue: int64(3 * character.PseudoStats.TimewornBonus),
+	}))
 
-	character.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode != 0 && len(spell.Dots()) > 0 {
-			spell.PeriodicDamageMultiplierAdditive += multiplier
-		}
-	})
 }
 
 // https://www.wowhead.com/classic/spell=1213407/timeworn-expertise
@@ -567,21 +569,7 @@ func TimewornExpertiseAura(agent core.Agent) {
 		ActionID:   core.ActionID{SpellID: 1214218},
 		Label:      "Timeworn Expertise Aura",
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(stats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, stats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(stats.Multiply(-1))
-			} else {
-				aura.Unit.AddStatsDynamic(sim, stats.Multiply(-1))
-			}
-		},
-	}))
+	}).AttachStatsBuff(stats))
 }
 
 // https://www.wowhead.com/classic/spell=1213405/timeworn-healing

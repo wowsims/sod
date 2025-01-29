@@ -29,7 +29,6 @@ func (priest *Priest) applyTAQShadow2PBonus() {
 	if priest.HasAura(label) {
 		return
 	}
-
 	priest.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -74,14 +73,26 @@ func (priest *Priest) applyTAQShadow4PBonus() {
 		return
 	}
 
-	priest.RegisterAura(core.Aura{
+	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			priest.MindSpike.CastTimeMultiplier -= 1
-			priest.MindSpike.DamageMultiplierAdditive += 0.10
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  ClassSpellMask_PriestMindSpike,
+		FloatValue: -1,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestMindSpike,
+		IntValue:  10,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Custom,
+		ClassMask: ClassSpellMask_PriestMindSpike,
+		ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
 			priest.MindSpike.Flags |= core.SpellFlagCastWhileChanneling
 		},
-	})
+		RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+			priest.MindSpike.Flags ^= core.SpellFlagCastWhileChanneling
+		},
+	}))
 }
 
 var ItemSetDawnOfTheOracle = core.NewItemSet(core.ItemSet{

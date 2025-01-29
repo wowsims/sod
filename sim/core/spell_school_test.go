@@ -375,13 +375,16 @@ func SchoolMultiplierArrayHelper[T stats.SchoolValueArrayValues](t *testing.T, c
 	var highest T = T(highestMult)
 
 	spell := &Spell{
-		BaseDamageMultiplierAdditive:     1,
-		DamageMultiplier:                 1,
-		DamageMultiplierAdditive:         1,
-		ImpactDamageMultiplierAdditive:   1,
-		PeriodicDamageMultiplierAdditive: 1,
-		Unit:                             caster,
+		baseDamageMultiplierAdditivePct:     0,
+		damageMultiplier:                    1,
+		damageMultiplierAdditivePct:         0,
+		impactDamageMultiplierAdditivePct:   0,
+		periodicDamageMultiplierAdditivePct: 0,
+		Unit:                                caster,
 	}
+
+	spell.updateImpactDamageMultiplier()
+	spell.updatePeriodicDamageMultiplier()
 
 	for schoolIndex1 := stats.SchoolIndexPhysical; schoolIndex1 < stats.SchoolLen; schoolIndex1++ {
 		for schoolIndex2 := stats.SchoolIndexPhysical; schoolIndex2 < stats.SchoolLen; schoolIndex2++ {

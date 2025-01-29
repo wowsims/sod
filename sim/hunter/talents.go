@@ -82,8 +82,8 @@ func (hunter *Hunter) ApplyTalents() {
 	if hunter.Talents.RangedWeaponSpecialization > 0 {
 		mult := 1 + 0.01*float64(hunter.Talents.RangedWeaponSpecialization)
 		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.ProcMask.Matches(core.ProcMaskRanged) && spell.SpellCode != SpellCode_HunterSerpentSting {
-				spell.DamageMultiplier *= mult
+			if spell.ProcMask.Matches(core.ProcMaskRanged) && !spell.Matches(ClassSpellMask_HunterSerpentSting) {
+				spell.ApplyMultiplicativeDamageBonus(mult)
 			}
 		})
 	}
@@ -149,13 +149,7 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		Label:    "Bestial Wrath Pet",
 		ActionID: actionID,
 		Duration: time.Second * 18,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.5
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.5
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.5)
 
 	bwSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -193,7 +187,7 @@ func (hunter *Hunter) applyTrapMastery() {
 	}
 
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagTrap) {
+		if spell.Matches(ClassSpellMask_HunterTraps) {
 			spell.BonusHitRating += 5 * float64(hunter.Talents.TrapMastery)
 		}
 	})
@@ -204,18 +198,26 @@ func (hunter *Hunter) applyCleverTraps() {
 		return
 	}
 
+	multiplier := 1 + 0.15*float64(hunter.Talents.CleverTraps)
+
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagTrap) {
-			spell.DamageMultiplier *= 1 + 0.15*float64(hunter.Talents.CleverTraps)
+		if spell.Matches(ClassSpellMask_HunterTraps) {
+			spell.ApplyMultiplicativeDamageBonus(multiplier)
 		}
 	})
 }
 
 func (hunter *Hunter) applyEfficiency() {
+	if hunter.Talents.Efficiency == 0 {
+		return
+	}
+
+	costModifier := 2 * hunter.Talents.Efficiency
+
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		// applies to Stings, Shots, Strikes and Volley
-		if spell.Cost != nil && spell.Flags.Matches(SpellFlagSting|SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterVolley {
-			spell.Cost.Multiplier -= 2 * hunter.Talents.Efficiency
+		if spell.Cost != nil && (spell.Flags.Matches(SpellFlagSting|SpellFlagStrike) || spell.Matches(ClassSpellMask_HunterShots|ClassSpellMask_HunterVolley)) {
+			spell.Cost.FlatModifier -= costModifier
 		}
 	})
 }

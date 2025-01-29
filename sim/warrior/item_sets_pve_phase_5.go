@@ -37,7 +37,7 @@ func (warrior *Warrior) applyT2Damage2PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarriorOverpower && result.DidCrit() {
+			if spell.Matches(ClassSpellMask_WarriorOverpower) && result.DidCrit() {
 				if dot := warrior.Rend.Dot(result.Target); dot.IsActive() {
 					dot.Refresh(sim)
 				}
@@ -56,16 +56,16 @@ func (warrior *Warrior) applyT2Damage4PBonus() {
 	warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.HeroicStrike.DamageMultiplier *= 1.25
-			warrior.Overpower.DamageMultiplier *= 1.25
+			warrior.HeroicStrike.ApplyMultiplicativeDamageBonus(1.25)
+			warrior.Overpower.ApplyMultiplicativeDamageBonus(1.25)
 			if warrior.SlamMH != nil {
-				warrior.SlamMH.DamageMultiplier *= 1.25
+				warrior.SlamMH.ApplyMultiplicativeDamageBonus(1.25)
 			}
 			if warrior.SlamOH != nil {
-				warrior.SlamMH.DamageMultiplier *= 1.25
+				warrior.SlamMH.ApplyMultiplicativeDamageBonus(1.25)
 			}
 			if warrior.QuickStrike != nil {
-				warrior.QuickStrike.DamageMultiplier *= 1.25
+				warrior.QuickStrike.ApplyMultiplicativeDamageBonus(1.25)
 			}
 		},
 	})
@@ -78,18 +78,14 @@ func (warrior *Warrior) applyT2Damage6PBonus() {
 		return
 	}
 
-	var affectedSpells []*WarriorSpell
+	var affectedSpells []*core.Spell
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range []*WarriorSpell{warrior.Bloodthirst, warrior.MortalStrike, warrior.ShieldSlam} {
-				if spell != nil {
-					affectedSpells = append(affectedSpells, spell)
-				}
-			}
+			affectedSpells = warrior.GetSpellsMatchingClassMask(ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorMortalStrike | ClassSpellMask_WarriorShieldSlam)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarriorSlamMH && result.Landed() {
+			if spell.Matches(ClassSpellMask_WarriorSlamMH) && result.Landed() {
 				for _, spell := range affectedSpells {
 					spell.CD.Reset()
 				}
@@ -154,7 +150,7 @@ func (warrior *Warrior) applyT2Protection4PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarriorRevenge {
+			if spell.Matches(ClassSpellMask_WarriorRevenge) {
 				flurryAura.Activate(sim)
 				flurryAura.SetStacks(sim, 3)
 			}
@@ -239,12 +235,13 @@ func (warrior *Warrior) applyZGGladiator3PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.ShieldSlam.CD.FlatModifier -= time.Second * 2
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_WarriorShieldSlam,
+		TimeValue: -time.Second * 2,
+	}))
 }
 
 // Reduces the cooldown on your Bloodrage ability by 30 sec while you are in Gladiator Stance.

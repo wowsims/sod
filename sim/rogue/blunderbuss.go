@@ -16,11 +16,12 @@ func (rogue *Rogue) registerBlunderbussSpell() {
 	results := make([]*core.SpellResult, min(4, rogue.Env.GetNumTargets()))
 
 	rogue.Blunderbuss = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 436564},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeRanged,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagCarnage,
+		ActionID:       core.ActionID{SpellID: 436564},
+		ClassSpellMask: SpellClassMask_RogueBlunderbuss,
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeRanged,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagCarnage,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   20,

@@ -8,6 +8,7 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+type OnApplyEffects func(aura *Aura, sim *Simulation, target *Unit, spell *Spell)
 type ApplySpellResults func(sim *Simulation, target *Unit, spell *Spell)
 type ExpectedDamageCalculator func(sim *Simulation, target *Unit, spell *Spell, useSnapshot bool) *SpellResult
 type CanCastCondition func(sim *Simulation, target *Unit) bool
@@ -16,17 +17,17 @@ type SpellConfig struct {
 	// See definition of Spell (below) for comments on these.
 	ActionID
 	// Used to identify spells with multiple ranks that need to be referenced
-	SpellCode     int32
-	SpellSchool   SpellSchool
-	DefenseType   DefenseType
-	ProcMask      ProcMask
-	Flags         SpellFlag
-	CastType      proto.CastType
-	MissileSpeed  float64
-	BaseCost      float64
-	MetricSplits  int
-	Rank          int
-	RequiredLevel int
+	ClassSpellMask int64
+	SpellSchool    SpellSchool
+	DefenseType    DefenseType
+	ProcMask       ProcMask
+	Flags          SpellFlag
+	CastType       proto.CastType
+	MissileSpeed   float64
+	BaseCost       float64
+	MetricSplits   int
+	Rank           int
+	RequiredLevel  int
 
 	ManaCost   ManaCostOptions
 	EnergyCost EnergyCostOptions
@@ -41,11 +42,11 @@ type SpellConfig struct {
 
 	CritDamageBonus float64
 
-	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
-	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
-	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full Direct and Periodic spell damage.      Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
-	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
-	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
+	BaseDamageMultiplierAdditivePct     int64
+	DamageMultiplier                    float64
+	DamageMultiplierAdditivePct         int64
+	ImpactDamageMultiplierAdditivePct   int64
+	PeriodicDamageMultiplierAdditivePct int64
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -77,7 +78,8 @@ type Spell struct {
 	ActionID
 
 	// Used to identify spells with multiple ranks that need to be referenced
-	SpellCode int32
+	// The specific class spell id should be a unique bit
+	ClassSpellMask int64
 
 	// The unit who will perform this spell.
 	Unit *Unit
@@ -140,11 +142,15 @@ type Spell struct {
 	BonusCritRating    float64
 	CastTimeMultiplier float64
 
-	BaseDamageMultiplierAdditive     float64 // Applies an additive multiplier to spell base damage.                          Equivalent to Modifies Spell Effectiveness (8).
-	DamageMultiplier                 float64 // Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
-	DamageMultiplierAdditive         float64 // Applies an additive multiplier to full Direct and Periodic spell damage.      Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
-	ImpactDamageMultiplierAdditive   float64 // Applies an additive multiplier to just Direct spell damage.                   Equivalent to Modifies Damage/Healing Done.
-	PeriodicDamageMultiplierAdditive float64 // Applies an additive multiplier to just Periodic spell dammage.                Equivalent to Modifies Periodic Damage/Healing Done (22).
+	baseDamageMultiplierAdditivePct     int64 // Stores an integer representation of the Spell's Base Damage Multiplier
+	damageMultiplierAdditivePct         int64 // Stores an integer representation of the Spell's Additive Damage Multiplier before Imapct or Periodic-only bonuses
+	impactDamageMultiplierAdditivePct   int64 // Stores an integer representation of the Spell's Additive Impact Damage Multiplier
+	periodicDamageMultiplierAdditivePct int64 // Stores an integer representation of the Spell's Additive Periodic Damage Multiplier
+
+	baseDamageMultiplier     float64 // Stores the Spell's calculated Base Damage Multiplier
+	damageMultiplier         float64 // Stores the Spell's calculated Damage Multiplier before Imapct or Periodic-only bonuses
+	impactDamageMultiplier   float64 // Stores the Spell's calculated Impact Damage Multiplier
+	periodicDamageMultiplier float64 // Stores the Spell's calculated Damage Multiplier
 
 	BonusDamage      float64 // Bonus scaling power e.g. Idol of the Moon "Increases the damage of X spell by N" https://www.wowhead.com/classic/item=23197/idol-of-the-moon
 	BonusCoefficient float64 // EffectBonusCoefficient in SpellEffect client DB table, "SP mod" on Wowhead (not necessarily shown there even if > 0)
@@ -190,23 +196,9 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		panic(fmt.Sprintf("Over 200 registered spells when registering %s! There is probably a spell being registered every iteration.", config.ActionID))
 	}
 
-	if config.BaseDamageMultiplierAdditive == 0 {
-		config.BaseDamageMultiplierAdditive = 1
-	}
-
 	// Default the other damage multiplier to 1 if only one or the other is set.
-	if config.DamageMultiplier != 0 && config.DamageMultiplierAdditive == 0 {
-		config.DamageMultiplierAdditive = 1
-	} else if config.DamageMultiplierAdditive != 0 && config.DamageMultiplier == 0 {
+	if config.DamageMultiplierAdditivePct != 0 && config.DamageMultiplier == 0 {
 		config.DamageMultiplier = 1
-	}
-
-	if config.ImpactDamageMultiplierAdditive == 0 {
-		config.ImpactDamageMultiplierAdditive = 1
-	}
-
-	if config.PeriodicDamageMultiplierAdditive == 0 {
-		config.PeriodicDamageMultiplierAdditive = 1
 	}
 
 	// Default CastSlot to mainhand
@@ -237,14 +229,14 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	}
 
 	spell := &Spell{
-		ActionID:     config.ActionID,
-		SpellCode:    config.SpellCode,
-		DefenseType:  config.DefenseType,
-		Unit:         unit,
-		ProcMask:     config.ProcMask,
-		Flags:        config.Flags,
-		CastType:     config.CastType,
-		MissileSpeed: config.MissileSpeed,
+		ActionID:       config.ActionID,
+		ClassSpellMask: config.ClassSpellMask,
+		DefenseType:    config.DefenseType,
+		Unit:           unit,
+		ProcMask:       config.ProcMask,
+		Flags:          config.Flags,
+		CastType:       config.CastType,
+		MissileSpeed:   config.MissileSpeed,
 
 		SpellSchool:       config.SpellSchool,
 		SchoolIndex:       config.SpellSchool.GetSchoolIndex(),
@@ -269,11 +261,11 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		CritDamageBonus: 1 + config.CritDamageBonus,
 
-		BaseDamageMultiplierAdditive:     config.BaseDamageMultiplierAdditive,
-		DamageMultiplier:                 config.DamageMultiplier,
-		DamageMultiplierAdditive:         config.DamageMultiplierAdditive,
-		ImpactDamageMultiplierAdditive:   config.ImpactDamageMultiplierAdditive,
-		PeriodicDamageMultiplierAdditive: config.PeriodicDamageMultiplierAdditive,
+		baseDamageMultiplierAdditivePct:     config.BaseDamageMultiplierAdditivePct,
+		damageMultiplier:                    config.DamageMultiplier,
+		damageMultiplierAdditivePct:         config.DamageMultiplierAdditivePct,
+		impactDamageMultiplierAdditivePct:   config.ImpactDamageMultiplierAdditivePct,
+		periodicDamageMultiplierAdditivePct: config.PeriodicDamageMultiplierAdditivePct,
 
 		BonusCoefficient: config.BonusCoefficient,
 
@@ -287,6 +279,10 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		RelatedAuras: config.RelatedAuras,
 	}
+
+	spell.updateBaseDamageMultiplier()
+	spell.updateImpactDamageMultiplier()
+	spell.updatePeriodicDamageMultiplier()
 
 	spell.Rank = config.Rank
 	spell.RequiredLevel = config.RequiredLevel
@@ -582,6 +578,13 @@ func (spell *Spell) applyEffects(sim *Simulation, target *Unit) {
 	spell.SpellMetrics[target.UnitIndex].Casts++
 	spell.casts++
 
+	// Not sure if we want to split this flag into its own?
+	// Both are used to optimize away unneccesery calls and 99%
+	// of the time are gonna be used together. For now just in one
+	if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
+		spell.Unit.OnApplyEffects(sim, target, spell)
+	}
+
 	spell.ApplyEffects(sim, target, spell)
 }
 
@@ -638,6 +641,87 @@ func (spell *Spell) TravelTime() time.Duration {
 	} else {
 		return time.Duration(float64(time.Second) * spell.Unit.DistanceFromTarget / spell.MissileSpeed)
 	}
+}
+
+// Returns true if the given mask matches the spell mask
+func (spell *Spell) Matches(mask int64) bool {
+	return spell.ClassSpellMask&mask > 0
+}
+
+// Applies an additive multiplier to spell base damage. Equivalent to Modifies Spell Effectiveness (8).
+func (spell *Spell) ApplyAdditiveBaseDamageBonus(percent int64) {
+	spell.baseDamageMultiplierAdditivePct += percent
+	spell.updateBaseDamageMultiplier()
+}
+
+func (spell *Spell) SetMultiplicativeDamageBonus(multiplier float64) {
+	spell.damageMultiplier = multiplier
+	spell.updateImpactDamageMultiplier()
+	spell.updatePeriodicDamageMultiplier()
+}
+
+// Applies a multiplicative multiplier to full Direct and Periodic spell damage. Equivalent to Mod Damage Done % or similar effects.
+func (spell *Spell) ApplyMultiplicativeDamageBonus(multiplier float64) {
+	spell.damageMultiplier *= multiplier
+	spell.updateImpactDamageMultiplier()
+	spell.updatePeriodicDamageMultiplier()
+}
+
+func (spell *Spell) SetAdditiveDamageBonus(percent int64) {
+	spell.damageMultiplierAdditivePct = percent
+	spell.updateImpactDamageMultiplier()
+	spell.updatePeriodicDamageMultiplier()
+}
+
+// Applies an additive multiplier to full Direct and Periodic spell damage. Equivalent to Modifies Damage/Healing Done + Modifies Periodic Damage/Healing Done (22).
+func (spell *Spell) ApplyAdditiveDamageBonus(percent int64) {
+	spell.damageMultiplierAdditivePct += percent
+	spell.updateImpactDamageMultiplier()
+	spell.updatePeriodicDamageMultiplier()
+}
+
+// Applies an additive multiplier to just Direct spell damage. Equivalent to Modifies Damage/Healing Done.
+func (spell *Spell) ApplyAdditiveImpactDamageBonus(percent int64) {
+	spell.impactDamageMultiplierAdditivePct += percent
+	spell.updateImpactDamageMultiplier()
+}
+
+// Applies an additive multiplier to just Periodic spell dammage. Equivalent to Modifies Periodic Damage/Healing Done (22).
+func (spell *Spell) ApplyAdditivePeriodicDamageBonus(percent int64) {
+	spell.periodicDamageMultiplierAdditivePct += percent
+	spell.updatePeriodicDamageMultiplier()
+}
+
+func (spell *Spell) updateBaseDamageMultiplier() {
+	spell.baseDamageMultiplier = float64(100+spell.baseDamageMultiplierAdditivePct) / 100.0
+}
+
+func (spell *Spell) updateImpactDamageMultiplier() {
+	spell.impactDamageMultiplier = spell.damageMultiplier * (float64(100+spell.damageMultiplierAdditivePct+spell.impactDamageMultiplierAdditivePct) / 100.0)
+}
+
+func (spell *Spell) updatePeriodicDamageMultiplier() {
+	spell.periodicDamageMultiplier = spell.damageMultiplier * (float64(100+spell.damageMultiplierAdditivePct+spell.periodicDamageMultiplierAdditivePct) / 100.0)
+}
+
+func (spell *Spell) GetBaseDamageMultiplierAdditive() int64 {
+	return spell.baseDamageMultiplierAdditivePct
+}
+
+func (spell *Spell) GetDamageMultiplier() float64 {
+	return spell.damageMultiplier
+}
+
+func (spell *Spell) GetDamageMultiplierAdditive() int64 {
+	return spell.damageMultiplierAdditivePct
+}
+
+func (spell *Spell) GetImpactDamageMultiplierAdditive() int64 {
+	return spell.impactDamageMultiplierAdditivePct
+}
+
+func (spell *Spell) GetPeriodicDamageMultiplierAdditive() int64 {
+	return spell.periodicDamageMultiplierAdditivePct
 }
 
 type CostType uint8

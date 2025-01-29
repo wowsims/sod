@@ -36,21 +36,23 @@ const (
 	SignetOfTheUnseenPath    = 233422
 )
 
-func applyRaptorStrikeDamageEffect(agent core.Agent, modifier float64) {
+func applyRaptorStrikeDamageEffect(agent core.Agent, modifier int64) {
 	hunter := agent.(HunterAgent).GetHunter()
-	hunter.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_HunterRaptorStrikeHit {
-			spell.DamageMultiplierAdditive += modifier
-		}
+
+	hunter.AddStaticMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterRaptorStrikeHit,
+		IntValue:  modifier,
 	})
 }
 
-func applyMultiShotDamageEffect(agent core.Agent, modifier float64) {
+func applyMultiShotDamageEffect(agent core.Agent, modifier int64) {
 	hunter := agent.(HunterAgent).GetHunter()
-	hunter.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_HunterMultiShot {
-			spell.DamageMultiplierAdditive += modifier
-		}
+
+	hunter.AddStaticMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterMultiShot,
+		IntValue:  modifier,
 	})
 }
 
@@ -269,35 +271,35 @@ func init() {
 	})
 
 	core.NewItemEffect(BloodChainGrips, func(agent core.Agent) {
-		applyRaptorStrikeDamageEffect(agent, 0.04)
+		applyRaptorStrikeDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(KnightChainGrips, func(agent core.Agent) {
-		applyRaptorStrikeDamageEffect(agent, 0.04)
+		applyRaptorStrikeDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(GeneralChainGrips, func(agent core.Agent) {
-		applyRaptorStrikeDamageEffect(agent, 0.04)
+		applyRaptorStrikeDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(MarshalChainGrips, func(agent core.Agent) {
-		applyRaptorStrikeDamageEffect(agent, 0.04)
+		applyRaptorStrikeDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(BloodChainVices, func(agent core.Agent) {
-		applyMultiShotDamageEffect(agent, 0.04)
+		applyMultiShotDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(KnightChainVices, func(agent core.Agent) {
-		applyMultiShotDamageEffect(agent, 0.04)
+		applyMultiShotDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(GeneralChainVices, func(agent core.Agent) {
-		applyMultiShotDamageEffect(agent, 0.04)
+		applyMultiShotDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(MarshalChainVices, func(agent core.Agent) {
-		applyMultiShotDamageEffect(agent, 0.04)
+		applyMultiShotDamageEffect(agent, 4)
 	})
 
 	core.NewItemEffect(MaelstromsWrath, func(a core.Agent) {
@@ -406,8 +408,8 @@ func init() {
 			Duration:  time.Second * 20,
 			MaxStacks: 2,
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.Flags.Matches(SpellFlagShot) || spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) && spell.CD.Timer != nil {
-					if spell.SpellCode == SpellCode_HunterRaptorStrike {
+				if spell.Matches(ClassSpellMask_HunterShots) || spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) && spell.CD.Timer != nil {
+					if spell.Matches(ClassSpellMask_HunterRaptorStrike) {
 						spell.CD.QueueReset(sim.CurrentTime)
 					} else {
 						spell.CD.Reset()
@@ -474,7 +476,7 @@ func init() {
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				// Uses same targeting code as multi-shot however the detonations occur at cast time rather than when the shots land
-				if spell.SpellCode == SpellCode_HunterMultiShot {
+				if spell.Matches(ClassSpellMask_HunterMultiShot) {
 					curTarget := sim.Environment.Encounter.TargetUnits[0]
 					for hitIndex := int32(0); hitIndex < maxMultishotTargetsPerCast; hitIndex++ {
 						arcaneDetonation.Cast(sim, curTarget)
@@ -482,7 +484,7 @@ func init() {
 					}
 				}
 				// 1 explosion per target up to 5 targets per carve cast
-				if spell.SpellCode == SpellCode_HunterCarve {
+				if spell.Matches(ClassSpellMask_HunterCarve) {
 					curTarget := sim.Environment.Encounter.TargetUnits[0]
 					for hitIndex := int32(0); hitIndex < maxCarveTargetsPerCast; hitIndex++ {
 						arcaneDetonation.Cast(sim, curTarget)

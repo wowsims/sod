@@ -47,8 +47,9 @@ func (druid *Druid) applySavageRoar() {
 	})
 
 	srSpell := druid.RegisterSpell(Cat, core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_DruidSavageRoar,
+		Flags:          core.SpellFlagAPL,
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 25,
 		},

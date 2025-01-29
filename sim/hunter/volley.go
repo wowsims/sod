@@ -37,17 +37,17 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 	}
 
 	return core.SpellConfig{
-		SpellCode: SpellCode_HunterVolley,
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagChanneled | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_HunterVolley,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagChanneled | core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
-			FlatCost: manaCost,
+			FlatCost:   manaCost,
 			Multiplier: manaCostModifer,
 		},
 		Cast: core.CastConfig{

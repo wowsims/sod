@@ -98,37 +98,19 @@ func (mage *Mage) applyT1Damage4PBonus() {
 		Label:    "S03 - Item - T1 - Mage - Damage 4P Bonus (Arcane)",
 		ActionID: core.ActionID{SpellID: 456398}.WithTag(int32(stats.SchoolIndexArcane)),
 		Duration: auraDuration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.PseudoStats.DamageDealtMultiplier *= damageMultiplierPerSchool
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.PseudoStats.DamageDealtMultiplier /= damageMultiplierPerSchool
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&mage.PseudoStats.DamageDealtMultiplier, damageMultiplierPerSchool)
 
 	fireAura := mage.RegisterAura(core.Aura{
 		Label:    "S03 - Item - T1 - Mage - Damage 4P Bonus (Fire)",
 		ActionID: core.ActionID{SpellID: 456398}.WithTag(int32(stats.SchoolIndexFire)),
 		Duration: auraDuration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.PseudoStats.DamageDealtMultiplier *= damageMultiplierPerSchool
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.PseudoStats.DamageDealtMultiplier /= damageMultiplierPerSchool
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&mage.PseudoStats.DamageDealtMultiplier, damageMultiplierPerSchool)
 
 	frostAura := mage.RegisterAura(core.Aura{
 		Label:    "S03 - Item - T1 - Mage - Damage 4P Bonus (Frost)",
 		ActionID: core.ActionID{SpellID: 456398}.WithTag(int32(stats.SchoolIndexFrost)),
 		Duration: auraDuration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			mage.PseudoStats.DamageDealtMultiplier *= damageMultiplierPerSchool
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			mage.PseudoStats.DamageDealtMultiplier /= damageMultiplierPerSchool
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&mage.PseudoStats.DamageDealtMultiplier, damageMultiplierPerSchool)
 
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
@@ -171,11 +153,7 @@ func (mage *Mage) applyT1Damage6PBonus() {
 			case proto.Mage_Options_MageArmor:
 				mage.PseudoStats.SpiritRegenRateCasting += bonusSpiritRegenRateCasting
 			case proto.Mage_Options_MoltenArmor:
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-					mage.AddStat(stats.SpellPower, bonusSpellPower)
-				} else {
-					mage.AddStatDynamic(sim, stats.SpellPower, bonusSpellPower)
-				}
+				mage.AddBuildPhaseStatDynamic(sim, stats.SpellPower, bonusSpellPower)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -185,11 +163,7 @@ func (mage *Mage) applyT1Damage6PBonus() {
 			case proto.Mage_Options_MageArmor:
 				mage.PseudoStats.SpiritRegenRateCasting -= bonusSpiritRegenRateCasting
 			case proto.Mage_Options_MoltenArmor:
-				if mage.Options.Armor == proto.Mage_Options_MoltenArmor && aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-					mage.AddStat(stats.SpellPower, -bonusSpellPower)
-				} else {
-					mage.AddStatDynamic(sim, stats.SpellPower, -bonusSpellPower)
-				}
+				mage.AddBuildPhaseStatDynamic(sim, stats.SpellPower, -bonusSpellPower)
 			}
 		},
 	}))

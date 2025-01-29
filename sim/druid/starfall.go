@@ -26,11 +26,11 @@ func (druid *Druid) registerStarfallCD() {
 	cooldown := time.Second * 90
 
 	druid.StarfallSplash = druid.RegisterSpell(Any, core.SpellConfig{
-		SpellCode:   SpellCode_DruidStarfallSplash,
-		ActionID:    actionID.WithTag(2),
-		SpellSchool: core.SpellSchoolArcane,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
+		ClassSpellMask: ClassSpellMask_DruidStarfallSplash,
+		ActionID:       actionID.WithTag(2),
+		SpellSchool:    core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskEmpty,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -38,23 +38,24 @@ func (druid *Druid) registerStarfallCD() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Apply the base spell's multipliers to pick up on effects that only affect spells with DoTs
-			spell.DamageMultiplierAdditive += druid.Starfall.PeriodicDamageMultiplierAdditive - 1
+			periodicDamageMultiplier := druid.Starfall.GetPeriodicDamageMultiplierAdditive()
+			spell.ApplyAdditiveDamageBonus(periodicDamageMultiplier)
 
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
 				spell.CalcAndDealDamage(sim, aoeTarget, baseDamageSplash, spell.OutcomeMagicHitAndCrit)
 			}
 
-			spell.DamageMultiplierAdditive -= druid.Starfall.PeriodicDamageMultiplierAdditive - 1
+			spell.ApplyAdditiveDamageBonus(-periodicDamageMultiplier)
 		},
 	})
 
 	druid.StarfallTick = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		SpellCode:   SpellCode_DruidStarfallTick,
-		ActionID:    actionID.WithTag(1),
-		SpellSchool: core.SpellSchoolArcane,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage, // Shown to proc things in-game
-		Flags:       core.SpellFlagBinary,
+		ClassSpellMask: ClassSpellMask_DruidStarfallTick,
+		ActionID:       actionID.WithTag(1),
+		SpellSchool:    core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage, // Shown to proc things in-game
+		Flags:          core.SpellFlagBinary,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -64,20 +65,21 @@ func (druid *Druid) registerStarfallCD() {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 
 			// Apply the base spell's multipliers to pick up on effects that only affect spells with DoTs
-			spell.DamageMultiplierAdditive += druid.Starfall.PeriodicDamageMultiplierAdditive - 1
+			periodicDamageMultiplier := druid.Starfall.GetPeriodicDamageMultiplierAdditive()
+			spell.ApplyAdditiveDamageBonus(periodicDamageMultiplier)
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplierAdditive -= druid.Starfall.PeriodicDamageMultiplierAdditive - 1
+			spell.ApplyAdditiveDamageBonus(-periodicDamageMultiplier)
 
 			druid.StarfallSplash.Cast(sim, target)
 		},
 	})
 
 	druid.Starfall = druid.RegisterSpell(Humanoid|Moonkin, core.SpellConfig{
-		SpellCode:   SpellCode_DruidStarfall,
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL | SpellFlagOmen,
+		ClassSpellMask: ClassSpellMask_DruidStarfall,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL | SpellFlagOmen,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.39,

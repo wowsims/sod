@@ -23,11 +23,12 @@ func (paladin *Paladin) registerDivineStorm() {
 	healthMetrics := paladin.NewHealthMetrics(core.ActionID{SpellID: 407784})
 
 	divineStormSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlag_RV,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_PaladinDivineStorm,
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlag_RV,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.12,
@@ -56,7 +57,7 @@ func (paladin *Paladin) registerDivineStorm() {
 			}
 
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + core.SpellBatchWindow,
+				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
 				Priority: core.ActionPriorityLow,
 				OnAction: func(sim *core.Simulation) {
 					for _, result := range results {
