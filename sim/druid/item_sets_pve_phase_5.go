@@ -131,6 +131,16 @@ func (druid *Druid) applyT2Feral2PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 467207}, // Tracking in APL
 		Label:    label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			for _, dot := range druid.Rake.Dots() {
+				if dot == nil {
+					continue
+				}
+
+				dot.NumberOfTicks += int32(6 / dot.TickLength.Seconds())
+				dot.RecomputeAuraDuration()
+			}
+		},
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_DruidRake,
 		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
