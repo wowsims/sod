@@ -50,41 +50,41 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestProtection-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.85033
-  weights: 0.8773
-  weights: 0.57077
-  weights: 0.0007
+  weights: 0.83863
+  weights: 0.80187
+  weights: 0.24838
+  weights: 0.02921
   weights: 0
-  weights: 0.17337
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0.0922
+  weights: 0.17428
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.17897
-  weights: 1.17286
+  weights: 0.09231
   weights: 0
   weights: 0
-  weights: 0.34059
   weights: 0
-  weights: 14.83903
+  weights: 2.80493
+  weights: 1.14829
   weights: 0
   weights: 0
+  weights: 0.29071
+  weights: 0
+  weights: 13.23249
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.40271
-  weights: 0
-  weights: 0.73364
   weights: 0
   weights: 0
+  weights: 1.72788
   weights: 0
-  weights: 0.05246
+  weights: 0.72575
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: -0.05649
   weights: 0
   weights: 0
   weights: 0
@@ -99,43 +99,43 @@ stat_weights_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1331.59802
-  tps: 2853.18559
+  dps: 1329.28471
+  tps: 2843.79992
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1331.83461
-  tps: 2843.88182
+  dps: 1332.09853
+  tps: 2855.86509
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1407.20433
-  tps: 3007.23634
+  dps: 1406.37724
+  tps: 2997.5457
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 1495.30246
-  tps: 3514.12007
+  dps: 1490.91655
+  tps: 3518.03442
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1113.99916
-  tps: 1988.58268
+  dps: 1116.28993
+  tps: 1991.78012
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1721.42585
-  tps: 4125.69164
+  dps: 1720.2464
+  tps: 4122.05051
  }
 }
 dps_results: {
@@ -225,7 +225,7 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1432.14868
-  tps: 3428.55879
+  dps: 1431.08087
+  tps: 3413.65644
  }
 }
