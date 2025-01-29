@@ -162,9 +162,9 @@ func (ai *ThaddiusAI) ExecuteCustomRotation(sim *core.Simulation) {
 		return
 	}
 	
-		if ai.ChainLightning.IsReady(sim) {
-			ai.Target.WaitUntil(sim, sim.CurrentTime+BossGCD)
-			ai.ChainLightning.Cast(sim, target)
-			return
-		}
+	if ai.ChainLightning.IsReady(sim) {
+		ai.Target.WaitUntil(sim, sim.CurrentTime+BossGCD)
+		ai.ChainLightning.Cast(sim, target)
+		return
+	}
 }

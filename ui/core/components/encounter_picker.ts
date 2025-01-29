@@ -622,6 +622,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 					this.getTargetInput().boolValue = newValue;
 					this.encounter.targetsChangeEmitter.emit(eventID);
 				},
+				reverse: true,
 			});
 		}
 	}

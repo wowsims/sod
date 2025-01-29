@@ -1,8 +1,8 @@
 package naxxramas
 
 func Register() {
+	addNaxx60("SoD/Naxxrammas")
 	addPatchwerk("SoD/Naxxrammas")
-	//addKelThuzad25("SoD/Naxxrammas")
 	addThaddius("SoD/Naxxrammas")
-	//addLoatheb25("SoD/Naxxrammas")
+	addLoatheb("SoD/Naxxrammas")
 }

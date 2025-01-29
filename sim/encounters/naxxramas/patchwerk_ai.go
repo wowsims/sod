@@ -2,7 +2,6 @@ package naxxramas
 
 import (
 	"time"
-
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -38,6 +37,12 @@ func addPatchwerk(bossPrefix string) {
 					Tooltip:     "Click to turn off auto attacks and activate hateful strikes.",
 					InputType:   proto.InputType_Bool,
 				},
+				{
+					Label:       "Percent of Hatefuls Taken",
+					Tooltip:     "What `%` (0-100) of hateful strikes are you targeted by?",
+					InputType:   proto.InputType_Number,
+					NumberValue: 70.0,
+				},
 			},
 		},
 		AI: NewPatchwerkAI(),
@@ -51,6 +56,7 @@ type PatchwerkAI struct {
 	// Unit references
 	Target   *core.Target
 	isHatefulTank  bool
+	hatefulPercent float64
 
 	// Spells
 	HatefulStrikePrimer *core.Spell
@@ -66,8 +72,9 @@ func NewPatchwerkAI() core.AIFactory {
 
 func (ai *PatchwerkAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.Target = target
-
 	ai.isHatefulTank = config.TargetInputs[0].BoolValue
+	ai.hatefulPercent = config.TargetInputs[1].NumberValue / 100.0
+
 	ai.registerHatefulStrikePrimerSpell(ai.Target)
 	ai.registerHatefulStrikeSpell(ai.Target)
 	ai.registerFrenzySpell(ai.Target)
@@ -95,7 +102,7 @@ func (ai *PatchwerkAI) registerHatefulStrikePrimerSpell(target *core.Target) {
 		DamageMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// Spell does nothing but does proc things such as lightning shield. This implementation is currently incorrect because it is proccing thorns.
+			// Spell does nothing but does proc things such as lightning shield.
 		},
 	})
 }
@@ -170,15 +177,20 @@ func (ai *PatchwerkAI) ExecuteCustomRotation(sim *core.Simulation) {
 	if ai.HatefulStrikePrimer.IsReady(sim) {
 		ai.HatefulStrikePrimer.Cast(sim, target)
 	}
-	if ai.isHatefulTank {
-		ai.Target.AutoAttacks.CancelAutoSwing(sim)
-		if ai.HatefulStrike.IsReady(sim) {
-			ai.HatefulStrike.Cast(sim, target)
-		}
-	}
-
+	
 	if ai.Frenzy.IsReady(sim) && sim.GetRemainingDurationPercent() < 0.05 {
 		ai.Frenzy.Cast(sim, target)
 	}
 
+	if ai.isHatefulTank {
+		ai.Target.AutoAttacks.CancelAutoSwing(sim)
+		 
+		if ai.HatefulStrike.IsReady(sim) {
+			if sim.Proc(ai.hatefulPercent, "Hateful Strike Target Chance") {
+				ai.HatefulStrike.Cast(sim, target)
+				return
+			}
+			ai.Target.WaitUntil(sim, sim.CurrentTime + 1200 * time.Millisecond)
+		}
+	}
 }
