@@ -135,7 +135,7 @@ func (warrior *Warrior) registerBerserkerStanceAura() {
 		},
 		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			ee.Aura.Unit.PseudoStats.ThreatMultiplier /= 0.8
-			ee.Aura.Unit.PseudoStats.DamageTakenMultiplier *= 1.1
+			ee.Aura.Unit.PseudoStats.DamageTakenMultiplier /= 1.1
 			ee.Aura.Unit.AddStatDynamic(sim, stats.MeleeCrit, -core.CritRatingPerCritChance*3)
 		},
 	})

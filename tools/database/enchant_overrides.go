@@ -245,7 +245,7 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 1897, SpellId: 20031, Name: "Enchant Weapon - Superior Striking", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon},
 
 	// 2H Weapon
-	{EffectId: 34, SpellId: 7218, Name: "Iron Counterweight", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.MeleeHaste: 3}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeTwoHand},
+	{EffectId: 34, SpellId: 7218, Name: "Iron Counterweight", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeTwoHand},
 	{EffectId: 723, SpellId: 7793, Name: "Enchant 2H Weapon - Lesser Intellect", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Intellect: 3}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeTwoHand},
 	{EffectId: 241, SpellId: 7745, Name: "Enchant 2H Weapon - Minor Impact", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeTwoHand},
 	{EffectId: 255, SpellId: 13380, Name: "Enchant 2H Weapon - Lesser Spirit", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Spirit: 3}.ToFloatArray(), Type: proto.ItemType_ItemTypeWeapon, EnchantType: proto.EnchantType_EnchantTypeTwoHand},

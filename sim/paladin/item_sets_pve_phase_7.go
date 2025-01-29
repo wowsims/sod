@@ -39,6 +39,7 @@ func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 
 	paladin.RegisterAura(core.Aura{
 		Label: label,
+		ActionID: core.ActionID{SpellID: PaladinT3Ret2P},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			paladin.divineStorm.DamageMultiplierAdditive += 1.0
 		},
@@ -54,6 +55,7 @@ func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 
 	paladin.RegisterAura(core.Aura{
 		Label: label,
+		ActionID: core.ActionID{SpellID: PaladinT3Ret4P},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range paladin.holyWrath {
 				spell.CastTimeMultiplier -= 1
@@ -73,6 +75,7 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 
 	paladin.RegisterAura(core.Aura{
 		Label: label,
+		ActionID: core.ActionID{SpellID: PaladinT3Ret6P},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			affectedSpells := paladin.exorcism
 			affectedSpells = append(affectedSpells, paladin.holyWrath...)
@@ -86,21 +89,25 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 			for _, spell := range affectedSpells {
 				oldApplyEffects := spell.ApplyEffects
 				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					critChanceBonus := 0.0
+					critChanceBonus := 1.0
 
 					if target.MobType == proto.MobType_MobTypeUndead {
 						if spell.SpellCode == SpellCode_PaladinExorcism || spell.SpellCode == SpellCode_PaladinHolyWrath {
-							critChanceBonus = paladin.GetStat(stats.SpellCrit)/100.0 + paladin.GetSchoolBonusCritChance(spell)/100.0
+							critChanceBonus += spell.SpellCritChance(target)
+							if spell.SpellCode == SpellCode_PaladinExorcism {
+								critChanceBonus += 1.0
+							}
+							if paladin.hasRune(proto.PaladinRune_RuneHeadWrath) {
+								critChanceBonus += paladin.GetStat(stats.MeleeCrit) / 100.0
+							}
 						} else {
-							critChanceBonus = paladin.GetStat(stats.MeleeCrit) / 100.0
+							critChanceBonus += (paladin.GetStat(stats.MeleeCrit) + spell.BonusCritRating) / 100.0
 						}
 					}
 
-					critChanceBonus = min(critChanceBonus, 1.0)
-
-					spell.DamageMultiplierAdditive += critChanceBonus
+					spell.DamageMultiplier *= critChanceBonus
 					oldApplyEffects(sim, target, spell)
-					spell.DamageMultiplierAdditive -= critChanceBonus
+					spell.DamageMultiplier /= critChanceBonus
 				}
 			}
 		},

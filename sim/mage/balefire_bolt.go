@@ -45,7 +45,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 			}
 
 			if newStacks == aura.MaxStacks {
-				mage.RemoveHealth(sim, mage.CurrentHealth())
+				mage.RemoveHealth(sim, mage.CurrentHealth(), mage.DamageTakenHealthMetrics)
 
 				if sim.Log != nil {
 					mage.Log(sim, "YOU DIED")

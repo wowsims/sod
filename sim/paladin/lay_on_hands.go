@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (paladin *Paladin) registerLayOnHands() {
@@ -46,6 +47,10 @@ func (paladin *Paladin) registerLayOnHands() {
 			paladin.AddMana(sim, manaReturn, layOnHandsManaMetrics)
 		},
 	})
+	
+	if paladin.Spec == proto.Spec_SpecRetributionPaladin {
+		return
+	}
 
 	paladin.AddMajorCooldown(core.MajorCooldown{
 		Spell:    paladin.layOnHands,
