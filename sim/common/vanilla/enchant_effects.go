@@ -332,6 +332,7 @@ func init() {
 		strBonus := 100.0 - 4.0*float64(character.Level-60)
 		mhAura := character.NewTemporaryStatsAura("Crusader Enchant MH", core.ActionID{SpellID: 20007, Tag: 1}, stats.Stats{stats.Strength: strBonus}, time.Second*15)
 		ohAura := character.NewTemporaryStatsAura("Crusader Enchant OH", core.ActionID{SpellID: 20007, Tag: 2}, stats.Stats{stats.Strength: strBonus}, time.Second*15)
+		healthMetrics := character.NewHealthMetrics(core.ActionID{SpellID: 20007})
 
 		aura := character.GetOrRegisterAura(core.Aura{
 			Label:    "Crusader Enchant",
@@ -349,6 +350,7 @@ func init() {
 					} else {
 						ohAura.Activate(sim)
 					}
+					character.GainHealth(sim, sim.RollWithLabel(75, 125, "Crusader Heal"), healthMetrics)
 				}
 			},
 		})
