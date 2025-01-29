@@ -2,7 +2,6 @@ package item_effects
 
 import (
 	"fmt"
-	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/sod"
@@ -632,7 +631,7 @@ func TimewornSpellAura(agent core.Agent) {
 		return
 	}
 
-	castSpeedMultiplier := math.Pow((1 + 0.02), float64(character.PseudoStats.TimewornBonus))
+	castSpeedMultiplier := 1 + 0.02*float64(character.PseudoStats.TimewornBonus)
 
 	core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213398},
