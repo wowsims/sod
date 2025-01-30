@@ -77,16 +77,13 @@ func (rogue *Rogue) applyNaxxramasDamage6PBonus() {
 		return
 	}
 
-	var undeadTargets []*core.Unit
+	undeadTargets := core.FilterSlice(rogue.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
 
 	buffAura := rogue.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1219291},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
 		MaxStacks: 25,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			undeadTargets = core.FilterSlice(rogue.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			for _, unit := range undeadTargets {
 				rogue.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
