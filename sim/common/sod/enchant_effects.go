@@ -132,7 +132,7 @@ func init() {
 	})
 
 	// Obsidian Scope
-	core.AddWeaponEffect(7657, func(agent core.Agent, _ proto.ItemSlot) {
+	core.AddWeaponEffect(7657, func(agent core.Agent) {
 		w := agent.GetCharacter().AutoAttacks.Ranged()
 		w.BaseDamageMin += 10
 		w.BaseDamageMax += 10

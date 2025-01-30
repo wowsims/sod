@@ -5,6 +5,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -309,6 +310,42 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 	}
 
 	return character.GetOrRegisterAura(config)
+}
+
+type DynamicEquipEffectConfig struct {
+	Label          string
+	EffectID       int32
+	OnStacksChange func(aura *Aura, sim *Simulation, prevCount int32, newCount int32)
+}
+
+// Creates a new Aura that tracks the number of enchants on the character
+// and updates based on the count when item swapping
+func (character *Character) NewDynamicEquipEffectAura(config DynamicEquipEffectConfig) *Aura {
+	possibleSlots := character.Equipment.EligibleSlotsForEffect(config.EffectID)
+	totalCount := int32(len(possibleSlots))
+
+	aura := character.RegisterAura(Aura{
+		Label:          config.Label,
+		MaxStacks:      totalCount,
+		BuildPhase:     CharacterBuildPhaseGear,
+		OnStacksChange: config.OnStacksChange,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			newCount := character.Equipment.GetEnchantCount(config.EffectID)
+			aura.SetStacks(sim, newCount)
+		},
+	})
+
+	if totalCount > 0 {
+		aura = MakePermanent(aura)
+	}
+	character.RegisterItemSwapCallback(possibleSlots, func(sim *Simulation, slot proto.ItemSlot) {
+		if aura.IsActive() {
+			newCount := character.Equipment.GetEnchantCount(config.EffectID)
+			aura.SetStacks(sim, newCount)
+		}
+	})
+
+	return aura
 }
 
 func ApplyFixedUptimeAura(aura *Aura, uptime float64, tickLength time.Duration, startTime time.Duration) {

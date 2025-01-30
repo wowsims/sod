@@ -253,6 +253,30 @@ func (equipment *Equipment) containsItemInSlots(itemID int32, possibleSlots []pr
 	})
 }
 
+func (equipment *Equipment) GetEnchantCount(effectID int32) int32 {
+	count := int32(0)
+
+	for itemSlot := proto.ItemSlot(0); itemSlot < NumItemSlots; itemSlot++ {
+		if equipment.containsEnchantInSlot(effectID, itemSlot) {
+			count++
+		}
+	}
+
+	return count
+}
+
+func (equipment *Equipment) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
+	var eligibleSlots []proto.ItemSlot
+
+	for itemSlot := proto.ItemSlot(0); itemSlot < NumItemSlots; itemSlot++ {
+		if equipment.containsEnchantInSlot(effectID, itemSlot) {
+			eligibleSlots = append(eligibleSlots, itemSlot)
+		}
+	}
+
+	return eligibleSlots
+}
+
 func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
 	return &proto.EquipmentSpec{
 		Items: MapSlice(equipment[:], func(item Item) *proto.ItemSpec {

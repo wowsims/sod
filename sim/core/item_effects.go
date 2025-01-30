@@ -16,11 +16,8 @@ import (
 // but there are occasionally class-specific item effects.
 type ApplyEffect func(agent Agent)
 
-// Function for applying permanent effects to an agent's weapon
-type ApplyWeaponEffect func(agent Agent, slot proto.ItemSlot)
-
 var itemEffects = map[int32]ApplyEffect{}
-var weaponEffects = map[int32]ApplyWeaponEffect{}
+var weaponEffects = map[int32]ApplyEffect{}
 var enchantEffects = map[int32]ApplyEffect{}
 
 // IDs of item effects which should be used for tests.
@@ -80,7 +77,7 @@ func NewEnchantEffect(id int32, enchantEffect ApplyEffect) {
 	enchantEffects[id] = enchantEffect
 }
 
-func AddWeaponEffect(id int32, weaponEffect ApplyWeaponEffect) {
+func AddWeaponEffect(id int32, weaponEffect ApplyEffect) {
 	if WITH_DB {
 		if _, ok := EnchantsByEffectID[id]; !ok {
 			panic(fmt.Sprintf("No enchant with ID: %d", id))
@@ -93,7 +90,14 @@ func AddWeaponEffect(id int32, weaponEffect ApplyWeaponEffect) {
 }
 
 func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects map[int32]bool, registeredItemEnchantEffects map[int32]bool) {
-	for slot, eq := range equipment {
+	for _, eq := range equipment {
+		if registeredItemEnchantEffects == nil {
+			registeredItemEnchantEffects = map[int32]bool{}
+		}
+		if registeredItemEffects == nil {
+			registeredItemEffects = map[int32]bool{}
+		}
+
 		if applyItemEffect, ok := itemEffects[eq.ID]; ok && !registeredItemEffects[eq.ID] {
 			applyItemEffect(agent)
 			registeredItemEffects[eq.ID] = true
@@ -105,10 +109,9 @@ func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects 
 		}
 
 		if applyWeaponEffect, ok := weaponEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
-			applyWeaponEffect(agent, proto.ItemSlot(slot))
+			applyWeaponEffect(agent)
 			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
 		}
-
 	}
 }
 

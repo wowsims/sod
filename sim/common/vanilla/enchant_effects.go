@@ -1,6 +1,7 @@
 package vanilla
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -16,14 +17,14 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 
 	// Ranged Scopes
-	core.AddWeaponEffect(32, func(agent core.Agent, _ proto.ItemSlot) {
+	core.AddWeaponEffect(32, func(agent core.Agent) {
 		w := agent.GetCharacter().AutoAttacks.Ranged()
 		w.BaseDamageMin += 2
 		w.BaseDamageMax += 2
 	})
 
 	// Accurate Scope
-	core.AddWeaponEffect(33, func(agent core.Agent, _ proto.ItemSlot) {
+	core.AddWeaponEffect(33, func(agent core.Agent) {
 		w := agent.GetCharacter().AutoAttacks.Ranged()
 		w.BaseDamageMin += 3
 		w.BaseDamageMax += 3
@@ -69,36 +70,36 @@ func init() {
 	})
 
 	// Weapon - Lesser Striking
-	core.AddWeaponEffect(241, func(agent core.Agent, slot proto.ItemSlot) {
-		registerStrikingEnchantEffect(agent.GetCharacter(), "Lesser Striking", 241, slot, 2)
+	core.AddWeaponEffect(241, func(agent core.Agent) {
+		registerStrikingEnchantEffect(agent.GetCharacter(), "Lesser Striking", 241, 2)
 	})
 
 	// Weapon - Beast Slaying
-	core.AddWeaponEffect(249, func(agent core.Agent, slot proto.ItemSlot) {
-		registerSlayerEnchantEffect(agent.GetCharacter(), "Beast Slaying", 249, proto.MobType_MobTypeBeast, slot, 2)
+	core.AddWeaponEffect(249, func(agent core.Agent) {
+		registerSlayerEnchantEffect(agent.GetCharacter(), "Beast Slaying", 249, proto.MobType_MobTypeBeast, 2)
 	})
 
 	// Weapon - Minor Striking
-	core.AddWeaponEffect(250, func(agent core.Agent, slot proto.ItemSlot) {
-		registerStrikingEnchantEffect(agent.GetCharacter(), "Minor Striking", 250, slot, 1)
+	core.AddWeaponEffect(250, func(agent core.Agent) {
+		registerStrikingEnchantEffect(agent.GetCharacter(), "Minor Striking", 250, 1)
 	})
 
 	// Deadly Scope
-	core.AddWeaponEffect(663, func(agent core.Agent, _ proto.ItemSlot) {
+	core.AddWeaponEffect(663, func(agent core.Agent) {
 		w := agent.GetCharacter().AutoAttacks.Ranged()
 		w.BaseDamageMin += 5
 		w.BaseDamageMax += 5
 	})
 
 	// Sniper Scope
-	core.AddWeaponEffect(664, func(agent core.Agent, _ proto.ItemSlot) {
+	core.AddWeaponEffect(664, func(agent core.Agent) {
 		w := agent.GetCharacter().AutoAttacks.Ranged()
 		w.BaseDamageMin += 7
 		w.BaseDamageMax += 7
 	})
 
 	// Weapon - Fiery Weapon
-	core.AddWeaponEffect(803, func(agent core.Agent, _ proto.ItemSlot) {
+	core.AddWeaponEffect(803, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee proc combo
@@ -135,18 +136,18 @@ func init() {
 	})
 
 	// Weapon - Greater Striking
-	core.AddWeaponEffect(805, func(agent core.Agent, slot proto.ItemSlot) {
-		registerStrikingEnchantEffect(agent.GetCharacter(), "Greater Striking", 805, slot, 4)
+	core.AddWeaponEffect(805, func(agent core.Agent) {
+		registerStrikingEnchantEffect(agent.GetCharacter(), "Greater Striking", 805, 4)
 	})
 
 	// Weapon - Lesser Beastslayer
-	core.AddWeaponEffect(853, func(agent core.Agent, slot proto.ItemSlot) {
-		registerSlayerEnchantEffect(agent.GetCharacter(), "Lesser Beast Slaying", 853, proto.MobType_MobTypeBeast, slot, 6)
+	core.AddWeaponEffect(853, func(agent core.Agent) {
+		registerSlayerEnchantEffect(agent.GetCharacter(), "Lesser Beast Slaying", 853, proto.MobType_MobTypeBeast, 6)
 	})
 
 	// Weapon - Lesser Elemental Slayer
-	core.AddWeaponEffect(854, func(agent core.Agent, slot proto.ItemSlot) {
-		registerSlayerEnchantEffect(agent.GetCharacter(), "Lesser Elemental Slaying", 854, proto.MobType_MobTypeElemental, slot, 6)
+	core.AddWeaponEffect(854, func(agent core.Agent) {
+		registerSlayerEnchantEffect(agent.GetCharacter(), "Lesser Elemental Slaying", 854, proto.MobType_MobTypeElemental, 6)
 	})
 
 	// Boots - Minor Speed
@@ -176,26 +177,31 @@ func init() {
 	// Effect #34 explicitly does NOT affect ranged attack speed
 	core.NewEnchantEffect(34, func(agent core.Agent) {
 		character := agent.GetCharacter()
+		character.NewDynamicEquipEffectAura(core.DynamicEquipEffectConfig{
+			EffectID: 34,
+			Label:    "Weapon Counterweight",
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+				character.PseudoStats.MeleeSpeedMultiplier *= 1 / math.Pow(1.03, float64(oldStacks))
+				character.PseudoStats.RangedSpeedMultiplier *= 1 / math.Pow(1.03, float64(oldStacks))
 
-		aura := core.MakePermanent(character.RegisterAura(core.Aura{
-			Label: "Weapon Counterweight",
-		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.MeleeSpeedMultiplier, 1.03))
-
-		character.ItemSwap.RegisterEnchantProc(34, aura)
+				character.PseudoStats.MeleeSpeedMultiplier *= math.Pow(1.03, float64(newStacks))
+				character.PseudoStats.RangedSpeedMultiplier *= math.Pow(1.03, float64(newStacks))
+			},
+		})
 	})
 
 	// Weapon - Striking
-	core.AddWeaponEffect(943, func(agent core.Agent, slot proto.ItemSlot) {
-		registerStrikingEnchantEffect(agent.GetCharacter(), "Striking", 943, slot, 3)
+	core.AddWeaponEffect(943, func(agent core.Agent) {
+		registerStrikingEnchantEffect(agent.GetCharacter(), "Striking", 943, 3)
 	})
 
 	// Weapon - Superior Striking
-	core.AddWeaponEffect(1897, func(agent core.Agent, slot proto.ItemSlot) {
-		registerStrikingEnchantEffect(agent.GetCharacter(), "Superior Striking", 1897, slot, 5)
+	core.AddWeaponEffect(1897, func(agent core.Agent) {
+		registerStrikingEnchantEffect(agent.GetCharacter(), "Superior Striking", 1897, 5)
 	})
 
 	// Weapon - Lifestealing
-	core.AddWeaponEffect(1898, func(agent core.Agent, slot proto.ItemSlot) {
+	core.NewEnchantEffect(1898, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee proc combo
@@ -267,18 +273,28 @@ func init() {
 	})
 
 	// Biznicks 247x128 Accurascope
-	core.AddWeaponEffect(2523, func(agent core.Agent, _ proto.ItemSlot) {
+	core.AddWeaponEffect(2523, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		character.AddBonusRangedHitRating(3)
 	})
 
-	// Gloves - Libram of Rapidity
+	// Head/Legs - Arcanum of Rapidity
 	// Confirmed to mod both melee and ranged speed
 	core.NewEnchantEffect(2543, func(agent core.Agent) {
 		character := agent.GetCharacter()
+		character.NewDynamicEquipEffectAura(core.DynamicEquipEffectConfig{
+			EffectID: 2543,
+			Label:    "Arcanum of Rapidity",
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+				oldMulti := math.Pow(1.01, float64(oldStacks))
+				newMulti := math.Pow(1.01, float64(newStacks))
+				character.PseudoStats.MeleeSpeedMultiplier *= 1 / oldMulti
+				character.PseudoStats.RangedSpeedMultiplier *= 1 / oldMulti
 
-		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
-		character.PseudoStats.RangedSpeedMultiplier *= 1.01
+				character.PseudoStats.MeleeSpeedMultiplier *= newMulti
+				character.PseudoStats.RangedSpeedMultiplier *= newMulti
+			},
+		})
 	})
 
 	// Gloves - Threat
@@ -302,71 +318,83 @@ func init() {
 	core.AddEffectsToTest = true
 }
 
-func registerStrikingEnchantEffect(character *core.Character, label string, effectID int32, slot proto.ItemSlot, bonus float64) {
-	aura := core.MakePermanent(character.RegisterAura(core.Aura{
-		Label: label,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			w := character.AutoAttacks.MH()
-			if slot == proto.ItemSlot_ItemSlotOffHand {
-				w = character.AutoAttacks.OH()
-			}
-			w.BaseDamageMin += bonus
-			w.BaseDamageMax += bonus
+func registerStrikingEnchantEffect(character *core.Character, label string, effectID int32, bonus float64) {
+	applyWeaponBonus := func(weapon *core.Weapon, bonus float64) {
+		weapon.BaseDamageMin += bonus
+		weapon.BaseDamageMax += bonus
+	}
 
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			w := character.AutoAttacks.MH()
-			if slot == proto.ItemSlot_ItemSlotOffHand {
-				w = character.AutoAttacks.OH()
-			}
-			w.BaseDamageMin -= bonus
-			w.BaseDamageMax -= bonus
-		},
-	}))
+	makeItemSlotAura := func(itemSlotProcMask core.ProcMask) *core.Aura {
+		var weapon *core.Weapon
+		switch {
+		case itemSlotProcMask.Matches(core.ProcMaskMeleeMH):
+			weapon = character.AutoAttacks.MH()
+			label += " MH"
+		case itemSlotProcMask.Matches(core.ProcMaskMeleeOH):
+			weapon = character.AutoAttacks.OH()
+			label += " OH"
+		}
 
-	character.ItemSwap.RegisterEnchantProc(effectID, aura)
+		return core.MakePermanent(character.RegisterAura(core.Aura{
+			Label: label,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				applyWeaponBonus(weapon, bonus)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				applyWeaponBonus(weapon, -bonus)
+			},
+		}))
+	}
+
+	mhAura := makeItemSlotAura(core.ProcMaskMeleeMH)
+	ohAura := makeItemSlotAura(core.ProcMaskMeleeOH)
+
+	character.ItemSwap.RegisterEnchantProcWithSlots(effectID, mhAura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
+	character.ItemSwap.RegisterEnchantProcWithSlots(effectID, ohAura, []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand})
 }
 
-func registerSlayerEnchantEffect(character *core.Character, label string, effectID int32, mobType proto.MobType, slot proto.ItemSlot, bonus float64) {
-	aura := character.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if character.CurrentTarget.MobType == mobType {
-				aura.Activate(sim)
-			}
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if character.CurrentTarget.MobType != mobType {
-				aura.Deactivate(sim)
-			}
+func registerSlayerEnchantEffect(character *core.Character, label string, effectID int32, mobType proto.MobType, bonus float64) {
+	applyWeaponBonus := func(weapon *core.Weapon, bonus float64) {
+		weapon.BaseDamageMin += bonus
+		weapon.BaseDamageMax += bonus
+	}
 
-			w := character.AutoAttacks.MH()
-			if slot == proto.ItemSlot_ItemSlotOffHand {
-				w = character.AutoAttacks.OH()
-			}
+	makeItemSlotAura := func(itemSlotProcMask core.ProcMask) *core.Aura {
+		var weapon *core.Weapon
+		rangedWeapon := character.AutoAttacks.Ranged()
+		switch {
+		case itemSlotProcMask.Matches(core.ProcMaskMeleeMH):
+			weapon = character.AutoAttacks.MH()
+			label += " MH"
+		case itemSlotProcMask.Matches(core.ProcMaskMeleeOH):
+			weapon = character.AutoAttacks.OH()
+			label += " OH"
+		}
 
-			w.BaseDamageMin += bonus
-			w.BaseDamageMax += bonus
+		return character.RegisterAura(core.Aura{
+			Label: label,
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				if character.CurrentTarget.MobType == mobType {
+					aura.Activate(sim)
+				}
+			},
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				if character.CurrentTarget.MobType != mobType {
+					aura.Deactivate(sim)
+				}
+				applyWeaponBonus(weapon, bonus)
+				applyWeaponBonus(rangedWeapon, bonus)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				applyWeaponBonus(weapon, -bonus)
+				applyWeaponBonus(rangedWeapon, -bonus)
+			},
+		})
+	}
 
-			w = character.AutoAttacks.Ranged()
-			w.BaseDamageMin += bonus
-			w.BaseDamageMax += bonus
+	mhAura := makeItemSlotAura(core.ProcMaskMeleeMH)
+	ohAura := makeItemSlotAura(core.ProcMaskMeleeOH)
 
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			w := character.AutoAttacks.MH()
-			if slot == proto.ItemSlot_ItemSlotOffHand {
-				w = character.AutoAttacks.OH()
-			}
-
-			w.BaseDamageMin -= bonus
-			w.BaseDamageMax -= bonus
-
-			w = character.AutoAttacks.Ranged()
-			w.BaseDamageMin -= bonus
-			w.BaseDamageMax -= bonus
-		},
-	})
-
-	character.ItemSwap.RegisterEnchantProc(effectID, aura)
+	character.ItemSwap.RegisterEnchantProcWithSlots(effectID, mhAura, []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
+	character.ItemSwap.RegisterEnchantProcWithSlots(effectID, ohAura, []proto.ItemSlot{proto.ItemSlot_ItemSlotOffHand})
 }
