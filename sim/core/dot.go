@@ -276,8 +276,7 @@ func newDot(config Dot) *Dot {
 		if dot.isChanneled {
 			dot.Spell.Unit.ChanneledDot = dot
 		}
-	})
-	dot.Aura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
 		if dot.tickAction != nil {
 			dot.tickAction.Cancel(sim)
 			dot.tickAction = nil

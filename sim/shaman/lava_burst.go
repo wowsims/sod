@@ -30,7 +30,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 	cooldown := time.Second * 8
 	manaCost := .10
 
-	flags := SpellFlagShaman
+	var flags core.SpellFlag
 	if !isOverload {
 		flags |= core.SpellFlagAPL | SpellFlagMaelstrom
 	}
@@ -85,9 +85,9 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 
-			damageMultiplier := 0.0
+			critChanceBonusPct := 100.0
 			if shaman.useLavaBurstCritScaling {
-				damageMultiplier = shaman.GetStat(stats.SpellCrit) / 100
+				critChanceBonusPct += shaman.GetStat(stats.SpellCrit)
 			}
 
 			flameShockActive := false
@@ -102,16 +102,16 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 				}
 			}
 
-			spell.DamageMultiplierAdditive += damageMultiplier
 			if flameShockActive {
-				spell.BonusCritRating += 100 * core.SpellCritRatingPerCritChance
+				spell.BonusCritRating += 100.0 * core.SpellCritRatingPerCritChance
 			}
 
+			spell.ApplyMultiplicativeDamageBonus(critChanceBonusPct / 100)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.ApplyMultiplicativeDamageBonus(100 / critChanceBonusPct)
 
-			spell.DamageMultiplierAdditive -= damageMultiplier
 			if flameShockActive {
-				spell.BonusCritRating -= 100 * core.SpellCritRatingPerCritChance
+				spell.BonusCritRating -= 100.0 * core.SpellCritRatingPerCritChance
 			}
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {

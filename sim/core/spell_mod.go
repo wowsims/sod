@@ -15,6 +15,7 @@ type SpellModConfig struct {
 	School            SpellSchool
 	SpellFlags        SpellFlag
 	SpellFlagsExclude SpellFlag
+	DefenseType       DefenseType
 	ProcMask          ProcMask
 	IntValue          int64
 	TimeValue         time.Duration
@@ -30,6 +31,7 @@ type SpellMod struct {
 	School            SpellSchool
 	SpellFlags        SpellFlag
 	SpellFlagsExclude SpellFlag
+	DefenseType       DefenseType
 	ProcMask          ProcMask
 	floatValue        float64
 	intValue          int64
@@ -75,6 +77,7 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		School:            config.School,
 		SpellFlags:        config.SpellFlags,
 		SpellFlagsExclude: config.SpellFlagsExclude,
+		DefenseType:       config.DefenseType,
 		ProcMask:          config.ProcMask,
 		floatValue:        config.FloatValue,
 		intValue:          config.IntValue,
@@ -110,6 +113,10 @@ func (unit *Unit) AddDynamicMod(config SpellModConfig) *SpellMod {
 func shouldApply(spell *Spell, mod *SpellMod) bool {
 
 	if spell.Flags.Matches(SpellFlagNoSpellMods) {
+		return false
+	}
+
+	if mod.DefenseType > 0 && spell.DefenseType != mod.DefenseType {
 		return false
 	}
 
@@ -297,6 +304,14 @@ const (
 	// Uses: FloatValue
 	SpellMod_BonusExpertise_Rating
 
+	// Increases or decreases spell.ThreatMultiplier by flat amount
+	// Uses: FloatValue
+	SpellMod_Threat_Flat
+
+	// Increases or decreases the spell.ThreatMultiplier by % amount. +50% = 0.5
+	// Uses: FloatValue
+	SpellMod_Threat_Pct
+
 	// Add/subtract duration for associated debuff
 	// Uses: KeyValue, TimeValue
 	SpellMod_DebuffDuration_Flat
@@ -416,53 +431,63 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 		Remove: removeBonusDamageFlat,
 	},
 
+	SpellMod_Threat_Flat: {
+		Apply:  applyThreatFlat,
+		Remove: removeThreatFlat,
+	},
+
+	SpellMod_Threat_Pct: {
+		Apply:  applyThreatPct,
+		Remove: removeThreatPct,
+	},
+
 	SpellMod_Custom: {
 		// Doesn't have dedicated Apply/Remove functions as ApplyCustom/RemoveCustom is handled in buildMod()
 	},
 }
 
 func applyDamageDonePercent(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplier *= 1 + mod.floatValue
+	spell.ApplyMultiplicativeDamageBonus(mod.floatValue)
 }
 
 func removeDamageDonePercent(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplier /= 1 + mod.floatValue
+	spell.ApplyMultiplicativeDamageBonus(1 / mod.floatValue)
 }
 
 func applyDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplierAdditive += mod.floatValue
+	spell.ApplyAdditiveDamageBonus(mod.intValue)
 }
 
 func removeDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.DamageMultiplierAdditive -= mod.floatValue
+	spell.ApplyAdditiveDamageBonus(-mod.intValue)
 }
 
 func applyBaseDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.BaseDamageMultiplierAdditive += mod.floatValue
+	spell.ApplyAdditiveBaseDamageBonus(mod.intValue)
 }
 
 func removeBaseDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.BaseDamageMultiplierAdditive -= mod.floatValue
+	spell.ApplyAdditiveBaseDamageBonus(-mod.intValue)
 }
 
 func applyPeriodicDamageDoneAdd(mod *SpellMod, spell *Spell) {
 	if len(spell.Dots()) > 0 {
-		spell.PeriodicDamageMultiplierAdditive += mod.floatValue
+		spell.ApplyAdditivePeriodicDamageBonus(mod.intValue)
 	}
 }
 
 func removePeriodicDamageDoneAdd(mod *SpellMod, spell *Spell) {
 	if len(spell.Dots()) > 0 {
-		spell.PeriodicDamageMultiplierAdditive -= mod.floatValue
+		spell.ApplyAdditivePeriodicDamageBonus(-mod.intValue)
 	}
 }
 
 func applyImpactDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.ImpactDamageMultiplierAdditive += mod.floatValue
+	spell.ApplyAdditiveImpactDamageBonus(mod.intValue)
 }
 
 func removeImpactDamageDoneAdd(mod *SpellMod, spell *Spell) {
-	spell.ImpactDamageMultiplierAdditive -= mod.floatValue
+	spell.ApplyAdditiveImpactDamageBonus(-mod.intValue)
 }
 
 func applyCritDamageBonusAdd(mod *SpellMod, spell *Spell) {
@@ -522,11 +547,15 @@ func removeCooldownMultiplierPct(mod *SpellMod, spell *Spell) {
 }
 
 func applyCastTimePercent(mod *SpellMod, spell *Spell) {
-	spell.CastTimeMultiplier += mod.floatValue
+	if spell.DefaultCast.CastTime > 0 {
+		spell.CastTimeMultiplier += mod.floatValue
+	}
 }
 
 func removeCastTimePercent(mod *SpellMod, spell *Spell) {
-	spell.CastTimeMultiplier -= mod.floatValue
+	if spell.DefaultCast.CastTime > 0 {
+		spell.CastTimeMultiplier -= mod.floatValue
+	}
 }
 
 func applyCastTimeFlat(mod *SpellMod, spell *Spell) {
@@ -647,10 +676,27 @@ func applyBonusCoefficientFlat(mod *SpellMod, spell *Spell) {
 func removeBonusCoefficientFlat(mod *SpellMod, spell *Spell) {
 	spell.BonusCoefficient -= mod.floatValue
 }
+
 func applyBonusDamageFlat(mod *SpellMod, spell *Spell) {
 	spell.BonusDamage += mod.floatValue
 }
 
 func removeBonusDamageFlat(mod *SpellMod, spell *Spell) {
 	spell.BonusDamage -= mod.floatValue
+}
+
+func applyThreatFlat(mod *SpellMod, spell *Spell) {
+	spell.ThreatMultiplier += mod.floatValue
+}
+
+func removeThreatFlat(mod *SpellMod, spell *Spell) {
+	spell.ThreatMultiplier -= mod.floatValue
+}
+
+func applyThreatPct(mod *SpellMod, spell *Spell) {
+	spell.ThreatMultiplier *= mod.floatValue
+}
+
+func removeThreatPct(mod *SpellMod, spell *Spell) {
+	spell.ThreatMultiplier /= mod.floatValue
 }

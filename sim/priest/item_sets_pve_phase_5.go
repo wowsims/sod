@@ -38,12 +38,13 @@ func (priest *Priest) applyT2Shadow2PBonus() {
 		return
 	}
 
-	priest.RegisterAura(core.Aura{
+	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			priest.ShadowWordDeath.CD.FlatModifier -= time.Second * 6
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_PriestShadowWordDeath,
+		TimeValue: -time.Second * 6,
+	}))
 }
 
 // Your Shadow Word: Pain has a 2% chance per talent point in Spirit Tap to trigger your Spirit Tap talent when it deals damage,
@@ -62,21 +63,21 @@ func (priest *Priest) applyT2Shadow4PBonus() {
 
 	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if priest.Talents.InnerFocus {
-				oldApplyEffects := priest.InnerFocus.ApplyEffects
-				priest.InnerFocus.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					oldApplyEffects(sim, target, spell)
-					priest.SpiritTapAura.Activate(sim)
-				}
-			}
-		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(ClassSpellMask_PriestShadowWordPain) && sim.Proc(procChance, "Proc Spirit Tap") {
 				priest.SpiritTapAura.Activate(sim)
 			}
 		},
+	}).AttachProcTrigger(core.ProcTrigger{
+		Name:           "Proc Spirit Tap",
+		ProcChance:     procChance * 10,
+		ClassSpellMask: ClassSpellMask_PriestInnerFocus,
+		Callback:       core.CallbackOnCastComplete,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			priest.SpiritTapAura.Activate(sim)
+		},
 	}))
+
 }
 
 // While Spirit Tap is active, you deal 25% more shadow damage.
@@ -93,18 +94,10 @@ func (priest *Priest) applyT2Shadow6PBonus() {
 	priest.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			oldOnGain := priest.SpiritTapAura.OnGain
-			priest.SpiritTapAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnGain(aura, sim)
-				priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.25
-			}
-			oldOnExpire := priest.SpiritTapAura.OnExpire
-			priest.SpiritTapAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnExpire(aura, sim)
-				priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] /= 1.25
-			}
+			priest.SpiritTapAura.AttachMultiplicativePseudoStatBuff(&priest.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow], 1.25)
 		},
 	})
+
 }
 
 var ItemSetDawnOfTranscendence = core.NewItemSet(core.ItemSet{
@@ -135,13 +128,7 @@ func (priest *Priest) applyT2Healer2PBonus() {
 
 	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: label,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			priest.PseudoStats.SpiritRegenRateCasting += bonusRegen
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			priest.PseudoStats.SpiritRegenRateCasting -= bonusRegen
-		},
-	}))
+	}).AttachAdditivePseudoStatBuff(&priest.PseudoStats.SpiritRegenRateCasting, bonusRegen))
 }
 
 // Your periodic healing has a 2% chance to make your next spell with a casting time less than 10 seconds an instant cast spell.

@@ -32,12 +32,13 @@ func (warrior *Warrior) applyTAQDamage2PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "S03 - Item - TAQ - Warrior - Damage 2P Bonus",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.DeathWish.CD.Multiplier *= 0.5
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multi_Pct,
+		ClassMask:  ClassSpellMask_WarriorDeathWish,
+		FloatValue: 0.5,
+	}))
 }
 
 // You deal 15% increased damage while any nearby enemy is afflicted with both your Rend and your Deep Wounds.
@@ -116,14 +117,15 @@ func (warrior *Warrior) applyTAQTank4PBonus() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.ShieldSlam.ThreatMultiplier *= 2
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(ClassSpellMask_WarriorShieldSlam) && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry|core.OutcomeBlock) {
 				spell.CD.Reset()
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Threat_Pct,
+		ClassMask:  ClassSpellMask_WarriorShieldSlam,
+		FloatValue: 2,
 	}))
 }
 
@@ -148,10 +150,11 @@ func (warrior *Warrior) applyRAQTank3PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "S03 - Item - RAQ - Warrior - Tank 3P Bonus",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.Shockwave.CD.Multiplier *= 0.5
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multi_Pct,
+		ClassMask:  ClassSpellMask_WarriorShockwave,
+		FloatValue: 0.5,
+	}))
 }

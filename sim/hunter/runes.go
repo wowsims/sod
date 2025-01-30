@@ -381,9 +381,9 @@ func (hunter *Hunter) applyTNT() {
 		return
 	}
 	hunter.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_HunterExplosiveShot | ClassSpellMask_HunterTraps,
-		FloatValue: 0.10,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterExplosiveShot | ClassSpellMask_HunterTraps,
+		IntValue:  10,
 	})
 }
 
@@ -474,6 +474,6 @@ func (hunter *Hunter) applyImprovedVolley() {
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_HunterVolley,
 		// The 3% rAP scaling and manacost reduction is applied inside the volley spell config itself
-		FloatValue: 1,
+		IntValue: 100,
 	}))
 }

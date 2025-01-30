@@ -36,9 +36,9 @@ func (warlock *Warlock) applyNaxxramasDamage2PBonus() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockCorruption,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockCorruption,
+		IntValue:  20,
 	}))
 }
 
@@ -148,18 +148,17 @@ func (warlock *Warlock) applyNaxxramasTank4PBonus() {
 		return
 	}
 
-	warlock.RegisterAura(core.Aura{
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if warlock.InfernalArmor != nil {
-				warlock.InfernalArmor.CD.FlatModifier -= time.Second * 30
-			}
-
-			if warlock.DemonicGrace != nil {
-				warlock.DemonicGrace.CD.FlatModifier -= time.Second * 10
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_WarlockInfernalArmor,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Second * 30,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_WarlockDemonicGrace,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Second * 10,
+	}))
 }
 
 // When an Undead enemy attempts to attack you, the remaining duration of your active Vengeance is reset to 20 sec.

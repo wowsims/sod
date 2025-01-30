@@ -59,7 +59,7 @@ func (druid *Druid) registerLacerateSpell() {
 
 				if !isRollover {
 					attackTable := dot.Spell.Unit.AttackTables[target.UnitIndex][dot.Spell.CastType]
-					dot.Spell.DamageMultiplier = tickDamageMul
+					dot.Spell.SetMultiplicativeDamageBonus(tickDamageMul)
 					dot.SnapshotCritChance = dot.Spell.PhysicalCritChance(attackTable)
 					dot.SnapshotAttackerMultiplier = dot.Spell.AttackerDamageMultiplier(attackTable)
 				}
@@ -81,7 +81,7 @@ func (druid *Druid) registerLacerateSpell() {
 
 			// Hack so that FlatThreatBonus only applies to the initial portion.
 			spell.FlatThreatBonus = 515.5
-			spell.DamageMultiplier = initialDamageMul
+			spell.SetMultiplicativeDamageBonus(initialDamageMul)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 			spell.FlatThreatBonus = 0
 

@@ -87,12 +87,14 @@ func (warlock *Warlock) applyT1Damage2PBonus() {
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.LifeTap {
-				spell.DamageMultiplier *= 1.5
-				spell.ThreatMultiplier *= -1
-			}
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_WarlockLifeTap,
+		FloatValue: 1.5,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Threat_Pct,
+		ClassMask:  ClassSpellMask_WarlockLifeTap,
+		FloatValue: -1,
 	}))
 }
 
@@ -218,21 +220,15 @@ func (warlock *Warlock) applyT1Tank6PBonus() {
 		ActionID: core.ActionID{SpellID: 457643},
 		Label:    "Soul Fire!",
 		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.SoulFire {
-				spell.CastTimeMultiplier -= 1
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.SoulFire {
-				spell.CastTimeMultiplier += 1
-			}
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_WarlockSoulFire) {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  ClassSpellMask_WarlockSoulFire,
+		FloatValue: -1,
 	})
 
 	icd := core.Cooldown{

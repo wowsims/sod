@@ -1291,8 +1291,8 @@ func init() {
 
 		// Register 2 PPM for MH and 4 PPM for MH+OH
 		// This is needed due to Item Swap
-		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(MisplacedServoArm, 2.0, 0)
-		dpmDualWield := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(MisplacedServoArm, 4.0, 0)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(MisplacedServoArm, 1.0, 0)
+		dpmDualWield := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(MisplacedServoArm, 2.0, 0)
 
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,

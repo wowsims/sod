@@ -16,7 +16,7 @@ func (paladin *Paladin) ApplyRunes() {
 	paladin.registerRV()
 	paladin.registerFanaticism()
 
-	// "RuneHeadWrath" is handled in Exorcism, Holy Shock, Consecration (and Holy Wrath once implemented)
+	// "RuneHeadWrath" is handled in Exorcism, Holy Shock, Consecration and Holy Wrath
 	paladin.registerMalleableProtection()
 	paladin.registerHammerOfTheRighteous()
 	// "RuneWristImprovedHammerOfWrath" is handled Hammer of Wrath
@@ -375,8 +375,9 @@ func (paladin *Paladin) registerMalleableProtection() {
 	})
 
 	paladin.divineProtection = paladin.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL | SpellFlag_Forbearance,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_PaladinDivineProtection,
+		Flags:          core.SpellFlagAPL | SpellFlag_Forbearance,
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
 		},

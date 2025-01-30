@@ -36,6 +36,13 @@ const (
 	ClassSpellMask_WarriorWhirlwind
 	ClassSpellMask_WarriorWhirlwindMH
 	ClassSpellMask_WarriorWhirlwindOH
+	ClassSpellMask_WarriorDeathWish
+	ClassSpellMask_WarriorShockwave
+	ClassSpellMask_WarriorShieldWall
+	ClassSpellMask_WarriorRecklesness
+	ClassSpellMask_WarriorQuickStrike
+	ClassSpellMask_WarriorHeroicStrike
+	ClassSpellMask_WarriorCleave
 )
 
 var TalentTreeSizes = [3]int{18, 17, 17}

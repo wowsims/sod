@@ -31,7 +31,7 @@ func (shaman *Shaman) applyMoltenBlast() {
 		SpellSchool:    core.SpellSchoolFire,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          SpellFlagShaman | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

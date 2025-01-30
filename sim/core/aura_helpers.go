@@ -389,12 +389,9 @@ func (parentAura *Aura) AttachSpellMod(spellModConfig SpellModConfig) *Aura {
 // Attaches a StatDependency to a parent Aura
 // Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
 func (parentAura *Aura) AttachStatDependency(statDep *stats.StatDependency) *Aura {
-
 	parentAura.ApplyOnGain(func(_ *Aura, sim *Simulation) {
 		parentAura.Unit.EnableBuildPhaseStatDep(sim, statDep)
-	})
-
-	parentAura.ApplyOnExpire(func(_ *Aura, sim *Simulation) {
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
 		parentAura.Unit.DisableBuildPhaseStatDep(sim, statDep)
 	})
 
@@ -406,9 +403,7 @@ func (parentAura *Aura) AttachStatDependency(statDep *stats.StatDependency) *Aur
 func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) *Aura {
 	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
 		aura.Unit.AddStatsDynamic(sim, stats)
-	})
-
-	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
 		aura.Unit.AddStatsDynamic(sim, stats.Invert())
 	})
 
@@ -423,9 +418,7 @@ func (parentAura *Aura) AttachStatsBuff(stats stats.Stats) *Aura {
 func (parentAura *Aura) AttachMultiplicativePseudoStatBuff(fieldPointer *float64, multiplier float64) *Aura {
 	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
 		*fieldPointer *= multiplier
-	})
-
-	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+	}).ApplyOnExpire(func(_ *Aura, _ *Simulation) {
 		*fieldPointer /= multiplier
 	})
 
@@ -440,9 +433,7 @@ func (parentAura *Aura) AttachMultiplicativePseudoStatBuff(fieldPointer *float64
 func (parentAura *Aura) AttachAdditivePseudoStatBuff(fieldPointer *float64, bonus float64) *Aura {
 	parentAura.ApplyOnGain(func(_ *Aura, _ *Simulation) {
 		*fieldPointer += bonus
-	})
-
-	parentAura.ApplyOnExpire(func(_ *Aura, _ *Simulation) {
+	}).ApplyOnExpire(func(_ *Aura, _ *Simulation) {
 		*fieldPointer -= bonus
 	})
 
@@ -458,9 +449,7 @@ func (parentAura *Aura) AttachAdditivePseudoStatBuff(fieldPointer *float64, bonu
 func (parentAura *Aura) AttachBuildPhaseStatsBuff(stats stats.Stats) *Aura {
 	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
 		aura.Unit.AddBuildPhaseStatsDynamic(sim, stats)
-	})
-
-	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
 		aura.Unit.AddBuildPhaseStatsDynamic(sim, stats.Invert())
 	})
 
@@ -492,9 +481,7 @@ func (parentAura *Aura) AttachBuildPhaseStatBuff(stat stats.Stat, value float64)
 func (parentAura *Aura) AttachMultiplyAttackSpeed(unit *Unit, value float64) *Aura {
 	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
 		unit.MultiplyAttackSpeed(sim, value)
-	})
-
-	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
 		unit.MultiplyAttackSpeed(sim, 1/value)
 	})
 	return parentAura
@@ -505,9 +492,7 @@ func (parentAura *Aura) AttachMultiplyAttackSpeed(unit *Unit, value float64) *Au
 func (parentAura *Aura) AttachMultiplyCastSpeed(unit *Unit, value float64) *Aura {
 	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
 		unit.MultiplyCastSpeed(value)
-	})
-
-	parentAura.ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
 		unit.MultiplyCastSpeed(1 / value)
 	})
 	return parentAura

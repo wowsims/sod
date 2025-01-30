@@ -267,7 +267,7 @@ func init() {
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 				castMod.UpdateFloatValue(-0.2 * float64(newStacks))
 				costMod.UpdateIntValue(-int64(100.0 * (0.2 * float64(newStacks))))
-				damageMod.UpdateFloatValue(0.2 * float64(newStacks))
+				damageMod.UpdateIntValue(int64(20 * newStacks))
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				castMod.Activate()
@@ -325,9 +325,9 @@ func init() {
 		aura := core.MakePermanent(paladin.RegisterAura(core.Aura{
 			Label: "Libram of the Exorcist",
 		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_PaladinCrusaderStrike | ClassSpellMask_PaladinExorcism,
-			FloatValue: 0.03,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_PaladinCrusaderStrike | ClassSpellMask_PaladinExorcism,
+			IntValue:  3,
 		}))
 
 		paladin.ItemSwap.RegisterProc(LibramOfTheExorcist, aura)
@@ -353,9 +353,9 @@ func init() {
 			},
 		}).AttachSpellMod(core.SpellModConfig{
 			// Increases the damage of Holy Shock by 3%, and your Shock and Awe buff now also grants 10% increased Holy Damage. (This effect does not stack with Sanctity Aura).
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_PaladinHolyShock,
-			FloatValue: 0.03,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_PaladinHolyShock,
+			IntValue:  3,
 		})
 
 		paladin.ItemSwap.RegisterProc(LibramOfSanctity, buffAura)
@@ -368,9 +368,9 @@ func init() {
 		aura := core.MakePermanent(paladin.RegisterAura(core.Aura{
 			Label: "Libram of Righteousness",
 		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_PaladinHammerOfTheRighteous | ClassSpellMask_PaladinShieldOfRighteousness,
-			FloatValue: 0.03,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_PaladinHammerOfTheRighteous | ClassSpellMask_PaladinShieldOfRighteousness,
+			IntValue:  3,
 		}))
 
 		paladin.ItemSwap.RegisterProc(LibramOfRighteousness, aura)

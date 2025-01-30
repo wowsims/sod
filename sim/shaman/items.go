@@ -160,54 +160,25 @@ func init() {
 			},
 		})
 
-		aura := shaman.RegisterAura(core.Aura{
-			Label:    "Terrestris Elemental Dummy",
-			ActionID: core.ActionID{ItemID: TerrestrisEle},
+		procTrigger := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+			Name:           "Terrestris Boon Trigger",
+			ClassSpellMask: ClassSpellMask_ShamanTotems,
+			Callback:       core.CallbackOnApplyEffects,
+			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+				switch {
+				case spell.Matches(ClassSpellMask_ShamanEarthTotem):
+					boonOfEarth.Activate(sim)
+				case spell.Matches(ClassSpellMask_ShamanFireTotem):
+					boonOfFire.Activate(sim)
+				case spell.Matches(ClassSpellMask_ShamanWaterTotem):
+					boonOfWater.Activate(sim)
+				case spell.Matches(ClassSpellMask_ShamanAirTotem):
+					boonOfAir.Activate(sim)
+				}
+			},
 		})
 
-		core.MakePermanent(shaman.RegisterAura(core.Aura{
-			Label: "Terrestris Boon Trigger",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				core.Each(shaman.EarthTotems, func(spell *core.Spell) {
-					oldApplyEffects := spell.ApplyEffects
-					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						oldApplyEffects(sim, target, spell)
-						if aura.IsActive() {
-							boonOfEarth.Activate(sim)
-						}
-					}
-				})
-				core.Each(shaman.FireTotems, func(spell *core.Spell) {
-					oldApplyEffects := spell.ApplyEffects
-					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						oldApplyEffects(sim, target, spell)
-						if aura.IsActive() {
-							boonOfFire.Activate(sim)
-						}
-					}
-				})
-				core.Each(shaman.WaterTotems, func(spell *core.Spell) {
-					oldApplyEffects := spell.ApplyEffects
-					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						oldApplyEffects(sim, target, spell)
-						if aura.IsActive() {
-							boonOfWater.Activate(sim)
-						}
-					}
-				})
-				core.Each(shaman.AirTotems, func(spell *core.Spell) {
-					oldApplyEffects := spell.ApplyEffects
-					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						oldApplyEffects(sim, target, spell)
-						if aura.IsActive() {
-							boonOfAir.Activate(sim)
-						}
-					}
-				})
-			},
-		}))
-
-		shaman.ItemSwap.RegisterProc(TerrestrisEle, aura)
+		shaman.ItemSwap.RegisterProc(TerrestrisEle, procTrigger)
 	})
 
 	// https://www.wowhead.com/classic/item=224279/terrestris
@@ -283,54 +254,25 @@ func init() {
 			},
 		})
 
-		aura := shaman.RegisterAura(core.Aura{
-			Label:    "Terrestris Warden Dummy",
-			ActionID: core.ActionID{ItemID: TerrestrisTank},
+		procTrigger := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+			Name:           "Terrestris Boon Trigger",
+			ClassSpellMask: ClassSpellMask_ShamanTotems,
+			Callback:       core.CallbackOnApplyEffects,
+			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+				switch {
+				case spell.Matches(ClassSpellMask_ShamanEarthTotem):
+					boonOfEarth.Activate(sim)
+				case spell.Matches(ClassSpellMask_ShamanFireTotem):
+					boonOfFire.Activate(sim)
+				case spell.Matches(ClassSpellMask_ShamanWaterTotem):
+					boonOfWater.Activate(sim)
+				case spell.Matches(ClassSpellMask_ShamanAirTotem):
+					boonOfAir.Activate(sim)
+				}
+			},
 		})
 
-		core.MakePermanent(shaman.RegisterAura(core.Aura{
-			Label: "Terrestris Boon Trigger",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				core.Each(shaman.EarthTotems, func(spell *core.Spell) {
-					oldApplyEffects := spell.ApplyEffects
-					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						oldApplyEffects(sim, target, spell)
-						if aura.IsActive() {
-							boonOfEarth.Activate(sim)
-						}
-					}
-				})
-				core.Each(shaman.FireTotems, func(spell *core.Spell) {
-					oldApplyEffects := spell.ApplyEffects
-					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						oldApplyEffects(sim, target, spell)
-						if aura.IsActive() {
-							boonOfFire.Activate(sim)
-						}
-					}
-				})
-				core.Each(shaman.WaterTotems, func(spell *core.Spell) {
-					oldApplyEffects := spell.ApplyEffects
-					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						oldApplyEffects(sim, target, spell)
-						if aura.IsActive() {
-							boonOfWater.Activate(sim)
-						}
-					}
-				})
-				core.Each(shaman.AirTotems, func(spell *core.Spell) {
-					oldApplyEffects := spell.ApplyEffects
-					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						oldApplyEffects(sim, target, spell)
-						if aura.IsActive() {
-							boonOfAir.Activate(sim)
-						}
-					}
-				})
-			},
-		}))
-
-		shaman.ItemSwap.RegisterProc(TerrestrisTank, aura)
+		shaman.ItemSwap.RegisterProc(TerrestrisTank, procTrigger)
 	})
 
 	// https://www.wowhead.com/classic/item=232416/totem-of-astral-flow
@@ -364,7 +306,7 @@ func init() {
 			Duration:  time.Second * 15,
 			MaxStacks: 5,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				damageMod.UpdateFloatValue(0.20 * float64(newStacks))
+				damageMod.UpdateIntValue(int64(20 * newStacks))
 				castTimeMod.UpdateFloatValue(0.20 * float64(newStacks))
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
@@ -419,9 +361,9 @@ func init() {
 		core.MakePermanent(shaman.RegisterAura(core.Aura{
 			Label: "Improved Flame Shock/Molten Blast",
 		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanMoltenBlast,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.03,
+			ClassMask: ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanMoltenBlast,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  3,
 		}))
 	})
 
@@ -430,10 +372,10 @@ func init() {
 	core.NewItemEffect(TotemOfInvigoratingFlame, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 
-		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_ShamanFlameShock) {
-				spell.Cost.FlatModifier -= 10
-			}
+		shaman.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_PowerCost_Flat,
+			ClassMask: ClassSpellMask_ShamanFlameShock,
+			IntValue:  -10,
 		})
 	})
 
@@ -445,9 +387,9 @@ func init() {
 		core.MakePermanent(shaman.RegisterAura(core.Aura{
 			Label: "Improved Lightning Bolt/Lava Burst",
 		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning | ClassSpellMask_ShamanLavaBurst,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.03,
+			ClassMask: ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning | ClassSpellMask_ShamanLavaBurst,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  3,
 		}))
 	})
 
@@ -459,21 +401,16 @@ func init() {
 		// TODO: Verify 2H value
 		procAura2H := shaman.NewTemporaryStatsAura("Totem of Raging Fire (2H)", core.ActionID{ItemID: TotemOfRagingFire}.WithTag(2), stats.Stats{stats.AttackPower: 48}, time.Second*12)
 
-		shaman.RegisterAura(core.Aura{
-			Label:    "Totem of Raging Fire Trigger",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if !spell.Matches(ClassSpellMask_ShamanStormstrike) {
-					return
-				}
-
-				if shaman.MainHand().HandType == proto.HandType_HandTypeOneHand {
+		core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+			Name:           "Totem of Raging Fire Trigger",
+			Callback:       core.CallbackOnCastComplete,
+			ClassSpellMask: ClassSpellMask_ShamanStormstrike,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				switch shaman.MainHand().HandType {
+				case proto.HandType_HandTypeOneHand:
 					procAura2H.Deactivate(sim)
 					procAura1H.Activate(sim)
-				} else if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+				case proto.HandType_HandTypeTwoHand:
 					procAura1H.Deactivate(sim)
 					procAura2H.Activate(sim)
 				}
@@ -523,10 +460,10 @@ func init() {
 	// Equip: Increases healing done by Lesser Healing Wave by up to 53.
 	core.NewItemEffect(TotemOfSustaining, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_ShamanLesserHealingWave) {
-				spell.BonusDamage += 53
-			}
+		shaman.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusDamage_Flat,
+			ClassMask:  ClassSpellMask_ShamanLesserHealingWave,
+			FloatValue: 53,
 		})
 	})
 
@@ -550,10 +487,10 @@ func init() {
 	// Equip: Increases damage done by Chain Lightning and Lightning Bolt by up to 33.
 	core.NewItemEffect(TotemOfTheStorm, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning) {
-				spell.BonusDamage += 33
-			}
+		shaman.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusDamage_Flat,
+			ClassMask:  ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning,
+			FloatValue: 33,
 		})
 	})
 
@@ -567,16 +504,12 @@ func init() {
 			12*time.Second,
 		)
 
-		shaman.RegisterAura(core.Aura{
-			Label:    "Totem of Tormented Ancestry",
-			Duration: core.NeverExpires,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-			},
-			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.Matches(ClassSpellMask_ShamanFlameShock) {
-					procAura.Activate(sim)
-				}
+		core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+			Name:           "Totem of Tormented Ancestry",
+			ClassSpellMask: ClassSpellMask_ShamanFlameShock,
+			Callback:       core.CallbackOnCastComplete,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procAura.Activate(sim)
 			},
 		})
 	})
@@ -586,11 +519,10 @@ func init() {
 	// Acts as extra 30 spellpower for shocks.
 	core.NewItemEffect(TotemOfRage, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		affectedSpellClassMasks := ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock
-		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Matches(affectedSpellClassMasks) {
-				spell.BonusDamage += 30
-			}
+		shaman.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusDamage_Flat,
+			ClassMask:  ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock,
+			FloatValue: 30,
 		})
 	})
 
@@ -598,10 +530,10 @@ func init() {
 	// Equip: The cast time of your Lightning Bolt spell is reduced by -0.1 sec.
 	core.NewItemEffect(TotemOfThunder, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		shaman.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_ShamanLightningBolt) {
-				spell.DefaultCast.CastTime -= time.Millisecond * 100
-			}
+		shaman.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_CastTime_Flat,
+			ClassMask: ClassSpellMask_ShamanLightningBolt,
+			TimeValue: -time.Millisecond * 100,
 		})
 	})
 
@@ -613,13 +545,14 @@ func init() {
 		core.MakePermanent(shaman.RegisterAura(core.Aura{
 			Label: "Improved Stormstrike/Windfury Weapon",
 		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  ClassSpellMask_ShamanStormstrikeHit,
-			Kind:       core.SpellMod_BaseDamageDone_Flat,
-			FloatValue: 0.03,
+			// For whatever reason the Stormstrike damage seems to be additive
+			ClassMask: ClassSpellMask_ShamanStormstrikeHit,
+			Kind:      core.SpellMod_BaseDamageDone_Flat,
+			IntValue:  3,
 		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  ClassSpellMask_ShamanWindFury,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 0.03,
+			ClassMask: ClassSpellMask_ShamanWindFury,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  3,
 		}))
 
 	})
@@ -642,9 +575,9 @@ func init() {
 			Label:    "Wushoolay's Charm of Spirits",
 			Duration: time.Second * 20,
 		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  ClassSpellMask_ShamanLightningShieldProc | ClassSpellMask_ShamanRollingThunder,
-			Kind:       core.SpellMod_DamageDone_Flat,
-			FloatValue: 1,
+			ClassMask: ClassSpellMask_ShamanLightningShieldProc | ClassSpellMask_ShamanRollingThunder,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			IntValue:  100,
 		})
 
 		spell := shaman.RegisterSpell(core.SpellConfig{

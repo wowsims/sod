@@ -13,9 +13,8 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 	}
 
 	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ProcMask:   core.ProcMaskMelee,
-		FloatValue: 0,
+		Kind:     core.SpellMod_DamageDone_Flat,
+		ProcMask: core.ProcMaskMelee,
 	})
 
 	hunter.FlankingStrikeAura = hunter.GetOrRegisterAura(core.Aura{
@@ -24,7 +23,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		MaxStacks: 3,
 		Duration:  time.Second * 10,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			damageMod.UpdateFloatValue(0.08 * float64(newStacks))
+			damageMod.UpdateIntValue(int64(8 * newStacks))
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMod.Activate()

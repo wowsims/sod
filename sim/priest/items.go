@@ -69,9 +69,9 @@ func init() {
 		core.MakePermanent(priest.RegisterAura(core.Aura{
 			Label: "Band of Faith",
 		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_PriestAll,
-			FloatValue: 0.02,
+			Kind:      core.SpellMod_PeriodicDamageDone_Flat,
+			ClassMask: ClassSpellMask_PriestAll,
+			IntValue:  2,
 		}))
 	})
 

@@ -36,9 +36,9 @@ func (druid *Druid) applyT2Balance2PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_DruidHurricane | ClassSpellMask_DruidStarfall | ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash,
-		FloatValue: 0.25,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_DruidHurricane | ClassSpellMask_DruidStarfall | ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash,
+		IntValue:  25,
 	}))
 }
 
@@ -59,7 +59,7 @@ func (druid *Druid) applyT2Balance4PBonus() {
 	}))
 }
 
-// Your Wrath critical strikes have a 30% chance to make your next Starfire instant cast.
+// Your Wrath critical strikes have a 50% chance to make your next Starfire deal 10% increased damage, stacking up to 3 times.
 func (druid *Druid) applyT2Balance6PBonus() {
 	label := "S03 - Item - T2 - Druid - Balance 6P Bonus"
 	if druid.HasAura(label) {
@@ -67,9 +67,8 @@ func (druid *Druid) applyT2Balance6PBonus() {
 	}
 
 	damageMod := druid.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_DruidStarfire,
-		FloatValue: 0,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_DruidStarfire,
 	})
 
 	buffAura := druid.RegisterAura(core.Aura{
@@ -78,7 +77,7 @@ func (druid *Druid) applyT2Balance6PBonus() {
 		Duration:  time.Second * 15,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			damageMod.UpdateFloatValue(0.10 * float64(newStacks))
+			damageMod.UpdateIntValue(int64(10 * newStacks))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_DruidStarfire) {
@@ -129,9 +128,9 @@ func (druid *Druid) applyT2Feral2PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467207},
-		Label:    "S03 - Item - T2- Druid - Feral 2P Bonus",
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 467207}, // Tracking in APL
+		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, dot := range druid.Rake.Dots() {
 				if dot == nil {
@@ -140,14 +139,13 @@ func (druid *Druid) applyT2Feral2PBonus() {
 
 				dot.NumberOfTicks += int32(6 / dot.TickLength.Seconds())
 				dot.RecomputeAuraDuration()
-				oldOnSnapshot := dot.OnSnapshot
-				dot.OnSnapshot = func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-					oldOnSnapshot(sim, target, dot, isRollover)
-					dot.SnapshotAttackerMultiplier *= 1.50
-				}
 			}
 		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidRake,
+		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
+		IntValue:  50,
+	}))
 }
 
 // Your critical strike chance is increased by 15% while Tiger's Fury is active.
@@ -160,36 +158,37 @@ func (druid *Druid) applyT2Feral4PBonus() {
 	druid.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			oldOnGain := druid.TigersFuryAura.OnGain
-			druid.TigersFuryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnGain(aura, sim)
+			druid.TigersFuryAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 				druid.AddStatsDynamic(sim, stats.Stats{stats.MeleeCrit: 15 * core.CritRatingPerCritChance})
-			}
-			oldOnExpire := druid.TigersFuryAura.OnExpire
-			druid.TigersFuryAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnExpire(aura, sim)
+			})
+			druid.TigersFuryAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 				druid.AddStatsDynamic(sim, stats.Stats{stats.MeleeCrit: -15 * core.CritRatingPerCritChance})
-			}
+			})
 		},
 	})
 }
 
 // Your Shred and Mangle(Cat) abilities deal 10% increased damage per your Bleed effect on the target, up to a maximum of 20% increase.
 func (druid *Druid) applyT2Feral6PBonus() {
+	label := "S03 - Item - T2 - Druid - Feral 6P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
+
 	damageMod := druid.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
+		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite,
-		FloatValue: 0,
+		FloatValue: 1.0,
 	})
 
 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
-		Name:           "S03 - Item - T2 - Druid - Feral 6P Bonus",
+		Name:           label,
 		Callback:       core.CallbackOnApplyEffects,
 		ProcChance:     1,
 		ClassSpellMask: ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			damageMod.Activate()
-			damageMod.UpdateFloatValue(0.10 * float64(druid.BleedsActive))
+			damageMod.UpdateFloatValue(1 + 0.10*float64(druid.BleedsActive))
 		},
 	})
 }
@@ -306,19 +305,17 @@ func (druid *Druid) applyZGBalance3PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range druid.Starfire {
-				if spell == nil {
-					continue
-				}
-
-				spell.DefaultCast.CastTime -= time.Millisecond * 500
-				spell.DefaultCast.GCD -= time.Millisecond * 500
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_CastTime_Flat,
+		ClassMask: ClassSpellMask_DruidStarfire,
+		TimeValue: -time.Millisecond * 500,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_GlobalCooldown_Flat,
+		ClassMask: ClassSpellMask_DruidStarfire,
+		TimeValue: -time.Millisecond * 500,
+	}))
 }
 
 // Increases the critical strike chance of Wrath by 10%.
@@ -328,16 +325,11 @@ func (druid *Druid) applyZGBalance5PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range druid.Wrath {
-				if spell == nil {
-					continue
-				}
-
-				spell.BonusCritRating += 10 * core.SpellCritRatingPerCritChance
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		ClassMask:  ClassSpellMask_DruidWrath,
+		FloatValue: 10 * core.SpellCritRatingPerCritChance,
+	}))
 }

@@ -20,9 +20,10 @@ func (rogue *Rogue) RegisterEvasionSpell() {
 	)
 
 	rogue.Evasion = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 5277},
-		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: 5277},
+		ClassSpellMask: SpellClassMask_RogueEvasion,
+		SpellSchool:    core.SpellSchoolPhysical,
+		Flags:          core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{},

@@ -142,14 +142,14 @@ func (shaman *Shaman) applyT2Tank2PBonus() {
 		},
 	}).AttachStatBuff(stats.Block, 30*core.BlockRatingPerBlockChance)
 
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_ShamanFlameShock) {
-				shieldBlockAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_ShamanFlameShock,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			shieldBlockAura.Activate(sim)
 		},
-	}))
+	})
 }
 
 // Each time you Block, your Block amount is increased by 10% of your Spell Damage for 6 sec, stacking up to 3 times.
@@ -160,25 +160,21 @@ func (shaman *Shaman) applyT2Tank4PBonus() {
 	}
 
 	statDeps := []*stats.StatDependency{
-		nil,
-		shaman.NewDynamicMultiplyStat(stats.BlockValue, 1.10),
-		shaman.NewDynamicMultiplyStat(stats.BlockValue, 1.20),
-		shaman.NewDynamicMultiplyStat(stats.BlockValue, 1.30),
+		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0),
+		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0.10),
+		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0.20),
+		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0.30),
 	}
 
 	// Couldn't find a separate spell for this
 	blockAura := shaman.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 467909},
-		Label:     "S03 - Item - T2 - Shaman - Tank 4P Bonus Proc",
+		ActionID:  core.ActionID{SpellID: 467910},
+		Label:     "Elemental Shield",
 		Duration:  time.Second * 6,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			if oldStacks != 0 {
-				shaman.DisableDynamicStatDep(sim, statDeps[oldStacks])
-			}
-			if newStacks != 0 {
-				shaman.EnableDynamicStatDep(sim, statDeps[newStacks])
-			}
+			shaman.DisableDynamicStatDep(sim, statDeps[oldStacks])
+			shaman.EnableDynamicStatDep(sim, statDeps[newStacks])
 		},
 	})
 
@@ -263,12 +259,14 @@ func (shaman *Shaman) applyT2Enhancement4PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.StormstrikeMH.DamageMultiplier += 0.50
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_ShamanStormstrikeHit,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		FloatValue: 1.5,
+	}))
 }
 
 // While Static Shock is engraved, your Lightning Shield now gains a charge each time you hit a target with Lightning Bolt or Chain Lightning, up to a maximum of 9 charges.
@@ -392,9 +390,9 @@ func (shaman *Shaman) applyT2Restoration6PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanChainLightning,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0.20,
+		ClassMask: ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanChainLightning,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  20,
 	}))
 }
 

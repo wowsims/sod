@@ -30,6 +30,7 @@ const (
 	ClassSpellMask_PriestDispersion
 	ClassSpellMask_PriestShadowFiend
 	ClassSpellMask_PriestVampiricEmbrace
+	ClassSpellMask_PriestInnerFocus
 
 	ClassSpellMask_PriestPenanceDamage
 	ClassSpellMask_PriestPenanceHeal

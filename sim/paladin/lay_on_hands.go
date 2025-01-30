@@ -5,6 +5,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func (paladin *Paladin) registerLayOnHands() {
@@ -43,9 +44,19 @@ func (paladin *Paladin) registerLayOnHands() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			paladin.SpendMana(sim, paladin.CurrentMana(), layOnHandsManaMetrics)
 			paladin.GainHealth(sim, paladin.MaxHealth(), layOnHandsHealthMetrics)
-			paladin.AddMana(sim, manaReturn, layOnHandsManaMetrics)
+
+			hasNaxxramasHoly2PBonus := paladin.GetAura("S03 - Item - Naxxramas - Paladin - Holy 2P Bonus")
+			if hasNaxxramasHoly2PBonus != nil && hasNaxxramasHoly2PBonus.IsActive() {
+				paladin.AddMana(sim, paladin.MaxMana()*0.3, layOnHandsManaMetrics)
+			} else {
+				paladin.AddMana(sim, manaReturn, layOnHandsManaMetrics)
+			}
 		},
 	})
+	
+	if paladin.Spec == proto.Spec_SpecRetributionPaladin {
+		return
+	}
 
 	paladin.AddMajorCooldown(core.MajorCooldown{
 		Spell:    paladin.layOnHands,

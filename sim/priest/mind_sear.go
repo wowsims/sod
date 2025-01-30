@@ -105,9 +105,10 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 			damage := sim.Roll(baseDamageLow, baseDamageHigh)
 
 			// Apply the base spell's multipliers to pick up on effects that only affect spells with DoTs
-			spell.DamageMultiplierAdditive += priest.MindSear[numTicks].PeriodicDamageMultiplierAdditive - 1
+			damageMultiplier := priest.MindSear[numTicks].GetPeriodicDamageMultiplierAdditive()
+			spell.ApplyAdditiveDamageBonus(damageMultiplier)
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplierAdditive -= priest.MindSear[numTicks].PeriodicDamageMultiplierAdditive - 1
+			spell.ApplyAdditiveDamageBonus(-damageMultiplier)
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)

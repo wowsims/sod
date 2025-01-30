@@ -144,9 +144,9 @@ func init() {
 		core.MakePermanent(druid.RegisterAura(core.Aura{
 			Label: "Idol of Celestial Focus",
 		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash,
-			FloatValue: 0.10,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_DruidStarfallTick | ClassSpellMask_DruidStarfallSplash,
+			IntValue:  10,
 		}))
 	})
 
@@ -189,7 +189,7 @@ func init() {
 	core.NewItemEffect(IdolOfTheMoon, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 		druid.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidStarfallSplash | ClassSpellMask_DruidStarfallTick) {
+			if spell.Matches(ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat | ClassSpellMask_DruidStarfallSplash | ClassSpellMask_DruidStarfallTick) {
 				spell.BonusDamage += 33
 			}
 		})
@@ -225,9 +225,9 @@ func init() {
 		core.MakePermanent(druid.RegisterAura(core.Aura{
 			Label: "Improved Shred/Ferocious Bite",
 		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidShred,
-			FloatValue: 0.03,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidShred,
+			IntValue:  3,
 		}))
 	})
 
@@ -239,9 +239,9 @@ func init() {
 		core.MakePermanent(druid.RegisterAura(core.Aura{
 			Label: "Improved Wrath/Moonfire",
 		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_DruidWrath | ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidStarsurge | ClassSpellMask_DruidStarfallSplash | ClassSpellMask_DruidStarfallTick,
-			FloatValue: 0.03,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_DruidWrath | ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidStarsurge | ClassSpellMask_DruidStarfallSplash | ClassSpellMask_DruidStarfallTick,
+			IntValue:  3,
 		}))
 	})
 
@@ -283,9 +283,9 @@ func init() {
 		core.MakePermanent(druid.RegisterAura(core.Aura{
 			Label: "Improved Swipe/Mangle",
 		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Flat,
-			ClassMask:  ClassSpellMask_DruidSwipeBear | ClassSpellMask_DruidSwipeCat | ClassSpellMask_DruidMangleBear | ClassSpellMask_DruidMangleCat,
-			FloatValue: 0.03,
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_DruidSwipeBear | ClassSpellMask_DruidSwipeCat | ClassSpellMask_DruidMangleBear | ClassSpellMask_DruidMangleCat,
+			IntValue:  3,
 		}))
 	})
 
@@ -299,21 +299,14 @@ func init() {
 	// Increases the critical hit chance of Wrath and Starfire by 2%.
 	core.NewItemEffect(PristineEnchantedSouthSeasKelp, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
-		druid.RegisterAura(core.Aura{
+
+		core.MakePermanent(druid.RegisterAura(core.Aura{
 			Label: "Improved Wrath/Starfire",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range druid.Wrath {
-					if spell != nil {
-						spell.BonusCritRating += 2 * core.SpellCritRatingPerCritChance
-					}
-				}
-				for _, spell := range druid.Starfire {
-					if spell != nil {
-						spell.BonusCritRating += 2 * core.SpellCritRatingPerCritChance
-					}
-				}
-			},
-		})
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusCrit_Flat,
+			ClassMask:  ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarfire,
+			FloatValue: 2 * core.SpellCritRatingPerCritChance,
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=224282/raelar
@@ -482,36 +475,13 @@ func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 }
 
 func registerDragonHideGripsAura(druid *Druid) {
-	const costReduction int32 = 150
-	var affectedForms []*DruidSpell
-
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label:    "Dragonhide Grips",
 		ActionID: core.ActionID{SpellID: 459594},
 		Duration: core.NeverExpires,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedForms = []*DruidSpell{
-				druid.CatForm,
-				druid.MoonkinForm,
-				druid.BearForm,
-			}
-		},
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedForms {
-				if spell != nil {
-					spell.Cost.FlatModifier -= costReduction
-				}
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedForms {
-				if spell != nil {
-					spell.Cost.FlatModifier += costReduction
-				}
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Flat,
+		ClassMask: ClassSpellMask_DruidForms,
+		IntValue:  -150,
+	}))
 }

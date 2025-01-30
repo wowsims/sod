@@ -116,12 +116,13 @@ func (druid *Druid) applyT1Balance6PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			druid.Starfall.CD.Multiplier *= 0.5
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multi_Pct,
+		ClassMask:  ClassSpellMask_DruidStarfall,
+		FloatValue: 0.5,
+	}))
 }
 
 var ItemSetCenarionCunning = core.NewItemSet(core.ItemSet{
@@ -153,14 +154,15 @@ func (druid *Druid) applyT1Feral2PBonus() {
 		return core.ImprovedFaerieFireAura(target)
 	})
 
-	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: label,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_DruidFaerieFire|ClassSpellMask_DruidFaerieFireFeral) && result.Landed() {
-				druid.ImprovedFaerieFireAuras.Get(result.Target).Activate(sim)
-			}
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_DruidFaerieFire | ClassSpellMask_DruidFaerieFireFeral,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			druid.ImprovedFaerieFireAuras.Get(result.Target).Activate(sim)
 		},
-	}))
+	})
 }
 
 // Periodic damage from your Rake and Rip can now be critical strikes.

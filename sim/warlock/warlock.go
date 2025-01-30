@@ -42,6 +42,8 @@ const (
 	ClassSpellMask_WarlockSiphonLife
 	ClassSpellMask_WarlockSoulFire
 	ClassSpellMask_WarlockUnstableAffliction
+	ClassSpellMask_WarlockInfernalArmor
+	ClassSpellMask_WarlockDemonicGrace
 
 	ClassSpellMask_WarlockRainOfFire
 	ClassSpellMask_WarlockImmolationAura
@@ -152,8 +154,8 @@ type Warlock struct {
 	masterDemonologistMultiplier float64 // Bonus multiplier applied to the Master Demonologist talent
 	nightfallProcChance          float64
 	// For effects that buff the damage of shadow bolt for each active Warlock effect on the target, e.g. 2pc DPS 6pc
-	shadowBoltActiveEffectModifierPer float64
-	shadowBoltActiveEffectModifierMax float64
+	shadowBoltActiveEffectMultiplierPer float64
+	shadowBoltActiveEffectMultiplierMax float64
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {

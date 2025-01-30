@@ -15,6 +15,8 @@ import (
 
 func (paladin *Paladin) registerSealOfMartyrdom() {
 	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 407802}) // SoM's mana restore
+	procActionID := core.ActionID{SpellID: 407799}
+	healthMetrics := paladin.NewHealthMetrics(procActionID)
 
 	judgeSpell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 407803},
@@ -30,12 +32,22 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
+				Priority: core.ActionPriorityLow,
+				OnAction: func(sim *core.Simulation) {
+					spell.DealDamage(sim, result)
+					selfDamage := result.RawDamage() * 0.1
+					paladin.RemoveHealth(sim, selfDamage, healthMetrics)
+				},
+			})
 		},
 	})
 
 	procSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: 407799},
+		ActionID:      procActionID,
 		SpellSchool:   core.SpellSchoolHoly,
 		DefenseType:   core.DefenseTypeMelee,
 		ProcMask:      core.ProcMaskMeleeMHSpecial,
@@ -46,17 +58,19 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + core.SpellBatchWindow,
-				OnAction: func(s *core.Simulation) {
+				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
+				Priority: core.ActionPriorityLow,
+				OnAction: func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 
 					// damages the paladin for 10% of rawDamage, then adds 133% of that for everyone in the raid
-					paladin.AddMana(sim, result.RawDamage()*0.1*1.33, manaMetrics)
+					selfDamage := result.RawDamage() * 0.1
+					paladin.RemoveHealth(sim, selfDamage, healthMetrics)
+					paladin.AddMana(sim, selfDamage*1.33, manaMetrics)
 				},
 			})
 		},

@@ -190,27 +190,20 @@ func (warrior *Warrior) applyT1Damage6PBonus() {
 		ActionID: core.ActionID{SpellID: 457816},
 		Label:    "Battle Forecast",
 		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.10
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.10
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.10)
 
 	defenseAura := warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 457814},
 		Label:    "Defense Forecast",
 		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageTakenMultiplier *= 0.90
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageTakenMultiplier /= 0.90
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.DamageTakenMultiplier, 0.90)
 
-	berserkAura := warrior.NewTemporaryStatsAura("Berserker Forecast", core.ActionID{SpellID: 457817}, stats.Stats{stats.MeleeCrit: 10 * core.CritRatingPerCritChance}, duration)
+	berserkAura := warrior.NewTemporaryStatsAura(
+		"Berserker Forecast",
+		core.ActionID{SpellID: 457817},
+		stats.Stats{stats.MeleeCrit: 10 * core.CritRatingPerCritChance},
+		duration,
+	)
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
@@ -270,11 +263,11 @@ func (warrior *Warrior) applyT1Tank6PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.defensiveStanceThreatMultiplier *= 1.10
-			warrior.gladiatorStanceDamageMultiplier *= 1.04
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(
+		&warrior.defensiveStanceThreatMultiplier, 1.10,
+	).AttachMultiplicativePseudoStatBuff(
+		&warrior.gladiatorStanceDamageMultiplier, 1.04,
+	))
 }

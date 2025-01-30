@@ -36,9 +36,9 @@ func (priest *Priest) applyNaxxramasShadow2PBonus() {
 	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PriestShadowWordPain,
-		FloatValue: 0.20,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestShadowWordPain,
+		IntValue:  20,
 	}))
 }
 
@@ -66,14 +66,14 @@ func (priest *Priest) applyNaxxramasShadow6PBonus() {
 	}
 
 	classSpellMasks := ClassSpellMask_PriestMindBlast | ClassSpellMask_PriestMindSpike
-
 	if priest.HasRune(proto.PriestRune_RuneBracersDespair) {
 		classSpellMasks |= ClassSpellMask_PriestMindFlay
 	}
 
 	damageMod := priest.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: classSpellMasks,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  classSpellMasks,
+		FloatValue: 1,
 	})
 
 	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
@@ -81,13 +81,19 @@ func (priest *Priest) applyNaxxramasShadow6PBonus() {
 		Callback:       core.CallbackOnApplyEffects,
 		ClassSpellMask: classSpellMasks,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			critChanceBonus := 0.0
-			if result.Target.MobType == proto.MobType_MobTypeUndead {
-				critChanceBonus = priest.GetStat(stats.SpellCrit) / 100
+			if result.Target.MobType != proto.MobType_MobTypeUndead {
+				return
 			}
 
-			damageMod.UpdateFloatValue(critChanceBonus)
+			critChanceBonusPct := 100.0
+			critChanceBonusPct += priest.GetStat(stats.SpellCrit)
+
+			damageMod.UpdateFloatValue(critChanceBonusPct / 100)
 		},
+	}).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+		damageMod.Activate()
+	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+		damageMod.Deactivate()
 	})
 }
 

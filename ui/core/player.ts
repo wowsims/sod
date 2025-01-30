@@ -421,7 +421,7 @@ export class Player<SpecType extends Spec> {
 	// Returns all random suffixes that this player would be interested in for the given base item.
 	getRandomSuffixes(item: Item): Array<ItemRandomSuffix> {
 		const allSuffixes = item.randomSuffixOptions.map(id => this.sim.db.getRandomSuffixById(id)!);
-		return allSuffixes.filter(suffix => this.computeRandomSuffixEP(suffix) > 0);
+		return allSuffixes.filter(suffix => this.computeRandomSuffixEP(suffix) > 0 || (suffix.id >= 2338 && suffix.id <= 2343));
 	}
 
 	// Returns all enchants that this player can wear in the given slot.

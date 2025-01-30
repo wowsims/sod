@@ -18,13 +18,12 @@ func (druid *Druid) applyStarsurge() {
 	baseHighDamage := druid.baseRuneAbilityDamage() * 3.04
 	spellCoeff := .429
 
-	starfireAuraModifier := 0.80
 	starfireAuraDuration := time.Second * 15
 
 	damageMod := druid.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_DruidStarfire,
-		FloatValue: starfireAuraModifier,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_DruidStarfire,
+		IntValue:  80,
 	})
 
 	starfireDamageAura := druid.RegisterAura(core.Aura{

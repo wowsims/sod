@@ -28,12 +28,16 @@ var ItemSetDreamwalkerEclipse = core.NewItemSet(core.ItemSet{
 
 // Your Moonfire and Sunfire deal 20% more damage.
 func (druid *Druid) applyNaxxramasBalance2PBonus() {
+	label := "S03 - Item - Naxxramas - Druid - Balance 2P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
 
 	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: "S03 - Item - Naxxramas - Druid - Balance 2P Bonus",
+		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusDamage_Flat,
-		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire,
+		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat,
 		FloatValue: 0.20,
 	}))
 }
@@ -126,13 +130,14 @@ func (druid *Druid) applyNaxxramasFeral4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1218477}, // Tracking in APL
 		Label:    label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			druid.TigersFury.CD.Multiplier *= 0.5
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multi_Pct,
+		ClassMask:  ClassSpellMask_DruidTigersFury,
+		FloatValue: 0.5,
+	}))
 }
 
 // Each time you deal Bleed damage to an Undead target, you gain 1% increased damage done to Undead for 30 sec, stacking up to 25 times.
@@ -142,16 +147,13 @@ func (druid *Druid) applyNaxxramasFeral6PBonus() {
 		return
 	}
 
-	var undeadTargets []*core.Unit
+	undeadTargets := core.FilterSlice(druid.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
 
 	buffAura := druid.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1218479},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
 		MaxStacks: 25,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			undeadTargets = core.FilterSlice(druid.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			for _, unit := range undeadTargets {
 				druid.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)

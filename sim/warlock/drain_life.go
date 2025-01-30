@@ -26,8 +26,6 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 		manaCost *= 2
 	}
 
-	baseDamage *= 1 + warlock.shadowMasteryBonus() + 0.02*float64(warlock.Talents.ImprovedDrainLife)
-
 	actionID := core.ActionID{SpellID: spellId}
 
 	healingSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
@@ -60,9 +58,8 @@ func (warlock *Warlock) getDrainLifeBaseConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

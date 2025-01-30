@@ -72,9 +72,9 @@ func (priest *Priest) applyForceOfWill() {
 	}
 
 	priest.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PriestAll,
-		FloatValue: 0.01 * float64(priest.Talents.ForceOfWill),
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestAll,
+		IntValue:  int64(1 * priest.Talents.ForceOfWill),
 	})
 	priest.AddStaticMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusCrit_Flat,
@@ -128,9 +128,9 @@ func (priest *Priest) applySearingLight() {
 	}
 
 	priest.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PriestSmite | ClassSpellMask_PriestHolyFire,
-		FloatValue: 0.05 * float64(priest.Talents.SearingLight),
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestSmite | ClassSpellMask_PriestHolyFire,
+		IntValue:  int64(5 * priest.Talents.SearingLight),
 	})
 }
 
@@ -162,10 +162,11 @@ func (priest *Priest) applyShadowAffinity() {
 		return
 	}
 
-	priest.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Matches(ClassSpellMask_PriestAll) || spell.SpellSchool.Matches(core.SpellSchoolShadow) {
-			spell.ThreatMultiplier *= 1 - 0.08*float64(priest.Talents.ShadowAffinity)
-		}
+	priest.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Threat_Pct,
+		ClassMask:  ClassSpellMask_PriestAll,
+		School:     core.SpellSchoolShadow,
+		FloatValue: 1 - 0.08*float64(priest.Talents.ShadowAffinity),
 	})
 }
 
@@ -174,11 +175,11 @@ func (priest *Priest) applyShadowFocus() {
 		return
 	}
 
-	bonusHit := 2 * float64(priest.Talents.ShadowFocus) * core.SpellHitRatingPerHitChance
-	priest.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Matches(ClassSpellMask_PriestAll) || spell.SpellSchool.Matches(core.SpellSchoolShadow) {
-			spell.BonusHitRating += bonusHit
-		}
+	priest.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusHit_Flat,
+		ClassMask:  ClassSpellMask_PriestAll,
+		School:     core.SpellSchoolShadow,
+		FloatValue: 2 * float64(priest.Talents.ShadowFocus) * core.SpellHitRatingPerHitChance,
 	})
 }
 
@@ -225,18 +226,18 @@ func (priest *Priest) applyDarkness() {
 		return
 	}
 
-	multiplier := 0.02 * float64(priest.Talents.Darkness)
+	modifier := int64(2 * priest.Talents.Darkness)
 
 	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: "Darkness",
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BaseDamageDone_Flat,
-		ClassMask:  ClassSpellMask_PriestMindBlast | ClassSpellMask_PriestDevouringPlague | ClassSpellMask_PriestMindSear | ClassSpellMask_PriestShadowWordDeath,
-		FloatValue: multiplier,
+		Kind:      core.SpellMod_BaseDamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestMindBlast | ClassSpellMask_PriestDevouringPlague | ClassSpellMask_PriestMindSear | ClassSpellMask_PriestShadowWordDeath,
+		IntValue:  modifier,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestVoidPlague | ClassSpellMask_PriestMindSpike | ClassSpellMask_PriestVoidZone | ClassSpellMask_PriestMindFlay,
-		FloatValue: multiplier,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestVoidPlague | ClassSpellMask_PriestMindSpike | ClassSpellMask_PriestVoidZone | ClassSpellMask_PriestMindFlay,
+		IntValue:  modifier,
 	}))
 }
 
@@ -251,35 +252,28 @@ func (priest *Priest) registerInnerFocus() {
 		Label:    "Inner Focus",
 		ActionID: actionID,
 		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range priest.Spellbook {
-				if spell.Matches(ClassSpellMask_PriestAll) && spell.Cost != nil {
-					spell.Cost.Multiplier -= 100
-					spell.BonusCritRating += 25 * core.SpellCritRatingPerCritChance
-				}
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range priest.Spellbook {
-				if spell.Matches(ClassSpellMask_PriestAll) && spell.Cost != nil {
-					spell.Cost.Multiplier += 100
-					spell.BonusCritRating -= 25 * core.SpellCritRatingPerCritChance
-				}
-			}
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_PriestAll) {
+			if spell.Matches(ClassSpellMask_PriestAll ^ ClassSpellMask_PriestInnerFocus) {
 				// Remove the buff and put skill on CD
 				aura.Deactivate(sim)
 				priest.InnerFocus.CD.Use(sim)
 				priest.UpdateMajorCooldowns()
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Flat,
+		ClassMask: ClassSpellMask_PriestAll,
+		IntValue:  -100,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		ClassMask:  ClassSpellMask_PriestAll,
+		FloatValue: 25 * core.SpellCritRatingPerCritChance,
 	})
 
 	priest.InnerFocus = priest.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_PriestInnerFocus,
+		Flags:          core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

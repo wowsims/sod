@@ -15,8 +15,6 @@ func (warlock *Warlock) getDeathCoilBaseConfig(rank int) core.SpellConfig {
 	level := [DeathCoilRanks + 1]int{0, 42, 50, 58}[rank]
 	spellCoeff := 0.214
 
-	baseDamage *= 1 + warlock.shadowMasteryBonus()
-
 	healingSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId}.WithTag(1),
 		SpellSchool: core.SpellSchoolPhysical,
@@ -51,10 +49,9 @@ func (warlock *Warlock) getDeathCoilBaseConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
-		BonusCoefficient:         spellCoeff,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)

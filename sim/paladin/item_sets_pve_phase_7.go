@@ -40,9 +40,9 @@ func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PaladinDivineStorm,
-		FloatValue: 1,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PaladinDivineStorm,
+		IntValue:  100,
 	}))
 }
 
@@ -54,7 +54,8 @@ func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 	}
 
 	paladin.RegisterAura(core.Aura{
-		Label: label,
+		Label:    label,
+		ActionID: core.ActionID{SpellID: PaladinT3Ret4P},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range paladin.holyWrath {
 				spell.CastTimeMultiplier -= 1
@@ -72,10 +73,13 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 		return
 	}
 
+	hasWrathRune := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
+
 	classSpellMasks := ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath | ClassSpellMask_PaladinDivineStorm | ClassSpellMask_PaladinCrusaderStrike
 	damageMod := paladin.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: classSpellMasks,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  classSpellMasks,
+		FloatValue: 1,
 	})
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
@@ -87,20 +91,27 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 			damageMod.Deactivate()
 		},
 		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if !spell.Matches(classSpellMasks) {
+			if !spell.Matches(classSpellMasks) || target.MobType != proto.MobType_MobTypeUndead {
 				return
 			}
-			critChanceBonus := 0.0
 
-			if target.MobType == proto.MobType_MobTypeUndead {
-				if spell.Matches(ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath) {
-					critChanceBonus = paladin.GetStat(stats.SpellCrit)/100.0 + paladin.GetSchoolBonusCritChance(spell)/100.0
-				} else {
-					critChanceBonus = paladin.GetStat(stats.MeleeCrit) / 100.0
+			critChanceBonusPct := 100.0
+
+			if spell.Matches(ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath) {
+				critChanceBonusPct += paladin.GetStat(stats.SpellCrit) + paladin.GetSchoolBonusCritChance(spell)
+
+				if hasWrathRune {
+					critChanceBonusPct += paladin.GetStat(stats.MeleeCrit)
 				}
+			} else {
+				critChanceBonusPct += paladin.GetStat(stats.MeleeCrit)
 			}
-			critChanceBonus = min(critChanceBonus, 1)
-			damageMod.UpdateFloatValue(critChanceBonus)
+
+			if spell.Matches(ClassSpellMask_PaladinExorcism) {
+				critChanceBonusPct += 100
+			}
+
+			damageMod.UpdateFloatValue(critChanceBonusPct / 100)
 		},
 	}))
 }
@@ -145,18 +156,17 @@ func (paladin *Paladin) applyNaxxramasProtection4PBonus() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if paladin.divineProtection != nil {
-				paladin.divineProtection.CD.FlatModifier -= time.Minute * 3
-			}
-
-			if paladin.avengingWrath != nil {
-				paladin.avengingWrath.CD.FlatModifier -= time.Minute * 2
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_PaladinDivineProtection,
+		TimeValue: -time.Minute * 3,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_PaladinavengingWrath,
+		TimeValue: -time.Minute * 2,
+	}))
 }
 
 // When damage from an Undead enemy takes you below 35% health, the effect from Hand of Reckoning and Righteous Fury now reduces that damage by 50%.
@@ -197,12 +207,12 @@ func (paladin *Paladin) applyNaxxramasHoly2PBonus() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	// AddMana effect is implemented in lay_on_hands.go:47
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.layOnHands.CD.FlatModifier -= time.Minute * 35
-
-			// TODO: Mana return
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_PaladinLayOnHands,
+		TimeValue: -time.Minute * 35,
+	}))
 }

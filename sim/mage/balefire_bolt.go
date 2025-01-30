@@ -22,11 +22,11 @@ func (mage *Mage) registerBalefireBoltSpell() {
 	manaCost := .20
 	maxStacks := 5
 	stackMultiplier := 0.20
+	stackModifier := int32(20)
 
 	damageMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_MageBalefireBolt,
-		Kind:       core.SpellMod_DamageDone_Flat,
-		FloatValue: 0,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_MageBalefireBolt,
 	})
 
 	statDeps := make([]*stats.StatDependency, maxStacks+1) // 5 stacks + zero conditions
@@ -40,7 +40,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 		Duration:  buffDuration,
 		MaxStacks: int32(maxStacks),
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			damageMod.UpdateFloatValue(stackMultiplier * float64(newStacks))
+			damageMod.UpdateIntValue(int64(stackModifier * newStacks))
 
 			if oldStacks != 0 {
 				aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
@@ -50,7 +50,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 			}
 
 			if newStacks == aura.MaxStacks {
-				mage.RemoveHealth(sim, mage.CurrentHealth())
+				mage.RemoveHealth(sim, mage.CurrentHealth(), mage.DamageTakenHealthMetrics)
 
 				if sim.Log != nil {
 					mage.Log(sim, "YOU DIED")
@@ -74,7 +74,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL,
-		// https://wago.tools/db2/SpellMisc?build=1.15.6.58658&sort[SpellID]=asc&filter[SpellID]=428878&page=1
+
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{

@@ -2,7 +2,6 @@ package item_effects
 
 import (
 	"fmt"
-	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/common/sod"
@@ -602,8 +601,8 @@ func TimewornDecayAura(agent core.Agent, itemID int32) {
 	aura := core.MakePermanent(character.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_PeriodicDamageDone_Flat,
-		FloatValue: 0.03 * float64(character.PseudoStats.TimewornBonus),
+		Kind:     core.SpellMod_PeriodicDamageDone_Flat,
+		IntValue: int64(3 * character.PseudoStats.TimewornBonus),
 	}))
 
 	character.ItemSwap.RegisterProc(itemID, aura)
@@ -689,7 +688,7 @@ func TimewornSpellAura(agent core.Agent, itemID int32) {
 		return
 	}
 
-	castSpeedMultiplier := math.Pow((1 + 0.02), float64(character.PseudoStats.TimewornBonus))
+	castSpeedMultiplier := 1 + 0.02*float64(character.PseudoStats.TimewornBonus)
 
 	aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213398},

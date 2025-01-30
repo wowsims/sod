@@ -32,6 +32,9 @@ const (
 	PaladinT2Ret2P   = 467518
 	PaladinT2Ret4P   = 467526
 	PaladinT2Ret6P   = 467529
+	PaladinT3Ret2P   = 1219189
+	PaladinT3Ret4P   = 1219191
+	PaladinT3Ret6P   = 1219193
 	PaladinTAQRet2P  = 1213397
 	PaladinTAQRet4P  = 1213406
 	PaladinZG2P      = 468401
@@ -508,9 +511,9 @@ func (paladin *Paladin) applyPaladinT2Holy4P() {
 
 	//Increases damage done by your Consecration spell by 50%
 	paladin.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PaladinConsecration,
-		FloatValue: 0.5,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PaladinConsecration,
+		IntValue:  50,
 	})
 }
 
@@ -579,9 +582,9 @@ func (paladin *Paladin) applyPaladinT2Ret2P() {
 			paladin.consumeSealsOnJudge = true
 		},
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PaladinJudgements,
-		FloatValue: 0.2,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PaladinJudgements,
+		IntValue:  20,
 	}))
 }
 
@@ -653,9 +656,9 @@ func (paladin *Paladin) applyPaladinTAQRet2P() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PaladinCrusaderStrike,
-		FloatValue: 0.5,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PaladinCrusaderStrike,
+		IntValue:  50,
 	})
 }
 
@@ -677,7 +680,7 @@ func (paladin *Paladin) applyPaladinTAQRet4P() {
 		Duration:  time.Second * 20,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			damageMod.UpdateFloatValue(0.4 * float64(newStacks))
+			damageMod.UpdateIntValue(int64(40 * newStacks))
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMod.Activate()
@@ -716,9 +719,9 @@ func (paladin *Paladin) applyPaladinZG3P() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PaladinHolyShock,
-		FloatValue: 0.5,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PaladinHolyShock,
+		IntValue:  50,
 	})
 }
 
@@ -730,9 +733,9 @@ func (paladin *Paladin) applyPaladinZG5P() {
 	}
 
 	paladin.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DamageDone_Flat,
-		ClassMask:  ClassSpellMask_PaladinExorcism,
-		FloatValue: 0.5,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PaladinExorcism,
+		IntValue:  50,
 	})
 
 	paladin.AddStaticMod(core.SpellModConfig{

@@ -22,8 +22,7 @@ func (shaman *Shaman) registerRollingThunder() {
 		ClassSpellMask: ClassSpellMask_ShamanRollingThunder,
 		SpellSchool:    core.SpellSchoolNature,
 		DefenseType:    core.DefenseTypeMagic,
-		ProcMask:       core.ProcMaskEmpty,
-		Flags:          SpellFlagShaman | SpellFlagLightning,
+		ProcMask:       core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
