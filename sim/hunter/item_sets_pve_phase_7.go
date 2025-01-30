@@ -77,23 +77,50 @@ func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 		return
 	}
 
-	buffAura := hunter.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 1218587},
-		Label:     "Critical Aim",
-		Duration:  time.Second * 30,
-		MaxStacks: 35,
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			hunter.AddStatDynamic(sim, stats.MeleeCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
-			hunter.AddStatDynamic(sim, stats.SpellCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
-		},
-	})
+	units := []*core.Unit{&hunter.Unit}
+	if hunter.pet != nil {
+		units = append(units, &hunter.pet.Unit)
+	}
+
+	spellMods := []*core.SpellMod{}
+	buffAuras := []*core.Aura{}
+	for _, unit := range units {
+		spellMod := unit.AddDynamicMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 1.0,
+		})
+		spellMods = append(spellMods, spellMod)
+
+		buffAuras = append(buffAuras, unit.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1218587},
+			Label:     "Critical Aim",
+			Duration:  time.Second * 30,
+			MaxStacks: 25,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				spellMod.UpdateFloatValue(1 / (1 + 0.01*float64(oldStacks)))
+				spellMod.UpdateFloatValue(1 + 0.01*float64(newStacks))
+			},
+		}))
+	}
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spellMod := range spellMods {
+				spellMod.Activate()
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spellMod := range spellMods {
+				spellMod.Deactivate()
+			}
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Target.MobType == proto.MobType_MobTypeUndead && spell.ProcMask.Matches(core.ProcMaskMelee) {
-				buffAura.Activate(sim)
-				buffAura.AddStack(sim)
+				for _, aura := range buffAuras {
+					aura.Activate(sim)
+					aura.AddStack(sim)
+				}
 			}
 		},
 	}))
