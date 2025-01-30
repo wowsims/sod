@@ -80,7 +80,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 				paladin.AutoAttacks.MHAuto().ApplyMultiplicativeDamageBonus(1.4)
 				paladin.AddStatDynamic(sim, stats.AttackPower, -ap*improvedSotC+libramAp)
 			},
-		}).AttachStatBuff(stats.AttackPower, ap*improvedSotC+libramAp)
+		})
 
 		paladin.aurasSotC = append(paladin.aurasSotC, aura)
 
