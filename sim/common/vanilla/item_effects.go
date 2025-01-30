@@ -2472,7 +2472,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=236337/glyph-of-deflection
 	// Use: Increases the block value of your shield by 400 for 20 sec. (2 Min Cooldown)
-	core.NewSimpleStatDefensiveTrinketEffect(GlyphOfDeflection, stats.Stats{stats.BlockValue: 400}, time.Second*20, time.Minute*2)
+	core.NewSimpleStatOffensiveTrinketEffect(GlyphOfDeflection, stats.Stats{stats.BlockValue: 400}, time.Second*20, time.Minute*2)
 
 	// https://www.wowhead.com/classic/item=227990/hand-of-injustice
 	// Equip: 2% chance on ranged hit to gain 1 extra attack. (Proc chance: 2%, 2s cooldown)
