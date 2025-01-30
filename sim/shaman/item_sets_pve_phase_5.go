@@ -160,25 +160,21 @@ func (shaman *Shaman) applyT2Tank4PBonus() {
 	}
 
 	statDeps := []*stats.StatDependency{
-		nil,
-		shaman.NewDynamicMultiplyStat(stats.BlockValue, 1.10),
-		shaman.NewDynamicMultiplyStat(stats.BlockValue, 1.20),
-		shaman.NewDynamicMultiplyStat(stats.BlockValue, 1.30),
+		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0),
+		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0.10),
+		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0.20),
+		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0.30),
 	}
 
 	// Couldn't find a separate spell for this
 	blockAura := shaman.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 467909},
-		Label:     "S03 - Item - T2 - Shaman - Tank 4P Bonus Proc",
+		ActionID:  core.ActionID{SpellID: 467910},
+		Label:     "Elemental Shield",
 		Duration:  time.Second * 6,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			if oldStacks != 0 {
-				shaman.DisableDynamicStatDep(sim, statDeps[oldStacks])
-			}
-			if newStacks != 0 {
-				shaman.EnableDynamicStatDep(sim, statDeps[newStacks])
-			}
+			shaman.DisableDynamicStatDep(sim, statDeps[oldStacks])
+			shaman.EnableDynamicStatDep(sim, statDeps[newStacks])
 		},
 	})
 
