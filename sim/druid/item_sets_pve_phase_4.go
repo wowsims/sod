@@ -102,7 +102,7 @@ func (druid *Druid) applyT1Balance4PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-	}).AttachBuildPhaseStatsBuff(bonusStats))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on Starfall by 50%.

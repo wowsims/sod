@@ -67,13 +67,7 @@ func init() {
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeDemon || character.CurrentTarget.MobType == proto.MobType_MobTypeUndead {
 			aura := core.MakePermanent(character.RegisterAura(core.Aura{
 				Label: "Libram Discarded Tenets Of The SilverHand",
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					character.PseudoStats.MobTypeAttackPower += 15
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					character.PseudoStats.MobTypeAttackPower -= 15
-				},
-			}))
+			}).AttachAdditivePseudoStatBuff(&character.PseudoStats.MobTypeAttackPower, 15))
 
 			character.ItemSwap.RegisterProc(LibramDiscardedTenetsOfTheSilverHand, aura)
 		}
@@ -84,13 +78,7 @@ func init() {
 		if character.CurrentTarget.MobType == proto.MobType_MobTypeDragonkin {
 			aura := core.MakePermanent(character.RegisterAura(core.Aura{
 				Label: "Libram Of Draconic Destruction",
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					character.PseudoStats.MobTypeAttackPower += 36
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					character.PseudoStats.MobTypeAttackPower -= 36
-				},
-			}))
+			}).AttachAdditivePseudoStatBuff(&character.PseudoStats.MobTypeAttackPower, 36))
 
 			character.ItemSwap.RegisterProc(LibramOfDraconicDestruction, aura)
 		}
@@ -119,20 +107,15 @@ func init() {
 			ActionID: core.ActionID{SpellID: 467522},
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.25)
-				character.MultiplyCastSpeed(1.33)
-
 				// Crusader's zeal proc overwrites scrolls regardless of time left
 				truthbearerAura := character.GetAuraByID(core.ActionID{SpellID: 465414})
 				if truthbearerAura != nil {
 					truthbearerAura.Deactivate(sim)
 				}
 			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyAttackSpeed(sim, 1.0/1.25)
-				character.MultiplyCastSpeed(1.0 / 1.33)
-			},
-		})
+		}).
+			AttachMultiplyAttackSpeed(&character.Unit, 1.25).
+			AttachMultiplyCastSpeed(&character.Unit, 1.33)
 
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: ScrollsOfBlindingLight},
@@ -206,13 +189,10 @@ func init() {
 			ActionID: core.ActionID{ItemID: GrileksCharmOfValor},
 			Label:    "Brilliant Light",
 			Duration: duration,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe), 15.0*core.CritRatingPerCritChance, 10.0*core.CritRatingPerCritChance)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly] += core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe), -15.0*core.CritRatingPerCritChance, -10.0*core.CritRatingPerCritChance)
-			},
-		})
+		}).AttachAdditivePseudoStatBuff(
+			&paladin.PseudoStats.SchoolBonusCritChance[stats.SchoolIndexHoly],
+			core.TernaryFloat64(paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe), 15.0*core.CritRatingPerCritChance, 10.0*core.CritRatingPerCritChance),
+		)
 
 		spell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: GrileksCharmOfValor},
