@@ -262,11 +262,10 @@ func (shaman *Shaman) applyT2Enhancement4PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask: ClassSpellMask_ShamanStormstrikeHit,
-		// TODO: Verify if this is additive or multiplicative
-		Kind:     core.SpellMod_DamageDone_Flat,
-		ProcMask: core.ProcMaskMeleeMHSpecial,
-		IntValue: 50,
+		ClassMask:  ClassSpellMask_ShamanStormstrikeHit,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ProcMask:   core.ProcMaskMeleeMHSpecial,
+		FloatValue: 1.5,
 	}))
 }
 
