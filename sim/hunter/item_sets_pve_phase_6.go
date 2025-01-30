@@ -58,7 +58,7 @@ func (hunter *Hunter) applyTAQMelee4PBonus() {
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_ImpactDamageDone_Flat,
-		ClassMask: ClassSpellMask_HunterShots | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterMongooseBite,
+		ClassMask: ClassSpellMask_HunterMongooseBite | ClassSpellMask_HunterStrikes,
 		IntValue:  15,
 	}))
 }
