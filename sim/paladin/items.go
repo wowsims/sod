@@ -338,7 +338,6 @@ func init() {
 			IntValue:  3,
 		})
 
-		paladin.ItemSwap.RegisterProc(LibramOfSanctity, buffAura)
 		paladin.ItemSwap.RegisterProc(LibramOfSanctity, aura)
 	})
 
