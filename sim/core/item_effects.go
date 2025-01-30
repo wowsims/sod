@@ -91,13 +91,6 @@ func AddWeaponEffect(id int32, weaponEffect ApplyEffect) {
 
 func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects map[int32]bool, registeredItemEnchantEffects map[int32]bool) {
 	for _, eq := range equipment {
-		if registeredItemEnchantEffects == nil {
-			registeredItemEnchantEffects = map[int32]bool{}
-		}
-		if registeredItemEffects == nil {
-			registeredItemEffects = map[int32]bool{}
-		}
-
 		if applyItemEffect, ok := itemEffects[eq.ID]; ok && !registeredItemEffects[eq.ID] {
 			applyItemEffect(agent)
 			registeredItemEffects[eq.ID] = true
