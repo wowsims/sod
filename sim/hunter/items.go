@@ -176,18 +176,11 @@ func init() {
 	core.NewItemEffect(SignetOfBeasts, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 		if hunter.pet != nil {
-			damageMulti := 0.01
-			procAura := core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
+			aura := core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
 				Label: "Increased Hunter Pet Damage (Signet of Beasts)",
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.pet.PseudoStats.DamageDealtMultiplierAdditive += damageMulti
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					hunter.pet.PseudoStats.DamageDealtMultiplierAdditive -= damageMulti
-				},
-			}))
+			}).AttachAdditivePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplierAdditive, 0.01))
 
-			hunter.ItemSwap.RegisterProc(SignetOfBeasts, procAura)
+			hunter.ItemSwap.RegisterProc(SignetOfBeasts, aura)
 		}
 	})
 
@@ -539,17 +532,10 @@ func init() {
 			return
 		}
 
-		damageMulti := 1.02
 		procAura := core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
 			Label:    "Increased Pet Damage +2% (Cloak of the Unseen Path)",
 			ActionID: core.ActionID{SpellID: 468270},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.pet.PseudoStats.DamageDealtMultiplier *= damageMulti
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.pet.PseudoStats.DamageDealtMultiplier *= 1 / damageMulti
-			},
-		}))
+		}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.02))
 
 		hunter.ItemSwap.RegisterProc(CloakOfTheUnseenPath, procAura)
 	})
@@ -559,17 +545,10 @@ func init() {
 		if hunter.pet == nil {
 			return
 		}
-		damageMulti := 1.03
 		procAura := core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
 			Label:    "Increased Pet Damage +3% (Scythe of the Unseen Path)",
 			ActionID: core.ActionID{SpellID: 468268},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.pet.PseudoStats.DamageDealtMultiplier *= damageMulti
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.pet.PseudoStats.DamageDealtMultiplier *= 1 / damageMulti
-			},
-		}))
+		}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.03))
 
 		hunter.ItemSwap.RegisterProc(ScytheOfTheUnseenPath, procAura)
 	})
@@ -580,17 +559,10 @@ func init() {
 			return
 		}
 
-		damageMulti := 1.02
 		procAura := core.MakePermanent(hunter.GetOrRegisterAura(core.Aura{
 			Label:    "Increased Pet Damage +2% (Signet of the Unseen Path)",
 			ActionID: core.ActionID{SpellID: 468270},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.pet.PseudoStats.DamageDealtMultiplier *= damageMulti
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				hunter.pet.PseudoStats.DamageDealtMultiplier *= 1 / damageMulti
-			},
-		}))
+		}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.02))
 
 		hunter.ItemSwap.RegisterProc(SignetOfTheUnseenPath, procAura)
 	})

@@ -447,9 +447,9 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase4-Lvl60-AllItems-DreadHunter'sChain"
  value: {
-  dps: 1877.21263
-  tps: 1614.6016
-  hps: 15.34389
+  dps: 1877.25078
+  tps: 1614.64046
+  hps: 15.3416
  }
 }
 dps_results: {
