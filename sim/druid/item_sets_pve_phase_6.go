@@ -235,11 +235,17 @@ func (druid *Druid) applyTAQGuardian4PBonus() {
 	if !druid.HasRune(proto.DruidRune_RuneHandsMangle) {
 		return
 	}
-	druid.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_DruidMangleBear {
-			spell.CD.FlatModifier -= 1500 * time.Millisecond
-		}
-	})
+	label := "S03 - Item - TAQ - Druid - Guardian 4P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label:      label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MangleBear.CD.FlatModifier -= 1500 * time.Millisecond
+		},
+	}))
 }
 
 var ItemSetSymbolsOfUnendingLife = core.NewItemSet(core.ItemSet{

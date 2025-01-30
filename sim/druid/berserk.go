@@ -12,6 +12,7 @@ func (druid *Druid) applyBerserk() {
 		return
 	}
 	hasMangle := druid.HasRune(proto.DruidRune_RuneHandsMangle)
+	hasLacerate := druid.HasRune(proto.DruidRune_RuneLegsLacerate)
 
 	actionId := core.ActionID{SpellID: 417141}
 	var affectedSpells []*DruidSpell
@@ -43,12 +44,18 @@ func (druid *Druid) applyBerserk() {
 					spell.Cost.Multiplier -= 50
 				}
 			}
+			if(hasLacerate) {
+				druid.Lacerate.Cost.Multiplier -= 100
+			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range affectedSpells {
 				if spell.Cost != nil {
 					spell.Cost.Multiplier += 50
 				}
+			}
+			if(hasLacerate) {
+				druid.Lacerate.Cost.Multiplier += 100
 			}
 		},
 	})

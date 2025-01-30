@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 type SwipeRankInfo struct {
@@ -101,7 +100,7 @@ func (druid *Druid) newSwipeBearSpellConfig(swipeRank SwipeRankInfo) core.SpellC
 		ThreatMultiplier:             SwipeThreatMultiplier,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			damage := baseDamage + .1*druid.GetStat(stats.AttackPower)
+			damage := baseDamage + .1*spell.MeleeAttackPower()
 			for idx := range results {
 				results[idx] = spell.CalcDamage(sim, target, damage, spell.OutcomeMeleeSpecialHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)

@@ -237,7 +237,8 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 
 // Swipe(Bear) also causes your Maul to hit 1 additional target for the next 6 sec.
 func (druid *Druid) applyT2Guardian2PBonus() {
-	if druid.Env.GetNumTargets() == 1 || druid.HasAura("S03 - Item - T2 - Druid - Guardian 2P Bonus") {
+	label := "S03 - Item - T2 - Druid - Guardian 2P Bonus"
+	if druid.Env.GetNumTargets() == 1 || druid.HasAura(label) {
 		return
 	}
 
@@ -253,7 +254,7 @@ func (druid *Druid) applyT2Guardian2PBonus() {
 	})
 
 	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: "S03 - Item - T2 - Druid - Guardian 2P Bonus",
+		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && spell.SpellCode == SpellCode_DruidSwipeBear {
 				cleaveAura.Activate(sim)
@@ -302,9 +303,14 @@ func (druid *Druid) applyT2Guardian6PBonus() {
 	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
 		return
 	}
+	label := "S03 - Item - T2 - Druid - Guardian 6P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
+
 	druid.FuryOfStormrageLacerateSpread = true
 	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: "S03 - Item - T2 - Druid - Guardian 6P Bonus",
+		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.SpellCode == SpellCode_DruidSwipeBear && result.Landed() && result.Target != druid.CurrentTarget {
 				currentTargetDoT := druid.LacerateBleed.Dot(druid.CurrentTarget)

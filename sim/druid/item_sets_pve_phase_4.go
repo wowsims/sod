@@ -265,17 +265,7 @@ func (druid *Druid) applyT1Guardian6PBonus() {
 		ActionID: core.ActionID{SpellID: 456332}, // Tracking in APL
 		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			oldOnGain := druid.BearFormAura.OnGain
-			druid.BearFormAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnGain(aura, sim)
-				druid.PseudoStats.ThreatMultiplier += 0.20
-			}
-
-			oldOnExpire := druid.BearFormAura.OnExpire
-			druid.BearFormAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnExpire(aura, sim)
-				druid.PseudoStats.ThreatMultiplier -= 0.20
-			}
+			druid.BearFormThreatMultiplier += 0.20
 		},
 	}))
 }

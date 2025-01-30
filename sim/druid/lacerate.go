@@ -7,6 +7,8 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
+var LacerateDotMaxStacks int32 = 5
+
 func (druid *Druid) registerLacerateSpell() {
 	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
 		return
@@ -50,12 +52,10 @@ func (druid *Druid) registerLacerateSpell() {
 
 			for idx := range results {
 				activeStacks := druid.LacerateBleed.Dot(target).GetStacks() + 1
-				activeStacks = core.TernaryInt32(activeStacks > 5, 5, activeStacks)
+				activeStacks = core.TernaryInt32(activeStacks > LacerateDotMaxStacks, LacerateDotMaxStacks, activeStacks)
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * (.2*float64(activeStacks) + initialDamageMul)
 
-				spell.Cost.FlatModifier -= core.TernaryInt32(berserking, 10, 0)
 				results[idx] = spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-				spell.Cost.FlatModifier += core.TernaryInt32(berserking, 10, 0)
 
 				if results[idx].Landed() {
 					druid.LacerateBleed.Cast(sim, target)
@@ -97,7 +97,7 @@ func (druid *Druid) registerLacerateBleedSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label:     "Lacerate",
-				MaxStacks: 5,
+				MaxStacks: LacerateDotMaxStacks,
 				Duration:  time.Second * 15,
 			},
 			NumberOfTicks: 5,

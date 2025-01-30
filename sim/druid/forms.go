@@ -291,6 +291,8 @@ func (druid *Druid) registerBearFormSpell() {
 	clawWeapon := druid.GetBearWeapon()
 	predBonus := stats.Stats{}
 
+	druid.BearFormThreatMultiplier = 1.3 + 0.03 * float64(druid.Talents.FeralInstinct)
+
 	druid.BearFormAura = druid.RegisterAura(core.Aura{
 		Label:      "Bear Form",
 		ActionID:   actionID,
@@ -306,8 +308,7 @@ func (druid *Druid) registerBearFormSpell() {
 
 			druid.AutoAttacks.SetMH(clawWeapon)
 
-			druid.PseudoStats.ThreatMultiplier += druid.CenarionRageThreatBonus
-			druid.PseudoStats.ThreatMultiplier += .3 + .03*float64(druid.Talents.FeralInstinct)
+			druid.PseudoStats.ThreatMultiplier *= druid.BearFormThreatMultiplier
 			druid.PseudoStats.DamageTakenMultiplier *= sotfdtm
 
 			predBonus = druid.GetDynamicPredStrikeStats()
@@ -336,8 +337,7 @@ func (druid *Druid) registerBearFormSpell() {
 
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
-			druid.PseudoStats.ThreatMultiplier -= druid.CenarionRageThreatBonus
-			druid.PseudoStats.ThreatMultiplier -= .3 + .03*float64(druid.Talents.FeralInstinct)
+			druid.PseudoStats.ThreatMultiplier /= druid.BearFormThreatMultiplier
 			druid.PseudoStats.DamageTakenMultiplier /= sotfdtm
 
 			druid.AddStatsDynamic(sim, predBonus.Invert())

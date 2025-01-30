@@ -140,7 +140,7 @@ type Druid struct {
 	FerociousBiteExcessEnergyOverride bool // When true, disables the excess energy consumption of Ferocious bite
 	FuryOfStormrageLacerateSpread     bool // When true, spreads Lacerate from main target with Swipe(Bear)
 	FuryOfStormrageMaulCleave         bool // When true, Maul should cleave a second target
-	CenarionRageThreatBonus           float64
+	BearFormThreatMultiplier          float64
 	CenarionRageEnrageBonus           bool
 	// Sunfire/Moonfire modifiers applied when in Moonkin form
 	MoonfireDotMultiplier float64
