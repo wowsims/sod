@@ -170,13 +170,19 @@ func (druid *Druid) applyT2Feral4PBonus() {
 
 // Your Shred and Mangle(Cat) abilities deal 10% increased damage per your Bleed effect on the target, up to a maximum of 20% increase.
 func (druid *Druid) applyT2Feral6PBonus() {
+	label := "S03 - Item - T2 - Druid - Feral 6P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
+
 	damageMod := druid.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Pct,
-		ClassMask: ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite,
+		FloatValue: 1.0,
 	})
 
 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
-		Name:           "S03 - Item - T2 - Druid - Feral 6P Bonus",
+		Name:           label,
 		Callback:       core.CallbackOnApplyEffects,
 		ProcChance:     1,
 		ClassSpellMask: ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite,
