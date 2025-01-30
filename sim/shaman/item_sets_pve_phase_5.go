@@ -263,7 +263,7 @@ func (shaman *Shaman) applyT2Enhancement4PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanStormstrikeHit,
@@ -271,7 +271,7 @@ func (shaman *Shaman) applyT2Enhancement4PBonus() {
 		Kind:     core.SpellMod_DamageDone_Flat,
 		ProcMask: core.ProcMaskMeleeMHSpecial,
 		IntValue: 50,
-	})
+	}))
 }
 
 // While Static Shock is engraved, your Lightning Shield now gains a charge each time you hit a target with Lightning Bolt or Chain Lightning, up to a maximum of 9 charges.
