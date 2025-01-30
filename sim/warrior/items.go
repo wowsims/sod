@@ -124,11 +124,12 @@ func init() {
 		warrior := agent.(WarriorAgent).GetWarrior()
 		actionID := core.ActionID{ItemID: GrileksCharmOFMight}
 		rageMetrics := warrior.NewRageMetrics(actionID)
+		duration := time.Second * 20
 
 		aura := warrior.RegisterAura(core.Aura{
 			ActionID: actionID,
 			Label:    "Gri'lek's Guard",
-			Duration: time.Second * 20,
+			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				warrior.AddStatDynamic(sim, stats.BlockValue, 200)
 			},
@@ -147,6 +148,10 @@ func init() {
 				CD: core.Cooldown{
 					Timer:    warrior.NewTimer(),
 					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    warrior.GetOffensiveTrinketCD(),
+					Duration: duration,
 				},
 			},
 
