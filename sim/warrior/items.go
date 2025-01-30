@@ -168,12 +168,13 @@ func init() {
 			return
 		}
 
-		warrior.RegisterAura(core.Aura{
+		core.MakePermanent(warrior.RegisterAura(core.Aura{
 			Label: "Reduced Shield Slam Cost (Rage of Mugamba)",
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				warrior.ShieldSlam.Cost.FlatModifier -= 5
-			},
-		})
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:      core.SpellMod_PowerCost_Flat,
+			ClassMask: ClassSpellMask_WarriorShieldSlam,
+			IntValue:  -5,
+		}))
 	})
 
 	core.NewItemEffect(SuzerainDefender, func(agent core.Agent) {

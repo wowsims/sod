@@ -1,7 +1,6 @@
 package priest
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -24,32 +23,21 @@ func init() {
 
 		actionID := core.ActionID{ItemID: CassandrasTome}
 		duration := time.Second * 15
-		affectedSpells := []*core.Spell{}
 
 		buffAura := priest.RegisterAura(core.Aura{
 			ActionID: actionID,
 			Label:    "Cassandra's Tome",
 			Duration: duration,
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				affectedSpells = core.FilterSlice(priest.Spellbook, func(spell *core.Spell) bool {
-					return spell.Flags.Matches(SpellFlagPriest) && !spell.Flags.Matches(core.SpellFlagPureDot|core.SpellFlagChanneled)
-				})
-			},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range affectedSpells {
-					spell.BonusCritRating += 100 * core.SpellCritRatingPerCritChance
-				}
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range affectedSpells {
-					spell.BonusCritRating -= 100 * core.SpellCritRatingPerCritChance
-				}
-			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if slices.Contains(affectedSpells, spell) {
+				if spell.Matches(ClassSpellMask_PriestAll) && !spell.Flags.Matches(core.SpellFlagPureDot|core.SpellFlagChanneled) {
 					aura.Deactivate(sim)
 				}
 			},
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:         ClassSpellMask_PriestAll,
+			SpellFlagsExclude: core.SpellFlagPureDot | core.SpellFlagChanneled,
+			Kind:              core.SpellMod_BonusCrit_Flat,
+			FloatValue:        100 * core.SpellCritRatingPerCritChance,
 		})
 
 		spell := priest.RegisterSpell(core.SpellConfig{
@@ -78,11 +66,13 @@ func init() {
 	core.NewItemEffect(BandOfFaith, func(agent core.Agent) {
 		priest := agent.(PriestAgent).GetPriest()
 
-		priest.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagPriest) {
-				spell.PeriodicDamageMultiplierAdditive += .02
-			}
-		})
+		core.MakePermanent(priest.RegisterAura(core.Aura{
+			Label: "Band of Faith",
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:      core.SpellMod_PeriodicDamageDone_Flat,
+			ClassMask: ClassSpellMask_PriestAll,
+			IntValue:  2,
+		}))
 	})
 
 	core.AddEffectsToTest = true

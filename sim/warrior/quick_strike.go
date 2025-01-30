@@ -11,11 +11,12 @@ func (warrior *Warrior) registerQuickStrike() {
 	}
 
 	warrior.QuickStrike = warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 429765},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
+		ActionID:       core.ActionID{SpellID: 429765},
+		ClassSpellMask: ClassSpellMask_WarriorQuickStrike,
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
 			Cost:   20 - float64(warrior.Talents.ImprovedHeroicStrike),

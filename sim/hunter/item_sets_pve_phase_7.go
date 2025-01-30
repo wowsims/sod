@@ -33,15 +33,13 @@ func (hunter *Hunter) applyNaxxramasMelee2PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.WyvernStrike != nil {
-				hunter.WyvernStrike.ImpactDamageMultiplierAdditive += 0.20
-			}
-			hunter.MongooseBite.ImpactDamageMultiplierAdditive += 0.20
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_ImpactDamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterWyvernStrike | ClassSpellMask_HunterMongooseBite,
+		IntValue:  20,
+	}))
 }
 
 // Reduces the cooldown on your Wyvern Strike ability by 2 sec, reduces the cooldown on your raptor strike ability by 1 sec, and reduces the cooldown on your Flanking Strike ability by 8sec.
@@ -57,17 +55,18 @@ func (hunter *Hunter) applyNaxxramasMelee4PBonus() {
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.RaptorStrike != nil {
-				hunter.RaptorStrike.CD.FlatModifier -= time.Second
-			}
-			if hunter.WyvernStrike != nil {
-				hunter.WyvernStrike.CD.FlatModifier -= time.Second * 2
-			}
-			if hunter.FlankingStrike != nil {
-				hunter.FlankingStrike.CD.FlatModifier -= time.Second * 8
-			}
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_HunterRaptorStrike,
+		TimeValue: -time.Second,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_HunterWyvernStrike,
+		TimeValue: -time.Second * 2,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_HunterFlankingStrike,
+		TimeValue: -time.Second * 8,
 	}))
 }
 
@@ -78,23 +77,37 @@ func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 		return
 	}
 
-	buffAura := hunter.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 1218587},
-		Label:     "Critical Aim",
-		Duration:  time.Second * 30,
-		MaxStacks: 35,
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			hunter.AddStatDynamic(sim, stats.MeleeCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
-			hunter.AddStatDynamic(sim, stats.SpellCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
-		},
-	})
+	undeadTargets := core.FilterSlice(hunter.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
+
+	units := []*core.Unit{&hunter.Unit}
+	if hunter.pet != nil {
+		units = append(units, &hunter.pet.Unit)
+	}
+
+	buffAuras := []*core.Aura{}
+	for _, unit := range units {
+		buffAuras = append(buffAuras, unit.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1218587},
+			Label:     "Undead Slaying",
+			Duration:  time.Second * 30,
+			MaxStacks: 25,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				for _, unit := range undeadTargets {
+					aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
+					aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= 1 + 0.01*float64(newStacks)
+				}
+			},
+		}))
+	}
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Target.MobType == proto.MobType_MobTypeUndead && spell.ProcMask.Matches(core.ProcMaskMelee) {
-				buffAura.Activate(sim)
-				buffAura.AddStack(sim)
+				for _, aura := range buffAuras {
+					aura.Activate(sim)
+					aura.AddStack(sim)
+				}
 			}
 		},
 	}))
@@ -125,16 +138,13 @@ func (hunter *Hunter) applyNaxxramasRanged2PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.SerpentSting.DamageMultiplierAdditive += 0.20
-
-			if hunter.SerpentStingChimeraShot != nil {
-				hunter.SerpentStingChimeraShot.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterChimeraShot,
+		IntValue:  20,
+	}))
 }
 
 // Reduces the cooldown on your Chimera Shot, Explosive Shot, and Aimed Shot abilities by 1.5 sec and reduces the cooldown on your Kill Shot ability by 3sec.
@@ -150,13 +160,13 @@ func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 				hunter.ChimeraShot.CD.FlatModifier -= time.Millisecond * 1500
 			}
 			if hunter.ExplosiveShot != nil {
-				hunter.ExplosiveShot.CD.FlatModifier -= time.Millisecond * 1500 
+				hunter.ExplosiveShot.CD.FlatModifier -= time.Millisecond * 1500
 			}
 			if hunter.AimedShot != nil {
-				hunter.AimedShot.CD.FlatModifier -= time.Millisecond * 1500 
+				hunter.AimedShot.CD.FlatModifier -= time.Millisecond * 1500
 			}
 			if hunter.KillShot != nil {
-				hunter.KillShot.CD.FlatModifier -= time.Second * 3 
+				hunter.KillShot.CD.FlatModifier -= time.Second * 3
 			}
 		},
 	}))

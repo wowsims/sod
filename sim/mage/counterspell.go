@@ -9,10 +9,11 @@ import (
 // This exists purely so that it can be used to extend the arcane buff from the mage T1 4pc
 func (mage *Mage) registerCounterspellSpell() {
 	mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 2139},
-		SpellSchool: core.SpellSchoolArcane,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | SpellFlagMage | core.SpellFlagCastTimeNoGCD,
+		ActionID:       core.ActionID{SpellID: 2139},
+		ClassSpellMask: ClassSpellMask_MageCounterSpell,
+		SpellSchool:    core.SpellSchoolArcane,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagCastTimeNoGCD,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: 100,

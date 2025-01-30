@@ -12,36 +12,75 @@ import (
 var TalentTreeSizes = [3]int{15, 16, 15}
 
 const (
-	SpellFlagShaman    = core.SpellFlagAgentReserved1
-	SpellFlagTotem     = core.SpellFlagAgentReserved2
-	SpellFlagLightning = core.SpellFlagAgentReserved3
-	SpellFlagMaelstrom = core.SpellFlagAgentReserved4
+	SpellFlagMaelstrom = core.SpellFlagAgentReserved1
 )
 
 const (
-	SpellCode_ShamanNone int32 = iota
+	ClassSpellMask_ShamanNone int64 = 0
 
-	SpellCode_ShamanChainHeal
-	SpellCode_ShamanChainLightning
-	SpellCode_ShamanEarthShock
-	SpellCode_ShamanFireNova
-	SpellCode_ShamanFireNovaTotem
-	SpellCode_ShamanFireNovaTotemAttack
-	SpellCode_ShamanFlameShock
-	SpellCode_ShamanFrostShock
-	SpellCode_ShamanHealingWave
-	SpellCode_ShamanLavaLash
-	SpellCode_ShamanLesserHealingWave
-	SpellCode_ShamanLightningBolt
-	SpellCode_ShamanLightningShield
-	SpellCode_ShamanLavaBurst
-	SpellCode_ShamanMagmaTotem
-	SpellCode_ShamanMagmaTotemAttack
-	SpellCode_ShamanMoltenBlast
-	SpellCode_ShamanSearingTotem
-	SpellCode_ShamanSearingTotemAttack
-	SpellCode_ShamanStormstrike
-	SpellCode_ShamanStormstrikeHit
+	ClassSpellMask_ShamanAncestralAwakening int64 = 1 << iota
+	ClassSpellMask_ShamanAncestralGuidance
+	ClassSpellMask_ShamanAncestralGuidanceDamage
+	ClassSpellMask_ShamanAncestralGuidanceHeal
+	ClassSpellMask_ShamanChainHeal
+	ClassSpellMask_ShamanChainLightning
+	ClassSpellMask_ShamanEarthShock
+	ClassSpellMask_ShamanFeralSpirit
+	ClassSpellMask_ShamanFireNova
+	ClassSpellMask_ShamanFireNovaTotemAttack
+	ClassSpellMask_ShamanFlameShock
+	ClassSpellMask_ShamanFrostShock
+	ClassSpellMask_ShamanHealingWave
+	ClassSpellMask_ShamanLavaLash
+	ClassSpellMask_ShamanLesserHealingWave
+	ClassSpellMask_ShamanLightningBolt
+	ClassSpellMask_ShamanLightningShield
+	ClassSpellMask_ShamanLightningShieldProc
+	ClassSpellMask_ShamanMagmaTotemAttack
+	ClassSpellMask_ShamanRollingThunder
+	ClassSpellMask_ShamanLavaBurst
+	ClassSpellMask_ShamanMoltenBlast
+	ClassSpellMask_ShamanRiptide
+	ClassSpellMask_ShamanSearingTotemAttack
+	ClassSpellMask_ShamanShamanisticRage
+	ClassSpellMask_ShamanStormstrike
+	ClassSpellMask_ShamanStormstrikeHit
+	ClassSpellMask_ShamanWaterShield
+	ClassSpellMask_ShamanWindFury
+
+	// Totems should go after this
+	ClassSpellMask_ShamanLast
+
+	// Fire totems
+	ClassSpellMask_ShamanFireNovaTotem
+	ClassSpellMask_ShamanMagmaTotem
+	ClassSpellMask_ShamanSearingTotem
+	// Air totems
+	ClassSpellMask_ShamanWindFuryTotem
+	ClassSpellMask_ShamanGraceOfAirTotem
+	ClassSpellMask_ShamanWindwallTotem
+	// Earth totems
+	ClassSpellMask_ShamanStrengthOfEarthTotem
+	ClassSpellMask_ShamanStoneskinTotem
+	ClassSpellMask_ShamanTremorTotem
+	// Water totems
+	ClassSpellMask_ShamanHealingStreamTotem
+	ClassSpellMask_ShamanManaSpringTotem
+
+	ClassSpellMask_ShamanAll = ClassSpellMask_ShamanLast<<1 - 1
+
+	// Direct healing spells only. See Tidal Mastery talent
+	ClassSpellMask_ShamanHealingSpell   = ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanHealingWave | ClassSpellMask_ShamanLesserHealingWave | ClassSpellMask_ShamanRiptide
+	ClassSpellMask_ShamanLightningSpell = ClassSpellMask_ShamanChainLightning | ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanLightningShield |
+		ClassSpellMask_ShamanLightningShieldProc | ClassSpellMask_ShamanRollingThunder
+
+	// Totem groups
+	ClassSpellMask_ShamanFireTotem  = ClassSpellMask_ShamanSearingTotem | ClassSpellMask_ShamanMagmaTotem | ClassSpellMask_ShamanFireNovaTotem
+	ClassSpellMask_ShamanAirTotem   = ClassSpellMask_ShamanWindFuryTotem | ClassSpellMask_ShamanGraceOfAirTotem | ClassSpellMask_ShamanWindwallTotem
+	ClassSpellMask_ShamanEarthTotem = ClassSpellMask_ShamanStrengthOfEarthTotem | ClassSpellMask_ShamanStoneskinTotem | ClassSpellMask_ShamanTremorTotem
+	ClassSpellMask_ShamanWaterTotem = ClassSpellMask_ShamanHealingStreamTotem | ClassSpellMask_ShamanManaSpringTotem
+
+	ClassSpellMask_ShamanTotems = ClassSpellMask_ShamanFireTotem | ClassSpellMask_ShamanAirTotem | ClassSpellMask_ShamanEarthTotem | ClassSpellMask_ShamanWaterTotem
 )
 
 // Indexes into NextTotemDrops for self buffs

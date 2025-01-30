@@ -18,6 +18,11 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 	spellCoeff := .429
 	cooldown := time.Minute * 2
 	auraDuration := time.Second * 8
+	damageMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_MageArcaneSurge,
+		FloatValue: 1,
+	})
 
 	manaMetrics := mage.NewManaMetrics(actionID)
 
@@ -38,12 +43,12 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 	})
 
 	mage.ArcaneSurge = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellCode:   SpellCode_MageArcaneSurge,
-		SpellSchool: core.SpellSchoolArcane,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_MageArcaneSurge,
+		SpellSchool:    core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: 0.0, // Drains remaining mana so we have to use ModifyCast
@@ -65,10 +70,10 @@ func (mage *Mage) registerArcaneSurgeSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamageLow, baseDamageHigh)
 			// Damage increased based on remaining mana up to 300%
-			modifier := mage.CurrentManaPercent() * 3
-			spell.DamageMultiplierAdditive += modifier
+			damageMod.UpdateFloatValue(4 * mage.CurrentManaPercent())
+			damageMod.Activate()
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplierAdditive -= modifier
+			damageMod.Deactivate()
 			// Because of the 0 base mana cost we have to create resource metrics
 			mage.SpendMana(sim, mage.CurrentMana(), manaMetrics)
 			manaAura.Activate(sim)

@@ -29,7 +29,7 @@ func (priest *Priest) registerHomunculiSpell() {
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagPriest | core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

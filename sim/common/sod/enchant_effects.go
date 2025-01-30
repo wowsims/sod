@@ -102,8 +102,6 @@ func init() {
 			}
 		}
 
-		character.PseudoStats.ThornsDamage += damage * float64(numEnchants)
-
 		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
 			SpellSchool: core.SpellSchoolNature,
@@ -127,7 +125,7 @@ func init() {
 					}
 				}
 			},
-		}))
+		}).AttachAdditivePseudoStatBuff(&character.PseudoStats.ThornsDamage, damage*float64(numEnchants)))
 	})
 
 	// Obsidian Scope

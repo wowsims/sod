@@ -33,18 +33,13 @@ func (druid *Druid) applyNaxxramasBalance2PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range druid.Moonfire {
-				spell.DamageMultiplierAdditive += 0.20
-			}
-
-			if druid.Sunfire != nil {
-				druid.Sunfire.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusDamage_Flat,
+		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat,
+		FloatValue: 0.20,
+	}))
 }
 
 // The cooldown of your Starsurge spell is reduced by 1.5 sec.
@@ -80,7 +75,7 @@ func (druid *Druid) applyNaxxramasBalance6PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if starfallDot := druid.Starfall.AOEDot(); starfallDot.IsActive() && result.Target.MobType == proto.MobType_MobTypeUndead && spell.SpellCode == SpellCode_DruidStarsurge && result.Landed() {
+			if starfallDot := druid.Starfall.AOEDot(); starfallDot.IsActive() && result.Target.MobType == proto.MobType_MobTypeUndead && spell.Matches(ClassSpellMask_DruidStarsurge) && result.Landed() {
 				starfallDot.Refresh(sim)
 			}
 		},
@@ -135,13 +130,14 @@ func (druid *Druid) applyNaxxramasFeral4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1218477}, // Tracking in APL
 		Label:    label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			druid.TigersFury.CD.Multiplier *= 0.5
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Cooldown_Multi_Pct,
+		ClassMask:  ClassSpellMask_DruidTigersFury,
+		FloatValue: 0.5,
+	}))
 }
 
 // Each time you deal Bleed damage to an Undead target, you gain 1% increased damage done to Undead for 30 sec, stacking up to 25 times.
@@ -151,16 +147,13 @@ func (druid *Druid) applyNaxxramasFeral6PBonus() {
 		return
 	}
 
-	var undeadTargets []*core.Unit
+	undeadTargets := core.FilterSlice(druid.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
 
 	buffAura := druid.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1218479},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
 		MaxStacks: 25,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			undeadTargets = core.FilterSlice(druid.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			for _, unit := range undeadTargets {
 				druid.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
@@ -211,21 +204,7 @@ func (druid *Druid) applyNaxxramasGuardian2PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on your Survival Instincts by 2 min, and reduces the cooldown on your Berserk ability by 2 min.

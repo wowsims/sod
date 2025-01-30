@@ -13,7 +13,7 @@ func (paladin *Paladin) registerDivineFavor() {
 
 	var affectedSpells []*core.Spell
 	paladin.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_PaladinHolyShock {
+		if spell.Matches(ClassSpellMask_PaladinHolyShock) {
 			affectedSpells = append(affectedSpells, spell)
 		}
 	})
@@ -38,7 +38,7 @@ func (paladin *Paladin) registerDivineFavor() {
 			})
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode != SpellCode_PaladinHolyShock {
+			if !spell.Matches(ClassSpellMask_PaladinHolyShock) {
 				return
 			}
 			// Remove the buff and put skill on CD

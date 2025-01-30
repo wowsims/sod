@@ -1,7 +1,6 @@
 package shaman
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -125,7 +124,6 @@ func (shaman *Shaman) applyShoulderRuneEffect() {
 }
 
 var BurnFlameShockTargetCount = int32(5)
-var BurnFlameShockDamageBonus = 1.0
 var BurnFlameShockBonusTicks = int32(2)
 var BurnSpellPowerPerLevel = int32(2)
 
@@ -138,10 +136,10 @@ func (shaman *Shaman) applyBurn() {
 		shaman.AddStatDependency(stats.Intellect, stats.SpellDamage, 1.50)
 	}
 
-	shaman.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_ShamanFlameShock {
-			spell.DamageMultiplierAdditive += BurnFlameShockDamageBonus
-		}
+	shaman.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanFlameShock,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  100,
 	})
 
 	// Other parts of burn are handled in flame_shock.go
@@ -189,26 +187,18 @@ func (shaman *Shaman) applyStormEarthAndFire() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Storm, Earth, and Fire",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range shaman.ChainLightning {
-				if spell == nil {
-					continue
-				}
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanFlameShock,
+		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
+		IntValue:  60,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_ShamanChainLightning,
+		Kind:       core.SpellMod_Cooldown_Multi_Pct,
+		FloatValue: 0.5,
+	}))
 
-				spell.CD.Multiplier *= 0.5
-			}
-
-			for _, spell := range shaman.FlameShock {
-				if spell == nil {
-					continue
-				}
-
-				spell.PeriodicDamageMultiplierAdditive += 0.60
-			}
-		},
-	})
 }
 
 func (shaman *Shaman) applyDualWieldSpec() {
@@ -283,7 +273,7 @@ func (shaman *Shaman) applyShieldMastery() {
 		},
 	})
 
-	affectedSpellcodes := []int32{SpellCode_ShamanEarthShock, SpellCode_ShamanFlameShock, SpellCode_ShamanFrostShock}
+	affectedSpellClassMasks := ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Shield Mastery Trigger",
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -293,7 +283,7 @@ func (shaman *Shaman) applyShieldMastery() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && slices.Contains(affectedSpellcodes, spell.SpellCode) {
+			if result.Landed() && spell.Matches(affectedSpellClassMasks) {
 				if stacks := int32(shaman.GetStat(stats.Defense)); stacks > 0 {
 					//Aura.Activate takes care of refreshing if the aura is already active
 					defendersResolveAura.Activate(sim)
@@ -467,11 +457,7 @@ func (shaman *Shaman) applyPowerSurge() {
 		ActionID: core.ActionID{SpellID: 415105},
 		Duration: time.Second * 10,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedDamageSpells = core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					shaman.ChainLightning,
-					{shaman.LavaBurst},
-				}), func(spell *core.Spell) bool { return spell != nil })
+			affectedDamageSpells = shaman.GetSpellsMatchingClassMask(ClassSpellMask_ShamanChainLightning | ClassSpellMask_ShamanLavaBurst)
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			core.Each(affectedDamageSpells, func(spell *core.Spell) {
@@ -485,7 +471,7 @@ func (shaman *Shaman) applyPowerSurge() {
 			core.Each(affectedDamageSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if (spell.SpellCode == SpellCode_ShamanLavaBurst || spell.SpellCode == SpellCode_ShamanChainLightning) && !spell.ProcMask.Matches(core.ProcMaskSpellDamageProc) {
+			if spell.Matches(ClassSpellMask_ShamanLavaBurst|ClassSpellMask_ShamanChainLightning) && !spell.ProcMask.Matches(core.ProcMaskSpellDamageProc) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -495,47 +481,35 @@ func (shaman *Shaman) applyPowerSurge() {
 		return
 	}
 
-	var affectedHealSpells []*core.Spell
 	shaman.PowerSurgeHealAura = shaman.RegisterAura(core.Aura{
 		Label:    "Power Surge Proc (Heal)",
 		ActionID: core.ActionID{SpellID: 468526},
 		Duration: time.Second * 10,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedHealSpells = core.FilterSlice(shaman.ChainHeal, func(spell *core.Spell) bool { return spell != nil })
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedHealSpells, func(spell *core.Spell) { spell.CastTimeMultiplier -= 1 })
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedHealSpells, func(spell *core.Spell) { spell.CastTimeMultiplier += 1 })
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_ShamanChainHeal && !spell.ProcMask.Matches(core.ProcMaskSpellDamageProc) {
+			if spell.Matches(ClassSpellMask_ShamanChainHeal) && !spell.ProcMask.Matches(core.ProcMaskSpellDamageProc) {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  ClassSpellMask_ShamanChainHeal,
+		FloatValue: -1,
 	})
 
 	statDep := shaman.NewDynamicStatDependency(stats.Intellect, stats.MP5, .15)
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Power Surge",
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.EnableDynamicStatDep(sim, statDep)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.DisableDynamicStatDep(sim, statDep)
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_ShamanFlameShock && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
+			if spell.Matches(ClassSpellMask_ShamanFlameShock) && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
 				shaman.PowerSurgeDamageAura.Activate(sim)
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_ShamanFlameShock && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
+			if spell.Matches(ClassSpellMask_ShamanFlameShock) && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
 				shaman.PowerSurgeDamageAura.Activate(sim)
 			}
 		},
-	}))
+	}).AttachStatDependency(statDep))
 }
 
 func (shaman *Shaman) applyWayOfEarth() {
@@ -579,15 +553,11 @@ func (shaman *Shaman) applySpiritOfTheAlpha() {
 		Label:    "Loyal Beta",
 		Duration: core.NeverExpires,
 		ActionID: core.ActionID{SpellID: 443320},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.05
-			shaman.PseudoStats.ThreatMultiplier *= .70
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.05
-			shaman.PseudoStats.ThreatMultiplier /= .70
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(
+		&shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.05,
+	).AttachMultiplicativePseudoStatBuff(
+		&shaman.PseudoStats.ThreatMultiplier, .70,
+	)
 
 	if !shaman.IsTanking() {
 		shaman.SpiritOfTheAlphaAura.OnReset = func(aura *core.Aura, sim *core.Simulation) {}

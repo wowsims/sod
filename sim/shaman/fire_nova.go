@@ -35,12 +35,12 @@ func (shaman *Shaman) newFireNovaSpellConfig(rank int) core.SpellConfig {
 	level := FireNovaTotemLevel[rank]
 
 	spell := core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellCode:   SpellCode_ShamanFireNova,
-		SpellSchool: core.SpellSchoolFire,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagShaman | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: spellId},
+		ClassSpellMask: ClassSpellMask_ShamanFireNova,
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,

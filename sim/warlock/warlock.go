@@ -19,29 +19,50 @@ const (
 )
 
 const (
-	SpellCode_WarlockNone int32 = iota
+	ClassSpellMask_WarlockNone int64 = 0
 
-	SpellCode_WarlockChaosBolt
-	SpellCode_WarlockConflagrate
-	SpellCode_WarlockCorruption
-	SpellCode_WarlockCurseOfAgony
-	SpellCode_WarlockCurseOfDoom
-	SpellCode_WarlockDeathCoil
-	SpellCode_WarlockDemonicSacrifice
-	SpellCode_WarlockDrainLife
-	SpellCode_WarlockDrainSoul
-	SpellCode_WarlockHaunt
-	SpellCode_WarlockImmolate
-	SpellCode_WarlockIncinerate
-	SpellCode_WarlockLifeTap
-	SpellCode_WarlockSearingPain
-	SpellCode_WarlockShadowflame
-	SpellCode_WarlockShadowCleave
-	SpellCode_WarlockShadowBolt
-	SpellCode_WarlockShadowburn
-	SpellCode_WarlockSiphonLife
-	SpellCode_WarlockSoulFire
-	SpellCode_WarlockUnstableAffliction
+	ClassSpellMask_WarlockChaosBolt int64 = 1 << iota
+	ClassSpellMask_WarlockConflagrate
+	ClassSpellMask_WarlockCorruption
+	ClassSpellMask_WarlockCurseOfAgony
+	ClassSpellMask_WarlockCurseOfDoom
+	ClassSpellMask_WarlockDeathCoil
+	ClassSpellMask_WarlockDemonicSacrifice
+	ClassSpellMask_WarlockDrainLife
+	ClassSpellMask_WarlockDrainSoul
+	ClassSpellMask_WarlockHaunt
+	ClassSpellMask_WarlockImmolate
+	ClassSpellMask_WarlockIncinerate
+	ClassSpellMask_WarlockLifeTap
+	ClassSpellMask_WarlockSearingPain
+	ClassSpellMask_WarlockShadowflame
+	ClassSpellMask_WarlockShadowCleave
+	ClassSpellMask_WarlockShadowBolt
+	ClassSpellMask_WarlockShadowburn
+	ClassSpellMask_WarlockSiphonLife
+	ClassSpellMask_WarlockSoulFire
+	ClassSpellMask_WarlockUnstableAffliction
+	ClassSpellMask_WarlockInfernalArmor
+	ClassSpellMask_WarlockDemonicGrace
+
+	ClassSpellMask_WarlockRainOfFire
+	ClassSpellMask_WarlockImmolationAura
+	ClassSpellMask_WarlockImmolationAuraProc
+
+	ClassSpellMask_WarlockLast
+	ClassSpellMask_WarlockAll = ClassSpellMask_WarlockLast<<1 - 1
+
+	ClassSpellMask_WarlockSummonFelguard = ClassSpellMask_WarlockAll << iota
+	ClassSpellMask_WarlockSummonFelhunter
+	ClassSpellMask_WarlockSummonImp
+	ClassSpellMask_WarlockSummonSuccubus
+	ClassSpellMask_WarlockSummonVoidwalker
+
+	ClassSpellMask_WarlockSummons = ClassSpellMask_WarlockSummonFelguard |
+		ClassSpellMask_WarlockSummonFelhunter |
+		ClassSpellMask_WarlockSummonImp |
+		ClassSpellMask_WarlockSummonSuccubus |
+		ClassSpellMask_WarlockSummonVoidwalker
 )
 
 type Warlock struct {
@@ -100,9 +121,8 @@ type Warlock struct {
 	AmplifyCurse             *core.Spell
 
 	// Track all DoT spells for effecrs that add multipliers based on active effects
-	DoTSpells         []*core.Spell
-	DebuffSpells      []*core.Spell
-	SummonDemonSpells []*core.Spell
+	DoTSpells    []*core.Spell
+	DebuffSpells []*core.Spell
 
 	AmplifyCurseAura        *core.Aura
 	BackdraftAura           *core.Aura
@@ -132,11 +152,10 @@ type Warlock struct {
 	demonicKnowledgeSp           float64
 	maintainBuffsOnSacrifice     bool    // Whether to disable the Master Demonologist and Demonic Sacrifice buffs when sacrificing/summoning pets. Used by TAQ 4pc
 	masterDemonologistMultiplier float64 // Bonus multiplier applied to the Master Demonologist talent
-	improvedShadowBoltSpellCodes []int32 // List of spells that proc ISB
 	nightfallProcChance          float64
 	// For effects that buff the damage of shadow bolt for each active Warlock effect on the target, e.g. 2pc DPS 6pc
-	shadowBoltActiveEffectModifierPer float64
-	shadowBoltActiveEffectModifierMax float64
+	shadowBoltActiveEffectMultiplierPer float64
+	shadowBoltActiveEffectMultiplierMax float64
 }
 
 func (warlock *Warlock) GetCharacter() *core.Character {
@@ -250,8 +269,4 @@ func (warlock *Warlock) OnGCDReady(_ *core.Simulation) {
 // Agent is a generic way to access underlying warlock on any of the agents.
 type WarlockAgent interface {
 	GetWarlock() *Warlock
-}
-
-func isWarlockSpell(spell *core.Spell) bool {
-	return spell.Flags.Matches(WarlockFlagAffliction) || spell.Flags.Matches(WarlockFlagDemonology) || spell.Flags.Matches(WarlockFlagDestruction)
 }

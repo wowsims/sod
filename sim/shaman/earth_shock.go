@@ -47,7 +47,7 @@ func (shaman *Shaman) newEarthShockSpellConfig(rank int, shockTimer *core.Timer)
 
 	spell.Flags |= core.SpellFlagBinary
 
-	spell.SpellCode = SpellCode_ShamanEarthShock
+	spell.ClassSpellMask = ClassSpellMask_ShamanEarthShock
 	spell.RequiredLevel = level
 	spell.Rank = rank
 

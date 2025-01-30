@@ -39,7 +39,7 @@ func (shaman *Shaman) newFrostShockSpellConfig(rank int, shockTimer *core.Timer)
 		shockTimer,
 	)
 
-	spell.SpellCode = SpellCode_ShamanFrostShock
+	spell.ClassSpellMask = ClassSpellMask_ShamanFrostShock
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.BonusCoefficient = spellCoeff

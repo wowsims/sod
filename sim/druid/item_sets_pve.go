@@ -23,7 +23,7 @@ var ItemSetLostWorshippersArmor = core.NewItemSet(core.ItemSet{
 		3: func(agent core.Agent) {
 			c := agent.GetCharacter()
 			c.OnSpellRegistered(func(spell *core.Spell) {
-				if spell.SpellCode == SpellCode_DruidWrath || spell.SpellCode == SpellCode_DruidStarfire {
+				if spell.Matches(ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarfire) {
 					spell.BonusCritRating += 3 * core.CritRatingPerCritChance
 				}
 			})
@@ -62,12 +62,11 @@ var ItemSetCoagulateBloodguardsLeathers = core.NewItemSet(core.ItemSet{
 			})
 
 			core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
-				Name:     "Power Shredder",
-				Callback: core.CallbackOnCastComplete,
+				Name:           "Power Shredder",
+				Callback:       core.CallbackOnCastComplete,
+				ClassSpellMask: ClassSpellMask_DruidShred,
 				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellCode == SpellCode_DruidShred {
-						procAura.Activate(sim)
-					}
+					procAura.Activate(sim)
 				},
 			})
 

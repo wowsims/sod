@@ -28,18 +28,23 @@ func (hunter *Hunter) applyTAQMelee2PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.WyvernStrike != nil {
-				hunter.WyvernStrike.PeriodicDamageMultiplierAdditive += 0.50
-			}
-
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if hunter.pet != nil {
 				hunter.pet.IncreaseMaxFocus(50)
 			}
 		},
-	})
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			if hunter.pet != nil {
+				hunter.pet.DecreaseMaxFocus(50)
+			}
+		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterWyvernStrike,
+		IntValue:  50,
+	}))
 }
 
 // Increases the Impact Damage of Mongoose Bite and all Strikes by 15%
@@ -49,17 +54,13 @@ func (hunter *Hunter) applyTAQMelee4PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range hunter.Strikes {
-				spell.ImpactDamageMultiplierAdditive += 0.15
-			}
-			hunter.RaptorStrikeMH.ImpactDamageMultiplierAdditive += 0.15
-			hunter.RaptorStrikeOH.ImpactDamageMultiplierAdditive += 0.15
-			hunter.MongooseBite.ImpactDamageMultiplierAdditive += 0.15
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_ImpactDamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterMongooseBite | ClassSpellMask_HunterStrikes,
+		IntValue:  15,
+	}))
 }
 
 var StrikersPursuit = core.NewItemSet(core.ItemSet{
@@ -78,7 +79,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 
 const TAQRanged2PBonusLabel = "S03 - Item - TAQ - Hunter - Ranged 2P Bonus"
 
-// Increases Kill Shot damage by 50% against non-player targets.
+// Increases Kill Shot damage by 20% against non-player targets.
 func (hunter *Hunter) applyTAQRanged2PBonus() {
 	if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
 		return
@@ -88,12 +89,13 @@ func (hunter *Hunter) applyTAQRanged2PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: TAQRanged2PBonusLabel,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.KillShot.DamageMultiplierAdditive += 0.20
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterKillShot,
+		IntValue:  20,
+	}))
 }
 
 // Kill Shot's cooldown is reduced by 50%.
@@ -134,10 +136,6 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 				return
 			}
 
-			if hunter.HasAura(TAQRanged2PBonusLabel) {
-				clonedShot.DamageMultiplierAdditive += 0.20 // Add the 2p bonus 20%
-			}
-
 			oldApplyEffects := hunter.KillShot.ApplyEffects
 			hunter.KillShot.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				oldApplyEffects(sim, target, spell)
@@ -150,11 +148,14 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 							DoAt: sim.CurrentTime + time.Duration(i*375)*time.Millisecond,
 							OnAction: func(sim *core.Simulation) {
 								// Ensure that the cloned shots get any damage amps from the main Kill Shot ability
-								clonedShot.DamageMultiplier *= spell.DamageMultiplier
-								clonedShot.DamageMultiplierAdditive += spell.DamageMultiplierAdditive - 1
+								damageMultiplier := spell.GetDamageMultiplier()
+								damageMultiplierAdditive := spell.GetDamageMultiplierAdditive()
+
+								clonedShot.ApplyMultiplicativeDamageBonus(damageMultiplier)
+								clonedShot.ApplyAdditiveDamageBonus(damageMultiplierAdditive)
 								clonedShot.Cast(sim, target)
-								clonedShot.DamageMultiplier /= spell.DamageMultiplier
-								clonedShot.DamageMultiplierAdditive -= spell.DamageMultiplierAdditive - 1
+								clonedShot.ApplyMultiplicativeDamageBonus(1 / damageMultiplier)
+								clonedShot.ApplyAdditiveDamageBonus(-damageMultiplierAdditive)
 							},
 						})
 					}

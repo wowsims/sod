@@ -27,11 +27,11 @@ func (paladin *Paladin) registerLayOnHands() {
 	layOnHandsHealthMetrics := paladin.NewHealthMetrics(actionID)
 
 	paladin.layOnHands = paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagAPL | core.SpellFlagMCD,
-		SpellSchool: core.SpellSchoolHoly,
-		SpellCode:   SpellCode_PaladinLayOnHands,
+		ActionID:       actionID,
+		ProcMask:       core.ProcMaskSpellHealing,
+		Flags:          core.SpellFlagAPL | core.SpellFlagMCD,
+		SpellSchool:    core.SpellSchoolHoly,
+		ClassSpellMask: ClassSpellMask_PaladinLayOnHands,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -44,7 +44,13 @@ func (paladin *Paladin) registerLayOnHands() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			paladin.SpendMana(sim, paladin.CurrentMana(), layOnHandsManaMetrics)
 			paladin.GainHealth(sim, paladin.MaxHealth(), layOnHandsHealthMetrics)
-			paladin.AddMana(sim, manaReturn, layOnHandsManaMetrics)
+
+			hasNaxxramasHoly2PBonus := paladin.GetAura("S03 - Item - Naxxramas - Paladin - Holy 2P Bonus")
+			if hasNaxxramasHoly2PBonus != nil && hasNaxxramasHoly2PBonus.IsActive() {
+				paladin.AddMana(sim, paladin.MaxMana()*0.3, layOnHandsManaMetrics)
+			} else {
+				paladin.AddMana(sim, manaReturn, layOnHandsManaMetrics)
+			}
 		},
 	})
 	

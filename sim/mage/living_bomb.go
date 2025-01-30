@@ -29,12 +29,12 @@ func (mage *Mage) registerLivingBombSpell() {
 	tickLength := time.Second * 3
 
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID.WithTag(1),
-		SpellCode:   SpellCode_MageLivingBombExplosion,
-		SpellSchool: core.SpellSchoolFire,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagPassiveSpell,
+		ActionID:       actionID.WithTag(1),
+		ClassSpellMask: ClassSpellMask_MageLivingBombExplosion,
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -53,10 +53,11 @@ func (mage *Mage) registerLivingBombSpell() {
 	})
 
 	mage.LivingBomb = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolFire,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL | core.SpellFlagPureDot,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_MageLivingBomb,
+		SpellSchool:    core.SpellSchoolFire,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

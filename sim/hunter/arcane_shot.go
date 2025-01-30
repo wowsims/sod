@@ -13,18 +13,18 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 	spellCoeff := [9]float64{0, .204, .3, .429, .429, .429, .429, .429, .429}[rank]
 	manaCost := [9]float64{0, 25, 35, 50, 80, 105, 135, 160, 190}[rank]
 	level := [9]int{0, 6, 12, 20, 28, 36, 44, 52, 60}[rank]
-	
+
 	return core.SpellConfig{
-		SpellCode:     SpellCode_HunterArcaneShot,
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolArcane,
-		DefenseType:   core.DefenseTypeRanged,
-		ProcMask:      core.ProcMaskRangedSpecial,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagShot,
-		CastType:      proto.CastType_CastTypeRanged,
-		Rank:          rank,
-		RequiredLevel: level,
-		MissileSpeed:  24,
+		ClassSpellMask: ClassSpellMask_HunterArcaneShot,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeRanged,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		CastType:       proto.CastType_CastTypeRanged,
+		Rank:           rank,
+		RequiredLevel:  level,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,

@@ -298,18 +298,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.67078
+  weights: 0.67178
   weights: 0
-  weights: 0.75835
-  weights: 0
-  weights: 0
+  weights: 0.76046
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 7.61585
+  weights: 0
+  weights: 0
+  weights: 7.60612
   weights: 0
   weights: 0
   weights: 0
@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.55669
+  weights: -0.75576
   weights: 0
-  weights: 3.33469
-  weights: 0
-  weights: 0
+  weights: 2.06373
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 9.44213
-  weights: 14.09941
+  weights: 0
+  weights: 0
+  weights: 10.73443
+  weights: 12.50388
   weights: 0
   weights: 0
   weights: 0
@@ -527,201 +527,201 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1318.31203
-  tps: 2687.45895
+  dps: 1321.29485
+  tps: 2692.73854
   hps: 270.45762
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1941.29621
-  tps: 5581.59517
+  dps: 2010.03598
+  tps: 5703.26456
   hps: 268.69237
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 1265.39003
-  tps: 2565.38524
+  dps: 1268.42019
+  tps: 2570.74862
   hps: 269.2479
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-FullBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 1258.45235
-  tps: 2496.78835
+  dps: 1261.44534
+  tps: 2502.08594
   hps: 261.72694
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-NoBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1220.48728
-  tps: 4231.69965
+  dps: 1271.38935
+  tps: 4321.79633
   hps: 160.22201
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-NoBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 722.59691
-  tps: 1462.38372
+  dps: 724.60263
+  tps: 1465.93385
   hps: 159.00817
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-p3.destro.tank-Destruction Warlock-p3.destro.tank-NoBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 717.98958
-  tps: 1462.20446
+  dps: 719.96366
+  tps: 1465.69858
   hps: 157.73139
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1299.78442
-  tps: 2643.5148
+  dps: 1302.79679
+  tps: 2648.84669
   hps: 268.60893
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1538.48111
-  tps: 1858.66019
+  dps: 1540.38074
+  tps: 1855.64664
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-DeathmistRaiment"
  value: {
-  dps: 1350.92878
-  tps: 1603.54812
+  dps: 1355.17997
+  tps: 1606.17429
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1545.36053
-  tps: 1868.13564
+  dps: 1554.09954
+  tps: 1882.27788
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2026.00174
-  tps: 4195.10721
-  hps: 401.53418
+  dps: 2038.54174
+  tps: 4199.99363
+  hps: 405.378
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 1301.0629
-  tps: 1536.88577
+  dps: 1296.72298
+  tps: 1529.19294
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 2018.93999
-  tps: 4164.83743
-  hps: 409.90972
+  dps: 2010.8129
+  tps: 4149.05768
+  hps: 397.26908
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1538.48111
-  tps: 1858.66019
+  dps: 1540.38074
+  tps: 1855.64664
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1699.68611
-  tps: 3540.14176
+  dps: 1691.07622
+  tps: 3512.55139
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1682.44773
-  tps: 3492.61689
+  dps: 1684.26607
+  tps: 3496.05453
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2024.17252
-  tps: 4195.10721
-  hps: 401.53418
+  dps: 2036.52388
+  tps: 4199.99363
+  hps: 405.378
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 2049.71273
-  tps: 4223.19619
-  hps: 418.17731
+  dps: 2046.697
+  tps: 4218.49947
+  hps: 404.39869
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 4036.63208
-  tps: 12078.50072
-  hps: 419.7806
+  dps: 4133.37204
+  tps: 12249.73044
+  hps: 405.93593
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1974.39745
-  tps: 4064.20398
-  hps: 415.24932
+  dps: 1970.90131
+  tps: 4058.01581
+  hps: 401.47715
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1971.43696
-  tps: 4051.76253
-  hps: 406.46529
+  dps: 1968.09213
+  tps: 4045.84219
+  hps: 392.86948
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2092.07968
-  tps: 7390.87464
-  hps: 230.2021
+  dps: 2157.08327
+  tps: 7505.93101
+  hps: 222.39491
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 933.2387
-  tps: 1901.90291
-  hps: 228.68139
+  dps: 931.3556
+  tps: 1898.56983
+  hps: 220.86518
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-Settings-Orc-p4_destro_aff_tank-Destruction Warlock-p4_destro_aff_tank-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 933.96013
-  tps: 1923.68135
-  hps: 204.7692
+  dps: 932.73227
+  tps: 1921.50805
+  hps: 197.7658
  }
 }
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1987.96799
-  tps: 4098.2264
-  hps: 408.39016
+  dps: 1986.31208
+  tps: 4092.55723
+  hps: 395.8249
  }
 }

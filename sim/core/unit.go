@@ -140,9 +140,8 @@ type Unit struct {
 	Hardcast Hardcast
 
 	// GCD-related PendingActions.
-	gcdAction              *PendingAction
-	hardcastAction         *PendingAction
-	castWhileCastingAction *PendingAction
+	gcdAction      *PendingAction
+	hardcastAction *PendingAction
 
 	// Cached mana return values per tick.
 	manaTickWhileCasting    float64
@@ -248,10 +247,26 @@ func (unit *Unit) AddStatsDynamic(sim *Simulation, bonus stats.Stats) {
 	unit.processDynamicBonus(sim, bonus)
 }
 
+func (unit *Unit) AddBuildPhaseStatsDynamic(sim *Simulation, stats stats.Stats) {
+	if unit.Env.MeasuringStats && unit.Env.State != Finalized {
+		unit.AddStats(stats)
+	} else {
+		unit.AddStatsDynamic(sim, stats)
+	}
+}
+
 func (unit *Unit) AddStatDynamic(sim *Simulation, stat stats.Stat, amount float64) {
 	bonus := stats.Stats{}
 	bonus[stat] = amount
 	unit.AddStatsDynamic(sim, bonus)
+}
+
+func (unit *Unit) AddBuildPhaseStatDynamic(sim *Simulation, stat stats.Stat, amount float64) {
+	if unit.Env.MeasuringStats && unit.Env.State != Finalized {
+		unit.AddStat(stat, amount)
+	} else {
+		unit.AddStatDynamic(sim, stat, amount)
+	}
 }
 
 func (unit *Unit) AddResistancesDynamic(sim *Simulation, amount float64) {
@@ -262,6 +277,14 @@ func (unit *Unit) AddResistancesDynamic(sim *Simulation, amount float64) {
 		stats.NatureResistance: amount,
 		stats.ShadowResistance: amount,
 	})
+}
+
+func (unit *Unit) AddBuildPhaseResistancesDynamic(sim *Simulation, amount float64) {
+	if unit.Env.MeasuringStats && unit.Env.State != Finalized {
+		unit.AddResistances(amount)
+	} else {
+		unit.AddResistancesDynamic(sim, amount)
+	}
 }
 
 func (unit *Unit) processDynamicBonus(sim *Simulation, bonus stats.Stats) {
@@ -300,6 +323,22 @@ func (unit *Unit) DisableDynamicStatDep(sim *Simulation, dep *stats.StatDependen
 		if sim.Log != nil {
 			unit.Log(sim, "Dynamic dep disabled (%s): %s", dep.String(), unit.stats.Subtract(oldStats).FlatString())
 		}
+	}
+}
+
+func (unit *Unit) EnableBuildPhaseStatDep(sim *Simulation, dep *stats.StatDependency) {
+	if unit.Env.MeasuringStats && unit.Env.State != Finalized {
+		unit.StatDependencyManager.EnableDynamicStatDep(dep)
+	} else {
+		unit.EnableDynamicStatDep(sim, dep)
+	}
+}
+
+func (unit *Unit) DisableBuildPhaseStatDep(sim *Simulation, dep *stats.StatDependency) {
+	if unit.Env.MeasuringStats && unit.Env.State != Finalized {
+		unit.StatDependencyManager.DisableDynamicStatDep(dep)
+	} else {
+		unit.DisableDynamicStatDep(sim, dep)
 	}
 }
 
@@ -534,6 +573,16 @@ func (unit *Unit) GetSpellsMatchingSchool(school SpellSchool) []*Spell {
 	var spells []*Spell
 	for _, spell := range unit.Spellbook {
 		if spell.SpellSchool.Matches(school) {
+			spells = append(spells, spell)
+		}
+	}
+	return spells
+}
+
+func (unit *Unit) GetSpellsMatchingClassMask(spellClassMask int64) []*Spell {
+	var spells []*Spell
+	for _, spell := range unit.Spellbook {
+		if spell.Matches(spellClassMask) {
 			spells = append(spells, spell)
 		}
 	}

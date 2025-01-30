@@ -1305,10 +1305,10 @@ func init() {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 1220535}
 		label := "Electric Discharge Trigger"
-		ppm := 2.0
+		ppm := 1.0
 		procMask := character.GetProcMaskForItem(MisplacedServoArm)
 		if procMask == core.ProcMaskMelee {
-			ppm = 4.0
+			ppm = 2.0
 		}
 		ppmm := character.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
 
@@ -2295,13 +2295,7 @@ func init() {
 			Label:    "Aura of the Blue Dragon",
 			ActionID: actionID,
 			Duration: time.Second * 15,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.SpiritRegenRateCasting += 1
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.SpiritRegenRateCasting -= 1
-			},
-		})
+		}).AttachAdditivePseudoStatBuff(&character.PseudoStats.SpiritRegenRateCasting, 1)
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Aura of the Blue Dragon Trigger",
@@ -3377,23 +3371,14 @@ func dreadbladeOfTheDestructorEffect(character *core.Character) *core.Spell {
 		ActionID:   core.ActionID{SpellID: 462228},
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				character.AddStat(stats.MeleeCrit, 2*core.CritRatingPerCritChance)
-			} else {
-				character.AddStatDynamic(sim, stats.MeleeCrit, 2*core.CritRatingPerCritChance)
-			}
+			character.AddBuildPhaseStatDynamic(sim, stats.MeleeCrit, 2*core.CritRatingPerCritChance)
 
 			character.PseudoStats.MeleeSpeedMultiplier *= 1.05
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				character.AddStat(stats.MeleeCrit, -2*core.CritRatingPerCritChance)
-			} else {
-				character.AddStatDynamic(sim, stats.MeleeCrit, -2*core.CritRatingPerCritChance)
-			}
+			character.AddBuildPhaseStatDynamic(sim, stats.MeleeCrit, -2*core.CritRatingPerCritChance)
 
 			character.PseudoStats.MeleeSpeedMultiplier /= 1.05
-
 		},
 	}))
 

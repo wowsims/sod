@@ -112,7 +112,7 @@ func (warrior *Warrior) applyT1Damage2PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if slices.Contains(StanceCodes, spell.SpellCode) {
+			if spell.Matches(StanceCodes) {
 				tacticianAura.Activate(sim)
 			}
 		},
@@ -158,7 +158,7 @@ func (warrior *Warrior) applyT1Damage4PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if slices.Contains(StanceCodes, spell.SpellCode) {
+			if spell.Matches(StanceCodes) {
 				switch warrior.PreviousStance {
 				case BattleStance:
 					battleStanceAura.Activate(sim)
@@ -190,47 +190,31 @@ func (warrior *Warrior) applyT1Damage6PBonus() {
 		ActionID: core.ActionID{SpellID: 457816},
 		Label:    "Battle Forecast",
 		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.10
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.10
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.10)
+
 	defenseAura := warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 457814},
 		Label:    "Defense Forecast",
 		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageTakenMultiplier *= 0.90
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageTakenMultiplier /= 0.90
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.DamageTakenMultiplier, 0.90)
+
 	berserkAura := warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 457817},
 		Label:    "Berserker Forecast",
 		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.MeleeCrit, 10*core.CritRatingPerCritChance)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.MeleeCrit, -10*core.CritRatingPerCritChance)
-		},
-	})
+	}).AttachStatBuff(stats.MeleeCrit, 10*core.CritRatingPerCritChance)
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			switch spell.SpellCode {
-			case SpellCode_WarriorStanceBattle:
+			switch spell.ClassSpellMask {
+			case ClassSpellMask_WarriorStanceBattle:
 				battleAura.Activate(sim)
-			case SpellCode_WarriorStanceGladiator:
+			case ClassSpellMask_WarriorStanceGladiator:
 				battleAura.Activate(sim)
-			case SpellCode_WarriorStanceDefensive:
+			case ClassSpellMask_WarriorStanceDefensive:
 				defenseAura.Activate(sim)
-			case SpellCode_WarriorStanceBerserker:
+			case ClassSpellMask_WarriorStanceBerserker:
 				berserkAura.Activate(sim)
 			}
 		},
@@ -278,11 +262,11 @@ func (warrior *Warrior) applyT1Tank6PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.defensiveStanceThreatMultiplier *= 1.10
-			warrior.gladiatorStanceDamageMultiplier *= 1.04
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(
+		&warrior.defensiveStanceThreatMultiplier, 1.10,
+	).AttachMultiplicativePseudoStatBuff(
+		&warrior.gladiatorStanceDamageMultiplier, 1.04,
+	))
 }

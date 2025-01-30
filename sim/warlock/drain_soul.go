@@ -24,12 +24,12 @@ func (warlock *Warlock) getDrainSoulBaseConfig(rank int) core.SpellConfig {
 	level := [DrainSoulRanks + 1]int{0, 10, 24, 38, 52}[rank]
 
 	return core.SpellConfig{
-		SpellCode:   SpellCode_WarlockDrainSoul,
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellSchool: core.SpellSchoolShadow,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagChanneled | core.SpellFlagResetAttackSwing | WarlockFlagAffliction | WarlockFlagHaunt,
+		ClassSpellMask: ClassSpellMask_WarlockDrainSoul,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagChanneled | core.SpellFlagResetAttackSwing | WarlockFlagAffliction | WarlockFlagHaunt,
 
 		RequiredLevel: level,
 		Rank:          rank,

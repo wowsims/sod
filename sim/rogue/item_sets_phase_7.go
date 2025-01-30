@@ -36,25 +36,19 @@ func (rogue *Rogue) applyNaxxramasDamage2PBonus() {
 
 	healthMetrics := rogue.NewHealthMetrics(core.ActionID{SpellID: 1219261})
 
-	core.MakePermanent(rogue.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.Ambush.DamageMultiplierAdditive += 0.20
-			for _, spell := range rogue.InstantPoison {
-				spell.DamageMultiplierAdditive += 0.20
-			}
+	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueInstantPoison,
+		Callback:       core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			rogue.GainHealth(sim, result.Damage*0.05, healthMetrics)
 		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_RogueDeadlyPoisonTick || spell.SpellCode == SpellCode_RogueOccultPoisonTick) && result.Landed() {
-				rogue.GainHealth(sim, result.Damage*0.05, healthMetrics)
-			}
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_RogueInstantPoison && result.Landed() {
-				rogue.GainHealth(sim, result.Damage*0.05, healthMetrics)
-			}
-		},
-	}))
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_RogueAmbush | ClassSpellMask_RogueInstantPoison,
+		IntValue:  20,
+	})
 }
 
 // You have a 100% chance gain 1 Energy each time you deal periodic Nature or Bleed damage.
@@ -66,14 +60,14 @@ func (rogue *Rogue) applyNaxxramasDamage4PBonus() {
 
 	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 1219288})
 
-	core.MakePermanent(rogue.RegisterAura(core.Aura{
-		Label: label,
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellSchool.Matches(core.SpellSchoolPhysical) || spell.SpellSchool.Matches(core.SpellSchoolNature) {
-				rogue.AddEnergy(sim, 1, energyMetrics)
-			}
+	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+		Name:        label,
+		SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolNature,
+		Callback:    core.CallbackOnPeriodicDamageDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			rogue.AddEnergy(sim, 1, energyMetrics)
 		},
-	}))
+	})
 }
 
 // You gain 1% increased damage to Undead for 30 sec per Combo Point you spend, stacking up to 25 times.
@@ -83,16 +77,13 @@ func (rogue *Rogue) applyNaxxramasDamage6PBonus() {
 		return
 	}
 
-	var undeadTargets []*core.Unit
+	undeadTargets := core.FilterSlice(rogue.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
 
 	buffAura := rogue.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1219291},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
 		MaxStacks: 25,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			undeadTargets = core.FilterSlice(rogue.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			for _, unit := range undeadTargets {
 				rogue.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
@@ -142,21 +133,7 @@ func (rogue *Rogue) applyNaxxramasTank2PBonus() {
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on your Evasion ability by 2 min and reduces the cooldown on your Blade Flurry ability by 1 min.
@@ -166,16 +143,17 @@ func (rogue *Rogue) applyNaxxramasTank4PBonus() {
 		return
 	}
 
-	rogue.RegisterAura(core.Aura{
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.Evasion.CD.FlatModifier -= time.Minute * 2
-
-			if rogue.BladeFlurry != nil {
-				rogue.BladeFlurry.CD.FlatModifier -= time.Minute
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: SpellClassMask_RogueEvasion,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Minute * 2,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_RogueBladeFlurry,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Minute,
+	}))
 }
 
 // Any damage from an Undead attacker which would otherwise kill you will instead reduce you to 10% of your maximum health (or your current health, whichever is lower).
@@ -197,13 +175,7 @@ func (rogue *Rogue) applyNaxxramasTank6PBonus() {
 		ActionID: actionID,
 		Label:    fmt.Sprintf("Cheat Death (%s)", label),
 		Duration: time.Second * 3,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.PseudoStats.DamageTakenMultiplier *= 0.10
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.PseudoStats.DamageTakenMultiplier /= 0.10
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&rogue.PseudoStats.DamageTakenMultiplier, 0.10)
 
 	cheatDeathSpell := rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,

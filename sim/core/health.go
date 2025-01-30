@@ -113,7 +113,7 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if result.Damage > 0 {
-				aura.Unit.RemoveHealth(sim, result.Damage, aura.Unit.NewHealthMetrics(spell.ActionID))
+				aura.Unit.RemoveHealth(sim, result.Damage, aura.Unit.DamageTakenHealthMetrics)
 
 				if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
 					aura.Unit.Metrics.Died = true
@@ -125,7 +125,7 @@ func (character *Character) trackChanceOfDeath(healingModel *proto.HealingModel)
 		},
 		OnPeriodicDamageTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			if result.Damage > 0 {
-				aura.Unit.RemoveHealth(sim, result.Damage, aura.Unit.NewHealthMetrics(spell.ActionID))
+				aura.Unit.RemoveHealth(sim, result.Damage, aura.Unit.DamageTakenHealthMetrics)
 
 				if aura.Unit.CurrentHealth() <= 0 && !aura.Unit.Metrics.Died {
 					aura.Unit.Metrics.Died = true
