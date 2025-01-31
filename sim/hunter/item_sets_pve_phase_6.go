@@ -130,7 +130,7 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 	hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.KillShot.CD.Multiplier *= 0.5
+			hunter.KillShot.CD.FlatModifier -= time.Second * 6
 
 			if !hunter.HasRune(proto.HunterRune_RuneHelmRapidKilling) {
 				return
