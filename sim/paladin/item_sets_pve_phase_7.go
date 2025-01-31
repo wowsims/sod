@@ -59,10 +59,20 @@ func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range paladin.holyWrath {
 				spell.CastTimeMultiplier -= 1
-				spell.CD.Multiplier *= 0.25
-				spell.Cost.Multiplier -= 75
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_PaladinHolyWrath,
+		Kind:       core.SpellMod_CastTime_Pct,
+		FloatValue: -1.0,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_PaladinHolyWrath,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -75,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_PaladinHolyWrath,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -75,
 	})
 }
 

@@ -35,9 +35,9 @@ func (warrior *Warrior) applyTAQDamage2PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "S03 - Item - TAQ - Warrior - Damage 2P Bonus",
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_Cooldown_Multi_Pct,
-		ClassMask:  ClassSpellMask_WarriorDeathWish,
-		FloatValue: 0.5,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		ClassMask: ClassSpellMask_WarriorDeathWish,
+		IntValue:  -50,
 	}))
 }
 
@@ -153,8 +153,8 @@ func (warrior *Warrior) applyRAQTank3PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "S03 - Item - RAQ - Warrior - Tank 3P Bonus",
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_Cooldown_Multi_Pct,
-		ClassMask:  ClassSpellMask_WarriorShockwave,
-		FloatValue: 0.5,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		ClassMask: ClassSpellMask_WarriorShockwave,
+		IntValue:  -50,
 	}))
 }

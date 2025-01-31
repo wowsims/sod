@@ -249,13 +249,11 @@ const (
 	// Uses TimeValue
 	SpellMod_Cooldown_Flat
 
-	// Increases or decreases spell.CD.Multiplier by flat amount
+	// Increases or decreases spell.CD.Multiplier by flat amount. 50% = 0.5
+	// Apply Aura: Modifies Cooldown (11)
+	// -X%
 	// Uses FloatValue
 	SpellMod_Cooldown_Multi_Flat
-
-	// Increases or decreases spell.CD.Multiplier by % amount. +50% = 0.5
-	// Uses FloatValue
-	SpellMod_Cooldown_Multi_Pct
 
 	// Add/subtract BonusCritRating. +1% = 1.0
 	// Uses: FloatValue
@@ -374,11 +372,6 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_Cooldown_Multi_Flat: {
 		Apply:  applyCooldownMultiplierFlat,
 		Remove: removeCooldownMultiplierFlat,
-	},
-
-	SpellMod_Cooldown_Multi_Pct: {
-		Apply:  applyCooldownMultiplierPct,
-		Remove: removeCooldownMultiplierPct,
 	},
 
 	SpellMod_CastTime_Pct: {
@@ -531,19 +524,11 @@ func removeCooldownFlat(mod *SpellMod, spell *Spell) {
 }
 
 func applyCooldownMultiplierFlat(mod *SpellMod, spell *Spell) {
-	spell.CD.Multiplier += mod.floatValue
+	spell.CD.MultiplierPct += mod.intValue
 }
 
 func removeCooldownMultiplierFlat(mod *SpellMod, spell *Spell) {
-	spell.CD.Multiplier -= mod.floatValue
-}
-
-func applyCooldownMultiplierPct(mod *SpellMod, spell *Spell) {
-	spell.CD.Multiplier *= mod.floatValue
-}
-
-func removeCooldownMultiplierPct(mod *SpellMod, spell *Spell) {
-	spell.CD.Multiplier /= mod.floatValue
+	spell.CD.MultiplierPct -= mod.intValue
 }
 
 func applyCastTimePercent(mod *SpellMod, spell *Spell) {

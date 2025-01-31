@@ -134,9 +134,9 @@ func (druid *Druid) applyNaxxramasFeral4PBonus() {
 		ActionID: core.ActionID{SpellID: 1218477}, // Tracking in APL
 		Label:    label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_Cooldown_Multi_Pct,
-		ClassMask:  ClassSpellMask_DruidTigersFury,
-		FloatValue: 0.5,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		ClassMask: ClassSpellMask_DruidTigersFury,
+		IntValue:  -50,
 	}))
 }
 

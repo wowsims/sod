@@ -264,9 +264,9 @@ func (paladin *Paladin) applyPurifyingPower() {
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: "Purifying Power",
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath,
-		Kind:       core.SpellMod_Cooldown_Multi_Pct,
-		FloatValue: 0.5,
+		ClassMask: ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -50,
 	}))
 
 }
