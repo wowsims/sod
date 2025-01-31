@@ -153,23 +153,18 @@ func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 	if hunter.HasAura(label) {
 		return
 	}
+
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.ChimeraShot != nil {
-				hunter.ChimeraShot.CD.FlatModifier -= time.Millisecond * 1500
-			}
-			if hunter.ExplosiveShot != nil {
-				hunter.ExplosiveShot.CD.FlatModifier -= time.Millisecond * 1500
-			}
-			if hunter.AimedShot != nil {
-				hunter.AimedShot.CD.FlatModifier -= time.Millisecond * 1500
-			}
-			if hunter.KillShot != nil {
-				hunter.KillShot.CD.FlatModifier -= time.Second * 3
-			}
-		},
-	}))
+	})).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_HunterChimeraShot | ClassSpellMask_HunterExplosiveShot | ClassSpellMask_HunterAimedShot,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Millisecond * 1500,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_HunterKillShot,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Second * 3,
+	})
 }
 
 // You gain 1% increased critical strike chance for 30 sec each time you hit an Undead enemy with a ranged attack, stacking up to 35 times.

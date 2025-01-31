@@ -158,6 +158,7 @@ const (
 	GlyphOfDeflection               = 236337 // 23040
 	MarkOfTheChampionSpell          = 236351 // 23207
 	MarkOfTheChampionPhys           = 236352 // 23206
+	TalismanOfAscendance            = 237283 // 22678
 )
 
 func init() {
@@ -2847,6 +2848,67 @@ func init() {
 	// Equip: +81 Attack Power when fighting Undead.
 	core.NewMobTypeAttackPowerEffect(SealOfTheDawn, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
 
+	// https://www.wowhead.com/classic/item=237283/talisman-of-ascendance
+	// Use: Your next 5 damage or healing spells cast within 20 seconds will grant a bonus of up to 40 damage and up to 75 healing, stacking up to 5 times.
+	// Expires after 6 damage or healing spells or 20 seconds, whichever occurs first. (50 Sec Cooldown)
+	core.NewItemEffect(TalismanOfAscendance, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{ItemID: TalismanOfAscendance}
+		duration := time.Second * 20
+		bonusPerStack := stats.Stats{
+			stats.SpellDamage:  40,
+			stats.HealingPower: 75,
+		}
+
+		buffAura := character.GetOrRegisterAura(core.Aura{
+			ActionID:  actionID,
+			Label:     "Ascendance",
+			Duration:  duration,
+			MaxStacks: 5,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				bonusStats := bonusPerStack.Multiply(float64(newStacks - oldStacks))
+				character.AddStatsDynamic(sim, bonusStats)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if !spell.ProcMask.Matches(core.ProcMaskSpellDamage | core.ProcMaskSpellHealing) {
+					return
+				}
+
+				if aura.GetStacks() == 5 {
+					aura.Deactivate(sim)
+				} else {
+					aura.AddStack(sim)
+				}
+			},
+		})
+
+		cdSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 50,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: cdSpell,
+			Type:  core.CooldownTypeDPS,
+		})
+	})
+
 	// https://www.wowhead.com/classic/item=228255/talisman-of-ephemeral-power
 	// Use: Increases damage and healing done by magical spells and effects by up to 184 for 15 sec. (1 Min, 30 Sec Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(TalismanOfEphemeralPower, stats.Stats{stats.SpellPower: 184}, time.Second*15, time.Second*90)
@@ -3247,7 +3309,7 @@ func init() {
 			Name:             "Spell Blasting Trigger",
 			Callback:         core.CallbackOnSpellHitDealt,
 			Outcome:          core.OutcomeLanded,
-			ProcMask:         core.ProcMaskSpellDamage,
+			ProcMask:         core.ProcMaskSpellOrSpellProc,
 			CanProcFromProcs: true,
 			ProcChance:       0.05,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

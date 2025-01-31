@@ -36,8 +36,8 @@ func (druid *Druid) applyNaxxramasBalance2PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BonusDamage_Flat,
 		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat,
+		Kind:       core.SpellMod_BonusDamage_Flat,
 		FloatValue: 0.20,
 	}))
 }
@@ -53,12 +53,13 @@ func (druid *Druid) applyNaxxramasBalance4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			druid.Starsurge.CD.FlatModifier -= time.Millisecond * 1500
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidStarsurge,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Millisecond * 1500,
+	}))
 }
 
 // When your Starsurge strikes an Undead target, the remaining duration on your active Starfall is reset to 10 sec.
@@ -134,9 +135,9 @@ func (druid *Druid) applyNaxxramasFeral4PBonus() {
 		ActionID: core.ActionID{SpellID: 1218477}, // Tracking in APL
 		Label:    label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_Cooldown_Multi_Pct,
-		ClassMask:  ClassSpellMask_DruidTigersFury,
-		FloatValue: 0.5,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		ClassMask: ClassSpellMask_DruidTigersFury,
+		IntValue:  -50,
 	}))
 }
 
@@ -218,17 +219,12 @@ func (druid *Druid) applyNaxxramasGuardian4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if druid.SurvivalInstincts != nil {
-				druid.SurvivalInstincts.CD.FlatModifier -= time.Minute * 2
-			}
-
-			if druid.Berserk != nil {
-				druid.Berserk.CD.FlatModifier -= time.Minute * 2
-			}
-		},
+	})).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidSurvivalInstincts | ClassSpellMask_DruidBerserk,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Minute * 2,
 	})
 }
 

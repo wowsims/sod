@@ -147,24 +147,27 @@ func init() {
 			},
 		})
 
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Millisecond * 1500,
+		icds := make(map[int32]core.Cooldown, len(character.Env.Encounter.TargetUnits))
+		for _, target := range character.Env.Encounter.TargetUnits {
+			icds[target.UnitIndex] = core.Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Millisecond * 1500,
+			}
 		}
 
 		core.MakePermanent(character.RegisterAura(core.Aura{
 			Label: "Creeping Darkness Trigger",
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && spell.SpellSchool.Matches(core.SpellSchoolShadow) {
+				if icd := icds[result.Target.UnitIndex]; icd.IsReady(sim) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && spell.SpellSchool.Matches(core.SpellSchoolShadow) {
 					debuff := debuffs.Get(result.Target)
 					debuff.Activate(sim)
 					debuff.AddStack(sim)
+					icd.Use(sim)
 				}
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && spell.SpellSchool.Matches(core.SpellSchoolShadow) && icd.IsReady(sim) && debuffs.Get(result.Target).IsActive() {
+				if result.Damage > 0 && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && spell.SpellSchool.Matches(core.SpellSchoolShadow) && debuffs.Get(result.Target).IsActive() {
 					damageSpell.Cast(sim, result.Target)
-					icd.Use(sim)
 				}
 			},
 		}))
