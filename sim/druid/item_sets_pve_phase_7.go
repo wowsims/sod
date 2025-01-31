@@ -55,9 +55,10 @@ func (druid *Druid) applyNaxxramasBalance4PBonus() {
 
 	druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			druid.Starsurge.CD.FlatModifier -= time.Millisecond * 1500
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidStarsurge,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Millisecond * 1500,
 	})
 }
 
@@ -220,15 +221,10 @@ func (druid *Druid) applyNaxxramasGuardian4PBonus() {
 
 	druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if druid.SurvivalInstincts != nil {
-				druid.SurvivalInstincts.CD.FlatModifier -= time.Minute * 2
-			}
-
-			if druid.Berserk != nil {
-				druid.Berserk.CD.FlatModifier -= time.Minute * 2
-			}
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidSurvivalInstincts | ClassSpellMask_DruidBerserk,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Minute * 2,
 	})
 }
 

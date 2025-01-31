@@ -24,8 +24,9 @@ func (druid *Druid) applyBerserk() {
 	})
 
 	druid.Berserk = druid.RegisterSpell(Cat|Bear, core.SpellConfig{
-		ActionID: actionId,
-		Flags:    core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_DruidBerserk,
+		ActionID:       actionId,
+		Flags:          core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

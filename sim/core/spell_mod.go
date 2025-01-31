@@ -516,19 +516,19 @@ func removePowerCostFlat(mod *SpellMod, spell *Spell) {
 }
 
 func applyCooldownFlat(mod *SpellMod, spell *Spell) {
-	spell.CD.FlatModifier += mod.timeValue
+	spell.CD.ApplyFlatCooldownMod(mod.timeValue)
 }
 
 func removeCooldownFlat(mod *SpellMod, spell *Spell) {
-	spell.CD.FlatModifier -= mod.timeValue
+	spell.CD.ApplyFlatCooldownMod(-mod.timeValue)
 }
 
 func applyCooldownMultiplierFlat(mod *SpellMod, spell *Spell) {
-	spell.CD.MultiplierPct += mod.intValue
+	spell.CD.ApplyFlatPercentCooldownMod(mod.intValue)
 }
 
 func removeCooldownMultiplierFlat(mod *SpellMod, spell *Spell) {
-	spell.CD.MultiplierPct -= mod.intValue
+	spell.CD.ApplyFlatPercentCooldownMod(-mod.intValue)
 }
 
 func applyCastTimePercent(mod *SpellMod, spell *Spell) {
