@@ -28,7 +28,7 @@ func (paladin *Paladin) registerDivineStorm() {
 		SpellSchool:    core.SpellSchoolPhysical,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlag_RV,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlag_RV | core.SpellFlagBatchStartAttackMacro,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.12,

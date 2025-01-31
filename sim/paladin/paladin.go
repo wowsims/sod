@@ -51,16 +51,6 @@ const (
 		ClassSpellMask_PaladinJudgementOfRighteousness | ClassSpellMask_PaladinJudgementOfTheCrusader
 )
 
-type SealJudgeCode uint8
-
-const (
-	SealJudgeCodeNone        SealJudgeCode = 0
-	SealJudgeOfMartyrdomCode SealJudgeCode = 1 << iota
-	SealJudgeOfRighteousnessCode
-	SealJudgeOfCommandCode
-	SealJudgeOfTheCrusaderCode
-)
-
 type Paladin struct {
 	core.Character
 
@@ -134,7 +124,53 @@ func (paladin *Paladin) AddRaidBuffs(_ *proto.RaidBuffs) {
 func (paladin *Paladin) AddPartyBuffs(_ *proto.PartyBuffs) {
 }
 
+func (paladin *Paladin) shouldAttachStopAttack(spell *core.Spell) bool {
+	return (paladin.Options.IsUsingJudgementStopAttack && spell.Matches(ClassSpellMask_PaladinJudgements)) ||
+		(paladin.Options.IsUsingExorcismStopAttack && spell.Matches(ClassSpellMask_PaladinExorcism)) ||
+		(paladin.Options.IsUsingCrusaderStrikeStopAttack && spell.Matches(ClassSpellMask_PaladinCrusaderStrike)) ||
+		(paladin.Options.IsUsingDivineStormStopAttack && spell.Matches(ClassSpellMask_PaladinDivineStorm))
+}
+
+func (paladin *Paladin) registerStartAndStopAttacks() {
+	if !paladin.Options.IsUsingJudgementStopAttack &&
+		!paladin.Options.IsUsingExorcismStopAttack &&
+		!paladin.Options.IsUsingCrusaderStrikeStopAttack &&
+		!paladin.Options.IsUsingDivineStormStopAttack {
+		return
+	}
+
+	paladin.OnSpellRegistered(func(spell *core.Spell) {
+		if paladin.shouldAttachStopAttack(spell) {
+			spell.Flags |= core.SpellFlagBatchStopAttackMacro
+			oldApplyEffects := spell.ApplyEffects
+			spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				oldApplyEffects(sim, target, spell)
+				paladin.AutoAttacks.CancelAutoSwing(sim)
+
+				if paladin.Options.IsUsingManualStartAttack {
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt:     sim.CurrentTime + time.Millisecond*time.Duration(sim.RollWithLabel(50, 100, "Start attack delay")),
+						Priority: core.ActionPriorityAuto,
+						OnAction: func(sim *core.Simulation) {
+							paladin.AutoAttacks.EnableAutoSwing(sim)
+						},
+					})
+				}
+			}
+		} else if !paladin.Options.IsUsingManualStartAttack && spell.Flags.Matches(core.SpellFlagBatchStartAttackMacro) {
+			oldApplyEffects := spell.ApplyEffects
+			spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				oldApplyEffects(sim, target, spell)
+				if sim.CurrentTime > 0 {
+					paladin.AutoAttacks.EnableAutoSwing(sim)
+				}
+			}
+		}
+	})
+}
+
 func (paladin *Paladin) Initialize() {
+	paladin.registerStartAndStopAttacks()
 	paladin.registerRighteousFury()
 	// Judgement and Seals
 	paladin.registerJudgement()
@@ -177,8 +213,6 @@ func (paladin *Paladin) Initialize() {
 	if paladin.Options.Aura == proto.PaladinAura_SanctityAura || paladin.HasAura("Sanctity Aura") {
 		paladin.sanctityAura = core.SanctityAuraAura(paladin.GetCharacter())
 	}
-
-	paladin.registerStopAttackMacros()
 
 	paladin.ResetCurrentPaladinAura()
 	paladin.ResetPrimarySeal(paladin.Options.PrimarySeal)
@@ -231,25 +265,6 @@ func (paladin *Paladin) has2hEquipped() bool {
 func (paladin *Paladin) ResetPrimarySeal(primarySeal proto.PaladinSeal) {
 	paladin.currentSeal = nil
 	paladin.primarySeal = paladin.getPrimarySealSpell(primarySeal)
-}
-
-func (paladin *Paladin) registerStopAttackMacros() {
-
-	if paladin.divineStorm != nil && paladin.Options.IsUsingDivineStormStopAttack {
-		paladin.divineStorm.Flags |= core.SpellFlagBatchStopAttackMacro
-	}
-
-	if paladin.crusaderStrike != nil && paladin.Options.IsUsingCrusaderStrikeStopAttack {
-		paladin.crusaderStrike.Flags |= core.SpellFlagBatchStopAttackMacro
-	}
-
-	for _, spellsJoX := range paladin.allJudgeSpells {
-		for _, v := range spellsJoX {
-			if v != nil && paladin.Options.IsUsingJudgementStopAttack {
-				v.Flags |= core.SpellFlagBatchStopAttackMacro
-			}
-		}
-	}
 }
 
 func (paladin *Paladin) ResetCurrentPaladinAura() {

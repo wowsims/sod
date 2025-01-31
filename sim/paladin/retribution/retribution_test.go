@@ -79,7 +79,7 @@ func TestRetribution(t *testing.T) {
 			OtherRotations: []core.RotationCombo{core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5p6p7-twist")},
 			Buffs:          core.FullBuffsPhase5,
 			Consumes:       Phase4Consumes,
-			SpecOptions:    core.SpecOptionsCombo{Label: "P4 Twist", SpecOptions: PlayerOptionsSealofMartyrdom},
+			SpecOptions:    core.SpecOptionsCombo{Label: "P4 Twist", SpecOptions: PlayerOptionsSealofMartyrdomStopAttack},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
@@ -97,7 +97,7 @@ func TestRetribution(t *testing.T) {
 			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5p6p7-twist"),
 			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase5Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "P5 Twist", SpecOptions: PlayerOptionsSealofMartyrdom},
+			SpecOptions: core.SpecOptionsCombo{Label: "P5 Twist", SpecOptions: PlayerOptionsSealofMartyrdomStopAttack},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
@@ -115,7 +115,7 @@ func TestRetribution(t *testing.T) {
 			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5p6p7-twist"),
 			Buffs:       core.FullBuffsPhase6,
 			Consumes:    Phase6Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "P6 Twist", SpecOptions: PlayerOptionsSealofMartyrdom},
+			SpecOptions: core.SpecOptionsCombo{Label: "P6 Twist", SpecOptions: PlayerOptionsSealofMartyrdomStopAttack},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
@@ -348,6 +348,12 @@ var PlayerOptionsSealofMartyrdom = &proto.Player_RetributionPaladin{
 	},
 }
 
+var PlayerOptionsSealofMartyrdomStopAttack = &proto.Player_RetributionPaladin{
+	RetributionPaladin: &proto.RetributionPaladin{
+		Options: optionsSealOfMartyrdomStopAttack,
+	},
+}
+
 var PlayerOptionsSealofRighteousness = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{
 		Options: optionsSealOfRighteousness,
@@ -362,6 +368,15 @@ var optionsSealOfCommand = &proto.PaladinOptions{
 var optionsSealOfMartyrdom = &proto.PaladinOptions{
 	Aura:        proto.PaladinAura_SanctityAura,
 	PrimarySeal: proto.PaladinSeal_Martyrdom,
+}
+
+var optionsSealOfMartyrdomStopAttack = &proto.PaladinOptions{
+	Aura:                            proto.PaladinAura_SanctityAura,
+	PrimarySeal:                     proto.PaladinSeal_Martyrdom,
+	IsUsingCrusaderStrikeStopAttack: true,
+	IsUsingExorcismStopAttack:       true,
+	IsUsingDivineStormStopAttack:    true,
+	IsUsingJudgementStopAttack:      true,
 }
 
 var optionsSealOfRighteousness = &proto.PaladinOptions{
