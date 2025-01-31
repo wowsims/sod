@@ -30,57 +30,56 @@ func (shaman *Shaman) RegisterRockbiterImbue(procMask core.ProcMask) {
 	enchantId := RockbiterWeaponEnchantId[rank]
 	bonusThreat := RockbiterWeaponBonusTPS[rank]
 
-	duration := time.Minute * 5
-
 	hasMHImbue := procMask.Matches(core.ProcMaskMeleeMH)
 	hasOHImbue := procMask.Matches(core.ProcMaskMeleeOH)
-
-	if hasMHImbue {
-		shaman.MainHand().TempEnchant = enchantId
-		shaman.AutoAttacks.MHConfig().FlatThreatBonus += bonusThreat * shaman.AutoAttacks.MH().SwingSpeed
-	}
-	if hasOHImbue {
-		shaman.OffHand().TempEnchant = enchantId
-		shaman.AutoAttacks.MHConfig().FlatThreatBonus += bonusThreat * shaman.AutoAttacks.OH().SwingSpeed
-	}
-
-	shaman.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.ProcMask.Matches(procMask) {
-			spell.FlatThreatBonus += bonusThreat
-		}
-	})
-
-	aura := shaman.RegisterAura(core.Aura{
-		Label:    "Rockbiter Imbue",
-		Duration: duration,
-	})
-
-	shaman.RegisterOnItemSwapWithImbue(enchantId, &procMask, aura)
-}
-
-func (shaman *Shaman) ApplyRockbiterImbue(procMask core.ProcMask) {
-	if procMask.Matches(core.ProcMaskMeleeMH) && shaman.HasMHWeapon() {
-		shaman.ApplyRockbiterImbueToItem(shaman.MainHand())
-	}
-
-	if procMask.Matches(core.ProcMaskMeleeOH) && shaman.HasOHWeapon() {
-		shaman.ApplyRockbiterImbueToItem(shaman.OffHand())
-	}
-}
-
-func (shaman *Shaman) ApplyRockbiterImbueToItem(item *core.Item) {
-	if item == nil {
-		return
-	}
-
-	rank := RockbiterWeaponRankByLevel[shaman.Level]
-	enchantId := RockbiterWeaponEnchantId[rank]
 
 	// Nerfed by 90% going into SoD Phase 3, in a... weird way ;)
 	bonusAP := RockbiterWeaponBonusAP[rank] * ([]float64{1, 1.07, 1.14, 1.2}[shaman.Talents.ElementalWeapons] - 0.9)
 
-	newStats := stats.Stats{stats.AttackPower: bonusAP}
+	if hasMHImbue {
+		shaman.MainHand().TempEnchant = enchantId
+	}
+	if hasOHImbue {
+		shaman.OffHand().TempEnchant = enchantId
+	}
 
-	item.Stats = item.Stats.Add(newStats)
-	item.TempEnchant = enchantId
+	threatMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusThreat_Flat,
+		ProcMask:   procMask,
+		FloatValue: bonusThreat,
+	})
+
+	aura := shaman.NewDynamicEquipEffectAura(core.DynamicEquipEffectConfig{
+		Label:    "Rockbiter Imbue",
+		EffectID: enchantId,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			shaman.AddStatDynamic(sim, stats.AttackPower, bonusAP*float64(newStacks-oldStacks))
+			threatMod.UpdateFloatValue(bonusThreat * float64(newStacks))
+		},
+	})
+
+	aura.Duration = time.Minute * 5
+	aura.BuildPhase = core.CharacterBuildPhaseGear
+	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+		threatMod.Activate()
+
+		if procMask.Matches(core.ProcMaskMeleeMH) {
+			shaman.AutoAttacks.MHAuto().FlatThreatBonus += bonusThreat * shaman.AutoAttacks.MH().SwingSpeed
+		}
+		if procMask.Matches(core.ProcMaskMeleeOH) {
+			shaman.AutoAttacks.OHAuto().FlatThreatBonus += bonusThreat * shaman.AutoAttacks.OH().SwingSpeed
+		}
+	})
+	aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+		threatMod.Deactivate()
+
+		if procMask.Matches(core.ProcMaskMeleeMH) {
+			shaman.AutoAttacks.MHAuto().FlatThreatBonus -= bonusThreat * shaman.AutoAttacks.MH().SwingSpeed
+		}
+		if procMask.Matches(core.ProcMaskMeleeOH) {
+			shaman.AutoAttacks.OHAuto().FlatThreatBonus -= bonusThreat * shaman.AutoAttacks.OH().SwingSpeed
+		}
+	})
+
+	shaman.RegisterOnItemSwapWithImbue(enchantId, &procMask, aura)
 }

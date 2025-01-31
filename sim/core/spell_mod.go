@@ -310,6 +310,10 @@ const (
 	// Uses: FloatValue
 	SpellMod_Threat_Pct
 
+	// Increases or decreases the spell.FlatThreatBonus by flat amount.
+	// Uses: FloatValue
+	SpellMod_BonusThreat_Flat
+
 	// Add/subtract duration for associated debuff
 	// Uses: KeyValue, TimeValue
 	SpellMod_DebuffDuration_Flat
@@ -432,6 +436,11 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 	SpellMod_Threat_Pct: {
 		Apply:  applyThreatPct,
 		Remove: removeThreatPct,
+	},
+
+	SpellMod_BonusThreat_Flat: {
+		Apply:  applyBonusThreatFlat,
+		Remove: removeBonusThreatFlat,
 	},
 
 	SpellMod_Custom: {
@@ -684,4 +693,12 @@ func applyThreatPct(mod *SpellMod, spell *Spell) {
 
 func removeThreatPct(mod *SpellMod, spell *Spell) {
 	spell.ThreatMultiplier /= mod.floatValue
+}
+
+func applyBonusThreatFlat(mod *SpellMod, spell *Spell) {
+	spell.FlatThreatBonus += mod.floatValue
+}
+
+func removeBonusThreatFlat(mod *SpellMod, spell *Spell) {
+	spell.FlatThreatBonus -= mod.floatValue
 }
