@@ -23,9 +23,11 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 	manaCost := .06
 	castTime := time.Millisecond * 1500
 
-	priest.MindSpikeAuras = priest.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return priest.newMindSpikeAura(unit)
-	})
+	if len(priest.MindSpikeAuras) == 0 {
+		priest.MindSpikeAuras = priest.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
+			return priest.newMindSpikeAura(unit)
+		})
+	}
 
 	return core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_PriestMindSpike,

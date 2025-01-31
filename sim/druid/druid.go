@@ -19,29 +19,31 @@ var TalentTreeSizes = [3]int{16, 16, 15}
 const (
 	ClassSpellMask_DruidNone int64 = 0
 
-	ClassSpellMask_DruidFaerieFire int64 = 1 << iota
+	ClassSpellMask_DruidBerserk int64 = 1 << iota
+	ClassSpellMask_DruidFaerieFire
 	ClassSpellMask_DruidFaerieFireFeral
 	ClassSpellMask_DruidFerociousBite
+	ClassSpellMask_DruidHurricane
 	ClassSpellMask_DruidInsectSwarm
-	ClassSpellMask_DruidSwipeCat
-	ClassSpellMask_DruidSwipeBear
-	ClassSpellMask_DruidMangleCat
 	ClassSpellMask_DruidMangleBear
+	ClassSpellMask_DruidMangleCat
 	ClassSpellMask_DruidMoonfire
 	ClassSpellMask_DruidRake
 	ClassSpellMask_DruidRip
+	ClassSpellMask_DruidSavageRoar
 	ClassSpellMask_DruidShred
 	ClassSpellMask_DruidStarfire
 	ClassSpellMask_DruidStarsurge
-	ClassSpellMask_DruidWrath
 	ClassSpellMask_DruidStarfall
-	ClassSpellMask_DruidStarfallTick
 	ClassSpellMask_DruidStarfallSplash
+	ClassSpellMask_DruidStarfallTick
 	ClassSpellMask_DruidSunfire
 	ClassSpellMask_DruidSunfireCat
-	ClassSpellMask_DruidHurricane
+	ClassSpellMask_DruidSurvivalInstincts
+	ClassSpellMask_DruidSwipeCat
+	ClassSpellMask_DruidSwipeBear
 	ClassSpellMask_DruidTigersFury
-	ClassSpellMask_DruidSavageRoar
+	ClassSpellMask_DruidWrath
 
 	ClassSpellMask_DruidCatForm
 	ClassSpellMask_DruidBearForm

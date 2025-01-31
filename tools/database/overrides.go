@@ -90,24 +90,6 @@ var ItemOverrides = []*proto.UIItem{
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82081, Name: "A Broken Ritual"}}},
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
 	}},
-
-	// 2024-08-30 This item randomly vanished from Wowhead after Phase 5 datamining
-	{
-		Id:                 215161,
-		Name:               "Tempered Interference-Negating Helmet",
-		Icon:               "inv_helmet_49",
-		Type:               1,
-		ArmorType:          4,
-		RequiresLevel:      40,
-		Stats:              []float64{20, 0, 14, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 426, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		WeaponSkills:       []float64{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
-		Ilvl:               45,
-		Phase:              2,
-		Quality:            4,
-		RequiredProfession: 2,
-		Sources: []*proto.UIItemSource{
-			{Source: &proto.UIItemSource_Crafted{Crafted: &proto.CraftedSource{Profession: 2}}}},
-	},
 }
 
 // Keep these sorted by item ID.
@@ -151,6 +133,7 @@ var ItemDenyList = map[int32]struct{}{
 	21209:  {}, // Signet Ring of the Bronze Dragonflight
 	21210:  {}, // Signet Ring of the Bronze Dragonflight
 	22631:  {}, // https://www.wowhead.com/classic/item=22631/atiesh-greatstaff-of-the-guardian
+	22678:  {}, // https://www.wowhead.com/classic/item=22678/talisman-of-ascendance not filtered out because ilvl gap is too high
 	22736:  {}, // Andonisus, Reaper of Souls
 	23207:  {}, // Mark of the Champion (Spellpower, old)
 	34576:  {}, // Battlemaster's Cruelty

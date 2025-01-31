@@ -72,9 +72,9 @@ func (mage *Mage) applyNaxxramasDamage4PBonus() {
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_MageEvocation,
-		Kind:       core.SpellMod_Cooldown_Multi_Pct,
-		FloatValue: 0.2,
+		ClassMask: ClassSpellMask_MageEvocation,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -80,
 	}))
 }
 
