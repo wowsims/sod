@@ -128,7 +128,7 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 
 	clonedShot := hunter.RegisterSpell(clonedShotConfig)
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if !hunter.HasRune(proto.HunterRune_RuneHelmRapidKilling) {
@@ -161,7 +161,7 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 				}
 			}
 		},
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_HunterKillShot,
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
 		IntValue:  -50,

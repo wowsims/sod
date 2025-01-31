@@ -237,11 +237,11 @@ func (warrior *Warrior) applyZGGladiator3PBonus() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
 		ClassMask: ClassSpellMask_WarriorShieldSlam,
 		TimeValue: -time.Second * 2,
-	}))
+	})
 }
 
 // Reduces the cooldown on your Bloodrage ability by 30 sec while you are in Gladiator Stance.

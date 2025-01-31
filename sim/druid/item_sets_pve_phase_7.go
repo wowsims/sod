@@ -36,8 +36,8 @@ func (druid *Druid) applyNaxxramasBalance2PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_BonusDamage_Flat,
 		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat,
+		Kind:       core.SpellMod_BonusDamage_Flat,
 		FloatValue: 0.20,
 	}))
 }
@@ -53,13 +53,13 @@ func (druid *Druid) applyNaxxramasBalance4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_DruidStarsurge,
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: -time.Millisecond * 1500,
-	})
+	}))
 }
 
 // When your Starsurge strikes an Undead target, the remaining duration on your active Starfall is reset to 10 sec.
@@ -219,9 +219,9 @@ func (druid *Druid) applyNaxxramasGuardian4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_DruidSurvivalInstincts | ClassSpellMask_DruidBerserk,
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: -time.Minute * 2,

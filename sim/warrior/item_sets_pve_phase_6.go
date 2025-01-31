@@ -34,11 +34,11 @@ func (warrior *Warrior) applyTAQDamage2PBonus() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "S03 - Item - TAQ - Warrior - Damage 2P Bonus",
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
 		ClassMask: ClassSpellMask_WarriorDeathWish,
 		IntValue:  -50,
-	}))
+	})
 }
 
 // You deal 15% increased damage while any nearby enemy is afflicted with both your Rend and your Deep Wounds.
@@ -122,11 +122,11 @@ func (warrior *Warrior) applyTAQTank4PBonus() {
 				spell.CD.Reset()
 			}
 		},
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_Threat_Pct,
 		ClassMask:  ClassSpellMask_WarriorShieldSlam,
 		FloatValue: 2,
-	}))
+	})
 }
 
 var ItemSetBattlegearOfUnyieldingStrength = core.NewItemSet(core.ItemSet{
@@ -152,9 +152,9 @@ func (warrior *Warrior) applyRAQTank3PBonus() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "S03 - Item - RAQ - Warrior - Tank 3P Bonus",
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
 		ClassMask: ClassSpellMask_WarriorShockwave,
 		IntValue:  -50,
-	}))
+	})
 }

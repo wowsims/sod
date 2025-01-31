@@ -44,7 +44,7 @@ func (warlock *Warlock) applyTAQDamage2PBonus() {
 				isbAura.SetStacks(sim, core.ISBNumStacksShadowflame)
 			}
 		},
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_WarlockChaosBolt | ClassSpellMask_WarlockShadowBolt,
 		IntValue:  10,
@@ -52,7 +52,7 @@ func (warlock *Warlock) applyTAQDamage2PBonus() {
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
 		ClassMask: ClassSpellMask_WarlockChaosBolt,
 		IntValue:  -50,
-	}))
+	})
 }
 
 // Each time you hit a target with Conflagrate, you gain 5% increased Fire damage for 20 sec, stacking up to 2 times.
@@ -114,11 +114,11 @@ func (warlock *Warlock) applyTAQTank2PBonus() {
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_WarlockShadowCleave,
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: -time.Millisecond * 1500,
-	}))
+	})
 }
 
 // The effects of your Demonic Sacrifice now persist while you have a Demon pet active, as long as you do not resummon the sacrificed pet.

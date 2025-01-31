@@ -53,15 +53,10 @@ func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
-		Label:    label,
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: PaladinT3Ret4P},
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range paladin.holyWrath {
-				spell.CastTimeMultiplier -= 1
-			}
-		},
-	}).AttachSpellMod(core.SpellModConfig{
+		Label:    label,
+	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  ClassSpellMask_PaladinHolyWrath,
 		Kind:       core.SpellMod_CastTime_Pct,
 		FloatValue: -1.0,

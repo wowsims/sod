@@ -39,11 +39,11 @@ func (warrior *Warrior) applyNaxxramasDamage2PBonus() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_WarriorDeepWounds,
 		Kind:      core.SpellMod_DamageDone_Flat,
 		IntValue:  20,
-	}))
+	})
 }
 
 // Reduces the cooldown on your Bloodthirst, Mortal Strike, and Shield Slam abilities by 25%.
@@ -59,11 +59,11 @@ func (warrior *Warrior) applyNaxxramasDamage4PBonus() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
 		ClassMask: ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorMortalStrike | ClassSpellMask_WarriorShieldSlam,
 		IntValue:  -25,
-	}))
+	})
 }
 
 // Your melee critical strikes against Undead enemies grant you 1% increased damage done to Undead for 30 sec, stacking up to 25 times.
@@ -144,9 +144,9 @@ func (warrior *Warrior) applyNaxxramasProtection4PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
 		ClassMask: ClassSpellMask_WarriorShieldWall | ClassSpellMask_WarriorRecklesness,
 		TimeValue: -time.Minute * 3,

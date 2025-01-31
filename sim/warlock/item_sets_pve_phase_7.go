@@ -35,11 +35,11 @@ func (warlock *Warlock) applyNaxxramasDamage2PBonus() {
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockCorruption,
 		IntValue:  20,
-	}))
+	})
 }
 
 // Your non-periodic critical strikes cause your active Corruption, Immolate, Shadowflame, and Unstable Affliction spells on the target to immediately deal one pulse of their damage to the target.
@@ -150,7 +150,7 @@ func (warlock *Warlock) applyNaxxramasTank4PBonus() {
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_WarlockInfernalArmor,
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: -time.Second * 30,
@@ -158,7 +158,7 @@ func (warlock *Warlock) applyNaxxramasTank4PBonus() {
 		ClassMask: ClassSpellMask_WarlockDemonicGrace,
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: -time.Second * 10,
-	}))
+	})
 }
 
 // When an Undead enemy attempts to attack you, the remaining duration of your active Vengeance is reset to 20 sec.
