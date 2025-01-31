@@ -790,24 +790,36 @@ func (spell *Spell) IssueRefund(sim *Simulation) {
 type SpellCooldown struct {
 	*Cooldown
 
-	FlatModifier time.Duration // Flat value added to base cooldown before pct mods
-	Multiplier   float64       // Multiplier for cooldown duration, e.g. 50% is stored as 0.5
+	flatModifier time.Duration // Flat value added to base cooldown before pct mods
+
+	// An int representation of the cooldown's multiplier percentage
+	// Starts at 0 and any value added are an offset from 100%.
+	// For example, for -50%, add -50
+	multiplierPct int64
 }
 
 func newSpellCooldown(cd Cooldown) *SpellCooldown {
 	return &SpellCooldown{
-		Cooldown:     &cd,
-		FlatModifier: 0,
-		Multiplier:   1.0,
+		Cooldown:      &cd,
+		flatModifier:  0,
+		multiplierPct: 0,
 	}
 }
 
-func (cd *SpellCooldown) ApplyCooldownModifiers(duration time.Duration) time.Duration {
-	duration = max(0, duration+cd.FlatModifier)
-	return max(0, time.Duration(float64(duration)*cd.Multiplier))
+func (cd *SpellCooldown) ApplyFlatCooldownMod(duration time.Duration) {
+	cd.flatModifier += duration
+}
+
+func (cd *SpellCooldown) ApplyFlatPercentCooldownMod(percent int64) {
+	cd.multiplierPct += percent
+}
+
+func (cd *SpellCooldown) applyCooldownModifiers(duration time.Duration) time.Duration {
+	duration = max(0, duration+cd.flatModifier)
+	return max(0, time.Duration(float64(duration)*float64(100+cd.multiplierPct)/100))
 }
 
 // Get cooldown after all modifiers.
 func (cd *SpellCooldown) GetCurrentDuration() time.Duration {
-	return cd.ApplyCooldownModifiers(cd.Duration)
+	return cd.applyCooldownModifiers(cd.Duration)
 }

@@ -127,8 +127,8 @@ func (priest *Priest) applyNaxxramasHealer2PBonus() {
 	core.MakePermanent(priest.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_Cooldown_Multi_Pct,
-		ClassMask:  ClassSpellMask_PriestPenance,
-		FloatValue: 0.75,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		ClassMask: ClassSpellMask_PriestPenance,
+		IntValue:  -25,
 	}))
 }

@@ -237,11 +237,11 @@ func (warrior *Warrior) applyZGGladiator3PBonus() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
+	})).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
 		ClassMask: ClassSpellMask_WarriorShieldSlam,
 		TimeValue: -time.Second * 2,
-	}))
+	})
 }
 
 // Reduces the cooldown on your Bloodrage ability by 30 sec while you are in Gladiator Stance.
@@ -255,6 +255,12 @@ func (warrior *Warrior) applyZGGladiator5PBonus() {
 		return
 	}
 
+	cooldownMod := warrior.AddDynamicMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_WarriorBloodrage,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Second * 30,
+	})
+
 	warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -265,13 +271,13 @@ func (warrior *Warrior) applyZGGladiator5PBonus() {
 			oldOnGain := ee.OnGain
 			ee.OnGain = func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 				oldOnGain(ee, sim)
-				warrior.Bloodrage.CD.FlatModifier -= time.Second * 30
+				cooldownMod.Activate()
 			}
 
 			oldOnExpire := ee.OnExpire
 			ee.OnExpire = func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 				oldOnExpire(ee, sim)
-				warrior.Bloodrage.CD.FlatModifier += time.Second * 30
+				cooldownMod.Deactivate()
 			}
 		},
 	})

@@ -194,9 +194,9 @@ func (shaman *Shaman) applyStormEarthAndFire() {
 		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
 		IntValue:  60,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_ShamanChainLightning,
-		Kind:       core.SpellMod_Cooldown_Multi_Pct,
-		FloatValue: 0.5,
+		ClassMask: ClassSpellMask_ShamanChainLightning,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -50,
 	}))
 
 }

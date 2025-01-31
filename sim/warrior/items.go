@@ -124,8 +124,9 @@ func init() {
 		warrior := agent.(WarriorAgent).GetWarrior()
 		actionID := core.ActionID{ItemID: GrileksCharmOFMight}
 		rageMetrics := warrior.NewRageMetrics(actionID)
+		duration := time.Second * 20
 
-		aura := warrior.NewTemporaryStatsAura("Gri'lek's Guard", actionID, stats.Stats{stats.BlockValue: 200}, time.Second*20)
+		aura := warrior.NewTemporaryStatsAura("Gri'lek's Guard", actionID, stats.Stats{stats.BlockValue: 200}, duration)
 
 		spell := warrior.Character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
@@ -137,6 +138,10 @@ func init() {
 				CD: core.Cooldown{
 					Timer:    warrior.NewTimer(),
 					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    warrior.GetOffensiveTrinketCD(),
+					Duration: duration,
 				},
 			},
 
