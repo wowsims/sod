@@ -112,6 +112,7 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 
 	clonedShotConfig := hunter.newKillShotConfig()
 	clonedShotConfig.ActionID.Tag = 1
+	clonedShotConfig.ProcMask = core.ProcMaskRangedProc | core.ProcMaskRangedDamageProc
 	clonedShotConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
 	clonedShotConfig.Flags ^= core.SpellFlagAPL
 	clonedShotConfig.Cast.DefaultCast.GCD = 0

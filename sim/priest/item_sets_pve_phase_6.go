@@ -29,6 +29,26 @@ func (priest *Priest) applyTAQShadow2PBonus() {
 	if priest.HasAura(label) {
 		return
 	}
+
+	hasMindSpike := priest.HasRune(proto.PriestRune_RuneWaistMindSpike)
+
+	var mindSpikeCopy *core.Spell
+	if hasMindSpike {
+		mindSpikeConfig := priest.newMindSpikeSpellConfig()
+		mindSpikeConfig.ActionID.Tag = 1
+		mindSpikeConfig.ProcMask = core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc
+		mindSpikeConfig.Flags |= core.SpellFlagCastWhileChanneling | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
+		mindSpikeConfig.Flags ^= core.SpellFlagAPL
+		mindSpikeConfig.Cast.DefaultCast.GCD = 0
+		mindSpikeConfig.Cast.DefaultCast.Cost = 0
+		mindSpikeConfig.Cast.CD = core.Cooldown{}
+		mindSpikeConfig.ManaCost.BaseCost = 0
+		mindSpikeConfig.ManaCost.FlatCost = 0
+		mindSpikeConfig.MetricSplits = 0
+
+		mindSpikeCopy = priest.RegisterSpell(mindSpikeConfig)
+	}
+
 	priest.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -40,19 +60,13 @@ func (priest *Priest) applyTAQShadow2PBonus() {
 
 					spell.PushbackReduction += 1
 
-					if priest.MindSpike == nil {
+					if !hasMindSpike {
 						continue
 					}
 
 					oldApplyEffects := spell.ApplyEffects
 					spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-						priest.MindSpike.DefaultCast.GCD = 0
-						priest.MindSpike.CastTimeMultiplier -= 1
-						priest.MindSpike.Cost.Multiplier -= 100
-						priest.MindSpike.Cast(sim, target)
-						priest.MindSpike.DefaultCast.GCD = core.GCDDefault
-						priest.MindSpike.CastTimeMultiplier += 1
-						priest.MindSpike.Cost.Multiplier += 100
+						mindSpikeCopy.Cast(sim, target)
 
 						oldApplyEffects(sim, target, spell)
 					}
