@@ -23,6 +23,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatAttackPower,
+		Stat.StatFeralAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatExpertise,
@@ -33,6 +34,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 		Stat.StatNatureResistance,
 		Stat.StatShadowResistance,
 		Stat.StatFrostResistance,
+		Stat.StatMana,
+		Stat.StatMP5,
 	],
 	epPseudoStats: [
 		PseudoStat.PseudoStatMainHandDps,
@@ -48,6 +51,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatAttackPower,
+		Stat.StatFeralAttackPower,
 		Stat.StatMeleeHit,
 		Stat.StatMeleeCrit,
 		Stat.StatExpertise,
@@ -65,20 +69,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
-				[Stat.StatArmor]: 3.5665,
-				[Stat.StatBonusArmor]: 0.5187,
-				[Stat.StatStamina]: 7.3021,
-				[Stat.StatStrength]: 2.3786,
-				[Stat.StatAgility]: 4.4974,
+				[Stat.StatArmor]: 1,
+				[Stat.StatBonusArmor]: 0.22,
+				[Stat.StatStamina]: 2,
+				[Stat.StatStrength]: 2.52,
+				[Stat.StatAgility]: 2.52,
 				[Stat.StatAttackPower]: 1,
-				[Stat.StatMeleeHit]: 2.9282,
-				[Stat.StatMeleeCrit]: 1.5143,
-				[Stat.StatDefense]: 1.8171,
-				[Stat.StatDodge]: 2.0196,
-				[Stat.StatHealth]: 0.4465,
+				[Stat.StatFeralAttackPower]: 1,
+				[Stat.StatMeleeHit]: 68,
+				[Stat.StatMeleeCrit]: 31,
+				[Stat.StatExpertise]: 135,
+				[Stat.StatDefense]: 5,
+				[Stat.StatDodge]: 30,
+				[Stat.StatHealth]: 0.117,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 0.0,
+				[PseudoStat.PseudoStatBonusPhysicalDamage]: 3,
+				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 11.73,
+				[PseudoStat.PseudoStatSanctifiedBonus]: 300,
 			},
 		),
 		// Default consumes settings.
@@ -126,11 +134,32 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralTankDruid, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [...Presets.TalentPresets[Phase.Phase2], ...Presets.TalentPresets[Phase.Phase1]],
-		// Preset rotations that the user can quickly select.
-		rotations: [...Presets.APLPresets[Phase.Phase2], ...Presets.APLPresets[Phase.Phase1]],
+		talents: [
+			...Presets.TalentPresets[Phase.Phase5],
+			...Presets.TalentPresets[Phase.Phase4],
+			...Presets.TalentPresets[Phase.Phase3],
+			...Presets.TalentPresets[Phase.Phase2],
+			...Presets.TalentPresets[Phase.Phase1],
+		],
+		rotations: [
+			...Presets.APLPresets[Phase.Phase7],
+			...Presets.APLPresets[Phase.Phase6],
+			...Presets.APLPresets[Phase.Phase5],
+			...Presets.APLPresets[Phase.Phase4],
+			...Presets.APLPresets[Phase.Phase3],
+			...Presets.APLPresets[Phase.Phase2],
+			...Presets.APLPresets[Phase.Phase1],
+		],
 		// Preset gear configurations that the user can quickly select.
-		gear: [...Presets.GearPresets[Phase.Phase2], ...Presets.GearPresets[Phase.Phase1]],
+		gear: [
+			...Presets.GearPresets[Phase.Phase7],
+			...Presets.GearPresets[Phase.Phase6],
+			...Presets.GearPresets[Phase.Phase5],
+			...Presets.GearPresets[Phase.Phase4],
+			...Presets.GearPresets[Phase.Phase3],
+			...Presets.GearPresets[Phase.Phase2],
+			...Presets.GearPresets[Phase.Phase1],
+		],
 	},
 
 	autoRotation: player => {

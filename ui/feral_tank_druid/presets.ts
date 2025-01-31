@@ -29,7 +29,11 @@ import {
 
 import * as PresetUtils from '../core/preset_utils.js';
 import Phase6APL from './apls/phase_6.apl.json';
+import CatWeaveRakeAPL from './apls/catweave_rake.apl.json';
 import Phase6Gear from './gear_sets/phase_6.gear.json';
+import Phase7Gear from './gear_sets/phase_7.gear.json';
+import Phase7PreBis from './gear_sets/phase_7_prebis.gear.json';
+import Phase7CatWeave from './gear_sets/phase_7_catweave.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -39,14 +43,19 @@ import Phase6Gear from './gear_sets/phase_6.gear.json';
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const P5Gear = PresetUtils.makePresetGear('Phase 6', Phase6Gear);
+export const P6Gear = PresetUtils.makePresetGear('Phase 6', Phase6Gear);
+export const P7Gear = PresetUtils.makePresetGear('Phase 7', Phase7Gear);
+export const P7PreBis = PresetUtils.makePresetGear('Phase 7 Pre-bis', Phase7PreBis);
+export const P7CatWeave = PresetUtils.makePresetGear('Phase 7 Cat Weave', Phase7CatWeave);
 
 export const GearPresets = {
-  [Phase.Phase1]: [P5Gear],
-  [Phase.Phase2]: [P5Gear],
-  [Phase.Phase3]: [P5Gear],
-  [Phase.Phase4]: [P5Gear],
-  [Phase.Phase5]: [P5Gear]
+  [Phase.Phase1]: [P6Gear],
+  [Phase.Phase2]: [P6Gear],
+  [Phase.Phase3]: [P6Gear],
+  [Phase.Phase4]: [P6Gear],
+  [Phase.Phase5]: [P6Gear],
+  [Phase.Phase6]: [P6Gear],
+  [Phase.Phase7]: [P6Gear,P7PreBis,P7Gear,P7CatWeave],
 };
 
 // TODO: Add Phase 2 preset and pull from map
@@ -56,14 +65,17 @@ export const DefaultGear = GearPresets[Phase.Phase5][0];
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const APLPhase5 = PresetUtils.makePresetAPLRotation('Phase 6', Phase6APL, { customCondition: player => player.getLevel() === 60 });
+export const APLPhase6 = PresetUtils.makePresetAPLRotation('Phase 6', Phase6APL, { customCondition: player => player.getLevel() === 60 });
+export const APLCatWeaveRake = PresetUtils.makePresetAPLRotation('Cat Weave Rake', CatWeaveRakeAPL, { customCondition: player => player.getLevel() === 60 });
 
 export const APLPresets = {
-  [Phase.Phase1]: [APLPhase5],
-  [Phase.Phase2]: [APLPhase5],
-  [Phase.Phase3]: [APLPhase5],
-  [Phase.Phase4]: [APLPhase5],
-  [Phase.Phase5]: [APLPhase5]
+  [Phase.Phase1]: [APLPhase6],
+  [Phase.Phase2]: [APLPhase6],
+  [Phase.Phase3]: [APLPhase6],
+  [Phase.Phase4]: [APLPhase6],
+  [Phase.Phase5]: [APLPhase6],
+  [Phase.Phase6]: [APLPhase6],
+  [Phase.Phase7]: [APLPhase6, APLCatWeaveRake]
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
@@ -79,8 +91,6 @@ export const DefaultRotation = FeralTankDruid_Rotation.create({
 	lacerateTime: 8.0,
 });
 
-export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Default', Spec.SpecFeralTankDruid, DefaultRotation);
-
 ///////////////////////////////////////////////////////////////////////////
 //                                 Talent Presets
 ///////////////////////////////////////////////////////////////////////////
@@ -91,7 +101,7 @@ export const SIMPLE_ROTATION_DEFAULT = PresetUtils.makePresetSimpleRotation('Def
 export const StandardTalents = {
 	name: 'Standard',
 	data: SavedTalents.create({
-		talentsString: '500005001-5050321303022151-05002',
+		talentsString: '014005301-5050021323022151-05',
 	}),
 };
 
@@ -116,12 +126,12 @@ export const DefaultOptions = DruidOptions.create({
 });
 
 export const DefaultConsumes = Consumes.create({
-	agilityElixir: AgilityElixir.ElixirOfTheMongoose,
+	agilityElixir: AgilityElixir.ElixirOfTheHoneyBadger,
 	attackPowerBuff: AttackPowerBuff.JujuMight,
 	defaultPotion: Potions.GreaterStoneshieldPotion,
 	dragonBreathChili: true,
-	enchantedSigil: EnchantedSigil.FlowingWatersSigil,
-	flask: Flask.FlaskOfTheTitans,
+	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
+	flask: Flask.FlaskOfTheOldGods,
 	food: Food.FoodDirgesKickChimaerokChops,
 	mainHandImbue: WeaponImbue.ElementalSharpeningStone,
 	miscConsumes: {
@@ -129,7 +139,7 @@ export const DefaultConsumes = Consumes.create({
 		jujuEmber: true,
 	},
 	strengthBuff: StrengthBuff.JujuPower,
-	zanzaBuff: ZanzaBuff.ROIDS,
+	zanzaBuff: ZanzaBuff.SpiritOfZanza,
 });
 
 export const DefaultRaidBuffs = RaidBuffs.create({
