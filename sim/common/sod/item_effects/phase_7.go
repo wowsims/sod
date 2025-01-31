@@ -116,7 +116,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=235894/doomsayers-demise
 	// Equip: Periodic shadow effects have a chance to apply Creeping Darkness up to 5 times.
-	// Spells which deal direct Shadow damage detonate this effect, dealing 45 damage per stack. (1.5s cooldown)
+	// Spells which deal direct Shadow damage detonate this effect, dealing 100 damage per stack. (1.5s cooldown)
 	core.NewItemEffect(DoomsayersDemise, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 1219020}
@@ -135,20 +135,18 @@ func init() {
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Flags:       core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				debuff := debuffs.Get(target)
-				spell.CalcAndDealDamage(sim, target, float64(45*debuff.GetStacks()), spell.OutcomeMagicHitAndCrit)
+				spell.CalcAndDealDamage(sim, target, float64(100*debuff.GetStacks()), spell.OutcomeMagicCrit)
 				debuff.Deactivate(sim)
 			},
 		})
 
-		// TODO: Made up proc rate TBD
-		procChance := 0.20
 		icd := core.Cooldown{
 			Timer:    character.NewTimer(),
 			Duration: time.Millisecond * 1500,
@@ -157,7 +155,7 @@ func init() {
 		core.MakePermanent(character.RegisterAura(core.Aura{
 			Label: "Creeping Darkness Trigger",
 			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && spell.SpellSchool.Matches(core.SpellSchoolShadow) && sim.Proc(procChance, "Creeping Darkness") {
+				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && spell.SpellSchool.Matches(core.SpellSchoolShadow) {
 					debuff := debuffs.Get(result.Target)
 					debuff.Activate(sim)
 					debuff.AddStack(sim)
@@ -166,6 +164,7 @@ func init() {
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && spell.SpellSchool.Matches(core.SpellSchoolShadow) && icd.IsReady(sim) && debuffs.Get(result.Target).IsActive() {
 					damageSpell.Cast(sim, result.Target)
+					icd.Use(sim)
 				}
 			},
 		}))
@@ -258,7 +257,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=236708/breastplate-of-undead-slaying
 	// Equip: +108 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(BreastplateOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 108)
+	core.NewMobTypeAttackPowerEffect(BreastplateOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 0)
 
 	// https://www.wowhead.com/classic/item=236709/chestguard-of-undead-slaying
 	// Equip: +108 Attack Power when fighting Undead.
