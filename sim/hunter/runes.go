@@ -439,14 +439,15 @@ func (hunter *Hunter) applyCatlikeReflexes() {
 	}
 	label := "Catlike Reflexes"
 
+	hunter.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_HunterFlankingStrike,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -50,
+	})
+
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.FlankingStrike != nil {
-				hunter.FlankingStrike.CD.Multiplier *= 0.5
-			}
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			hunter.AddBuildPhaseStatDynamic(sim, stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
 			if hunter.pet != nil {

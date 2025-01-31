@@ -158,6 +158,7 @@ const (
 	GlyphOfDeflection               = 236337 // 23040
 	MarkOfTheChampionSpell          = 236351 // 23207
 	MarkOfTheChampionPhys           = 236352 // 23206
+	TalismanOfAscendance            = 237283 // 22678
 )
 
 func init() {
@@ -2488,7 +2489,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=236337/glyph-of-deflection
 	// Use: Increases the block value of your shield by 400 for 20 sec. (2 Min Cooldown)
-	core.NewSimpleStatDefensiveTrinketEffect(GlyphOfDeflection, stats.Stats{stats.BlockValue: 400}, time.Second*20, time.Minute*2)
+	core.NewSimpleStatOffensiveTrinketEffect(GlyphOfDeflection, stats.Stats{stats.BlockValue: 400}, time.Second*20, time.Minute*2)
 
 	// https://www.wowhead.com/classic/item=227990/hand-of-injustice
 	// Equip: 2% chance on ranged hit to gain 1 extra attack. (Proc chance: 2%, 2s cooldown)
@@ -2865,6 +2866,67 @@ func init() {
 	// https://www.wowhead.com/classic/item=13209/seal-of-the-dawn
 	// Equip: +81 Attack Power when fighting Undead.
 	core.NewMobTypeAttackPowerEffect(SealOfTheDawn, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
+
+	// https://www.wowhead.com/classic/item=237283/talisman-of-ascendance
+	// Use: Your next 5 damage or healing spells cast within 20 seconds will grant a bonus of up to 40 damage and up to 75 healing, stacking up to 5 times.
+	// Expires after 6 damage or healing spells or 20 seconds, whichever occurs first. (50 Sec Cooldown)
+	core.NewItemEffect(TalismanOfAscendance, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{ItemID: TalismanOfAscendance}
+		duration := time.Second * 20
+		bonusPerStack := stats.Stats{
+			stats.SpellDamage:  40,
+			stats.HealingPower: 75,
+		}
+
+		buffAura := character.GetOrRegisterAura(core.Aura{
+			ActionID:  actionID,
+			Label:     "Ascendance",
+			Duration:  duration,
+			MaxStacks: 5,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				bonusStats := bonusPerStack.Multiply(float64(newStacks - oldStacks))
+				character.AddStatsDynamic(sim, bonusStats)
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if !spell.ProcMask.Matches(core.ProcMaskSpellDamage | core.ProcMaskSpellHealing) {
+					return
+				}
+
+				if aura.GetStacks() == 5 {
+					aura.Deactivate(sim)
+				} else {
+					aura.AddStack(sim)
+				}
+			},
+		})
+
+		cdSpell := character.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 50,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: cdSpell,
+			Type:  core.CooldownTypeDPS,
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=228255/talisman-of-ephemeral-power
 	// Use: Increases damage and healing done by magical spells and effects by up to 184 for 15 sec. (1 Min, 30 Sec Cooldown)

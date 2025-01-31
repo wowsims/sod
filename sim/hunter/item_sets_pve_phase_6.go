@@ -112,6 +112,7 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 
 	clonedShotConfig := hunter.newKillShotConfig()
 	clonedShotConfig.ActionID.Tag = 1
+	clonedShotConfig.ProcMask = core.ProcMaskRangedProc | core.ProcMaskRangedDamageProc
 	clonedShotConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
 	clonedShotConfig.Flags ^= core.SpellFlagAPL
 	clonedShotConfig.Cast.DefaultCast.GCD = 0
@@ -127,11 +128,9 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 
 	clonedShot := hunter.RegisterSpell(clonedShotConfig)
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.KillShot.CD.Multiplier *= 0.5
-
 			if !hunter.HasRune(proto.HunterRune_RuneHelmRapidKilling) {
 				return
 			}
@@ -162,6 +161,10 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 				}
 			}
 		},
+	})).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_HunterKillShot,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -50,
 	})
 }
 

@@ -16,16 +16,24 @@ const (
 const (
 	ClassSpellMask_WarriorNone int64 = 0
 
-	ClassSpellMask_WarriorBloodthirst int64 = 1 << iota
+	ClassSpellMask_WarriorBloodrage int64 = 1 << iota
+	ClassSpellMask_WarriorBloodthirst
+	ClassSpellMask_WarriorCleave
+	ClassSpellMask_WarriorDeathWish
 	ClassSpellMask_WarriorDeepWounds
 	ClassSpellMask_WarriorDevastate
 	ClassSpellMask_WarriorExecute
+	ClassSpellMask_WarriorHeroicStrike
 	ClassSpellMask_WarriorMortalStrike
 	ClassSpellMask_WarriorOverpower
+	ClassSpellMask_WarriorQuickStrike
 	ClassSpellMask_WarriorRagingBlow
+	ClassSpellMask_WarriorRecklesness
 	ClassSpellMask_WarriorRend
 	ClassSpellMask_WarriorRevenge
 	ClassSpellMask_WarriorShieldSlam
+	ClassSpellMask_WarriorShieldWall
+	ClassSpellMask_WarriorShockwave
 	ClassSpellMask_WarriorSlam
 	ClassSpellMask_WarriorSlamMH
 	ClassSpellMask_WarriorSlamOH
@@ -36,13 +44,6 @@ const (
 	ClassSpellMask_WarriorWhirlwind
 	ClassSpellMask_WarriorWhirlwindMH
 	ClassSpellMask_WarriorWhirlwindOH
-	ClassSpellMask_WarriorDeathWish
-	ClassSpellMask_WarriorShockwave
-	ClassSpellMask_WarriorShieldWall
-	ClassSpellMask_WarriorRecklesness
-	ClassSpellMask_WarriorQuickStrike
-	ClassSpellMask_WarriorHeroicStrike
-	ClassSpellMask_WarriorCleave
 )
 
 var TalentTreeSizes = [3]int{18, 17, 17}

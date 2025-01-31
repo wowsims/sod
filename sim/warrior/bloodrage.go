@@ -20,7 +20,8 @@ func (warrior *Warrior) registerBloodrageCD() {
 	})
 
 	warrior.Bloodrage = warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		ActionID: actionID,
+		ClassSpellMask: ClassSpellMask_WarriorBloodrage,
+		ActionID:       actionID,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
