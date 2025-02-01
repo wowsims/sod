@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 // See https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
@@ -14,8 +13,6 @@ const ShredWeaponMultiplierBuff = 0.75 // increases multiplier additively by 75%
 const ShredFlatDmgMultiplier = 0.75    // decreases flat damage modifier multiplicatively by -25% to counteract 3.0/2.25 overall scaling buff
 
 func (druid *Druid) registerShredSpell() {
-	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
-
 	damageMultiplier := 2.25
 	flatDamageBonus := map[int32]float64{
 		25: 24,
@@ -29,7 +26,7 @@ func (druid *Druid) registerShredSpell() {
 		flatDamageBonus *= 1.02
 	}
 
-	// In-game testing concluded that, unintuitively, Idol of the Drea's 1.02x damage applies to the original 2.25x
+	// In-game testing concluded that, unintuitively, Idol of the Dream's 1.02x damage applies to the original 2.25x
 	// Shred mod, and to the flat damage bonus, but that the .75x SoD buff happens additively after Idol
 	damageMultiplier += ShredWeaponMultiplierBuff
 
@@ -77,10 +74,6 @@ func (druid *Druid) registerShredSpell() {
 
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
-
-				if hasGoreRune {
-					druid.rollGoreCatReset(sim)
-				}
 			} else {
 				spell.IssueRefund(sim)
 			}
