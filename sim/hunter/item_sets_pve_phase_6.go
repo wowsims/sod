@@ -47,7 +47,7 @@ func (hunter *Hunter) applyTAQMelee2PBonus() {
 	}))
 }
 
-// Increases the Impact Damage of Mongoose Bite and all Strikes by 15%
+// Increases the Impact Damage of Mongoose Bite and all Strikes by 20%
 func (hunter *Hunter) applyTAQMelee4PBonus() {
 	label := "S03 - Item - TAQ - Hunter - Melee 4P Bonus"
 	if hunter.HasAura(label) {
@@ -59,7 +59,7 @@ func (hunter *Hunter) applyTAQMelee4PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_ImpactDamageDone_Flat,
 		ClassMask: ClassSpellMask_HunterMongooseBite | ClassSpellMask_HunterStrikes,
-		IntValue:  15,
+		IntValue:  20,
 	}))
 }
 
@@ -79,7 +79,7 @@ var StrikersPursuit = core.NewItemSet(core.ItemSet{
 
 const TAQRanged2PBonusLabel = "S03 - Item - TAQ - Hunter - Ranged 2P Bonus"
 
-// Increases Kill Shot damage by 20% against non-player targets.
+// Increases Kill Shot damage by 30% against non-player targets.
 func (hunter *Hunter) applyTAQRanged2PBonus() {
 	if !hunter.HasRune(proto.HunterRune_RuneLegsKillShot) {
 		return
@@ -94,7 +94,7 @@ func (hunter *Hunter) applyTAQRanged2PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_HunterKillShot,
-		IntValue:  20,
+		IntValue:  30,
 	}))
 }
 

@@ -26,7 +26,7 @@ var ItemSetCryptstalkerProwess = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Wyvern Strike and Mongoose Bite deal 20% more initial damage.
+// Your Wyvern Strike and Mongoose Bite deal 30% more initial damage.
 func (hunter *Hunter) applyNaxxramasMelee2PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Melee 2P Bonus"
 	if hunter.HasAura(label) {
@@ -38,7 +38,7 @@ func (hunter *Hunter) applyNaxxramasMelee2PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_ImpactDamageDone_Flat,
 		ClassMask: ClassSpellMask_HunterWyvernStrike | ClassSpellMask_HunterMongooseBite,
-		IntValue:  20,
+		IntValue:  30,
 	}))
 }
 
@@ -70,7 +70,7 @@ func (hunter *Hunter) applyNaxxramasMelee4PBonus() {
 	}))
 }
 
-// You gain 1% increased critical strike chance for 30 sec each time you hit an Undead enemy with a melee attack, stacking up to 35 times.
+// You gain 4% increased damage done to Undead for 30 sec each time you hit an Undead enemy with a melee attack, stacking up to 10 times.
 func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Melee 6P Bonus"
 	if hunter.HasAura(label) {
@@ -90,11 +90,11 @@ func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 			ActionID:  core.ActionID{SpellID: 1218587},
 			Label:     "Undead Slaying",
 			Duration:  time.Second * 30,
-			MaxStacks: 25,
+			MaxStacks: 10,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 				for _, unit := range undeadTargets {
-					aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
-					aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= 1 + 0.01*float64(newStacks)
+					aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.04*float64(oldStacks)
+					aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= 1 + 0.04*float64(newStacks)
 				}
 			},
 		}))
@@ -167,7 +167,7 @@ func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 	})
 }
 
-// You gain 1% increased critical strike chance for 30 sec each time you hit an Undead enemy with a ranged attack, stacking up to 35 times.
+// You gain 2% increased critical strike chance for 30 sec each time you hit an Undead enemy with a ranged attack, stacking up to 15 times.
 func (hunter *Hunter) applyNaxxramasRanged6PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Ranged 6P Bonus"
 	if hunter.HasAura(label) {
@@ -178,10 +178,10 @@ func (hunter *Hunter) applyNaxxramasRanged6PBonus() {
 		ActionID:  core.ActionID{SpellID: 1218587},
 		Label:     "Critical Aim",
 		Duration:  time.Second * 30,
-		MaxStacks: 35,
+		MaxStacks: 15,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			hunter.AddStatDynamic(sim, stats.MeleeCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
-			hunter.AddStatDynamic(sim, stats.SpellCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
+			hunter.AddStatDynamic(sim, stats.MeleeCrit, 2*float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
+			hunter.AddStatDynamic(sim, stats.SpellCrit, 2*float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
 		},
 	})
 
