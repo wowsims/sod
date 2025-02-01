@@ -260,7 +260,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=236708/breastplate-of-undead-slaying
 	// Equip: +108 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(BreastplateOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 0)
+	core.NewMobTypeAttackPowerEffect(BreastplateOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 108)
 
 	// https://www.wowhead.com/classic/item=236709/chestguard-of-undead-slaying
 	// Equip: +108 Attack Power when fighting Undead.
