@@ -77,10 +77,10 @@ func (warrior *Warrior) applyNaxxramasDamage6PBonus() {
 		ActionID:  core.ActionID{SpellID: 1219485},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
-		MaxStacks: 25,
+		MaxStacks: 14,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			warrior.PseudoStats.DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
-			warrior.PseudoStats.DamageDealtMultiplier *= 1 + 0.01*float64(newStacks)
+			warrior.PseudoStats.DamageDealtMultiplier /= 1 + 0.02*float64(oldStacks)
+			warrior.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(newStacks)
 		},
 	})
 

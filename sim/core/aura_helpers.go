@@ -225,7 +225,7 @@ func MakeProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
 
 	ApplyProcTriggerCallback(unit, &aura, config)
 
-	return unit.RegisterAura(aura)
+	return unit.GetOrRegisterAura(aura)
 }
 
 type StackingStatAura struct {

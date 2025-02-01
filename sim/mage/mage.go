@@ -136,7 +136,6 @@ type Mage struct {
 
 	ArcaneBlastDamageMultiplier     float64
 	ArcaneBlastMissileBarrageChance float64
-	BonusFireballDoTAmount          float64
 	FingersOfFrostProcChance        float64
 	FireballMissileActive           bool // Whether Fireball has been cast but has not hit to avoid chain-casting
 
@@ -183,7 +182,6 @@ func (mage *Mage) Initialize() {
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
-	mage.BonusFireballDoTAmount = 0
 }
 
 func NewMage(character *core.Character, options *proto.Player) *Mage {

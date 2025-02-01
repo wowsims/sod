@@ -575,6 +575,10 @@ func (paladin *Paladin) applyPaladinT2Ret2P() {
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label:    bonusLabel,
 		ActionID: core.ActionID{SpellID: PaladinT2Ret2P},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			// Made to enable double judge 2025-02-01
+			paladin.enableMultiJudge = true // Implemented in Paladin.go
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			paladin.consumeSealsOnJudge = false
 		},
@@ -644,7 +648,6 @@ func (paladin *Paladin) applyPaladinT2Ret6P() {
 }
 
 func (paladin *Paladin) applyPaladinTAQRet2P() {
-
 	bonusLabel := "S03 - Item - TAQ - Paladin - Retribution 2P Bonus"
 
 	if duplicateBonusCheckAndCreate(paladin, PaladinTAQRet2P, bonusLabel) {
@@ -680,7 +683,7 @@ func (paladin *Paladin) applyPaladinTAQRet4P() {
 		Duration:  time.Second * 20,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			damageMod.UpdateIntValue(int64(40 * newStacks))
+			damageMod.UpdateIntValue(core.TernaryInt64(paladin.MainHand().HandType == proto.HandType_HandTypeTwoHand, 35, 0) * int64(newStacks))
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMod.Activate()

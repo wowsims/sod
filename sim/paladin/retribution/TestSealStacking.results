@@ -120,8 +120,8 @@ dps_results: {
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2588.27786
-  tps: 2643.05604
+  dps: 2954.37557
+  tps: 3008.81224
  }
 }
 dps_results: {

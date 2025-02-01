@@ -351,8 +351,8 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2295.4338
-  tps: 2338.21122
+  dps: 2395.85208
+  tps: 2438.72275
  }
 }
 dps_results: {

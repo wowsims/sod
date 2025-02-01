@@ -27,7 +27,7 @@ var ItemSetBonescytheArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Ambush and Instant Poison deal 20% more damage. You heal for 5% of all damage done by your Poisons.
+// Your Backstab, Ambush, and Instant Poison deal 20% more damage. You heal for 5% of all damage done by your Poisons.
 func (rogue *Rogue) applyNaxxramasDamage2PBonus() {
 	label := "S03 - Item - Naxxramas - Rogue - Damage 2P Bonus"
 	if rogue.HasAura(label) {
@@ -46,7 +46,7 @@ func (rogue *Rogue) applyNaxxramasDamage2PBonus() {
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_RogueAmbush | ClassSpellMask_RogueInstantPoison,
+		ClassMask: ClassSpellMask_RogueAmbush | ClassSpellMask_RogueInstantPoison | ClassSpellMask_RogueBackstab,
 		IntValue:  20,
 	})
 }
@@ -70,7 +70,7 @@ func (rogue *Rogue) applyNaxxramasDamage4PBonus() {
 	})
 }
 
-// You gain 1% increased damage to Undead for 30 sec per Combo Point you spend, stacking up to 25 times.
+// You gain 2% increased damage to Undead for 30 sec per Combo Point you spend, stacking up to 15 times.
 func (rogue *Rogue) applyNaxxramasDamage6PBonus() {
 	label := "S03 - Item - Naxxramas - Rogue - Damage 6P Bonus"
 	if rogue.HasAura(label) {
@@ -83,11 +83,11 @@ func (rogue *Rogue) applyNaxxramasDamage6PBonus() {
 		ActionID:  core.ActionID{SpellID: 1219291},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
-		MaxStacks: 25,
+		MaxStacks: 15,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			for _, unit := range undeadTargets {
-				rogue.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
-				rogue.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= 1 + 0.01*float64(newStacks)
+				rogue.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.02*float64(oldStacks)
+				rogue.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= 1 + 0.02*float64(newStacks)
 			}
 		},
 	})
