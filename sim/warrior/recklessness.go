@@ -7,6 +7,9 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+var DefaultRecklessnessDamageTakenMultiplier = 1.20
+var DefaultRecklessnessStance = BerserkerStance
+
 // Recklessness now increases critical strike chance by 50% (was 100%) and the duration is reduced to 12 seconds, but the cooldown is reduced to 5 minutes.
 func (warrior *Warrior) RegisterRecklessnessCD() {
 	if warrior.Level < 50 {
@@ -14,7 +17,7 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 	}
 
 	actionID := core.ActionID{SpellID: 1719}
-	warrior.recklessnessDamageTakenMultiplier = 1.20
+	warrior.recklessnessDamageTakenMultiplier = DefaultRecklessnessDamageTakenMultiplier
 
 	reckAura := warrior.RegisterAura(core.Aura{
 		Label:    "Recklessness",
@@ -31,8 +34,9 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 		},
 	})
 
-	warrior.Recklessness = warrior.RegisterSpell(BerserkerStance, core.SpellConfig{
-		ActionID: actionID,
+	warrior.Recklessness = warrior.RegisterSpell(DefaultRecklessnessStance, core.SpellConfig{
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_WarriorRecklesness,
 		Cast: core.CastConfig{
 			IgnoreHaste: true,
 			DefaultCast: core.Cast{

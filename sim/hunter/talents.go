@@ -1,6 +1,7 @@
 package hunter
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -23,22 +24,26 @@ func (hunter *Hunter) ApplyTalents() {
 		}
 	}
 
-	if hunter.Talents.MonsterSlaying+hunter.Talents.HumanoidSlaying > 0 {
+	monsterSlayingMobTypes := []proto.MobType{proto.MobType_MobTypeBeast, proto.MobType_MobTypeGiant, proto.MobType_MobTypeDragonkin}
+	monsterSlayingTargets := core.FilterSlice(hunter.Env.Encounter.Targets, func(t *core.Target) bool { return slices.Contains(monsterSlayingMobTypes, t.MobType) })
+	humanoidSlayingTargets := core.FilterSlice(hunter.Env.Encounter.Targets, func(t *core.Target) bool { return t.MobType == proto.MobType_MobTypeHumanoid })
+
+	if (hunter.Talents.MonsterSlaying > 0 && len(monsterSlayingTargets) > 0) || (hunter.Talents.HumanoidSlaying > 0 && len(humanoidSlayingTargets) > 0) {
 		hunter.Env.RegisterPostFinalizeEffect(func() {
-			for _, t := range hunter.Env.Encounter.Targets {
-				switch t.MobType {
-				case proto.MobType_MobTypeHumanoid:
-					multiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.HumanoidSlaying]
-					for _, at := range hunter.AttackTables[t.UnitIndex] {
-						at.DamageDealtMultiplier *= multiplier
-						at.CritMultiplier *= multiplier
-					}
-				case proto.MobType_MobTypeBeast, proto.MobType_MobTypeGiant, proto.MobType_MobTypeDragonkin:
-					multiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.MonsterSlaying]
-					for _, at := range hunter.AttackTables[t.UnitIndex] {
-						at.DamageDealtMultiplier *= multiplier
-						at.CritMultiplier *= multiplier
-					}
+			humanoidMultiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.HumanoidSlaying]
+			monsterMultiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.MonsterSlaying]
+
+			for _, t := range humanoidSlayingTargets {
+				for _, at := range hunter.AttackTables[t.UnitIndex] {
+					at.DamageDealtMultiplier *= humanoidMultiplier
+					at.CritMultiplier *= humanoidMultiplier
+				}
+			}
+
+			for _, t := range monsterSlayingTargets {
+				for _, at := range hunter.AttackTables[t.UnitIndex] {
+					at.DamageDealtMultiplier *= monsterMultiplier
+					at.CritMultiplier *= monsterMultiplier
 				}
 			}
 		})
@@ -77,8 +82,8 @@ func (hunter *Hunter) ApplyTalents() {
 	if hunter.Talents.RangedWeaponSpecialization > 0 {
 		mult := 1 + 0.01*float64(hunter.Talents.RangedWeaponSpecialization)
 		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.ProcMask.Matches(core.ProcMaskRanged) && spell.SpellCode != SpellCode_HunterSerpentSting {
-				spell.DamageMultiplier *= mult
+			if spell.ProcMask.Matches(core.ProcMaskRanged) && !spell.Matches(ClassSpellMask_HunterSerpentSting) {
+				spell.ApplyMultiplicativeDamageBonus(mult)
 			}
 		})
 	}
@@ -144,13 +149,7 @@ func (hunter *Hunter) registerBestialWrathCD() {
 		Label:    "Bestial Wrath Pet",
 		ActionID: actionID,
 		Duration: time.Second * 18,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.5
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.5
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.5)
 
 	bwSpell := hunter.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
@@ -188,7 +187,7 @@ func (hunter *Hunter) applyTrapMastery() {
 	}
 
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagTrap) {
+		if spell.Matches(ClassSpellMask_HunterTraps) {
 			spell.BonusHitRating += 5 * float64(hunter.Talents.TrapMastery)
 		}
 	})
@@ -199,18 +198,26 @@ func (hunter *Hunter) applyCleverTraps() {
 		return
 	}
 
+	multiplier := 1 + 0.15*float64(hunter.Talents.CleverTraps)
+
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagTrap) {
-			spell.DamageMultiplier *= 1 + 0.15*float64(hunter.Talents.CleverTraps)
+		if spell.Matches(ClassSpellMask_HunterTraps) {
+			spell.ApplyMultiplicativeDamageBonus(multiplier)
 		}
 	})
 }
 
 func (hunter *Hunter) applyEfficiency() {
+	if hunter.Talents.Efficiency == 0 {
+		return
+	}
+
+	costModifier := 2 * hunter.Talents.Efficiency
+
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
 		// applies to Stings, Shots, Strikes and Volley
-		if spell.Cost != nil && spell.Flags.Matches(SpellFlagSting|SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterVolley {
-			spell.Cost.Multiplier -= 2 * hunter.Talents.Efficiency
+		if spell.Cost != nil && (spell.Flags.Matches(SpellFlagSting|SpellFlagStrike) || spell.Matches(ClassSpellMask_HunterShots|ClassSpellMask_HunterVolley)) {
+			spell.Cost.FlatModifier -= costModifier
 		}
 	})
 }

@@ -17,25 +17,48 @@ const (
 var TalentTreeSizes = [3]int{16, 16, 15}
 
 const (
-	SpellCode_DruidNone int32 = iota
+	ClassSpellMask_DruidNone int64 = 0
 
-	SpellCode_DruidFaerieFire
-	SpellCode_DruidFaerieFireFeral
-	SpellCode_DruidFerociousBite
-	SpellCode_DruidInsectSwarm
-	SpellCode_DruidMangleCat
-	SpellCode_DruidMangleBear
-	SpellCode_DruidMoonfire
-	SpellCode_DruidRake
-	SpellCode_DruidRip
-	SpellCode_DruidShred
-	SpellCode_DruidStarfire
-	SpellCode_DruidStarsurge
-	SpellCode_DruidWrath
-	SpellCode_DruidStarfall
-	SpellCode_DruidStarfallTick
-	SpellCode_DruidStarfallSplash
-	SpellCode_DruidSunfire
+	ClassSpellMask_DruidBerserk int64 = 1 << iota
+	ClassSpellMask_DruidEnrage
+	ClassSpellMask_DruidFaerieFire
+	ClassSpellMask_DruidFaerieFireFeral
+	ClassSpellMask_DruidFerociousBite
+	ClassSpellMask_DruidFrenziedRegeneration
+	ClassSpellMask_DruidHurricane
+	ClassSpellMask_DruidInsectSwarm
+	ClassSpellMask_DruidLacerate
+	ClassSpellMask_DruidMangleBear
+	ClassSpellMask_DruidMangleCat
+	ClassSpellMask_DruidMaul
+	ClassSpellMask_DruidMoonfire
+	ClassSpellMask_DruidRake
+	ClassSpellMask_DruidRip
+	ClassSpellMask_DruidSavageRoar
+	ClassSpellMask_DruidShred
+	ClassSpellMask_DruidStarfire
+	ClassSpellMask_DruidStarsurge
+	ClassSpellMask_DruidStarfall
+	ClassSpellMask_DruidStarfallSplash
+	ClassSpellMask_DruidStarfallTick
+	ClassSpellMask_DruidSunfire
+	ClassSpellMask_DruidSunfireCat
+	ClassSpellMask_DruidSurvivalInstincts
+	ClassSpellMask_DruidSwipeCat
+	ClassSpellMask_DruidSwipeBear
+	ClassSpellMask_DruidTigersFury
+	ClassSpellMask_DruidWrath
+
+	ClassSpellMask_DruidCatForm
+	ClassSpellMask_DruidBearForm
+	ClassSpellMask_DruidMoonkinForm
+
+	ClassSpellMask_DruidLast
+	ClassSpellMask_DruidAll = ClassSpellMask_DruidLast<<1 - 1
+
+	ClassSpellMask_DruidForms         = ClassSpellMask_DruidCatForm | ClassSpellMask_DruidBearForm | ClassSpellMask_DruidMoonkinForm
+	ClassSpellMask_DruidCatFormSpells = ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidRake | ClassSpellMask_DruidRip |
+		ClassSpellMask_DruidSavageRoar | ClassSpellMask_DruidShred | ClassSpellMask_DruidSunfireCat | ClassSpellMask_DruidSwipeCat | ClassSpellMask_DruidTigersFury
 )
 
 type Druid struct {
@@ -66,12 +89,12 @@ type Druid struct {
 	Innervate            *DruidSpell
 	InsectSwarm          []*DruidSpell
 	Lacerate             *DruidSpell
+	LacerateBleed        *DruidSpell
 	Languish             *DruidSpell
 	MangleBear           *DruidSpell
 	MangleCat            *DruidSpell
 	Berserk              *DruidSpell
 	Maul                 *DruidSpell
-	MaulQueueSpell       *DruidSpell
 	Moonfire             []*DruidSpell
 	Rebirth              *DruidSpell
 	Rake                 *DruidSpell
@@ -90,6 +113,8 @@ type Druid struct {
 	SwipeCat             *DruidSpell
 	TigersFury           *DruidSpell
 	Typhoon              *DruidSpell
+	curQueuedAutoSpell   *DruidSpell
+	MaulQueue            *DruidSpell
 	Wrath                []*DruidSpell
 
 	BearForm    *DruidSpell
@@ -100,6 +125,7 @@ type Druid struct {
 	BearFormAura             *core.Aura
 	BerserkAura              *core.Aura
 	CatFormAura              *core.Aura
+	curQueueAura             *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
 	DreamstateManaRegenAura  *core.Aura
@@ -109,6 +135,7 @@ type Druid struct {
 	ImprovedFaerieFireAuras  core.AuraArray
 	FrenziedRegenerationAura *core.Aura
 	FurorAura                *core.Aura
+	PrimalFuryAura           *core.Aura
 	FuryOfStormrageAura      *core.Aura
 	InsectSwarmAuras         core.AuraArray
 	MaulQueueAura            *core.Aura
@@ -127,12 +154,17 @@ type Druid struct {
 
 	// Extra data used for various calculations and overrides
 	AllowRakeRipDoTCrits              bool // From T1 Feral 4p bonus
-	FerociousBiteExcessEnergyOverride bool // When true, disables the excess energy consumption of Ferocious bite
-	// Sunfire/Moonfire modifiers applied when in Moonkin form
-	MoonfireDotMultiplier float64
-	ShredPositionOverride bool
-	SunfireDotMultiplier  float64
-	t26pcTreants          *T2Treants
+	BearFormThreatMultiplier          float64
+	CenarionRageEnrageBonus           bool
+	FerociousBiteExcessEnergyOverride bool    // When true, disables the excess energy consumption of Ferocious bite
+	FrenziedRegenRageThreshold        float64 // Rage threshold where Frenzied Regeneration no longer consumes rage
+	FuryOfStormrageLacerateSpread     bool    // When true, spreads Lacerate from main target with Swipe(Bear)
+	FuryOfStormrageMaulCleave         bool    // When true, Maul should cleave a second target
+	MoonfireDotMultiplier             float64
+	ShredPositionOverride             bool
+	SunfireDotMultiplier              float64
+
+	t26pcTreants *T2Treants
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
@@ -161,9 +193,18 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	}
 }
 
-// func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-// 	return druid.MaulReplaceMH(sim, mhSwingSpell)
-// }
+func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
+	if !druid.curQueueAura.IsActive() {
+		return mhSwingSpell
+	}
+
+	if !druid.curQueuedAutoSpell.CanCast(sim, druid.CurrentTarget) {
+		druid.curQueueAura.Deactivate(sim)
+		return mhSwingSpell
+	}
+
+	return druid.curQueuedAutoSpell.Spell
+}
 
 func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *DruidSpell {
 	prev := config.ExtraCastCondition
@@ -231,21 +272,19 @@ func (druid *Druid) RegisterFeralCatSpells() {
 // TODO: Classic feral tank
 func (druid *Druid) RegisterFeralTankSpells() {
 	// druid.registerBarkskinCD()
-	// druid.registerBerserkCD()
-	// druid.registerBearFormSpell()
+	druid.registerBearFormSpell()
 	// druid.registerDemoralizingRoarSpell()
-	// druid.registerEnrageSpell()
-	// druid.registerFrenziedRegenerationCD()
-	// druid.registerMangleBearSpell()
-	// druid.registerMaulSpell()
-	// druid.registerLacerateSpell()
-	// druid.registerRakeSpell()
-	// druid.registerRipSpell()
+	druid.registerEnrageSpell()
+	druid.registerFrenziedRegenerationCD()
+	druid.registerMaulSpell()
 	// druid.registerSurvivalInstinctsCD()
-	// druid.registerSwipeBearSpell()
+	druid.registerSwipeBearSpell()
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
+	druid.curQueueAura = nil
+	druid.curQueuedAutoSpell = nil
+
 	druid.BleedsActive = 0
 	druid.form = druid.StartingForm
 	druid.disabledMCDs = []*core.MajorCooldown{}
@@ -268,8 +307,7 @@ func New(character *core.Character, form DruidForm, selfBuffs SelfBuffs, talents
 	druid.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(druid.Level)]*core.SpellCritRatingPerCritChance)
 	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 
-	// Druids get extra melee haste
-	// druid.PseudoStats.MeleeHasteRatingPerHastePercent /= 1.3
+	druid.ReplaceBearMHFunc = druid.TryMaul
 
 	guardians.ConstructGuardians(&druid.Character)
 	druid.t26pcTreants = druid.NewT2Treants()

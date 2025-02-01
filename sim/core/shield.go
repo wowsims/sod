@@ -25,7 +25,7 @@ func (shield *Shield) Apply(sim *Simulation, shieldAmount float64) {
 
 	// Shields are not affected by healing pseudostats the same way heals are.
 	// So we only apply the spell-specific multiplier and shield-specific multiplier.
-	shieldAmount *= shield.Spell.DamageMultiplier * caster.PseudoStats.ShieldDealtMultiplier
+	shieldAmount *= shield.Spell.GetDamageMultiplier() * caster.PseudoStats.ShieldDealtMultiplier
 
 	shield.Aura.Deactivate(sim)
 	shield.Aura.Activate(sim)

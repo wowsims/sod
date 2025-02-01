@@ -29,11 +29,11 @@ func (mage *Mage) registerFrozenOrbCD() {
 	})
 
 	mage.FrozenOrb = mage.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_MageFrozenOrb,
-		ActionID:    core.ActionID{SpellID: int32(proto.MageRune_RuneCloakFrozenOrb)},
-		SpellSchool: core.SpellSchoolFrost,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_MageFrozenOrb,
+		ActionID:       core.ActionID{SpellID: int32(proto.MageRune_RuneCloakFrozenOrb)},
+		SpellSchool:    core.SpellSchoolFrost,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -75,11 +75,12 @@ func (mage *Mage) registerFrozenOrbTickSpell() {
 	spellCoef := .129
 
 	mage.FrozenOrbTick = mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 440809},
-		SpellSchool: core.SpellSchoolFrost | core.SpellSchoolArcane,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
-		Flags:       SpellFlagMage | SpellFlagChillSpell | core.SpellFlagNotAProc | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		ActionID:       core.ActionID{SpellID: 440809},
+		ClassSpellMask: ClassSpellMask_MageFrozenOrbTick,
+		SpellSchool:    core.SpellSchoolFrost | core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+		Flags:          SpellFlagChillSpell | core.SpellFlagNotAProc | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		BonusCoefficient: spellCoef,
 		DamageMultiplier: 1,

@@ -13,18 +13,14 @@ func (paladin *Paladin) registerAvengingWrath() {
 		Label:    "Avenging Wrath",
 		ActionID: actionID,
 		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= 1.2
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier /= 1.2
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&paladin.PseudoStats.DamageDealtMultiplier, 1.2)
+
 	core.RegisterPercentDamageModifierEffect(AvengingWrathAura, 1.2)
 
 	paladin.avengingWrath = paladin.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | SpellFlag_Forbearance,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_PaladinavengingWrath,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | SpellFlag_Forbearance,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.08,

@@ -31,17 +31,12 @@ func (druid *Druid) registerTigersFurySpell() {
 		Label:    "Tiger's Fury Aura",
 		ActionID: actionID,
 		Duration: 6 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.BonusPhysicalDamage += dmgBonus
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.BonusPhysicalDamage -= dmgBonus
-		},
-	})
+	}).AttachAdditivePseudoStatBuff(&druid.PseudoStats.BonusPhysicalDamage, dmgBonus)
 
 	spell := druid.RegisterSpell(Cat, core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_DruidTigersFury,
+		Flags:          core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 30,
@@ -70,17 +65,12 @@ func (druid *Druid) registerTigersFurySpellKotJ() {
 		Label:    "Tiger's Fury Aura",
 		ActionID: actionID,
 		Duration: 6 * time.Second,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= 1.15
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= 1.15
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.15)
 
 	spell := druid.RegisterSpell(Cat, core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_DruidTigersFury,
+		Flags:          core.SpellFlagAPL,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),

@@ -1,6 +1,7 @@
 package rogue
 
 import (
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -59,16 +60,17 @@ func (rogue *Rogue) applyRuthlessness() {
 
 // Murder talent
 func (rogue *Rogue) applyMurder() {
-	if rogue.Talents.Murder > 0 {
+	murderMobTypes := []proto.MobType{proto.MobType_MobTypeHumanoid, proto.MobType_MobTypeGiant, proto.MobType_MobTypeBeast, proto.MobType_MobTypeDragonkin}
+	murderTargets := core.FilterSlice(rogue.Env.Encounter.Targets, func(t *core.Target) bool { return slices.Contains(murderMobTypes, t.MobType) })
+
+	if rogue.Talents.Murder > 0 && len(murderTargets) > 0 {
 		rogue.Env.RegisterPostFinalizeEffect(func() {
-			for _, t := range rogue.Env.Encounter.Targets {
-				switch t.MobType {
-				case proto.MobType_MobTypeHumanoid, proto.MobType_MobTypeGiant, proto.MobType_MobTypeBeast, proto.MobType_MobTypeDragonkin:
-					multiplier := []float64{1, 1.01, 1.02}[rogue.Talents.Murder]
-					for _, at := range rogue.AttackTables[t.UnitIndex] {
-						at.DamageDealtMultiplier *= multiplier
-						at.CritMultiplier *= multiplier
-					}
+			multiplier := []float64{1, 1.01, 1.02}[rogue.Talents.Murder]
+
+			for _, t := range murderTargets {
+				for _, at := range rogue.AttackTables[t.UnitIndex] {
+					at.DamageDealtMultiplier *= multiplier
+					at.CritMultiplier *= multiplier
 				}
 			}
 		})
@@ -345,9 +347,9 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 
 	cooldownDur := time.Minute * 2
 	rogue.BladeFlurry = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode: SpellCode_RogueBladeFlurry,
-		ActionID:  core.ActionID{SpellID: 13877},
-		Flags:     core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_RogueBladeFlurry,
+		ActionID:       core.ActionID{SpellID: 13877},
+		Flags:          core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 25,
@@ -406,8 +408,8 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 	})
 
 	rogue.AdrenalineRush = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode: SpellCode_RogueAdrenalineRush,
-		ActionID:  AdrenalineRushActionID,
+		ClassSpellMask: ClassSpellMask_RogueAdrenalineRush,
+		ActionID:       AdrenalineRushActionID,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,

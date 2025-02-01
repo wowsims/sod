@@ -13,12 +13,12 @@ func (rogue *Rogue) registerShadowstrikeSpell() {
 	}
 
 	rogue.Shadowstrike = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_RogueShadowStrike,
-		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneShadowstrike)},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       rogue.builderFlags(),
+		ClassSpellMask: ClassSpellMask_RogueShadowStrike,
+		ActionID:       core.ActionID{SpellID: int32(proto.RogueRune_RuneShadowstrike)},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          rogue.builderFlags(),
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   20,
 			Refund: 0.8,

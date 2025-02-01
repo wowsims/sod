@@ -37,11 +37,12 @@ func (warrior *Warrior) applyNaxxramasDamage2PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.DeepWounds.DamageMultiplierAdditive += 0.20
-		},
+	})).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_WarriorDeepWounds,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  20,
 	})
 }
 
@@ -56,19 +57,12 @@ func (warrior *Warrior) applyNaxxramasDamage4PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.Bloodthirst != nil {
-				warrior.Bloodthirst.CD.Multiplier *= 0.75
-			}
-			if warrior.MortalStrike != nil {
-				warrior.MortalStrike.CD.Multiplier *= 0.75
-			}
-			if warrior.ShieldSlam != nil {
-				warrior.ShieldSlam.CD.Multiplier *= 0.75
-			}
-		},
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		ClassMask: ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorMortalStrike | ClassSpellMask_WarriorShieldSlam,
+		IntValue:  -25,
 	})
 }
 
@@ -83,10 +77,10 @@ func (warrior *Warrior) applyNaxxramasDamage6PBonus() {
 		ActionID:  core.ActionID{SpellID: 1219485},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
-		MaxStacks: 25,
+		MaxStacks: 14,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			warrior.PseudoStats.DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
-			warrior.PseudoStats.DamageDealtMultiplier *= 1 + 0.01*float64(newStacks)
+			warrior.PseudoStats.DamageDealtMultiplier /= 1 + 0.02*float64(oldStacks)
+			warrior.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(newStacks)
 		},
 	})
 
@@ -121,10 +115,6 @@ var ItemSetDreadnaughtsBattlegear = core.NewItemSet(core.ItemSet{
 
 // Your Taunt ability never misses, and your chance to be Dodged or Parried is reduced by 2%.
 func (warrior *Warrior) applyNaxxramasProtection2PBonus() {
-	if warrior.Talents.DeepWounds == 0 {
-		return
-	}
-
 	label := "S03 - Item - Naxxramas - Warrior - Protection 2P Bonus"
 	if warrior.HasAura(label) {
 		return
@@ -135,46 +125,33 @@ func (warrior *Warrior) applyNaxxramasProtection2PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on your Shield Wall ability by 3 min and reduces the cooldown on your Recklessness ability by 3 min.
 // Recklessness can now be used in any Stance and does not increase damage taken.
 func (warrior *Warrior) applyNaxxramasProtection4PBonus() {
-	if warrior.Talents.DeepWounds == 0 {
-		return
-	}
-
 	label := "S03 - Item - Naxxramas - Warrior - Protection 4P Bonus"
 	if warrior.HasAura(label) {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if warrior.ShieldWall != nil {
-				warrior.ShieldWall.CD.FlatModifier -= time.Minute * 3
-			}
-			if warrior.Recklessness != nil {
-				warrior.Recklessness.CD.FlatModifier -= time.Minute * 3
-				warrior.Recklessness.StanceMask = AnyStance
-				warrior.recklessnessDamageTakenMultiplier = 1
-			}
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_WarriorShieldWall | ClassSpellMask_WarriorRecklesness,
+		TimeValue: -time.Minute * 3,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Custom,
+		ClassMask: ClassSpellMask_WarriorRecklesness,
+		ApplyCustom: func(_ *core.SpellMod, _ *core.Spell) {
+			warrior.Recklessness.StanceMask = AnyStance
+			warrior.recklessnessDamageTakenMultiplier = 1
+		},
+		RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+			warrior.Recklessness.StanceMask = DefaultRecklessnessStance
+			warrior.recklessnessDamageTakenMultiplier = DefaultRecklessnessDamageTakenMultiplier
 		},
 	})
 }

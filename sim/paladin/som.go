@@ -15,13 +15,17 @@ import (
 
 func (paladin *Paladin) registerSealOfMartyrdom() {
 	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 407802}) // SoM's mana restore
+	procActionID := core.ActionID{SpellID: 407799}
+	healthMetrics := paladin.NewHealthMetrics(procActionID)
 
 	judgeSpell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 407803},
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlag_RV,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlag_RV | core.SpellFlagBatchStartAttackMacro,
+
+		ClassSpellMask: ClassSpellMask_PaladinJudgementOfMartyrdom,
 
 		DamageMultiplier: 0.85 * paladin.getWeaponSpecializationModifier() * paladin.improvedSoR(),
 		ThreatMultiplier: 1,
@@ -31,17 +35,19 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + core.SpellBatchWindow,
+				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
 				Priority: core.ActionPriorityLow,
 				OnAction: func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
+					selfDamage := result.RawDamage() * 0.1
+					paladin.RemoveHealth(sim, selfDamage, healthMetrics)
 				},
 			})
 		},
 	})
 
 	procSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: 407799},
+		ActionID:      procActionID,
 		SpellSchool:   core.SpellSchoolHoly,
 		DefenseType:   core.DefenseTypeMelee,
 		ProcMask:      core.ProcMaskMeleeMHSpecial,
@@ -56,13 +62,15 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + core.SpellBatchWindow,
+				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
 				Priority: core.ActionPriorityLow,
 				OnAction: func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
 
 					// damages the paladin for 10% of rawDamage, then adds 133% of that for everyone in the raid
-					paladin.AddMana(sim, result.RawDamage()*0.1*1.33, manaMetrics)
+					selfDamage := result.RawDamage() * 0.1
+					paladin.RemoveHealth(sim, selfDamage, healthMetrics)
+					paladin.AddMana(sim, selfDamage*1.33, manaMetrics)
 				},
 			})
 		},
@@ -89,7 +97,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 	paladin.sealOfMartyrdom = paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    aura.ActionID,
 		SpellSchool: core.SpellSchoolHoly,
-		Flags:       core.SpellFlagAPL,
+		Flags:       core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   paladin.BaseMana*0.04 - paladin.getLibramSealCostReduction(),

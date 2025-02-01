@@ -69,12 +69,13 @@ func (mage *Mage) applyNaxxramasDamage4PBonus() {
 		return
 	}
 
-	mage.RegisterAura(core.Aura{
+	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			mage.Evocation.CD.Multiplier *= 0.2
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_MageEvocation,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -80,
+	}))
 }
 
 // Your Ignite damage does not decay on Undead targets below 20% health, and Undead targets below 20% health take damage as if they were Frozen.

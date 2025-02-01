@@ -31,12 +31,12 @@ func (warrior *Warrior) registerExecuteSpell() {
 
 	var rageMetrics *core.ResourceMetrics
 	warrior.Execute = warrior.RegisterSpell(BattleStance|BerserkerStance, core.SpellConfig{
-		SpellCode:   SpellCode_WarriorExecute,
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagPassiveSpell | SpellFlagOffensive,
+		ClassSpellMask: ClassSpellMask_WarriorExecute,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagPassiveSpell | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
 			Cost:   15 - []float64{0, 2, 5}[warrior.Talents.ImprovedExecute],

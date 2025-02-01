@@ -24,12 +24,12 @@ func (warrior *Warrior) registerMortalStrikeSpell(cdTimer *core.Timer) {
 	}[warrior.Level]
 
 	warrior.MortalStrike = warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		SpellCode:   SpellCode_WarriorMortalStrike,
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
+		ClassSpellMask: ClassSpellMask_WarriorMortalStrike,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
 			Cost:   30,

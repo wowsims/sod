@@ -70,9 +70,9 @@ func (paladin *Paladin) registerSealOfCommand() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlag_RV,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlag_RV | core.SpellFlagBatchStartAttackMacro,
 
-			SpellCode: SpellCode_PaladinJudgementOfCommand, // used in judgement.go
+			ClassSpellMask: ClassSpellMask_PaladinJudgementOfCommand, // used in judgement.go
 
 			DamageMultiplier: paladin.getWeaponSpecializationModifier(),
 			ThreatMultiplier: 1,
@@ -93,7 +93,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 				result := spell.CalcDamage(sim, target, baseDamage, outcomeApplier)
 
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + core.SpellBatchWindow,
+					DoAt:     sim.CurrentTime + core.SpellBatchWindow,
 					Priority: core.ActionPriorityLow,
 					OnAction: func(sim *core.Simulation) {
 						spell.DealDamage(sim, result)
@@ -119,7 +119,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + core.SpellBatchWindow,
+					DoAt:     sim.CurrentTime + core.SpellBatchWindow,
 					Priority: core.ActionPriorityLow,
 					OnAction: func(s *core.Simulation) {
 						spell.DealDamage(sim, result)
@@ -151,7 +151,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 		paladin.sealOfCommand = paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
 			SpellSchool: core.SpellSchoolHoly,
-			Flags:       core.SpellFlagAPL,
+			Flags:       core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,

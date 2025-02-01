@@ -22,6 +22,12 @@ func (mage *Mage) registerBalefireBoltSpell() {
 	manaCost := .20
 	maxStacks := 5
 	stackMultiplier := 0.20
+	stackModifier := int32(20)
+
+	damageMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_MageBalefireBolt,
+	})
 
 	statDeps := make([]*stats.StatDependency, maxStacks+1) // 5 stacks + zero conditions
 	for i := 1; i < maxStacks+1; i++ {
@@ -34,8 +40,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 		Duration:  buffDuration,
 		MaxStacks: int32(maxStacks),
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			mage.BalefireBolt.DamageMultiplierAdditive -= stackMultiplier * float64(oldStacks)
-			mage.BalefireBolt.DamageMultiplierAdditive += stackMultiplier * float64(newStacks)
+			damageMod.UpdateIntValue(int64(stackModifier * newStacks))
 
 			if oldStacks != 0 {
 				aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
@@ -45,7 +50,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 			}
 
 			if newStacks == aura.MaxStacks {
-				mage.RemoveHealth(sim, mage.CurrentHealth())
+				mage.RemoveHealth(sim, mage.CurrentHealth(), mage.DamageTakenHealthMetrics)
 
 				if sim.Log != nil {
 					mage.Log(sim, "YOU DIED")
@@ -54,15 +59,22 @@ func (mage *Mage) registerBalefireBoltSpell() {
 				sim.Cleanup()
 			}
 		},
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Deactivate()
+		},
 	})
 
 	mage.BalefireBolt = mage.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_MageBalefireBolt,
-		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneBracersBalefireBolt)},
-		SpellSchool:  core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost,
-		DefenseType:  core.DefenseTypeMagic,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: int32(proto.MageRune_RuneBracersBalefireBolt)},
+		ClassSpellMask: ClassSpellMask_MageBalefireBolt,
+		SpellSchool:    core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+
 		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{

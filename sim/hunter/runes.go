@@ -134,7 +134,7 @@ func (hunter *Hunter) applyMasterMarksman() {
 		hunter.AddStat(stats.SpellCrit, 5*core.SpellCritRatingPerCritChance)
 
 		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagShot) && spell.Cost != nil {
+			if spell.Matches(ClassSpellMask_HunterShots) && spell.Cost != nil {
 				spell.Cost.Multiplier -= 25
 			}
 		})
@@ -193,7 +193,7 @@ func (hunter *Hunter) applySniperTraining() {
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			statDelta := float64(newStacks - oldStacks)
 			for _, spell := range aura.Unit.Spellbook {
-				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) || spell.SpellCode == SpellCode_HunterChimeraSerpent {
+				if spell.ProcMask.Matches(core.ProcMaskRangedSpecial) || spell.Matches(ClassSpellMask_HunterChimeraSerpent) {
 					spell.BonusCritRating += statDelta * 2 * core.CritRatingPerCritChance
 				}
 
@@ -277,7 +277,7 @@ func (hunter *Hunter) applyCobraStrikes() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: "Cobra Strikes Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() && (spell.Flags.Matches(SpellFlagShot|SpellFlagStrike) || spell.SpellCode == SpellCode_HunterMongooseBite) {
+			if result.DidCrit() && (spell.Matches(ClassSpellMask_HunterShots|ClassSpellMask_HunterMongooseBite) || spell.Flags.Matches(SpellFlagStrike)) {
 				hunter.CobraStrikesAura.Activate(sim)
 				hunter.CobraStrikesAura.SetStacks(sim, 2)
 			}
@@ -297,7 +297,7 @@ func (hunter *Hunter) applyLockAndLoad() {
 		ActionID: core.ActionID{SpellID: 415413},
 		Duration: time.Second * 20,
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagShot) {
+			if spell.Matches(ClassSpellMask_HunterShots) {
 				aura.Deactivate(sim)
 				hunter.AddMana(sim, spell.CurCast.Cost, lockAndLoadMetrics)
 
@@ -311,7 +311,7 @@ func (hunter *Hunter) applyLockAndLoad() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: "Lock And Load Trigger",
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagTrap) {
+			if spell.Matches(ClassSpellMask_HunterTraps) {
 				hunter.LockAndLoadAura.Activate(sim)
 			}
 		},
@@ -380,11 +380,10 @@ func (hunter *Hunter) applyTNT() {
 	if !hunter.HasRune(proto.HunterRune_RuneBracersTNT) {
 		return
 	}
-
-	hunter.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagTrap) || spell.SpellCode == SpellCode_HunterExplosiveShot {
-			spell.DamageMultiplierAdditive += 0.10
-		}
+	hunter.AddStaticMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterExplosiveShot | ClassSpellMask_HunterTraps,
+		IntValue:  10,
 	})
 }
 
@@ -408,7 +407,7 @@ func (hunter *Hunter) applyResourcefulness() {
 	}
 
 	hunter.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagTrap) {
+		if spell.Matches(ClassSpellMask_HunterTraps) {
 			spell.Cost.BaseCost = 0
 			spell.CD.Duration = spell.CD.Duration / 100 * 60
 		}
@@ -440,39 +439,25 @@ func (hunter *Hunter) applyCatlikeReflexes() {
 	}
 	label := "Catlike Reflexes"
 
+	hunter.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_HunterFlankingStrike,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -50,
+	})
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
-		Label: label,
+		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.FlankingStrike != nil {
-				hunter.FlankingStrike.CD.Multiplier *= 0.5
-			}
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-			  hunter.AddStat(stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
-				if hunter.pet != nil {
-					hunter.pet.AddStat(stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
-				}
-			} else {
-				hunter.AddStatDynamic(sim, stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
-				if hunter.pet != nil {
-					hunter.pet.AddStatDynamic(sim, stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
-				}
+			hunter.AddBuildPhaseStatDynamic(sim, stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
+			if hunter.pet != nil {
+				hunter.pet.AddBuildPhaseStatDynamic(sim, stats.Dodge, 9*core.DodgeRatingPerDodgeChance)
 			}
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-			  hunter.AddStat(stats.Dodge, -20*core.DodgeRatingPerDodgeChance)
-				if hunter.pet != nil {
-					hunter.pet.AddStat(stats.Dodge, -9*core.DodgeRatingPerDodgeChance)
-				}
-			} else {
-				hunter.AddStatDynamic(sim, stats.Dodge, -20*core.DodgeRatingPerDodgeChance)
-				if hunter.pet != nil {
-					hunter.pet.AddStatDynamic(sim, stats.Dodge, -9*core.DodgeRatingPerDodgeChance)
-				}
+			hunter.AddBuildPhaseStatDynamic(sim, stats.Dodge, -20*core.DodgeRatingPerDodgeChance)
+			if hunter.pet != nil {
+				hunter.pet.AddBuildPhaseStatDynamic(sim, stats.Dodge, -9*core.DodgeRatingPerDodgeChance)
 			}
 		},
 	}))
@@ -483,12 +468,13 @@ func (hunter *Hunter) applyImprovedVolley() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label:    "Improved Volley",
 		ActionID: core.ActionID{SpellID: 440520},
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// The 3% rAP scaling and manacost reduction is applied inside the volley spell config itself
-			hunter.Volley.DamageMultiplierAdditive += 1.00
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterVolley,
+		// The 3% rAP scaling and manacost reduction is applied inside the volley spell config itself
+		IntValue: 100,
+	}))
 }

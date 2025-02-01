@@ -26,12 +26,12 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 	hasShadowflameRune := warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame)
 
 	return core.SpellConfig{
-		SpellCode:   SpellCode_WarlockImmolate,
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellSchool: core.SpellSchoolFire,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagDestruction,
+		ClassSpellMask: ClassSpellMask_WarlockImmolate,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagBinary | WarlockFlagDestruction,
 
 		Rank:          rank,
 		RequiredLevel: level,

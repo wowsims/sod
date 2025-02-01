@@ -97,7 +97,7 @@ func (hunter *Hunter) applyT1Melee2PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_HunterMongooseBite && result.Landed() {
+			if spell.Matches(ClassSpellMask_HunterMongooseBite) && result.Landed() {
 				debuffAuras.Get(result.Target).Activate(sim)
 				stalkerAura.Activate(sim)
 			}
@@ -115,14 +115,11 @@ func (hunter *Hunter) applyT1Melee4PBonus() {
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			// Just adding 3% damage to assume the hunter is tracking their target's type
-			hunter.PseudoStats.DamageDealtMultiplier *= 1.03
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.PseudoStats.DamageDealtMultiplier /= 1.03
-		},
-	}))
+	}).AttachMultiplicativePseudoStatBuff(
+		&hunter.PseudoStats.DamageDealtMultiplier,
+		// Just adding 3% damage to assume the hunter is tracking their target's type
+		1.03,
+	))
 }
 
 // Mongoose Bite also activates for 5 sec whenever your target Parries or Blocks or when your melee attack misses.
@@ -170,14 +167,11 @@ func (hunter *Hunter) applyT1Ranged4PBonus() {
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			// Just adding 3% damage to assume the hunter is tracking their target's type
-			hunter.PseudoStats.DamageDealtMultiplier *= 1.03
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.PseudoStats.DamageDealtMultiplier /= 1.03
-		},
-	}))
+	}).AttachMultiplicativePseudoStatBuff(
+		&hunter.PseudoStats.DamageDealtMultiplier,
+		// Just adding 3% damage to assume the hunter is tracking their target's type
+		1.03,
+	))
 }
 
 // Your next Shot ability within 12 sec after Aimed Shot deals 20% more damage.
@@ -191,22 +185,24 @@ func (hunter *Hunter) applyT1Ranged6PBonus() {
 		return
 	}
 
+	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterShots,
+		IntValue:  20,
+	})
+
 	procAura := hunter.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 456382},
 		Label:    "Precision",
 		Duration: time.Second * 12,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range hunter.Shots {
-				spell.DamageMultiplierAdditive += 0.20
-			}
+			damageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range hunter.Shots {
-				spell.DamageMultiplierAdditive -= 0.20
-			}
+			damageMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Flags.Matches(SpellFlagShot) || (aura.RemainingDuration(sim) == aura.Duration && spell.SpellCode == SpellCode_HunterAimedShot) {
+			if !spell.Matches(ClassSpellMask_HunterShots) || (aura.RemainingDuration(sim) == aura.Duration && spell.Matches(ClassSpellMask_HunterAimedShot)) {
 				return
 			}
 
@@ -214,12 +210,12 @@ func (hunter *Hunter) applyT1Ranged6PBonus() {
 		},
 	})
 
-	core.MakePermanent(hunter.RegisterAura(core.Aura{
-		Label: label,
-		OnCastComplete: func(_ *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_HunterAimedShot {
-				procAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+		Name:           label,
+		Callback:       core.CallbackOnCastComplete,
+		ClassSpellMask: ClassSpellMask_HunterAimedShot,
+		Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
+			procAura.Activate(sim)
 		},
-	}))
+	})
 }

@@ -20,15 +20,15 @@ func (warlock *Warlock) getSoulFireBaseConfig(rank int) core.SpellConfig {
 	spellCoeff := 1.0
 
 	config := core.SpellConfig{
-		SpellCode:     SpellCode_WarlockSoulFire,
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolFire,
-		DefenseType:   core.DefenseTypeMagic,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
-		RequiredLevel: level,
-		Rank:          rank,
-		MissileSpeed:  24,
+		ClassSpellMask: ClassSpellMask_WarlockSoulFire,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
+		RequiredLevel:  level,
+		Rank:           rank,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,

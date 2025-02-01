@@ -3,7 +3,6 @@ package warlock
 import (
 	"fmt"
 	"math"
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -127,7 +126,7 @@ func (warlock *Warlock) applyVengeance() {
 			warlock.AddStatsDynamic(sim, stats.Stats{stats.Health: -bonusHealth})
 			healthDiff := warlock.CurrentHealth() - warlock.MaxHealth()
 			if healthDiff > 0 {
-				warlock.RemoveHealth(sim, healthDiff)
+				warlock.RemoveHealth(sim, healthDiff, healthMetrics)
 			}
 		},
 	})
@@ -181,7 +180,7 @@ func (warlock *Warlock) applyDecimation() {
 		return
 	}
 
-	affectedSpellCodes := []int32{SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockIncinerate, SpellCode_WarlockSoulFire}
+	affectedSpellClassMasks := ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockShadowCleave | ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockSoulFire
 
 	warlock.DecimationAura = warlock.RegisterAura(core.Aura{
 		Label:    "Decimation",
@@ -203,7 +202,7 @@ func (warlock *Warlock) applyDecimation() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "Decimation Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && sim.IsExecutePhase35() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
+			if result.Landed() && sim.IsExecutePhase35() && spell.Matches(affectedSpellClassMasks) {
 				warlock.DecimationAura.Activate(sim)
 			}
 		},
@@ -244,7 +243,7 @@ func (warlock *Warlock) applyEverlastingAffliction() {
 		return
 	}
 
-	affectedSpellCodes := []int32{SpellCode_WarlockDrainLife, SpellCode_WarlockDrainSoul, SpellCode_WarlockShadowBolt, SpellCode_WarlockShadowCleave, SpellCode_WarlockSearingPain, SpellCode_WarlockIncinerate, SpellCode_WarlockHaunt}
+	affectedSpellClassMasks := ClassSpellMask_WarlockDrainLife | ClassSpellMask_WarlockDrainSoul | ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockShadowCleave | ClassSpellMask_WarlockSearingPain | ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockHaunt
 	warlock.RegisterAura(core.Aura{
 		Label:    "Everlasting Affliction Trigger",
 		Duration: core.NeverExpires,
@@ -252,7 +251,7 @@ func (warlock *Warlock) applyEverlastingAffliction() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && slices.Contains(affectedSpellCodes, spell.SpellCode) {
+			if result.Landed() && spell.Matches(affectedSpellClassMasks) {
 				for _, spell := range warlock.Corruption {
 					if spell.Dot(result.Target).IsActive() {
 						spell.Dot(result.Target).Rollover(sim)

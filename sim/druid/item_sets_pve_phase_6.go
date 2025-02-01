@@ -48,25 +48,13 @@ func (druid *Druid) applyTAQBalance4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := core.FilterSlice(
-				core.Flatten(
-					[][]*DruidSpell{
-						druid.Wrath,
-						druid.Starfire,
-						{druid.Starsurge},
-					},
-				),
-				func(spell *DruidSpell) bool { return spell != nil },
-			)
-
-			for _, spell := range affectedSpells {
-				spell.CritDamageBonus += 0.60
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CritDamageBonus_Flat,
+		ClassMask:  ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarfire | ClassSpellMask_DruidStarsurge,
+		FloatValue: 0.60,
+	}))
 }
 
 var ItemSetGenesisCunning = core.NewItemSet(core.ItemSet{
@@ -90,13 +78,19 @@ func (druid *Druid) applyTAQFeral2PBonus() {
 		return
 	}
 
+	damageMod := druid.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_DruidShred,
+		IntValue:  15,
+	})
+
 	druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213171}, // Tracking in APL
 		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			druid.ShredPositionOverride = true
 			if !druid.PseudoStats.InFrontOfTarget {
-				druid.Shred.DamageMultiplierAdditive += 0.15
+				damageMod.Activate()
 			}
 		},
 	})
@@ -142,8 +136,17 @@ func (druid *Druid) applyTAQFeral4PBonus() {
 		ActionID: core.ActionID{SpellID: 1213174}, // Tracking in APL
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Outcome.Matches(core.OutcomeCrit) || !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
+			if !result.Outcome.Matches(core.OutcomeCrit) {
 				return
+			}
+			if druid.form == Cat {
+				if !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
+					return
+				}
+			} else if druid.form == Bear {
+				if spell != druid.MangleBear.Spell {
+					return
+				}
 			}
 
 			dot := toothAndClawSpell.Dot(result.Target)
@@ -192,12 +195,41 @@ func (druid *Druid) applyTAQGuardian2PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
+	damageMod := druid.AddDynamicMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidMangleBear | ClassSpellMask_DruidSwipeBear,
+		Kind:      core.SpellMod_DamageDone_Flat,
+	})
+
+	buffAura := druid.RegisterAura(core.Aura{
+		Label:     "Guardian 2P Bonus Proc",
+		ActionID:  core.ActionID{SpellID: 1213188},
+		Duration:  time.Second * 10,
+		MaxStacks: 5,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Deactivate()
+		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			damageMod.UpdateIntValue(10 * int64(newStacks))
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_DruidMangleBear | ClassSpellMask_DruidSwipeBear) {
+				aura.Deactivate(sim)
+			}
 		},
 	})
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label: label,
+		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if druid.form == Bear && spell.ProcMask.Matches(core.ProcMaskMelee) && result.Outcome.Matches(core.OutcomeDodge) {
+				buffAura.Activate(sim)
+				buffAura.AddStack(sim)
+			}
+		},
+	}))
 }
 
 // Reduces the cooldown on Mangle (Bear) by 1.5 sec.
@@ -205,17 +237,17 @@ func (druid *Druid) applyTAQGuardian4PBonus() {
 	if !druid.HasRune(proto.DruidRune_RuneHandsMangle) {
 		return
 	}
-
 	label := "S03 - Item - TAQ - Druid - Guardian 4P Bonus"
 	if druid.HasAura(label) {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
-		},
+	})).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidMangleBear,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Millisecond * 1500,
 	})
 }
 
@@ -241,19 +273,5 @@ func (druid *Druid) applyRAQFeral3PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachStatsBuff(bonusStats))
 }

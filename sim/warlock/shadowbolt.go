@@ -25,14 +25,14 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 	results := make([]*core.SpellResult, min(core.TernaryInt32(shadowboltVolley, 5, 1), warlock.Env.GetNumTargets()))
 
 	return core.SpellConfig{
-		SpellCode:     SpellCode_WarlockShadowBolt,
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolShadow,
-		DefenseType:   core.DefenseTypeMagic,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
-		RequiredLevel: level,
-		Rank:          rank,
+		ClassSpellMask: ClassSpellMask_WarlockShadowBolt,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
+		RequiredLevel:  level,
+		Rank:           rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -53,31 +53,31 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
-				activeEffectModifier := 0.0
+				activeEffectMultiplier := 1.0
 
-				if warlock.shadowBoltActiveEffectModifierPer > 0 && warlock.shadowBoltActiveEffectModifierMax > 0 {
+				if warlock.shadowBoltActiveEffectMultiplierPer > 0 && warlock.shadowBoltActiveEffectMultiplierMax > 0 {
 					for _, spell := range warlock.DoTSpells {
 						if spell.Dot(warlock.CurrentTarget).IsActive() {
-							activeEffectModifier += warlock.shadowBoltActiveEffectModifierPer
+							activeEffectMultiplier += warlock.shadowBoltActiveEffectMultiplierPer
 						}
 					}
 
 					for _, spell := range warlock.DebuffSpells {
 						if spell.RelatedAuras[0].Get(warlock.CurrentTarget).IsActive() {
-							activeEffectModifier += warlock.shadowBoltActiveEffectModifierPer
+							activeEffectMultiplier += warlock.shadowBoltActiveEffectMultiplierPer
 						}
 					}
 
 					if hasMarkOfChaosRune && warlock.MarkOfChaosAuras.Get(warlock.CurrentTarget).IsActive() {
-						activeEffectModifier += warlock.shadowBoltActiveEffectModifierPer
+						activeEffectMultiplier += warlock.shadowBoltActiveEffectMultiplierPer
 					}
 
-					activeEffectModifier = min(warlock.shadowBoltActiveEffectModifierMax, activeEffectModifier)
+					activeEffectMultiplier = min(warlock.shadowBoltActiveEffectMultiplierMax, activeEffectMultiplier)
 				}
 
-				spell.DamageMultiplierAdditive += activeEffectModifier
+				spell.ApplyMultiplicativeDamageBonus(activeEffectMultiplier)
 				results[idx] = spell.CalcDamage(sim, target, sim.Roll(baseDamage[0], baseDamage[1]), spell.OutcomeMagicHitAndCrit)
-				spell.DamageMultiplierAdditive -= activeEffectModifier
+				spell.ApplyMultiplicativeDamageBonus(1 / activeEffectMultiplier)
 
 				target = sim.Environment.NextTargetUnit(target)
 			}

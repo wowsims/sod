@@ -8,33 +8,55 @@ import (
 )
 
 const (
-	SpellFlagMage       = core.SpellFlagAgentReserved1
-	SpellFlagChillSpell = core.SpellFlagAgentReserved2
+	SpellFlagChillSpell = core.SpellFlagAgentReserved1
 )
 
 const (
-	SpellCode_MageNone int32 = iota
-	SpellCode_MageArcaneBarrage
-	SpellCode_MageArcaneBlast
-	SpellCode_MageArcaneExplosion
-	SpellCode_MageArcaneMissiles
-	SpellCode_MageArcaneMissilesTick
-	SpellCode_MageArcaneSurge
-	SpellCode_MageBalefireBolt
-	SpellCode_MageBlastWave
-	SpellCode_MageBlizzard
-	SpellCode_MageFireball
-	SpellCode_MageFireBlast
-	SpellCode_MageFrostbolt
-	SpellCode_MageFrostfireBolt
-	SpellCode_MageFrozenOrb
-	SpellCode_MageIceLance
-	SpellCode_MageIgnite
-	SpellCode_MageLivingBomb
-	SpellCode_MageLivingBombExplosion
-	SpellCode_MageLivingFlame
-	SpellCode_MageScorch
-	SpellCode_MageSpellfrostBolt
+	ClassSpellMask_MageNone int64 = 0
+
+	ClassSpellMask_MageArcaneBarrage int64 = 1 << iota
+	ClassSpellMask_MageArcaneBlast
+	ClassSpellMask_MageArcaneExplosion
+	ClassSpellMask_MageArcaneMissiles
+	ClassSpellMask_MageArcaneMissilesTick
+	ClassSpellMask_MageArcaneSurge
+	ClassSpellMask_MageCounterSpell
+	ClassSpellMask_MageBalefireBolt
+	ClassSpellMask_MageBlastWave
+	ClassSpellMask_MageBlizzard
+	ClassSpellMask_MageDeepFreeze
+	ClassSpellMask_MageFireball
+	ClassSpellMask_MageFireBlast
+	ClassSpellMask_MagePyroblast
+	ClassSpellMask_MageFrostbolt
+	ClassSpellMask_MageFrostfireBolt
+	ClassSpellMask_MageFrozenOrb
+	ClassSpellMask_MageFrozenOrbTick
+	ClassSpellMask_MageIceLance
+	ClassSpellMask_MageIgnite
+	ClassSpellMask_MageFlamestrike
+	ClassSpellMask_MageLivingBomb
+	ClassSpellMask_MageLivingBombExplosion
+	ClassSpellMask_MageLivingFlame
+	ClassSpellMask_MageScorch
+	ClassSpellMask_MageSpellfrostBolt
+	ClassSpellMask_MageEvocation
+
+	ClassSpellMask_MageLast
+	ClassSpellMask_MageAll = ClassSpellMask_MageLast<<1 - 1
+
+	// All spells that have additive scaling with Arcane Blast
+	ClassSpellMask_MageArcaneBlastAuraFlat = ClassSpellMask_MageArcaneExplosion | ClassSpellMask_MageArcaneMissilesTick |
+		ClassSpellMask_MageArcaneSurge | ClassSpellMask_MageSpellfrostBolt | ClassSpellMask_MageBalefireBolt
+	// All spells that have multiplicative scaling with Arcane Blast
+	ClassSpellMask_MageArcaneBlastAuraPct = ClassSpellMask_MageLivingFlame
+
+	ClassSpellMask_MageInstantCast = ClassSpellMask_MageArcaneBarrage | ClassSpellMask_MageArcaneExplosion |
+		ClassSpellMask_MageArcaneMissiles | ClassSpellMask_MageArcaneSurge | ClassSpellMask_MageBlastWave |
+		ClassSpellMask_MageBlizzard | ClassSpellMask_MageDeepFreeze | ClassSpellMask_MageEvocation |
+		ClassSpellMask_MageFireBlast | ClassSpellMask_MageFrozenOrb | ClassSpellMask_MageFrozenOrbTick |
+		ClassSpellMask_MageIceLance | ClassSpellMask_MageIceLance | ClassSpellMask_MageLivingBomb |
+		ClassSpellMask_MageLivingFlame
 )
 
 var TalentTreeSizes = [3]int{16, 16, 17}
@@ -114,7 +136,6 @@ type Mage struct {
 
 	ArcaneBlastDamageMultiplier     float64
 	ArcaneBlastMissileBarrageChance float64
-	BonusFireballDoTAmount          float64
 	FingersOfFrostProcChance        float64
 	FireballMissileActive           bool // Whether Fireball has been cast but has not hit to avoid chain-casting
 
@@ -161,7 +182,6 @@ func (mage *Mage) Initialize() {
 }
 
 func (mage *Mage) Reset(sim *core.Simulation) {
-	mage.BonusFireballDoTAmount = 0
 }
 
 func NewMage(character *core.Character, options *proto.Player) *Mage {

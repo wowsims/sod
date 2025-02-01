@@ -17,14 +17,14 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 	bleedCoeff := 0.10
 
 	spellConfig := core.SpellConfig{
-		SpellCode:     SpellCode_HunterWyvernStrike,
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolPhysical,
-		DefenseType:   core.DefenseTypeMelee,
-		ProcMask:      core.ProcMaskMeleeMHSpecial,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagStrike,
-		Rank:          rank,
-		RequiredLevel: level,
+		ClassSpellMask: ClassSpellMask_HunterWyvernStrike,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagStrike,
+		Rank:           rank,
+		RequiredLevel:  level,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,

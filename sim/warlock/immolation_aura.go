@@ -19,11 +19,12 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 	baseDamage := warlock.baseRuneAbilityDamage() * 0.2
 
 	immoAuraProc := warlock.GetOrRegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 427725},
-		SpellSchool: core.SpellSchoolFire,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		ActionID:       core.ActionID{SpellID: 427725},
+		ClassSpellMask: ClassSpellMask_WarlockImmolationAuraProc,
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -82,9 +83,10 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 	})
 
 	warlock.ImmolationAura = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerImmolationAura)},
-		SpellSchool: core.SpellSchoolFire,
-		Flags:       core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagNoOnCastComplete | WarlockFlagDestruction,
+		ActionID:       core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerImmolationAura)},
+		ClassSpellMask: ClassSpellMask_WarlockImmolationAura,
+		SpellSchool:    core.SpellSchoolFire,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagNoOnCastComplete | WarlockFlagDestruction,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

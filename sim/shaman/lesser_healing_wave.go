@@ -47,13 +47,13 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 	}
 
 	spell := core.SpellConfig{
-		ActionID:     core.ActionID{SpellID: spellId},
-		SpellCode:    SpellCode_ShamanLesserHealingWave,
-		SpellSchool:  core.SpellSchoolNature,
-		DefenseType:  core.DefenseTypeMagic,
-		ProcMask:     core.ProcMaskSpellHealing,
-		Flags:        core.SpellFlagHelpful | core.SpellFlagAPL | SpellFlagMaelstrom | SpellFlagShaman,
-		MetricSplits: 6,
+		ActionID:       core.ActionID{SpellID: spellId},
+		ClassSpellMask: ClassSpellMask_ShamanLesserHealingWave,
+		SpellSchool:    core.SpellSchoolNature,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellHealing,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagAPL | SpellFlagMaelstrom,
+		MetricSplits:   6,
 
 		RequiredLevel: level,
 		Rank:          rank,

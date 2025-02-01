@@ -26,12 +26,12 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 	})
 
 	rogue.GhostlyStrike = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_RogueGhostlyStrike,
-		ActionID:    ghostlyStrikeAura.ActionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       rogue.builderFlags(),
+		ClassSpellMask: ClassSpellMask_RogueGhostlyStrike,
+		ActionID:       ghostlyStrikeAura.ActionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          rogue.builderFlags(),
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   40.0,
 			Refund: 0.8,

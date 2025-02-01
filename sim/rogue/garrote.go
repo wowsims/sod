@@ -25,12 +25,12 @@ func (rogue *Rogue) registerGarrote() {
 	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
 
 	rogue.Garrote = rogue.GetOrRegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_RogueGarrote,
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       SpellFlagBuilder | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_RogueGarrote,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          SpellFlagBuilder | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   50.0 - 10*float64(rogue.Talents.DirtyDeeds),

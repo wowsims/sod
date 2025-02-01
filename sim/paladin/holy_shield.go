@@ -42,11 +42,11 @@ func (paladin *Paladin) registerHolyShield() {
 		}
 
 		paladin.holyShieldProc[i] = paladin.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: procID},
-			SpellCode:   SpellCode_PaladinHolyShieldProc,
-			SpellSchool: core.SpellSchoolHoly,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskSpellDamage,
+			ActionID:       core.ActionID{SpellID: procID},
+			ClassSpellMask: ClassSpellMask_PaladinHolyShieldProc,
+			SpellSchool:    core.SpellSchoolHoly,
+			DefenseType:    core.DefenseTypeMagic,
+			ProcMask:       core.ProcMaskSpellDamage,
 
 			RequiredLevel: int(level),
 			Rank:          rank,
@@ -84,11 +84,11 @@ func (paladin *Paladin) registerHolyShield() {
 		})
 
 		paladin.RegisterSpell(core.SpellConfig{
-			ActionID:      core.ActionID{SpellID: spellID},
-			SpellCode:     SpellCode_PaladinHolyShield,
-			Flags:         core.SpellFlagAPL,
-			RequiredLevel: int(level),
-			Rank:          rank,
+			ActionID:       core.ActionID{SpellID: spellID},
+			ClassSpellMask: ClassSpellMask_PaladinHolyShield,
+			Flags:          core.SpellFlagAPL,
+			RequiredLevel:  int(level),
+			Rank:           rank,
 			ManaCost: core.ManaCostOptions{
 				FlatCost: manaCost,
 			},

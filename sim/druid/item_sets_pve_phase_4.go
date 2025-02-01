@@ -1,6 +1,8 @@
 package druid
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -102,21 +104,7 @@ func (druid *Druid) applyT1Balance4PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on Starfall by 50%.
@@ -130,12 +118,13 @@ func (druid *Druid) applyT1Balance6PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			druid.Starfall.CD.Multiplier *= 0.5
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		ClassMask: ClassSpellMask_DruidStarfall,
+		IntValue:  -50,
+	}))
 }
 
 var ItemSetCenarionCunning = core.NewItemSet(core.ItemSet{
@@ -167,14 +156,15 @@ func (druid *Druid) applyT1Feral2PBonus() {
 		return core.ImprovedFaerieFireAura(target)
 	})
 
-	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: label,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_DruidFaerieFire || spell.SpellCode == SpellCode_DruidFaerieFireFeral) && result.Landed() {
-				druid.ImprovedFaerieFireAuras.Get(result.Target).Activate(sim)
-			}
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_DruidFaerieFire | ClassSpellMask_DruidFaerieFireFeral,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			druid.ImprovedFaerieFireAuras.Get(result.Target).Activate(sim)
 		},
-	}))
+	})
 }
 
 // Periodic damage from your Rake and Rip can now be critical strikes.
@@ -225,7 +215,8 @@ var ItemSetCenarionRage = core.NewItemSet(core.ItemSet{
 		},
 		// Reduces the cooldown of Enrage by 30 sec and it no longer reduces your armor.
 		4: func(agent core.Agent) {
-			// TODO: Enrage
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyT1Guardian4PBonus()
 		},
 		6: func(agent core.Agent) {
 			druid := agent.(DruidAgent).GetDruid()
@@ -234,6 +225,26 @@ var ItemSetCenarionRage = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// Reduces the cooldown of Enrage by 30 sec and it no longer reduces your armor.
+func (druid *Druid) applyT1Guardian4PBonus() {
+	label := "S03 - Item - T1 - Druid - Guardian 4P Bonus"
+	if druid.HasAura(label) {
+		return
+	}
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 456328}, // Tracking in APL
+		Label:    label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			druid.CenarionRageEnrageBonus = true
+		},
+	})).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidEnrage,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Second * 30,
+	})
+}
+
 // Bear Form and Dire Bear Form increase all threat you generate by an additional 20%, and Cower now removes all your threat against the target but has a 20 sec longer cooldown.
 func (druid *Druid) applyT1Guardian6PBonus() {
 	label := "S03 - Item - T1 - Druid - Guardian 6P Bonus"
@@ -241,12 +252,13 @@ func (druid *Druid) applyT1Guardian6PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
-		Label: label,
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 456332}, // Tracking in APL
+		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
+			druid.BearFormThreatMultiplier += 0.20
 		},
-	})
+	}))
 }
 
 var ItemSetCenarionBounty = core.NewItemSet(core.ItemSet{

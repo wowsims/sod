@@ -473,6 +473,8 @@ type PseudoStats struct {
 	TimewornBonus int32
 	// Tracks the number of Sanctified items equipped for Seal of the Dawn bonuses
 	SanctifiedBonus int32
+	// Tracks the bonus damage multiplier from Sanctified items for preventing Mage 6pT2 and Ignite double dipping
+	SanctifiedDamageMultiplier float64
 
 	// Tracks the cumulative amount of Thorns damage from various effects purely for UI display
 	ThornsDamage float64
@@ -573,6 +575,9 @@ func NewPseudoStats() PseudoStats {
 
 		FeralCombatEnabled: false,
 		FeralCombatSkill:   0,
+
+		SanctifiedBonus:            0,
+		SanctifiedDamageMultiplier: 1,
 	}
 }
 

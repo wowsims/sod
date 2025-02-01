@@ -19,13 +19,13 @@ func (mage *Mage) registerArcaneBarrageSpell() {
 	cooldown := time.Second * 3
 
 	mage.ArcaneBarrage = mage.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_MageArcaneBarrage,
-		ActionID:     core.ActionID{SpellID: int32(proto.MageRune_RuneCloakArcaneBarrage)},
-		SpellSchool:  core.SpellSchoolArcane,
-		DefenseType:  core.DefenseTypeMagic,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage | core.SpellFlagAPL,
-		MissileSpeed: 24,
+		ActionID:       core.ActionID{SpellID: int32(proto.MageRune_RuneCloakArcaneBarrage)},
+		ClassSpellMask: ClassSpellMask_MageArcaneBarrage,
+		SpellSchool:    core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

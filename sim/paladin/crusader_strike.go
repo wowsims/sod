@@ -24,7 +24,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		SpellSchool: core.SpellSchoolHoly,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlag_RV | core.SpellFlagIgnoreResists,
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlag_RV | core.SpellFlagIgnoreResists | core.SpellFlagBatchStartAttackMacro,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
@@ -38,14 +38,14 @@ func (paladin *Paladin) registerCrusaderStrike() {
 
 		DamageMultiplier: 0.75 * paladin.getWeaponSpecializationModifier(),
 		ThreatMultiplier: 1,
-		SpellCode:        SpellCode_PaladinCrusaderStrike,
+		ClassSpellMask:   ClassSpellMask_PaladinCrusaderStrike,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt: sim.CurrentTime + core.SpellBatchWindow,
+				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
 				Priority: core.ActionPriorityLow,
 				OnAction: func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)

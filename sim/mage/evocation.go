@@ -31,8 +31,9 @@ func (mage *Mage) registerEvocationCD() {
 	})
 
 	mage.Evocation = mage.GetOrRegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagHelpful | core.SpellFlagChanneled | core.SpellFlagAPL,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_MageEvocation,
+		Flags:          core.SpellFlagHelpful | core.SpellFlagChanneled | core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

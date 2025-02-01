@@ -31,16 +31,14 @@ func (mage *Mage) applyT2Damage2PBonus() {
 		return
 	}
 
-	mage.RegisterAura(core.Aura{
+	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range mage.Spellbook {
-				if spell.SpellSchool == core.SpellSchoolFire && spell.Flags.Matches(SpellFlagMage) {
-					spell.ThreatMultiplier *= .80
-				}
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Threat_Pct,
+		ClassMask:  ClassSpellMask_MageAll,
+		School:     core.SpellSchoolFire,
+		FloatValue: 0.80,
+	}))
 }
 
 // Your Pyroblast deals 20% increased damage to targets afflicted with your Fireball's periodic effect.
@@ -54,30 +52,30 @@ func (mage *Mage) applyT2Damage4PBonus() {
 		return
 	}
 
+	damageMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_MagePyroblast,
+		IntValue:  20,
+	})
+
 	mage.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			fireballSpells := core.FilterSlice(mage.Fireball, func(spell *core.Spell) bool { return spell != nil })
+			fireballSpells := mage.GetSpellsMatchingClassMask(ClassSpellMask_MageFireball)
+			pyroBlastSpells := mage.GetSpellsMatchingClassMask(ClassSpellMask_MagePyroblast)
 
-			for _, spell := range mage.Pyroblast {
-				if spell == nil {
-					continue
-				}
-
+			for _, spell := range pyroBlastSpells {
 				oldApplyEffects := spell.ApplyEffects
 				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					modifier := 0.0
-
 					for _, spell := range fireballSpells {
 						if spell.Dot(target).IsActive() {
-							modifier += 0.20
+							damageMod.Activate()
 							break
 						}
 					}
 
-					spell.DamageMultiplierAdditive += modifier
 					oldApplyEffects(sim, target, spell)
-					spell.DamageMultiplierAdditive -= modifier
+					damageMod.Deactivate()
 				}
 			}
 		},
@@ -91,13 +89,35 @@ func (mage *Mage) applyT2Damage6PBonus() {
 		return
 	}
 
+	bonusDamage := 0.0
+
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 467399},
 		Label:    label,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			bonusDamage = 0
+		},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range mage.GetSpellsMatchingClassMask(ClassSpellMask_MageFireball) {
+				for _, dot := range spell.Dots() {
+					if dot == nil {
+						continue
+					}
+
+					oldOnSnapshot := dot.OnSnapshot
+					dot.OnSnapshot = func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+						oldOnSnapshot(sim, target, dot, isRollover)
+						dot.SnapshotBaseDamage += bonusDamage
+						// This was made to not double dip on Sanctified
+						dot.SnapshotAttackerMultiplier /= mage.PseudoStats.SanctifiedDamageMultiplier
+					}
+				}
+			}
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_MageFireball && result.Landed() {
+			if spell.Matches(ClassSpellMask_MageFireball) && result.Landed() {
 				// Tested that this is calculated using the fireball damage WITHOUT defender mods (debuffs)
-				mage.BonusFireballDoTAmount += result.DamagePostAttacker * 1.00 / float64(spell.Dot(result.Target).NumberOfTicks)
+				bonusDamage = result.DamagePostAttacker * 1.00 / float64(spell.Dot(result.Target).NumberOfTicks)
 			}
 		},
 	}))
@@ -128,14 +148,15 @@ func (mage *Mage) applyT2Healer2PBonus() {
 	}
 
 	manaMetrics := mage.NewManaMetrics(core.ActionID{SpellID: 467401})
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: label,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_MageArcaneMissilesTick && result.Landed() {
-				mage.AddMana(sim, mage.ArcaneMissiles[spell.Rank].Cost.BaseCost*0.1, manaMetrics)
-			}
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_MageArcaneMissilesTick,
+		Outcome:        core.OutcomeLanded,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			mage.AddMana(sim, mage.ArcaneMissiles[spell.Rank].Cost.BaseCost*0.1, manaMetrics)
 		},
-	}))
+	})
 }
 
 // Arcane Blast gains a 10% additional change to trigger Missile Barrage, and Missile Barrage now affects Regeneration the same way it affects Arcane Missiles.
@@ -202,19 +223,11 @@ func (mage *Mage) applyZGFrost5PBonus() {
 		return
 	}
 
-	mage.RegisterAura(core.Aura{
+	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := core.FilterSlice(
-				core.Flatten([][]*core.Spell{
-					mage.Frostbolt,
-					{mage.SpellfrostBolt},
-				}), func(spell *core.Spell) bool { return spell != nil },
-			)
-
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += 0.65
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_MageFrostbolt | ClassSpellMask_MageSpellfrostBolt,
+		IntValue:  65,
+	}))
 }

@@ -20,12 +20,12 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 	}
 
 	shaman.Stormstrike = shaman.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_ShamanStormstrike,
-		ActionID:    core.ActionID{SpellID: 17364},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       SpellFlagShaman | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_ShamanStormstrike,
+		ActionID:       core.ActionID{SpellID: 17364},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: .063,
@@ -68,12 +68,12 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 	})
 
 	return shaman.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_ShamanStormstrikeHit,
-		ActionID:    core.ActionID{SpellID: 17364}.WithTag(int32(core.Ternary(isMH, 1, 2))),
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    procMask,
-		Flags:       flags,
+		ClassSpellMask: ClassSpellMask_ShamanStormstrikeHit,
+		ActionID:       core.ActionID{SpellID: 17364}.WithTag(int32(core.Ternary(isMH, 1, 2))),
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       procMask,
+		Flags:          flags,
 
 		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,

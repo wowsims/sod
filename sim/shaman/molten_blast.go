@@ -26,12 +26,12 @@ func (shaman *Shaman) applyMoltenBlast() {
 	results := make([]*core.SpellResult, numHits)
 
 	shaman.MoltenBlast = shaman.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsMoltenBlast)},
-		SpellCode:   SpellCode_ShamanMoltenBlast,
-		SpellSchool: core.SpellSchoolFire,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagShaman | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsMoltenBlast)},
+		ClassSpellMask: ClassSpellMask_ShamanMoltenBlast,
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

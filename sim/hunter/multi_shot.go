@@ -19,16 +19,16 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 	hasSerpentSpread := hunter.HasRune(proto.HunterRune_RuneLegsSerpentSpread)
 
 	return core.SpellConfig{
-		SpellCode:     SpellCode_HunterMultiShot,
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolPhysical,
-		DefenseType:   core.DefenseTypeRanged,
-		ProcMask:      core.ProcMaskRangedSpecial,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagShot,
-		CastType:      proto.CastType_CastTypeRanged,
-		Rank:          rank,
-		RequiredLevel: level,
-		MissileSpeed:  24,
+		ClassSpellMask: ClassSpellMask_HunterMultiShot,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeRanged,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		CastType:       proto.CastType_CastTypeRanged,
+		Rank:           rank,
+		RequiredLevel:  level,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,

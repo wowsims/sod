@@ -46,13 +46,13 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 	actionID := core.ActionID{SpellID: spellId}
 
 	return core.SpellConfig{
-		ActionID:     actionID,
-		SpellCode:    SpellCode_MageFireball,
-		SpellSchool:  core.SpellSchoolFire,
-		DefenseType:  core.DefenseTypeMagic,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        core.SpellFlagAPL | SpellFlagMage,
-		MissileSpeed: 24,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_MageFireball,
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		MissileSpeed:   24,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -75,7 +75,7 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 			NumberOfTicks: numTicks,
 			TickLength:    tickLength,
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
-				dot.Snapshot(target, baseDotDamage+mage.BonusFireballDoTAmount, isRollover)
+				dot.Snapshot(target, baseDotDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
@@ -87,7 +87,6 @@ func (mage *Mage) newFireballSpellConfig(rank int) core.SpellConfig {
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			mage.BonusFireballDoTAmount = 0
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {

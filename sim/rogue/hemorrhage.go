@@ -35,12 +35,12 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 	}
 
 	rogue.Hemorrhage = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_RogueHemorrhage,
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       rogue.builderFlags(),
+		ClassSpellMask: ClassSpellMask_RogueHemorrhage,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35.0,

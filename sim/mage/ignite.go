@@ -16,12 +16,12 @@ func (mage *Mage) applyIgnite() {
 	}
 
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_MageIgnite,
-		ActionID:    core.ActionID{SpellID: 12654},
-		SpellSchool: core.SpellSchoolFire,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagMage,
+		ClassSpellMask: ClassSpellMask_MageIgnite,
+		ActionID:       core.ActionID{SpellID: 12654},
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -54,7 +54,9 @@ func (mage *Mage) applyIgnite() {
 		newDamage := result.Damage * igniteMultiplier
 		outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
+		// This was also made to not double dip on Sanctified
 		dot.Snapshot(result.Target, (outstandingDamage+newDamage)/float64(IgniteTicks), false)
+		dot.SnapshotAttackerMultiplier /= mage.PseudoStats.SanctifiedDamageMultiplier
 
 		mage.Ignite.Cast(sim, result.Target)
 	}

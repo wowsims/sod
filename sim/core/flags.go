@@ -196,8 +196,11 @@ const (
 	SpellFlagPassiveSpell                                  // Indicates this spell is applied/cast as a result of another spell
 	SpellFlagSuppressWeaponProcs                           // Indicates this spell cannot proc weapon chance on hits or enchants
 	SpellFlagSuppressEquipProcs                            // Indicates this spell cannot proc Equip procs
+	SpellFlagBatchStartAttackMacro                         // Indicates this spell is being cast in a Macro with a startattack following it
 	SpellFlagBatchStopAttackMacro                          // Indicates this spell is being cast in a Macro with a stopattack following it
 	SpellFlagNotAProc                                      // Indicates the proc is not treated as a proc (Seal of Command)
+	SpellFlagSwapped                                       // Indicates that this spell is not useable because it is from a currently swapped item
+	SpellFlagNoSpellMods                                   // Indicates that no spell mods should be applied to this spell
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1

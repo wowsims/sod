@@ -1,6 +1,7 @@
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
+import { SpecOptions } from '../../../core/proto_utils/utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { PresetBuild } from '../../preset_utils';
 import { APLRotation, APLRotation_Type } from '../../proto/apl';
@@ -82,7 +83,7 @@ export class PresetConfigurationPicker extends Component {
 		});
 	}
 
-	private applyBuild({ gear, rotation, talents, epWeights, encounter }: PresetBuild) {
+	private applyBuild({ gear, rotation, talents, epWeights, encounter, options }: PresetBuild) {
 		const eventID = TypedEvent.nextEventID();
 		TypedEvent.freezeAllAndDo(() => {
 			if (gear) this.simUI.player.setGear(eventID, this.simUI.sim.db.lookupEquipmentSpec(gear.gear));
@@ -100,10 +101,16 @@ export class PresetConfigurationPicker extends Component {
 				if (encounter.raidBuffs) this.simUI.sim.raid.setBuffs(eventID, encounter.raidBuffs);
 				if (encounter.consumes) this.simUI.player.setConsumes(eventID, encounter.consumes);
 			}
+			if (options) {
+				this.simUI.player.setSpecOptions(eventID, {
+					...this.simUI.player.getSpecOptions(),
+					...options,
+				});
+			}
 		});
 	}
 
-	private isBuildActive({ gear, rotation, talents, epWeights, encounter }: PresetBuild): boolean {
+	private isBuildActive({ gear, rotation, talents, epWeights, encounter, options }: PresetBuild): boolean {
 		const hasGear = gear ? EquipmentSpec.equals(gear.gear, this.simUI.player.getGear().asSpec()) : true;
 		const hasTalents = talents ? talents.data.talentsString == this.simUI.player.getTalentsString() : true;
 		let hasRotation = true;
@@ -116,7 +123,12 @@ export class PresetConfigurationPicker extends Component {
 		const hasEpWeights = epWeights ? this.simUI.player.getEpWeights().equals(epWeights.epWeights) : true;
 		const hasEncounter = encounter?.encounter ? Encounter.equals(encounter.encounter, this.simUI.sim.encounter.toProto()) : true;
 		const hasHealingModel = encounter?.healingModel ? HealingModel.equals(encounter.healingModel, this.simUI.player.getHealingModel()) : true;
+		const hasOptions = options ? this.containsAllFields(this.simUI.player.getSpecOptions(), options) : true;
 
-		return hasGear && hasTalents && hasRotation && hasEpWeights && hasEncounter && hasHealingModel;
+		return hasGear && hasTalents && hasRotation && hasEpWeights && hasEncounter && hasHealingModel && hasOptions;
+	}
+
+	private containsAllFields<T extends Spec>(full: SpecOptions<T>, partial: Partial<SpecOptions<T>>): boolean {
+		return Object.keys(partial).every(key => key in full && full[key as keyof SpecOptions<T>] === partial[key as keyof SpecOptions<T>]);
 	}
 }

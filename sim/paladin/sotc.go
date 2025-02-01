@@ -54,7 +54,9 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagMeleeMetrics,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagBatchStartAttackMacro,
+
+			ClassSpellMask: ClassSpellMask_PaladinJudgementOfTheCrusader,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
@@ -70,12 +72,12 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			Duration: time.Second * 30,
 			OnGain: func(_ *core.Aura, sim *core.Simulation) {
 				paladin.MultiplyMeleeSpeed(sim, 1.4)
-				paladin.AutoAttacks.MHAuto().DamageMultiplier /= 1.4
+				paladin.AutoAttacks.MHAuto().ApplyMultiplicativeDamageBonus(1 / 1.4)
 				paladin.AddStatDynamic(sim, stats.AttackPower, ap*improvedSotC+libramAp)
 			},
 			OnExpire: func(_ *core.Aura, sim *core.Simulation) {
 				paladin.MultiplyMeleeSpeed(sim, 1/1.4)
-				paladin.AutoAttacks.MHAuto().DamageMultiplier *= 1.4
+				paladin.AutoAttacks.MHAuto().ApplyMultiplicativeDamageBonus(1.4)
 				paladin.AddStatDynamic(sim, stats.AttackPower, -ap*improvedSotC+libramAp)
 			},
 		})
@@ -85,7 +87,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 		paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
 			SpellSchool: core.SpellSchoolHoly,
-			Flags:       core.SpellFlagAPL,
+			Flags:       core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,

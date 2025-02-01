@@ -38,12 +38,12 @@ func (mage *Mage) newFireBlastSpellConfig(rank int, cdTimer *core.Timer) core.Sp
 	cooldown := time.Second * 8
 
 	return core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellCode:   SpellCode_MageFireBlast,
-		SpellSchool: core.SpellSchoolFire,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL,
+		ActionID:       core.ActionID{SpellID: spellId},
+		ClassSpellMask: ClassSpellMask_MageFireBlast,
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
 
 		Rank:          rank,
 		RequiredLevel: level,
