@@ -59,18 +59,30 @@ export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Sp
 
 export const CrusaderStrikeStopAttack = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecRetributionPaladin>({
 	fieldName: 'isUsingCrusaderStrikeStopAttack',
-	label: 'Using Crusader Strike StopAttack Macro',
+	label: 'Using Crusader Strike /stopattack macro',
 	labelTooltip: 'Allows saving of extra attacks',
 });
 
 export const DivineStormStopAttack = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecRetributionPaladin>({
 	fieldName: 'isUsingDivineStormStopAttack',
-	label: 'Using Divine Storm StopAttack Macro',
+	label: 'Using Divine Storm /stopattack macro',
 	labelTooltip: 'Allows saving of extra attacks',
 });
 
 export const JudgementStopAttack = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecRetributionPaladin>({
 	fieldName: 'isUsingJudgementStopAttack',
-	label: 'Using Judgement StopAttack Macro',
+	label: 'Using Judgement /stopattack macro',
 	labelTooltip: 'Allows saving of extra attacks',
+});
+
+export const ExorcismStopAttack = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecRetributionPaladin>({
+	fieldName: 'isUsingExorcismStopAttack',
+	label: 'Using Exorcism /stopattack macro',
+	labelTooltip: 'Makes for more precise timings when twisting close to or below 3s swing speed',
+});
+
+export const ManualStartAttack = InputHelpers.makeSpecOptionsBooleanInput<Spec.SpecRetributionPaladin>({
+	fieldName: 'isUsingManualStartAttack',
+	label: 'Using manual /startattack macro (for stacking only)',
+	labelTooltip: 'Mainly useful for slow seal stacking utilizing /startattack macros',
 });

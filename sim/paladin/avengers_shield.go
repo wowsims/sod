@@ -35,7 +35,7 @@ func (paladin *Paladin) registerAvengersShield() {
 		SpellSchool:    core.SpellSchoolHoly,
 		DefenseType:    core.DefenseTypeRanged, // Crits as if melee for 200%
 		ProcMask:       core.ProcMaskRangedSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary | core.SpellFlagBatchStartAttackMacro,
 		MissileSpeed:   35, // Verified from game files using WoW tools.
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.26,

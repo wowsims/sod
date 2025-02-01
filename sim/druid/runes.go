@@ -27,8 +27,8 @@ func (druid *Druid) ApplyRunes() {
 	druid.applyElunesFires()
 
 	// Hands
-	druid.applyMangle()
 	druid.registerSunfireSpell()
+	druid.applyMangle()
 
 	// Belt
 	druid.applyBerserk()
@@ -37,6 +37,8 @@ func (druid *Druid) ApplyRunes() {
 	// Legs
 	druid.applyStarsurge()
 	druid.applySavageRoar()
+	druid.registerLacerateBleedSpell()
+	druid.registerLacerateSpell()
 
 	// Feet
 	druid.applyDreamstate()
@@ -90,6 +92,8 @@ func (druid *Druid) applyShoulderRuneEffect() {
 		druid.applyRAQFeral3PBonus()
 
 	// Guardian
+	case int32(proto.DruidRune_RuneShoulderFerocious):
+		druid.applyT1Guardian4PBonus()
 	case int32(proto.DruidRune_RuneShouldersShifter):
 		druid.applyT1Guardian6PBonus()
 	case int32(proto.DruidRune_RuneShouldersTerritorial):
@@ -125,32 +129,33 @@ func (druid *Druid) applyGore() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
-		Label:    "Gore",
-		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneHelmGore)},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	affectedBearSpells := ClassSpellMask_DruidLacerate | ClassSpellMask_DruidSwipeBear | ClassSpellMask_DruidMaul
+	affectedCatSpells := ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidShred
+
+	actionID := core.ActionID{SpellID: int32(proto.DruidRune_RuneHelmGore)}
+	rageMetrics := druid.NewRageMetrics(actionID)
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label: "Gore Trigger",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			if spell.Matches(affectedBearSpells) {
+				if !sim.Proc(0.15, "Gore Bear") {
+					return
+				}
+
+				if druid.MangleBear != nil {
+					druid.MangleBear.CD.Reset()
+				}
+				druid.AddRage(sim, 10, rageMetrics)
+			} else if spell.Matches(affectedCatSpells) && sim.Proc(0.15, "Gore Bear") {
+				druid.TigersFury.CD.Reset()
+			}
 		},
-	})
-}
-
-const (
-	Gore_BearResetProcChance = .15
-	Gore_CatResetProcChance  = .15
-)
-
-// TODO: Bear spells not implemented: MangleBear, Swipe, Maul
-func (druid *Druid) rollGoreBearReset(sim *core.Simulation) {
-	if sim.RandomFloat("Gore (Bear)") < Gore_BearResetProcChance {
-		druid.MangleBear.CD.Reset()
-	}
-}
-
-func (druid *Druid) rollGoreCatReset(sim *core.Simulation) {
-	if sim.RandomFloat("Gore (Cat)") < Gore_CatResetProcChance {
-		druid.TigersFury.CD.Reset()
-	}
+	}))
 }
 
 func (druid *Druid) applyFuryOfStormRage() {
@@ -307,7 +312,7 @@ func (druid *Druid) tryElunesFiresRipExtension(sim *core.Simulation, unit *core.
 }
 
 func (druid *Druid) applyMangle() {
-	//druid.registerMangleBearSpell()
+	druid.registerMangleBearSpell()
 	druid.registerMangleCatSpell()
 }
 

@@ -163,8 +163,8 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 		},
 	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_HunterKillShot,
-		Kind:      core.SpellMod_Cooldown_Multi_Flat,
-		IntValue:  -50,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Second * 6,
 	})
 }
 

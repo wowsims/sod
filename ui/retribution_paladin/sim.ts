@@ -129,6 +129,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			RetributionPaladinInputs.CrusaderStrikeStopAttack,
 			RetributionPaladinInputs.JudgementStopAttack,
 			RetributionPaladinInputs.DivineStormStopAttack,
+			RetributionPaladinInputs.ExorcismStopAttack,
+			RetributionPaladinInputs.ManualStartAttack,
 		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],

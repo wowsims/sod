@@ -14,6 +14,7 @@ const (
 	IdolOfFerocity                   = 22397
 	IdolOfTheMoon                    = 23197
 	IdolOfBrutality                  = 23198
+	IdolOfCruelty                    = 232424
 	IdolMindExpandingMushroom        = 209576
 	Catnip                           = 213407
 	IdolOfWrath                      = 216490
@@ -133,7 +134,16 @@ func init() {
 	// https://www.wowhead.com/classic/item=23198/idol-of-brutality
 	// Equip: Reduces the rage cost of Maul and Swipe by 3.
 	core.NewItemEffect(IdolOfBrutality, func(agent core.Agent) {
-		// Implemented in maul.go and swipe.go
+		druid := agent.(DruidAgent).GetDruid()
+
+		core.MakePermanent(druid.RegisterAura(core.Aura{
+			Label: "Reduced Maul and Swipe Cost",
+		}).AttachSpellMod(core.SpellModConfig{
+			// For whatever reason also affects Mnagle (Bear)
+			ClassMask: ClassSpellMask_DruidMaul | ClassSpellMask_DruidSwipeBear | ClassSpellMask_DruidSwipeCat | ClassSpellMask_DruidMangleBear,
+			Kind:      core.SpellMod_PowerCost_Flat,
+			IntValue:  -3,
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=232390/idol-of-celestial-focus
@@ -214,7 +224,18 @@ func init() {
 	// https://www.wowhead.com/classic/item=228182/idol-of-exsanguination-bear
 	// Equip: Your Lacerate ticks energize you for 3 rage.
 	core.NewItemEffect(IdolOfExsanguinationBear, func(agent core.Agent) {
-		// TODO: Not yet implemented
+		druid := agent.(DruidAgent).GetDruid()
+
+		rageMetrics := druid.NewRageMetrics(core.ActionID{ItemID: IdolOfExsanguinationBear})
+
+		core.MakePermanent(druid.RegisterAura(core.Aura{
+			Label: "Idol of Exsanguination (Bear)",
+			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.Matches(ClassSpellMask_DruidLacerate) {
+					druid.AddRage(sim, 3, rageMetrics)
+				}
+			},
+		}))
 	})
 
 	// https://www.wowhead.com/classic/item=234469/idol-of-feline-ferocity
@@ -243,6 +264,17 @@ func init() {
 			ClassMask: ClassSpellMask_DruidWrath | ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidStarsurge | ClassSpellMask_DruidStarfallSplash | ClassSpellMask_DruidStarfallTick,
 			IntValue:  3,
 		}))
+	})
+
+	// https://www.wowhead.com/classic/item=220606/idol-of-the-dream
+	// Equip: Increases the damage of Swipe and Shred by 2%.
+	core.NewItemEffect(IdolOfTheDream, func(agent core.Agent) {
+		// druid := agent.(DruidAgent).GetDruid()
+
+		// TODO: How does this Idol work?
+		// core.MakePermanent(druid.RegisterAura(core.Aura{
+		// 	Label: "Improved Swipe/Shred",
+		// })).AttachSpellMod(core.SpellModConfig{})
 	})
 
 	// https://www.wowhead.com/classic/item=228180/idol-of-the-swarm
@@ -287,6 +319,19 @@ func init() {
 			ClassMask: ClassSpellMask_DruidSwipeBear | ClassSpellMask_DruidSwipeCat | ClassSpellMask_DruidMangleBear | ClassSpellMask_DruidMangleCat,
 			IntValue:  3,
 		}))
+	})
+
+	// https://www.wowhead.com/classic/item=216490/idol-of-wrath
+	// Equip: Increases the damage of your Wrath spell by up to 2%.
+	core.NewItemEffect(IdolOfWrath, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+		core.MakePermanent(druid.RegisterAura(core.Aura{
+			Label: "Improved Wrath",
+		})).AttachSpellMod(core.SpellModConfig{
+			ClassMask: ClassSpellMask_DruidWrath,
+			Kind:      core.SpellMod_BaseDamageDone_Flat,
+			IntValue:  2,
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=227183/knight-lieutenants-dragonhide-grips

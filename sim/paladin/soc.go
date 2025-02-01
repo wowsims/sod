@@ -70,7 +70,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlag_RV,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlag_RV | core.SpellFlagBatchStartAttackMacro,
 
 			ClassSpellMask: ClassSpellMask_PaladinJudgementOfCommand, // used in judgement.go
 
@@ -151,7 +151,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 		paladin.sealOfCommand = paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
 			SpellSchool: core.SpellSchoolHoly,
-			Flags:       core.SpellFlagAPL,
+			Flags:       core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,

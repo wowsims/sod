@@ -57,7 +57,7 @@ func (paladin *Paladin) registerHolyShock() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,

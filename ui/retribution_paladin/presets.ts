@@ -216,11 +216,66 @@ export const TalentPresets = {
 	[Phase.Phase6]: [RetTalents],
 };
 
-export const PresetBuildTwisting = PresetUtils.makePresetBuild('Twisting', { gear: Phase6TwistingGear, talents: RetTalents, rotation: APLTwisting });
-export const PresetBuildP5SealStacking = PresetUtils.makePresetBuild('P5 Seal Stacking', { gear: Phase5SealStackingGear, talents: RetTalents, rotation: APLP5SealStacking6CF });
-export const PresetBuildP5Exodin = PresetUtils.makePresetBuild('P5 Exodin', { gear: Phase5ExodinGear, talents: RetTalents, rotation: APLP5Exodin6CF });
-export const PresetBuildP5Shockadin = PresetUtils.makePresetBuild('P5 Shockadin', { gear: Phase5ShockadinGear, talents: ShockadinTalents, rotation: APLShockadin });
-export const PresetBuildP6Exodin = PresetUtils.makePresetBuild('P6 Exodin', { gear: Phase6ExodinGear, talents: RetTalents, rotation: APLP6Exodin });
+export const PresetBuildTwisting = PresetUtils.makePresetBuild('Twisting', {
+	gear: Phase6TwistingGear,
+	talents: RetTalents,
+	rotation: APLTwisting,
+	options: {
+		isUsingCrusaderStrikeStopAttack: true,
+		isUsingDivineStormStopAttack: true,
+		isUsingExorcismStopAttack: true,
+		isUsingJudgementStopAttack: true,
+		isUsingManualStartAttack: false,
+	},
+});
+export const PresetBuildP5SealStacking = PresetUtils.makePresetBuild('P5 Seal Stacking', {
+	gear: Phase5SealStackingGear,
+	talents: RetTalents,
+	rotation: APLP5SealStacking6CF,
+	options: {
+		isUsingCrusaderStrikeStopAttack: false,
+		isUsingDivineStormStopAttack: false,
+		isUsingExorcismStopAttack: false,
+		isUsingJudgementStopAttack: false,
+		isUsingManualStartAttack: false,
+	},
+});
+export const PresetBuildP5Exodin = PresetUtils.makePresetBuild('P5 Exodin', {
+	gear: Phase5ExodinGear,
+	talents: RetTalents,
+	rotation: APLP5Exodin6CF,
+	options: {
+		isUsingCrusaderStrikeStopAttack: false,
+		isUsingDivineStormStopAttack: false,
+		isUsingExorcismStopAttack: false,
+		isUsingJudgementStopAttack: false,
+		isUsingManualStartAttack: false,
+	},
+});
+export const PresetBuildP5Shockadin = PresetUtils.makePresetBuild('P5 Shockadin', {
+	gear: Phase5ShockadinGear,
+	talents: ShockadinTalents,
+	rotation: APLShockadin,
+	options: {
+		isUsingCrusaderStrikeStopAttack: false,
+		isUsingDivineStormStopAttack: false,
+		isUsingExorcismStopAttack: false,
+		isUsingJudgementStopAttack: false,
+		isUsingManualStartAttack: false,
+	},
+});
+export const PresetBuildP6Exodin = PresetUtils.makePresetBuild('P6 Exodin', {
+	gear: Phase6ExodinGear,
+	talents: RetTalents,
+	rotation: APLP6Exodin,
+	options: {
+		isUsingCrusaderStrikeStopAttack: false,
+		isUsingDivineStormStopAttack: false,
+		isUsingExorcismStopAttack: false,
+		isUsingJudgementStopAttack: false,
+		isUsingManualStartAttack: false,
+	},
+});
 
 export const DefaultTalents = TalentPresets[Phase.Phase6][0];
 
@@ -248,7 +303,7 @@ export const DefaultConsumes = Consumes.create({
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
 	mildlyIrradiatedRejuvPot: true,
 	miscConsumes: {
-		boglingRoot: true
+		boglingRoot: false,
 	},
 	offHandImbue: WeaponImbue.EnchantedRepellent,
 	sapperExplosive: SapperExplosive.SapperFumigator,

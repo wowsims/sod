@@ -65,7 +65,6 @@ func (druid *Druid) registerRakeSpell() {
 func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 	baseDamageInitial := rakeRank.initialDamage
 	baseDamageTick := rakeRank.dotTickDamage
-	energyCost := 40 - float64(druid.Talents.Ferocity)
 
 	return core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_DruidRake,
@@ -76,7 +75,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagBinary | core.SpellFlagAPL | SpellFlagOmen | SpellFlagBuilder,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   energyCost,
+			Cost:   40,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -87,7 +86,7 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 		},
 
 		BaseDamageMultiplierAdditivePct: RakeBaseDmgModifier,
-		DamageMultiplier:                1 + 0.1*float64(druid.Talents.SavageFury),
+		DamageMultiplier:                1,
 		ThreatMultiplier:                1,
 
 		Dot: core.DotConfig{

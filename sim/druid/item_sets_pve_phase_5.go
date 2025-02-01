@@ -214,16 +214,26 @@ var ItemSetFuryOfStormrage = core.NewItemSet(core.ItemSet{
 // Swipe(Bear) also causes your Maul to hit 1 additional target for the next 6 sec.
 func (druid *Druid) applyT2Guardian2PBonus() {
 	label := "S03 - Item - T2 - Druid - Guardian 2P Bonus"
-	if druid.HasAura(label) {
+	if druid.Env.GetNumTargets() == 1 || druid.HasAura(label) {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
-		Label: label,
+	cleaveAura := druid.RegisterAura(core.Aura{
+		Label:    "2P Cleave Buff",
+		Duration: time.Second * 6,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
+			druid.FuryOfStormrageMaulCleave = true
 		},
 	})
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label: label,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && spell.Matches(ClassSpellMask_DruidSwipeBear) {
+				cleaveAura.Activate(sim)
+			}
+		},
+	}))
 }
 
 // Your Mangle(Bear), Swipe(Bear), Maul, and Lacerate abilities gain 5% increased critical strike chance against targets afflicted by your Lacerate.
@@ -240,7 +250,23 @@ func (druid *Druid) applyT2Guardian4PBonus() {
 	druid.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
+			for _, spell := range []*DruidSpell{druid.MangleBear, druid.SwipeBear, druid.Maul, druid.Lacerate} {
+				if spell == nil {
+					continue
+				}
+
+				oldApplyEffects := spell.ApplyEffects
+				spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					bonusCrit := 0.0
+					if druid.LacerateBleed.Dot(target).GetStacks() > 0 {
+						bonusCrit = 5 * core.CritRatingPerCritChance
+					}
+
+					spell.BonusCritRating += bonusCrit
+					oldApplyEffects(sim, target, spell)
+					spell.BonusCritRating -= bonusCrit
+				}
+			}
 		},
 	})
 }
@@ -250,18 +276,28 @@ func (druid *Druid) applyT2Guardian6PBonus() {
 	if !druid.HasRune(proto.DruidRune_RuneLegsLacerate) {
 		return
 	}
-
 	label := "S03 - Item - T2 - Druid - Guardian 6P Bonus"
 	if druid.HasAura(label) {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	druid.FuryOfStormrageLacerateSpread = true
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// TODO
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_DruidSwipeBear) && result.Landed() && result.Target != druid.CurrentTarget {
+				currentTargetDoT := druid.LacerateBleed.Dot(druid.CurrentTarget)
+				if !currentTargetDoT.IsActive() {
+					return
+				}
+
+				targetDoT := druid.LacerateBleed.Dot(result.Target)
+				targetDoT.Apply(sim)
+				targetDoT.SetStacks(sim, currentTargetDoT.GetStacks())
+				targetDoT.UpdateExpires(sim, currentTargetDoT.ExpiresAt())
+			}
 		},
-	})
+	}))
 }
 
 var ItemSetBountyOfStormrage = core.NewItemSet(core.ItemSet{

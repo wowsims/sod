@@ -22,7 +22,7 @@ func (paladin *Paladin) registerShieldOfRighteousness() {
 		SpellSchool:    core.SpellSchoolHoly,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 		ClassSpellMask: ClassSpellMask_PaladinShieldOfRighteousness,
 
 		ManaCost: core.ManaCostOptions{

@@ -12,14 +12,24 @@ func (druid *Druid) applyBerserk() {
 		return
 	}
 
+	hasMangle := druid.HasRune(proto.DruidRune_RuneHandsMangle)
+
 	actionId := core.ActionID{SpellID: 417141}
 	druid.BerserkAura = druid.RegisterAura(core.Aura{
 		Label:    "Berserk",
 		ActionID: actionId,
 		Duration: time.Second * 15,
 	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidLacerate,
 		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -100,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidMangleBear,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -100,
+	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_DruidCatFormSpells,
+		Kind:      core.SpellMod_PowerCost_Pct,
 		IntValue:  -50,
 	})
 
@@ -36,6 +46,9 @@ func (druid *Druid) applyBerserk() {
 			IgnoreHaste: true,
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			if hasMangle {
+				druid.MangleBear.CD.Reset()
+			}
 			druid.BerserkAura.Activate(sim)
 		},
 	})

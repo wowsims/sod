@@ -847,17 +847,12 @@ func sanctifiedTankingEffect(character *Character, spellID int32, threatPercentI
 	}
 }
 
-// Gets all units that the Sanctified buff should apply to. This includes the player and Hunter/Warlock pets
+// Gets all units that the Sanctified buff should apply to.
+// This includes the player and ALL pets/minions as of 2025-01-31
 func getSanctifiedUnits(character *Character) []*Unit {
 	units := []*Unit{&character.Unit}
-	if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
-		for _, pet := range character.Pets {
-			if pet.IsGuardian() {
-				continue
-			}
-
-			units = append(units, &pet.Unit)
-		}
+	for _, pet := range character.Pets {
+		units = append(units, &pet.Unit)
 	}
 
 	return units

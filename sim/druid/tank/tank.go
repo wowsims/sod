@@ -37,18 +37,18 @@ func NewFeralTankDruid(character *core.Character, options *proto.Player) *FeralT
 		bear.SelfBuffs.InnervateTarget = tankOptions.Options.InnervateTarget
 	}
 
+	bear.EnableEnergyBar(100.0)
 	bear.EnableRageBar(core.RageBarOptions{
-		StartingRage:   bear.Options.StartingRage,
-		RageMultiplier: 1,
+		StartingRage:          bear.Options.StartingRage,
+		DamageDealtMultiplier: 1,
+		DamageTakenMultiplier: 1,
 	})
 
 	bear.EnableAutoAttacks(bear, core.AutoAttackOptions{
 		// Base paw weapon.
 		MainHand:       bear.GetBearWeapon(),
 		AutoSwingMelee: true,
-		ReplaceMHSwing: bear.TryMaul,
 	})
-	bear.ReplaceBearMHFunc = bear.TryMaul
 
 	healingModel := options.HealingModel
 	if healingModel != nil {
@@ -56,6 +56,9 @@ func NewFeralTankDruid(character *core.Character, options *proto.Player) *FeralT
 			core.ApplyInspiration(bear.GetCharacter(), healingModel.InspirationUptime)
 		}
 	}
+
+	bear.PseudoStats.FeralCombatEnabled = true
+	bear.PseudoStats.InFrontOfTarget = true
 
 	return bear
 }
@@ -73,11 +76,12 @@ func (bear *FeralTankDruid) GetDruid() *druid.Druid {
 func (bear *FeralTankDruid) Initialize() {
 	bear.Druid.Initialize()
 	bear.RegisterFeralTankSpells()
+	bear.RegisterFeralCatSpells()
 }
 
 func (bear *FeralTankDruid) Reset(sim *core.Simulation) {
 	bear.Druid.Reset(sim)
-	bear.Druid.ClearForm(sim)
+	bear.Druid.CancelShapeshift(sim)
 	bear.BearFormAura.Activate(sim)
 	bear.Druid.PseudoStats.Stunned = false
 }

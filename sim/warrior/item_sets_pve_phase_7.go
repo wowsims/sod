@@ -115,10 +115,6 @@ var ItemSetDreadnaughtsBattlegear = core.NewItemSet(core.ItemSet{
 
 // Your Taunt ability never misses, and your chance to be Dodged or Parried is reduced by 2%.
 func (warrior *Warrior) applyNaxxramasProtection2PBonus() {
-	if warrior.Talents.DeepWounds == 0 {
-		return
-	}
-
 	label := "S03 - Item - Naxxramas - Warrior - Protection 2P Bonus"
 	if warrior.HasAura(label) {
 		return
@@ -135,10 +131,6 @@ func (warrior *Warrior) applyNaxxramasProtection2PBonus() {
 // Reduces the cooldown on your Shield Wall ability by 3 min and reduces the cooldown on your Recklessness ability by 3 min.
 // Recklessness can now be used in any Stance and does not increase damage taken.
 func (warrior *Warrior) applyNaxxramasProtection4PBonus() {
-	if warrior.Talents.DeepWounds == 0 {
-		return
-	}
-
 	label := "S03 - Item - Naxxramas - Warrior - Protection 4P Bonus"
 	if warrior.HasAura(label) {
 		return
@@ -149,10 +141,6 @@ func (warrior *Warrior) applyNaxxramasProtection4PBonus() {
 	})).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
 		ClassMask: ClassSpellMask_WarriorShieldWall | ClassSpellMask_WarriorRecklesness,
-		TimeValue: -time.Minute * 3,
-	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_Cooldown_Flat,
-		ClassMask: ClassSpellMask_WarriorRecklesness,
 		TimeValue: -time.Minute * 3,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Custom,

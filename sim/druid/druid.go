@@ -20,13 +20,17 @@ const (
 	ClassSpellMask_DruidNone int64 = 0
 
 	ClassSpellMask_DruidBerserk int64 = 1 << iota
+	ClassSpellMask_DruidEnrage
 	ClassSpellMask_DruidFaerieFire
 	ClassSpellMask_DruidFaerieFireFeral
 	ClassSpellMask_DruidFerociousBite
+	ClassSpellMask_DruidFrenziedRegeneration
 	ClassSpellMask_DruidHurricane
 	ClassSpellMask_DruidInsectSwarm
+	ClassSpellMask_DruidLacerate
 	ClassSpellMask_DruidMangleBear
 	ClassSpellMask_DruidMangleCat
+	ClassSpellMask_DruidMaul
 	ClassSpellMask_DruidMoonfire
 	ClassSpellMask_DruidRake
 	ClassSpellMask_DruidRip
@@ -85,12 +89,12 @@ type Druid struct {
 	Innervate            *DruidSpell
 	InsectSwarm          []*DruidSpell
 	Lacerate             *DruidSpell
+	LacerateBleed        *DruidSpell
 	Languish             *DruidSpell
 	MangleBear           *DruidSpell
 	MangleCat            *DruidSpell
 	Berserk              *DruidSpell
 	Maul                 *DruidSpell
-	MaulQueueSpell       *DruidSpell
 	Moonfire             []*DruidSpell
 	Rebirth              *DruidSpell
 	Rake                 *DruidSpell
@@ -109,6 +113,8 @@ type Druid struct {
 	SwipeCat             *DruidSpell
 	TigersFury           *DruidSpell
 	Typhoon              *DruidSpell
+	curQueuedAutoSpell   *DruidSpell
+	MaulQueue            *DruidSpell
 	Wrath                []*DruidSpell
 
 	BearForm    *DruidSpell
@@ -119,6 +125,7 @@ type Druid struct {
 	BearFormAura             *core.Aura
 	BerserkAura              *core.Aura
 	CatFormAura              *core.Aura
+	curQueueAura             *core.Aura
 	ClearcastingAura         *core.Aura
 	DemoralizingRoarAuras    core.AuraArray
 	DreamstateManaRegenAura  *core.Aura
@@ -128,6 +135,7 @@ type Druid struct {
 	ImprovedFaerieFireAuras  core.AuraArray
 	FrenziedRegenerationAura *core.Aura
 	FurorAura                *core.Aura
+	PrimalFuryAura           *core.Aura
 	FuryOfStormrageAura      *core.Aura
 	InsectSwarmAuras         core.AuraArray
 	MaulQueueAura            *core.Aura
@@ -146,12 +154,17 @@ type Druid struct {
 
 	// Extra data used for various calculations and overrides
 	AllowRakeRipDoTCrits              bool // From T1 Feral 4p bonus
-	FerociousBiteExcessEnergyOverride bool // When true, disables the excess energy consumption of Ferocious bite
-	// Sunfire/Moonfire modifiers applied when in Moonkin form
-	MoonfireDotMultiplier float64
-	ShredPositionOverride bool
-	SunfireDotMultiplier  float64
-	t26pcTreants          *T2Treants
+	BearFormThreatMultiplier          float64
+	CenarionRageEnrageBonus           bool
+	FerociousBiteExcessEnergyOverride bool    // When true, disables the excess energy consumption of Ferocious bite
+	FrenziedRegenRageThreshold        float64 // Rage threshold where Frenzied Regeneration no longer consumes rage
+	FuryOfStormrageLacerateSpread     bool    // When true, spreads Lacerate from main target with Swipe(Bear)
+	FuryOfStormrageMaulCleave         bool    // When true, Maul should cleave a second target
+	MoonfireDotMultiplier             float64
+	ShredPositionOverride             bool
+	SunfireDotMultiplier              float64
+
+	t26pcTreants *T2Treants
 
 	form         DruidForm
 	disabledMCDs []*core.MajorCooldown
@@ -180,9 +193,18 @@ func (druid *Druid) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
 	}
 }
 
-// func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
-// 	return druid.MaulReplaceMH(sim, mhSwingSpell)
-// }
+func (druid *Druid) TryMaul(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
+	if !druid.curQueueAura.IsActive() {
+		return mhSwingSpell
+	}
+
+	if !druid.curQueuedAutoSpell.CanCast(sim, druid.CurrentTarget) {
+		druid.curQueueAura.Deactivate(sim)
+		return mhSwingSpell
+	}
+
+	return druid.curQueuedAutoSpell.Spell
+}
 
 func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *DruidSpell {
 	prev := config.ExtraCastCondition
@@ -250,21 +272,19 @@ func (druid *Druid) RegisterFeralCatSpells() {
 // TODO: Classic feral tank
 func (druid *Druid) RegisterFeralTankSpells() {
 	// druid.registerBarkskinCD()
-	// druid.registerBerserkCD()
-	// druid.registerBearFormSpell()
+	druid.registerBearFormSpell()
 	// druid.registerDemoralizingRoarSpell()
-	// druid.registerEnrageSpell()
-	// druid.registerFrenziedRegenerationCD()
-	// druid.registerMangleBearSpell()
-	// druid.registerMaulSpell()
-	// druid.registerLacerateSpell()
-	// druid.registerRakeSpell()
-	// druid.registerRipSpell()
+	druid.registerEnrageSpell()
+	druid.registerFrenziedRegenerationCD()
+	druid.registerMaulSpell()
 	// druid.registerSurvivalInstinctsCD()
-	// druid.registerSwipeBearSpell()
+	druid.registerSwipeBearSpell()
 }
 
 func (druid *Druid) Reset(_ *core.Simulation) {
+	druid.curQueueAura = nil
+	druid.curQueuedAutoSpell = nil
+
 	druid.BleedsActive = 0
 	druid.form = druid.StartingForm
 	druid.disabledMCDs = []*core.MajorCooldown{}
@@ -286,6 +306,8 @@ func New(character *core.Character, form DruidForm, selfBuffs SelfBuffs, talents
 	druid.AddStatDependency(stats.Agility, stats.Dodge, core.DodgePerAgiAtLevel[character.Class][int(druid.Level)]*core.DodgeRatingPerDodgeChance)
 	druid.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[character.Class][int(druid.Level)]*core.SpellCritRatingPerCritChance)
 	druid.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
+
+	druid.ReplaceBearMHFunc = druid.TryMaul
 
 	guardians.ConstructGuardians(&druid.Character)
 	druid.t26pcTreants = druid.NewT2Treants()

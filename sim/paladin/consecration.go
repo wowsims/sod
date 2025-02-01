@@ -46,7 +46,7 @@ func (paladin *Paladin) registerConsecration() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagPureDot | core.SpellFlagAPL,
+			Flags:       core.SpellFlagPureDot | core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,
