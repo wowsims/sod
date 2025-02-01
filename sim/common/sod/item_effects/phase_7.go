@@ -377,15 +377,9 @@ func UnholyMightAura(character *core.Character) *core.Aura {
 		ActionID: core.ActionID{SpellID: 1220668},
 		Label:    "Unholy Might",
 		Duration: time.Second * 8,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.Strength, 350)
-			character.PseudoStats.DamageTakenMultiplier *= 1.05
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.Strength, -350)
-			character.PseudoStats.DamageTakenMultiplier /= 1.05
-		},
-	}).AttachStatBuff(stats.Strength, 400)
+	}).
+		AttachStatBuff(stats.Strength, 350).
+		AttachMultiplicativePseudoStatBuff(&character.PseudoStats.DamageTakenMultiplier, 1.05)
 }
 
 // Atiesh Helpers
