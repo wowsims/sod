@@ -48,9 +48,7 @@ func NewFeralTankDruid(character *core.Character, options *proto.Player) *FeralT
 		// Base paw weapon.
 		MainHand:       bear.GetBearWeapon(),
 		AutoSwingMelee: true,
-		ReplaceMHSwing: bear.TryMaul,
 	})
-	bear.ReplaceBearMHFunc = bear.TryMaul
 
 	healingModel := options.HealingModel
 	if healingModel != nil {
