@@ -364,11 +364,11 @@ func (warrior *Warrior) applySuddenDeath() {
 	})
 
 	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
-		Name:       "Sudden Death",
+		Name:       "Sudden Death Trigger",
+		Callback:   core.CallbackOnSpellHitDealt,
 		ProcMask:   core.ProcMaskMelee,
 		Outcome:    core.OutcomeLanded,
 		ProcChance: procChance,
-		Callback:   core.CallbackOnPeriodicDamageDealt,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			warrior.SuddenDeathAura.Activate(sim)
 		},
