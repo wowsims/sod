@@ -79,7 +79,10 @@ func TestRetribution(t *testing.T) {
 			OtherRotations: []core.RotationCombo{core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5p6p7-twist")},
 			Buffs:          core.FullBuffsPhase5,
 			Consumes:       Phase4Consumes,
-			SpecOptions:    core.SpecOptionsCombo{Label: "P4 Twist", SpecOptions: PlayerOptionsSealofMartyrdomStopAttack},
+			SpecOptions:    core.SpecOptionsCombo{Label: "P4 Twist", SpecOptions: PlayerOptionsSealofMartyrdom},
+			OtherSpecOptions: []core.SpecOptionsCombo{
+				core.SpecOptionsCombo{Label: "P4 Twist Stopattack", SpecOptions: PlayerOptionsSealofMartyrdomStopAttack},
+			},
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
