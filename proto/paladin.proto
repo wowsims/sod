@@ -162,6 +162,8 @@ message PaladinOptions {
     bool IsUsingDivineStormStopAttack = 4;
     bool IsUsingJudgementStopAttack = 5;
     bool IsUsingCrusaderStrikeStopAttack = 6;
+    bool IsUsingExorcismStopAttack = 7;
+    bool IsUsingManualStartAttack = 10;
 
     bool righteousFury = 8;
     Blessings personalBlessing = 9;

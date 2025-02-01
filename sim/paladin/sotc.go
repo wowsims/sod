@@ -54,7 +54,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagMeleeMetrics,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagBatchStartAttackMacro,
 
 			ClassSpellMask: ClassSpellMask_PaladinJudgementOfTheCrusader,
 
@@ -87,7 +87,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 		paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
 			SpellSchool: core.SpellSchoolHoly,
-			Flags:       core.SpellFlagAPL,
+			Flags:       core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,

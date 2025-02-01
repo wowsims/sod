@@ -43,7 +43,7 @@ func (paladin *Paladin) registerHolyWrath() {
 			SpellSchool:    core.SpellSchoolHoly,
 			DefenseType:    core.DefenseTypeMagic,
 			ProcMask:       core.ProcMaskSpellDamage, // TODO to be tested
-			Flags:          core.SpellFlagAPL,
+			Flags:          core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,

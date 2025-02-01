@@ -22,7 +22,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 		SpellSchool:    core.SpellSchoolHoly,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists | core.SpellFlagBatchStartAttackMacro,
 		ClassSpellMask: ClassSpellMask_PaladinHammerOfTheRighteous,
 
 		ManaCost: core.ManaCostOptions{
