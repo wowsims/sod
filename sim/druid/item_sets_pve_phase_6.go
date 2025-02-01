@@ -212,7 +212,7 @@ func (druid *Druid) applyTAQGuardian2PBonus() {
 			damageMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			damageMod.UpdateIntValue(10 * int64(newStacks-oldStacks))
+			damageMod.UpdateIntValue(10 * int64(newStacks))
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(ClassSpellMask_DruidMangleBear | ClassSpellMask_DruidSwipeBear) {
