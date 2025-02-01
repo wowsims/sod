@@ -744,7 +744,6 @@ const MaxSanctifiedBonus = 8
 func sanctifiedDamageEffect(character *Character, spellID int32, percentIncrease float64) {
 	for _, unit := range getSanctifiedUnits(character) {
 		sanctifiedBonus := int32(0)
-		multiplier := 1.0
 		healthDeps := buildSanctifiedHealthDeps(unit, percentIncrease)
 
 		unit.GetOrRegisterAura(Aura{
@@ -755,7 +754,6 @@ func sanctifiedDamageEffect(character *Character, spellID int32, percentIncrease
 			MaxStacks:  MaxSanctifiedBonus,
 			OnInit: func(aura *Aura, sim *Simulation) {
 				sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
-				multiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
 			},
 			OnReset: func(aura *Aura, sim *Simulation) {
 				aura.Activate(sim)
@@ -763,11 +761,14 @@ func sanctifiedDamageEffect(character *Character, spellID int32, percentIncrease
 			},
 			OnGain: func(aura *Aura, sim *Simulation) {
 				aura.Unit.EnableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
-				aura.Unit.PseudoStats.DamageDealtMultiplier *= multiplier
+
+				aura.Unit.PseudoStats.SanctifiedDamageMultiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= aura.Unit.PseudoStats.SanctifiedDamageMultiplier
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				aura.Unit.DisableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
-				aura.Unit.PseudoStats.DamageDealtMultiplier /= multiplier
+
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= aura.Unit.PseudoStats.SanctifiedDamageMultiplier
 			},
 		})
 	}
@@ -812,7 +813,6 @@ func sanctifiedHealingEffect(character *Character, spellID int32, percentIncreas
 func sanctifiedTankingEffect(character *Character, spellID int32, threatPercentIncrease float64, damageHealthPercentIncrease float64) {
 	for _, unit := range getSanctifiedUnits(character) {
 		sanctifiedBonus := int32(0)
-		damageHealthMultiplier := 1.0
 		threatMultiplier := 1.0
 		healthDeps := buildSanctifiedHealthDeps(unit, damageHealthPercentIncrease)
 
@@ -824,7 +824,6 @@ func sanctifiedTankingEffect(character *Character, spellID int32, threatPercentI
 			MaxStacks:  MaxSanctifiedBonus,
 			OnInit: func(aura *Aura, sim *Simulation) {
 				sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
-				damageHealthMultiplier = 1.0 + damageHealthPercentIncrease/100.0*float64(sanctifiedBonus)
 				threatMultiplier = 1.0 + threatPercentIncrease/100.0*float64(sanctifiedBonus)
 			},
 			OnReset: func(aura *Aura, sim *Simulation) {
@@ -834,14 +833,15 @@ func sanctifiedTankingEffect(character *Character, spellID int32, threatPercentI
 			OnGain: func(aura *Aura, sim *Simulation) {
 				aura.Unit.EnableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 
+				aura.Unit.PseudoStats.SanctifiedDamageMultiplier = 1.0 + damageHealthPercentIncrease/100.0*float64(sanctifiedBonus)
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= aura.Unit.PseudoStats.SanctifiedDamageMultiplier
 				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
-				aura.Unit.PseudoStats.DamageDealtMultiplier *= damageHealthMultiplier
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				aura.Unit.DisableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= aura.Unit.PseudoStats.SanctifiedDamageMultiplier
 				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
-				aura.Unit.PseudoStats.DamageDealtMultiplier /= damageHealthMultiplier
 			},
 		})
 	}

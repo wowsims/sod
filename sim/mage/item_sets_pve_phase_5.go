@@ -89,13 +89,35 @@ func (mage *Mage) applyT2Damage6PBonus() {
 		return
 	}
 
+	bonusDamage := 0.0
+
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 467399},
 		Label:    label,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			bonusDamage = 0
+		},
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			for _, spell := range mage.GetSpellsMatchingClassMask(ClassSpellMask_MageFireball) {
+				for _, dot := range spell.Dots() {
+					if dot == nil {
+						continue
+					}
+
+					oldOnSnapshot := dot.OnSnapshot
+					dot.OnSnapshot = func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+						oldOnSnapshot(sim, target, dot, isRollover)
+						dot.SnapshotBaseDamage += bonusDamage
+						// This was made to not double dip on Sanctified
+						dot.SnapshotAttackerMultiplier /= mage.PseudoStats.SanctifiedDamageMultiplier
+					}
+				}
+			}
+		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(ClassSpellMask_MageFireball) && result.Landed() {
 				// Tested that this is calculated using the fireball damage WITHOUT defender mods (debuffs)
-				mage.BonusFireballDoTAmount += result.DamagePostAttacker * 1.00 / float64(spell.Dot(result.Target).NumberOfTicks)
+				bonusDamage = result.DamagePostAttacker * 1.00 / float64(spell.Dot(result.Target).NumberOfTicks)
 			}
 		},
 	}))
