@@ -236,9 +236,11 @@ func (druid *Druid) applyNaxxramasGuardian6PBonus() {
 		return
 	}
 
-	// TODO: Implement rage part when Frenzied Regeneration is implemented
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			druid.FrenziedRegenRageThreshold = 15
+		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if druid.FrenziedRegenerationAura != nil && druid.FrenziedRegenerationAura.IsActive() && spell.Unit.MobType == proto.MobType_MobTypeUndead && result.Landed() && result.Damage > 0 {
 				druid.FrenziedRegenerationAura.Activate(sim)

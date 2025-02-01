@@ -5,27 +5,27 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
-/* TODO: Bear mangle
 func (druid *Druid) registerMangleBearSpell() {
-	if !druid.Talents.Mangle {
+	if !druid.HasRune(proto.DruidRune_RuneHandsMangle) {
 		return
 	}
 
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
-	durReduction := (0.5) * float64(druid.Talents.ImprovedMangle)
+	apProcAura := core.DefendersResolveAttackPower(druid.GetCharacter())
 
 	druid.MangleBear = druid.RegisterSpell(Bear, core.SpellConfig{
-		SpellClassMask:   ClassSpellMask_DruidMangleBear
-		ActionID:    core.ActionID{SpellID: 48564},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagIncludeTargetBonusDamage | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_DruidMangleBear,
+		ActionID:       core.ActionID{SpellID: 407995},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          SpellFlagOmen | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		RageCost: core.RageCostOptions{
-			Cost:   20 - float64(druid.Talents.Ferocity),
+			Cost:   15,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -35,24 +35,38 @@ func (druid *Druid) registerMangleBearSpell() {
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    druid.NewTimer(),
-				Duration: time.Duration(float64(time.Second) * (6 - durReduction)),
+				Duration: time.Second * 6,
 			},
 		},
 
-		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * 1.15
-		ThreatMultiplier: core.TernaryFloat64(druid.HasSetBonus(ItemSetThunderheartHarness, 2), 1.15, 1),
+		DamageMultiplier: 1.6,
+		ThreatMultiplier: 1.5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			baseDamage := 299/1.15 +
-				spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) +
-				spell.BonusWeaponDamage()
+			berserking := druid.BerserkAura.IsActive()
+			targetCount := core.TernaryInt32(berserking, 3, 1)
+			numHits := min(targetCount, druid.Env.GetNumTargets())
+			results := make([]*core.SpellResult, numHits)
+			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 
-			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			for idx := range results {
+				results[idx] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
-			if result.Landed() {
-				mangleAuras.Get(target).Activate(sim)
-			} else {
-				spell.IssueRefund(sim)
+				if results[idx].Landed() {
+					mangleAuras.Get(target).Activate(sim)
+					if stacks := int32(druid.GetStat(stats.Defense)); stacks > 0 {
+						apProcAura.Activate(sim)
+						if apProcAura.GetStacks() != stacks {
+							apProcAura.SetStacks(sim, stacks)
+						}
+					}
+				} else if targetCount == 1 {
+					// Miss in single target mode
+					spell.IssueRefund(sim)
+				}
+				// Deal damage here, after Defender's Resolve
+				spell.DealDamage(sim, results[idx])
+				target = sim.Environment.NextTargetUnit(target)
 			}
 
 			if druid.BerserkAura.IsActive() {
@@ -62,18 +76,12 @@ func (druid *Druid) registerMangleBearSpell() {
 
 		RelatedAuras: []core.AuraArray{mangleAuras},
 	})
-        }
-*/
+}
 
 func (druid *Druid) registerMangleCatSpell() {
 	if !druid.HasRune(proto.DruidRune_RuneHandsMangle) {
 		return
 	}
-
-	hasGoreRune := druid.HasRune(proto.DruidRune_RuneHelmGore)
-
-	weaponMulti := 2.7
-	energyCost := 40 - float64(druid.Talents.Ferocity)
 
 	mangleAuras := druid.NewEnemyAuraArray(core.MangleAura)
 	druid.MangleCat = druid.RegisterSpell(Cat, core.SpellConfig{
@@ -85,7 +93,7 @@ func (druid *Druid) registerMangleCatSpell() {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOmen | SpellFlagBuilder,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   energyCost,
+			Cost:   40,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -95,7 +103,7 @@ func (druid *Druid) registerMangleCatSpell() {
 			IgnoreHaste: true,
 		},
 
-		DamageMultiplier: (1 + 0.1*float64(druid.Talents.SavageFury)) * weaponMulti,
+		DamageMultiplier: 2.7,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
@@ -106,10 +114,6 @@ func (druid *Druid) registerMangleCatSpell() {
 			if result.Landed() {
 				druid.AddComboPoints(sim, 1, target, spell.ComboPointMetrics())
 				mangleAuras.Get(target).Activate(sim)
-
-				if hasGoreRune {
-					druid.rollGoreCatReset(sim)
-				}
 			} else {
 				spell.IssueRefund(sim)
 			}

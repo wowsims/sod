@@ -5,7 +5,6 @@
 	      {"action":{"activateAura":{"auraId":{"spellId":407988}}},"doAtValue":{"const":{"val":"-8s"}}}
       ],
       "priorityList": [
-	      {"action":{"autocastOtherCooldowns":{}}},
-            {"action":{"catOptimalRotationAction":{"maxWaitTime":2,"minCombosForRip":3}}}
+	      {"action":{"autocastOtherCooldowns":{}}}
       ]
 }

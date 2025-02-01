@@ -53,7 +53,9 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 		// Base paw weapon.
 		MainHand:       cat.GetCatWeapon(cat.Level),
 		AutoSwingMelee: true,
+		ReplaceMHSwing: cat.TryMaul,
 	})
+	cat.ReplaceBearMHFunc = cat.TryMaul
 	/*
 		cat.ReplaceBearMHFunc = func(sim *core.Simulation, mhSwingSpell *core.Spell) *core.Spell {
 			return cat.checkReplaceMaul(sim, mhSwingSpell)
