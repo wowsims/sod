@@ -818,6 +818,9 @@ message Consumes {
 
 // NextIndex: 45
 message Debuffs {
+	reserved 21, 24;
+ 	reserved "ancient_corrosive_poison", "crystal_yield";
+  
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
 	TristateEffect judgement_of_the_crusader = 33;
