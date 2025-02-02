@@ -108,18 +108,35 @@ func (paladin *Paladin) registerTheArtOfWar() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
-		Label:    "The Art of War",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	cdReduction := time.Second*2
+	aowSpell := paladin.RegisterSpell(core.SpellConfig{
+		ActionID: core.ActionID{SpellID: 426157},
+		Flags:    core.SpellFlagPassiveSpell,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			timeToReady := paladin.exorcismCooldown.TimeToReady(sim)
+			actualReduction := min(timeToReady, cdReduction)
+			newTimeToReady := timeToReady - actualReduction
+
+			if sim.Log != nil {
+				paladin.Log(sim, "The Art of War reduced Exorcism cooldown by %s (%s -> %s)", actualReduction, timeToReady, newTimeToReady)
+			}
+
+			paladin.exorcismCooldown.Set(sim.CurrentTime + newTimeToReady)
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskMeleeDamageProc) || !result.Outcome.Matches(core.OutcomeCrit) {
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:       "The Art of War Trigger",
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMelee | core.ProcMaskMeleeDamageProc,
+		Outcome:    core.OutcomeCrit,
+		ProcChance: 1,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if paladin.exorcismCooldown.TimeToReady(sim) <= 0 {
 				return
 			}
-			//paladin.holyShockCooldown.Reset()
-			paladin.exorcismCooldown.Set(sim.CurrentTime + max(0, paladin.exorcismCooldown.TimeToReady(sim)-(time.Second*2)))
+
+			aowSpell.Cast(sim, result.Target)
 		},
 	})
 }

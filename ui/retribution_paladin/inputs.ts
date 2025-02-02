@@ -1,7 +1,7 @@
 import * as InputHelpers from '../core/components/input_helpers.js';
 import { Player } from '../core/player.js';
 import { Spec } from '../core/proto/common.js';
-import { PaladinAura,PaladinSeal } from '../core/proto/paladin.js';
+import { PaladinAura, PaladinSeal } from '../core/proto/paladin.js';
 import { ActionId } from '../core/proto_utils/action_id.js';
 import { TypedEvent } from '../core/typed_event.js';
 
@@ -9,11 +9,17 @@ import { TypedEvent } from '../core/typed_event.js';
 // These don't need to be in a separate file but it keeps things cleaner.
 
 export const AuraSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecRetributionPaladin, PaladinAura>({
- 	fieldName: 'aura',
- 	values: [
- 		{ value: PaladinAura.NoPaladinAura, tooltip: 'No Aura' },
- 		{ actionId: () => ActionId.fromSpellId(20218), value: PaladinAura.SanctityAura },
- 	],
+	fieldName: 'aura',
+	values: [
+		{ value: PaladinAura.NoPaladinAura, tooltip: 'No Aura' },
+		{
+			actionId: () => ActionId.fromSpellId(20218),
+			value: PaladinAura.SanctityAura,
+			showWhen: (player: Player<Spec.SpecRetributionPaladin>) => player.getTalents().sanctityAura,
+		},
+	],
+	changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) =>
+		TypedEvent.onAny([player.gearChangeEmitter, player.talentsChangeEmitter, player.specOptionsChangeEmitter, player.levelChangeEmitter]),
 });
 
 // The below is used in the custom APL action "Cast Primary Seal".

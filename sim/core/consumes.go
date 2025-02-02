@@ -114,7 +114,7 @@ func applyWeaponImbueConsumes(character *Character, consumes *proto.Consumes) {
 	if character.HasMHWeapon() {
 		addImbueStats(character, consumes.MainHandImbue, true, shadowOilIcd)
 	}
-	if character.OffHand() != nil {
+	if character.HasOHItem() {
 		addImbueStats(character, consumes.OffHandImbue, false, shadowOilIcd)
 	}
 }
