@@ -816,8 +816,11 @@ message Consumes {
 	MageScroll mage_scroll = 32;
 }
 
-// NextIndex: 44
+// NextIndex: 45
 message Debuffs {
+	reserved 21, 24;
+ 	reserved "ancient_corrosive_poison", "crystal_yield";
+  
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
 	TristateEffect judgement_of_the_crusader = 33;
@@ -871,9 +874,8 @@ message Debuffs {
 
 	// Misc Debuffs
 	bool gift_of_arthas = 9;
+	bool holy_sunder = 44;
 	bool curse_of_vulnerability = 23;
-	bool crystal_yield = 21;
-	int32 ancient_corrosive_poison = 24; // between 0 and 100, represents average uptime percentage
 	bool mekkatorque_fist_debuff = 29;
 	bool serpents_striker_fist_debuff = 30;
 	bool improved_faerie_fire = 36; // Provided by Tier 1 Feral set bonus

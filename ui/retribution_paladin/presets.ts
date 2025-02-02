@@ -38,6 +38,7 @@ import APLShockadinJson from './apls/p5-shockadin.apl.json';
 import APLTwistingJson from './apls/p5p6p7-twist.apl.json';
 import APLP6OneHandJson from './apls/p6-1h-3AQ10.apl.json';
 import APLP6ExodinJson from './apls/p6-exodin.apl.json';
+import APLTwistSlowJson from './apls/twist-slow-hold-filler.apl.json';
 import Phase1RetGearJson from './gear_sets/p1-ret.gear.json';
 import Phase2RetSoCGearJson from './gear_sets/p2-retsoc.gear.json';
 import Phase2RetSoMGearJson from './gear_sets/p2-retsom.gear.json';
@@ -159,6 +160,9 @@ export const APLP6OneHand = PresetUtils.makePresetAPLRotation('P6 1H Ret', APLP6
 export const APLTwisting = PresetUtils.makePresetAPLRotation('Twist', APLTwistingJson, {
 	customCondition: player => player.getLevel() === 60,
 });
+export const APLTwistingSlow = PresetUtils.makePresetAPLRotation('Twist Slow', APLTwistSlowJson, {
+	customCondition: player => player.getLevel() === 60,
+});
 
 export const APLPresets = {
 	[Phase.Phase1]: [APLP1Ret],
@@ -166,7 +170,7 @@ export const APLPresets = {
 	[Phase.Phase3]: [APLP3Ret],
 	[Phase.Phase4]: [APLP4RetTwist6pT1, APLP4RetExodin, APLP4RetExodin6pT1],
 	[Phase.Phase5]: [APLP5Exodin6CF, APLShockadin, APLP5SealStacking6CF],
-	[Phase.Phase6]: [APLTwisting, APLP6Exodin, APLP6OneHand],
+	[Phase.Phase6]: [APLTwisting, APLTwistingSlow, APLP6Exodin, APLP6OneHand],
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
