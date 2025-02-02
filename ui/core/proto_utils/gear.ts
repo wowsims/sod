@@ -1,4 +1,4 @@
-import { EquipmentSpec, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimItem } from '../proto/common.js';
+import { EquipmentSpec, HandType, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimItem } from '../proto/common.js';
 import { UIEnchant as Enchant, UIItem as Item } from '../proto/ui.js';
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
 import { distinct, equalsOrBothNull, getEnumValues } from '../utils.js';
@@ -122,6 +122,18 @@ export class Gear extends BaseGear {
 
 	withEquippedItem(newSlot: ItemSlot, newItem: EquippedItem | null, canDualWield2H: boolean): Gear {
 		return new Gear(this.withEquippedItemInternal(newSlot, newItem, canDualWield2H));
+	}
+
+	isDualWielding(): boolean {
+		return this.getEquippedItem(ItemSlot.ItemSlotMainHand) !== null && this.hasOffHandWeapon();
+	}
+
+	hasTwoHandedWeapon(): boolean {
+		return this.getEquippedItem(ItemSlot.ItemSlotMainHand)?.item.handType === HandType.HandTypeTwoHand;
+	}
+
+	hasOffHandWeapon(): boolean {
+		return this.getEquippedItem(ItemSlot.ItemSlotOffHand)?.item?.weaponType !== undefined;
 	}
 
 	getTrinkets(): Array<EquippedItem | null> {
