@@ -23,15 +23,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatHealth,
 		Stat.StatMana,
 		// Attributes
-		Stat.StatStrength,
 		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
-		Stat.StatAgility,
-		// Physical
-		Stat.StatAttackPower,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHit,
 		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
