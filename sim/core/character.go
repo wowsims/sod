@@ -565,6 +565,19 @@ func (character *Character) HasOHWeapon() bool {
 	return character.GetOHWeapon() != nil
 }
 
+// Returns the OH item if one is equipped, and null otherwise. Note that
+// shields / Held-in-off-hand items ARE counted in this function.
+func (character *Character) GetOHItem() *Item {
+	weapon := character.OffHand()
+	if weapon.ID == 0 {
+		return nil
+	}
+	return weapon
+}
+func (character *Character) HasOHItem() bool {
+	return character.GetOHItem() != nil
+}
+
 // Returns the ranged weapon if one is equipped, and null otherwise.
 func (character *Character) GetRangedWeapon() *Item {
 	weapon := character.Ranged()
