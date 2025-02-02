@@ -481,6 +481,12 @@ func (item WowheadItemResponse) GetUnique() bool {
 	return uniqueRegex.MatchString(item.Tooltip)
 }
 
+var uniqueCategoryRegex = regexp.MustCompile(`Unique-Equipped: ([^<]+) \(1\)<`)
+
+func (item WowheadItemResponse) GetUniqueCategory() string {
+	return item.GetTooltipRegexString(uniqueCategoryRegex, 1)
+}
+
 var itemTypePatterns = map[proto.ItemType]*regexp.Regexp{
 	proto.ItemType_ItemTypeHead:     regexp.MustCompile(`<td>Head</td>`),
 	proto.ItemType_ItemTypeNeck:     regexp.MustCompile(`<td>Neck</td>`),
@@ -701,14 +707,15 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		WeaponDamageMax: weaponDamageMax,
 		WeaponSpeed:     item.GetWeaponSpeed(),
 
-		Ilvl:          int32(item.GetItemLevel()),
-		Phase:         int32(item.GetPhase()),
-		RequiresLevel: int32(item.GetRequiresLevel()),
-		Quality:       proto.ItemQuality(item.GetQuality()),
-		Unique:        item.GetUnique(),
-		Heroic:        item.IsHeroic(),
-		Timeworn:      item.IsTimeworn(),
-		Sanctified:    item.IsSanctified(),
+		Ilvl:           int32(item.GetItemLevel()),
+		Phase:          int32(item.GetPhase()),
+		RequiresLevel:  int32(item.GetRequiresLevel()),
+		Quality:        proto.ItemQuality(item.GetQuality()),
+		Unique:         item.GetUnique(),
+		UniqueCategory: item.GetUniqueCategory(),
+		Heroic:         item.IsHeroic(),
+		Timeworn:       item.IsTimeworn(),
+		Sanctified:     item.IsSanctified(),
 
 		RequiredProfession: item.GetRequiredProfession(),
 		SetName:            item.GetItemSetName(),
