@@ -3161,7 +3161,7 @@ func init() {
 	// Equip: Adds 2 fire damage to your melee attacks.
 	core.NewItemEffect(BlazefuryMedallion, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		BlazefuryTriggerAura(character, 7712, core.SpellSchoolFire, 2)
+		BlazefuryTriggerAura(character, 7711, 7712, core.SpellSchoolFire, 2)
 	})
 
 	// https://www.wowhead.com/classic/item=14554/cloudkeeper-legplates
@@ -3343,13 +3343,13 @@ func EnrageAura446327(character *core.Character) *core.Aura {
 
 const BlazefuryAuraTag = "Blazefury"
 
-func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool core.SpellSchool, damage float64) {
+func BlazefuryTriggerAura(character *core.Character, triggerSpellID int32, damageSpellID int32, spellSchool core.SpellSchool, damage float64) {
 	if character.HasAuraWithTag(BlazefuryAuraTag) {
 		return
 	}
 
 	procSpell := character.RegisterSpell(core.SpellConfig{
-		ActionID:         core.ActionID{SpellID: spellID},
+		ActionID:         core.ActionID{SpellID: damageSpellID},
 		SpellSchool:      spellSchool,
 		DefenseType:      core.DefenseTypeMagic,
 		ProcMask:         core.ProcMaskMeleeDamageProc,
@@ -3362,7 +3362,8 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 	})
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		Name:              fmt.Sprintf("Blazefury Trigger (%d)", spellID),
+		ActionID:          core.ActionID{SpellID: triggerSpellID},
+		Name:              fmt.Sprintf("Blazefury Trigger (%d)", triggerSpellID),
 		Tag:               BlazefuryAuraTag,
 		Callback:          core.CallbackOnSpellHitDealt,
 		Outcome:           core.OutcomeLanded,
