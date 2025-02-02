@@ -92,9 +92,12 @@ func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 			Duration:  time.Second * 30,
 			MaxStacks: 10,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				oldMultiplier := 1 + 0.04*float64(oldStacks)
+				newMultiplier := 1 + 0.04*float64(newStacks)
 				for _, unit := range undeadTargets {
-					aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.04*float64(oldStacks)
-					aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= 1 + 0.04*float64(newStacks)
+					aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= newMultiplier / oldMultiplier
+					aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeOffHand].DamageDealtMultiplier *= newMultiplier / oldMultiplier
+					aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeRanged].DamageDealtMultiplier *= newMultiplier / oldMultiplier
 				}
 			},
 		}))

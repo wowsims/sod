@@ -103,12 +103,14 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 	spellID := core.Ternary(hasMeleeSpecialist, RaptorStrikeSpellIdMeleeSpecialist, RaptorStrikeSpellId)[rank]
 	baseDamage := RaptorStrikeBaseDamage[rank]
 
+	castType := proto.CastType_CastTypeMainHand
 	procMask := core.ProcMaskMeleeMHSpecial
 	damageMultiplier := 1.0
 	damageFunc := core.Ternary(hasMeleeSpecialist, hunter.MHNormalizedWeaponDamage, hunter.MHWeaponDamage)
 
 	if !isMH {
 		baseDamage /= 2
+		castType = proto.CastType_CastTypeOffHand
 		procMask = core.ProcMaskMeleeOHSpecial
 		damageMultiplier = hunter.AutoAttacks.OHConfig().DamageMultiplier
 		damageFunc = core.Ternary(hasMeleeSpecialist, hunter.OHNormalizedWeaponDamage, hunter.OHWeaponDamage)
@@ -118,6 +120,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 		ClassSpellMask: ClassSpellMask_HunterRaptorStrikeHit,
 		ActionID:       core.ActionID{SpellID: spellID}.WithTag(core.TernaryInt32(isMH, 1, 2)),
 		SpellSchool:    core.SpellSchoolPhysical,
+		CastType:       castType,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       procMask,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,

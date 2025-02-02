@@ -100,11 +100,13 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 		60: 87,
 	}[warrior.Level]
 
+	castType := proto.CastType_CastTypeMainHand
 	procMask := core.ProcMaskMeleeMHSpecial
 	flags := core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete
 	damageFunc := warrior.MHWeaponDamage
 	if !isMH {
 		flatDamageBonus /= 2
+		castType = proto.CastType_CastTypeOffHand
 		procMask = core.ProcMaskMeleeOHSpecial
 		flags |= core.SpellFlagPassiveSpell
 		damageFunc = warrior.OHWeaponDamage
@@ -114,6 +116,7 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 		ClassSpellMask: core.Ternary(isMH, ClassSpellMask_WarriorSlamMH, ClassSpellMask_WarriorSlamOH),
 		ActionID:       core.ActionID{SpellID: spellID}.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool:    core.SpellSchoolPhysical,
+		CastType:       castType,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       procMask,
 		Flags:          flags,

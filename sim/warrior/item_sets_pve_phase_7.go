@@ -66,12 +66,14 @@ func (warrior *Warrior) applyNaxxramasDamage4PBonus() {
 	})
 }
 
-// Your melee critical strikes against Undead enemies grant you 1% increased damage done to Undead for 30 sec, stacking up to 25 times.
+// Your melee critical strikes against Undead enemies grant you 2% increased damage done to Undead for 30 sec, stacking up to 14 times.
 func (warrior *Warrior) applyNaxxramasDamage6PBonus() {
 	label := "S03 - Item - Naxxramas - Warrior - Damage 6P Bonus"
 	if warrior.HasAura(label) {
 		return
 	}
+
+	undeadTargets := core.FilterSlice(warrior.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
 
 	buffAura := warrior.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1219485},
@@ -79,8 +81,13 @@ func (warrior *Warrior) applyNaxxramasDamage6PBonus() {
 		Duration:  time.Second * 30,
 		MaxStacks: 14,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			warrior.PseudoStats.DamageDealtMultiplier /= 1 + 0.02*float64(oldStacks)
-			warrior.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(newStacks)
+			oldMultiplier := 1 + 0.02*float64(oldStacks)
+			newMultiplier := 1 + 0.02*float64(newStacks)
+			for _, unit := range undeadTargets {
+				aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= newMultiplier / oldMultiplier
+				aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeOffHand].DamageDealtMultiplier *= newMultiplier / oldMultiplier
+				aura.Unit.AttackTables[unit.UnitIndex][proto.CastType_CastTypeRanged].DamageDealtMultiplier *= newMultiplier / oldMultiplier
+			}
 		},
 	})
 

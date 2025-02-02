@@ -85,9 +85,13 @@ func (rogue *Rogue) applyNaxxramasDamage6PBonus() {
 		Duration:  time.Second * 30,
 		MaxStacks: 15,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			oldMultiplier := 1 + 0.02*float64(oldStacks)
+			newMultiplier := 1 + 0.02*float64(newStacks)
+
 			for _, unit := range undeadTargets {
-				rogue.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.02*float64(oldStacks)
-				rogue.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= 1 + 0.02*float64(newStacks)
+				rogue.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= newMultiplier / oldMultiplier
+				rogue.AttackTables[unit.UnitIndex][proto.CastType_CastTypeOffHand].DamageDealtMultiplier *= newMultiplier / oldMultiplier
+				rogue.AttackTables[unit.UnitIndex][proto.CastType_CastTypeRanged].DamageDealtMultiplier *= newMultiplier / oldMultiplier
 			}
 		},
 	})
