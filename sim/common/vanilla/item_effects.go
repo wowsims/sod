@@ -3365,8 +3365,10 @@ func EnrageAura446327(character *core.Character) *core.Aura {
 	}).AttachMultiplyAttackSpeed(&character.Unit, 1.05)
 }
 
+const BlazefuryAuraTag = "Blazefury"
+
 func BlazefuryTriggerAura(character *core.Character, itemID int32, spellID int32, spellSchool core.SpellSchool, damage float64) {
-	if character.GetSpell(core.ActionID{SpellID: spellID}) != nil {
+	if character.HasAuraWithTag(BlazefuryAuraTag) {
 		return
 	}
 
@@ -3388,6 +3390,7 @@ func BlazefuryTriggerAura(character *core.Character, itemID int32, spellID int32
 
 	triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:              fmt.Sprintf("Blazefury Trigger (%d)", spellID),
+		Tag:               BlazefuryAuraTag,
 		Callback:          core.CallbackOnSpellHitDealt,
 		Outcome:           core.OutcomeLanded,
 		ProcMask:          core.ProcMaskMelee,

@@ -51,11 +51,13 @@ func (shaman *Shaman) registerStormstrikeSpell() {
 }
 
 func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
+	castType := proto.CastType_CastTypeMainHand
 	procMask := core.ProcMaskMeleeMHSpecial
 	flags := core.SpellFlagMeleeMetrics
 	damageMultiplier := 1.0
 	damageFunc := shaman.MHWeaponDamage
 	if !isMH {
+		castType = proto.CastType_CastTypeOffHand
 		// Only the main-hand hit triggers procs / the debuff
 		procMask = core.ProcMaskMeleeOHSpecial | core.ProcMaskMeleeProc | core.ProcMaskMeleeDamageProc
 		flags |= core.SpellFlagNoOnCastComplete
@@ -71,6 +73,7 @@ func (shaman *Shaman) newStormstrikeHitSpell(isMH bool) *core.Spell {
 		ClassSpellMask: ClassSpellMask_ShamanStormstrikeHit,
 		ActionID:       core.ActionID{SpellID: 17364}.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool:    core.SpellSchoolPhysical,
+		CastType:       castType,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       procMask,
 		Flags:          flags,

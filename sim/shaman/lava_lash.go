@@ -26,6 +26,7 @@ func (shaman *Shaman) applyLavaLash() {
 		ClassSpellMask: ClassSpellMask_ShamanLavaLash,
 		ActionID:       core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaLash)},
 		SpellSchool:    core.SpellSchoolFire,
+		CastType:       proto.CastType_CastTypeOffHand,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeOHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,

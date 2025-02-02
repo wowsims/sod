@@ -54,9 +54,11 @@ func (warrior *Warrior) registerWhirlwindSpell() {
 }
 
 func (warrior *Warrior) newWhirlwindHitSpell(isMH bool) *WarriorSpell {
+	castType := proto.CastType_CastTypeMainHand
 	procMask := core.ProcMaskMeleeSpecial
 	damageFunc := warrior.MHNormalizedWeaponDamage
 	if !isMH {
+		castType = proto.CastType_CastTypeOffHand
 		procMask = core.ProcMaskMeleeOHSpecial
 		damageFunc = warrior.OHNormalizedWeaponDamage
 	}
@@ -65,6 +67,7 @@ func (warrior *Warrior) newWhirlwindHitSpell(isMH bool) *WarriorSpell {
 		ClassSpellMask: core.Ternary(isMH, ClassSpellMask_WarriorWhirlwindMH, ClassSpellMask_WarriorWhirlwindOH),
 		ActionID:       core.ActionID{SpellID: 1680}.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool:    core.SpellSchoolPhysical,
+		CastType:       castType,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       procMask,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,

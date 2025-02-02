@@ -156,9 +156,13 @@ func (druid *Druid) applyNaxxramasFeral6PBonus() {
 		Duration:  time.Second * 30,
 		MaxStacks: 25,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			oldMultiplier := 1 + 0.01*float64(oldStacks)
+			newMultiplier := 1 + 0.01*float64(newStacks)
+
 			for _, unit := range undeadTargets {
-				druid.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
-				druid.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= 1 + 0.01*float64(newStacks)
+				for _, at := range aura.Unit.AttackTables[unit.UnitIndex] {
+					at.DamageDealtMultiplier *= newMultiplier / oldMultiplier
+				}
 			}
 		},
 	})

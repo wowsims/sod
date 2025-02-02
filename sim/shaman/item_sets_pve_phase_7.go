@@ -77,9 +77,13 @@ func (shaman *Shaman) applyNaxxramasElemental6PBonus() {
 		Duration:  time.Second * 30,
 		MaxStacks: 7,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			oldMultiplier := 1 + 0.06*float64(oldStacks)
+			newMultiplier := 1 + 0.06*float64(newStacks)
+
 			for _, unit := range undeadTargets {
-				shaman.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.06*float64(oldStacks)
-				shaman.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= 1 + 0.06*float64(newStacks)
+				for _, at := range aura.Unit.AttackTables[unit.UnitIndex] {
+					at.DamageDealtMultiplier *= newMultiplier / oldMultiplier
+				}
 			}
 		},
 	})
@@ -168,9 +172,13 @@ func (shaman *Shaman) applyNaxxramasEnhancement6PBonus() {
 		Duration:  time.Second * 30,
 		MaxStacks: 20,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			oldMultiplier := 1 + 0.02*float64(oldStacks)
+			newMultiplier := 1 + 0.02*float64(newStacks)
+
 			for _, unit := range undeadTargets {
-				shaman.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.02*float64(oldStacks)
-				shaman.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= 1 + 0.02*float64(newStacks)
+				for _, at := range aura.Unit.AttackTables[unit.UnitIndex] {
+					at.DamageDealtMultiplier *= newMultiplier / oldMultiplier
+				}
 			}
 		},
 	})

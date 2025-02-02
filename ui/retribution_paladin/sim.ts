@@ -8,6 +8,14 @@ import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as RetributionPaladinInputs from './inputs.js';
 import * as Presets from './presets.js';
 
+const UNIQUE_ITEM_COMBOS = new Map([
+	[228354, 'Blazefury Medallion'],
+	[229749, 'Truthbearer (2H)'],
+	[230003, 'Hammer of the Lightbringer'],
+	[231862, 'Blazefury Retributer'],
+	[231862, 'Blazefury Retributer'],
+]);
+
 const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 	cssClass: 'retribution-paladin-sim-ui',
 	cssScheme: 'paladin',
@@ -24,6 +32,31 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 					} else {
 						return '';
 					}
+				},
+			};
+		},
+		(simUI: IndividualSimUI<Spec.SpecRetributionPaladin>) => {
+			return {
+				updateOn: simUI.player.changeEmitter,
+				getContent: () => {
+					const gear = simUI.player.getGear();
+					const itemSlots = gear.getItemSlots();
+					const blazefuryItems = [];
+
+					for (let i = 0; i < itemSlots.length; i++) {
+						const item = gear.getEquippedItem(itemSlots[i]);
+						if (!item) continue;
+						const matchingItem = UNIQUE_ITEM_COMBOS.get(item.id);
+						if (matchingItem) {
+							blazefuryItems.push(matchingItem);
+						}
+					}
+
+					if (blazefuryItems.length < 2) return '';
+
+					return `${blazefuryItems.slice(0, -1).join(', ')} and ${
+						blazefuryItems[blazefuryItems.length - 1]
+					} can't be equipped at the same time because they share the Unique-Equipped category: Blazefury`;
 				},
 			};
 		},

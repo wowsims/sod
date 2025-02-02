@@ -58,6 +58,7 @@ type ProcTrigger struct {
 	Handler           ProcHandler
 	ClassSpellMask    int64
 	ExtraCondition    ProcExtraCondition
+	Tag               string
 }
 
 func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
@@ -215,6 +216,7 @@ func MakeProcTriggerAura(unit *Unit, config ProcTrigger) *Aura {
 		Label:           config.Name,
 		ActionIDForProc: config.ActionID,
 		Duration:        config.Duration,
+		Tag:             config.Tag,
 	}
 	if config.Duration == 0 {
 		aura.Duration = NeverExpires

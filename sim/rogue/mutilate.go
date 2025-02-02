@@ -9,8 +9,10 @@ import (
 
 func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 	actionID := core.ActionID{SpellID: int32(proto.RogueRune_RuneMutilate)}
+	castType := proto.CastType_CastTypeMainHand
 	procMask := core.ProcMaskMeleeMHSpecial
 	if !isMH {
+		castType = proto.CastType_CastTypeOffHand
 		procMask = core.ProcMaskMeleeOHSpecial
 	}
 
@@ -22,6 +24,7 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		ClassSpellMask: ClassSpellMask_RogueMutilate,
 		ActionID:       actionID.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool:    core.SpellSchoolPhysical,
+		CastType:       castType,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       procMask,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage,
