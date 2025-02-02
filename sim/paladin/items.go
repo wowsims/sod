@@ -143,7 +143,7 @@ func init() {
 
 	core.NewItemEffect(HammerOfTheLightbringer, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		vanilla.BlazefuryTriggerAura(character, 465412, core.SpellSchoolHoly, 4)
+		vanilla.BlazefuryTriggerAura(character, 465412, 465411, core.SpellSchoolHoly, 4)
 		crusadersZealAura465414(character)
 	})
 
@@ -160,7 +160,7 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(Truthbearer2H, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		vanilla.BlazefuryTriggerAura(character, 465412, core.SpellSchoolHoly, 4)
+		vanilla.BlazefuryTriggerAura(character, 465412, 465411, core.SpellSchoolHoly, 4)
 		crusadersZealAura465414(character)
 	})
 
