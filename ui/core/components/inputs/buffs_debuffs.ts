@@ -419,9 +419,9 @@ export const ManaSpringTotem = withLabel(
 	}),
 	'Mana Spring Totem',
 );
-export const VampiricTouchReplenishment = withLabel(
-	makeMultistateRaidBuffInput({ actionId: () => ActionId.fromSpellId(402668), numStates: 21, fieldName: 'vampiricTouch', multiplier: 20 }),
-	'Vampiric Touch MP5',
+export const RaidMP5 = withLabel(
+	makeMultistateRaidBuffInput({ actionId: () => ActionId.fromSpellId(402668), numStates: 30, fieldName: 'vampiricTouch', multiplier: 40 }),
+	'Raid MP5',
 );
 
 export const MeleeCritBuff = withLabel(
@@ -1094,7 +1094,7 @@ export const RAID_BUFFS_CONFIG = [
 		stats: [Stat.StatMP5],
 	},
 	{
-		config: VampiricTouchReplenishment,
+		config: RaidMP5,
 		picker: IconPicker,
 		stats: [Stat.StatMP5],
 	},
