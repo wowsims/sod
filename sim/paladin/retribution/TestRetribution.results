@@ -491,12 +491,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 3.92485
-  weights: 3.04452
+  weights: 4.02344
+  weights: 2.37101
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.7029
+  weights: 0.7113
   weights: 0
   weights: 0
   weights: 0
@@ -504,13 +504,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 7.77441
-  weights: 0.50083
+  weights: 20.21913
+  weights: 0.58088
   weights: 0
   weights: 0
-  weights: 1.39822
-  weights: 1.32167
-  weights: 51.96571
+  weights: 1.43532
+  weights: 4.16966
+  weights: 52.25149
   weights: 0
   weights: 0
   weights: 0
@@ -540,12 +540,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase6-Lvl60-StatWeights-Default"
  value: {
-  weights: 4.6785
-  weights: 4.65925
+  weights: 4.67809
+  weights: 4.63992
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.68538
+  weights: 0.68606
   weights: 0
   weights: 0
   weights: 0
@@ -553,13 +553,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 12.14674
-  weights: 0.49938
+  weights: 11.86698
+  weights: 0.49536
   weights: 0
   weights: 0
-  weights: 1.71749
-  weights: 7.72448
-  weights: 59.8733
+  weights: 1.71734
+  weights: 7.69381
+  weights: 59.59207
   weights: 0
   weights: 0
   weights: 0
@@ -1667,8 +1667,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 6252.32912
-  tps: 6299.21793
+  dps: 6279.33512
+  tps: 6326.74092
  }
 }
 dps_results: {
@@ -1756,8 +1756,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5271.464
-  tps: 5317.26652
+  dps: 5350.73054
+  tps: 5397.76255
  }
 }
 dps_results: {
@@ -1803,9 +1803,9 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 7101.70406
-  tps: 7150.13997
-  dtps: 2.26381
+  dps: 7102.01458
+  tps: 7150.45363
+  dtps: 2.26426
  }
 }
 dps_results: {
@@ -1895,8 +1895,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 6550.43852
-  tps: 6598.34946
+  dps: 6548.40516
+  tps: 6596.31628
   dtps: 2.05858
  }
 }
