@@ -89,8 +89,9 @@ func (mage *Mage) applyNaxxramasDamage6PBonus() {
 		return
 	}
 
-	mage.RegisterAura(core.Aura{
-		Label: label,
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 1218995},
+		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			oldProcIgnite := mage.procIgnite
 			mage.procIgnite = func(sim *core.Simulation, result *core.SpellResult) {
@@ -108,7 +109,12 @@ func (mage *Mage) applyNaxxramasDamage6PBonus() {
 				return (sim.IsExecutePhase20() && target.MobType == proto.MobType_MobTypeUndead) || oldIsTargetFrozen(target)
 			}
 		},
-	})
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_MageIgnite) && sim.IsExecutePhase20() && result.Target.MobType == proto.MobType_MobTypeUndead {
+				spell.Dot(result.Target).Refresh(sim)
+			}
+		},
+	}))
 }
 
 var ItemSetFrostfireVestments = core.NewItemSet(core.ItemSet{
