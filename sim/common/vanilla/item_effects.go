@@ -3341,8 +3341,10 @@ func EnrageAura446327(character *core.Character) *core.Aura {
 	})
 }
 
+const BlazefuryAuraTag = "Blazefury"
+
 func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool core.SpellSchool, damage float64) {
-	if character.GetSpell(core.ActionID{SpellID: spellID}) != nil {
+	if character.HasAuraWithTag(BlazefuryAuraTag) {
 		return
 	}
 
@@ -3354,7 +3356,6 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 		Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		//BonusCoefficient: 0.10,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicCrit)
 		},
@@ -3362,6 +3363,7 @@ func BlazefuryTriggerAura(character *core.Character, spellID int32, spellSchool 
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:              fmt.Sprintf("Blazefury Trigger (%d)", spellID),
+		Tag:               BlazefuryAuraTag,
 		Callback:          core.CallbackOnSpellHitDealt,
 		Outcome:           core.OutcomeLanded,
 		ProcMask:          core.ProcMaskMelee,
