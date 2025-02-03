@@ -542,6 +542,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 
 	private boolPicker: Input<null, boolean> | null;
 	private numberPicker: Input<null, number> | null;
+	private enumPicker: EnumPicker<null> | null;
 
 	private getTargetInput(): TargetInput {
 		return this.encounter.targets[this.targetIndex].targetInputs[this.targetInputIndex] || TargetInput.create();
@@ -555,6 +556,10 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 		if (this.numberPicker) {
 			this.numberPicker.rootElem.remove();
 			this.numberPicker = null;
+		}
+		if (this.enumPicker) {
+			this.enumPicker.rootElem.remove();
+			this.enumPicker = null;
 		}
 	}
 
@@ -572,6 +577,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 
 		this.boolPicker = null;
 		this.numberPicker = null;
+		this.enumPicker = null;
 		this.init();
 	}
 
@@ -582,16 +588,16 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 		return TargetInput.create({
 			boolValue: this.boolPicker ? this.boolPicker.getInputValue() : undefined,
 			numberValue: this.numberPicker ? this.numberPicker.getInputValue() : undefined,
+			enumValue: this.enumPicker ? this.enumPicker.getInputValue() : undefined,
 		});
 	}
 	setInputValue(newValue: TargetInput) {
 		if (!newValue) {
 			return;
 		}
-		if (newValue.inputType == InputType.Number && !this.numberPicker) {
-			if (this.boolPicker) {
-				this.boolPicker.rootElem.remove();
-				this.boolPicker = null;
+		if (newValue.inputType == InputType.Number) {
+			if (this.numberPicker && this.numberPicker.inputConfig.label === newValue.label) {
+				return;
 			}
 
 			this.clearPickers();
@@ -606,20 +612,36 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 					this.encounter.targetsChangeEmitter.emit(eventID);
 				},
 			});
-		} else if (newValue.inputType == InputType.Bool && !this.boolPicker) {
-			if (this.numberPicker) {
-				this.numberPicker.rootElem.remove();
-				this.numberPicker = null;
+		} else if (newValue.inputType == InputType.Bool) {
+			if (this.boolPicker && this.boolPicker.inputConfig.label === newValue.label) {
+				return;
 			}
+
 			this.clearPickers();
 			this.boolPicker = new BooleanPicker(this.rootElem, null, {
 				id: randomUUID(),
 				label: newValue.label,
 				labelTooltip: newValue.tooltip,
+				extraCssClasses: ['input-inline'],
 				changedEvent: () => this.encounter.targetsChangeEmitter,
 				getValue: () => this.getTargetInput().boolValue,
 				setValue: (eventID: EventID, _: null, newValue: boolean) => {
 					this.getTargetInput().boolValue = newValue;
+					this.encounter.targetsChangeEmitter.emit(eventID);
+				},
+			});
+		} else if (newValue.inputType == InputType.Enum) {
+			this.clearPickers();
+			this.enumPicker = new EnumPicker<null>(this.rootElem, null, {
+				id: randomUUID(),
+				label: newValue.label,
+				values: newValue.enumOptions.map((option, index) => {
+					return { value: index, name: option };
+				}),
+				changedEvent: () => this.encounter.targetsChangeEmitter,
+				getValue: () => this.getTargetInput().enumValue,
+				setValue: (eventID: EventID, _: null, newValue: number) => {
+					this.getTargetInput().enumValue = newValue;
 					this.encounter.targetsChangeEmitter.emit(eventID);
 				},
 			});

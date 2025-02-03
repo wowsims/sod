@@ -735,9 +735,6 @@ func applySealOfTheDawnBuffConsumes(character *Character, consumes *proto.Consum
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR10:
 		sanctifiedHealingEffect(character, 1223387, 37.5)
 	}
-
-	authorityFrozenWastesStacks := ((int32(consumes.SealOfTheDawn) - 1) % 10) / 2
-	authorityOfTheFrozenWastesAura(character, authorityFrozenWastesStacks)
 }
 
 const MaxSanctifiedBonus = 8
@@ -868,27 +865,6 @@ func buildSanctifiedHealthDeps(unit *Unit, percentIncrease float64) []*stats.Sta
 	}
 
 	return healthDeps
-}
-
-func authorityOfTheFrozenWastesAura(character *Character, stacks int32) *Aura {
-	return MakePermanent(character.RegisterAura(Aura{
-		ActionID:  ActionID{SpellID: 1218283},
-		Label:     "Authority of the Frozen Wastes",
-		MaxStacks: 4,
-		OnReset: func(aura *Aura, sim *Simulation) {
-			aura.Activate(sim)
-			aura.SetStacks(sim, stacks)
-		},
-		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
-			aura.Unit.PseudoStats.DodgeReduction += 0.04 * float64(newStacks-oldStacks)
-
-			for _, target := range sim.Encounter.TargetUnits {
-				for _, at := range target.AttackTables[aura.Unit.UnitIndex] {
-					at.BaseMissChance -= 0.01 * float64(newStacks-oldStacks)
-				}
-			}
-		},
-	}))
 }
 
 ///////////////////////////////////////////////////////////////////////////

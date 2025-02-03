@@ -101,7 +101,7 @@ func (ai *VaelastraszTheCorruptAI) registerSpells() {
 		},
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "Essemce of the Red",
+				Label: "Essence of the Red",
 			},
 			NumberOfTicks: 240,
 			TickLength:    time.Second * 1,
