@@ -588,10 +588,9 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 		if (!newValue) {
 			return;
 		}
-		if (newValue.inputType == InputType.Number && !this.numberPicker) {
-			if (this.boolPicker) {
-				this.boolPicker.rootElem.remove();
-				this.boolPicker = null;
+		if (newValue.inputType == InputType.Number) {
+			if (this.numberPicker && this.numberPicker.inputConfig.label === newValue.label) {
+				return;
 			}
 
 			this.clearPickers();
@@ -606,10 +605,9 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 					this.encounter.targetsChangeEmitter.emit(eventID);
 				},
 			});
-		} else if (newValue.inputType == InputType.Bool && !this.boolPicker) {
-			if (this.numberPicker) {
-				this.numberPicker.rootElem.remove();
-				this.numberPicker = null;
+		} else if (newValue.inputType == InputType.Bool) {
+			if (this.boolPicker && this.boolPicker.inputConfig.label === newValue.label) {
+				return;
 			}
 			this.clearPickers();
 			this.boolPicker = new BooleanPicker(this.rootElem, null, {
