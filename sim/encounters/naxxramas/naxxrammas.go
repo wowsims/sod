@@ -1,8 +1,9 @@
 package naxxramas
 
 import (
-	"github.com/wowsims/sod/sim/core"
 	"fmt"
+
+	"github.com/wowsims/sod/sim/core"
 )
 
 func Register() {
@@ -12,15 +13,15 @@ func Register() {
 	addLoatheb("SoD/Naxxrammas")
 }
 
-
 type NaxxramasEncounter struct {
-		authorityFrozenWastesStacks   *int32
-		authorityFrozenWastesAura     *core.Aura
+	authorityFrozenWastesStacks int32
+	authorityFrozenWastesAura   *core.Aura
 }
 
 func (naxxEncounter *NaxxramasEncounter) registerAuthorityOfTheFrozenWastesAura(target *core.Target, stacks int32) *core.Aura {
 	charactertarget := target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
 	fmt.Println("Stacks:", stacks)
+
 	return core.MakePermanent(charactertarget.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1218283},
 		Label:     "Authority of the Frozen Wastes",
@@ -40,4 +41,3 @@ func (naxxEncounter *NaxxramasEncounter) registerAuthorityOfTheFrozenWastesAura(
 		},
 	}))
 }
-
