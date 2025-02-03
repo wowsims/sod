@@ -715,11 +715,7 @@ export class Player<SpecType extends Spec> {
 		this.bonusStatsChangeEmitter.emit(eventID);
 	}
 
-	hasDualWieldPenalty(): boolean {
-		return [Class.ClassWarrior, Class.ClassHunter].includes(this.getClass()) && this.getGear().isDualWielding();
-	}
-
-	getMeleeCritCapInfo(weapon: WeaponType, useDWPenality?: boolean): MeleeCritCapInfo {
+	getMeleeCritCapInfo(weapon: WeaponType, useDWPenalty?: boolean): MeleeCritCapInfo {
 		let targetLevel = 63; // Initializes at level 63 until UI is loaded
 		if (this.sim.encounter.targets) {
 			targetLevel = this.sim.encounter?.primaryTarget.level;
@@ -780,7 +776,7 @@ export class Player<SpecType extends Spec> {
 		const skillDiff = defenderDefense - weaponSkill;
 		// Due to warrior HS bug, hit cap for crit cap calculation ignores the 19% penalty
 		let meleeHitCap = skillDiff <= 10 ? 5.0 + skillDiff * 0.1 : 5.0 + skillDiff * 0.2 + (skillDiff - 10) * 0.2;
-		meleeHitCap = !this.hasDualWieldPenalty() || useDWPenality ? meleeHitCap + 19.0 : meleeHitCap + 0.0;
+		meleeHitCap = this.getGear().isDualWielding() && (![Spec.SpecWarrior, Spec.SpecHunter].includes(this.spec) || useDWPenalty) ? meleeHitCap + 19.0 : meleeHitCap + 0.0;
 
 		const dodgeCap = 5.0 + skillDiff * 0.1;
 		let parryCap = 0.0;
