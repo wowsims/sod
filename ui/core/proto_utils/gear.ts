@@ -64,11 +64,13 @@ abstract class BaseGear {
 	}
 
 	private removeUniqueItems(gear: Partial<InternalGear>, newItem: EquippedItem) {
-		if (newItem.item.unique) {
+		if (newItem.item.unique || newItem.item.uniqueCategory) {
 			this.getItemSlots()
 				.map(slot => Number(slot) as ItemSlot)
 				.forEach(slot => {
-					if (gear[slot]?.item.id == newItem.item.id) {
+					const sameItem = gear[slot]?.item.id === newItem.item.id
+					const sameUniqueCategory = newItem.item.uniqueCategory && gear[slot]?.item.uniqueCategory === newItem.item.uniqueCategory
+					if (sameItem || sameUniqueCategory) {
 						gear[slot] = null;
 					}
 				});
