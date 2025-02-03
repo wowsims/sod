@@ -27,12 +27,12 @@ func (priest *Priest) registerVoidPlagueSpell() {
 	cooldown := time.Second * 6
 
 	priest.VoidPlague = priest.GetOrRegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_PriestVoidPlague,
-		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneFeetVoidPlague)},
-		SpellSchool: core.SpellSchoolShadow,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagPriest | core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
+		ActionID:       core.ActionID{SpellID: int32(proto.PriestRune_RuneFeetVoidPlague)},
+		ClassSpellMask: ClassSpellMask_PriestVoidPlague,
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagDisease | core.SpellFlagPureDot,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

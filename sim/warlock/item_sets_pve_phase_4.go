@@ -87,12 +87,14 @@ func (warlock *Warlock) applyT1Damage2PBonus() {
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.LifeTap {
-				spell.DamageMultiplier *= 1.5
-				spell.ThreatMultiplier *= -1
-			}
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_WarlockLifeTap,
+		FloatValue: 1.5,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Threat_Pct,
+		ClassMask:  ClassSpellMask_WarlockLifeTap,
+		FloatValue: -1,
 	}))
 }
 
@@ -111,21 +113,7 @@ func (warlock *Warlock) applyT1Damage4PBonus() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Your Nightfall talent has a 4% increased chance to trigger.
@@ -149,7 +137,7 @@ func (warlock *Warlock) applyT1Damage6PBonus() {
 
 	core.MakePermanent(warlock6pt1Aura)
 	warlock6pt1Aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		if spell.SpellCode == SpellCode_WarlockIncinerate && result.Landed() && sim.Proc(.04, "T1 6P Incinerate Proc") {
+		if spell.Matches(ClassSpellMask_WarlockIncinerate) && result.Landed() && sim.Proc(.04, "T1 6P Incinerate Proc") {
 			warlock.DecimationAura.Activate(sim)
 		}
 	}
@@ -232,21 +220,15 @@ func (warlock *Warlock) applyT1Tank6PBonus() {
 		ActionID: core.ActionID{SpellID: 457643},
 		Label:    "Soul Fire!",
 		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.SoulFire {
-				spell.CastTimeMultiplier -= 1
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.SoulFire {
-				spell.CastTimeMultiplier += 1
-			}
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode == SpellCode_WarlockSoulFire {
+			if spell.Matches(ClassSpellMask_WarlockSoulFire) {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  ClassSpellMask_WarlockSoulFire,
+		FloatValue: -1,
 	})
 
 	icd := core.Cooldown{
@@ -257,7 +239,7 @@ func (warlock *Warlock) applyT1Tank6PBonus() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.SpellCode == SpellCode_WarlockShadowCleave && icd.IsReady(sim) && sim.Proc(0.2, "Soul Fire! Proc") {
+			if result.Landed() && spell.Matches(ClassSpellMask_WarlockShadowCleave) && icd.IsReady(sim) && sim.Proc(0.2, "Soul Fire! Proc") {
 				procAura.Activate(sim)
 				icd.Use(sim)
 			}

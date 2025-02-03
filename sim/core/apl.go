@@ -25,6 +25,8 @@ type APLRotation struct {
 	allowChannelRecastOnInterrupt bool
 	// Checking for cast-while-channeling spells to allow the APL to not evaluate during channels unless absolutely necessary
 	allowCastWhileChanneling bool
+	// Checking for cast-while-casting spells to allow the APL to not evaluate during channels unless absolutely necessary
+	allowCastWhileCasting bool
 
 	// Used inside of actions/value to determine whether they will occur during the prepull or regular rotation.
 	parsingPrepull bool
@@ -170,9 +172,14 @@ func (rot *APLRotation) reset(sim *Simulation) {
 	rot.inLoop = false
 	rot.interruptChannelIf = nil
 	rot.allowChannelRecastOnInterrupt = false
+
 	rot.allowCastWhileChanneling = slices.ContainsFunc(rot.unit.Spellbook, func(spell *Spell) bool {
 		return spell.Flags.Matches(SpellFlagCastWhileChanneling)
 	})
+	rot.allowCastWhileCasting = slices.ContainsFunc(rot.unit.Spellbook, func(spell *Spell) bool {
+		return spell.Flags.Matches(SpellFlagCastWhileCasting)
+	})
+
 	for _, action := range rot.allAPLActions() {
 		action.impl.Reset(sim)
 	}

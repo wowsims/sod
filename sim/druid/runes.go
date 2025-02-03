@@ -1,7 +1,6 @@
 package druid
 
 import (
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -28,8 +27,8 @@ func (druid *Druid) ApplyRunes() {
 	druid.applyElunesFires()
 
 	// Hands
-	druid.applyMangle()
 	druid.registerSunfireSpell()
+	druid.applyMangle()
 
 	// Belt
 	druid.applyBerserk()
@@ -38,6 +37,8 @@ func (druid *Druid) ApplyRunes() {
 	// Legs
 	druid.applyStarsurge()
 	druid.applySavageRoar()
+	druid.registerLacerateBleedSpell()
+	druid.registerLacerateSpell()
 
 	// Feet
 	druid.applyDreamstate()
@@ -91,6 +92,8 @@ func (druid *Druid) applyShoulderRuneEffect() {
 		druid.applyRAQFeral3PBonus()
 
 	// Guardian
+	case int32(proto.DruidRune_RuneShoulderFerocious):
+		druid.applyT1Guardian4PBonus()
 	case int32(proto.DruidRune_RuneShouldersShifter):
 		druid.applyT1Guardian6PBonus()
 	case int32(proto.DruidRune_RuneShouldersTerritorial):
@@ -126,32 +129,33 @@ func (druid *Druid) applyGore() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
-		Label:    "Gore",
-		ActionID: core.ActionID{SpellID: int32(proto.DruidRune_RuneHelmGore)},
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	affectedBearSpells := ClassSpellMask_DruidLacerate | ClassSpellMask_DruidSwipeBear | ClassSpellMask_DruidMaul
+	affectedCatSpells := ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidShred
+
+	actionID := core.ActionID{SpellID: int32(proto.DruidRune_RuneHelmGore)}
+	rageMetrics := druid.NewRageMetrics(actionID)
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		Label: "Gore Trigger",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !result.Landed() {
+				return
+			}
+
+			if spell.Matches(affectedBearSpells) {
+				if !sim.Proc(0.15, "Gore Bear") {
+					return
+				}
+
+				if druid.MangleBear != nil {
+					druid.MangleBear.CD.Reset()
+				}
+				druid.AddRage(sim, 10, rageMetrics)
+			} else if spell.Matches(affectedCatSpells) && sim.Proc(0.15, "Gore Bear") {
+				druid.TigersFury.CD.Reset()
+			}
 		},
-	})
-}
-
-const (
-	Gore_BearResetProcChance = .15
-	Gore_CatResetProcChance  = .15
-)
-
-// TODO: Bear spells not implemented: MangleBear, Swipe, Maul
-func (druid *Druid) rollGoreBearReset(sim *core.Simulation) {
-	if sim.RandomFloat("Gore (Bear)") < Gore_BearResetProcChance {
-		druid.MangleBear.CD.Reset()
-	}
-}
-
-func (druid *Druid) rollGoreCatReset(sim *core.Simulation) {
-	if sim.RandomFloat("Gore (Cat)") < Gore_CatResetProcChance {
-		druid.TigersFury.CD.Reset()
-	}
+	}))
 }
 
 func (druid *Druid) applyFuryOfStormRage() {
@@ -177,38 +181,23 @@ func (druid *Druid) applyEclipse() {
 	solarCritBonus := 30.0
 	lunarCastTimeReduction := time.Second * 1
 
-	var affectedSolarSpells []*DruidSpell
-	var affectedLunarSpells []*DruidSpell
-
 	// Solar
 	druid.SolarEclipseProcAura = druid.RegisterAura(core.Aura{
 		Label:     "Solar Eclipse proc",
 		Duration:  time.Second * 15,
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408250},
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSolarSpells = core.FilterSlice(
-				core.Flatten([][]*DruidSpell{druid.Wrath, {druid.Starsurge}}),
-				func(spell *DruidSpell) bool { return spell != nil },
-			)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSolarSpells, func(spell *DruidSpell) {
-				spell.BonusCritRating += solarCritBonus
-			})
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSolarSpells, func(spell *DruidSpell) {
-				spell.BonusCritRating -= solarCritBonus
-			})
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode != SpellCode_DruidWrath && spell.SpellCode != SpellCode_DruidStarsurge {
+			if !spell.Matches(ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarsurge) {
 				return
 			}
 
 			aura.RemoveStack(sim)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		ClassMask:  ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarsurge,
+		FloatValue: solarCritBonus,
 	})
 
 	// Lunar
@@ -217,29 +206,17 @@ func (druid *Druid) applyEclipse() {
 		Duration:  time.Second * 15,
 		MaxStacks: 4,
 		ActionID:  core.ActionID{SpellID: 408255},
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedLunarSpells = core.FilterSlice(
-				core.Flatten([][]*DruidSpell{druid.Starfire}),
-				func(spell *DruidSpell) bool { return spell != nil },
-			)
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
-				spell.DefaultCast.CastTime -= lunarCastTimeReduction
-			})
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedLunarSpells, func(spell *DruidSpell) {
-				spell.DefaultCast.CastTime += lunarCastTimeReduction
-			})
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.SpellCode != SpellCode_DruidStarfire {
+			if !spell.Matches(ClassSpellMask_DruidStarfire) {
 				return
 			}
 
 			aura.RemoveStack(sim)
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_CastTime_Flat,
+		ClassMask: ClassSpellMask_DruidStarfire,
+		TimeValue: -lunarCastTimeReduction,
 	})
 
 	druid.EclipseAura = druid.RegisterAura(core.Aura{
@@ -250,17 +227,17 @@ func (druid *Druid) applyEclipse() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !slices.Contains([]int32{SpellCode_DruidWrath, SpellCode_DruidStarfire, SpellCode_DruidStarsurge}, spell.SpellCode) || !result.Landed() {
+			if !spell.Matches(ClassSpellMask_DruidWrath|ClassSpellMask_DruidStarfire|ClassSpellMask_DruidStarsurge) || !result.Landed() {
 				return
 			}
 
-			if spell.SpellCode == SpellCode_DruidWrath || spell.SpellCode == SpellCode_DruidStarsurge {
+			if spell.Matches(ClassSpellMask_DruidWrath | ClassSpellMask_DruidStarsurge) {
 				druid.LunarEclipseProcAura.Activate(sim)
 				// Solar gives 1 stack of lunar bonus
 				druid.LunarEclipseProcAura.AddStack(sim)
 			}
 
-			if spell.SpellCode == SpellCode_DruidStarfire || spell.SpellCode == SpellCode_DruidStarsurge {
+			if spell.Matches(ClassSpellMask_DruidStarfire | ClassSpellMask_DruidStarsurge) {
 				druid.SolarEclipseProcAura.Activate(sim)
 				// Lunar gives 2 staacks of solar bonus
 				druid.SolarEclipseProcAura.AddStacks(sim, 2)
@@ -287,15 +264,15 @@ func (druid *Druid) applyElunesFires() {
 				return
 			}
 
-			switch spell.SpellCode {
-			case SpellCode_DruidWrath:
+			switch spell.ClassSpellMask {
+			case ClassSpellMask_DruidWrath:
 				druid.tryElunesFiresSunfireExtension(sim, result.Target)
-			case SpellCode_DruidStarfire:
+			case ClassSpellMask_DruidStarfire:
 				druid.tryElunesFiresMoonfireExtension(sim, result.Target)
-			case SpellCode_DruidStarsurge: // Starsurge now benefits from the effects of Wrath and Starfire
+			case ClassSpellMask_DruidStarsurge: // Starsurge now benefits from the effects of Wrath and Starfire
 				druid.tryElunesFiresSunfireExtension(sim, result.Target)
 				druid.tryElunesFiresMoonfireExtension(sim, result.Target)
-			case SpellCode_DruidShred:
+			case ClassSpellMask_DruidShred:
 				druid.tryElunesFiresRipExtension(sim, result.Target)
 			}
 		},
@@ -335,7 +312,7 @@ func (druid *Druid) tryElunesFiresRipExtension(sim *core.Simulation, unit *core.
 }
 
 func (druid *Druid) applyMangle() {
-	//druid.registerMangleBearSpell()
+	druid.registerMangleBearSpell()
 	druid.registerMangleCatSpell()
 }
 
@@ -377,7 +354,7 @@ func (druid *Druid) applyDreamstate() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: "Dreamstate Trigger",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() || spell.SpellCode == SpellCode_DruidStarsurge {
+			if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() || spell.Matches(ClassSpellMask_DruidStarsurge) {
 				druid.DreamstateManaRegenAura.Activate(sim)
 				dreamstateAuras.Get(result.Target).Activate(sim)
 			}

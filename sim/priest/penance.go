@@ -24,12 +24,15 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 	manaCost := .16
 	cooldown := time.Second * 12
 
+	var classSpellMask int64
 	var procMask core.ProcMask
-	flags := SpellFlagPriest | core.SpellFlagChanneled | core.SpellFlagAPL
+	flags := core.SpellFlagChanneled | core.SpellFlagAPL
 	if isHeal {
+		classSpellMask = ClassSpellMask_PriestPenanceHeal
 		flags |= core.SpellFlagHelpful
 		procMask = core.ProcMaskSpellHealing
 	} else {
+		classSpellMask = ClassSpellMask_PriestPenanceDamage
 		procMask = core.ProcMaskSpellDamage
 	}
 
@@ -40,6 +43,8 @@ func (priest *Priest) makePenanceSpell(isHeal bool) *core.Spell {
 		ProcMask:      procMask,
 		Flags:         flags,
 		RequiredLevel: 1,
+
+		ClassSpellMask: ClassSpellMask_PriestPenance | classSpellMask,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

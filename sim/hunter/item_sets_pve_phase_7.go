@@ -26,22 +26,20 @@ var ItemSetCryptstalkerProwess = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Wyvern Strike and Mongoose Bite deal 20% more initial damage.
+// Your Wyvern Strike and Mongoose Bite deal 30% more initial damage.
 func (hunter *Hunter) applyNaxxramasMelee2PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Melee 2P Bonus"
 	if hunter.HasAura(label) {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.WyvernStrike != nil {
-				hunter.WyvernStrike.ImpactDamageMultiplierAdditive += 0.20
-			}
-			hunter.MongooseBite.ImpactDamageMultiplierAdditive += 0.20
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_ImpactDamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterWyvernStrike | ClassSpellMask_HunterMongooseBite,
+		IntValue:  30,
+	}))
 }
 
 // Reduces the cooldown on your Wyvern Strike ability by 2 sec, reduces the cooldown on your raptor strike ability by 1 sec, and reduces the cooldown on your Flanking Strike ability by 8sec.
@@ -57,44 +55,63 @@ func (hunter *Hunter) applyNaxxramasMelee4PBonus() {
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.RaptorStrike != nil {
-				hunter.RaptorStrike.CD.FlatModifier -= time.Second
-			}
-			if hunter.WyvernStrike != nil {
-				hunter.WyvernStrike.CD.FlatModifier -= time.Second * 2
-			}
-			if hunter.FlankingStrike != nil {
-				hunter.FlankingStrike.CD.FlatModifier -= time.Second * 8
-			}
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_HunterRaptorStrike,
+		TimeValue: -time.Second,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_HunterWyvernStrike,
+		TimeValue: -time.Second * 2,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_HunterFlankingStrike,
+		TimeValue: -time.Second * 8,
 	}))
 }
 
-// You gain 1% increased critical strike chance for 30 sec each time you hit an Undead enemy with a melee attack, stacking up to 35 times.
+// You gain 4% increased damage done to Undead for 30 sec each time you hit an Undead enemy with a melee attack, stacking up to 10 times.
 func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Melee 6P Bonus"
 	if hunter.HasAura(label) {
 		return
 	}
 
-	buffAura := hunter.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 1218587},
-		Label:     "Critical Aim",
-		Duration:  time.Second * 30,
-		MaxStacks: 35,
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			hunter.AddStatDynamic(sim, stats.MeleeCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
-			hunter.AddStatDynamic(sim, stats.SpellCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
-		},
-	})
+	undeadTargets := core.FilterSlice(hunter.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
+
+	units := []*core.Unit{&hunter.Unit}
+	if hunter.pet != nil {
+		units = append(units, &hunter.pet.Unit)
+	}
+
+	buffAuras := []*core.Aura{}
+	for _, unit := range units {
+		buffAuras = append(buffAuras, unit.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1218587},
+			Label:     "Undead Slaying",
+			Duration:  time.Second * 30,
+			MaxStacks: 10,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				oldMultiplier := 1 + 0.04*float64(oldStacks)
+				newMultiplier := 1 + 0.04*float64(newStacks)
+
+				for _, unit := range undeadTargets {
+					for _, at := range aura.Unit.AttackTables[unit.UnitIndex] {
+						at.DamageDealtMultiplier *= newMultiplier / oldMultiplier
+					}
+				}
+			},
+		}))
+	}
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Target.MobType == proto.MobType_MobTypeUndead && spell.ProcMask.Matches(core.ProcMaskMelee) {
-				buffAura.Activate(sim)
-				buffAura.AddStack(sim)
+				for _, aura := range buffAuras {
+					aura.Activate(sim)
+					aura.AddStack(sim)
+				}
 			}
 		},
 	}))
@@ -125,16 +142,13 @@ func (hunter *Hunter) applyNaxxramasRanged2PBonus() {
 		return
 	}
 
-	hunter.RegisterAura(core.Aura{
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.SerpentSting.DamageMultiplierAdditive += 0.20
-
-			if hunter.SerpentStingChimeraShot != nil {
-				hunter.SerpentStingChimeraShot.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterChimeraShot,
+		IntValue:  20,
+	}))
 }
 
 // Reduces the cooldown on your Chimera Shot, Explosive Shot, and Aimed Shot abilities by 1.5 sec and reduces the cooldown on your Kill Shot ability by 3sec.
@@ -143,26 +157,21 @@ func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 	if hunter.HasAura(label) {
 		return
 	}
+
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if hunter.ChimeraShot != nil {
-				hunter.ChimeraShot.CD.FlatModifier -= time.Millisecond * 1500
-			}
-			if hunter.ExplosiveShot != nil {
-				hunter.ExplosiveShot.CD.FlatModifier -= time.Millisecond * 1500 
-			}
-			if hunter.AimedShot != nil {
-				hunter.AimedShot.CD.FlatModifier -= time.Millisecond * 1500 
-			}
-			if hunter.KillShot != nil {
-				hunter.KillShot.CD.FlatModifier -= time.Second * 3 
-			}
-		},
-	}))
+	})).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_HunterChimeraShot | ClassSpellMask_HunterExplosiveShot | ClassSpellMask_HunterAimedShot,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Millisecond * 1500,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_HunterKillShot,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Second * 3,
+	})
 }
 
-// You gain 1% increased critical strike chance for 30 sec each time you hit an Undead enemy with a ranged attack, stacking up to 35 times.
+// You gain 2% increased critical strike chance for 30 sec each time you hit an Undead enemy with a ranged attack, stacking up to 15 times.
 func (hunter *Hunter) applyNaxxramasRanged6PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Ranged 6P Bonus"
 	if hunter.HasAura(label) {
@@ -173,10 +182,10 @@ func (hunter *Hunter) applyNaxxramasRanged6PBonus() {
 		ActionID:  core.ActionID{SpellID: 1218587},
 		Label:     "Critical Aim",
 		Duration:  time.Second * 30,
-		MaxStacks: 35,
+		MaxStacks: 15,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			hunter.AddStatDynamic(sim, stats.MeleeCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
-			hunter.AddStatDynamic(sim, stats.SpellCrit, float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
+			hunter.AddStatDynamic(sim, stats.MeleeCrit, 2*float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
+			hunter.AddStatDynamic(sim, stats.SpellCrit, 2*float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
 		},
 	})
 

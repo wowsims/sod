@@ -596,85 +596,85 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 51.68557
-  tps: 189.73688
+  dps: 51.81482
+  tps: 189.88863
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 51.68557
-  tps: 55.09892
+  dps: 51.81482
+  tps: 55.25067
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 55.80018
-  tps: 57.12558
+  dps: 55.90862
+  tps: 57.25652
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 32.05369
-  tps: 140.47905
+  dps: 32.15208
+  tps: 140.59993
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 32.05369
-  tps: 36.01863
+  dps: 32.15208
+  tps: 36.13952
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Auto-phase_1-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 39.53089
-  tps: 41.77695
+  dps: 39.60307
+  tps: 41.87163
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 51.68557
-  tps: 189.73688
+  dps: 51.81482
+  tps: 189.88863
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 51.68557
-  tps: 55.09892
+  dps: 51.81482
+  tps: 55.25067
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 55.80018
-  tps: 57.12558
+  dps: 55.90862
+  tps: 57.25652
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 32.05369
-  tps: 140.47905
+  dps: 32.15208
+  tps: 140.59993
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 32.05369
-  tps: 36.01863
+  dps: 32.15208
+  tps: 36.13952
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase1-Lvl25-Settings-Orc-phase_1-Sync Delay OH-phase_1-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 39.53089
-  tps: 41.77695
+  dps: 39.60307
+  tps: 41.87163
  }
 }
 dps_results: {
@@ -1135,43 +1135,43 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1910.62682
-  tps: 1934.74761
+  dps: 1910.72481
+  tps: 1934.42303
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1980.67769
-  tps: 2003.55076
+  dps: 1980.77911
+  tps: 2003.22961
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 2021.27179
-  tps: 2047.22404
+  dps: 2021.36977
+  tps: 2047.3558
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1955.93479
-  tps: 1980.16507
+  dps: 1956.02758
+  tps: 1979.8147
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1910.20152
-  tps: 1934.46074
+  dps: 1910.29951
+  tps: 1934.13615
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1958.12022
-  tps: 1981.45938
+  dps: 1958.22055
+  tps: 1981.13713
  }
 }
 dps_results: {
@@ -1199,7 +1199,7 @@ dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-Average-Default"
  value: {
   dps: 3896.68633
-  tps: 2777.84278
+  tps: 2777.84281
  }
 }
 dps_results: {
@@ -1975,8 +1975,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1799.73162
-  tps: 1827.48582
+  dps: 1800.34483
+  tps: 1828.30849
  }
 }
 dps_results: {

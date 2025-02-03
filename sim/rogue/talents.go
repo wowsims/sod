@@ -347,9 +347,9 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 
 	cooldownDur := time.Minute * 2
 	rogue.BladeFlurry = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode: SpellCode_RogueBladeFlurry,
-		ActionID:  core.ActionID{SpellID: 13877},
-		Flags:     core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_RogueBladeFlurry,
+		ActionID:       core.ActionID{SpellID: 13877},
+		Flags:          core.SpellFlagAPL,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 25,
@@ -408,8 +408,8 @@ func (rogue *Rogue) registerAdrenalineRushCD() {
 	})
 
 	rogue.AdrenalineRush = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode: SpellCode_RogueAdrenalineRush,
-		ActionID:  AdrenalineRushActionID,
+		ClassSpellMask: ClassSpellMask_RogueAdrenalineRush,
+		ActionID:       AdrenalineRushActionID,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: time.Second,

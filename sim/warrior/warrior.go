@@ -14,28 +14,36 @@ const (
 )
 
 const (
-	SpellCode_WarriorNone int32 = iota
+	ClassSpellMask_WarriorNone int64 = 0
 
-	SpellCode_WarriorBloodthirst
-	SpellCode_WarriorDeepWounds
-	SpellCode_WarriorDevastate
-	SpellCode_WarriorExecute
-	SpellCode_WarriorMortalStrike
-	SpellCode_WarriorOverpower
-	SpellCode_WarriorRagingBlow
-	SpellCode_WarriorRend
-	SpellCode_WarriorRevenge
-	SpellCode_WarriorShieldSlam
-	SpellCode_WarriorSlam
-	SpellCode_WarriorSlamMH
-	SpellCode_WarriorSlamOH
-	SpellCode_WarriorStanceBattle
-	SpellCode_WarriorStanceBerserker
-	SpellCode_WarriorStanceGladiator
-	SpellCode_WarriorStanceDefensive
-	SpellCode_WarriorWhirlwind
-	SpellCode_WarriorWhirlwindMH
-	SpellCode_WarriorWhirlwindOH
+	ClassSpellMask_WarriorBloodrage int64 = 1 << iota
+	ClassSpellMask_WarriorBloodthirst
+	ClassSpellMask_WarriorCleave
+	ClassSpellMask_WarriorDeathWish
+	ClassSpellMask_WarriorDeepWounds
+	ClassSpellMask_WarriorDevastate
+	ClassSpellMask_WarriorExecute
+	ClassSpellMask_WarriorHeroicStrike
+	ClassSpellMask_WarriorMortalStrike
+	ClassSpellMask_WarriorOverpower
+	ClassSpellMask_WarriorQuickStrike
+	ClassSpellMask_WarriorRagingBlow
+	ClassSpellMask_WarriorRecklesness
+	ClassSpellMask_WarriorRend
+	ClassSpellMask_WarriorRevenge
+	ClassSpellMask_WarriorShieldSlam
+	ClassSpellMask_WarriorShieldWall
+	ClassSpellMask_WarriorShockwave
+	ClassSpellMask_WarriorSlam
+	ClassSpellMask_WarriorSlamMH
+	ClassSpellMask_WarriorSlamOH
+	ClassSpellMask_WarriorStanceBattle
+	ClassSpellMask_WarriorStanceBerserker
+	ClassSpellMask_WarriorStanceGladiator
+	ClassSpellMask_WarriorStanceDefensive
+	ClassSpellMask_WarriorWhirlwind
+	ClassSpellMask_WarriorWhirlwindMH
+	ClassSpellMask_WarriorWhirlwindOH
 )
 
 var TalentTreeSizes = [3]int{18, 17, 17}

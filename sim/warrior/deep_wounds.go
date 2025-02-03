@@ -19,11 +19,11 @@ func (warrior *Warrior) applyDeepWounds() {
 	}[warrior.Talents.DeepWounds]
 
 	warrior.DeepWounds = warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		SpellCode:   SpellCode_WarriorDeepWounds,
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		ClassSpellMask: ClassSpellMask_WarriorDeepWounds,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -69,23 +69,22 @@ func (warrior *Warrior) applyDeepWounds() {
 func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, isOh bool) {
 	dot := warrior.DeepWounds.Dot(target)
 
+	attackTable := warrior.AttackTables[target.UnitIndex][core.Ternary(isOh, proto.CastType_CastTypeOffHand, proto.CastType_CastTypeMainHand)]
 	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
 	var awd float64
 	if isOh {
-		attackTableOh := warrior.AttackTables[target.UnitIndex][proto.CastType_CastTypeOffHand]
-		adm := warrior.AutoAttacks.OHAuto().AttackerDamageMultiplier(attackTableOh, true)
+		adm := warrior.AutoAttacks.OHAuto().AttackerDamageMultiplier(attackTable, true)
 		awd = warrior.AutoAttacks.OH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) * 0.5 * adm
 	} else { // MH
-		attackTableMh := warrior.AttackTables[target.UnitIndex][proto.CastType_CastTypeMainHand]
-		adm := warrior.AutoAttacks.MHAuto().AttackerDamageMultiplier(attackTableMh, true)
+		adm := warrior.AutoAttacks.MHAuto().AttackerDamageMultiplier(attackTable, true)
 		awd = warrior.AutoAttacks.MH().CalculateAverageWeaponDamage(dot.Spell.MeleeAttackPower()) * adm
 	}
 
 	newDamage := awd * 0.2 * float64(warrior.Talents.DeepWounds)
 
 	dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(dot.NumberOfTicks)
-	dot.SnapshotAttackerMultiplier = warrior.DeepWounds.DamageMultiplier * warrior.DeepWounds.DamageMultiplierAdditive
+	dot.SnapshotAttackerMultiplier = warrior.DeepWounds.AttackerDamageMultiplier(attackTable, true)
 
 	warrior.DeepWounds.Cast(sim, target)
 }

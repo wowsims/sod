@@ -48,12 +48,13 @@ func (paladin *Paladin) registerExorcism() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary, //Logs show it never has partial resists, No clue why, still misses
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary | core.SpellFlagBatchStartAttackMacro, //Logs show it never has partial resists, No clue why, still misses
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,
 
-			SpellCode: SpellCode_PaladinExorcism,
+			ClassSpellMask: ClassSpellMask_PaladinExorcism,
+
 			ManaCost: core.ManaCostOptions{
 				FlatCost:   rank.manaCost,
 				Multiplier: core.TernaryInt32(paladin.hasRune(proto.PaladinRune_RuneFeetTheArtOfWar), 20, 100),

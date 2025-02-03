@@ -12,49 +12,31 @@ func (druid *Druid) applyBerserk() {
 		return
 	}
 
-	actionId := core.ActionID{SpellID: 417141}
-	var affectedSpells []*DruidSpell
+	hasMangle := druid.HasRune(proto.DruidRune_RuneHandsMangle)
 
+	actionId := core.ActionID{SpellID: 417141}
 	druid.BerserkAura = druid.RegisterAura(core.Aura{
 		Label:    "Berserk",
 		ActionID: actionId,
 		Duration: time.Second * 15,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells = core.FilterSlice([]*DruidSpell{
-				druid.Rip,
-				// druid.Claw, // If it would exist
-				druid.Rake,
-				druid.TigersFury,
-				druid.Shred,
-				// druid.Ravage, // If it would exist
-				// druid.Pounce, // If it would exist
-				druid.FerociousBite,
-				druid.MangleCat,
-				// druid.Sunfire, // If it would exist
-				// druid.Skullbash, // If it would exist
-				druid.SavageRoar,
-				druid.SwipeCat,
-			}, func(spell *DruidSpell) bool { return spell != nil })
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				if spell.Cost != nil {
-					spell.Cost.Multiplier -= 50
-				}
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				if spell.Cost != nil {
-					spell.Cost.Multiplier += 50
-				}
-			}
-		},
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidLacerate,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -100,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidMangleBear,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -100,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidCatFormSpells,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -50,
 	})
 
 	druid.Berserk = druid.RegisterSpell(Cat|Bear, core.SpellConfig{
-		ActionID: actionId,
-		Flags:    core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_DruidBerserk,
+		ActionID:       actionId,
+		Flags:          core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
@@ -64,6 +46,9 @@ func (druid *Druid) applyBerserk() {
 			IgnoreHaste: true,
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+			if hasMangle {
+				druid.MangleBear.CD.Reset()
+			}
 			druid.BerserkAura.Activate(sim)
 		},
 	})

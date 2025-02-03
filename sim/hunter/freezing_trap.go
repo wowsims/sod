@@ -9,14 +9,14 @@ import (
 func (hunter *Hunter) getFreezingTrapConfig(timer *core.Timer) core.SpellConfig {
 
 	return core.SpellConfig{
-		SpellCode:     SpellCode_HunterFreezingTrap,
-		ActionID:      core.ActionID{SpellID: 409510},
-		SpellSchool:   core.SpellSchoolFrost,
-		DefenseType:   core.DefenseTypeMagic,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Flags:         core.SpellFlagAPL | SpellFlagTrap,
-		RequiredLevel: 20,
-		MissileSpeed:  24,
+		ClassSpellMask: ClassSpellMask_HunterFreezingTrap,
+		ActionID:       core.ActionID{SpellID: 409510},
+		SpellSchool:    core.SpellSchoolFrost,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
+		RequiredLevel:  20,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: 50,

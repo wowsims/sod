@@ -19,10 +19,11 @@ func (shaman *Shaman) registerEarthShieldSpell() {
 
 	// shaman.EarthShield = shaman.RegisterSpell(core.SpellConfig{
 	// 	ActionID:    actionID,
+	//  SpellClassMask: ClassSpellMask_ShamanEarthShield,
 	// 	SpellSchool: core.SpellSchoolNature,
 	// 	DefenseType: core.DefenseTypeMagic,
 	// 	ProcMask:    core.ProcMaskEmpty,
-	// 	Flags:       core.SpellFlagHelpful | core.SpellFlagAPL | SpellFlagShaman,
+	// 	Flags:       core.SpellFlagHelpful | core.SpellFlagAPL,
 
 	// 	Cast: core.CastConfig{
 	// 		DefaultCast: core.Cast{

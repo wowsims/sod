@@ -28,7 +28,7 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 	manaCost := .28
 
 	numTicks := tickIdx
-	flags := SpellFlagPriest | core.SpellFlagChanneled | core.SpellFlagNoMetrics
+	flags := core.SpellFlagChanneled | core.SpellFlagNoMetrics
 	if tickIdx == 0 {
 		numTicks = 5
 		flags |= core.SpellFlagAPL
@@ -38,10 +38,11 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 	priest.MindSearTicks[tickIdx] = priest.newMindSearTickSpell(tickIdx)
 
 	return core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId}.WithTag(tickIdx),
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       flags,
+		ActionID:       core.ActionID{SpellID: spellId}.WithTag(tickIdx),
+		ClassSpellMask: ClassSpellMask_PriestMindSear,
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          flags,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -104,9 +105,10 @@ func (priest *Priest) newMindSearTickSpell(numTicks int32) *core.Spell {
 			damage := sim.Roll(baseDamageLow, baseDamageHigh)
 
 			// Apply the base spell's multipliers to pick up on effects that only affect spells with DoTs
-			spell.DamageMultiplierAdditive += priest.MindSear[numTicks].PeriodicDamageMultiplierAdditive - 1
+			damageMultiplier := priest.MindSear[numTicks].GetPeriodicDamageMultiplierAdditive()
+			spell.ApplyAdditiveDamageBonus(damageMultiplier)
 			result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplierAdditive -= priest.MindSear[numTicks].PeriodicDamageMultiplierAdditive - 1
+			spell.ApplyAdditiveDamageBonus(-damageMultiplier)
 
 			if result.Landed() {
 				priest.AddShadowWeavingStack(sim, target)

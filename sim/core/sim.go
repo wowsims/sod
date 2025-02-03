@@ -39,7 +39,7 @@ type Simulation struct {
 	NeedsInput     bool          // Sim is in interactive mode and needs input
 
 	ProgressReport func(*proto.ProgressMetrics)
-	Signals simsignals.Signals
+	Signals        simsignals.Signals
 
 	Log func(string, ...interface{})
 
@@ -58,7 +58,7 @@ type Simulation struct {
 
 	minWeaponAttackTime time.Duration
 	weaponAttacks       []*WeaponAttack
-	extraAttacks int32
+	extraAttacks        int32
 
 	minTaskTime time.Duration
 	tasks       []Task
@@ -347,7 +347,7 @@ func (sim *Simulation) run() *proto.RaidSimResult {
 		Logs:                   logsBuffer.String(),
 		FirstIterationDuration: firstIterationDuration.Seconds(),
 		AvgIterationDuration:   totalDuration.Seconds() / float64(sim.Options.Iterations),
-		IterationsDone: sim.Options.Iterations,
+		IterationsDone:         sim.Options.Iterations,
 	}
 
 	// Final progress report

@@ -69,7 +69,7 @@ character_stats_results: {
   final_stats: 0
   final_stats: 2023.05
   final_stats: 6
-  final_stats: 50.49271
+  final_stats: 48.49271
   final_stats: 0
   final_stats: 0
   final_stats: 0
@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestMM-Phase4-Lvl60-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.52119
+  weights: 0.45304
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.19892
+  weights: 0.19594
   weights: 0
-  weights: 4.90375
+  weights: 5.42335
   weights: 0
   weights: 0
   weights: 0
@@ -218,15 +218,15 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase2-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 758.20261
-  tps: 931.51243
+  dps: 758.0355
+  tps: 931.78149
  }
 }
 dps_results: {
  key: "TestMM-Phase2-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 654.86883
-  tps: 526.85756
+  dps: 654.46464
+  tps: 526.22807
  }
 }
 dps_results: {
@@ -239,15 +239,15 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase2-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 422.26075
-  tps: 661.00298
+  dps: 425.39453
+  tps: 662.12008
  }
 }
 dps_results: {
  key: "TestMM-Phase2-Lvl40-Settings-Dwarf-p2_ranged_mm-Basic-p2_ranged_mm-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 360.96617
-  tps: 303.92172
+  dps: 362.89604
+  tps: 306.05498
  }
 }
 dps_results: {
@@ -260,15 +260,15 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase2-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 762.87626
-  tps: 935.56757
+  dps: 760.89931
+  tps: 938.70492
  }
 }
 dps_results: {
  key: "TestMM-Phase2-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 658.83242
-  tps: 525.79631
+  dps: 657.66538
+  tps: 524.91378
  }
 }
 dps_results: {
@@ -281,15 +281,15 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase2-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-NoBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 427.60071
-  tps: 651.92758
+  dps: 429.13402
+  tps: 655.44292
  }
 }
 dps_results: {
  key: "TestMM-Phase2-Lvl40-Settings-Orc-p2_ranged_mm-Basic-p2_ranged_mm-NoBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 366.58411
-  tps: 304.7192
+  dps: 366.33833
+  tps: 305.07021
  }
 }
 dps_results: {
@@ -309,112 +309,112 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-BeastmasterArmor"
  value: {
-  dps: 551.2998
-  tps: 551.41051
+  dps: 543.80213
+  tps: 543.91285
   hps: 10.10534
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-BloodGuard'sChain"
  value: {
-  dps: 749.90036
-  tps: 750.01081
+  dps: 741.06355
+  tps: 741.174
   hps: 10.05412
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-BloodlashBow-216516"
  value: {
-  dps: 873.84069
-  tps: 873.95114
+  dps: 864.5631
+  tps: 864.67355
   hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-DevilsaurEye-19991"
  value: {
-  dps: 872.84826
-  tps: 872.95871
+  dps: 865.21294
+  tps: 865.32339
   hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-DevilsaurTooth-19992"
  value: {
-  dps: 865.94683
-  tps: 866.05728
+  dps: 858.33233
+  tps: 858.44278
   hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-DreadHunter'sChain"
  value: {
-  dps: 643.41364
-  tps: 643.52409
+  dps: 637.34453
+  tps: 637.45498
   hps: 9.63591
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-GurubashiPitFighter'sBow-221450"
  value: {
-  dps: 875.32463
-  tps: 875.43508
+  dps: 866.02699
+  tps: 866.13744
   hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-Knight-Lieutenant'sChain"
  value: {
-  dps: 749.90036
-  tps: 750.01081
+  dps: 741.06355
+  tps: 741.174
   hps: 10.05412
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-Maelstrom'sWrath-231320"
  value: {
-  dps: 875.87563
-  tps: 875.98608
+  dps: 865.76579
+  tps: 865.87624
   hps: 12.90919
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 861.75744
-  tps: 861.86789
+  dps: 852.62654
+  tps: 852.73699
   hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-ZandalarPredator'sBelt-231322"
  value: {
-  dps: 823.14755
-  tps: 823.258
+  dps: 815.3012
+  tps: 815.41165
   hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-ZandalarPredator'sBracers-231323"
  value: {
-  dps: 747.22255
-  tps: 747.333
+  dps: 737.32942
+  tps: 737.43987
   hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-ZandalarPredator'sMantle-231321"
  value: {
-  dps: 859.12713
-  tps: 859.23758
+  dps: 850.45062
+  tps: 850.56107
   hps: 13.05826
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 882.2824
-  tps: 882.40141
+  dps: 871.66331
+  tps: 871.78233
   hps: 13.07849
  }
 }
@@ -422,7 +422,7 @@ dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 4646.24644
-  tps: 5300.61577
+  tps: 5332.04045
   hps: 17.71737
  }
 }
@@ -430,7 +430,7 @@ dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 2665.60409
-  tps: 2698.28066
+  tps: 2699.86612
   hps: 17.92142
  }
 }
@@ -438,31 +438,31 @@ dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 2653.89565
-  tps: 2685.21084
+  tps: 2686.43682
   hps: 16.2045
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2408.17569
-  tps: 3029.90079
-  hps: 9.23821
+  dps: 2388.28571
+  tps: 3037.12446
+  hps: 9.23017
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1238.58545
-  tps: 1269.6717
-  hps: 9.30873
+  dps: 1247.05916
+  tps: 1279.5011
+  hps: 9.48191
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Dwarf-p4_ranged-Weave-p4_ranged-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 1302.61803
-  tps: 1326.34591
+  tps: 1327.41457
   hps: 8.92667
  }
 }
@@ -470,7 +470,7 @@ dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 5004.96134
-  tps: 5642.012
+  tps: 5670.55046
   hps: 17.7196
  }
 }
@@ -478,7 +478,7 @@ dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 2824.23633
-  tps: 2856.16411
+  tps: 2857.51399
   hps: 17.66612
  }
 }
@@ -486,31 +486,31 @@ dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 2893.32708
-  tps: 2924.65833
+  tps: 2927.39346
   hps: 15.94173
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2409.73439
-  tps: 3004.49054
-  hps: 9.34711
+  dps: 2395.32219
+  tps: 3028.185
+  hps: 9.2873
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1221.34751
-  tps: 1251.08532
-  hps: 9.36407
+  dps: 1224.99362
+  tps: 1256.63676
+  hps: 9.35961
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-Settings-Orc-p4_ranged-Weave-p4_ranged-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 1314.25856
-  tps: 1337.98643
+  tps: 1339.0551
   hps: 8.74813
  }
 }

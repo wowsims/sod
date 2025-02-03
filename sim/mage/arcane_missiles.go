@@ -48,12 +48,12 @@ func (mage *Mage) getArcaneMissilesSpellConfig(rank int) core.SpellConfig {
 	mage.ArcaneMissilesTickSpell[rank] = tickSpell
 
 	return core.SpellConfig{
-		SpellCode:   SpellCode_MageArcaneMissiles,
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellSchool: core.SpellSchoolArcane,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagAPL | core.SpellFlagChanneled | core.SpellFlagNoMetrics,
+		ClassSpellMask: ClassSpellMask_MageArcaneMissiles,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | core.SpellFlagChanneled | core.SpellFlagNoMetrics,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -110,13 +110,12 @@ func (mage *Mage) getArcaneMissilesTickSpell(rank int) *core.Spell {
 	spellCoeff := ArcaneMissilesSpellCoeff[rank]
 
 	return mage.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_MageArcaneMissilesTick,
-		ActionID:     core.ActionID{SpellID: spellId}.WithTag(1),
-		SpellSchool:  core.SpellSchoolArcane,
-		DefenseType:  core.DefenseTypeMagic,
-		ProcMask:     core.ProcMaskSpellDamage,
-		Flags:        SpellFlagMage,
-		MissileSpeed: 20,
+		ClassSpellMask: ClassSpellMask_MageArcaneMissilesTick,
+		ActionID:       core.ActionID{SpellID: spellId}.WithTag(1),
+		SpellSchool:    core.SpellSchoolArcane,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		MissileSpeed:   20,
 
 		Rank: 1,
 

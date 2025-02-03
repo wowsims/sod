@@ -23,12 +23,13 @@ func (shaman *Shaman) applyLavaLash() {
 	}
 
 	shaman.LavaLash = shaman.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_ShamanLavaLash,
-		ActionID:    core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaLash)},
-		SpellSchool: core.SpellSchoolFire,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeOHSpecial,
-		Flags:       SpellFlagShaman | core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_ShamanLavaLash,
+		ActionID:       core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaLash)},
+		SpellSchool:    core.SpellSchoolFire,
+		CastType:       proto.CastType_CastTypeOffHand,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

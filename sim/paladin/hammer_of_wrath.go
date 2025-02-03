@@ -39,12 +39,12 @@ func (paladin *Paladin) registerHammerOfWrath() {
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeRanged,
 			ProcMask:    core.ProcMaskRangedSpecial, // TODO to be tested
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 			CastType:    proto.CastType_CastTypeRanged,
 
-			Rank:          i + 1,
-			RequiredLevel: int(rank.level),
-			SpellCode:     SpellCode_PaladinHammerOfWrath,
+			Rank:           i + 1,
+			RequiredLevel:  int(rank.level),
+			ClassSpellMask: ClassSpellMask_PaladinHammerOfWrath,
 
 			ManaCost: core.ManaCostOptions{
 				FlatCost: rank.manaCost,

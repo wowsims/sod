@@ -38,12 +38,12 @@ func (paladin *Paladin) registerHolyWrath() {
 		maxDamage := rank.maxDamage + float64(min(paladin.Level, rank.scaleLevel)-rank.level)*rank.scale
 
 		holyWrathSpell := paladin.GetOrRegisterSpell(core.SpellConfig{
-			SpellCode:   SpellCode_PaladinHolyWrath,
-			ActionID:    core.ActionID{SpellID: rank.spellID},
-			SpellSchool: core.SpellSchoolHoly,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskSpellDamage, // TODO to be tested
-			Flags:       core.SpellFlagAPL,
+			ClassSpellMask: ClassSpellMask_PaladinHolyWrath,
+			ActionID:       core.ActionID{SpellID: rank.spellID},
+			SpellSchool:    core.SpellSchoolHoly,
+			DefenseType:    core.DefenseTypeMagic,
+			ProcMask:       core.ProcMaskSpellDamage, // TODO to be tested
+			Flags:          core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,

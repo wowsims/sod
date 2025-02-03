@@ -41,12 +41,12 @@ func (mage *Mage) newBlastWaveSpellConfig(rank int, cooldownTimer *core.Timer) c
 	cooldown := time.Second * 45
 
 	return core.SpellConfig{
-		SpellCode:   SpellCode_MageBlastWave,
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellSchool: core.SpellSchoolFire,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagMage | core.SpellFlagBinary | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_MageBlastWave,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagBinary | core.SpellFlagAPL,
 
 		RequiredLevel: level,
 		Rank:          rank,

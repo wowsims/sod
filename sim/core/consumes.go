@@ -114,7 +114,7 @@ func applyWeaponImbueConsumes(character *Character, consumes *proto.Consumes) {
 	if character.HasMHWeapon() {
 		addImbueStats(character, consumes.MainHandImbue, true, shadowOilIcd)
 	}
-	if character.OffHand() != nil {
+	if character.HasOHItem() {
 		addImbueStats(character, consumes.OffHandImbue, false, shadowOilIcd)
 	}
 }
@@ -735,6 +735,9 @@ func applySealOfTheDawnBuffConsumes(character *Character, consumes *proto.Consum
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR10:
 		sanctifiedHealingEffect(character, 1223387, 37.5)
 	}
+
+	authorityFrozenWastesStacks := ((int32(consumes.SealOfTheDawn) - 1) % 10) / 2
+	authorityOfTheFrozenWastesAura(character, authorityFrozenWastesStacks)
 }
 
 const MaxSanctifiedBonus = 8
@@ -744,7 +747,6 @@ const MaxSanctifiedBonus = 8
 func sanctifiedDamageEffect(character *Character, spellID int32, percentIncrease float64) {
 	for _, unit := range getSanctifiedUnits(character) {
 		sanctifiedBonus := int32(0)
-		multiplier := 1.0
 		healthDeps := buildSanctifiedHealthDeps(unit, percentIncrease)
 
 		unit.GetOrRegisterAura(Aura{
@@ -755,29 +757,21 @@ func sanctifiedDamageEffect(character *Character, spellID int32, percentIncrease
 			MaxStacks:  MaxSanctifiedBonus,
 			OnInit: func(aura *Aura, sim *Simulation) {
 				sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
-				multiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
 			},
 			OnReset: func(aura *Aura, sim *Simulation) {
 				aura.Activate(sim)
 				aura.SetStacks(sim, sanctifiedBonus)
 			},
 			OnGain: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
+				aura.Unit.EnableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 
-				aura.Unit.PseudoStats.DamageDealtMultiplier *= multiplier
+				aura.Unit.PseudoStats.SanctifiedDamageMultiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= aura.Unit.PseudoStats.SanctifiedDamageMultiplier
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
+				aura.Unit.DisableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 
-				aura.Unit.PseudoStats.DamageDealtMultiplier /= multiplier
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= aura.Unit.PseudoStats.SanctifiedDamageMultiplier
 			},
 		})
 	}
@@ -806,21 +800,11 @@ func sanctifiedHealingEffect(character *Character, spellID int32, percentIncreas
 				aura.SetStacks(sim, sanctifiedBonus)
 			},
 			OnGain: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
-
+				aura.Unit.EnableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 				aura.Unit.PseudoStats.HealingDealtMultiplier *= multiplier
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
-
+				aura.Unit.DisableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 				aura.Unit.PseudoStats.HealingDealtMultiplier /= multiplier
 			},
 		})
@@ -832,7 +816,6 @@ func sanctifiedHealingEffect(character *Character, spellID int32, percentIncreas
 func sanctifiedTankingEffect(character *Character, spellID int32, threatPercentIncrease float64, damageHealthPercentIncrease float64) {
 	for _, unit := range getSanctifiedUnits(character) {
 		sanctifiedBonus := int32(0)
-		damageHealthMultiplier := 1.0
 		threatMultiplier := 1.0
 		healthDeps := buildSanctifiedHealthDeps(unit, damageHealthPercentIncrease)
 
@@ -844,7 +827,6 @@ func sanctifiedTankingEffect(character *Character, spellID int32, threatPercentI
 			MaxStacks:  MaxSanctifiedBonus,
 			OnInit: func(aura *Aura, sim *Simulation) {
 				sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
-				damageHealthMultiplier = 1.0 + damageHealthPercentIncrease/100.0*float64(sanctifiedBonus)
 				threatMultiplier = 1.0 + threatPercentIncrease/100.0*float64(sanctifiedBonus)
 			},
 			OnReset: func(aura *Aura, sim *Simulation) {
@@ -852,40 +834,28 @@ func sanctifiedTankingEffect(character *Character, spellID int32, threatPercentI
 				aura.SetStacks(sim, sanctifiedBonus)
 			},
 			OnGain: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.EnableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.EnableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
+				aura.Unit.EnableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 
+				aura.Unit.PseudoStats.SanctifiedDamageMultiplier = 1.0 + damageHealthPercentIncrease/100.0*float64(sanctifiedBonus)
+				aura.Unit.PseudoStats.DamageDealtMultiplier *= aura.Unit.PseudoStats.SanctifiedDamageMultiplier
 				aura.Unit.PseudoStats.ThreatMultiplier *= threatMultiplier
-				aura.Unit.PseudoStats.DamageDealtMultiplier *= damageHealthMultiplier
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != Finalized {
-					aura.Unit.StatDependencyManager.DisableDynamicStatDep(healthDeps[sanctifiedBonus])
-				} else {
-					aura.Unit.DisableDynamicStatDep(sim, healthDeps[sanctifiedBonus])
-				}
+				aura.Unit.DisableBuildPhaseStatDep(sim, healthDeps[sanctifiedBonus])
 
+				aura.Unit.PseudoStats.DamageDealtMultiplier /= aura.Unit.PseudoStats.SanctifiedDamageMultiplier
 				aura.Unit.PseudoStats.ThreatMultiplier /= threatMultiplier
-				aura.Unit.PseudoStats.DamageDealtMultiplier /= damageHealthMultiplier
 			},
 		})
 	}
 }
 
-// Gets all units that the Sanctified buff should apply to. This includes the player and Hunter/Warlock pets
+// Gets all units that the Sanctified buff should apply to.
+// This includes the player and ALL pets/minions as of 2025-01-31
 func getSanctifiedUnits(character *Character) []*Unit {
 	units := []*Unit{&character.Unit}
-	if character.Class == proto.Class_ClassHunter || character.Class == proto.Class_ClassWarlock {
-		for _, pet := range character.Pets {
-			if pet.IsGuardian() {
-				continue
-			}
-
-			units = append(units, &pet.Unit)
-		}
+	for _, pet := range character.Pets {
+		units = append(units, &pet.Unit)
 	}
 
 	return units
@@ -898,6 +868,27 @@ func buildSanctifiedHealthDeps(unit *Unit, percentIncrease float64) []*stats.Sta
 	}
 
 	return healthDeps
+}
+
+func authorityOfTheFrozenWastesAura(character *Character, stacks int32) *Aura {
+	return MakePermanent(character.RegisterAura(Aura{
+		ActionID:  ActionID{SpellID: 1218283},
+		Label:     "Authority of the Frozen Wastes",
+		MaxStacks: 4,
+		OnReset: func(aura *Aura, sim *Simulation) {
+			aura.Activate(sim)
+			aura.SetStacks(sim, stacks)
+		},
+		OnStacksChange: func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
+			aura.Unit.PseudoStats.DodgeReduction += 0.04 * float64(newStacks-oldStacks)
+
+			for _, target := range sim.Encounter.TargetUnits {
+				for _, at := range target.AttackTables[aura.Unit.UnitIndex] {
+					at.BaseMissChance -= 0.01 * float64(newStacks-oldStacks)
+				}
+			}
+		},
+	}))
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1068,13 +1059,13 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 			Duration: time.Second * 20,
 			OnGain: func(aura *Aura, sim *Simulation) {
 				aura.Unit.MultiplyMeleeSpeed(sim, 1.03)
-				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier /= 1.03
-				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier /= 1.03
+				aura.Unit.AutoAttacks.MHAuto().ApplyMultiplicativeDamageBonus(1 / 1.03)
+				aura.Unit.AutoAttacks.OHAuto().ApplyMultiplicativeDamageBonus(1 / 1.03)
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
 				aura.Unit.MultiplyMeleeSpeed(sim, 1/1.03)
-				aura.Unit.AutoAttacks.MHAuto().DamageMultiplier *= 1.03
-				aura.Unit.AutoAttacks.OHAuto().DamageMultiplier *= 1.03
+				aura.Unit.AutoAttacks.MHAuto().ApplyMultiplicativeDamageBonus(1.03)
+				aura.Unit.AutoAttacks.OHAuto().ApplyMultiplicativeDamageBonus(1.03)
 			},
 		})
 		jujuFlurrySpell := character.RegisterSpell(SpellConfig{
@@ -1407,15 +1398,15 @@ func (character *Character) newStratholmeHolyWaterSpell(sharedTimer *Timer) *Spe
 	config.BonusCoefficient = 1
 	config.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
 		for _, aoeTarget := range sim.Encounter.TargetUnits {
-			damageMultiplier := spell.DamageMultiplier
-			additiveMultiplier := spell.DamageMultiplierAdditive
+			damageMultiplier := spell.GetDamageMultiplier()
+			additiveMultiplierPct := spell.GetDamageMultiplierAdditive()
 			if aoeTarget.MobType != proto.MobType_MobTypeUndead {
-				spell.DamageMultiplier = 0
-				spell.DamageMultiplierAdditive = 0
+				spell.SetMultiplicativeDamageBonus(0)
+				spell.SetAdditiveDamageBonus(0)
 			}
 			spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(explosiveConfig.MinDamage, explosiveConfig.MaxDamage), spell.OutcomeMagicHitAndCrit)
-			spell.DamageMultiplier = damageMultiplier
-			spell.DamageMultiplierAdditive = additiveMultiplier
+			spell.SetMultiplicativeDamageBonus(damageMultiplier)
+			spell.ApplyAdditiveDamageBonus(additiveMultiplierPct)
 		}
 	}
 

@@ -23,15 +23,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatHealth,
 		Stat.StatMana,
 		// Attributes
-		Stat.StatStrength,
 		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
-		Stat.StatAgility,
-		// Physical
-		Stat.StatAttackPower,
-		Stat.StatMeleeCrit,
-		Stat.StatMeleeHit,
 		// Spell
 		Stat.StatSpellPower,
 		Stat.StatSpellDamage,
@@ -178,8 +172,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		BuffDebuffInputs.BattleSquawkBuff,
 		BuffDebuffInputs.CurseOfVulnerability,
 		BuffDebuffInputs.GiftOfArthas,
-		BuffDebuffInputs.CrystalYield,
-		BuffDebuffInputs.AncientCorrosivePoison,
+		BuffDebuffInputs.HolySunder,
 	],
 	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.SpellWintersChillDebuff, ...ConsumablesInputs.FROST_POWER_CONFIG],
 	petConsumeInputs: [ConsumablesInputs.PetAttackPowerConsumable, ConsumablesInputs.PetAgilityConsumable, ConsumablesInputs.PetStrengthConsumable],

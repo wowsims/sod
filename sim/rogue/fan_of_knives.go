@@ -11,12 +11,14 @@ const FanOfKnivesSpellID int32 = 409240
 
 func (rogue *Rogue) makeFanOfKnivesWeaponHitSpell(isMH bool) *core.Spell {
 	actionID := core.ActionID{SpellID: FanOfKnivesSpellID}.WithTag(1)
+	castType := proto.CastType_CastTypeMainHand
 	procMask := core.ProcMaskMeleeMHSpecial
 	flags := core.SpellFlagMeleeMetrics | SpellFlagColdBlooded
 	weaponMultiplier := core.TernaryFloat64(rogue.HasDagger(core.MainHand), 0.75, 0.5)
 
 	if !isMH {
 		actionID.Tag = 2
+		castType = proto.CastType_CastTypeOffHand
 		procMask = core.ProcMaskMeleeOHSpecial
 		flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
 		weaponMultiplier = core.TernaryFloat64(rogue.HasDagger(core.OffHand), 0.75, 0.5) * rogue.dwsMultiplier()
@@ -25,6 +27,7 @@ func (rogue *Rogue) makeFanOfKnivesWeaponHitSpell(isMH bool) *core.Spell {
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
+		CastType:    castType,
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    procMask,
 		Flags:       flags,
@@ -45,9 +48,10 @@ func (rogue *Rogue) registerFanOfKnives() {
 	results := make([]*core.SpellResult, len(rogue.Env.Encounter.TargetUnits))
 
 	rogue.FanOfKnives = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: FanOfKnivesSpellID},
-		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagCarnage,
+		ActionID:       core.ActionID{SpellID: FanOfKnivesSpellID},
+		ClassSpellMask: SpellClassMask_RogueFanOfKnives,
+		SpellSchool:    core.SpellSchoolPhysical,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagCarnage,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 50,

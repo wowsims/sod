@@ -32,11 +32,12 @@ func (warrior *Warrior) applyTAQDamage2PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "S03 - Item - TAQ - Warrior - Damage 2P Bonus",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.DeathWish.CD.Multiplier *= 0.5
-		},
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		ClassMask: ClassSpellMask_WarriorDeathWish,
+		IntValue:  -50,
 	})
 }
 
@@ -55,25 +56,19 @@ func (warrior *Warrior) applyTAQDamage4PBonus() {
 		ActionID: core.ActionID{SpellID: 1214166},
 		Label:    "Bloodythirsty",
 		Duration: time.Second * 3,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageDealtMultiplier *= 1.15
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.PseudoStats.DamageDealtMultiplier /= 1.15
-		},
-	})
+	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.DamageDealtMultiplier, 1.15)
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_WarriorDeepWounds && warrior.Rend.Dot(result.Target).IsActive()) ||
-				(spell.SpellCode == SpellCode_WarriorRend && warrior.DeepWounds.Dot(result.Target).IsActive()) {
+			if (spell.Matches(ClassSpellMask_WarriorDeepWounds) && warrior.Rend.Dot(result.Target).IsActive()) ||
+				(spell.Matches(ClassSpellMask_WarriorRend) && warrior.DeepWounds.Dot(result.Target).IsActive()) {
 				buffAura.Activate(sim)
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if (spell.SpellCode == SpellCode_WarriorDeepWounds && warrior.Rend.Dot(result.Target).IsActive()) ||
-				(spell.SpellCode == SpellCode_WarriorRend && warrior.DeepWounds.Dot(result.Target).IsActive()) {
+			if (spell.Matches(ClassSpellMask_WarriorDeepWounds) && warrior.Rend.Dot(result.Target).IsActive()) ||
+				(spell.Matches(ClassSpellMask_WarriorRend) && warrior.DeepWounds.Dot(result.Target).IsActive()) {
 				buffAura.Activate(sim)
 			}
 		},
@@ -122,15 +117,16 @@ func (warrior *Warrior) applyTAQTank4PBonus() {
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.ShieldSlam.ThreatMultiplier *= 2
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode == SpellCode_WarriorShieldSlam && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry|core.OutcomeBlock) {
+			if spell.Matches(ClassSpellMask_WarriorShieldSlam) && result.Outcome.Matches(core.OutcomeDodge|core.OutcomeParry|core.OutcomeBlock) {
 				spell.CD.Reset()
 			}
 		},
-	}))
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Threat_Pct,
+		ClassMask:  ClassSpellMask_WarriorShieldSlam,
+		FloatValue: 2,
+	})
 }
 
 var ItemSetBattlegearOfUnyieldingStrength = core.NewItemSet(core.ItemSet{
@@ -154,10 +150,11 @@ func (warrior *Warrior) applyRAQTank3PBonus() {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "S03 - Item - RAQ - Warrior - Tank 3P Bonus",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.Shockwave.CD.Multiplier *= 0.5
-		},
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		ClassMask: ClassSpellMask_WarriorShockwave,
+		IntValue:  -50,
 	})
 }

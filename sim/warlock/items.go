@@ -132,32 +132,19 @@ func init() {
 	core.NewItemEffect(ScytheOfChaos, func(agent core.Agent) {
 		warlock := agent.(WarlockAgent).GetWarlock()
 
-		affectedSpells := make(map[*core.Spell]bool)
-
 		summonBuffAura := warlock.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 469211},
 			Label:    "Scythe of Chaos",
 			Duration: time.Second * 20,
-			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range warlock.SummonDemonSpells {
-					affectedSpells[spell] = true
-				}
-			},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range warlock.SummonDemonSpells {
-					spell.CastTimeMultiplier -= 1
-				}
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				for _, spell := range warlock.SummonDemonSpells {
-					spell.CastTimeMultiplier += 1
-				}
-			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if affectedSpells[spell] {
+				if spell.Matches(ClassSpellMask_WarlockSummons) {
 					aura.Deactivate(sim)
 				}
 			},
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_CastTime_Pct,
+			ClassMask:  ClassSpellMask_WarlockSummons,
+			FloatValue: -1,
 		})
 
 		core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
@@ -282,9 +269,9 @@ func init() {
 		warlock.RegisterAura(core.Aura{
 			Label: "Reduced Cleave Cooldown",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
-				warlock.Succubus.primaryAbility.CD.FlatModifier -= time.Second * 2
+				warlock.Succubus.primaryAbility.CD.ApplyFlatCooldownMod(-time.Second * 2)
 				if warlock.Felguard != nil {
-					warlock.Felguard.primaryAbility.CD.FlatModifier -= time.Second * 2
+					warlock.Felguard.primaryAbility.CD.ApplyFlatCooldownMod(-time.Second * 2)
 				}
 			},
 		})
@@ -298,7 +285,7 @@ func init() {
 		priest.OnSpellRegistered(func(spell *core.Spell) {
 			// Unlike the Priest ring, the Warlock ring doesn't seem to affect channels https://www.wowhead.com/classic/spell=1222974/damage-over-time-increase
 			if spell.Flags.Matches(SpellFlagWarlock) && !spell.Flags.Matches(core.SpellFlagChanneled) {
-				spell.PeriodicDamageMultiplierAdditive += .02
+				spell.ApplyAdditivePeriodicDamageBonus(2)
 			}
 		})
 	})
@@ -382,6 +369,10 @@ func init() {
 				CD: core.Cooldown{
 					Timer:    warlock.NewTimer(),
 					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    warlock.GetOffensiveTrinketCD(),
+					Duration: time.Second * 20,
 				},
 			},
 

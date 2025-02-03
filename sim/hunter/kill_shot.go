@@ -19,14 +19,14 @@ func (hunter *Hunter) newKillShotConfig() core.SpellConfig {
 	baseDamage := 113 / 100 * hunter.baseRuneAbilityDamage() * 5.21
 
 	return core.SpellConfig{
-		SpellCode:    SpellCode_HunterKillShot,
-		ActionID:     core.ActionID{SpellID: int32(proto.HunterRune_RuneLegsKillShot)},
-		SpellSchool:  core.SpellSchoolPhysical,
-		DefenseType:  core.DefenseTypeRanged,
-		ProcMask:     core.ProcMaskRangedSpecial,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagShot,
-		CastType:     proto.CastType_CastTypeRanged,
-		MissileSpeed: 24,
+		ClassSpellMask: ClassSpellMask_HunterKillShot,
+		ActionID:       core.ActionID{SpellID: int32(proto.HunterRune_RuneLegsKillShot)},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeRanged,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		CastType:       proto.CastType_CastTypeRanged,
+		MissileSpeed:   24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.03,

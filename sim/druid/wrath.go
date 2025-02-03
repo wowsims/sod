@@ -38,12 +38,12 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 	level := WrathLevel[rank]
 
 	return core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellId},
-		SpellCode:   SpellCode_DruidWrath,
-		SpellSchool: core.SpellSchoolNature,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagOmen | core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
+		ActionID:       core.ActionID{SpellID: spellId},
+		ClassSpellMask: ClassSpellMask_DruidWrath,
+		SpellSchool:    core.SpellSchoolNature,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          SpellFlagOmen | core.SpellFlagAPL | core.SpellFlagResetAttackSwing,
 
 		RequiredLevel: level,
 		Rank:          rank,
@@ -62,7 +62,7 @@ func (druid *Druid) newWrathSpellConfig(rank int) core.SpellConfig {
 
 		BonusCritRating: core.TernaryFloat64(druid.HasSetBonus(item_sets.ItemSetInsulatedSorcerorLeather, 3), 2, 0) * core.CritRatingPerCritChance,
 
-		DamageMultiplier: 1 + core.Ternary(druid.Ranged().ID == IdolOfWrath, .02, 0),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,
 

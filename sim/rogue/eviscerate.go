@@ -39,13 +39,13 @@ func (rogue *Rogue) registerEviscerate() {
 	cutToTheChase := rogue.HasRune(proto.RogueRune_RuneCutToTheChase)
 
 	rogue.Eviscerate = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_RogueEviscerate,
-		ActionID:     core.ActionID{SpellID: spellID},
-		SpellSchool:  core.SpellSchoolPhysical,
-		DefenseType:  core.DefenseTypeMelee,
-		ProcMask:     core.ProcMaskMeleeMHSpecial,
-		Flags:        rogue.finisherFlags() | SpellFlagColdBlooded,
-		MetricSplits: 6,
+		ClassSpellMask: ClassSpellMask_RogueEviscerate,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          rogue.finisherFlags() | SpellFlagColdBlooded,
+		MetricSplits:   6,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,
@@ -64,11 +64,9 @@ func (rogue *Rogue) registerEviscerate() {
 			return rogue.ComboPoints() > 0
 		},
 
-		DamageMultiplierAdditive: 1 +
-			[]float64{0, 0.05, 0.10, 0.15}[rogue.Talents.ImprovedEviscerate] +
-			[]float64{0, 0.02, 0.04, 0.06}[rogue.Talents.Aggression],
-		ThreatMultiplier: 1,
-		BonusCoefficient: 1,
+		DamageMultiplierAdditivePct: []int64{0, 5, 10, 15}[rogue.Talents.ImprovedEviscerate] + []int64{0, 2, 4, 6}[rogue.Talents.Aggression],
+		ThreatMultiplier:            1,
+		BonusCoefficient:            1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)

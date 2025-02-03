@@ -23,17 +23,19 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 	manaCost := .06
 	castTime := time.Millisecond * 1500
 
-	priest.MindSpikeAuras = priest.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return priest.newMindSpikeAura(unit)
-	})
+	if len(priest.MindSpikeAuras) == 0 {
+		priest.MindSpikeAuras = priest.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
+			return priest.newMindSpikeAura(unit)
+		})
+	}
 
 	return core.SpellConfig{
-		SpellCode:   SpellCode_PriestMindSpike,
-		ActionID:    core.ActionID{SpellID: int32(proto.PriestRune_RuneWaistMindSpike)},
-		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFrost,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       SpellFlagPriest | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_PriestMindSpike,
+		ActionID:       core.ActionID{SpellID: int32(proto.PriestRune_RuneWaistMindSpike)},
+		SpellSchool:    core.SpellSchoolShadow | core.SpellSchoolFrost,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL,
 		// TODO: Verify missile speed
 		MissileSpeed: 20,
 

@@ -33,18 +33,12 @@ func (warlock *Warlock) applyNaxxramasDamage2PBonus() {
 		return
 	}
 
-	warlock.RegisterAura(core.Aura{
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := warlock.Corruption
-			if warlock.Incinerate != nil {
-				affectedSpells = append(affectedSpells, warlock.Incinerate)
-			}
-
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += 0.20
-			}
-		},
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockCorruption,
+		IntValue:  20,
 	})
 }
 
@@ -140,21 +134,7 @@ func (warlock *Warlock) applyNaxxramasTank2PBonus() {
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on your Infernal Armor ability by 30 sec and reduces the cooldown on your Demonic Grace ability by 10 sec.
@@ -168,17 +148,16 @@ func (warlock *Warlock) applyNaxxramasTank4PBonus() {
 		return
 	}
 
-	warlock.RegisterAura(core.Aura{
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if warlock.InfernalArmor != nil {
-				warlock.InfernalArmor.CD.FlatModifier -= time.Second * 30
-			}
-
-			if warlock.DemonicGrace != nil {
-				warlock.DemonicGrace.CD.FlatModifier -= time.Second * 10
-			}
-		},
+	})).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_WarlockInfernalArmor,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Second * 30,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_WarlockDemonicGrace,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Second * 10,
 	})
 }
 

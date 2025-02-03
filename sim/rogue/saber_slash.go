@@ -13,12 +13,12 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 	}
 
 	rogue.SaberSlash = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_RogueSaberSlash,
-		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneSaberSlash)},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       rogue.builderFlags(),
+		ClassSpellMask: ClassSpellMask_RogueSaberSlash,
+		ActionID:       core.ActionID{SpellID: int32(proto.RogueRune_RuneSaberSlash)},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          rogue.builderFlags(),
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   []float64{45, 42, 40}[rogue.Talents.ImprovedSinisterStrike],
 			Refund: 0.8,
@@ -63,10 +63,10 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier:               1,
-		ImpactDamageMultiplierAdditive: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
-		ThreatMultiplier:               1,
-		BonusCoefficient:               1,
+		DamageMultiplier:                  1,
+		ImpactDamageMultiplierAdditivePct: []int64{0, 2, 4, 6}[rogue.Talents.Aggression],
+		ThreatMultiplier:                  1,
+		BonusCoefficient:                  1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
@@ -95,10 +95,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 	rogue.RegisterAura(core.Aura{
 		Label: "Saber Slash DoT Damage Amp",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			affectedSpells := core.FilterSlice(
-				[]*core.Spell{rogue.SinisterStrike, rogue.SaberSlash, rogue.PoisonedKnife},
-				func(spell *core.Spell) bool { return spell != nil },
-			)
+			affectedSpells := rogue.GetSpellsMatchingClassMask(ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RoguePoisonedKnife)
 
 			for _, spell := range affectedSpells {
 				oldApplyEffects := spell.ApplyEffects
@@ -108,9 +105,9 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 						multiplier = rogue.saberSlashMultiplier(dot.GetStacks())
 					}
 
-					spell.DamageMultiplier *= multiplier
+					spell.ApplyMultiplicativeDamageBonus(multiplier)
 					oldApplyEffects(sim, target, spell)
-					spell.DamageMultiplier /= multiplier
+					spell.ApplyMultiplicativeDamageBonus(1 / multiplier)
 				}
 			}
 		},

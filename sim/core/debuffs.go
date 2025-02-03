@@ -140,20 +140,16 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 		MakePermanent(GiftOfArthasAura(target))
 	}
 
+	if debuffs.HolySunder {
+		MakePermanent(HolySunderAura(target))
+	}
+
 	if debuffs.CurseOfVulnerability {
 		MakePermanent(CurseOfVulnerabilityAura(target))
 	}
 
 	if debuffs.Mangle {
 		MakePermanent(MangleAura(target, level))
-	}
-
-	if debuffs.CrystalYield {
-		MakePermanent(CrystalYieldAura(target))
-	}
-
-	if debuffs.AncientCorrosivePoison > 0 {
-		ApplyFixedUptimeAura(AncientCorrosivePoisonAura(target), float64(debuffs.AncientCorrosivePoison)/100.0, GCDDefault, 1)
 	}
 
 	// Major Armor Debuffs
@@ -195,15 +191,6 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 					}
 				},
 			}, raid)
-		}
-
-		if debuffs.Homunculi > 0 {
-			// Calculate desired downtime based on selected uptimeCount (1 count = 10% uptime, 0%-100%)
-			totalDuration := time.Second * 15
-			uptimePercent := float64(debuffs.Homunculi) / 100.0
-			ApplyFixedUptimeAura(HomunculiArmorAura(target, level), uptimePercent, totalDuration, 1)
-			ApplyFixedUptimeAura(HomunculiAttackSpeedAura(target, level), uptimePercent, totalDuration, 1)
-			ApplyFixedUptimeAura(HomunculiAttackPowerAura(target, level), uptimePercent, totalDuration, 1)
 		}
 	}
 
@@ -757,6 +744,20 @@ func GiftOfArthasAura(target *Unit) *Aura {
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexPhysical] -= 8
+		},
+	})
+}
+
+func HolySunderAura(target *Unit) *Aura {
+	return target.GetOrRegisterAura(Aura{
+		Label:    "Holy Sunder",
+		ActionID: ActionID{SpellID: 9176},
+		Duration: time.Minute * 1,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			aura.Unit.stats[stats.Armor] -= 50
+		},
+		OnExpire: func(aura *Aura, sim *Simulation) {
+			aura.Unit.stats[stats.Armor] += 50
 		},
 	})
 }
@@ -1387,34 +1388,6 @@ func increasedMissEffect(aura *Aura, increasedMissChance float64) *ExclusiveEffe
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			ee.Aura.Unit.PseudoStats.IncreasedMissChance -= increasedMissChance
-		},
-	})
-}
-
-func CrystalYieldAura(target *Unit) *Aura {
-	return target.GetOrRegisterAura(Aura{
-		Label:    "Crystal Yield",
-		ActionID: ActionID{SpellID: 15235},
-		Duration: 2 * time.Minute,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.stats[stats.Armor] -= 200
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.stats[stats.Armor] += 200
-		},
-	})
-}
-
-func AncientCorrosivePoisonAura(target *Unit) *Aura {
-	return target.GetOrRegisterAura(Aura{
-		Label:    "Ancient Corrosive Poison",
-		ActionID: ActionID{SpellID: 422996},
-		Duration: 15 * time.Second,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.stats[stats.Armor] -= 150
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.stats[stats.Armor] += 150
 		},
 	})
 }

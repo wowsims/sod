@@ -1082,7 +1082,7 @@ export const WildStrikes: ConsumableInputConfig<WeaponImbue> = {
 // Wizard Oils
 export const BlessedWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
-		actionId: player => player.getMatchingItemActionId([{ id: 23123, minLevel: 50 }]),
+		actionId: player => player.getMatchingItemActionId([{ id: 238234, minLevel: 50 }]),
 		value: WeaponImbue.BlessedWizardOil,
 		showWhen: player => {
 			const weapon = player.getEquippedItem(slot);
@@ -1187,7 +1187,7 @@ export const BlackfathomManaOil = (slot: ItemSlot): ConsumableInputConfig<Weapon
 // Sharpening Stones
 export const ConsecratedSharpeningStone = (slot: ItemSlot): ConsumableInputConfig<WeaponImbue> => {
 	return {
-		actionId: player => player.getMatchingItemActionId([{ id: 23122, minLevel: 50 }]),
+		actionId: player => player.getMatchingItemActionId([{ id: 238241, minLevel: 50 }]),
 		value: WeaponImbue.ConsecratedSharpeningStone,
 		showWhen: player => {
 			const weapon = player.getEquippedItem(slot);

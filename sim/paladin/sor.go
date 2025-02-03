@@ -77,6 +77,8 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ProcMask:    core.ProcMaskSpellDamage,
 			Flags:       core.SpellFlagMeleeMetrics | SpellFlag_RV | core.SpellFlagSuppressWeaponProcs | core.SpellFlagSuppressEquipProcs | core.SpellFlagBinary,
 
+			ClassSpellMask: ClassSpellMask_PaladinJudgementOfRighteousness,
+
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 
@@ -109,9 +111,8 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			ActionID:    core.ActionID{SpellID: rank.proc.spellID},
 			SpellSchool: core.SpellSchoolHoly,
 			DefenseType: core.DefenseTypeMelee,
-			ProcMask:    core.ProcMaskMeleeMHSpecial,                                   //changed to ProcMaskMeleeMHSpecial, to allow procs from weapons/oils which do proc from SoR,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagSuppressEquipProcs, // but Wild Strikes does not proc, nor equip procs
-
+			ProcMask:    core.ProcMaskMeleeMHSpecial,                                                                         //changed to ProcMaskMeleeMHSpecial, to allow procs from weapons/oils which do proc from SoR,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagSuppressEquipProcs | core.SpellFlagBatchStartAttackMacro, // but Wild Strikes does not proc, nor equip procs
 			//BonusCritRating: paladin.holyCrit(), // TODO to be tested, but unlikely
 
 			DamageMultiplier: paladin.getWeaponSpecializationModifier(),
@@ -154,7 +155,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 		paladin.sealOfRighteousness = paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
 			SpellSchool: core.SpellSchoolHoly,
-			Flags:       core.SpellFlagAPL,
+			Flags:       core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,

@@ -1,0 +1,196 @@
+character_stats_results: {
+ key: "TestFeralTank-Phase5-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 479.6
+  final_stats: 467.5
+  final_stats: 938.124
+  final_stats: 254.76
+  final_stats: 216.7
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 41.25
+  final_stats: 6
+  final_stats: 27.05449
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2450.2
+  final_stats: 6
+  final_stats: 45.275
+  final_stats: 0
+  final_stats: 0
+  final_stats: 12
+  final_stats: 4785.4
+  final_stats: 0
+  final_stats: 0
+  final_stats: 10246.956
+  final_stats: 810
+  final_stats: 157
+  final_stats: 11.28
+  final_stats: 0
+  final_stats: 31.555
+  final_stats: 11.28
+  final_stats: 0
+  final_stats: 14129.052
+  final_stats: 27
+  final_stats: 80
+  final_stats: 60
+  final_stats: 85
+  final_stats: 66
+  final_stats: 384
+  final_stats: 0
+  final_stats: 0
+  final_stats: 338
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-BloodGuard'sCracklingLeather"
+ value: {
+  dps: 1037.49465
+  tps: 3299.28733
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-BloodGuard'sLeather"
+ value: {
+  dps: 1110.05646
+  tps: 3543.0674
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-BloodGuard'sRestoredLeather"
+ value: {
+  dps: 1001.67355
+  tps: 3185.18473
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
+ value: {
+  dps: 1908.63305
+  tps: 5017.95825
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-EmeraldDreamkeeperGarb"
+ value: {
+  dps: 1014.26257
+  tps: 3234.0334
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-EmeraldLeathers"
+ value: {
+  dps: 1099.85898
+  tps: 3518.57288
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-EmeraldWatcherVestments"
+ value: {
+  dps: 1018.77502
+  tps: 3240.57644
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-ExiledProphet'sRaiment"
+ value: {
+  dps: 1805.41545
+  tps: 4748.71612
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-FeralheartRaiment"
+ value: {
+  dps: 1024.48142
+  tps: 3266.69654
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-Knight-Lieutenant'sCracklingLeather"
+ value: {
+  dps: 1037.49465
+  tps: 3299.28733
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLeather"
+ value: {
+  dps: 1110.05646
+  tps: 3543.0674
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-Knight-Lieutenant'sRestoredLeather"
+ value: {
+  dps: 1001.67355
+  tps: 3185.18473
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-AllItems-LostWorshipper'sArmor"
+ value: {
+  dps: 1840.27906
+  tps: 4833.53431
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-Average-Default"
+ value: {
+  dps: 2391.00896
+  tps: 6544.28575
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-FullBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 289.82424
+  tps: 675.78829
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-FullBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 77.33923
+  tps: 212.20786
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-FullBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 386.69616
+  tps: 1061.0393
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-NoBuffs-Full Consumes-LongMultiTarget"
+ value: {
+  dps: 105.99931
+  tps: 287.70781
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-NoBuffs-Full Consumes-LongSingleTarget"
+ value: {
+  dps: 33.2439
+  tps: 106.86845
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-NoBuffs-Full Consumes-ShortSingleTarget"
+ value: {
+  dps: 166.21948
+  tps: 534.34225
+ }
+}
+dps_results: {
+ key: "TestFeralTank-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 2392.80406
+  tps: 6534.82016
+ }
+}

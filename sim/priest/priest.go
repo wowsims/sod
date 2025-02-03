@@ -10,24 +10,49 @@ import (
 var TalentTreeSizes = [3]int{15, 16, 16}
 
 const (
-	SpellFlagPriest = core.SpellFlagAgentReserved1
-)
+	ClassSpellMask_PriestNone int64 = 0
 
-const (
-	SpellCode_PriestNone int32 = iota
+	ClassSpellMask_PriestDevouringPlague int64 = 1 << iota
+	ClassSpellMask_PriestFlashHeal
+	ClassSpellMask_PriestGreaterHeal
+	ClassSpellMask_PriestHeal
+	ClassSpellMask_PriestHolyFire
+	ClassSpellMask_PriestMindBlast
+	ClassSpellMask_PriestMindFlay
+	ClassSpellMask_PriestMindSear
+	ClassSpellMask_PriestMindSpike
+	ClassSpellMask_PriestShadowWordPain
+	ClassSpellMask_PriestShadowWordDeath
+	ClassSpellMask_PriestSmite
+	ClassSpellMask_PriestVampiricTouch
+	ClassSpellMask_PriestVoidPlague
+	ClassSpellMask_PriestVoidZone
+	ClassSpellMask_PriestDispersion
+	ClassSpellMask_PriestShadowFiend
+	ClassSpellMask_PriestVampiricEmbrace
+	ClassSpellMask_PriestInnerFocus
 
-	SpellCode_PriestDevouringPlague
-	SpellCode_PriestFlashHeal
-	SpellCode_PriestGreaterHeal
-	SpellCode_PriestHeal
-	SpellCode_PriestHolyFire
-	SpellCode_PriestMindBlast
-	SpellCode_PriestMindFlay
-	SpellCode_PriestMindSpike
-	SpellCode_PriestShadowWordPain
-	SpellCode_PriestSmite
-	SpellCode_PriestVampiricTouch
-	SpellCode_PriestVoidPlague
+	ClassSpellMask_PriestPenanceDamage
+	ClassSpellMask_PriestPenanceHeal
+	ClassSpellMask_PriestPenance = ClassSpellMask_PriestPenanceDamage | ClassSpellMask_PriestPenanceHeal
+
+	ClassSpellMask_PriestLast
+	ClassSpellMask_PriestAll = ClassSpellMask_PriestLast<<1 - 1
+
+	ClassSpellMask_PriestDevouringPlagueDots = ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestVoidPlague |
+		ClassSpellMask_PriestVampiricTouch
+
+	PriestSpellInstant = ClassSpellMask_PriestDevouringPlague |
+		ClassSpellMask_PriestMindFlay |
+		ClassSpellMask_PriestMindSear |
+		ClassSpellMask_PriestShadowWordPain |
+		ClassSpellMask_PriestShadowWordDeath |
+		ClassSpellMask_PriestVoidPlague |
+		ClassSpellMask_PriestVoidZone |
+		ClassSpellMask_PriestDispersion |
+		ClassSpellMask_PriestShadowFiend |
+		ClassSpellMask_PriestVampiricEmbrace |
+		ClassSpellMask_PriestPenance
 )
 
 type Priest struct {

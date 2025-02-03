@@ -28,12 +28,12 @@ func (warrior *Warrior) registerShieldSlamSpell() {
 	defendersResolveAura := core.DefendersResolveAttackPower(warrior.GetCharacter())
 
 	warrior.ShieldSlam = warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		SpellCode:   SpellCode_WarriorShieldSlam,
-		ActionID:    core.ActionID{SpellID: rank.spellID},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial, // TODO really?
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
+		ClassSpellMask: ClassSpellMask_WarriorShieldSlam,
+		ActionID:       core.ActionID{SpellID: rank.spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial, // TODO really?
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
 			Cost:   20,

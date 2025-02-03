@@ -36,14 +36,14 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	hunter.RaptorStrikeOH = hunter.newRaptorStrikeHitSpell(rank, false)
 
 	spellConfig := core.SpellConfig{
-		SpellCode:     SpellCode_HunterRaptorStrike,
-		ActionID:      core.ActionID{SpellID: spellID},
-		SpellSchool:   core.SpellSchoolPhysical,
-		DefenseType:   core.DefenseTypeMelee,
-		ProcMask:      core.ProcMaskMeleeMHSpecial,
-		Flags:         core.SpellFlagMeleeMetrics | SpellFlagStrike,
-		Rank:          rank,
-		RequiredLevel: level,
+		ClassSpellMask: ClassSpellMask_HunterRaptorStrike,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagStrike,
+		Rank:           rank,
+		RequiredLevel:  level,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -103,24 +103,27 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 	spellID := core.Ternary(hasMeleeSpecialist, RaptorStrikeSpellIdMeleeSpecialist, RaptorStrikeSpellId)[rank]
 	baseDamage := RaptorStrikeBaseDamage[rank]
 
+	castType := proto.CastType_CastTypeMainHand
 	procMask := core.ProcMaskMeleeMHSpecial
 	damageMultiplier := 1.0
 	damageFunc := core.Ternary(hasMeleeSpecialist, hunter.MHNormalizedWeaponDamage, hunter.MHWeaponDamage)
 
 	if !isMH {
 		baseDamage /= 2
+		castType = proto.CastType_CastTypeOffHand
 		procMask = core.ProcMaskMeleeOHSpecial
 		damageMultiplier = hunter.AutoAttacks.OHConfig().DamageMultiplier
 		damageFunc = core.Ternary(hasMeleeSpecialist, hunter.OHNormalizedWeaponDamage, hunter.OHWeaponDamage)
 	}
 
 	return hunter.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_HunterRaptorStrikeHit,
-		ActionID:    core.ActionID{SpellID: spellID}.WithTag(core.TernaryInt32(isMH, 1, 2)),
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+		ClassSpellMask: ClassSpellMask_HunterRaptorStrikeHit,
+		ActionID:       core.ActionID{SpellID: spellID}.WithTag(core.TernaryInt32(isMH, 1, 2)),
+		SpellSchool:    core.SpellSchoolPhysical,
+		CastType:       castType,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       procMask,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,
 		CritDamageBonus:  hunter.mortalShots(),
@@ -165,9 +168,9 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 	})
 
 	queueSpell := hunter.RegisterSpell(core.SpellConfig{
-		SpellCode: SpellCode_HunterRaptorStrike,
-		ActionID:  hunter.RaptorStrike.WithTag(3),
-		Flags:     core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_HunterRaptorStrike,
+		ActionID:       hunter.RaptorStrike.WithTag(3),
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.curQueueAura != queueAura &&

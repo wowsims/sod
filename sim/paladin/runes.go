@@ -108,18 +108,35 @@ func (paladin *Paladin) registerTheArtOfWar() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
-		Label:    "The Art of War",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
+	cdReduction := time.Second*2
+	aowSpell := paladin.RegisterSpell(core.SpellConfig{
+		ActionID: core.ActionID{SpellID: 426157},
+		Flags:    core.SpellFlagPassiveSpell,
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			timeToReady := paladin.exorcismCooldown.TimeToReady(sim)
+			actualReduction := min(timeToReady, cdReduction)
+			newTimeToReady := timeToReady - actualReduction
+
+			if sim.Log != nil {
+				paladin.Log(sim, "The Art of War reduced Exorcism cooldown by %s (%s -> %s)", actualReduction, timeToReady, newTimeToReady)
+			}
+
+			paladin.exorcismCooldown.Set(sim.CurrentTime + newTimeToReady)
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskMeleeDamageProc) || !result.Outcome.Matches(core.OutcomeCrit) {
+	})
+
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:       "The Art of War Trigger",
+		Callback:   core.CallbackOnSpellHitDealt,
+		ProcMask:   core.ProcMaskMelee | core.ProcMaskMeleeDamageProc,
+		Outcome:    core.OutcomeCrit,
+		ProcChance: 1,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if paladin.exorcismCooldown.TimeToReady(sim) <= 0 {
 				return
 			}
-			//paladin.holyShockCooldown.Reset()
-			paladin.exorcismCooldown.Set(sim.CurrentTime + max(0, paladin.exorcismCooldown.TimeToReady(sim)-(time.Second*2)))
+
+			aowSpell.Cast(sim, result.Target)
 		},
 	})
 }
@@ -206,7 +223,7 @@ func (paladin *Paladin) registerShockAndAwe() {
 			aura.Activate(sim)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.SpellCode != SpellCode_PaladinHolyShock {
+			if !spell.Matches(ClassSpellMask_PaladinHolyShock) {
 				return
 			}
 			shockAndAweAura.Activate(sim)
@@ -261,18 +278,14 @@ func (paladin *Paladin) applyPurifyingPower() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label: "Purifying Power",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range paladin.exorcism {
-				spell.CD.Multiplier *= 0.5
-			}
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -50,
+	}))
 
-			for _, spell := range paladin.holyWrath {
-				spell.CD.Multiplier *= 0.5
-			}
-		},
-	})
 }
 
 func (paladin *Paladin) registerAegis() {
@@ -335,7 +348,7 @@ func (paladin *Paladin) registerMalleableProtection() {
 	// Activating Holy Shield now grants 4 AP for each point of defense above paladin.Level * 5
 	defendersResolveAPAura := core.DefendersResolveAttackPower(paladin.GetCharacter())
 	handler := func(spell *core.Spell) {
-		if spell.SpellCode != SpellCode_PaladinHolyShield {
+		if !spell.Matches(ClassSpellMask_PaladinHolyShield) {
 			return
 		}
 		oldEffects := spell.ApplyEffects
@@ -379,8 +392,9 @@ func (paladin *Paladin) registerMalleableProtection() {
 	})
 
 	paladin.divineProtection = paladin.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagAPL | SpellFlag_Forbearance,
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_PaladinDivineProtection,
+		Flags:          core.SpellFlagAPL | SpellFlag_Forbearance,
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
 		},

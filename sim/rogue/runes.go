@@ -292,11 +292,11 @@ func (rogue *Rogue) registerBladeDance() {
 	})
 
 	rogue.BladeDance = rogue.RegisterSpell(core.SpellConfig{
-		SpellCode:    SpellCode_RogueBladeDance,
-		ActionID:     core.ActionID{SpellID: int32(proto.RogueRune_RuneBladeDance)},
-		SpellSchool:  core.SpellSchoolPhysical,
-		Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		MetricSplits: 6,
+		ClassSpellMask: ClassSpellMask_RogueBladeDance,
+		ActionID:       core.ActionID{SpellID: int32(proto.RogueRune_RuneBladeDance)},
+		SpellSchool:    core.SpellSchoolPhysical,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		MetricSplits:   6,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   25,
@@ -429,8 +429,8 @@ func (rogue *Rogue) applySlaughterfromtheShadows() {
 	}
 
 	rogue.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_RogueAmbush || spell.SpellCode == SpellCode_RogueBackstab {
-			spell.DamageMultiplier *= 1.60
+		if spell.Matches(ClassSpellMask_RogueAmbush | ClassSpellMask_RogueBackstab) {
+			spell.ApplyMultiplicativeDamageBonus(1.60)
 			spell.Cost.FlatModifier -= 30
 		}
 	})

@@ -14,6 +14,7 @@ func (unit *Unit) newHardcastAction(sim *Simulation) {
 	if unit.hardcastAction == nil {
 		pa := &PendingAction{
 			NextActionAt: unit.Hardcast.Expires,
+			Priority:     ActionPriorityGCD,
 			OnAction: func(sim *Simulation) {
 				if hc := &unit.Hardcast; hc.Expires != startingCDTime && !unit.IsCasting(sim) {
 					hc.Expires = startingCDTime
@@ -27,10 +28,6 @@ func (unit *Unit) newHardcastAction(sim *Simulation) {
 	} else {
 		unit.hardcastAction.cancelled = false
 		unit.hardcastAction.NextActionAt = unit.Hardcast.Expires
-
-		if sim.Log != nil {
-			unit.Log(sim, "Unit Hardcast extended to %s", unit.Hardcast.Expires)
-		}
 	}
 
 	sim.AddPendingAction(unit.hardcastAction)

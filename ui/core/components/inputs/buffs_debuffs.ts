@@ -419,9 +419,9 @@ export const ManaSpringTotem = withLabel(
 	}),
 	'Mana Spring Totem',
 );
-export const VampiricTouchReplenishment = withLabel(
-	makeMultistateRaidBuffInput({ actionId: () => ActionId.fromSpellId(402668), numStates: 21, fieldName: 'vampiricTouch', multiplier: 20 }),
-	'Vampiric Touch MP5',
+export const RaidMP5 = withLabel(
+	makeMultistateRaidBuffInput({ actionId: () => ActionId.fromSpellId(402668), numStates: 30, fieldName: 'vampiricTouch', multiplier: 40 }),
+	'Raid MP5',
 );
 
 export const MeleeCritBuff = withLabel(
@@ -673,13 +673,6 @@ export const MajorArmorDebuff = InputHelpers.makeMultiIconInput({
 			actionId: player => player.getMatchingSpellActionId([{ id: 439500, minLevel: 60 }]),
 			impId: ActionId.fromSpellId(14169),
 			fieldName: 'sebaciousPoison',
-		}),
-		makeMultistateMultiplierDebuffInput({
-			actionId: () => ActionId.fromSpellId(402818),
-			numStates: 11,
-			multiplier: 10,
-			reverse: true,
-			fieldName: 'homunculi',
 		}),
 	],
 	label: 'Major Armor Penetration',
@@ -974,23 +967,13 @@ export const CurseOfVulnerability = makeBooleanDebuffInput({
 	fieldName: 'curseOfVulnerability',
 });
 export const GiftOfArthas = makeBooleanDebuffInput({
-	actionId: player =>
-		player.getMatchingSpellActionId([
-			// SoD Phase 3?
-			{ id: 11374, minLevel: 41 },
-		]),
+	actionId: player => player.getMatchingSpellActionId([{ id: 11374, minLevel: 41 }]),
 	fieldName: 'giftOfArthas',
 });
-export const CrystalYield = makeBooleanDebuffInput({
-	actionId: player => player.getMatchingSpellActionId([{ id: 15235, minLevel: 47 }]),
-	fieldName: 'crystalYield',
-});
-export const AncientCorrosivePoison = makeMultistateMultiplierDebuffInput({
-	actionId: () => ActionId.fromItemId(209562),
-	numStates: 11,
-	multiplier: 10,
-	reverse: true,
-	fieldName: 'ancientCorrosivePoison',
+export const HolySunder = makeBooleanDebuffInput({
+	actionId: player => player.getMatchingSpellActionId([{ id: 9176, minLevel: 20 }]),
+	fieldName: 'holySunder',
+	showWhen: player => player.getFaction() === Faction.Alliance,
 });
 
 ///////////////////////////////////////////////////////////////////////////
@@ -1111,7 +1094,7 @@ export const RAID_BUFFS_CONFIG = [
 		stats: [Stat.StatMP5],
 	},
 	{
-		config: VampiricTouchReplenishment,
+		config: RaidMP5,
 		picker: IconPicker,
 		stats: [Stat.StatMP5],
 	},
@@ -1409,12 +1392,7 @@ export const MISC_DEBUFFS_CONFIG = [
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},
 	{
-		config: CrystalYield,
-		picker: IconPicker,
-		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
-	},
-	{
-		config: AncientCorrosivePoison,
+		config: HolySunder,
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
 	},

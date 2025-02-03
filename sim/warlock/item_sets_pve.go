@@ -32,7 +32,7 @@ var ItemSetNightmareProphetsGarb = core.NewItemSet(core.ItemSet{
 			core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
 				Label: "Shadow Spark",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if spell.SpellCode == SpellCode_WarlockShadowCleave && result.Landed() {
+					if spell.Matches(ClassSpellMask_WarlockShadowCleave) && result.Landed() {
 						warlock.shadowSparkAura.Activate(sim)
 						warlock.shadowSparkAura.AddStack(sim)
 					}

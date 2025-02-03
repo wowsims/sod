@@ -16,12 +16,12 @@ func (hunter *Hunter) registerCarveSpell() {
 	hunter.CarveOH = hunter.newCarveHitSpell(false)
 
 	hunter.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_HunterCarve,
-		ActionID:    core.ActionID{SpellID: 425711},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_HunterCarve,
+		ActionID:       core.ActionID{SpellID: 425711},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.04,
@@ -62,12 +62,12 @@ func (hunter *Hunter) newCarveHitSpell(isMH bool) *core.Spell {
 	}
 
 	return hunter.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_HunterCarveHit,
-		ActionID:    core.ActionID{SpellID: 425711}.WithTag(core.TernaryInt32(isMH, 1, 2)),
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+		ClassSpellMask: ClassSpellMask_HunterCarveHit,
+		ActionID:       core.ActionID{SpellID: 425711}.WithTag(core.TernaryInt32(isMH, 1, 2)),
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       procMask,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,

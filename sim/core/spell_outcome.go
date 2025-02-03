@@ -870,8 +870,7 @@ func (result *SpellResult) applyEnemyAttackTableDodge(spell *Spell, attackTable 
 		return false
 	}
 
-	dodgeChance := attackTable.BaseDodgeChance +
-		result.Target.GetStat(stats.Dodge)/100
+	dodgeChance := attackTable.BaseDodgeChance - max(0, attackTable.Defender.PseudoStats.DodgeReduction) + result.Target.GetStat(stats.Dodge)/100
 	*chance += max(0, dodgeChance)
 
 	if roll < *chance {

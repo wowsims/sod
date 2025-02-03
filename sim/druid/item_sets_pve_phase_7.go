@@ -33,18 +33,13 @@ func (druid *Druid) applyNaxxramasBalance2PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range druid.Moonfire {
-				spell.DamageMultiplierAdditive += 0.20
-			}
-
-			if druid.Sunfire != nil {
-				druid.Sunfire.DamageMultiplierAdditive += 0.20
-			}
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat,
+		Kind:       core.SpellMod_BonusDamage_Flat,
+		FloatValue: 0.20,
+	}))
 }
 
 // The cooldown of your Starsurge spell is reduced by 1.5 sec.
@@ -58,12 +53,13 @@ func (druid *Druid) applyNaxxramasBalance4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			druid.Starsurge.CD.FlatModifier -= time.Millisecond * 1500
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidStarsurge,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Millisecond * 1500,
+	}))
 }
 
 // When your Starsurge strikes an Undead target, the remaining duration on your active Starfall is reset to 10 sec.
@@ -80,7 +76,7 @@ func (druid *Druid) applyNaxxramasBalance6PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if starfallDot := druid.Starfall.AOEDot(); starfallDot.IsActive() && result.Target.MobType == proto.MobType_MobTypeUndead && spell.SpellCode == SpellCode_DruidStarsurge && result.Landed() {
+			if starfallDot := druid.Starfall.AOEDot(); starfallDot.IsActive() && result.Target.MobType == proto.MobType_MobTypeUndead && spell.Matches(ClassSpellMask_DruidStarsurge) && result.Landed() {
 				starfallDot.Refresh(sim)
 			}
 		},
@@ -135,13 +131,14 @@ func (druid *Druid) applyNaxxramasFeral4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1218477}, // Tracking in APL
 		Label:    label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			druid.TigersFury.CD.Multiplier *= 0.5
-		},
-	})
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		ClassMask: ClassSpellMask_DruidTigersFury,
+		IntValue:  -50,
+	}))
 }
 
 // Each time you deal Bleed damage to an Undead target, you gain 1% increased damage done to Undead for 30 sec, stacking up to 25 times.
@@ -151,20 +148,21 @@ func (druid *Druid) applyNaxxramasFeral6PBonus() {
 		return
 	}
 
-	var undeadTargets []*core.Unit
+	undeadTargets := core.FilterSlice(druid.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
 
 	buffAura := druid.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1218479},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
 		MaxStacks: 25,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			undeadTargets = core.FilterSlice(druid.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			oldMultiplier := 1 + 0.01*float64(oldStacks)
+			newMultiplier := 1 + 0.01*float64(newStacks)
+
 			for _, unit := range undeadTargets {
-				druid.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
-				druid.AttackTables[unit.UnitIndex][proto.CastType_CastTypeMainHand].DamageDealtMultiplier *= 1 + 0.01*float64(newStacks)
+				for _, at := range aura.Unit.AttackTables[unit.UnitIndex] {
+					at.DamageDealtMultiplier *= newMultiplier / oldMultiplier
+				}
 			}
 		},
 	})
@@ -211,21 +209,7 @@ func (druid *Druid) applyNaxxramasGuardian2PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats)
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			if aura.Unit.Env.MeasuringStats && aura.Unit.Env.State != core.Finalized {
-				aura.Unit.AddStats(bonusStats.Invert())
-			} else {
-				aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-			}
-		},
-	}))
+	}).AttachStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on your Survival Instincts by 2 min, and reduces the cooldown on your Berserk ability by 2 min.
@@ -239,17 +223,12 @@ func (druid *Druid) applyNaxxramasGuardian4PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
+	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if druid.SurvivalInstincts != nil {
-				druid.SurvivalInstincts.CD.FlatModifier -= time.Minute * 2
-			}
-
-			if druid.Berserk != nil {
-				druid.Berserk.CD.FlatModifier -= time.Minute * 2
-			}
-		},
+	})).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidSurvivalInstincts | ClassSpellMask_DruidBerserk,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Minute * 2,
 	})
 }
 
@@ -261,9 +240,11 @@ func (druid *Druid) applyNaxxramasGuardian6PBonus() {
 		return
 	}
 
-	// TODO: Implement rage part when Frenzied Regeneration is implemented
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			druid.FrenziedRegenRageThreshold = 15
+		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if druid.FrenziedRegenerationAura != nil && druid.FrenziedRegenerationAura.IsActive() && spell.Unit.MobType == proto.MobType_MobTypeUndead && result.Landed() && result.Damage > 0 {
 				druid.FrenziedRegenerationAura.Activate(sim)

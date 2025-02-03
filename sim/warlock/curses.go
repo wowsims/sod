@@ -24,18 +24,17 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
 
-	baseDamage *= 1 + warlock.shadowMasteryBonus()
 	snapshotBaseDmgNoBonus := 0.0
 
 	return core.SpellConfig{
-		SpellCode:     SpellCode_WarlockCurseOfAgony,
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolShadow,
-		DefenseType:   core.DefenseTypeMagic,
-		Flags:         core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction | WarlockFlagHaunt,
-		ProcMask:      core.ProcMaskSpellDamage,
-		RequiredLevel: level,
-		Rank:          rank,
+		ClassSpellMask: ClassSpellMask_WarlockCurseOfAgony,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagPureDot | WarlockFlagAffliction | WarlockFlagHaunt,
+		ProcMask:       core.ProcMaskSpellDamage,
+		RequiredLevel:  level,
+		Rank:           rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -48,9 +47,8 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 
 		CritDamageBonus: core.TernaryFloat64(hasPandemicRune, 1, 0),
 
-		DamageMultiplierAdditive: 1,
-		DamageMultiplier:         1,
-		ThreatMultiplier:         1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -358,12 +356,12 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
 
 	warlock.CurseOfDoom = warlock.RegisterSpell(core.SpellConfig{
-		SpellCode:   SpellCode_WarlockCurseOfDoom,
-		ActionID:    core.ActionID{SpellID: 449432}, // New spell created for SoD
-		SpellSchool: core.SpellSchoolShadow,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
-		Flags:       core.SpellFlagAPL | WarlockFlagAffliction,
+		ClassSpellMask: ClassSpellMask_WarlockCurseOfDoom,
+		ActionID:       core.ActionID{SpellID: 449432}, // New spell created for SoD
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Flags:          core.SpellFlagAPL | WarlockFlagAffliction,
 
 		RequiredLevel: 60,
 

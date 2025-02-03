@@ -40,7 +40,7 @@ func (shaman *Shaman) newWindfuryTotemSpellConfig(rank int) core.SpellConfig {
 
 	duration := time.Second * 120
 
-	spell := shaman.newTotemSpellConfig(manaCost, spellId)
+	spell := shaman.newTotemSpellConfig(ClassSpellMask_ShamanWindFuryTotem, spellId, manaCost)
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
@@ -89,7 +89,7 @@ func (shaman *Shaman) newGraceOfAirTotemSpellConfig(rank int) core.SpellConfig {
 		graceOfAirTotemAuras[1] = core.GraceOfAirTotemAura(&shaman.SpiritWolves.Unit, shaman.Level, multiplier)
 	}
 
-	spell := shaman.newTotemSpellConfig(manaCost, spellId)
+	spell := shaman.newTotemSpellConfig(ClassSpellMask_ShamanGraceOfAirTotem, spellId, manaCost)
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
@@ -133,7 +133,7 @@ func (shaman *Shaman) newWindwallTotemSpellConfig(rank int) core.SpellConfig {
 
 	duration := time.Second * 120
 
-	spell := shaman.newTotemSpellConfig(manaCost, spellId)
+	spell := shaman.newTotemSpellConfig(ClassSpellMask_ShamanWindwallTotem, spellId, manaCost)
 	spell.RequiredLevel = level
 	spell.Rank = rank
 	spell.ApplyEffects = func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {

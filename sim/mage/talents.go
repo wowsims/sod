@@ -2,7 +2,6 @@ package mage
 
 import (
 	"fmt"
-	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -23,21 +22,21 @@ func (mage *Mage) applyArcaneTalents() {
 
 	// Arcane Subtlety
 	if mage.Talents.ArcaneSubtlety > 0 {
-		threatMultiplier := 1 - .20*float64(mage.Talents.ArcaneSubtlety)
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolArcane) && spell.Flags.Matches(SpellFlagMage) {
-				spell.ThreatMultiplier *= threatMultiplier
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_Threat_Pct,
+			ClassMask:  ClassSpellMask_MageAll,
+			School:     core.SpellSchoolArcane,
+			FloatValue: 1 - .20*float64(mage.Talents.ArcaneSubtlety),
 		})
 	}
 
 	// Arcane Focus
 	if mage.Talents.ArcaneFocus > 0 {
-		bonusHit := 2 * float64(mage.Talents.ArcaneFocus) * core.SpellHitRatingPerHitChance
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolArcane) && spell.Flags.Matches(SpellFlagMage) {
-				spell.BonusHitRating += bonusHit
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusHit_Flat,
+			ClassMask:  ClassSpellMask_MageAll,
+			School:     core.SpellSchoolArcane,
+			FloatValue: 2 * float64(mage.Talents.ArcaneFocus) * core.SpellHitRatingPerHitChance,
 		})
 	}
 
@@ -56,14 +55,16 @@ func (mage *Mage) applyArcaneTalents() {
 
 	// Arcane Instability
 	if mage.Talents.ArcaneInstability > 0 {
-		bonusDamageMultiplierAdditive := .01 * float64(mage.Talents.ArcaneInstability)
-		bonusCritRating := 1 * float64(mage.Talents.ArcaneInstability) * core.SpellCritRatingPerCritChance
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_MageAll,
+			IntValue:  int64(1 * mage.Talents.ArcaneInstability),
+		})
 
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagMage) {
-				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
-				spell.BonusCritRating += bonusCritRating
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusCrit_Flat,
+			ClassMask:  ClassSpellMask_MageAll,
+			FloatValue: 1 * float64(mage.Talents.ArcaneInstability) * core.SpellCritRatingPerCritChance,
 		})
 	}
 }
@@ -79,32 +80,31 @@ func (mage *Mage) applyFireTalents() {
 
 	// Burning Soul
 	if mage.Talents.BurningSoul > 0 {
-		threatMultiplier := 1 - .15*float64(mage.Talents.BurningSoul)
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
-				spell.ThreatMultiplier *= threatMultiplier
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_Threat_Pct,
+			ClassMask:  ClassSpellMask_MageAll,
+			School:     core.SpellSchoolFire,
+			FloatValue: 1 - .15*float64(mage.Talents.BurningSoul),
 		})
 	}
 
 	// Critical Mass
 	if mage.Talents.CriticalMass > 0 {
-		bonusCrit := 2 * float64(mage.Talents.CriticalMass) * core.SpellCritRatingPerCritChance
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
-				spell.BonusCritRating += bonusCrit
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusCrit_Flat,
+			ClassMask:  ClassSpellMask_MageAll,
+			School:     core.SpellSchoolFire,
+			FloatValue: 2 * float64(mage.Talents.CriticalMass) * core.SpellCritRatingPerCritChance,
 		})
 	}
 
 	// Fire Power
 	if mage.Talents.FirePower > 0 {
-		bonusDamageMultiplierAdditive := 0.02 * float64(mage.Talents.FirePower)
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			// Fire Power buffs pretty much all mage fire spells EXCEPT ignite
-			if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) && spell.SpellCode != SpellCode_MageIgnite {
-				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_MageAll ^ ClassSpellMask_MageIgnite,
+			School:    core.SpellSchoolFire,
+			IntValue:  int64(2 * mage.Talents.FirePower),
 		})
 	}
 }
@@ -118,48 +118,48 @@ func (mage *Mage) applyFrostTalents() {
 
 	// Elemental Precision
 	if mage.Talents.ElementalPrecision > 0 {
-		bonusHit := 2 * float64(mage.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance
-
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagMage) && (spell.SpellSchool.Matches(core.SpellSchoolFire) || spell.SpellSchool.Matches(core.SpellSchoolFrost)) {
-				spell.BonusHitRating += bonusHit
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusHit_Flat,
+			ClassMask:  ClassSpellMask_MageAll,
+			School:     core.SpellSchoolFire | core.SpellSchoolFrost,
+			FloatValue: 2 * float64(mage.Talents.ElementalPrecision) * core.SpellHitRatingPerHitChance,
 		})
 	}
 
 	// Ice Shards
 	if mage.Talents.IceShards > 0 {
-		critBonus := .20 * float64(mage.Talents.IceShards)
-
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				spell.CritDamageBonus += critBonus
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_CritDamageBonus_Flat,
+			ClassMask:  ClassSpellMask_MageAll,
+			School:     core.SpellSchoolFrost,
+			FloatValue: .20 * float64(mage.Talents.IceShards),
 		})
 	}
 
 	// Piercing Ice
 	if mage.Talents.PiercingIce > 0 {
-		bonusDamageMultiplierAdditive := 0.02 * float64(mage.Talents.PiercingIce)
-
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				spell.DamageMultiplierAdditive += bonusDamageMultiplierAdditive
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_MageAll,
+			School:    core.SpellSchoolFrost,
+			IntValue:  int64(2 * mage.Talents.PiercingIce),
 		})
 	}
 
 	// Frost Channeling
 	if mage.Talents.FrostChanneling > 0 {
-		manaCostMultiplier := 5 * mage.Talents.FrostChanneling
-		threatMultiplier := 1 - .10*float64(mage.Talents.FrostChanneling)
-		mage.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) {
-				if spell.Cost != nil {
-					spell.Cost.Multiplier -= manaCostMultiplier
-				}
-				spell.ThreatMultiplier *= threatMultiplier
-			}
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_Threat_Pct,
+			ClassMask:  ClassSpellMask_MageAll,
+			School:     core.SpellSchoolFrost,
+			FloatValue: 1 - .10*float64(mage.Talents.FrostChanneling),
+		})
+
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_PowerCost_Pct,
+			ClassMask: ClassSpellMask_MageAll,
+			School:    core.SpellSchoolFrost,
+			IntValue:  -5 * int64(mage.Talents.FrostChanneling),
 		})
 	}
 
@@ -189,21 +189,27 @@ func (mage *Mage) applyArcaneConcentration() {
 				return
 			}
 
-			if !spell.Flags.Matches(SpellFlagMage) || spell.Cost == nil {
+			if !spell.Matches(ClassSpellMask_MageAll) || spell.Cost == nil {
 				return
 			}
 			aura.Deactivate(sim)
 		},
 	})
 
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: "Arcane Concentration",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.Flags.Matches(SpellFlagMage) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && spell.Cost != nil && sim.Proc(procChance, "Arcane Concentration") {
-				mage.ClearcastingAura.Activate(sim)
-			}
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+		Name:           "Arcane Concentration",
+		ClassSpellMask: ClassSpellMask_MageAll,
+		ProcMask:       core.ProcMaskSpellDamage,
+		ProcChance:     procChance,
+		Outcome:        core.OutcomeLanded,
+		Callback:       core.CallbackOnSpellHitDealt,
+		ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+			return spell.Cost != nil
 		},
-	}))
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			mage.ClearcastingAura.Activate(sim)
+		},
+	})
 }
 
 func (mage *Mage) registerPresenceOfMindCD() {
@@ -214,31 +220,27 @@ func (mage *Mage) registerPresenceOfMindCD() {
 	actionID := core.ActionID{SpellID: 12043}
 	cooldown := time.Second * 180
 
-	affectedSpells := []*core.Spell{}
+	classSpellMasks := ClassSpellMask_MageAll ^ ClassSpellMask_MageInstantCast
+	castTimeMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_CastTime_Pct,
+		ClassMask:  classSpellMasks,
+		FloatValue: -1,
+	})
+
 	pomAura := mage.RegisterAura(core.Aura{
 		Label:    "Presence of Mind",
 		ActionID: actionID,
 		Duration: time.Second * 15,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for spellIdx := range mage.Spellbook {
-				if spell := mage.Spellbook[spellIdx]; spell.DefaultCast.CastTime > 0 {
-					affectedSpells = append(affectedSpells, spell)
-				}
-			}
-		},
+
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) {
-				spell.CastTimeMultiplier -= 1
-			})
+			castTimeMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			core.Each(affectedSpells, func(spell *core.Spell) {
-				spell.CastTimeMultiplier += 1
-			})
+			castTimeMod.Deactivate()
 			mage.PresenceOfMind.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !slices.Contains(affectedSpells, spell) {
+			if !spell.Matches(classSpellMasks) {
 				return
 			}
 
@@ -276,12 +278,15 @@ func (mage *Mage) registerArcanePowerCD() {
 
 	actionID := core.ActionID{SpellID: 12042}
 
-	affectedSpells := []*core.Spell{}
-
-	mage.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagMage) {
-			affectedSpells = append(affectedSpells, spell)
-		}
+	costMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: ClassSpellMask_MageAll,
+		IntValue:  30,
+	})
+	damageMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_MageAll,
+		IntValue:  3,
 	})
 
 	mage.ArcanePowerAura = mage.RegisterAura(core.Aura{
@@ -289,22 +294,15 @@ func (mage *Mage) registerArcanePowerCD() {
 		ActionID: actionID,
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive += 0.3
-				if spell.Cost != nil {
-					spell.Cost.Multiplier += 30
-				}
-			}
+			damageMod.Activate()
+			costMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range affectedSpells {
-				spell.DamageMultiplierAdditive -= 0.3
-				if spell.Cost != nil {
-					spell.Cost.Multiplier -= 30
-				}
-			}
+			damageMod.Deactivate()
+			costMod.Deactivate()
 		},
 	})
+
 	core.RegisterPercentDamageModifierEffect(mage.ArcanePowerAura, 1.3)
 
 	spell := mage.RegisterSpell(core.SpellConfig{
@@ -332,12 +330,10 @@ func (mage *Mage) applyImprovedFireBlast() {
 		return
 	}
 
-	cdReduction := 500 * time.Millisecond * time.Duration(mage.Talents.ImprovedFireBlast)
-
-	mage.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_MageFireBlast {
-			spell.CD.FlatModifier -= cdReduction
-		}
+	mage.AddStaticMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_MageFireBlast,
+		TimeValue: -500 * time.Millisecond * time.Duration(mage.Talents.ImprovedFireBlast),
 	})
 }
 
@@ -346,13 +342,10 @@ func (mage *Mage) applyIncinerate() {
 		return
 	}
 
-	affectedSpellCodes := []int32{SpellCode_MageScorch, SpellCode_MageFireBlast, SpellCode_MageLivingBombExplosion}
-	bonusCritRating := 2 * float64(mage.Talents.Incinerate) * core.SpellCritRatingPerCritChance
-
-	mage.OnSpellRegistered(func(spell *core.Spell) {
-		if slices.Contains(affectedSpellCodes, spell.SpellCode) {
-			spell.BonusCritRating += bonusCritRating
-		}
+	mage.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		ClassMask:  ClassSpellMask_MageScorch | ClassSpellMask_MageFireBlast | ClassSpellMask_MageLivingBombExplosion,
+		FloatValue: 2 * float64(mage.Talents.Incinerate) * core.SpellCritRatingPerCritChance,
 	})
 }
 
@@ -407,11 +400,10 @@ func (mage *Mage) registerCombustionCD() {
 		Duration: time.Minute * 3,
 	}
 
-	var fireSpells []*core.Spell
-	mage.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellSchool.Matches(core.SpellSchoolFire) && spell.Flags.Matches(SpellFlagMage) {
-			fireSpells = append(fireSpells, spell)
-		}
+	critMod := mage.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_BonusCrit_Flat,
+		ClassMask: ClassSpellMask_MageAll,
+		School:    core.SpellSchoolFire,
 	})
 
 	numCrits := 0
@@ -424,25 +416,23 @@ func (mage *Mage) registerCombustionCD() {
 		MaxStacks: 20,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			numCrits = 0
+			critMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			cd.Use(sim)
 			mage.UpdateMajorCooldowns()
+			critMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			bonusCrit := critPerStack * float64(newStacks-oldStacks)
-			for _, spell := range fireSpells {
-				spell.BonusCritRating += bonusCrit
-			}
+			critMod.UpdateFloatValue(critPerStack * float64(newStacks))
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !result.Landed() || numCrits >= 3 || !spell.SpellSchool.Matches(core.SpellSchoolFire) || !spell.Flags.Matches(SpellFlagMage) {
+			if !result.Landed() || numCrits >= 3 || !spell.SpellSchool.Matches(core.SpellSchoolFire) || !spell.Matches(ClassSpellMask_MageAll) {
 				return
 			}
 
 			// Ignite, Living Bomb explosions, and Fire Blast with Overheart don't consume crit stacks
-			if spell.SpellCode == SpellCode_MageIgnite ||
-				spell.SpellCode == SpellCode_MageLivingBombExplosion || (hasOverheatRune && spell.SpellCode == SpellCode_MageFireBlast) {
+			if spell.Matches(ClassSpellMask_MageIgnite|ClassSpellMask_MageLivingBombExplosion) || (hasOverheatRune && spell.Matches(ClassSpellMask_MageFireBlast)) {
 				return
 			}
 
@@ -502,7 +492,7 @@ func (mage *Mage) applyFrostbite() {
 		Label: "Frostbite Trigger",
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Only Blizzard ticks proc
-			if spell.SpellCode == SpellCode_MageBlizzard && spell.Flags.Matches(SpellFlagChillSpell) && sim.Proc(procChance, "Frostbite") {
+			if spell.Matches(ClassSpellMask_MageBlizzard) && spell.Flags.Matches(SpellFlagChillSpell) && sim.Proc(procChance, "Frostbite") {
 				frostbiteSpell.Cast(sim, result.Target)
 			}
 		},
@@ -556,7 +546,7 @@ func (mage *Mage) applyImprovedBlizzard() {
 	}
 
 	mage.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.SpellCode == SpellCode_MageBlizzard {
+		if spell.Matches(ClassSpellMask_MageBlizzard) {
 			spell.Flags |= SpellFlagChillSpell
 		}
 	})
@@ -580,11 +570,10 @@ func (mage *Mage) applyShatter() {
 	if mage.Talents.Shatter == 0 {
 		return
 	}
-
 	bonusCrit := 10 * float64(mage.Talents.Shatter) * core.SpellCritRatingPerCritChance
 
 	mage.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagMage) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
+		if spell.Matches(ClassSpellMask_MageAll) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) {
 			oldApplyEffects := spell.ApplyEffects
 			spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				spellBonusCrit := 0.0
@@ -618,14 +607,18 @@ func (mage *Mage) applyWintersChill() {
 		}
 	})
 
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: "Winters Chill Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolFrost) && spell.Flags.Matches(SpellFlagMage) && sim.Proc(procChance, "Winters Chill") {
-				aura := mage.WintersChillAuras.Get(result.Target)
-				aura.Activate(sim)
-				aura.AddStack(sim)
-			}
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+		Name:             "Winters Chill",
+		ClassSpellMask:   ClassSpellMask_MageAll,
+		SpellSchool:      core.SpellSchoolFrost,
+		Callback:         core.CallbackOnSpellHitDealt,
+		Outcome:          core.OutcomeLanded,
+		ProcChance:       procChance,
+		CanProcFromProcs: true,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			aura := mage.WintersChillAuras.Get(result.Target)
+			aura.Activate(sim)
+			aura.AddStack(sim)
 		},
-	}))
+	})
 }
