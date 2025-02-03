@@ -10,8 +10,8 @@ func addNaxx60(bossPrefix string) {
 	core.AddPresetTarget(&core.PresetTarget{
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
-			Id:        213336, // TODO:
-			Name:      "Level 60",
+			Id:        15952, // TODO:
+			Name:      "Generic",
 			Level:     63,
 			MobType:   proto.MobType_MobTypeUndead,
 			TankIndex: 0,
@@ -44,8 +44,8 @@ func addNaxx60(bossPrefix string) {
 		},
 		AI: NewDefaultNaxxAI(),
 	})
-	core.AddPresetEncounter("Level 60", []string{
-		bossPrefix + "/Level 60",
+	core.AddPresetEncounter("Generic", []string{
+		bossPrefix + "/Generic",
 	})
 }
 
