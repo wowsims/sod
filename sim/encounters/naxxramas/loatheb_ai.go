@@ -33,6 +33,15 @@ func addLoatheb(bossPrefix string) {
 			DualWieldPenalty: false,
 			TargetInputs:     []*proto.TargetInput{
 				{
+					Label:       "Authority of The Frozen Wastes Stacks",
+					Tooltip:     "Hard Modes Activated?",
+					InputType:   proto.InputType_Enum,
+					EnumValue:   0,
+					EnumOptions: []string{
+						"0", "1", "2", "3", "4",
+					},
+				},
+				{
 					Label:       "Spore Assignment (1-10)",
 					Tooltip:     "Which spore are you assigned to?",
 					InputType:   proto.InputType_Number,
@@ -51,6 +60,8 @@ type LoathebAI struct {
 	Target          *core.Target
 	SummonSpore     *core.Spell
 	sporeAssignment float64
+	authorityFrozenWastesStacks int32
+	authorityFrozenWastesAura *core.Aura
 }
 
 func NewLoathebAI() core.AIFactory {
@@ -61,9 +72,33 @@ func NewLoathebAI() core.AIFactory {
 
 func (ai *LoathebAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.Target = target
-	ai.sporeAssignment = config.TargetInputs[0].NumberValue
-
+	ai.authorityFrozenWastesStacks = config.TargetInputs[0].EnumValue
+	ai.sporeAssignment = config.TargetInputs[1].NumberValue
 	ai.registerSummonSpore(target)
+	ai.authorityFrozenWastesAura = ai.registerAuthorityOfTheFrozenWastesAura(ai.authorityFrozenWastesStacks)
+}
+
+func (ai *LoathebAI) registerAuthorityOfTheFrozenWastesAura(stacks int32) *core.Aura {
+	charactertarget := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
+		
+	return core.MakePermanent(charactertarget.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1218283},
+		Label:     "Authority of the Frozen Wastes",
+		MaxStacks: 4,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+			aura.SetStacks(sim, stacks)
+		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			aura.Unit.PseudoStats.DodgeReduction += 0.04 * float64(newStacks-oldStacks)
+
+			for _, target := range sim.Encounter.TargetUnits {
+				for _, at := range target.AttackTables[aura.Unit.UnitIndex] {
+					at.BaseMissChance -= 0.01 * float64(newStacks-oldStacks)
+				}
+			}
+		},
+	}))
 }
 
 func (ai *LoathebAI) registerSummonSpore(target *core.Target) {
@@ -115,6 +150,9 @@ func (ai *LoathebAI) ExecuteCustomRotation(sim *core.Simulation) {
 		// For individual non tank sims we still want abilities to work
 		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
 	}
+	if !ai.authorityFrozenWastesAura.IsActive() {
+		ai.authorityFrozenWastesAura.Activate(sim)
+	}
 
 	if ai.SummonSpore.IsReady(sim) {
 		if sim.CurrentTime > ((time.Duration(ai.sporeAssignment) * 13) + 4) * time.Second && ai.sporeAssignment != 0 {
@@ -122,11 +160,4 @@ func (ai *LoathebAI) ExecuteCustomRotation(sim *core.Simulation) {
 			return
 		}
 	}
-	
-	/*if ai.ChainLightning.IsReady(sim) {
-		ai.Target.WaitUntil(sim, sim.CurrentTime+BossGCD)
-		ai.ChainLightning.Cast(sim, target)
-		return
-	}*/
-
 }

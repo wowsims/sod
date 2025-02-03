@@ -34,6 +34,15 @@ func addThaddius(bossPrefix string) {
 			DualWieldPenalty: false,
 			TargetInputs:     []*proto.TargetInput{
 				{
+					Label:       "Authority of The Frozen Wastes Stacks",
+					Tooltip:     "Hard Modes Activated?",
+					InputType:   proto.InputType_Enum,
+					EnumValue:   0,
+					EnumOptions: []string{
+						"0", "1", "2", "3", "4",
+					},
+				},
+				{
 					Label:       "Stacks of Polarity Expected",
 					Tooltip:     "How many stacks of polarity do you predict to have?  Max: ",
 					InputType:   proto.InputType_Number,
@@ -53,6 +62,8 @@ type ThaddiusAI struct {
 	ChainLightning *core.Spell
 	Polarity       *core.Spell
 	polarityStacks  float64
+	authorityFrozenWastesStacks int32
+	authorityFrozenWastesAura *core.Aura
 }
 
 func NewThaddiusAI() core.AIFactory {
@@ -67,6 +78,30 @@ func (ai *ThaddiusAI) Initialize(target *core.Target, config *proto.Target) {
 
 	ai.registerPolarity(ai.Target)
 	ai.registerChainLightning(ai.Target)
+	ai.authorityFrozenWastesAura = ai.registerAuthorityOfTheFrozenWastesAura(ai.authorityFrozenWastesStacks)
+}
+
+func (ai *ThaddiusAI) registerAuthorityOfTheFrozenWastesAura(stacks int32) *core.Aura {
+	charactertarget := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
+		
+	return core.MakePermanent(charactertarget.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1218283},
+		Label:     "Authority of the Frozen Wastes",
+		MaxStacks: 4,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			aura.Activate(sim)
+			aura.SetStacks(sim, stacks)
+		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			aura.Unit.PseudoStats.DodgeReduction += 0.04 * float64(newStacks-oldStacks)
+
+			for _, target := range sim.Encounter.TargetUnits {
+				for _, at := range target.AttackTables[aura.Unit.UnitIndex] {
+					at.BaseMissChance -= 0.01 * float64(newStacks-oldStacks)
+				}
+			}
+		},
+	}))
 }
 
 const BossGCD = time.Millisecond * 1600
@@ -155,6 +190,10 @@ func (ai *ThaddiusAI) ExecuteCustomRotation(sim *core.Simulation) {
 	if target == nil {
 		// For individual non tank sims we still want abilities to work
 		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
+	}
+
+	if !ai.authorityFrozenWastesAura.IsActive() {
+		ai.authorityFrozenWastesAura.Activate(sim)
 	}
 
 	if ai.Polarity.IsReady(sim) {
