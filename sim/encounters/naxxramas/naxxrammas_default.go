@@ -51,9 +51,8 @@ func addNaxx60(bossPrefix string) {
 
 
 type DefaultNaxxAI struct {
+	NaxxramasEncounter
 	Target         *core.Target
-	authorityFrozenWastesStacks int32
-	authorityFrozenWastesAura *core.Aura
 }
 
 func NewDefaultNaxxAI() core.AIFactory {
@@ -64,32 +63,11 @@ func NewDefaultNaxxAI() core.AIFactory {
 
 func (ai *DefaultNaxxAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.Target = target
+	ai.authorityFrozenWastesStacks = config.TargetInputs[0].EnumValue
 
-	ai.authorityFrozenWastesAura = ai.registerAuthorityOfTheFrozenWastesAura(ai.authorityFrozenWastesStacks)
+	ai.registerAuthorityOfTheFrozenWastesAura(ai.Target, ai.authorityFrozenWastesStacks)
 }
 
-func (ai *DefaultNaxxAI) registerAuthorityOfTheFrozenWastesAura(stacks int32) *core.Aura {
-	charactertarget := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
-		
-	return core.MakePermanent(charactertarget.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 1218283},
-		Label:     "Authority of the Frozen Wastes",
-		MaxStacks: 4,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-			aura.SetStacks(sim, stacks)
-		},
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			aura.Unit.PseudoStats.DodgeReduction += 0.04 * float64(newStacks-oldStacks)
-
-			for _, target := range sim.Encounter.TargetUnits {
-				for _, at := range target.AttackTables[aura.Unit.UnitIndex] {
-					at.BaseMissChance -= 0.01 * float64(newStacks-oldStacks)
-				}
-			}
-		},
-	}))
-}
 
 func (ai *DefaultNaxxAI) Reset(*core.Simulation) {
 }
@@ -100,9 +78,5 @@ func (ai *DefaultNaxxAI) ExecuteCustomRotation(sim *core.Simulation) {
 	if target == nil {
 		// For individual non tank sims we still want abilities to work
 		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
-	}
-
-	if !ai.authorityFrozenWastesAura.IsActive() {
-		ai.authorityFrozenWastesAura.Activate(sim)
 	}
 }

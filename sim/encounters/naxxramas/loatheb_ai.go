@@ -76,33 +76,9 @@ func (ai *LoathebAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.sporeAssignment = config.TargetInputs[1].NumberValue
 	ai.registerSummonSpore(target)
 
-	ai.authorityFrozenWastesAura = ai.registerAuthorityOfTheFrozenWastesAura(ai.Target, ai.authorityFrozenWastesStacks)
+	ai.registerAuthorityOfTheFrozenWastesAura(ai.Target, ai.authorityFrozenWastesStacks)
 }
 
-/*
-	func (ai *LoathebAI) registerAuthorityOfTheFrozenWastesAura(stacks int32) *core.Aura {
-		charactertarget := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
-
-		return core.MakePermanent(charactertarget.RegisterAura(core.Aura{
-			ActionID:  core.ActionID{SpellID: 1218283},
-			Label:     "Authority of the Frozen Wastes",
-			MaxStacks: 4,
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Activate(sim)
-				aura.SetStacks(sim, stacks)
-			},
-			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				aura.Unit.PseudoStats.DodgeReduction += 0.04 * float64(newStacks-oldStacks)
-
-				for _, target := range sim.Encounter.TargetUnits {
-					for _, at := range target.AttackTables[aura.Unit.UnitIndex] {
-						at.BaseMissChance -= 0.01 * float64(newStacks-oldStacks)
-					}
-				}
-			},
-		}))
-	}
-*/
 func (ai *LoathebAI) registerSummonSpore(target *core.Target) {
 	actionID := core.ActionID{SpellID: 29234}
 	charactertarget := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
@@ -152,10 +128,6 @@ func (ai *LoathebAI) ExecuteCustomRotation(sim *core.Simulation) {
 		// For individual non tank sims we still want abilities to work
 		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
 	}
-	//if !ai.authorityFrozenWastesAura.IsActive() {
-	//	ai.authorityFrozenWastesAura.Activate(sim)
-	//		ai.authorityFrozenWastesAura.SetStacks(sim, ai.authorityFrozenWastesStacks)
-	//	}
 
 	if ai.SummonSpore.IsReady(sim) {
 		if sim.CurrentTime > ((time.Duration(ai.sporeAssignment)*13)+4)*time.Second && ai.sporeAssignment != 0 {
