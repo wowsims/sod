@@ -2,6 +2,7 @@ package naxxramas
 
 import (
 	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -15,7 +16,7 @@ func addPatchwerk(bossPrefix string) {
 			Name:      "Patchwerk",
 			Level:     63,
 			MobType:   proto.MobType_MobTypeUndead,
-			TankIndex:       0,
+			TankIndex: 0,
 
 			Stats: stats.Stats{
 				stats.Health:      16_950_147,
@@ -33,9 +34,9 @@ func addPatchwerk(bossPrefix string) {
 			DamageSpread:     0.1,
 			TargetInputs: []*proto.TargetInput{
 				{
-					Label:       "Hateful Tank",
-					Tooltip:     "Click to turn off auto attacks and activate hateful strikes.",
-					InputType:   proto.InputType_Bool,
+					Label:     "Hateful Tank",
+					Tooltip:   "Click to turn off auto attacks and activate hateful strikes.",
+					InputType: proto.InputType_Bool,
 				},
 				{
 					Label:       "Percent of Hatefuls Taken",
@@ -44,10 +45,10 @@ func addPatchwerk(bossPrefix string) {
 					NumberValue: 70.0,
 				},
 				{
-					Label:       "Authority of The Frozen Wastes Stacks",
-					Tooltip:     "Hard Modes Activated?",
-					InputType:   proto.InputType_Enum,
-					EnumValue:   0,
+					Label:     "Authority of The Frozen Wastes Stacks",
+					Tooltip:   "Hard Modes Activated?",
+					InputType: proto.InputType_Enum,
+					EnumValue: 0,
 					EnumOptions: []string{
 						"0", "1", "2", "3", "4",
 					},
@@ -62,12 +63,12 @@ func addPatchwerk(bossPrefix string) {
 }
 
 type PatchwerkAI struct {
+	NaxxramasEncounter
+
 	// Unit references
-	Target   *core.Target
+	Target         *core.Target
 	isHatefulTank  bool
 	hatefulPercent float64
-	authorityFrozenWastesStacks int32
-	authorityFrozenWastesAura *core.Aura
 
 	// Spells
 	HatefulStrikePrimer *core.Spell
@@ -94,7 +95,7 @@ func (ai *PatchwerkAI) Initialize(target *core.Target, config *proto.Target) {
 
 func (ai *PatchwerkAI) registerAuthorityOfTheFrozenWastesAura(stacks int32) *core.Aura {
 	charactertarget := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
-		
+
 	return core.MakePermanent(charactertarget.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1218283},
 		Label:     "Authority of the Frozen Wastes",
@@ -216,20 +217,20 @@ func (ai *PatchwerkAI) ExecuteCustomRotation(sim *core.Simulation) {
 	if ai.HatefulStrikePrimer.IsReady(sim) {
 		ai.HatefulStrikePrimer.Cast(sim, target)
 	}
-	
+
 	if ai.Frenzy.IsReady(sim) && sim.GetRemainingDurationPercent() < 0.05 {
 		ai.Frenzy.Cast(sim, target)
 	}
 
 	if ai.isHatefulTank {
 		ai.Target.AutoAttacks.CancelAutoSwing(sim)
-		 
+
 		if ai.HatefulStrike.IsReady(sim) {
 			if sim.Proc(ai.hatefulPercent, "Hateful Strike Target Chance") {
 				ai.HatefulStrike.Cast(sim, target)
 				return
 			}
-			ai.Target.WaitUntil(sim, sim.CurrentTime + 1200 * time.Millisecond)
+			ai.Target.WaitUntil(sim, sim.CurrentTime+1200*time.Millisecond)
 		}
 	}
 }

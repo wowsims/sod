@@ -32,12 +32,12 @@ func addThaddius(bossPrefix string) {
 			ParryHaste:       false,
 			DualWield:        false,
 			DualWieldPenalty: false,
-			TargetInputs:     []*proto.TargetInput{
+			TargetInputs: []*proto.TargetInput{
 				{
-					Label:       "Authority of The Frozen Wastes Stacks",
-					Tooltip:     "Hard Modes Activated?",
-					InputType:   proto.InputType_Enum,
-					EnumValue:   0,
+					Label:     "Authority of The Frozen Wastes Stacks",
+					Tooltip:   "Hard Modes Activated?",
+					InputType: proto.InputType_Enum,
+					EnumValue: 0,
 					EnumOptions: []string{
 						"0", "1", "2", "3", "4",
 					},
@@ -58,12 +58,12 @@ func addThaddius(bossPrefix string) {
 }
 
 type ThaddiusAI struct {
+	NaxxramasEncounter
+
 	Target         *core.Target
 	ChainLightning *core.Spell
 	Polarity       *core.Spell
-	polarityStacks  float64
-	authorityFrozenWastesStacks int32
-	authorityFrozenWastesAura *core.Aura
+	polarityStacks float64
 }
 
 func NewThaddiusAI() core.AIFactory {
@@ -83,7 +83,7 @@ func (ai *ThaddiusAI) Initialize(target *core.Target, config *proto.Target) {
 
 func (ai *ThaddiusAI) registerAuthorityOfTheFrozenWastesAura(stacks int32) *core.Aura {
 	charactertarget := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
-		
+
 	return core.MakePermanent(charactertarget.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1218283},
 		Label:     "Authority of the Frozen Wastes",
@@ -113,8 +113,8 @@ func (ai *ThaddiusAI) registerChainLightning(target *core.Target) {
 	actionID := core.ActionID{SpellID: 28167}
 
 	ai.ChainLightning = target.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolNature,
+		ActionID:         actionID,
+		SpellSchool:      core.SpellSchoolNature,
 		DefenseType:      core.DefenseTypeMagic,
 		ProcMask:         core.ProcMaskSpellDamage,
 		DamageMultiplier: 1,
@@ -128,7 +128,7 @@ func (ai *ThaddiusAI) registerChainLightning(target *core.Target) {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if sim.Proc(0.6, "Chain Lightning Target Chance") { // damage and target chance estimated from PTR
-				baseDamage := sim.Roll(1850.0, 2250.0) 
+				baseDamage := sim.Roll(1850.0, 2250.0)
 				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHit)
 			}
 		},
@@ -142,9 +142,9 @@ func (ai *ThaddiusAI) registerPolarity(target *core.Target) {
 	charactertarget := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
 
 	polarityAura := charactertarget.RegisterAura(core.Aura{
-		Label:    "Polarity Stacks",
-		ActionID: core.ActionID{SpellID: 28059},
-		Duration: time.Minute * 1,
+		Label:     "Polarity Stacks",
+		ActionID:  core.ActionID{SpellID: 28059},
+		Duration:  time.Minute * 1,
 		MaxStacks: 20,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			inverseMultiplierBonus = 1 / (1.0 + float64(oldStacks)*0.1)
@@ -200,7 +200,7 @@ func (ai *ThaddiusAI) ExecuteCustomRotation(sim *core.Simulation) {
 		ai.Polarity.Cast(sim, target)
 		return
 	}
-	
+
 	if ai.ChainLightning.IsReady(sim) {
 		ai.Target.WaitUntil(sim, sim.CurrentTime+BossGCD)
 		ai.ChainLightning.Cast(sim, target)
