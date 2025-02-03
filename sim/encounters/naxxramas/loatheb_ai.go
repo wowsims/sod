@@ -57,6 +57,7 @@ func addLoatheb(bossPrefix string) {
 }
 
 type LoathebAI struct {
+	NaxxramasEncounter
 	Target          *core.Target
 	SummonSpore     *core.Spell
 	sporeAssignment float64
@@ -75,9 +76,10 @@ func (ai *LoathebAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.authorityFrozenWastesStacks = config.TargetInputs[0].EnumValue
 	ai.sporeAssignment = config.TargetInputs[1].NumberValue
 	ai.registerSummonSpore(target)
-	ai.authorityFrozenWastesAura = ai.registerAuthorityOfTheFrozenWastesAura(ai.authorityFrozenWastesStacks)
-}
 
+	ai.authorityFrozenWastesAura = ai.registerAuthorityOfTheFrozenWastesAura(ai.Target, ai.authorityFrozenWastesStacks)
+}
+/*
 func (ai *LoathebAI) registerAuthorityOfTheFrozenWastesAura(stacks int32) *core.Aura {
 	charactertarget := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
 		
@@ -100,7 +102,7 @@ func (ai *LoathebAI) registerAuthorityOfTheFrozenWastesAura(stacks int32) *core.
 		},
 	}))
 }
-
+*/
 func (ai *LoathebAI) registerSummonSpore(target *core.Target) {
 	actionID := core.ActionID{SpellID: 29234}
 	charactertarget := &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
@@ -150,9 +152,10 @@ func (ai *LoathebAI) ExecuteCustomRotation(sim *core.Simulation) {
 		// For individual non tank sims we still want abilities to work
 		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
 	}
-	if !ai.authorityFrozenWastesAura.IsActive() {
-		ai.authorityFrozenWastesAura.Activate(sim)
-	}
+	//if !ai.authorityFrozenWastesAura.IsActive() {
+	//	ai.authorityFrozenWastesAura.Activate(sim)
+//		ai.authorityFrozenWastesAura.SetStacks(sim, ai.authorityFrozenWastesStacks)
+//	}
 
 	if ai.SummonSpore.IsReady(sim) {
 		if sim.CurrentTime > ((time.Duration(ai.sporeAssignment) * 13) + 4) * time.Second && ai.sporeAssignment != 0 {
