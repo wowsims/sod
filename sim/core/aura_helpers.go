@@ -27,12 +27,12 @@ const (
 	CallbackOnApplyEffects
 )
 
-type DPMProcType uint16
+type DPMProcCheck uint16
 
 const (
-	DPMProcWithWeaponSpecials DPMProcType = 0
+	DPMProcWithWeaponSpecials DPMProcCheck = 0
 
-	DPMProcNoWeaponSpecials DPMProcType = 1 << iota
+	DPMProc DPMProcCheck = 1 << iota
 )
 
 type ProcHandler func(sim *Simulation, spell *Spell, result *SpellResult)
@@ -53,7 +53,7 @@ type ProcTrigger struct {
 	ProcChance        float64
 	PPM               float64
 	DPM               *DynamicProcManager
-	DPMProcType       DPMProcType // Will use ProcWithWeaponSpecials by default. Used to override default DPM Proc check.
+	DPMProcCheck      DPMProcCheck // Will use ProcWithWeaponSpecials by default. Used to override default DPM Proc check.
 	ICD               time.Duration
 	Handler           ProcHandler
 	ClassSpellMask    int64
@@ -117,9 +117,9 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 		if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
 			return
 		} else if dpm != nil {
-			if config.DPMProcType == DPMProcNoWeaponSpecials && !dpm.Proc(sim, spell.ProcMask, config.Name) {
+			if config.DPMProcCheck == DPMProc && !dpm.Proc(sim, spell.ProcMask, config.Name) {
 				return
-			} else if config.DPMProcType == DPMProcWithWeaponSpecials && !dpm.ProcWithWeaponSpecials(sim, spell.ProcMask, config.Name) {
+			} else if config.DPMProcCheck == DPMProcWithWeaponSpecials && !dpm.ProcWithWeaponSpecials(sim, spell.ProcMask, config.Name) {
 				return
 			}
 		}

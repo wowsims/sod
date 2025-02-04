@@ -98,7 +98,7 @@ func init() {
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 			ICD:               time.Second * 15,
 			DPM:               dpm,
-			DPMProcType:       core.DPMProcNoWeaponSpecials,
+			DPMProcCheck:      core.DPMProc,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 			},

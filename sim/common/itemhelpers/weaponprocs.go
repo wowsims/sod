@@ -61,7 +61,7 @@ func CreateWeaponProcDamage(itemID int32, itemName string, ppm float64, spellID 
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			DPM:               character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0),
-			DPMProcType:       core.DPMProcNoWeaponSpecials,
+			DPMProcCheck:      core.DPMProc,
 			SpellFlagsExclude: spellFlagExclude,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
@@ -99,7 +99,7 @@ func CreateWeaponProcSpell(itemID int32, itemName string, ppm float64, procSpell
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			DPM:               character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0),
-			DPMProcType:       core.DPMProcNoWeaponSpecials,
+			DPMProcCheck:      core.DPMProc,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
@@ -125,7 +125,7 @@ func CreateWeaponProcAura(itemID int32, itemName string, ppm float64, procAuraGe
 			Outcome:           core.OutcomeLanded,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			DPM:               dpm,
-			DPMProcType:       core.DPMProcNoWeaponSpecials,
+			DPMProcCheck:      core.DPMProc,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procAura.Activate(sim)
 			},

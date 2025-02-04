@@ -2104,11 +2104,11 @@ func init() {
 		})
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:        "Thunderfury",
-			DPM:         character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(Thunderfury, 6.0, 0),
-			DPMProcType: core.DPMProcNoWeaponSpecials,
-			Callback:    core.CallbackOnSpellHitDealt,
-			Outcome:     core.OutcomeLanded,
+			Name:         "Thunderfury",
+			DPM:          character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(Thunderfury, 6.0, 0),
+			DPMProcCheck: core.DPMProc,
+			Callback:     core.CallbackOnSpellHitDealt,
+			Outcome:      core.OutcomeLanded,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				singleTargetSpell.Cast(sim, result.Target)
 				bounceSpell.Cast(sim, result.Target)

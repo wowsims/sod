@@ -1151,9 +1151,9 @@ message CustomSpell {
 }
 
 message ItemSwap {
-	ItemSpec mh_item = 1 [deprecated=true];
-	ItemSpec oh_item = 2 [deprecated=true];
-	ItemSpec ranged_item = 3 [deprecated=true];
+	reserved 1, 2, 3;
+	reserved "mh_item", "oh_item", "ranged_item";
+
 	repeated ItemSpec items = 4;
 	UnitStats prepull_bonus_stats = 5;
 }

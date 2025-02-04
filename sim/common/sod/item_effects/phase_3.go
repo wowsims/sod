@@ -471,12 +471,12 @@ func init() {
 		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(CobraFangClaw, 1.0, 0)
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:        "Cobra Fang Claw Extra Attack",
-			Duration:    core.NeverExpires,
-			Outcome:     core.OutcomeLanded,
-			Callback:    core.CallbackOnSpellHitDealt,
-			DPM:         dpm,
-			DPMProcType: core.DPMProcNoWeaponSpecials,
+			Name:         "Cobra Fang Claw Extra Attack",
+			Duration:     core.NeverExpires,
+			Outcome:      core.OutcomeLanded,
+			Callback:     core.CallbackOnSpellHitDealt,
+			DPM:          dpm,
+			DPMProcCheck: core.DPMProc,
 			Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
 				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 220588}, spell)
 			},

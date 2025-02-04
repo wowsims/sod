@@ -125,7 +125,7 @@ func init() {
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			Outcome:           core.OutcomeLanded,
 			DPM:               character.AutoAttacks.NewDynamicProcManagerForEnchant(803, 6.0, 0),
-			DPMProcType:       core.DPMProcNoWeaponSpecials,
+			DPMProcCheck:      core.DPMProc,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.ProcMask = core.Ternary(spell.ProcMask.Matches(core.ProcMaskMeleeSpecial), procMaskOnSpecial, procMaskOnAuto)
 				procSpell.Cast(sim, result.Target)
@@ -228,7 +228,7 @@ func init() {
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			Outcome:           core.OutcomeLanded,
 			DPM:               character.AutoAttacks.NewDynamicProcManagerForEnchant(1898, 6.66, 0),
-			DPMProcType:       core.DPMProcNoWeaponSpecials,
+			DPMProcCheck:      core.DPMProc,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.ProcMask = core.Ternary(spell.ProcMask.Matches(core.ProcMaskMeleeSpecial), procMaskOnSpecial, procMaskOnAuto)
 				procSpell.Cast(sim, result.Target)
