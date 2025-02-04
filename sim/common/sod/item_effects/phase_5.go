@@ -35,11 +35,11 @@ func init() {
 	// https://www.wowhead.com/classic/item=231275/blazefury-retributer
 	// Adds 2 fire damage to your melee attacks.
 	core.NewItemEffect(BlazefuryRetributer, func(agent core.Agent) {
-		vanilla.BlazefuryTriggerAura(agent.GetCharacter(), BlazefuryRetributer, 468169, core.SpellSchoolFire, 2)
+		vanilla.BlazefuryTriggerAura(agent.GetCharacter(), BlazefuryRetributer, 468170, 468169, core.SpellSchoolFire, 2)
 	})
 	// https://www.wowhead.com/classic/item=231862/blazefury-retributer
 	core.NewItemEffect(BlazefuryRetributerBloodied, func(agent core.Agent) {
-		vanilla.BlazefuryTriggerAura(agent.GetCharacter(), BlazefuryRetributerBloodied, 468169, core.SpellSchoolFire, 2)
+		vanilla.BlazefuryTriggerAura(agent.GetCharacter(), BlazefuryRetributerBloodied, 468170, 468169, core.SpellSchoolFire, 2)
 	})
 
 	// https://www.wowhead.com/classic/item=230794/claw-of-chromaggus

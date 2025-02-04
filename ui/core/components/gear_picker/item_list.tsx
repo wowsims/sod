@@ -316,30 +316,54 @@ export default class ItemList<T extends ItemListType> {
 			itemIdxs = this.player.filterEnchantData(itemIdxs, i => this.itemData[i].item as unknown as UIEnchant, this.slot, currentEquippedItem);
 		}
 
-		itemIdxs = itemIdxs.filter(i => {
-			const listItemData = this.itemData[i];
+		const formatQuery = (value: string) => value.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '');
+		const searchQuery = this.searchInput.value.split(/:|,|\s/);
 
-			// if (listItemData.phase > this.player.sim.getPhase()) {
-			// 	return false;
-			// }
+		if (searchQuery[0] === 'is') {
+			searchQuery.shift()
 
-			if (!!this.searchInput.value.length) {
-				const formatQuery = (value: string) => value.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '');
-
-				const searchQuery = formatQuery(this.searchInput.value).split(' ');
-				const name = formatQuery(listItemData.name.toString());
-
-				let include = true;
-				searchQuery.some(v => {
-					if (!name.includes(v)) include = false;
-				});
-				if (!include) {
-					return false;
+			searchQuery.forEach(filter => {
+				if (filter === 'timeworn') {
+					itemIdxs = itemIdxs.filter(i => {
+						const listItemData = this.itemData[i];
+						return (listItemData.item as UIItem)?.timeworn;
+					})
+				} else if (filter === 'sanctified') {
+					itemIdxs = itemIdxs.filter(i => {
+						const listItemData = this.itemData[i];
+						return (listItemData.item as UIItem)?.sanctified;
+					})
+				} else if (filter === 'set') {
+					itemIdxs = itemIdxs.filter(i => {
+						const listItemData = this.itemData[i];
+						return (listItemData.item as UIItem)?.setName !== "";
+					})
 				}
-			}
+			})
+		} else {
+			itemIdxs = itemIdxs.filter(i => {
+				const listItemData = this.itemData[i];
 
-			return true;
-		});
+				// if (listItemData.phase > this.player.sim.getPhase()) {
+				// 	return false;
+				// }
+
+				if (!!this.searchInput.value.length) {
+					const name = formatQuery(listItemData.name.toString());
+
+					let include = true;
+					searchQuery.some(v => {
+						if (!name.includes(v)) include = false;
+					});
+
+					if (!include) {
+						return false;
+					}
+				}
+
+				return true;
+			});
+		}
 
 		if (
 			[ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(this.slot) ||

@@ -43,6 +43,7 @@ func (mage *Mage) ApplyRunes() {
 	mage.registerArcaneSurgeSpell()
 	mage.registerIcyVeinsSpell()
 	mage.registerLivingFlameSpell()
+	mage.registerMassRegenerationSpell()
 
 	// Feet
 	mage.applyBrainFreeze()

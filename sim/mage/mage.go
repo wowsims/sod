@@ -38,6 +38,7 @@ const (
 	ClassSpellMask_MageLivingBomb
 	ClassSpellMask_MageLivingBombExplosion
 	ClassSpellMask_MageLivingFlame
+	ClassSpellMask_MageMassRegeneration
 	ClassSpellMask_MageScorch
 	ClassSpellMask_MageSpellfrostBolt
 	ClassSpellMask_MageEvocation

@@ -367,6 +367,10 @@ func init() {
 					Timer:    warlock.NewTimer(),
 					Duration: time.Minute * 2,
 				},
+				SharedCD: core.Cooldown{
+					Timer:    warlock.GetOffensiveTrinketCD(),
+					Duration: time.Second * 20,
+				},
 			},
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
