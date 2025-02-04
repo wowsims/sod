@@ -290,9 +290,12 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 
 func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
 	isSameSealType := false
+	isThirdSealType := false
 
 	if paladin.currentSeal != nil {
-		if newSeal.Label[:10] == paladin.currentSeal.Label[:10] {
+		newSealLabel := newSeal.Label[:10]
+		currentSealLabel := paladin.currentSeal.Label[:10]
+		if newSealLabel == currentSealLabel {
 			isSameSealType = true
 
 			paladin.currentSeal.Deactivate(sim)
@@ -308,11 +311,20 @@ func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim
 			paladin.prevSeal = nil
 			paladin.prevJudgement = nil
 		}
+		
+		if paladin.prevSeal != nil && paladin.prevSeal.IsActive() {
+			if newSealLabel != currentSealLabel && newSealLabel != paladin.prevSeal.Label[:10] {
+				isThirdSealType = true
+			}
+		}
 	}
 
 	if !isSameSealType {
 		if paladin.currentSeal.IsActive() {
 			paladin.currentSeal.UpdateExpires(sim, sim.CurrentTime+paladin.lingerDuration) // always update, even if it extends duration
+		}
+		if isThirdSealType {
+			paladin.prevSeal.Deactivate(sim)
 		}
 
 		paladin.prevSeal = paladin.currentSeal
