@@ -92,16 +92,18 @@ mismatchedIds = {
 }
 
 for item_id in item_ids:
-    item_response = get_tooltips_response(item_id)
+    item_response = get_tooltips_response(item_id) or ""
+    if not item_response:
+        continue
     spell_ids = re.findall(r'\/spell=(\d+)', item_response)
 
     if len(spell_ids) >= 2:
         # The base spell is different from what we typically use but the spell we actually want appears as the first related spell in the "See also" tab
         enchant_spell_id = spell_ids[0]
 
-        if mismatchedIds[enchant_spell_id]:
-            to_export.append([actual_spell_id, item_response])
-        else
+        if enchant_spell_id in mismatchedIds:
+            to_export.append([mismatchedIds[enchant_spell_id], item_response]) 
+        else:
             try:
                 driver.get(f"https://www.wowhead.com/classic/spell={enchant_spell_id}#see-also-other")
                 driver.refresh()
