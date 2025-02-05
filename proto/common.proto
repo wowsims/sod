@@ -553,6 +553,7 @@ message MiscConsumes {
 	bool juju_escape = 6;
 	bool juju_flurry = 7;
 	bool draught_of_the_sands = 8;
+	bool greater_mark_of_the_dawn = 9;
 }
 
 message PetMiscConsumes {

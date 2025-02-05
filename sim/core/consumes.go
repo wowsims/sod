@@ -1042,6 +1042,10 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 		})
 	}
 
+	if miscConsumes.GreaterMarkOfTheDawn {
+		character.AddStat(stats.Stamina, 30)
+	}
+
 	if miscConsumes.JujuEmber {
 		character.AddStat(stats.FireResistance, 15)
 	}

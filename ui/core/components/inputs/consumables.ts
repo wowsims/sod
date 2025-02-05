@@ -749,6 +749,11 @@ export const makeMiscOffensiveConsumesInput = makeMultiIconConsumesInputFactory(
 	tooltip: 'Misc Offensive',
 });
 
+export const GreaterMarkOfTheDawn = makeBooleanMiscConsumeInput({
+	actionId: () => ActionId.fromItemId(23196),
+	fieldName: 'greaterMarkOfTheDawn',
+	showWhen: player => player.getLevel() >= 60,
+});
 export const JujuEmber = makeBooleanMiscConsumeInput({
 	actionId: () => ActionId.fromItemId(12455),
 	fieldName: 'jujuEmber',
@@ -766,6 +771,7 @@ export const JujuEscape = makeBooleanMiscConsumeInput({
 });
 
 export const MISC_DEFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
+	{ config: GreaterMarkOfTheDawn, picker :IconPicker, stats: [] },
 	{ config: JujuEmber, picker: IconPicker, stats: [] },
 	{ config: JujuChill, picker: IconPicker, stats: [] },
 	{ config: JujuEscape, picker: IconPicker, stats: [Stat.StatDodge] },
