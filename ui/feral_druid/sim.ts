@@ -37,10 +37,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		// Spell
 		Stat.StatMP5,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatBonusPhysicalDamage,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatBonusPhysicalDamage, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -61,10 +58,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 		// Spell
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatBonusPhysicalDamage,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
+	displayPseudoStats: [PseudoStat.PseudoStatBonusPhysicalDamage, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 
 	defaults: {
 		// Default equipped gear.
@@ -85,7 +79,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 				[Stat.StatFireResistance]: 0.5,
 			},
 			{
-				[PseudoStat.PseudoStatBonusPhysicalDamage]: 11.40,
+				[PseudoStat.PseudoStatBonusPhysicalDamage]: 11.4,
 				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 11.73,
 				[PseudoStat.PseudoStatTimewornBonus]: 8.55,
 			},
@@ -129,9 +123,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecFeralDruid, {
 			OtherInputs.InFrontOfTarget,
 		],
 	},
-	itemSwapConfig: {
-		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
-	},
+	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

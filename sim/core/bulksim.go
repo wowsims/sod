@@ -121,7 +121,7 @@ func (b *bulkSimRunner) Run(signals simsignals.Signals, progress chan *proto.Pro
 				},
 			}
 		}
-		for _, slot := range eligibleSlotsForItem(item) {
+		for _, slot := range eligibleSlotsForItem(&item) {
 			distinctItemSlotCombos = append(distinctItemSlotCombos, &itemWithSlot{
 				Item:  is,
 				Slot:  slot,

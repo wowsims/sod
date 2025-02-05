@@ -126,17 +126,7 @@ func init() {
 		rageMetrics := warrior.NewRageMetrics(actionID)
 		duration := time.Second * 20
 
-		aura := warrior.RegisterAura(core.Aura{
-			ActionID: actionID,
-			Label:    "Gri'lek's Guard",
-			Duration: duration,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				warrior.AddStatDynamic(sim, stats.BlockValue, 200)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				warrior.AddStatDynamic(sim, stats.BlockValue, -200)
-			},
-		})
+		aura := warrior.NewTemporaryStatsAura("Gri'lek's Guard", actionID, stats.Stats{stats.BlockValue: 200}, duration)
 
 		spell := warrior.Character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,

@@ -35,28 +35,32 @@ func init() {
 	// https://www.wowhead.com/classic/item=231275/blazefury-retributer
 	// Adds 2 fire damage to your melee attacks.
 	core.NewItemEffect(BlazefuryRetributer, func(agent core.Agent) {
-		vanilla.BlazefuryTriggerAura(agent.GetCharacter(), 468170, 468169, core.SpellSchoolFire, 2)
+		vanilla.BlazefuryTriggerAura(agent.GetCharacter(), BlazefuryRetributer, 468170, 468169, core.SpellSchoolFire, 2)
 	})
 	// https://www.wowhead.com/classic/item=231862/blazefury-retributer
 	core.NewItemEffect(BlazefuryRetributerBloodied, func(agent core.Agent) {
-		vanilla.BlazefuryTriggerAura(agent.GetCharacter(), 468170, 468169, core.SpellSchoolFire, 2)
+		vanilla.BlazefuryTriggerAura(agent.GetCharacter(), BlazefuryRetributerBloodied, 468170, 468169, core.SpellSchoolFire, 2)
 	})
 
 	// https://www.wowhead.com/classic/item=230794/claw-of-chromaggus
 	// Your offensive spellcasts increase the spell damage of a random school of magic by 50 for 10 sec. (9.5s cooldown)
 	core.NewItemEffect(ClawOfChromaggus, func(agent core.Agent) {
-		ClawOfChromaggusEffect(agent.GetCharacter())
+		clawOfChromaggusEffect(agent.GetCharacter(), ClawOfChromaggus)
 	})
 	// https://www.wowhead.com/classic/item=232557/claw-of-chromaggus
 	core.NewItemEffect(ClawOfChromaggusShadowflame, func(agent core.Agent) {
-		ClawOfChromaggusEffect(agent.GetCharacter())
+		clawOfChromaggusEffect(agent.GetCharacter(), ClawOfChromaggusShadowflame)
 	})
 
 	// https://www.wowhead.com/classic/item=231016/nat-pagles-fish-terminator
 	// Chance on hit: Zap nearby enemies dealing 175 to 225 damage to them. Will affect up to 4 targets.
-	core.NewItemEffect(NatPaglesFishTerminator, fishTerminatorEffect)
+	core.NewItemEffect(NatPaglesFishTerminator, func(agent core.Agent) {
+		fishTerminatorEffect(agent, NatPaglesFishTerminator)
+	})
 	// https://www.wowhead.com/classic/item=231848/nat-pagles-fish-terminator
-	core.NewItemEffect(NatPaglesFishTerminatorBloodied, fishTerminatorEffect)
+	core.NewItemEffect(NatPaglesFishTerminatorBloodied, func(agent core.Agent) {
+		fishTerminatorEffect(agent, NatPaglesFishTerminatorBloodied)
+	})
 
 	// https://www.wowhead.com/classic/item=231387/stormwrath-sanctified-shortblade-of-the-galefinder
 	// Equip: Damaging non-periodic spells have a chance to blast up to 3 targets for 181 to 229.
@@ -85,7 +89,8 @@ func init() {
 			Timer:    character.NewTimer(),
 			Duration: time.Millisecond * 100,
 		}
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "Chain Lightning (Stormwrath)",
 			Callback:   core.CallbackOnSpellHitDealt,
 			Outcome:    core.OutcomeLanded,
@@ -99,6 +104,8 @@ func init() {
 				icd.Use(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(Stormwrath, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=230939/will-of-arlokk
@@ -118,18 +125,19 @@ func init() {
 		character := agent.GetCharacter()
 
 		effectAura := character.NewTemporaryStatsAura("Felstriker", core.ActionID{SpellID: 16551}, stats.Stats{stats.MeleeCrit: 100 * core.CritRatingPerCritChance, stats.MeleeHit: 100 * core.MeleeHitRatingPerHitChance}, time.Second*3)
-		procMask := character.GetProcMaskForItem(Windstriker)
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(Windstriker, 0.6, 0)
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Felstriker Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			ProcMask:          procMask,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               0.6,
+			DPM:               dpm,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				effectAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(Windstriker, triggerAura)
 	})
 
 	///////////////////////////////////////////////////////////////////////////
@@ -171,7 +179,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:             "Lightning's Cell Trigger",
 			Callback:         core.CallbackOnSpellHitDealt,
 			Outcome:          core.OutcomeCrit,
@@ -183,6 +191,8 @@ func init() {
 				chargeAura.AddStack(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(LightningsCell, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=230253/hearstriker
@@ -193,7 +203,7 @@ func init() {
 			return
 		}
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Heartstrike",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -205,6 +215,8 @@ func init() {
 				spell.Unit.AutoAttacks.ExtraRangedAttack(sim, 1, core.ActionID{SpellID: 461164}, spell.ActionID)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(Heartstriker, triggerAura)
 	})
 
 	core.NewSimpleStatOffensiveTrinketEffect(WrathOfWray, stats.Stats{stats.Strength: 92}, time.Second*20, time.Minute*2)
@@ -215,17 +227,7 @@ func init() {
 func makeWillOfWarlookOnUseEffect(character *core.Character, itemID int32) {
 	actionID := core.ActionID{ItemID: itemID}
 
-	buffAura := character.RegisterAura(core.Aura{
-		ActionID: actionID,
-		Label:    "Serpentine Spirit",
-		Duration: time.Second * 20,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.AddStatDynamic(sim, stats.Spirit, 200)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.AddStatDynamic(sim, stats.Spirit, -200)
-		},
-	})
+	buffAura := character.NewTemporaryStatsAura("Serpentine Spirit", actionID, stats.Stats{stats.Spirit: 200}, time.Second*20)
 
 	spell := character.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
@@ -258,7 +260,7 @@ There's no buff for the Holy school, so there are 5 total schools that can be pr
 
 schoolChances should be a map of school indexes with the relative proc chance of that school for the given class
 */
-func ClawOfChromaggusEffect(character *core.Character) {
+func clawOfChromaggusEffect(character *core.Character, itemID int32) {
 	arcaneChance, fireChance, frostChance, natureChance, shadowChance := 0.20, 0.20, 0.20, 0.20, 0.20
 
 	switch character.Class {
@@ -300,65 +302,11 @@ func ClawOfChromaggusEffect(character *core.Character) {
 
 	duration := time.Second * 10
 
-	arcaneAura := character.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467410},
-		Label:    "Brood Boon: Bronze",
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.ArcanePower, 50)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.ArcanePower, -50)
-		},
-	})
-
-	fireAura := character.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467414},
-		Label:    "Brood Boon: Red",
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.FirePower, 50)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.FirePower, -50)
-		},
-	})
-
-	frostAura := character.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467412},
-		Label:    "Brood Boon: Blue",
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.FrostPower, 50)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.FrostPower, -50)
-		},
-	})
-
-	natureAura := character.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467413},
-		Label:    "Brood Boon: Green",
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.NaturePower, 50)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.NaturePower, -50)
-		},
-	})
-
-	shadowAura := character.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 467411},
-		Label:    "Brood Boon: Black",
-		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.ShadowPower, 50)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.ShadowPower, -50)
-		},
-	})
+	arcaneAura := character.NewTemporaryStatsAura("Brood Boon: Bronze", core.ActionID{SpellID: 467410}, stats.Stats{stats.ArcanePower: 50}, duration)
+	fireAura := character.NewTemporaryStatsAura("Brood Boon: Red", core.ActionID{SpellID: 467414}, stats.Stats{stats.FirePower: 50}, duration)
+	frostAura := character.NewTemporaryStatsAura("Brood Boon: Blue", core.ActionID{SpellID: 467412}, stats.Stats{stats.FrostPower: 50}, duration)
+	natureAura := character.NewTemporaryStatsAura("Brood Boon: Green", core.ActionID{SpellID: 467413}, stats.Stats{stats.NaturePower: 50}, duration)
+	shadowAura := character.NewTemporaryStatsAura("Brood Boon: Black", core.ActionID{SpellID: 467411}, stats.Stats{stats.ShadowPower: 50}, duration)
 
 	arcaneRangeMax := 0.0 + arcaneChance
 	fireRangeMax := arcaneRangeMax + fireChance
@@ -370,7 +318,7 @@ func ClawOfChromaggusEffect(character *core.Character) {
 		panic("Invalid school chances provided to Claw of Chromaggus effect.")
 	}
 
-	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:     "Claw of the Chromaggus Trigger",
 		Callback: core.CallbackOnCastComplete,
 		ProcMask: core.ProcMaskSpellDamage,
@@ -390,9 +338,11 @@ func ClawOfChromaggusEffect(character *core.Character) {
 			}
 		},
 	})
+
+	character.ItemSwap.RegisterProc(itemID, triggerAura)
 }
 
-func fishTerminatorEffect(agent core.Agent) {
+func fishTerminatorEffect(agent core.Agent, itemID int32) {
 	character := agent.GetCharacter()
 
 	results := make([]*core.SpellResult, min(4, character.Env.GetNumTargets()))
@@ -417,7 +367,7 @@ func fishTerminatorEffect(agent core.Agent) {
 		},
 	})
 
-	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:              "Fish Terminator Trigger",
 		Callback:          core.CallbackOnSpellHitDealt,
 		Outcome:           core.OutcomeLanded,
@@ -428,4 +378,6 @@ func fishTerminatorEffect(agent core.Agent) {
 			procSpell.Cast(sim, result.Target)
 		},
 	})
+
+	character.ItemSwap.RegisterProc(itemID, triggerAura)
 }

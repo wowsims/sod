@@ -1023,8 +1023,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Phase4-Lvl60-Settings-NightElf-phase_4-Default-phase_4-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 3140.86195
-  tps: 3321.60878
+  dps: 3140.87958
+  tps: 3321.6264
  }
 }
 dps_results: {
@@ -1191,8 +1191,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Phase5-Lvl60-Settings-NightElf-phase_5-Default-phase_5-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 7624.1685
-  tps: 7914.74014
+  dps: 7621.26755
+  tps: 7911.89894
  }
 }
 dps_results: {
@@ -1233,8 +1233,8 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Phase5-Lvl60-Settings-Tauren-phase_5-Default-phase_5-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 7542.53604
-  tps: 7830.19705
+  dps: 7536.70296
+  tps: 7824.75731
  }
 }
 dps_results: {
@@ -1401,15 +1401,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Phase6-Lvl60-Settings-NightElf-phase_6-Default-phase_6-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 4063.27869
-  tps: 4244.02551
+  dps: 4063.89355
+  tps: 4244.64038
  }
 }
 dps_results: {
  key: "TestBalance-Phase6-Lvl60-Settings-NightElf-phase_6-Default-phase_6-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 2622.63945
-  tps: 2631.67679
+  dps: 2624.31142
+  tps: 2633.34876
  }
 }
 dps_results: {
@@ -1443,15 +1443,15 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Phase6-Lvl60-Settings-Tauren-phase_6-Default-phase_6-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 4052.32026
-  tps: 4233.06708
+  dps: 4049.83361
+  tps: 4230.58043
  }
 }
 dps_results: {
  key: "TestBalance-Phase6-Lvl60-Settings-Tauren-phase_6-Default-phase_6-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 2638.27701
-  tps: 2647.31435
+  dps: 2638.78151
+  tps: 2647.81885
  }
 }
 dps_results: {

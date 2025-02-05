@@ -27,22 +27,16 @@ func init() {
 		actionID := core.ActionID{ItemID: FireRuby}
 		manaMetrics := character.NewManaMetrics(actionID)
 
-		damageAura := character.GetOrRegisterAura(core.Aura{
+		damageAura := character.RegisterAura(core.Aura{
 			Label:    "Chaos Fire",
 			ActionID: core.ActionID{SpellID: 24389},
 			Duration: time.Minute * 1,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.FirePower, 100)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.FirePower, -100)
-			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell.SpellSchool.Matches(core.SpellSchoolFire) {
 					aura.Deactivate(sim)
 				}
 			},
-		})
+		}).AttachStatBuff(stats.FirePower, 100)
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
@@ -137,7 +131,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=230243/mind-quickening-gem
 	// Use: Quickens the mind, increasing the Mage's casting speed of non-channeled spells by 33% for 20 sec. (2 Min Cooldown)
 	core.NewItemEffect(MindQuickeningGem, func(agent core.Agent) {
-		mage := agent.(MageAgent).GetMage()
+		mage := agent.(MageAgent).GetMage().GetCharacter()
 
 		actionID := core.ActionID{ItemID: MindQuickeningGem}
 		duration := time.Second * 20
@@ -181,7 +175,7 @@ func init() {
 			return
 		}
 
-		core.MakePermanent(mage.RegisterAura(core.Aura{
+		aura := core.MakePermanent(mage.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 469237},
 			Label:    "Staff of Inferno",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -192,6 +186,8 @@ func init() {
 				}
 			},
 		}))
+
+		mage.ItemSwap.RegisterProc(StaffOfInferno, aura)
 	})
 
 	core.NewItemEffect(StaffOfOrder, func(agent core.Agent) {
@@ -200,7 +196,7 @@ func init() {
 			return
 		}
 
-		core.MakePermanent(mage.RegisterAura(core.Aura{
+		aura := core.MakePermanent(mage.RegisterAura(core.Aura{
 			Label: "Staff of Order",
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.SpellSchool == core.SpellSchoolArcane && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.Landed() {
@@ -208,6 +204,8 @@ func init() {
 				}
 			},
 		}))
+
+		mage.ItemSwap.RegisterProc(StaffOfOrder, aura)
 	})
 
 	core.NewItemEffect(StaffOfRime, func(agent core.Agent) {
@@ -216,13 +214,9 @@ func init() {
 			return
 		}
 
-		statsAura := mage.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 469238},
-			Label:    "Staff of Rime",
-			Duration: time.Minute,
-		}).AttachStatBuff(stats.FrostPower, 100)
+		statsAura := mage.NewTemporaryStatsAura("Staff of Rime", core.ActionID{SpellID: 469238}, stats.Stats{stats.FrostPower: 100}, time.Minute)
 
-		mage.RegisterAura(core.Aura{
+		aura := mage.RegisterAura(core.Aura{
 			Label: "Staff of Rime Dummy",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				for _, aura := range mage.IceBarrierAuras {
@@ -244,6 +238,8 @@ func init() {
 				}
 			},
 		})
+
+		mage.ItemSwap.RegisterProc(StaffOfRime, aura)
 	})
 
 	core.AddEffectsToTest = true

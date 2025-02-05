@@ -56,7 +56,7 @@ func (enh *EnhancementShaman) Initialize() {
 	enh.Shaman.Initialize()
 
 	if enh.ItemSwap.IsEnabled() {
-		enh.RegisterOnItemSwap(func(_ *core.Simulation) {
+		enh.RegisterItemSwapCallback(core.AllWeaponSlots(), func(_ *core.Simulation, _ proto.ItemSlot) {
 			enh.ApplySyncType(proto.ShamanSyncType_Auto)
 		})
 	}

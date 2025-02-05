@@ -17,16 +17,10 @@ func (warlock *Warlock) registerDemonicGraceSpell() {
 		Label:    "Demonic Grace Aura",
 		ActionID: core.ActionID{SpellID: 425463},
 		Duration: time.Second * 6,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.AddStatDynamic(sim, stats.Dodge, 20*core.DodgeRatingPerDodgeChance)
-			warlock.AddStatDynamic(sim, stats.MeleeCrit, 20*core.CritRatingPerCritChance)
-			warlock.AddStatDynamic(sim, stats.SpellCrit, 20*core.SpellCritRatingPerCritChance)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.AddStatDynamic(sim, stats.Dodge, -20*core.DodgeRatingPerDodgeChance)
-			warlock.AddStatDynamic(sim, stats.MeleeCrit, -20*core.CritRatingPerCritChance)
-			warlock.AddStatDynamic(sim, stats.SpellCrit, -20*core.SpellCritRatingPerCritChance)
-		},
+	}).AttachStatsBuff(stats.Stats{
+		stats.Dodge:     20 * core.DodgeRatingPerDodgeChance,
+		stats.MeleeCrit: 20 * core.CritRatingPerCritChance,
+		stats.SpellCrit: 20 * core.SpellCritRatingPerCritChance,
 	})
 
 	warlock.DemonicGrace = warlock.RegisterSpell(core.SpellConfig{

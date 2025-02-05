@@ -36,11 +36,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellHit,
 		Stat.StatMP5,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -63,10 +59,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
-	
+	displayPseudoStats: [PseudoStat.PseudoStatMeleeSpeedMultiplier],
+
 	defaults: {
 		race: Race.RaceOrc,
 		// Default equipped gear.
@@ -94,7 +88,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 				[PseudoStat.PseudoStatMainHandDps]: 4.86,
 				[PseudoStat.PseudoStatOffHandDps]: 5.55,
 				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 16.04,
-				[PseudoStat.PseudoStatTimewornBonus]: 9.00,
+				[PseudoStat.PseudoStatTimewornBonus]: 9.0,
 			},
 		),
 		// Default consumes settings.
@@ -120,9 +114,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 	otherInputs: {
 		inputs: [ShamanInputs.SyncTypeInput, OtherInputs.TankAssignment, OtherInputs.InFrontOfTarget],
 	},
-	itemSwapConfig: {
-		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
-	},
+	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
 	customSections: [],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
@@ -154,10 +146,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [
-			Presets.PresetBuildDW,
-			Presets.PresetBuild2H,
-		]
+		builds: [Presets.PresetBuildDW, Presets.PresetBuild2H],
 	},
 
 	autoRotation: (player): APLRotation => {

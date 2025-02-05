@@ -1,3 +1,4 @@
+import clsx, { ClassValue } from 'clsx';
 import tippy from 'tippy.js';
 
 import { EventID, TypedEvent } from '../typed_event.js';
@@ -154,9 +155,7 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 		this.inputConfig.setValue(eventID, this.modObject, newValue);
 	}
 
-	static newGroupContainer(): HTMLElement {
-		const group = document.createElement('div');
-		group.classList.add('picker-group');
-		return group;
+	static newGroupContainer(className?: ClassValue): HTMLElement {
+		return (<div className={clsx('picker-group', className)} />) as HTMLElement;
 	}
 }

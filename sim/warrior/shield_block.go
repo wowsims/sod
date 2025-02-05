@@ -16,20 +16,15 @@ func (warrior *Warrior) RegisterShieldBlockCD() {
 		ActionID:  actionID,
 		Duration:  time.Second * time.Duration(5+[]float64{0, 0.5, 1, 2}[warrior.Talents.ImprovedShieldBlock]),
 		MaxStacks: 1 + []int32{0, 1, 1, 1}[warrior.Talents.ImprovedShieldBlock],
-
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.SetStacks(sim, aura.MaxStacks)
-			warrior.AddStatDynamic(sim, stats.Block, 75*core.BlockRatingPerBlockChance)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.Block, -75*core.BlockRatingPerBlockChance)
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidBlock() {
 				aura.RemoveStack(sim)
 			}
 		},
-	})
+	}).AttachStatBuff(stats.Block, 75*core.BlockRatingPerBlockChance)
 
 	warrior.ShieldBlock = warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
 		ActionID:    actionID,

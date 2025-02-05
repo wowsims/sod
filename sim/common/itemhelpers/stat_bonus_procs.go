@@ -62,5 +62,7 @@ func newProcStatBonusEffect(config ProcStatBonusEffect) {
 			Handler:          handler,
 		})
 		procAura.Icd = triggerAura.Icd
+
+		character.ItemSwap.RegisterProc(config.ID, triggerAura)
 	})
 }

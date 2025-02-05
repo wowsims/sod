@@ -19,7 +19,9 @@ func (paladin *Paladin) registerAvengersShield() {
 		return
 	}
 
-	hasLibramOfAvenging := paladin.Ranged().ID == LibramOfAvenging
+	hasLibramOfAvenging := func() bool {
+		return paladin.Ranged().ID == LibramOfAvenging
+	}
 
 	// Avenger's Shield hits up to 3 targets. It cannot miss or be resisted.
 	numTargets := min(3, int(paladin.Env.GetNumTargets()))
@@ -57,8 +59,7 @@ func (paladin *Paladin) registerAvengersShield() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			apBonus := 0.091 * spell.MeleeAttackPower()
 			baseTravelTime := spell.TravelTime()
-
-			if hasLibramOfAvenging {
+			if hasLibramOfAvenging() {
 				// Libram of Avenging causes Avenger's Shield to be single target, but it
 				// hits the target twice. The second projectile fires after a fixed 1.5s delay.
 				firstHit := spell.CalcDamage(sim, target, sim.Roll(lowDamage, highDamage)+apBonus, spell.OutcomeRangedHitAndCrit)

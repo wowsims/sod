@@ -65,18 +65,12 @@ func (paladin *Paladin) applyRedoubt() {
 		ActionID:  core.ActionID{SpellID: 20134},
 		Duration:  time.Second * 10,
 		MaxStacks: 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.AddStatDynamic(sim, stats.Block, blockBonus)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.AddStatDynamic(sim, stats.Block, -blockBonus)
-		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidBlock() {
 				aura.RemoveStack(sim)
 			}
 		},
-	})
+	}).AttachStatBuff(stats.Block, blockBonus)
 
 	paladin.RegisterAura(core.Aura{
 		Label:    "Redoubt Crit Trigger",

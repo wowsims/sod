@@ -247,6 +247,11 @@ func (mcdm *majorCooldownManager) AddMajorCooldown(mcd MajorCooldown) {
 	if mcd.Spell == nil {
 		panic("Major cooldown must have a Spell!")
 	}
+
+	if mcd.Spell.ActionID.ItemID != 0 {
+		mcdm.character.ItemSwap.RegisterActive(mcd.Spell.ActionID.ItemID)
+	}
+
 	mcd.Spell.Flags |= SpellFlagAPL | SpellFlagMCD
 
 	if mcd.ShouldActivate == nil {

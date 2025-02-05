@@ -129,7 +129,8 @@ export class LogRunner extends ResultComponent {
 	}
 
 	onSimResult(resultData: SimResultData): void {
-		this.virtualScroll?.setItems(this.getLogs(resultData) || []);
+		this.getLogs(resultData)
+		this.searchLogs(this.ui.search.value)
 	}
 
 	getLogs(resultData: SimResultData) {
