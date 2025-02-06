@@ -369,7 +369,7 @@ func UnholyMightAura(character *core.Character) *core.Aura {
 	return character.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1220668},
 		Label:    "Unholy Might",
-		Duration: time.Second * 8,
+		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Strength, 350)
 			character.PseudoStats.DamageTakenMultiplier *= 1.05

@@ -79,13 +79,16 @@ func (warrior *Warrior) applyNaxxramasDamage6PBonus() {
 		ActionID:  core.ActionID{SpellID: 1219485},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
-		MaxStacks: 14,
+		MaxStacks: 9,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			oldMultiplier := 1 + 0.02*float64(oldStacks)
 			newMultiplier := 1 + 0.02*float64(newStacks)
+			delta := newMultiplier / oldMultiplier
+
 			for _, unit := range undeadTargets {
 				for _, at := range aura.Unit.AttackTables[unit.UnitIndex] {
-					at.DamageDealtMultiplier *= newMultiplier / oldMultiplier
+					at.DamageDealtMultiplier *= delta
+					at.CritMultiplier *= delta
 				}
 			}
 		},
