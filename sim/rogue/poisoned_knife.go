@@ -42,7 +42,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return rogue.HasOHWeapon()
 		},
-		CastType: proto.CastType_CastTypeRanged,
+		CastType: proto.CastType_CastTypeOffHand,
 
 		CritDamageBonus: rogue.lethality(),
 
