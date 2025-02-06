@@ -46,7 +46,7 @@ func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 	}))
 }
 
-// Reduces the cast time of your Holy Wrath ability by 100% and reduces the cooldown and mana cost of your Holy Wrath ability by 75%.
+// Reduces the cast time of your Holy Wrath ability by 100%, reduces its cooldown by 25%, and reduces its mana cost by 75%.
 func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 	label := "S03 - Item - Naxxramas - Paladin - Retribution 4P Bonus"
 	if paladin.HasAura(label) {
@@ -63,7 +63,7 @@ func (paladin *Paladin) applyNaxxramasRetribution4PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_PaladinHolyWrath,
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
-		IntValue:  -75,
+		IntValue:  -25,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_PaladinHolyWrath,
 		Kind:      core.SpellMod_PowerCost_Pct,
