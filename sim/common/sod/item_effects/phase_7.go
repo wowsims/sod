@@ -47,6 +47,7 @@ const (
 	GauntletsOfUndeadWarding     = 236747
 	BreastplateOfUndeadWarding   = 236748
 	BladeOfInquisition           = 237512
+	TheHungeringCold             = 236341
 )
 
 func init() {
@@ -71,6 +72,23 @@ func init() {
 	// https://www.wowhead.com/classic/item=236398/atiesh-greatstaff-of-the-guardian
 	core.NewItemEffect(AtieshSpellPower, func(agent core.Agent) {
 		core.AtieshSpellPowerEffect(&agent.GetCharacter().Unit)
+	})
+
+	// https://www.wowhead.com/classic/item=236341/the-hungering-cold
+	// Equip: Gives you a 2% chance to get an extra attack on the same target after dealing damage with your weapon.
+	core.NewItemEffect(TheHungeringCold, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "The Hungering Cold Trigger",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskMelee,
+			ProcChance: 0.02,
+			ICD:        time.Millisecond * 200,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1223010}, spell)
+			},
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=237512/blade-of-inquisition
