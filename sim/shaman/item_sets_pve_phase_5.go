@@ -159,11 +159,17 @@ func (shaman *Shaman) applyT2Tank4PBonus() {
 		return
 	}
 
-	statDeps := []*stats.StatDependency{
+	spellDamStatDeps := []*stats.StatDependency{
 		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0),
 		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0.10),
 		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0.20),
 		shaman.NewDynamicStatDependency(stats.SpellDamage, stats.BlockValue, 0.30),
+	}
+	spellPowerStatDeps := []*stats.StatDependency{
+		shaman.NewDynamicStatDependency(stats.SpellPower, stats.BlockValue, 0),
+		shaman.NewDynamicStatDependency(stats.SpellPower, stats.BlockValue, 0.10),
+		shaman.NewDynamicStatDependency(stats.SpellPower, stats.BlockValue, 0.20),
+		shaman.NewDynamicStatDependency(stats.SpellPower, stats.BlockValue, 0.30),
 	}
 
 	// Couldn't find a separate spell for this
@@ -173,8 +179,11 @@ func (shaman *Shaman) applyT2Tank4PBonus() {
 		Duration:  time.Second * 6,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			shaman.DisableDynamicStatDep(sim, statDeps[oldStacks])
-			shaman.EnableDynamicStatDep(sim, statDeps[newStacks])
+			shaman.DisableDynamicStatDep(sim, spellDamStatDeps[oldStacks])
+			shaman.EnableDynamicStatDep(sim, spellDamStatDeps[newStacks])
+
+			shaman.DisableDynamicStatDep(sim, spellPowerStatDeps[oldStacks])
+			shaman.EnableDynamicStatDep(sim, spellPowerStatDeps[newStacks])
 		},
 	})
 
