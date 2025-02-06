@@ -435,7 +435,7 @@ export class UnitMetrics {
 	}
 
 	get chanceOfDeath(): DistributionMetricsProto {
-		const p = Math.max(1.0, this.metrics.chanceOfDeath);
+		const p = this.metrics.chanceOfDeath;
 		const err = Math.sqrt(Math.abs(p * (1 - p)) / this.iterations);
 		return DistributionMetricsProto.create({
 			avg: p * 100,
