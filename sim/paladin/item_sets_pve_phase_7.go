@@ -38,7 +38,8 @@ func (paladin *Paladin) applyNaxxramasRetribution2PBonus() {
 	}
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: PaladinT3Ret2P},
+		Label:    label,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_PaladinDivineStorm,
@@ -88,7 +89,8 @@ func (paladin *Paladin) applyNaxxramasRetribution6PBonus() {
 	})
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: PaladinT3Ret6P},
+		Label:    label,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMod.Activate()
 		},
@@ -149,6 +151,7 @@ func (paladin *Paladin) applyNaxxramasProtection2PBonus() {
 	bonusStats := stats.Stats{stats.Expertise: 2 * core.ExpertiseRatingPerExpertiseChance}
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		ActionID:   core.ActionID{SpellID: PaladinT3Prot2P},
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 	}).AttachStatsBuff(bonusStats))
@@ -162,7 +165,8 @@ func (paladin *Paladin) applyNaxxramasProtection4PBonus() {
 	}
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: PaladinT3Prot4P},
+		Label:    label,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
 		ClassMask: ClassSpellMask_PaladinDivineProtection,
@@ -182,7 +186,8 @@ func (paladin *Paladin) applyNaxxramasProtection6PBonus() {
 	}
 
 	paladin.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: PaladinT3Prot6P},
+		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			// Implemented in righteous_fury.go
 		},
