@@ -20,26 +20,6 @@ var ItemOverrides = []*proto.UIItem{
 			},
 		},
 	}}},
-	// TODO: Remove when hotfixes are parsed by wowhead - 2025-02-06
-	{Id: 236221, Stats: []float64{
-		13,0,0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	}},
-	// TODO: Remove when hotfixes are parsed by wowhead - 2025-02-06
-	{Id: 236270, WeaponSpeed: 2.9, WeaponDamageMin: 132, WeaponDamageMax: 247, Stats: []float64{
-		15,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	}},
-	// TODO: Remove when hotfixes are parsed by wowhead - 2025-02-06
-	{Id: 236306, WeaponSpeed: 2.8, WeaponDamageMin: 133, WeaponDamageMax: 247},
-	// TODO: Remove when hotfixes are parsed by wowhead - 2025-02-06
-	{Id: 236312, WeaponSpeed: 1.3, WeaponDamageMin: 59, WeaponDamageMax: 111},
-	// TODO: Remove when hotfixes are parsed by wowhead - 2025-02-06
-	{Id: 236339, WeaponSpeed: 3.0, WeaponDamageMin: 153, WeaponDamageMax: 256, Stats: []float64{
-		0,10,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	}},
-	// TODO: Remove when hotfixes are parsed by wowhead - 2025-02-06
-	{Id: 236341, WeaponSpeed: 1.2, WeaponDamageMin: 61, WeaponDamageMax: 114, Stats: []float64{
-		0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,1,0,0,0,140,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
-	}},
 
 	// Updated profession items not updated in the AtlasLoot DB
 	// Crimson Silk Robe
