@@ -16,6 +16,9 @@ const (
 	PaladinT2Prot2P  = 467531
 	PaladinT2Prot4P  = 467532
 	PaladinT2Prot6P  = 467536
+	PaladinT3Prot2P  = 1219205
+	PaladinT3Prot4P  = 1219225
+	PaladinT3Prot6P  = 1219226
 	PaladinTAQProt2P = 1213410
 	PaladinTAQProt4P = 1213413
 	PaladinT1Holy2P  = 456488

@@ -49,6 +49,9 @@ type Character struct {
 	// Consumables this Character will be using.
 	Consumes *proto.Consumes
 
+	// Individual Buffs this Character will be using.
+	IndividualBuffs *proto.IndividualBuffs
+
 	// ISB External configuration
 	IsbConfig IsbConfig
 
@@ -148,6 +151,11 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 	character.Consumes = &proto.Consumes{}
 	if player.Consumes != nil {
 		character.Consumes = player.Consumes
+	}
+
+	character.IndividualBuffs = &proto.IndividualBuffs{}
+	if player.Buffs != nil {
+		character.IndividualBuffs = player.Buffs
 	}
 
 	character.createIsbConfig(player)

@@ -182,6 +182,7 @@ func (druid *Druid) applyT2Feral6PBonus() {
 	})
 
 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		ActionID:       core.ActionID{SpellID: 467211}, // Tracking in APL
 		Name:           label,
 		Callback:       core.CallbackOnApplyEffects,
 		ProcChance:     1,

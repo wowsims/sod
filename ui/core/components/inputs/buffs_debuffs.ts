@@ -430,7 +430,7 @@ export const MeleeCritBuff = withLabel(
 );
 
 export const HordeThreatBuff = withLabel(
-	makeBooleanRaidBuffInput({
+	makeBooleanIndividualBuffInput({
 		actionId: player => player.getMatchingSpellActionId([{ id: 408696, minLevel: 40 }]),
 		fieldName: 'spiritOfTheAlpha',
 		showWhen: player => player.getFaction() === Faction.Horde,
@@ -1076,7 +1076,7 @@ export const RAID_BUFFS_CONFIG = [
 	{
 		config: SpellIncreaseBuff,
 		picker: IconPicker,
-		stats: [Stat.StatSpellPower],
+		stats: [Stat.StatSpellPower, Stat.StatSpellDamage],
 	},
 	{
 		config: SpellCritBuff,
@@ -1104,22 +1104,22 @@ export const MISC_BUFFS_CONFIG = [
 	{
 		config: AtieshSpellPowerBuff,
 		picker: IconPicker,
-		stats: [],
+		stats: [Stat.StatSpellPower, Stat.StatSpellDamage],
 	},
 	{
 		config: AtieshSpellCritBuff,
 		picker: IconPicker,
-		stats: [],
+		stats: [Stat.StatSpellPower, Stat.StatSpellDamage],
 	},
 	{
 		config: AtieshCastSpeedBuff,
 		picker: IconPicker,
-		stats: [],
+		stats: [Stat.StatSpellPower, Stat.StatSpellDamage],
 	},
 	{
 		config: AtieshHealingBuff,
 		picker: IconPicker,
-		stats: [],
+		stats: [Stat.StatSpellPower, Stat.StatSpellDamage],
 	},
 	{
 		config: ImprovedStoneskinWindwall,

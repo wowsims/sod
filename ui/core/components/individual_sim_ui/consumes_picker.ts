@@ -127,11 +127,6 @@ export class ConsumesPicker extends Component {
 	}
 
 	private buildPhysicalBuffPickers() {
-		const includeAgi = this.simUI.individualConfig.epStats.includes(Stat.StatAgility);
-		const includeStr = this.simUI.individualConfig.epStats.includes(Stat.StatStrength);
-
-		if (!includeAgi && !includeStr) return;
-
 		const fragment = document.createElement('fragment');
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">

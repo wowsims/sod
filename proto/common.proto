@@ -553,6 +553,7 @@ message MiscConsumes {
 	bool juju_escape = 6;
 	bool juju_flurry = 7;
 	bool draught_of_the_sands = 8;
+	bool greater_mark_of_the_dawn = 9;
 }
 
 message PetMiscConsumes {
@@ -656,8 +657,8 @@ enum SaygesFortune {
 // Buffs that affect the entire raid.
 // NextIndex: 48
 message RaidBuffs {
-	reserved 42;
-	reserved "flowing_waters_sigil";
+	reserved 42, 43;
+	reserved "flowing_waters_sigil", "spirit_of_the_alpha";
 
 	// +Stats
 	TristateEffect gift_of_the_wild = 1;
@@ -726,7 +727,6 @@ message RaidBuffs {
 	bool sanctity_aura = 36;
 	int32 battle_squawk = 37;
 	bool improved_stoneskin_windwall = 40;
-	bool spirit_of_the_alpha = 43;
 
 	bool atiesh_cast_speed_buff = 44;
 	bool atiesh_healing_buff = 45;
@@ -745,7 +745,7 @@ message PartyBuffs {
 }
 
 // These are usually individual actions taken by other Characters.
-// NextIndex: 22
+// NextIndex: 23
 message IndividualBuffs {
 	reserved 20;
 	reserved "dragonslayer_buff";
@@ -777,6 +777,7 @@ message IndividualBuffs {
 	bool ashenvale_pvp_buff = 16;
 	bool spark_of_inspiration = 17;
 	bool fervor_of_the_temple_explorer = 18;
+	bool spirit_of_the_alpha = 22;
 }
 
 // NextIndex: 36
