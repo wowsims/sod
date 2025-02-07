@@ -22,6 +22,7 @@ func (rogue *Rogue) registerBlunderbussSpell() {
 		DefenseType:    core.DefenseTypeRanged,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagCarnage,
+		CastType:       proto.CastType_CastTypeRanged,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   20,

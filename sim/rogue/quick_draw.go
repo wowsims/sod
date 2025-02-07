@@ -29,6 +29,7 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 		DefenseType: core.DefenseTypeRanged,
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       rogue.builderFlags(),
+		CastType:    proto.CastType_CastTypeRanged,
 
 		MissileSpeed: 40,
 
