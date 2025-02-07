@@ -3393,7 +3393,6 @@ func BlazefuryTriggerAura(character *core.Character, triggerSpellID int32, damag
 	})
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		ActionID:          core.ActionID{SpellID: triggerSpellID},
 		Name:              fmt.Sprintf("Blazefury Trigger (%d)", triggerSpellID),
 		Tag:               BlazefuryAuraTag,
 		Callback:          core.CallbackOnSpellHitDealt,

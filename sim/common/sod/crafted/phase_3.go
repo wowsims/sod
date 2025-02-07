@@ -51,7 +51,6 @@ func init() {
 		}
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 446570},
 			Name:       "Echoes of the Depraved",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskSpellDamage,
@@ -96,7 +95,6 @@ func init() {
 		}
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:          core.ActionID{SpellID: 446620},
 			Name:              "Echoes of the Damned",
 			Callback:          core.CallbackOnCastComplete,
 			ProcMask:          core.ProcMaskMeleeOrRanged,
@@ -146,7 +144,6 @@ func echoesOfFearEffect(agent core.Agent) {
 	}
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		ActionID:   core.ActionID{SpellID: 446592},
 		Name:       "Echoes of Fear",
 		Callback:   core.CallbackOnCastComplete,
 		ProcMask:   core.ProcMaskDirect,
@@ -170,7 +167,6 @@ func echoesOfInsanityEffect(agent core.Agent) {
 	}
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		ActionID:   core.ActionID{SpellID: 446545},
 		Name:       "Echoes of Insanity",
 		Callback:   core.CallbackOnHealDealt,
 		ProcMask:   core.ProcMaskSpellHealing,
@@ -204,7 +200,6 @@ func echoesOfMadnessEffect(agent core.Agent) {
 	}
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		ActionID:   core.ActionID{SpellID: 446518},
 		Name:       "Echoes of Madness",
 		Callback:   core.CallbackOnCastComplete,
 		ProcMask:   core.ProcMaskSpellDamage,
@@ -240,7 +235,6 @@ func echoesOfDreadEffect(agent core.Agent) {
 	}
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		ActionID:          core.ActionID{SpellID: 446579},
 		Name:              "Echoes of Dread",
 		Callback:          core.CallbackOnSpellHitDealt,
 		ProcMask:          core.ProcMaskMelee,
