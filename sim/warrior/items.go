@@ -20,6 +20,21 @@ const (
 func init() {
 	core.AddEffectsToTest = false
 
+	core.NewItemEffect(236340, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Might of Menethil Trigger",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskMelee,
+			ProcChance: 0.02,
+			ICD:        time.Millisecond * 200,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1223010}, spell)
+			},
+		})
+	})
+
 	core.NewItemEffect(BandOfTheDreadnaught, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{

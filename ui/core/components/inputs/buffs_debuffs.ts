@@ -430,7 +430,7 @@ export const MeleeCritBuff = withLabel(
 );
 
 export const HordeThreatBuff = withLabel(
-	makeBooleanRaidBuffInput({
+	makeBooleanIndividualBuffInput({
 		actionId: player => player.getMatchingSpellActionId([{ id: 408696, minLevel: 40 }]),
 		fieldName: 'spiritOfTheAlpha',
 		showWhen: player => player.getFaction() === Faction.Horde,

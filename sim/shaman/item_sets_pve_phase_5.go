@@ -54,10 +54,6 @@ func (shaman *Shaman) applyT2Elemental2PBonus() {
 
 // Loyal Beta from your Spirit of the Alpha ability now also increases Fire, Frost, and Nature damage by 5%.
 func (shaman *Shaman) applyT2Elemental4PBonus() {
-	if !shaman.HasRune(proto.ShamanRune_RuneFeetSpiritOfTheAlpha) || shaman.IsTanking() {
-		return
-	}
-
 	label := "S03 - Item - T2 - Shaman - Elemental 4P Bonus"
 	if shaman.HasAura(label) {
 		return
@@ -66,13 +62,15 @@ func (shaman *Shaman) applyT2Elemental4PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			oldOnGain := shaman.LoyalBetaAura.OnGain
-			shaman.LoyalBetaAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnGain(aura, sim)
+			if shaman.LoyalBetaAura == nil {
+				return
+			}
+
+			shaman.LoyalBetaAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFrost] *= 1.05
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.05
 				shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature] *= 1.05
-			}
+			})
 		},
 	}))
 }
@@ -91,17 +89,13 @@ func (shaman *Shaman) applyT2Elemental6PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			oldOnGain := shaman.ClearcastingAura.OnGain
-			shaman.ClearcastingAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnGain(aura, sim)
+			shaman.ClearcastingAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 				shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.15)
-			}
+			})
 
-			oldOnExpire := shaman.ClearcastingAura.OnExpire
-			shaman.ClearcastingAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnExpire(aura, sim)
+			shaman.ClearcastingAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 				shaman.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.15)
-			}
+			})
 		},
 	}))
 }
