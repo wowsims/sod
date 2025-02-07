@@ -108,10 +108,21 @@ func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Target.MobType == proto.MobType_MobTypeUndead && spell.ProcMask.Matches(core.ProcMaskMeleeOrMeleeProc) {
+			if result.Target.MobType != proto.MobType_MobTypeUndead {
+				return
+			}
+
+			if spell.ProcMask.Matches(core.ProcMaskMeleeOrMeleeProc) {
 				for _, aura := range buffAuras {
 					aura.Activate(sim)
 					aura.AddStack(sim)
+				}
+			} else if spell.ProcMask.Matches(core.ProcMaskRangedOrRangedProc) {
+				// Ranged attacks actually remove a stack
+				for _, aura := range buffAuras {
+					if aura.IsActive() {
+						aura.RemoveStack(sim)
+					}
 				}
 			}
 		},
