@@ -24,17 +24,18 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 	// Quick Draw applies a 50% slow, but bosses are immune
 
 	rogue.QuickDraw = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneQuickDraw)},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeRanged,
-		ProcMask:    core.ProcMaskRangedSpecial,
-		Flags:       rogue.builderFlags(),
-		CastType:    proto.CastType_CastTypeRanged,
+		ActionID:       core.ActionID{SpellID: int32(proto.RogueRune_RuneQuickDraw)},
+		ClassSpellMask: ClassSpellMask_RogueQuickdraw,
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeRanged,
+		ProcMask:       core.ProcMaskRangedSpecial,
+		Flags:          rogue.builderFlags(),
+		CastType:       proto.CastType_CastTypeRanged,
 
 		MissileSpeed: 40,
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   []float64{25, 22, 20}[rogue.Talents.ImprovedSinisterStrike],
+			Cost:   25,
 			Refund: 0,
 		},
 		Cast: core.CastConfig{
@@ -55,7 +56,7 @@ func (rogue *Rogue) registerQuickDrawSpell() {
 
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression],
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 

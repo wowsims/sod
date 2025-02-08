@@ -64,9 +64,9 @@ func (rogue *Rogue) registerEviscerate() {
 			return rogue.ComboPoints() > 0
 		},
 
-		DamageMultiplierAdditivePct: []int64{0, 5, 10, 15}[rogue.Talents.ImprovedEviscerate] + []int64{0, 2, 4, 6}[rogue.Talents.Aggression],
-		ThreatMultiplier:            1,
-		BonusCoefficient:            1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)

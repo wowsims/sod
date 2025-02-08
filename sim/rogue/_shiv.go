@@ -21,14 +21,15 @@ func (rogue *Rogue) registerShivSpell() {
 
 	// Shiv /might/ scale with BonusWeaponDamage, if it's using https://www.wowhead.com/classic/spell=424800/shiv
 	rogue.Shiv = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneShiv)},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeOHSpecial,
-		Flags:       rogue.builderFlags(),
+		ActionID:       core.ActionID{SpellID: int32(proto.RogueRune_RuneShiv)},
+		ClassSpellMask: ClassSpellMask_RogueShiv,
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeOHSpecial,
+		Flags:          rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   baseCost - []float64{0, 3, 5}[rogue.Talents.ImprovedSinisterStrike],
+			Cost:   baseCost,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -40,7 +41,7 @@ func (rogue *Rogue) registerShivSpell() {
 
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression] * rogue.dwsMultiplier(),
+		DamageMultiplier: 1 * rogue.dwsMultiplier(),
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
