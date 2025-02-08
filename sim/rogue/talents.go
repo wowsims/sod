@@ -74,9 +74,9 @@ func (rogue *Rogue) applyImprovedBackstab() {
 	}
 
 	rogue.AddStaticMod(core.SpellModConfig{
-		ClassMask: ClassSpellMask_RogueBackstabDependent,
-		Kind:      core.SpellMod_BonusCrit_Flat,
-		IntValue:  10 * int64(rogue.Talents.ImprovedBackstab),
+		ClassMask:  ClassSpellMask_RogueBackstabDependent,
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		FloatValue: 10 * float64(rogue.Talents.ImprovedBackstab),
 	})
 }
 
