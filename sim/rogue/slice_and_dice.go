@@ -23,7 +23,7 @@ func (rogue *Rogue) registerSliceAndDice() {
 
 	actionID := core.ActionID{SpellID: spellID}
 
-	durationMultiplier := []float64{1, 1.15, 1.3, 1.45}[rogue.Talents.ImprovedSliceAndDice]
+	durationMultiplier := 1 + 0.15*float64(rogue.Talents.ImprovedSliceAndDice)
 
 	rogue.sliceAndDiceDurations = [6]time.Duration{
 		0,

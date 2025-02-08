@@ -26,11 +26,14 @@ const (
 	ClassSpellMask_RogueBetweentheEyes
 	ClassSpellMask_RogueBladeDance
 	ClassSpellMask_RogueBladeFlurry
+	SpellClassMask_RogueBlunderbuss
 	ClassSpellMask_RogueCrimsonTempest
 	ClassSpellMask_RogueDeadlyPoisonTick
 	ClassSpellMask_RogueEnvenom
+	SpellClassMask_RogueEvasion
 	ClassSpellMask_RogueEviscerate
 	ClassSpellMask_RogueExposeArmor
+	SpellClassMask_RogueFanOfKnives
 	ClassSpellMask_RogueGarrote
 	ClassSpellMask_RogueGhostlyStrike
 	ClassSpellMask_RogueHemorrhage
@@ -39,14 +42,25 @@ const (
 	ClassSpellMask_RogueMutilate
 	ClassSpellMask_RogueOccultPoisonTick
 	ClassSpellMask_RoguePoisonedKnife
+	ClassSpellMask_RogueQuickdraw
 	ClassSpellMask_RogueRupture
 	ClassSpellMask_RogueSaberSlash
 	ClassSpellMask_RogueShadowStrike
+	ClassSpellMask_RogueShiv
 	ClassSpellMask_RogueSinisterStrike
 	ClassSpellMask_RogueSliceAndDice
-	SpellClassMask_RogueFanOfKnives
-	SpellClassMask_RogueBlunderbuss
-	SpellClassMask_RogueEvasion
+
+	// Sinister Strike and spells that benefit from effects that benefit it
+	ClassSpellMask_RogueSinisterStrikeDependent = ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueQuickdraw |
+		ClassSpellMask_RoguePoisonedKnife | ClassSpellMask_RogueShiv | ClassSpellMask_RogueMainGauche
+
+	// Backstab and spells that benefit from effects that benefit it
+	ClassSpellMask_RogueBackstabDependent = ClassSpellMask_RogueBackstab | ClassSpellMask_RogueMutilate
+
+	// Rupture and spells that benefit from effects that benefit it
+	ClassSpellMask_RogueRuptureDependent = ClassSpellMask_RogueRupture | ClassSpellMask_RogueCrimsonTempest
+
+	ClassSpellMask_RoguePoisonDependent = ClassSpellMask_RogueInstantPoison | ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueEnvenom
 )
 
 var TalentTreeSizes = [3]int{15, 19, 17}

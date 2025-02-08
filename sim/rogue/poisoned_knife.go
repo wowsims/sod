@@ -26,7 +26,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 		Flags:          rogue.builderFlags(),
 
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   []float64{25, 22, 20}[rogue.Talents.ImprovedSinisterStrike],
+			Cost:   25,
 			Refund: 0.8,
 		},
 		Cast: core.CastConfig{
@@ -46,7 +46,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier: []float64{1, 1.02, 1.04, 1.06}[rogue.Talents.Aggression] * rogue.dwsMultiplier(),
+		DamageMultiplier: 1 * rogue.dwsMultiplier(),
 		ThreatMultiplier: core.TernaryFloat64(hasJustAFleshWound, 1.5, 1),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

@@ -20,7 +20,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          rogue.builderFlags(),
 		EnergyCost: core.EnergyCostOptions{
-			Cost:   []float64{45, 42, 40}[rogue.Talents.ImprovedSinisterStrike],
+			Cost:   45,
 			Refund: 0.8,
 		},
 
@@ -63,10 +63,9 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier:                  1,
-		ImpactDamageMultiplierAdditivePct: []int64{0, 2, 4, 6}[rogue.Talents.Aggression],
-		ThreatMultiplier:                  1,
-		BonusCoefficient:                  1,
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			rogue.BreakStealth(sim)
