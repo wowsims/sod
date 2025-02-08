@@ -3,14 +3,10 @@
 .content-block {
 	display: flex;
 	flex-direction: column;
-
-	&:not(:last-child) {
-		margin-bottom: calc(2 * var(--spacer-3));
-	}
+	gap: var(--block-spacer);
 
 	.content-block-header {
 		border-bottom: $border-default;
-		margin-bottom: var(--block-spacer);
 		display: flex;
 
 		.content-block-title {
@@ -21,5 +17,6 @@
 	.content-block-body {
 		display: flex;
 		flex-direction: column;
+		gap: var(--block-spacer);
 	}
 }

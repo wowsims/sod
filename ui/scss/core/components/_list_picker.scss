@@ -1,27 +1,11 @@
-@use 'sass:map';
-
 .list-picker-root {
 	flex-direction: column;
 	align-items: center;
-
-	&.dragfrom {
-		background-color: color-mix(in srgb, var(--bs-body-bg) 80%, transparent);
-		filter: opacity(0.5);
-		cursor: move;
-	}
-
-	&.draggable:has(> .list-picker-item-header .list-picker-item-popover.hover) {
-		background-color: color-mix(in srgb, var(--bs-primary) 5%, transparent);
-	}
-	
-	&:not(:last-child) {
-		margin-bottom: calc(2 * var(--spacer-3));
-	}
+	gap: var(--block-spacer);
 
 	.list-picker-title {
 		width: 100%;
-		padding-bottom: var(--spacer-2);
-		border-bottom: $border-default;
+		border-bottom: var(--border-default);
 		margin-bottom: var(--block-spacer);
 		font-size: 1rem;
 		font-weight: bold;
@@ -29,13 +13,24 @@
 
 	.list-picker-items {
 		width: 100%;
+		display: flex;
+		flex-direction: column;
+		gap: var(--block-spacer);
 
 		.list-picker-item-container {
-			width: 100%;
-			margin-bottom: var(--spacer-3);
+			border: var(--border-default);
+			
+			&.dragfrom {
+				background-color: color-mix(in srgb, var(--bs-body-bg) 80%, transparent);
+				filter: opacity(0.5);
+				cursor: move;
+			}
+
+			&.draggable:has(> .list-picker-item-header .list-picker-item-popover.hover) {
+				background-color: color-mix(in srgb, var(--bs-primary) 5%, transparent);
+			}
 
 			&.inline {
-				border: 0;
 				display: flex;
 
 				.list-picker-item-header {
@@ -46,8 +41,7 @@
 			}
 
 			&:not(.inline) {
-				padding: var(--spacer-3) var(--spacer-3) 0 var(--spacer-3);
-				border: 1px solid $link-color;
+				padding: var(--spacer-3);
 
 				.list-picker-item-header {
 					.list-picker-item-action:first-of-type {
@@ -58,7 +52,7 @@
 
 			.list-picker-item-header {
 				padding-bottom: var(--block-spacer);
-				border-bottom: $border-default;
+				border-bottom: var(--border-default);
 				margin-bottom: var(--block-spacer);
 				display: flex;
 				align-items: center;
@@ -70,12 +64,12 @@
 
 				.list-picker-item-action {
 					margin-left: var(--spacer-2);
-
+					
 					&.list-picker-item-move {
 						cursor: move;
 					}
 				}
-				
+
 				.list-picker-item-popover:popover-open {
 					inset: unset;
 					position: relative;
@@ -83,33 +77,38 @@
 					border: 1px solid black;
 					border-radius: 5px;
 					padding: 5px 10px;
- 				}
-			}
-
-			.target-input-picker-root {
-				margin-bottom: 0;
+				}
 			}
 		}
 	}
 
 	.list-picker-new-button {
-		margin-left: auto;
-		margin-right: auto;
-		width: 33.33%;
+		width: 100%;
+		margin-top: var(--spacer-3);
 	}
-}
 
-.list-picker-root.horizontal {
-	flex-direction: row;
-	align-items: center;
-
-	.list-picker-items {
-		display: flex;
-		flex-wrap: wrap;
+	&.horizontal {
+		flex-direction: row;
 		align-items: center;
 
+		.list-picker-items {
+			flex-direction: row;
+			flex-wrap: wrap;
+			align-items: center;
+		}
+	}
+
+	&.list-picker-compact {
 		.list-picker-item-container {
-			margin-bottom: 0;
+			border: 0;
+			padding: 0 !important;
+		}
+		.list-picker-item-header {
+			display: none !important;
+		}
+
+		&:not(:has(.list-picker-items > *)) {
+			display: none;
 		}
 	}
 }

@@ -42,7 +42,7 @@ export class GearTab extends SimTab {
 	}
 
 	private buildPresetConfigurationPicker() {
-		new PresetConfigurationPicker(this.rightPanel, this.simUI, 'gear');
+		new PresetConfigurationPicker(this.rightPanel, this.simUI, ['gear']);
 	}
 
 	private buildSavedGearsetPicker() {

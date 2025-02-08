@@ -11,6 +11,7 @@ import {
 	Faction,
 	HealingModel,
 	IndividualBuffs,
+	Race,
 	RaidBuffs,
 	Spec,
 	UnitReference,
@@ -84,8 +85,10 @@ export interface PresetBuild {
 	gear?: PresetGear;
 	talents?: PresetTalents;
 	rotation?: PresetRotation;
+	rotationType?: APLRotationType;
 	epWeights?: PresetEpWeights;
 	encounter?: PresetEncounter;
+	race?: Race;
 	options?: Partial<SpecOptions<any>>;
 }
 
@@ -224,8 +227,8 @@ export const makePresetEncounter = (name: string, encounter?: PresetEncounter['e
 	};
 };
 
-export const makePresetBuild = (name: string, { gear, talents, rotation, epWeights, encounter, options }: PresetBuildOptions): PresetBuild => {
-	return { name, gear, talents, rotation, epWeights, encounter, options };
+export const makePresetBuild = (name: string, { gear, talents, rotation, epWeights, encounter, race, options }: PresetBuildOptions): PresetBuild => {
+	return { name, gear, talents, rotation, epWeights, encounter, race, options };
 };
 
 export type SpecCheckWarning = {
