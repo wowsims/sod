@@ -733,6 +733,10 @@ export const JujuFlurry = makeBooleanMiscConsumeInput({
 	fieldName: 'jujuFlurry',
 	showWhen: player => player.getLevel() >= 55,
 });
+export const RaptorPunch = makeBooleanMiscConsumeInput({
+	actionId: () => ActionId.fromItemId(5342),
+	fieldName: 'raptorPunch',
+});
 export const elixirOfCoalescedRegret = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(210708), fieldName: 'elixirOfCoalescedRegret' });
 export const BoglingRoot = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' });
 
@@ -740,6 +744,7 @@ export const MISC_OFFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
 	{ config: DraughtOfTheSands, picker: IconPicker, stats: [] },
 	{ config: Catnip, picker: IconPicker, stats: [] },
 	{ config: JujuFlurry, picker: IconPicker, stats: [Stat.StatAttackPower] },
+	{ config: RaptorPunch, picker: IconPicker, stats: [Stat.StatIntellect] },
 	{ config: elixirOfCoalescedRegret, picker: IconPicker, stats: [] },
 	{ config: BoglingRoot, picker: IconPicker, stats: [Stat.StatAttackPower] },
 ];
