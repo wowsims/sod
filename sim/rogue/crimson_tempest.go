@@ -19,7 +19,7 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 		ProcMask:    procMask,
 		Flags:       core.SpellFlagMeleeMetrics | SpellFlagCarnage,
 
-		DamageMultiplier: []float64{1, 1.1, 1.2, 1.3}[rogue.Talents.SerratedBlades],
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

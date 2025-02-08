@@ -25,8 +25,6 @@ func (rogue *Rogue) registerBackstabSpell() {
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
 	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
 
-	damageMultiplier := 1.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity]
-
 	rogue.Backstab = rogue.RegisterSpell(core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_RogueBackstab,
 		ActionID:       core.ActionID{SpellID: spellID},
@@ -52,11 +50,9 @@ func (rogue *Rogue) registerBackstabSpell() {
 			return hasCutthroatRune || !rogue.PseudoStats.InFrontOfTarget
 		},
 
-		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedBackstab),
-
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier: damageMultiplier,
+		DamageMultiplier: 1.5,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
