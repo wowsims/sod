@@ -103,6 +103,9 @@ func (rogue *Rogue) applySerratedBlades() {
 		return
 	}
 
+	// TODO: Test the Armor reduction amount
+	rogue.AddStat(stats.ArmorPenetration, float64(5/3*rogue.Talents.SerratedBlades*rogue.Level))
+
 	rogue.AddStaticMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_RogueRuptureDependent,
 		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
