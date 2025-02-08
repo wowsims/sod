@@ -7,7 +7,7 @@ import { EquippedItem } from '../../proto_utils/equipped_item';
 import { ItemSwapGear } from '../../proto_utils/gear';
 import { Stats } from '../../proto_utils/stats';
 import { SimUI } from '../../sim_ui';
-import { EventID,TypedEvent } from '../../typed_event';
+import { EventID, TypedEvent } from '../../typed_event';
 import { BooleanPicker } from '../boolean_picker';
 import { Component } from '../component';
 import IconItemSwapPicker from '../gear_picker/icon_item_swap_picker';
@@ -114,10 +114,12 @@ export class ItemSwapPicker<SpecType extends Spec> extends Component {
 			<>
 				<div ref={swapPickerContainerRef} className="input-root input-inline input-item-swap-container">
 					<label className="form-label">Item Swap</label>
-					<button ref={swapButtonRef} className="gear-swap-icon">
-						<i className="fas fa-arrows-rotate me-1"></i>
-					</button>
-					{itemSwapContainer}
+					<div className="d-flex">
+						<button ref={swapButtonRef} className="btn btn-link p-2">
+							<i className="fas fa-arrows-rotate me-1"></i>
+						</button>
+						{itemSwapContainer}
+					</div>
 				</div>
 				{config.note && (
 					<p ref={noteRef} className="form-text">
