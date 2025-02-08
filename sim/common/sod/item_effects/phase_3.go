@@ -570,18 +570,7 @@ func init() {
 			},
 		})
 
-<<<<<<< HEAD
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 21978},
-=======
-		handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Damage > 0 {
-				procSpell.Cast(sim, character.CurrentTarget)
-			}
-		}
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
->>>>>>> 6f55f3fb916c5fa2142cab27206c4e272dfcc1e0
 			Name:       "Engulfing Shadows",
 			Callback:   core.CallbackOnSpellHitDealt,
 			ProcMask:   core.ProcMaskSpellDamage,
