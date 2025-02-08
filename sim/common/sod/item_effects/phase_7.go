@@ -207,11 +207,11 @@ func init() {
 			},
 		})
 
-		spell := character.RegisterSpell(core.SpellConfig{
+		character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{ItemID: OlReliable},
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagAPL,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -223,11 +223,6 @@ func init() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				damageSpell.Cast(sim, target)
 			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Type:  core.CooldownTypeDPS,
-			Spell: spell,
 		})
 	})
 

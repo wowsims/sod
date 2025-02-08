@@ -554,6 +554,7 @@ message MiscConsumes {
 	bool juju_flurry = 7;
 	bool draught_of_the_sands = 8;
 	bool greater_mark_of_the_dawn = 9;
+	bool raptor_punch = 10;
 }
 
 message PetMiscConsumes {
@@ -901,6 +902,7 @@ enum MobType {
 enum InputType {
 	Bool = 0;
 	Number = 1;
+	Enum = 2;
 }
 
 message TargetInput {
@@ -910,6 +912,9 @@ message TargetInput {
 
 	bool bool_value = 3;
 	double number_value = 4;
+
+	int32 enum_value = 6;
+	repeated string enum_options = 7;
 }
 
 message Target {

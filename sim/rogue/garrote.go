@@ -49,8 +49,7 @@ func (rogue *Rogue) registerGarrote() {
 			return hasCutthroatRune || !rogue.PseudoStats.InFrontOfTarget
 		},
 
-		DamageMultiplier: 1 +
-			0.04*float64(rogue.Talents.Opportunity),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

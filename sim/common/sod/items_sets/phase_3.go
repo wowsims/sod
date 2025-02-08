@@ -54,10 +54,6 @@ var ItemSetMalevolentProphetsVestments = core.NewItemSet(core.ItemSet{
 				})
 			})
 
-			handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procAuras.Get(result.Target).Activate(sim)
-			}
-
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
 				ActionID:   core.ActionID{SpellID: 449919},
 				Name:       "Malevolence",
@@ -65,7 +61,9 @@ var ItemSetMalevolentProphetsVestments = core.NewItemSet(core.ItemSet{
 				Outcome:    core.OutcomeLanded,
 				ProcMask:   core.ProcMaskSpellDamage,
 				ProcChance: 0.2,
-				Handler:    handler,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					procAuras.Get(result.Target).Activate(sim)
+				},
 			})
 		},
 	},
@@ -234,7 +232,6 @@ var ItemSetShunnedDevoteesChainmail = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:   core.ActionID{SpellID: 449935},
 				Name:       "The Furious Storm",
 				Callback:   core.CallbackOnCastComplete,
 				ProcMask:   core.ProcMaskSpellDamage | core.ProcMaskSpellHealing,
@@ -265,7 +262,6 @@ var ItemSetWailingBerserkersPlateArmor = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:          core.ActionID{SpellID: 449970},
 				Name:              "Extra Attack",
 				Callback:          core.CallbackOnSpellHitDealt,
 				Outcome:           core.OutcomeLanded,
@@ -297,7 +293,6 @@ var ItemSetBanishedMartyrsFullPlate = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakeProcTriggerAura(&c.Unit, core.ProcTrigger{
-				ActionID:          core.ActionID{SpellID: 449974},
 				Name:              "Stalwart Block",
 				Callback:          core.CallbackOnSpellHitTaken,
 				ProcMask:          core.ProcMaskMelee,
@@ -371,7 +366,6 @@ var ItemSetSerpentsAscension = core.NewItemSet(core.ItemSet{
 			}
 
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				ActionID:          core.ActionID{SpellID: 446233},
 				Name:              "Serpent's Ascension",
 				Callback:          core.CallbackOnSpellHitDealt,
 				Outcome:           core.OutcomeLanded,

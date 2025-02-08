@@ -311,7 +311,7 @@ func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim
 			paladin.prevSeal = nil
 			paladin.prevJudgement = nil
 		}
-		
+
 		if paladin.prevSeal != nil && paladin.prevSeal.IsActive() {
 			if newSealLabel != currentSealLabel && newSealLabel != paladin.prevSeal.Label[:10] {
 				isThirdSealType = true

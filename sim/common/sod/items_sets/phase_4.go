@@ -401,7 +401,6 @@ var ItemSetSpidersKiss = core.NewItemSet(core.ItemSet{
 			character := agent.GetCharacter()
 			procAura := character.NewTemporaryStatsAura("Spider's Kiss", core.ActionID{SpellID: 17333}, stats.Stats{stats.Armor: -100}, time.Second*10)
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				ActionID:          core.ActionID{SpellID: 446570},
 				Name:              "Echoes of the Depraved",
 				Callback:          core.CallbackOnSpellHitDealt,
 				Outcome:           core.OutcomeLanded,
