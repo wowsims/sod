@@ -39,17 +39,14 @@ var ItemSetHyperconductiveWizardsAttire = core.NewItemSet(core.ItemSet{
 
 			procAura := character.NewTemporaryStatsAura("Energized Hyperconductor Proc", core.ActionID{SpellID: 435978}, stats.Stats{stats.SpellPower: 40}, time.Second*10)
 
-			handler := func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
-				procAura.Activate(sim)
-			}
-
 			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-				ActionID:   core.ActionID{ItemID: 435977},
 				Name:       "Energized Hyperconductor",
 				Callback:   core.CallbackOnCastComplete,
 				ProcMask:   core.ProcMaskSpellDamage,
 				ProcChance: 0.10,
-				Handler:    handler,
+				Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
+					procAura.Activate(sim)
+				},
 			})
 		},
 	},

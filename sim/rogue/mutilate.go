@@ -29,13 +29,9 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 		ProcMask:       procMask,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | SpellFlagBuilder | SpellFlagColdBlooded | SpellFlagCarnage,
 
-		BonusCritRating: 10 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedBackstab),
-
 		CritDamageBonus: rogue.lethality(),
 
-		DamageMultiplier: 1 *
-			core.TernaryFloat64(isMH, 1, rogue.dwsMultiplier()) *
-			[]float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity],
+		DamageMultiplier: 1 * core.TernaryFloat64(isMH, 1, rogue.dwsMultiplier()),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 

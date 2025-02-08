@@ -46,8 +46,12 @@ func (rogue *Rogue) applyNaxxramasDamage2PBonus() {
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_RogueAmbush | ClassSpellMask_RogueInstantPoison | ClassSpellMask_RogueBackstab,
+		ClassMask: ClassSpellMask_RogueAmbush | ClassSpellMask_RogueInstantPoison,
 		IntValue:  20,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_RogueBackstab,
+		IntValue:  5,
 	})
 }
 
@@ -83,14 +87,16 @@ func (rogue *Rogue) applyNaxxramasDamage6PBonus() {
 		ActionID:  core.ActionID{SpellID: 1219291},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
-		MaxStacks: 15,
+		MaxStacks: 6,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			oldMultiplier := 1 + 0.02*float64(oldStacks)
-			newMultiplier := 1 + 0.02*float64(newStacks)
+			oldMultiplier := 1 + 0.03*float64(oldStacks)
+			newMultiplier := 1 + 0.03*float64(newStacks)
+			delta := newMultiplier / oldMultiplier
 
 			for _, unit := range undeadTargets {
 				for _, at := range aura.Unit.AttackTables[unit.UnitIndex] {
-					at.DamageDealtMultiplier *= newMultiplier / oldMultiplier
+					at.DamageDealtMultiplier *= delta
+					at.CritMultiplier *= delta
 				}
 			}
 		},

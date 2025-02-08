@@ -286,7 +286,7 @@ func (mage *Mage) registerArcanePowerCD() {
 	damageMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_MageAll,
-		IntValue:  3,
+		IntValue:  30,
 	})
 
 	mage.ArcanePowerAura = mage.RegisterAura(core.Aura{

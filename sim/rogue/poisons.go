@@ -51,24 +51,20 @@ const (
 )
 
 func (rogue *Rogue) GetInstantPoisonProcChance() float64 {
-	return (0.2+rogue.improvedPoisons())*(1+rogue.instantPoisonProcChanceBonus) + rogue.additivePoisonBonusChance
+	return (0.2+rogue.improvedPoisonsBonusProcChance())*(1+rogue.instantPoisonProcChanceBonus) + rogue.additivePoisonBonusChance
 }
 
 // Used for all 30% proc poisons (Sebacious and others)
 func (rogue *Rogue) GetDeadlyPoisonProcChance() float64 {
-	return 0.3 + rogue.improvedPoisons() + rogue.additivePoisonBonusChance
+	return 0.3 + rogue.improvedPoisonsBonusProcChance() + rogue.additivePoisonBonusChance
 }
 
 func (rogue *Rogue) GetWoundPoisonProcChance() float64 {
-	return 0.3 + rogue.improvedPoisons() + rogue.additivePoisonBonusChance
+	return 0.3 + rogue.improvedPoisonsBonusProcChance() + rogue.additivePoisonBonusChance
 }
 
-func (rogue *Rogue) improvedPoisons() float64 {
-	return []float64{0, 0.02, 0.04, 0.06, 0.08, 0.1}[rogue.Talents.ImprovedPoisons]
-}
-
-func (rogue *Rogue) getPoisonDamageMultiplier() float64 {
-	return []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.VilePoisons]
+func (rogue *Rogue) improvedPoisonsBonusProcChance() float64 {
+	return 0.02 * float64(rogue.Talents.ImprovedPoisons)
 }
 
 ///////////////////////////////////////////////////////////////////////////
@@ -365,7 +361,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		ProcMask:       core.ProcMaskSpellDamageProc,
 		Flags:          core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagRoguePoison | SpellFlagCarnage,
 
-		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -448,7 +444,7 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 		ProcMask:       core.ProcMaskSpellDamageProc,
 		Flags:          SpellFlagCarnage | core.SpellFlagPoison | SpellFlagRoguePoison,
 
-		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -575,7 +571,7 @@ func (rogue *Rogue) makeInstantPoison(procSource PoisonProcSource) *core.Spell {
 		ProcMask:       core.ProcMaskSpellDamageProc,
 		Flags:          core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagCarnage | SpellFlagRoguePoison,
 
-		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
@@ -661,7 +657,7 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 		ProcMask:    core.ProcMaskSpellDamageProc,
 		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagRoguePoison,
 
-		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
@@ -691,7 +687,6 @@ func (rogue *Rogue) makeWoundPoison(procSource PoisonProcSource) *core.Spell {
 }
 
 func (rogue *Rogue) makeSebaciousPoison(procSource PoisonProcSource) *core.Spell {
-
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 439500, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
@@ -699,7 +694,7 @@ func (rogue *Rogue) makeSebaciousPoison(procSource PoisonProcSource) *core.Spell
 		ProcMask:    core.ProcMaskSpellDamageProc,
 		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagRoguePoison,
 
-		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
@@ -717,7 +712,6 @@ func (rogue *Rogue) makeSebaciousPoison(procSource PoisonProcSource) *core.Spell
 }
 
 func (rogue *Rogue) makeAtrophicPoison(procSource PoisonProcSource) *core.Spell {
-
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 439473, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
@@ -725,7 +719,7 @@ func (rogue *Rogue) makeAtrophicPoison(procSource PoisonProcSource) *core.Spell 
 		ProcMask:    core.ProcMaskSpellDamageProc,
 		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagRoguePoison,
 
-		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),
@@ -743,7 +737,6 @@ func (rogue *Rogue) makeAtrophicPoison(procSource PoisonProcSource) *core.Spell 
 }
 
 func (rogue *Rogue) makeNumbingPoison(procSource PoisonProcSource) *core.Spell {
-
 	return rogue.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 439472, Tag: int32(procSource)},
 		SpellSchool: core.SpellSchoolNature,
@@ -751,7 +744,7 @@ func (rogue *Rogue) makeNumbingPoison(procSource PoisonProcSource) *core.Spell {
 		ProcMask:    core.ProcMaskSpellDamageProc,
 		Flags:       core.SpellFlagPoison | core.SpellFlagPassiveSpell | SpellFlagDeadlyBrewed | SpellFlagRoguePoison,
 
-		DamageMultiplier: rogue.getPoisonDamageMultiplier(),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		BonusHitRating: core.TernaryFloat64(procSource == ShivProc, 100*core.SpellHitRatingPerHitChance, 0),

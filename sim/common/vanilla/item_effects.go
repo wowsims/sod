@@ -1227,8 +1227,8 @@ func init() {
 
 	itemhelpers.CreateWeaponCoHProcDamage(JoonhosMercy, "Joonho's Mercy", 1.0, 20883, core.SpellSchoolArcane, 70, 0, 0, core.DefenseTypeMagic)
 
-	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevenge, "Kalimdor's Revenge", 12, 1213355, core.SpellSchoolNature, 339, 38, 0.15, core.DefenseTypeMagic)
-	itemhelpers.CreateWeaponCoHProcDamage(KalimdorsRevengeVoidTouched, "Kalimdor's Revenge", 12, 1213355, core.SpellSchoolNature, 339, 38, 0.15, core.DefenseTypeMagic)
+	itemhelpers.CreateWeaponProcSpell(KalimdorsRevenge, "Kalimdor's Revenge", 12, KalimdorsRevengeDamageProc)
+	itemhelpers.CreateWeaponProcSpell(KalimdorsRevengeVoidTouched, "Kalimdor's Revenge", 12, KalimdorsRevengeDamageProc)
 
 	itemhelpers.CreateWeaponCoHProcDamage(LinkensSwordOfMastery, "Linken's Sword of Mastery", 1.0, 18089, core.SpellSchoolNature, 45, 30, 0, core.DefenseTypeMagic)
 
@@ -3321,6 +3321,37 @@ func init() {
 	core.AddEffectsToTest = true
 }
 
+// https://www.wowhead.com/classic/spell=1213355/shock
+// Chance on hit: Instantly lightning shocks the target for 339 to 377 Nature damage.
+// SP mod: 0.15
+// Used by:
+// - https://www.wowhead.com/classic/item=233621/kalimdors-revenge
+// - https://www.wowhead.com/classic/item=234981/kalimdors-revenge
+func KalimdorsRevengeDamageProc(character *core.Character) *core.Spell {
+	procMaskOnAuto := core.ProcMaskDamageProc     // Both spell and melee procs
+	procMaskOnSpecial := core.ProcMaskSpellDamage // TODO: check if core.ProcMaskSpellDamage remains on special
+
+	return character.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 1213355},
+		SpellSchool: core.SpellSchoolNature,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    procMaskOnAuto,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: 0.15,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial) {
+				spell.ProcMask = procMaskOnSpecial
+			} else {
+				spell.ProcMask = procMaskOnAuto
+			}
+			spell.CalcAndDealDamage(sim, target, sim.RollWithLabel(339, 377, "Kalimdor's Revenge"), spell.OutcomeMagicHitAndCrit)
+		},
+	})
+}
+
 // https://www.wowhead.com/classic/spell=446327/enrage
 // Used by:
 // - https://www.wowhead.com/classic/item=220569/blistering-ragehammer and
@@ -3362,7 +3393,6 @@ func BlazefuryTriggerAura(character *core.Character, triggerSpellID int32, damag
 	})
 
 	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-		ActionID:          core.ActionID{SpellID: triggerSpellID},
 		Name:              fmt.Sprintf("Blazefury Trigger (%d)", triggerSpellID),
 		Tag:               BlazefuryAuraTag,
 		Callback:          core.CallbackOnSpellHitDealt,

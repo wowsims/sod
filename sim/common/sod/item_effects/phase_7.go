@@ -47,6 +47,7 @@ const (
 	GauntletsOfUndeadWarding     = 236747
 	BreastplateOfUndeadWarding   = 236748
 	BladeOfInquisition           = 237512
+	TheHungeringCold             = 236341
 )
 
 func init() {
@@ -71,6 +72,23 @@ func init() {
 	// https://www.wowhead.com/classic/item=236398/atiesh-greatstaff-of-the-guardian
 	core.NewItemEffect(AtieshSpellPower, func(agent core.Agent) {
 		core.AtieshSpellPowerEffect(&agent.GetCharacter().Unit)
+	})
+
+	// https://www.wowhead.com/classic/item=236341/the-hungering-cold
+	// Equip: Gives you a 2% chance to get an extra attack on the same target after dealing damage with your weapon.
+	core.NewItemEffect(TheHungeringCold, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "The Hungering Cold Trigger",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskMelee,
+			ProcChance: 0.02,
+			ICD:        time.Millisecond * 200,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1223010}, spell)
+			},
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=237512/blade-of-inquisition
@@ -195,11 +213,11 @@ func init() {
 			},
 		})
 
-		spell := character.RegisterSpell(core.SpellConfig{
+		character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{ItemID: OlReliable},
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagAPL,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -211,11 +229,6 @@ func init() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				damageSpell.Cast(sim, target)
 			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Type:  core.CooldownTypeDPS,
-			Spell: spell,
 		})
 	})
 
@@ -254,125 +267,113 @@ func init() {
 		}))
 	})
 
-	// https://www.wowhead.com/classic/item=236707/tunic-of-undead-slaying
-	// Equip: +108 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(TunicOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 108)
-
-	// https://www.wowhead.com/classic/item=236708/breastplate-of-undead-slaying
-	// Equip: +108 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(BreastplateOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 108)
-
-	// https://www.wowhead.com/classic/item=236709/chestguard-of-undead-slaying
-	// Equip: +108 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(ChestguardOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 108)
-
-	// https://www.wowhead.com/classic/item=236710/wristguards-of-undead-slaying
-	// Equip: +60 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(WristguardsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
-
-	// https://www.wowhead.com/classic/item=236711/wristwraps-of-undead-slaying
-	// Equip: +60 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(WristwrapsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
-
-	// https://www.wowhead.com/classic/item=236712/bracers-of-undead-slaying
-	// Equip: +60 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(BracersOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
-
-	// https://www.wowhead.com/classic/item=236713/handwraps-of-undead-slaying
-	// Equip: +81 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(HandwrapsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
-
-	// https://www.wowhead.com/classic/item=236714/gauntlets-of-undead-slaying
-	// Equip: +81 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(GauntletsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
-
-	// https://www.wowhead.com/classic/item=236715/handguards-of-undead-slaying
-	// Equip: +81 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(HandguardsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
-
-	// https://www.wowhead.com/classic/item=236716/bracers-of-undead-cleansing
-	// Equip: Increases damage done to Undead by magical spells and effects by up to 35.
-	core.NewMobTypeSpellPowerEffect(BracersOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 35)
-
-	// https://www.wowhead.com/classic/item=236717/gloves-of-undead-cleansing
-	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
-	core.NewMobTypeSpellPowerEffect(GlovesOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 48)
+	// Cloth Sets
 
 	// https://www.wowhead.com/classic/item=236718/robe-of-undead-cleansing/
 	// Equip: Increases damage done to Undead by magical spells and effects by up to 65.
 	core.NewMobTypeSpellPowerEffect(RobeofUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 65)
-
-	// https://www.wowhead.com/classic/item=236722/bracers-of-undead-warding
-	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
-	core.NewMobTypeSpellPowerEffect(BracersOfUndeadWardingCloth, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
-
-	// https://www.wowhead.com/classic/item=236723/gloves-of-undead-warding
-	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
-	core.NewMobTypeSpellPowerEffect(GlovesOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
+	// https://www.wowhead.com/classic/item=236716/bracers-of-undead-cleansing
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 35.
+	core.NewMobTypeSpellPowerEffect(BracersOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 35)
+	// https://www.wowhead.com/classic/item=236717/gloves-of-undead-cleansing
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
+	core.NewMobTypeSpellPowerEffect(GlovesOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 48)
 
 	// https://www.wowhead.com/classic/item=236724/robe-of-undead-warding
 	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
 	core.NewMobTypeSpellPowerEffect(RobeOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
+	// https://www.wowhead.com/classic/item=236722/bracers-of-undead-warding
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
+	core.NewMobTypeSpellPowerEffect(BracersOfUndeadWardingCloth, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
+	// https://www.wowhead.com/classic/item=236723/gloves-of-undead-warding
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
+	core.NewMobTypeSpellPowerEffect(GlovesOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
 
-	// https://www.wowhead.com/classic/item=236725/wristwraps-of-undead-cleansing
-	// Equip: +35 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(WristwrapsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 35)
-
-	// https://www.wowhead.com/classic/item=236726/handwraps-of-undead-cleansing
-	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
-	core.NewMobTypeSpellPowerEffect(HandwrapsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 48)
+	// Leather sets
 
 	// https://www.wowhead.com/classic/item=236727/tunic-of-undead-cleansing
 	// Equip: Increases damage done to Undead by magical spells and effects by up to 65.
 	core.NewMobTypeSpellPowerEffect(TunicOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 65)
+	// https://www.wowhead.com/classic/item=236725/wristwraps-of-undead-cleansing
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 35.
+	core.NewMobTypeSpellPowerEffect(WristwrapsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 35)
+	// https://www.wowhead.com/classic/item=236726/handwraps-of-undead-cleansing
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
+	core.NewMobTypeSpellPowerEffect(HandwrapsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 48)
 
-	// https://www.wowhead.com/classic/item=236731/wristwraps-of-undead-warding
-	// Equip: +45 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(WristwrapsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
-
-	// https://www.wowhead.com/classic/item=236732/handwraps-of-undead-warding
-	// Equip: +45 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(HandwrapsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+	// https://www.wowhead.com/classic/item=236707/tunic-of-undead-slaying
+	// Equip: +108 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(TunicOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 108)
+	// https://www.wowhead.com/classic/item=236711/wristwraps-of-undead-slaying
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(WristwrapsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+	// https://www.wowhead.com/classic/item=236713/handwraps-of-undead-slaying
+	// Equip: +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(HandwrapsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
 
 	// https://www.wowhead.com/classic/item=236733/tunic-of-undead-warding
 	// Equip: +45 Attack Power when fighting Undead.
 	core.NewMobTypeAttackPowerEffect(TunicOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+	// https://www.wowhead.com/classic/item=236731/wristwraps-of-undead-warding
+	// Equip: +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(WristwrapsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+	// https://www.wowhead.com/classic/item=236732/handwraps-of-undead-warding
+	// Equip: +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(HandwrapsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
 
-	// https://www.wowhead.com/classic/item=236734/wristguards-of-undead-cleansing
-	// Equip: Increases damage done to Undead by magical spells and effects by up to 35.
-	core.NewMobTypeSpellPowerEffect(WristguardsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 35)
-
-	// https://www.wowhead.com/classic/item=236735/handguards-of-undead-cleansing
-	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
-	core.NewMobTypeSpellPowerEffect(HandguardsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 48)
+	// Mail
 
 	// https://www.wowhead.com/classic/item=236736/chestguard-of-undead-cleansing
 	// Equip: Increases damage done to Undead by magical spells and effects by up to 65.
 	core.NewMobTypeSpellPowerEffect(ChestguardOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 65)
+	// https://www.wowhead.com/classic/item=236734/wristguards-of-undead-cleansing
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 35.
+	core.NewMobTypeSpellPowerEffect(WristguardsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 35)
+	// https://www.wowhead.com/classic/item=236735/handguards-of-undead-cleansing
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 48.
+	core.NewMobTypeSpellPowerEffect(HandguardsOfUndeadCleansing, []proto.MobType{proto.MobType_MobTypeUndead}, 48)
 
-	// https://www.wowhead.com/classic/item=236737/wristguards-of-undead-warding
-	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
-	core.NewMobTypeSpellPowerEffect(WristguardsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 36)
-
-	// https://www.wowhead.com/classic/item=236738/handguards-of-undead-warding
-	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
-	core.NewMobTypeSpellPowerEffect(HandguardsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
+	// https://www.wowhead.com/classic/item=236709/chestguard-of-undead-slaying
+	// Equip: +108 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(ChestguardOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 108)
+	// https://www.wowhead.com/classic/item=236710/wristguards-of-undead-slaying
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(WristguardsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+	// https://www.wowhead.com/classic/item=236715/handguards-of-undead-slaying
+	// Equip: +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(HandguardsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
 
 	// https://www.wowhead.com/classic/item=236739/chestguard-of-undead-warding
 	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
 	core.NewMobTypeSpellPowerEffect(ChestguardOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
+	// https://www.wowhead.com/classic/item=236737/wristguards-of-undead-warding
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
+	core.NewMobTypeSpellPowerEffect(WristguardsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
+	// https://www.wowhead.com/classic/item=236738/handguards-of-undead-warding
+	// Equip: Increases damage done to Undead by magical spells and effects by up to 26.
+	core.NewMobTypeSpellPowerEffect(HandguardsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 26)
 
-	// https://www.wowhead.com/classic/item=236746/bracers-of-undead-warding
-	// Equip: +45 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(BracersOfUndeadWardingPlate, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+	// Plate
 
-	// https://www.wowhead.com/classic/item=236747/gauntlets-of-undead-warding
-	//  Equip: +45 Attack Power when fighting Undead.
-	core.NewMobTypeAttackPowerEffect(GauntletsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+	// https://www.wowhead.com/classic/item=236708/breastplate-of-undead-slaying
+	// Equip: +108 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(BreastplateOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 108)
+	// https://www.wowhead.com/classic/item=236712/bracers-of-undead-slaying
+	// Equip: +60 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(BracersOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 60)
+	// https://www.wowhead.com/classic/item=236714/gauntlets-of-undead-slaying
+	// Equip: +81 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(GauntletsOfUndeadSlaying, []proto.MobType{proto.MobType_MobTypeUndead}, 81)
 
 	// https://www.wowhead.com/classic/item=236748/breastplate-of-undead-warding
 	// +45 Attack Power when fighting Undead.
 	core.NewMobTypeAttackPowerEffect(BreastplateOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+	// https://www.wowhead.com/classic/item=236746/bracers-of-undead-warding
+	// Equip: +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(BracersOfUndeadWardingPlate, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
+	// https://www.wowhead.com/classic/item=236747/gauntlets-of-undead-warding
+	//  Equip: +45 Attack Power when fighting Undead.
+	core.NewMobTypeAttackPowerEffect(GauntletsOfUndeadWarding, []proto.MobType{proto.MobType_MobTypeUndead}, 45)
 
 	core.AddEffectsToTest = true
 }
@@ -381,7 +382,7 @@ func UnholyMightAura(character *core.Character) *core.Aura {
 	return character.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1220668},
 		Label:    "Unholy Might",
-		Duration: time.Second * 8,
+		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Strength, 350)
 			character.PseudoStats.DamageTakenMultiplier *= 1.05

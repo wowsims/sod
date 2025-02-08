@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 var ItemSetCryptstalkerProwess = core.NewItemSet(core.ItemSet{
@@ -90,14 +89,16 @@ func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 			ActionID:  core.ActionID{SpellID: 1218587},
 			Label:     "Undead Slaying",
 			Duration:  time.Second * 30,
-			MaxStacks: 10,
+			MaxStacks: 12,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				oldMultiplier := 1 + 0.04*float64(oldStacks)
-				newMultiplier := 1 + 0.04*float64(newStacks)
+				oldMultiplier := 1 + 0.02*float64(oldStacks)
+				newMultiplier := 1 + 0.02*float64(newStacks)
+				delta := newMultiplier / oldMultiplier
 
 				for _, unit := range undeadTargets {
 					for _, at := range aura.Unit.AttackTables[unit.UnitIndex] {
-						at.DamageDealtMultiplier *= newMultiplier / oldMultiplier
+						at.DamageDealtMultiplier *= delta
+						at.CritMultiplier *= delta
 					}
 				}
 			},
@@ -107,10 +108,21 @@ func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Target.MobType == proto.MobType_MobTypeUndead && spell.ProcMask.Matches(core.ProcMaskMelee) {
+			if result.Target.MobType != proto.MobType_MobTypeUndead {
+				return
+			}
+
+			if spell.ProcMask.Matches(core.ProcMaskMeleeOrMeleeProc) {
 				for _, aura := range buffAuras {
 					aura.Activate(sim)
 					aura.AddStack(sim)
+				}
+			} else if spell.ProcMask.Matches(core.ProcMaskRangedOrRangedProc) {
+				// Ranged attacks actually remove a stack
+				for _, aura := range buffAuras {
+					if aura.IsActive() {
+						aura.RemoveStack(sim)
+					}
 				}
 			}
 		},
@@ -178,23 +190,43 @@ func (hunter *Hunter) applyNaxxramasRanged6PBonus() {
 		return
 	}
 
-	buffAura := hunter.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 1218587},
-		Label:     "Critical Aim",
-		Duration:  time.Second * 30,
-		MaxStacks: 15,
-		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			hunter.AddStatDynamic(sim, stats.MeleeCrit, 2*float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
-			hunter.AddStatDynamic(sim, stats.SpellCrit, 2*float64(newStacks-oldStacks)*core.CritRatingPerCritChance)
-		},
-	})
+	undeadTargets := core.FilterSlice(hunter.Env.Encounter.TargetUnits, func(unit *core.Unit) bool { return unit.MobType == proto.MobType_MobTypeUndead })
+
+	units := []*core.Unit{&hunter.Unit}
+	if hunter.pet != nil {
+		units = append(units, &hunter.pet.Unit)
+	}
+
+	buffAuras := []*core.Aura{}
+	for _, unit := range units {
+		buffAuras = append(buffAuras, unit.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1218587},
+			Label:     "Undead Slaying",
+			Duration:  time.Second * 30,
+			MaxStacks: 7,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				oldMultiplier := 1 + 0.02*float64(oldStacks)
+				newMultiplier := 1 + 0.02*float64(newStacks)
+				delta := newMultiplier / oldMultiplier
+
+				for _, unit := range undeadTargets {
+					for _, at := range aura.Unit.AttackTables[unit.UnitIndex] {
+						at.DamageDealtMultiplier *= delta
+						at.CritMultiplier *= delta
+					}
+				}
+			},
+		}))
+	}
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Target.MobType == proto.MobType_MobTypeUndead && spell.ProcMask.Matches(core.ProcMaskRanged) {
-				buffAura.Activate(sim)
-				buffAura.AddStack(sim)
+			if result.Target.MobType == proto.MobType_MobTypeUndead && spell.ProcMask.Matches(core.ProcMaskRangedOrRangedProc) {
+				for _, aura := range buffAuras {
+					aura.Activate(sim)
+					aura.AddStack(sim)
+				}
 			}
 		},
 	}))

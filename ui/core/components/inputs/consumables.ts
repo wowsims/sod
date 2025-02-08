@@ -346,10 +346,10 @@ export const FLASKS_CONFIG: ConsumableStatOption<Flask>[] = [
 	{ config: FlaskOfMadness, stats: [Stat.StatAttackPower] },
 	{ config: FlaskOfDistilledWisdom, stats: [Stat.StatIntellect] },
 	{ config: FlaskOfUnyieldingSorrow, stats: [Stat.StatIntellect] },
-	{ config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower] },
-	{ config: FlaskOfAncientKnowledge, stats: [Stat.StatMP5, Stat.StatSpellPower] },
+	{ config: FlaskOfSupremePower, stats: [Stat.StatMP5, Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: FlaskOfAncientKnowledge, stats: [Stat.StatMP5, Stat.StatSpellPower, Stat.StatSpellDamage] },
 	{ config: FlaskOfChromaticResistance, stats: [] },
-	{ config: FlaskOfRestlessDreams, stats: [Stat.StatSpellPower] },
+	{ config: FlaskOfRestlessDreams, stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
 	{ config: FlaskOfEverlastingNightmares, stats: [Stat.StatAttackPower] },
 ];
 
@@ -712,7 +712,7 @@ export const ZANZA_BUFF_CONSUMES_CONFIG: ConsumableStatOption<ZanzaBuff>[] = [
 	{ config: CerebralCortexCompound, stats: [Stat.StatIntellect] },
 	{ config: GizzardGum, stats: [Stat.StatSpirit] },
 	{ config: AtalAiMojoOfWar, stats: [Stat.StatAttackPower] },
-	{ config: AtalAiMojoOfForbiddenMagic, stats: [Stat.StatSpellPower] },
+	{ config: AtalAiMojoOfForbiddenMagic, stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
 	{ config: AtalAiMojoOfLife, stats: [Stat.StatHealingPower] },
 ];
 export const makeZanzaBuffConsumesInput = makeConsumeInputFactory({ consumesFieldName: 'zanzaBuff' });
@@ -733,6 +733,10 @@ export const JujuFlurry = makeBooleanMiscConsumeInput({
 	fieldName: 'jujuFlurry',
 	showWhen: player => player.getLevel() >= 55,
 });
+export const RaptorPunch = makeBooleanMiscConsumeInput({
+	actionId: () => ActionId.fromItemId(5342),
+	fieldName: 'raptorPunch',
+});
 export const elixirOfCoalescedRegret = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(210708), fieldName: 'elixirOfCoalescedRegret' });
 export const BoglingRoot = makeBooleanMiscConsumeInput({ actionId: () => ActionId.fromItemId(5206), fieldName: 'boglingRoot' });
 
@@ -740,6 +744,7 @@ export const MISC_OFFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
 	{ config: DraughtOfTheSands, picker: IconPicker, stats: [] },
 	{ config: Catnip, picker: IconPicker, stats: [] },
 	{ config: JujuFlurry, picker: IconPicker, stats: [Stat.StatAttackPower] },
+	{ config: RaptorPunch, picker: IconPicker, stats: [Stat.StatIntellect] },
 	{ config: elixirOfCoalescedRegret, picker: IconPicker, stats: [] },
 	{ config: BoglingRoot, picker: IconPicker, stats: [Stat.StatAttackPower] },
 ];
@@ -749,6 +754,11 @@ export const makeMiscOffensiveConsumesInput = makeMultiIconConsumesInputFactory(
 	tooltip: 'Misc Offensive',
 });
 
+export const GreaterMarkOfTheDawn = makeBooleanMiscConsumeInput({
+	actionId: () => ActionId.fromItemId(23196),
+	fieldName: 'greaterMarkOfTheDawn',
+	showWhen: player => player.getLevel() >= 60,
+});
 export const JujuEmber = makeBooleanMiscConsumeInput({
 	actionId: () => ActionId.fromItemId(12455),
 	fieldName: 'jujuEmber',
@@ -766,6 +776,7 @@ export const JujuEscape = makeBooleanMiscConsumeInput({
 });
 
 export const MISC_DEFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
+	{ config: GreaterMarkOfTheDawn, picker :IconPicker, stats: [] },
 	{ config: JujuEmber, picker: IconPicker, stats: [] },
 	{ config: JujuChill, picker: IconPicker, stats: [] },
 	{ config: JujuEscape, picker: IconPicker, stats: [Stat.StatDodge] },
@@ -1000,10 +1011,10 @@ export const LesserArcaneElixir: ConsumableInputConfig<SpellPowerBuff> = {
 };
 
 export const SPELL_POWER_CONFIG: ConsumableStatOption<SpellPowerBuff>[] = [
-	{ config: ElixirOfTheMageLord, stats: [Stat.StatSpellPower] },
-	{ config: GreaterArcaneElixir, stats: [Stat.StatSpellPower] },
-	{ config: ArcaneElixir, stats: [Stat.StatSpellPower] },
-	{ config: LesserArcaneElixir, stats: [Stat.StatSpellPower] },
+	{ config: ElixirOfTheMageLord, stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: GreaterArcaneElixir, stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: ArcaneElixir, stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: LesserArcaneElixir, stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
 ];
 
 export const makeSpellPowerConsumeInput = makeConsumeInputFactory({ consumesFieldName: 'spellPowerBuff' });
@@ -1086,7 +1097,7 @@ export const BlessedWizardOil = (slot: ItemSlot): ConsumableInputConfig<WeaponIm
 		value: WeaponImbue.BlessedWizardOil,
 		showWhen: player => {
 			const weapon = player.getEquippedItem(slot);
-			return !weapon || weapon.item.weaponType != WeaponType.WeaponTypeOffHand;
+			return !weapon || weapon.item.weaponType !== WeaponType.WeaponTypeOffHand;
 		},
 	};
 };
@@ -1096,7 +1107,7 @@ export const EnchantedRepellent = (slot: ItemSlot): ConsumableInputConfig<Weapon
 		value: WeaponImbue.EnchantedRepellent,
 		showWhen: player => {
 			const weapon = player.getEquippedItem(slot);
-			return !weapon || weapon.item.weaponType != WeaponType.WeaponTypeOffHand;
+			return !weapon || weapon.item.weaponType !== WeaponType.WeaponTypeOffHand;
 		},
 	};
 };
@@ -1191,7 +1202,7 @@ export const ConsecratedSharpeningStone = (slot: ItemSlot): ConsumableInputConfi
 		value: WeaponImbue.ConsecratedSharpeningStone,
 		showWhen: player => {
 			const weapon = player.getEquippedItem(slot);
-			return !weapon || isWeapon(weapon.item.weaponType);
+			return !weapon || weapon.item.weaponType !== WeaponType.WeaponTypeOffHand;
 		},
 	};
 };
@@ -1324,19 +1335,19 @@ const ROGUE_IMBUES: ConsumableStatOption<WeaponImbue>[] = [
 ];
 
 const CONSUMABLES_IMBUES = (slot: ItemSlot): ConsumableStatOption<WeaponImbue>[] => [
-	{ config: BlessedWizardOil(slot), stats: [Stat.StatSpellPower] },
-	{ config: EnchantedRepellent(slot), stats: [Stat.StatSpellPower] },
-	{ config: MagnificentTrollshine(slot), stats: [Stat.StatSpellPower] },
-	{ config: ConductiveShieldCoating(slot), stats: [Stat.StatSpellPower] },
-	{ config: BrilliantWizardOil(slot), stats: [Stat.StatSpellPower] },
-	{ config: WizardOil(slot), stats: [Stat.StatSpellPower] },
-	{ config: LesserWizardOil(slot), stats: [Stat.StatSpellPower] },
-	{ config: MinorWizardOil(slot), stats: [Stat.StatSpellPower] },
+	{ config: BlessedWizardOil(slot), stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: EnchantedRepellent(slot), stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: MagnificentTrollshine(slot), stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: ConductiveShieldCoating(slot), stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: BrilliantWizardOil(slot), stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: WizardOil(slot), stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: LesserWizardOil(slot), stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: MinorWizardOil(slot), stats: [Stat.StatSpellPower, Stat.StatSpellDamage] },
 
-	{ config: BrilliantManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
-	{ config: LesserManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
-	{ config: MinorManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower] },
-	{ config: BlackfathomManaOil(slot), stats: [Stat.StatSpellPower, Stat.StatMP5] },
+	{ config: BrilliantManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: LesserManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: MinorManaOil(slot), stats: [Stat.StatHealingPower, Stat.StatSpellPower, Stat.StatSpellDamage] },
+	{ config: BlackfathomManaOil(slot), stats: [Stat.StatSpellPower, Stat.StatSpellDamage, Stat.StatMP5] },
 
 	{ config: WeightedConsecratedSharpeningStone(slot), stats: [Stat.StatAttackPower] },
 	{ config: ConsecratedSharpeningStone(slot), stats: [Stat.StatAttackPower] },

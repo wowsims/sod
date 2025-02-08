@@ -59,7 +59,6 @@ func init() {
 
 		procAura := character.NewTemporaryStatsAura("Roar of the Dream", core.ActionID{SpellID: 446706}, stats.Stats{stats.SpellDamage: 66}, time.Second*10)
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:         core.ActionID{SpellID: 446705},
 			Name:             "Roar of the Dream Trigger",
 			Callback:         core.CallbackOnCastComplete,
 			ProcMask:         core.ProcMaskSpellDamage,
@@ -299,7 +298,6 @@ func init() {
 		}
 
 		hitAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:          core.ActionID{SpellID: 446392},
 			Name:              "DMC Decay Spell Hit",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -311,7 +309,6 @@ func init() {
 		hitAura.Icd = &icd
 
 		castAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 450110},
 			Name:       "DMC Decay Spell Cast",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskSpellDamage,
@@ -387,7 +384,6 @@ func init() {
 		}
 
 		hitAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:          core.ActionID{SpellID: 446389},
 			Name:              "Sandstorm Spell Hit",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
@@ -399,7 +395,6 @@ func init() {
 		hitAura.Icd = &icd
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 446389},
 			Name:       "Sandstorm Spell Cast",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskSpellDamage,
@@ -580,7 +575,6 @@ func init() {
 		}
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 21978},
 			Name:       "Engulfing Shadows",
 			Callback:   core.CallbackOnSpellHitDealt,
 			ProcMask:   core.ProcMaskSpellDamage,
