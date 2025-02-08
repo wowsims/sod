@@ -4,9 +4,20 @@
 		gap: var(--section-spacer);
 		grid-template-columns: 1fr 1fr;
 
+		@include media-breakpoint-down(lg) {
+			gap: var(--block-spacer);
+		}
+
 		@include media-breakpoint-down(sm) {
 			grid-template-columns: 1fr;
 		}
+	}
+
+	.gear-picker-left,
+	.gear-picker-right {
+		display: flex;
+		flex-direction: column;
+		gap: var(--block-spacer);
 	}
 
 	.gear-picker-left {
@@ -16,7 +27,7 @@
 
 			// Add space to separate weapon categories
 			&:nth-child(6) {
-				margin-bottom: calc(var(--spacer-3) * 2);
+				margin-bottom: calc(var(--container-padding) - var(--block-spacer));
 			}
 		}
 	}
@@ -42,10 +53,6 @@
 .item-picker-root {
 	display: flex;
 
-	&:not(:last-child) {
-		margin-bottom: var(--block-spacer);
-	}
-
 	.item-picker-ilvl {
 		position: absolute;
 		padding-left: 1px;
@@ -62,6 +69,10 @@
 		display: flex;
 		flex-direction: column;
 		align-items: flex-start;
+
+		@include media-breakpoint-down(lg) {
+			padding-top: 0;
+		}
 
 		.item-picker-name,
 		.item-picker-enchant,

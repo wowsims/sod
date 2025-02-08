@@ -1,14 +1,15 @@
-import * as Tooltips from '../../constants/tooltips.js';
+import { ref } from 'tsx-vanilla';
+
+import * as Tooltips from '../../constants/tooltips';
 import { IndividualSimUI, InputSection } from '../../individual_sim_ui';
 import { Player } from '../../player';
 import { APLRotation, APLRotation_Type as APLRotationType } from '../../proto/apl';
-import { Spec } from '../../proto/common';
 import { SavedRotation } from '../../proto/ui';
 import { EventID, TypedEvent } from '../../typed_event';
 import { BooleanPicker } from '../boolean_picker';
 import { ContentBlock } from '../content_block';
 import { EnumPicker } from '../enum_picker';
-import * as IconInputs from '../icon_inputs.js';
+import * as IconInputs from '../icon_inputs';
 import { Input } from '../input';
 import { NumberPicker } from '../number_picker';
 import { SavedDataManager } from '../saved_data_manager';
@@ -18,20 +19,21 @@ import { CooldownsPicker } from './cooldowns_picker';
 import { PresetConfigurationPicker } from './preset_configuration_picker';
 
 export class RotationTab extends SimTab {
-	protected simUI: IndividualSimUI<Spec>;
+	protected simUI: IndividualSimUI<any>;
 
 	readonly leftPanel: HTMLElement;
 	readonly rightPanel: HTMLElement;
 
-	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<Spec>) {
+	readonly leftCol: HTMLElement = this.buildColumn(1, 'rotation-tab-col');
+
+	constructor(parentElem: HTMLElement, simUI: IndividualSimUI<any>) {
 		super(parentElem, simUI, { identifier: 'rotation-tab', title: 'Rotation' });
 		this.simUI = simUI;
 
-		this.leftPanel = document.createElement('div');
-		this.leftPanel.classList.add('rotation-tab-left', 'tab-panel-left');
+		this.leftPanel = (<div className="rotation-tab-left tab-panel-left" />) as HTMLElement;
+		this.rightPanel = (<div className="rotation-tab-right tab-panel-right" />) as HTMLElement;
 
-		this.rightPanel = document.createElement('div');
-		this.rightPanel.classList.add('rotation-tab-right', 'tab-panel-right');
+		this.leftPanel.appendChild(this.leftCol);
 
 		this.contentContainer.appendChild(this.leftPanel);
 		this.contentContainer.appendChild(this.rightPanel);
@@ -54,29 +56,50 @@ export class RotationTab extends SimTab {
 	}
 
 	private updateSections() {
-		this.rootElem.classList.remove('rotation-type-auto');
-		this.rootElem.classList.remove('rotation-type-simple');
-		this.rootElem.classList.remove('rotation-type-apl');
-		this.rootElem.classList.remove('rotation-type-legacy');
+		this.rootElem.classList.remove('rotation-type-auto', 'rotation-type-simple', 'rotation-type-apl', 'rotation-type-legacy');
 
-		const rotType = this.simUI.player.getRotationType();
-		if (rotType == APLRotationType.TypeAuto) {
-			this.rootElem.classList.add('rotation-type-auto');
-		} else if (rotType == APLRotationType.TypeSimple) {
-			this.rootElem.classList.add('rotation-type-simple');
-		} else if (rotType == APLRotationType.TypeAPL) {
-			this.rootElem.classList.add('rotation-type-apl');
-		} else if (rotType == APLRotationType.TypeLegacy) {
-			this.rootElem.classList.add('rotation-type-legacy');
+		const rotationType = this.simUI.player.getRotationType();
+		let rotationClass = '';
+		switch (rotationType) {
+			case APLRotationType.TypeAuto:
+				rotationClass = 'rotation-type-auto';
+				break;
+			case APLRotationType.TypeSimple:
+				rotationClass = 'rotation-type-simple';
+				break;
+			case APLRotationType.TypeAPL:
+				rotationClass = 'rotation-type-apl';
+				break;
 		}
+
+		this.rootElem.classList.add(rotationClass);
 	}
 
 	private buildHeader() {
-		const header = document.createElement('div');
-		header.classList.add('rotation-tab-header');
-		this.leftPanel.appendChild(header);
+		const headerRef = ref<HTMLDivElement>();
+		const resetButtonRef = ref<HTMLButtonElement>();
+		const rotationTypeSelectRef = ref<HTMLDivElement>();
+		this.leftCol.appendChild(
+			<div ref={headerRef} className="rotation-tab-header d-flex justify-content-between align-items-baseline">
+				<div ref={rotationTypeSelectRef} />
+				<button ref={resetButtonRef} className="btn btn-sm btn-link btn-reset summary-table-reset-button">
+					<i className="fas fa-times me-1"></i>
+					Reset APL
+				</button>
+			</div>,
+		);
 
-		new EnumPicker(header, this.simUI.player, {
+		resetButtonRef.value!.addEventListener('click', () => {
+			this.simUI.applyEmptyAplRotation(TypedEvent.nextEventID());
+		});
+
+		this.simUI.player.rotationChangeEmitter.on(() => {
+			const type = this.simUI.player.getRotationType();
+			resetButtonRef.value?.classList[type === APLRotationType.TypeAPL ? 'remove' : 'add']('hide');
+		});
+
+		new EnumPicker(rotationTypeSelectRef.value!, this.simUI.player, {
+			extraCssClasses: ['w-auto'],
 			id: 'rotation-tab-rotation-type',
 			label: 'Rotation Type',
 			labelTooltip: 'Which set of options to use for specifying the rotation.',
@@ -101,17 +124,14 @@ export class RotationTab extends SimTab {
 	}
 
 	private buildAutoContent() {
-		const content = document.createElement('div');
-		content.classList.add('rotation-tab-auto');
-		this.leftPanel.appendChild(content);
+		this.leftCol.appendChild(<div className="rotation-tab-auto" />);
 	}
 
 	private buildAplContent() {
-		const content = document.createElement('div');
-		content.classList.add('rotation-tab-apl');
-		this.leftPanel.appendChild(content);
+		const contentRef = ref<HTMLDivElement>();
+		this.leftCol.appendChild(<div ref={contentRef} className="rotation-tab-apl" />);
 
-		new APLRotationPicker(content, this.simUI, this.simUI.player);
+		new APLRotationPicker(contentRef.value!, this.simUI, this.simUI.player);
 	}
 
 	private buildSimpleContent() {
@@ -120,7 +140,7 @@ export class RotationTab extends SimTab {
 		}
 		const cssClass = 'rotation-tab-simple';
 
-		const contentBlock = new ContentBlock(this.leftPanel, 'rotation-settings', {
+		const contentBlock = new ContentBlock(this.leftCol, 'rotation-settings', {
 			header: { title: 'Rotation' },
 		});
 		contentBlock.rootElem.classList.add(cssClass);
@@ -138,12 +158,7 @@ export class RotationTab extends SimTab {
 		}
 
 		this.configureInputSection(contentBlock.bodyElement, this.simUI.individualConfig.rotationInputs);
-
-		contentBlock.bodyElement.querySelectorAll('.input-root').forEach(elem => {
-			elem.classList.add('input-inline');
-		});
-
-		const cooldownsContentBlock = new ContentBlock(this.leftPanel, 'cooldown-settings', {
+		const cooldownsContentBlock = new ContentBlock(this.leftCol, 'cooldown-settings', {
 			header: { title: 'Cooldowns', tooltip: Tooltips.COOLDOWNS_SECTION },
 		});
 		cooldownsContentBlock.rootElem.classList.add(cssClass);
@@ -153,18 +168,19 @@ export class RotationTab extends SimTab {
 
 	private configureInputSection(sectionElem: HTMLElement, sectionConfig: InputSection) {
 		sectionConfig.inputs.forEach(inputConfig => {
+			inputConfig.extraCssClasses = [...(inputConfig.extraCssClasses || []), 'input-inline'];
 			if (inputConfig.type == 'number') {
-				new NumberPicker(sectionElem, this.simUI.player, inputConfig);
+				new NumberPicker(sectionElem, this.simUI.player, { ...inputConfig, inline: true });
 			} else if (inputConfig.type == 'boolean') {
-				new BooleanPicker(sectionElem, this.simUI.player, { ...inputConfig });
+				new BooleanPicker(sectionElem, this.simUI.player, { ...inputConfig, inline: true });
 			} else if (inputConfig.type == 'enum') {
-				new EnumPicker(sectionElem, this.simUI.player, inputConfig);
+				new EnumPicker(sectionElem, this.simUI.player, { ...inputConfig, inline: true });
 			}
 		});
 	}
 
 	private configureIconSection(sectionElem: HTMLElement, iconPickers: Array<any>, adjustColumns?: boolean) {
-		if (iconPickers.length == 0) {
+		if (!iconPickers.length) {
 			sectionElem.classList.add('hide');
 		} else if (adjustColumns) {
 			if (iconPickers.length <= 4) {
@@ -176,7 +192,7 @@ export class RotationTab extends SimTab {
 	}
 
 	private buildPresetConfigurationPicker() {
-		new PresetConfigurationPicker(this.rightPanel, this.simUI, 'rotation');
+		new PresetConfigurationPicker(this.rightPanel, this.simUI, ['rotation']);
 	}
 
 	private buildSavedDataPickers() {
@@ -193,7 +209,7 @@ export class RotationTab extends SimTab {
 					player.setAplRotation(eventID, newRotation.rotation || APLRotation.create());
 				});
 			},
-			changeEmitters: [this.simUI.player.rotationChangeEmitter, this.simUI.player.talentsChangeEmitter, this.simUI.player.levelChangeEmitter],
+			changeEmitters: [this.simUI.player.rotationChangeEmitter, this.simUI.player.talentsChangeEmitter],
 			equals: (a: SavedRotation, b: SavedRotation) => {
 				// Uncomment this to debug equivalence checks with preset rotations (e.g. the chip doesn't highlight)
 				//console.log(`Rot A: ${SavedRotation.toJsonString(a, {prettySpaces: 2})}\n\nRot B: ${SavedRotation.toJsonString(b, {prettySpaces: 2})}`);
@@ -216,6 +232,7 @@ export class RotationTab extends SimTab {
 					isPreset: true,
 					data: rotData,
 					enableWhen: presetRotation.enableWhen,
+					onLoad: presetRotation.onLoad,
 				});
 			});
 		});

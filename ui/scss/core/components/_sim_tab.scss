@@ -7,6 +7,10 @@
 		flex-direction: column;
 	}
 
+	@include media-breakpoint-down(lg) {
+		gap: calc(var(--block-spacer) * 2);
+	}
+
 	.tab-panel-left,
 	.tab-panel-right {
 		width: 100%;
@@ -22,9 +26,16 @@
 	}
 
 	.tab-panel-right {
+		min-width: 200px;
 		flex: 1.25;
 		display: flex;
 		flex-direction: column;
-		min-width: 200px;
+		gap: calc(var(--block-spacer) * 2);
+	}
+
+	.tab-panel-col {
+		display: flex;
+		flex-direction: column;
+		gap: calc(var(--block-spacer) * 2);
 	}
 }

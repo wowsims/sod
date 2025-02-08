@@ -1,8 +1,6 @@
 @use 'sass:map';
 
 .saved-data-manager-root {
-	margin-bottom: calc(var(--block-spacer) * 2);
-
 	.saved-data-container {
 		display: flex;
 		flex-direction: column;
