@@ -75,14 +75,16 @@ func (shaman *Shaman) applyNaxxramasElemental6PBonus() {
 		ActionID:  core.ActionID{SpellID: 1219370},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
-		MaxStacks: 7,
+		MaxStacks: 6,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			oldMultiplier := 1 + 0.06*float64(oldStacks)
-			newMultiplier := 1 + 0.06*float64(newStacks)
+			oldMultiplier := 1 + 0.03*float64(oldStacks)
+			newMultiplier := 1 + 0.03*float64(newStacks)
+			delta := newMultiplier / oldMultiplier
 
 			for _, unit := range undeadTargets {
 				for _, at := range aura.Unit.AttackTables[unit.UnitIndex] {
-					at.DamageDealtMultiplier *= newMultiplier / oldMultiplier
+					at.DamageDealtMultiplier *= delta
+					at.CritMultiplier *= delta
 				}
 			}
 		},
@@ -170,14 +172,16 @@ func (shaman *Shaman) applyNaxxramasEnhancement6PBonus() {
 		ActionID:  core.ActionID{SpellID: 1219370},
 		Label:     "Undead Slaying",
 		Duration:  time.Second * 30,
-		MaxStacks: 20,
+		MaxStacks: 7,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			oldMultiplier := 1 + 0.02*float64(oldStacks)
-			newMultiplier := 1 + 0.02*float64(newStacks)
+			oldMultiplier := 1 + 0.03*float64(oldStacks)
+			newMultiplier := 1 + 0.03*float64(newStacks)
+			delta := newMultiplier / oldMultiplier
 
 			for _, unit := range undeadTargets {
 				for _, at := range aura.Unit.AttackTables[unit.UnitIndex] {
-					at.DamageDealtMultiplier *= newMultiplier / oldMultiplier
+					at.DamageDealtMultiplier *= delta
+					at.CritMultiplier *= delta
 				}
 			}
 		},

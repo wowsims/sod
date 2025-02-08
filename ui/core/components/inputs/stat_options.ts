@@ -2,7 +2,6 @@ import { IndividualSimUI } from "../../individual_sim_ui";
 import { Player } from "../../player";
 import { Spec, Stat } from "../../proto/common";
 import { ActionId } from "../../proto_utils/action_id";
-
 import { IconEnumPicker, IconEnumPickerConfig } from "../icon_enum_picker";
 import { IconPicker, IconPickerConfig } from "../icon_picker";
 import { MultiIconPicker, MultiIconPickerConfig } from "../multi_icon_picker";
@@ -53,13 +52,13 @@ export function relevantStatOptions<T, OptionsType extends ItemStatOptions<T> | 
 ): StatOptions<T, OptionsType> {
   return options
     .filter(option =>
-			// Filter out excluded options
-			!simUI.individualConfig.excludeBuffDebuffInputs.includes(option.config) &&
-      (
-				// Compare EP stats
-				option.stats.length == 0 ||
-      	option.stats.some(stat => simUI.individualConfig.epStats.includes(stat)) ||
-				// Check included options
-				simUI.individualConfig.includeBuffDebuffInputs.includes(option.config))
-			)
+		// Filter out excluded options
+		!simUI.individualConfig.excludeBuffDebuffInputs.includes(option.config) && (
+			// Compare stats
+			option.stats.length == 0 ||
+      		option.stats.some(stat => simUI.individualConfig.displayStats.includes(stat)) ||
+			// Check included options
+			simUI.individualConfig.includeBuffDebuffInputs.includes(option.config)
+		)
+	)
 }

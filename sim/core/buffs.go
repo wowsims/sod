@@ -647,8 +647,8 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		})
 	}
 
-	if raidBuffs.SpiritOfTheAlpha {
-		SpiritOfTheAlphaAura(&character.Unit)
+	if individualBuffs.SpiritOfTheAlpha {
+		MakePermanent(SpiritOfTheAlphaAura(&character.Unit))
 	}
 
 	if raidBuffs.TrueshotAura {
@@ -1974,17 +1974,16 @@ func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *A
 }
 
 func SpiritOfTheAlphaAura(unit *Unit) *Aura {
-	return MakePermanent(unit.GetOrRegisterAura(Aura{
-		Label:      "Spirit of the Alpha",
-		ActionID:   ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
-		BuildPhase: CharacterBuildPhaseBuffs,
+	return unit.GetOrRegisterAura(Aura{
+		Label:    "Spirit of the Alpha",
+		ActionID: ActionID{SpellID: int32(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)},
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.ThreatMultiplier *= 1.45
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.ThreatMultiplier /= 1.45
 		},
-	}))
+	})
 }
 
 func TrueshotAura(unit *Unit) *Aura {

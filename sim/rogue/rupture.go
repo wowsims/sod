@@ -40,7 +40,7 @@ func (rogue *Rogue) registerRupture() {
 			return rogue.ComboPoints() > 0
 		},
 
-		DamageMultiplier: []float64{1, 1.1, 1.2, 1.3}[rogue.Talents.SerratedBlades],
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{

@@ -22,6 +22,7 @@ func (rogue *Rogue) registerShurikenTossSpell() {
 		DefenseType: core.DefenseTypeRanged,
 		ProcMask:    core.ProcMaskRangedSpecial,
 		Flags:       SpellFlagBuilder | SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagAPL, // not affected by Cold Blood
+		CastType:    proto.CastType_CastTypeRanged,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   30,

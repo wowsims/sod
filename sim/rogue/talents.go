@@ -10,20 +10,25 @@ import (
 )
 
 func (rogue *Rogue) ApplyTalents() {
+	rogue.applyImprovedSinisterStrike()
+	rogue.applyImprovedBackstab()
+	rogue.applyImprovedEviscerate()
 	rogue.applyRuthlessness()
 	rogue.applyMurder()
+	rogue.applyVilePoisons()
 	rogue.applyRelentlessStrikes()
 	rogue.applySealFate()
 	rogue.applyWeaponSpecializations()
 	rogue.applyWeaponExpertise()
 	rogue.applyInitiative()
+	rogue.applyAggression()
+	rogue.applyOpportunity()
+	rogue.applySerratedBlades()
 
 	rogue.AddStat(stats.Dodge, 1*float64(rogue.Talents.LightningReflexes))
 	rogue.AddStat(stats.Parry, 1*float64(rogue.Talents.Deflection))
 	rogue.AddStat(stats.MeleeCrit, 1*float64(rogue.Talents.Malice))
 	rogue.AddStat(stats.MeleeHit, 1*float64(rogue.Talents.Precision))
-	// TODO: Test the Armor reduction amount
-	rogue.AddStat(stats.ArmorPenetration, float64(5/3*rogue.Talents.SerratedBlades*rogue.Level))
 	rogue.AutoAttacks.OHConfig().DamageMultiplier *= rogue.dwsMultiplier()
 
 	if rogue.Talents.Deadliness > 0 {
@@ -37,6 +42,75 @@ func (rogue *Rogue) ApplyTalents() {
 	rogue.registerPremeditation()
 	rogue.registerGhostlyStrikeSpell()
 	rogue.applyRiposte()
+}
+
+func (rogue *Rogue) applyImprovedEviscerate() {
+	if rogue.Talents.ImprovedEviscerate == 0 {
+		return
+	}
+
+	rogue.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_RogueEviscerate,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  5 * int64(rogue.Talents.ImprovedEviscerate),
+	})
+}
+
+func (rogue *Rogue) applyImprovedSinisterStrike() {
+	if rogue.Talents.ImprovedSinisterStrike == 0 {
+		return
+	}
+
+	rogue.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_RogueSinisterStrikeDependent,
+		Kind:      core.SpellMod_PowerCost_Flat,
+		IntValue:  -[]int64{0, 3, 5}[rogue.Talents.ImprovedSinisterStrike],
+	})
+}
+
+func (rogue *Rogue) applyImprovedBackstab() {
+	if rogue.Talents.ImprovedBackstab == 0 {
+		return
+	}
+
+	rogue.AddStaticMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_RogueBackstabDependent,
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		FloatValue: 10 * float64(rogue.Talents.ImprovedBackstab),
+	})
+}
+
+func (rogue *Rogue) applyOpportunity() {
+	if rogue.Talents.Opportunity == 0 {
+		return
+	}
+
+	rogue.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_RogueBackstabDependent | ClassSpellMask_RogueAmbush | ClassSpellMask_RogueMutilate,
+		Kind:      core.SpellMod_ImpactDamageDone_Flat,
+		IntValue:  4 * int64(rogue.Talents.Opportunity),
+	})
+
+	rogue.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_RogueGarrote,
+		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
+		IntValue:  4 * int64(rogue.Talents.Opportunity),
+	})
+}
+
+func (rogue *Rogue) applySerratedBlades() {
+	if rogue.Talents.SerratedBlades == 0 {
+		return
+	}
+
+	// TODO: Test the Armor reduction amount
+	rogue.AddStat(stats.ArmorPenetration, float64(5/3*rogue.Talents.SerratedBlades*rogue.Level))
+
+	rogue.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_RogueRuptureDependent,
+		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
+		IntValue:  10 * int64(rogue.Talents.SerratedBlades),
+	})
 }
 
 // dwsMultiplier returns the offhand damage multiplier
@@ -85,6 +159,30 @@ func (rogue *Rogue) applyMurder() {
 			}
 		})
 	}
+}
+
+func (rogue *Rogue) applyVilePoisons() {
+	if rogue.Talents.VilePoisons == 0 {
+		return
+	}
+
+	rogue.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_RoguePoisonDependent,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  4 * int64(rogue.Talents.VilePoisons),
+	})
+}
+
+func (rogue *Rogue) applyAggression() {
+	if rogue.Talents.Aggression == 0 {
+		return
+	}
+
+	rogue.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_RogueSinisterStrikeDependent,
+		Kind:      core.SpellMod_ImpactDamageDone_Flat,
+		IntValue:  2 * int64(rogue.Talents.Aggression),
+	})
 }
 
 func (rogue *Rogue) applyRelentlessStrikes() {

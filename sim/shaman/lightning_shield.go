@@ -106,7 +106,7 @@ func (shaman *Shaman) registerNewLightningShieldSpell(rank int) {
 			}
 		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.ProcMask.Matches(core.ProcMaskDirect) || !icd.IsReady(sim) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !result.Landed() || !icd.IsReady(sim) {
 				return
 			}
 			icd.Use(sim)

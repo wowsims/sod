@@ -1,5 +1,6 @@
 package naxxramas
 
+<<<<<<< HEAD:sim/encounters/naxxramas/naxxramas.go
 import (
 	"github.com/wowsims/sod/sim/core"
 )
@@ -37,4 +38,14 @@ func (naxxEncounter *NaxxramasEncounter) registerAuthorityOfTheFrozenWastesAura(
 			}
 		},
 	}))
+=======
+func Register() {
+	addPatchwerk25("Naxxrammas 25")
+	addKelThuzad25("Naxxrammas 25")
+	addThaddius25("Naxxrammas 25")
+	addLoatheb25("Naxxrammas 25")
+
+	// TODO: Figure out why this isn't pickable
+	//addPatchwerk10("Naxxrammas")
+>>>>>>> master:sim/encounters/naxxramas/naxxrammas.go
 }

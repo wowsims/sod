@@ -25,8 +25,6 @@ func (rogue *Rogue) registerAmbushSpell() {
 	// waylay := rogue.HasRune(proto.RogueRune_RuneWaylay)
 	hasCutthroatRune := rogue.HasRune(proto.RogueRune_RuneCutthroat)
 
-	damageMultiplier := 2.5 * []float64{1, 1.04, 1.08, 1.12, 1.16, 1.2}[rogue.Talents.Opportunity]
-
 	rogue.Ambush = rogue.RegisterSpell(core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_RogueAmbush,
 		ActionID:       core.ActionID{SpellID: spellID},
@@ -56,7 +54,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		},
 
 		BonusCritRating:  15 * core.CritRatingPerCritChance * float64(rogue.Talents.ImprovedAmbush),
-		DamageMultiplier: damageMultiplier,
+		DamageMultiplier: 2.5,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 

@@ -120,10 +120,6 @@ func (shaman *Shaman) applyTAQTank2PBonus() {
 
 // Your Spirit of the Alpha also increases your health by 10%, threat by 20%, and damage by 10% when cast on self.
 func (shaman *Shaman) applyTAQTank4PBonus() {
-	if !shaman.HasRune(proto.ShamanRune_RuneFeetSpiritOfTheAlpha) || !shaman.IsTanking() {
-		return
-	}
-
 	label := "S03 - Item - TAQ - Shaman - Tank 4P Bonus"
 	if shaman.HasAura(label) {
 		return

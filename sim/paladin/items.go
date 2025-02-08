@@ -57,7 +57,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=236299/claymore-of-unholy-might
 	// Chance on hit: Increases the wielder's Strength by 350, but they also take 5% more damage from all sources for 8 sec.
 	// TODO: Proc rate assumed and needs testing
-	itemhelpers.CreateWeaponProcAura(ClaymoreOfUnholyMight, "Claymore of Unholy Might", 1.0, item_effects.UnholyMightAura)
+	itemhelpers.CreateWeaponProcAura(ClaymoreOfUnholyMight, "Claymore of Unholy Might", 2.0, item_effects.UnholyMightAura)
 
 	core.NewSimpleStatOffensiveTrinketEffect(SanctifiedOrb, stats.Stats{stats.MeleeCrit: 3 * core.CritRatingPerCritChance, stats.SpellCrit: 3 * core.CritRatingPerCritChance}, time.Second*25, time.Minute*3)
 

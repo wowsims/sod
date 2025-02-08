@@ -544,25 +544,19 @@ func (shaman *Shaman) applyWayOfEarth() {
 
 // https://www.wowhead.com/classic/spell=408696/spirit-of-the-alpha
 func (shaman *Shaman) applySpiritOfTheAlpha() {
-	if !shaman.HasRune(proto.ShamanRune_RuneFeetSpiritOfTheAlpha) {
-		return
-	}
+	hasSpiritOfTheAlpha := shaman.HasRune(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)
 
 	shaman.SpiritOfTheAlphaAura = core.SpiritOfTheAlphaAura(&shaman.Unit)
-	shaman.LoyalBetaAura = shaman.RegisterAura(core.Aura{
-		Label:    "Loyal Beta",
-		Duration: core.NeverExpires,
-		ActionID: core.ActionID{SpellID: 443320},
-	}).AttachMultiplicativePseudoStatBuff(
-		&shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.05,
-	).AttachMultiplicativePseudoStatBuff(
-		&shaman.PseudoStats.ThreatMultiplier, .70,
-	)
-
-	if !shaman.IsTanking() {
-		shaman.SpiritOfTheAlphaAura.OnReset = func(aura *core.Aura, sim *core.Simulation) {}
-		shaman.LoyalBetaAura.OnReset = func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		}
+	if (hasSpiritOfTheAlpha && shaman.IsTanking()) || shaman.IndividualBuffs.SpiritOfTheAlpha {
+		core.MakePermanent(shaman.SpiritOfTheAlphaAura)
+	} else if hasSpiritOfTheAlpha {
+		shaman.LoyalBetaAura = core.MakePermanent(shaman.RegisterAura(core.Aura{
+			Label:    "Loyal Beta",
+			ActionID: core.ActionID{SpellID: 443320},
+		}).AttachMultiplicativePseudoStatBuff(
+			&shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.05,
+		).AttachMultiplicativePseudoStatBuff(
+			&shaman.PseudoStats.ThreatMultiplier, .70,
+		))
 	}
 }

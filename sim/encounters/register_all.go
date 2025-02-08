@@ -2,18 +2,18 @@ package encounters
 
 import (
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/encounters/naxxramas"
 )
 
 func init() {
-	naxxramas.Register()
-	addVaelastraszTheCorrupt("SoD")
-	addLevel60("SoD")
-	addSunkenTempleDragonkin("SoD")
-	addLevel50("SoD")
-	addGnomereganMechanical("SoD")
-	addLevel40("SoD")
+	// TODO: Classic encounters?
+	// naxxramas.Register()
 	addLevel25("SoD")
+	addLevel40("SoD")
+	addGnomereganMechanical("SoD")
+	addLevel50("SoD")
+	addSunkenTempleDragonkin("SoD")
+	addLevel60("SoD")
+	addVaelastraszTheCorrupt("SoD")
 }
 
 func AddSingleTargetBossEncounter(presetTarget *core.PresetTarget) {

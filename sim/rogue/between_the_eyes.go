@@ -22,6 +22,7 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 		DefenseType:    core.DefenseTypeRanged,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          rogue.finisherFlags(),
+		CastType:       proto.CastType_CastTypeRanged,
 		MetricSplits:   6,
 
 		EnergyCost: core.EnergyCostOptions{
