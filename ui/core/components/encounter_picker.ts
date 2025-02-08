@@ -123,7 +123,6 @@ export class EncounterPicker extends Component {
 			// Transfer Target Inputs from target Id if they dont match (possible when custom AI is selected)
 			const targetIndex = presetTargets.findIndex(pe => modEncounter.primaryTarget.id == pe.target?.id);
 			const targetInputs = presetTargets[targetIndex]?.target?.targetInputs || [];
-
 			if (
 				targetInputs.length != modEncounter.primaryTarget.targetInputs.length ||
 				modEncounter.primaryTarget.targetInputs.some((ti, i) => ti.label != targetInputs[i].label)
@@ -635,6 +634,7 @@ class TargetInputPicker extends Input<Encounter, TargetInput> {
 			this.enumPicker = new EnumPicker<null>(this.rootElem, null, {
 				id: randomUUID(),
 				label: newValue.label,
+				labelTooltip: newValue.tooltip,
 				values: newValue.enumOptions.map((option, index) => {
 					return { value: index, name: option };
 				}),

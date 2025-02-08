@@ -2,6 +2,7 @@ package naxxramas
 
 import (
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 func Register() {
@@ -13,7 +14,14 @@ func Register() {
 
 type NaxxramasEncounter struct {
 	authorityFrozenWastesStacks int32
-	authorityFrozenWastesAura   *core.Aura
+}
+
+var NaxxramasDifficultyLevels = &proto.TargetInput{
+	Label:       "Difficulty Level",
+	Tooltip:     "Affects the Authority of the Frozen Wastes debuff for tanks.",
+	InputType:   proto.InputType_Enum,
+	EnumValue:   0,
+	EnumOptions: []string{"Normal", "Hardmode 1/4", "Hardmode 2/4", "Hardmode 3/4", "Hardmode 4/4"},
 }
 
 func (naxxEncounter *NaxxramasEncounter) registerAuthorityOfTheFrozenWastesAura(target *core.Target, stacks int32) {

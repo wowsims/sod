@@ -33,6 +33,7 @@ func addPatchwerk(bossPrefix string) {
 			DualWieldPenalty: false,
 			DamageSpread:     0.1,
 			TargetInputs: []*proto.TargetInput{
+				NaxxramasDifficultyLevels,
 				{
 					Label:     "Hateful Tank",
 					Tooltip:   "Click to turn off auto attacks and activate hateful strikes.",
@@ -43,15 +44,6 @@ func addPatchwerk(bossPrefix string) {
 					Tooltip:     "What `%` (0-100) of hateful strikes are you targeted by?",
 					InputType:   proto.InputType_Number,
 					NumberValue: 70.0,
-				},
-				{
-					Label:     "Authority of The Frozen Wastes Stacks",
-					Tooltip:   "Hard Modes Activated?",
-					InputType: proto.InputType_Enum,
-					EnumValue: 0,
-					EnumOptions: []string{
-						"0", "1", "2", "3", "4",
-					},
 				},
 			},
 		},

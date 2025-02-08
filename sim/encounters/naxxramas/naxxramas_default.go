@@ -10,7 +10,7 @@ func addNaxx60(bossPrefix string) {
 	core.AddPresetTarget(&core.PresetTarget{
 		PathPrefix: bossPrefix,
 		Config: &proto.Target{
-			Id:        15952 , // TODO:
+			Id:        15952, // TODO:
 			Name:      "Generic",
 			Level:     63,
 			MobType:   proto.MobType_MobTypeUndead,
@@ -30,16 +30,8 @@ func addNaxx60(bossPrefix string) {
 			ParryHaste:       true,
 			DualWield:        false,
 			DualWieldPenalty: false,
-			TargetInputs:     []*proto.TargetInput{
-				{
-					Label:       "Authority of The Frozen Wastes Stacks",
-					Tooltip:     "Hard Modes Activated?",
-					InputType:   proto.InputType_Enum,
-					EnumValue:   0,
-					EnumOptions: []string{
-						"0", "1", "2", "3", "4",
-					},
-				},
+			TargetInputs: []*proto.TargetInput{
+				NaxxramasDifficultyLevels,
 			},
 		},
 		AI: NewDefaultNaxxAI(),
@@ -49,10 +41,9 @@ func addNaxx60(bossPrefix string) {
 	})
 }
 
-
 type DefaultNaxxAI struct {
 	NaxxramasEncounter
-	Target         *core.Target
+	Target *core.Target
 }
 
 func NewDefaultNaxxAI() core.AIFactory {
@@ -67,7 +58,6 @@ func (ai *DefaultNaxxAI) Initialize(target *core.Target, config *proto.Target) {
 
 	ai.registerAuthorityOfTheFrozenWastesAura(ai.Target, ai.authorityFrozenWastesStacks)
 }
-
 
 func (ai *DefaultNaxxAI) Reset(*core.Simulation) {
 }

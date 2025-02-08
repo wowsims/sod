@@ -33,15 +33,7 @@ func addLoatheb(bossPrefix string) {
 			DualWield:        false,
 			DualWieldPenalty: false,
 			TargetInputs: []*proto.TargetInput{
-				{
-					Label:     "Authority of The Frozen Wastes Stacks",
-					Tooltip:   "Hard Modes Activated?",
-					InputType: proto.InputType_Enum,
-					EnumValue: 0,
-					EnumOptions: []string{
-						"0", "1", "2", "3", "4",
-					},
-				},
+				NaxxramasDifficultyLevels,
 				{
 					Label:       "Spore Assignment (1-10)",
 					Tooltip:     "Which spore are you assigned to?",

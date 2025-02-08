@@ -33,15 +33,7 @@ func addThaddius(bossPrefix string) {
 			DualWield:        false,
 			DualWieldPenalty: false,
 			TargetInputs: []*proto.TargetInput{
-				{
-					Label:     "Authority of The Frozen Wastes Stacks",
-					Tooltip:   "Hard Modes Activated?",
-					InputType: proto.InputType_Enum,
-					EnumValue: 0,
-					EnumOptions: []string{
-						"0", "1", "2", "3", "4",
-					},
-				},
+				NaxxramasDifficultyLevels,
 				{
 					Label:       "Stacks of Polarity Expected",
 					Tooltip:     "How many stacks of polarity do you predict to have?  Max: ",
