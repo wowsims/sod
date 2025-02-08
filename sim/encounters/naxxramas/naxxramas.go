@@ -1,16 +1,14 @@
 package naxxramas
 
 import (
-	"fmt"
-
 	"github.com/wowsims/sod/sim/core"
 )
 
 func Register() {
-	addNaxx60("SoD/Naxxrammas")
-	addPatchwerk("SoD/Naxxrammas")
-	addThaddius("SoD/Naxxrammas")
-	addLoatheb("SoD/Naxxrammas")
+	addNaxx60("SoD/Naxxramas")
+	addPatchwerk("SoD/Naxxramas")
+	addThaddius("SoD/Naxxramas")
+	addLoatheb("SoD/Naxxramas")
 }
 
 type NaxxramasEncounter struct {
@@ -20,14 +18,12 @@ type NaxxramasEncounter struct {
 
 func (naxxEncounter *NaxxramasEncounter) registerAuthorityOfTheFrozenWastesAura(target *core.Target, stacks int32) {
 	charactertarget := target.Env.Raid.Parties[0].Players[0].GetCharacter()
-	fmt.Println("Stacks:", stacks)
 
 	core.MakePermanent(charactertarget.GetOrRegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1218283},
 		Label:     "Authority of the Frozen Wastes",
 		MaxStacks: 4,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			fmt.Println("Reset:", stacks)
 			aura.Activate(sim)
 			aura.SetStacks(sim, stacks)
 		},
