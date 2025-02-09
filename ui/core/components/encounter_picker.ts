@@ -249,9 +249,9 @@ class TargetPicker extends Input<Encounter, TargetProto> {
 		this.targetIndex = targetIndex;
 
 		this.rootElem.innerHTML = `
-			<div class="target-picker-section target-picker-section1"></div>
-			<div class="target-picker-section target-picker-section2"></div>
-			<div class="target-picker-section target-picker-section3 threat-metrics"></div>
+			<div class="picker-group target-picker-section target-picker-section1"></div>
+			<div class="picker-group target-picker-section target-picker-section2"></div>
+			<div class="picker-group target-picker-section target-picker-section3 threat-metrics"></div>
 		`;
 
 		const section1 = this.rootElem.getElementsByClassName('target-picker-section1')[0] as HTMLElement;

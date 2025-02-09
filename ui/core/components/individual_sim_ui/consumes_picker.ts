@@ -1,6 +1,6 @@
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { Player } from '../../player';
-import { Spec, Stat } from '../../proto/common';
+import { Spec } from '../../proto/common';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
 import { IconEnumPicker } from '../icon_enum_picker';
@@ -37,7 +37,7 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
 				<label class="form-label">Potions</label>
-				<div class="consumes-row-inputs consumes-potions"></div>
+				<div class="picker-group icon-group consumes-row-inputs consumes-potions"></div>
 			</div>
     	`;
 
@@ -62,7 +62,7 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
 				<label class="form-label">Flasks</label>
-				<div class="consumes-row-inputs consumes-flasks"></div>
+				<div class="picker-group icon-group consumes-row-inputs consumes-flasks"></div>
 			</div>
     	`;
 
@@ -82,7 +82,7 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
 				<label class="form-label">Weapon Imbues</label>
-				<div class="consumes-row-inputs consumes-weapon-imbues"></div>
+				<div class="picker-group icon-group consumes-row-inputs consumes-weapon-imbues"></div>
 			</div>
     	`;
 
@@ -106,7 +106,7 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
 				<label class="form-label">Food</label>
-				<div class="consumes-row-inputs consumes-food"></div>
+				<div class="picker-group icon-group consumes-row-inputs consumes-food"></div>
 			</div>
     	`;
 
@@ -131,7 +131,7 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
 				<label class="form-label">Physical</label>
-				<div class="consumes-row-inputs consumes-physical"></div>
+				<div class="picker-group icon-group consumes-row-inputs consumes-physical"></div>
 			</div>
 		`;
 
@@ -163,7 +163,7 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
 				<label class="form-label">Defensive</label>
-				<div class="consumes-row-inputs consumes-defensive"></div>
+				<div class="picker-group icon-group consumes-row-inputs consumes-defensive"></div>
 			</div>
 		`;
 
@@ -188,7 +188,7 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
 				<label class="form-label">Spells</label>
-				<div class="consumes-row-inputs consumes-spells"></div>
+				<div class="picker-group icon-group consumes-row-inputs consumes-spells"></div>
 			</div>
     	`;
 
@@ -230,7 +230,7 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
 				<label class="form-label">Miscellaneous</label>
-				<div class="consumes-row-inputs consumes-misc"></div>
+				<div class="picker-group icon-group consumes-row-inputs consumes-misc"></div>
 			</div>
 		`;
 
@@ -267,7 +267,7 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
 				<label class="form-label">Engineering</label>
-				<div class="consumes-row-inputs consumes-engi"></div>
+				<div class="picker-group icon-group consumes-row-inputs consumes-engi"></div>
 			</div>
 		`;
 
@@ -291,7 +291,7 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
 				<label class="form-label">Enchanting</label>
-				<div class="consumes-row-inputs consumes-ench">
+				<div class="picker-group icon-group consumes-row-inputs consumes-ench">
 						</div>
 			</div>
     	`;
@@ -317,7 +317,7 @@ export class ConsumesPicker extends Component {
 		fragment.innerHTML = `
 			<div class="consumes-row input-root input-inline">
 				<label class="form-label">Pet</label>
-				<div class="consumes-row-inputs consumes-pet"></div>
+				<div class="picker-group icon-group consumes-row-inputs consumes-pet"></div>
 			</div>
 		`;
 

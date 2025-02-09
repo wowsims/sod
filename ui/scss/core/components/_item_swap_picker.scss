@@ -1,23 +1,14 @@
-@use "sass:map";
+@use 'sass:map';
 
 .item-swap-picker-root {
-  label {
-    width: unset !important;
-  }
+	label {
+		width: unset !important;
+	}
 
-  .picker-group {
-    // Override a width: 100% from the default picker group
-    width: unset;
-    align-items: center;
-    justify-content: flex-end;
-
-    &> * {
-      margin-bottom: 0 !important;
-      margin-right: 0 !important;
-      
-      &:not(:first-child) {
-        margin-left: var(--spacer-1);
-      }
-    }
-  }
+	.picker-group {
+		// Override a width: 100% from the default picker group
+		width: unset;
+		align-items: center;
+		justify-content: flex-end;
+	}
 }

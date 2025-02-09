@@ -1,12 +1,18 @@
 .filters-menu {
+	.modal-body {
+		gap: var(--block-spacer);
+	}
+
 	.menu-section {
 		display: flex;
 		@include media-breakpoint-down(sm) {
 			display: block;
 		}
 
-		&:not(:last-child) {
-			margin-bottom: var(--spacer-3);
+		&.general-section {
+			.menu-section-content {
+				gap: var(--block-spacer);
+			}
 		}
 
 		.menu-section-header {
@@ -14,6 +20,8 @@
 		}
 
 		.menu-section-content {
+			display: flex;
+			flex-direction: column;
 			flex: 3;
 
 			.ilvl-filters {
@@ -22,9 +30,10 @@
 				grid-column-gap: var(--bs-modal-padding);
 
 				.ilvl-filters-separator {
+					padding: $input-padding-y 0;
 					display: flex;
-					align-items: center;
 					justify-content: center;
+					align-self: flex-end;
 				}
 			}
 

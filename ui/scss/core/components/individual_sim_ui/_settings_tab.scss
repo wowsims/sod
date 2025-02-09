@@ -11,20 +11,6 @@
 		}
 	}
 
-	.content-block {
-		.content-block-body {
-			& > .input-root:last-child {
-				margin-bottom: 0;
-			}
-
-			& > .picker-group:last-child {
-				& > .input-root {
-					margin-bottom: 0;
-				}
-			}
-		}
-	}
-
 	.rotation-settings,
 	.other-settings {
 		.input-root {
@@ -88,16 +74,6 @@
 				.tab-panel-col {
 					flex-basis: 100%;
 					margin-right: 0 !important;
-				}
-			}
-		}
-
-		.content-block {
-			.content-block-body {
-				& > .picker-group {
-					& > .input-root:not(:last-child) {
-						margin-bottom: var(--block-spacer);
-					}
 				}
 			}
 		}

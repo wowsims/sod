@@ -4,6 +4,12 @@
 	flex-direction: column;
 	align-items: flex-start;
 
+	@include media-breakpoint-down(md) {
+		flex-direction: column !important;
+		align-items: flex-start !important;
+		gap: calc(var(--spacer-2));
+	}
+
 	&.disabled {
 		filter: opacity(0.5);
 	}
@@ -54,7 +60,7 @@
 .picker-group {
 	width: 100%;
 	display: grid;
-	gap: var(--spacer-3);
+	gap: var(--block-spacer);
 	grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
 
 	.input-root {

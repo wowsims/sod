@@ -50,16 +50,10 @@
 
 	.target-picker-root {
 		display: grid;
-		gap: var(--spacer-3);
+		gap: var(--block-spacer);
 		grid-template-columns: 1fr;
 		@include media-breakpoint-up(xl) {
 			grid-template-columns: 1fr 1fr 1fr;
-		}
-
-		.target-picker-section {
-			display: flex;
-			flex-direction: column;
-			gap: var(--block-spacer);
 		}
 
 		.input-root:is(:only-child),

@@ -1,51 +1,16 @@
-@use 'sass:map';
-
 .consumes-picker-root {
-	display: flex;
-	flex-direction: column;
+	display: grid;
 	gap: var(--block-spacer);
+	@include media-breakpoint-down(lg) {
+		grid-template-columns: repeat(3, 1fr);
+	}
 
-	.consumes-row {
-		.consumes-row-inputs {
-			display: flex;
-			align-items: center;
-
-			& > * {
-				margin-bottom: 0;
-
-				&:not(:first-child) {
-					margin-left: map.get($spacers, 1);
-				}
-			}
-		}
-
-		&:last-child {
-			margin-bottom: 0;
-		}
+	.consumes-row-inputs {
+		justify-content: flex-end;
 	}
 
 	.elixir-space {
 		width: var(--icon-size-md);
 		text-align: center;
-	}
-}
-
-@include media-breakpoint-between(sm, xl) {
-	.consumes-picker-root {
-		display: flex;
-		flex-wrap: wrap;
-
-		& > * {
-			// Use 49% instead of 50% because of the margin-right
-			flex-basis: 49%;
-
-			&:not(:first-child) {
-				margin-left: var(--block-spacer) !important;
-			}
-
-			&:nth-last-child(2) {
-				margin-bottom: 0 !important;
-			}
-		}
 	}
 }
