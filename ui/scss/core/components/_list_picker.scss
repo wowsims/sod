@@ -19,7 +19,7 @@
 
 		.list-picker-item-container {
 			border: var(--border-default);
-			
+
 			&.dragfrom {
 				background-color: color-mix(in srgb, var(--bs-body-bg) 80%, transparent);
 				filter: opacity(0.5);
@@ -64,7 +64,7 @@
 
 				.list-picker-item-action {
 					margin-left: var(--spacer-2);
-					
+
 					&.list-picker-item-move {
 						cursor: move;
 					}
@@ -84,7 +84,6 @@
 
 	.list-picker-new-button {
 		width: 100%;
-		margin-top: var(--spacer-3);
 	}
 
 	&.horizontal {
