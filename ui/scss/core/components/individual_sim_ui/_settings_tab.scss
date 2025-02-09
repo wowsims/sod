@@ -42,9 +42,11 @@
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 			grid-gap: var(--block-spacer);
 
-			& > .icon-picker {
-				margin-bottom: 0;
+			@include media-breakpoint-down(md) {
+				grid-template-columns: repeat(2, minmax(0, 1fr));
+			}
 
+			& > .icon-picker {
 				.form-label {
 					white-space: normal;
 				}
@@ -57,10 +59,6 @@
 	.settings-tab {
 		.tab-pane-content-container {
 			flex-direction: column;
-
-			.tab-panel-left {
-				margin-right: 0 !important;
-			}
 		}
 	}
 }
@@ -73,7 +71,6 @@
 
 				.tab-panel-col {
 					flex-basis: 100%;
-					margin-right: 0 !important;
 				}
 			}
 		}
