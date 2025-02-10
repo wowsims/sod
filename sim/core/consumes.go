@@ -1244,6 +1244,7 @@ func registerExplosivesCD(agent Agent, consumes *proto.Consumes) {
 type ExplosiveConfig struct {
 	ActionID     ActionID
 	SpellSchool  SpellSchool
+	DefenseType  DefenseType
 	MissileSpeed float64
 
 	SharedTimer *Timer
@@ -1259,6 +1260,9 @@ type ExplosiveConfig struct {
 	MaxDamage     float64
 	SelfMinDamage float64
 	SelfMaxDamage float64
+
+	IncludeAttackerModifiers bool
+	BonusCoefficient         float64
 }
 
 type OnHitAction func(sim *Simulation, spell *Spell, result *SpellResult)
@@ -1304,12 +1308,21 @@ func (character *Character) newBasicExplosiveSpellConfig(explosiveConfig Explosi
 		}
 	}
 
+	flags := SpellFlagCastTimeNoGCD
+	if !explosiveConfig.IncludeAttackerModifiers {
+		flags |= SpellFlagIgnoreAttackerModifiers
+	}
+
+	if explosiveConfig.DefenseType == DefenseTypeNone {
+		explosiveConfig.DefenseType = DefenseTypeMagic
+	}
+
 	return SpellConfig{
 		ActionID:     explosiveConfig.ActionID,
 		SpellSchool:  explosiveConfig.SpellSchool,
-		DefenseType:  DefenseTypeMagic,
+		DefenseType:  explosiveConfig.DefenseType,
 		ProcMask:     ProcMaskEmpty,
-		Flags:        SpellFlagCastTimeNoGCD | SpellFlagIgnoreAttackerModifiers,
+		Flags:        flags,
 		MissileSpeed: explosiveConfig.MissileSpeed,
 
 		Cast: CastConfig{
@@ -1330,6 +1343,7 @@ func (character *Character) newBasicExplosiveSpellConfig(explosiveConfig Explosi
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+		BonusCoefficient: explosiveConfig.BonusCoefficient,
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			if explosiveConfig.TriggerDelay > 0 {
@@ -1375,14 +1389,17 @@ func (character *Character) newSapperSpell(sharedTimer *Timer) *Spell {
 
 func (character *Character) newStratholmeHolyWaterSpell(sharedTimer *Timer) *Spell {
 	explosiveConfig := ExplosiveConfig{
-		ActionID:    StratholmeHolyWaterActionID,
-		SpellSchool: SpellSchoolHoly,
-		SharedTimer: sharedTimer,
-		MinDamage:   438,
-		MaxDamage:   562,
+		ActionID:                 StratholmeHolyWaterActionID,
+		SpellSchool:              SpellSchoolHoly,
+		DefenseType:              DefenseTypeMelee,
+		SharedTimer:              sharedTimer,
+		MinDamage:                438,
+		MaxDamage:                562,
+		IncludeAttackerModifiers: true,
+		BonusCoefficient:         1,
 	}
 	config := character.newBasicExplosiveSpellConfig(explosiveConfig)
-	config.BonusCoefficient = 1
+	var outcomeMagicHitAndBaseSpellCrit OutcomeApplier
 	config.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
 		for _, aoeTarget := range sim.Encounter.TargetUnits {
 			damageMultiplier := spell.GetDamageMultiplier()
@@ -1391,14 +1408,39 @@ func (character *Character) newStratholmeHolyWaterSpell(sharedTimer *Timer) *Spe
 				spell.SetMultiplicativeDamageBonus(0)
 				spell.SetAdditiveDamageBonus(0)
 			}
-			spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(explosiveConfig.MinDamage, explosiveConfig.MaxDamage), spell.OutcomeMagicHitAndCrit)
+			spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(explosiveConfig.MinDamage, explosiveConfig.MaxDamage), outcomeMagicHitAndBaseSpellCrit)
 			spell.SetMultiplicativeDamageBonus(damageMultiplier)
 			spell.ApplyAdditiveDamageBonus(additiveMultiplierPct)
 		}
 	}
-
-	return character.GetOrRegisterSpell(config)
+	holyWaterSpell := character.GetOrRegisterSpell(config)
+	baseSpellCrit := character.GetBaseStats()[stats.SpellCrit] / 100.0
+	outcomeMagicHitAndBaseSpellCrit = func(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
+		isPartialResist := result.DidResist()
+		if holyWaterSpell.MagicHitCheck(sim, attackTable) {
+			if sim.RandomFloat("Magical Crit Roll") < baseSpellCrit {
+				result.Outcome = OutcomeCrit
+				result.Damage *= holyWaterSpell.CritMultiplier(attackTable)
+				holyWaterSpell.SpellMetrics[result.Target.UnitIndex].Crits++
+				if isPartialResist {
+					holyWaterSpell.SpellMetrics[result.Target.UnitIndex].ResistedCrits++
+				}
+			} else {
+				result.Outcome = OutcomeHit
+				holyWaterSpell.SpellMetrics[result.Target.UnitIndex].Hits++
+				if isPartialResist {
+					holyWaterSpell.SpellMetrics[result.Target.UnitIndex].ResistedHits++
+				}
+			}
+		} else {
+			result.Outcome = OutcomeMiss
+			result.Damage = 0
+			holyWaterSpell.SpellMetrics[result.Target.UnitIndex].Misses++
+		}
+	}
+	return holyWaterSpell
 }
+
 func (character *Character) newObisidianBombSpell(sharedTimer *Timer) *Spell {
 	return character.GetOrRegisterSpell(character.newBasicExplosiveSpellConfig(ExplosiveConfig{
 		ActionID:     ObsidianBombActionID,
