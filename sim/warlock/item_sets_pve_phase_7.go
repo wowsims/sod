@@ -137,7 +137,7 @@ func (warlock *Warlock) applyNaxxramasTank2PBonus() {
 	}).AttachStatsBuff(bonusStats))
 }
 
-// Reduces the cooldown on your Infernal Armor ability by 30 sec and reduces the cooldown on your Demonic Grace ability by 10 sec.
+// Reduces the cooldown on your Infernal Armor ability by 10 sec and reduces the cooldown on your Demonic Grace ability by 3 sec.
 func (warlock *Warlock) applyNaxxramasTank4PBonus() {
 	if !warlock.HasRune(proto.WarlockRune_RuneCloakInfernalArmor) && !warlock.HasRune(proto.WarlockRune_RuneLegsDemonicGrace) {
 		return
@@ -153,11 +153,11 @@ func (warlock *Warlock) applyNaxxramasTank4PBonus() {
 	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_WarlockInfernalArmor,
 		Kind:      core.SpellMod_Cooldown_Flat,
-		TimeValue: -time.Second * 30,
+		TimeValue: -time.Second * 10,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_WarlockDemonicGrace,
 		Kind:      core.SpellMod_Cooldown_Flat,
-		TimeValue: -time.Second * 10,
+		TimeValue: -time.Second * 3,
 	})
 }
 
