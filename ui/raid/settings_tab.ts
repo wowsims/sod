@@ -3,21 +3,17 @@ import { EncounterPicker } from "../core/components/encounter_picker";
 import { IconPicker } from "../core/components/icon_picker";
 import { SavedDataManager } from "../core/components/saved_data_manager";
 import { SimTab } from "../core/components/sim_tab";
-
+import * as Tooltips from "../core/constants/tooltips.js";
 import { Encounter } from "../core/encounter";
-import { Raid } from "../core/raid";
-import { EventID } from "../core/typed_event";
-
 import { RaidBuffs } from "../core/proto/common";
 import { SavedEncounter } from "../core/proto/ui";
 import { ActionId } from "../core/proto_utils/action_id";
-
+import { Raid } from "../core/raid";
+import { EventID } from "../core/typed_event";
 import { AssignmentsPicker } from "./assignments_picker";
 import { BlessingsPicker } from "./blessings_picker";
 import { RaidSimUI } from "./raid_sim_ui";
 import { TanksPicker } from "./tanks_picker";
-
-import * as Tooltips from "../core/constants/tooltips.js";
 
 export class SettingsTab extends SimTab {
 	protected simUI: RaidSimUI;
@@ -74,7 +70,7 @@ export class SettingsTab extends SimTab {
 			header: { title: 'Consumables' }
 		});
 
-		let container = document.createElement('div');
+		const container = document.createElement('div');
 		container.classList.add('consumes-container');
 
 		contentBlock.bodyElement.appendChild(container);

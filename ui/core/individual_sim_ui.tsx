@@ -21,7 +21,7 @@ import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
 import { PresetBuild, PresetGear, PresetRotation } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
-import { APLRotation_Type as APLRotationType } from './proto/apl';
+import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
 	Consumes,
 	Debuffs,
@@ -405,6 +405,17 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.simHeader.addExportLink('60U SoD EP', new Exporters.Individual60UEPExporter(this.rootElem, this), false);
 		this.simHeader.addExportLink('Pawn EP', new Exporters.IndividualPawnEPExporter(this.rootElem, this), false);
 		//this.simHeader.addExportLink("CLI", new Exporters.IndividualCLIExporter(this.rootElem, this), true);
+	}
+
+	applyEmptyAplRotation(eventID: EventID) {
+		TypedEvent.freezeAllAndDo(() => {
+			this.player.setAplRotation(
+				eventID,
+				APLRotation.create({
+					type: APLRotationType.TypeAPL,
+				}),
+			);
+		});
 	}
 
 	applyDefaults(eventID: EventID) {

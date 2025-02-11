@@ -36,9 +36,9 @@ func (druid *Druid) applyNaxxramasBalance2PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask:  ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat,
-		Kind:       core.SpellMod_BonusDamage_Flat,
-		FloatValue: 0.20,
+		ClassMask: ClassSpellMask_DruidMoonfire | ClassSpellMask_DruidSunfire | ClassSpellMask_DruidSunfireCat,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  20,
 	}))
 }
 

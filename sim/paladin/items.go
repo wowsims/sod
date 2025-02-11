@@ -20,6 +20,7 @@ const (
 	LibramOfDraconicDestruction          = 221457
 	LibramOfTheDevoted                   = 228174
 	LibramOfAvenging                     = 232421
+	HammerOfTheFallenThane               = 227935
 	Truthbearer2H                        = 229749
 	Truthbearer1H                        = 229806
 	HammerOfTheLightbringer              = 230003
@@ -353,6 +354,27 @@ func init() {
 		}))
 
 		paladin.ItemSwap.RegisterProc(LibramOfRighteousness, aura)
+	})
+
+	// https://www.wowhead.com/classic/item=227935/hammer-of-the-fallen-thane
+	// Chance on hit: Steals 42 life from target enemy.
+	itemhelpers.CreateWeaponProcSpell(HammerOfTheFallenThane, "Hammer of the Fallen Thane", 7.0, func(character *core.Character) *core.Spell {
+		actionID := core.ActionID{SpellID: 462221}
+		healthMetrics := character.NewHealthMetrics(actionID)
+
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:         actionID,
+			SpellSchool:      core.SpellSchoolFire,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskEmpty,
+			BonusCoefficient: 0.2,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealDamage(sim, target, 42, spell.OutcomeAlwaysHit)
+				character.GainHealth(sim, result.Damage, healthMetrics)
+			},
+		})
 	})
 
 	core.AddEffectsToTest = true

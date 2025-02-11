@@ -243,6 +243,18 @@ var ItemSetWilfullJudgement = core.NewItemSet(core.ItemSet{
 //                            SoD Phase 6 Item Sets
 ///////////////////////////////////////////////////////////////////////////
 
+var ItemSetAvengersWill = core.NewItemSet(core.ItemSet{
+	Name: "Avenger's Will",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinTAQProt2P()
+		},
+		4: func(agent core.Agent) {
+			agent.(PaladinAgent).GetPaladin().applyPaladinTAQProt4P()
+		},
+	},
+})
+
 var ItemSetAvengersRadiance = core.NewItemSet(core.ItemSet{
 	Name: "Avenger's Radiance",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -461,7 +473,35 @@ func (paladin *Paladin) applyPaladinT2Prot6P() {
 }
 
 func (paladin *Paladin) applyPaladinTAQProt2P() {
-	// Empty Function (Not Implemented)
+	bonusLabel := "S03 - Item - TAQ - Paladin - Protection 2P Bonus"
+
+	if paladin.HasAura(bonusLabel) || paladin.Options.PersonalBlessing != proto.Blessings_BlessingOfSanctuary {
+		return
+	}
+
+	statDeps := []*stats.StatDependency{
+		paladin.NewDynamicMultiplyStat(stats.Stamina, 1.10),
+		paladin.NewDynamicMultiplyStat(stats.Agility, 1.10),
+		paladin.NewDynamicMultiplyStat(stats.Strength, 1.10),
+		paladin.NewDynamicMultiplyStat(stats.Intellect, 1.10),
+		paladin.NewDynamicMultiplyStat(stats.Spirit, 1.10),
+	}
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		ActionID:   core.ActionID{SpellID: PaladinTAQProt2P},
+		Label:      bonusLabel,
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			for _, dep := range statDeps {
+				aura.Unit.EnableBuildPhaseStatDep(sim, dep)
+			}
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			for _, dep := range statDeps {
+				aura.Unit.DisableBuildPhaseStatDep(sim, dep)
+			}
+		},
+	}))
 }
 
 func (paladin *Paladin) applyPaladinTAQProt4P() {

@@ -57,10 +57,11 @@ type Paladin struct {
 	Talents *proto.PaladinTalents
 	Options *proto.PaladinOptions
 
-	primarySeal        *core.Spell // the seal configured in options, available via "Cast Primary Seal"
-	primaryPaladinAura proto.PaladinAura
-	currentPaladinAura *core.Aura
-	sanctityAura       *core.Aura
+	primarySeal             *core.Spell // the seal configured in options, available via "Cast Primary Seal"
+	primaryPaladinAura      proto.PaladinAura
+	currentPaladinAura      *core.Aura
+	sanctityAura            *core.Aura
+	blessingOfSanctuaryAura *core.Aura
 
 	currentSeal      *core.Aura
 	prevSeal         *core.Aura

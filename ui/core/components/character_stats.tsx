@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
-import { PseudoStat, Spec, Stat } from '../proto/common.js';
+import { ItemSlot, PseudoStat, Spec, Stat, WeaponType } from '../proto/common.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
@@ -175,6 +175,9 @@ export class CharacterStats extends Component {
 
 	private updateStats(player: Player<any>) {
 		const playerStats = player.getCurrentStats();
+		const gear = player.getGear();
+		const mainHandWeapon = gear.getEquippedItem(ItemSlot.ItemSlotMainHand);
+		const offHandItem = gear.getEquippedItem(ItemSlot.ItemSlotOffHand);
 
 		const statMods = this.modifyDisplayStats ? this.modifyDisplayStats(this.player) : {};
 		if (!statMods.talents) statMods.talents = new Stats();
@@ -340,6 +343,31 @@ export class CharacterStats extends Component {
 							<span>Shadow</span>
 							<span>{this.spellSchoolHitDisplayString(finalStats, PseudoStat.PseudoStatSchoolHitShadow)}</span>
 						</div>
+					</div>,
+				);
+			} else if (stat.isPseudoStat() && stat.getPseudoStat() === PseudoStat.PseudoStatMeleeSpeedMultiplier && (mainHandWeapon || offHandItem)) {
+				const speedStat = finalStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier);
+				const offHandWeapon = offHandItem &&
+					offHandItem.item.weaponType !== WeaponType.WeaponTypeShield &&
+					offHandItem.item.weaponType !== WeaponType.WeaponTypeOffHand &&
+					offHandItem.item.weaponType !== WeaponType.WeaponTypeUnknown;
+				const mainHandLabel = offHandWeapon
+					? 'Main-hand'
+					: 'Weapon';
+				tooltipContent.appendChild(
+					<div className="ps-2">
+						{mainHandWeapon && (
+							<div className="character-stats-tooltip-row">
+								<span>{mainHandLabel} Speed</span>
+								<span>{(mainHandWeapon.item.weaponSpeed / speedStat).toFixed(2)}s</span>
+							</div>
+						)}
+						{offHandWeapon && (
+							<div className="character-stats-tooltip-row">
+								<span>Off-hand Speed</span>
+								<span>{(offHandItem.item.weaponSpeed / speedStat).toFixed(2)}s</span>
+							</div>
+						)}
 					</div>,
 				);
 			}

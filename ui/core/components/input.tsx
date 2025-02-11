@@ -1,5 +1,5 @@
 import clsx, { ClassValue } from 'clsx';
-import tippy from 'tippy.js';
+import tippy, { Content as TippyContent } from 'tippy.js';
 
 import { EventID, TypedEvent } from '../typed_event.js';
 import { existsInDOM } from '../utils';
@@ -10,7 +10,8 @@ import { Component } from './component.js';
  */
 export interface InputConfig<ModObject, T, V = T> {
 	label?: string;
-	labelTooltip?: string;
+	labelTooltip?: TippyContent;
+	description?: string | Element;
 	inline?: boolean;
 	id?: string;
 	extraCssClasses?: Array<string>;
@@ -62,6 +63,7 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 		if (config.inline) this.rootElem.classList.add('input-inline');
 		if (config.extraCssClasses) this.rootElem.classList.add(...config.extraCssClasses);
 		if (config.label) this.rootElem.appendChild(this.buildLabel(config));
+		if (config.description) this.rootElem.appendChild(this.buildDescription(config));
 
 		const event = config.changedEvent(this.modObject).on(() => {
 			const element = this.getInputElem();
@@ -94,6 +96,10 @@ export abstract class Input<ModObject, T, V = T> extends Component {
 		}
 
 		return label;
+	}
+
+	private buildDescription(config: InputConfig<ModObject, T, V>): JSX.Element {
+		return <div className="input-description">{config.description}</div>;
 	}
 
 	update() {

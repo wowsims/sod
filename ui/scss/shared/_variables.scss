@@ -192,9 +192,9 @@ $theme-colors: map-merge($theme-colors, $table-colors);
 :root {
 	--table-cell-padding: 0.5rem;
 
-	--container-padding-sm: var(--gap-width-sm);
-	--container-padding-lg: 3rem;
 	--container-padding-xxl: 4rem;
+	--container-padding-lg: 3rem;
+	--container-padding-sm: var(--gap-width-sm);
 	--container-padding: var(--gap-width-sm);
 
 	--section-spacer-sm: 2rem;
@@ -272,27 +272,6 @@ $btn-padding-y: 0.5rem;
 	--btn-font-size: #{$btn-font-size};
 }
 
-// Dropdown
-$dropdown-bg: $body-bg;
-$dropdown-border-width: 0;
-$dropdown-color: $white;
-$dropdown-link-active-bg: $dropdown-bg;
-$dropdown-link-color: $white;
-$dropdown-link-hover-color: $white;
-$dropdown-link-hover-bg: color-mix(in srgb, $body-bg, $black 30%);
-$dropdown-padding-y: 0;
-:root {
-	// Add custom variable to reuse outside dropdowns
-	--dropdown-bg: #{$dropdown-bg};
-	--dropdown-border-width: #{$dropdown-border-width};
-	--dropdown-color: #{$dropdown-color};
-	--dropdown-link-active-bg: #{$dropdown-link-active-bg};
-	--dropdown-link-color: #{$dropdown-link-color};
-	--dropdown-link-hover-color: #{$dropdown-link-hover-color};
-	--dropdown-link-hover-bg: #{$dropdown-link-hover-bg};
-	--dropdown-padding-y: #{$dropdown-padding-y};
-}
-
 // Input
 $input-bg: #1e2633;
 $input-border-color: #373d57;
@@ -304,6 +283,33 @@ $input-focus-box-shadow: 0 0 0.25rem color-mix(in srgb, $body-bg, $white 20%);
 $input-focus-color: $white;
 $input-font-size: var(--content-font-size);
 $input-placeholder-color: $border-color;
+
+:root {
+	--input-padding-y: #{$input-padding-y};
+	--input-padding-x: #{$input-padding-x};
+}
+
+// Dropdown
+$dropdown-bg: color-mix(in srgb, $body-bg, $white 5%);
+$dropdown-border-color: $input-border-color;
+$dropdown-color: $white;
+$dropdown-link-active-bg: $dropdown-bg;
+$dropdown-link-color: $white;
+$dropdown-link-hover-color: $white;
+$dropdown-link-hover-bg: color-mix(in srgb, $body-bg, $black 30%);
+$dropdown-padding-y: 0;
+
+:root {
+	// Add custom variable to reuse outside dropdowns
+	--dropdown-bg: #{$dropdown-bg};
+	--dropdown-border-width: #{$dropdown-border-width};
+	--dropdown-color: #{$dropdown-color};
+	--dropdown-link-active-bg: #{$dropdown-link-active-bg};
+	--dropdown-link-color: #{$dropdown-link-color};
+	--dropdown-link-hover-color: #{$dropdown-link-hover-color};
+	--dropdown-link-hover-bg: #{$dropdown-link-hover-bg};
+	--dropdown-padding-y: #{$dropdown-padding-y};
+}
 
 // Form
 $form-check-input-bg: $input-bg;
@@ -364,16 +370,6 @@ $tooltip-max-width-sm: 75vw;
 $tooltip-body-padding-x: var(--spacer-2);
 $tooltip-body-padding-y: var(--spacer-2);
 
-// Toast
-$toast-background-color: $tooltip-bg;
-$toast-border-color: $input-border-color;
-$toast-border-radius: 0;
-$toast-color: $body-color;
-$toast-header-color: $toast-color;
-$toast-header-background-color: $toast-background-color;
-$toast-padding-x: var(--spacer-3);
-$toast-padding-y: var(--spacer-3);
-
 :root {
 	--bs-tooltip-bg: #{$tooltip-bg};
 	--bs-tooltip-border: #{$tooltip-border};
@@ -384,3 +380,13 @@ $toast-padding-y: var(--spacer-3);
 	--bs-tooltip-body-padding-x: #{$tooltip-body-padding-x};
 	--bs-tooltip-body-padding-y: #{$tooltip-body-padding-y};
 }
+
+// Toast
+$toast-background-color: $tooltip-bg;
+$toast-border-color: $input-border-color;
+$toast-border-radius: 0;
+$toast-color: $body-color;
+$toast-header-color: $toast-color;
+$toast-header-background-color: $toast-background-color;
+$toast-padding-x: var(--spacer-3);
+$toast-padding-y: var(--spacer-3);

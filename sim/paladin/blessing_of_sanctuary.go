@@ -19,7 +19,7 @@ func (paladin *Paladin) registerBlessingOfSanctuary() {
 	}{
 		{minLevel: 1, maxLevel: 39, spellID: 20911, absorb: 10, damage: 14},
 		{minLevel: 40, maxLevel: 49, spellID: 20912, absorb: 14, damage: 21},
-		{minLevel: 50, maxLevel: 49, spellID: 20913, absorb: 19, damage: 28},
+		{minLevel: 50, maxLevel: 59, spellID: 20913, absorb: 19, damage: 28},
 		{minLevel: 60, maxLevel: 60, spellID: 20914, absorb: 24, damage: 35},
 	}
 
@@ -53,12 +53,8 @@ func (paladin *Paladin) registerBlessingOfSanctuary() {
 				},
 			})
 
-			paladin.RegisterAura(core.Aura{
-				Label:    "Blessing of Sanctuary Trigger",
-				Duration: core.NeverExpires,
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					aura.Activate(sim)
-				},
+			paladin.blessingOfSanctuaryAura = core.MakePermanent(paladin.RegisterAura(core.Aura{
+				Label: "Blessing of Sanctuary Trigger",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for i := range paladin.PseudoStats.BonusDamageTakenBeforeModifiers {
 						paladin.PseudoStats.BonusDamageTakenBeforeModifiers[i] -= absorb
@@ -74,8 +70,9 @@ func (paladin *Paladin) registerBlessingOfSanctuary() {
 						sanctuaryProc.Cast(sim, spell.Unit)
 					}
 				},
-			})
+			}))
 
+			return
 		}
 	}
 }

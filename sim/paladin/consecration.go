@@ -34,6 +34,8 @@ func (paladin *Paladin) registerConsecration() {
 	}
 
 	hasWrath := paladin.hasRune(proto.PaladinRune_RuneHeadWrath)
+	hasHallowedGround := paladin.hasRune(proto.PaladinRune_RuneChestHallowedGround)
+	healthMetrics := paladin.NewHealthMetrics(core.ActionID{SpellID: 458286})
 
 	for i, rank := range ranks {
 		rank := rank
@@ -88,6 +90,17 @@ func (paladin *Paladin) registerConsecration() {
 					outcomeApplier := core.Ternary(hasWrath, dot.OutcomeMagicHitAndSnapshotCrit, dot.Spell.OutcomeMagicHit)
 					for _, aoeTarget := range sim.Encounter.TargetUnits {
 						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, outcomeApplier)
+					}
+
+					if hasHallowedGround {
+						rawDamageResult := dot.CalcSnapshotDamage(sim, target, dot.Spell.OutcomeAlwaysHit)
+						healAmount := rawDamageResult.RawDamage() * 2.0
+						if sim.RandomFloat("Hallowed Ground") < dot.Spell.HealingCritChance() {
+							attackTable := paladin.AttackTables[paladin.UnitIndex][dot.Spell.CastType]
+							healAmount *= dot.Spell.CritMultiplier(attackTable)
+						}
+
+						paladin.GainHealth(sim, healAmount, healthMetrics)
 					}
 				},
 			},

@@ -3,6 +3,10 @@
 @import './apl_helpers';
 
 .apl-rotation-picker-root {
+	display: flex;
+	flex-direction: column;
+	gap: calc(var(--block-spacer) * 2);
+
 	.apl-list-item-picker,
 	.apl-prepull-action-picker {
 		flex-wrap: wrap;
@@ -19,10 +23,8 @@
 		}
 
 		> * > .list-picker-item-container {
-			background-color: rgba(21, 23, 30, 0.8);
-			border: 1px solid var(--bs-primary) !important;
+			background-color: color-mix(in srgb, var(--bs-body-bg) 80%, transparent);
 			padding: var(--spacer-2);
-			margin-bottom: var(--spacer-2);
 
 			.list-picker-item-header {
 				align-items: flex-start;
@@ -44,10 +46,6 @@
 		.list-picker-item-container {
 			align-items: center;
 		}
-
-		.apl-picker-builder-root {
-			align-items: center;
-		}
 	}
 
 	.apl-list-item-picker .apl-prepull-actions-only,
@@ -63,6 +61,24 @@
 		width: unset;
 		margin: 0;
 	}
+
+	.apl-validation-information {
+		color: var(--bs-off-white) !important;
+		text-shadow: 0 0 var(--spacer-2) var(--bs-link-color);
+	}
+
+	.apl-validation-warning {
+		color: var(--bs-link-warning) !important;
+		text-shadow:
+			0 0 var(--spacer-2) var(--bs-danger),
+			0 0 var(--spacer-2) var(--bs-danger),
+			0 0 var(--spacer-2) var(--bs-danger);
+	}
+
+	.apl-validation-error {
+		color: var(--bs-danger) !important;
+		text-shadow: 0 0 var(--spacer-2) var(--bs-off-white);
+	}
 }
 
 .apl-list-item-picker-root {
@@ -76,7 +92,7 @@
 	}
 
 	.form-label {
-		font-size: $btn-font-size;
+		font-size: var(--btn-font-size);
 		line-height: 1.5;
 	}
 
@@ -133,7 +149,7 @@
 
 	.apl-picker-builder-multi {
 		padding-left: var(--spacer-2);
-		border-left: 1px solid $border-color;
+		border-left: 1px solid var(--bs-border-color);
 	}
 
 	.list-picker-item-header {
@@ -152,7 +168,7 @@
 		.list-picker-item-container {
 			padding: 0 !important;
 			border: 0 !important;
-			margin-bottom: 0;
+			margin-bottom: 0 !important;
 			display: flex;
 
 			.list-picker-item-header {
@@ -167,12 +183,6 @@
 .apl-action-picker-action {
 	display: flex;
 	flex-direction: row;
-	flex-wrap: wrap;
-
-	.dropdown-picker-root {
-		flex-direction: row;
-		align-items: center;
-	}
 }
 
 .hide-picker-root {
