@@ -27,7 +27,7 @@ var ItemSetBonescytheArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Backstab, Ambush, and Instant Poison deal 20% more damage. You heal for 5% of all damage done by your Poisons.
+// Your Ambush and Instant Poison deal 20% more damage. Your Backstab deals 10% more damage (Does not benefit Mutilate). You heal for 5% of all damage done by your Poisons.
 func (rogue *Rogue) applyNaxxramasDamage2PBonus() {
 	label := "S03 - Item - Naxxramas - Rogue - Damage 2P Bonus"
 	if rogue.HasAura(label) {
@@ -51,7 +51,7 @@ func (rogue *Rogue) applyNaxxramasDamage2PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_RogueBackstab,
-		IntValue:  5,
+		IntValue:  10,
 	})
 }
 
