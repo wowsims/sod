@@ -129,8 +129,8 @@ func (ai *LoathebAI) registerRemoveCurse(target *core.Target) {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for _, aura := range ai.Target.GetAuras() {
-				if aura.IsActive() && aura.DispelType == core.DispelType_Curse /*&& aura.Duration < core.NeverExpires*/ {
+			for _, aura := range ai.Target.GetAurasWithDispelType(core.DispelType_Curse) {
+				if aura.IsActive() && aura.Duration < core.NeverExpires { // Ensures raid setting debuffs stay active
 					aura.Deactivate(sim)
 				}
 			}

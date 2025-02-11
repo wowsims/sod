@@ -340,6 +340,7 @@ type auraTracker struct {
 	auras []*Aura
 
 	aurasByTag map[string][]*Aura
+	aurasbyDispelType map[DispelType][]*Aura
 
 	// IDs of Auras that may expire and are currently active, in no particular order.
 	activeAuras []*Aura
@@ -366,6 +367,7 @@ func newAuraTracker() auraTracker {
 		resetEffects:           []ResetEffect{},
 		ExclusiveEffectManager: &ExclusiveEffectManager{},
 		aurasByTag:             make(map[string][]*Aura),
+		aurasbyDispelType:      make(map[DispelType][]*Aura),
 	}
 }
 
@@ -444,6 +446,9 @@ func (at *auraTracker) registerAura(unit *Unit, aura Aura) *Aura {
 	if newAura.Tag != "" {
 		at.aurasByTag[newAura.Tag] = append(at.aurasByTag[newAura.Tag], newAura)
 	}
+	if newAura.DispelType != DispelType_None {
+		at.aurasbyDispelType[newAura.DispelType] = append(at.aurasbyDispelType[newAura.DispelType], newAura)
+	}
 
 	return newAura
 }
@@ -506,6 +511,48 @@ func (at *auraTracker) HasActiveAuraWithTag(tag string) bool {
 }
 func (at *auraTracker) HasActiveAuraWithTagExcludingAura(tag string, excludeAura *Aura) bool {
 	for _, aura := range at.aurasByTag[tag] {
+		if aura.active && aura != excludeAura {
+			return true
+		}
+	}
+	return false
+}
+
+func (at *auraTracker) GetAurasWithDispelType(dispeltype DispelType) []*Aura {
+	return at.aurasbyDispelType[dispeltype]
+}
+
+func (at *auraTracker) HasAuraWithDispelType(dispeltype DispelType) bool {
+	return len(at.aurasbyDispelType[dispeltype]) > 0
+}
+
+func (at *auraTracker) GetActiveAuraWithDispelType(dispeltype DispelType) *Aura {
+	for _, aura := range at.aurasbyDispelType[dispeltype] {
+		if aura.active {
+			return aura
+		}
+	}
+	return nil
+}
+func (at *auraTracker) NumActiveAurasWithDispelType(dispeltype DispelType) int32 {
+	count := int32(0)
+	for _, aura := range at.aurasbyDispelType[dispeltype] {
+		if aura.active {
+			count++
+		}
+	}
+	return count
+}
+func (at *auraTracker) HasActiveAuraWithDispelType(dispeltype DispelType) bool {
+	for _, aura := range at.aurasbyDispelType[dispeltype] {
+		if aura.active {
+			return true
+		}
+	}
+	return false
+}
+func (at *auraTracker) HasActiveAuraWithDispelTypeExcludingAura(dispeltype DispelType, excludeAura *Aura) bool {
+	for _, aura := range at.aurasbyDispelType[dispeltype] {
 		if aura.active && aura != excludeAura {
 			return true
 		}
