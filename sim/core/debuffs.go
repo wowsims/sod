@@ -664,6 +664,7 @@ func CurseOfElementsAura(target *Unit, playerLevel int32) *Aura {
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Elements",
+		DispelType: DispelType_Curse,
 		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Minute * 5,
 	})
@@ -698,6 +699,7 @@ func CurseOfShadowAura(target *Unit, playerLevel int32) *Aura {
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Shadow",
+		DispelType: DispelType_Curse,
 		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Minute * 5,
 	})
@@ -802,6 +804,7 @@ func HemorrhageAura(target *Unit, casterLevel int32) *Aura {
 func CurseOfVulnerabilityAura(target *Unit) *Aura {
 	return target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Vulnerability",
+		DispelType: DispelType_Curse,
 		ActionID: ActionID{SpellID: 427143},
 		Duration: time.Second * 15,
 		OnGain: func(aura *Aura, sim *Simulation) {
@@ -1069,6 +1072,7 @@ func CurseOfRecklessnessAura(target *Unit, playerLevel int32) *Aura {
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Recklessness",
+		DispelType: DispelType_Curse,
 		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Minute * 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
@@ -1183,6 +1187,7 @@ func CurseOfWeaknessAura(target *Unit, points int32, playerLevel int32) *Aura {
 
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Curse of Weakness" + strconv.Itoa(int(points)),
+		DispelType: DispelType_Curse,
 		ActionID: ActionID{SpellID: spellID},
 		Duration: time.Minute * 2,
 		OnGain: func(aura *Aura, sim *Simulation) {

@@ -51,6 +51,9 @@ type Aura struct {
 	// For easily grouping auras.
 	Tag string
 
+	// Dispel type for this aura
+	DispelType DispelType
+
 	ActionID        ActionID // If set, metrics will be tracked for this aura.
 	ActionIDForProc ActionID // If set, indicates that this aura is a trigger aura for the specified proc.
 
