@@ -76,9 +76,9 @@ func NewPatchwerkAI() core.AIFactory {
 
 func (ai *PatchwerkAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.Target = target
-	ai.isHatefulTank = config.TargetInputs[0].BoolValue
-	ai.hatefulPercent = config.TargetInputs[1].NumberValue / 100.0
-	ai.authorityFrozenWastesStacks = config.TargetInputs[2].EnumValue
+	ai.isHatefulTank = config.TargetInputs[1].BoolValue
+	ai.hatefulPercent = config.TargetInputs[2].NumberValue / 100.0
+	ai.authorityFrozenWastesStacks = config.TargetInputs[0].EnumValue
 
 	ai.registerHatefulStrikePrimerSpell(ai.Target)
 	ai.registerHatefulStrikeSpell(ai.Target)
@@ -95,7 +95,7 @@ func (ai *PatchwerkAI) registerHatefulStrikePrimerSpell(target *core.Target) {
 	ai.HatefulStrikePrimer = target.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,
 		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskDirect,
+		ProcMask:    core.ProcMaskRanged,
 		Flags:       core.SpellFlagMeleeMetrics,
 
 		Cast: core.CastConfig{
@@ -105,10 +105,8 @@ func (ai *PatchwerkAI) registerHatefulStrikePrimerSpell(target *core.Target) {
 			},
 		},
 
-		DamageMultiplier: 1,
-
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// Spell does nothing but does proc things such as lightning shield.
+			spell.CalcAndDealOutcome(sim, target, spell.OutcomeRangedHitNoHitCounter)
 		},
 	})
 }
