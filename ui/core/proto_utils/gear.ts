@@ -1,4 +1,4 @@
-import { EquipmentSpec, ItemSlot, ItemSpec, ItemSwap, Profession, SimDatabase, SimEnchant, SimItem } from '../proto/common.js';
+import { EquipmentSpec, ItemSlot, ItemSpec, Profession, SimDatabase, SimEnchant, SimItem } from '../proto/common.js';
 import { UIEnchant as Enchant, UIItem as Item } from '../proto/ui.js';
 import { isBluntWeaponType, isSharpWeaponType } from '../proto_utils/utils.js';
 import { distinct, equalsOrBothNull, getEnumValues } from '../utils.js';
@@ -178,7 +178,7 @@ export class Gear extends BaseGear {
 }
 
 /**
- * Represents a item swap gear set, including items/enchants.
+ * Represents a item swap gear set, including items/enchants/bonusStats.
  *
  * This is an immutable type.
  */
@@ -188,18 +188,10 @@ export class ItemSwapGear extends BaseGear {
 	}
 
 	getItemSlots(): ItemSlot[] {
-		return [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged];
+		return getEnumValues(ItemSlot);
 	}
 
 	withEquippedItem(newSlot: ItemSlot, newItem: EquippedItem | null, canDualWield2H: boolean): ItemSwapGear {
 		return new ItemSwapGear(this.withEquippedItemInternal(newSlot, newItem, canDualWield2H));
-	}
-
-	toProto(): ItemSwap {
-		return ItemSwap.create({
-			mhItem: this.gear[ItemSlot.ItemSlotMainHand]?.asSpec(),
-			ohItem: this.gear[ItemSlot.ItemSlotOffHand]?.asSpec(),
-			rangedItem: this.gear[ItemSlot.ItemSlotRanged]?.asSpec(),
-		});
 	}
 }

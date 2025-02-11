@@ -35,9 +35,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatShadowPower,
 		Stat.StatMP5,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -63,10 +61,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
-	
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
+
 	// TODO: Figure out a way to get the stat but right now this comes out wrong
 	// due to pet scaling and player getting some dynamic buffs which we cant get here
 	// modifyDisplayStats: (player: Player<Spec.SpecWarlock>) => {
@@ -121,21 +117,24 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		gear: Presets.DefaultGear.gear,
 
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.32,
-			[Stat.StatSpirit]: 0.63,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellDamage]: 1,
-			[Stat.StatFirePower]: 1,
-			[Stat.StatShadowPower]: 1,
-			[Stat.StatSpellHit]: 10.69,
-			[Stat.StatSpellCrit]: 16.93,
-			[Stat.StatStamina]: 0.01,
-			[Stat.StatFireResistance]: 0.5,
-		}, {
-			[PseudoStat.PseudoStatCastSpeedMultiplier]: 3.47,
-			[PseudoStat.PseudoStatTimewornBonus]: 21.59,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatIntellect]: 0.32,
+				[Stat.StatSpirit]: 0.63,
+				[Stat.StatSpellPower]: 1,
+				[Stat.StatSpellDamage]: 1,
+				[Stat.StatFirePower]: 1,
+				[Stat.StatShadowPower]: 1,
+				[Stat.StatSpellHit]: 10.69,
+				[Stat.StatSpellCrit]: 16.93,
+				[Stat.StatStamina]: 0.01,
+				[Stat.StatFireResistance]: 0.5,
+			},
+			{
+				[PseudoStat.PseudoStatCastSpeedMultiplier]: 3.47,
+				[PseudoStat.PseudoStatTimewornBonus]: 21.59,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -180,9 +179,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 	otherInputs: {
 		inputs: [WarlockInputs.PetPoolManaInput(), OtherInputs.DistanceFromTarget, OtherInputs.ChannelClipDelay],
 	},
-	itemSwapConfig: {
-		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
-	},
+	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

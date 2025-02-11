@@ -50,99 +50,99 @@ character_stats_results: {
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-BloodGuard'sCracklingLeather"
  value: {
-  dps: 1037.49465
-  tps: 3299.28733
+  dps: 1037.17925
+  tps: 3299.02153
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-BloodGuard'sLeather"
  value: {
-  dps: 1110.05646
-  tps: 3543.0674
+  dps: 1109.51732
+  tps: 3541.59081
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-BloodGuard'sRestoredLeather"
  value: {
-  dps: 1001.67355
-  tps: 3185.18473
+  dps: 1005.06566
+  tps: 3196.66853
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
  value: {
-  dps: 1908.63305
-  tps: 5017.95825
+  dps: 1917.16144
+  tps: 5031.07721
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-EmeraldDreamkeeperGarb"
  value: {
-  dps: 1014.26257
-  tps: 3234.0334
+  dps: 1013.70074
+  tps: 3229.80081
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-EmeraldLeathers"
  value: {
-  dps: 1099.85898
-  tps: 3518.57288
+  dps: 1102.49909
+  tps: 3527.15417
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-EmeraldWatcherVestments"
  value: {
-  dps: 1018.77502
-  tps: 3240.57644
+  dps: 1018.21319
+  tps: 3236.34385
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-ExiledProphet'sRaiment"
  value: {
-  dps: 1805.41545
-  tps: 4748.71612
+  dps: 1809.65596
+  tps: 4756.78969
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-FeralheartRaiment"
  value: {
-  dps: 1024.48142
-  tps: 3266.69654
+  dps: 1028.46074
+  tps: 3280.76752
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-Knight-Lieutenant'sCracklingLeather"
  value: {
-  dps: 1037.49465
-  tps: 3299.28733
+  dps: 1037.17925
+  tps: 3299.02153
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLeather"
  value: {
-  dps: 1110.05646
-  tps: 3543.0674
+  dps: 1109.51732
+  tps: 3541.59081
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-Knight-Lieutenant'sRestoredLeather"
  value: {
-  dps: 1001.67355
-  tps: 3185.18473
+  dps: 1005.06566
+  tps: 3196.66853
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-AllItems-LostWorshipper'sArmor"
  value: {
-  dps: 1840.27906
-  tps: 4833.53431
+  dps: 1842.26487
+  tps: 4838.71627
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 2391.00896
-  tps: 6544.28575
+  dps: 2392.31721
+  tps: 6547.75628
  }
 }
 dps_results: {
@@ -190,7 +190,7 @@ dps_results: {
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2392.80406
-  tps: 6534.82016
+  dps: 2396.42355
+  tps: 6542.68729
  }
 }

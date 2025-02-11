@@ -265,22 +265,8 @@ func (shaman *Shaman) applyNaxxramasTank4PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.shamanisticRageDRMultiplier += shamRageDRBonus
-
-			oldOnGain := shaman.ShamanisticRageAura.OnGain
-			shaman.ShamanisticRageAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnGain(aura, sim)
-
-				shaman.MultiplyAttackSpeed(sim, attackCastSpeedBonus)
-				shaman.MultiplyCastSpeed(attackCastSpeedBonus)
-			}
-
-			oldOnExpire := shaman.ShamanisticRageAura.OnExpire
-			shaman.ShamanisticRageAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-				oldOnExpire(aura, sim)
-
-				shaman.MultiplyAttackSpeed(sim, 1/attackCastSpeedBonus)
-				shaman.MultiplyCastSpeed(1 / attackCastSpeedBonus)
-			}
+			shaman.ShamanisticRageAura.AttachMultiplyAttackSpeed(&shaman.Unit, attackCastSpeedBonus)
+			shaman.ShamanisticRageAura.AttachMultiplyCastSpeed(&shaman.Unit, attackCastSpeedBonus)
 		},
 	})
 }

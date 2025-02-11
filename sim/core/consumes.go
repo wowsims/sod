@@ -1085,13 +1085,8 @@ func applyMiscConsumes(character *Character, miscConsumes *proto.MiscConsumes) {
 			Label:    "Juju Escape",
 			ActionID: actionID,
 			Duration: time.Second * 10,
-			OnGain: func(aura *Aura, sim *Simulation) {
-				aura.Unit.AddStatDynamic(sim, stats.Dodge, 5*DodgeRatingPerDodgeChance)
-			},
-			OnExpire: func(aura *Aura, sim *Simulation) {
-				aura.Unit.AddStatDynamic(sim, stats.Dodge, -5*DodgeRatingPerDodgeChance)
-			},
-		})
+		}).AttachStatBuff(stats.Dodge, 5*DodgeRatingPerDodgeChance)
+
 		jujuEscapeSpell := character.RegisterSpell(SpellConfig{
 			ActionID: actionID,
 			ProcMask: ProcMaskEmpty,

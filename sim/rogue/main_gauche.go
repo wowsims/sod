@@ -19,18 +19,12 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		Label:    "Main Gauche Buff",
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneMainGauche)},
 		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.AddStatDynamic(sim, stats.Parry, 100*core.ParryRatingPerParryChance)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.AddStatDynamic(sim, stats.Parry, -100*core.ParryRatingPerParryChance)
-		},
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.DidParry() {
 				aura.Deactivate(sim)
 			}
 		},
-	})
+	}).AttachStatBuff(stats.Parry, 100*core.ParryRatingPerParryChance)
 
 	mainGaucheSSAura := rogue.RegisterAura(core.Aura{
 		Label:    "Main Gauche Sinister Strike Discount",

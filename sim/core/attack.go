@@ -254,6 +254,7 @@ type WeaponAttack struct {
 
 	curSwingSpeed    float64
 	curSwingDuration time.Duration
+	enabled          bool
 }
 
 func (wa *WeaponAttack) getWeapon() *Weapon {
@@ -393,6 +394,10 @@ func (wa *WeaponAttack) updateSwingDuration(curSwingSpeed float64) {
 }
 
 func (wa *WeaponAttack) addWeaponAttack(sim *Simulation, swingSpeed float64) {
+	if !wa.enabled {
+		return
+	}
+
 	wa.updateSwingDuration(swingSpeed)
 	sim.addWeaponAttack(wa)
 	sim.rescheduleWeaponAttack(wa.swingAt)
@@ -404,11 +409,11 @@ type AutoAttacks struct {
 
 	IsDualWielding bool
 
+	character *Character
+
 	mh     WeaponAttack
 	oh     WeaponAttack
 	ranged WeaponAttack
-
-	enabled bool
 }
 
 // Options for initializing auto attacks.
@@ -434,6 +439,8 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		AutoSwingRanged: options.AutoSwingRanged,
 
 		IsDualWielding: options.OffHand.SwingSpeed != 0,
+
+		character: agent.GetCharacter(),
 
 		mh: WeaponAttack{
 			agent:        agent,
@@ -592,12 +599,18 @@ func (aa *AutoAttacks) finalize() {
 	}
 }
 
+func (aa *AutoAttacks) anyEnabled() bool {
+	return aa.mh.enabled || aa.oh.enabled || aa.ranged.enabled
+}
+
 func (aa *AutoAttacks) reset(sim *Simulation) {
 	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
 		return
 	}
 
-	aa.enabled = false
+	aa.mh.enabled = false
+	aa.oh.enabled = false
+	aa.ranged.enabled = false
 
 	aa.mh.swingAt = NeverExpires
 	aa.oh.swingAt = NeverExpires
@@ -647,25 +660,32 @@ func (aa *AutoAttacks) reset(sim *Simulation) {
 }
 
 func (aa *AutoAttacks) startPull(sim *Simulation) {
-
 	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
 		return
 	}
 
-	if aa.enabled {
+	if aa.mh.unit.CurrentTarget == nil {
 		return
 	}
 
-	aa.enabled = true
+	if aa.anyEnabled() {
+		return
+	}
 
-	if aa.AutoSwingMelee && aa.mh.unit.DistanceFromTarget <= MaxMeleeAttackDistance {
-		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
-		if aa.IsDualWielding {
+	if aa.AutoSwingMelee {
+		if aa.mh.unit.DistanceFromTarget <= MaxMeleeAttackDistance {
+			aa.mh.enabled = true
+			aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
+		}
+
+		if aa.IsDualWielding && aa.oh.unit.DistanceFromTarget <= MaxMeleeAttackDistance {
+			aa.oh.enabled = true
 			aa.oh.addWeaponAttack(sim, aa.mh.curSwingSpeed)
 		}
 	}
 
 	if aa.AutoSwingRanged && aa.mh.unit.DistanceFromTarget >= MinRangedAttackDistance {
+		aa.ranged.enabled = true
 		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 	}
 }
@@ -673,53 +693,84 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 // Stops the auto swing action for the rest of the iteration. Used for pets
 // after being disabled.
 func (aa *AutoAttacks) CancelAutoSwing(sim *Simulation) {
-	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
-		return
-	}
-
-	if !aa.enabled {
-		return
-	}
-
-	aa.enabled = false
-
-	if aa.AutoSwingMelee {
-		sim.removeWeaponAttack(&aa.mh)
-		if aa.IsDualWielding {
-			sim.removeWeaponAttack(&aa.oh)
-		}
-	}
-
-	if aa.AutoSwingRanged {
-		sim.removeWeaponAttack(&aa.ranged)
-	}
+	aa.CancelMeleeSwing(sim)
+	aa.CancelRangedSwing(sim)
 }
 
 // Re-enables the auto swing action for the iteration
 func (aa *AutoAttacks) EnableAutoSwing(sim *Simulation) {
-	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
+	aa.EnableMeleeSwing(sim)
+	aa.EnableRangedSwing(sim)
+}
+
+func (aa *AutoAttacks) EnableMeleeSwing(sim *Simulation) {
+	if !aa.AutoSwingMelee {
 		return
 	}
 
-	if aa.enabled {
+	if aa.mh.unit.CurrentTarget == nil {
 		return
 	}
 
-	aa.enabled = true
-
-	if aa.AutoSwingMelee && aa.mh.unit.DistanceFromTarget <= MaxMeleeAttackDistance {
-		aa.mh.swingAt = max(aa.mh.swingAt, sim.CurrentTime, 0)
+	aa.mh.swingAt = max(aa.mh.swingAt, sim.CurrentTime, 0)
+	if aa.mh.unit.DistanceFromTarget <= MaxMeleeAttackDistance && !aa.mh.enabled {
+		aa.mh.enabled = true
 		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
-		if aa.IsDualWielding {
-			aa.oh.swingAt = max(aa.oh.swingAt, sim.CurrentTime, 0)
+	}
+
+	if aa.IsDualWielding && !aa.oh.enabled {
+		aa.oh.swingAt = max(aa.oh.swingAt, sim.CurrentTime, 0)
+		if aa.oh.unit.DistanceFromTarget <= MaxMeleeAttackDistance {
+			aa.oh.enabled = true
 			aa.oh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 		}
 	}
 
-	if aa.AutoSwingRanged && aa.mh.unit.DistanceFromTarget >= MinRangedAttackDistance {
-		aa.ranged.swingAt = max(aa.ranged.swingAt, sim.CurrentTime, 0)
+	if !aa.IsDualWielding && aa.oh.enabled {
+		sim.removeWeaponAttack(&aa.oh)
+		aa.oh.enabled = false
+	}
+}
+
+func (aa *AutoAttacks) EnableRangedSwing(sim *Simulation) {
+	if !aa.AutoSwingRanged || aa.ranged.enabled {
+		return
+	}
+
+	if aa.ranged.unit.CurrentTarget == nil {
+		return
+	}
+
+	aa.ranged.swingAt = max(aa.ranged.swingAt, sim.CurrentTime, 0)
+	if aa.ranged.unit.DistanceFromTarget >= MinRangedAttackDistance {
+		aa.ranged.enabled = true
 		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 	}
+}
+
+func (aa *AutoAttacks) CancelMeleeSwing(sim *Simulation) {
+	if !aa.AutoSwingMelee {
+		return
+	}
+
+	if aa.mh.enabled {
+		sim.removeWeaponAttack(&aa.mh)
+		aa.mh.enabled = false
+	}
+
+	if aa.IsDualWielding && aa.oh.enabled {
+		aa.oh.enabled = false
+		sim.removeWeaponAttack(&aa.oh)
+	}
+}
+
+func (aa *AutoAttacks) CancelRangedSwing(sim *Simulation) {
+	if !aa.AutoSwingRanged || !aa.ranged.enabled {
+		return
+	}
+
+	aa.ranged.enabled = false
+	sim.removeWeaponAttack(&aa.ranged)
 }
 
 // The amount of time between two MH swings.
@@ -738,16 +789,16 @@ func (aa *AutoAttacks) RangedSwingSpeed() time.Duration {
 }
 
 func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
-	if !aa.enabled {
+	if !aa.anyEnabled() {
 		return
 	}
 
-	if aa.AutoSwingRanged {
+	if aa.AutoSwingRanged && aa.ranged.enabled {
 		aa.ranged.updateSwingDuration(aa.ranged.unit.RangedSwingSpeed())
 		// ranged attack speed changes aren't applied mid-"swing"
 	}
 
-	if aa.AutoSwingMelee {
+	if aa.AutoSwingMelee && aa.mh.enabled {
 		oldSwingSpeed := aa.mh.curSwingSpeed
 		aa.mh.updateSwingDuration(aa.mh.unit.SwingSpeed())
 		f := oldSwingSpeed / aa.mh.curSwingSpeed
@@ -758,7 +809,7 @@ func (aa *AutoAttacks) UpdateSwingTimers(sim *Simulation) {
 
 		sim.rescheduleWeaponAttack(aa.mh.swingAt)
 
-		if aa.IsDualWielding {
+		if aa.IsDualWielding && aa.oh.enabled {
 			aa.oh.updateSwingDuration(aa.mh.curSwingSpeed)
 
 			if remainingSwingTime := aa.oh.swingAt - sim.CurrentTime; remainingSwingTime > 0 {
@@ -876,6 +927,15 @@ func (aa *AutoAttacks) StopMeleeUntil(sim *Simulation, readyAt time.Duration, de
 	}
 }
 
+func (aa *AutoAttacks) StopRangedUntil(sim *Simulation, readyAt time.Duration) {
+	if !aa.AutoSwingRanged { // if not auto swinging, don't auto restart.
+		return
+	}
+
+	aa.ranged.swingAt = readyAt + aa.ranged.curSwingDuration
+	sim.rescheduleWeaponAttack(aa.ranged.swingAt)
+}
+
 // Delays all swing timers for the specified amount. Only used by Slam.
 func (aa *AutoAttacks) DelayMeleeBy(sim *Simulation, delay time.Duration) {
 	if delay <= 0 {
@@ -915,10 +975,11 @@ func (aa *AutoAttacks) NextRangedAttackAt() time.Duration {
 	return aa.ranged.swingAt
 }
 
-type PPMManager struct {
-	ppm         float64
-	procMasks   []ProcMask
-	procChances []float64
+type DynamicProcManager struct {
+	ppm             float64
+	fixedProcChance float64
+	procMasks       []ProcMask
+	procChances     []float64
 
 	// For feral druids, certain PPM effects use their equipped weapon speed
 	// instead of their paw attack speed.
@@ -927,10 +988,10 @@ type PPMManager struct {
 }
 
 // Returns whether the effect procced.
-func (ppmm *PPMManager) Proc(sim *Simulation, procMask ProcMask, label string) bool {
-	for i, m := range ppmm.procMasks {
+func (dpm *DynamicProcManager) Proc(sim *Simulation, procMask ProcMask, label string) bool {
+	for i, m := range dpm.procMasks {
 		if m.Matches(procMask) {
-			return sim.RandomFloat(label) < ppmm.procChances[i]
+			return sim.RandomFloat(label) < dpm.procChances[i]
 		}
 	}
 	return false
@@ -939,74 +1000,135 @@ func (ppmm *PPMManager) Proc(sim *Simulation, procMask ProcMask, label string) b
 // Returns whether the effect procced.
 // This is different from Proc() in that yellow melee hits use a proc chance based on the equipped
 // weapon speed rather than the base attack speed. This distinction matters for feral druids.
-func (ppmm *PPMManager) ProcWithWeaponSpecials(sim *Simulation, procMask ProcMask, label string) bool {
+func (dpm *DynamicProcManager) ProcWithWeaponSpecials(sim *Simulation, procMask ProcMask, label string) bool {
 	if procMask.Matches(ProcMaskMeleeMHSpecial) {
-		return sim.RandomFloat(label) < ppmm.mhSpecialProcChance
+		return sim.RandomFloat(label) < dpm.mhSpecialProcChance
 	} else if procMask.Matches(ProcMaskMeleeOHSpecial) {
-		return sim.RandomFloat(label) < ppmm.ohSpecialProcChance
+		return sim.RandomFloat(label) < dpm.ohSpecialProcChance
 	} else {
-		return ppmm.Proc(sim, procMask, label)
+		return dpm.Proc(sim, procMask, label)
 	}
 }
 
-func (ppmm *PPMManager) Chance(procMask ProcMask) float64 {
-	for i, m := range ppmm.procMasks {
+func (dpm *DynamicProcManager) Chance(procMask ProcMask) float64 {
+	for i, m := range dpm.procMasks {
 		if m.Matches(procMask) {
-			return ppmm.procChances[i]
+			return dpm.procChances[i]
 		}
 	}
 	return 0
 }
 
-func (ppmm *PPMManager) GetPPM() float64 {
-	return ppmm.ppm
+func (dpm *DynamicProcManager) GetPPM() float64 {
+	return dpm.ppm
 }
 
-func (aa *AutoAttacks) NewPPMManager(ppm float64, procMask ProcMask) PPMManager {
-	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
-		return PPMManager{}
+// PPMManager for static ProcMasks
+func (aa *AutoAttacks) NewPPMManager(ppm float64, procMask ProcMask) *DynamicProcManager {
+	dpm := aa.newDynamicProcManager(ppm, 0, procMask)
+
+	if aa.character != nil {
+		aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
+			dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, 0, procMask)
+		})
 	}
 
-	ppmm := PPMManager{ppm: ppm, procMasks: make([]ProcMask, 0, 2), procChances: make([]float64, 0, 2)}
+	return &dpm
+}
+
+// PPMManager for static ProcMasks and no item swap callback
+func (aa *AutoAttacks) NewStaticPPMManager(ppm float64, procMask ProcMask) *DynamicProcManager {
+	dpm := aa.newDynamicProcManager(ppm, 0, procMask)
+
+	return &dpm
+}
+
+// Dynamic Proc Manager for dynamic ProcMasks on weapon enchants
+func (aa *AutoAttacks) NewDynamicProcManagerForEnchant(effectID int32, ppm float64, fixedProcChance float64) *DynamicProcManager {
+	return aa.newDynamicProcManagerWithDynamicProcMask(ppm, fixedProcChance, func() ProcMask {
+		return aa.character.getCurrentProcMaskForWeaponEnchant(effectID)
+	})
+}
+
+// Dynamic Proc Manager for dynamic ProcMasks on weapon effects
+func (aa *AutoAttacks) NewDynamicProcManagerForWeaponEffect(itemID int32, ppm float64, fixedProcChance float64) *DynamicProcManager {
+	return aa.newDynamicProcManagerWithDynamicProcMask(ppm, fixedProcChance, func() ProcMask {
+		return aa.character.getCurrentProcMaskForWeaponEffect(itemID)
+	})
+}
+
+func (aa *AutoAttacks) newDynamicProcManagerWithDynamicProcMask(ppm float64, fixedProcChance float64, procMaskFn func() ProcMask) *DynamicProcManager {
+	dpm := aa.newDynamicProcManager(ppm, fixedProcChance, procMaskFn())
+
+	if aa.character != nil {
+		aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
+			dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, fixedProcChance, procMaskFn())
+		})
+	}
+
+	return &dpm
+
+}
+
+func (aa *AutoAttacks) newDynamicProcManager(ppm float64, fixedProcChance float64, procMask ProcMask) DynamicProcManager {
+	if (ppm != 0) && (fixedProcChance != 0) {
+		panic("Cannot simultaneously specify both a ppm and a fixed proc chance!")
+	}
+
+	if !aa.AutoSwingMelee && !aa.AutoSwingRanged {
+		return DynamicProcManager{}
+	}
+
+	dpm := DynamicProcManager{ppm: ppm, fixedProcChance: fixedProcChance, procMasks: make([]ProcMask, 0, 2), procChances: make([]float64, 0, 2)}
 
 	mergeOrAppend := func(speed float64, mask ProcMask) {
 		if speed == 0 || mask == 0 {
 			return
 		}
 
-		if i := slices.Index(ppmm.procChances, speed); i != -1 {
-			ppmm.procMasks[i] |= mask
+		if i := slices.Index(dpm.procChances, speed); i != -1 {
+			dpm.procMasks[i] |= mask
 			return
 		}
 
-		ppmm.procMasks = append(ppmm.procMasks, mask)
-		ppmm.procChances = append(ppmm.procChances, speed)
+		dpm.procMasks = append(dpm.procMasks, mask)
+		dpm.procChances = append(dpm.procChances, speed)
 	}
 
 	mergeOrAppend(aa.mh.SwingSpeed, procMask&^ProcMaskRanged&^ProcMaskMeleeOH) // "everything else", even if not explicitly flagged MH
 	mergeOrAppend(aa.oh.SwingSpeed, procMask&ProcMaskMeleeOH)
 	mergeOrAppend(aa.ranged.SwingSpeed, procMask&ProcMaskRanged)
 
-	for i := range ppmm.procChances {
-		ppmm.procChances[i] *= ppm / 60
+	for i := range dpm.procChances {
+		if fixedProcChance != 0 {
+			dpm.procChances[i] = fixedProcChance
+		} else {
+			dpm.procChances[i] *= ppm / 60
+		}
 	}
 
 	character := aa.mh.agent.GetCharacter()
-	if procMask.Matches(ProcMaskMeleeMH) {
-		if character != nil {
+	if character != nil {
+		if procMask.Matches(ProcMaskMeleeMH) {
 			if mhWeapon := character.GetMHWeapon(); mhWeapon != nil {
-				ppmm.mhSpecialProcChance = mhWeapon.SwingSpeed * ppm / 60
+				if fixedProcChance != 0 {
+					dpm.mhSpecialProcChance = fixedProcChance
+				} else {
+					dpm.mhSpecialProcChance = mhWeapon.SwingSpeed * ppm / 60
+				}
 			}
 		}
-	}
-	if procMask.Matches(ProcMaskMeleeOH) {
-		if character != nil {
+		if procMask.Matches(ProcMaskMeleeOH) {
 			if ohWeapon := character.GetOHWeapon(); ohWeapon != nil {
-				ppmm.ohSpecialProcChance = ohWeapon.SwingSpeed * ppm / 60
+				if fixedProcChance != 0 {
+					dpm.ohSpecialProcChance = fixedProcChance
+				} else {
+					dpm.ohSpecialProcChance = ohWeapon.SwingSpeed * ppm / 60
+				}
 			}
 		}
 	}
-	return ppmm
+	return dpm
 }
 
 // Returns whether a PPM-based effect procced.

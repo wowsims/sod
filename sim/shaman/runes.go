@@ -314,16 +314,12 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 		ActionID: core.ActionID{SpellID: procSpellId},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, attackSpeedMultiplier)
-			shaman.AddStatDynamic(sim, stats.SpellHit, spellHitIncrease)
 			aura.Unit.EnableDynamicStatDep(sim, statDep)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyAttackSpeed(sim, 1/attackSpeedMultiplier)
-			shaman.AddStatDynamic(sim, stats.SpellHit, -1*spellHitIncrease)
 			aura.Unit.DisableDynamicStatDep(sim, statDep)
 		},
-	})
+	}).AttachStatBuff(stats.SpellHit, spellHitIncrease).AttachMultiplyAttackSpeed(&shaman.Unit, attackSpeedMultiplier)
 
 	shaman.RegisterAura(core.Aura{
 		Label:    "Two-Handed Mastery Trigger",
@@ -428,8 +424,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		},
 	})
 
-	ppmm := shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
-	shaman.maelstromWeaponPPMM = &ppmm
+	shaman.maelstromWeaponPPMM = shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
 
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:              "Maelstrom Weapon Trigger",

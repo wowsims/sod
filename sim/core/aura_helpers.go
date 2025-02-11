@@ -5,6 +5,7 @@ import (
 	"math"
 	"time"
 
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -26,6 +27,14 @@ const (
 	CallbackOnApplyEffects
 )
 
+type DPMProcCheck uint16
+
+const (
+	DPMProcWithWeaponSpecials DPMProcCheck = 0
+
+	DPMProc DPMProcCheck = 1 << iota
+)
+
 type ProcHandler func(sim *Simulation, spell *Spell, result *SpellResult)
 type ProcExtraCondition func(sim *Simulation, spell *Spell, result *SpellResult) bool
 
@@ -44,6 +53,8 @@ type ProcTrigger struct {
 	Harmful           bool
 	ProcChance        float64
 	PPM               float64
+	DPM               *DynamicProcManager
+	DPMProcCheck      DPMProcCheck // Will use ProcWithWeaponSpecials by default. Used to override default DPM Proc check.
 	ICD               time.Duration
 	Handler           ProcHandler
 	ClassSpellMask    int64
@@ -61,9 +72,15 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 		procAura.Icd = &icd
 	}
 
-	var ppmm PPMManager
-	if config.PPM > 0 {
-		ppmm = unit.AutoAttacks.NewPPMManager(config.PPM, config.ProcMask)
+	var dpm *DynamicProcManager
+	if config.DPM != nil {
+		dpm = config.DPM
+	} else if config.PPM > 0 {
+		dpm = unit.AutoAttacks.NewPPMManager(config.PPM, config.ProcMask)
+	}
+
+	if dpm != nil {
+		procAura.Dpm = dpm
 	}
 
 	handler := config.Handler
@@ -100,8 +117,12 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 		}
 		if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
 			return
-		} else if config.PPM != 0 && !ppmm.ProcWithWeaponSpecials(sim, spell.ProcMask, config.Name) {
-			return
+		} else if dpm != nil {
+			if config.DPMProcCheck == DPMProc && !dpm.Proc(sim, spell.ProcMask, config.Name) {
+				return
+			} else if config.DPMProcCheck == DPMProcWithWeaponSpecials && !dpm.ProcWithWeaponSpecials(sim, spell.ProcMask, config.Name) {
+				return
+			}
 		}
 
 		if icd.Duration != 0 {
@@ -293,6 +314,42 @@ func (character *Character) NewTemporaryStatsAuraWrapped(auraLabel string, actio
 	}
 
 	return character.GetOrRegisterAura(config)
+}
+
+type DynamicEquipEffectConfig struct {
+	Label          string
+	EffectID       int32
+	OnStacksChange func(aura *Aura, sim *Simulation, prevCount int32, newCount int32)
+}
+
+// Creates a new Aura that tracks the number of enchants on the character
+// and updates based on the count when item swapping
+func (character *Character) NewDynamicEquipEffectAura(config DynamicEquipEffectConfig) *Aura {
+	possibleSlots := character.Equipment.EligibleSlotsForEffect(config.EffectID)
+	totalCount := int32(len(possibleSlots))
+
+	aura := character.RegisterAura(Aura{
+		Label:          config.Label,
+		MaxStacks:      totalCount,
+		BuildPhase:     CharacterBuildPhaseGear,
+		OnStacksChange: config.OnStacksChange,
+		OnGain: func(aura *Aura, sim *Simulation) {
+			newCount := character.Equipment.GetEnchantCount(config.EffectID)
+			aura.SetStacks(sim, newCount)
+		},
+	})
+
+	if totalCount > 0 {
+		aura = MakePermanent(aura)
+	}
+	character.RegisterItemSwapCallback(possibleSlots, func(sim *Simulation, slot proto.ItemSlot) {
+		if aura.IsActive() {
+			newCount := character.Equipment.GetEnchantCount(config.EffectID)
+			aura.SetStacks(sim, newCount)
+		}
+	})
+
+	return aura
 }
 
 func ApplyFixedUptimeAura(aura *Aura, uptime float64, tickLength time.Duration, startTime time.Duration) {

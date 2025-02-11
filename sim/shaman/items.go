@@ -145,44 +145,9 @@ func init() {
 	core.NewItemEffect(TerrestrisEle, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 
-		boonOfEarth := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 469208},
-			Label:    "Boon of Earth",
-			Duration: time.Minute * 2,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.MeleeCrit, 1*core.CritRatingPerCritChance)
-				shaman.AddStatDynamic(sim, stats.SpellCrit, 1*core.SpellCritRatingPerCritChance)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.MeleeCrit, -1*core.CritRatingPerCritChance)
-				shaman.AddStatDynamic(sim, stats.SpellCrit, -1*core.SpellCritRatingPerCritChance)
-			},
-		})
-
-		boonOfFire := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 469209},
-			Label:    "Boon of Fire",
-			Duration: time.Minute * 2,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.SpellDamage, 16)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.SpellDamage, -16)
-			},
-		})
-
-		boonOfWater := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 469210},
-			Label:    "Boon of Water",
-			Duration: time.Minute * 2,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.HealingPower, 31)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.HealingPower, 31)
-			},
-		})
-
+		boonOfEarth := shaman.NewTemporaryStatsAura("Boon of Earth", core.ActionID{SpellID: 469208}, stats.Stats{stats.MeleeCrit: 1 * core.CritRatingPerCritChance, stats.SpellCrit: 1 * core.SpellCritRatingPerCritChance}, time.Minute*2)
+		boonOfFire := shaman.NewTemporaryStatsAura("Boon of Fire", core.ActionID{SpellID: 469209}, stats.Stats{stats.SpellDamage: 16}, time.Minute*2)
+		boonOfWater := shaman.NewTemporaryStatsAura("Boon of Water", core.ActionID{SpellID: 469210}, stats.Stats{stats.HealingPower: 31}, time.Minute*2)
 		boonOfAir := shaman.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 452456},
 			Label:    "Boon of Air",
@@ -195,7 +160,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		procTrigger := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 			Name:           "Terrestris Boon Trigger",
 			ClassSpellMask: ClassSpellMask_ShamanTotems,
 			Callback:       core.CallbackOnApplyEffects,
@@ -212,23 +177,15 @@ func init() {
 				}
 			},
 		})
+
+		shaman.ItemSwap.RegisterProc(TerrestrisEle, procTrigger)
 	})
 
 	// https://www.wowhead.com/classic/item=224279/terrestris
 	core.NewItemEffect(TerrestrisTank, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 
-		boonOfEarth := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 452464},
-			Label:    "Boon of Earth",
-			Duration: time.Minute * 2,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.Block, 3*core.BlockRatingPerBlockChance)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				shaman.AddStatDynamic(sim, stats.Block, 31*core.BlockRatingPerBlockChance)
-			},
-		})
+		boonOfEarth := shaman.NewTemporaryStatsAura("Boon of Earth", core.ActionID{SpellID: 452464}, stats.Stats{stats.Block: 3 * core.BlockRatingPerBlockChance}, time.Minute*2)
 
 		fireExplosion := shaman.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 453085},
@@ -297,7 +254,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		procTrigger := core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 			Name:           "Terrestris Boon Trigger",
 			ClassSpellMask: ClassSpellMask_ShamanTotems,
 			Callback:       core.CallbackOnApplyEffects,
@@ -314,6 +271,8 @@ func init() {
 				}
 			},
 		})
+
+		shaman.ItemSwap.RegisterProc(TerrestrisTank, procTrigger)
 	})
 
 	// https://www.wowhead.com/classic/item=232416/totem-of-astral-flow
@@ -438,17 +397,9 @@ func init() {
 	// Equip: Your Stormstrike spell causes you to gain 24 attack power for 12 sec. (More effective with a two - handed weapon).
 	core.NewItemEffect(TotemOfRagingFire, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
-		procAura1H := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{ItemID: TotemOfRagingFire}.WithTag(1),
-			Label:    "Totem of Raging Fire (1H)",
-			Duration: time.Second * 12,
-		}).AttachStatBuff(stats.AttackPower, 24)
+		procAura1H := shaman.NewTemporaryStatsAura("Totem of Raging Fire (1H)", core.ActionID{ItemID: TotemOfRagingFire}.WithTag(1), stats.Stats{stats.AttackPower: 24}, time.Second*12)
 		// TODO: Verify 2H value
-		procAura2H := shaman.RegisterAura(core.Aura{
-			ActionID: core.ActionID{ItemID: TotemOfRagingFire}.WithTag(2),
-			Label:    "Totem of Raging Fire (2H)",
-			Duration: time.Second * 12,
-		}).AttachStatBuff(stats.AttackPower, 48)
+		procAura2H := shaman.NewTemporaryStatsAura("Totem of Raging Fire (2H)", core.ActionID{ItemID: TotemOfRagingFire}.WithTag(2), stats.Stats{stats.AttackPower: 48}, time.Second*12)
 
 		core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 			Name:           "Totem of Raging Fire Trigger",
@@ -463,7 +414,6 @@ func init() {
 					procAura1H.Deactivate(sim)
 					procAura2H.Activate(sim)
 				}
-
 			},
 		})
 	})
@@ -476,13 +426,13 @@ func init() {
 			return
 		}
 
-		core.MakePermanent(shaman.RegisterAura(core.Aura{
+		aura := core.MakePermanent(shaman.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 470081},
 			Label:    "Totem of Raging Storms",
 			OnInit: func(aura *core.Aura, sim *core.Simulation) {
 				oldPPMM := shaman.maelstromWeaponPPMM
 				newPPMM := shaman.AutoAttacks.NewPPMManager(oldPPMM.GetPPM()*2, core.ProcMaskMelee)
-				shaman.maelstromWeaponPPMM = &newPPMM
+				shaman.maelstromWeaponPPMM = newPPMM
 
 				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
 					Period:          time.Second * 2,
@@ -495,13 +445,15 @@ func init() {
 						}
 
 						if !aura.IsActive() {
-							shaman.maelstromWeaponPPMM = &newPPMM
+							shaman.maelstromWeaponPPMM = newPPMM
 							aura.Activate(sim)
 						}
 					},
 				})
 			},
 		}))
+
+		shaman.ItemSwap.RegisterProc(TotemOfRelentlessThunder, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=23200/totem-of-sustaining

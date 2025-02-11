@@ -67,7 +67,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		shaman.OffHand().TempEnchant = enchantId
 	}
 
-	ppmm := shaman.AutoAttacks.NewPPMManager(9.0, procMask)
+	dpm := shaman.AutoAttacks.NewPPMManager(9.0, procMask)
 
 	mhSpell := shaman.newFrostbrandImbueSpell()
 	ohSpell := shaman.newFrostbrandImbueSpell()
@@ -85,7 +85,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 				return
 			}
 
-			if ppmm.Proc(sim, spell.ProcMask, "Frostbrand Weapon") {
+			if dpm.Proc(sim, spell.ProcMask, "Frostbrand Weapon") {
 				if spell.IsMH() {
 					mhSpell.Cast(sim, result.Target)
 				} else {
@@ -96,7 +96,7 @@ func (shaman *Shaman) RegisterFrostbrandImbue(procMask core.ProcMask) {
 		},
 	})
 
-	shaman.ItemSwap.RegisterOnSwapItemForEffectWithPPMManager(3784, 9.0, &ppmm, aura)
+	shaman.ItemSwap.RegisterEnchantProc(3784, aura)
 }
 
 func (shaman *Shaman) ApplyFrostbrandImbue(procMask core.ProcMask) {

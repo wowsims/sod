@@ -1157,9 +1157,11 @@ message CustomSpell {
 }
 
 message ItemSwap {
-	ItemSpec mh_item = 1;
-	ItemSpec oh_item = 2;
-	ItemSpec ranged_item = 3;
+	reserved 1, 2, 3;
+	reserved "mh_item", "oh_item", "ranged_item";
+
+	repeated ItemSpec items = 4;
+	UnitStats prepull_bonus_stats = 5;
 }
 
 message Duration {

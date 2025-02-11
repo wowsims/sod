@@ -85,12 +85,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 		// Resistances
 		Stat.StatShadowResistance,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatThornsDamage,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
-	
+	displayPseudoStats: [PseudoStat.PseudoStatThornsDamage, PseudoStat.PseudoStatMeleeSpeedMultiplier, PseudoStat.PseudoStatCastSpeedMultiplier],
+
 	defaults: {
 		race: Race.RaceTroll,
 		// Default equipped gear.
@@ -162,9 +158,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 			OtherInputs.InspirationUptime,
 		],
 	},
-	itemSwapConfig: {
-		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
-	},
+	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
 	customSections: [],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.

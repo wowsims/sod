@@ -13,17 +13,7 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 		return
 	}
 
-	ghostlyStrikeAura := rogue.RegisterAura(core.Aura{
-		Label:    "Ghostly Strike Buff",
-		ActionID: core.ActionID{SpellID: 14278},
-		Duration: time.Second * 7,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.AddStatDynamic(sim, stats.Dodge, 15*core.DodgeRatingPerDodgeChance)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.AddStatDynamic(sim, stats.Dodge, -15*core.DodgeRatingPerDodgeChance)
-		},
-	})
+	ghostlyStrikeAura := rogue.NewTemporaryStatsAura("Ghostly Strike Buff", core.ActionID{SpellID: 14278}, stats.Stats{stats.Dodge: 15 * core.DodgeRatingPerDodgeChance}, time.Second*7)
 
 	rogue.GhostlyStrike = rogue.RegisterSpell(core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_RogueGhostlyStrike,

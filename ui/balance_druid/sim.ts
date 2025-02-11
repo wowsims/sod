@@ -30,9 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -51,29 +49,30 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
-	
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
+
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.16,
-			[Stat.StatSpirit]: 0.0,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellDamage]: 1,
-			[Stat.StatArcanePower]: 0.62,
-			[Stat.StatNaturePower]: 0.38,
-			[Stat.StatSpellHit]: 11.75,
-			[Stat.StatSpellCrit]: 7.5,
-			[Stat.StatMP5]: 0.0,
-			[Stat.StatFireResistance]: 0.5,
-		}, {
-			[PseudoStat.PseudoStatCastSpeedMultiplier]: 6.09,
-			[PseudoStat.PseudoStatTimewornBonus]: 9.08,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatIntellect]: 0.16,
+				[Stat.StatSpirit]: 0.0,
+				[Stat.StatSpellPower]: 1,
+				[Stat.StatSpellDamage]: 1,
+				[Stat.StatArcanePower]: 0.62,
+				[Stat.StatNaturePower]: 0.38,
+				[Stat.StatSpellHit]: 11.75,
+				[Stat.StatSpellCrit]: 7.5,
+				[Stat.StatMP5]: 0.0,
+				[Stat.StatFireResistance]: 0.5,
+			},
+			{
+				[PseudoStat.PseudoStatCastSpeedMultiplier]: 6.09,
+				[PseudoStat.PseudoStatTimewornBonus]: 9.08,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -106,9 +105,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 	otherInputs: {
 		inputs: [OtherInputs.ReactionTime, OtherInputs.DistanceFromTarget],
 	},
-	itemSwapConfig: {
-		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
-	},
+	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,
@@ -139,11 +136,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [
-			Presets.PresetBuildPhase6,
-			Presets.PresetBuildPhase5,
-			Presets.PresetBuildPhase4,
-		],
+		builds: [Presets.PresetBuildPhase6, Presets.PresetBuildPhase5, Presets.PresetBuildPhase4],
 	},
 
 	autoRotation: player => {

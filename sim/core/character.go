@@ -58,12 +58,6 @@ type Character struct {
 	// Base stats for this Character.
 	baseStats stats.Stats
 
-	// Handles scaling that only affects stats from items
-	itemStatMultipliers stats.Stats
-	// Used to track if we need to separately apply multipliers, because
-	// equipment was already applied
-	equipStatsApplied bool
-
 	// Bonus stats for this Character, specified in the UI and/or EP
 	// calculator
 	bonusStats     stats.Stats
@@ -75,6 +69,9 @@ type Character struct {
 
 	runesMap          map[int32]bool
 	PrimaryTalentTree uint8
+
+	// Used for effects like "Increased Armor Value from Items"
+	*EquipScalingManager
 
 	// Provides major cooldown management behavior.
 	majorCooldownManager
@@ -167,9 +164,6 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 
 	character.AddStats(character.baseStats)
 	character.addUniversalStatDependencies()
-	for i := range character.itemStatMultipliers {
-		character.itemStatMultipliers[i] = 1
-	}
 
 	if player.BonusStats != nil {
 		if player.BonusStats.Stats != nil {
@@ -215,56 +209,89 @@ func NewCharacter(party *Party, partyIndex int, player *proto.Player) Character 
 		character.enableItemSwap(player.ItemSwap)
 	}
 
+	character.EquipScalingManager = character.NewEquipScalingManager()
+
 	return character
 }
 
-func (character *Character) applyEquipScaling(stat stats.Stat, multiplier float64) float64 {
-	var oldValue = character.BaseEquipStats()[stat]
-	character.itemStatMultipliers[stat] *= multiplier
-	var newValue = character.BaseEquipStats()[stat]
-	return newValue - oldValue
+type EquipScalingManager struct {
+	itemStatMultipliers  map[stats.Stat]float64
+	cachedEquipStats     stats.Stats
+	cachedEquipBaseStats stats.Stats
+	equipStatsApplied    bool
+	equipCacheValid      bool
+}
+
+func (character *Character) NewEquipScalingManager() *EquipScalingManager {
+	return &EquipScalingManager{
+		itemStatMultipliers:  make(map[stats.Stat]float64),
+		cachedEquipStats:     character.Equipment.Stats().Add(character.bonusStats),
+		cachedEquipBaseStats: character.Equipment.BaseStats().Add(character.bonusStats),
+		equipCacheValid:      true,
+	}
+}
+
+func (character *Character) AddDynamicEquipStats(sim *Simulation, equipStats stats.Stats) {
+	character.AddStatsDynamic(sim, equipStats.ApplyMultipliers(character.itemStatMultipliers))
+	character.equipCacheValid = false
+}
+
+func (character *Character) applyEquipScalingInternal(stat stats.Stat, multiplier float64) float64 {
+	character.updateCachedEquipStats()
+	oldMultiplier, exists := character.itemStatMultipliers[stat]
+
+	if !exists {
+		oldMultiplier = 1.0
+	}
+
+	newMultiplier := oldMultiplier * multiplier
+	character.itemStatMultipliers[stat] = newMultiplier
+
+	return character.cachedEquipBaseStats[stat] * (newMultiplier - oldMultiplier)
 }
 
 func (character *Character) ApplyEquipScaling(stat stats.Stat, multiplier float64) {
-	var statDiff stats.Stats
-	statDiff[stat] = character.applyEquipScaling(stat, multiplier)
+	statDiff := character.applyEquipScalingInternal(stat, multiplier)
 	// Equipment stats already applied, so need to manually at the bonus to
 	// the character now to ensure correct values
 	if character.equipStatsApplied {
-		character.AddStats(statDiff)
+		character.AddStat(stat, statDiff)
 	}
 }
 
 func (character *Character) ApplyDynamicEquipScaling(sim *Simulation, stat stats.Stat, multiplier float64) {
-	statDiff := character.applyEquipScaling(stat, multiplier)
-	character.AddStatDynamic(sim, stat, statDiff)
-}
-
-func (character *Character) RemoveEquipScaling(stat stats.Stat, multiplier float64) {
-	var statDiff stats.Stats
-	statDiff[stat] = character.applyEquipScaling(stat, 1/multiplier)
-	// Equipment stats already applied, so need to manually at the bonus to
-	// the character now to ensure correct values
-	if character.equipStatsApplied {
-		character.AddStats(statDiff)
+	if character.Env.MeasuringStats && (character.Env.State != Finalized) {
+		character.ApplyEquipScaling(stat, multiplier)
+	} else {
+		statDiff := character.applyEquipScalingInternal(stat, multiplier)
+		character.AddStatDynamic(sim, stat, statDiff)
 	}
 }
 
+func (character *Character) RemoveEquipScaling(stat stats.Stat, multiplier float64) {
+	character.ApplyEquipScaling(stat, 1/multiplier)
+}
+
 func (character *Character) RemoveDynamicEquipScaling(sim *Simulation, stat stats.Stat, multiplier float64) {
-	statDiff := character.applyEquipScaling(stat, 1/multiplier)
-	character.AddStatDynamic(sim, stat, statDiff)
+	character.ApplyDynamicEquipScaling(sim, stat, 1/multiplier)
+}
+
+func (character *Character) updateCachedEquipStats() {
+	if !character.equipCacheValid {
+		character.cachedEquipStats = character.Equipment.Stats().Add(character.bonusStats)
+		character.cachedEquipBaseStats = character.Equipment.BaseStats().Add(character.bonusStats)
+		character.equipCacheValid = true
+	}
 }
 
 func (character *Character) EquipStats() stats.Stats {
-	var baseEquipStats = character.Equipment.Stats()
-	var bonusEquipStats = baseEquipStats.Add(character.bonusStats)
-	return bonusEquipStats.DotProduct(character.itemStatMultipliers)
+	character.updateCachedEquipStats()
+	return character.cachedEquipStats.ApplyMultipliers(character.itemStatMultipliers)
 }
 
 func (character *Character) BaseEquipStats() stats.Stats {
-	var baseEquipStats = character.Equipment.BaseStats()
-	var bonusEquipStats = baseEquipStats.Add(character.bonusStats)
-	return bonusEquipStats.DotProduct(character.itemStatMultipliers)
+	character.updateCachedEquipStats()
+	return character.cachedEquipBaseStats.ApplyMultipliers(character.itemStatMultipliers)
 }
 
 func (character *Character) HasRuneById(id int32) bool {
@@ -396,31 +423,13 @@ func (character *Character) clearBuildPhaseAuras(phase CharacterBuildPhase) {
 
 // Apply effects from all equipped core.
 func (character *Character) applyItemEffects(agent Agent) {
-	for slot, eq := range character.Equipment {
-		if applyItemEffect, ok := itemEffects[eq.ID]; ok {
-			applyItemEffect(agent)
-		}
+	registeredItemEffects := make(map[int32]bool)
+	registeredItemEnchantEffects := make(map[int32]bool)
 
-		if applyEnchantEffect, ok := enchantEffects[eq.Enchant.EffectID]; ok {
-			applyEnchantEffect(agent)
-		}
-
-		if applyWeaponEffect, ok := weaponEffects[eq.Enchant.EffectID]; ok {
-			applyWeaponEffect(agent, proto.ItemSlot(slot))
-		}
-	}
+	character.Equipment.applyItemEffects(agent, registeredItemEffects, registeredItemEnchantEffects)
 
 	if character.ItemSwap.IsEnabled() {
-		offset := int(proto.ItemSlot_ItemSlotMainHand)
-		for i, item := range character.ItemSwap.unEquippedItems {
-			if applyEnchantEffect, ok := enchantEffects[item.Enchant.EffectID]; ok {
-				applyEnchantEffect(agent)
-			}
-
-			if applyWeaponEffect, ok := weaponEffects[item.Enchant.EffectID]; ok {
-				applyWeaponEffect(agent, proto.ItemSlot(offset+i))
-			}
-		}
+		character.ItemSwap.unEquippedItems.applyItemEffects(agent, registeredItemEffects, registeredItemEnchantEffects)
 	}
 }
 
@@ -449,7 +458,7 @@ func (character *Character) AddPartyBuffs(partyBuffs *proto.PartyBuffs) {
 	}
 }
 
-func (character *Character) initialize(agent Agent) {
+func (character *Character) initialize(_ Agent) {
 	character.majorCooldownManager.initialize(character)
 	character.ItemSwap.initialize(character)
 
@@ -527,6 +536,8 @@ func (character *Character) reset(sim *Simulation, agent Agent) {
 
 	agent.Reset(sim)
 
+	character.ItemSwap.reset(sim)
+
 	for _, petAgent := range character.PetAgents {
 		petAgent.GetPet().reset(sim, petAgent)
 	}
@@ -602,26 +613,52 @@ func (character *Character) HasRangedWeapon() bool {
 	return character.GetRangedWeapon() != nil
 }
 
-func (character *Character) GetProcMaskForEnchant(effectID int32) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+func (character *Character) GetDynamicProcMaskForWeaponEnchant(effectID int32) *ProcMask {
+	return character.getDynamicProcMaskPointer(func() ProcMask {
+		return character.getCurrentProcMaskForWeaponEnchant(effectID)
+	})
+}
+
+func (character *Character) getDynamicProcMaskPointer(procMaskFn func() ProcMask) *ProcMask {
+	procMask := procMaskFn()
+
+	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
+		procMask = procMaskFn()
+	})
+
+	return &procMask
+}
+
+func (character *Character) getCurrentProcMaskForWeaponEnchant(effectID int32) ProcMask {
+	return character.getCurrentProcMaskFor(func(weapon *Item) bool {
 		return weapon.Enchant.EffectID == effectID
 	})
 }
 
-func (character *Character) GetProcMaskForItem(itemID int32) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
+func (character *Character) GetDynamicProcMaskForWeaponEffect(itemID int32) *ProcMask {
+	return character.getDynamicProcMaskPointer(func() ProcMask {
+		return character.getCurrentProcMaskForWeaponEffect(itemID)
+	})
+}
+
+func (character *Character) getCurrentProcMaskForWeaponEffect(itemID int32) ProcMask {
+	return character.getCurrentProcMaskFor(func(weapon *Item) bool {
 		return weapon.ID == itemID
 	})
 }
 
 func (character *Character) GetProcMaskForTypes(weaponTypes ...proto.WeaponType) ProcMask {
-	return character.getProcMaskFor(func(weapon *Item) bool {
-		return weapon == nil || slices.Contains(weaponTypes, weapon.WeaponType)
+	return character.getCurrentProcMaskFor(func(weapon *Item) bool {
+		return weapon != nil && slices.Contains(weaponTypes, weapon.WeaponType)
 	})
 }
 
-func (character *Character) getProcMaskFor(pred func(weapon *Item) bool) ProcMask {
+func (character *Character) getCurrentProcMaskFor(pred func(weapon *Item) bool) ProcMask {
 	mask := ProcMaskUnknown
+
+	if character == nil {
+		return mask
+	}
 	if pred(character.MainHand()) {
 		mask |= ProcMaskMeleeMH
 	}
@@ -635,6 +672,8 @@ func (character *Character) getProcMaskFor(pred func(weapon *Item) bool) ProcMas
 }
 
 func (character *Character) doneIteration(sim *Simulation) {
+	character.ItemSwap.doneIteration(sim)
+
 	// Need to do pets first, so we can add their results to the owners.
 	for _, pet := range character.Pets {
 		pet.doneIteration(sim)

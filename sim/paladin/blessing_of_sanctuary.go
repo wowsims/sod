@@ -54,7 +54,7 @@ func (paladin *Paladin) registerBlessingOfSanctuary() {
 			})
 
 			paladin.blessingOfSanctuaryAura = core.MakePermanent(paladin.RegisterAura(core.Aura{
-				Label:    "Blessing of Sanctuary Trigger",
+				Label: "Blessing of Sanctuary Trigger",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					for i := range paladin.PseudoStats.BonusDamageTakenBeforeModifiers {
 						paladin.PseudoStats.BonusDamageTakenBeforeModifiers[i] -= absorb
@@ -71,7 +71,7 @@ func (paladin *Paladin) registerBlessingOfSanctuary() {
 					}
 				},
 			}))
-			
+
 			return
 		}
 	}

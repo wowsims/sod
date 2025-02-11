@@ -1,12 +1,12 @@
 import { default as pako } from 'pako';
 import { ref } from 'tsx-vanilla';
 
+import { SimSettingCategories } from '../constants/sim-settings';
 import { IndividualSimUI } from '../individual_sim_ui';
 import { Class, EquipmentSpec, ItemSlot, ItemSpec, Profession, Race, Spec } from '../proto/common';
 import { IndividualSimSettings } from '../proto/ui';
 import { Database } from '../proto_utils/database';
 import { classNames, nameToClass, nameToProfession, nameToRace } from '../proto_utils/names';
-import { SimSettingCategories } from '../sim';
 import { SimUI } from '../sim_ui';
 import { talentSpellIdsToTalentString } from '../talents/factory';
 import { TypedEvent } from '../typed_event';

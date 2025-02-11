@@ -59,26 +59,34 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=236400/atiesh-greatstaff-of-the-guardian
 	core.NewItemEffect(AtieshCastSpeed, func(agent core.Agent) {
-		core.AtieshCastSpeedEffect(&agent.GetCharacter().Unit)
+		character := agent.GetCharacter()
+		aura := core.AtieshCastSpeedEffect(&character.Unit)
+		character.ItemSwap.RegisterProc(AtieshCastSpeed, aura)
 	})
 	// https://www.wowhead.com/classic/item=236399/atiesh-greatstaff-of-the-guardian
 	core.NewItemEffect(AtieshHealing, func(agent core.Agent) {
-		core.AtieshHealingEffect(&agent.GetCharacter().Unit)
+		character := agent.GetCharacter()
+		aura := core.AtieshHealingEffect(&character.Unit)
+		character.ItemSwap.RegisterProc(AtieshHealing, aura)
 	})
 	// https://www.wowhead.com/classic/item=236401/atiesh-greatstaff-of-the-guardian
 	core.NewItemEffect(AtieshSpellCrit, func(agent core.Agent) {
-		core.AtieshSpellCritEffect(&agent.GetCharacter().Unit)
+		character := agent.GetCharacter()
+		aura := core.AtieshSpellCritEffect(&character.Unit)
+		character.ItemSwap.RegisterProc(AtieshSpellCrit, aura)
 	})
 	// https://www.wowhead.com/classic/item=236398/atiesh-greatstaff-of-the-guardian
 	core.NewItemEffect(AtieshSpellPower, func(agent core.Agent) {
-		core.AtieshSpellPowerEffect(&agent.GetCharacter().Unit)
+		character := agent.GetCharacter()
+		aura := core.AtieshSpellPowerEffect(&character.Unit)
+		character.ItemSwap.RegisterProc(AtieshSpellPower, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=236341/the-hungering-cold
 	// Equip: Gives you a 2% chance to get an extra attack on the same target after dealing damage with your weapon.
 	core.NewItemEffect(TheHungeringCold, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:       "The Hungering Cold Trigger",
 			Callback:   core.CallbackOnSpellHitDealt,
 			Outcome:    core.OutcomeLanded,
@@ -89,6 +97,7 @@ func init() {
 				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1223010}, spell)
 			},
 		})
+		character.ItemSwap.RegisterProc(TheHungeringCold, aura)
 	})
 
 	// https://www.wowhead.com/classic/item=237512/blade-of-inquisition
@@ -97,39 +106,24 @@ func init() {
 	core.NewItemEffect(BladeOfInquisition, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := character.GetProcMaskForItem(BladeOfInquisition)
-		ppmm := character.AutoAttacks.NewPPMManager(1.0, procMask)
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(BladeOfInquisition, 1.0, 0)
 
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Second * 15,
-		}
+		buffAura := character.NewTemporaryStatsAura("Scarlet Inquisition", core.ActionID{SpellID: 1223342}, stats.Stats{stats.Strength: 250}, time.Second*15)
 
-		buffAura := character.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 1223342},
-			Label:    "Scarlet Inquisition",
-			Duration: time.Second * 15,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.AddStatDynamic(sim, stats.Strength, 250)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				aura.Unit.AddStatDynamic(sim, stats.Strength, -250)
-			},
-		})
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Blade of Inquisition Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
-			ProcMask:          procMask,
+			ICD:               time.Second * 15,
+			DPM:               dpm,
+			DPMProcCheck:      core.DPMProc,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if icd.IsReady(sim) && ppmm.Proc(sim, procMask, "Scarlet Inquisition") {
-					icd.Use(sim)
-					buffAura.Activate(sim)
-				}
+				buffAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(BladeOfInquisition, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=235894/doomsayers-demise
@@ -257,7 +251,7 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(character.GetOrRegisterAura(core.Aura{
+		aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
 			Label: "Splintered Shield",
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMelee) {
@@ -265,6 +259,8 @@ func init() {
 				}
 			},
 		}))
+
+		character.ItemSwap.RegisterProc(BulwarkOfIre, aura)
 	})
 
 	// Cloth Sets
@@ -383,13 +379,9 @@ func UnholyMightAura(character *core.Character) *core.Aura {
 		ActionID: core.ActionID{SpellID: 1220668},
 		Label:    "Unholy Might",
 		Duration: time.Second * 10,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.Strength, 350)
-			character.PseudoStats.DamageTakenMultiplier *= 1.05
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.AddStatDynamic(sim, stats.Strength, -350)
-			character.PseudoStats.DamageTakenMultiplier /= 1.05
-		},
-	})
+	}).
+		AttachStatBuff(stats.Strength, 350).
+		AttachMultiplicativePseudoStatBuff(&character.PseudoStats.DamageTakenMultiplier, 1.05)
 }
+
+// Atiesh Helpers

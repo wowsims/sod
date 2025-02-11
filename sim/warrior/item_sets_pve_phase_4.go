@@ -198,11 +198,12 @@ func (warrior *Warrior) applyT1Damage6PBonus() {
 		Duration: duration,
 	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.DamageTakenMultiplier, 0.90)
 
-	berserkAura := warrior.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 457817},
-		Label:    "Berserker Forecast",
-		Duration: duration,
-	}).AttachStatBuff(stats.MeleeCrit, 10*core.CritRatingPerCritChance)
+	berserkAura := warrior.NewTemporaryStatsAura(
+		"Berserker Forecast",
+		core.ActionID{SpellID: 457817},
+		stats.Stats{stats.MeleeCrit: 10 * core.CritRatingPerCritChance},
+		duration,
+	)
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
