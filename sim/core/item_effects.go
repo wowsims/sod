@@ -176,7 +176,7 @@ func NewMobTypeAttackPowerEffect(itemID int32, mobTypes []proto.MobType, bonus f
 		}
 
 		aura := MakePermanent(character.GetOrRegisterAura(Aura{
-			Label: fmt.Sprintf("Mob Type Attack Power Bonus - %s", character.CurrentTarget.MobType),
+			Label: fmt.Sprintf("Mob type Attack Power Bonus - %s (%d)", character.CurrentTarget.MobType, itemID),
 			OnGain: func(aura *Aura, sim *Simulation) {
 				character.PseudoStats.MobTypeAttackPower += bonus
 			},
@@ -198,7 +198,7 @@ func NewMobTypeSpellPowerEffect(itemID int32, mobTypes []proto.MobType, bonus fl
 		}
 
 		aura := MakePermanent(character.GetOrRegisterAura(Aura{
-			Label: fmt.Sprintf("Mob type Spell Power Bonus - %s", character.CurrentTarget.MobType),
+			Label: fmt.Sprintf("Mob type Spell Power Bonus - %s (%d)", character.CurrentTarget.MobType, itemID),
 			OnGain: func(aura *Aura, sim *Simulation) {
 				character.PseudoStats.MobTypeSpellPower += bonus
 			},

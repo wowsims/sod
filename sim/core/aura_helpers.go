@@ -83,6 +83,18 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 		procAura.Dpm = dpm
 	}
 
+	if config.CanProcFromProcs {
+		if config.ProcMask.Matches(ProcMaskMelee) {
+			config.ProcMask |= ProcMaskMeleeProc | ProcMaskMeleeDamageProc
+		}
+		if config.ProcMask.Matches(ProcMaskRanged) {
+			config.ProcMask |= ProcMaskRangedProc | ProcMaskRangedDamageProc
+		}
+		if config.ProcMask.Matches(ProcMaskSpellDamage) {
+			config.ProcMask |= ProcMaskSpellProc | ProcMaskSpellDamageProc
+		}
+	}
+
 	handler := config.Handler
 	callback := func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 		if config.SpellFlags != SpellFlagNone && !spell.Flags.Matches(config.SpellFlags) {
@@ -98,9 +110,6 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 			return
 		}
 		if config.ProcMask != ProcMaskUnknown && !spell.ProcMask.Matches(config.ProcMask) {
-			return
-		}
-		if !config.CanProcFromProcs && spell.ProcMask.Matches(ProcMaskProc) {
 			return
 		}
 		if config.Outcome != OutcomeEmpty && !result.Outcome.Matches(config.Outcome) {

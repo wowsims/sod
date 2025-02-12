@@ -519,22 +519,23 @@ func (shaman *Shaman) applyWayOfEarth() {
 
 	healthDep := shaman.NewDynamicMultiplyStat(stats.Health, 1.3)
 
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label:    "Way of Earth",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsWayOfEarth)},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.EnableDynamicStatDep(sim, healthDep)
-			shaman.PseudoStats.DamageTakenMultiplier *= .9
-			shaman.PseudoStats.ReducedCritTakenChance += 6
-			shaman.PseudoStats.ThreatMultiplier *= 1.65
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.DisableDynamicStatDep(sim, healthDep)
-			shaman.PseudoStats.DamageTakenMultiplier /= .9
-			shaman.PseudoStats.ReducedCritTakenChance -= 6
-			shaman.PseudoStats.ThreatMultiplier /= 1.65
-		},
-	}))
+	core.MakePermanent(
+		shaman.RegisterAura(core.Aura{
+			ActionID:   core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsWayOfEarth)},
+			BuildPhase: core.CharacterBuildPhaseBuffs,
+			Label:      "Way of Earth",
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.DamageTakenMultiplier *= .9
+				shaman.PseudoStats.ReducedCritTakenChance += 6
+				shaman.PseudoStats.ThreatMultiplier *= 1.65
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.DamageTakenMultiplier /= .9
+				shaman.PseudoStats.ReducedCritTakenChance -= 6
+				shaman.PseudoStats.ThreatMultiplier /= 1.65
+			},
+		}).AttachStatDependency(healthDep),
+	)
 }
 
 // https://www.wowhead.com/classic/spell=408696/spirit-of-the-alpha

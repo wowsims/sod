@@ -344,12 +344,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase2-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.66194
-  weights: 0.30699
+  weights: 0.66443
+  weights: 0.55502
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.22025
+  weights: 0.2224
   weights: 0
   weights: 0
   weights: 0
@@ -357,13 +357,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.83792
-  weights: 0.08257
+  weights: 1.99628
+  weights: 0.07348
   weights: 0
   weights: 0
-  weights: 0.30088
-  weights: 5.44541
-  weights: 4.94471
+  weights: 0.30201
+  weights: 5.41004
+  weights: 5.22083
   weights: 0
   weights: 0
   weights: 0
@@ -442,12 +442,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.63292
-  weights: 1.41008
+  weights: 2.64181
+  weights: 2.17695
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.41167
+  weights: 0.41388
   weights: 0
   weights: 0
   weights: 0
@@ -455,13 +455,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 6.23826
-  weights: 0.87461
+  weights: 7.11834
+  weights: 0.72263
   weights: 0
   weights: 0
-  weights: 0.94607
-  weights: 2.26637
-  weights: 29.02796
+  weights: 0.94927
+  weights: 1.5663
+  weights: 30.0639
   weights: 0
   weights: 0
   weights: 0
@@ -491,12 +491,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 4.2784
-  weights: 2.32032
+  weights: 4.06975
+  weights: 3.624
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.7108
+  weights: 0.71223
   weights: 0
   weights: 0
   weights: 0
@@ -504,13 +504,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 18.88003
-  weights: 0.49838
+  weights: 12.36027
+  weights: 0.52183
   weights: 0
   weights: 0
-  weights: 1.60968
-  weights: 4.20825
-  weights: 51.32436
+  weights: 1.50874
+  weights: 4.21274
+  weights: 54.59679
   weights: 0
   weights: 0
   weights: 0
@@ -540,12 +540,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase6-Lvl60-StatWeights-Default"
  value: {
-  weights: 4.50826
-  weights: 4.60347
+  weights: 4.36372
+  weights: 3.8632
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.68565
+  weights: 0.6885
   weights: 0
   weights: 0
   weights: 0
@@ -553,13 +553,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 10.86743
-  weights: 0.56141
+  weights: 13.40936
+  weights: 0.55835
   weights: 0
   weights: 0
-  weights: 1.73221
-  weights: 7.76859
-  weights: 59.20405
+  weights: 1.57293
+  weights: 6.814
+  weights: 60.35978
   weights: 0
   weights: 0
   weights: 0
@@ -701,8 +701,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 547.19229
-  tps: 560.62339
+  dps: 549.58169
+  tps: 563.08933
  }
 }
 dps_results: {
@@ -792,8 +792,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 513.23904
-  tps: 526.63566
+  dps: 519.25717
+  tps: 532.69222
  }
 }
 dps_results: {
@@ -919,43 +919,43 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1761.10656
-  tps: 1799.92744
+  dps: 1766.38441
+  tps: 1805.52464
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1769.02331
-  tps: 1808.40883
+  dps: 1766.52077
+  tps: 1805.38437
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1858.15124
-  tps: 1897.81954
+  dps: 1860.0383
+  tps: 1899.93266
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2360.30705
-  tps: 2411.18806
+  dps: 2345.48361
+  tps: 2396.75137
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1613.49195
-  tps: 1652.13849
+  dps: 1616.63394
+  tps: 1655.67702
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3825.44214
-  tps: 3875.02855
+  dps: 3856.06575
+  tps: 3905.48743
  }
 }
 dps_results: {
@@ -1625,50 +1625,50 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3123.43997
-  tps: 3172.5486
+  dps: 3099.53909
+  tps: 3148.42065
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 2507.35982
-  tps: 2532.39295
+  dps: 2578.44153
+  tps: 2603.75884
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 2507.35982
-  tps: 2532.68465
+  dps: 2578.44153
+  tps: 2604.04619
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 2671.50379
-  tps: 2697.4861
+  dps: 2745.46084
+  tps: 2771.7135
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 4562.19874
-  tps: 4596.47972
+  dps: 4607.42225
+  tps: 4641.61254
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 2064.39897
-  tps: 2087.82855
+  dps: 2109.656
+  tps: 2133.08
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 6206.72958
-  tps: 6254.14083
+  dps: 6262.87379
+  tps: 6310.29245
  }
 }
 dps_results: {
@@ -1756,56 +1756,56 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5298.88905
-  tps: 5345.86458
+  dps: 5328.80281
+  tps: 5375.69413
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 2579.29094
-  tps: 2602.60028
+  dps: 2591.30634
+  tps: 2614.60742
   dtps: 1.95566
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 2579.66953
-  tps: 2603.30611
+  dps: 2591.61773
+  tps: 2615.23873
   dtps: 1.98833
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 2731.23341
-  tps: 2755.44081
+  dps: 2743.22998
+  tps: 2767.41884
   dtps: 1.95566
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 3601.41597
-  tps: 3627.28672
+  dps: 3616.35776
+  tps: 3642.16216
   dtps: 2.06392
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 2373.60166
-  tps: 2395.62232
+  dps: 2407.54824
+  tps: 2429.63782
   dtps: 1.85242
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 7053.85317
-  tps: 7102.29312
-  dtps: 2.25384
+  dps: 7096.7333
+  tps: 7145.14821
+  dtps: 2.26567
  }
 }
 dps_results: {
@@ -1895,8 +1895,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 6496.99939
-  tps: 6544.88462
+  dps: 6538.81484
+  tps: 6586.48083
   dtps: 2.05858
  }
 }
