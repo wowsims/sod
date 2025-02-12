@@ -41,6 +41,7 @@ func (priest *Priest) applyTAQShadow2PBonus() {
 		mindSpikeConfig.Flags ^= core.SpellFlagAPL
 		mindSpikeConfig.Cast.DefaultCast.GCD = 0
 		mindSpikeConfig.Cast.DefaultCast.Cost = 0
+		mindSpikeConfig.Cast.DefaultCast.CastTime = 0
 		mindSpikeConfig.Cast.CD = core.Cooldown{}
 		mindSpikeConfig.ManaCost.BaseCost = 0
 		mindSpikeConfig.ManaCost.FlatCost = 0
