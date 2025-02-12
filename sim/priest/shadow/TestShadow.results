@@ -545,13 +545,13 @@ stat_weights_results: {
   weights: 0
   weights: 0.53951
   weights: 0
-  weights: 2.68553
+  weights: 2.68568
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.68553
+  weights: 2.68568
   weights: 0
   weights: 0.00284
   weights: 29.89888
@@ -1409,8 +1409,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 5460.97089
-  tps: 5097.5282
+  dps: 5461.30096
+  tps: 5097.84508
  }
 }
 dps_results: {
@@ -1437,15 +1437,15 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-NightElf-phase_6-Basic-phase_6-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 3026.99592
-  tps: 3332.78646
+  dps: 3027.40543
+  tps: 3333.1816
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-NightElf-phase_6-Basic-phase_6-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 3026.99592
-  tps: 2803.95064
+  dps: 3027.40543
+  tps: 2804.34387
  }
 }
 dps_results: {
@@ -1479,15 +1479,15 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-Troll-phase_6-Basic-phase_6-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 3025.39509
-  tps: 3336.22285
+  dps: 3025.8046
+  tps: 3336.61839
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-Troll-phase_6-Basic-phase_6-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 3025.39509
-  tps: 2802.77764
+  dps: 3025.8046
+  tps: 2803.17089
  }
 }
 dps_results: {
@@ -1500,7 +1500,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5434.63279
-  tps: 5070.38111
+  dps: 5434.93055
+  tps: 5070.66696
  }
 }

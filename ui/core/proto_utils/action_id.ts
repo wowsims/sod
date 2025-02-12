@@ -286,6 +286,9 @@ export class ActionId {
 			case 'Mind Sear':
 				if (this.tag > 0) name = `${name} (${this.tag} Tick)`;
 				break;
+			case 'Mind Spike':
+				if (this.tag === 1) name = `${name} (2pT2.5)`;
+				break;
 			case 'Shattering Throw':
 				if (this.tag === playerIndex) {
 					name += ` (self)`;
@@ -467,18 +470,18 @@ export class ActionId {
 				if (this.tag === 1) name += ` (Heal)`;
 				break;
 			case 'Kill Shot':
-				if (this.tag === 1) name = `${name} (Rapid Fire)`
+				if (this.tag === 1) name = `${name} (Rapid Fire)`;
 				break;
 			case 'Master Demonologist':
-				if (this.tag === 1) name = `${name} (Imp)`
-				else if (this.tag === 2) name = `${name} (Voidwalker)`
-				else if (this.tag === 3) name = `${name} (Succubus)`
-				else if (this.tag === 4) name = `${name} (Felhunter)`
-				else if (this.tag === 5) name = `${name} (Felguard)`
+				if (this.tag === 1) name = `${name} (Imp)`;
+				else if (this.tag === 2) name = `${name} (Voidwalker)`;
+				else if (this.tag === 3) name = `${name} (Succubus)`;
+				else if (this.tag === 4) name = `${name} (Felhunter)`;
+				else if (this.tag === 5) name = `${name} (Felguard)`;
 				break;
 			// Temporary until real debuff is implemented
 			case 'Ice Lance':
-				if (this.tag > 0) name = `${name} (${this.tag} Stacks)`
+				if (this.tag > 0) name = `${name} (${this.tag} Stacks)`;
 				break;
 			default:
 				if (this.tag) {

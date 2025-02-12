@@ -30,7 +30,14 @@ func init() {
 			Duration: duration,
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell.Matches(ClassSpellMask_PriestAll) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && !spell.Flags.Matches(core.SpellFlagPureDot|core.SpellFlagChanneled) {
-					aura.Deactivate(sim)
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt: sim.CurrentTime + core.SpellBatchWindow,
+						OnAction: func(sim *core.Simulation) {
+							if aura.IsActive() {
+								aura.Deactivate(sim)
+							}
+						},
+					})
 				}
 			},
 		}).AttachSpellMod(core.SpellModConfig{
