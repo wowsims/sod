@@ -2104,7 +2104,7 @@ func init() {
 		})
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:         "Thunderfury",
+			Name:         "Thunderfury Trigger",
 			DPM:          character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(Thunderfury, 6.0, 0),
 			DPMProcCheck: core.DPMProc,
 			Callback:     core.CallbackOnSpellHitDealt,
