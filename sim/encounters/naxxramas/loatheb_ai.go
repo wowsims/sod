@@ -53,6 +53,7 @@ type LoathebAI struct {
 	NaxxramasEncounter
 	Target          *core.Target
 	SummonSpore     *core.Spell
+	RemoveCurse     *core.Spell
 	sporeAssignment float64
 }
 
@@ -67,6 +68,7 @@ func (ai *LoathebAI) Initialize(target *core.Target, config *proto.Target) {
 	ai.authorityFrozenWastesStacks = config.TargetInputs[0].EnumValue
 	ai.sporeAssignment = config.TargetInputs[1].NumberValue
 	ai.registerSummonSpore(target)
+	ai.registerRemoveCurse(target)
 
 	ai.registerAuthorityOfTheFrozenWastesAura(ai.Target, ai.authorityFrozenWastesStacks)
 }
@@ -110,6 +112,32 @@ func (ai *LoathebAI) registerSummonSpore(target *core.Target) {
 	})
 }
 
+func (ai *LoathebAI) registerRemoveCurse(target *core.Target) {
+	actionID := core.ActionID{SpellID: 30281}
+
+	ai.RemoveCurse = target.RegisterSpell(core.SpellConfig{
+		ActionID: actionID,
+		ProcMask: core.ProcMaskEmpty,
+
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: time.Millisecond * 4240, // Next server tick after cast complete
+			},
+			CD: core.Cooldown{
+				Timer:    target.NewTimer(),
+				Duration: time.Second * 30,
+			},
+		},
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			for _, aura := range ai.Target.GetAurasWithDispelType(core.DispelType_Curse) {
+				if aura.IsActive() && aura.Duration < core.NeverExpires { // Ensures raid setting debuffs stay active
+					aura.Deactivate(sim)
+				}
+			}
+		},
+	})
+}
+
 func (ai *LoathebAI) Reset(*core.Simulation) {
 }
 
@@ -119,6 +147,11 @@ func (ai *LoathebAI) ExecuteCustomRotation(sim *core.Simulation) {
 	if target == nil {
 		// For individual non tank sims we still want abilities to work
 		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
+	}
+
+	if sim.CurrentTime > (time.Second * 4) {
+		ai.RemoveCurse.Cast(sim, target)
+			return
 	}
 
 	if ai.SummonSpore.IsReady(sim) {
