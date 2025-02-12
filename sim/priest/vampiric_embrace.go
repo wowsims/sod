@@ -23,6 +23,7 @@ func (priest *Priest) registerVampiricEmbraceSpell() {
 		return target.GetOrRegisterAura(core.Aura{
 			ActionID: actionID,
 			Label:    "Vampiric Embrace (Health) - " + target.Label,
+			DispelType: core.DispelType_Curse,
 			Duration: duration,
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.Landed() && spell.SpellSchool.Matches(core.SpellSchoolShadow) {

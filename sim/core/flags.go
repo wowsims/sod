@@ -212,6 +212,18 @@ const (
 	SpellFlagIgnoreModifiers = SpellFlagIgnoreAttackerModifiers | SpellFlagIgnoreTargetModifiers
 )
 
+// Dispel Type flags
+type DispelType uint64
+
+const (
+	DispelType_None                  DispelType = 0
+	DispelType_Poison                DispelType = 1 << iota
+	DispelType_Disease                         
+	DispelType_Curse  
+	DispelType_Magic
+	DispelType_Enrage  
+)
+
 /*
 outcome roll hit/miss/crit/glance (assigns Outcome mask) -> If Hit, Crit Roll -> damage (applies metrics) -> trigger proc
 

@@ -53,6 +53,7 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "CurseofAgony-" + warlock.Label + strconv.Itoa(rank),
+				DispelType: core.DispelType_Curse,
 			},
 			NumberOfTicks:    numTicks,
 			TickLength:       tickLength,
@@ -387,6 +388,7 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "CurseofDoom",
+				DispelType: core.DispelType_Curse,
 			},
 			NumberOfTicks: 1,
 			TickLength:    time.Minute,
