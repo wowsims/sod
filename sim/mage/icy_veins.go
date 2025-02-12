@@ -22,13 +22,7 @@ func (mage *Mage) registerIcyVeinsSpell() {
 		Label:    "Icy Veins",
 		ActionID: actionID,
 		Duration: duration,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyCastSpeed(castSpeedMultiplier)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.MultiplyCastSpeed(1 / castSpeedMultiplier)
-		},
-	})
+	}).AttachMultiplyCastSpeed(&mage.Unit, castSpeedMultiplier)
 
 	mage.IcyVeins = mage.RegisterSpell(core.SpellConfig{
 		ActionID:    actionID,

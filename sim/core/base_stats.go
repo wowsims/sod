@@ -444,7 +444,7 @@ var ClassBaseStats = map[proto.Class]map[int]stats.Stats{
 			stats.AttackPower: 50*2 - 20,
 		},
 		60: {
-			stats.Health:      1423,
+			stats.Health:      1280,
 			stats.Mana:        1520,
 			stats.Agility:     55,
 			stats.Strength:    85,

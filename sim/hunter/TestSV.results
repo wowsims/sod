@@ -302,7 +302,7 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase2-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 774.29357
+  dps: 772.75616
   tps: 388.97231
  }
 }
@@ -447,9 +447,9 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase4-Lvl60-AllItems-DreadHunter'sChain"
  value: {
-  dps: 1906.32729
-  tps: 1639.97247
-  hps: 15.34389
+  dps: 1906.36657
+  tps: 1640.01246
+  hps: 15.3416
  }
 }
 dps_results: {

@@ -29,9 +29,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -50,31 +48,32 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 
 	defaults: {
 		race: Race.RaceTroll,
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 2.30,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellDamage]: 1,
-			[Stat.StatFirePower]: 0.3,
-			[Stat.StatNaturePower]: 0.7,
-			[Stat.StatSpellHit]: 20.08,
-			[Stat.StatSpellCrit]: 17.91,
-			[Stat.StatMP5]: 0.02,
-			[Stat.StatStrength]: 0.01,
-			[Stat.StatAttackPower]: 0.01,
-			[Stat.StatFireResistance]: 0.5,
-		}, {
-			[PseudoStat.PseudoStatCastSpeedMultiplier]: 19.64,
-			[PseudoStat.PseudoStatTimewornBonus]: 35.74,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatIntellect]: 2.3,
+				[Stat.StatSpellPower]: 1,
+				[Stat.StatSpellDamage]: 1,
+				[Stat.StatFirePower]: 0.3,
+				[Stat.StatNaturePower]: 0.7,
+				[Stat.StatSpellHit]: 20.08,
+				[Stat.StatSpellCrit]: 17.91,
+				[Stat.StatMP5]: 0.02,
+				[Stat.StatStrength]: 0.01,
+				[Stat.StatAttackPower]: 0.01,
+				[Stat.StatFireResistance]: 0.5,
+			},
+			{
+				[PseudoStat.PseudoStatCastSpeedMultiplier]: 19.64,
+				[PseudoStat.PseudoStatTimewornBonus]: 35.74,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -99,9 +98,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 	otherInputs: {
 		inputs: [OtherInputs.DistanceFromTarget],
 	},
-	itemSwapConfig: {
-		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
-	},
+	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
 	customSections: [
 		// TotemsSection,
 	],
@@ -139,11 +136,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecElementalShaman, {
 			...Presets.GearPresets[Phase.Phase1],
 		],
 		// Preset build configurations that the user can quickly select
-		builds: [
-			Presets.PresetBuildPhase6,
-			Presets.PresetBuildPhase5,
-			Presets.PresetBuildPhase4,
-		],
+		builds: [Presets.PresetBuildPhase6, Presets.PresetBuildPhase5, Presets.PresetBuildPhase4],
 	},
 
 	autoRotation: player => {

@@ -16,11 +16,8 @@ import (
 // but there are occasionally class-specific item effects.
 type ApplyEffect func(agent Agent)
 
-// Function for applying permanent effects to an agent's weapon
-type ApplyWeaponEffect func(agent Agent, slot proto.ItemSlot)
-
 var itemEffects = map[int32]ApplyEffect{}
-var weaponEffects = map[int32]ApplyWeaponEffect{}
+var weaponEffects = map[int32]ApplyEffect{}
 var enchantEffects = map[int32]ApplyEffect{}
 
 // IDs of item effects which should be used for tests.
@@ -80,7 +77,7 @@ func NewEnchantEffect(id int32, enchantEffect ApplyEffect) {
 	enchantEffects[id] = enchantEffect
 }
 
-func AddWeaponEffect(id int32, weaponEffect ApplyWeaponEffect) {
+func AddWeaponEffect(id int32, weaponEffect ApplyEffect) {
 	if WITH_DB {
 		if _, ok := EnchantsByEffectID[id]; !ok {
 			panic(fmt.Sprintf("No enchant with ID: %d", id))
@@ -90,6 +87,25 @@ func AddWeaponEffect(id int32, weaponEffect ApplyWeaponEffect) {
 		panic(fmt.Sprintf("Cannot add multiple effects for one item: %d, %#v", id, weaponEffect))
 	}
 	weaponEffects[id] = weaponEffect
+}
+
+func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects map[int32]bool, registeredItemEnchantEffects map[int32]bool) {
+	for _, eq := range equipment {
+		if applyItemEffect, ok := itemEffects[eq.ID]; ok && !registeredItemEffects[eq.ID] {
+			applyItemEffect(agent)
+			registeredItemEffects[eq.ID] = true
+		}
+
+		if applyEnchantEffect, ok := enchantEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
+			applyEnchantEffect(agent)
+			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
+		}
+
+		if applyWeaponEffect, ok := weaponEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
+			applyWeaponEffect(agent)
+			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
+		}
+	}
 }
 
 // Helpers for making common types of active item effects.
@@ -154,17 +170,43 @@ func NewSimpleStatDefensiveTrinketEffect(itemID int32, bonus stats.Stats, durati
 func NewMobTypeAttackPowerEffect(itemID int32, mobTypes []proto.MobType, bonus float64) {
 	NewItemEffect(itemID, func(agent Agent) {
 		character := agent.GetCharacter()
-		if slices.Contains(mobTypes, character.CurrentTarget.MobType) {
-			character.PseudoStats.MobTypeAttackPower += bonus
+
+		if !slices.Contains(mobTypes, character.CurrentTarget.MobType) {
+			return
 		}
+
+		aura := MakePermanent(character.GetOrRegisterAura(Aura{
+			Label: fmt.Sprintf("Mob type Attack Power Bonus - %s (%d)", character.CurrentTarget.MobType, itemID),
+			OnGain: func(aura *Aura, sim *Simulation) {
+				character.PseudoStats.MobTypeAttackPower += bonus
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				character.PseudoStats.MobTypeAttackPower -= bonus
+			},
+		}))
+
+		character.ItemSwap.RegisterProc(itemID, aura)
 	})
 }
 
 func NewMobTypeSpellPowerEffect(itemID int32, mobTypes []proto.MobType, bonus float64) {
 	NewItemEffect(itemID, func(agent Agent) {
 		character := agent.GetCharacter()
-		if slices.Contains(mobTypes, character.CurrentTarget.MobType) {
-			character.PseudoStats.MobTypeSpellPower += bonus
+
+		if !slices.Contains(mobTypes, character.CurrentTarget.MobType) {
+			return
 		}
+
+		aura := MakePermanent(character.GetOrRegisterAura(Aura{
+			Label: fmt.Sprintf("Mob type Spell Power Bonus - %s (%d)", character.CurrentTarget.MobType, itemID),
+			OnGain: func(aura *Aura, sim *Simulation) {
+				character.PseudoStats.MobTypeSpellPower += bonus
+			},
+			OnExpire: func(aura *Aura, sim *Simulation) {
+				character.PseudoStats.MobTypeSpellPower -= bonus
+			},
+		}))
+
+		character.ItemSwap.RegisterProc(itemID, aura)
 	})
 }

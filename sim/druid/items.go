@@ -108,33 +108,27 @@ func init() {
 			},
 		})
 
-		core.MakePermanent(character.RegisterAura(core.Aura{
-			Label: "Gla'sir Damage Trigger",
-			OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Damage") {
-					damageSpell.Cast(sim, result.Target)
-				}
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Gla'sir Damage",
+			Callback:   core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeCrit,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: 0.15,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				damageSpell.Cast(sim, result.Target)
 			},
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Damage") {
-					damageSpell.Cast(sim, result.Target)
-				}
-			},
-		}))
+		})
 
-		core.MakePermanent(character.RegisterAura(core.Aura{
-			Label: "Gla'sir Heal Trigger",
-			OnPeriodicHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Heal") {
-					healSpell.Cast(sim, result.Target)
-				}
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Gla'sir Heal",
+			Callback:   core.CallbackOnPeriodicHealDealt | core.CallbackOnHealDealt,
+			Outcome:    core.OutcomeCrit,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: 0.15,
+			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
+				healSpell.Cast(sim, result.Target)
 			},
-			OnHealDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage) && result.DidCrit() && sim.Proc(.15, "Gla'sir Heal") {
-					healSpell.Cast(sim, result.Target)
-				}
-			},
-		}))
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=23198/idol-of-brutality
@@ -384,7 +378,7 @@ func init() {
 			},
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Rae'lar Damage Trigger",
 			Callback: core.CallbackOnSpellHitDealt,
 			ProcMask: core.ProcMaskWhiteHit,
@@ -393,6 +387,8 @@ func init() {
 				lifesteal.Cast(sim, result.Target)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(Raelar, triggerAura)
 	})
 
 	core.NewItemEffect(RitualistsHammer, func(agent core.Agent) {
@@ -408,21 +404,19 @@ func init() {
 		actionID := core.ActionID{ItemID: WushoolaysCharmOfNature}
 		duration := time.Second * 20
 
+		// TODO: healing dealt multiplier?
 		aura := character.RegisterAura(core.Aura{
 			ActionID: actionID,
 			Label:    "Aligned with Nature",
 			Duration: duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.10)
-				// TODO: healing dealt multiplier?
-				character.AddStatDynamic(sim, stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.10)
-				// TODO: healing dealt multiplier?
-				character.AddStatDynamic(sim, stats.SpellCrit, -10*core.SpellCritRatingPerCritChance)
 			},
-		})
+			// TODO: healing dealt multiplier?
+		}).AttachStatBuff(stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,

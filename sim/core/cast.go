@@ -154,6 +154,10 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 			}
 		}
 
+		if spell.Flags.Matches(SpellFlagSwapped) {
+			return spell.castFailureHelper(sim, "spell attached to an un-equipped item")
+		}
+
 		if spell.ExtraCastCondition != nil {
 			if !spell.ExtraCastCondition(sim, target) {
 				return spell.castFailureHelper(sim, "extra spell condition")
@@ -220,9 +224,10 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 		}
 
 		// Non melee casts
-		if spell.Flags.Matches(SpellFlagResetAttackSwing) && spell.Unit.AutoAttacks.enabled {
-			restartMeleeAt := sim.CurrentTime + spell.CurCast.CastTime
-			spell.Unit.AutoAttacks.StopMeleeUntil(sim, restartMeleeAt, false)
+		if spell.Flags.Matches(SpellFlagResetAttackSwing) && spell.Unit.AutoAttacks.anyEnabled() {
+			restartSwingAt := sim.CurrentTime + spell.CurCast.CastTime
+			spell.Unit.AutoAttacks.StopMeleeUntil(sim, restartSwingAt, false)
+			spell.Unit.AutoAttacks.StopRangedUntil(sim, restartSwingAt)
 		}
 
 		// Hardcasts
@@ -292,6 +297,10 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 
 func (spell *Spell) makeCastFuncSimple() CastSuccessFunc {
 	return func(sim *Simulation, target *Unit) bool {
+		if spell.Flags.Matches(SpellFlagSwapped) {
+			return spell.castFailureHelper(sim, "spell attached to an un-equipped item")
+		}
+
 		if spell.ExtraCastCondition != nil {
 			if !spell.ExtraCastCondition(sim, target) {
 				return spell.castFailureHelper(sim, "extra spell condition")

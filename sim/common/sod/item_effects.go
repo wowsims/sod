@@ -54,7 +54,7 @@ func RegisterFiftyPercentHasteBuffCD(character *core.Character, actionID core.Ac
 	})
 }
 
-func StormhammerChainLightningProcAura(agent core.Agent) {
+func StormhammerChainLightningProcAura(agent core.Agent, itemID int32) {
 	character := agent.GetCharacter()
 
 	maxHits := int(min(3, character.Env.GetNumTargets()))
@@ -75,7 +75,7 @@ func StormhammerChainLightningProcAura(agent core.Agent) {
 		},
 	})
 
-	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	meleeProcTrigger := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:              "Chain Lightning (Skyrider's Masterwork Stormhammer Melee)",
 		Callback:          core.CallbackOnSpellHitDealt,
 		Outcome:           core.OutcomeLanded,
@@ -91,7 +91,7 @@ func StormhammerChainLightningProcAura(agent core.Agent) {
 		Timer:    character.NewTimer(),
 		Duration: time.Millisecond * 100,
 	}
-	core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	spellProcTrigger := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 		Name:       "Chain Lightning (Skyrider's Masterwork Stormhammer Spell)",
 		Callback:   core.CallbackOnSpellHitDealt,
 		Outcome:    core.OutcomeLanded,
@@ -104,4 +104,7 @@ func StormhammerChainLightningProcAura(agent core.Agent) {
 			}
 		},
 	})
+
+	character.ItemSwap.RegisterProc(itemID, meleeProcTrigger)
+	character.ItemSwap.RegisterProc(itemID, spellProcTrigger)
 }

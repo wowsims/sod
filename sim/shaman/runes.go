@@ -314,16 +314,12 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 		ActionID: core.ActionID{SpellID: procSpellId},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyMeleeSpeed(sim, attackSpeedMultiplier)
-			shaman.AddStatDynamic(sim, stats.SpellHit, spellHitIncrease)
 			aura.Unit.EnableDynamicStatDep(sim, statDep)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.MultiplyAttackSpeed(sim, 1/attackSpeedMultiplier)
-			shaman.AddStatDynamic(sim, stats.SpellHit, -1*spellHitIncrease)
 			aura.Unit.DisableDynamicStatDep(sim, statDep)
 		},
-	})
+	}).AttachStatBuff(stats.SpellHit, spellHitIncrease).AttachMultiplyAttackSpeed(&shaman.Unit, attackSpeedMultiplier)
 
 	shaman.RegisterAura(core.Aura{
 		Label:    "Two-Handed Mastery Trigger",
@@ -428,8 +424,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		},
 	})
 
-	ppmm := shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
-	shaman.maelstromWeaponPPMM = &ppmm
+	shaman.maelstromWeaponPPMM = shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
 
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:              "Maelstrom Weapon Trigger",
@@ -524,22 +519,23 @@ func (shaman *Shaman) applyWayOfEarth() {
 
 	healthDep := shaman.NewDynamicMultiplyStat(stats.Health, 1.3)
 
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label:    "Way of Earth",
-		ActionID: core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsWayOfEarth)},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.EnableDynamicStatDep(sim, healthDep)
-			shaman.PseudoStats.DamageTakenMultiplier *= .9
-			shaman.PseudoStats.ReducedCritTakenChance += 6
-			shaman.PseudoStats.ThreatMultiplier *= 1.65
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.DisableDynamicStatDep(sim, healthDep)
-			shaman.PseudoStats.DamageTakenMultiplier /= .9
-			shaman.PseudoStats.ReducedCritTakenChance -= 6
-			shaman.PseudoStats.ThreatMultiplier /= 1.65
-		},
-	}))
+	core.MakePermanent(
+		shaman.RegisterAura(core.Aura{
+			ActionID:   core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsWayOfEarth)},
+			BuildPhase: core.CharacterBuildPhaseBuffs,
+			Label:      "Way of Earth",
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.DamageTakenMultiplier *= .9
+				shaman.PseudoStats.ReducedCritTakenChance += 6
+				shaman.PseudoStats.ThreatMultiplier *= 1.65
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				shaman.PseudoStats.DamageTakenMultiplier /= .9
+				shaman.PseudoStats.ReducedCritTakenChance -= 6
+				shaman.PseudoStats.ThreatMultiplier /= 1.65
+			},
+		}).AttachStatDependency(healthDep),
+	)
 }
 
 // https://www.wowhead.com/classic/spell=408696/spirit-of-the-alpha

@@ -40,10 +40,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatDefense,
 		Stat.StatDodge,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMeleeSpeedMultiplier, PseudoStat.PseudoStatCastSpeedMultiplier],
 	// Reference stat against which to calculate EP. DPS classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -76,12 +73,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		// Resistances
 		Stat.StatShadowResistance,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatThornsDamage,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
-	
+	displayPseudoStats: [PseudoStat.PseudoStatThornsDamage, PseudoStat.PseudoStatMeleeSpeedMultiplier, PseudoStat.PseudoStatCastSpeedMultiplier],
+
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
@@ -142,9 +135,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 			OtherInputs.ChannelClipDelay,
 		],
 	},
-	itemSwapConfig: {
-		itemSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
-	},
+	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

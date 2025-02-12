@@ -956,21 +956,21 @@ func HeartOfTheLionAura(character *Character) *Aura {
 		character.NewDynamicMultiplyStat(stats.Spirit, 1.10),
 	}
 
+	bonusStats := stats.Stats{stats.AttackPower: modAP, stats.RangedAttackPower: modAP}
+
 	return MakePermanent(character.RegisterAura(Aura{
 		Label:      "Heart of the Lion",
 		ActionID:   ActionID{SpellID: 409583},
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			character.AddBuildPhaseStatDynamic(sim, stats.AttackPower, modAP)
-			character.AddBuildPhaseStatDynamic(sim, stats.RangedAttackPower, modAP)
+			character.AddBuildPhaseStatsDynamic(sim, bonusStats)
 
 			for _, dep := range statDeps {
 				aura.Unit.EnableBuildPhaseStatDep(sim, dep)
 			}
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			character.AddBuildPhaseStatDynamic(sim, stats.AttackPower, -modAP)
-			character.AddBuildPhaseStatDynamic(sim, stats.RangedAttackPower, -modAP)
+			character.AddBuildPhaseStatsDynamic(sim, bonusStats.Invert())
 
 			for _, dep := range statDeps {
 				aura.Unit.DisableBuildPhaseStatDep(sim, dep)
@@ -1903,13 +1903,19 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 }
 
 func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
+	label := "Strength of Earth Totem"
 	rank := LevelToBuffRank[StrengthOfEarth][level]
 	spellID := []int32{0, 8075, 8160, 8161, 10442, 25361}[rank]
 	duration := time.Minute * 2
 	updateStats := BuffSpellByLevel[StrengthOfEarth][level].Multiply(multiplier).Floor()
 
-	aura := unit.GetOrRegisterAura(Aura{
-		Label:      "Strength of Earth Totem",
+	aura := unit.GetAura(label)
+	if aura != nil {
+		return aura
+	}
+
+	return unit.RegisterAura(Aura{
+		Label:      label,
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
@@ -1924,13 +1930,19 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 }
 
 func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
+	label := "Grace of Air Totem"
 	rank := LevelToBuffRank[GraceOfAir][level]
 	spellID := []int32{0, 8835, 10627, 25359}[rank]
 	duration := time.Minute * 2
 	updateStats := BuffSpellByLevel[GraceOfAir][level].Multiply(multiplier).Floor()
 
-	aura := unit.GetOrRegisterAura(Aura{
-		Label:      "Grace of Air Totem",
+	aura := unit.GetAura(label)
+	if aura != nil {
+		return aura
+	}
+
+	return unit.RegisterAura(Aura{
+		Label:      label,
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
 		BuildPhase: CharacterBuildPhaseBuffs,
@@ -1951,26 +1963,25 @@ var BattleShoutBaseAP = [BattleShoutRanks + 1]float64{0, 20, 40, 57, 93, 138, 19
 var BattleShoutLevel = [BattleShoutRanks + 1]int{0, 1, 12, 22, 32, 42, 52, 60}
 
 func BattleShoutAura(unit *Unit, impBattleShout int32, boomingVoicePts int32) *Aura {
+	label := "Battle Shout"
 	rank := LevelToBuffRank[BattleShout][unit.Level]
 	spellId := BattleShoutSpellId[rank]
 	baseAP := BattleShoutBaseAP[rank]
-
-	bonusStats := stats.Stats{
+	stats := stats.Stats{
 		stats.AttackPower: math.Floor(baseAP * (1 + 0.05*float64(impBattleShout))),
 	}
 
-	return unit.GetOrRegisterAura(Aura{
-		Label:      "Battle Shout",
+	aura := unit.GetAura(label)
+	if aura != nil {
+		return aura
+	}
+
+	return unit.RegisterAura(Aura{
+		Label:      label,
 		ActionID:   ActionID{SpellID: spellId},
 		Duration:   time.Duration(float64(time.Minute*2) * (1 + 0.1*float64(boomingVoicePts))),
 		BuildPhase: CharacterBuildPhaseBuffs,
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, bonusStats)
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.AddStatsDynamic(sim, bonusStats.Invert())
-		},
-	})
+	}).AttachBuildPhaseStatsBuff(stats)
 }
 
 func SpiritOfTheAlphaAura(unit *Unit) *Aura {
@@ -2625,14 +2636,14 @@ func DefendersResolveSpellDamage(character *Character, spellDamageAmount int32) 
 }
 
 // Equip: Increases spell casting speed of all party members within 30 yards by 2%. This specific effect does not stack from multiple sources.
-func AtieshCastSpeedEffect(unit *Unit) {
+func AtieshCastSpeedEffect(unit *Unit) *Aura {
 	label := "Atiesh Greatstaff of the Guardian (Cast Speed)"
 
 	if unit.HasAura(label) {
-		return
+		return unit.GetAura(label)
 	}
 
-	MakePermanent(unit.RegisterAura(Aura{
+	return MakePermanent(unit.RegisterAura(Aura{
 		ActionID:   ActionID{SpellID: 1219557},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
@@ -2643,14 +2654,15 @@ func AtieshCastSpeedEffect(unit *Unit) {
 			aura.Unit.MultiplyCastSpeed(1 / 1.02)
 		},
 	}))
+
 }
 
 // Equip: Increases healing done by up to 62 and damage done by up to 19 for all magical spells and effects of all party members within 30. This specific effect does not stack from multiple sources.
-func AtieshHealingEffect(unit *Unit) {
+func AtieshHealingEffect(unit *Unit) *Aura {
 	label := "Atiesh Greatstaff of the Guardian (Healing)"
 
 	if unit.HasAura(label) {
-		return
+		return unit.GetAura(label)
 	}
 
 	stats := stats.Stats{
@@ -2658,7 +2670,7 @@ func AtieshHealingEffect(unit *Unit) {
 		stats.SpellDamage:  19,
 	}
 
-	MakePermanent(unit.RegisterAura(Aura{
+	return MakePermanent(unit.RegisterAura(Aura{
 		ActionID:   ActionID{SpellID: 1219553},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
@@ -2666,31 +2678,35 @@ func AtieshHealingEffect(unit *Unit) {
 }
 
 // Equip: Increases the spell critical chance of all party members within 30 yards by 2%. This specific effect does not stack from multiple sources.
-func AtieshSpellCritEffect(unit *Unit) {
+func AtieshSpellCritEffect(unit *Unit) *Aura {
 	label := "Atiesh Greatstaff of the Guardian (Spell Crit)"
 
 	if unit.HasAura(label) {
-		return
+		return unit.GetAura(label)
 	}
 
-	MakePermanent(unit.RegisterAura(Aura{
+	stats := stats.Stats{stats.SpellCrit: 2 * SpellCritRatingPerCritChance}
+
+	return MakePermanent(unit.RegisterAura(Aura{
 		ActionID:   ActionID{SpellID: 1219558},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
-	}).AttachStatBuff(stats.SpellCrit, 2*SpellCritRatingPerCritChance))
+	}).AttachBuildPhaseStatsBuff(stats))
 }
 
 // Equip: Increases damage and healing done by magical spells and effects of all party members within 30 yards by up to 33. This specific effect does not stack from multiple sources.
-func AtieshSpellPowerEffect(unit *Unit) {
+func AtieshSpellPowerEffect(unit *Unit) *Aura {
 	label := "Atiesh Greatstaff of the Guardian (Spell Power)"
 
 	if unit.HasAura(label) {
-		return
+		return unit.GetAura(label)
 	}
 
-	MakePermanent(unit.RegisterAura(Aura{
+	stats := stats.Stats{stats.SpellPower: 33}
+
+	return MakePermanent(unit.RegisterAura(Aura{
 		ActionID:   ActionID{SpellID: 1219552},
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
-	}).AttachStatBuff(stats.SpellPower, 33))
+	}).AttachBuildPhaseStatsBuff(stats))
 }

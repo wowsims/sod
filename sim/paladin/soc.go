@@ -49,7 +49,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 		{level: 60, spellID: 20920, manaCost: 210, scaleLevel: 60, proc: proc{spellID: 20947}, judge: judge{spellID: 20966, minDamage: 339, maxDamage: 373, scale: 6.1}},
 	}
 
-	ppmm := paladin.AutoAttacks.NewPPMManager(7, core.ProcMaskMelee)
+	dpm := paladin.AutoAttacks.NewPPMManager(7, core.ProcMaskMelee)
 
 	icd := core.Cooldown{
 		Timer:    paladin.NewTimer(),
@@ -138,7 +138,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 				}
 
 				if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
-					if icd.IsReady(sim) && ppmm.Proc(sim, spell.ProcMask, "seal of command") {
+					if icd.IsReady(sim) && dpm.Proc(sim, spell.ProcMask, "seal of command") {
 						icd.Use(sim)
 						procSpell.Cast(sim, result.Target)
 					}

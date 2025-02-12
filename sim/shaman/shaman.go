@@ -108,7 +108,8 @@ func NewShaman(character *core.Character, talents string) *Shaman {
 	shaman.AddStatDependency(stats.BonusArmor, stats.Armor, 1)
 	shaman.PseudoStats.BlockValuePerStrength = .05 // 20 str = 1 block
 
-	shaman.ApplyRockbiterImbue(shaman.getImbueProcMask(proto.WeaponImbue_RockbiterWeapon))
+	// Rockbiter Weapon is applied dynamically in RegisterRockbiterImbue
+	// shaman.ApplyRockbiterImbue(shaman.getImbueProcMask(proto.WeaponImbue_RockbiterWeapon))
 	shaman.ApplyFlametongueImbue(shaman.getImbueProcMask(proto.WeaponImbue_FlametongueWeapon))
 	shaman.ApplyFrostbrandImbue(shaman.getImbueProcMask(proto.WeaponImbue_FrostbrandWeapon))
 	shaman.ApplyWindfuryImbue(shaman.getImbueProcMask(proto.WeaponImbue_WindfuryWeapon))
@@ -219,7 +220,7 @@ type Shaman struct {
 	elementalFocusProcChance    float64
 	lastFlameShockTarget        *core.Unit // Used by Ancestral Guidance rune
 	lightningShieldCanCrit      bool
-	maelstromWeaponPPMM         *core.PPMManager
+	maelstromWeaponPPMM         *core.DynamicProcManager
 	powerSurgeProcChance        float64
 	shamanisticRageDRMultiplier float64
 	staticSHocksProcChance      float64

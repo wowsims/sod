@@ -1,8 +1,10 @@
 package core
 
 import (
+	"cmp"
 	"hash/fnv"
 	"math"
+	"slices"
 	"time"
 
 	"github.com/wowsims/sod/sim/core/proto"
@@ -171,6 +173,30 @@ func Flatten[T any](src [][]T) []T {
 	for _, sublist := range src {
 		dst = append(dst, sublist...)
 	}
+	return dst
+}
+
+// Returns true if two slices share any common elements, and false otherwise.
+func CheckSliceOverlap[T comparable](s1 []T, s2 []T) bool {
+	for _, v1 := range s1 {
+		for _, v2 := range s2 {
+			if v1 == v2 {
+				return true
+			}
+		}
+	}
+	return false
+}
+
+// Allows Go maps to be used like the "Set" type commonly found in other languages
+func SetToSortedSlice[K cmp.Ordered](src map[K]bool) []K {
+	dst := make([]K, 0, len(src))
+	for k, exists := range src {
+		if exists {
+			dst = append(dst, k)
+		}
+	}
+	slices.Sort(dst)
 	return dst
 }
 

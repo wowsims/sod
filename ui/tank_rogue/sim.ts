@@ -3,7 +3,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui';
 import { Player } from '../core/player';
-import { Class, Faction, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common';
+import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common';
 import { Stats } from '../core/proto_utils/stats';
 import { getSpecIcon } from '../core/proto_utils/utils';
 import { HonorOfThievesCritRate, pkSwap } from './inputs';
@@ -135,6 +135,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 			pkSwap,
 		],
 	},
+	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand],
 	encounterPicker: {
 		// Whether to include 'Execute Duration (%)' in the 'Encounter' section of the settings tab.
 		showExecuteProportion: false,

@@ -399,16 +399,7 @@ func (paladin *Paladin) applyPaladinT2Prot2P() {
 				if paladin.Level < HolyShieldValues[i].level {
 					break
 				}
-				oldOnGain := hsAura.OnGain
-				hsAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-					oldOnGain(aura, sim)
-					paladin.AddStatDynamic(sim, stats.Block, blockBonus)
-				}
-				oldOnExpire := hsAura.OnExpire
-				hsAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-					oldOnExpire(aura, sim)
-					paladin.AddStatDynamic(sim, stats.Block, -blockBonus)
-				}
+				hsAura.AttachStatBuff(stats.Block, blockBonus)
 			}
 		},
 	})

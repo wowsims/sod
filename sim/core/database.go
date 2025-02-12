@@ -237,6 +237,46 @@ func (equipment *Equipment) EquipItem(item Item) {
 	}
 }
 
+func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.ItemSlot) bool {
+	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID)
+}
+
+func (equipment *Equipment) containsEnchantInSlots(effectID int32, possibleSlots []proto.ItemSlot) bool {
+	return slices.ContainsFunc(possibleSlots, func(slot proto.ItemSlot) bool {
+		return equipment.containsEnchantInSlot(effectID, slot)
+	})
+}
+
+func (equipment *Equipment) containsItemInSlots(itemID int32, possibleSlots []proto.ItemSlot) bool {
+	return slices.ContainsFunc(possibleSlots, func(slot proto.ItemSlot) bool {
+		return equipment[slot].ID == itemID
+	})
+}
+
+func (equipment *Equipment) GetEnchantCount(effectID int32) int32 {
+	count := int32(0)
+
+	for itemSlot := proto.ItemSlot(0); itemSlot < NumItemSlots; itemSlot++ {
+		if equipment.containsEnchantInSlot(effectID, itemSlot) {
+			count++
+		}
+	}
+
+	return count
+}
+
+func (equipment *Equipment) EligibleSlotsForEffect(effectID int32) []proto.ItemSlot {
+	var eligibleSlots []proto.ItemSlot
+
+	for itemSlot := proto.ItemSlot(0); itemSlot < NumItemSlots; itemSlot++ {
+		if equipment.containsEnchantInSlot(effectID, itemSlot) {
+			eligibleSlots = append(eligibleSlots, itemSlot)
+		}
+	}
+
+	return eligibleSlots
+}
+
 func (equipment *Equipment) ToEquipmentSpecProto() *proto.EquipmentSpec {
 	return &proto.EquipmentSpec{
 		Items: MapSlice(equipment[:], func(item Item) *proto.ItemSpec {
@@ -326,12 +366,20 @@ func EquipmentSpecFromJsonString(jsonString string) *proto.EquipmentSpec {
 	return es
 }
 
+func ItemSwapFromJsonString(jsonString string) *proto.ItemSwap {
+	is := &proto.ItemSwap{}
+
+	data := []byte(jsonString)
+	if err := protojson.Unmarshal(data, is); err != nil {
+		panic(err)
+	}
+	return is
+}
+
 func (equipment *Equipment) Stats() stats.Stats {
 	equipStats := stats.Stats{}
 	for _, item := range equipment {
-		equipStats = equipStats.Add(item.Stats)
-		equipStats = equipStats.Add(item.RandomSuffix.Stats)
-		equipStats = equipStats.Add(item.Enchant.Stats)
+		equipStats = equipStats.Add(ItemEquipmentStats(item, false))
 	}
 	return equipStats
 }
@@ -339,10 +387,32 @@ func (equipment *Equipment) Stats() stats.Stats {
 func (equipment *Equipment) BaseStats() stats.Stats {
 	equipStats := stats.Stats{}
 	for _, item := range equipment {
-		equipStats = equipStats.Add(item.Stats)
-		equipStats = equipStats.Add(item.RandomSuffix.Stats)
+		equipStats = equipStats.Add(ItemEquipmentStats(item, true))
 	}
 	return equipStats
+}
+
+func ItemEquipmentStats(item Item, includeOnlyBaseStats bool) stats.Stats {
+	equipStats := stats.Stats{}
+
+	if item.ID == 0 {
+		return equipStats
+	}
+
+	equipStats = equipStats.Add(item.Stats)
+	equipStats = equipStats.Add(item.RandomSuffix.Stats)
+	if !includeOnlyBaseStats {
+		equipStats = equipStats.Add(item.Enchant.Stats)
+	}
+
+	return equipStats
+}
+
+func GetItemByID(id int32) *Item {
+	if item, ok := ItemsByID[id]; ok {
+		return &item
+	}
+	return nil
 }
 
 func (equipment *Equipment) GetRuneIds() []int32 {
@@ -408,7 +478,11 @@ var itemTypeToSlotsMap = map[proto.ItemType][]proto.ItemSlot{
 	// ItemType_ItemTypeWeapon is excluded intentionally - the slot cannot be decided based on type alone for weapons.
 }
 
-func eligibleSlotsForItem(item Item) []proto.ItemSlot {
+func eligibleSlotsForItem(item *Item) []proto.ItemSlot {
+	if item == nil {
+		return nil
+	}
+
 	if slots, ok := itemTypeToSlotsMap[item.Type]; ok {
 		return slots
 	}

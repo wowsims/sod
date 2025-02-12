@@ -317,29 +317,29 @@ export default class ItemList<T extends ItemListType> {
 		}
 
 		const formatQuery = (value: string) => value.toLowerCase().replaceAll(/[^a-zA-Z0-9\s]/g, '');
-		const searchQuery = this.searchInput.value.split(/:|,|\s/);
+		const searchQuery = this.searchInput.value.toLowerCase().split(/:|,|\s/);
 
 		if (searchQuery[0] === 'is') {
-			searchQuery.shift()
+			searchQuery.shift();
 
 			searchQuery.forEach(filter => {
 				if (filter === 'timeworn') {
 					itemIdxs = itemIdxs.filter(i => {
 						const listItemData = this.itemData[i];
 						return (listItemData.item as UIItem)?.timeworn;
-					})
+					});
 				} else if (filter === 'sanctified') {
 					itemIdxs = itemIdxs.filter(i => {
 						const listItemData = this.itemData[i];
 						return (listItemData.item as UIItem)?.sanctified;
-					})
+					});
 				} else if (filter === 'set') {
 					itemIdxs = itemIdxs.filter(i => {
 						const listItemData = this.itemData[i];
-						return (listItemData.item as UIItem)?.setName !== "";
-					})
+						return (listItemData.item as UIItem)?.setName !== '';
+					});
 				}
-			})
+			});
 		} else {
 			itemIdxs = itemIdxs.filter(i => {
 				const listItemData = this.itemData[i];
@@ -353,6 +353,7 @@ export default class ItemList<T extends ItemListType> {
 
 					let include = true;
 					searchQuery.some(v => {
+						console.log(v);
 						if (!name.includes(v)) include = false;
 					});
 
@@ -772,25 +773,25 @@ export default class ItemList<T extends ItemListType> {
 	}
 
 	private getProfessionSourceIcon(profession: Profession): Element {
-		let src = "https://static.wikia.nocookie.net/wowpedia/images/6/63/Pointer_repair_off_32x32.png"
+		let src = 'https://static.wikia.nocookie.net/wowpedia/images/6/63/Pointer_repair_off_32x32.png';
 		switch (profession) {
 			case Profession.Alchemy:
-				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_alchemy.gif"
+				src = 'https://wow.zamimg.com/images/wow/icons/tiny/trade_alchemy.gif';
 				break;
 			case Profession.Blacksmithing:
-				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_blacksmithing.gif"
+				src = 'https://wow.zamimg.com/images/wow/icons/tiny/trade_blacksmithing.gif';
 				break;
 			case Profession.Enchanting:
-				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_engraving.gif"
+				src = 'https://wow.zamimg.com/images/wow/icons/tiny/trade_engraving.gif';
 				break;
 			case Profession.Engineering:
-				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_engineering.gif"
+				src = 'https://wow.zamimg.com/images/wow/icons/tiny/trade_engineering.gif';
 				break;
 			case Profession.Leatherworking:
-				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_leatherworking.gif"
+				src = 'https://wow.zamimg.com/images/wow/icons/tiny/trade_leatherworking.gif';
 				break;
 			case Profession.Tailoring:
-				src = "https://wow.zamimg.com/images/wow/icons/tiny/trade_tailoring.gif"
+				src = 'https://wow.zamimg.com/images/wow/icons/tiny/trade_tailoring.gif';
 				break;
 		}
 		return <img src={src} className="item-source-icon-profession me-1" />;

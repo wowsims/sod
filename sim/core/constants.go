@@ -2,6 +2,8 @@ package core
 
 import (
 	"time"
+
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const CharacterMaxLevel = 60
@@ -42,6 +44,16 @@ type Hand bool
 
 const MainHand Hand = true
 const OffHand Hand = false
+
+const NumItemSlots = proto.ItemSlot_ItemSlotRanged + 1
+
+func MeleeWeaponSlots() []proto.ItemSlot {
+	return []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand}
+}
+
+func AllWeaponSlots() []proto.ItemSlot {
+	return []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand, proto.ItemSlot_ItemSlotOffHand, proto.ItemSlot_ItemSlotRanged}
+}
 
 type DefenseType byte
 

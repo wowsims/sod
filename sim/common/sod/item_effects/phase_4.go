@@ -41,7 +41,9 @@ func init() {
 	// https://www.wowhead.com/classic/item=227886/skyriders-masterwork-stormhammer
 	// Chance on hit: Blasts up to 3 targets for 105 to 145 Nature damage.
 	// Estimated based on data from WoW Armaments Discord
-	core.NewItemEffect(SkyridersMasterworkStormhammer, sod.StormhammerChainLightningProcAura)
+	core.NewItemEffect(SkyridersMasterworkStormhammer, func(agent core.Agent) {
+		sod.StormhammerChainLightningProcAura(agent, SkyridersMasterworkStormhammer)
+	})
 
 	// https://www.wowhead.com/classic/item=228486/treants-bane
 	// Equip: +75 Attack Power when fighting Elementals.
@@ -84,17 +86,7 @@ func init() {
 
 		duration := time.Second * 15
 
-		aura := character.RegisterAura(core.Aura{
-			ActionID: core.ActionID{ItemID: WoodcarvedMoonstalker},
-			Label:    "Woodcarved Moonstalker",
-			Duration: duration,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.Strength, 60)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AddStatDynamic(sim, stats.Strength, -60)
-			},
-		})
+		aura := character.NewTemporaryStatsAura("Woodcarved Moonstalker", core.ActionID{ItemID: WoodcarvedMoonstalker}, stats.Stats{stats.Strength: 60}, duration)
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: WoodcarvedMoonstalker},
