@@ -62,10 +62,10 @@ func (shaman *Shaman) ApplyTalents() {
 
 	if shaman.Talents.HealingGrace > 0 {
 		shaman.AddStaticMod(core.SpellModConfig{
-			Kind:       core.SpellMod_Threat_Pct,
+			Kind:       core.SpellMod_Threat_Flat,
 			ClassMask:  ClassSpellMask_ShamanAll,
 			ProcMask:   core.ProcMaskSpellHealing,
-			FloatValue: 1 - .05*float64(shaman.Talents.HealingGrace),
+			FloatValue: -0.05 * float64(shaman.Talents.HealingGrace),
 		})
 	}
 

@@ -163,10 +163,10 @@ func (priest *Priest) applyShadowAffinity() {
 	}
 
 	priest.AddStaticMod(core.SpellModConfig{
-		Kind:       core.SpellMod_Threat_Pct,
+		Kind:       core.SpellMod_Threat_Flat,
 		ClassMask:  ClassSpellMask_PriestAll,
 		School:     core.SpellSchoolShadow,
-		FloatValue: 1 - 0.08*float64(priest.Talents.ShadowAffinity),
+		FloatValue: -[]float64{0.0, 0.08, 0.16, 0.25}[priest.Talents.ShadowAffinity],
 	})
 }
 

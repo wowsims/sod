@@ -123,9 +123,9 @@ func (warrior *Warrior) applyTAQTank4PBonus() {
 			}
 		},
 	})).AttachSpellMod(core.SpellModConfig{
-		Kind:       core.SpellMod_Threat_Pct,
+		Kind:       core.SpellMod_Threat_Flat,
 		ClassMask:  ClassSpellMask_WarriorShieldSlam,
-		FloatValue: 2,
+		FloatValue: 1,
 	})
 }
 
