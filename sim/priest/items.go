@@ -29,7 +29,7 @@ func init() {
 			Label:    "Cassandra's Tome",
 			Duration: duration,
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.Matches(ClassSpellMask_PriestAll) && !spell.Flags.Matches(core.SpellFlagPureDot|core.SpellFlagChanneled) {
+				if spell.Matches(ClassSpellMask_PriestAll) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && !spell.Flags.Matches(core.SpellFlagPureDot|core.SpellFlagChanneled) {
 					aura.Deactivate(sim)
 				}
 			},
