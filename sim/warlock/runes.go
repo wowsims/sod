@@ -12,6 +12,7 @@ import (
 
 func (warlock *Warlock) ApplyRunes() {
 	// Helm runes
+	warlock.applyPandemic()
 	warlock.applyVengeance()
 	warlock.applyBackdraft()
 
@@ -100,6 +101,19 @@ func (warlock *Warlock) applyShoulderRuneEffect() {
 	case int32(proto.WarlockRune_RuneShouldersPainSpreader):
 		warlock.applyRAQTank3PBonus()
 	}
+}
+
+func (warlock *Warlock) applyPandemic() {
+	if !warlock.HasRune(proto.WarlockRune_RuneHelmPandemic) {
+		return
+	}
+
+	warlock.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_WarlockCorruption | ClassSpellMask_WarlockUnstableAffliction | ClassSpellMask_WarlockCurseOfAgony |
+			ClassSpellMask_WarlockImmolate | ClassSpellMask_WarlockShadowflame | ClassSpellMask_WarlockCurseOfDoom | ClassSpellMask_WarlockSiphonLife,
+		Kind:       core.SpellMod_CritDamageBonus_Flat,
+		FloatValue: 1,
+	})
 }
 
 func (warlock *Warlock) applyVengeance() {

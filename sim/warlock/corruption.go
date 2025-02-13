@@ -42,8 +42,6 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		CritDamageBonus: core.TernaryFloat64(hasPandemicRune, 1, 0),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 

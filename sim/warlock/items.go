@@ -281,7 +281,7 @@ func init() {
 
 		priest.OnSpellRegistered(func(spell *core.Spell) {
 			// Unlike the Priest ring, the Warlock ring doesn't seem to affect channels https://www.wowhead.com/classic/spell=1222974/damage-over-time-increase
-			if spell.Flags.Matches(SpellFlagWarlock) && !spell.Flags.Matches(core.SpellFlagChanneled) {
+			if spell.Matches(ClassSpellMask_WarlockAll) && !spell.Flags.Matches(core.SpellFlagChanneled) {
 				spell.ApplyAdditivePeriodicDamageBonus(2)
 			}
 		})

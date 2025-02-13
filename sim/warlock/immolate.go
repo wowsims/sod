@@ -73,21 +73,23 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 				dot.Snapshot(target, dotDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				var result *core.SpellResult
 				if hasPandemicRune {
-					// We add the crit damage bonus and remove it after the call to not affect the initial damage portion of the spell
-					dot.Spell.CritDamageBonus += 1
-					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
-					dot.Spell.CritDamageBonus -= 1
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
 				} else {
-					result = dot.CalcSnapshotDamage(sim, target, dot.OutcomeTick)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
 				}
-				dot.Spell.DealPeriodicDamage(sim, result)
 			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			// Pandemic should only apply to the periodic part of the spell
+			impactCritDamageBonus := 0.0
+			if hasPandemicRune {
+				impactCritDamageBonus -= 1.0
+			}
+			spell.CritDamageBonus += impactCritDamageBonus
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.CritDamageBonus -= impactCritDamageBonus
 
 			if result.Landed() {
 				dot := spell.Dot(target)
@@ -106,8 +108,6 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 
 				dot.Apply(sim)
 			}
-
-			spell.DealDamage(sim, result)
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {
 			if useSnapshot {

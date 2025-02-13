@@ -12,6 +12,10 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 		return
 	}
 
+	warlock.UnstableAffliction = warlock.GetOrRegisterSpell(warlock.getUnstableAfflictionConfig())
+}
+
+func (warlock *Warlock) getUnstableAfflictionConfig() core.SpellConfig {
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
@@ -19,7 +23,7 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 	// 2024-11-22 +120% damage
 	baseDamage := warlock.baseRuneAbilityDamage() * 1.1 * 2.20
 
-	warlock.UnstableAffliction = warlock.GetOrRegisterSpell(core.SpellConfig{
+	return core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_WarlockUnstableAffliction,
 		ActionID:       core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerUnstableAffliction)},
 		SpellSchool:    core.SpellSchoolShadow,
@@ -89,5 +93,5 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 				return spell.CalcPeriodicDamage(sim, target, baseDamage, spell.OutcomeExpectedMagicAlwaysHit)
 			}
 		},
-	})
+	}
 }

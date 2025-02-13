@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.12953
+  weights: 2.11883
   weights: 0
-  weights: 1.45282
-  weights: 0
-  weights: 0
+  weights: 1.4527
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 13.31518
-  weights: 10.88234
+  weights: 0
+  weights: 0
+  weights: 13.32429
+  weights: 10.88884
   weights: 0
   weights: 0
   weights: 0
@@ -293,8 +293,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2253.21109
-  tps: 4578.75428
+  dps: 2253.25776
+  tps: 4578.85341
   hps: 401.41826
  }
 }
@@ -341,16 +341,16 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2253.21109
-  tps: 4578.75428
+  dps: 2253.25776
+  tps: 4578.85341
   hps: 401.41826
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 2260.96787
-  tps: 4613.76957
+  dps: 2261.00201
+  tps: 4613.84209
   hps: 407.66181
  }
 }
@@ -381,24 +381,24 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1202.68935
-  tps: 5916.1435
+  dps: 1202.77129
+  tps: 5916.31754
   hps: 219.93349
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 905.77865
-  tps: 2093.68398
+  dps: 905.92915
+  tps: 2094.00365
   hps: 223.4753
  }
 }
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Settings-Orc-p4_demo_tank-Demonology Warlock-p4_demo_tank-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 904.66904
-  tps: 2126.61087
+  dps: 905.07037
+  tps: 2127.46331
   hps: 208.19231
  }
 }

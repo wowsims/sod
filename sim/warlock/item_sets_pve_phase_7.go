@@ -49,12 +49,46 @@ func (warlock *Warlock) applyNaxxramasDamage4PBonus() {
 		return
 	}
 
-	affectedDots := []*core.Dot{}
+	dotSpellsMap := make(map[int64]*core.Spell)
+
+	copiedCorruptionConfig := warlock.getCorruptionConfig(CorruptionRanks)
+	copiedCorruptionConfig.ActionID.SpellID = 1219428
+	copiedCorruptionConfig.Dot.Aura.Label = copiedCorruptionConfig.Dot.Aura.Label + "-4pT3"
+	copiedCorruptionConfig.Flags ^= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
+	copiedCorruptionConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
+	dotSpellsMap[ClassSpellMask_WarlockCorruption] = warlock.RegisterSpell(copiedCorruptionConfig)
+
+	copiedImmolateConfig := warlock.getImmolateConfig(ImmolateRanks)
+	copiedImmolateConfig.ActionID.SpellID = 1219425
+	copiedImmolateConfig.Dot.Aura.Label = copiedImmolateConfig.Dot.Aura.Label + "-4pT3"
+	copiedImmolateConfig.Flags ^= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
+	copiedImmolateConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
+	dotSpellsMap[ClassSpellMask_WarlockImmolate] = warlock.RegisterSpell(copiedImmolateConfig)
+
+	if warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame) {
+		copiedShadowflameConfig := warlock.getShadowflameConfig()
+		copiedShadowflameConfig.ActionID.SpellID = 1219429
+		copiedShadowflameConfig.Dot.Aura.Label = copiedShadowflameConfig.Dot.Aura.Label + "-4pT3"
+		copiedShadowflameConfig.Flags ^= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
+		copiedShadowflameConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
+		dotSpellsMap[ClassSpellMask_WarlockShadowflame] = warlock.RegisterSpell(copiedShadowflameConfig)
+	}
+
+	if warlock.HasRune(proto.WarlockRune_RuneBracerUnstableAffliction) {
+		copiedUnstableAfflictionConfig := warlock.getUnstableAfflictionConfig()
+		copiedUnstableAfflictionConfig.ActionID.SpellID = 1219436
+		copiedUnstableAfflictionConfig.Dot.Aura.Label = copiedUnstableAfflictionConfig.Dot.Aura.Label + "-4pT3"
+		copiedUnstableAfflictionConfig.Flags ^= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
+		copiedUnstableAfflictionConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
+		dotSpellsMap[ClassSpellMask_WarlockUnstableAffliction] = warlock.RegisterSpell(copiedUnstableAfflictionConfig)
+	}
+
+	var affectedDotSpells []*core.Spell
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			dotSpells := core.FilterSlice(
+			affectedDotSpells = core.FilterSlice(
 				core.Flatten([][]*core.Spell{
 					warlock.Corruption,
 					warlock.Immolate,
@@ -62,16 +96,15 @@ func (warlock *Warlock) applyNaxxramasDamage4PBonus() {
 				}),
 				func(spell *core.Spell) bool { return spell != nil },
 			)
-
-			for _, spell := range dotSpells {
-				affectedDots = append(affectedDots, core.FilterSlice(spell.Dots(), func(dot *core.Dot) bool { return dot != nil })...)
-			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagWarlock) && result.DidCrit() {
-				for _, dot := range affectedDots {
-					if dot.IsActive() {
-						dot.TickOnce(sim)
+			if spell.Matches(ClassSpellMask_WarlockAll) && result.DidCrit() {
+				for _, spell := range affectedDotSpells {
+					if spell.Dot(result.Target).IsActive() {
+						copiedDoT := dotSpellsMap[spell.ClassSpellMask].Dot(result.Target)
+						copiedDoT.Apply(sim)
+						copiedDoT.TickOnce(sim)
+						copiedDoT.Deactivate(sim)
 					}
 				}
 			}

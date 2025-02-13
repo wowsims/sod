@@ -14,8 +14,6 @@ const (
 	WarlockFlagDemonology  = core.SpellFlagAgentReserved2
 	WarlockFlagDestruction = core.SpellFlagAgentReserved3
 	WarlockFlagHaunt       = core.SpellFlagAgentReserved4
-
-	SpellFlagWarlock = WarlockFlagAffliction | WarlockFlagDemonology | WarlockFlagDestruction
 )
 
 const (
@@ -196,7 +194,7 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerPetAbilities()
 
 	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		if !spell.Flags.Matches(SpellFlagWarlock) {
+		if !spell.Matches(ClassSpellMask_WarlockAll) {
 			return
 		}
 

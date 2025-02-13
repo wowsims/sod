@@ -194,7 +194,7 @@ func (warlock *Warlock) applyT2Damage2PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			for _, spell := range warlock.Spellbook {
-				if spell.Flags.Matches(SpellFlagWarlock) && len(spell.Dots()) > 0 {
+				if spell.Matches(ClassSpellMask_WarlockAll) && len(spell.Dots()) > 0 {
 					spell.ApplyAdditivePeriodicDamageBonus(10)
 				}
 			}

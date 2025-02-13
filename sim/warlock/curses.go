@@ -45,14 +45,12 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		CritDamageBonus: core.TernaryFloat64(hasPandemicRune, 1, 0),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "CurseofAgony-" + warlock.Label + strconv.Itoa(rank),
+				Label:      "CurseofAgony-" + warlock.Label + strconv.Itoa(rank),
 				DispelType: core.DispelType_Curse,
 			},
 			NumberOfTicks:    numTicks,
@@ -379,15 +377,13 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 			},
 		},
 
-		CritDamageBonus: core.TernaryFloat64(hasPandemicRune, 1, 0),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1 - 0.1*float64(warlock.Talents.ImprovedDrainSoul),
 		FlatThreatBonus:  160,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
-				Label: "CurseofDoom",
+				Label:      "CurseofDoom",
 				DispelType: core.DispelType_Curse,
 			},
 			NumberOfTicks: 1,
