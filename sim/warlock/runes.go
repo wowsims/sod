@@ -110,7 +110,7 @@ func (warlock *Warlock) applyPandemic() {
 
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_WarlockCorruption | ClassSpellMask_WarlockUnstableAffliction | ClassSpellMask_WarlockCurseOfAgony |
-			ClassSpellMask_WarlockImmolate | ClassSpellMask_WarlockShadowflame | ClassSpellMask_WarlockCurseOfDoom | ClassSpellMask_WarlockSiphonLife,
+			ClassSpellMask_WarlockCurseOfDoom | ClassSpellMask_WarlockSiphonLife,
 		Kind:       core.SpellMod_CritDamageBonus_Flat,
 		FloatValue: 1,
 	})

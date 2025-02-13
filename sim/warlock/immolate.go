@@ -82,14 +82,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			// Pandemic should only apply to the periodic part of the spell
-			impactCritDamageBonus := 0.0
-			if hasPandemicRune {
-				impactCritDamageBonus -= 1.0
-			}
-			spell.CritDamageBonus += impactCritDamageBonus
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			spell.CritDamageBonus -= impactCritDamageBonus
 
 			if result.Landed() {
 				dot := spell.Dot(target)
