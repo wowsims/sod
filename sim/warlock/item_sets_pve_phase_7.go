@@ -100,8 +100,10 @@ func (warlock *Warlock) applyNaxxramasDamage4PBonus() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(ClassSpellMask_WarlockAll) && result.DidCrit() {
 				for _, spell := range affectedDotSpells {
-					if spell.Dot(result.Target).IsActive() {
+					if dot := spell.Dot(result.Target); dot.IsActive() {
 						copiedDoT := dotSpellsMap[spell.ClassSpellMask].Dot(result.Target)
+						copiedDoT.SnapshotBaseDamage = dot.SnapshotBaseDamage
+						copiedDoT.SnapshotAttackerMultiplier = dot.SnapshotAttackerMultiplier
 						copiedDoT.Apply(sim)
 						copiedDoT.TickOnce(sim)
 						copiedDoT.Deactivate(sim)
