@@ -139,6 +139,7 @@ func (druid *Druid) applyTAQFeral4PBonus() {
 			if !result.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
+
 			if druid.form == Cat {
 				if !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
 					return
@@ -150,6 +151,10 @@ func (druid *Druid) applyTAQFeral4PBonus() {
 			}
 
 			dot := toothAndClawSpell.Dot(result.Target)
+			if dot == nil {
+				return
+			}
+
 			dotDamage := result.Damage * 0.3
 			if dot.IsActive() {
 				dotDamage += dot.SnapshotBaseDamage * float64(dot.MaxTicksRemaining())
