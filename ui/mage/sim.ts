@@ -30,9 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellDamage,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -48,34 +46,36 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		Stat.StatArcanePower,
 		Stat.StatFirePower,
 		Stat.StatFrostPower,
+		Stat.StatHealingPower,
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
-	
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
+
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.49,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellDamage]: 1,
-			[Stat.StatArcanePower]: 1,
-			[Stat.StatFirePower]: 1,
-			[Stat.StatFrostPower]: 1,
-			// Aggregated across 3 builds
-			[Stat.StatSpellHit]: 18.59,
-			[Stat.StatSpellCrit]: 13.91,
-			[Stat.StatMP5]: 0.11,
-			[Stat.StatFireResistance]: 0.5,
-		}, {
-			[PseudoStat.PseudoStatCastSpeedMultiplier]: 10.30,
-			[PseudoStat.PseudoStatTimewornBonus]: 20.27,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatIntellect]: 0.49,
+				[Stat.StatSpellPower]: 1,
+				[Stat.StatSpellDamage]: 1,
+				[Stat.StatArcanePower]: 1,
+				[Stat.StatFirePower]: 1,
+				[Stat.StatFrostPower]: 1,
+				// Aggregated across 3 builds
+				[Stat.StatSpellHit]: 18.59,
+				[Stat.StatSpellCrit]: 13.91,
+				[Stat.StatMP5]: 0.11,
+				[Stat.StatFireResistance]: 0.5,
+			},
+			{
+				[PseudoStat.PseudoStatCastSpeedMultiplier]: 10.3,
+				[PseudoStat.PseudoStatTimewornBonus]: 20.27,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.

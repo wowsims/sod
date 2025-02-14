@@ -164,6 +164,7 @@ export const statNames: Map<Stat, string> = new Map([
 	[Stat.StatHolyPower, 'Holy Damage'],
 	[Stat.StatNaturePower, 'Nature Damage'],
 	[Stat.StatShadowPower, 'Shadow Damage'],
+	[Stat.StatHealingPower, 'Healing Power'],
 	[Stat.StatMP5, 'Mana Per 5 Sec'],
 	[Stat.StatSpellHit, 'Spell Hit'],
 	[Stat.StatSpellCrit, 'Spell Crit'],

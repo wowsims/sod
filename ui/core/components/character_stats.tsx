@@ -12,91 +12,86 @@ import { NumberPicker } from './number_picker';
 
 export type StatMods = { talents?: Stats; buffs?: Stats };
 export type DisplayStat = {
-	stat: UnitStat,
-	notEditable?: boolean
-}
+	stat: UnitStat;
+	notEditable?: boolean;
+};
 
 const statGroups = new Map<string, Array<DisplayStat>>([
-	[
-		'Primary',
-		[
-			{stat: UnitStat.fromStat(Stat.StatHealth)},
-			{stat: UnitStat.fromStat(Stat.StatMana)},
-		],
-	],
+	['Primary', [{ stat: UnitStat.fromStat(Stat.StatHealth) }, { stat: UnitStat.fromStat(Stat.StatMana) }]],
 	[
 		'Attributes',
 		[
-			{stat: UnitStat.fromStat(Stat.StatStrength)},
-			{stat: UnitStat.fromStat(Stat.StatAgility)},
-			{stat: UnitStat.fromStat(Stat.StatStamina)},
-			{stat: UnitStat.fromStat(Stat.StatIntellect)},
-			{stat: UnitStat.fromStat(Stat.StatSpirit)},
-		]
+			{ stat: UnitStat.fromStat(Stat.StatStrength) },
+			{ stat: UnitStat.fromStat(Stat.StatAgility) },
+			{ stat: UnitStat.fromStat(Stat.StatStamina) },
+			{ stat: UnitStat.fromStat(Stat.StatIntellect) },
+			{ stat: UnitStat.fromStat(Stat.StatSpirit) },
+		],
 	],
 	[
 		'Physical',
 		[
-			{stat: UnitStat.fromStat(Stat.StatAttackPower)},
-			{stat: UnitStat.fromStat(Stat.StatFeralAttackPower)},
-			{stat: UnitStat.fromStat(Stat.StatRangedAttackPower)},
-			{stat: UnitStat.fromStat(Stat.StatMeleeHit)},
-			{stat: UnitStat.fromStat(Stat.StatExpertise)},
-			{stat: UnitStat.fromStat(Stat.StatMeleeCrit)},
-			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier)},
-			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier)},
-			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatBonusPhysicalDamage)},
-		]
+			{ stat: UnitStat.fromStat(Stat.StatAttackPower) },
+			{ stat: UnitStat.fromStat(Stat.StatFeralAttackPower) },
+			{ stat: UnitStat.fromStat(Stat.StatRangedAttackPower) },
+			{ stat: UnitStat.fromStat(Stat.StatMeleeHit) },
+			{ stat: UnitStat.fromStat(Stat.StatExpertise) },
+			{ stat: UnitStat.fromStat(Stat.StatMeleeCrit) },
+			{ stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier) },
+			{ stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier) },
+			{ stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatBonusPhysicalDamage) },
+		],
 	],
 	[
 		'Spell',
 		[
-			{stat: UnitStat.fromStat(Stat.StatSpellPower)},
-			{stat: UnitStat.fromStat(Stat.StatSpellDamage)},
-			{stat: UnitStat.fromStat(Stat.StatArcanePower)},
-			{stat: UnitStat.fromStat(Stat.StatFirePower)},
-			{stat: UnitStat.fromStat(Stat.StatFrostPower)},
-			{stat: UnitStat.fromStat(Stat.StatHolyPower)},
-			{stat: UnitStat.fromStat(Stat.StatNaturePower)},
-			{stat: UnitStat.fromStat(Stat.StatShadowPower)},
-			{stat: UnitStat.fromStat(Stat.StatSpellHit)},
-			{stat: UnitStat.fromStat(Stat.StatSpellCrit)},
-			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier)},
-			{stat: UnitStat.fromStat(Stat.StatSpellPenetration)},
-			{stat: UnitStat.fromStat(Stat.StatMP5)},
-		]
+			{ stat: UnitStat.fromStat(Stat.StatSpellPower) },
+			{ stat: UnitStat.fromStat(Stat.StatSpellDamage) },
+			{ stat: UnitStat.fromStat(Stat.StatArcanePower) },
+			{ stat: UnitStat.fromStat(Stat.StatFirePower) },
+			{ stat: UnitStat.fromStat(Stat.StatFrostPower) },
+			{ stat: UnitStat.fromStat(Stat.StatHolyPower) },
+			{ stat: UnitStat.fromStat(Stat.StatNaturePower) },
+			{ stat: UnitStat.fromStat(Stat.StatShadowPower) },
+			{ stat: UnitStat.fromStat(Stat.StatHealingPower) },
+			{ stat: UnitStat.fromStat(Stat.StatSpellHit) },
+			{ stat: UnitStat.fromStat(Stat.StatSpellCrit) },
+			{ stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier) },
+			{ stat: UnitStat.fromStat(Stat.StatSpellPenetration) },
+			{ stat: UnitStat.fromStat(Stat.StatMP5) },
+		],
 	],
 	[
 		'Defense',
 		[
-			{stat: UnitStat.fromStat(Stat.StatArmor)},
-			{stat: UnitStat.fromStat(Stat.StatBonusArmor)},
-			{stat: UnitStat.fromStat(Stat.StatDefense)},
-			{stat: UnitStat.fromStat(Stat.StatDodge)},
-			{stat: UnitStat.fromStat(Stat.StatParry)},
-			{stat: UnitStat.fromStat(Stat.StatBlock)},
-			{stat: UnitStat.fromStat(Stat.StatBlockValue)},
-		]
+			{ stat: UnitStat.fromStat(Stat.StatArmor) },
+			{ stat: UnitStat.fromStat(Stat.StatBonusArmor) },
+			{ stat: UnitStat.fromStat(Stat.StatDefense) },
+			{ stat: UnitStat.fromStat(Stat.StatDodge) },
+			{ stat: UnitStat.fromStat(Stat.StatParry) },
+			{ stat: UnitStat.fromStat(Stat.StatBlock) },
+			{ stat: UnitStat.fromStat(Stat.StatBlockValue) },
+		],
 	],
 	[
 		'Resistance',
 		[
-			{stat: UnitStat.fromStat(Stat.StatArcaneResistance)},
-			{stat: UnitStat.fromStat(Stat.StatFireResistance)},
-			{stat: UnitStat.fromStat(Stat.StatFrostResistance)},
-			{stat: UnitStat.fromStat(Stat.StatNatureResistance)},
-			{stat: UnitStat.fromStat(Stat.StatShadowResistance)},
-		]
+			{ stat: UnitStat.fromStat(Stat.StatArcaneResistance) },
+			{ stat: UnitStat.fromStat(Stat.StatFireResistance) },
+			{ stat: UnitStat.fromStat(Stat.StatFrostResistance) },
+			{ stat: UnitStat.fromStat(Stat.StatNatureResistance) },
+			{ stat: UnitStat.fromStat(Stat.StatShadowResistance) },
+		],
 	],
 	[
 		'Misc',
 		[
-			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatThornsDamage), notEditable: true},
-			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatTimewornBonus)},
-			{stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSanctifiedBonus)},
-		]
+			{ stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatThornsDamage), notEditable: true },
+			{ stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatTimewornBonus) },
+			{ stat: UnitStat.fromPseudoStat(PseudoStat.PseudoStatSanctifiedBonus) },
+		],
 	],
-])
+]);
 
 export class CharacterStats extends Component {
 	readonly stats: Array<UnitStat>;
@@ -135,7 +130,7 @@ export class CharacterStats extends Component {
 
 			const body = <tbody></tbody>;
 			filteredStats.forEach(displayStat => {
-				const { stat } = displayStat
+				const { stat } = displayStat;
 				this.stats.push(stat);
 
 				const statName = stat.getName(player.getClass());
@@ -347,13 +342,12 @@ export class CharacterStats extends Component {
 				);
 			} else if (stat.isPseudoStat() && stat.getPseudoStat() === PseudoStat.PseudoStatMeleeSpeedMultiplier && (mainHandWeapon || offHandItem)) {
 				const speedStat = finalStats.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier);
-				const offHandWeapon = offHandItem &&
+				const offHandWeapon =
+					offHandItem &&
 					offHandItem.item.weaponType !== WeaponType.WeaponTypeShield &&
 					offHandItem.item.weaponType !== WeaponType.WeaponTypeOffHand &&
 					offHandItem.item.weaponType !== WeaponType.WeaponTypeUnknown;
-				const mainHandLabel = offHandWeapon
-					? 'Main-hand'
-					: 'Weapon';
+				const mainHandLabel = offHandWeapon ? 'Main-hand' : 'Weapon';
 				tooltipContent.appendChild(
 					<div className="ps-2">
 						{mainHandWeapon && (
@@ -452,58 +446,59 @@ export class CharacterStats extends Component {
 			const stat = unitStat.getStat();
 
 			switch (stat) {
-			case Stat.StatBlockValue:
-				const mult = stats.getPseudoStat(PseudoStat.PseudoStatBlockValueMultiplier) || 1;
-				const perStr = Math.max(0, stats.getPseudoStat(PseudoStat.PseudoStatBlockValuePerStrength) * deltaStats.getStat(Stat.StatStrength) - 1);
-				displayStr = String(Math.round((rawValue * mult) + perStr));
-				break;
-			case Stat.StatMeleeHit:
-				displayStr = `${(rawValue / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
-				break;
-			case Stat.StatSpellHit:
-				displayStr = `${(rawValue / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
-				break;
-			case Stat.StatSpellDamage:
-				const statSpellDamage = Math.round(rawValue);
-				const statSpellPower = Math.round(deltaStats.getStat(Stat.StatSpellPower));
-				displayStr = statSpellPower + statSpellDamage + ` (+${statSpellDamage})`;
-				break;
-			case Stat.StatArcanePower:
-			case Stat.StatFirePower:
-			case Stat.StatFrostPower:
-			case Stat.StatHolyPower:
-			case Stat.StatNaturePower:
-			case Stat.StatShadowPower:
-				const schoolDamage = Math.round(rawValue);
-				const baseSpellPower = Math.round(deltaStats.getStat(Stat.StatSpellPower) + deltaStats.getStat(Stat.StatSpellDamage));
-				displayStr = baseSpellPower + schoolDamage + ` (+${schoolDamage})`;
-				break;
-			case Stat.StatMeleeCrit:
-			case Stat.StatSpellCrit:
-				displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
-				break;
-			case Stat.StatArmorPenetration:
-				displayStr = `${rawValue} (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
-				break;
-			case Stat.StatExpertise:
-				// It's just like crit and hit in SoD.
-				displayStr = `${rawValue}%`;
-				break;
-			case Stat.StatDefense:
-				displayStr = `${(player.getLevel() * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)}`;
-				break;
-			case Stat.StatBlock:
-				displayStr = `${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%`;
-				break;
-			case Stat.StatDodge:
-				displayStr = `${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%`;
-				break;
-			case Stat.StatParry:
-				displayStr = `${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%`;
-				break;
-			case Stat.StatResilience:
-				displayStr = `${rawValue} (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
-				break;
+				case Stat.StatBlockValue:
+					const mult = stats.getPseudoStat(PseudoStat.PseudoStatBlockValueMultiplier) || 1;
+					const perStr = Math.max(0, stats.getPseudoStat(PseudoStat.PseudoStatBlockValuePerStrength) * deltaStats.getStat(Stat.StatStrength) - 1);
+					displayStr = String(Math.round(rawValue * mult + perStr));
+					break;
+				case Stat.StatMeleeHit:
+					displayStr = `${(rawValue / Mechanics.MELEE_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
+					break;
+				case Stat.StatSpellHit:
+					displayStr = `${(rawValue / Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE).toFixed(2)}%`;
+					break;
+				case Stat.StatSpellDamage:
+					const statSpellDamage = Math.round(rawValue);
+					const statSpellPower = Math.round(deltaStats.getStat(Stat.StatSpellPower));
+					displayStr = statSpellPower + statSpellDamage + ` (+${statSpellDamage})`;
+					break;
+				case Stat.StatArcanePower:
+				case Stat.StatFirePower:
+				case Stat.StatFrostPower:
+				case Stat.StatHolyPower:
+				case Stat.StatNaturePower:
+				case Stat.StatShadowPower:
+				case Stat.StatHealingPower:
+					const schoolDamage = Math.round(rawValue);
+					const baseSpellPower = Math.round(deltaStats.getStat(Stat.StatSpellPower) + deltaStats.getStat(Stat.StatSpellDamage));
+					displayStr = baseSpellPower + schoolDamage + ` (+${schoolDamage})`;
+					break;
+				case Stat.StatMeleeCrit:
+				case Stat.StatSpellCrit:
+					displayStr = `${(rawValue / Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE).toFixed(2)}%`;
+					break;
+				case Stat.StatArmorPenetration:
+					displayStr = `${rawValue} (${(rawValue / Mechanics.ARMOR_PEN_PER_PERCENT_ARMOR).toFixed(2)}%)`;
+					break;
+				case Stat.StatExpertise:
+					// It's just like crit and hit in SoD.
+					displayStr = `${rawValue}%`;
+					break;
+				case Stat.StatDefense:
+					displayStr = `${(player.getLevel() * 5 + Math.floor(rawValue / Mechanics.DEFENSE_RATING_PER_DEFENSE)).toFixed(0)}`;
+					break;
+				case Stat.StatBlock:
+					displayStr = `${(rawValue / Mechanics.BLOCK_RATING_PER_BLOCK_CHANCE).toFixed(2)}%`;
+					break;
+				case Stat.StatDodge:
+					displayStr = `${(rawValue / Mechanics.DODGE_RATING_PER_DODGE_CHANCE).toFixed(2)}%`;
+					break;
+				case Stat.StatParry:
+					displayStr = `${(rawValue / Mechanics.PARRY_RATING_PER_PARRY_CHANCE).toFixed(2)}%`;
+					break;
+				case Stat.StatResilience:
+					displayStr = `${rawValue} (${(rawValue / Mechanics.RESILIENCE_RATING_PER_CRIT_REDUCTION_CHANCE).toFixed(2)}%)`;
+					break;
 			}
 		} else {
 			const pseudoStat = unitStat.getPseudoStat();
@@ -520,7 +515,7 @@ export class CharacterStats extends Component {
 					break;
 			}
 		}
-		
+
 		if (!displayStr) displayStr = String(Math.round(rawValue));
 
 		return displayStr;
@@ -556,7 +551,7 @@ export class CharacterStats extends Component {
 			<a
 				ref={linkRef}
 				href="javascript:void(0)"
-				className={clsx("add-bonus-stats text-white ms-2", notEditable && "invisible")}
+				className={clsx('add-bonus-stats text-white ms-2', notEditable && 'invisible')}
 				dataset={{ bsToggle: 'popover' }}
 				attributes={{ role: 'button' }}>
 				<i ref={iconRef} className="fas fa-plus-minus"></i>
