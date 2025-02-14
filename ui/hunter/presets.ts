@@ -49,6 +49,10 @@ import Phase6AplMeleeSv from './apls/p6_melee_sv.apl.json';
 import Phase6AplRangedDraconic from './apls/p6_ranged_draconic.apl.json';
 import Phase6AplRangedKillshot from './apls/p6_ranged_killshot.apl.json';
 import Phase6AplWeave from './apls/p6_weave.apl.json';
+import Phase7AplMeleeDw from './apls/p7_melee_dw.apl.json';
+import Phase7AplMelee2h from './apls/p7_melee_2h.apl.json';
+import Phase7AplRangedKillshot from './apls/p7_ranged_killshot.apl.json';
+import Phase7AplWeave from './apls/p7_weave.apl.json';
 import Phase2GearMelee from './gear_sets/p2_melee.gear.json';
 import Phase2GearRangedBm from './gear_sets/p2_ranged_bm.gear.json';
 import Phase2GearRangedMm from './gear_sets/p2_ranged_mm.gear.json';
@@ -65,6 +69,10 @@ import Phase6GearMeleeSv from './gear_sets/p6_melee_sv.gear.json';
 import Phase6GearRangedDraconic from './gear_sets/p6_ranged_draconic.gear.json';
 import Phase6GearRangedKillshot from './gear_sets/p6_ranged_killshot.gear.json';
 import Phase6GearWeave from './gear_sets/p6_weave.gear.json';
+import Phase7GearMelee2h from './gear_sets/p7_melee_2h.gear.json';
+import Phase7GearMeleeDw from './gear_sets/p7_melee_dw.gear.json';
+import Phase7GearRangedKillshot from './gear_sets/p7_ranged_killshot.gear.json';
+import Phase7GearWeave from './gear_sets/p7_weave.gear.json';
 import Phase1Gear from './gear_sets/phase1.gear.json';
 
 // Preset options for this spec.
@@ -100,6 +108,11 @@ export const GearRangedKillshotPhase6 = PresetUtils.makePresetGear('P6 Ranged Ki
 export const GearMeleeBMPhase6 = PresetUtils.makePresetGear('P6 Melee BM', Phase6GearMeleeBm, { customCondition: player => player.getLevel() === 60 });
 export const GearMeleeSVPhase6 = PresetUtils.makePresetGear('P6 Melee SV', Phase6GearMeleeSv, { customCondition: player => player.getLevel() === 60 });
 
+export const GearWeavePhase7 = PresetUtils.makePresetGear('P7 Weave', Phase7GearWeave, { customCondition: player => player.getLevel() === 60 });
+export const GearRangedKillshotPhase7 = PresetUtils.makePresetGear('P7 Ranged', Phase7GearRangedKillshot, { customCondition: player => player.getLevel() === 60 });
+export const GearMelee2HPhase7 = PresetUtils.makePresetGear('P7 Melee 2H', Phase7GearMelee2h, { customCondition: player => player.getLevel() === 60 });
+export const GearMeleeDWPhase7 = PresetUtils.makePresetGear('P7 Melee DW', Phase7GearMeleeDw, { customCondition: player => player.getLevel() === 60 });
+
 export const GearPresets = {
 	[Phase.Phase1]: [GearBeastMasteryPhase1, GearMarksmanPhase1, GearSurvivalPhase1],
 	[Phase.Phase2]: [GearRangedBmPhase2, GearRangedMmPhase2, GearMeleePhase2],
@@ -107,13 +120,13 @@ export const GearPresets = {
 	[Phase.Phase4]: [], //[GearWeavePhase4, GearRangedSVPhase4],
 	[Phase.Phase5]: [], //[GearWeavePhase5, GearRangedMMPhase5, GearRangedSVPhase5, GearMeleeBMPhase5, GearMeleeSVPhase5],
 	[Phase.Phase6]: [GearWeavePhase6, GearRangedDraconicPhase6, GearRangedKillshotPhase6, GearMeleeBMPhase6, GearMeleeSVPhase6],
+	[Phase.Phase7]: [GearWeavePhase7, GearRangedKillshotPhase7, GearMelee2HPhase7, GearMeleeDWPhase7],
 };
 
-export const DefaultGearWeave = GearPresets[Phase.Phase6][0];
-export const DefaultGearRangedDraconic = GearPresets[Phase.Phase6][1];
-export const DefaultGearRangedKillshot = GearPresets[Phase.Phase6][2];
-export const DefaultGearMeleeBM = GearPresets[Phase.Phase6][3];
-export const DefaultGearMeleeSV = GearPresets[Phase.Phase6][4];
+export const DefaultGearWeave = GearPresets[Phase.Phase7][0];
+export const DefaultGearRangedKillshot = GearPresets[Phase.Phase7][1];
+export const DefaultGearMeleeSV = GearPresets[Phase.Phase7][2];
+export const DefaultGearMeleeBM = GearPresets[Phase.Phase7][3];
 
 export const DefaultGear = DefaultGearRangedKillshot;
 
@@ -145,6 +158,11 @@ export const APLRangedKillshotPhase6 = PresetUtils.makePresetAPLRotation('P6 Ran
 export const APLMeleeBMPhase6 = PresetUtils.makePresetAPLRotation('P6 Melee BM', Phase6AplMeleeBm, { customCondition: player => player.getLevel() === 60 });
 export const APLMeleeSVPhase6 = PresetUtils.makePresetAPLRotation('P6 Melee SV', Phase6AplMeleeSv, { customCondition: player => player.getLevel() === 60 });
 
+export const APLWeavePhase7 = PresetUtils.makePresetAPLRotation('P7 Weave', Phase7AplWeave, { customCondition: player => player.getLevel() === 60 });
+export const APLRangedKillshotPhase7 = PresetUtils.makePresetAPLRotation('P7 Ranged', Phase7AplRangedKillshot, { customCondition: player => player.getLevel() === 60 });
+export const APLMeleeDWPhase7 = PresetUtils.makePresetAPLRotation('P7 Melee DW', Phase7AplMeleeDw, { customCondition: player => player.getLevel() === 60 });
+export const APLMelee2HPhase7 = PresetUtils.makePresetAPLRotation('P7 Melee 2H', Phase7AplMelee2h, { customCondition: player => player.getLevel() === 60 });
+
 export const APLPresets = {
 	[Phase.Phase1]: [APLMeleeWeavePhase1],
 	[Phase.Phase2]: [APLRangedBmPhase2, APLRangedMmPhase2, APLMeleePhase2],
@@ -152,13 +170,13 @@ export const APLPresets = {
 	[Phase.Phase4]: [], //[APLWeavePhase4, APLRangedPhase4],
 	[Phase.Phase5]: [], //[APLWeavePhase5, APLRanged31Phase5, APLRanged22Phase5, APLMeleeBMPhase5, APLMeleeSVPhase5],
 	[Phase.Phase6]: [APLWeavePhase6, APLRangedDraconicPhase6, APLRangedKillshotPhase6, APLMeleeBMPhase6, APLMeleeSVPhase6],
+	[Phase.Phase7]: [APLWeavePhase7, APLRangedKillshotPhase7, APLMeleeDWPhase7, APLMelee2HPhase7],
 };
 
-export const DefaultAPLWeave = APLPresets[Phase.Phase6][0];
-export const DefaultAPLRangedDraconic = APLPresets[Phase.Phase6][1];
-export const DefaultAPLRangedKillshot = APLPresets[Phase.Phase6][2];
-export const DefaultAPLMeleeBM = APLPresets[Phase.Phase6][3];
-export const DefaultAPLMeleeSV = APLPresets[Phase.Phase6][4];
+export const DefaultAPLWeave = APLPresets[Phase.Phase7][0];
+export const DefaultAPLRangedKillshot = APLPresets[Phase.Phase7][1];
+export const DefaultAPLMeleeBM = APLPresets[Phase.Phase7][2];
+export const DefaultAPLMeleeSV = APLPresets[Phase.Phase7][3];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Talent Presets
@@ -240,6 +258,22 @@ export const TalentsMeleeSVPhase6 = PresetUtils.makePresetTalents('P6 Melee SV',
 	customCondition: player => player.getLevel() === 60,
 });
 
+export const TalentsWeavePhase7 = PresetUtils.makePresetTalents('Weave', SavedTalents.create({ talentsString: '-054510005-3305202202303051' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const TalentsRangedMMPhase7 = PresetUtils.makePresetTalents('Marksmanship', SavedTalents.create({ talentsString: '5-05451005503051-3320202' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const TalentsRangedSVPhase7 = PresetUtils.makePresetTalents('Ranged Survival', SavedTalents.create({ talentsString: '1-054510005-332020230232305' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const TalentsMeleeDWPhase7 = PresetUtils.makePresetTalents('DW Survival', SavedTalents.create({ talentsString: '1-052500305-332020241230305' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+export const TalentsMelee2HPhase7 = PresetUtils.makePresetTalents('2H Survival', SavedTalents.create({ talentsString: '-055500005-3320202412303051' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+
 export const TalentPresets = {
 	[Phase.Phase1]: [TalentsBeastMasteryPhase1, TalentsMarksmanPhase1, TalentsSurvivalPhase1],
 	[Phase.Phase2]: [TalentsBeastMasteryPhase2, TalentsMarksmanPhase2, TalentsSurvivalPhase2],
@@ -247,13 +281,13 @@ export const TalentPresets = {
 	[Phase.Phase4]: [], //[TalentsWeavePhase4, TalentsRangedMMPhase4, TalentsRangedSVPhase4],
 	[Phase.Phase5]: [], //[TalentsWeavePhase5, TalentsRangedMMPhase5, TalentsRangedSVPhase5, TalentsMeleeBMPhase5, TalentsMeleeSVPhase5],
 	[Phase.Phase6]: [TalentsWeavePhase6, TalentsRangedMMPhase6, TalentsRangedSVPhase6, TalentsMeleeBMPhase6, TalentsMeleeSVPhase6],
+	[Phase.Phase7]: [TalentsWeavePhase7, TalentsRangedMMPhase7, TalentsRangedSVPhase7, TalentsMeleeDWPhase7, TalentsMelee2HPhase7],
 };
 
-export const DefaultTalentsWeave = TalentPresets[Phase.Phase6][0];
-export const DefaultTalentsRangedDraconic = TalentPresets[Phase.Phase6][2];
-export const DefaultTalentsRangedKillshot = TalentPresets[Phase.Phase6][2];
-export const DefaultTalentsMeleeBM = TalentPresets[Phase.Phase6][3];
-export const DefaultTalentsMeleeSV = TalentPresets[Phase.Phase6][4];
+export const DefaultTalentsWeave = TalentPresets[Phase.Phase7][0];
+export const DefaultTalentsRangedKillshot = TalentPresets[Phase.Phase7][2];
+export const DefaultTalentsMeleeBM = TalentPresets[Phase.Phase7][3];
+export const DefaultTalentsMeleeSV = TalentPresets[Phase.Phase7][4];
 
 export const DefaultTalents = DefaultTalentsRangedKillshot;
 
@@ -452,6 +486,27 @@ export const EncounterMeleeSVPhase6 = PresetUtils.makePresetEncounter(
 	'https://wowsims.github.io/sod/hunter/#eJztVF1IFFEU3nP3b/aY03j9m5012ra0aWhjZteJzGI36UF8CCEffLTI0jRdWqJ6szL6wxAfKotIX0oiQ3qI8EXbelCIyCLxISqIoiLQ6kUIrTt3d6wwnzII6gzMnPOd73z33HNnBgMCkUiQqESHDRAndZAgbWRTJ4EBAhVFMvRxLw4TANVkAHY1QA+QEYBKoA7lyRL0VDfvOFy/X3LLm4JE6wPMklK9ovykXO3v96NL+tIlole6z6CbeSz34Iooj3nUpx8VFgwz9JWoXpiVWXC+Q5TflquzN/wsuMyC9jy1eyaAgtTdIarTHL7UwZUneHCXVb8Q1UnOaesV1bPtlvfwiqieYZ5Len5NZPdLvVYDfYz8QUQHc0+nsuV35ZGo4JWI6uHbhkpXJyGHvCfB3QmkB1x9AAMAdwCmAYYBHgOR2ATcG9+48CVx/Lc/arTtnx/xe+KokPiLCdVQC3XQAAmoCoR10zR1ZmY4Go3o7Co1IlE9qptGtasWdjr2nnPLTixA7AIvutGJYIYE9KArbOhJzEVBYb7QPVYU4umwmWRkn8IC4XOjKoR8yNywsY7h+Rnysx74FXz7RFUG1tcZSeoRQCEbHXQley7HAi1P8FBfCiwm+1oV3krEegivC2lE0XGtoi1EQ0kTGc7krJWQGDoTNpUorqGrMTuUhb5bvML6VVgSznkSUSUT0piyGaPUwEIt3+INzvG4ciS5QA/GnEC+kmuvd+xeEYc/zQT4Forpyp/LZ+1yE31dTrvEGu5Qq+qiqKRHN8lkbd/SylJ880nW2tYiJXQVn4eTkp2ZeZjF9oSqMkhpktcM9fvpMiWAOdpSK8v4/JRNvdg+dnpQOYBNtBFlrUBw/zgPzmQnzDNsR9ch0+oCGdb494xfK2QZvA72NuZSfOHBr3JiBE5B+t3Oi08TuAiOFOTTXEGQPDKEHGvSualYpTc07vSlo23xHLvEf7HbstFYWRp5FFuxm9t4LHLVKUwczaZF2w+0NNW3BGvq9yWa64Nb9+/Y09rS1NgSrGhNJuVY0KP9Zb/uqSPxRdEp6f8tHSm4fsui9MHM4PfEtXhZY+vU8dGapzFbOl4L3wABv+hb',
 );
 
+export const EncounterWeavePhase7 = PresetUtils.makePresetEncounter(
+	'Weave',
+	'https://wowsims.github.io/sod/hunter/#eJztVm9oW1UUz7l5SV9O1vh6064vN22Xpta9PpeYP321bbYl9oOUIVKqQj9qoTLHoMWA6DenFVyns/SDdEWwOMFSWpEyi/9griC0Mp1TNioIDkSYfnHTISq087x/WRpXO3CKH3oSknPPv/u755x37sMWmSksxjSWgk4osF54FJbZHJsBeJa9CuMM3mHQ06TCjMUVYBXgEkAfG4CDMA1sGaAXuEdcVtHfd/ixZ4aeVKrUvTGmzwEGleOnQupXOW1+PoKS8tpiiERnXg+pZ/dp1z48QIuF2ZD6S067cFXQ4hgZfxfSxsg4qIzR4nJOW58zF6/QYrRW+3pdRVkZPxXSpq+rJH6ZxGdy2u/W4jTF/Tak/bQWJZtJsnlp1OSeXwxpx4iTlLdpe0k5Tr9Vytq7IfViLXqIfW8xpP6Qy6TlgAKa30oC9ErjjD3d8iL4xoFNg0TJ+BjgS/CTCaknGa6Cr3tdwkvMs03/KvHJ7RRvQj+yk764Z6uPvt2m/wFtt+mm1BPuBBqgNFWhDwboejkII3AgmkgZhpEiMhLZbMrIpDL0zaaITfdJAzDoOXQ2qHoxjLLwoySfON8Qr0IfehNGESOIQka/PHOSRnY8gKRIZJNGUQXc6dh/Mw1xRDJKpJNd5KLacuWP8WpHnkq2b/B4/zMo15Q86N6o8KjHKkFI5O/rKxSqg+vcJ6AFynU8KiJYo98hezkb9AjrIIbRKiRkajWPiSas4+FKgw4yoD/l10HeKKKW1l/mnmrtN2Gfno/wO0UcVX2nLHE8VNrfBI/MKFqHo6uT7xM5TPI9WKeHZR/3LTEmMxMuSunkvUUM6zUk9k6AxxamSDgBFossneGjTBxheA34VbBs/XYIn71Puoj9os8C6QRxxTnehd4x8GC9Xke6wCw4gGyLDJVTrydFcNbcTP6csPtKqkfEQyh0ldKyYxao0PIHwzGvJpf0ps53M13WDlvpZ58ad5jFWQC7iNgsdqHvU1JQM+i15ONg/HktahYAIT0BVs4RDC4J1u2x6qnoIbMg3c5R24tOU/BawW9Ed3voJlLqRX63aMNdvLECUXU8iIE33ET1u8Zmo9RyjoEpV+XgLtX4HpHAFt6MYVFTFs45HE6Zx5DPDdtJkunFibeJ3djIo+W6it1LpibULUxLBeQRQafgwTKoJYzVIihulITTIyOcbPP9Yi9meOpv4X80rHnL9zWr5EI0RBbb+G6r1fzlZXSbcUOaS273UwZ7sJN3bO648aCbxCmI/djOM7cc5a8RGoSw+soeA/YT3Crc55zyJtzU8z1CxxhvsmMugGNTvqSZ6c7OUp3tZ60MmjMAnDlBY/MWTZUjb4a4LrStTN2SjSzDUbBvBK3wG4MV58KUC+cdrquwymAKPEvQwAW9jvvjnjZbcyWfdpleFl/yBuzVg4Uam0kWIlMnTFrJd9mSL/LNj1t0MZ+Z8Mqrz1Vz+YGhp4YOxzpSaj4m6/+zVyLtaOG2xLlr/h/FUcT124ODyC7ZyFuFrieGr7yw8vCF/H2OpjAAfwLdx3ad',
+);
+
+export const EncounterRangedPhase7 = PresetUtils.makePresetEncounter(
+	'Ranged',
+	'https://wowsims.github.io/sod/hunter/#eJztVl1IFFEUnnN3Z/fuMcfxajZdI7a1bFowxtUNzWKnXjKJ8KEH6akCwyRIEqLewgyyyEQoyoKkgiI0QkqKHioh0P60oLCnhCiqp6KICtLO/LhJ9EsWPXhmmT3nfN89595z796zWMCZzqLMZBaUgc0qYR30sy52BmAnOwRtDM4zWD7bgDOuZsMwwAhANauBOugE1g9QCUKRzwSGqjev31G7VQ8bS6Is3gWYobde0IzrFWZ390wM6sd6NXJdP64Zt5eab69UkdFzVjPeVJj3Xksy9hH5iWbuJXKGvpeM5zTyoIMcIKM513w0aiDX2y5oZueYQe79XvQPrnGV4j7WzBtjDqeFOK3N+aTt6tXMfaQF9XOUPqi30jusf7qoGQ9zUSH1Uq9mvKhIWDyigxlyiwCVwYbw9oI9oLYB64Qg1eIawH0IEYPQwwyHQV08GsQRpkzJXxVxeKrE35GX7KQaU372xKeO6T+QqWP6XVmeUwZ0gdKlCtVQQ92lDhqgKr+4yEqWJosty0oWlZQkLHpK6EOvZHWwBjYo9bdUI4DTkdeHMMhPjhmxMKoYKEo2GoASM3sAyX/0fJVgJcmJ2HREyTHEh26AGU4DmIdcUiT9Y1tmDJEIRdbCUvIbPv3yHYiGvokMUqDIRETMkhKz41k8INhaRbopyqx5kr70dxt+hDZvEivlClwqKlyGKthin5GwGjEnnk0utY8xrjpzRVbc6PMC7aCMu9xlNJ3SREJaWCjmYqQDnBo5fZB3AAXjT2dgZiwDIydcgPqmO4Y6oCiViV8eky7Lb2eiIgtTFuIsIdGI51EpsD5dSm8di9x1OCPEfDnPZU6I/lVML5PIlQJ5j59X+lyRLbNQvUlFg3TEr1wOaxrpPG05e6THNX8H3AklG9PobOJK1GLTEBNfpp3WBPqRnFTj+lUnh/ROzF1iqSJDRpy95YNbTN7QDy3g/SBM+z2DAf++4PY9Xyu3hxl0gNIHVAr6MxKKKQs85FWqeFypZLG+QMSzVtvZnrLQntlxxJGBVLnnGUrN2ejKw1SiPcCHmzIFX1W7rXZzdJFlpKI8/p91BLPFnpQ4hd1/FEeXY5MzDxJvyxpO2+WbtrzaPbDmQWqZj9g18Bk7LQHU',
+);
+
+export const EncounterMeleeDWPhase7 = PresetUtils.makePresetEncounter(
+	'Melee DW',
+	'https://wowsims.github.io/sod/hunter/#eJztVUFsFGUUnvfv7O7MaztM/9Y6+++aLAMl45gtM7NdI11xx8ZD04NpoIeetCUpgkB3w8ZEb9Vigk0kjUpt96CNGiXENaSQxhAMUi8QPKgJ2IOJJl7QEKx66YXCP//sLlRsPAjGQ98kM/9733vf+983/+5gSiE6SROLOPAE+GQYSmScTMMUgVMEehMGnBArH5YABsg+mANyEaAPqMTeb8PYwMGRV0YP61HjyTSxTwM26dNnNONC3qpWEyjrN+Y1HnqHh77eaR0918+d6oJm/Jm3rvzOuFPhyM+aNcmTm/R339SMa3lr9VPhcORIuzV7M4mK/vYZzVoR4eMh+5Jw3uMFP2rW9+MJnjPDc44dCbInFjTri4kkb//ZgsbvK8c0jOuned/rweLyW7XF5GKL8UveyytxnVgxMT/0yVOEvBwfB/MoRKeAzIF8AuAUwOcAKwBfAnwHss4TZwguQbRnVcafiLRhD9TozIbE69iv5MOoKf3TZW8c0//ANo7putariz9XGIAhGIZ9UIL+pJtxcl7OcbJOLpPNeg6/ul0vG/gD8hDskV48HjMi2IYKi6GszH6bMuMYxUgmV8aHasEf5sBUkYczbleuTLPMxQx7DDvsdiVG1UUIcvi3gvEyBA9b7U1KlJIeiQkm1yn3SHQny6NLt2OL2YTqB6LkN/550cxmxArwROV80ZIxMgkSqpUGZfD86HKKPsKSgjdGyZ4ab87p3BXA56sJ6rLt2Em3iC1F7tlSFtV5qDGxGkJ99hR2Uw8Nu0ORqXq2URJuuiu3znxug8FjjmhaI5/4KrW2ZLVe0s3q81FkoaR8dtrE1DuAGJBuCvWZXzN/vdc2uhV1W+MDBhpwBEmuU0S4Kv21SHeZ1UX5e83qr5luVYClxY6jVD35F8VE1tlbBmU8qwObTUTFE8S3DFZ70maOKY3MYfYcDtJdmLAfDjQIGf+4mWQK8lVwctZCXIK7IGYbHMKTjaNwB2t0GGHPP6AOQehc0eJHh8UDBfTp3aWL8AaEv6t2f4VABaRFaKOtiqrHTOnREFku9MXNqxE19J71W8NFl5+ozAZ2qbAjjHxT2LxX2NWC93FEWXqthaZ2vzR2YHQsPTh6qHRwNP3M4ZEXimMH9o+le4vlslFIK/b/7GOy/Kp/X3i2Vf8Vj55+/On7sg9urriXPvF37C8uv35p8EqhTu0PwW15AwsJ',
+);
+
+export const EncounterMelee2HPhase7 = PresetUtils.makePresetEncounter(
+	'Melee 2H',
+	'https://wowsims.github.io/sod/hunter/#eJztVU9oFGcUn/ft7O7MixknX2I6+22E7WrsOGXj7G5GNFF3DD2EHCRoDjnZREir1WYXF0FvWi3YHCQoDUlO8Q8qwRUJEkpISRs8RPTgH5QcCgrtoS2lpvWSS2O/+WZ3NdXgoSoe8gZm3nu/N7/3vd98ux/WKUQnMWISGzaBS7ogR46SAegncI1AS8SAy8JzYRagneyFESAzAK1AJTZRjaH2A91Heg7qQWNLjFhXACv0geuacb/ZLBQiKOt/jmk8deOsZtzeap6cbONBYVwznjabD/5iPBjmxT9rZh8vrtBP8+DXZnPhihf8MqYZJ2rMoX+iqOhnrmvmvEh/67PPiuBHzvtIM5+ImkFec+qE5x0f18zvj0d5+6vjGr/Pn9IwrM9MacYfGkrc7ZuuNH5rTm1SwjoxQ2JwaJX7CTkcPgnBfiAjIF8GuAbwHcA8wA8A90DWedUgwVkINi3I+JhIy/ZWjQ4uS7yE/U7OB+PS6y5reZu+A1vepktaiy7+WaEdOqEL9kIO2qIJ23Ecm5uTSKdTNr8ak6m0nbadZLvcCXukLyZCRgBXIZ6GMAYxgODEhZNw8liNCguhrAzdrXueXFVM/jQCcRV5OpFscPI0zZKYYB9jrVWjhKg6DV4NPziYIE1hlbVSCVLSJDHBlLTzTRJtY624jW7BKItgZbwC1XPitb+9IyZV8l4AnvCDKNAHEqrDZX7veeFWHV3NoqJJiJI9xSaOXb/Tg6cKEZpkG7CerhHrC7y0vjSqY1BkYkWEumwbNtIUGlatIlN1ovyKP0GDs8SwyTLDR6weGTUW1y2U6ho9ImUqa8oUmS8qH5BWMPVlgAvhT0hX+oKMLRLAa5ZiNq6ja1G3ND6hJwJHkDj1IsNlaStmGvOspMqrRSt9dLpWARYTqw9SdfQ/komqiWcGZbyqFlfEsfjRpp4ZrPikKzimlCu72G7soDsxYn3g6TFa+tpMQe55+2gxxOV4AWKWwSEchZI6z7Fyh2726Vvq4KUmsybfOyzsKaAP7MrNwDfg//hq3HkCwyBNQzWtUlQ9FJfW+8hcpjUcfxhQ/WiHW+U7DW5keMizm5nNfuZO5sPPhD3MpC4GlNmvKmndrkO9+3t6Yx09X+YO9MQ+Odj9ebZ3/77eWEs2nzcyMcV6z06cuWPuG+FZV/hfPHps4/Y3sg5uSXHPXXI378vOfX2z40GmRO12wr/b0A+c',
+);
+
+
 ///////////////////////////////////////////////////////////////////////////
 //                                 Presets
 ///////////////////////////////////////////////////////////////////////////
@@ -460,29 +515,23 @@ export const PresetBuildWeave = PresetUtils.makePresetBuild('Weave', {
 	gear: DefaultGearWeave,
 	talents: DefaultTalentsWeave,
 	rotation: DefaultAPLWeave,
-	encounter: EncounterWeavePhase6,
+	encounter: EncounterWeavePhase7,
 });
-export const PresetBuildRangedDraconic = PresetUtils.makePresetBuild('Ranged Draconic', {
-	gear: DefaultGearRangedDraconic,
-	talents: DefaultTalentsRangedDraconic,
-	rotation: DefaultAPLRangedDraconic,
-	encounter: EncounterRangedDraconicPhase6,
-});
-export const PresetBuildRangedKillshot = PresetUtils.makePresetBuild('Ranged Killshot', {
+export const PresetBuildRangedKillshot = PresetUtils.makePresetBuild('Ranged', {
 	gear: DefaultGearRangedKillshot,
 	talents: DefaultTalentsRangedKillshot,
 	rotation: DefaultAPLRangedKillshot,
-	encounter: EncounterRangedKillshotPhase6,
+	encounter: EncounterRangedPhase7,
 });
 export const PresetBuildMeleeBM = PresetUtils.makePresetBuild('Melee DW', {
 	gear: DefaultGearMeleeBM,
 	talents: DefaultTalentsMeleeBM,
 	rotation: DefaultAPLMeleeBM,
-	encounter: EncounterMeleeBMPhase6,
+	encounter: EncounterMeleeDWPhase7,
 });
 export const PresetBuildMeleeSV = PresetUtils.makePresetBuild('Melee 2H', {
 	gear: DefaultGearMeleeSV,
 	talents: DefaultTalentsMeleeSV,
 	rotation: DefaultAPLMeleeSV,
-	encounter: EncounterMeleeSVPhase6,
+	encounter: EncounterMelee2HPhase7,
 });
