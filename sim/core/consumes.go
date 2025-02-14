@@ -486,7 +486,7 @@ func applyDefensiveBuffConsumes(character *Character, consumes *proto.Consumes) 
 		switch consumes.ArmorElixir {
 		case proto.ArmorElixir_ElixirOfTheIronside:
 			character.AddStats(stats.Stats{
-				stats.BonusArmor:       350,
+				stats.BonusArmor:       450,
 				stats.Defense:          5,
 				stats.NatureResistance: 15,
 			})
