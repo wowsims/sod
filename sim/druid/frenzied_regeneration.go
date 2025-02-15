@@ -43,6 +43,10 @@ func (druid *Druid) registerFrenziedRegenerationCD() {
 		}
 	}
 
+	if druid.FrenziedRegeneration == nil {
+		return
+	}
+
 	druid.AddMajorCooldown(core.MajorCooldown{
 		Spell: druid.FrenziedRegeneration.Spell,
 		Type:  core.CooldownTypeSurvival,
