@@ -402,6 +402,7 @@ func (spell *Spell) CalcAndDealOutcome(sim *Simulation, target *Unit, outcomeApp
 
 // Applies the fully computed spell result to the sim.
 func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result *SpellResult) {
+	isPeriodic = isPeriodic || spell.Flags.Matches(SpellFlagTreatAsPeriodic)
 	isPartialResist := result.DidResist()
 
 	if sim.CurrentTime >= 0 {

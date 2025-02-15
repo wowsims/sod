@@ -201,6 +201,7 @@ const (
 	SpellFlagNotAProc                                      // Indicates the proc is not treated as a proc (Seal of Command)
 	SpellFlagSwapped                                       // Indicates that this spell is not useable because it is from a currently swapped item
 	SpellFlagNoSpellMods                                   // Indicates that no spell mods should be applied to this spell
+	SpellFlagTreatAsPeriodic                               // Indicates that the spell deals non-DoT damage but is treated a periodic. Equivalent to the "Treat as Periodic" flag in-game
 
 	// Used to let agents categorize their spells.
 	SpellFlagAgentReserved1
@@ -216,12 +217,12 @@ const (
 type DispelType uint64
 
 const (
-	DispelType_None                  DispelType = 0
-	DispelType_Poison                DispelType = 1 << iota
-	DispelType_Disease                         
-	DispelType_Curse  
+	DispelType_None   DispelType = 0
+	DispelType_Poison DispelType = 1 << iota
+	DispelType_Disease
+	DispelType_Curse
 	DispelType_Magic
-	DispelType_Enrage  
+	DispelType_Enrage
 )
 
 /*
