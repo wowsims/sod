@@ -121,7 +121,7 @@ func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 				// Ranged attacks actually remove a stack
 				for _, aura := range buffAuras {
 					if aura.IsActive() {
-						aura.RemoveStack(sim)
+						aura.Deactivate(sim)
 					}
 				}
 			}
