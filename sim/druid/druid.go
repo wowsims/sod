@@ -256,28 +256,21 @@ func (druid *Druid) RegisterBalanceSpells() {
 // TODO: Classic feral
 func (druid *Druid) RegisterFeralCatSpells() {
 	druid.registerCatFormSpell()
-	// druid.registerBearFormSpell()
-	// druid.registerEnrageSpell()
-	druid.registerFerociousBiteSpell()
-	// druid.registerMangleBearSpell()
-	// druid.registerMaulSpell()
-	// druid.registerLacerateSpell()
 	druid.registerRakeSpell()
-	druid.registerRipSpell()
 	druid.registerShredSpell()
-	// druid.registerSwipeBearSpell()
+	druid.registerRipSpell()
+	druid.registerFerociousBiteSpell()
 	druid.registerTigersFurySpell()
 }
 
 // TODO: Classic feral tank
 func (druid *Druid) RegisterFeralTankSpells() {
-	// druid.registerBarkskinCD()
 	druid.registerBearFormSpell()
+	druid.registerBarkskinCD()
 	// druid.registerDemoralizingRoarSpell()
 	druid.registerEnrageSpell()
 	druid.registerFrenziedRegenerationCD()
 	druid.registerMaulSpell()
-	// druid.registerSurvivalInstinctsCD()
 	druid.registerSwipeBearSpell()
 }
 

@@ -92,6 +92,7 @@ func (cat *FeralDruid) Initialize() {
 	cat.Druid.Initialize()
 	cat.RegisterBalanceSpells()
 	cat.RegisterFeralCatSpells()
+	cat.RegisterFeralTankSpells()
 }
 
 func (cat *FeralDruid) Reset(sim *core.Simulation) {
