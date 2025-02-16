@@ -24,6 +24,7 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagIgnoreResists | core.SpellFlagBatchStartAttackMacro,
 		ClassSpellMask: ClassSpellMask_PaladinHammerOfTheRighteous,
+		MissileSpeed:   35,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
@@ -53,9 +54,11 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 				target = sim.Environment.NextTargetUnit(target)
 			}
 
-			for _, result := range results {
-				spell.DealDamage(sim, result)
-			}
+			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+				for _, result := range results {
+					spell.DealDamage(sim, result)
+				}
+			})
 		},
 	})
 }
