@@ -79,7 +79,7 @@ func (druid *Druid) applyNaturesGrace() {
 
 			// Make sure the aura actually applied to the spell being cast before deactivating
 			if spell.CurCast.CastTime > 0 && (sim.CurrentTime-spell.CurCast.CastTime >= aura.StartedAt()) {
-				aura.Deactivate(sim)
+				aura.RemoveStack(sim)
 			}
 		},
 	})
