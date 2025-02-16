@@ -103,6 +103,7 @@ type Paladin struct {
 	enableMultiJudge    bool
 	lingerDuration      time.Duration
 	consumeSealsOnJudge bool
+	artOfWarDelayAura   *core.Aura
 }
 
 // Implemented by each Paladin spec.

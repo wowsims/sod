@@ -344,12 +344,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase2-Lvl40-StatWeights-Default"
  value: {
-  weights: 0.66443
-  weights: 0.55502
+  weights: 0.66388
+  weights: 0.4832
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.2224
+  weights: 0.22181
   weights: 0
   weights: 0
   weights: 0
@@ -357,13 +357,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.99628
-  weights: 0.07348
+  weights: 1.83121
+  weights: 0.07263
   weights: 0
   weights: 0
-  weights: 0.30201
-  weights: 5.41004
-  weights: 5.22083
+  weights: 0.30176
+  weights: 5.38759
+  weights: 5.06997
   weights: 0
   weights: 0
   weights: 0
@@ -393,12 +393,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase3-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.09556
-  weights: 0.31044
+  weights: 1.13205
+  weights: 0.42363
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.27594
+  weights: 0.27425
   weights: 0
   weights: 0
   weights: 0
@@ -406,13 +406,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.19585
-  weights: 0.65278
+  weights: 3.07165
+  weights: 0.71707
   weights: 0
   weights: 0
-  weights: 0.41842
-  weights: 13.62273
-  weights: 8.68996
+  weights: 0.42943
+  weights: 14.04386
+  weights: 8.64565
   weights: 0
   weights: 0
   weights: 0
@@ -442,12 +442,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.64098
-  weights: 2.17132
+  weights: 2.64149
+  weights: 2.14192
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.41304
+  weights: 0.41263
   weights: 0
   weights: 0
   weights: 0
@@ -455,13 +455,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 7.17273
-  weights: 0.72263
+  weights: 6.82717
+  weights: 0.71329
   weights: 0
   weights: 0
-  weights: 0.94897
-  weights: 1.5737
-  weights: 30.23643
+  weights: 0.94915
+  weights: 1.53961
+  weights: 30.13354
   weights: 0
   weights: 0
   weights: 0
@@ -701,8 +701,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 549.58169
-  tps: 563.08933
+  dps: 549.21359
+  tps: 562.71382
  }
 }
 dps_results: {
@@ -792,8 +792,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 519.25717
-  tps: 532.69222
+  dps: 517.83208
+  tps: 531.27462
  }
 }
 dps_results: {
@@ -807,9 +807,9 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1228.45736
-  tps: 1269.89745
-  hps: 11.11189
+  dps: 1227.47315
+  tps: 1268.93
+  hps: 11.10904
  }
 }
 dps_results: {
@@ -911,9 +911,9 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1161.29491
-  tps: 1202.12534
-  hps: 11.1026
+  dps: 1159.56111
+  tps: 1200.4119
+  hps: 11.02718
  }
 }
 dps_results: {
@@ -954,8 +954,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3855.49603
-  tps: 3904.91387
+  dps: 3855.41834
+  tps: 3904.83628
  }
 }
 dps_results: {
@@ -1625,8 +1625,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3098.39047
-  tps: 3147.26712
+  dps: 3104.12279
+  tps: 3153.04229
  }
 }
 dps_results: {
