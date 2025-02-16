@@ -41,7 +41,7 @@ message APLListItem {
     APLAction action = 3; // The action to be performed.
 }
 
-// NextIndex: 24
+// NextIndex: 25
 message APLAction {
     APLValue condition = 1; // If set, action will only execute if value is true or != 0.
 
@@ -76,6 +76,7 @@ message APLAction {
         // Class or Spec-specific actions
         APLActionCatOptimalRotationAction cat_optimal_rotation_action = 19;
         APLActionCastPaladinPrimarySeal cast_paladin_primary_seal = 21;
+        APLActionPaladinCastWithMacro paladin_cast_with_macro = 24;
 
         // Internal use only, not exposed in UI.
         APLActionCustomRotation custom_rotation = 20;
@@ -284,6 +285,18 @@ message APLActionCatOptimalRotationAction {
 }
 
 message APLActionCastPaladinPrimarySeal {
+}
+
+message APLActionPaladinCastWithMacro {
+	enum Macro {
+		Unknown = 0;
+		StartAttack = 1;
+		StopAttack = 2;
+	}
+
+	ActionID spell_id = 1;
+	UnitReference target = 2;
+	Macro macro = 3;
 }
 
 message APLActionMove {

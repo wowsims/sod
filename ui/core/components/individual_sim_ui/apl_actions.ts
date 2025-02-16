@@ -18,6 +18,8 @@ import {
 	APLActionMove,
 	APLActionMultidot,
 	APLActionMultishield,
+	APLActionPaladinCastWithMacro,
+	APLActionPaladinCastWithMacro_Macro as PaladinMacro,
 	APLActionResetSequence,
 	APLActionSchedule,
 	APLActionSequence,
@@ -266,6 +268,25 @@ function itemSwapSetFieldConfig(field: string): AplHelpers.APLPickerBuilderField
 				values: [
 					{ value: ItemSwapSet.Main, label: 'Main' },
 					{ value: ItemSwapSet.Swap1, label: 'Swapped' },
+				],
+			}),
+	};
+}
+
+function castWithMacroFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
+	return {
+		field: field,
+		newValue: () => PaladinMacro.StopAttack,
+		factory: (parent, player, config) =>
+			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
+				...config,
+				label: 'followed by',
+				defaultLabel: 'None',
+				equals: (a, b) => a == b,
+				values: [
+					{ value: PaladinMacro.StartAttack, label: '/startattack' },
+					{ value: PaladinMacro.StopAttack, label: '/stopattack' },
 				],
 			}),
 	};
@@ -660,5 +681,17 @@ const actionKindFactories: { [f in NonNullable<APLActionKind>]: ActionKindConfig
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec == Spec.SpecRetributionPaladin || player.spec == Spec.SpecProtectionPaladin,
 		newValue: () => APLActionCastPaladinPrimarySeal.create({}),
 		fields: [],
+	}),
+	['paladinCastWithMacro']: inputBuilder({
+		label: 'Cast',
+		submenu: ['Paladin'],
+		shortDescription: 'Casts the specified spell, followed by the selected macro.',
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec == Spec.SpecRetributionPaladin,
+		newValue: () => APLActionPaladinCastWithMacro.create(),
+		fields: [
+			AplHelpers.actionIdFieldConfig('spellId', 'castable_spells', ''),
+			AplHelpers.unitFieldConfig('target', 'targets'),
+			castWithMacroFieldConfig('macro'),
+		],
 	}),
 };

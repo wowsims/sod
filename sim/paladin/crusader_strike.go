@@ -41,6 +41,7 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		ClassSpellMask:   ClassSpellMask_PaladinCrusaderStrike,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			flags := spell.Flags
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
@@ -48,7 +49,10 @@ func (paladin *Paladin) registerCrusaderStrike() {
 				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
 				Priority: core.ActionPriorityLow,
 				OnAction: func(sim *core.Simulation) {
+					currentFlags := spell.Flags
+					spell.Flags = flags
 					spell.DealDamage(sim, result)
+					spell.Flags = currentFlags
 				},
 			})
 

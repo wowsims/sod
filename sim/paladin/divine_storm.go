@@ -49,6 +49,7 @@ func (paladin *Paladin) registerDivineStorm() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]*core.SpellResult, numTargets)
+			flags := spell.Flags
 
 			for idx := range results {
 				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
@@ -60,10 +61,13 @@ func (paladin *Paladin) registerDivineStorm() {
 				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
 				Priority: core.ActionPriorityLow,
 				OnAction: func(sim *core.Simulation) {
+					currentFlags := spell.Flags
+					spell.Flags = flags
 					for _, result := range results {
 						spell.DealDamage(sim, result)
 						paladin.GainHealth(sim, result.RawDamage()*0.25, healthMetrics)
 					}
+					spell.Flags = currentFlags
 				},
 			})
 		},
