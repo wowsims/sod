@@ -188,7 +188,7 @@ var ItemSetKharonsDecree = core.NewItemSet(core.ItemSet{
 			character.RegisterAura(core.Aura{
 				Label: "Kharon's Decree",
 				OnInit: func(aura *core.Aura, sim *core.Simulation) {
-					character.GetSpell(core.ActionID{SpellID: 1219020}).ApplyMultiplicativeDamageBonus(2.0)
+					character.GetSpell(core.ActionID{SpellID: 1219024}).ApplyMultiplicativeDamageBonus(2.0)
 				},
 			})
 		},
