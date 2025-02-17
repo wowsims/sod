@@ -109,31 +109,23 @@ func (spell *Spell) OutcomeMagicHitAndCritNoHitCounter(sim *Simulation, result *
 }
 func (spell *Spell) outcomeMagicHitAndCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable, countHits bool) {
 	isPartialResist := result.DidResist()
-	if spell.MagicHitCheck(sim, attackTable) {
-		if spell.MagicCritCheck(sim, result.Target) {
+	didHit := spell.MagicHitCheck(sim, attackTable)
+	didCrit := didHit && spell.MagicCritCheck(sim, result.Target)
+
+	if didHit {
+		if didCrit {
 			result.Outcome = OutcomeCrit
 			result.Damage *= spell.CritMultiplier(attackTable)
-			if countHits {
-				spell.SpellMetrics[result.Target.UnitIndex].Crits++
-				if isPartialResist {
-					spell.SpellMetrics[result.Target.UnitIndex].ResistedCrits++
-				}
-			}
 		} else {
 			result.Outcome = OutcomeHit
-			if countHits {
-				spell.SpellMetrics[result.Target.UnitIndex].Hits++
-				if isPartialResist {
-					spell.SpellMetrics[result.Target.UnitIndex].ResistedHits++
-				}
-			}
 		}
 	} else {
 		result.Outcome = OutcomeMiss
 		result.Damage = 0
-		if countHits {
-			spell.SpellMetrics[result.Target.UnitIndex].Misses++
-		}
+	}
+
+	if countHits {
+		result.applyMagicOutcome(spell, didHit, didCrit, isPartialResist)
 	}
 }
 
@@ -145,24 +137,17 @@ func (spell *Spell) OutcomeMagicCritNoHitCounter(sim *Simulation, result *SpellR
 }
 func (spell *Spell) outcomeMagicCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable, countHits bool) {
 	isPartialResist := result.DidResist()
+	didCrit := spell.MagicCritCheck(sim, result.Target)
 
-	if spell.MagicCritCheck(sim, result.Target) {
+	if didCrit {
 		result.Outcome = OutcomeCrit
 		result.Damage *= spell.CritMultiplier(attackTable)
-		if countHits {
-			spell.SpellMetrics[result.Target.UnitIndex].Crits++
-			if isPartialResist {
-				spell.SpellMetrics[result.Target.UnitIndex].ResistedCrits++
-			}
-		}
 	} else {
 		result.Outcome = OutcomeHit
-		if countHits {
-			spell.SpellMetrics[result.Target.UnitIndex].Hits++
-			if isPartialResist {
-				spell.SpellMetrics[result.Target.UnitIndex].ResistedHits++
-			}
-		}
+	}
+
+	if countHits {
+		result.applyMagicOutcome(spell, true, didCrit, isPartialResist)
 	}
 }
 
@@ -173,13 +158,8 @@ func (spell *Spell) OutcomeHealingNoHitCounter(_ *Simulation, result *SpellResul
 	spell.outcomeHealing(nil, result, nil, false)
 }
 func (spell *Spell) outcomeHealing(_ *Simulation, result *SpellResult, _ *AttackTable, countHits bool) {
-	isPartialResist := result.DidResist()
-	result.Outcome = OutcomeHit
 	if countHits {
-		spell.SpellMetrics[result.Target.UnitIndex].Hits++
-		if isPartialResist {
-			spell.SpellMetrics[result.Target.UnitIndex].ResistedHits++
-		}
+		result.applyMagicOutcome(spell, true, false, false)
 	}
 }
 
@@ -190,34 +170,17 @@ func (spell *Spell) OutcomeHealingCritNoHitCounter(sim *Simulation, result *Spel
 	spell.outcomeHealingCrit(sim, result, attackTable, false)
 }
 func (spell *Spell) outcomeHealingCrit(sim *Simulation, result *SpellResult, attackTable *AttackTable, countHits bool) {
-	isPartialResist := result.DidResist()
+	didCrit := spell.HealingCritCheck(sim)
 
-	if spell.HealingCritCheck(sim) {
+	if didCrit {
 		result.Outcome = OutcomeCrit
 		result.Damage *= spell.CritMultiplier(attackTable)
-		if countHits {
-			spell.SpellMetrics[result.Target.UnitIndex].Crits++
-			if isPartialResist {
-				spell.SpellMetrics[result.Target.UnitIndex].ResistedCrits++
-			}
-		}
 	} else {
 		result.Outcome = OutcomeHit
-		if countHits {
-			spell.SpellMetrics[result.Target.UnitIndex].Hits++
-			if isPartialResist {
-				spell.SpellMetrics[result.Target.UnitIndex].ResistedHits++
-			}
-		}
 	}
-}
 
-func (spell *Spell) OutcomeTickMagicHit(sim *Simulation, result *SpellResult, attackTable *AttackTable) {
-	if spell.MagicHitCheck(sim, attackTable) {
-		result.Outcome = OutcomeHit
-	} else {
-		result.Outcome = OutcomeMiss
-		result.Damage = 0
+	if countHits {
+		result.applyMagicOutcome(spell, true, didCrit, false)
 	}
 }
 
@@ -228,20 +191,50 @@ func (spell *Spell) OutcomeMagicHitNoHitCounter(sim *Simulation, result *SpellRe
 	spell.outcomeMagicHit(sim, result, attackTable, false)
 }
 func (spell *Spell) outcomeMagicHit(sim *Simulation, result *SpellResult, attackTable *AttackTable, countHits bool) {
-	if spell.MagicHitCheck(sim, attackTable) {
-		isPartialResist := result.DidResist()
+	isPartialResist := result.DidResist()
+	didHit := spell.MagicHitCheck(sim, attackTable)
+
+	if didHit {
 		result.Outcome = OutcomeHit
-		if countHits {
+	} else {
+		result.Outcome = OutcomeMiss
+		result.Damage = 0
+	}
+
+	if countHits {
+		result.applyMagicOutcome(spell, didHit, false, isPartialResist)
+	}
+}
+
+func (result *SpellResult) applyMagicOutcome(spell *Spell, didHit bool, didCrit bool, isPartialResist bool) {
+	if !didHit {
+		spell.SpellMetrics[result.Target.UnitIndex].Misses++
+		return
+	}
+
+	if spell.Flags.Matches(SpellFlagTreatAsPeriodic) {
+		if didCrit {
+			spell.SpellMetrics[result.Target.UnitIndex].CritTicks++
+			if isPartialResist {
+				spell.SpellMetrics[result.Target.UnitIndex].ResistedCritTicks++
+			}
+		} else {
+			spell.SpellMetrics[result.Target.UnitIndex].Ticks++
+			if isPartialResist {
+				spell.SpellMetrics[result.Target.UnitIndex].ResistedTicks++
+			}
+		}
+	} else {
+		if didCrit {
+			spell.SpellMetrics[result.Target.UnitIndex].Crits++
+			if isPartialResist {
+				spell.SpellMetrics[result.Target.UnitIndex].ResistedCrits++
+			}
+		} else {
 			spell.SpellMetrics[result.Target.UnitIndex].Hits++
 			if isPartialResist {
 				spell.SpellMetrics[result.Target.UnitIndex].ResistedHits++
 			}
-		}
-	} else {
-		result.Outcome = OutcomeMiss
-		result.Damage = 0
-		if countHits {
-			spell.SpellMetrics[result.Target.UnitIndex].Misses++
 		}
 	}
 }
@@ -691,11 +684,11 @@ func (result *SpellResult) applyAttackTableMissNoDWPenalty(spell *Spell, attackT
 func (result *SpellResult) applyAttackTableBlock(spell *Spell, attackTable *AttackTable, roll float64, chance *float64, countHits bool) bool {
 	*chance += attackTable.BaseBlockChance
 	if roll < *chance {
-		isCrit := result.DidCrit()
+		didCrit := result.DidCrit()
 		isPartialResist := result.DidResist()
 		result.Outcome |= OutcomeBlock
 		if countHits {
-			if isCrit {
+			if didCrit {
 				spell.SpellMetrics[result.Target.UnitIndex].BlockedCrits++
 				spell.SpellMetrics[result.Target.UnitIndex].Crits--
 				if isPartialResist {
