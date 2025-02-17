@@ -49,38 +49,54 @@ func (warlock *Warlock) applyNaxxramasDamage4PBonus() {
 		return
 	}
 
-	dotSpellsMap := make(map[int64]*core.Spell)
-
-	copiedCorruptionConfig := warlock.getCorruptionConfig(CorruptionRanks)
-	copiedCorruptionConfig.ActionID.SpellID = 1219428
-	copiedCorruptionConfig.Dot.Aura.Label = copiedCorruptionConfig.Dot.Aura.Label + "-4pT3"
-	copiedCorruptionConfig.Flags ^= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
-	copiedCorruptionConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
-	dotSpellsMap[ClassSpellMask_WarlockCorruption] = warlock.RegisterSpell(copiedCorruptionConfig)
-
-	copiedImmolateConfig := warlock.getImmolateConfig(ImmolateRanks)
-	copiedImmolateConfig.ActionID.SpellID = 1219425
-	copiedImmolateConfig.Dot.Aura.Label = copiedImmolateConfig.Dot.Aura.Label + "-4pT3"
-	copiedImmolateConfig.Flags ^= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
-	copiedImmolateConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
-	dotSpellsMap[ClassSpellMask_WarlockImmolate] = warlock.RegisterSpell(copiedImmolateConfig)
-
-	if warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame) {
-		copiedShadowflameConfig := warlock.getShadowflameConfig()
-		copiedShadowflameConfig.ActionID.SpellID = 1219429
-		copiedShadowflameConfig.Dot.Aura.Label = copiedShadowflameConfig.Dot.Aura.Label + "-4pT3"
-		copiedShadowflameConfig.Flags ^= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
-		copiedShadowflameConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
-		dotSpellsMap[ClassSpellMask_WarlockShadowflame] = warlock.RegisterSpell(copiedShadowflameConfig)
+	copiedSpellConfig := []struct {
+		ClassMask   int64
+		SpellID     int32
+		SpellSchool core.SpellSchool
+		Flags       core.SpellFlag
+	}{
+		{
+			ClassMask:   ClassSpellMask_WarlockCorruption,
+			SpellID:     1219428,
+			SpellSchool: core.SpellSchoolShadow,
+			Flags:       WarlockFlagAffliction,
+		},
+		{
+			ClassMask:   ClassSpellMask_WarlockImmolate,
+			SpellID:     1219425,
+			SpellSchool: core.SpellSchoolFire,
+			Flags:       WarlockFlagDestruction,
+		},
+		{
+			ClassMask:   ClassSpellMask_WarlockShadowflame,
+			SpellID:     1219429,
+			SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
+			Flags:       WarlockFlagAffliction | WarlockFlagDestruction,
+		},
+		{
+			ClassMask:   ClassSpellMask_WarlockUnstableAffliction,
+			SpellID:     1219436,
+			SpellSchool: core.SpellSchoolShadow,
+			Flags:       WarlockFlagAffliction,
+		},
 	}
 
-	if warlock.HasRune(proto.WarlockRune_RuneBracerUnstableAffliction) {
-		copiedUnstableAfflictionConfig := warlock.getUnstableAfflictionConfig()
-		copiedUnstableAfflictionConfig.ActionID.SpellID = 1219436
-		copiedUnstableAfflictionConfig.Dot.Aura.Label = copiedUnstableAfflictionConfig.Dot.Aura.Label + "-4pT3"
-		copiedUnstableAfflictionConfig.Flags ^= core.SpellFlagAPL | core.SpellFlagResetAttackSwing
-		copiedUnstableAfflictionConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
-		dotSpellsMap[ClassSpellMask_WarlockUnstableAffliction] = warlock.RegisterSpell(copiedUnstableAfflictionConfig)
+	dotSpellsMap := make(map[int64]*core.Spell)
+
+	for _, spellConfig := range copiedSpellConfig {
+		dotSpellsMap[spellConfig.ClassMask] = warlock.RegisterSpell(core.SpellConfig{
+			ActionID:       core.ActionID{SpellID: spellConfig.SpellID},
+			ClassSpellMask: spellConfig.ClassMask,
+			SpellSchool:    spellConfig.SpellSchool,
+			DefenseType:    core.DefenseTypeMagic,
+			ProcMask:       core.ProcMaskSpellDamage,
+			Flags:          core.SpellFlagTreatAsPeriodic | core.SpellFlagPureDot | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | WarlockFlagHaunt | spellConfig.Flags,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},
+		})
 	}
 
 	var affectedDotSpells []*core.Spell
@@ -101,12 +117,9 @@ func (warlock *Warlock) applyNaxxramasDamage4PBonus() {
 			if spell.Matches(ClassSpellMask_WarlockAll) && result.DidCrit() {
 				for _, spell := range affectedDotSpells {
 					if dot := spell.Dot(result.Target); dot.IsActive() {
-						copiedDoT := dotSpellsMap[spell.ClassSpellMask].Dot(result.Target)
-						copiedDoT.SnapshotBaseDamage = dot.SnapshotBaseDamage
-						copiedDoT.SnapshotAttackerMultiplier = dot.SnapshotAttackerMultiplier
-						copiedDoT.Apply(sim)
-						copiedDoT.TickOnce(sim)
-						copiedDoT.Deactivate(sim)
+						copiedDoTSpell := dotSpellsMap[spell.ClassSpellMask]
+						copiedDoTSpell.Cast(sim, result.Target)
+						copiedDoTSpell.CalcAndDealDamage(sim, result.Target, dot.SnapshotBaseDamage, copiedDoTSpell.OutcomeMagicCrit)
 					}
 				}
 			}
