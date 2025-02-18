@@ -691,8 +691,9 @@ func TimewornSpellAura(agent core.Agent, itemID int32) {
 	castSpeedMultiplier := 1 + 0.02*float64(character.PseudoStats.TimewornBonus)
 
 	aura := core.MakePermanent(character.GetOrRegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 1213398},
-		Label:    label,
+		ActionID:   core.ActionID{SpellID: 1213398},
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+		Label:      label,
 	}).AttachMultiplyCastSpeed(&character.Unit, castSpeedMultiplier))
 
 	character.ItemSwap.RegisterProc(itemID, aura)
