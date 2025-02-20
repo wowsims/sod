@@ -26,7 +26,7 @@ func (warlock *Warlock) getShadowflameConfig() core.SpellConfig {
 
 	baseSpellCoeff := 0.20
 	dotSpellCoeff := 0.13
-	baseDamage := warlock.baseRuneAbilityDamage() * 1.73
+	baseDamage := warlock.baseRuneAbilityDamage() * 2.26
 	dotDamage := warlock.baseRuneAbilityDamage() * 3.2 / float64(numTicks)
 
 	tickLength := time.Second * 3
