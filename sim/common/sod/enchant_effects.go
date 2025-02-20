@@ -1,12 +1,23 @@
 package sod
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
 const (
 	WolfsheadTrophy = 7124
+	BloodPlague     = 7878
+	FrostFever      = 7879
+	MarkOfBlood     = 7880
+	Obliterate      = 7881
+
+	BloodPlagueSpellId = 1219121
+	FrostFeverSpellId  = 1219124
+	MarkOfBloodSpellId = 1219153
+	ObliterateSpellId  = 1219176
 )
 
 func init() {
@@ -138,5 +149,116 @@ func init() {
 		w.BaseDamageMax += 10
 	})
 
+	registerDeathKnightDiseaseSpell("Blood Plague", BloodPlague, BloodPlagueSpellId, 120, 5)
+	registerDeathKnightDiseaseSpell("Frost Fever", FrostFever, FrostFeverSpellId, 100, 7)
+
+	core.NewEnchantEffect(Obliterate, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{SpellID: ObliterateSpellId}
+		baseDamage := 900.0
+		singleDiseaseMultiplier := 1 + 0.6
+		doubleDiseaseMultiplier := 1 + 0.6 + 0.6 // Assuming additive until it can be tested by 3 people on the same target dummy
+
+		character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolPhysical,
+			DefenseType: core.DefenseTypeMelee,
+			ProcMask:    core.ProcMaskMeleeMHSpecial,
+			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+
+			Cast: core.CastConfig{
+				DefaultCast: core.Cast{
+					GCD: core.GCDDefault,
+				},
+				IgnoreHaste: true,
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 90,
+				},
+			},
+
+			DamageMultiplier: 1.0,
+			ThreatMultiplier: 1.0,
+			BonusCoefficient: 0, // Not affected by things like Gift of Arthas
+
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return character.HasMHWeapon()
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				multiplier := 1.0
+				diseases := target.GetAurasWithTag("Obliterate")
+
+				switch len(diseases) {
+				case 2:
+					multiplier = doubleDiseaseMultiplier
+				case 1:
+					multiplier = singleDiseaseMultiplier
+				}
+
+				spell.ApplyMultiplicativeDamageBonus(multiplier)
+				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+				spell.ApplyMultiplicativeDamageBonus(1 / multiplier)
+
+				spell.DealDamage(sim, result)
+			},
+		})
+	})
+
 	core.AddEffectsToTest = true
+}
+
+func registerDeathKnightDiseaseSpell(label string, itemID int32, spellID int32, baseDamage float64, numTicks int32) {
+	core.NewEnchantEffect(itemID, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: spellID}.WithTag(1),
+			SpellSchool: core.SpellSchoolShadow, // For some reason, both Frost Fever and Blood Plague are Shadow, verified in logs
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagAPL | core.SpellFlagPureDot | core.SpellFlagDisease,
+
+			Cast: core.CastConfig{
+				DefaultCast: core.Cast{
+					GCD: core.GCDDefault,
+				},
+				IgnoreHaste: true,
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 1,
+				},
+			},
+
+			DamageMultiplier: 1.0,
+			ThreatMultiplier: 1.0,
+
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: label + "-" + character.Label,
+				},
+
+				NumberOfTicks: numTicks,
+				TickLength:    time.Second * 3,
+
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, baseDamage, isRollover)
+				},
+
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					dot.Snapshot(target, baseDamage, false)
+					dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
+				if !result.Landed() {
+					spell.DealOutcome(sim, result)
+					return
+				}
+				spell.Dot(target).Apply(sim)
+			},
+		})
+	})
 }

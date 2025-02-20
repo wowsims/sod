@@ -120,6 +120,7 @@ type RandomSuffix struct {
 	ID    int32
 	Name  string
 	Stats stats.Stats
+	EnchantIDList []int32
 }
 
 func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
@@ -127,6 +128,7 @@ func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
 		ID:    pData.Id,
 		Name:  pData.Name,
 		Stats: stats.FromFloatArray(pData.Stats),
+		EnchantIDList: pData.EnchantIdList,
 	}
 }
 
