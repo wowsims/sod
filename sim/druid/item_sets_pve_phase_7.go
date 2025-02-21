@@ -172,6 +172,12 @@ func (druid *Druid) applyNaxxramasFeral6PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1218478}, // Tracking in APL
 		Label:    label,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_DruidRake) && result.Target.MobType == proto.MobType_MobTypeUndead && result.Landed() {
+				buffAura.Activate(sim)
+				buffAura.AddStack(sim)
+			}
+		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.SpellSchool.Matches(core.SpellSchoolPhysical) && result.Target.MobType == proto.MobType_MobTypeUndead {
 				buffAura.Activate(sim)

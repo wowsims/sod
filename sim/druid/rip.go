@@ -62,7 +62,7 @@ const RipTicks int32 = 8
 // - Rake and Rip damage contributions from attack power increased by roughly 50%.
 // PTR testing comes out to .0165563 AP scaling per CP
 // damageCoefPerCP := 0.01
-const RipDamageCoefPerAPPerCP = 0.015
+const RipDamageCoefPerAPPerCP = 0.01
 
 func (druid *Druid) registerRipSpell() {
 	// Add highest available Rip rank for level.
