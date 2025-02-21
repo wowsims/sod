@@ -21,6 +21,7 @@ func (druid *Druid) ApplyTalents() {
 	druid.PseudoStats.DamageDealtMultiplier *= 1 + 0.02*float64(druid.Talents.NaturalWeapons)
 
 	// Feral
+	druid.applyFeralAggression()
 	druid.applyFerocity()
 	druid.applyBloodFrenzy()
 	druid.applyPrimalFury()
@@ -158,6 +159,18 @@ func (druid *Druid) applyNaturesGrace() {
 // 		},
 // 	})
 // }
+
+func (druid *Druid) applyFeralAggression() {
+	if druid.Talents.FeralAggression == 0 {
+		return
+	}
+
+	druid.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_DruidFerociousBite,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  int64(3 * druid.Talents.FeralAggression),
+	})
+}
 
 func (druid *Druid) applyFerocity() {
 	if druid.Talents.Ferocity == 0 {

@@ -269,12 +269,15 @@ func init() {
 	// https://www.wowhead.com/classic/item=220606/idol-of-the-dream
 	// Equip: Increases the damage of Swipe and Shred by 2%.
 	core.NewItemEffect(IdolOfTheDream, func(agent core.Agent) {
-		// druid := agent.(DruidAgent).GetDruid()
+		druid := agent.(DruidAgent).GetDruid()
 
-		// TODO: How does this Idol work?
-		// core.MakePermanent(druid.RegisterAura(core.Aura{
-		// 	Label: "Improved Swipe/Shred",
-		// })).AttachSpellMod(core.SpellModConfig{})
+		core.MakePermanent(druid.RegisterAura(core.Aura{
+			Label: "Improved Swipe/Shred",
+		})).AttachSpellMod(core.SpellModConfig{
+			ClassMask: ClassSpellMask_DruidSwipeBear | ClassSpellMask_DruidSwipeCat | ClassSpellMask_DruidShred,
+			Kind:      core.SpellMod_BaseDamageDone_Flat,
+			IntValue:  2,
+		})
 	})
 
 	// https://www.wowhead.com/classic/item=228180/idol-of-the-swarm
