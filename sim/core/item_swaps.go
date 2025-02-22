@@ -165,12 +165,12 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 			if !config.Aura.IsActive() {
 				config.Aura.Activate(sim)
 			}
-			if shouldUpdateIcd {
+			if swap.initialized && shouldUpdateIcd {
 				config.Aura.Icd.Use(sim)
 			}
 		} else {
 			config.Aura.Deactivate(sim)
-			if shouldUpdateIcd {
+			if swap.initialized && shouldUpdateIcd {
 				// This is a hack to block ActivateAura APL
 				// actions from executing for unequipped items.
 				config.Aura.Icd.Set(NeverExpires)

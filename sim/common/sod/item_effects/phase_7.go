@@ -143,10 +143,10 @@ func init() {
 		})
 
 		damageSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
+			ActionID:    core.ActionID{SpellID: 1219024},
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+			ProcMask:    core.ProcMaskEmpty, // Seems to be considered non-harmful
 			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,

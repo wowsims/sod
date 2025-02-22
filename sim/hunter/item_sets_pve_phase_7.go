@@ -158,7 +158,7 @@ func (hunter *Hunter) applyNaxxramasRanged2PBonus() {
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterChimeraShot,
+		ClassMask: ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterChimeraSerpent,
 		IntValue:  20,
 	}))
 }

@@ -698,7 +698,10 @@ func (warlock *Warlock) applyImprovedImmolate() {
 	warlock.AddStaticMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_WarlockImmolate | ClassSpellMask_WarlockShadowflame,
 		Kind:      core.SpellMod_ImpactDamageDone_Flat,
-		IntValue:  int64(5 * warlock.Talents.ImprovedImmolate),
+		// @Lucenia: Exclude the periodic hits from Invocation and 4pT3 with the "Treat as Periodic" flag.
+		// This bug was present in both the sim and in-game but was confirmed to be unintended and fixed in Phase 7
+		SpellFlagsExclude: core.SpellFlagTreatAsPeriodic,
+		IntValue:          int64(5 * warlock.Talents.ImprovedImmolate),
 	})
 }
 

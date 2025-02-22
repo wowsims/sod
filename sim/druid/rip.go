@@ -57,13 +57,12 @@ var ripRanks = []RipRankInfo{
 // Modifies Periodic Damage/Healing Done +51%:
 // const RipTicks int32 = 6
 const RipTicks int32 = 8
-const RipBaseDamageMultiplier = 1.5
 
 // See https://www.wowhead.com/classic/news/development-notes-for-phase-4-ptr-season-of-discovery-new-runes-class-changes-342896
 // - Rake and Rip damage contributions from attack power increased by roughly 50%.
 // PTR testing comes out to .0165563 AP scaling per CP
 // damageCoefPerCP := 0.01
-const RipDamageCoefPerAPPerCP = 0.015
+const RipDamageCoefPerAPPerCP = 0.01
 
 func (druid *Druid) registerRipSpell() {
 	// Add highest available Rip rank for level.
@@ -101,8 +100,9 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 			return druid.ComboPoints() > 0
 		},
 
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
+		DamageMultiplier:                    1,
+		PeriodicDamageMultiplierAdditivePct: 50, // https://www.wowhead.com/classic/spell=436895/s03-tuning-and-overrides-passive-druid
+		ThreatMultiplier:                    1,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{

@@ -21,11 +21,6 @@ func (druid *Druid) registerShredSpell() {
 		60: 80,
 	}[druid.Level] * ShredFlatDmgMultiplier
 
-	if druid.Ranged().ID == IdolOfTheDream {
-		damageMultiplier *= 1.02
-		flatDamageBonus *= 1.02
-	}
-
 	// In-game testing concluded that, unintuitively, Idol of the Dream's 1.02x damage applies to the original 2.25x
 	// Shred mod, and to the flat damage bonus, but that the .75x SoD buff happens additively after Idol
 	damageMultiplier += ShredWeaponMultiplierBuff

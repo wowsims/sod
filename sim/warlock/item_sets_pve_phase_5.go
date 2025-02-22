@@ -222,7 +222,7 @@ func (warlock *Warlock) applyT2Damage4PBonus() {
 
 	procChance := 0.04
 
-	affectedSpellClassMasks := ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockShadowflame | ClassSpellMask_WarlockUnstableAffliction
+	affectedSpellClassMasks := ClassSpellMask_WarlockShadowflame | ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockUnstableAffliction
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {

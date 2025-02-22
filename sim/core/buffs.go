@@ -750,12 +750,12 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 
 	if raidBuffs.StrengthOfEarthTotem != proto.TristateEffect_TristateEffectMissing && isHorde {
 		multiplier := GetTristateValueFloat(raidBuffs.StrengthOfEarthTotem, 1, 1.15)
-		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, level, multiplier))
+		MakePermanent(StrengthOfEarthTotemAura(&character.Unit, level, multiplier, CharacterBuildPhaseBuffs))
 	}
 
 	if raidBuffs.GraceOfAirTotem > 0 && isHorde {
 		multiplier := GetTristateValueFloat(raidBuffs.GraceOfAirTotem, 1, 1.15)
-		MakePermanent(GraceOfAirTotemAura(&character.Unit, level, multiplier))
+		MakePermanent(GraceOfAirTotemAura(&character.Unit, level, multiplier, CharacterBuildPhaseBuffs))
 	}
 
 	if individualBuffs.BlessingOfWisdom > 0 && isAlliance {
@@ -1902,7 +1902,7 @@ func spellPowerBonusEffect(aura *Aura, spellPowerBonus float64) *ExclusiveEffect
 	})
 }
 
-func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
+func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64, buildPhase CharacterBuildPhase) *Aura {
 	label := "Strength of Earth Totem"
 	rank := LevelToBuffRank[StrengthOfEarth][level]
 	spellID := []int32{0, 8075, 8160, 8161, 10442, 25361}[rank]
@@ -1918,7 +1918,7 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 		Label:      label,
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
-		BuildPhase: CharacterBuildPhaseBuffs,
+		BuildPhase: buildPhase,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			unit.AddBuildPhaseStatsDynamic(sim, updateStats)
 		},
@@ -1926,10 +1926,9 @@ func StrengthOfEarthTotemAura(unit *Unit, level int32, multiplier float64) *Aura
 			unit.AddBuildPhaseStatsDynamic(sim, updateStats.Multiply(-1))
 		},
 	})
-	return aura
 }
 
-func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
+func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64, buildPhase CharacterBuildPhase) *Aura {
 	label := "Grace of Air Totem"
 	rank := LevelToBuffRank[GraceOfAir][level]
 	spellID := []int32{0, 8835, 10627, 25359}[rank]
@@ -1945,7 +1944,7 @@ func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 		Label:      label,
 		ActionID:   ActionID{SpellID: spellID},
 		Duration:   duration,
-		BuildPhase: CharacterBuildPhaseBuffs,
+		BuildPhase: buildPhase,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			unit.AddBuildPhaseStatsDynamic(sim, updateStats)
 		},
@@ -1953,7 +1952,6 @@ func GraceOfAirTotemAura(unit *Unit, level int32, multiplier float64) *Aura {
 			unit.AddBuildPhaseStatsDynamic(sim, updateStats.Multiply(-1))
 		},
 	})
-	return aura
 }
 
 const BattleShoutRanks = 7

@@ -18,6 +18,7 @@ func (warlock *Warlock) registerShadowflameSpell() {
 }
 
 func (warlock *Warlock) getShadowflameConfig() core.SpellConfig {
+	hasHauntRune := warlock.HasRune(proto.WarlockRune_RuneHandsHaunt)
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
@@ -25,7 +26,7 @@ func (warlock *Warlock) getShadowflameConfig() core.SpellConfig {
 
 	baseSpellCoeff := 0.20
 	dotSpellCoeff := 0.13
-	baseDamage := warlock.baseRuneAbilityDamage() * 1.73
+	baseDamage := warlock.baseRuneAbilityDamage() * 2.26
 	dotDamage := warlock.baseRuneAbilityDamage() * 3.2 / float64(numTicks)
 
 	tickLength := time.Second * 3
@@ -74,7 +75,15 @@ func (warlock *Warlock) getShadowflameConfig() core.SpellConfig {
 		BonusCoefficient: baseSpellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			damageMultiplier := 1.0
+			if hasHauntRune {
+				// @Lucenia: Haunt incorrectly applies to the impact damage of the spell even in-game/
+				// This was fixed in Phase 7
+				damageMultiplier = hauntMultiplier(spell, warlock.AttackTables[target.UnitIndex][proto.CastType_CastTypeMainHand])
+			}
+			spell.ApplyMultiplicativeDamageBonus(1 / damageMultiplier)
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			spell.ApplyMultiplicativeDamageBonus(damageMultiplier)
 
 			if result.Landed() {
 				dot := spell.Dot(target)
