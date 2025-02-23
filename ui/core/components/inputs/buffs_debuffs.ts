@@ -975,6 +975,14 @@ export const HolySunder = makeBooleanDebuffInput({
 	fieldName: 'holySunder',
 	showWhen: player => player.getFaction() === Faction.Alliance,
 });
+export const BloodPlague = makeBooleanDebuffInput({
+	actionId: player => player.getMatchingSpellActionId([{ id: 1219121, minLevel: 60 }]),
+	fieldName: 'bloodPlague',
+});
+export const FrostFever = makeBooleanDebuffInput({
+	actionId: player => player.getMatchingSpellActionId([{ id: 1219124, minLevel: 60 }]),
+	fieldName: 'frostFever',
+});
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 CONFIGS
@@ -1400,5 +1408,15 @@ export const MISC_DEBUFFS_CONFIG = [
 		config: JudgementOfLight,
 		picker: IconPicker,
 		stats: [Stat.StatStamina],
+	},
+	{
+		config: BloodPlague,
+		picker: IconPicker,
+		stats: [],
+	},
+	{
+		config: FrostFever,
+		picker: IconPicker,
+		stats: [],
 	},
 ] as PickerStatOptions[];

@@ -818,7 +818,7 @@ message Consumes {
 	MageScroll mage_scroll = 32;
 }
 
-// NextIndex: 45
+// NextIndex: 47
 message Debuffs {
 	reserved 21, 24;
  	reserved "ancient_corrosive_poison", "crystal_yield";
@@ -882,6 +882,8 @@ message Debuffs {
 	bool serpents_striker_fist_debuff = 30;
 	bool improved_faerie_fire = 36; // Provided by Tier 1 Feral set bonus
 	bool melee_hunter_dodge_debuff = 41; // Provided by Tier 1 Melee Hunter set bonus
+	bool frost_fever = 45; // Used by Karazhan random suffix "of Fevers"
+	bool blood_plague = 46; // Used by Karazhan random suffix "of Plagues"
 
 	TristateEffect curse_of_elements_new = 31 [deprecated=true];
 	TristateEffect curse_of_shadow_new = 32  [deprecated=true];
@@ -980,6 +982,7 @@ message ItemRandomSuffix {
 	int32 id = 1;
 	string name = 2;
 	repeated double stats = 3;
+	repeated int32 enchant_id_list = 4;
 }
 
 message ItemSpec {

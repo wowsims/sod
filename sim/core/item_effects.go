@@ -101,6 +101,15 @@ func (equipment *Equipment) applyItemEffects(agent Agent, registeredItemEffects 
 			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
 		}
 
+		if eq.RandomSuffix.ID != 0 && eq.RandomSuffix.Stats.Equals(stats.Stats{}) {
+			for _, enchantID := range eq.RandomSuffix.EnchantIDList {
+				if applyEnchantEffect, ok := enchantEffects[enchantID]; ok && !registeredItemEnchantEffects[enchantID] {
+					applyEnchantEffect(agent)
+					registeredItemEnchantEffects[enchantID] = true
+				}
+			}
+		}
+
 		if applyWeaponEffect, ok := weaponEffects[eq.Enchant.EffectID]; ok && !registeredItemEnchantEffects[eq.Enchant.EffectID] {
 			applyWeaponEffect(agent)
 			registeredItemEnchantEffects[eq.Enchant.EffectID] = true
