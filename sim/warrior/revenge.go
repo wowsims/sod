@@ -23,7 +23,7 @@ func (warrior *Warrior) registerRevengeSpell(cdTimer *core.Timer) {
 	basedamageLow := RevengeBaseDamage[rank][0]
 	basedamageHigh := RevengeBaseDamage[rank][1]
 	// Added in SoD phase 5
-	apCoeff := 0.15
+	apCoeff := 0.25
 	cooldown := time.Second * 5
 
 	warrior.revengeProcAura = warrior.RegisterAura(core.Aura{
