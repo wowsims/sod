@@ -212,6 +212,40 @@ func (swap *ItemSwap) RegisterActive(itemID int32) {
 	})
 }
 
+// Helper for handling Enchant On Use effects to set a 30s cd on the related spell.
+// Currently only used for random suffix "enchants" like the Karazhan gloves.
+func (swap *ItemSwap) RegisterEnchantActive(effectID int32, spellID int32) {
+	slots := swap.EligibleSlotsForEffect(effectID)
+	spellActionID := ActionID{SpellID: spellID}
+	character := swap.character
+
+	character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
+		spell := character.GetSpell(spellActionID)
+		if spell == nil {
+			return
+		}
+
+		aura := character.GetAuraByID(spell.ActionID)
+		if aura.IsActive() {
+			aura.Deactivate(sim)
+		}
+
+		hasEnchantEquipped := character.hasEnchantEquipped(effectID, slots)
+		if !hasEnchantEquipped {
+			spell.Flags |= SpellFlagSwapped
+			return
+		}
+
+		spell.Flags &= ^SpellFlagSwapped
+
+		if !swap.initialized {
+			return
+		}
+
+		spell.CD.Set(sim.CurrentTime + max(spell.CD.TimeToReady(sim), time.Second*30))
+	})
+}
+
 // // Helper for handling Effects that use PPMManager to toggle the aura on/off
 // func (swap *ItemSwap) RegisterOnSwapItemForEffectWithPPMManager(effectID int32, ppm float64, dpm *DynamicProcManager, aura *Aura) {
 // 	slots := swap.EligibleSlotsForEffect(effectID)

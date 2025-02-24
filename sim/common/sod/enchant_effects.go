@@ -203,13 +203,15 @@ func init() {
 				spell.DealDamage(sim, result)
 			},
 		})
+
+		character.ItemSwap.RegisterEnchantActive(Obliterate, ObliterateSpellId)
 	})
 
 	core.AddEffectsToTest = true
 }
 
-func registerDeathKnightDiseaseSpell(label string, itemID int32, spellID int32, baseDamage float64, numTicks int32) {
-	core.NewEnchantEffect(itemID, func(agent core.Agent) {
+func registerDeathKnightDiseaseSpell(label string, effectID int32, spellID int32, baseDamage float64, numTicks int32) {
+	core.NewEnchantEffect(effectID, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		character.RegisterSpell(core.SpellConfig{
@@ -260,5 +262,7 @@ func registerDeathKnightDiseaseSpell(label string, itemID int32, spellID int32, 
 				spell.Dot(target).Apply(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterEnchantActive(effectID, spellID)
 	})
 }
