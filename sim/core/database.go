@@ -120,6 +120,7 @@ type RandomSuffix struct {
 	ID    int32
 	Name  string
 	Stats stats.Stats
+	EnchantIDList []int32
 }
 
 func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
@@ -127,6 +128,7 @@ func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
 		ID:    pData.Id,
 		Name:  pData.Name,
 		Stats: stats.FromFloatArray(pData.Stats),
+		EnchantIDList: pData.EnchantIdList,
 	}
 }
 
@@ -238,7 +240,20 @@ func (equipment *Equipment) EquipItem(item Item) {
 }
 
 func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.ItemSlot) bool {
-	return (equipment[slot].Enchant.EffectID == effectID) || (equipment[slot].TempEnchant == effectID)
+	equipmentSlot := equipment[slot]
+	if equipmentSlot.Enchant.EffectID == effectID || equipmentSlot.TempEnchant == effectID {
+		return true
+	}
+	
+	if len(equipmentSlot.RandomSuffix.EnchantIDList) > 0 {
+		for _, enchantID := range equipmentSlot.RandomSuffix.EnchantIDList {
+			if enchantID == effectID {
+				return true
+			}
+		}
+	}
+	
+	return false
 }
 
 func (equipment *Equipment) containsEnchantInSlots(effectID int32, possibleSlots []proto.ItemSlot) bool {

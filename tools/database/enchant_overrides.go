@@ -205,6 +205,11 @@ var EnchantOverrides = []*proto.UIEnchant{
 	{EffectId: 7647, SpellId: 1213626, Name: "Enchant Gloves - Arcane Power", Quality: proto.ItemQuality_ItemQualityRare, Stats: stats.Stats{stats.ArcanePower: 20}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
 	// New in SoD Phase 7
 	{EffectId: 7666, SpellId: 1219586, Name: "Enchant Gloves - Superior Strength", Quality: proto.ItemQuality_ItemQualityCommon, Stats: stats.Stats{stats.Strength: 15}.ToFloatArray(), Type: proto.ItemType_ItemTypeHands},
+	// Karazhan random suffixes
+	{EffectId: 7878, SpellId: 1219121, Name: "Blood Plague", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeUnknown},
+	{EffectId: 7879, SpellId: 1219124, Name: "Frost Fever", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeUnknown},
+	{EffectId: 7880, SpellId: 1219153, Name: "Mark of Blood", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeUnknown},
+	{EffectId: 7881, SpellId: 1219176, Name: "Obliterate", Quality: proto.ItemQuality_ItemQualityEpic, Stats: stats.Stats{}.ToFloatArray(), Type: proto.ItemType_ItemTypeUnknown},
 
 	// Feet
 	{EffectId: 247, SpellId: 7867, Name: "Enchant Boots - Minor Agility", Quality: proto.ItemQuality_ItemQualityUncommon, Stats: stats.Stats{stats.Agility: 1}.ToFloatArray(), Type: proto.ItemType_ItemTypeFeet},
