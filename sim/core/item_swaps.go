@@ -181,46 +181,37 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 
 // Helper for handling Item On Use effects to set a 30s cd on the related spell.
 func (swap *ItemSwap) RegisterActive(itemID int32) {
-	slots := swap.EligibleSlotsForItem(itemID)
-	itemActionID := ActionID{ItemID: itemID}
-	character := swap.character
-
-	character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
-		spell := character.GetSpell(itemActionID)
-		if spell == nil {
-			return
-		}
-
-		aura := character.GetAuraByID(spell.ActionID)
-		if aura.IsActive() {
-			aura.Deactivate(sim)
-		}
-
-		hasItemEquipped := character.hasItemEquipped(itemID, slots)
-		if !hasItemEquipped {
-			spell.Flags |= SpellFlagSwapped
-			return
-		}
-
-		spell.Flags &= ^SpellFlagSwapped
-
-		if !swap.initialized {
-			return
-		}
-
-		spell.CD.Set(sim.CurrentTime + max(spell.CD.TimeToReady(sim), time.Second*30))
+	swap.registerActiveInternal(ItemSwapActiveConfig{
+		ActionID: ActionID{ItemID: itemID},
+		ItemID:   itemID,
+		Slots:    swap.EligibleSlotsForItem(itemID),
 	})
 }
 
 // Helper for handling Enchant On Use effects to set a 30s cd on the related spell.
 // Currently only used for random suffix "enchants" like the Karazhan gloves.
 func (swap *ItemSwap) RegisterEnchantActive(effectID int32, spellID int32) {
-	slots := swap.EligibleSlotsForEffect(effectID)
-	spellActionID := ActionID{SpellID: spellID}
-	character := swap.character
+	swap.registerActiveInternal(ItemSwapActiveConfig{
+		ActionID:  ActionID{SpellID: spellID},
+		EnchantId: effectID,
+		Slots:     swap.EligibleSlotsForEffect(effectID),
+	})
+}
 
-	character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
-		spell := character.GetSpell(spellActionID)
+type ItemSwapActiveConfig struct {
+	ActionID  ActionID
+	ItemID    int32
+	EnchantId int32
+	Slots     []proto.ItemSlot
+}
+
+func (swap *ItemSwap) registerActiveInternal(config ItemSwapActiveConfig) {
+	isItemActive := config.ItemID != 0
+	isEnchantEffectActive := config.EnchantId != 0
+
+	character := swap.character
+	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot) {
+		spell := character.GetSpell(config.ActionID)
 		if spell == nil {
 			return
 		}
@@ -230,8 +221,14 @@ func (swap *ItemSwap) RegisterEnchantActive(effectID int32, spellID int32) {
 			aura.Deactivate(sim)
 		}
 
-		hasEnchantEquipped := character.hasEnchantEquipped(effectID, slots)
-		if !hasEnchantEquipped {
+		var isEquipped bool
+		if isItemActive {
+			isEquipped = character.hasItemEquipped(config.ItemID, config.Slots)
+		} else if isEnchantEffectActive {
+			isEquipped = character.hasEnchantEquipped(config.EnchantId, config.Slots)
+		}
+
+		if !isEquipped {
 			spell.Flags |= SpellFlagSwapped
 			return
 		}
