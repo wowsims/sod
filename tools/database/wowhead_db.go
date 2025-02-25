@@ -77,9 +77,10 @@ type WowheadDatabase struct {
 }
 
 type WowheadRandomSuffix struct {
-	ID    int32                    `json:"id"`
-	Name  string                   `json:"name"`
-	Stats WowheadRandomSuffixStats `json:"stats"`
+	ID            int32                    `json:"id"`
+	Name          string                   `json:"name"`
+	Stats         WowheadRandomSuffixStats `json:"stats"`
+	EnchantIdList []int32                  `json:"enchantIdList"`
 }
 
 type WowheadRandomSuffixStats struct {
@@ -141,10 +142,20 @@ func (wrs WowheadRandomSuffix) ToProto() *proto.ItemRandomSuffix {
 		proto.Stat_StatHealingPower:      float64(wrs.Stats.Healing),
 	}
 
+	enchantIdList := wrs.EnchantIdList
+	statsSlice := toSlice(stats)
+	for _, stat := range statsSlice {
+		if stat > 0 {
+			enchantIdList = []int32{}
+			break
+		}
+	}
+
 	return &proto.ItemRandomSuffix{
-		Id:    wrs.ID,
-		Name:  wrs.Name,
-		Stats: toSlice(stats),
+		Id:            wrs.ID,
+		Name:          wrs.Name,
+		Stats:         statsSlice,
+		EnchantIdList: enchantIdList,
 	}
 }
 

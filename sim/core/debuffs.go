@@ -16,6 +16,11 @@ const (
 	DemoralizingShout DebuffName = iota
 )
 
+const (
+	BloodPlagueAuraID = 1219121
+	FrostFeverAuraID  = 1219124
+)
+
 var LevelToDebuffRank = map[DebuffName]map[int32]int32{
 	DemoralizingShout: {
 		25: 2,
@@ -249,6 +254,14 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 	}
 	if debuffs.ScorpidSting && targetIdx == 0 {
 		MakePermanent(ScorpidStingAura(target))
+	}
+
+	// Karazhan random suffixes
+	if debuffs.FrostFever {
+		MakePermanent(FrostFeverAura(target))
+	}
+	if debuffs.BloodPlague {
+		MakePermanent(BloodPlagueAura(target))
 	}
 }
 
@@ -1425,5 +1438,25 @@ func SerpentsStrikerFistDebuffAura(target *Unit, playerLevel int32) *Aura {
 	// 0.01 priority as this overwrites the other spells of this category and does not allow them to be recast
 	spellSchoolDamageEffect(aura, stats.SchoolIndexNature, dmgMod, 0.01, true)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexHoly, dmgMod, 0.01, true)
+	return aura
+}
+
+func FrostFeverAura(target *Unit) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Frost Fever",
+		ActionID: ActionID{SpellID: FrostFeverAuraID}.WithTag(2),
+		Duration: time.Second * 21,
+		Tag:      "Obliterate",
+	})
+	return aura
+}
+
+func BloodPlagueAura(target *Unit) *Aura {
+	aura := target.GetOrRegisterAura(Aura{
+		Label:    "Blood Plague",
+		ActionID: ActionID{SpellID: BloodPlagueAuraID}.WithTag(2),
+		Duration: time.Second * 15,
+		Tag:      "Obliterate",
+	})
 	return aura
 }

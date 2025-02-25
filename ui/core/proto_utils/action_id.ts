@@ -479,6 +479,12 @@ export class ActionId {
 				else if (this.tag === 4) name = `${name} (Felhunter)`;
 				else if (this.tag === 5) name = `${name} (Felguard)`;
 				break;
+			case 'Blood Plague':
+				if (this.tag === 2) name = `${name} (Debuff)`;
+				break;
+			case 'Frost Fever':
+				if (this.tag === 2) name = `${name} (Debuff)`;
+				break;
 			// Temporary until real debuff is implemented
 			case 'Ice Lance':
 				if (this.tag > 0) name = `${name} (${this.tag} Stacks)`;

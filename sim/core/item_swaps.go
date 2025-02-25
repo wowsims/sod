@@ -181,12 +181,37 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 
 // Helper for handling Item On Use effects to set a 30s cd on the related spell.
 func (swap *ItemSwap) RegisterActive(itemID int32) {
-	slots := swap.EligibleSlotsForItem(itemID)
-	itemActionID := ActionID{ItemID: itemID}
-	character := swap.character
+	swap.registerActiveInternal(ItemSwapActiveConfig{
+		ActionID: ActionID{ItemID: itemID},
+		ItemID:   itemID,
+		Slots:    swap.EligibleSlotsForItem(itemID),
+	})
+}
 
-	character.RegisterItemSwapCallback(slots, func(sim *Simulation, _ proto.ItemSlot) {
-		spell := character.GetSpell(itemActionID)
+// Helper for handling Enchant On Use effects to set a 30s cd on the related spell.
+// Currently only used for random suffix "enchants" like the Karazhan gloves.
+func (swap *ItemSwap) RegisterEnchantActive(effectID int32, spellID int32) {
+	swap.registerActiveInternal(ItemSwapActiveConfig{
+		ActionID:  ActionID{SpellID: spellID},
+		EnchantId: effectID,
+		Slots:     swap.EligibleSlotsForEffect(effectID),
+	})
+}
+
+type ItemSwapActiveConfig struct {
+	ActionID  ActionID
+	ItemID    int32
+	EnchantId int32
+	Slots     []proto.ItemSlot
+}
+
+func (swap *ItemSwap) registerActiveInternal(config ItemSwapActiveConfig) {
+	isItemActive := config.ItemID != 0
+	isEnchantEffectActive := config.EnchantId != 0
+
+	character := swap.character
+	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot) {
+		spell := character.GetSpell(config.ActionID)
 		if spell == nil {
 			return
 		}
@@ -196,8 +221,14 @@ func (swap *ItemSwap) RegisterActive(itemID int32) {
 			aura.Deactivate(sim)
 		}
 
-		hasItemEquipped := character.hasItemEquipped(itemID, slots)
-		if !hasItemEquipped {
+		var isEquipped bool
+		if isItemActive {
+			isEquipped = character.hasItemEquipped(config.ItemID, config.Slots)
+		} else if isEnchantEffectActive {
+			isEquipped = character.hasEnchantEquipped(config.EnchantId, config.Slots)
+		}
+
+		if !isEquipped {
 			spell.Flags |= SpellFlagSwapped
 			return
 		}

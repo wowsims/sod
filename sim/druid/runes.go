@@ -43,6 +43,7 @@ func (druid *Druid) ApplyRunes() {
 	// Feet
 	druid.applyDreamstate()
 	druid.applyKingOfTheJungle()
+	druid.applySurvivalInstincts()
 }
 
 func (druid *Druid) applyShoulderRuneEffect() {
