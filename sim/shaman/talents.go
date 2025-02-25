@@ -166,8 +166,9 @@ func (shaman *Shaman) applyElementalDevastation() {
 		return
 	}
 
+	spellID := []int32{0, 30165, 29177, 29178}[shaman.Talents.ElementalDevastation]
 	critBonus := 3.0 * float64(shaman.Talents.ElementalDevastation) * core.CritRatingPerCritChance
-	procAura := shaman.NewTemporaryStatsAura("Elemental Devastation Proc", core.ActionID{SpellID: 30160}, stats.Stats{stats.MeleeCrit: critBonus}, time.Second*10)
+	procAura := shaman.NewTemporaryStatsAura("Elemental Devastation Proc", core.ActionID{SpellID: spellID}, stats.Stats{stats.MeleeCrit: critBonus}, time.Second*10)
 
 	shaman.RegisterAura(core.Aura{
 		Label:    "Elemental Devastation",
