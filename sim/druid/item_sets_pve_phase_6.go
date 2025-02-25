@@ -132,22 +132,19 @@ func (druid *Druid) applyTAQFeral4PBonus() {
 		},
 	})
 
+	catProcMasks := ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite
+	bearProcMasks := ClassSpellMask_DruidMangleBear
+
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213174}, // Tracking in APL
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Outcome.Matches(core.OutcomeCrit) {
 				return
-			}
-
-			if druid.form == Cat {
-				if !(spell == druid.Shred.Spell || spell == druid.MangleCat.Spell || spell == druid.FerociousBite.Spell) {
-					return
-				}
-			} else if druid.form == Bear {
-				if spell != druid.MangleBear.Spell {
-					return
-				}
+			} else if druid.form.Matches(Cat) && !spell.Matches(catProcMasks) {
+				return
+			} else if druid.form.Matches(Bear) && !spell.Matches(bearProcMasks) {
+				return
 			}
 
 			dot := toothAndClawSpell.Dot(result.Target)
