@@ -30,12 +30,18 @@ var LevelToDebuffRank = map[DebuffName]map[int32]int32{
 	},
 }
 
-func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, raid *proto.Raid) {
-	level := raid.Parties[0].Players[0].Level
+func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, level int32, units []*Unit) {
 	if debuffs.JudgementOfWisdom && targetIdx == 0 {
 		jowAura := JudgementOfWisdomAura(target, level)
 		if jowAura != nil {
 			MakePermanent(jowAura)
+		}
+	}
+
+	if debuffs.JudgementOfLight && targetIdx == 0 {
+		jolAura := JudgementOfLightAura(target, level, units)
+		if jolAura != nil {
+			MakePermanent(jolAura)
 		}
 	}
 
@@ -64,7 +70,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 					aura.AddStack(sim)
 				}
 			},
-		}, raid)
+		})
 	}
 
 	if debuffs.OccultPoison {
@@ -80,7 +86,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 					aura.AddStack(sim)
 				}
 			},
-		}, raid)
+		})
 	}
 
 	if debuffs.MekkatorqueFistDebuff {
@@ -116,7 +122,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 					aura.AddStack(sim)
 				}
 			},
-		}, raid)
+		})
 	}
 
 	if debuffs.WintersChill && targetIdx == 0 {
@@ -132,7 +138,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 					aura.AddStack(sim)
 				}
 			},
-		}, raid)
+		})
 	}
 
 	if debuffs.Stormstrike {
@@ -167,7 +173,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 				OnAction: func(sim *Simulation) {
 					aura.Activate(sim)
 				},
-			}, raid)
+			})
 		}
 
 		if debuffs.SebaciousPoison != proto.TristateEffect_TristateEffectMissing {
@@ -178,7 +184,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 				OnAction: func(sim *Simulation) {
 					aura.Activate(sim)
 				},
-			}, raid)
+			})
 		}
 
 		if debuffs.SunderArmor {
@@ -195,7 +201,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, rai
 						aura.AddStack(sim)
 					}
 				},
-			}, raid)
+			})
 		}
 	}
 
@@ -440,7 +446,7 @@ func ShadowWeavingAura(unit *Unit, rank int) *Aura {
 	})
 }
 
-func SchedulePeriodicDebuffApplication(aura *Aura, options PeriodicActionOptions, _ *proto.Raid) {
+func SchedulePeriodicDebuffApplication(aura *Aura, options PeriodicActionOptions) {
 	aura.OnReset = func(aura *Aura, sim *Simulation) {
 		aura.Duration = NeverExpires
 		StartPeriodicAction(sim, options)
@@ -504,17 +510,65 @@ func JudgementOfWisdomAura(target *Unit, level int32) *Aura {
 	})
 }
 
-func JudgementOfLightAura(target *Unit) *Aura {
-	actionID := ActionID{SpellID: 20271}
+func JudgementOfLightAura(target *Unit, level int32, units []*Unit) *Aura {
+	auraActionID := ActionID{SpellID: map[int32]int32{
+		30: 20185,
+		40: 20344,
+		50: 20345,
+		60: 20346,
+	}[level]}
+	healActionID := ActionID{SpellID: map[int32]int32{
+		30: 20267,
+		40: 20341,
+		50: 20342,
+		60: 20343,
+	}[level]}
+
+	jolHealth := map[int32]float64{
+		30: 25.0,
+		40: 34.0,
+		50: 49.0,
+		60: 61.0,
+	}[level]
+
+	for _, playerOrPet := range units {
+		unit := playerOrPet
+		unit.GetOrRegisterSpell(SpellConfig{
+			ActionID:         healActionID,
+			SpellSchool:      SpellSchoolHoly,
+			ProcMask:         ProcMaskEmpty,
+			Flags:            SpellFlagPassiveSpell | SpellFlagHelpful | SpellFlagNoOnCastComplete,
+			DamageMultiplier: 1.0,
+			ThreatMultiplier: 1.0,
+
+			ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
+				spell.CalcAndDealHealing(sim, unit, jolHealth, spell.OutcomeAlwaysHit)
+			},
+		})
+	}
 
 	return target.GetOrRegisterAura(Aura{
 		Label:    "Judgement of Light",
-		ActionID: actionID,
+		ActionID: auraActionID,
 		Tag:      JudgementAuraTag,
 		Duration: time.Second * 10,
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			unit := spell.Unit
+			if !unit.HasHealthBar() {
+				return
+			}
+
+			healingSpell := unit.GetSpell(healActionID)
+			if healingSpell == nil {
+				return
+			}
+
 			if !spell.ProcMask.Matches(ProcMaskMelee) || !result.Landed() {
 				return
+			}
+
+			if sim.RandomFloat("jol") < 0.5 {
+				healingSpell.Cast(sim, unit)
 			}
 		},
 	})

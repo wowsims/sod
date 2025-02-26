@@ -50,37 +50,37 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestProtection-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.71433
-  weights: 1.03218
-  weights: 0.48611
-  weights: -0.08702
+  weights: 0.90835
+  weights: 0.75771
   weights: 0
-  weights: 0.17356
+  weights: 0.00625
   weights: 0
-  weights: 0
-  weights: 0
-  weights: 0.09192
+  weights: 0.17023
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.7606
-  weights: 1.38281
+  weights: 0.09003
   weights: 0
   weights: 0
-  weights: 0.27078
   weights: 0
-  weights: 13.75596
+  weights: 2.94925
+  weights: 1.1355
   weights: 0
   weights: 0
+  weights: 0.40127
+  weights: 0
+  weights: 14.86375
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.65011
   weights: 0
-  weights: 0.726
+  weights: 0
+  weights: 1.94553
+  weights: 0
+  weights: 0.74368
   weights: 0
   weights: 0
   weights: 0
@@ -99,43 +99,49 @@ stat_weights_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1328.07533
-  tps: 2840.65189
+  dps: 1304.26757
+  tps: 2789.17105
+  hps: 68.26917
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1330.5733
-  tps: 2847.70262
+  dps: 1304.28191
+  tps: 2789.75514
+  hps: 68.26917
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1402.86295
-  tps: 2994.25757
+  dps: 1375.59787
+  tps: 2934.97507
+  hps: 68.26917
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 1490.42004
-  tps: 3509.55075
+  dps: 1476.49216
+  tps: 3463.24027
+  hps: 69.5705
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1116.28993
-  tps: 1991.78012
+  dps: 1116.13019
+  tps: 1985.97506
+  hps: 65.93287
  }
 }
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1716.7982
-  tps: 4111.17078
+  dps: 1702.67298
+  tps: 4083.92397
+  hps: 68.07032
  }
 }
 dps_results: {
@@ -143,6 +149,7 @@ dps_results: {
  value: {
   dps: 682.15012
   tps: 2486.15595
+  hps: 5.673
  }
 }
 dps_results: {
@@ -150,6 +157,7 @@ dps_results: {
  value: {
   dps: 268.01934
   tps: 1003.58591
+  hps: 5.68317
  }
 }
 dps_results: {
@@ -157,6 +165,7 @@ dps_results: {
  value: {
   dps: 524.74685
   tps: 1847.74645
+  hps: 10.2175
  }
 }
 dps_results: {
@@ -185,6 +194,7 @@ dps_results: {
  value: {
   dps: 689.17698
   tps: 2513.53813
+  hps: 5.7645
  }
 }
 dps_results: {
@@ -192,6 +202,7 @@ dps_results: {
  value: {
   dps: 274.48126
   tps: 1022.31156
+  hps: 5.7645
  }
 }
 dps_results: {
@@ -199,6 +210,7 @@ dps_results: {
  value: {
   dps: 529.93969
   tps: 1863.88637
+  hps: 10.31917
  }
 }
 dps_results: {
@@ -225,7 +237,8 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1427.82707
-  tps: 3430.31608
+  dps: 1416.98425
+  tps: 3399.94464
+  hps: 53.73083
  }
 }
