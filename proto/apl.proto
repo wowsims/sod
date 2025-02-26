@@ -83,7 +83,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 75
+// NextIndex: 76
 message APLValue {
     oneof value {
         // Operators
@@ -103,6 +103,7 @@ message APLValue {
         APLValueRemainingTimePercent remaining_time_percent = 10;
         APLValueIsExecutePhase is_execute_phase = 41;
         APLValueNumberTargets number_targets = 28;
+        APLValueTargetMobType target_mob_type = 75;
 
         // Resource values
         APLValueCurrentHealth current_health = 26;
@@ -380,6 +381,10 @@ message APLValueIsExecutePhase {
         E35 = 3;
     }
     ExecutePhaseThreshold threshold = 1;
+}
+message APLValueTargetMobType {
+    MobType mob_type = 1;
+    UnitReference target = 2;
 }
 
 message APLValueCurrentHealth {
