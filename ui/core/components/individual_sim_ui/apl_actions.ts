@@ -282,6 +282,7 @@ function castWithMacroFieldConfig(field: string): AplHelpers.APLPickerBuilderFie
 				id: randomUUID(),
 				...config,
 				label: 'followed by',
+				inline: true,
 				defaultLabel: 'None',
 				equals: (a, b) => a == b,
 				values: [
