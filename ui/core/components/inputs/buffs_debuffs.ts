@@ -951,17 +951,20 @@ export const SerpentsStrikerFistDebuff = makeBooleanDebuffInput({
 	actionId: player => player.getMatchingItemActionId([{ id: 220589, minLevel: 50, maxLevel: 55 }]),
 	fieldName: 'serpentsStrikerFistDebuff',
 });
-export const JudgementOfLight = makeBooleanDebuffInput({
-	actionId: player =>
-		player.getMatchingSpellActionId([
-			{ id: 20185, minLevel: 30, maxLevel: 39 },
-			{ id: 20344, minLevel: 40, maxLevel: 49 },
-			{ id: 20345, minLevel: 50, maxLevel: 59 },
-			{ id: 20346, minLevel: 60 },
-		]),
-	fieldName: 'judgementOfLight',
-	showWhen: player => player.getFaction() === Faction.Alliance,
-});
+export const JudgementOfLight = withLabel(
+	makeBooleanDebuffInput({
+		actionId: player =>
+			player.getMatchingSpellActionId([
+				{ id: 20185, minLevel: 30, maxLevel: 39 },
+				{ id: 20344, minLevel: 40, maxLevel: 49 },
+				{ id: 20345, minLevel: 50, maxLevel: 59 },
+				{ id: 20346, minLevel: 60 },
+			]),
+		fieldName: 'judgementOfLight',
+		showWhen: player => player.getFaction() === Faction.Alliance,
+	}),
+	'Judgement of Light',
+);
 export const CurseOfVulnerability = makeBooleanDebuffInput({
 	actionId: player => player.getMatchingSpellActionId([{ id: 427143, minLevel: 25 }]),
 	fieldName: 'curseOfVulnerability',
@@ -1365,6 +1368,11 @@ export const DEBUFFS_CONFIG = [
 		picker: IconPicker,
 		stats: [Stat.StatMP5, Stat.StatIntellect],
 	},
+	{
+		config: JudgementOfLight,
+		picker: IconPicker,
+		stats: [],
+	},
 ] as PickerStatOptions[];
 
 export const MISC_DEBUFFS_CONFIG = [
@@ -1403,11 +1411,6 @@ export const MISC_DEBUFFS_CONFIG = [
 		config: HolySunder,
 		picker: IconPicker,
 		stats: [Stat.StatAttackPower, Stat.StatRangedAttackPower],
-	},
-	{
-		config: JudgementOfLight,
-		picker: IconPicker,
-		stats: [Stat.StatStamina],
 	},
 	{
 		config: BloodPlague,

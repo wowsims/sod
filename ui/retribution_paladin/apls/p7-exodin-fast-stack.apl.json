@@ -1,0 +1,20 @@
+{
+  "type": "TypeAPL",
+  "prepullActions": [
+    {"action":{"castSpell":{"spellId":{"spellId":20293,"rank":8}}},"doAtValue":{"const":{"val":"-3s"}}},
+    {"action":{"castSpell":{"spellId":{"spellId":407798}}},"doAtValue":{"const":{"val":"-1.5s"}}}
+  ],
+  "priorityList": [
+    {"action":{"autocastOtherCooldowns":{}}},
+    {"action":{"condition":{"auraIsActive":{"auraId":{"spellId":426157}}},"wait":{"duration":{"auraRemainingTime":{"auraId":{"spellId":426157}}}}}},
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":20293,"rank":8}}},"rhs":{"const":{"val":"0.5s"}}}},"castSpell":{"spellId":{"spellId":20293,"rank":8}}}},
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":407798}}},"rhs":{"const":{"val":"0.5s"}}}},"castSpell":{"spellId":{"spellId":407798}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":415073}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":407676}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":407778}}}},
+    {"action":{"condition":{"auraIsKnown":{"auraId":{"spellId":467518}}},"castSpell":{"spellId":{"spellId":20271}}}},
+    {"action":{"condition":{"auraIsKnown":{"auraId":{"spellId":1219191}}},"castSpell":{"spellId":{"spellId":10318,"rank":2}}}},
+    {"action":{"castSpell":{"spellId":{"spellId":20924,"rank":5}}}},
+    {"action":{"condition":{"and":{"vals":[{"isExecutePhase":{"threshold":"E20"}},{"runeIsEquipped":{"runeId":{"spellId":429152}}}]}},"castSpell":{"spellId":{"spellId":24239,"rank":3}}}}
+  ]
+}

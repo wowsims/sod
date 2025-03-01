@@ -35,12 +35,13 @@ func (paladin *Paladin) registerHammerOfWrath() {
 		}
 
 		paladin.GetOrRegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: rank.spellID},
-			SpellSchool: core.SpellSchoolHoly,
-			DefenseType: core.DefenseTypeRanged,
-			ProcMask:    core.ProcMaskRangedSpecial, // TODO to be tested
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
-			CastType:    proto.CastType_CastTypeRanged,
+			ActionID:     core.ActionID{SpellID: rank.spellID},
+			SpellSchool:  core.SpellSchoolHoly,
+			DefenseType:  core.DefenseTypeRanged,
+			ProcMask:     core.ProcMaskRangedSpecial, // TODO to be tested
+			Flags:        core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
+			CastType:     proto.CastType_CastTypeRanged,
+			MissileSpeed: 35,
 
 			Rank:           i + 1,
 			RequiredLevel:  int(rank.level),
@@ -69,7 +70,11 @@ func (paladin *Paladin) registerHammerOfWrath() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				damage := sim.Roll(rank.minDamage, rank.maxDamage)
-				result := spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
+				result := spell.CalcDamage(sim, target, damage, spell.OutcomeRangedHitAndCrit)
+
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					spell.DealDamage(sim, result)
+				})
 
 				// should be based on target.CurrentHealthPercent(), which is not available
 				if hasImprovedHammerOfWrath && result.Landed() && sim.CurrentTime >= time.Duration(0.9*float64(sim.Duration)) {

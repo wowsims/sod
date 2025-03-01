@@ -80,6 +80,7 @@ func (paladin *Paladin) registerSealOfCommand() {
 			BonusCoefficient: 0.429,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				flags := spell.Flags
 				baseDamage := sim.Roll(minDamage, maxDamage) * 0.5 // unless stunned
 
 				// Seal of Command requires this spell to act as its intermediary dummy,
@@ -96,7 +97,10 @@ func (paladin *Paladin) registerSealOfCommand() {
 					DoAt:     sim.CurrentTime + core.SpellBatchWindow,
 					Priority: core.ActionPriorityLow,
 					OnAction: func(sim *core.Simulation) {
+						currentFlags := spell.Flags
+						spell.Flags = flags
 						spell.DealDamage(sim, result)
+						spell.Flags = currentFlags
 					},
 				})
 			},

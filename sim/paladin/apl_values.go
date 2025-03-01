@@ -1,6 +1,7 @@
 package paladin
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -49,6 +50,8 @@ func (paladin *Paladin) NewAPLAction(rot *core.APLRotation, config *proto.APLAct
 	switch config.Action.(type) {
 	case *proto.APLAction_CastPaladinPrimarySeal:
 		return paladin.newActionPaladinPrimarySealAction(rot, config.GetCastPaladinPrimarySeal())
+	case *proto.APLAction_PaladinCastWithMacro:
+		return paladin.newActionPaladinCastWithMacro(rot, config.GetPaladinCastWithMacro())
 	default:
 		return nil
 	}
@@ -88,4 +91,99 @@ func (x *APLActionCastPaladinPrimarySeal) Reset(*core.Simulation) {
 
 func (x *APLActionCastPaladinPrimarySeal) String() string {
 	return "Cast Primary Seal()"
+}
+
+type APLActionPaladinCastWithMacro struct {
+	paladin *Paladin
+	spell   *core.Spell
+	target  core.UnitReference
+	macro   proto.APLActionPaladinCastWithMacro_Macro
+}
+
+func (x *APLActionPaladinCastWithMacro) GetInnerActions() []*core.APLAction { return nil }
+func (x *APLActionPaladinCastWithMacro) GetAPLValues() []core.APLValue      { return nil }
+func (x *APLActionPaladinCastWithMacro) Finalize(*core.APLRotation)         {}
+func (x *APLActionPaladinCastWithMacro) GetNextAction(*core.Simulation) *core.APLAction {
+	return nil
+}
+func (x *APLActionPaladinCastWithMacro) Reset(*core.Simulation) {}
+func (x *APLActionPaladinCastWithMacro) GetSpellFromAction() *core.Spell {
+	return x.spell
+}
+
+func (paladin *Paladin) newActionPaladinCastWithMacro(rot *core.APLRotation, config *proto.APLActionPaladinCastWithMacro) core.APLActionImpl {
+	if config.Macro == proto.APLActionPaladinCastWithMacro_Unknown {
+		rot.ValidationWarning("Unknown macro")
+		return nil
+	}
+
+	spell := rot.GetAPLSpell(config.SpellId)
+	if spell == nil {
+		return nil
+	}
+	target := rot.GetTargetUnit(config.Target)
+	if target.Get() == nil {
+		return nil
+	}
+	return &APLActionPaladinCastWithMacro{
+		paladin: paladin,
+		spell:   spell,
+		target:  target,
+		macro:   config.Macro,
+	}
+}
+func (action *APLActionPaladinCastWithMacro) IsReady(sim *core.Simulation) bool {
+	return action.spell.CanCast(sim, action.target.Get()) && (!action.spell.Flags.Matches(core.SpellFlagMCD) || action.spell.Unit.GCD.IsReady(sim) || action.spell.DefaultCast.GCD == 0)
+}
+func (action *APLActionPaladinCastWithMacro) Execute(sim *core.Simulation) {
+	if action.macro == proto.APLActionPaladinCastWithMacro_StartAttack {
+		action.ExecuteWithStartattack(sim)
+	} else if action.macro == proto.APLActionPaladinCastWithMacro_StopAttack {
+		action.ExecuteWithStopattack(sim)
+	}
+}
+func (action *APLActionPaladinCastWithMacro) ExecuteWithStartattack(sim *core.Simulation) {
+	action.paladin.bypassMacroOptions = true
+
+	actualSpell := action.spell
+	if actualSpell == action.paladin.judgement {
+		actualSpell = action.paladin.currentJudgement
+	}
+	oldApplyEffects := actualSpell.ApplyEffects
+	oldFlags := actualSpell.Flags
+	actualSpell.Flags ^= core.SpellFlagBatchStopAttackMacro
+	actualSpell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		oldApplyEffects(sim, target, spell)
+		if sim.CurrentTime > 0 {
+			action.paladin.AutoAttacks.EnableAutoSwing(sim)
+		}
+	}
+	action.spell.Cast(sim, action.target.Get())
+
+	actualSpell.Flags = oldFlags
+	actualSpell.ApplyEffects = oldApplyEffects
+	action.paladin.bypassMacroOptions = false
+}
+func (action *APLActionPaladinCastWithMacro) ExecuteWithStopattack(sim *core.Simulation) {
+	action.paladin.bypassMacroOptions = true
+
+	actualSpell := action.spell
+	if actualSpell == action.paladin.judgement {
+		actualSpell = action.paladin.currentJudgement
+	}
+	oldApplyEffects := actualSpell.ApplyEffects
+	oldFlags := actualSpell.Flags
+	actualSpell.Flags |= core.SpellFlagBatchStopAttackMacro
+	actualSpell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+		oldApplyEffects(sim, target, spell)
+		action.paladin.performStopAttack(sim, target, spell)
+	}
+	action.spell.Cast(sim, action.target.Get())
+
+	actualSpell.Flags = oldFlags
+	actualSpell.ApplyEffects = oldApplyEffects
+	action.paladin.bypassMacroOptions = false
+}
+func (action *APLActionPaladinCastWithMacro) String() string {
+	return fmt.Sprintf("Cast Spell(%s) With Macro(%s)", action.spell.ActionID, action.macro.String())
 }

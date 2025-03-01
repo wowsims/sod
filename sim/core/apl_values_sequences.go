@@ -107,6 +107,8 @@ func (value *APLValueSequenceTimeToReady) GetDuration(sim *Simulation) time.Dura
 		return NeverExpires
 	} else if subaction, ok := value.sequence.subactions[value.sequence.curIdx].impl.(*APLActionCastSpell); ok {
 		return subaction.spell.TimeToReady(sim)
+	} else if spell := value.sequence.subactions[value.sequence.curIdx].impl.GetSpellFromAction(); spell != nil {
+		return spell.TimeToReady(sim)
 	} else if value.sequence.IsReady(sim) {
 		return 0
 	} else {
