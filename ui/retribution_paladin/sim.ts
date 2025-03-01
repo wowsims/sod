@@ -189,13 +189,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		if (player.getTalents().holyShock) {
 			if (mainHand?.item && mainHand.item.handType === HandType.HandTypeTwoHand) {
 				return Presets.APLShockadin2H.rotation.rotation!;
-			} else {
-				return Presets.APLShockadin1H.rotation.rotation!;
 			}
-		}
 
-		if (mainHand?.item && mainHand.item.weaponSpeed < 3) {
-			return Presets.APLExodin.rotation.rotation!;
+			return Presets.APLShockadin1H.rotation.rotation!;
 		}
 
 		const itemSlots = gear.getItemSlots();
@@ -207,8 +203,20 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 				coreForgedCount++;
 			}
 		}
+
 		const shoulder = gear.getEquippedItem(ItemSlot.ItemSlotShoulder);
-		if (coreForgedCount >= 6 || shoulder?.rune?.id === PaladinRune.RuneShouldersSealbearer) {
+		const hasSealbearer = shoulder?.rune?.id === PaladinRune.RuneShouldersSealbearer;
+		const isStacking = coreForgedCount >= 6 || hasSealbearer;
+
+		if (mainHand?.item && mainHand.item.weaponSpeed < 3) {
+			if (isStacking) {
+				return Presets.APLExodinFastStack.rotation.rotation!;
+			}
+
+			return Presets.APLExodin.rotation.rotation!;
+		}
+
+		if (isStacking) {
 			return Presets.APLSealStacking.rotation.rotation!;
 		}
 
