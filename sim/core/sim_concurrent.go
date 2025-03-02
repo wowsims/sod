@@ -498,6 +498,7 @@ func runSimConcurrent(request *proto.RaidSimRequest, progress chan *proto.Progre
 					progress <- msg
 				}
 				log.Printf("Thread %d had an error. Cancelling all sims!", i)
+				log.Printf(msg.FinalRaidResult.Error.Message)
 				signals.Abort.Trigger()
 				return msg.FinalRaidResult
 			}

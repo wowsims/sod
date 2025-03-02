@@ -37,10 +37,14 @@ func (hunter *Hunter) getHuntersMark(rank int) core.SpellConfig {
 			aura := hunter.HuntersMarkAuras.Get(target)
 			// Can only have 1 hunter's mark up at a time
 			for _, auras := range hunter.HuntersMarkAuras {
-				auras.Deactivate(sim)
+				if auras.IsActive() {
+					auras.Deactivate(sim)
+				}
 			}
 			aura.Activate(sim)
 		},
+
+		RelatedAuras: []core.AuraArray{hunter.HuntersMarkAuras},
 	}
 }
 
