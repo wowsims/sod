@@ -75,12 +75,6 @@ func init() {
 		aura := core.AtieshSpellCritEffect(&character.Unit)
 		character.ItemSwap.RegisterProc(AtieshSpellCrit, aura)
 	})
-	// https://www.wowhead.com/classic/item=236398/atiesh-greatstaff-of-the-guardian
-	core.NewItemEffect(AtieshSpellPower, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		aura := core.AtieshSpellPowerEffect(&character.Unit)
-		character.ItemSwap.RegisterProc(AtieshSpellPower, aura)
-	})
 
 	// https://www.wowhead.com/classic/item=236341/the-hungering-cold
 	// Equip: Gives you a 2% chance to get an extra attack on the same target after dealing damage with your weapon.

@@ -3,6 +3,7 @@ package warlock
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/sod/item_effects"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -18,6 +19,18 @@ const (
 )
 
 func init() {
+	// https://www.wowhead.com/classic/item=236398/atiesh-greatstaff-of-the-guardian
+	core.NewItemEffect(item_effects.AtieshSpellPower, func(agent core.Agent) {
+		warlock := agent.(WarlockAgent).GetWarlock()
+		aura := core.AtieshSpellPowerEffect(&warlock.Unit)
+		warlock.ItemSwap.RegisterProc(item_effects.AtieshSpellPower, aura)
+
+		for _, pet := range warlock.BasePets {
+			petAura := core.AtieshSpellPowerEffect(&pet.Unit)
+			warlock.ItemSwap.RegisterProc(item_effects.AtieshSpellPower, petAura)
+		}
+	})
+
 	// https://www.wowhead.com/classic/item=231284/hazzarahs-charm-of-destruction
 	// Increases your critical hit chance by 10%, and increases your pet's attack speed by 50% for 20 sec.
 	// This spell does not affect temporary pets or Subjugated Demons.
