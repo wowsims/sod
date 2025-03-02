@@ -1,15 +1,15 @@
 import tippy from 'tippy.js';
 
-import { Component } from '../core/components/component';
-import { IconEnumPicker } from '../core/components/icon_enum_picker';
-import { Class, Spec } from '../core/proto/common';
-import { Blessings } from '../core/proto/paladin';
-import { BlessingsAssignments } from '../core/proto/ui';
-import { ActionId } from '../core/proto_utils/action_id';
-import { classColors, makeDefaultBlessings, naturalSpecOrder, specNames, titleIcons } from '../core/proto_utils/utils';
-import { EventID, TypedEvent } from '../core/typed_event';
-import { implementedSpecs } from './presets';
-import { RaidSimUI } from './raid_sim_ui';
+import { Component } from '../../core/components/component';
+import { IconEnumPicker } from '../../core/components/icon_enum_picker';
+import { Class, Spec } from '../../core/proto/common';
+import { Blessings } from '../../core/proto/paladin';
+import { BlessingsAssignments } from '../../core/proto/ui';
+import { ActionId } from '../../core/proto_utils/action_id';
+import { classColors, makeDefaultBlessings, naturalSpecOrder, specNames, titleIcons } from '../../core/proto_utils/utils';
+import { EventID, TypedEvent } from '../../core/typed_event';
+import { implementedSpecs } from '../presets';
+import { RaidSimUI } from '../raid_sim_ui';
 
 const MAX_PALADINS = 4;
 
