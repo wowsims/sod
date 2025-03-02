@@ -1,3 +1,4 @@
+import ApexCharts from 'apexcharts';
 import tippy from 'tippy.js';
 import { ref } from 'tsx-vanilla';
 
@@ -12,8 +13,6 @@ import { TypedEvent } from '../../typed_event.js';
 import { bucket, distinct, maxIndex, stringComparator } from '../../utils.js';
 import { actionColors } from './color_settings.js';
 import { ResultComponent, ResultComponentConfig, SimResultData } from './result_component.js';
-
-declare let ApexCharts: any;
 
 type TooltipHandler = (dataPointIndex: number) => Element;
 
@@ -99,11 +98,17 @@ export class Timeline extends ResultComponent {
 		this.dpsResourcesPlotElem = this.rootElem.querySelector('.dps-resources-plot')!;
 		this.dpsResourcesPlot = new ApexCharts(this.dpsResourcesPlotElem, {
 			chart: {
-				type: 'line',
-				foreColor: 'white',
-				id: 'dpsResources',
 				animations: {
 					enabled: false,
+				},
+				background: 'transparent',
+				foreColor: 'white',
+				height: '100%',
+				id: 'dpsResources',
+				type: 'line',
+				zoom: {
+					enabled: true,
+					allowMouseWheelZoom: false,
 				},
 			},
 			series: [], // Set dynamically
@@ -120,6 +125,8 @@ export class Timeline extends ResultComponent {
 				curve: 'straight',
 			},
 		});
+
+		this.addOnDisposeCallback(() => this.dpsResourcesPlot.destroy());
 
 		this.rotationPlotElem = this.rootElem.querySelector('.rotation-plot')!;
 		this.rotationLabels = this.rootElem.querySelector('.rotation-labels')!;
@@ -169,6 +176,9 @@ export class Timeline extends ResultComponent {
 
 		const duration = this.resultData!.result.result.firstIterationDuration || 1;
 		const options: any = {
+			theme: {
+				mode: 'dark',
+			},
 			series: [],
 			colors: [],
 			xaxis: {
@@ -1065,7 +1075,7 @@ export class Timeline extends ResultComponent {
 					<span className="bold">{log.timestamp.toFixed(2)}s</span>
 				</div>
 				<div className="timeline-tooltip-body">
-					<ul className="timeline-dps-events">{log.damageLogs.map(damageLog => this.tooltipLogItem(damageLog, damageLog.result())).join('')}</ul>
+					<ul className="timeline-dps-events">{log.damageLogs.map(damageLog => this.tooltipLogItem(damageLog, damageLog.result()))}</ul>
 					<div className="timeline-tooltip-body-row">
 						<span className="series-color">DPS: {log.dps.toFixed(2)}</span>
 					</div>
@@ -1095,7 +1105,7 @@ export class Timeline extends ResultComponent {
 					<div className="timeline-tooltip-body-row">
 						<span className="series-color">Before: {log.threatBefore.toFixed(1)}</span>
 					</div>
-					<ul className="timeline-threat-events">{log.logs.map(log => this.tooltipLogItem(log, <>{log.threat.toFixed(1)} Threat</>)).join('')}</ul>
+					<ul className="timeline-threat-events">{log.logs.map(log => this.tooltipLogItem(log, <>{log.threat.toFixed(1)} Threat</>))}</ul>
 					<div className="timeline-tooltip-body-row">
 						<span className="series-color">After: {log.threatAfter.toFixed(1)}</span>
 					</div>
