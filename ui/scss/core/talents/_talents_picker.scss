@@ -8,16 +8,18 @@
 }
 
 .talents-picker-root {
-	width: unset;
-	margin-right: var(--block-spacer);
+	width: fit-content;
 	display: flex;
-	flex-direction: column;
-
-	@include media-breakpoint-down(xxxl) {
-		width: 100%;
+	flex-direction: row;
+	gap: var(--section-spacer) !important;
+	@include media-breakpoint-down(1080p) {
+		flex-direction: column;
 	}
-	@include media-breakpoint-down(xxl) {
-		margin-right: 0;
+	@include media-breakpoint-down(xl) {
+		margin: auto;
+	}
+	@include media-breakpoint-down(md) {
+		width: 100%;
 	}
 
 	.talents-picker-header {
@@ -34,7 +36,11 @@
 			}
 		}
 	}
+
 	.talents-picker-inner {
+		display: flex;
+		flex-direction: column;
+
 		@include media-breakpoint-down(lg) {
 			width: 100%;
 		}
@@ -43,7 +49,6 @@
 
 #talents-carousel {
 	flex: 1;
-	margin-bottom: var(--section-spacer);
 	@include media-breakpoint-down(lg) {
 		display: flex;
 		justify-content: center;
@@ -53,7 +58,8 @@
 	}
 
 	.carousel-inner {
-		display: flex;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
 		overflow: unset;
 		transform: unset;
 		@include media-breakpoint-down(lg) {
@@ -304,23 +310,23 @@
 }
 
 .talent-picker-req-arrow-left {
-	background-image: url('/sod/assets/talent_calc/left.png');
+	background-image: url('/assets/talent_calc/left.png');
 	background-position: left center;
 	right: 0.9rem;
 	width: 2rem;
 
 	&[data-req-active] {
-		background-image: url('/sod/assets/talent_calc/left2.png');
+		background-image: url('/assets/talent_calc/left2.png');
 	}
 }
 
 .talent-picker-req-arrow-right {
-	background-image: url('/sod/assets/talent_calc/right.png');
+	background-image: url('/assets/talent_calc/right.png');
 	background-position: right center;
 	left: 3rem;
 	width: 1.3rem;
 
 	&[data-req-active] {
-		background-image: url('/sod/assets/talent_calc/right2.png');
+		background-image: url('/assets/talent_calc/right2.png');
 	}
 }

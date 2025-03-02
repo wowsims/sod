@@ -57,26 +57,26 @@
 				display: flex;
 				align-items: center;
 				flex: 1;
+				--list-picker-item-spacing: var(--spacer-2);
+				gap: var(--list-picker-item-spacing);
 
 				.list-picker-item-title {
 					margin-bottom: 0;
 				}
 
 				.list-picker-item-action {
-					margin-left: var(--spacer-2);
-
 					&.list-picker-item-move {
 						cursor: move;
 					}
 				}
 
 				.list-picker-item-popover:popover-open {
+					@extend .tippy-content;
+
 					inset: unset;
 					position: relative;
-					background-color: color-mix(in srgb, var(--bs-body-bg) 80%, transparent);
-					border: 1px solid black;
-					border-radius: 5px;
-					padding: 5px 10px;
+					display: flex;
+					gap: var(--list-picker-item-spacing);
 				}
 			}
 		}

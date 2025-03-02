@@ -10,7 +10,7 @@
 		}
 
 		.blessings-picker-spec {
-			margin-right: calc(var(--block-spacer) * 2);
+			margin-right: var(--section-spacer);
 
 			.blessings-spec-icon {
 				@extend .icon-md;
