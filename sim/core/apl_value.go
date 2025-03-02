@@ -93,6 +93,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueIsExecutePhase(config.GetIsExecutePhase())
 	case *proto.APLValue_NumberTargets:
 		return rot.newValueNumberTargets(config.GetNumberTargets())
+	case *proto.APLValue_TargetMobType:
+		return rot.newValueTargetMobType(config.GetTargetMobType())
 
 	// Resources
 	case *proto.APLValue_CurrentHealth:

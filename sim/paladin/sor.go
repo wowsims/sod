@@ -85,6 +85,7 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 			BonusCoefficient: rank.judge.coeff,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				flags := spell.Flags
 				baseDamage := sim.Roll(minDamage, maxDamage) * improvedSoR
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
@@ -92,7 +93,10 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 					DoAt:     sim.CurrentTime + core.SpellBatchWindow,
 					Priority: core.ActionPriorityLow,
 					OnAction: func(sim *core.Simulation) {
+						currentFlags := spell.Flags
+						spell.Flags = flags
 						spell.DealDamage(sim, result)
+						spell.Flags = currentFlags
 					},
 				})
 			},

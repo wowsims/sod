@@ -44,6 +44,7 @@ func (paladin *Paladin) registerHolyWrath() {
 			DefenseType:    core.DefenseTypeMagic,
 			ProcMask:       core.ProcMaskSpellDamage, // TODO to be tested
 			Flags:          core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
+			MissileSpeed:   20,
 
 			RequiredLevel: int(rank.level),
 			Rank:          i + 1,
@@ -80,11 +81,17 @@ func (paladin *Paladin) registerHolyWrath() {
 					}
 				}
 
-				for _, result := range results {
-					spell.DealDamage(sim, result)
+				spell.BonusCritRating -= bonusCrit
+
+				if len(results) == 0 {
+					return
 				}
 
-				spell.BonusCritRating -= bonusCrit
+				spell.WaitTravelTime(sim, func(sim *core.Simulation) {
+					for _, result := range results {
+						spell.DealDamage(sim, result)
+					}
+				})
 			},
 		})
 

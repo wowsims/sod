@@ -144,6 +144,8 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 		for _, action := range rotation.allAPLActions() {
 			if castSpellAction, ok := action.impl.(*APLActionCastSpell); ok {
 				character.removeInitialMajorCooldown(castSpellAction.spell.ActionID)
+			} else if spell := action.impl.GetSpellFromAction(); spell != nil {
+				character.removeInitialMajorCooldown(spell.ActionID)
 			}
 		}
 	}
