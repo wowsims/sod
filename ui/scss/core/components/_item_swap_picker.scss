@@ -1,6 +1,14 @@
 @use 'sass:map';
 
 .item-swap-picker-root {
+	display: grid;
+	gap: var(--block-spacer);
+
+	.input-item-swap-container {
+		flex-wrap: wrap;
+		gap: var(--block-spacer);
+	}
+
 	label {
 		width: unset !important;
 	}

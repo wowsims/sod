@@ -4,11 +4,12 @@ import { Database } from '../../../proto_utils/database';
 import { BulkTab } from '../bulk_tab';
 import { IndividualImporter } from './individual_importer';
 
-export default class BulkGearJsonImporter<SpecType extends Spec> extends IndividualImporter<SpecType> {
+export class BulkGearJsonImporter<SpecType extends Spec> extends IndividualImporter<SpecType> {
 	private readonly bulkUI: BulkTab;
 
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>, bulkUI: BulkTab) {
 		super(parent, simUI, { title: 'Bag Item Import', allowFileUpload: true });
+
 		this.bulkUI = bulkUI;
 		this.descriptionElem.appendChild(
 			<>

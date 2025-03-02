@@ -1,6 +1,6 @@
 import { default as pako } from 'pako';
 
-import { SIM_CATEGORY_KEYS, SimSettingCategories } from '../../../constants/sim-settings';
+import { SIM_CATEGORY_KEYS, SimSettingCategories } from '../../../constants/sim_settings';
 import { IndividualSimUI } from '../../../individual_sim_ui';
 import { Spec } from '../../../proto/common';
 import { IndividualSimSettings } from '../../../proto/ui';
@@ -10,12 +10,7 @@ import { IndividualExporter } from './individual_exporter';
 
 export class IndividualLinkExporter<SpecType extends Spec> extends IndividualExporter<SpecType> {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
-		super(parent, simUI, { title: 'Sharable Link', selectCategories: true });
-	}
-
-	open() {
-		super.open();
-		this.init();
+		super(parent, simUI, { title: 'Shareable Link', selectCategories: true });
 	}
 
 	getData(): string {

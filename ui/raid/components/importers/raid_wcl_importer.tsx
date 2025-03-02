@@ -33,7 +33,7 @@ import { EventID, TypedEvent } from '../../../core/typed_event';
 import { bucket, distinct } from '../../../core/utils';
 import { playerPresets } from '../../presets';
 import { RaidSimUI } from '../../raid_sim_ui';
-import { RaidImporter } from './raid_importer';
+import { RaidImporter } from '../raid_importer';
 
 class WCLSimPlayer {
 	public readonly data: wclPlayer;
@@ -319,40 +319,43 @@ export class RaidWCLImporter extends RaidImporter {
 		super(parent, simUI, { title: 'WCL Import', allowFileUpload: false });
 
 		this.textElem.classList.add('small-textarea');
-		this.descriptionElem.innerHTML = `
-            <p>
-                Imports the entire raid from a WCL report.<br>
-            </p>
-            <p>
-                To import, paste the WCL report and fight link (https://classic.warcraftlogs.com/reports/REPORTID#fight=FIGHTID).<br>
-                Include the fight ID or else the first fight in the report will be used.<br>
-            </p>
-            <p>
-                The following are imported directly from the report:
-                <ul>
-                    <li>Player Name</li>
-                    <li>Equipment (items and enchants)</li>
-                    <li>Faction (Alliance / Horde)</li>
-                    <li>Encounter: If the import link has a fight ID we try to match with a preset Encounter. Note that many Encounters are still unimplemented.</li>
-                </ul>
-
-                The following are not available directly from the report data, but we try to infer them:
-                <ul>
-                    <li>Talents: Log data only gives us the tree summary (e.g. '51/20/0') so we match this with the closest preset talent build.</li>
-                    <li>Race: Inferred from Race-specific abilties used in any fight if possible, or defaults to Spec-specific Race.</li>
-                    <li>Professions: Inferred from profession-locked items/enchants.</li>
-                    <li>Buff assignments (Innervate, Unholy Frenzy, etc): Inferred from casts.</li>
-                    <li>Party Composition: Inferred from party-only effects, such as Heroic Presence, Prayer of Healing, or Vampiric Touch.</li>
-                </ul>
-
-                The following are not imported, and instead use spec-specific defaults:
-                <ul>
-                    <li>Rotation / Spec-specific options</li>
-                    <li>Consumes</li>
-                    <li>Paladin Blessings</li>
-                </ul>
-            </p>
-        `;
+		this.descriptionElem.appendChild(
+			<>
+				<p>Imports the entire raid from a WCL report.</p>
+				<p>
+					To import, paste the WCL report and fight link (https://classic.warcraftlogs.com/reports/REPORTID#fight=FIGHTID).
+					<br />
+					Include the fight ID or else the first fight in the report will be used.
+				</p>
+				<p>
+					The following are imported directly from the report:
+					<ul>
+						<li>Player Name</li>
+						<li>Equipment (items, enchants, and gems)</li>
+						<li>Faction (Alliance / Horde)</li>
+						<li>
+							Encounter: If the import link has a fight ID we try to match with a preset Encounter. Note that many Encounters are still
+							unimplemented.
+						</li>
+					</ul>
+					The following are not available directly from the report data, but we try to infer them:
+					<ul>
+						<li>Talents: Log data only gives us the tree summary (e.g. '51/20/0') so we match this with the closest preset talent build.</li>
+						<li>Glyphs: Glyphs are absent from log data, but we pair them with the inferred Talents.</li>
+						<li>Race: Inferred from Race-specific abilties used in any fight if possible, or defaults to Spec-specific Race.</li>
+						<li>Professions: Inferred from profession-locked items/enchants/gems.</li>
+						<li>Buff assignments (Innervate, Unholy Frenzy, etc): Inferred from casts.</li>
+						<li>Party Composition: Inferred from party-only effects, such as Prayer of Healing, or Vampiric Touch.</li>
+					</ul>
+					The following are not imported, and instead use spec-specific defaults:
+					<ul>
+						<li>Rotation / Spec-specific options</li>
+						<li>Consumes</li>
+						<li>Paladin Blessings</li>
+					</ul>
+				</p>
+			</>,
+		);
 	}
 
 	private token = '';

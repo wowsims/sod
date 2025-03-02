@@ -1,6 +1,6 @@
 import pako from 'pako';
 
-import { SIM_CATEGORY_KEYS, SimSettingCategories } from '../../../constants/sim-settings';
+import { SIM_CATEGORY_KEYS, SimSettingCategories } from '../../../constants/sim_settings';
 import { IndividualSimSettings } from '../../../proto/ui';
 import { IndividualImporter } from './individual_importer';
 

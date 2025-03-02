@@ -47,6 +47,11 @@ export abstract class Exporter extends BaseModal {
 		}
 	}
 
+	open() {
+		super.open();
+		this.init();
+	}
+
 	protected init() {
 		this.changedEvent.on(() => this.updateContent());
 		this.updateContent();

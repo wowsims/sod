@@ -8,11 +8,6 @@ export class IndividualCLIExporter<SpecType extends Spec> extends IndividualExpo
 		super(parent, simUI, { title: 'CLI Export', allowDownload: true });
 	}
 
-	open() {
-		super.open();
-		this.init();
-	}
-
 	getData(): string {
 		const raidSimJson: any = RaidSimRequest.toJson(this.simUI.sim.makeRaidSimRequest(false));
 		delete raidSimJson.raid?.parties[0]?.players[0]?.database;

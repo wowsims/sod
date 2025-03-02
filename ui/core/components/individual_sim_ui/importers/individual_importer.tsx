@@ -1,4 +1,4 @@
-import { SimSettingCategories } from '../../../constants/sim-settings';
+import { SimSettingCategories } from '../../../constants/sim_settings';
 import { IndividualSimUI } from '../../../individual_sim_ui';
 import { Class, EquipmentSpec, Profession, Race, Spec } from '../../../proto/common';
 import { Database } from '../../../proto_utils/database';
@@ -6,6 +6,7 @@ import { classNames } from '../../../proto_utils/names';
 import { TypedEvent } from '../../../typed_event';
 import { getEnumValues } from '../../../utils';
 import { Importer, ImporterOptions } from '../../importer';
+import Toast from '../../toast';
 
 // For now this just holds static helpers to match the exporter, so it doesn't extend Importer.
 export abstract class IndividualImporter<SpecType extends Spec> extends Importer {
@@ -61,13 +62,15 @@ export abstract class IndividualImporter<SpecType extends Spec> extends Importer
 		this.close();
 
 		if (missingItems.length == 0 && missingEnchants.length == 0) {
-			alert('Import successful!');
+			new Toast({ variant: 'success', body: `Import successful!` });
 		} else {
-			alert(
-				'Import successful, but the following IDs were not found in the sim database:' +
+			new Toast({
+				variant: 'info',
+				body:
+					'Import successful, but the following IDs were not found in the sim database:' +
 					(missingItems.length == 0 ? '' : '\n\nItems: ' + missingItems.join(', ')) +
 					(missingEnchants.length == 0 ? '' : '\n\nEnchants: ' + missingEnchants.join(', ')),
-			);
+			});
 		}
 	}
 }

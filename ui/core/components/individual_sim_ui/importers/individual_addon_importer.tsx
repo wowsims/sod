@@ -7,17 +7,19 @@ export class IndividualAddonImporter<SpecType extends Spec> extends IndividualIm
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'Addon Import', allowFileUpload: true });
 
-		this.descriptionElem.innerHTML = `
-			<p>
-				Import settings from the <a href="https://www.curseforge.com/wow/addons/wowsimsexporter" target="_blank">WoWSims Importer In-Game Addon</a>.
-			</p>
-			<p>
-				This feature imports gear, race, talents, and professions. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.
-			</p>
-			<p>
-				To import, paste the output from the addon below and click, 'Import'.
-			</p>
-		`;
+		this.descriptionElem.appendChild(
+			<>
+				<p>
+					Import settings from the{' '}
+					<a href="https://www.curseforge.com/wow/addons/wowsimsexporter" target="_blank">
+						WoWSims Exporter In-Game Addon
+					</a>
+					.
+				</p>
+				<p>This feature imports gear, race, talents, and professions. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.</p>
+				<p>To import, paste the output from the addon below and click, 'Import'.</p>
+			</>,
+		);
 	}
 
 	async onImport(data: string) {

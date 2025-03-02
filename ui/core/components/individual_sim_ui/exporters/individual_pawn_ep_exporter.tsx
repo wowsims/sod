@@ -10,11 +10,6 @@ export class IndividualPawnEPExporter<SpecType extends Spec> extends IndividualE
 		super(parent, simUI, { title: 'Pawn EP Export', allowDownload: true });
 	}
 
-	open() {
-		super.open();
-		this.init();
-	}
-
 	getData(): string {
 		const player = this.simUI.player;
 		const epValues = player.getEpWeights();

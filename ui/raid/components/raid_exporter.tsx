@@ -1,5 +1,5 @@
-import { Exporter, ExporterOptions } from '../../../core/components/exporter';
-import { RaidSimUI } from '../../raid_sim_ui';
+import { Exporter, ExporterOptions } from '../../core/components/exporter';
+import { RaidSimUI } from '../raid_sim_ui';
 
 export abstract class RaidExporter extends Exporter {
 	protected readonly simUI: RaidSimUI;

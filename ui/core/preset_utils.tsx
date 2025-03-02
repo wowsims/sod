@@ -1,4 +1,4 @@
-import { IndividualLinkImporter } from './components/individual_sim_ui/importers/individual_link_importer';
+import { IndividualLinkImporter } from './components/individual_sim_ui/importers';
 import Toast, { ToastOptions } from './components/toast';
 import * as Tooltips from './constants/tooltips.js';
 import { Player } from './player.js';

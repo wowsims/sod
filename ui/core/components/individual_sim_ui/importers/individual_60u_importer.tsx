@@ -2,26 +2,29 @@ import { IndividualSimUI } from '../../../individual_sim_ui';
 import { Class, EquipmentSpec, ItemSpec, Race, Spec } from '../../../proto/common';
 import { nameToClass, nameToRace } from '../../../proto_utils/names';
 import { talentSpellIdsToTalentString } from '../../../talents/factory';
+import Toast from '../../toast';
 import { IndividualImporter } from './individual_importer';
 
 export class Individual60UImporter<SpecType extends Spec> extends IndividualImporter<SpecType> {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'Sixty Upgrades SoD Import', allowFileUpload: true });
 
-		this.descriptionElem.innerHTML = `
-            <p>
-                Import settings from <a href="https://sixtyupgrades.com/sod/" target="_blank">Sixty Upgrades Season of Discovery</a>.
-            </p>
-            <p>
-                This feature imports gear, race, and (optionally) talents. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.
-            </p>
-            <p>
-                To import, paste the output from the site's export option below and click, 'Import'.
-            </p>
-        `;
+		this.descriptionElem.appendChild(
+			<>
+				<p>
+					Import settings from{' '}
+					<a href="https://sixtyupgrades.com/sod" target="_blank">
+						Sixty Upgrades
+					</a>
+					.
+				</p>
+				<p>This feature imports gear, race, and (optionally) talents. It does NOT import buffs, debuffs, consumes, rotation, or custom stats.</p>
+				<p>To import, paste the output from the site's export option below and click, 'Import'.</p>
+			</>,
+		);
 	}
 
-	onImport(data: string) {
+	async onImport(data: string) {
 		const importJson = JSON.parse(data);
 
 		// Parse all the settings.
@@ -41,6 +44,8 @@ export class Individual60UImporter<SpecType extends Spec> extends IndividualImpo
 			talentsStr = talentSpellIdsToTalentString(charClass, talentIds);
 		}
 
+		let hasRemovedRandomSuffix = false;
+		const modifiedItemNames: string[] = [];
 		const equipmentSpec = EquipmentSpec.create();
 		(importJson.items as Array<any>).forEach(itemJson => {
 			const itemSpec = ItemSpec.create();
@@ -48,11 +53,41 @@ export class Individual60UImporter<SpecType extends Spec> extends IndividualImpo
 			if (itemJson.enchant?.id) {
 				itemSpec.enchant = itemJson.enchant.id;
 			}
+
+			// As long as 60U exports the wrong suffixes we should
+			// inform the user that they need to manually add them.
+			// Due to this we also remove the reforge on the item.
+			if (itemJson.suffixId) {
+				hasRemovedRandomSuffix = true;
+				if (itemJson.reforge?.id) {
+					itemJson.reforge.id = null;
+				}
+				modifiedItemNames.push(itemJson.name);
+			}
 			equipmentSpec.items.push(itemSpec);
 		});
 
 		this.simUI.sim.db.lookupEquipmentSpec(equipmentSpec);
 
 		this.finishIndividualImport(this.simUI, charClass, race, equipmentSpec, talentsStr, []);
+
+		if (hasRemovedRandomSuffix && modifiedItemNames.length) {
+			new Toast({
+				variant: 'warning',
+				body: (
+					<>
+						<p>Sixty Upgrades currently exports the wrong Random Suffixes. We have removed the random suffix on the following item(s):</p>
+						<ul>
+							{modifiedItemNames.map(itemName => (
+								<li>
+									<strong>{itemName}</strong>
+								</li>
+							))}
+						</ul>
+					</>
+				),
+				delay: 8000,
+			});
+		}
 	}
 }

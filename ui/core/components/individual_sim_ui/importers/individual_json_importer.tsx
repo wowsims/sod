@@ -9,14 +9,21 @@ export class IndividualJsonImporter<SpecType extends Spec> extends IndividualImp
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'JSON Import', allowFileUpload: true });
 
-		this.descriptionElem.innerHTML = `
-            <p>Import settings from a JSON file, which can be created using the JSON Export feature.</p>
-            <p>To import, upload the file or paste the text below, then click, 'Import'.</p>
-        `;
+		this.descriptionElem.appendChild(
+			<>
+				<p>Import settings from a JSON file, which can be created using the JSON Export feature.</p>
+				<p>To import, upload the file or paste the text below, then click, 'Import'.</p>
+			</>,
+		);
 	}
 
 	async onImport(data: string) {
-		const proto = IndividualSimSettings.fromJsonString(data, { ignoreUnknownFields: true });
+		let proto: ReturnType<typeof IndividualSimSettings.fromJsonString> | null = null;
+		try {
+			proto = IndividualSimSettings.fromJsonString(data, { ignoreUnknownFields: true });
+		} catch {
+			throw new Error('Please use a valid JSON object.');
+		}
 		if (proto.player?.equipment) {
 			await Database.loadLeftoversIfNecessary(proto.player.equipment);
 		}

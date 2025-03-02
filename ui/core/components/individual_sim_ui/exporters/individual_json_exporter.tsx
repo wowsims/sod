@@ -1,4 +1,4 @@
-import { SimSettingCategories } from '../../../constants/sim-settings';
+import { SimSettingCategories } from '../../../constants/sim_settings';
 import { IndividualSimUI } from '../../../individual_sim_ui';
 import { Spec } from '../../../proto/common';
 import { IndividualSimSettings } from '../../../proto/ui';
@@ -9,11 +9,6 @@ import { IndividualExporter } from './individual_exporter';
 export class IndividualJsonExporter<SpecType extends Spec> extends IndividualExporter<SpecType> {
 	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>) {
 		super(parent, simUI, { title: 'JSON Export', allowDownload: true, selectCategories: true });
-	}
-
-	open() {
-		super.open();
-		this.init();
 	}
 
 	getData(): string {

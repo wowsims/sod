@@ -1,4 +1,4 @@
-import { SimSettingCategories } from '../../../constants/sim-settings';
+import { SimSettingCategories } from '../../../constants/sim_settings';
 import { IndividualSimUI } from '../../../individual_sim_ui';
 import { Spec } from '../../../proto/common';
 import { EventID } from '../../../typed_event';

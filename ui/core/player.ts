@@ -3,7 +3,7 @@ import Toast from './components/toast';
 import { getLanguageCode } from './constants/lang.js';
 import * as Mechanics from './constants/mechanics.js';
 import { LEVEL_THRESHOLDS } from './constants/other.js';
-import { SimSettingCategories } from './constants/sim-settings';
+import { SimSettingCategories } from './constants/sim_settings';
 import { simLaunchStatuses } from './launched_sims.js';
 import { MAX_PARTY_SIZE, Party } from './party.js';
 import {
