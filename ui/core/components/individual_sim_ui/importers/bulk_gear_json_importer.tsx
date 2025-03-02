@@ -1,15 +1,14 @@
-import { IndividualSimUI } from '../../individual_sim_ui';
-import { EquipmentSpec } from '../../proto/common';
-import { Database } from '../../proto_utils/database';
-import { Importer } from '../importers';
-import { BulkTab } from '../individual_sim_ui/bulk_tab';
+import { IndividualSimUI } from '../../../individual_sim_ui';
+import { EquipmentSpec, Spec } from '../../../proto/common';
+import { Database } from '../../../proto_utils/database';
+import { BulkTab } from '../bulk_tab';
+import { IndividualImporter } from './individual_importer';
 
-export default class BulkGearJsonImporter extends Importer {
-	private readonly simUI: IndividualSimUI<any>;
+export default class BulkGearJsonImporter<SpecType extends Spec> extends IndividualImporter<SpecType> {
 	private readonly bulkUI: BulkTab;
-	constructor(parent: HTMLElement, simUI: IndividualSimUI<any>, bulkUI: BulkTab) {
-		super(parent, simUI, 'Bag Item Import', true);
-		this.simUI = simUI;
+
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>, bulkUI: BulkTab) {
+		super(parent, simUI, { title: 'Bag Item Import', allowFileUpload: true });
 		this.bulkUI = bulkUI;
 		this.descriptionElem.appendChild(
 			<>

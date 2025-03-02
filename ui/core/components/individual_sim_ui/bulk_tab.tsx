@@ -14,7 +14,7 @@ import { WorkerProgressCallback } from '../../worker_pool';
 import { BooleanPicker } from '../boolean_picker';
 import { ContentBlock } from '../content_block';
 import SelectorModal, { SelectorModalTabs } from '../gear_picker/selector_modal';
-import BulkGearJsonImporter from '../importers/bulk_gear_json_importer';
+import BulkGearJsonImporter from './importers/bulk_gear_json_importer';
 import { ResultsViewer } from '../results_viewer';
 import { SimTab } from '../sim_tab';
 import Toast from '../toast';
@@ -301,7 +301,6 @@ export class BulkTab extends SimTab {
 					<i className="fa fa-spinner fa-spin" /> Running
 				</>,
 			);
-
 
 			let waitAbort = false;
 			try {

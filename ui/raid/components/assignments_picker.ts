@@ -1,11 +1,11 @@
-import { Component } from '../core/components/component.js';
-import { UnitReferencePicker } from '../core/components/raid_target_picker.js';
-import { Player } from '../core/player.js';
-import { Class, Spec,UnitReference } from '../core/proto/common.js';
-import { PriestTalents } from '../core/proto/priest.js';
-import { emptyUnitReference } from '../core/proto_utils/utils.js';
-import { EventID, TypedEvent } from '../core/typed_event.js';
-import { RaidSimUI } from './raid_sim_ui.js';
+import { Component } from '../../core/components/component.js';
+import { UnitReferencePicker } from '../../core/components/raid_target_picker.js';
+import { Player } from '../../core/player.js';
+import { Class, Spec, UnitReference } from '../../core/proto/common.js';
+import { PriestTalents } from '../../core/proto/priest.js';
+import { emptyUnitReference } from '../../core/proto_utils/utils.js';
+import { EventID, TypedEvent } from '../../core/typed_event.js';
+import { RaidSimUI } from '../raid_sim_ui.js';
 
 export class AssignmentsPicker extends Component {
 	readonly raidSimUI: RaidSimUI;
@@ -24,10 +24,10 @@ export class AssignmentsPicker extends Component {
 }
 
 interface AssignmentTargetPicker {
-	player: Player<any>,
-	targetPicker: UnitReferencePicker<Player<any>>,
+	player: Player<any>;
+	targetPicker: UnitReferencePicker<Player<any>>;
 	targetPlayer: Player<any> | null;
-};
+}
 
 abstract class AssignedBuffPicker extends Component {
 	readonly raidSimUI: RaidSimUI;
@@ -53,13 +53,11 @@ abstract class AssignedBuffPicker extends Component {
 	private update() {
 		this.playersContainer.innerHTML = `
 			<label class="assignmented-buff-label form-label">${this.getTitle()}</label>
-		`
+		`;
 
 		const sourcePlayers = this.getSourcePlayers();
-		if (sourcePlayers.length == 0)
-			this.rootElem.classList.add('hide');
-		else
-			this.rootElem.classList.remove('hide');
+		if (sourcePlayers.length == 0) this.rootElem.classList.add('hide');
+		else this.rootElem.classList.remove('hide');
 
 		this.targetPickers = sourcePlayers.map(sourcePlayer => {
 			const row = document.createElement('div');
@@ -68,9 +66,7 @@ abstract class AssignedBuffPicker extends Component {
 
 			const sourceElem = document.createElement('div');
 			sourceElem.classList.add('raid-target-picker-root');
-			sourceElem.appendChild(
-				UnitReferencePicker.makeOptionElem({ player: sourcePlayer, isDropdown: false })
-			);
+			sourceElem.appendChild(UnitReferencePicker.makeOptionElem({ player: sourcePlayer, isDropdown: false }));
 			row.appendChild(sourceElem);
 
 			const arrow = document.createElement('i');

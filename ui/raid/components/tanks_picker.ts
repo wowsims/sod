@@ -1,13 +1,10 @@
-import { Component } from '../core/components/component';
-import { UnitReferencePicker } from '../core/components/raid_target_picker';
-
-import { Raid } from '../core/raid';
-import { EventID } from '../core/typed_event';
-
-import { UnitReference } from '../core/proto/common';
-import { emptyUnitReference } from '../core/proto_utils/utils';
-
-import { RaidSimUI } from './raid_sim_ui';
+import { Component } from '../../core/components/component';
+import { UnitReferencePicker } from '../../core/components/raid_target_picker';
+import { UnitReference } from '../../core/proto/common';
+import { emptyUnitReference } from '../../core/proto_utils/utils';
+import { Raid } from '../../core/raid';
+import { EventID } from '../../core/typed_event';
+import { RaidSimUI } from '../raid_sim_ui';
 
 const MAX_TANKS = 4;
 

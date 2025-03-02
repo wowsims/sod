@@ -1,0 +1,87 @@
+import { SimSettingCategories } from '../../../constants/sim-settings';
+import { IndividualSimUI } from '../../../individual_sim_ui';
+import { Class, EquipmentSpec, Profession, Race, Spec } from '../../../proto/common';
+import { Database } from '../../../proto_utils/database';
+import { classNames } from '../../../proto_utils/names';
+import { TypedEvent } from '../../../typed_event';
+import { getEnumValues } from '../../../utils';
+import { Importer, ImporterOptions } from '../../importer';
+
+// For now this just holds static helpers to match the exporter, so it doesn't extend Importer.
+export abstract class IndividualImporter<SpecType extends Spec> extends Importer {
+	// Exclude UISettings by default, since most users don't intend to export those.
+	static readonly DEFAULT_CATEGORIES = getEnumValues(SimSettingCategories).filter(c => c != SimSettingCategories.UISettings) as Array<SimSettingCategories>;
+
+	static readonly CATEGORY_PARAM = 'i';
+	static readonly CATEGORY_KEYS: Map<SimSettingCategories, string> = (() => {
+		const map = new Map();
+		// Use single-letter abbreviations since these will be included in sim links.
+		map.set(SimSettingCategories.Gear, 'g');
+		map.set(SimSettingCategories.Talents, 't');
+		map.set(SimSettingCategories.Rotation, 'r');
+		map.set(SimSettingCategories.Consumes, 'c');
+		map.set(SimSettingCategories.Miscellaneous, 'm');
+		map.set(SimSettingCategories.External, 'x');
+		map.set(SimSettingCategories.Encounter, 'e');
+		map.set(SimSettingCategories.UISettings, 'u');
+		return map;
+	})();
+
+	protected readonly simUI: IndividualSimUI<any>;
+
+	constructor(parent: HTMLElement, simUI: IndividualSimUI<SpecType>, options: ImporterOptions) {
+		super(parent, options);
+		this.simUI = simUI;
+	}
+
+	protected async finishIndividualImport<SpecType extends Spec>(
+		simUI: IndividualSimUI<SpecType>,
+		charClass: Class,
+		race: Race,
+		equipmentSpec: EquipmentSpec,
+		talentsStr: string,
+		professions: Array<Profession>,
+	): Promise<void> {
+		const playerClass = simUI.player.getClass();
+		if (charClass != playerClass) {
+			throw new Error(`Wrong Class! Expected ${classNames.get(playerClass)} but found ${classNames.get(charClass)}!`);
+		}
+
+		await Database.loadLeftoversIfNecessary(equipmentSpec);
+
+		const gear = simUI.sim.db.lookupEquipmentSpec(equipmentSpec);
+
+		const expectedEnchantIds = equipmentSpec.items.map(item => item.enchant);
+		const foundEnchantIds = gear.asSpec().items.map(item => item.enchant);
+		const missingEnchants = expectedEnchantIds.filter(expectedId => expectedId != 0 && !foundEnchantIds.includes(expectedId));
+
+		const expectedItemIds = equipmentSpec.items.map(item => item.id);
+		const foundItemIds = gear.asSpec().items.map(item => item.id);
+		const missingItems = expectedItemIds.filter(expectedId => !foundItemIds.includes(expectedId));
+
+		// Now update settings using the parsed values.
+		const eventID = TypedEvent.nextEventID();
+		TypedEvent.freezeAllAndDo(() => {
+			simUI.player.setRace(eventID, race);
+			simUI.player.setGear(eventID, gear);
+			if (talentsStr && talentsStr != '--') {
+				simUI.player.setTalentsString(eventID, talentsStr);
+			}
+			if (professions.length > 0) {
+				simUI.player.setProfessions(eventID, professions);
+			}
+		});
+
+		this.close();
+
+		if (missingItems.length == 0 && missingEnchants.length == 0) {
+			alert('Import successful!');
+		} else {
+			alert(
+				'Import successful, but the following IDs were not found in the sim database:' +
+					(missingItems.length == 0 ? '' : '\n\nItems: ' + missingItems.join(', ')) +
+					(missingEnchants.length == 0 ? '' : '\n\nEnchants: ' + missingEnchants.join(', ')),
+			);
+		}
+	}
+}

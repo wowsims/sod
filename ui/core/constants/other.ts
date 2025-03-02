@@ -1,4 +1,4 @@
-import { PseudoStat, Stat } from "../proto/common";
+import { PseudoStat, Stat } from '../proto/common';
 
 export enum Phase {
 	Phase1 = 1,
@@ -8,6 +8,7 @@ export enum Phase {
 	Phase5,
 	Phase6,
 	Phase7,
+	Phase8,
 }
 
 export const LEVEL_THRESHOLDS: Record<Phase, number> = {
@@ -18,6 +19,7 @@ export const LEVEL_THRESHOLDS: Record<Phase, number> = {
 	[Phase.Phase5]: 60,
 	[Phase.Phase6]: 60,
 	[Phase.Phase7]: 60,
+	[Phase.Phase8]: 60,
 };
 
 export const CURRENT_PHASE = Phase.Phase3;
@@ -32,28 +34,13 @@ const pathnameParts = window.location.pathname.split('/');
 const repoPartIdx = pathnameParts.findIndex(part => part == REPO_NAME);
 export const SPEC_DIRECTORY = repoPartIdx == -1 ? '' : pathnameParts[repoPartIdx + 1];
 
-export const GLOBAL_DISPLAY_STATS = [
-	Stat.StatHealth,
-	Stat.StatFireResistance,
-	Stat.StatFrostResistance,
-	Stat.StatNatureResistance,
-];
+export const GLOBAL_DISPLAY_STATS = [Stat.StatHealth, Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatNatureResistance];
 
-export const GLOBAL_DISPLAY_PSEUDO_STATS = [
-	PseudoStat.PseudoStatTimewornBonus,
-	PseudoStat.PseudoStatSanctifiedBonus,
-];
+export const GLOBAL_DISPLAY_PSEUDO_STATS = [PseudoStat.PseudoStatTimewornBonus, PseudoStat.PseudoStatSanctifiedBonus];
 
-export const GLOBAL_EP_STATS = [
-	Stat.StatFireResistance,
-	Stat.StatFrostResistance,
-	Stat.StatNatureResistance,
-];
+export const GLOBAL_EP_STATS = [Stat.StatFireResistance, Stat.StatFrostResistance, Stat.StatNatureResistance];
 
-export const GLOBAL_EP_PSEUDOSTATS = [
-	PseudoStat.PseudoStatTimewornBonus,
-	PseudoStat.PseudoStatSanctifiedBonus,
-];
+export const GLOBAL_EP_PSEUDOSTATS = [PseudoStat.PseudoStatTimewornBonus, PseudoStat.PseudoStatSanctifiedBonus];
 
 export enum SortDirection {
 	ASC,

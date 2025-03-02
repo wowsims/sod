@@ -2,11 +2,17 @@ import { CharacterStats, StatMods } from './components/character_stats';
 import { ContentBlock } from './components/content_block';
 import { EmbeddedDetailedResults } from './components/detailed_results';
 import { EncounterPickerConfig } from './components/encounter_picker';
-import * as Exporters from './components/exporters';
 import * as IconInputs from './components/icon_inputs';
-import * as Importers from './components/importers';
 import { BulkTab } from './components/individual_sim_ui/bulk_tab';
+import { Individual60UEPExporter } from './components/individual_sim_ui/exporters/individual_60u_exporter';
+import { IndividualJsonExporter } from './components/individual_sim_ui/exporters/individual_json_exporter';
+import { IndividualLinkExporter } from './components/individual_sim_ui/exporters/individual_link_exporter';
+import { IndividualPawnEPExporter } from './components/individual_sim_ui/exporters/individual_pawn_exporter';
 import { GearTab } from './components/individual_sim_ui/gear_tab';
+import { Individual60UImporter } from './components/individual_sim_ui/importers/individual_60u_importer';
+import { IndividualAddonImporter } from './components/individual_sim_ui/importers/individual_addon_importer';
+import { IndividualJsonImporter } from './components/individual_sim_ui/importers/individual_json_importer';
+import { IndividualLinkImporter } from './components/individual_sim_ui/importers/individual_link_importer';
 import { RotationTab } from './components/individual_sim_ui/rotation_tab';
 import { SettingsTab } from './components/individual_sim_ui/settings_tab';
 import { TalentsTab } from './components/individual_sim_ui/talents_tab';
@@ -190,7 +196,16 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			knownIssues: config.knownIssues,
 			simStatus: simLaunchStatuses[player.spec],
 			noticeText: (
-				<span>Check out the <a href='https://docs.google.com/spreadsheets/d/e/2PACX-1vRYT-aWTwI2L0Gp323a62t2DCBnZ3Fhf93tsFmPo0se0gCTibP7M7Vq7E8nu732FUX-AUGA6VzgpfU-/pubhtml' target='_blank' rel='noreferrer'>WoWSims Phase 7 Sim DPS Spreadsheet</a> for up-to-date community builds!</span>
+				<span>
+					Check out the{' '}
+					<a
+						href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRYT-aWTwI2L0Gp323a62t2DCBnZ3Fhf93tsFmPo0se0gCTibP7M7Vq7E8nu732FUX-AUGA6VzgpfU-/pubhtml"
+						target="_blank"
+						rel="noreferrer">
+						WoWSims Phase 7 Sim DPS Spreadsheet
+					</a>{' '}
+					for up-to-date community builds!
+				</span>
 			),
 		});
 		this.rootElem.classList.add('individual-sim-ui');
@@ -308,7 +323,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			// Loading from link needs to happen after loading saved settings, so that partial link imports
 			// (e.g. rotation only) include the previous settings for other categories.
 			try {
-				const urlParseResults = Importers.IndividualLinkImporter.tryParseUrlLocation(window.location);
+				const urlParseResults = IndividualLinkImporter.tryParseUrlLocation(window.location);
 				if (urlParseResults) {
 					this.fromProto(initEventID, urlParseResults.settings, urlParseResults.categories);
 				}
@@ -394,17 +409,17 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 	private addTopbarComponents() {
 		// TODO: Classic
-		this.simHeader.addImportLink('JSON', new Importers.IndividualJsonImporter(this.rootElem, this), true);
-		this.simHeader.addImportLink('60U SoD', new Importers.Individual60UImporter(this.rootElem, this), true);
-		//this.simHeader.addImportLink('WoWHead', new Importers.IndividualWowheadGearPlannerImporter(this.rootElem, this), false);
-		this.simHeader.addImportLink('Addon', new Importers.IndividualAddonImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('JSON', new IndividualJsonImporter(this.rootElem, this), true);
+		this.simHeader.addImportLink('60U SoD', new Individual60UImporter(this.rootElem, this), true);
+		//this.simHeader.addImportLink('WoWHead', new IndividualWowheadGearPlannerImporter(this.rootElem, this), false);
+		this.simHeader.addImportLink('Addon', new IndividualAddonImporter(this.rootElem, this), true);
 
-		this.simHeader.addExportLink('Link', new Exporters.IndividualLinkExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('JSON', new Exporters.IndividualJsonExporter(this.rootElem, this), true);
-		//this.simHeader.addExportLink('WoWHead', new Exporters.IndividualWowheadGearPlannerExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('60U SoD EP', new Exporters.Individual60UEPExporter(this.rootElem, this), false);
-		this.simHeader.addExportLink('Pawn EP', new Exporters.IndividualPawnEPExporter(this.rootElem, this), false);
-		//this.simHeader.addExportLink("CLI", new Exporters.IndividualCLIExporter(this.rootElem, this), true);
+		this.simHeader.addExportLink('Link', new IndividualLinkExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('JSON', new IndividualJsonExporter(this.rootElem, this), true);
+		//this.simHeader.addExportLink('WoWHead', new IndividualWowheadGearPlannerExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('60U SoD EP', new Individual60UEPExporter(this.rootElem, this), false);
+		this.simHeader.addExportLink('Pawn EP', new IndividualPawnEPExporter(this.rootElem, this), false);
+		//this.simHeader.addExportLink("CLI", new IndividualCLIExporter(this.rootElem, this), true);
 	}
 
 	applyEmptyAplRotation(eventID: EventID) {
@@ -529,7 +544,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	}
 
 	toLink(): string {
-		return Exporters.IndividualLinkExporter.createLink(this);
+		return IndividualLinkExporter.createLink(this);
 	}
 
 	fromProto(eventID: EventID, settings: IndividualSimSettings, includeCategories?: Array<SimSettingCategories>) {

@@ -83,7 +83,7 @@ export default class SelectorModal extends BaseModal {
 		this.contentElem = this.rootElem.querySelector<HTMLElement>('.selector-modal-tab-content')!;
 
 		this.body.appendChild(
-			<div className="d-flex align-items-center form-text mt-auto pt-3">
+			<div className="d-flex align-items-center form-text mt-auto">
 				<i className="fas fa-circle-exclamation fa-xl me-2"></i>
 				<span>
 					If gear is missing, check the selected phase and your gear filters.
@@ -485,8 +485,8 @@ export default class SelectorModal extends BaseModal {
 	}
 
 	private removeTabs(labelSubstring: string) {
-		const tabElems = [...this.tabsElem.querySelectorAll<HTMLElement>('.selector-modal-item-tab')].filter(tab =>
-			tab.dataset?.label?.includes(labelSubstring),
+		const tabElems = [...this.tabsElem.querySelectorAll<HTMLElement>('.selector-modal-item-tab')].filter(
+			tab => tab.dataset?.label?.includes(labelSubstring),
 		);
 		const contentElems = tabElems.map(tabElem => document.querySelector(tabElem.dataset.bsTarget!)).filter(tabElem => Boolean(tabElem));
 

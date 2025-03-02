@@ -11,7 +11,8 @@ import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
 import { ContentBlock } from '../content_block';
 
-type PresetConfigurationCategory = 'gear' | 'talents' | 'rotation' | 'encounter' | 'race' | 'options';
+type PresetConfigurationCategory = 'epWeights' | 'gear' | 'talents' | 'rotation' | 'encounter' | 'race' | 'options';
+type PresetEncounterConfigurationCategory = 'buffs' | 'consumes' | 'debuffs' | 'encounter';
 
 export class PresetConfigurationPicker extends Component {
 	readonly simUI: IndividualSimUI<Spec>;
@@ -57,14 +58,23 @@ export class PresetConfigurationPicker extends Component {
 					</button>,
 				);
 
+				let categories = Object.keys(build).filter(c => !['name', 'encounter'].includes(c) && build[c as PresetConfigurationCategory]);
+				if (build.encounter) {
+					categories = categories.concat(
+						Object.keys(build.encounter).filter(
+							c => ['buffs', 'consume', 'debuffs', 'encounter'].includes(c) && build.encounter![c as PresetEncounterConfigurationCategory],
+						),
+					);
+				}
+
 				tippy(dataElemRef.value!, {
 					content: (
 						<>
 							<p className="mb-1">This preset affects the following settings:</p>
 							<ul className="mb-0 text-capitalize">
-								{Object.keys(build)
-									.filter(c => c !== 'name')
-									.map(category => (build[category as PresetConfigurationCategory] ? <li>{category}</li> : undefined))}
+								{categories.sort().map(category => (
+									<li>{category}</li>
+								))}
 							</ul>
 						</>
 					),
@@ -93,7 +103,7 @@ export class PresetConfigurationPicker extends Component {
 			if (rotationType) {
 				this.simUI.player.aplRotation.type = rotationType;
 				this.simUI.player.rotationChangeEmitter.emit(eventID);
-			} else  if (rotation?.rotation.rotation) {
+			} else if (rotation?.rotation.rotation) {
 				this.simUI.player.setAplRotation(eventID, rotation.rotation.rotation);
 			}
 			if (epWeights) this.simUI.player.setEpWeights(eventID, epWeights.epWeights);

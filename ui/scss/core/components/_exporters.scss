@@ -5,10 +5,12 @@
 		resize: none;
 	}
 
-	.link-exporter-pickers {
+	.exporter-category-pickers {
 		display: grid;
-		grid-template-columns: repeat(3, 1fr);
-		column-gap: 1.25rem;
+		grid-template-columns: repeat(4, 1fr);
+		@include media-breakpoint-down(md) {
+			grid-template-columns: repeat(3, 1fr);
+		}
 	}
 
 	.modal-footer {
