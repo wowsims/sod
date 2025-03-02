@@ -44,7 +44,6 @@ import Phase3RetSoMGearJson from './gear_sets/p3-retsom.gear.json';
 import Phase7ExodinFastStackNonNaxxGearJson from './gear_sets/p7-exodin-fast-stack-non-naxx.gear.json';
 import Phase7ExodinNaxxGearJson from './gear_sets/p7-exodin-naxx.gear.json';
 import Phase7SealStackingNaxxGearJson from './gear_sets/p7-seal-stacking-naxx.gear.json';
-import Phase7SealStackingNonNaxxGearJson from './gear_sets/p7-seal-stacking-non-naxx.gear.json';
 import Phase7Shockadin1HNaxxGearJson from './gear_sets/p7-shockadin-1h-naxx.gear.json';
 import Phase7Shockadin2HNaxxGearJson from './gear_sets/p7-shockadin-2h-naxx.gear.json';
 import Phase7TwistingNaxxGearJson from './gear_sets/p7-twisting-naxx.gear.json';
@@ -85,7 +84,7 @@ export const Phase7ExodinFastStackNonNaxxGear = PresetUtils.makePresetGear('Exod
 export const Phase7SealStackingNaxxGear = PresetUtils.makePresetGear('Seal Stacking (Naxx BiS)', Phase7SealStackingNaxxGearJson, {
 	customCondition: player => player.getLevel() == 60,
 });
-export const Phase7SealStackingNonNaxxGear = PresetUtils.makePresetGear('Seal Stacking (Non-Naxx BiS)', Phase7SealStackingNonNaxxGearJson, {
+export const Phase7SealStackingNonNaxxGear = PresetUtils.makePresetGear('Seal Stacking (Non-Naxx BiS)', Phase7SealStackingNaxxGearJson, {
 	customCondition: player => player.getLevel() == 60,
 });
 export const Phase7TwistingNaxxGear = PresetUtils.makePresetGear('Twisting (Naxx BiS)', Phase7TwistingNaxxGearJson, {
