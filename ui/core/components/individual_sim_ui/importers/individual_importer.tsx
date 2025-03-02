@@ -10,22 +10,8 @@ import { Importer, ImporterOptions } from '../../importer';
 // For now this just holds static helpers to match the exporter, so it doesn't extend Importer.
 export abstract class IndividualImporter<SpecType extends Spec> extends Importer {
 	// Exclude UISettings by default, since most users don't intend to export those.
-	static readonly DEFAULT_CATEGORIES = getEnumValues(SimSettingCategories).filter(c => c != SimSettingCategories.UISettings) as Array<SimSettingCategories>;
-
+	static readonly DEFAULT_CATEGORIES = getEnumValues(SimSettingCategories).filter(c => c !== SimSettingCategories.UISettings) as Array<SimSettingCategories>;
 	static readonly CATEGORY_PARAM = 'i';
-	static readonly CATEGORY_KEYS: Map<SimSettingCategories, string> = (() => {
-		const map = new Map();
-		// Use single-letter abbreviations since these will be included in sim links.
-		map.set(SimSettingCategories.Gear, 'g');
-		map.set(SimSettingCategories.Talents, 't');
-		map.set(SimSettingCategories.Rotation, 'r');
-		map.set(SimSettingCategories.Consumes, 'c');
-		map.set(SimSettingCategories.Miscellaneous, 'm');
-		map.set(SimSettingCategories.External, 'x');
-		map.set(SimSettingCategories.Encounter, 'e');
-		map.set(SimSettingCategories.UISettings, 'u');
-		return map;
-	})();
 
 	protected readonly simUI: IndividualSimUI<any>;
 

@@ -1,6 +1,6 @@
 import pako from 'pako';
 
-import { SimSettingCategories } from '../../../constants/sim-settings';
+import { SIM_CATEGORY_KEYS, SimSettingCategories } from '../../../constants/sim-settings';
 import { IndividualSimSettings } from '../../../proto/ui';
 import { IndividualImporter } from './individual_importer';
 
@@ -33,7 +33,7 @@ export class IndividualLinkImporter {
 		if (urlParams.has(IndividualImporter.CATEGORY_PARAM)) {
 			const categoryChars = urlParams.get(IndividualImporter.CATEGORY_PARAM)!.split('');
 			exportCategories = categoryChars
-				.map(char => [...IndividualImporter.CATEGORY_KEYS.entries()].find(e => e[1] == char))
+				.map(char => [...SIM_CATEGORY_KEYS.entries()].find(e => e[1] == char))
 				.filter(e => e)
 				.map(e => e![0]);
 		}

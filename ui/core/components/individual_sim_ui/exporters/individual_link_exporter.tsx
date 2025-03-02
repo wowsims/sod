@@ -1,6 +1,6 @@
 import { default as pako } from 'pako';
 
-import { SimSettingCategories } from '../../../constants/sim-settings';
+import { SIM_CATEGORY_KEYS, SimSettingCategories } from '../../../constants/sim-settings';
 import { IndividualSimUI } from '../../../individual_sim_ui';
 import { Spec } from '../../../proto/common';
 import { IndividualSimSettings } from '../../../proto/ui';
@@ -43,7 +43,7 @@ export class IndividualLinkExporter<SpecType extends Spec> extends IndividualExp
 		if (arrayEquals(exportCategories, IndividualImporter.DEFAULT_CATEGORIES)) {
 			linkUrl.searchParams.delete(IndividualImporter.CATEGORY_PARAM);
 		} else {
-			const categoryCharString = exportCategories.map(c => IndividualImporter.CATEGORY_KEYS.get(c)).join('');
+			const categoryCharString = exportCategories.map(c => SIM_CATEGORY_KEYS.get(c)).join('');
 			linkUrl.searchParams.set(IndividualImporter.CATEGORY_PARAM, categoryCharString);
 		}
 		return linkUrl.toString();
