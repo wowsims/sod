@@ -122,3 +122,33 @@ func (value *APLValueIsExecutePhase) GetBool(sim *Simulation) bool {
 func (value *APLValueIsExecutePhase) String() string {
 	return "Is Execute Phase"
 }
+
+type APLValueTargetMobType struct {
+	DefaultAPLValueImpl
+	MobType              proto.MobType
+	targetMatchesMobType bool
+}
+
+func (rot *APLRotation) newValueTargetMobType(config *proto.APLValueTargetMobType) APLValue {
+	if config.MobType == proto.MobType_MobTypeUnknown {
+		return nil
+	}
+	target := rot.GetTargetUnit(config.Target)
+	unit := target.Get()
+	if unit == nil {
+		return nil
+	}
+	return &APLValueTargetMobType{
+		MobType:              config.MobType,
+		targetMatchesMobType: unit.MobType == config.MobType,
+	}
+}
+func (value *APLValueTargetMobType) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeBool
+}
+func (value *APLValueTargetMobType) GetBool(sim *Simulation) bool {
+	return value.targetMatchesMobType
+}
+func (value *APLValueTargetMobType) String() string {
+	return fmt.Sprintf("Target Matches Mob Type (%s)", value.MobType)
+}

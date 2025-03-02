@@ -61,6 +61,7 @@ import {
 	APLValueSpellIsReady,
 	APLValueSpellTimeToReady,
 	APLValueSpellTravelTime,
+	APLValueTargetMobType,
 	APLValueTimeToEnergyTick,
 	APLValueTotemRemainingTime,
 	APLValueWarlockCurrentPetMana,
@@ -69,7 +70,7 @@ import {
 	APLValueWarlockShouldRecastDrainSoul,
 	APLValueWarlockShouldRefreshCorruption,
 } from '../../proto/apl.js';
-import { Class, Spec } from '../../proto/common.js';
+import { Class, MobType, Spec } from '../../proto/common.js';
 import { ShamanTotems_TotemType as TotemType } from '../../proto/shaman.js';
 import { EventID } from '../../typed_event.js';
 import { randomUUID } from '../../utils.js';
@@ -391,6 +392,31 @@ function executePhaseThresholdFieldConfig(field: string): AplHelpers.APLPickerBu
 	};
 }
 
+function targetMobTypeFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
+	return {
+		field: field,
+		newValue: () => MobType.MobTypeUnknown,
+		factory: (parent, player, config) =>
+			new TextDropdownPicker(parent, player, {
+				id: randomUUID(),
+				...config,
+				defaultLabel: 'Unknown',
+				equals: (a, b) => a === b,
+				values: [
+					{ label: 'Unknown', value: MobType.MobTypeUnknown },
+					{ label: 'Beast', value: MobType.MobTypeBeast },
+					{ label: 'Demon', value: MobType.MobTypeDemon },
+					{ label: 'Dragonkin', value: MobType.MobTypeDragonkin },
+					{ label: 'Elemental', value: MobType.MobTypeElemental },
+					{ label: 'Giant', value: MobType.MobTypeGiant },
+					{ label: 'Humanoid', value: MobType.MobTypeHumanoid },
+					{ label: 'Mechanical', value: MobType.MobTypeMechanical },
+					{ label: 'Undead', value: MobType.MobTypeUndead },
+				],
+			}),
+	};
+}
+
 function totemTypeFieldConfig(field: string): AplHelpers.APLPickerBuilderFieldConfig<any, any> {
 	return {
 		field: field,
@@ -595,6 +621,13 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		shortDescription: '<b>True</b> if facing from of target',
 		newValue: APLValueFrontOfTarget.create,
 		fields: [],
+	}),
+	targetMobType: inputBuilder({
+		label: 'Target Mob Type',
+		submenu: ['Encounter'],
+		shortDescription: '<b>True</b> if the selected target is of the specified mob type, otherwise <b>False</b>.',
+		newValue: APLValueTargetMobType.create,
+		fields: [AplHelpers.unitFieldConfig('target', 'targets'), targetMobTypeFieldConfig('mobType')],
 	}),
 
 	// Resources

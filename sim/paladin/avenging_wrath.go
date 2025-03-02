@@ -13,7 +13,9 @@ func (paladin *Paladin) registerAvengingWrath() {
 		Label:    "Avenging Wrath",
 		ActionID: actionID,
 		Duration: time.Second * 20,
-	}).AttachMultiplicativePseudoStatBuff(&paladin.PseudoStats.DamageDealtMultiplier, 1.2)
+	})
+	AvengingWrathAura.AttachMultiplicativePseudoStatBuff(&paladin.PseudoStats.DamageDealtMultiplier, 1.2)
+	AvengingWrathAura.AttachMultiplicativePseudoStatBuff(&paladin.PseudoStats.HealingDealtMultiplier, 1.2)
 
 	core.RegisterPercentDamageModifierEffect(AvengingWrathAura, 1.2)
 

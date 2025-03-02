@@ -89,7 +89,8 @@ func (env *Environment) construct(raidProto *proto.Raid, encounterProto *proto.E
 	// Apply extra debuffs from raid.
 	if raidProto.Debuffs != nil && len(env.Encounter.TargetUnits) > 0 {
 		for targetIdx, targetUnit := range env.Encounter.TargetUnits {
-			applyDebuffEffects(targetUnit, targetIdx, raidProto.Debuffs, raidProto)
+			level := raidProto.Parties[0].Players[0].Level
+			applyDebuffEffects(targetUnit, targetIdx, raidProto.Debuffs, level, env.Raid.AllUnits)
 		}
 	}
 
