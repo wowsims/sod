@@ -149,15 +149,15 @@ func (ai *LoathebAI) ExecuteCustomRotation(sim *core.Simulation) {
 		target = &ai.Target.Env.Raid.Parties[0].Players[0].GetCharacter().Unit
 	}
 
-	if sim.CurrentTime > (time.Second * 4) {
-		ai.RemoveCurse.Cast(sim, target)
-			return
-	}
-
 	if ai.SummonSpore.IsReady(sim) {
 		if sim.CurrentTime > ((time.Duration(ai.sporeAssignment)*13)+4)*time.Second && ai.sporeAssignment != 0 {
 			ai.SummonSpore.Cast(sim, target)
 			return
 		}
+	}
+
+	if sim.CurrentTime > (time.Second * 4) {
+		ai.RemoveCurse.Cast(sim, target)
+			return
 	}
 }
