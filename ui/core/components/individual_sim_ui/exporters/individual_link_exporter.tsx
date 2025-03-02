@@ -1,3 +1,5 @@
+import { default as pako } from 'pako';
+
 import { SimSettingCategories } from '../../../constants/sim-settings';
 import { IndividualSimUI } from '../../../individual_sim_ui';
 import { Spec } from '../../../proto/common';
