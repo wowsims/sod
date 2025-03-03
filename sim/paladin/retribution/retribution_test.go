@@ -124,6 +124,24 @@ func TestRetribution(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      7,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase456RetTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p7-twisting-naxx"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5p6p7-twist"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase7ConsumesTwistStack,
+			SpecOptions: core.SpecOptionsCombo{Label: "P7 Twist", SpecOptions: PlayerOptionsSealofMartyrdomStopAttack},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -165,10 +183,87 @@ func TestExodin(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      6,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase456RetTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p6-exodin"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p6-exodin"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase6Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "P6 Exodin", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      7,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase456RetTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p7-exodin-naxx"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p7-exodin"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase7ConsumesExodin,
+			SpecOptions: core.SpecOptionsCombo{Label: "P7 Exodin", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
-func TestShockadin(t *testing.T) {
+func TestShockadin1H(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      5,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase45ShockadinTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5-shockadin"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5-shockadin"),
+			Buffs:       core.FullBuffsPhase5,
+			Consumes:    Phase5Consumes,
+			SpecOptions: core.SpecOptionsCombo{Label: "P5 Shockadin", SpecOptions: PlayerOptionsSealofRighteousness},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatSpellPower,
+			StatsToWeigh:    Stats,
+		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      7,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase7ShockadinTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p7-shockadin-1h-naxx"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p7-shockadin-1h"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase7ConsumesShockadin,
+			SpecOptions: core.SpecOptionsCombo{Label: "P7 Shockadin 1H", SpecOptions: PlayerOptionsSealofRighteousnessNoAura},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
+	}))
+}
+
+func TestShockadin2H(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
 			Class:      proto.Class_ClassPaladin,
@@ -189,20 +284,20 @@ func TestShockadin(t *testing.T) {
 		},
 		{
 			Class:      proto.Class_ClassPaladin,
-			Phase:      5,
+			Phase:      7,
 			Level:      60,
 			Race:       proto.Race_RaceHuman,
 			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
 
-			Talents:     Phase45ShockadinTalents,
-			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p5-shockadin"),
-			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p5-shockadin"),
-			Buffs:       core.FullBuffsPhase5,
-			Consumes:    Phase5Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "P5 Shockadin", SpecOptions: PlayerOptionsSealofRighteousness},
+			Talents:     Phase7ShockadinTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p7-shockadin-2h-naxx"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p7-shockadin-2h"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase7ConsumesShockadin,
+			SpecOptions: core.SpecOptionsCombo{Label: "P7 Shockadin 2H", SpecOptions: PlayerOptionsSealofMartyrdomNoAura},
 
 			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatSpellPower,
+			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
 	}))
@@ -228,6 +323,24 @@ func TestSealStacking(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		{
+			Class:      proto.Class_ClassPaladin,
+			Phase:      7,
+			Level:      60,
+			Race:       proto.Race_RaceHuman,
+			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+
+			Talents:     Phase456RetTalents,
+			GearSet:     core.GetGearSet("../../../ui/retribution_paladin/gear_sets", "p7-seal-stacking-naxx"),
+			Rotation:    core.GetAplRotation("../../../ui/retribution_paladin/apls", "p7-seal-stacking"),
+			Buffs:       core.FullBuffsPhase6,
+			Consumes:    Phase7ConsumesTwistStack,
+			SpecOptions: core.SpecOptionsCombo{Label: "P7 Seal Stacking", SpecOptions: PlayerOptionsSealofMartyrdom},
+
+			ItemFilter:      ItemFilters,
+			EPReferenceStat: proto.Stat_StatAttackPower,
+			StatsToWeigh:    Stats,
+		},
 	}))
 }
 
@@ -237,6 +350,7 @@ var Phase2ShockadinTalents = "55050100521151--"
 var Phase3RetTalents = "500501--53230051200315"
 var Phase456RetTalents = "500501-503-52230351200315"
 var Phase45ShockadinTalents = "55053100501051--052303511"
+var Phase7ShockadinTalents = "55053100501051--052303502"
 
 var Phase1Consumes = core.ConsumesCombo{
 	Label: "P1-Consumes",
@@ -284,6 +398,7 @@ var Phase4Consumes = core.ConsumesCombo{
 	Label: "P4-Consumes",
 	Consumes: &proto.Consumes{
 		DefaultPotion:     proto.Potions_MajorManaPotion,
+		Alcohol:           proto.Alcohol_AlcoholRumseyRumBlackLabel,
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
 		Flask:             proto.Flask_FlaskOfSupremePower,
@@ -302,6 +417,7 @@ var Phase5Consumes = core.ConsumesCombo{
 	Label: "P5-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir:     proto.AgilityElixir_ElixirOfTheMongoose,
+		Alcohol:           proto.Alcohol_AlcoholRumseyRumBlackLabel,
 		AttackPowerBuff:   proto.AttackPowerBuff_JujuMight,
 		DefaultPotion:     proto.Potions_MajorManaPotion,
 		DragonBreathChili: true,
@@ -319,7 +435,8 @@ var Phase5Consumes = core.ConsumesCombo{
 var Phase6Consumes = core.ConsumesCombo{
 	Label: "P6-Consumes",
 	Consumes: &proto.Consumes{
-		AgilityElixir:            proto.AgilityElixir_ElixirOfTheMongoose,
+		AgilityElixir:            proto.AgilityElixir_ElixirOfTheHoneyBadger,
+		Alcohol:                  proto.Alcohol_AlcoholRumseyRumBlackLabel,
 		AttackPowerBuff:          proto.AttackPowerBuff_JujuMight,
 		DefaultConjured:          proto.Conjured_ConjuredDemonicRune,
 		DefaultPotion:            proto.Potions_MajorManaPotion,
@@ -331,12 +448,119 @@ var Phase6Consumes = core.ConsumesCombo{
 		MainHandImbue:            proto.WeaponImbue_WildStrikes,
 		ManaRegenElixir:          proto.ManaRegenElixir_MagebloodPotion,
 		MildlyIrradiatedRejuvPot: true,
+		MiscConsumes:             Phase6MiscConsumes,
 		OffHandImbue:             proto.WeaponImbue_EnchantedRepellent,
 		SapperExplosive:          proto.SapperExplosive_SapperFumigator,
 		SpellPowerBuff:           proto.SpellPowerBuff_ElixirOfTheMageLord,
 		StrengthBuff:             proto.StrengthBuff_JujuPower,
 		ZanzaBuff:                proto.ZanzaBuff_ROIDS,
 	},
+}
+
+var Phase6MiscConsumes = &proto.MiscConsumes{
+	BoglingRoot:             true,
+	ElixirOfCoalescedRegret: true,
+}
+
+var Phase7ConsumesTwistStack = core.ConsumesCombo{
+	Label: "P7-Consumes-TwistStack",
+	Consumes: &proto.Consumes{
+		AgilityElixir:            proto.AgilityElixir_ElixirOfTheHoneyBadger,
+		Alcohol:                  proto.Alcohol_AlcoholRumseyRumBlackLabel,
+		AttackPowerBuff:          proto.AttackPowerBuff_JujuMight,
+		DefaultConjured:          proto.Conjured_ConjuredDemonicRune,
+		DefaultPotion:            proto.Potions_MajorManaPotion,
+		DragonBreathChili:        true,
+		EnchantedSigil:           proto.EnchantedSigil_WrathOfTheStormSigil,
+		FillerExplosive:          proto.Explosive_ExplosiveStratholmeHolyWater,
+		FirePowerBuff:            proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		Flask:                    proto.Flask_FlaskOfAncientKnowledge,
+		Food:                     proto.Food_FoodSmokedDesertDumpling,
+		MainHandImbue:            proto.WeaponImbue_WildStrikes,
+		ManaRegenElixir:          proto.ManaRegenElixir_MagebloodPotion,
+		MildlyIrradiatedRejuvPot: true,
+		MiscConsumes:             Phase7MiscConsumesTwistStack,
+		OffHandImbue:             proto.WeaponImbue_EnchantedRepellent,
+		SapperExplosive:          proto.SapperExplosive_SapperUnknown,
+		SealOfTheDawn:            proto.SealOfTheDawn_SealOfTheDawnDamageR10,
+		SpellPowerBuff:           proto.SpellPowerBuff_ElixirOfTheMageLord,
+		StrengthBuff:             proto.StrengthBuff_JujuPower,
+		ZanzaBuff:                proto.ZanzaBuff_ROIDS,
+	},
+}
+
+var Phase7MiscConsumesTwistStack = &proto.MiscConsumes{
+	BoglingRoot:             true,
+	ElixirOfCoalescedRegret: true,
+	GreaterMarkOfTheDawn:    true,
+}
+
+var Phase7ConsumesExodin = core.ConsumesCombo{
+	Label: "P7-Consumes-Exodin",
+	Consumes: &proto.Consumes{
+		AgilityElixir:            proto.AgilityElixir_ElixirOfTheHoneyBadger,
+		Alcohol:                  proto.Alcohol_AlcoholRumseyRumBlackLabel,
+		AttackPowerBuff:          proto.AttackPowerBuff_JujuMight,
+		DefaultConjured:          proto.Conjured_ConjuredDemonicRune,
+		DefaultPotion:            proto.Potions_MajorManaPotion,
+		DragonBreathChili:        true,
+		EnchantedSigil:           proto.EnchantedSigil_WrathOfTheStormSigil,
+		FillerExplosive:          proto.Explosive_ExplosiveStratholmeHolyWater,
+		FirePowerBuff:            proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		Flask:                    proto.Flask_FlaskOfAncientKnowledge,
+		Food:                     proto.Food_FoodSmokedDesertDumpling,
+		MainHandImbue:            proto.WeaponImbue_WildStrikes,
+		ManaRegenElixir:          proto.ManaRegenElixir_MagebloodPotion,
+		MildlyIrradiatedRejuvPot: true,
+		MiscConsumes:             Phase7MiscConsumesExodin,
+		OffHandImbue:             proto.WeaponImbue_EnchantedRepellent,
+		SapperExplosive:          proto.SapperExplosive_SapperUnknown,
+		SealOfTheDawn:            proto.SealOfTheDawn_SealOfTheDawnDamageR10,
+		SpellPowerBuff:           proto.SpellPowerBuff_ElixirOfTheMageLord,
+		StrengthBuff:             proto.StrengthBuff_JujuPower,
+		ZanzaBuff:                proto.ZanzaBuff_ROIDS,
+	},
+}
+
+var Phase7MiscConsumesExodin = &proto.MiscConsumes{
+	BoglingRoot:             true,
+	ElixirOfCoalescedRegret: true,
+	GreaterMarkOfTheDawn:    true,
+	JujuFlurry:              true,
+}
+
+var Phase7ConsumesShockadin = core.ConsumesCombo{
+	Label: "P7-Consumes-Shockadin",
+	Consumes: &proto.Consumes{
+		AgilityElixir:            proto.AgilityElixir_ElixirOfTheHoneyBadger,
+		Alcohol:                  proto.Alcohol_AlcoholRumseyRumBlackLabel,
+		AttackPowerBuff:          proto.AttackPowerBuff_JujuMight,
+		DefaultConjured:          proto.Conjured_ConjuredDemonicRune,
+		DefaultPotion:            proto.Potions_MajorManaPotion,
+		DragonBreathChili:        true,
+		EnchantedSigil:           proto.EnchantedSigil_WrathOfTheStormSigil,
+		FillerExplosive:          proto.Explosive_ExplosiveStratholmeHolyWater,
+		FirePowerBuff:            proto.FirePowerBuff_ElixirOfGreaterFirepower,
+		Flask:                    proto.Flask_FlaskOfAncientKnowledge,
+		Food:                     proto.Food_FoodRunnTumTuberSurprise,
+		MainHandImbue:            proto.WeaponImbue_WildStrikes,
+		ManaRegenElixir:          proto.ManaRegenElixir_MagebloodPotion,
+		MildlyIrradiatedRejuvPot: true,
+		MiscConsumes:             Phase7MiscConsumesShockadin,
+		OffHandImbue:             proto.WeaponImbue_EnchantedRepellent,
+		SapperExplosive:          proto.SapperExplosive_SapperUnknown,
+		SealOfTheDawn:            proto.SealOfTheDawn_SealOfTheDawnDamageR10,
+		SpellPowerBuff:           proto.SpellPowerBuff_ElixirOfTheMageLord,
+		StrengthBuff:             proto.StrengthBuff_JujuPower,
+		ZanzaBuff:                proto.ZanzaBuff_CerebralCortexCompound,
+	},
+}
+
+var Phase7MiscConsumesShockadin = &proto.MiscConsumes{
+	BoglingRoot:             true,
+	ElixirOfCoalescedRegret: true,
+	GreaterMarkOfTheDawn:    true,
+	JujuFlurry:              true,
 }
 
 var PlayerOptionsSealofCommand = &proto.Player_RetributionPaladin{
@@ -348,6 +572,12 @@ var PlayerOptionsSealofCommand = &proto.Player_RetributionPaladin{
 var PlayerOptionsSealofMartyrdom = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{
 		Options: optionsSealOfMartyrdom,
+	},
+}
+
+var PlayerOptionsSealofMartyrdomNoAura = &proto.Player_RetributionPaladin{
+	RetributionPaladin: &proto.RetributionPaladin{
+		Options: optionsSealOfMartyrdomNoAura,
 	},
 }
 
@@ -363,6 +593,12 @@ var PlayerOptionsSealofRighteousness = &proto.Player_RetributionPaladin{
 	},
 }
 
+var PlayerOptionsSealofRighteousnessNoAura = &proto.Player_RetributionPaladin{
+	RetributionPaladin: &proto.RetributionPaladin{
+		Options: optionsSealOfRighteousnessNoAura,
+	},
+}
+
 var optionsSealOfCommand = &proto.PaladinOptions{
 	Aura:        proto.PaladinAura_SanctityAura,
 	PrimarySeal: proto.PaladinSeal_Command,
@@ -370,6 +606,11 @@ var optionsSealOfCommand = &proto.PaladinOptions{
 
 var optionsSealOfMartyrdom = &proto.PaladinOptions{
 	Aura:        proto.PaladinAura_SanctityAura,
+	PrimarySeal: proto.PaladinSeal_Martyrdom,
+}
+
+var optionsSealOfMartyrdomNoAura = &proto.PaladinOptions{
+	Aura:        proto.PaladinAura_NoPaladinAura,
 	PrimarySeal: proto.PaladinSeal_Martyrdom,
 }
 
@@ -384,6 +625,11 @@ var optionsSealOfMartyrdomStopAttack = &proto.PaladinOptions{
 
 var optionsSealOfRighteousness = &proto.PaladinOptions{
 	Aura:        proto.PaladinAura_SanctityAura,
+	PrimarySeal: proto.PaladinSeal_Righteousness,
+}
+
+var optionsSealOfRighteousnessNoAura = &proto.PaladinOptions{
+	Aura:        proto.PaladinAura_NoPaladinAura,
 	PrimarySeal: proto.PaladinSeal_Righteousness,
 }
 
@@ -409,4 +655,6 @@ var Stats = []proto.Stat{
 	proto.Stat_StatSpellPower,
 	proto.Stat_StatSpellHit,
 	proto.Stat_StatSpellCrit,
+	proto.Stat_StatMeleeHaste,
+	proto.Stat_StatExpertise,
 }

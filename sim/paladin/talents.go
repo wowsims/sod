@@ -129,34 +129,40 @@ func (paladin *Paladin) applyVengeance() {
 		return
 	}
 
-	vengeanceMultiplier := []float64{1, 1.03, 1.06, 1.09, 1.12, 1.15}[paladin.Talents.Vengeance]
+	vengeanceMultiplier := []float64{0, 0.03, 0.06, 0.09, 0.12, 0.15}[paladin.Talents.Vengeance]
+	damageMultiplier := 1.0 + vengeanceMultiplier
+
+	if !paladin.Options.RighteousFury {
+		threatMultiplier := 1.0 + (vengeanceMultiplier * 2)
+		paladin.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_Threat_Pct,
+			School:     core.SpellSchoolPhysical,
+			FloatValue: 1.0 / threatMultiplier,
+		})
+	}
 
 	procAura := paladin.RegisterAura(core.Aura{
 		Label:    "Vengeance Proc",
 		ActionID: core.ActionID{SpellID: 20059},
 		Duration: time.Second * 8,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= vengeanceMultiplier
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= vengeanceMultiplier
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= damageMultiplier
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= damageMultiplier
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= vengeanceMultiplier
-			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= vengeanceMultiplier
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] /= damageMultiplier
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= damageMultiplier
 		},
 	})
 
-	paladin.RegisterAura(core.Aura{
-		Label:    "Vengeance",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label: "Vengeance",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidCrit() {
 				procAura.Activate(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (paladin *Paladin) applyVindication() {

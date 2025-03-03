@@ -67,6 +67,21 @@ func (paladin *Paladin) registerExorcism() {
 				CD: *paladin.exorcismCooldown,
 			},
 
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				if paladin.artOfWarDelayAura == nil {
+					return true
+				}
+
+				if paladin.artOfWarDelayAura.IsActive() {
+					if sim.Log != nil {
+						paladin.Log(sim, "The Art of War Delay prevents Exorcism from being cast for another %s", paladin.artOfWarDelayAura.RemainingDuration(sim))
+					}
+					return false
+				}
+
+				return true
+			},
+
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 

@@ -103,6 +103,8 @@ type Paladin struct {
 	enableMultiJudge    bool
 	lingerDuration      time.Duration
 	consumeSealsOnJudge bool
+	artOfWarDelayAura   *core.Aura
+	bypassMacroOptions   bool
 }
 
 // Implemented by each Paladin spec.
@@ -132,6 +134,20 @@ func (paladin *Paladin) shouldAttachStopAttack(spell *core.Spell) bool {
 		(paladin.Options.IsUsingDivineStormStopAttack && spell.Matches(ClassSpellMask_PaladinDivineStorm))
 }
 
+func (paladin *Paladin) performStopAttack(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	paladin.AutoAttacks.CancelAutoSwing(sim)
+
+	if paladin.Options.IsUsingManualStartAttack {
+		core.StartDelayedAction(sim, core.DelayedActionOptions{
+			DoAt:     sim.CurrentTime + time.Millisecond*time.Duration(sim.RollWithLabel(50, 100, "Start attack delay")),
+			Priority: core.ActionPriorityAuto,
+			OnAction: func(sim *core.Simulation) {
+				paladin.AutoAttacks.EnableAutoSwing(sim)
+			},
+		})
+	}
+}
+
 func (paladin *Paladin) registerStartAndStopAttacks() {
 	if !paladin.Options.IsUsingJudgementStopAttack &&
 		!paladin.Options.IsUsingExorcismStopAttack &&
@@ -146,23 +162,17 @@ func (paladin *Paladin) registerStartAndStopAttacks() {
 			oldApplyEffects := spell.ApplyEffects
 			spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				oldApplyEffects(sim, target, spell)
-				paladin.AutoAttacks.CancelAutoSwing(sim)
-
-				if paladin.Options.IsUsingManualStartAttack {
-					core.StartDelayedAction(sim, core.DelayedActionOptions{
-						DoAt:     sim.CurrentTime + time.Millisecond*time.Duration(sim.RollWithLabel(50, 100, "Start attack delay")),
-						Priority: core.ActionPriorityAuto,
-						OnAction: func(sim *core.Simulation) {
-							paladin.AutoAttacks.EnableAutoSwing(sim)
-						},
-					})
+				if paladin.bypassMacroOptions {
+					return
 				}
+
+				paladin.performStopAttack(sim, target, spell)
 			}
 		} else if !paladin.Options.IsUsingManualStartAttack && spell.Flags.Matches(core.SpellFlagBatchStartAttackMacro) {
 			oldApplyEffects := spell.ApplyEffects
 			spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				oldApplyEffects(sim, target, spell)
-				if sim.CurrentTime > 0 {
+				if !paladin.bypassMacroOptions && sim.CurrentTime > 0 {
 					paladin.AutoAttacks.EnableAutoSwing(sim)
 				}
 			}
