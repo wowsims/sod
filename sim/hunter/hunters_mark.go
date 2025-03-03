@@ -58,7 +58,8 @@ func (hunter *Hunter) registerHuntersMark() {
 		config := hunter.getHuntersMark(i)
 
 		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.HuntersMark = hunter.GetOrRegisterSpell(config)
+			hunter.HuntersMark = append(hunter.HuntersMark, hunter.GetOrRegisterSpell(config))
 		}
 	}
+	
 }
