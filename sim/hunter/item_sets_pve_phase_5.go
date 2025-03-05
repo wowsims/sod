@@ -169,12 +169,22 @@ func (hunter *Hunter) applyT2Ranged4PBonus() {
 		return
 	}
 
+	damageModMap := make(map[int64]*core.SpellMod)
 	var damageMod *core.SpellMod
-
 	procAura := hunter.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 467312},
 		Label:    label + " Proc",
 		Duration: time.Second * 12,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			for _, shot := range hunter.Shots {
+				// Create new damage mod that buffs all shots that are not the current shot
+				damageModMap[shot.ClassSpellMask] = hunter.AddDynamicMod(core.SpellModConfig{
+					Kind:      core.SpellMod_DamageDone_Flat,
+					ClassMask: ClassSpellMask_HunterShots &^ shot.ClassSpellMask,
+					IntValue:  10,
+				})
+			}
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMod.Activate()
 		},
@@ -191,14 +201,7 @@ func (hunter *Hunter) applyT2Ranged4PBonus() {
 			if procAura.IsActive() {
 				procAura.Deactivate(sim)
 			}
-
-			// Create new damage mod that buffs all shots that are not the current shot
-			damageMod = hunter.AddDynamicMod(core.SpellModConfig{
-				Kind:      core.SpellMod_DamageDone_Flat,
-				ClassMask: ClassSpellMask_HunterShots &^ spell.ClassSpellMask,
-				IntValue:  10,
-			})
-
+			damageMod = damageModMap[spell.ClassSpellMask]
 			procAura.Activate(sim)
 		},
 	})
