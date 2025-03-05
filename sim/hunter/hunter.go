@@ -131,7 +131,7 @@ type Hunter struct {
 	CarveMH                 *core.Spell
 	CarveOH                 *core.Spell
 	WingClip                *core.Spell
-	HuntersMark             []*core.Spell
+	HuntersMark             *core.Spell
 
 	Shots       []*core.Spell
 	Strikes     []*core.Spell

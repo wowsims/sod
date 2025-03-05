@@ -54,11 +54,12 @@ func (hunter *Hunter) myHuntersMarkAura(target *core.Unit, playerLevel int32) *c
 
 func (hunter *Hunter) registerHuntersMark() {
 	maxRank := 4
-	for i := 1; i <= maxRank; i++ {
+	for i := maxRank; i > 1; i-- {
 		config := hunter.getHuntersMark(i)
 
 		if config.RequiredLevel <= int(hunter.Level) {
-			hunter.HuntersMark = append(hunter.HuntersMark, hunter.GetOrRegisterSpell(config))
+			hunter.HuntersMark = hunter.GetOrRegisterSpell(config)
+			return
 		}
 	}
 	
