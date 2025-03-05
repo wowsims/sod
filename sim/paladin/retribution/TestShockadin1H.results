@@ -148,12 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestShockadin1H-Phase7-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.87184
-  weights: 1.80148
+  weights: 1.86823
+  weights: 2.28915
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.24296
+  weights: 1.23871
   weights: 0
   weights: 0
   weights: 0
@@ -161,16 +161,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 24.49614
-  weights: 0.60153
+  weights: 25.38567
+  weights: -2.30839
   weights: 0
   weights: 0
-  weights: 0.6726
+  weights: 0.6713
   weights: 0
-  weights: 5.17566
+  weights: 3.98439
   weights: 0
   weights: 0
-  weights: -6.35861
+  weights: 10.78682
   weights: 0
   weights: 0
   weights: 0
@@ -337,49 +337,49 @@ dps_results: {
 dps_results: {
  key: "TestShockadin1H-Phase7-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 2352.38613
-  tps: 2401.45481
+  dps: 2345.00127
+  tps: 2393.95046
   hps: 80.3553
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase7-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 2389.71007
-  tps: 2439.82276
+  dps: 2382.91386
+  tps: 2433.06906
   hps: 80.3553
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase7-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 2507.1798
-  tps: 2559.19297
+  dps: 2499.32075
+  tps: 2551.13822
   hps: 80.3553
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase7-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 3021.61281
-  tps: 3069.96135
+  dps: 3033.748
+  tps: 3082.11042
   hps: 85.63383
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase7-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1838.66718
-  tps: 1877.05346
+  dps: 1837.87169
+  tps: 1876.2825
   hps: 78.35653
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase7-Lvl60-Average-Default"
  value: {
-  dps: 4431.75382
-  tps: 4456.15005
-  hps: 87.8815
+  dps: 4443.89883
+  tps: 4468.38067
+  hps: 87.92609
  }
 }
 dps_results: {
@@ -469,8 +469,8 @@ dps_results: {
 dps_results: {
  key: "TestShockadin1H-Phase7-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4280.72841
-  tps: 4306.24195
-  hps: 78.751
+  dps: 4258.86061
+  tps: 4284.22762
+  hps: 78.6412
  }
 }
