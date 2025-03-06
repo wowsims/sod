@@ -3412,7 +3412,7 @@ func BlazefuryTriggerAura(character *core.Character, itemID int32, triggerSpellI
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicCrit)
+			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicHitAndCrit)
 		},
 	})
 

@@ -247,7 +247,7 @@ func (rogue *Rogue) applyT1Tank4PBonus() {
 	})
 }
 
-// Your finishing moves have a 20% chance per combo point to make you take 50% less Physical damage from the next melee attack that hits you within 10 sec.
+// Your finishing moves have a 20% chance per combo point to make you take 20% less Physical damage from the next melee attack that hits you within 10 sec.
 func (rogue *Rogue) applyT1Tank6PBonus() {
 	label := "S03 - Item - T1 - Rogue - Tank 6P Bonus"
 	if rogue.HasAura(label) {
@@ -255,7 +255,7 @@ func (rogue *Rogue) applyT1Tank6PBonus() {
 	}
 
 	buffLabel := fmt.Sprintf("Resilient (%s)", label)
-	damageTakenMultiplier := 0.5
+	damageTakenMultiplier := 0.8
 
 	buffAura := rogue.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 457469},
