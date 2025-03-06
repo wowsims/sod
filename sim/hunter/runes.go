@@ -30,7 +30,7 @@ func (hunter *Hunter) ApplyRunes() {
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneBootsDualWieldSpecialization) {
-		hunter.AutoAttacks.OHConfig().DamageMultiplier *= 1.5
+		hunter.AutoAttacks.OHConfig().DamageMultiplier *= 1.60
 	}
 
 	hunter.applyCatlikeReflexes()
