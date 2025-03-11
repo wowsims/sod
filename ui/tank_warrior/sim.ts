@@ -44,7 +44,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarrior, {
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		// Attributes
-		Stat.StatStamina,
 		Stat.StatStrength,
 		Stat.StatAgility,
 		// Physical

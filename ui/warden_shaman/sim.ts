@@ -60,7 +60,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWardenShaman, {
 		// Primary
 		Stat.StatMana,
 		// Attributes
-		Stat.StatStamina,
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatIntellect,

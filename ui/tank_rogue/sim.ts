@@ -36,11 +36,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		Stat.StatArmor,
 		Stat.StatBonusArmor,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to caluclate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats seciont, at the bottom of the lef-hand sidebar.
@@ -48,7 +44,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		// Attributes
 		Stat.StatAgility,
 		Stat.StatStrength,
-		Stat.StatStamina,
 		// Physical
 		Stat.StatAttackPower,
 		Stat.StatMeleeHit,
@@ -66,10 +61,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 		// Resistances
 		Stat.StatShadowResistance,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatThornsDamage,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
+	displayPseudoStats: [PseudoStat.PseudoStatThornsDamage, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 
 	defaults: {
 		// Default equipped gear.
@@ -117,10 +109,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankRogue, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellCritBuff,
-		BuffDebuffInputs.SpellShadowWeavingDebuff,
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellCritBuff, BuffDebuffInputs.SpellShadowWeavingDebuff],
 	excludeBuffDebuffInputs: [],
 	otherInputs: {
 		inputs: [

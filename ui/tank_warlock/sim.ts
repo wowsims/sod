@@ -49,7 +49,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 		Stat.StatMana,
 		// Attributes
 		Stat.StatStrength,
-		Stat.StatStamina,
 		Stat.StatAgility,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
@@ -117,9 +116,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecTankWarlock, {
 
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [],
-	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.BleedDebuff,
-	],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	petConsumeInputs: [ConsumablesInputs.PetAttackPowerConsumable, ConsumablesInputs.PetAgilityConsumable, ConsumablesInputs.PetStrengthConsumable],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

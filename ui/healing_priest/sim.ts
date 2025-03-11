@@ -1,16 +1,7 @@
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import {
-	APLRotation,
-} from '../core/proto/apl.js';
-import {
-	Class,
-	Faction,
-	PartyBuffs,
-	Race,
-	Spec,
-	Stat,
-} from '../core/proto/common.js';
+import { APLRotation } from '../core/proto/apl.js';
+import { Class, Faction, PartyBuffs, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
 import * as HealingPriestInputs from './inputs.js';
@@ -26,25 +17,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 	],
 
 	// All stats for which EP should be calculated.
-	epStats: [
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellCrit,
-		Stat.StatMP5,
-	],
+	epStats: [Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatMana,
-		Stat.StatStamina,
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellCrit,
-		Stat.StatMP5,
-	],
+	displayStats: [Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
 	displayPseudoStats: [],
 
 	defaults: {
@@ -72,16 +49,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
-	playerIconInputs: [
-		HealingPriestInputs.SelfPowerInfusion,
-		HealingPriestInputs.InnerFire,
-		HealingPriestInputs.Shadowfiend,
-	],
+	playerIconInputs: [HealingPriestInputs.SelfPowerInfusion, HealingPriestInputs.InnerFire, HealingPriestInputs.Shadowfiend],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-	],
-	excludeBuffDebuffInputs: [
-	],
+	includeBuffDebuffInputs: [],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [],
@@ -93,20 +64,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 
 	presets: {
 		// Preset talents that the user can quickly select.
-		talents: [
-			Presets.DiscTalents,
-			Presets.HolyTalents,
-		],
+		talents: [Presets.DiscTalents, Presets.HolyTalents],
 		// Preset rotations that the user can quickly select.
-		rotations: [
-			Presets.ROTATION_PRESET_DISC,
-			Presets.ROTATION_PRESET_HOLY,
-		],
+		rotations: [Presets.ROTATION_PRESET_DISC, Presets.ROTATION_PRESET_HOLY],
 		// Preset gear configurations that the user can quickly select.
-		gear: [
-			Presets.DiscDefaultGear,
-			Presets.HolyDefaultGear,
-		],
+		gear: [Presets.DiscDefaultGear, Presets.HolyDefaultGear],
 	},
 
 	autoRotation: (player: Player<Spec.SpecHealingPriest>): APLRotation => {
@@ -167,7 +129,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHealingPriest, {
 				},
 			},
 		},
-	]
+	],
 });
 
 export class HealingPriestSimUI extends IndividualSimUI<Spec.SpecHealingPriest> {
