@@ -19,6 +19,13 @@ export const StanceSnapshot = <SpecType extends WarriorSpecs>() =>
 		labelTooltip: 'Ability that is cast at the same time as stance swap will benefit from the bonus of the stance before the swap.',
 	});
 
+export const QueueDelay = <SpecType extends WarriorSpecs>() =>
+	InputHelpers.makeSpecOptionsNumberInput<SpecType>({
+		fieldName: 'queueDelay',
+		label: 'HS/Cleave Queue Delay (ms)',
+		labelTooltip: 'How long (in milliseconds) to delay re-queueing Heroic Strike/Cleave in order to simulate real reaction time and game delay.',
+	});
+
 export const ShoutPicker = <SpecType extends WarriorSpecs>() =>
 	InputHelpers.makeSpecOptionsBooleanIconInput<SpecType>({
 		fieldName: 'shout',

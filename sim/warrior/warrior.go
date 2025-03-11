@@ -49,6 +49,7 @@ const (
 var TalentTreeSizes = [3]int{18, 17, 17}
 
 type WarriorInputs struct {
+	QueueDelay     int32
 	StanceSnapshot bool
 	Stance         proto.WarriorStance
 }
@@ -264,7 +265,7 @@ func (warrior *Warrior) Initialize() {
 	// This can cause an unrealistic immediate double-hit around wild strikes procs
 	queuedRealismICD := &core.Cooldown{
 		Timer:    warrior.NewTimer(),
-		Duration: core.SpellBatchWindow * 10,
+		Duration: time.Millisecond * time.Duration(warrior.WarriorInputs.QueueDelay),
 	}
 	warrior.registerHeroicStrikeSpell(queuedRealismICD)
 	warrior.registerCleaveSpell(queuedRealismICD)
