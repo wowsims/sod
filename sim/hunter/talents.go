@@ -82,7 +82,7 @@ func (hunter *Hunter) ApplyTalents() {
 	if hunter.Talents.RangedWeaponSpecialization > 0 {
 		mult := 1 + 0.01*float64(hunter.Talents.RangedWeaponSpecialization)
 		hunter.OnSpellRegistered(func(spell *core.Spell) {
-			if spell.ProcMask.Matches(core.ProcMaskRanged) && !spell.Matches(ClassSpellMask_HunterSerpentSting) {
+			if spell.Matches(ClassSpellMask_HunterShots) || spell.ProcMask.Matches(core.ProcMaskRangedAuto) {
 				spell.ApplyMultiplicativeDamageBonus(mult)
 			}
 		})

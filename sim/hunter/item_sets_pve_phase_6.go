@@ -147,14 +147,7 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 							DoAt: sim.CurrentTime + time.Duration(i*375)*time.Millisecond,
 							OnAction: func(sim *core.Simulation) {
 								// Ensure that the cloned shots get any damage amps from the main Kill Shot ability
-								damageMultiplier := spell.GetDamageMultiplier()
-								damageMultiplierAdditive := spell.GetDamageMultiplierAdditive()
-
-								clonedShot.ApplyMultiplicativeDamageBonus(damageMultiplier)
-								clonedShot.ApplyAdditiveDamageBonus(damageMultiplierAdditive)
 								clonedShot.Cast(sim, target)
-								clonedShot.ApplyMultiplicativeDamageBonus(1 / damageMultiplier)
-								clonedShot.ApplyAdditiveDamageBonus(-damageMultiplierAdditive)
 							},
 						})
 					}
