@@ -1256,8 +1256,7 @@ type ExplosiveConfig struct {
 	SelfMinDamage float64
 	SelfMaxDamage float64
 
-	IncludeAttackerModifiers bool
-	BonusCoefficient         float64
+	BonusCoefficient float64
 }
 
 type OnHitAction func(sim *Simulation, spell *Spell, result *SpellResult)
@@ -1304,9 +1303,6 @@ func (character *Character) newBasicExplosiveSpellConfig(explosiveConfig Explosi
 	}
 
 	flags := SpellFlagCastTimeNoGCD
-	if !explosiveConfig.IncludeAttackerModifiers {
-		flags |= SpellFlagIgnoreAttackerModifiers
-	}
 
 	if explosiveConfig.DefenseType == DefenseTypeNone {
 		explosiveConfig.DefenseType = DefenseTypeMagic
@@ -1384,14 +1380,13 @@ func (character *Character) newSapperSpell(sharedTimer *Timer) *Spell {
 
 func (character *Character) newStratholmeHolyWaterSpell(sharedTimer *Timer) *Spell {
 	explosiveConfig := ExplosiveConfig{
-		ActionID:                 StratholmeHolyWaterActionID,
-		SpellSchool:              SpellSchoolHoly,
-		DefenseType:              DefenseTypeMelee,
-		SharedTimer:              sharedTimer,
-		MinDamage:                438,
-		MaxDamage:                562,
-		IncludeAttackerModifiers: true,
-		BonusCoefficient:         1,
+		ActionID:         StratholmeHolyWaterActionID,
+		SpellSchool:      SpellSchoolHoly,
+		DefenseType:      DefenseTypeMelee,
+		SharedTimer:      sharedTimer,
+		MinDamage:        438,
+		MaxDamage:        562,
+		BonusCoefficient: 1,
 	}
 	config := character.newBasicExplosiveSpellConfig(explosiveConfig)
 	var outcomeMagicHitAndBaseSpellCrit OutcomeApplier

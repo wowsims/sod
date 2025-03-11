@@ -296,7 +296,7 @@ stat_weights_results: {
  key: "TestExodin-Phase6-Lvl60-StatWeights-Default"
  value: {
   weights: 3.32651
-  weights: 2.51761
+  weights: 2.52104
   weights: 0
   weights: 0
   weights: 0
@@ -308,16 +308,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 21.81687
-  weights: 3.94973
+  weights: 21.81155
+  weights: 3.9563
   weights: 0
   weights: 0
   weights: 1.1953
   weights: 0.32264
-  weights: 39.23674
+  weights: 39.23445
   weights: 0
   weights: 0
-  weights: 60.58263
+  weights: 60.58196
   weights: 0
   weights: 0
   weights: 0
@@ -685,54 +685,54 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase6-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 2638.70347
-  tps: 2502.11082
-  dtps: 3.66449
+  dps: 2640.23283
+  tps: 2503.64018
+  dtps: 4.44628
   hps: 55.03013
  }
 }
 dps_results: {
  key: "TestExodin-Phase6-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 2639.52657
-  tps: 2503.82167
-  dtps: 3.72471
+  dps: 2641.05593
+  tps: 2505.35103
+  dtps: 4.52577
   hps: 55.03013
  }
 }
 dps_results: {
  key: "TestExodin-Phase6-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 2802.27772
-  tps: 2657.02724
-  dtps: 3.66449
+  dps: 2803.80708
+  tps: 2658.5566
+  dtps: 4.44628
   hps: 55.03013
  }
 }
 dps_results: {
  key: "TestExodin-Phase6-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 3534.83466
-  tps: 3365.74599
-  dtps: 1.9838
+  dps: 3535.90785
+  tps: 3366.81918
+  dtps: 2.61861
   hps: 60.0606
  }
 }
 dps_results: {
  key: "TestExodin-Phase6-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 2335.38958
-  tps: 2182.59796
-  dtps: 1.85104
+  dps: 2336.43769
+  tps: 2183.64606
+  dtps: 2.44338
   hps: 55.2538
  }
 }
 dps_results: {
  key: "TestExodin-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 5791.56172
-  tps: 5554.79833
-  dtps: 2.73356
+  dps: 5792.77643
+  tps: 5556.01304
+  dtps: 3.43446
   hps: 70.21249
  }
 }
@@ -829,9 +829,9 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5097.37419
-  tps: 4897.19701
-  dtps: 2.07386
+  dps: 5098.4662
+  tps: 4898.28902
+  dtps: 2.71769
   hps: 59.90403
  }
 }
