@@ -169,10 +169,19 @@ func (hunter *Hunter) applyT2Ranged4PBonus() {
 		return
 	}
 
-	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_HunterShots,
-		IntValue:  10,
+	// Map of all possible damage mods
+	damageModMap := make(map[int64]*core.SpellMod)
+	// Dynamic damage mod for the current shot
+	var damageMod *core.SpellMod
+
+	hunter.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.Matches(ClassSpellMask_HunterShots) {
+			damageModMap[spell.ClassSpellMask] = hunter.AddDynamicMod(core.SpellModConfig{
+				Kind:      core.SpellMod_DamageDone_Flat,
+				ClassMask: ClassSpellMask_HunterShots &^ spell.ClassSpellMask,
+				IntValue:  10,
+			})
+		}
 	})
 
 	procAura := hunter.RegisterAura(core.Aura{
@@ -186,19 +195,17 @@ func (hunter *Hunter) applyT2Ranged4PBonus() {
 			damageMod.Deactivate()
 		},
 	})
-
+	
 	core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
 		Name:           label,
 		ClassSpellMask: ClassSpellMask_HunterShots,
 		Callback:       core.CallbackOnCastComplete,
 		Handler: func(sim *core.Simulation, spell *core.Spell, _ *core.SpellResult) {
-			if hunter.LastShot != nil && !spell.Matches(hunter.LastShot.ClassSpellMask) {
-				procAura.Activate(sim)
-			} else {
+			if procAura.IsActive() {
 				procAura.Deactivate(sim)
 			}
-
-			hunter.LastShot = spell
+			damageMod = damageModMap[spell.ClassSpellMask]
+			procAura.Activate(sim)
 		},
 	})
 }

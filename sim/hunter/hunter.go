@@ -50,6 +50,7 @@ const (
 	ClassSpellMask_HunterWingClip
 	ClassSpellMask_HunterVolley
 	ClassSpellMask_HunterChimeraSerpent
+	ClassSpellMask_HunterHuntersMark
 
 	// Pet Spells
 	ClassSpellMask_HunterPetFlankingStrike
@@ -130,6 +131,7 @@ type Hunter struct {
 	CarveMH                 *core.Spell
 	CarveOH                 *core.Spell
 	WingClip                *core.Spell
+	HuntersMark             *core.Spell
 
 	Shots       []*core.Spell
 	Strikes     []*core.Spell
@@ -149,6 +151,8 @@ type Hunter struct {
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
 	BestialWrathPetAura    *core.Aura
+
+	HuntersMarkAuras core.AuraArray
 }
 
 func (hunter *Hunter) GetCharacter() *core.Character {
@@ -201,6 +205,7 @@ func (hunter *Hunter) Initialize() {
 	hunter.registerAspectOfTheHawkSpell()
 	hunter.registerAspectOfTheFalconSpell()
 	hunter.registerAspectOfTheViperSpell()
+	hunter.registerHuntersMark()
 
 	multiShotTimer := hunter.NewTimer()
 	arcaneShotTimer := hunter.NewTimer()
