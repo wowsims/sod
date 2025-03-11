@@ -64,17 +64,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
 	displayStats: [
 		// Attributes
-		Stat.StatStamina,
 		Stat.StatAgility,
 		Stat.StatStrength,
 		// Physical
@@ -86,9 +81,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 		Stat.StatSpellHit,
 		Stat.StatSpellCrit,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
+	displayPseudoStats: [PseudoStat.PseudoStatMeleeSpeedMultiplier],
 
 	defaults: {
 		// Default equipped gear.
@@ -134,10 +127,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRogue, {
 	// IconInputs to include in the 'Player' section on the settings tab.
 	playerIconInputs: [],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
-	includeBuffDebuffInputs: [
-		BuffDebuffInputs.SpellCritBuff,
-		BuffDebuffInputs.SpellShadowWeavingDebuff,
-	],
+	includeBuffDebuffInputs: [BuffDebuffInputs.SpellCritBuff, BuffDebuffInputs.SpellShadowWeavingDebuff],
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

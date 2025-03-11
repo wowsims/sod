@@ -66,10 +66,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		// Resistances
 		Stat.StatShadowResistance,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -78,7 +75,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatMana,
 		// Attributes
 		Stat.StatStrength,
-		Stat.StatStamina,
 		Stat.StatAgility,
 		Stat.StatIntellect,
 		// Physical
@@ -104,11 +100,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecProtectionPaladin, {
 		Stat.StatShadowResistance,
 		Stat.StatArcaneResistance,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatThornsDamage,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
-	
+	displayPseudoStats: [PseudoStat.PseudoStatThornsDamage, PseudoStat.PseudoStatMeleeSpeedMultiplier],
+
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,

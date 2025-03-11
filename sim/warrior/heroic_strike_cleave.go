@@ -129,10 +129,15 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 }
 
 func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *WarriorSpell, realismICD *core.Cooldown) *WarriorSpell {
+	isQueueQueued := false
+
 	queueAura := warrior.RegisterAura(core.Aura{
 		Label:    "HS/Cleave Queue Aura-" + srcSpell.ActionID.String(),
 		ActionID: srcSpell.ActionID.WithTag(1),
 		Duration: core.NeverExpires,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			isQueueQueued = false
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			if warrior.curQueueAura != nil {
 				warrior.curQueueAura.Deactivate(sim)
@@ -154,6 +159,7 @@ func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *WarriorSpell, realismIC
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return warrior.curQueueAura == nil &&
+				!isQueueQueued &&
 				warrior.CurrentRage() >= srcSpell.DefaultCast.Cost &&
 				!warrior.IsCasting(sim) &&
 				realismICD.IsReady(sim)
@@ -161,11 +167,13 @@ func (warrior *Warrior) makeQueueSpellsAndAura(srcSpell *WarriorSpell, realismIC
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if realismICD.IsReady(sim) {
+				isQueueQueued = true
 				realismICD.Use(sim)
 				sim.AddPendingAction(&core.PendingAction{
 					NextActionAt: sim.CurrentTime + realismICD.Duration,
 					OnAction: func(sim *core.Simulation) {
 						queueAura.Activate(sim)
+						isQueueQueued = false
 					},
 				})
 			}

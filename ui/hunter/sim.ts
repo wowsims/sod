@@ -54,7 +54,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		// Attributes
 		Stat.StatStrength,
 		Stat.StatAgility,
-		Stat.StatStamina,
 		Stat.StatIntellect,
 		// Physical
 		Stat.StatAttackPower,
@@ -69,11 +68,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-		PseudoStat.PseudoStatRangedSpeedMultiplier,
-	],
-	
+	displayPseudoStats: [PseudoStat.PseudoStatMeleeSpeedMultiplier, PseudoStat.PseudoStatRangedSpeedMultiplier],
+
 	defaults: {
 		race: Presets.OtherDefaults.race,
 		// Default equipped gear.
@@ -82,23 +78,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		epWeights: Stats.fromMap(
 			{
 				[Stat.StatStrength]: 0.12,
-				[Stat.StatAgility]: 1.00,
+				[Stat.StatAgility]: 1.0,
 				[Stat.StatStamina]: 0.0,
 				[Stat.StatIntellect]: 0.02,
 				[Stat.StatAttackPower]: 1,
 				[Stat.StatRangedAttackPower]: 1.0,
-				[Stat.StatMeleeHit]: 15.00,
+				[Stat.StatMeleeHit]: 15.0,
 				[Stat.StatMeleeCrit]: 10.22,
 				[Stat.StatExpertise]: 4.13,
 				[Stat.StatSpellPower]: 0.11,
 				[Stat.StatNaturePower]: 0.01,
-				[Stat.StatArcanePower]: 0.10,
+				[Stat.StatArcanePower]: 0.1,
 				[Stat.StatSpellCrit]: 0.02,
 				[Stat.StatMP5]: 0.05,
 				[Stat.StatFireResistance]: 0.5,
 			},
 			{
-				[PseudoStat.PseudoStatMainHandDps]: 3.00,
+				[PseudoStat.PseudoStatMainHandDps]: 3.0,
 				[PseudoStat.PseudoStatOffHandDps]: 1.66,
 				[PseudoStat.PseudoStatRangedDps]: 2.61,
 				[PseudoStat.PseudoStatMeleeSpeedMultiplier]: 3.92,

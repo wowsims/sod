@@ -44,7 +44,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecEnhancementShaman, {
 		// Primary
 		Stat.StatMana,
 		// Attributes
-		Stat.StatStamina,
 		Stat.StatStrength,
 		Stat.StatAgility,
 		Stat.StatIntellect,

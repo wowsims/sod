@@ -38,7 +38,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		// Primary
 		Stat.StatMana,
 		// Attributes
-		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		// Spell

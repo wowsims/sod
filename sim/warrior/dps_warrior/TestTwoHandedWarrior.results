@@ -148,8 +148,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestTwoHandedWarrior-Phase3-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.12677
-  weights: 0.82161
+  weights: 1.3455
+  weights: 0.85423
   weights: 0
   weights: 0
   weights: 0
@@ -165,9 +165,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.48756
-  weights: 15.4724
-  weights: 11.09655
+  weights: 0.6146
+  weights: 16.37416
+  weights: 10.19278
   weights: 0
   weights: 0
   weights: 0
@@ -197,8 +197,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 3.46648
-  weights: 1.19662
+  weights: 3.06462
+  weights: 1.7736
   weights: 0
   weights: 0
   weights: 0
@@ -214,9 +214,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.01569
+  weights: 1.49469
   weights: 0
-  weights: 23.34931
+  weights: 25.28907
   weights: 0
   weights: 0
   weights: 0
@@ -246,8 +246,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestTwoHandedWarrior-Phase6-Lvl60-StatWeights-Default"
  value: {
-  weights: 4.07739
-  weights: 2.52606
+  weights: 4.3767
+  weights: 1.75762
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.75223
+  weights: 2.37527
   weights: 0
-  weights: 43.77834
+  weights: 42.42092
   weights: 0
   weights: 0
   weights: 0
@@ -295,17 +295,17 @@ stat_weights_results: {
 dps_results: {
  key: "TestTwoHandedWarrior-Phase3-Lvl50-AllItems-BattlegearofHeroism"
  value: {
-  dps: 808.85416
-  tps: 696.22442
+  dps: 813.38093
+  tps: 700.31309
   hps: 15.56567
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1179.65355
-  tps: 1007.26328
-  hps: 22.32201
+  dps: 1182.7436
+  tps: 1010.88583
+  hps: 22.32182
  }
 }
 dps_results: {
@@ -401,65 +401,65 @@ dps_results: {
 dps_results: {
  key: "TestTwoHandedWarrior-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1096.55209
-  tps: 941.23019
-  hps: 20.63717
+  dps: 1100.70767
+  tps: 944.54205
+  hps: 20.64533
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 2654.00327
-  tps: 2204.28529
-  hps: 31.6895
+  dps: 2633.04898
+  tps: 2189.51645
+  hps: 31.40483
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 1620.80039
-  tps: 1373.24192
-  hps: 19.77417
+  dps: 1625.14112
+  tps: 1379.75683
+  hps: 19.642
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 1940.78962
-  tps: 1632.6628
-  hps: 23.03767
+  dps: 1922.3779
+  tps: 1618.61208
+  hps: 22.86483
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 1910.89046
-  tps: 1606.72066
-  hps: 23.0885
+  dps: 1895.26458
+  tps: 1597.13369
+  hps: 22.80383
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 1940.78962
-  tps: 1632.6628
-  hps: 23.03767
+  dps: 1922.3779
+  tps: 1618.61208
+  hps: 22.86483
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 2872.05462
-  tps: 2383.12965
-  hps: 33.11283
+  dps: 2844.09473
+  tps: 2364.85597
+  hps: 32.7265
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4438.56314
-  tps: 3363.40268
-  hps: 38.82063
+  dps: 4461.99278
+  tps: 3395.70752
+  hps: 38.76524
  }
 }
 dps_results: {
@@ -645,65 +645,65 @@ dps_results: {
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3652.28249
-  tps: 2748.34794
-  hps: 33.123
+  dps: 3702.333
+  tps: 2793.15909
+  hps: 32.98067
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase6-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 3277.98989
-  tps: 2587.38454
-  hps: 34.343
+  dps: 3277.28103
+  tps: 2588.7148
+  hps: 34.23117
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase6-Lvl60-AllItems-BattlegearofHeroism"
  value: {
-  dps: 1575.75344
-  tps: 1309.6997
-  hps: 19.74367
+  dps: 1574.94314
+  tps: 1311.12634
+  hps: 19.68267
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase6-Lvl60-AllItems-BloodGuard'sPlate"
  value: {
-  dps: 1968.03528
-  tps: 1628.14821
-  hps: 23.47483
+  dps: 1969.75597
+  tps: 1631.85029
+  hps: 23.40367
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase6-Lvl60-AllItems-EmeraldDreamPlate"
  value: {
-  dps: 1947.2581
-  tps: 1611.71291
-  hps: 23.49517
+  dps: 1937.08722
+  tps: 1605.3764
+  hps: 23.25117
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase6-Lvl60-AllItems-Knight-Lieutenant'sPlate"
  value: {
-  dps: 1968.03528
-  tps: 1628.14821
-  hps: 23.47483
+  dps: 1969.75597
+  tps: 1631.85029
+  hps: 23.40367
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase6-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 3498.45586
-  tps: 2763.15662
-  hps: 35.319
+  dps: 3503.62882
+  tps: 2771.17291
+  hps: 35.197
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 6040.1792
-  tps: 4766.18167
-  hps: 40.04671
+  dps: 6088.26105
+  tps: 4810.34176
+  hps: 40.00522
  }
 }
 dps_results: {
@@ -799,8 +799,8 @@ dps_results: {
 dps_results: {
  key: "TestTwoHandedWarrior-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5390.70636
-  tps: 4239.41219
-  hps: 36.356
+  dps: 5471.49552
+  tps: 4308.99733
+  hps: 36.3255
  }
 }

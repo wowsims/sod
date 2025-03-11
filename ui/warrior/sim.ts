@@ -27,11 +27,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatExpertise,
 		Stat.StatMeleeCrit,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatMainHandDps,
-		PseudoStat.PseudoStatOffHandDps,
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatMainHandDps, PseudoStat.PseudoStatOffHandDps, PseudoStat.PseudoStatMeleeSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatAttackPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -45,9 +41,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 		Stat.StatMeleeCrit,
 		Stat.StatExpertise,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatMeleeSpeedMultiplier,
-	],
+	displayPseudoStats: [PseudoStat.PseudoStatMeleeSpeedMultiplier],
 
 	defaults: {
 		race: Presets.OtherDefaults.race,
@@ -103,7 +97,12 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
-		inputs: [WarriorInputs.StartingRage<Spec.SpecWarrior>(), WarriorInputs.StanceSnapshot<Spec.SpecWarrior>(), OtherInputs.InFrontOfTarget],
+		inputs: [
+			WarriorInputs.StartingRage<Spec.SpecWarrior>(),
+			WarriorInputs.QueueDelay<Spec.SpecWarrior>(),
+			WarriorInputs.StanceSnapshot<Spec.SpecWarrior>(),
+			OtherInputs.InFrontOfTarget,
+		],
 	},
 	itemSwapSlots: [ItemSlot.ItemSlotMainHand, ItemSlot.ItemSlotOffHand, ItemSlot.ItemSlotRanged],
 	encounterPicker: {

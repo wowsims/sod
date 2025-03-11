@@ -20,18 +20,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRestorationShaman, {
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
-	displayStats: [
-		Stat.StatHealth,
-		Stat.StatMana,
-		Stat.StatStamina,
-		Stat.StatIntellect,
-		Stat.StatSpirit,
-		Stat.StatSpellPower,
-		Stat.StatSpellCrit,
-		Stat.StatMP5,
-	],
+	displayStats: [Stat.StatHealth, Stat.StatMana, Stat.StatIntellect, Stat.StatSpirit, Stat.StatSpellPower, Stat.StatSpellCrit, Stat.StatMP5],
 	displayPseudoStats: [],
-	
+
 	defaults: {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,

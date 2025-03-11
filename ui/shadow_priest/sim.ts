@@ -30,9 +30,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	epPseudoStats: [
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
+	epPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
 	// Reference stat against which to calculate EP. I think all classes use either spell power or attack power.
 	epReferenceStat: Stat.StatSpellPower,
 	// Which stats to display in the Character Stats section, at the bottom of the left-hand sidebar.
@@ -40,7 +38,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		// Primary
 		Stat.StatMana,
 		// Attributes
-		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		// Spell
@@ -51,10 +48,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		Stat.StatSpellCrit,
 		Stat.StatMP5,
 	],
-	displayPseudoStats: [
-		PseudoStat.PseudoStatCastSpeedMultiplier,
-	],
-	
+	displayPseudoStats: [PseudoStat.PseudoStatCastSpeedMultiplier],
+
 	modifyDisplayStats: (player: Player<Spec.SpecShadowPriest>) => {
 		let stats = new Stats();
 		stats = stats.addPseudoStat(PseudoStat.PseudoStatSchoolHitShadow, player.getTalents().shadowFocus * 2 * Mechanics.SPELL_HIT_RATING_PER_HIT_CHANCE);
@@ -68,20 +63,23 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 		// Default equipped gear.
 		gear: Presets.DefaultGear.gear,
 		// Default EP weights for sorting gear in the gear picker.
-		epWeights: Stats.fromMap({
-			[Stat.StatIntellect]: 0.16,
-			[Stat.StatSpirit]: 0.01,
-			[Stat.StatSpellPower]: 1,
-			[Stat.StatSpellDamage]: 1,
-			[Stat.StatShadowPower]: 1,
-			[Stat.StatSpellHit]: 5.51,
-			[Stat.StatSpellCrit]: 5.99, // Averaged between using and not using Despair for dot crits
-			[Stat.StatMP5]: 0.0,
-			[Stat.StatFireResistance]: 0.5,
-		}, {
-			[PseudoStat.PseudoStatCastSpeedMultiplier]: 1.73,
-			[PseudoStat.PseudoStatTimewornBonus]: 26.08,
-		}),
+		epWeights: Stats.fromMap(
+			{
+				[Stat.StatIntellect]: 0.16,
+				[Stat.StatSpirit]: 0.01,
+				[Stat.StatSpellPower]: 1,
+				[Stat.StatSpellDamage]: 1,
+				[Stat.StatShadowPower]: 1,
+				[Stat.StatSpellHit]: 5.51,
+				[Stat.StatSpellCrit]: 5.99, // Averaged between using and not using Despair for dot crits
+				[Stat.StatMP5]: 0.0,
+				[Stat.StatFireResistance]: 0.5,
+			},
+			{
+				[PseudoStat.PseudoStatCastSpeedMultiplier]: 1.73,
+				[PseudoStat.PseudoStatTimewornBonus]: 26.08,
+			},
+		),
 		// Default consumes settings.
 		consumes: Presets.DefaultConsumes,
 		// Default talents.
@@ -145,12 +143,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [
-			Presets.PresetBuildPhase6,
-			Presets.PresetBuildPhase5Draconic,
-			Presets.PresetBuildPhase5CoreForged,
-			Presets.PresetBuildPhase4,
-		]
+		builds: [Presets.PresetBuildPhase6, Presets.PresetBuildPhase5Draconic, Presets.PresetBuildPhase5CoreForged, Presets.PresetBuildPhase4],
 	},
 
 	autoRotation: player => {

@@ -102,6 +102,7 @@ export const PresetBuildDamage = PresetUtils.makePresetBuild('Damage', { gear: D
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = TankWarriorOptions.create({
+	queueDelay: 250,
 	startingRage: 0,
 	shout: WarriorShout.WarriorShoutBattle,
 	stance: WarriorStance.WarriorStanceDefensive,

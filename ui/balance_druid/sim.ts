@@ -38,7 +38,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecBalanceDruid, {
 		// Primary
 		Stat.StatMana,
 		// Attributes
-		Stat.StatStamina,
 		Stat.StatIntellect,
 		Stat.StatSpirit,
 		// Spell

@@ -60,7 +60,6 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		// Attributes
 		Stat.StatStrength,
 		Stat.StatAgility,
-		Stat.StatStamina,
 		Stat.StatIntellect,
 		// Physical
 		Stat.StatAttackPower,

@@ -4,12 +4,11 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 )
 
 // TODO: Classic Update
 func (warrior *Warrior) RegisterShieldWallCD() {
-	if warrior.Level < 28 || warrior.OffHand().WeaponType != proto.WeaponType_WeaponTypeShield {
+	if warrior.Level < 28 {
 		return
 	}
 
