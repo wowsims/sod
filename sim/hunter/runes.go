@@ -464,7 +464,7 @@ func (hunter *Hunter) applyCatlikeReflexes() {
 }
 
 func (hunter *Hunter) applyImprovedVolley() {
-	if !hunter.HasRune(proto.HunterRune_RuneCloakImprovedVolley) && hunter.Volley != nil {
+	if !hunter.HasRune(proto.HunterRune_RuneCloakImprovedVolley) {
 		return
 	}
 
