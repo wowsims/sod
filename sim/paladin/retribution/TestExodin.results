@@ -898,91 +898,157 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Dwarf-p7-exodin-naxx-P7 Exodin-p7-exodin-FullBuffs-P7-Consumes-Exodin-LongMultiTarget"
  value: {
+<<<<<<< HEAD
   dps: 11275.89929
   tps: 11290.2888
   hps: 73.16747
+=======
+  dps: 7064.7141
+  tps: 7438.54105
+  hps: 8.06013
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Dwarf-p7-exodin-naxx-P7 Exodin-p7-exodin-FullBuffs-P7-Consumes-Exodin-LongSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 5840.17831
   tps: 5481.21377
   hps: 72.57577
+=======
+  dps: 1520.30505
+  tps: 1494.02291
+  hps: 8.1252
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Dwarf-p7-exodin-naxx-P7 Exodin-p7-exodin-FullBuffs-P7-Consumes-Exodin-ShortSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 6309.13712
   tps: 5915.53162
   hps: 78.40533
+=======
+  dps: 1580.01973
+  tps: 1546.39229
+  hps: 9.272
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Dwarf-p7-exodin-naxx-P7 Exodin-p7-exodin-NoBuffs-P7-Consumes-Exodin-LongMultiTarget"
  value: {
+<<<<<<< HEAD
   dps: 6242.38154
   tps: 6743.45992
+=======
+  dps: 2887.44383
+  tps: 3268.25481
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Dwarf-p7-exodin-naxx-P7 Exodin-p7-exodin-NoBuffs-P7-Consumes-Exodin-LongSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 2653.26307
   tps: 2537.8941
+=======
+  dps: 667.10608
+  tps: 669.21604
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Dwarf-p7-exodin-naxx-P7 Exodin-p7-exodin-NoBuffs-P7-Consumes-Exodin-ShortSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 2828.17012
   tps: 2701.28104
+=======
+  dps: 793.27384
+  tps: 796.89879
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Human-p7-exodin-naxx-P7 Exodin-p7-exodin-FullBuffs-P7-Consumes-Exodin-LongMultiTarget"
  value: {
+<<<<<<< HEAD
   dps: 11259.60929
   tps: 11268.36485
   hps: 73.21627
+=======
+  dps: 7095.21471
+  tps: 7467.24036
+  hps: 8.0642
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Human-p7-exodin-naxx-P7 Exodin-p7-exodin-FullBuffs-P7-Consumes-Exodin-LongSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 5849.39526
   tps: 5490.04982
   hps: 72.52087
+=======
+  dps: 1520.28388
+  tps: 1494.08265
+  hps: 8.1252
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Human-p7-exodin-naxx-P7 Exodin-p7-exodin-FullBuffs-P7-Consumes-Exodin-ShortSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 6306.99554
   tps: 5913.45668
   hps: 78.40533
+=======
+  dps: 1580.64337
+  tps: 1546.74088
+  hps: 9.272
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Human-p7-exodin-naxx-P7 Exodin-p7-exodin-NoBuffs-P7-Consumes-Exodin-LongMultiTarget"
  value: {
+<<<<<<< HEAD
   dps: 6224.65225
   tps: 6720.79547
+=======
+  dps: 2901.64379
+  tps: 3278.12297
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Human-p7-exodin-naxx-P7 Exodin-p7-exodin-NoBuffs-P7-Consumes-Exodin-LongSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 2649.54282
   tps: 2534.72066
+=======
+  dps: 666.28539
+  tps: 668.98053
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
  key: "TestExodin-Phase7-Lvl60-Settings-Human-p7-exodin-naxx-P7 Exodin-p7-exodin-NoBuffs-P7-Consumes-Exodin-ShortSingleTarget"
  value: {
+<<<<<<< HEAD
   dps: 2829.0388
   tps: 2702.38841
+=======
+  dps: 795.69843
+  tps: 800.13017
+>>>>>>> a8d5ee3de ([Ret] Update some presets)
  }
 }
 dps_results: {
