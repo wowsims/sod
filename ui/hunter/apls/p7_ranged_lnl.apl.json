@@ -1,0 +1,19 @@
+{
+  "type": "TypeAPL",
+  "prepullActions": [
+    {"action":{"castSpell":{"spellId":{"spellId":25296,"rank":7}}},"doAtValue":{"const":{"val":"-5s"}}},
+    {"action":{"activateAura":{"auraId":{"spellId":415413}}},"doAtValue":{"const":{"val":"-5s"}}},
+    {"action":{"castSpell":{"spellId":{"itemId":215162}}},"doAtValue":{"const":{"val":"-0.45s"}}},
+    {"action":{"castSpell":{"spellId":{"spellId":26297,"tag":6}}},"doAtValue":{"const":{"val":"-0.45s"}}},
+    {"action":{"castSpell":{"spellId":{"itemId":236334}}},"doAtValue":{"const":{"val":"-0.45s"}}},
+    {"action":{"castSpell":{"spellId":{"spellId":3045}}},"doAtValue":{"const":{"val":"-0.45s"}}},
+    {"action":{"castSpell":{"spellId":{"spellId":25295,"rank":9}}},"doAtValue":{"const":{"val":"-0.44s"}}}
+  ],
+  "priorityList": [
+    {"action":{"autocastOtherCooldowns":{}}},
+    {"action":{"castSpell":{"spellId":{"spellId":409433}}}},
+    {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":415413}}}}},{"auraIsKnown":{"auraId":{"spellId":415399}}},{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":415399}}},"rhs":{"const":{"val":"2"}}}}]}},"castSpell":{"spellId":{"spellId":20904,"rank":6}}}},
+    {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"spellTimeToReady":{"spellId":{"spellId":409433}}},"rhs":{"const":{"val":"1.6s"}}}},"castSpell":{"spellId":{"spellId":409535}}}},
+    {"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"spellTimeToReady":{"spellId":{"spellId":409433}}},"rhs":{"const":{"val":"1.6s"}}}},"castSpell":{"spellId":{"spellId":409510}}}}
+  ]
+}
