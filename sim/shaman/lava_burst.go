@@ -35,8 +35,6 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 		flags |= core.SpellFlagAPL | SpellFlagMaelstrom
 	}
 
-	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
-
 	spell := core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_ShamanLavaBurst,
 		ActionID:       core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaBurst)},
@@ -117,7 +115,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
 
-				if canOverload && sim.RandomFloat("LvB Overload") < ShamanOverloadChance {
+				if !isOverload && shaman.procOverload(sim, "Lava Burst Overload", 1) {
 					shaman.LavaBurstOverload.Cast(sim, target)
 				}
 			})

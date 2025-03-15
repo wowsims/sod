@@ -24,6 +24,7 @@ func (shaman *Shaman) ApplyRunes() {
 	shaman.applyDualWieldSpec()
 	shaman.applyShieldMastery()
 	shaman.applyTwoHandedMastery()
+	shaman.applyOverload()
 
 	// Bracers
 	shaman.applyStaticShocks()

@@ -221,6 +221,7 @@ type Shaman struct {
 	lastFlameShockTarget        *core.Unit // Used by Ancestral Guidance rune
 	lightningShieldCanCrit      bool
 	maelstromWeaponPPMM         *core.DynamicProcManager
+	overloadProcChance          float64
 	powerSurgeProcChance        float64
 	shamanisticRageDRMultiplier float64
 	staticSHocksProcChance      float64

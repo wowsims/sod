@@ -306,18 +306,12 @@ var ItemSetTheEarthshatteres = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		// Your Earth Shield ability no longer loses charges.
 		2: func(agent core.Agent) {
-			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.applyNaxxramasTank2PBonus()
 		},
 		// Your Healing Wave Rank 9 and Rank 10 and Lesser Healing Wave Rank 6 spells have a 10% chance to imbue your target with Totemic Power.
 		4: func(agent core.Agent) {
-			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.applyNaxxramasTank4PBonus()
 		},
 		// The target of your Spirit of the Alpha ability takes 20% reduced damage from Undead enemies.
 		6: func(agent core.Agent) {
-			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.applyNaxxramasTank6PBonus()
 		},
 	},
 })

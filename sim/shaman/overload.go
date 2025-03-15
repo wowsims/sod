@@ -2,13 +2,24 @@ package shaman
 
 import (
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 // This could be value or bitflag if we ended up needing multiple flags at the same time.
 // 1 to 5 are used by MaelstromWeapon Stacks
 const CastTagOverload = 6
 
-const ShamanOverloadChance = .60
+func (shaman *Shaman) applyOverload() {
+	if !shaman.HasRune(proto.ShamanRune_RuneChestOverload) {
+		return
+	}
+
+	shaman.overloadProcChance += 0.60
+}
+
+func (shaman *Shaman) procOverload(sim *core.Simulation, label string, multiplier float64) bool {
+	return sim.Proc(shaman.overloadProcChance*multiplier, label)
+}
 
 func (shaman *Shaman) applyOverloadModifiers(spell *core.SpellConfig) {
 	spell.ActionID.Tag = int32(CastTagOverload)

@@ -47,8 +47,6 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 	manaCost := LightningBoltManaCost[rank]
 	level := LightningBoltLevel[rank]
 
-	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
-
 	spell := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: spellId},
 		manaCost,
@@ -68,7 +66,7 @@ func (shaman *Shaman) newLightningBoltSpellConfig(rank int, isOverload bool) cor
 		spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 			spell.DealDamage(sim, result)
 
-			if canOverload && sim.Proc(ShamanOverloadChance, "LB Overload") {
+			if !isOverload && shaman.procOverload(sim, "Lightning Bolt Overload", 1) {
 				shaman.LightningBoltOverload[rank].Cast(sim, target)
 			}
 		})
