@@ -3,7 +3,6 @@ package warlock
 import (
 	"time"
 
-	"github.com/wowsims/sod/sim/common/sod/item_effects"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -16,18 +15,19 @@ const (
 	HazzarahsCharmOfDestruction = 231284
 	KezansUnstoppableTaint      = 231346
 	PlagueheartRing             = 236067
+	AtieshWarlock               = 236398
 )
 
 func init() {
 	// https://www.wowhead.com/classic/item=236398/atiesh-greatstaff-of-the-guardian
-	core.NewItemEffect(item_effects.AtieshSpellPower, func(agent core.Agent) {
+	core.NewItemEffect(AtieshWarlock, func(agent core.Agent) {
 		warlock := agent.(WarlockAgent).GetWarlock()
 		aura := core.AtieshSpellPowerEffect(&warlock.Unit)
-		warlock.ItemSwap.RegisterProc(item_effects.AtieshSpellPower, aura)
+		warlock.ItemSwap.RegisterProc(AtieshWarlock, aura)
 
 		for _, pet := range warlock.BasePets {
 			petAura := core.AtieshSpellPowerEffect(&pet.Unit)
-			warlock.ItemSwap.RegisterProc(item_effects.AtieshSpellPower, petAura)
+			warlock.ItemSwap.RegisterProc(AtieshWarlock, petAura)
 		}
 	})
 

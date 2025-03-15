@@ -10,12 +10,20 @@ const (
 	// Keep these ordered by ID
 	CassandrasTome = 231509
 	BandOfFaith    = 236112
+	AtieshPriest   = 236399
 )
 
 func init() {
 	core.AddEffectsToTest = false
 
 	// Keep these ordered by name
+
+	// https://www.wowhead.com/classic/item=236399/atiesh-greatstaff-of-the-guardian
+	core.NewItemEffect(AtieshPriest, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		aura := core.AtieshHealingEffect(&character.Unit)
+		character.ItemSwap.RegisterProc(AtieshPriest, aura)
+	})
 
 	// https://www.wowhead.com/classic/item=231509/cassandras-tome
 	core.NewItemEffect(CassandrasTome, func(agent core.Agent) {

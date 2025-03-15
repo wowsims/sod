@@ -16,10 +16,18 @@ const (
 	MindQuickeningGem            = 230243
 	HazzarahsCharmOfChilledMagic = 231282
 	JewelOfKajaro                = 231324
+	AtieshMage                   = 236400
 )
 
 func init() {
 	core.AddEffectsToTest = false
+
+	// https://www.wowhead.com/classic/item=236400/atiesh-greatstaff-of-the-guardian
+	core.NewItemEffect(AtieshMage, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		aura := core.AtieshCastSpeedEffect(&character.Unit)
+		character.ItemSwap.RegisterProc(AtieshMage, aura)
+	})
 
 	core.NewItemEffect(FireRuby, func(agent core.Agent) {
 		character := agent.GetCharacter()
