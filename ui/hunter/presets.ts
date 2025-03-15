@@ -49,9 +49,10 @@ import Phase6AplMeleeSv from './apls/p6_melee_sv.apl.json';
 import Phase6AplRangedDraconic from './apls/p6_ranged_draconic.apl.json';
 import Phase6AplRangedKillshot from './apls/p6_ranged_killshot.apl.json';
 import Phase6AplWeave from './apls/p6_weave.apl.json';
-import Phase7AplMeleeDw from './apls/p7_melee_dw.apl.json';
 import Phase7AplMelee2h from './apls/p7_melee_2h.apl.json';
+import Phase7AplMeleeDw from './apls/p7_melee_dw.apl.json';
 import Phase7AplRangedKillshot from './apls/p7_ranged_killshot.apl.json';
+import Phase7AplRangedLnL from './apls/p7_ranged_lnl.apl.json';
 import Phase7AplWeave from './apls/p7_weave.apl.json';
 import Phase2GearMelee from './gear_sets/p2_melee.gear.json';
 import Phase2GearRangedBm from './gear_sets/p2_ranged_bm.gear.json';
@@ -72,6 +73,7 @@ import Phase6GearWeave from './gear_sets/p6_weave.gear.json';
 import Phase7GearMelee2h from './gear_sets/p7_melee_2h.gear.json';
 import Phase7GearMeleeDw from './gear_sets/p7_melee_dw.gear.json';
 import Phase7GearRangedKillshot from './gear_sets/p7_ranged_killshot.gear.json';
+import Phase7GearRangedLnL from './gear_sets/p7_ranged_lnl.gear.json';
 import Phase7GearWeave from './gear_sets/p7_weave.gear.json';
 import Phase1Gear from './gear_sets/phase1.gear.json';
 
@@ -109,7 +111,8 @@ export const GearMeleeBMPhase6 = PresetUtils.makePresetGear('P6 Melee BM', Phase
 export const GearMeleeSVPhase6 = PresetUtils.makePresetGear('P6 Melee SV', Phase6GearMeleeSv, { customCondition: player => player.getLevel() === 60 });
 
 export const GearWeavePhase7 = PresetUtils.makePresetGear('P7 Weave', Phase7GearWeave, { customCondition: player => player.getLevel() === 60 });
-export const GearRangedKillshotPhase7 = PresetUtils.makePresetGear('P7 Ranged', Phase7GearRangedKillshot, { customCondition: player => player.getLevel() === 60 });
+export const GearRangedKillshotPhase7 = PresetUtils.makePresetGear('P7 Ranged Killshot', Phase7GearRangedKillshot, { customCondition: player => player.getLevel() === 60 });
+export const GearRangedLnLPhase7 = PresetUtils.makePresetGear('P7 Ranged LnL', Phase7GearRangedLnL, { customCondition: player => player.getLevel() === 60 });
 export const GearMelee2HPhase7 = PresetUtils.makePresetGear('P7 Melee 2H', Phase7GearMelee2h, { customCondition: player => player.getLevel() === 60 });
 export const GearMeleeDWPhase7 = PresetUtils.makePresetGear('P7 Melee DW', Phase7GearMeleeDw, { customCondition: player => player.getLevel() === 60 });
 
@@ -117,16 +120,16 @@ export const GearPresets = {
 	[Phase.Phase1]: [GearBeastMasteryPhase1, GearMarksmanPhase1, GearSurvivalPhase1],
 	[Phase.Phase2]: [GearRangedBmPhase2, GearRangedMmPhase2, GearMeleePhase2],
 	[Phase.Phase3]: [GearRangedMmPhase3, GearMeleeBmPhase3],
-	[Phase.Phase4]: [], //[GearWeavePhase4, GearRangedSVPhase4],
-	[Phase.Phase5]: [], //[GearWeavePhase5, GearRangedMMPhase5, GearRangedSVPhase5, GearMeleeBMPhase5, GearMeleeSVPhase5],
+	[Phase.Phase4]: [GearWeavePhase4, GearRangedSVPhase4],
+	[Phase.Phase5]: [GearWeavePhase5, GearRangedMMPhase5, GearRangedSVPhase5, GearMeleeBMPhase5, GearMeleeSVPhase5],
 	[Phase.Phase6]: [GearWeavePhase6, GearRangedDraconicPhase6, GearRangedKillshotPhase6, GearMeleeBMPhase6, GearMeleeSVPhase6],
-	[Phase.Phase7]: [GearWeavePhase7, GearRangedKillshotPhase7, GearMelee2HPhase7, GearMeleeDWPhase7],
+	[Phase.Phase7]: [GearWeavePhase7, GearRangedKillshotPhase7, GearRangedLnLPhase7, GearMelee2HPhase7, GearMeleeDWPhase7],
 };
 
 export const DefaultGearWeave = GearPresets[Phase.Phase7][0];
 export const DefaultGearRangedKillshot = GearPresets[Phase.Phase7][1];
-export const DefaultGearMeleeSV = GearPresets[Phase.Phase7][2];
-export const DefaultGearMeleeBM = GearPresets[Phase.Phase7][3];
+export const DefaultGearMeleeSV = GearPresets[Phase.Phase7][3];
+export const DefaultGearMeleeBM = GearPresets[Phase.Phase7][4];
 
 export const DefaultGear = DefaultGearRangedKillshot;
 
@@ -159,7 +162,8 @@ export const APLMeleeBMPhase6 = PresetUtils.makePresetAPLRotation('P6 Melee BM',
 export const APLMeleeSVPhase6 = PresetUtils.makePresetAPLRotation('P6 Melee SV', Phase6AplMeleeSv, { customCondition: player => player.getLevel() === 60 });
 
 export const APLWeavePhase7 = PresetUtils.makePresetAPLRotation('P7 Weave', Phase7AplWeave, { customCondition: player => player.getLevel() === 60 });
-export const APLRangedKillshotPhase7 = PresetUtils.makePresetAPLRotation('P7 Ranged', Phase7AplRangedKillshot, { customCondition: player => player.getLevel() === 60 });
+export const APLRangedKillshotPhase7 = PresetUtils.makePresetAPLRotation('P7 Ranged Killshot', Phase7AplRangedKillshot, { customCondition: player => player.getLevel() === 60 });
+export const APLRangedLnLPhase7 = PresetUtils.makePresetAPLRotation('P7 Ranged LnL', Phase7AplRangedLnL, { customCondition: player => player.getLevel() === 60 });
 export const APLMeleeDWPhase7 = PresetUtils.makePresetAPLRotation('P7 Melee DW', Phase7AplMeleeDw, { customCondition: player => player.getLevel() === 60 });
 export const APLMelee2HPhase7 = PresetUtils.makePresetAPLRotation('P7 Melee 2H', Phase7AplMelee2h, { customCondition: player => player.getLevel() === 60 });
 
@@ -167,16 +171,16 @@ export const APLPresets = {
 	[Phase.Phase1]: [APLMeleeWeavePhase1],
 	[Phase.Phase2]: [APLRangedBmPhase2, APLRangedMmPhase2, APLMeleePhase2],
 	[Phase.Phase3]: [APLRangedMmPhase3, APLMeleeBmPhase3],
-	[Phase.Phase4]: [], //[APLWeavePhase4, APLRangedPhase4],
-	[Phase.Phase5]: [], //[APLWeavePhase5, APLRanged31Phase5, APLRanged22Phase5, APLMeleeBMPhase5, APLMeleeSVPhase5],
+	[Phase.Phase4]: [APLWeavePhase4, APLRangedPhase4],
+	[Phase.Phase5]: [APLWeavePhase5, APLRanged31Phase5, APLRanged22Phase5, APLMeleeBMPhase5, APLMeleeSVPhase5],
 	[Phase.Phase6]: [APLWeavePhase6, APLRangedDraconicPhase6, APLRangedKillshotPhase6, APLMeleeBMPhase6, APLMeleeSVPhase6],
-	[Phase.Phase7]: [APLWeavePhase7, APLRangedKillshotPhase7, APLMeleeDWPhase7, APLMelee2HPhase7],
+	[Phase.Phase7]: [APLWeavePhase7, APLRangedKillshotPhase7, APLRangedLnLPhase7, APLMeleeDWPhase7, APLMelee2HPhase7],
 };
 
 export const DefaultAPLWeave = APLPresets[Phase.Phase7][0];
 export const DefaultAPLRangedKillshot = APLPresets[Phase.Phase7][1];
-export const DefaultAPLMeleeBM = APLPresets[Phase.Phase7][2];
-export const DefaultAPLMeleeSV = APLPresets[Phase.Phase7][3];
+export const DefaultAPLMeleeBM = APLPresets[Phase.Phase7][3];
+export const DefaultAPLMeleeSV = APLPresets[Phase.Phase7][4];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Talent Presets
