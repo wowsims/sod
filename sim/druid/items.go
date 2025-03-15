@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -489,11 +490,15 @@ func init() {
 		})
 
 		// https://www.wowhead.com/classic-ptr/spell=1231382/feral-dedication
-		core.MakePermanent(druid.GetOrRegisterAura(core.Aura{
+		druid.ItemSwap.RegisterProcWithSlots(StaffOfTheGlade, core.MakePermanent(druid.GetOrRegisterAura(core.Aura{
 			Label: "Feral Dedication (Passive)",
-			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				// Cat form may not be cast initially.
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				// May already be in cat form.
 				auraTimer.Activate(sim)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				auraTimer.Deactivate(sim)
+				auraBuff.Deactivate(sim)
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell == druid.CatForm.Spell {
@@ -503,7 +508,7 @@ func init() {
 					}
 				}
 			},
-		}))
+		})), []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
 	})
 
 	core.AddEffectsToTest = true
