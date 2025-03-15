@@ -72,6 +72,9 @@ func (shaman *Shaman) newLesserHealingWaveSpellConfig(rank int) core.SpellConfig
 				if hasMaelstromWeaponRune {
 					stacks := shaman.MaelstromWeaponAura.GetStacks()
 					spell.SetMetricsSplit(stacks)
+					if stacks > 0 {
+						return
+					}
 				}
 
 				if castTime > 0 {

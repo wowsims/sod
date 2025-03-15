@@ -50,6 +50,9 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 				if hasMaelstromWeaponRune {
 					stacks := shaman.MaelstromWeaponAura.GetStacks()
 					spell.SetMetricsSplit(stacks)
+					if stacks > 0 {
+						return
+					}
 				}
 
 				if castTime > 0 {

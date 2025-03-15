@@ -67,6 +67,9 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 				if hasMaelstromWeaponRune && shaman.MaelstromWeaponClassMask&ClassSpellMask_ShamanLavaBurst > 0 {
 					stacks := shaman.MaelstromWeaponAura.GetStacks()
 					spell.SetMetricsSplit(stacks)
+					if stacks > 0 {
+						return
+					}
 				}
 
 				if castTime > 0 {
