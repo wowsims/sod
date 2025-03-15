@@ -35,18 +35,10 @@ const (
 	IdolOfUrsinPower                 = 234468
 	IdolOfFelineFerocity             = 234469
 	IdolOfSiderealWrath              = 234474
-	AtieshDruid                      = 236401
 )
 
 func init() {
 	core.AddEffectsToTest = false
-
-	// https://www.wowhead.com/classic/item=236401/atiesh-greatstaff-of-the-guardian
-	core.NewItemEffect(AtieshDruid, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		aura := core.AtieshSpellCritEffect(&character.Unit)
-		character.ItemSwap.RegisterProc(AtieshDruid, aura)
-	})
 
 	core.NewItemEffect(BloodBarkCrusher, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
