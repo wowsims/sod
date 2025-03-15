@@ -12,10 +12,6 @@ const (
 	BulwarkOfIre                 = 235868
 	OlReliable                   = 235891
 	DoomsayersDemise             = 235894
-	AtieshSpellPower             = 236398
-	AtieshHealing                = 236399
-	AtieshCastSpeed              = 236400
-	AtieshSpellCrit              = 236401
 	TunicOfUndeadSlaying         = 236707
 	BreastplateOfUndeadSlaying   = 236708
 	ChestguardOfUndeadSlaying    = 236709
@@ -56,25 +52,6 @@ func init() {
 	///////////////////////////////////////////////////////////////////////////
 	//                                 Weapons
 	///////////////////////////////////////////////////////////////////////////
-
-	// https://www.wowhead.com/classic/item=236400/atiesh-greatstaff-of-the-guardian
-	core.NewItemEffect(AtieshCastSpeed, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		aura := core.AtieshCastSpeedEffect(&character.Unit)
-		character.ItemSwap.RegisterProc(AtieshCastSpeed, aura)
-	})
-	// https://www.wowhead.com/classic/item=236399/atiesh-greatstaff-of-the-guardian
-	core.NewItemEffect(AtieshHealing, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		aura := core.AtieshHealingEffect(&character.Unit)
-		character.ItemSwap.RegisterProc(AtieshHealing, aura)
-	})
-	// https://www.wowhead.com/classic/item=236401/atiesh-greatstaff-of-the-guardian
-	core.NewItemEffect(AtieshSpellCrit, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		aura := core.AtieshSpellCritEffect(&character.Unit)
-		character.ItemSwap.RegisterProc(AtieshSpellCrit, aura)
-	})
 
 	// https://www.wowhead.com/classic/item=236341/the-hungering-cold
 	// Equip: Gives you a 2% chance to get an extra attack on the same target after dealing damage with your weapon.
@@ -367,15 +344,3 @@ func init() {
 
 	core.AddEffectsToTest = true
 }
-
-func UnholyMightAura(character *core.Character) *core.Aura {
-	return character.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 1220668},
-		Label:    "Unholy Might",
-		Duration: time.Second * 10,
-	}).
-		AttachStatBuff(stats.Strength, 350).
-		AttachMultiplicativePseudoStatBuff(&character.PseudoStats.DamageTakenMultiplier, 1.05)
-}
-
-// Atiesh Helpers

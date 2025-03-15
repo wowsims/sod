@@ -2708,3 +2708,13 @@ func AtieshSpellPowerEffect(unit *Unit) *Aura {
 		BuildPhase: CharacterBuildPhaseBuffs,
 	}).AttachBuildPhaseStatsBuff(stats))
 }
+
+func UnholyMightAura(character *Character) *Aura {
+	return character.RegisterAura(Aura{
+		ActionID: ActionID{SpellID: 1220668},
+		Label:    "Unholy Might",
+		Duration: time.Second * 10,
+	}).
+		AttachStatBuff(stats.Strength, 350).
+		AttachMultiplicativePseudoStatBuff(&character.PseudoStats.DamageTakenMultiplier, 1.05)
+}

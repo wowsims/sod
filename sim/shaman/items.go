@@ -4,7 +4,6 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/common/itemhelpers"
-	"github.com/wowsims/sod/sim/common/sod/item_effects"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -560,7 +559,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=237577/totem-of-unholy-might
 	// Chance on hit: Increases the wielder's Strength by 350, but they also take 5% more damage from all sources for 8 sec.
 	// TODO: Proc rate assumed and needs testing
-	itemhelpers.CreateWeaponProcAura(TotemOfUnholyMight, "Totem of Unholy Might", 0.6, item_effects.UnholyMightAura)
+	itemhelpers.CreateWeaponProcAura(TotemOfUnholyMight, "Totem of Unholy Might", 0.6, core.UnholyMightAura)
 
 	// https://www.wowhead.com/classic/item=231281/wushoolays-charm-of-spirits
 	// Use: Increases the damage dealt by your Lightning Shield spell by 100% for 20 sec. (2 Min Cooldown)
