@@ -14,7 +14,7 @@ func (shaman *Shaman) registerRollingThunder() {
 	impLightningShieldBonus := []float64{1, 1.05, 1.10, 1.15}[shaman.Talents.ImprovedLightningShield]
 	manaMetrics := shaman.NewManaMetrics(actionID)
 
-	procChance := 0.50
+	shaman.rollingThunderProcChance += 0.50
 
 	// Casts handled in lightning_shield.go
 	shaman.RollingThunder = shaman.RegisterSpell(core.SpellConfig{
@@ -62,7 +62,7 @@ func (shaman *Shaman) registerRollingThunder() {
 
 			if spell.Matches(ClassSpellMask_ShamanEarthShock) && shaman.ActiveShieldAura.GetStacks() > 3 {
 				shaman.RollingThunder.Cast(sim, result.Target)
-			} else if spell.Matches(affectedSpellClassMasks) && sim.Proc(procChance, "Rolling Thunder") {
+			} else if spell.Matches(affectedSpellClassMasks) && sim.Proc(shaman.rollingThunderProcChance, "Rolling Thunder") {
 				shaman.ActiveShieldAura.AddStack(sim)
 			}
 		},

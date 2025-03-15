@@ -40,7 +40,6 @@ func (shaman *Shaman) registerChainHealSpell() {
 }
 
 func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.SpellConfig {
-	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 	hasCoherenceRune := shaman.HasRune(proto.ShamanRune_RuneCloakCoherence)
 	hasRiptideRune := shaman.HasRune(proto.ShamanRune_RuneBracersRiptide)
 
@@ -64,8 +63,6 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 		bounceCoef = .65 // 35% reduction per bounce
 		targetCount += 2
 	}
-
-	canOverload := !isOverload && hasOverloadRune
 
 	spell := core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: spellId},
@@ -107,7 +104,7 @@ func (shaman *Shaman) newChainHealSpellConfig(rank int, isOverload bool) core.Sp
 				spell.CalcAndDealHealing(sim, curTarget, sim.Roll(baseHealingLow, baseHealingHigh), spell.OutcomeHealingCrit)
 				spell.SetMultiplicativeDamageBonus(originalDamageMultiplier)
 
-				if canOverload && sim.RandomFloat("CH Overload") < ShamanOverloadChance {
+				if !isOverload && shaman.procOverload(sim, "Chain Heal Overload", 1/3) {
 					shaman.ChainHealOverload[rank].Cast(sim, target)
 				}
 

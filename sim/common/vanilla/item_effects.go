@@ -12,6 +12,7 @@ import (
 
 // Ordered by ID
 const (
+	Destiny                         = 647
 	ShortswordOfVengeance           = 754
 	FieryWarAxe                     = 870
 	Bloodrazor                      = 809
@@ -526,6 +527,15 @@ func init() {
 	// https://www.wowhead.com/classic/item=17068/deathbringer
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 110 to 140 Shadow damage.
 	itemhelpers.CreateWeaponCoHProcDamage(Deathbringer, "Deathbringer", 1.0, 18138, core.SpellSchoolShadow, 110, 30, 0, core.DefenseTypeMagic)
+
+	// https://www.wowhead.com/classic/item=647/destiny
+	itemhelpers.CreateWeaponProcAura(Destiny, "Destiny", 1.0, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 17152},
+			Label:    "Destiny",
+			Duration: time.Second * 10,
+		}).AttachStatBuff(stats.Strength, 200)
+	})
 
 	// https://www.wowhead.com/classic/item=230271/drake-talon-cleaver
 	// Chance on hit: Delivers a fatal wound for 300 damage.

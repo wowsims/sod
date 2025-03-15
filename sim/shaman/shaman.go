@@ -12,10 +12,6 @@ import (
 var TalentTreeSizes = [3]int{15, 16, 15}
 
 const (
-	SpellFlagMaelstrom = core.SpellFlagAgentReserved1
-)
-
-const (
 	ClassSpellMask_ShamanNone int64 = 0
 
 	ClassSpellMask_ShamanAncestralAwakening int64 = 1 << iota
@@ -197,6 +193,12 @@ type Shaman struct {
 	SpiritOfTheAlphaAura *core.Aura
 	WaterShieldAura      *core.Aura
 
+	// Dynamic Class Masks
+	MaelstromWeaponClassMask int64
+
+	// Dynamic Spell Mods
+	MaelstromWeaponSpellMods []*core.SpellMod
+
 	// Totems
 	ActiveTotems     [4]*core.Spell
 	EarthTotems      []*core.Spell
@@ -221,7 +223,9 @@ type Shaman struct {
 	lastFlameShockTarget        *core.Unit // Used by Ancestral Guidance rune
 	lightningShieldCanCrit      bool
 	maelstromWeaponPPMM         *core.DynamicProcManager
+	overloadProcChance          float64
 	powerSurgeProcChance        float64
+	rollingThunderProcChance    float64
 	shamanisticRageDRMultiplier float64
 	staticSHocksProcChance      float64
 	useLavaBurstCritScaling     bool

@@ -42,7 +42,6 @@ func (shaman *Shaman) registerChainLightningSpell() {
 }
 
 func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer, isOverload bool) core.SpellConfig {
-	hasOverloadRune := shaman.HasRune(proto.ShamanRune_RuneChestOverload)
 	hasCoherenceRune := shaman.HasRune(proto.ShamanRune_RuneCloakCoherence)
 
 	spellId := ChainLightningSpellId[rank]
@@ -61,9 +60,6 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 		bounceCoef = .8 // 20% reduction per bounce
 		targetCount += 2
 	}
-
-	canOverload := !isOverload && hasOverloadRune
-	overloadChance := .1667
 
 	spell := shaman.newElectricSpellConfig(
 		core.ActionID{SpellID: spellId},
@@ -98,7 +94,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 		for _, result := range results {
 			spell.DealDamage(sim, result)
 
-			if canOverload && sim.Proc(overloadChance, "CL Overload") {
+			if shaman.procOverload(sim, "Chain Lightning Overload", 1/3) {
 				shaman.ChainLightningOverload[rank].Cast(sim, result.Target)
 			}
 		}

@@ -485,10 +485,6 @@ export class ActionId {
 			case 'Frost Fever':
 				if (this.tag === 2) name = `${name} (Debuff)`;
 				break;
-			// Temporary until real debuff is implemented
-			case 'Ice Lance':
-				if (this.tag > 0) name = `${name} (${this.tag} Stacks)`;
-				break;
 			default:
 				if (this.tag) {
 					name += ' (??)';
