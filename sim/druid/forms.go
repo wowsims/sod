@@ -223,7 +223,7 @@ func (druid *Druid) registerCatFormSpell() {
 	druid.CatForm = druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: ClassSpellMask_DruidCatForm,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.55,
@@ -234,31 +234,27 @@ func (druid *Druid) registerCatFormSpell() {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
-			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				if druid.CatFormAura.IsActive() {
-					cast.GCD = 0
-					spell.Cost.Multiplier -= 100
-				}
-			},
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
-			if druid.CatFormAura.IsActive() {
+			// Mimic a "/cast !Cat Form" macro for the purpose of powershifting.
+			// To do actions outside of form, e.g. potions or sapper during shift, APL makers
+			// should explicitly cancel the aura, do actions, then cast cat form.
+			if druid.IsShapeshifted() {
 				druid.CancelShapeshift(sim)
-				spell.Cost.Multiplier += 100
-			} else {
-				maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < furorProcChance, 40, 0)
-				maxShiftEnergy = core.TernaryFloat64(hasWolfheadBonus, maxShiftEnergy+20, maxShiftEnergy)
-				energyDelta := maxShiftEnergy - druid.CurrentEnergy()
-
-				if energyDelta > 0 {
-					druid.AddEnergy(sim, energyDelta, energyMetrics)
-				} else {
-					druid.SpendEnergy(sim, -energyDelta, energyMetrics)
-				}
-
-				druid.CatFormAura.Activate(sim)
 			}
+
+			maxShiftEnergy := core.TernaryFloat64(sim.RandomFloat("Furor") < furorProcChance, 40, 0)
+			maxShiftEnergy = core.TernaryFloat64(hasWolfheadBonus, maxShiftEnergy+20, maxShiftEnergy)
+			energyDelta := maxShiftEnergy - druid.CurrentEnergy()
+
+			if energyDelta > 0 {
+				druid.AddEnergy(sim, energyDelta, energyMetrics)
+			} else {
+				druid.SpendEnergy(sim, -energyDelta, energyMetrics)
+			}
+
+			druid.CatFormAura.Activate(sim)
 		},
 	})
 }
