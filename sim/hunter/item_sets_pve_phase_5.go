@@ -170,7 +170,7 @@ func (hunter *Hunter) applyT2Ranged4PBonus() {
 	}
 
 	// Map of all possible damage mods
-	damageModMap := make(map[int64]*core.SpellMod)
+	damageModMap := make(map[uint64]*core.SpellMod)
 	// Dynamic damage mod for the current shot
 	var damageMod *core.SpellMod
 

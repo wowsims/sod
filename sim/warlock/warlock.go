@@ -17,9 +17,9 @@ const (
 )
 
 const (
-	ClassSpellMask_WarlockNone int64 = 0
+	ClassSpellMask_WarlockNone uint64 = 0
 
-	ClassSpellMask_WarlockChaosBolt int64 = 1 << iota
+	ClassSpellMask_WarlockChaosBolt uint64 = 1 << iota
 	ClassSpellMask_WarlockConflagrate
 	ClassSpellMask_WarlockCorruption
 	ClassSpellMask_WarlockCurseOfAgony
@@ -47,10 +47,9 @@ const (
 	ClassSpellMask_WarlockImmolationAura
 	ClassSpellMask_WarlockImmolationAuraProc
 
-	ClassSpellMask_WarlockLast
-	ClassSpellMask_WarlockAll = ClassSpellMask_WarlockLast<<1 - 1
+	ClassSpellMask_WarlockAll = 1<<iota - 1
 
-	ClassSpellMask_WarlockSummonFelguard = ClassSpellMask_WarlockAll << iota
+	ClassSpellMask_WarlockSummonFelguard = 1 << (iota - 1)
 	ClassSpellMask_WarlockSummonFelhunter
 	ClassSpellMask_WarlockSummonImp
 	ClassSpellMask_WarlockSummonSuccubus

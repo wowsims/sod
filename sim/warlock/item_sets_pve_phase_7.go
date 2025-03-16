@@ -50,7 +50,7 @@ func (warlock *Warlock) applyNaxxramasDamage4PBonus() {
 	}
 
 	copiedSpellConfig := []struct {
-		ClassMask   int64
+		ClassMask   uint64
 		SpellID     int32
 		SpellSchool core.SpellSchool
 		Flags       core.SpellFlag
@@ -81,7 +81,7 @@ func (warlock *Warlock) applyNaxxramasDamage4PBonus() {
 		},
 	}
 
-	dotSpellsMap := make(map[int64]*core.Spell)
+	dotSpellsMap := make(map[uint64]*core.Spell)
 
 	for _, spellConfig := range copiedSpellConfig {
 		dotSpellsMap[spellConfig.ClassMask] = warlock.RegisterSpell(core.SpellConfig{

@@ -12,9 +12,9 @@ import (
 var TalentTreeSizes = [3]int{15, 16, 15}
 
 const (
-	ClassSpellMask_ShamanNone int64 = 0
+	ClassSpellMask_ShamanNone uint64 = 0
 
-	ClassSpellMask_ShamanAncestralAwakening int64 = 1 << iota
+	ClassSpellMask_ShamanAncestralAwakening uint64 = 1 << iota
 	ClassSpellMask_ShamanAncestralGuidance
 	ClassSpellMask_ShamanAncestralGuidanceDamage
 	ClassSpellMask_ShamanAncestralGuidanceHeal
@@ -45,10 +45,10 @@ const (
 	ClassSpellMask_ShamanWindFury
 
 	// Totems should go after this
-	ClassSpellMask_ShamanLast
+	ClassSpellMask_ShamanAll = 1<<iota - 1
 
 	// Fire totems
-	ClassSpellMask_ShamanFireNovaTotem
+	ClassSpellMask_ShamanFireNovaTotem = 1 << (iota - 1)
 	ClassSpellMask_ShamanMagmaTotem
 	ClassSpellMask_ShamanSearingTotem
 	// Air totems
@@ -62,8 +62,6 @@ const (
 	// Water totems
 	ClassSpellMask_ShamanHealingStreamTotem
 	ClassSpellMask_ShamanManaSpringTotem
-
-	ClassSpellMask_ShamanAll = ClassSpellMask_ShamanLast<<1 - 1
 
 	// Direct healing spells only. See Tidal Mastery talent
 	ClassSpellMask_ShamanHealingSpell   = ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanHealingWave | ClassSpellMask_ShamanLesserHealingWave | ClassSpellMask_ShamanRiptide
@@ -194,7 +192,7 @@ type Shaman struct {
 	WaterShieldAura      *core.Aura
 
 	// Dynamic Class Masks
-	MaelstromWeaponClassMask int64
+	MaelstromWeaponClassMask uint64
 
 	// Dynamic Spell Mods
 	MaelstromWeaponSpellMods []*core.SpellMod
