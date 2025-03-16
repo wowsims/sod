@@ -439,7 +439,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(shaman.MaelstromWeaponClassMask) {
-				shaman.MaelstromWeaponAura.Deactivate(sim)
+				aura.RemoveStacks(sim, min(MaelstromWeaponBaseStacks, aura.GetStacks()))
 			}
 		},
 	})

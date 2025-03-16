@@ -237,6 +237,9 @@ func (aura *Aura) AddStacks(sim *Simulation, numStacks int32) {
 func (aura *Aura) RemoveStack(sim *Simulation) {
 	aura.SetStacks(sim, aura.stacks-1)
 }
+func (aura *Aura) RemoveStacks(sim *Simulation, numStacks int32) {
+	aura.SetStacks(sim, aura.stacks-numStacks)
+}
 
 func (aura *Aura) UpdateExpires(sim *Simulation, newExpires time.Duration) {
 	aura.expires = newExpires

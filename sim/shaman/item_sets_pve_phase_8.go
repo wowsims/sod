@@ -132,7 +132,7 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
 		return
 	}
 
-	classMask := ClassSpellMask_ShamanLavaLash | ClassSpellMask_ShamanStormstrike
+	classMask := ClassSpellMask_ShamanLavaLash | ClassSpellMask_ShamanStormstrikeHit
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
@@ -185,7 +185,7 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 
 	shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+		OnInit: func(_ *core.Aura, _ *core.Simulation) {
 			shaman.MaelstromWeaponAura.MaxStacks += 5
 			shaman.MaelstromWeaponAura.ApplyOnCastComplete(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if aura.GetStacks() == 10 && spell.Matches(shaman.MaelstromWeaponClassMask) {
@@ -193,9 +193,16 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 						spell.CD.Reset()
 					}
 
-					// @Lucenia - TODO: This could potentially get very messy depending on how the interaction works.
-					// Assuming that it applies the effect a second time without a true cast to proc cast effects.
-					spell.ApplyEffects(sim, shaman.CurrentTarget, spell)
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt:     sim.CurrentTime + core.SpellBatchWindow,
+						Priority: core.CooldownPriorityBloodlust,
+						OnAction: func(sim *core.Simulation) {
+							defaultGCD := spell.DefaultCast.GCD
+							spell.DefaultCast.GCD = 0
+							spell.Cast(sim, shaman.CurrentTarget)
+							spell.DefaultCast.GCD = defaultGCD
+						},
+					})
 				}
 			}, true)
 		},

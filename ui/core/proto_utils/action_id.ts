@@ -349,7 +349,7 @@ export class ActionId {
 			case 'Healing Wave':
 			case 'Lesser Healing Wave':
 			case 'Chain Heal':
-				if (this.tag === 6) {
+				if (this.tag === 11) {
 					name = `${name} OL`;
 				} else if (this.tag) {
 					name = `${name} (${this.tag} MSW)`;
