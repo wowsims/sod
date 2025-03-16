@@ -32,7 +32,7 @@ func (warrior *Warrior) StanceMatches(other Stance) bool {
 }
 
 func (warrior *Warrior) makeStanceSpell(stance Stance, aura *core.Aura, stanceCD *core.Timer) *WarriorSpell {
-	SpellClassMask := map[Stance]int64{
+	SpellClassMask := map[Stance]uint64{
 		BattleStance:    ClassSpellMask_WarriorStanceBattle,
 		DefensiveStance: ClassSpellMask_WarriorStanceDefensive,
 		BerserkerStance: ClassSpellMask_WarriorStanceBerserker,
