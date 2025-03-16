@@ -164,15 +164,6 @@ func init() {
 		character.ItemSwap.RegisterEnchantProc(911, aura)
 	})
 
-	// Gloves - Minor Haste
-	// Effect #931 explicitly does NOT affect ranged attack speed
-	core.NewEnchantEffect(931, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		character.PseudoStats.MeleeSpeedMultiplier *= 1.01
-		character.PseudoStats.RangedSpeedMultiplier *= 1.01
-	})
-
 	// Weapon - Iron Counterweight
 	// Effect #34 explicitly does NOT affect ranged attack speed
 	core.NewEnchantEffect(34, func(agent core.Agent) {
@@ -276,25 +267,6 @@ func init() {
 	core.AddWeaponEffect(2523, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		character.AddBonusRangedHitRating(3)
-	})
-
-	// Head/Legs - Arcanum of Rapidity
-	// Confirmed to mod both melee and ranged speed
-	core.NewEnchantEffect(2543, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		character.NewDynamicEquipEffectAura(core.DynamicEquipEffectConfig{
-			EffectID: 2543,
-			Label:    "Arcanum of Rapidity",
-			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				oldMulti := math.Pow(1.01, float64(oldStacks))
-				newMulti := math.Pow(1.01, float64(newStacks))
-				character.PseudoStats.MeleeSpeedMultiplier *= 1 / oldMulti
-				character.PseudoStats.RangedSpeedMultiplier *= 1 / oldMulti
-
-				character.PseudoStats.MeleeSpeedMultiplier *= newMulti
-				character.PseudoStats.RangedSpeedMultiplier *= newMulti
-			},
-		})
 	})
 
 	// Gloves - Threat
