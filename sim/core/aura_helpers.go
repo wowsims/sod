@@ -57,7 +57,7 @@ type ProcTrigger struct {
 	DPMProcCheck      DPMProcCheck // Will use ProcWithWeaponSpecials by default. Used to override default DPM Proc check.
 	ICD               time.Duration
 	Handler           ProcHandler
-	ClassSpellMask    int64
+	ClassSpellMask    uint64
 	ExtraCondition    ProcExtraCondition
 	Tag               string
 }

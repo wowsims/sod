@@ -18,10 +18,10 @@ const (
 )
 
 const (
-	ClassSpellMask_HunterNone int64 = 0
+	ClassSpellMask_HunterNone uint64 = 0
 
 	// Shots
-	ClassSpellMask_HunterAimedShot int64 = 1 << iota
+	ClassSpellMask_HunterAimedShot uint64 = 1 << iota
 	ClassSpellMask_HunterArcaneShot
 	ClassSpellMask_HunterChimeraShot
 	ClassSpellMask_HunterExplosiveShot
@@ -61,8 +61,7 @@ const (
 	ClassSpellMask_HunterPetScreech
 	ClassSpellMask_HunterPetScorpidPoison
 
-	ClassSpellMask_HunterLast
-	ClassSpellMask_HunterAll = ClassSpellMask_HunterLast<<1 - 1
+	ClassSpellMask_HunterAll = 1<<iota - 1
 
 	ClassSpellMask_HunterTraps   = ClassSpellMask_HunterExplosiveTrap | ClassSpellMask_HunterFreezingTrap | ClassSpellMask_HunterImmolationTrap
 	ClassSpellMask_HunterShots   = ClassSpellMask_HunterAimedShot | ClassSpellMask_HunterArcaneShot | ClassSpellMask_HunterChimeraShot | ClassSpellMask_HunterExplosiveShot | ClassSpellMask_HunterKillShot | ClassSpellMask_HunterMultiShot | ClassSpellMask_HunterSteadyShot

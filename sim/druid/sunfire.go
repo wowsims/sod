@@ -84,7 +84,7 @@ func (druid *Druid) registerSunfireCatSpell(baseDamageLow float64, baseDamageHig
 }
 
 func (druid *Druid) getSunfireBaseSpellConfig(
-	classMask int64,
+	classMask uint64,
 	actionID core.ActionID,
 	additionalFlags core.SpellFlag,
 	getBaseDamage func(sim *core.Simulation, spell *core.Spell) float64,

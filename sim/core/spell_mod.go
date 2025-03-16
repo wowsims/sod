@@ -10,7 +10,7 @@ SpellMod implementation.
 */
 
 type SpellModConfig struct {
-	ClassMask         int64
+	ClassMask         uint64
 	Kind              SpellModType
 	School            SpellSchool
 	SpellFlags        SpellFlag
@@ -26,7 +26,7 @@ type SpellModConfig struct {
 }
 
 type SpellMod struct {
-	ClassMask         int64
+	ClassMask         uint64
 	Kind              SpellModType
 	School            SpellSchool
 	SpellFlags        SpellFlag
