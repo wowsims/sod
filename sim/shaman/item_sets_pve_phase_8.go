@@ -103,27 +103,27 @@ func (shaman *Shaman) applyScarletEnclaveElemental6PBonus() {
 	})
 }
 
-// var ItemSetWIPScarletCrusadeEnh = core.NewItemSet(core.ItemSet{
-// 	Name: "WIPScarletCrusadeEnh",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveEnhancement2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveEnhancement4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveEnhancement6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetWIPScarletCrusadeEnh = core.NewItemSet(core.ItemSet{
+	Name: "The Earthshatterer's Rage",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveEnhancement2PBonus()
+		},
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveEnhancement4PBonus()
+		},
+		6: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveEnhancement6PBonus()
+		},
+	},
+})
 
 // Lava Lash and Stormstrike now have a 100% chance to add a charge to your Lightning Shield. If it exceeds 9 charges, Lightning Shield will immediately deal damage to your target instead of adding a charge.
 func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
-	if !shaman.HasRune(proto.ShamanRune_RuneHandsLavaLash) && !shaman.Talents.Stormstrike {
+	if !shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock) || (!shaman.HasRune(proto.ShamanRune_RuneHandsLavaLash) && !shaman.Talents.Stormstrike) {
 		return
 	}
 
@@ -132,17 +132,24 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
 		return
 	}
 
-	classMask := ClassSpellMask_ShamanLavaLash | ClassSpellMask_ShamanStormstrikeHit
+	classMask := ClassSpellMask_ShamanLavaLash | ClassSpellMask_ShamanStormstrikeHit | ClassSpellMask_ShamanLavaBurst
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(classMask) && shaman.ActiveShield != nil && shaman.ActiveShield.Matches(ClassSpellMask_ShamanLightningShield) {
-				if shaman.ActiveShieldAura.GetStacks() == 9 {
-					shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
+				numCharges := 1
+				if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+					numCharges++
 				}
 
-				shaman.ActiveShieldAura.AddStack(sim)
+				for i := 0; i < numCharges; i++ {
+					if shaman.ActiveShieldAura.GetStacks() == 9 {
+						shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
+					}
+
+					shaman.ActiveShieldAura.AddStack(sim)
+				}
 			}
 		},
 	}))
@@ -183,30 +190,72 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	twoHandedBonusAura := shaman.RegisterAura(core.Aura{
+		Label:    label + " - 2h maelstrom bonus",
+		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.maelstromWeaponStacksPerProc++
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.maelstromWeaponStacksPerProc--
+		},
+	})
+
+	core.MakePermanent(twoHandedBonusAura)
+	shaman.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
+		if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+			twoHandedBonusAura.Activate(sim)
+		} else {
+			twoHandedBonusAura.Deactivate(sim)
+		}
+	})
+
+	var damageMod *core.SpellMod
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(_ *core.Aura, _ *core.Simulation) {
+		OnInit: func(_ *core.Aura, sim *core.Simulation) {
 			shaman.MaelstromWeaponAura.MaxStacks += 5
+			// We have to initialize this within the OnInit for shaman.MaelstromWeaponClassMask to be set properly
+			damageMod = shaman.AddDynamicMod(core.SpellModConfig{
+				ClassMask:  shaman.MaelstromWeaponClassMask,
+				Kind:       core.SpellMod_DamageDone_Pct,
+				FloatValue: 1,
+			})
+
+			// @Lucenia: We have to use a boolean flag because otherwise the triggered cast infinitely procs this trigger
+			isProcced := false
 			shaman.MaelstromWeaponAura.ApplyOnCastComplete(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if aura.GetStacks() == 10 && spell.Matches(shaman.MaelstromWeaponClassMask) {
-					if spell.CD.Duration > 0 {
-						spell.CD.Reset()
+				if spell.Matches(shaman.MaelstromWeaponClassMask) {
+					if aura.GetStacks() > 5 {
+						damageMod.UpdateFloatValue(1 + 0.10*float64(aura.GetStacks()-5))
+					} else {
+						damageMod.UpdateFloatValue(1)
 					}
 
-					core.StartDelayedAction(sim, core.DelayedActionOptions{
-						DoAt:     sim.CurrentTime + core.SpellBatchWindow,
-						Priority: core.CooldownPriorityBloodlust,
-						OnAction: func(sim *core.Simulation) {
-							defaultGCD := spell.DefaultCast.GCD
-							spell.DefaultCast.GCD = 0
-							spell.Cast(sim, shaman.CurrentTarget)
-							spell.DefaultCast.GCD = defaultGCD
-						},
-					})
+					if aura.GetStacks() == 10 && !isProcced {
+						isProcced = true
+
+						if spell.CD.Duration > 0 {
+							spell.CD.Reset()
+						}
+
+						defaultGCD := spell.DefaultCast.GCD
+						spell.DefaultCast.GCD = 0
+						spell.Cast(sim, shaman.CurrentTarget)
+						spell.DefaultCast.GCD = defaultGCD
+
+						isProcced = false
+					}
 				}
 			}, true)
 		},
-	})
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Deactivate()
+		},
+	}))
 }
 
 // var ItemSetWIPScarletCrusadeTank = core.NewItemSet(core.ItemSet{

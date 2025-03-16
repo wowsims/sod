@@ -214,19 +214,20 @@ type Shaman struct {
 	SpiritWolves *SpiritWolves
 
 	// Other data
-	ancestralHealingAmount      float64 // Used by Ancestral Awakening
-	bonusFlurrySpeed            float64 // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
-	bonusWindfuryWeaponAP       float64
-	elementalFocusProcChance    float64
-	lastFlameShockTarget        *core.Unit // Used by Ancestral Guidance rune
-	lightningShieldCanCrit      bool
-	maelstromWeaponPPMM         *core.DynamicProcManager
-	overloadProcChance          float64
-	powerSurgeProcChance        float64
-	rollingThunderProcChance    float64
-	shamanisticRageDRMultiplier float64
-	staticSHocksProcChance      float64
-	useLavaBurstCritScaling     bool
+	ancestralHealingAmount       float64 // Used by Ancestral Awakening
+	bonusFlurrySpeed             float64 // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
+	bonusWindfuryWeaponAP        float64
+	elementalFocusProcChance     float64
+	lastFlameShockTarget         *core.Unit // Used by Ancestral Guidance rune
+	lightningShieldCanCrit       bool
+	maelstromWeaponPPMM          *core.DynamicProcManager
+	maelstromWeaponStacksPerProc int32
+	overloadProcChance           float64
+	powerSurgeProcChance         float64
+	rollingThunderProcChance     float64
+	shamanisticRageDRMultiplier  float64
+	staticSHocksProcChance       float64
+	useLavaBurstCritScaling      bool
 }
 
 // Implemented by each Shaman spec.
