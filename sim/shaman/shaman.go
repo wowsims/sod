@@ -45,9 +45,10 @@ const (
 	ClassSpellMask_ShamanWindFury
 
 	// Totems should go after this
+	ClassSpellMask_ShamanAll = 1<<iota - 1
 
 	// Fire totems
-	ClassSpellMask_ShamanFireNovaTotem
+	ClassSpellMask_ShamanFireNovaTotem = 1 << (iota - 1)
 	ClassSpellMask_ShamanMagmaTotem
 	ClassSpellMask_ShamanSearingTotem
 	// Air totems
@@ -61,8 +62,6 @@ const (
 	// Water totems
 	ClassSpellMask_ShamanHealingStreamTotem
 	ClassSpellMask_ShamanManaSpringTotem
-
-	ClassSpellMask_ShamanAll = 1<<iota - 1
 
 	// Direct healing spells only. See Tidal Mastery talent
 	ClassSpellMask_ShamanHealingSpell   = ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanHealingWave | ClassSpellMask_ShamanLesserHealingWave | ClassSpellMask_ShamanRiptide
