@@ -146,6 +146,7 @@ type Druid struct {
 	TigersFuryAura           *core.Aura
 	SavageRoarAura           *core.Aura
 	SolarEclipseProcAura     *core.Aura
+	StarsurgeAura            *core.Aura
 	LunarEclipseProcAura     *core.Aura
 	WildStrikesBuffAura      *core.Aura
 
