@@ -11,6 +11,7 @@ import {
 	Faction,
 	HealingModel,
 	IndividualBuffs,
+	PartyBuffs,
 	Race,
 	RaidBuffs,
 	Spec,
@@ -80,6 +81,7 @@ export interface PresetSettings extends PresetBase {
 	level?: number;
 	race?: Race;
 	raidBuffs?: RaidBuffs;
+	partyBuffs?: PartyBuffs;
 	buffs?: IndividualBuffs;
 	debuffs?: Debuffs;
 	consumes?: Consumes;
@@ -248,6 +250,10 @@ const makePresetSettingsHelper = (name: string, spec: Spec, simSettings: Individ
 
 	if (simSettings.raidBuffs) {
 		settings.raidBuffs = simSettings.raidBuffs;
+	}
+
+	if (simSettings.partyBuffs) {
+		settings.partyBuffs = simSettings.partyBuffs;
 	}
 
 	if (simSettings.debuffs) {
