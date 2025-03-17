@@ -10,6 +10,7 @@ import (
 
 // Soul Related Set Bonus IDs
 const (
+	// Prot
 	PaladinT1Prot2P  = 456536
 	PaladinT1Prot4P  = 456538
 	PaladinT1Prot6P  = 456541
@@ -21,6 +22,11 @@ const (
 	PaladinT3Prot6P  = 1219226
 	PaladinTAQProt2P = 1213410
 	PaladinTAQProt4P = 1213413
+	PaladinTSEProt2P = 1226467
+	PaladinTSEProt4P = 1226477
+	PaladinTSEProt6P = 1226479
+	
+	// Holy
 	PaladinT1Holy2P  = 456488
 	PaladinT1Holy4P  = 457323
 	PaladinT1Holy6P  = 456492
@@ -29,6 +35,11 @@ const (
 	PaladinT2Holy6P  = 467513
 	PaladinTAQHoly2P = 1213349
 	PaladinTAQHoly4P = 1213353
+	PaladinTSEHoly2P = 1226452
+	PaladinTSEHoly4P = 1226454
+	PaladinTSEHoly6P = 1226459
+	
+	// Ret
 	PaladinT1Ret2P   = 456494
 	PaladinT1Ret4P   = 456489
 	PaladinT1Ret6P   = 456533
@@ -40,6 +51,11 @@ const (
 	PaladinT3Ret6P   = 1219193
 	PaladinTAQRet2P  = 1213397
 	PaladinTAQRet4P  = 1213406
+	PaladinTSERet2P  = 1226460
+	PaladinTSERet4P  = 1226462
+	PaladinTSERet6P  = 1226463
+	
+	// Other
 	PaladinZG2P      = 468401
 	PaladinZG3P      = 468428
 	PaladinZG5P      = 468431

@@ -99,6 +99,10 @@ type Paladin struct {
 	sealOfCommand       *core.Spell
 	sealOfMartyrdom     *core.Spell
 
+	// Set bonus specific
+	holyPowerAura    *core.Aura
+	onHolyPowerSpent func(sim *core.Simulation, holyPower int32)
+
 	enableMultiJudge    bool
 	lingerDuration      time.Duration
 	consumeSealsOnJudge bool
