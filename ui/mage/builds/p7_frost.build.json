@@ -6,8 +6,9 @@
     "arcaneBrilliance": true,
     "divineSpirit": true,
     "moonkinAura": true,
-    "vampiricTouch": 300,
-    "demonicPact": 130,
+    "manaSpringTotem": "TristateEffectRegular",
+    "vampiricTouch": 400,
+    "demonicPact": 150,
     "aspectOfTheLion": true,
     "atieshCastSpeedBuff": true,
     "atieshHealingBuff": true,
@@ -24,7 +25,7 @@
   },
   "player": {
     "name": "Player",
-    "race": "RaceGnome",
+    "race": "RaceTroll",
     "level": 60,
     "class": "ClassMage",
     "equipment": {
@@ -51,6 +52,7 @@
     "consumes": {
       "flask": "FlaskOfAncientKnowledge",
       "food": "FoodDarkclawBisque",
+      "manaRegenElixir": "MagebloodPotion",
       "spellPowerBuff": "ElixirOfTheMageLord",
       "firePowerBuff": "ElixirOfGreaterFirepower",
       "frostPowerBuff": "ElixirOfFrostPower",
@@ -115,13 +117,12 @@
       }
     },
     "buffs": {
-      "blessingOfWisdom": "TristateEffectRegular",
       "rallyingCryOfTheDragonslayer": true,
       "valorOfAzeroth": true,
       "saygesFortune": "SaygesDamage",
       "spiritOfZandalar": true,
       "songflowerSerenade": true,
-      "mightOfStormwind": true,
+      "warchiefsBlessing": true,
       "moldarsMoxie": true,
       "slipkiksSavvy": true
     },

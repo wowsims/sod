@@ -37,9 +37,9 @@ import Phase4APLFireJSON from './apls/p4_fire.apl.json';
 import Phase4APLFrostJSON from './apls/p4_frost.apl.json';
 import Phase5APLFireJSON from './apls/p5_fire.apl.json';
 import Phase5APLSpellFrostJSON from './apls/p5_spellfrost.apl.json';
-import Phase6APLFireJSON from './apls/p6_fire.apl.json';
-import Phase6APLSpellFrostJSON from './apls/p6_spellfrost.apl.json';
 // Builds
+import Phase6BuildFireJSON from './builds/p6_fire.build.json';
+import Phase6BuildFrostJSON from './builds/p6_frost.build.json';
 import Phase7BuildFireJSON from './builds/p7_fire.build.json';
 import Phase7BuildFrostJSON from './builds/p7_frost.build.json';
 // Gear
@@ -56,8 +56,16 @@ import Phase4GearFrostJSON from './gear_sets/p4_frost.gear.json';
 import Phase5GearArcaneJSON from './gear_sets/p5_arcane.gear.json';
 import Phase5GearFireJSON from './gear_sets/p5_fire.gear.json';
 import Phase5GearFrostJSON from './gear_sets/p5_frost.gear.json';
-import Phase6GearFireJSON from './gear_sets/p6_fire.gear.json';
-import Phase6GearFrostJSON from './gear_sets/p6_frost.gear.json';
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Build Presets
+///////////////////////////////////////////////////////////////////////////
+
+export const PresetBuildFirePhase6 = PresetUtils.makePresetBuildFromJSON('P6 Fire', Spec.SpecMage, Phase6BuildFireJSON);
+export const PresetBuildFrostPhase6 = PresetUtils.makePresetBuildFromJSON('P6 Frost', Spec.SpecMage, Phase6BuildFrostJSON);
+
+export const PresetBuildFirePhase7 = PresetUtils.makePresetBuildFromJSON('P7 Fire', Spec.SpecMage, Phase7BuildFireJSON);
+export const PresetBuildFrostPhase7 = PresetUtils.makePresetBuildFromJSON('P7 Frost', Spec.SpecMage, Phase7BuildFrostJSON);
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
@@ -113,21 +121,14 @@ export const GearFrostPhase5 = PresetUtils.makePresetGear('P5 Frost', Phase5Gear
 	customCondition: player => player.getLevel() === 60,
 });
 
-export const GearFirePhase6 = PresetUtils.makePresetGear('P6 Fire', Phase6GearFireJSON, {
-	customCondition: player => player.getLevel() === 60,
-});
-export const GearFrostPhase6 = PresetUtils.makePresetGear('P6 Frost', Phase6GearFrostJSON, {
-	customCondition: player => player.getLevel() === 60,
-});
-
 export const GearPresets = {
 	[Phase.Phase1]: [GearArcanePhase1, GearFirePhase1, GearFrostPhase1],
 	[Phase.Phase2]: [GearArcanePhase2, GearFirePhase2, GearFrostPhase2],
 	[Phase.Phase3]: [GearArcanePhase3, GearFirePhase3, GearFrostPhase3],
 	[Phase.Phase4]: [GearArcanePhase4, GearFirePhase4, GearFrostPhase4],
 	[Phase.Phase5]: [GearArcanePhase5, GearFirePhase5, GearFrostPhase5],
-	[Phase.Phase6]: [GearFirePhase6, GearFrostPhase6],
-	[Phase.Phase7]: [],
+	[Phase.Phase6]: [PresetBuildFirePhase6.gear!, PresetBuildFrostPhase6.gear!],
+	[Phase.Phase7]: [PresetBuildFirePhase7.gear!, PresetBuildFrostPhase7.gear!],
 };
 
 export const DefaultGearArcane = GearPresets[Phase.Phase5][0];
@@ -180,21 +181,14 @@ export const APLSpellfrostPhase5 = PresetUtils.makePresetAPLRotation('P5 Frost',
 	customCondition: player => player.getLevel() >= 60,
 });
 
-export const APLFirePhase6 = PresetUtils.makePresetAPLRotation('P6 Fire', Phase6APLFireJSON, {
-	customCondition: player => player.getLevel() >= 60,
-});
-export const APLSpellfrostPhase6 = PresetUtils.makePresetAPLRotation('P6 Frost', Phase6APLSpellFrostJSON, {
-	customCondition: player => player.getLevel() >= 60,
-});
-
 export const APLPresets = {
 	[Phase.Phase1]: [APLArcanePhase1, APLFirePhase1, APLFirePhase1],
 	[Phase.Phase2]: [APLArcanePhase2, APLFirePhase2, APLFirePhase2],
 	[Phase.Phase3]: [APLArcanePhase3, APLFirePhase3, APLFrostPhase3],
 	[Phase.Phase4]: [APLArcanePhase4, APLFirePhase4, APLFrostPhase4],
 	[Phase.Phase5]: [APLFirePhase5, APLSpellfrostPhase5],
-	[Phase.Phase6]: [APLFirePhase6, APLSpellfrostPhase6],
-	[Phase.Phase7]: [],
+	[Phase.Phase6]: [PresetBuildFirePhase6.rotation!, PresetBuildFrostPhase6.rotation!],
+	[Phase.Phase7]: [PresetBuildFirePhase7.rotation!, PresetBuildFrostPhase7.rotation!],
 };
 
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
@@ -351,26 +345,3 @@ export const OtherDefaults = {
 	profession1: Profession.Alchemy,
 	profession2: Profession.Tailoring,
 };
-
-///////////////////////////////////////////////////////////////////////////
-//                                 Build Presets
-///////////////////////////////////////////////////////////////////////////
-
-export const PresetBuildArcanePhase6 = PresetUtils.makePresetBuild('P6 Arcane', {
-	gear: DefaultGearArcane,
-	talents: DefaultTalentsArcane,
-	rotation: DefaultAPLs[60][0],
-});
-export const PresetBuildFirePhase6 = PresetUtils.makePresetBuild('P6 Fire', {
-	gear: DefaultGearFire,
-	talents: DefaultTalentsFire,
-	rotation: DefaultAPLs[60][1],
-});
-export const PresetBuildFrostPhase6 = PresetUtils.makePresetBuild('P6 Frost', {
-	gear: DefaultGearFrost,
-	talents: DefaultTalentsFrost,
-	rotation: DefaultAPLs[60][2],
-});
-
-export const PresetBuildFirePhase7 = PresetUtils.makePresetBuildFromJSON('P7 Fire', Spec.SpecMage, Phase7BuildFireJSON);
-export const PresetBuildFrostPhase7 = PresetUtils.makePresetBuildFromJSON('P7 Frost', Spec.SpecMage, Phase7BuildFrostJSON);

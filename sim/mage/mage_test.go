@@ -176,24 +176,6 @@ func TestFire(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
-		{
-			Class:      proto.Class_ClassMage,
-			Phase:      6,
-			Level:      60,
-			Race:       proto.Race_RaceTroll,
-			OtherRaces: []proto.Race{proto.Race_RaceGnome},
-
-			Talents:     Phase6TalentsFire,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p6_fire"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p6_fire"),
-			Buffs:       core.FullBuffsPhase6,
-			Consumes:    Phase6Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
-
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatSpellPower,
-			StatsToWeigh:    Stats,
-		},
 		core.GetTestBuildFromJSON(proto.Class_ClassMage, 6, 60, "../../ui/mage/builds", "p6_fire", ItemFilters, proto.Stat_StatSpellPower, Stats),
 		core.GetTestBuildFromJSON(proto.Class_ClassMage, 7, 60, "../../ui/mage/builds", "p7_fire", ItemFilters, proto.Stat_StatSpellPower, Stats),
 	}))
@@ -254,24 +236,7 @@ func TestFrost(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
-		{
-			Class:      proto.Class_ClassMage,
-			Phase:      6,
-			Level:      60,
-			Race:       proto.Race_RaceTroll,
-			OtherRaces: []proto.Race{proto.Race_RaceGnome},
-
-			Talents:     phase6talentsfrost,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p6_frost"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p6_spellfrost"),
-			Buffs:       core.FullBuffsPhase6,
-			Consumes:    Phase6Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
-
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatSpellPower,
-			StatsToWeigh:    Stats,
-		},
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 6, 60, "../../ui/mage/builds", "p6_frost", ItemFilters, proto.Stat_StatSpellPower, Stats),
 		core.GetTestBuildFromJSON(proto.Class_ClassMage, 7, 60, "../../ui/mage/builds", "p7_frost", ItemFilters, proto.Stat_StatSpellPower, Stats),
 	}))
 }
