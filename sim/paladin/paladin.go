@@ -100,8 +100,9 @@ type Paladin struct {
 	sealOfMartyrdom     *core.Spell
 
 	// Set bonus specific
-	holyPowerAura    *core.Aura
-	onHolyPowerSpent func(sim *core.Simulation, holyPower int32)
+	holyPowerAura         *core.Aura
+	onHolyPowerSpent      func(sim *core.Simulation, holyPower int32)
+	holyShieldExtraDamage func(sim *core.Simulation, paladin *Paladin) float64
 
 	enableMultiJudge    bool
 	lingerDuration      time.Duration

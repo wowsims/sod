@@ -57,7 +57,7 @@ func (paladin *Paladin) registerHolyShield() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				// Spell damage from Holy Shield can crit, but does not miss.
-				spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMagicCrit)
+				spell.CalcAndDealDamage(sim, target, paladin.getHolyShieldDamage(sim, damage), spell.OutcomeMagicCrit)
 			},
 		})
 
@@ -78,7 +78,9 @@ func (paladin *Paladin) registerHolyShield() {
 			OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if result.DidBlock() {
 					paladin.holyShieldProc[i].Cast(sim, spell.Unit)
-					aura.RemoveStack(sim)
+					if aura.MaxStacks > 0 {
+						aura.RemoveStack(sim)
+					}
 				}
 			},
 		})
@@ -114,4 +116,14 @@ func (paladin *Paladin) registerHolyShield() {
 			},
 		})
 	}
+}
+
+func (paladin *Paladin) getHolyShieldDamage(sim *core.Simulation, baseDamage float64) float64 {
+	damage := baseDamage
+
+	if paladin.holyShieldExtraDamage != nil {
+		damage += paladin.holyShieldExtraDamage(sim, paladin)
+	}
+
+	return damage
 }

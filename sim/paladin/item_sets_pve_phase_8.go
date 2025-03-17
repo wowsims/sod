@@ -253,7 +253,7 @@ func (paladin *Paladin) applyScarletEnclaveProtection6PBonus() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			blockValue := paladin.GetStat(stats.BlockValue)
+			blockValue := paladin.BlockValue()
 			healAmount := blockValue * 0.5
 			spell.CalcAndDealHealing(sim, target, healAmount, spell.OutcomeHealingCrit)
 		},
