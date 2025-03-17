@@ -25,7 +25,7 @@ const (
 	PaladinTSEProt2P = 1226467
 	PaladinTSEProt4P = 1226477
 	PaladinTSEProt6P = 1226479
-	
+
 	// Holy
 	PaladinT1Holy2P  = 456488
 	PaladinT1Holy4P  = 457323
@@ -38,28 +38,28 @@ const (
 	PaladinTSEHoly2P = 1226452
 	PaladinTSEHoly4P = 1226454
 	PaladinTSEHoly6P = 1226459
-	
+
 	// Ret
-	PaladinT1Ret2P   = 456494
-	PaladinT1Ret4P   = 456489
-	PaladinT1Ret6P   = 456533
-	PaladinT2Ret2P   = 467518
-	PaladinT2Ret4P   = 467526
-	PaladinT2Ret6P   = 467529
-	PaladinT3Ret2P   = 1219189
-	PaladinT3Ret4P   = 1219191
-	PaladinT3Ret6P   = 1219193
-	PaladinTAQRet2P  = 1213397
-	PaladinTAQRet4P  = 1213406
-	PaladinTSERet2P  = 1226460
-	PaladinTSERet4P  = 1226462
-	PaladinTSERet6P  = 1226463
-	
+	PaladinT1Ret2P  = 456494
+	PaladinT1Ret4P  = 456489
+	PaladinT1Ret6P  = 456533
+	PaladinT2Ret2P  = 467518
+	PaladinT2Ret4P  = 467526
+	PaladinT2Ret6P  = 467529
+	PaladinT3Ret2P  = 1219189
+	PaladinT3Ret4P  = 1219191
+	PaladinT3Ret6P  = 1219193
+	PaladinTAQRet2P = 1213397
+	PaladinTAQRet4P = 1213406
+	PaladinTSERet2P = 1226460
+	PaladinTSERet4P = 1226462
+	PaladinTSERet6P = 1226463
+
 	// Other
-	PaladinZG2P      = 468401
-	PaladinZG3P      = 468428
-	PaladinZG5P      = 468431
-	PaladinRAQ3P     = 1213467
+	PaladinZG2P  = 468401
+	PaladinZG3P  = 468428
+	PaladinZG5P  = 468431
+	PaladinRAQ3P = 1213467
 )
 
 ///////////////////////////////////////////////////////////////////////////
@@ -293,43 +293,41 @@ var ItemSetBattlegearOfEternalJustice = core.NewItemSet(core.ItemSet{
 
 func (paladin *Paladin) applyPaladinT1Prot2P() {
 	bonusLabel := "S03 - Item - T1 - Paladin - Protection 2P Bonus"
-
-	if duplicateBonusCheckAndCreate(paladin, PaladinT1Prot2P, bonusLabel) {
+	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
 	// (2) Set: Increases the block value of your shield by 30.
-	paladin.AddStat(stats.BlockValue, 30)
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT1Prot2P},
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+	}).AttachBuildPhaseStatBuff(stats.BlockValue, 30))
 }
 
 func (paladin *Paladin) applyPaladinT1Prot4P() {
 	bonusLabel := "S03 - Item - T1 - Paladin - Protection 4P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
 	// (4) Set: Heal for 189 to 211 when you Block. (ICD: 3.5s)
 	// Note: The heal does not scale with healing/spell power, but can crit.
-	actionID := core.ActionID{SpellID: 456540}
-
 	bastionOfLight := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:         actionID,
-		SpellSchool:      core.SpellSchoolHoly,
-		DefenseType:      core.DefenseTypeMagic,
-		ProcMask:         core.ProcMaskSpellHealing,
-		Flags:            core.SpellFlagHelpful,
+		ActionID:    core.ActionID{SpellID: 456540},
+		SpellSchool: core.SpellSchoolHoly,
+		DefenseType: core.DefenseTypeMagic,
+		ProcMask:    core.ProcMaskSpellHealing,
+		Flags:       core.SpellFlagHelpful,
+
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseHeal := sim.Roll(189, 211)
 			spell.CalcAndDealHealing(sim, target, baseHeal, spell.OutcomeHealingCrit)
 		},
 	})
-
-	handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		bastionOfLight.Cast(sim, result.Target)
-	}
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
 		Name:       bonusLabel,
@@ -338,14 +336,14 @@ func (paladin *Paladin) applyPaladinT1Prot4P() {
 		Outcome:    core.OutcomeBlock,
 		ProcChance: 1.0,
 		ICD:        time.Millisecond * 3500,
-		Handler:    handler,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			bastionOfLight.Cast(sim, result.Target)
+		},
 	})
 }
 
 func (paladin *Paladin) applyPaladinT1Prot6P() {
-
 	bonusLabel := "S03 - Item - T1 - Paladin - Protection 6P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
@@ -354,48 +352,26 @@ func (paladin *Paladin) applyPaladinT1Prot6P() {
 		Label:    bonusLabel,
 		ActionID: core.ActionID{SpellID: PaladinT1Prot6P},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			auras := paladin.holyShieldAura
-			procs := paladin.holyShieldProc
-			blockBonus := 30.0 * core.BlockRatingPerBlockChance
-
 			for i, values := range HolyShieldValues {
-
 				if paladin.Level < values.level {
 					break
 				}
 
-				damage := values.damage
-
 				// Holy Shield's damage is increased by 80% of shield block value.
-				procs[i].ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					sbv := paladin.BlockValue() * 0.8
-					// Reminder: Holy Shield can crit, but does not miss.
-					spell.CalcAndDealDamage(sim, target, (damage + sbv), spell.OutcomeMagicCrit)
+				paladin.holyShieldExtraDamage = func(_ *core.Simulation, paladin *Paladin) float64 {
+					return paladin.BlockValue() * 0.8
 				}
 
-				// Holy Shield aura no longer has stacks...
-				auras[i].MaxStacks = 0
-
-				// ...and does not set stacks on gain...
-				auras[i].OnGain = func(aura *core.Aura, sim *core.Simulation) {
-					paladin.AddStatDynamic(sim, stats.Block, blockBonus)
-				}
-
-				// ...or remove stacks on block.
-				auras[i].OnSpellHitTaken = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-					if result.DidBlock() {
-						procs[i].Cast(sim, spell.Unit)
-					}
-				}
+				// Holy Shield aura no longer has stacks and does not set stacks on gain or remove stacks on block.
+				// Setting MaxStacks to 0 disables this behavior in holy_shield.go
+				paladin.holyShieldAura[i].MaxStacks = 0
 			}
 		},
 	})
 }
 
 func (paladin *Paladin) applyPaladinT2Prot2P() {
-
 	bonusLabel := "S03 - Item - T2 - Paladin - Protection 2P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
@@ -405,7 +381,7 @@ func (paladin *Paladin) applyPaladinT2Prot2P() {
 		return
 	}
 
-	blockBonus := 40.0 * core.BlockRatingPerBlockChance
+	blockBonus := 10.0 * core.BlockRatingPerBlockChance
 
 	paladin.RegisterAura(core.Aura{
 		Label:    bonusLabel,
@@ -422,9 +398,7 @@ func (paladin *Paladin) applyPaladinT2Prot2P() {
 }
 
 func (paladin *Paladin) applyPaladinT2Prot4P() {
-
 	bonusLabel := "S03 - Item - T2 - Paladin - Protection 4P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
@@ -434,7 +408,7 @@ func (paladin *Paladin) applyPaladinT2Prot4P() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label:    bonusLabel,
 		ActionID: core.ActionID{SpellID: PaladinT2Prot4P},
 		OnInit: func(_ *core.Aura, _ *core.Simulation) {
@@ -442,31 +416,24 @@ func (paladin *Paladin) applyPaladinT2Prot4P() {
 				if hsAura == nil || paladin.Level < HolyShieldValues[i].level {
 					break
 				}
-				oldOnGain := hsAura.OnGain
-				oldOnExpire := hsAura.OnExpire
 
-				hsAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-					oldOnGain(aura, sim)
+				hsAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 					paladin.PseudoStats.DamageTakenMultiplier *= 0.9
-				}
-				hsAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-					oldOnExpire(aura, sim)
+				}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 					paladin.PseudoStats.DamageTakenMultiplier /= 0.9
-				}
+				})
 			}
 		},
-	})
+	}))
 }
 
 func (paladin *Paladin) applyPaladinT2Prot6P() {
 	bonusLabel := "S03 - Item - T2 - Paladin - Protection 6P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
-	// Your Reckoning Talent now has a 20% chance per talent point to trigger when
-	// you block.
+	// Your Reckoning Talent now has a 20% chance per talent point to trigger when you block.
 	if paladin.Talents.Reckoning == 0 {
 		return
 	}
@@ -474,23 +441,20 @@ func (paladin *Paladin) applyPaladinT2Prot6P() {
 	actionID := core.ActionID{SpellID: 20178} // Reckoning proc ID
 	procChance := 0.2 * float64(paladin.Talents.Reckoning)
 
-	handler := func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-		paladin.AutoAttacks.ExtraMHAttack(sim, 1, actionID, spell.ActionID)
-	}
-
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
 		Name:       bonusLabel,
 		ActionID:   core.ActionID{SpellID: PaladinT2Prot6P},
 		Callback:   core.CallbackOnSpellHitTaken,
 		Outcome:    core.OutcomeBlock,
 		ProcChance: procChance,
-		Handler:    handler,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			paladin.AutoAttacks.ExtraMHAttack(sim, 1, actionID, spell.ActionID)
+		},
 	})
 }
 
 func (paladin *Paladin) applyPaladinTAQProt2P() {
 	bonusLabel := "S03 - Item - TAQ - Paladin - Protection 2P Bonus"
-
 	if paladin.HasAura(bonusLabel) || paladin.Options.PersonalBlessing != proto.Blessings_BlessingOfSanctuary {
 		return
 	}
@@ -529,15 +493,20 @@ func (paladin *Paladin) applyPaladinT1Holy2P() {
 }
 
 func (paladin *Paladin) applyPaladinT1Holy4P() {
-
 	bonusLabel := "S03 - Item - T1 - Paladin - Holy 4P Bonus"
-
-	if duplicateBonusCheckAndCreate(paladin, PaladinT1Holy4P, bonusLabel) {
+	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
-	paladin.AddStat(stats.MeleeCrit, 2)
-	paladin.AddStat(stats.SpellCrit, 2)
+	bonusStats := stats.Stats{
+		stats.SpellCrit: 2 * core.SpellCritRatingPerCritChance,
+		stats.MeleeCrit: 2 * core.CritRatingPerCritChance,
+	}
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT1Holy4P},
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+	}).AttachBuildPhaseStatsBuff(bonusStats))
 }
 
 func (paladin *Paladin) applyPaladinT1Holy6P() {
@@ -545,35 +514,37 @@ func (paladin *Paladin) applyPaladinT1Holy6P() {
 }
 
 func (paladin *Paladin) applyPaladinT2Holy2P() {
-
 	bonusLabel := "S03 - Item - T2 - Paladin - Holy 2P Bonus"
-
-	if duplicateBonusCheckAndCreate(paladin, PaladinT2Holy2P, bonusLabel) {
+	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
 	//Increases critical strike chance of holy shock spell by 5%
-	paladin.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Matches(ClassSpellMask_PaladinHolyShock) {
-			spell.BonusCritRating += 5.0
-		}
-	})
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT2Holy2P},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_BonusCrit_Flat,
+		ClassMask:  ClassSpellMask_PaladinHolyShock,
+		FloatValue: 5.0 * core.SpellCritRatingPerCritChance,
+	}))
 }
 
 func (paladin *Paladin) applyPaladinT2Holy4P() {
-
 	bonusLabel := "S03 - Item - T2 - Paladin - Holy 4P Bonus"
-
-	if duplicateBonusCheckAndCreate(paladin, PaladinT2Holy4P, bonusLabel) {
+	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
 	//Increases damage done by your Consecration spell by 50%
-	paladin.AddStaticMod(core.SpellModConfig{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT2Holy4P},
+	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_PaladinConsecration,
 		IntValue:  50,
-	})
+	}))
 }
 
 func (paladin *Paladin) applyPaladinT2Holy6P() {
@@ -597,18 +568,23 @@ func (paladin *Paladin) applyPaladinT1Ret2P() {
 
 func (paladin *Paladin) applyPaladinT1Ret4P() {
 	bonusLabel := "S03 - Item - T1 - Paladin - Retribution 4P Bonus"
-
-	if duplicateBonusCheckAndCreate(paladin, PaladinT1Ret4P, bonusLabel) {
+	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
-	paladin.AddStat(stats.MeleeCrit, 2)
-	paladin.AddStat(stats.SpellCrit, 2)
+	bonusStats := stats.Stats{
+		stats.SpellCrit: 2 * core.SpellCritRatingPerCritChance,
+		stats.MeleeCrit: 2 * core.CritRatingPerCritChance,
+	}
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinT1Ret4P},
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+	}).AttachBuildPhaseStatsBuff(bonusStats))
 }
 
 func (paladin *Paladin) applyPaladinT1Ret6P() {
 	bonusLabel := "S03 - Item - T1 - Paladin - Retribution 6P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
@@ -625,7 +601,6 @@ func (paladin *Paladin) applyPaladinT1Ret6P() {
 
 func (paladin *Paladin) applyPaladinT2Ret2P() {
 	bonusLabel := "S03 - Item - T2 - Paladin - Retribution 2P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
@@ -653,7 +628,6 @@ func (paladin *Paladin) applyPaladinT2Ret2P() {
 
 func (paladin *Paladin) applyPaladinT2Ret4P() {
 	bonusLabel := "S03 - Item - T2 - Paladin - Retribution 4P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
@@ -671,13 +645,12 @@ func (paladin *Paladin) applyPaladinT2Ret4P() {
 
 func (paladin *Paladin) applyPaladinT2Ret6P() {
 	bonusLabel := "S03 - Item - T2 - Paladin - Retribution 6P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
 	// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
-	t2Judgement6pcAura := paladin.GetOrRegisterAura(core.Aura{
+	swiftJudgementAura := paladin.GetOrRegisterAura(core.Aura{
 		Label:     "Swift Judgement",
 		ActionID:  core.ActionID{SpellID: 467530},
 		Duration:  time.Second * 8,
@@ -689,7 +662,7 @@ func (paladin *Paladin) applyPaladinT2Ret6P() {
 		},
 	})
 
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label:    bonusLabel,
 		ActionID: core.ActionID{SpellID: PaladinT2Ret6P},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -698,35 +671,33 @@ func (paladin *Paladin) applyPaladinT2Ret6P() {
 			// Wrap the apply Judgement ApplyEffects with more Effects
 			paladin.judgement.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				originalApplyEffects(sim, target, spell)
+
 				// 6 pieces: Your Judgement grants 1% increased Holy damage for 8 sec, stacking up to 5 times.
-				t2Judgement6pcAura.Activate(sim)
-				t2Judgement6pcAura.AddStack(sim)
+				swiftJudgementAura.Activate(sim)
+				swiftJudgementAura.AddStack(sim)
 			}
 		},
-	})
+	}))
 }
 
 func (paladin *Paladin) applyPaladinTAQRet2P() {
 	bonusLabel := "S03 - Item - TAQ - Paladin - Retribution 2P Bonus"
-
-	if duplicateBonusCheckAndCreate(paladin, PaladinTAQRet2P, bonusLabel) {
+	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
-	if !paladin.hasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
-		return
-	}
-
-	paladin.AddStaticMod(core.SpellModConfig{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinTAQRet2P},
+	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_PaladinCrusaderStrike,
 		IntValue:  50,
-	})
+	}))
 }
 
 func (paladin *Paladin) applyPaladinTAQRet4P() {
 	bonusLabel := "S03 - Item - TAQ - Paladin - Retribution 4P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
@@ -741,6 +712,7 @@ func (paladin *Paladin) applyPaladinTAQRet4P() {
 		ActionID:  core.ActionID{SpellID: 1217927},
 		Duration:  time.Second * 20,
 		MaxStacks: 3,
+
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			damageMod.UpdateIntValue(core.TernaryInt64(paladin.MainHand().HandType == proto.HandType_HandTypeTwoHand, 35, 0) * int64(newStacks))
 		},
@@ -767,58 +739,67 @@ func (paladin *Paladin) applyPaladinTAQRet4P() {
 }
 
 func (paladin *Paladin) applyPaladinZG2P() {
-	// No soul provides this bonus
-	paladin.AddStats(stats.Stats{
-		stats.HolyPower: 14,
-	})
+	bonusLabel := "S03 - Item - ZG - Paladin - Caster 2P Bonus"
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	// Increases damage done by Holy spells and effects by up to 14.
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinZG2P},
+		BuildPhase: core.CharacterBuildPhaseBuffs,
+	}).AttachBuildPhaseStatBuff(stats.HolyPower, 14))
 }
 
 func (paladin *Paladin) applyPaladinZG3P() {
 	bonusLabel := "S03 - Item - ZG - Paladin - Caster 3P Bonus"
-
-	if duplicateBonusCheckAndCreate(paladin, PaladinZG3P, bonusLabel) {
+	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
-	paladin.AddStaticMod(core.SpellModConfig{
+	// Increases damage done by your Holy Shock spell by 50%.
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinZG3P},
+	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_PaladinHolyShock,
 		IntValue:  50,
-	})
+	}))
 }
 
 func (paladin *Paladin) applyPaladinZG5P() {
 	bonusLabel := "S03 - Item - ZG - Paladin - Caster 5P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
-	paladin.AddStaticMod(core.SpellModConfig{
+	// Reduces the cooldown of your Exorcism spell by 3 sec and increases its damage done by 50%.
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		Label:    bonusLabel,
+		ActionID: core.ActionID{SpellID: PaladinZG3P},
+	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_PaladinExorcism,
 		IntValue:  50,
-	})
-
-	paladin.AddStaticMod(core.SpellModConfig{
+	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
 		ClassMask: ClassSpellMask_PaladinExorcism,
 		TimeValue: -time.Second * 3,
-	})
+	}))
 }
 
 func (paladin *Paladin) applyPaladinRAQ3P() {
 	bonusLabel := "S03 - Item - RAQ - Paladin - Retribution 3P Bonus"
-
 	if paladin.HasAura(bonusLabel) {
 		return
 	}
 
-	aura := core.Aura{
+	paladin.RegisterAura(core.Aura{
 		Label:    bonusLabel,
 		ActionID: core.ActionID{SpellID: PaladinRAQ3P},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-
 			if !paladin.hasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
 				return
 			}
@@ -837,22 +818,5 @@ func (paladin *Paladin) applyPaladinRAQ3P() {
 				paladin.consumeSealsOnJudge = consumeSealsOnJudgeSaved // Restore saved value
 			}
 		},
-	}
-
-	paladin.RegisterAura(aura)
-}
-
-func duplicateBonusCheckAndCreate(agent core.Agent, bonusID int32, bonusString string) bool {
-	paladin := agent.(PaladinAgent).GetPaladin()
-
-	if paladin.HasAura(bonusString) {
-		return true // Do not apply bonus aura more than once (Due to Soul)
-	}
-
-	paladin.RegisterAura(core.Aura{
-		Label:    bonusString,
-		ActionID: core.ActionID{SpellID: bonusID},
 	})
-
-	return false
 }
