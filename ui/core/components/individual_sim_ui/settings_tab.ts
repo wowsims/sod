@@ -316,7 +316,7 @@ export class SettingsTab extends SimTab {
 	}
 
 	private buildPresetConfigurationPicker() {
-		new PresetConfigurationPicker(this.rightPanel, this.simUI, ['encounter', 'options']);
+		new PresetConfigurationPicker(this.rightPanel, this.simUI, ['encounter']);
 	}
 
 	private buildSavedDataPickers() {
@@ -387,6 +387,21 @@ export class SettingsTab extends SimTab {
 		this.simUI.sim.waitForInit().then(() => {
 			savedEncounterManager.loadUserData();
 			savedSettingsManager.loadUserData();
+			this.simUI.individualConfig.presets.settings?.forEach(settings => {
+				savedSettingsManager.addSavedData({
+					name: settings.name,
+					tooltip: settings.tooltip,
+					isPreset: true,
+					data: SavedSettings.create({
+						level: settings.level,
+						race: settings.race,
+						raidBuffs: settings.raidBuffs,
+						playerBuffs: settings.buffs,
+						debuffs: settings.debuffs,
+						consumes: settings.consumes,
+					}),
+				});
+			});
 		});
 	}
 

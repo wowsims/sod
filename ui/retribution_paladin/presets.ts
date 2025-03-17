@@ -210,70 +210,85 @@ export const PresetBuildP7Twisting = PresetUtils.makePresetBuild('Twisting', {
 	gear: Phase7TwistingNaxxGear,
 	talents: RetTalents,
 	rotation: APLTwisting,
-	options: {
-		aura: PaladinAura.SanctityAura,
-		isUsingCrusaderStrikeStopAttack: true,
-		isUsingDivineStormStopAttack: true,
-		isUsingExorcismStopAttack: true,
-		isUsingJudgementStopAttack: true,
-		isUsingManualStartAttack: false,
-		primarySeal: PaladinSeal.Martyrdom,
+	settings: {
+		name: 'Twisting',
+		options: {
+			aura: PaladinAura.SanctityAura,
+			isUsingCrusaderStrikeStopAttack: true,
+			isUsingDivineStormStopAttack: true,
+			isUsingExorcismStopAttack: true,
+			isUsingJudgementStopAttack: true,
+			isUsingManualStartAttack: false,
+			primarySeal: PaladinSeal.Martyrdom,
+		},
 	},
 });
 export const PresetBuildP7SealStacking = PresetUtils.makePresetBuild('Seal Stacking', {
 	gear: Phase7SealStackingNaxxGear,
 	talents: RetTalents,
 	rotation: APLSealStacking,
-	options: {
-		aura: PaladinAura.SanctityAura,
-		isUsingCrusaderStrikeStopAttack: false,
-		isUsingDivineStormStopAttack: false,
-		isUsingExorcismStopAttack: false,
-		isUsingJudgementStopAttack: false,
-		isUsingManualStartAttack: false,
-		primarySeal: PaladinSeal.Martyrdom,
+	settings: {
+		name: 'Seal Stacking',
+		options: {
+			aura: PaladinAura.SanctityAura,
+			isUsingCrusaderStrikeStopAttack: false,
+			isUsingDivineStormStopAttack: false,
+			isUsingExorcismStopAttack: false,
+			isUsingJudgementStopAttack: false,
+			isUsingManualStartAttack: false,
+			primarySeal: PaladinSeal.Martyrdom,
+		},
 	},
 });
 export const PresetBuildP7Shockadin1H = PresetUtils.makePresetBuild('1H Shockadin', {
 	gear: Phase7Shockadin1HNaxxGear,
 	talents: ShockadinTalents,
 	rotation: APLShockadin1H,
-	options: {
-		aura: PaladinAura.NoPaladinAura,
-		isUsingCrusaderStrikeStopAttack: false,
-		isUsingDivineStormStopAttack: false,
-		isUsingExorcismStopAttack: false,
-		isUsingJudgementStopAttack: false,
-		isUsingManualStartAttack: false,
-		primarySeal: PaladinSeal.Righteousness,
+	settings: {
+		name: '1H Shockadin',
+		options: {
+			aura: PaladinAura.NoPaladinAura,
+			isUsingCrusaderStrikeStopAttack: false,
+			isUsingDivineStormStopAttack: false,
+			isUsingExorcismStopAttack: false,
+			isUsingJudgementStopAttack: false,
+			isUsingManualStartAttack: false,
+			primarySeal: PaladinSeal.Righteousness,
+		},
 	},
 });
 export const PresetBuildP7Shockadin2H = PresetUtils.makePresetBuild('2H Shockadin', {
 	gear: Phase7Shockadin2HNaxxGear,
 	talents: ShockadinTalents,
 	rotation: APLShockadin2H,
-	options: {
-		aura: PaladinAura.NoPaladinAura,
-		isUsingCrusaderStrikeStopAttack: false,
-		isUsingDivineStormStopAttack: false,
-		isUsingExorcismStopAttack: false,
-		isUsingJudgementStopAttack: false,
-		isUsingManualStartAttack: false,
-		primarySeal: PaladinSeal.Martyrdom,
+	settings: {
+		name: '2H Shockadin',
+		options: {
+			aura: PaladinAura.NoPaladinAura,
+			isUsingCrusaderStrikeStopAttack: false,
+			isUsingDivineStormStopAttack: false,
+			isUsingExorcismStopAttack: false,
+			isUsingJudgementStopAttack: false,
+			isUsingManualStartAttack: false,
+			primarySeal: PaladinSeal.Martyrdom,
+		},
 	},
 });
 export const PresetBuildP7Exodin = PresetUtils.makePresetBuild('Exodin', {
 	gear: Phase7ExodinNaxxGear,
 	talents: RetTalents,
 	rotation: APLExodin,
-	options: {
-		aura: PaladinAura.SanctityAura,
-		isUsingCrusaderStrikeStopAttack: false,
-		isUsingDivineStormStopAttack: false,
-		isUsingExorcismStopAttack: false,
-		isUsingJudgementStopAttack: false,
-		isUsingManualStartAttack: false,
-		primarySeal: PaladinSeal.Martyrdom,
+	settings: {
+		name: 'Exodin',
+		options: {
+			aura: PaladinAura.SanctityAura,
+			isUsingCrusaderStrikeStopAttack: false,
+			isUsingDivineStormStopAttack: false,
+			isUsingExorcismStopAttack: false,
+			isUsingJudgementStopAttack: false,
+			isUsingManualStartAttack: false,
+			primarySeal: PaladinSeal.Martyrdom,
+		},
 	},
 });
 

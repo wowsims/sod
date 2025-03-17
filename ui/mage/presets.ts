@@ -16,6 +16,7 @@ import {
 	Profession,
 	RaidBuffs,
 	SaygesFortune,
+	Spec,
 	SpellPowerBuff,
 	TristateEffect,
 	WeaponImbue,
@@ -38,6 +39,9 @@ import Phase5APLFireJSON from './apls/p5_fire.apl.json';
 import Phase5APLSpellFrostJSON from './apls/p5_spellfrost.apl.json';
 import Phase6APLFireJSON from './apls/p6_fire.apl.json';
 import Phase6APLSpellFrostJSON from './apls/p6_spellfrost.apl.json';
+// Builds
+import Phase7BuildFireJSON from './builds/p7_fire.build.json';
+import Phase7BuildFrostJSON from './builds/p7_frost.build.json';
 // Gear
 import Phase1GearFireJSON from './gear_sets/p1_fire.gear.json';
 import Phase1GearJSON from './gear_sets/p1_generic.gear.json';
@@ -285,14 +289,6 @@ export const DefaultTalentsFrost = TalentPresets[Phase.Phase6][1];
 
 export const DefaultTalents = DefaultTalentsFire;
 
-export const PresetBuildArcane = PresetUtils.makePresetBuild('Arcane', {
-	gear: DefaultGearArcane,
-	talents: DefaultTalentsArcane,
-	rotation: DefaultAPLs[60][0],
-});
-export const PresetBuildFire = PresetUtils.makePresetBuild('Fire', { gear: DefaultGearFire, talents: DefaultTalentsFire, rotation: DefaultAPLs[60][1] });
-export const PresetBuildFrost = PresetUtils.makePresetBuild('Frost', { gear: DefaultGearFrost, talents: DefaultTalentsFrost, rotation: DefaultAPLs[60][2] });
-
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
 ///////////////////////////////////////////////////////////////////////////
@@ -355,3 +351,26 @@ export const OtherDefaults = {
 	profession1: Profession.Alchemy,
 	profession2: Profession.Tailoring,
 };
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Build Presets
+///////////////////////////////////////////////////////////////////////////
+
+export const PresetBuildArcanePhase6 = PresetUtils.makePresetBuild('P6 Arcane', {
+	gear: DefaultGearArcane,
+	talents: DefaultTalentsArcane,
+	rotation: DefaultAPLs[60][0],
+});
+export const PresetBuildFirePhase6 = PresetUtils.makePresetBuild('P6 Fire', {
+	gear: DefaultGearFire,
+	talents: DefaultTalentsFire,
+	rotation: DefaultAPLs[60][1],
+});
+export const PresetBuildFrostPhase6 = PresetUtils.makePresetBuild('P6 Frost', {
+	gear: DefaultGearFrost,
+	talents: DefaultTalentsFrost,
+	rotation: DefaultAPLs[60][2],
+});
+
+export const PresetBuildFirePhase7 = PresetUtils.makePresetBuildFromJSON('P7 Fire', Spec.SpecMage, Phase7BuildFireJSON);
+export const PresetBuildFrostPhase7 = PresetUtils.makePresetBuildFromJSON('P7 Frost', Spec.SpecMage, Phase7BuildFrostJSON);

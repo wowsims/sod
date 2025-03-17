@@ -5,14 +5,13 @@ import { SpecOptions } from '../../../core/proto_utils/utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { PresetBuild } from '../../preset_utils';
 import { APLRotation, APLRotation_Type } from '../../proto/apl';
-import { Encounter, EquipmentSpec, HealingModel, Spec } from '../../proto/common';
+import { Consumes, Debuffs, Encounter, EquipmentSpec, HealingModel, IndividualBuffs, RaidBuffs, Spec } from '../../proto/common';
 import { SavedTalents } from '../../proto/ui';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
 import { ContentBlock } from '../content_block';
 
-type PresetConfigurationCategory = 'epWeights' | 'gear' | 'talents' | 'rotation' | 'encounter' | 'race' | 'options';
-type PresetEncounterConfigurationCategory = 'buffs' | 'consumes' | 'debuffs' | 'encounter';
+type PresetConfigurationCategory = 'epWeights' | 'gear' | 'talents' | 'rotation' | 'encounter';
 
 export class PresetConfigurationPicker extends Component {
 	readonly simUI: IndividualSimUI<Spec>;
@@ -58,13 +57,31 @@ export class PresetConfigurationPicker extends Component {
 					</button>,
 				);
 
-				let categories = Object.keys(build).filter(c => !['name', 'encounter'].includes(c) && build[c as PresetConfigurationCategory]);
-				if (build.encounter) {
-					categories = categories.concat(
-						Object.keys(build.encounter).filter(
-							c => ['buffs', 'consume', 'debuffs', 'encounter'].includes(c) && build.encounter![c as PresetEncounterConfigurationCategory],
-						),
-					);
+				const categories = Object.keys(build).filter(c => !['name', 'encounter', 'settings'].includes(c) && build[c as PresetConfigurationCategory]);
+				if (build.encounter?.encounter) {
+					categories.push('encounter');
+				}
+
+				if (build.epWeights) {
+					categories.push('stat weights');
+				}
+
+				if (build.settings) {
+					Object.keys(build.settings).forEach(c => {
+						if (['name', 'buffs', 'raidBuffs'].includes(c)) return;
+
+						if (c === 'options') {
+							categories.push('Class/Spec Options');
+						} else if (c === 'consumes') {
+							categories.push('consumables');
+						} else {
+							categories.push(c);
+						}
+					});
+				}
+
+				if (build.settings?.buffs || build.settings?.raidBuffs) {
+					categories.push('buffs');
 				}
 
 				tippy(dataElemRef.value!, {
@@ -94,11 +111,10 @@ export class PresetConfigurationPicker extends Component {
 		});
 	}
 
-	private applyBuild({ gear, rotation, rotationType, talents, epWeights, encounter, race, options }: PresetBuild) {
+	private applyBuild({ gear, rotation, rotationType, talents, epWeights, encounter, settings }: PresetBuild) {
 		const eventID = TypedEvent.nextEventID();
 		TypedEvent.freezeAllAndDo(() => {
 			if (gear) this.simUI.player.setGear(eventID, this.simUI.sim.db.lookupEquipmentSpec(gear.gear));
-			if (race) this.simUI.player.setRace(eventID, race);
 			if (talents) this.simUI.player.setTalentsString(eventID, talents.data.talentsString);
 			if (rotationType) {
 				this.simUI.player.aplRotation.type = rotationType;
@@ -111,23 +127,26 @@ export class PresetConfigurationPicker extends Component {
 				if (encounter.encounter) this.simUI.sim.encounter.fromProto(eventID, encounter.encounter);
 				if (encounter.healingModel) this.simUI.player.setHealingModel(eventID, encounter.healingModel);
 				if (encounter.tanks) this.simUI.sim.raid.setTanks(eventID, encounter.tanks);
-				if (encounter.buffs) this.simUI.player.setBuffs(eventID, encounter.buffs);
-				if (encounter.debuffs) this.simUI.sim.raid.setDebuffs(eventID, encounter.debuffs);
-				if (encounter.raidBuffs) this.simUI.sim.raid.setBuffs(eventID, encounter.raidBuffs);
-				if (encounter.consumes) this.simUI.player.setConsumes(eventID, encounter.consumes);
 			}
-			if (options) {
-				this.simUI.player.setSpecOptions(eventID, {
-					...this.simUI.player.getSpecOptions(),
-					...options,
-				});
+			if (settings) {
+				if (settings.level) this.simUI.player.setLevel(eventID, settings.level);
+				if (settings.race) this.simUI.player.setRace(eventID, settings.race);
+				if (settings.options) {
+					this.simUI.player.setSpecOptions(eventID, {
+						...this.simUI.player.getSpecOptions(),
+						...settings.options,
+					});
+				}
+				if (settings.buffs) this.simUI.player.setBuffs(eventID, settings.buffs);
+				if (settings.debuffs) this.simUI.sim.raid.setDebuffs(eventID, settings.debuffs);
+				if (settings.raidBuffs) this.simUI.sim.raid.setBuffs(eventID, settings.raidBuffs);
+				if (settings.consumes) this.simUI.player.setConsumes(eventID, settings.consumes);
 			}
 		});
 	}
 
-	private isBuildActive({ gear, rotation, rotationType, talents, epWeights, encounter, race, options }: PresetBuild): boolean {
+	private isBuildActive({ gear, rotation, rotationType, talents, epWeights, encounter, settings }: PresetBuild): boolean {
 		const hasGear = gear ? EquipmentSpec.equals(gear.gear, this.simUI.player.getGear().asSpec()) : true;
-		const hasRace = typeof race === 'number' ? race === this.simUI.player.getRace() : true;
 		const hasTalents = talents
 			? SavedTalents.equals(
 					talents.data,
@@ -155,9 +174,29 @@ export class PresetConfigurationPicker extends Component {
 		const hasEpWeights = epWeights ? this.simUI.player.getEpWeights().equals(epWeights.epWeights) : true;
 		const hasEncounter = encounter?.encounter ? Encounter.equals(encounter.encounter, this.simUI.sim.encounter.toProto()) : true;
 		const hasHealingModel = encounter?.healingModel ? HealingModel.equals(encounter.healingModel, this.simUI.player.getHealingModel()) : true;
-		const hasOptions = options ? this.containsAllFields(this.simUI.player.getSpecOptions(), options) : true;
+		const hasLevel = settings?.level ? this.simUI.player.getLevel() === settings.level : true;
+		const hasRace = settings?.race ? this.simUI.player.getRace() === settings.race : true;
+		const hasOptions = settings?.options ? this.containsAllFields(this.simUI.player.getSpecOptions(), settings.options) : true;
+		const hasConsumes = settings?.consumes ? Consumes.equals(this.simUI.player.getConsumes(), settings.consumes) : true;
+		const hasRaidBuffs = settings?.raidBuffs ? RaidBuffs.equals(this.simUI.sim.raid.getBuffs(), settings.raidBuffs) : true;
+		const hasBuffs = settings?.buffs ? IndividualBuffs.equals(this.simUI.player.getBuffs(), settings.buffs) : true;
+		const hasDebuffs = settings?.debuffs ? Debuffs.equals(this.simUI.sim.raid.getDebuffs(), settings.debuffs) : true;
 
-		return hasGear && hasRace && hasTalents && hasRotation && hasEpWeights && hasEncounter && hasHealingModel && hasOptions;
+		return (
+			hasGear &&
+			hasTalents &&
+			hasRotation &&
+			hasEpWeights &&
+			hasEncounter &&
+			hasHealingModel &&
+			hasLevel &&
+			hasRace &&
+			hasOptions &&
+			hasConsumes &&
+			hasRaidBuffs &&
+			hasBuffs &&
+			hasDebuffs
+		);
 	}
 
 	private containsAllFields<T extends Spec>(full: SpecOptions<T>, partial: Partial<SpecOptions<T>>): boolean {

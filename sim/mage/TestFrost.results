@@ -194,6 +194,55 @@ character_stats_results: {
   final_stats: 0
  }
 }
+character_stats_results: {
+ key: "TestFrost-Phase7-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 72.105
+  final_stats: 88.55
+  final_stats: 538.2575
+  final_stats: 486.1395
+  final_stats: 296.01
+  final_stats: 1084
+  final_stats: 0
+  final_stats: 40
+  final_stats: 138
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 43
+  final_stats: 4
+  final_stats: 41.36714
+  final_stats: 20
+  final_stats: 0
+  final_stats: 442.105
+  final_stats: 3
+  final_stats: 23.2
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 8225.0925
+  final_stats: 0
+  final_stats: 0
+  final_stats: 971.1
+  final_stats: 380
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 3.2
+  final_stats: 5
+  final_stats: 0
+  final_stats: 6992.575
+  final_stats: 37
+  final_stats: 57
+  final_stats: 27
+  final_stats: 42
+  final_stats: 27
+  final_stats: 384
+  final_stats: 62
+  final_stats: 71
+  final_stats: 0
+ }
+}
 stat_weights_results: {
  key: "TestFrost-Phase3-Lvl50-StatWeights-Default"
  value: {
@@ -359,6 +408,55 @@ stat_weights_results: {
   weights: 0
   weights: 0.0059
   weights: 28.31323
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestFrost-Phase7-Lvl60-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.08105
+  weights: 0
+  weights: 3.95856
+  weights: 0
+  weights: 0
+  weights: 3.95856
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 10.38923
   weights: 0
   weights: 0
   weights: 0
@@ -969,5 +1067,124 @@ dps_results: {
  value: {
   dps: 4674.87805
   tps: 3288.50612
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-AllItems-BloodGuard'sDreadweave"
+ value: {
+  dps: 2826.2379
+  tps: 1631.32879
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-AllItems-BloodGuard'sSatin"
+ value: {
+  dps: 2566.97204
+  tps: 1479.03656
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-AllItems-EmeraldEnchantedVestments"
+ value: {
+  dps: 2814.5009
+  tps: 1624.65422
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-AllItems-EmeraldWovenGarb"
+ value: {
+  dps: 2560.58225
+  tps: 1476.22588
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-AllItems-IronweaveBattlesuit"
+ value: {
+  dps: 1285.01626
+  tps: 936.39626
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
+ value: {
+  dps: 2826.2379
+  tps: 1631.32879
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-AllItems-KnightLieutenant'sSatin"
+ value: {
+  dps: 2566.97204
+  tps: 1479.03656
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 2853.85318
+  tps: 1703.80007
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-AllItems-Sorcerer'sRegalia"
+ value: {
+  dps: 1327.19541
+  tps: 966.18993
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-Average-Default"
+ value: {
+  dps: 7079.88776
+  tps: 4563.43821
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-Settings-Gnome-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-LongMultiTarget"
+ value: {
+  dps: 14716.13951
+  tps: 10383.48919
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-Settings-Gnome-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-LongSingleTarget"
+ value: {
+  dps: 7058.73767
+  tps: 4541.3136
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-Settings-Gnome-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-ShortSingleTarget"
+ value: {
+  dps: 9939.17432
+  tps: 6435.26276
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-Settings-Gnome-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-LongMultiTarget"
+ value: {
+  dps: 6437.80504
+  tps: 4570.08072
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-Settings-Gnome-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-LongSingleTarget"
+ value: {
+  dps: 3141.05538
+  tps: 2014.25473
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-Settings-Gnome-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-ShortSingleTarget"
+ value: {
+  dps: 4472.98942
+  tps: 2898.49119
+ }
+}
+dps_results: {
+ key: "TestFrost-Phase7-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 7133.13759
+  tps: 4605.26148
  }
 }

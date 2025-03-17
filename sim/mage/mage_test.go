@@ -194,6 +194,8 @@ func TestFire(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 6, 60, "../../ui/mage/builds", "p6_fire", ItemFilters, proto.Stat_StatSpellPower, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 7, 60, "../../ui/mage/builds", "p7_fire", ItemFilters, proto.Stat_StatSpellPower, Stats),
 	}))
 }
 
@@ -270,6 +272,7 @@ func TestFrost(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 7, 60, "../../ui/mage/builds", "p7_frost", ItemFilters, proto.Stat_StatSpellPower, Stats),
 	}))
 }
 

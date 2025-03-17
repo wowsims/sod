@@ -145,7 +145,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [Presets.PresetBuildArcane, Presets.PresetBuildFire, Presets.PresetBuildFrost],
+		builds: [
+			Presets.PresetBuildFirePhase7,
+			Presets.PresetBuildFrostPhase7,
+			Presets.PresetBuildArcanePhase6,
+			Presets.PresetBuildFirePhase6,
+			Presets.PresetBuildFrostPhase6,
+		],
 	},
 
 	autoRotation: player => {

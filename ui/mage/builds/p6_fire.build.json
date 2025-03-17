@@ -1,0 +1,180 @@
+{
+    "raidBuffs": {
+      "giftOfTheWild": "TristateEffectImproved",
+      "powerWordFortitude": "TristateEffectImproved",
+      "bloodPact": "TristateEffectRegular",
+      "arcaneBrilliance": true,
+      "divineSpirit": true,
+      "moonkinAura": true,
+      "manaSpringTotem": "TristateEffectRegular",
+      "vampiricTouch": 300,
+      "demonicPact": 120,
+      "aspectOfTheLion": true
+    },
+    "debuffs": {
+      "curseOfElements": true,
+      "markOfChaos": true,
+      "occultPoison": true,
+      "wintersChill": true,
+      "dreamstate": true,
+      "curseOfElementsNew": "TristateEffectRegular"
+    },
+    "partyBuffs": {
+    },
+    "player": {
+      "name": "Player",
+      "race": "RaceTroll",
+      "level": 60,
+      "class": "ClassMage",
+      "equipment": {
+        "items": [
+          {"id":233404,"enchant":7634,"rune":400624},
+          {"id":233620},
+          {"id":233403,"enchant":2605},
+          {"id":233424,"enchant":2463,"rune":400615},
+          {"id":233402,"enchant":7648,"rune":412324},
+          {"id":234114,"enchant":7655,"rune":428878},
+          {"id":233631,"enchant":2616,"rune":400613},
+          {"id":233633,"rune":401502},
+          {"id":233574,"enchant":7634,"rune":425121},
+          {"id":233405,"enchant":7648,"rune":412322},
+          {"id":234032,"rune":442894},
+          {"id":233425,"rune":442895},
+          {"id":230243},
+          {"id":233991},
+          {"id":233423,"enchant":2504},
+          {"id":19311},
+          {"id":233571}
+        ]
+      },
+      "consumes": {
+        "flask": "FlaskOfAncientKnowledge",
+        "food": "FoodDarkclawBisque",
+        "manaRegenElixir": "MagebloodPotion",
+        "spellPowerBuff": "ElixirOfTheMageLord",
+        "firePowerBuff": "ElixirOfGreaterFirepower",
+        "frostPowerBuff": "ElixirOfFrostPower",
+        "mainHandImbue": "EnchantedRepellent",
+        "defaultPotion": "MajorManaPotion",
+        "defaultConjured": "ConjuredDemonicRune",
+        "enchantedSigil": "WrathOfTheStormSigil",
+        "mildlyIrradiatedRejuvPot": true,
+        "miscConsumes": {
+          "elixirOfCoalescedRegret": true,
+          "jujuEmber": true
+        },
+        "zanzaBuff": "CerebralCortexCompound",
+        "healthElixir": "ElixirOfFortitude",
+        "mageScroll": "MageScrollArcanePower"
+      },
+      "bonusStats": {
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+      },
+      "itemSwap": {
+        "items": [
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          }
+        ],
+        "prepullBonusStats": {
+          "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        }
+      },
+      "buffs": {
+        "rallyingCryOfTheDragonslayer": true,
+        "saygesFortune": "SaygesDamage",
+        "spiritOfZandalar": true,
+        "songflowerSerenade": true,
+        "warchiefsBlessing": true,
+        "moldarsMoxie": true,
+        "slipkiksSavvy": true
+      },
+      "talentsString": "-0552323121033151-203500031",
+      "profession1": "Alchemy",
+      "profession2": "Tailoring",
+      "cooldowns": {
+      },
+      "rotation": {
+        "type": "TypeAPL",
+        "priorityList": [
+          {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"15%"}}}},"castSpell":{"spellId":{"spellId":12051}}}},
+          {"action":{"condition":{"not":{"val":{"spellIsReady":{"spellId":{"spellId":425121}}}}},"castSpell":{"spellId":{"spellId":12472}}}},
+          {"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":456398,"tag":2}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":428878,"tag":1}}},"rhs":{"const":{"val":"4"}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":456398,"tag":2}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"castSpell":{"spellId":{"spellId":2139}}}},
+          {"action":{"condition":{"or":{"vals":[{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400624}}},{"not":{"val":{"runeIsEquipped":{"runeId":{"spellId":400615}}}}},{"auraIsActive":{"auraId":{"spellId":48108,"tag":1}}}]}},{"runeIsEquipped":{"runeId":{"spellId":400615}}}]}},"castSpell":{"spellId":{"spellId":10199,"rank":7}}}},
+          {"action":{"condition":{"and":{"vals":[{"spellIsKnown":{"spellId":{"spellId":13021,"rank":5}}},{"auraIsKnown":{"auraId":{"spellId":469237}}},{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12873,"rank":3}}},"rhs":{"const":{"val":"1"}}}}]}},"strictSequence":{"actions":[{"move":{"rangeFromTarget":{"const":{"val":"15"}}}},{"castSpell":{"spellId":{"spellId":13021,"rank":5}}}]}}},
+          {"action":{"condition":{"and":{"vals":[{"not":{"val":{"dotIsActive":{"spellId":{"spellId":400613}}}}},{"or":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12873,"rank":3}}},"rhs":{"const":{"val":"2"}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12873,"rank":3}}},"rhs":{"const":{"val":"6s"}}}}]}}]}},"castSpell":{"spellId":{"spellId":400613}}}},
+          {"action":{"condition":{"or":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12873,"rank":3}}},"rhs":{"const":{"val":"2"}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12873,"rank":3}}},"rhs":{"const":{"val":"3s"}}}}]}},"castSpell":{"spellId":{"spellId":10207,"rank":7}}}},
+          {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400624}}},{"auraIsActiveWithReactionTime":{"auraId":{"spellId":48108}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":11129}}}}}]}},"castSpell":{"spellId":{"spellId":18809,"rank":8}}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12873,"rank":3}}},"rhs":{"const":{"val":"5"}}}},{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":428878,"tag":1}}},"rhs":{"const":{"val":"1"}}}}]}},"castSpell":{"spellId":{"spellId":11129}}}},
+          {"action":{"castSpell":{"spellId":{"spellId":401556}}}},
+          {"action":{"condition":{"and":{"vals":[{"not":{"val":{"spellIsReady":{"spellId":{"spellId":12472}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":26297}}}}}]}},"castSpell":{"spellId":{"itemId":230243}}}},
+          {"action":{"autocastOtherCooldowns":{}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":12873,"rank":3}}},"rhs":{"const":{"val":"5"}}}},{"or":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"spellId":428878,"tag":1}}},"rhs":{"const":{"val":"4"}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":428878,"tag":1}}},"rhs":{"spellCastTime":{"spellId":{"spellId":428878}}}}}]}}]}},"castSpell":{"spellId":{"spellId":428878}}}},
+          {"action":{"castSpell":{"spellId":{"spellId":401502}}}},
+          {"action":{"castSpell":{"spellId":{"spellId":10207,"rank":7}}}}
+        ]
+      },
+      "reactionTimeMs": 200,
+      "distanceFromTarget": 30,
+      "isbUsingShadowflame": true,
+      "healingModel": {
+      },
+      "mage": {
+        "options": {
+          "armor": "MageArmor"
+        }
+      }
+    },
+    "encounter": {
+      "duration": 60,
+      "durationVariation": 15,
+      "executeProportion20": 0.2,
+      "executeProportion25": 0.25,
+      "executeProportion35": 0.35,
+      "targets": [
+        {
+          "id": 213336,
+          "name": "Level 60",
+          "level": 63,
+          "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,805,0,0,0,0,0,0,0,0,3731,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0],
+          "minBaseDamage": 3000,
+          "damageSpread": 0.3333,
+          "swingSpeed": 2,
+          "parryHaste": true
+        }
+      ]
+    }
+  }
