@@ -29,6 +29,7 @@ func (warlock *Warlock) makeFelhunter() *WarlockPet {
 				BaseDamageMin: 24,
 				BaseDamageMax: 40,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -49,6 +50,7 @@ func (warlock *Warlock) makeFelhunter() *WarlockPet {
 				BaseDamageMin: 24,
 				BaseDamageMax: 40,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -70,6 +72,7 @@ func (warlock *Warlock) makeFelhunter() *WarlockPet {
 				BaseDamageMin: 24,
 				BaseDamageMax: 40,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -90,6 +93,7 @@ func (warlock *Warlock) makeFelhunter() *WarlockPet {
 				BaseDamageMin: 70,
 				BaseDamageMax: 97,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}

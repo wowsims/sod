@@ -42,8 +42,10 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | SpellFlagStrike,
-		Rank:           rank,
-		RequiredLevel:  level,
+
+		Rank:          rank,
+		RequiredLevel: level,
+		MaxRange:      core.MaxMeleeAttackRange,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -54,9 +56,6 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 6,
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -172,11 +171,12 @@ func (hunter *Hunter) makeQueueSpellsAndAura() *core.Spell {
 		ActionID:       hunter.RaptorStrike.WithTag(3),
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
+		MaxRange: core.MaxMeleeAttackRange,
+
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.curQueueAura != queueAura &&
 				hunter.CurrentMana() >= hunter.RaptorStrike.Cost.GetCurrentCost() &&
 				!hunter.IsCasting(sim) &&
-				hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance &&
 				hunter.RaptorStrike.IsReady(sim)
 		},
 

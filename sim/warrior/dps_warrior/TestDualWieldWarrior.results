@@ -197,8 +197,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-StatWeights-Default"
  value: {
-  weights: 2.31365
-  weights: 0.56735
+  weights: 2.40505
+  weights: 0.54998
   weights: 0
   weights: 0
   weights: 0
@@ -214,9 +214,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.23687
-  weights: 8.16743
-  weights: 7.87404
+  weights: 0.29584
+  weights: 8.12937
+  weights: 7.93481
   weights: 0
   weights: 0
   weights: 0
@@ -246,7 +246,7 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.91612
+  weights: 1.68061
   weights: 1.56573
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.62999
-  weights: 2.25792
-  weights: 30.26165
+  weights: 0.63006
+  weights: 2.24032
+  weights: 30.27765
   weights: 0
   weights: 0
   weights: 0
@@ -344,8 +344,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-StatWeights-Default"
  value: {
-  weights: 4.48868
-  weights: 2.64312
+  weights: 4.48897
+  weights: 2.72584
   weights: 0
   weights: 0
   weights: 0
@@ -361,9 +361,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.89
-  weights: 7.11052
-  weights: 45.52939
+  weights: 1.89014
+  weights: 7.31989
+  weights: 44.87403
   weights: 0
   weights: 0
   weights: 0
@@ -401,9 +401,9 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 622.62519
-  tps: 551.03694
-  hps: 30.31014
+  dps: 622.61859
+  tps: 551.02817
+  hps: 30.31031
  }
 }
 dps_results: {
@@ -547,17 +547,17 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 3236.50102
-  tps: 2790.32456
-  hps: 73.52533
+  dps: 3234.33635
+  tps: 2787.94867
+  hps: 73.48467
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 4123.61126
-  tps: 3223.84808
-  hps: 73.8447
+  dps: 4123.68388
+  tps: 3223.8619
+  hps: 73.8451
  }
 }
 dps_results: {
@@ -953,9 +953,9 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 6448.97736
-  tps: 5259.81057
-  hps: 66.0103
+  dps: 6449.39989
+  tps: 5260.08753
+  hps: 66.01138
  }
 }
 dps_results: {
@@ -1051,8 +1051,8 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5492.31879
-  tps: 4468.24906
-  hps: 58.47867
+  dps: 5498.83954
+  tps: 4473.58875
+  hps: 58.5295
  }
 }

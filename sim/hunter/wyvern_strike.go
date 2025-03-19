@@ -23,8 +23,10 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagStrike,
-		Rank:           rank,
-		RequiredLevel:  level,
+
+		Rank:          rank,
+		RequiredLevel: level,
+		MaxRange:      core.MaxMeleeAttackRange,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -38,9 +40,6 @@ func (hunter *Hunter) getWyvernStrikeConfig(rank int) core.SpellConfig {
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 8,
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.MainHand().HandType == proto.HandType_HandTypeTwoHand && hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
 		CritDamageBonus:  hunter.mortalShots(),

@@ -22,6 +22,8 @@ type Weapon struct {
 	SwingSpeed           float64
 	NormalizedSwingSpeed float64
 	SpellSchool          SpellSchool
+	MinRange             float64
+	MaxRange             float64
 }
 
 func (weapon *Weapon) DPS() float64 {
@@ -42,6 +44,33 @@ func newWeaponFromUnarmed() Weapon {
 	}
 }
 
+func getWeaponMinRange(item *Item) float64 {
+	switch item.RangedWeaponType {
+	case proto.RangedWeaponType_RangedWeaponTypeThrown:
+	case proto.RangedWeaponType_RangedWeaponTypeUnknown:
+	case proto.RangedWeaponType_RangedWeaponTypeWand:
+		return 0.
+	default:
+		return MaxMeleeAttackRange
+	}
+
+	return 0
+}
+
+func getWeaponMaxRange(item *Item) float64 {
+	switch item.RangedWeaponType {
+	case proto.RangedWeaponType_RangedWeaponTypeUnknown:
+		return MaxMeleeAttackRange
+	case proto.RangedWeaponType_RangedWeaponTypeWand:
+	case proto.RangedWeaponType_RangedWeaponTypeThrown:
+		return MaxShortRangedAttackRange
+	default:
+		return MaxRangedAttackRange
+	}
+
+	return MaxRangedAttackRange
+}
+
 func newWeaponFromItem(item *Item, bonusDps float64) Weapon {
 	normalizedWeaponSpeed := 2.4
 	if item.WeaponType == proto.WeaponType_WeaponTypeDagger {
@@ -58,6 +87,8 @@ func newWeaponFromItem(item *Item, bonusDps float64) Weapon {
 		SwingSpeed:           item.SwingSpeed,
 		NormalizedSwingSpeed: normalizedWeaponSpeed,
 		AttackPowerPerDPS:    DefaultAttackPowerPerDPS,
+		MinRange:             getWeaponMinRange(item),
+		MaxRange:             getWeaponMaxRange(item),
 	}
 }
 
@@ -673,21 +704,52 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 	}
 
 	if aa.AutoSwingMelee {
-		if aa.mh.unit.DistanceFromTarget <= MaxMeleeAttackDistance {
+		if aa.mh.swingAt == NeverExpires {
+			aa.mh.swingAt = 0
+		}
+
+		if aa.IsDualWielding {
+			if aa.oh.swingAt == NeverExpires {
+				aa.oh.swingAt = 0
+
+				// Apply random delay of 0 - 50% swing time, to one of the weapons if dual wielding
+				if aa.oh.unit.Type == EnemyUnit {
+					aa.oh.swingAt = DurationFromSeconds(aa.mh.SwingSpeed / 2)
+				} else {
+					if sim.RandomFloat("SwingResetWeapon") < 0.5 {
+						aa.mh.swingAt = DurationFromSeconds(sim.RandomFloat("SwingResetDelay") * aa.mh.SwingSpeed / 2)
+					} else {
+						aa.oh.swingAt = DurationFromSeconds(sim.RandomFloat("SwingResetDelay") * aa.mh.SwingSpeed / 2)
+					}
+				}
+			}
+			if aa.oh.IsInRange() {
+				aa.oh.enabled = true
+				aa.oh.addWeaponAttack(sim, aa.mh.curSwingSpeed)
+			}
+
+		}
+
+		if aa.mh.IsInRange() {
 			aa.mh.enabled = true
 			aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 		}
+	}
 
-		if aa.IsDualWielding && aa.oh.unit.DistanceFromTarget <= MaxMeleeAttackDistance {
-			aa.oh.enabled = true
-			aa.oh.addWeaponAttack(sim, aa.mh.curSwingSpeed)
+	if aa.AutoSwingRanged {
+		if aa.ranged.swingAt == NeverExpires {
+			aa.ranged.swingAt = 0
 		}
-	}
+		if aa.ranged.IsInRange() {
+			aa.ranged.enabled = true
+			aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
+		}
 
-	if aa.AutoSwingRanged && aa.mh.unit.DistanceFromTarget >= MinRangedAttackDistance {
-		aa.ranged.enabled = true
-		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 	}
+}
+
+func (wa *WeaponAttack) IsInRange() bool {
+	return (wa.MinRange == 0. || wa.MinRange < wa.unit.DistanceFromTarget) && (wa.MaxRange == 0. || wa.MaxRange >= wa.unit.DistanceFromTarget)
 }
 
 // Stops the auto swing action for the rest of the iteration. Used for pets
@@ -713,14 +775,14 @@ func (aa *AutoAttacks) EnableMeleeSwing(sim *Simulation) {
 	}
 
 	aa.mh.swingAt = max(aa.mh.swingAt, sim.CurrentTime, 0)
-	if aa.mh.unit.DistanceFromTarget <= MaxMeleeAttackDistance && !aa.mh.enabled {
+	if aa.mh.IsInRange() && !aa.mh.enabled {
 		aa.mh.enabled = true
 		aa.mh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 	}
 
 	if aa.IsDualWielding && !aa.oh.enabled {
 		aa.oh.swingAt = max(aa.oh.swingAt, sim.CurrentTime, 0)
-		if aa.oh.unit.DistanceFromTarget <= MaxMeleeAttackDistance {
+		if aa.oh.IsInRange() {
 			aa.oh.enabled = true
 			aa.oh.addWeaponAttack(sim, aa.mh.unit.SwingSpeed())
 		}
@@ -742,7 +804,7 @@ func (aa *AutoAttacks) EnableRangedSwing(sim *Simulation) {
 	}
 
 	aa.ranged.swingAt = max(aa.ranged.swingAt, sim.CurrentTime, 0)
-	if aa.ranged.unit.DistanceFromTarget >= MinRangedAttackDistance {
+	if aa.ranged.IsInRange() {
 		aa.ranged.enabled = true
 		aa.ranged.addWeaponAttack(sim, aa.ranged.unit.RangedSwingSpeed())
 	}

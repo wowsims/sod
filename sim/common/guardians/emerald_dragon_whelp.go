@@ -45,6 +45,7 @@ func NewEmeraldDragonWhelp(character *core.Character) *EmeraldDragonWhelp {
 			BaseDamageMax: 100.0,
 			SwingSpeed:    2.0,
 			SpellSchool:   core.SpellSchoolPhysical,
+			MaxRange:      core.MaxMeleeAttackRange,
 		},
 		AutoSwingMelee: true,
 	})

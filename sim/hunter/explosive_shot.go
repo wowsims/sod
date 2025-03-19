@@ -23,11 +23,14 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 		ClassSpellMask: ClassSpellMask_HunterExplosiveShot,
 		ActionID:       actionID,
 		SpellSchool:    core.SpellSchoolFire,
+		CastType:       proto.CastType_CastTypeRanged,
 		DefenseType:    core.DefenseTypeRanged,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
-		CastType:       proto.CastType_CastTypeRanged,
-		MissileSpeed:   24,
+
+		MinRange:     core.MinRangedAttackRange,
+		MaxRange:     core.MaxRangedAttackRange,
+		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.035,
@@ -41,9 +44,6 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 6,
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
 		CritDamageBonus: hunter.mortalShots(),

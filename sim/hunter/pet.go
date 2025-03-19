@@ -132,6 +132,7 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 			BaseDamageMin: baseMinDamage,
 			BaseDamageMax: baseMaxDamage,
 			SwingSpeed:    attackSpeed,
+			MaxRange:      core.MaxMeleeAttackRange,
 		},
 		AutoSwingMelee: true,
 	})

@@ -17,8 +17,10 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary,
-		Rank:           rank,
-		RequiredLevel:  level,
+
+		Rank:          rank,
+		RequiredLevel: level,
+		MaxRange:      core.MaxMeleeAttackRange,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -29,9 +31,6 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true,
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
 		CritDamageBonus:  hunter.mortalShots(),

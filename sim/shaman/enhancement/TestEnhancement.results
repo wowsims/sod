@@ -393,8 +393,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Phase3-Lvl50-StatWeights-Default"
  value: {
-  weights: 1.64659
-  weights: 0.14287
+  weights: 1.63898
+  weights: 0.23913
   weights: 0
   weights: 0
   weights: 0
@@ -410,9 +410,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.69301
-  weights: 8.93452
-  weights: 10.5159
+  weights: 0.68981
+  weights: 8.48244
+  weights: 10.80901
   weights: 0
   weights: 0
   weights: 0
@@ -442,16 +442,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.12204
-  weights: 0.41209
+  weights: 2.10589
+  weights: 0.49765
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.7599
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.76
   weights: 0
   weights: 0
   weights: 0
@@ -459,9 +455,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.96456
-  weights: 25.31945
-  weights: 10.96377
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.95722
+  weights: 26.09196
+  weights: 13.57979
   weights: 0
   weights: 0
   weights: 0
@@ -491,16 +491,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.58595
-  weights: 1.11583
+  weights: 2.56809
+  weights: 0.85557
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.83807
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.83482
   weights: 0
   weights: 0
   weights: 0
@@ -508,9 +504,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.02211
-  weights: 33.55064
-  weights: 13.66055
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 1.01505
+  weights: 34.47697
+  weights: 14.10481
   weights: 0
   weights: 0
   weights: 0
@@ -540,16 +540,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestEnhancement-Phase6-Lvl60-StatWeights-Default"
  value: {
-  weights: 3.18022
-  weights: 2.97259
+  weights: 3.18731
+  weights: 2.44931
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.81389
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
+  weights: 0.81452
   weights: 0
   weights: 0
   weights: 0
@@ -557,9 +553,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.257
-  weights: 39.3678
-  weights: 30.11643
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 1.2598
+  weights: 34.00203
+  weights: 26.46733
   weights: 0
   weights: 0
   weights: 0
@@ -967,8 +967,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1848.57507
-  tps: 1350.28669
+  dps: 1840.37586
+  tps: 1344.54724
   hps: 43.32856
  }
 }
@@ -1155,89 +1155,89 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1727.0963
-  tps: 1262.84683
+  dps: 1722.03349
+  tps: 1259.30286
   hps: 39.65733
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1911.34809
-  tps: 1935.21195
-  hps: 44.70283
+  dps: 1867.88384
+  tps: 1888.62778
+  hps: 44.51983
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1981.41657
-  tps: 2004.03225
-  hps: 44.70283
+  dps: 1935.84136
+  tps: 1955.23023
+  hps: 44.51983
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 2021.28891
-  tps: 2047.11033
-  hps: 46.03467
+  dps: 1987.30701
+  tps: 2011.69106
+  hps: 45.73983
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1956.66448
-  tps: 1980.62698
-  hps: 44.70283
+  dps: 1913.18667
+  tps: 1933.86082
+  hps: 44.51983
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1910.92279
-  tps: 1934.9237
-  hps: 44.70283
+  dps: 1867.44914
+  tps: 1888.28584
+  hps: 44.51983
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1958.8535
-  tps: 1981.93404
-  hps: 44.70283
+  dps: 1913.95257
+  tps: 1933.87291
+  hps: 44.51983
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 2979.39984
-  tps: 3037.6958
-  hps: 49.39983
+  dps: 2942.84131
+  tps: 3006.04827
+  hps: 49.17617
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 2924.1842
-  tps: 2985.99757
-  hps: 49.39983
+  dps: 2887.15161
+  tps: 2954.06449
+  hps: 49.105
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 1567.56787
-  tps: 1599.5143
-  hps: 43.72683
+  dps: 1537.42551
+  tps: 1565.42317
+  hps: 43.86917
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3992.27077
-  tps: 2846.06895
-  hps: 60.02536
+  dps: 3966.7036
+  tps: 2828.1831
+  hps: 59.99933
  }
 }
 dps_results: {
@@ -1603,89 +1603,89 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3266.29787
-  tps: 2334.90339
-  hps: 49.4405
+  dps: 3243.50565
+  tps: 2317.32525
+  hps: 49.3185
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 2052.12955
-  tps: 2066.42902
-  hps: 48.01513
+  dps: 2008.77892
+  tps: 2025.10879
+  hps: 48.14933
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 2130.72882
-  tps: 2143.48871
-  hps: 48.01513
+  dps: 2085.16493
+  tps: 2099.93261
+  hps: 48.14933
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 2169.03668
-  tps: 2186.21929
-  hps: 49.66417
+  dps: 2125.38336
+  tps: 2140.78795
+  hps: 49.64383
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 2101.37236
-  tps: 2115.09063
-  hps: 48.01513
+  dps: 2057.94762
+  tps: 2073.78003
+  hps: 48.14933
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 2051.75186
-  tps: 2065.98964
-  hps: 48.01513
+  dps: 2008.41308
+  tps: 2024.65872
+  hps: 48.14933
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 2099.61315
-  tps: 2112.93283
-  hps: 48.01513
+  dps: 2054.92239
+  tps: 2070.2461
+  hps: 48.14933
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 3458.1648
-  tps: 3511.61077
-  hps: 53.69627
+  dps: 3404.16742
+  tps: 3457.47864
+  hps: 53.6861
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 3392.08348
-  tps: 3450.1782
-  hps: 53.72677
+  dps: 3341.01811
+  tps: 3399.31558
+  hps: 53.67797
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 1676.20346
-  tps: 1704.83225
-  hps: 47.5617
+  dps: 1642.82231
+  tps: 1670.15356
+  hps: 47.50883
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4740.81125
-  tps: 3372.14371
-  hps: 66.07396
+  dps: 4711.29798
+  tps: 3351.25968
+  hps: 66.04049
  }
 }
 dps_results: {
@@ -2051,89 +2051,89 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3931.30774
-  tps: 2781.79185
-  hps: 54.92237
+  dps: 3882.79578
+  tps: 2747.19779
+  hps: 54.54417
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-AllItems-BloodGuard'sInscribedMail"
  value: {
-  dps: 1663.39363
-  tps: 1693.10151
-  hps: 32.87697
+  dps: 1642.66827
+  tps: 1670.16625
+  hps: 32.84443
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1717.85551
-  tps: 1745.79883
-  hps: 32.87697
+  dps: 1697.15693
+  tps: 1723.26378
+  hps: 32.84443
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-AllItems-BloodGuard'sPulsingMail"
  value: {
-  dps: 1799.90131
-  tps: 1827.79849
-  hps: 34.19863
+  dps: 1798.87177
+  tps: 1827.72888
+  hps: 34.80253
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-AllItems-EmeraldChainmail"
  value: {
-  dps: 1710.40949
-  tps: 1739.93551
-  hps: 32.87697
+  dps: 1689.14394
+  tps: 1716.57404
+  hps: 32.84443
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-AllItems-EmeraldLadenChain"
  value: {
-  dps: 1662.42819
-  tps: 1691.93118
-  hps: 32.87697
+  dps: 1642.1747
+  tps: 1669.7142
+  hps: 32.84443
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1696.03031
-  tps: 1724.62739
-  hps: 32.87697
+  dps: 1675.4879
+  tps: 1702.12516
+  hps: 32.84443
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-AllItems-OstracizedBerserker'sBattlemail"
  value: {
-  dps: 3557.9717
-  tps: 3573.41274
-  hps: 39.61137
+  dps: 3566.41806
+  tps: 3578.96322
+  hps: 39.9184
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-AllItems-ShunnedDevotee'sChainmail"
  value: {
-  dps: 3486.31176
-  tps: 3502.49669
-  hps: 39.64797
+  dps: 3493.05642
+  tps: 3503.06422
+  hps: 39.92857
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-AllItems-TheFiveThunders"
  value: {
-  dps: 1394.00749
-  tps: 1427.94147
-  hps: 32.80377
+  dps: 1399.08909
+  tps: 1433.67578
+  hps: 33.25517
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 6010.14029
-  tps: 4224.91343
-  hps: 49.26037
+  dps: 6008.75086
+  tps: 4223.86336
+  hps: 49.2691
  }
 }
 dps_results: {
@@ -2499,8 +2499,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5123.93296
-  tps: 3606.47415
-  hps: 42.0046
+  dps: 5131.80706
+  tps: 3610.08304
+  hps: 42.0839
  }
 }
