@@ -58,6 +58,7 @@ func (druid *Druid) NewT2Treants() *T2Treants {
 			SwingSpeed:        0.6667, // 3 Treants attack at 2 second intervals. To avoid creating 3 pets, have the AI swing at 2/3 second intervals
 			AttackPowerPerDPS: 14.0 / 6.0,
 			SpellSchool:       core.SpellSchoolPhysical,
+			MaxRange:          core.MaxMeleeAttackRange,
 		},
 		AutoSwingMelee: true,
 	})

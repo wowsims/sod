@@ -29,6 +29,7 @@ func NewCoreHound(character *core.Character) *CoreHound {
 			BaseDamageMax: 1,
 			SwingSpeed:    2.0,
 			SpellSchool:   core.SpellSchoolPhysical,
+			MaxRange:      core.MaxMeleeAttackRange,
 		},
 		AutoSwingMelee: true,
 	})
