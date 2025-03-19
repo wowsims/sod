@@ -633,17 +633,17 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase5-Lvl60-AllItems-BeastmasterArmor"
  value: {
-  dps: 1159.90113
-  tps: 942.4362
-  hps: 15.29067
+  dps: 1159.05806
+  tps: 940.89865
+  hps: 15.30083
  }
 }
 dps_results: {
  key: "TestSV-Phase5-Lvl60-AllItems-BloodGuard'sChain"
  value: {
-  dps: 1329.80221
-  tps: 1013.11132
-  hps: 15.16867
+  dps: 1353.84852
+  tps: 1025.78813
+  hps: 15.372
  }
 }
 dps_results: {
@@ -689,9 +689,9 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase5-Lvl60-AllItems-Knight-Lieutenant'sChain"
  value: {
-  dps: 1329.80221
-  tps: 1013.11132
-  hps: 15.16867
+  dps: 1353.84852
+  tps: 1025.78813
+  hps: 15.372
  }
 }
 dps_results: {
@@ -737,9 +737,9 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4237.32317
-  tps: 3598.69169
-  hps: 15.72413
+  dps: 4237.71585
+  tps: 3599.04259
+  hps: 15.72012
  }
 }
 dps_results: {

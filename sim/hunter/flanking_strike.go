@@ -71,6 +71,8 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagStrike,
 
+		MaxRange: core.MaxMeleeAttackRange,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.015,
 		},
@@ -83,9 +85,6 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 30,
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
 		CritDamageBonus:  hunter.mortalShots(),
