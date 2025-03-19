@@ -70,6 +70,7 @@ func (druid *Druid) GetBearWeapon() core.Weapon {
 		SwingSpeed:           2.5,
 		NormalizedSwingSpeed: 2.5,
 		AttackPowerPerDPS:    core.DefaultAttackPowerPerDPS,
+		MaxRange:             core.MaxMeleeAttackRange,
 	}
 }
 
