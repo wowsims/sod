@@ -39,6 +39,7 @@ func (rogue *Rogue) registerExposeArmorSpell() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          rogue.finisherFlags(),
 		MetricSplits:   6,
+		MaxRange:       5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   25,

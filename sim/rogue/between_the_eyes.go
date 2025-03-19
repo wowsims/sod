@@ -24,6 +24,7 @@ func (rogue *Rogue) registerBetweenTheEyes() {
 		Flags:          rogue.finisherFlags(),
 		CastType:       proto.CastType_CastTypeRanged,
 		MetricSplits:   6,
+		MaxRange:       20,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,

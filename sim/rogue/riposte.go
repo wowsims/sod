@@ -19,6 +19,7 @@ func (rogue *Rogue) applyRiposte() {
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       SpellFlagCarnage | core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		MaxRange:    5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 10,

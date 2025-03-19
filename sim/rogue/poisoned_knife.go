@@ -24,6 +24,7 @@ func (rogue *Rogue) registerPoisonedKnife() {
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeOHSpecial,
 		Flags:          rogue.builderFlags(),
+		MaxRange:       25,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   25,

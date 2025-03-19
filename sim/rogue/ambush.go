@@ -32,6 +32,7 @@ func (rogue *Rogue) registerAmbushSpell() {
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          rogue.builderFlags(),
+		MaxRange:       5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   60,

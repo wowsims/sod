@@ -22,6 +22,7 @@ func (rogue *Rogue) registerShadowstep() {
 			Cost:   baseCost,
 			Refund: 0,
 		},
+		MaxRange: 25,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

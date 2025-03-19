@@ -75,6 +75,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeOHSpecial,
 		Flags:          rogue.builderFlags(),
+		MaxRange:       5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   15,

@@ -72,6 +72,7 @@ func (rogue *Rogue) registerMutilateSpell() {
 		SpellSchool: core.SpellSchoolPhysical,
 		ProcMask:    core.ProcMaskMeleeMHSpecial,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		MaxRange:    5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   40,
