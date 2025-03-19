@@ -299,8 +299,8 @@ func (paladin *Paladin) applyPaladinT1Prot2P() {
 
 	// (2) Set: Increases the block value of your shield by 30.
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
-		Label:    bonusLabel,
-		ActionID: core.ActionID{SpellID: PaladinT1Prot2P},
+		Label:      bonusLabel,
+		ActionID:   core.ActionID{SpellID: PaladinT1Prot2P},
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 	}).AttachBuildPhaseStatBuff(stats.BlockValue, 30))
 }
@@ -343,6 +343,10 @@ func (paladin *Paladin) applyPaladinT1Prot4P() {
 }
 
 func (paladin *Paladin) applyPaladinT1Prot6P() {
+	if !paladin.Talents.HolyShield {
+		return
+	}
+
 	bonusLabel := "S03 - Item - T1 - Paladin - Protection 6P Bonus"
 	if paladin.HasAura(bonusLabel) {
 		return
@@ -503,8 +507,8 @@ func (paladin *Paladin) applyPaladinT1Holy4P() {
 		stats.MeleeCrit: 2 * core.CritRatingPerCritChance,
 	}
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
-		Label:    bonusLabel,
-		ActionID: core.ActionID{SpellID: PaladinT1Holy4P},
+		Label:      bonusLabel,
+		ActionID:   core.ActionID{SpellID: PaladinT1Holy4P},
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 	}).AttachBuildPhaseStatsBuff(bonusStats))
 }
@@ -577,8 +581,8 @@ func (paladin *Paladin) applyPaladinT1Ret4P() {
 		stats.MeleeCrit: 2 * core.CritRatingPerCritChance,
 	}
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
-		Label:    bonusLabel,
-		ActionID: core.ActionID{SpellID: PaladinT1Ret4P},
+		Label:      bonusLabel,
+		ActionID:   core.ActionID{SpellID: PaladinT1Ret4P},
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 	}).AttachBuildPhaseStatsBuff(bonusStats))
 }
@@ -746,8 +750,8 @@ func (paladin *Paladin) applyPaladinZG2P() {
 
 	// Increases damage done by Holy spells and effects by up to 14.
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
-		Label:    bonusLabel,
-		ActionID: core.ActionID{SpellID: PaladinZG2P},
+		Label:      bonusLabel,
+		ActionID:   core.ActionID{SpellID: PaladinZG2P},
 		BuildPhase: core.CharacterBuildPhaseBuffs,
 	}).AttachBuildPhaseStatBuff(stats.HolyPower, 14))
 }
