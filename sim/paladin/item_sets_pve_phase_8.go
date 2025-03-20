@@ -46,6 +46,10 @@ func (paladin *Paladin) applyScarletEnclaveRetribution2PBonus() {
 				return
 			}
 
+			if !result.Landed() {
+				return
+			}
+
 			paladin.holyPowerAura.Activate(sim)
 			paladin.holyPowerAura.AddStack(sim)
 		},
@@ -94,6 +98,10 @@ func (paladin *Paladin) applyScarletEnclaveRetribution4PBonus() {
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.Matches(spenderMask) || !paladin.holyPowerAura.IsActive() {
+				return
+			}
+
+			if !result.Landed() {
 				return
 			}
 
@@ -195,6 +203,10 @@ func (paladin *Paladin) applyScarletEnclaveProtection2PBonus() {
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.Matches(ClassSpellMask_PaladinShieldOfRighteousness) {
+				return
+			}
+
+			if !result.Landed() {
 				return
 			}
 
