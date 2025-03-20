@@ -132,7 +132,7 @@ func (rogue *Rogue) applyRuthlessness() {
 	})
 }
 
-// Murder talent
+// Murder talent / Draught of the Sands (these can stack)
 func (rogue *Rogue) applyMurder() {
 	murderMobTypes := []proto.MobType{proto.MobType_MobTypeHumanoid, proto.MobType_MobTypeGiant, proto.MobType_MobTypeBeast, proto.MobType_MobTypeDragonkin}
 	murderTargets := core.FilterSlice(rogue.Env.Encounter.Targets, func(t *core.Target) bool { return slices.Contains(murderMobTypes, t.MobType) })
@@ -148,7 +148,9 @@ func (rogue *Rogue) applyMurder() {
 				}
 			}
 		})
-	} else if rogue.Consumes.MiscConsumes != nil && rogue.Consumes.MiscConsumes.DraughtOfTheSands {
+	}
+
+	if rogue.Consumes.MiscConsumes != nil && rogue.Consumes.MiscConsumes.DraughtOfTheSands {
 		rogue.Env.RegisterPostFinalizeEffect(func() {
 			multiplier := 1.02
 			for _, t := range rogue.Env.Encounter.Targets {
