@@ -30,6 +30,7 @@ func (warlock *Warlock) makeVoidwalker() *WarlockPet {
 				BaseDamageMin: 2,
 				BaseDamageMax: 7,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -50,6 +51,7 @@ func (warlock *Warlock) makeVoidwalker() *WarlockPet {
 				BaseDamageMin: 5,
 				BaseDamageMax: 15,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -71,6 +73,7 @@ func (warlock *Warlock) makeVoidwalker() *WarlockPet {
 				BaseDamageMin: 5,
 				BaseDamageMax: 15,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -91,6 +94,7 @@ func (warlock *Warlock) makeVoidwalker() *WarlockPet {
 				BaseDamageMin: 31,
 				BaseDamageMax: 46,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}

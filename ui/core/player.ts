@@ -1014,7 +1014,17 @@ export class Player<SpecType extends Spec> {
 			return this.enchantEPCache.get(enchant.effectId)!;
 		}
 
-		const ep = this.computeStatsEP(new Stats(enchant.stats));
+		let ep = this.computeStatsEP(new Stats(enchant.stats));
+
+		if (enchant.stats[Stat.StatMeleeHaste] > 0) {
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatMeleeSpeedMultiplier) * enchant.stats[Stat.StatMeleeHaste];
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatRangedSpeedMultiplier) * enchant.stats[Stat.StatMeleeHaste];
+		}
+
+		if (enchant.stats[Stat.StatSpellHaste] > 0) {
+			ep += this.epWeights.getPseudoStat(PseudoStat.PseudoStatCastSpeedMultiplier) * enchant.stats[Stat.StatSpellHaste];
+		}
+
 		this.enchantEPCache.set(enchant.effectId, ep);
 		return ep;
 	}

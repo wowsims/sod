@@ -15,8 +15,10 @@ const SpellBatchWindow = time.Millisecond * 10
 const DefaultAttackPowerPerDPS = 14.0
 const ArmorPenPerPercentArmor = 13.99
 
-const MaxMeleeAttackDistance = 5
-const MinRangedAttackDistance = 12
+const MaxMeleeAttackRange = 5.0        // in yards
+const MinRangedAttackRange = 12.0      // in yards
+const MaxShortRangedAttackRange = 30.0 // in yards
+const MaxRangedAttackRange = 40.0      // in yards
 
 const MissDodgeParryBlockCritChancePerDefense = 0.04
 

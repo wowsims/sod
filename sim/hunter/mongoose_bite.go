@@ -24,8 +24,10 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		Rank:           rank,
-		RequiredLevel:  level,
+
+		Rank:          rank,
+		RequiredLevel: level,
+		MaxRange:      core.MaxMeleeAttackRange,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -42,7 +44,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		},
 
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance && hunter.DefensiveState.IsActive()
+			return hunter.DefensiveState.IsActive()
 		},
 
 		BonusCritRating:  float64(hunter.Talents.SavageStrikes) * 10 * core.CritRatingPerCritChance,

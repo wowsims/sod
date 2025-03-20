@@ -12,9 +12,9 @@ const (
 )
 
 const (
-	ClassSpellMask_MageNone int64 = 0
+	ClassSpellMask_MageNone uint64 = 0
 
-	ClassSpellMask_MageArcaneBarrage int64 = 1 << iota
+	ClassSpellMask_MageArcaneBarrage uint64 = 1 << iota
 	ClassSpellMask_MageArcaneBlast
 	ClassSpellMask_MageArcaneExplosion
 	ClassSpellMask_MageArcaneMissiles
@@ -43,8 +43,7 @@ const (
 	ClassSpellMask_MageSpellfrostBolt
 	ClassSpellMask_MageEvocation
 
-	ClassSpellMask_MageLast
-	ClassSpellMask_MageAll = ClassSpellMask_MageLast<<1 - 1
+	ClassSpellMask_MageAll = 1<<iota - 1
 
 	// All spells that have additive scaling with Arcane Blast
 	ClassSpellMask_MageArcaneBlastAuraFlat = ClassSpellMask_MageArcaneExplosion | ClassSpellMask_MageArcaneMissilesTick |

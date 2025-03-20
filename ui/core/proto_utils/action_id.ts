@@ -349,7 +349,7 @@ export class ActionId {
 			case 'Healing Wave':
 			case 'Lesser Healing Wave':
 			case 'Chain Heal':
-				if (this.tag === 6) {
+				if (this.tag === 11) {
 					name = `${name} OL`;
 				} else if (this.tag) {
 					name = `${name} (${this.tag} MSW)`;
@@ -484,10 +484,6 @@ export class ActionId {
 				break;
 			case 'Frost Fever':
 				if (this.tag === 2) name = `${name} (Debuff)`;
-				break;
-			// Temporary until real debuff is implemented
-			case 'Ice Lance':
-				if (this.tag > 0) name = `${name} (${this.tag} Stacks)`;
 				break;
 			default:
 				if (this.tag) {

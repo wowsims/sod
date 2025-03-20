@@ -8,14 +8,14 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-// Go on a rampage, increasing your attack power by 10% for 30 sec.  This ability can only be used while Enraged.
+// Go on a rampage, increasing your attack power by 15% for 30 sec. This ability can only be used while Enraged.
 func (warrior *Warrior) registerRampage() {
 	if !warrior.HasRune(proto.WarriorRune_RuneRampage) {
 		return
 	}
 
 	actionID := core.ActionID{SpellID: int32(proto.WarriorRune_RuneRampage)}
-	statDep := warrior.NewDynamicMultiplyStat(stats.AttackPower, 1.10)
+	statDep := warrior.NewDynamicMultiplyStat(stats.AttackPower, 1.15)
 
 	warrior.RampageAura = warrior.RegisterAura(core.Aura{
 		Label:    "Rampage",
@@ -36,7 +36,7 @@ func (warrior *Warrior) registerRampage() {
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: time.Minute * 2,
+				Duration: time.Second * 90,
 			},
 		},
 

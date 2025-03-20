@@ -53,8 +53,6 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 		flags |= core.SpellFlagAPL
 	}
 
-	canOverload := !isOverload && shaman.HasRune(proto.ShamanRune_RuneChestOverload)
-
 	spell := core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: spellId},
 		ClassSpellMask: ClassSpellMask_ShamanHealingWave,
@@ -87,7 +85,7 @@ func (shaman *Shaman) newHealingWaveSpellConfig(rank int, isOverload bool) core.
 			// TODO: Take Healing Way into account 6% stacking up to 3x
 			result := spell.CalcAndDealHealing(sim, spell.Unit, sim.Roll(baseHealingLow, baseHealingHigh), spell.OutcomeHealingCrit)
 
-			if canOverload && sim.RandomFloat("HW Overload") < ShamanOverloadChance {
+			if !isOverload && shaman.procOverload(sim, "Healing Wave Overload", 1) {
 				shaman.HealingWaveOverload[rank].Cast(sim, spell.Unit)
 			}
 

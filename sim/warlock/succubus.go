@@ -32,6 +32,7 @@ func (warlock *Warlock) makeSuccubus() *WarlockPet {
 				BaseDamageMin: 23,
 				BaseDamageMax: 38,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -52,6 +53,7 @@ func (warlock *Warlock) makeSuccubus() *WarlockPet {
 				BaseDamageMin: 41,
 				BaseDamageMax: 61,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -73,6 +75,7 @@ func (warlock *Warlock) makeSuccubus() *WarlockPet {
 				BaseDamageMin: 41,
 				BaseDamageMax: 61,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -93,6 +96,7 @@ func (warlock *Warlock) makeSuccubus() *WarlockPet {
 				BaseDamageMin: 95,
 				BaseDamageMax: 131,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}

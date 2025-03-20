@@ -348,6 +348,7 @@ func (hunter *Hunter) applyCobraSlayer() {
 	}
 
 	hunter.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: int32(proto.HunterRune_RuneHandsCobraSlayer)},
 		Label:     "Cobra Slayer",
 		Duration:  core.NeverExpires,
 		MaxStacks: 20,
@@ -464,7 +465,7 @@ func (hunter *Hunter) applyCatlikeReflexes() {
 }
 
 func (hunter *Hunter) applyImprovedVolley() {
-	if !hunter.HasRune(proto.HunterRune_RuneCloakImprovedVolley) && hunter.Volley != nil {
+	if !hunter.HasRune(proto.HunterRune_RuneCloakImprovedVolley) {
 		return
 	}
 

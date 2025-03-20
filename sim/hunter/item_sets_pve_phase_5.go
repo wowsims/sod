@@ -156,7 +156,7 @@ func (hunter *Hunter) applyT2Ranged2PBonus() {
 		Callback:       core.CallbackOnApplyEffects,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			hasActiveTrap := result.Target.HasActiveAuraWithTag("ImmolationTrap") || hunter.HasActiveAuraWithTag("ExplosiveTrap")
-			damageMod.UpdateFloatValue(core.TernaryFloat64(hasActiveTrap, 0.20, 0.0))
+			damageMod.UpdateIntValue(core.TernaryInt64(hasActiveTrap, 20, 0))
 			damageMod.Activate()
 		},
 	})
@@ -170,7 +170,7 @@ func (hunter *Hunter) applyT2Ranged4PBonus() {
 	}
 
 	// Map of all possible damage mods
-	damageModMap := make(map[int64]*core.SpellMod)
+	damageModMap := make(map[uint64]*core.SpellMod)
 	// Dynamic damage mod for the current shot
 	var damageMod *core.SpellMod
 
@@ -195,7 +195,7 @@ func (hunter *Hunter) applyT2Ranged4PBonus() {
 			damageMod.Deactivate()
 		},
 	})
-	
+
 	core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
 		Name:           label,
 		ClassSpellMask: ClassSpellMask_HunterShots,
