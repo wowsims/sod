@@ -318,14 +318,12 @@ func (hunter *Hunter) applyLockAndLoad() {
 	}))
 }
 
-const RaptorFuryPerStackDamageMultiplier = 0.15
-
 func (hunter *Hunter) raptorFuryDamageMultiplier() float64 {
 	stacks := hunter.RaptorFuryAura.GetStacks()
 	if stacks == 0 {
 		return 1
 	}
-
+	RaptorFuryPerStackDamageMultiplier := 0.15 + hunter.BonusRaptorFuryDamageMultiplier
 	return 1 + RaptorFuryPerStackDamageMultiplier*float64(stacks)
 }
 
