@@ -18,13 +18,16 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 		ClassSpellMask: ClassSpellMask_HunterArcaneShot,
 		ActionID:       core.ActionID{SpellID: spellId},
 		SpellSchool:    core.SpellSchoolArcane,
+		CastType:       proto.CastType_CastTypeRanged,
 		DefenseType:    core.DefenseTypeRanged,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		CastType:       proto.CastType_CastTypeRanged,
-		Rank:           rank,
-		RequiredLevel:  level,
-		MissileSpeed:   24,
+
+		Rank:          rank,
+		RequiredLevel: level,
+		MinRange:      core.MinRangedAttackRange,
+		MaxRange:      core.MaxRangedAttackRange,
+		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -38,9 +41,6 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 				Timer:    timer,
 				Duration: time.Second*6 - time.Millisecond*200*time.Duration(hunter.Talents.ImprovedArcaneShot),
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
 		CritDamageBonus: hunter.mortalShots(),

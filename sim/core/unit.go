@@ -579,7 +579,7 @@ func (unit *Unit) GetSpellsMatchingSchool(school SpellSchool) []*Spell {
 	return spells
 }
 
-func (unit *Unit) GetSpellsMatchingClassMask(spellClassMask int64) []*Spell {
+func (unit *Unit) GetSpellsMatchingClassMask(spellClassMask uint64) []*Spell {
 	var spells []*Spell
 	for _, spell := range unit.Spellbook {
 		if spell.Matches(spellClassMask) {

@@ -14,9 +14,9 @@ const (
 )
 
 const (
-	ClassSpellMask_WarriorNone int64 = 0
+	ClassSpellMask_WarriorNone uint64 = 0
 
-	ClassSpellMask_WarriorBloodrage int64 = 1 << iota
+	ClassSpellMask_WarriorBloodrage uint64 = 1 << iota
 	ClassSpellMask_WarriorBloodthirst
 	ClassSpellMask_WarriorCleave
 	ClassSpellMask_WarriorDeathWish

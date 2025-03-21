@@ -26,7 +26,7 @@ func (druid *Druid) applyStarsurge() {
 		IntValue:  80,
 	})
 
-	starfireDamageAura := druid.RegisterAura(core.Aura{
+	druid.StarsurgeAura = druid.RegisterAura(core.Aura{
 		Label:     "Starsurge",
 		ActionID:  actionID,
 		Duration:  starfireAuraDuration,
@@ -38,11 +38,9 @@ func (druid *Druid) applyStarsurge() {
 			damageMod.Deactivate()
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Matches(ClassSpellMask_DruidStarfire) {
-				return
+			if spell.Matches(ClassSpellMask_DruidStarfire) && aura.GetStacks() > 0 {
+				aura.RemoveStack(sim)
 			}
-
-			aura.Deactivate(sim)
 		},
 	})
 
@@ -85,7 +83,8 @@ func (druid *Druid) applyStarsurge() {
 			}
 
 			// Aura applies on cast
-			starfireDamageAura.Activate(sim)
+			druid.StarsurgeAura.Activate(sim)
+			druid.StarsurgeAura.SetStacks(sim, druid.StarsurgeAura.MaxStacks)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

@@ -17,9 +17,9 @@ const (
 )
 
 const (
-	ClassSpellMask_PaladinNone int64 = 0
+	ClassSpellMask_PaladinNone uint64 = 0
 
-	ClassSpellMask_PaladinExorcism int64 = 1 << iota
+	ClassSpellMask_PaladinExorcism uint64 = 1 << iota
 	ClassSpellMask_PaladinHolyShock
 	ClassSpellMask_PaladinHolyWrath
 	ClassSpellMask_PaladinConsecration
@@ -43,8 +43,7 @@ const (
 	ClassSpellMask_PaladinDivineProtection
 	ClassSpellMask_PaladinavengingWrath
 
-	ClassSpellMask_PaladinLast
-	ClassSpellMask_PaladinAll = ClassSpellMask_PaladinLast<<1 - 1
+	ClassSpellMask_PaladinAll = 1<<iota - 1
 
 	// Judgements
 	ClassSpellMask_PaladinJudgements = ClassSpellMask_PaladinJudgementOfCommand | ClassSpellMask_PaladinJudgementOfMartyrdom |
@@ -100,11 +99,16 @@ type Paladin struct {
 	sealOfCommand       *core.Spell
 	sealOfMartyrdom     *core.Spell
 
+	// Set bonus specific
+	holyPowerAura         *core.Aura
+	onHolyPowerSpent      func(sim *core.Simulation, holyPower int32)
+	holyShieldExtraDamage func(sim *core.Simulation, paladin *Paladin) float64
+
 	enableMultiJudge    bool
 	lingerDuration      time.Duration
 	consumeSealsOnJudge bool
 	artOfWarDelayAura   *core.Aura
-	bypassMacroOptions   bool
+	bypassMacroOptions  bool
 }
 
 // Implemented by each Paladin spec.

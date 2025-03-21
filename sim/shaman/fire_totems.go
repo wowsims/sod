@@ -320,7 +320,12 @@ func (shaman *Shaman) newFireNovaTotemSpellConfig(rank int) core.SpellConfig {
 			if shaman.ActiveTotems[FireTotem] != nil {
 				shaman.ActiveTotems[FireTotem].Dot(sim.GetTargetUnit(0)).Cancel(sim)
 			}
-			spell.Dot(sim.GetTargetUnit(0)).Apply(sim)
+			dot := spell.Dot(sim.GetTargetUnit(0))
+			if dot.Duration > 0 {
+				dot.Apply(sim)
+			} else {
+				novaSpell.Cast(sim, target)
+			}
 			// +1 needed because of rounding issues with totem tick time.
 			shaman.TotemExpirations[FireTotem] = sim.CurrentTime + duration + 1
 			shaman.ActiveTotems[FireTotem] = spell

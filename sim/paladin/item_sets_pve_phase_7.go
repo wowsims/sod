@@ -154,7 +154,7 @@ func (paladin *Paladin) applyNaxxramasProtection2PBonus() {
 		ActionID:   core.ActionID{SpellID: PaladinT3Prot2P},
 		Label:      label,
 		BuildPhase: core.CharacterBuildPhaseBuffs,
-	}).AttachStatsBuff(bonusStats))
+	}).AttachBuildPhaseStatsBuff(bonusStats))
 }
 
 // Reduces the cooldown on your Divine Protection ability by 3 min and reduces the cooldown on your Avenging Wrath ability by 2 min.

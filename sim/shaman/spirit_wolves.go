@@ -37,6 +37,7 @@ func (shaman *Shaman) NewSpiritWolves() *SpiritWolves {
 			BaseDamageMin: 55.5,
 			BaseDamageMax: 71.5,
 			SwingSpeed:    1.5 / 2, // Two dogs attack at 1.5s intervals, but for performance we use 1 pet so divide by 2
+			MaxRange:      core.MaxMeleeAttackRange,
 		},
 		AutoSwingMelee: true,
 	})

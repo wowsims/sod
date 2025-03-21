@@ -17,9 +17,9 @@ const (
 var TalentTreeSizes = [3]int{16, 16, 15}
 
 const (
-	ClassSpellMask_DruidNone int64 = 0
+	ClassSpellMask_DruidNone uint64 = 0
 
-	ClassSpellMask_DruidBerserk int64 = 1 << iota
+	ClassSpellMask_DruidBerserk uint64 = 1 << iota
 	ClassSpellMask_DruidEnrage
 	ClassSpellMask_DruidFaerieFire
 	ClassSpellMask_DruidFaerieFireFeral
@@ -53,8 +53,7 @@ const (
 	ClassSpellMask_DruidBearForm
 	ClassSpellMask_DruidMoonkinForm
 
-	ClassSpellMask_DruidLast
-	ClassSpellMask_DruidAll = ClassSpellMask_DruidLast<<1 - 1
+	ClassSpellMask_DruidAll = 1<<iota - 1
 
 	ClassSpellMask_DruidForms         = ClassSpellMask_DruidCatForm | ClassSpellMask_DruidBearForm | ClassSpellMask_DruidMoonkinForm
 	ClassSpellMask_DruidCatFormSpells = ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidRake | ClassSpellMask_DruidRip |
@@ -146,6 +145,7 @@ type Druid struct {
 	TigersFuryAura           *core.Aura
 	SavageRoarAura           *core.Aura
 	SolarEclipseProcAura     *core.Aura
+	StarsurgeAura            *core.Aura
 	LunarEclipseProcAura     *core.Aura
 	WildStrikesBuffAura      *core.Aura
 

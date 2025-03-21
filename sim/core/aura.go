@@ -237,6 +237,9 @@ func (aura *Aura) AddStacks(sim *Simulation, numStacks int32) {
 func (aura *Aura) RemoveStack(sim *Simulation) {
 	aura.SetStacks(sim, aura.stacks-1)
 }
+func (aura *Aura) RemoveStacks(sim *Simulation, numStacks int32) {
+	aura.SetStacks(sim, aura.stacks-numStacks)
+}
 
 func (aura *Aura) UpdateExpires(sim *Simulation, newExpires time.Duration) {
 	aura.expires = newExpires
@@ -323,6 +326,43 @@ func (aura *Aura) ApplyOnExpire(newOnExpire OnExpire) *Aura {
 	return aura
 }
 
+// Adds a handler to be called OnStacksChange, in addition to any current handlers.
+// We then return the Aura for chaining
+func (aura *Aura) ApplyOnStacksChange(newOnStacksChange OnStacksChange) *Aura {
+	oldOnStacksChange := aura.OnStacksChange
+	if oldOnStacksChange == nil {
+		aura.OnStacksChange = newOnStacksChange
+	} else {
+		aura.OnStacksChange = func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32) {
+			oldOnStacksChange(aura, sim, oldStacks, newStacks)
+			newOnStacksChange(aura, sim, oldStacks, newStacks)
+		}
+	}
+
+	return aura
+}
+
+// Adds a handler to be called OnStacksChange, in addition to any current handlers.
+// We then return the Aura for chaining
+func (aura *Aura) ApplyOnCastComplete(newOnCastComplete OnCastComplete, applyBefore bool) *Aura {
+	oldOnCastComplete := aura.OnCastComplete
+	if oldOnCastComplete == nil {
+		aura.OnCastComplete = newOnCastComplete
+	} else if applyBefore {
+		aura.OnCastComplete = func(aura *Aura, sim *Simulation, spell *Spell) {
+			newOnCastComplete(aura, sim, spell)
+			oldOnCastComplete(aura, sim, spell)
+		}
+	} else {
+		aura.OnCastComplete = func(aura *Aura, sim *Simulation, spell *Spell) {
+			oldOnCastComplete(aura, sim, spell)
+			newOnCastComplete(aura, sim, spell)
+		}
+	}
+
+	return aura
+}
+
 type AuraFactory func(*Simulation) *Aura
 
 // Callback for doing something on reset.
@@ -340,7 +380,7 @@ type auraTracker struct {
 	// All registered auras, both active and inactive.
 	auras []*Aura
 
-	aurasByTag map[string][]*Aura
+	aurasByTag        map[string][]*Aura
 	aurasbyDispelType map[DispelType][]*Aura
 
 	// IDs of Auras that may expire and are currently active, in no particular order.

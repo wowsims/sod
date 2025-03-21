@@ -10,9 +10,9 @@ import (
 var TalentTreeSizes = [3]int{15, 16, 16}
 
 const (
-	ClassSpellMask_PriestNone int64 = 0
+	ClassSpellMask_PriestNone uint64 = 0
 
-	ClassSpellMask_PriestDevouringPlague int64 = 1 << iota
+	ClassSpellMask_PriestDevouringPlague uint64 = 1 << iota
 	ClassSpellMask_PriestFlashHeal
 	ClassSpellMask_PriestGreaterHeal
 	ClassSpellMask_PriestHeal
@@ -36,8 +36,7 @@ const (
 	ClassSpellMask_PriestPenanceHeal
 	ClassSpellMask_PriestPenance = ClassSpellMask_PriestPenanceDamage | ClassSpellMask_PriestPenanceHeal
 
-	ClassSpellMask_PriestLast
-	ClassSpellMask_PriestAll = ClassSpellMask_PriestLast<<1 - 1
+	ClassSpellMask_PriestAll = 1<<iota - 1
 
 	ClassSpellMask_PriestDevouringPlagueDots = ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestVoidPlague |
 		ClassSpellMask_PriestVampiricTouch

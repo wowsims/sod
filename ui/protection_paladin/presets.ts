@@ -8,7 +8,6 @@ import {
 	Conjured,
 	Consumes,
 	Debuffs,
-	EnchantedSigil,
 	Explosive,
 	FirePowerBuff,
 	Flask,

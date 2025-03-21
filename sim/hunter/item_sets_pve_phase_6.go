@@ -115,6 +115,8 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 	clonedShotConfig.ProcMask = core.ProcMaskRangedProc | core.ProcMaskRangedDamageProc
 	clonedShotConfig.Flags |= core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell
 	clonedShotConfig.Flags ^= core.SpellFlagAPL
+	clonedShotConfig.MinRange = core.MinRangedAttackRange
+	clonedShotConfig.MaxRange = core.MaxRangedAttackRange
 	clonedShotConfig.Cast.DefaultCast.GCD = 0
 	clonedShotConfig.Cast.DefaultCast.Cost = 0
 	clonedShotConfig.Cast.CD = core.Cooldown{}
@@ -122,9 +124,6 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 	clonedShotConfig.ManaCost.FlatCost = 0
 	clonedShotConfig.MetricSplits = 0
 	clonedShotConfig.DamageMultiplier *= 0.30
-	clonedShotConfig.ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-		return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
-	}
 
 	clonedShot := hunter.RegisterSpell(clonedShotConfig)
 

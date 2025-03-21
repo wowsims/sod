@@ -10,7 +10,7 @@ SpellMod implementation.
 */
 
 type SpellModConfig struct {
-	ClassMask         int64
+	ClassMask         uint64
 	Kind              SpellModType
 	School            SpellSchool
 	SpellFlags        SpellFlag
@@ -26,7 +26,7 @@ type SpellModConfig struct {
 }
 
 type SpellMod struct {
-	ClassMask         int64
+	ClassMask         uint64
 	Kind              SpellModType
 	School            SpellSchool
 	SpellFlags        SpellFlag
@@ -218,19 +218,19 @@ const (
 	SpellMod_DamageDone_Pct SpellModType = 1 << iota
 
 	// Will add the value spell.DamageMultiplierAdditive
-	// Uses FloatValue
+	// Uses IntValue
 	SpellMod_DamageDone_Flat
 
 	// Will add the value spell.BaseDamageMultiplierAdditive
-	// Uses FloatValue
+	// Uses IntValue
 	SpellMod_BaseDamageDone_Flat
 
 	// Will add the value spell.PeriodicDamageMultiplierAdditive
-	// Uses FloatValue
+	// Uses IntValue
 	SpellMod_PeriodicDamageDone_Flat
 
 	// Will add the value spell.ImpactDamageMultiplierAdditive
-	// Uses FloatValue
+	// Uses IntValue
 	SpellMod_ImpactDamageDone_Flat
 
 	// Will add the value spell.CritDamageBonus
@@ -249,10 +249,10 @@ const (
 	// Uses TimeValue
 	SpellMod_Cooldown_Flat
 
-	// Increases or decreases spell.CD.Multiplier by flat amount. 50% = 0.5
+	// Increases or decreases spell.CD.Multiplier by flat amount. 50% = 50
 	// Apply Aura: Modifies Cooldown (11)
 	// -X%
-	// Uses FloatValue
+	// Uses IntValue
 	SpellMod_Cooldown_Multi_Flat
 
 	// Add/subtract BonusCritRating. +1% = 1.0
@@ -264,11 +264,11 @@ const (
 	SpellMod_BonusHit_Flat
 
 	// Will add / substract % amount from the cast time multiplier.
-	// Ueses: FloatValue
+	// Uses: FloatValue
 	SpellMod_CastTime_Pct
 
 	// Will add / substract time from the cast time.
-	// Ueses: TimeValue
+	// Uses: TimeValue
 	SpellMod_CastTime_Flat
 
 	// Add/subtract to the dots max ticks
@@ -581,11 +581,13 @@ func applyDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 		for _, dot := range spell.dots {
 			if dot != nil {
 				dot.NumberOfTicks += int32(mod.intValue)
+				dot.RecomputeAuraDuration()
 			}
 		}
 	}
 	if spell.aoeDot != nil {
 		spell.aoeDot.NumberOfTicks += int32(mod.intValue)
+		spell.aoeDot.RecomputeAuraDuration()
 	}
 }
 
@@ -594,11 +596,13 @@ func removeDotNumberOfTicks(mod *SpellMod, spell *Spell) {
 		for _, dot := range spell.dots {
 			if dot != nil {
 				dot.NumberOfTicks -= int32(mod.intValue)
+				dot.RecomputeAuraDuration()
 			}
 		}
 	}
 	if spell.aoeDot != nil {
 		spell.aoeDot.NumberOfTicks -= int32(mod.intValue)
+		spell.aoeDot.RecomputeAuraDuration()
 	}
 }
 
@@ -607,11 +611,13 @@ func applyDotTickLengthFlat(mod *SpellMod, spell *Spell) {
 		for _, dot := range spell.dots {
 			if dot != nil {
 				dot.TickLength += mod.timeValue
+				dot.RecomputeAuraDuration()
 			}
 		}
 	}
 	if spell.aoeDot != nil {
 		spell.aoeDot.TickLength += mod.timeValue
+		spell.aoeDot.RecomputeAuraDuration()
 	}
 }
 
@@ -620,11 +626,13 @@ func removeDotTickLengthFlat(mod *SpellMod, spell *Spell) {
 		for _, dot := range spell.dots {
 			if dot != nil {
 				dot.TickLength -= mod.timeValue
+				dot.RecomputeAuraDuration()
 			}
 		}
 	}
 	if spell.aoeDot != nil {
 		spell.aoeDot.TickLength -= mod.timeValue
+		spell.aoeDot.RecomputeAuraDuration()
 	}
 }
 
@@ -633,11 +641,13 @@ func applyDotTickLengthPercent(mod *SpellMod, spell *Spell) {
 		for _, dot := range spell.dots {
 			if dot != nil {
 				dot.TickLength = time.Duration(float64(dot.TickLength) * mod.floatValue)
+				dot.RecomputeAuraDuration()
 			}
 		}
 	}
 	if spell.aoeDot != nil {
 		spell.aoeDot.TickLength = time.Duration(float64(spell.aoeDot.TickLength) * mod.floatValue)
+		spell.aoeDot.RecomputeAuraDuration()
 	}
 }
 
@@ -646,12 +656,13 @@ func removeDotTickLengthPercent(mod *SpellMod, spell *Spell) {
 		for _, dot := range spell.dots {
 			if dot != nil {
 				dot.TickLength = time.Duration(float64(dot.TickLength) / mod.floatValue)
+				dot.RecomputeAuraDuration()
 			}
 		}
 	}
 	if spell.aoeDot != nil {
 		spell.aoeDot.TickLength = time.Duration(float64(spell.aoeDot.TickLength) / mod.floatValue)
-
+		spell.aoeDot.RecomputeAuraDuration()
 	}
 }
 

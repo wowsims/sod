@@ -19,13 +19,16 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 		ClassSpellMask: ClassSpellMask_HunterSerpentSting,
 		ActionID:       core.ActionID{SpellID: spellId},
 		SpellSchool:    core.SpellSchoolNature,
+		CastType:       proto.CastType_CastTypeRanged,
 		DefenseType:    core.DefenseTypeRanged,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagAPL | core.SpellFlagPureDot | core.SpellFlagPoison | SpellFlagSting,
-		CastType:       proto.CastType_CastTypeRanged,
-		Rank:           rank,
-		RequiredLevel:  level,
-		MissileSpeed:   24,
+
+		Rank:          rank,
+		RequiredLevel: level,
+		MinRange:      core.MinRangedAttackRange,
+		MaxRange:      core.MaxRangedAttackRange,
+		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -35,9 +38,6 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 				GCD: core.GCDDefault,
 			},
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
 		DamageMultiplier: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),

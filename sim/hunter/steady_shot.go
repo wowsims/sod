@@ -16,11 +16,14 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 		ClassSpellMask: ClassSpellMask_HunterSteadyShot,
 		ActionID:       core.ActionID{SpellID: 437123},
 		SpellSchool:    core.SpellSchoolPhysical,
+		CastType:       proto.CastType_CastTypeRanged,
 		DefenseType:    core.DefenseTypeRanged,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		CastType:       proto.CastType_CastTypeRanged,
-		MissileSpeed:   24,
+
+		MinRange:     core.MinRangedAttackRange,
+		MaxRange:     core.MaxRangedAttackRange,
+		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.05,
@@ -37,9 +40,6 @@ func (hunter *Hunter) registerSteadyShotSpell() {
 			CastTime: func(spell *core.Spell) time.Duration {
 				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
 		CritDamageBonus: hunter.mortalShots(),

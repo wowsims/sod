@@ -30,6 +30,7 @@ func NewEskhandar(character *core.Character) *Eskhandar {
 			BaseDamageMax: 1,
 			SwingSpeed:    2.0,
 			SpellSchool:   core.SpellSchoolPhysical,
+			MaxRange:      core.MaxMeleeAttackRange,
 		},
 		AutoSwingMelee: true,
 	})

@@ -8,7 +8,6 @@ const ExpertisePerQuarterPercentReduction = 2.500000
 
 // Crit/Hit/Haste ratings are straight percentage values in classic
 // TODO: Update Defense/Dodge/Parry rates
-const HasteRatingPerHastePercent = 1
 const CritRatingPerCritChance = 1
 const SpellCritRatingPerCritChance = 1
 const MeleeHitRatingPerHitChance = 1

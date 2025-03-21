@@ -17,7 +17,7 @@ type SpellConfig struct {
 	// See definition of Spell (below) for comments on these.
 	ActionID
 	// Used to identify spells with multiple ranks that need to be referenced
-	ClassSpellMask int64
+	ClassSpellMask uint64
 	SpellSchool    SpellSchool
 	DefenseType    DefenseType
 	ProcMask       ProcMask
@@ -36,6 +36,10 @@ type SpellConfig struct {
 
 	Cast               CastConfig
 	ExtraCastCondition CanCastCondition
+
+	// Optional range constraints. If supplied, these are used to modify the ExtraCastCondition above to additionally check for DistanceFromTarget.
+	MinRange float64
+	MaxRange float64
 
 	BonusHitRating  float64
 	BonusCritRating float64
@@ -79,7 +83,7 @@ type Spell struct {
 
 	// Used to identify spells with multiple ranks that need to be referenced
 	// The specific class spell id should be a unique bit
-	ClassSpellMask int64
+	ClassSpellMask uint64
 
 	// The unit who will perform this spell.
 	Unit *Unit
@@ -114,6 +118,10 @@ type Spell struct {
 	CD                 *SpellCooldown
 	SharedCD           *SpellCooldown
 	ExtraCastCondition CanCastCondition
+
+	// Optional range constraints. If supplied, these are used to modify the ExtraCastCondition above to additionally check for DistanceFromTarget.
+	MinRange float64
+	MaxRange float64
 
 	castTimeFn func(spell *Spell) time.Duration // allows to override CastTime()
 
@@ -329,6 +337,26 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 	if spell.ApplyEffects == nil {
 		spell.ApplyEffects = func(*Simulation, *Unit, *Spell) {}
+	}
+
+	// Apply range constraints if requested. This is done after generating the castFn
+	// for performance reasons, so that auto-attacks can be managed separately during
+	// movement actions rather than constantly polling range checks.
+	if (config.MinRange != 0) || (config.MaxRange != 0) {
+		spell.MinRange = config.MinRange
+		spell.MaxRange = config.MaxRange
+		oldExtraCastCondition := spell.ExtraCastCondition
+		spell.ExtraCastCondition = func(sim *Simulation, target *Unit) bool {
+			if ((spell.MinRange != 0) && (spell.Unit.DistanceFromTarget < spell.MinRange)) || ((spell.MaxRange != 0) && (spell.Unit.DistanceFromTarget > spell.MaxRange)) {
+				/*if sim.Log != nil {
+					sim.Log("Cannot cast spell %s, out of range!", spell.ActionID)
+				}*/
+
+				return false
+			}
+
+			return (oldExtraCastCondition == nil) || oldExtraCastCondition(sim, target)
+		}
 	}
 
 	unit.Spellbook = append(unit.Spellbook, spell)
@@ -651,7 +679,7 @@ func (spell *Spell) TravelTime() time.Duration {
 }
 
 // Returns true if the given mask matches the spell mask
-func (spell *Spell) Matches(mask int64) bool {
+func (spell *Spell) Matches(mask uint64) bool {
 	return spell.ClassSpellMask&mask > 0
 }
 
