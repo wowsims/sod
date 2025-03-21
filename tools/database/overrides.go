@@ -96,7 +96,7 @@ var ItemOverrides = []*proto.UIItem{
 	// TODO: Remove after it's added normally.
 	{
 		Id:              240849,
-		Name:            "Staff of the Glade (PH)",
+		Name:            "Staff of the Glade (Placeholder to test effect)",
 		Icon:            "inv_staff_26",
 		Type:            proto.ItemType_ItemTypeWeapon,
 		WeaponType:      proto.WeaponType_WeaponTypeStaff,

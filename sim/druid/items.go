@@ -453,6 +453,7 @@ func init() {
 
 	// https://www.wowhead.com/classic-ptr/item=240849/staff-of-the-glade
 	// Equip: Remaining in Cat Form for 5 seconds, causes your Energy Regeneration to increase by 100%, and the damage of your Ferocious Bite to increase by 100%.
+	// Equip: You may cast Rebirth and Innervate while in Cat Form.
 	core.NewItemEffect(StaffOfTheGlade, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 
@@ -490,15 +491,18 @@ func init() {
 		})
 
 		// https://www.wowhead.com/classic-ptr/spell=1231382/feral-dedication
+		// Also handle https://www.wowhead.com/classic-ptr/spell=1232896/staff-of-the-glade
 		druid.ItemSwap.RegisterProcWithSlots(StaffOfTheGlade, core.MakePermanent(druid.GetOrRegisterAura(core.Aura{
 			Label: "Feral Dedication (Passive)",
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				// May already be in cat form.
 				auraTimer.Activate(sim)
+				druid.Innervate.FormMask |= Cat
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				auraTimer.Deactivate(sim)
 				auraBuff.Deactivate(sim)
+				druid.Innervate.FormMask &= ^Cat
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				if spell == druid.CatForm.Spell {
