@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 // var ItemSetWaywatcherEclipse = core.NewItemSet(core.ItemSet{
@@ -175,6 +176,7 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 // 	},
 // })
 
+// https://www.wowhead.com/classic-ptr/spell=1226109/s03-item-scarlet-enclave-druid-feral-2p-bonus
 // You gain 2 Energy each time Rake or Rip deals periodic damage.
 func (druid *Druid) applyScarletEnclaveFeral2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Druid - Feral 2P Bonus"
@@ -182,9 +184,32 @@ func (druid *Druid) applyScarletEnclaveFeral2PBonus() {
 		return
 	}
 
-	druid.RegisterAura(core.Aura{
-		Label: label,
+	actionId := core.ActionID{SpellID: 1226113}
+	scentOfBloodMetrics := druid.NewEnergyMetrics(actionId)
+	ripOrRakeMask := ClassSpellMask_DruidRip | ClassSpellMask_DruidRake
+
+	// https://www.wowhead.com/classic-ptr/spell=1226113/scent-of-blood
+	// Not required at all to put this in a spell, but game does it like this, so why not?
+	scentOfBlood := druid.RegisterSpell(Any, core.SpellConfig{
+		ActionID:    actionId,
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.Unit.AddEnergy(sim, 2, scentOfBloodMetrics)
+		},
 	})
+
+	core.MakePermanent(druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 1226109},
+		Label:    label,
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ripOrRakeMask) && druid.HasEnergyBar() {
+				scentOfBlood.Cast(sim, &druid.Unit)
+			}
+		},
+	}))
 }
 
 // Multiplies the damage bonus from Tiger's Fury by 2.
@@ -195,10 +220,48 @@ func (druid *Druid) applyScarletEnclaveFeral4PBonus() {
 	}
 
 	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1226116},
+		Label:    label,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			// Q: wtf is this??
+			// A: We can't access and manipulate the bonus directly because it only exists in the gain/expire callbacks.
+			// Without hardcoding values it's probably the easiest to just double the change made by the original handler.
+			// For the rune version we need to calculate the mult needed to effectively double the originally applied mult.
+			// Hacky garbage, but probably better than having hardcoded values?
+
+			origGain := druid.TigersFuryAura.OnGain
+			origExpire := druid.TigersFuryAura.OnExpire
+
+			if druid.TigersFury.ActionID.SpellID == 417045 {
+				druid.TigersFuryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+					oldVal := druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical]
+					origGain(aura, sim)
+					origTfMult := druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] / oldVal
+					multToDoubleChange := (1 + (origTfMult-1)*2) / origTfMult // 1.3/1.15 for the default 15% on the rune
+					druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] *= multToDoubleChange
+				}
+				druid.TigersFuryAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+					oldVal := druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical]
+					origExpire(aura, sim)
+					origTfMult := oldVal / druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical]
+					multToDoubleChange := (1 + (origTfMult-1)*2) / origTfMult
+					druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= multToDoubleChange
+				}
+			} else {
+				repeatBonusHandler := func(aura *core.Aura, sim *core.Simulation) {
+					oldVal := druid.PseudoStats.BonusPhysicalDamage
+					origGain(aura, sim)
+					origBonus := druid.PseudoStats.BonusPhysicalDamage - oldVal
+					druid.PseudoStats.BonusPhysicalDamage += origBonus
+				}
+				druid.TigersFuryAura.OnGain = repeatBonusHandler
+				druid.TigersFuryAura.OnExpire = repeatBonusHandler
+			}
+		},
 	}))
 }
 
+// https://www.wowhead.com/classic-ptr/spell=1226119/s03-item-scarlet-enclave-druid-feral-6p-bonus
 // Your Finishing Moves have a 20% chance per combo point spent to trigger Clearcasting and extend the duration of your active Tiger's Fury by 6 sec.
 func (druid *Druid) applyScarletEnclaveFeral6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Druid - Feral 6P Bonus"
@@ -206,9 +269,34 @@ func (druid *Druid) applyScarletEnclaveFeral6PBonus() {
 		return
 	}
 
+	finisherMask := ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidRip | ClassSpellMask_DruidSavageRoar
+
+	// https://www.wowhead.com/classic-ptr/spell=1226118/s03-item-scarlet-enclave-druid-feral-6p-bonus-trigger
+	// Not needed but this way procs can be easily tracked.
+	triggerSpell := druid.RegisterSpell(Any, core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 1226118},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskEmpty,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			druid.ClearcastingAura.Activate(sim)
+			if druid.TigersFuryAura.IsActive() {
+				druid.TigersFuryAura.Refresh(sim)
+			}
+		},
+	})
+
 	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1226119},
+		Label:    label,
 	}))
+
+	druid.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
+		if spell.Matches(finisherMask) && sim.Proc(0.2*float64(comboPoints), label) {
+			triggerSpell.Cast(sim, &druid.Unit)
+		}
+	})
 }
 
 // var ItemSetWaywatcherGuardian = core.NewItemSet(core.ItemSet{

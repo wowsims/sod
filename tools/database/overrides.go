@@ -90,26 +90,6 @@ var ItemOverrides = []*proto.UIItem{
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82081, Name: "A Broken Ritual"}}},
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
 	}},
-
-	// https://www.wowhead.com/classic-ptr/item=240849/staff-of-the-glade
-	// Placeholder to test the effect.
-	// TODO: Remove after it's added normally.
-	{
-		Id:              240849,
-		Name:            "Staff of the Glade (Placeholder to test effect)",
-		Icon:            "inv_staff_26",
-		Type:            proto.ItemType_ItemTypeWeapon,
-		WeaponType:      proto.WeaponType_WeaponTypeStaff,
-		HandType:        proto.HandType_HandTypeTwoHand,
-		RequiresLevel:   60,
-		Stats:           []float64{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 700},
-		WeaponDamageMin: 159,
-		WeaponDamageMax: 235,
-		WeaponSpeed:     3.6,
-		Ilvl:            94,
-		Phase:           7,
-		Quality:         4,
-	},
 }
 
 // Keep these sorted by item ID.
