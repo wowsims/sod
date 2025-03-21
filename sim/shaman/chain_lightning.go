@@ -80,23 +80,20 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 		}
 	}
 
-	results := make([]*core.SpellResult, min(targetCount, shaman.Env.GetNumTargets()))
+	numTargets := int(min(targetCount, shaman.Env.GetNumTargets()))
+	overloadProcChance := 1.0 / float64(targetCount)
 
 	spell.ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		origMult := spell.GetDamageMultiplier()
-		for hitIndex := range results {
+		for i := 0; i < numTargets; i++ {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
-			results[hitIndex] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			target = sim.Environment.NextTargetUnit(target)
-			spell.ApplyMultiplicativeDamageBonus(bounceCoef)
-		}
-
-		for _, result := range results {
-			spell.DealDamage(sim, result)
-
-			if shaman.procOverload(sim, "Chain Lightning Overload", 1.0/3) {
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
+			if result.Landed() && shaman.procOverload(sim, "Chain Lightning Overload", overloadProcChance) {
 				shaman.ChainLightningOverload[rank].Cast(sim, result.Target)
 			}
+
+			target = sim.Environment.NextTargetUnit(target)
+			spell.ApplyMultiplicativeDamageBonus(bounceCoef)
 		}
 
 		spell.SetMultiplicativeDamageBonus(origMult)

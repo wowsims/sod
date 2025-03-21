@@ -102,19 +102,22 @@ func (shaman *Shaman) applyNaxxramasElemental6PBonus() {
 }
 
 var ItemSetTheEarthshatterersRage = core.NewItemSet(core.ItemSet{
-	Name: "The Earthshatterer's Ragee",
+	Name: "The Earthshatterer's Rage",
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.applyNaxxramasEnhancement2PBonus()
+			// shaman.applyNaxxramasEnhancement2PBonus()
+			shaman.applyScarletEnclaveEnhancement2PBonus()
 		},
 		4: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.applyNaxxramasEnhancement4PBonus()
+			// shaman.applyNaxxramasEnhancement4PBonus()
+			shaman.applyScarletEnclaveEnhancement4PBonus()
 		},
 		6: func(agent core.Agent) {
 			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.applyNaxxramasEnhancement6PBonus()
+			// shaman.applyNaxxramasEnhancement6PBonus()
+			shaman.applyScarletEnclaveEnhancement6PBonus()
 		},
 	},
 })

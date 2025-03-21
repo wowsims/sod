@@ -25,105 +25,155 @@ import (
 // 	},
 // })
 
-// TODO: When your Lava Burst strikes a target afflicted with your Flame Shock Rank 5 or Rank 6, it also deals one pulse of Flame Shock's damage.
+// When your Lava Burst strikes a target afflicted with your Flame Shock Rank 5 or Rank 6, it also deals one pulse of Flame Shock's damage.
 func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
+	if !shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst) {
+		return
+	}
+
 	label := "S03 - Item - Scarlet Enclave - Shaman - Elemental 2P Bonus"
 	if shaman.HasAura(label) {
 		return
 	}
 
-	dotSpells := make([]*core.Spell, FlameShockRanks+1)
+	flameShockCopy := shaman.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 1226972}.WithTag(1),
+		ClassSpellMask: ClassSpellMask_ShamanFlameShock,
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+		Flags:          core.SpellFlagTreatAsPeriodic | core.SpellFlagPureDot | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-	for rank := 1; rank <= FlameShockRanks; rank++ {
-		dotSpells[rank] = shaman.RegisterSpell(core.SpellConfig{
-			ActionID:       core.ActionID{SpellID: FlameShockSpellId[rank]}.WithTag(1),
-			ClassSpellMask: ClassSpellMask_ShamanFlameShock,
-			SpellSchool:    core.SpellSchoolFire,
-			DefenseType:    core.DefenseTypeMagic,
-			ProcMask:       core.ProcMaskSpellDamage,
-			Flags:          core.SpellFlagTreatAsPeriodic | core.SpellFlagPureDot | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "Flame Shock (2pT4)",
+			},
 
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
+			NumberOfTicks: 1,
+			TickLength:    0,
+		},
 
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},
-		})
-	}
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
 
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},
+	})
+
+	flameShockSpells := []*core.Spell{}
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Matches(ClassSpellMask_ShamanLavaBurst) {
-				return
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			if shaman.FlameShock[5] != nil {
+				flameShockSpells = append(flameShockSpells, shaman.FlameShock[5])
 			}
-
-			for rank := 1; rank <= FlameShockRanks; rank++ {
-				if dot := shaman.FlameShock[rank].Dot(result.Target); dot.IsActive() {
-					copiedDoTSpell := dotSpells[rank]
-					copiedDoTSpell.Cast(sim, result.Target)
-					copiedDoTSpell.CalcAndDealDamage(sim, result.Target, dot.SnapshotBaseDamage, copiedDoTSpell.OutcomeAlwaysHit)
-					break
+			if shaman.FlameShock[6] != nil {
+				flameShockSpells = append(flameShockSpells, shaman.FlameShock[6])
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_ShamanLavaBurst) && result.Landed() {
+				for _, spell := range flameShockSpells {
+					if dot := spell.Dot(result.Target); dot.IsActive() {
+						flameShockCopy.Cast(sim, result.Target)
+						flameShockCopy.CalcAndDealDamage(sim, result.Target, dot.SnapshotBaseDamage, flameShockCopy.Dot(result.Target).OutcomeTick)
+						break
+					}
 				}
 			}
 		},
 	}))
 }
 
-// Increases the chance to trigger your Rolling Thunder by an additional 10%.
+// Increases the chance to trigger your Overload by an additional 10%. Additionally, each time Lightning Bolt or Chain Lightning damages a target, your next Lava Burst deals 10% increased damage, stacking up to 5 times.
 func (shaman *Shaman) applyScarletEnclaveElemental4PBonus() {
-	if !shaman.HasRune(proto.ShamanRune_RuneBracersRollingThunder) {
-		return
-	}
-
 	label := "S03 - Item - Scarlet Enclave - Shaman - Elemental 4P Bonus"
 	if shaman.HasAura(label) {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.rollingThunderProcChance += 0.50
+	classMask := ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning
+
+	damageMod := shaman.AddDynamicMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanLavaBurst,
+		Kind:      core.SpellMod_DamageDone_Flat,
+	})
+
+	buffAura := shaman.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaBurst)},
+		Label:     label + " Proc", // TODO: Find real spell
+		MaxStacks: 5,
+		Duration:  time.Second * 10, // TODO: Find real duration
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Deactivate()
+		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			damageMod.UpdateIntValue(10 * int64(newStacks))
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Matches(ClassSpellMask_ShamanLavaBurst) {
+				aura.Deactivate(sim)
+			}
 		},
 	})
+
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
+		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.overloadProcChance += 0.10
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(classMask) && result.Landed() {
+				buffAura.Activate(sim)
+				buffAura.AddStack(sim)
+			}
+		},
+	}))
 }
 
-// Increases the chance to trigger your Overload by an additional 15%.
+// When your Chain Lightning damages fewer than 3 targets, it deals 35% increased damage for each target less than 3.
 func (shaman *Shaman) applyScarletEnclaveElemental6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Shaman - Elemental 6P Bonus"
 	if shaman.HasAura(label) {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	numTargets := shaman.Env.GetNumTargets()
+
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.overloadProcChance += 0.40
-		},
+	})).AttachSpellMod(core.SpellModConfig{
+		ClassMask:  ClassSpellMask_ShamanChainLightning,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 1 + (0.35 * float64(3-numTargets)),
 	})
 }
 
-var ItemSetWIPScarletCrusadeEnh = core.NewItemSet(core.ItemSet{
-	Name: "The Earthshatterer's Rage",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.applyScarletEnclaveEnhancement2PBonus()
-		},
-		4: func(agent core.Agent) {
-			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.applyScarletEnclaveEnhancement4PBonus()
-		},
-		6: func(agent core.Agent) {
-			shaman := agent.(ShamanAgent).GetShaman()
-			shaman.applyScarletEnclaveEnhancement6PBonus()
-		},
-	},
-})
+// var ItemSetWIPScarletCrusadeEnh = core.NewItemSet(core.ItemSet{
+// 	Name: "WIPScarletCrusadeEnh",
+// 	Bonuses: map[int32]core.ApplyEffect{
+// 		2: func(agent core.Agent) {
+// 			shaman := agent.(ShamanAgent).GetShaman()
+// 			shaman.applyScarletEnclaveEnhancement2PBonus()
+// 		},
+// 		4: func(agent core.Agent) {
+// 			shaman := agent.(ShamanAgent).GetShaman()
+// 			shaman.applyScarletEnclaveEnhancement4PBonus()
+// 		},
+// 		6: func(agent core.Agent) {
+// 			shaman := agent.(ShamanAgent).GetShaman()
+// 			shaman.applyScarletEnclaveEnhancement6PBonus()
+// 		},
+// 	},
+// })
 
-// Lava Lash and Stormstrike now have a 100% chance to add a charge to your Lightning Shield. If it exceeds 9 charges, Lightning Shield will immediately deal damage to your target instead of adding a charge.
+// While Static Shock is active, Lava Lash, Lava Burst, and Stormstrike have a 100% chance to add charges to your Lightning Shield.
+// While dual-wielding, you will gain 1 charge, and while using a two-handed weapon you will gain 2 charges.
+// If charges exceed 9, Lightning Shield will immediately deal damage to your target instead of adding charges.
 func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
-	if !shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock) || (!shaman.HasRune(proto.ShamanRune_RuneHandsLavaLash) && !shaman.Talents.Stormstrike) {
+	if !shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock) {
 		return
 	}
 
@@ -138,17 +188,18 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(classMask) && shaman.ActiveShield != nil && shaman.ActiveShield.Matches(ClassSpellMask_ShamanLightningShield) {
-				numCharges := 1
-				if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-					numCharges++
+				atMaxStacks := shaman.ActiveShieldAura.GetStacks() == 9
+
+				shaman.ActiveShieldAura.AddStack(sim)
+				if atMaxStacks {
+					shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
 				}
 
-				for i := 0; i < numCharges; i++ {
-					if shaman.ActiveShieldAura.GetStacks() == 9 {
+				if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+					shaman.ActiveShieldAura.AddStack(sim)
+					if atMaxStacks {
 						shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
 					}
-
-					shaman.ActiveShieldAura.AddStack(sim)
 				}
 			}
 		},
@@ -179,7 +230,7 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement4PBonus() {
 	})
 }
 
-// Maelstrom Weapon can now stack up to 10 charges. If you have 10 charges when casting an affected spell, all charges will be used and the spell will be instantly cast twice.
+// Maelstrom Weapon can now stack up to 10 charges and affected spells gain 10% increased damage per stack. If you have 10 charges when casting an affected spell, all charges will be used and the spell will be instantly cast twice.
 func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 	if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
 		return
@@ -193,12 +244,6 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 	twoHandedBonusAura := shaman.RegisterAura(core.Aura{
 		Label:    label + " - 2h maelstrom bonus",
 		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.maelstromWeaponStacksPerProc++
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.maelstromWeaponStacksPerProc--
-		},
 	})
 
 	core.MakePermanent(twoHandedBonusAura)
