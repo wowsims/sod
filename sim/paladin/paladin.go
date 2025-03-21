@@ -41,7 +41,7 @@ const (
 	ClassSpellMask_PaladinJudgementOfTheCrusader
 
 	ClassSpellMask_PaladinDivineProtection
-	ClassSpellMask_PaladinavengingWrath
+	ClassSpellMask_PaladinAvengingWrath
 
 	ClassSpellMask_PaladinAll = 1<<iota - 1
 
@@ -81,18 +81,19 @@ type Paladin struct {
 	holyShockCooldown *core.Cooldown
 	exorcismCooldown  *core.Cooldown
 
-	avengingWrath    *core.Spell
-	crusaderStrike   *core.Spell
-	divineStorm      *core.Spell
-	exorcism         []*core.Spell
-	judgement        *core.Spell
-	layOnHands       *core.Spell
-	rv               *core.Spell
-	holyShieldAura   [3]*core.Aura
-	holyShieldProc   [3]*core.Spell
-	redoubtAura      *core.Aura
-	holyWrath        []*core.Spell
-	divineProtection *core.Spell
+	avengingWrath     *core.Spell
+	avengingWrathAura *core.Aura
+	crusaderStrike    *core.Spell
+	divineStorm       *core.Spell
+	exorcism          []*core.Spell
+	judgement         *core.Spell
+	layOnHands        *core.Spell
+	rv                *core.Spell
+	holyShieldAura    [3]*core.Aura
+	holyShieldProc    [3]*core.Spell
+	redoubtAura       *core.Aura
+	holyWrath         []*core.Spell
+	divineProtection  *core.Spell
 
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
@@ -100,9 +101,10 @@ type Paladin struct {
 	sealOfMartyrdom     *core.Spell
 
 	// Set bonus specific
-	holyPowerAura         *core.Aura
-	onHolyPowerSpent      func(sim *core.Simulation, holyPower int32)
-	holyShieldExtraDamage func(sim *core.Simulation, paladin *Paladin) float64
+	holyPowerAura                  *core.Aura
+	onHolyPowerSpent               func(sim *core.Simulation, holyPower int32)
+	holyShieldExtraDamage          func(sim *core.Simulation, paladin *Paladin) float64
+	bypassAvengingWrathForbearance bool
 
 	enableMultiJudge    bool
 	lingerDuration      time.Duration
