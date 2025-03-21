@@ -8,23 +8,24 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-var ItemSetDawnstalkerProwess = core.NewItemSet(core.ItemSet{
-	Name: "Dawnstalker Prowess",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			hunter.applyScarletEnclaveMelee2PBonus()
-		},
-		4: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			hunter.applyScarletEnclaveMelee4PBonus()
-		},
-		6: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			hunter.applyScarletEnclaveMelee6PBonus()
-		},
-	},
-})
+// TODO: UNCOMMENT WHEN TIER SETS ARE ADDED TO THE SIM
+// var ItemSetDawnstalkerProwess = core.NewItemSet(core.ItemSet{
+// 	Name: "Dawnstalker Prowess",
+// 	Bonuses: map[int32]core.ApplyEffect{
+// 		2: func(agent core.Agent) {
+// 			hunter := agent.(HunterAgent).GetHunter()
+// 			hunter.applyScarletEnclaveMelee2PBonus()
+// 		},
+// 		4: func(agent core.Agent) {
+// 			hunter := agent.(HunterAgent).GetHunter()
+// 			hunter.applyScarletEnclaveMelee4PBonus()
+// 		},
+// 		6: func(agent core.Agent) {
+// 			hunter := agent.(HunterAgent).GetHunter()
+// 			hunter.applyScarletEnclaveMelee6PBonus()
+// 		},
+// 	},
+// })
 
 // Your Strikes and Mongoose Bite deal 20% increased damage to targets afflicted with your Serpent Sting or Wyvern Strike.
 func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
@@ -96,23 +97,24 @@ func (hunter *Hunter) applyScarletEnclaveMelee6PBonus() {
 	hunter.BonusRaptorFuryDamageMultiplier = 0.10
 }
 
-var ItemSetDawnstalkerArmor = core.NewItemSet(core.ItemSet{
-	Name: "Dawnstalker Armor",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			hunter.applyScarletEnclaveRanged2PBonus()
-		},
-		4: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			hunter.applyScarletEnclaveRanged4PBonus()
-		},
-		6: func(agent core.Agent) {
-			hunter := agent.(HunterAgent).GetHunter()
-			hunter.applyScarletEnclaveRanged6PBonus()
-		},
-	},
-})
+// TODO: UNCOMMENT WHEN TIER SETS ARE ADDED TO THE SIM
+// var ItemSetDawnstalkerArmor = core.NewItemSet(core.ItemSet{
+// 	Name: "Dawnstalker Armor",
+// 	Bonuses: map[int32]core.ApplyEffect{
+// 		2: func(agent core.Agent) {
+// 			hunter := agent.(HunterAgent).GetHunter()
+// 			hunter.applyScarletEnclaveRanged2PBonus()
+// 		},
+// 		4: func(agent core.Agent) {
+// 			hunter := agent.(HunterAgent).GetHunter()
+// 			hunter.applyScarletEnclaveRanged4PBonus()
+// 		},
+// 		6: func(agent core.Agent) {
+// 			hunter := agent.(HunterAgent).GetHunter()
+// 			hunter.applyScarletEnclaveRanged6PBonus()
+// 		},
+// 	},
+// })
 
 // Your Shots deal 20% increased damage to targets afflicted with your Serpent Sting.
 func (hunter *Hunter) applyScarletEnclaveRanged2PBonus() {
