@@ -206,7 +206,8 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
 	}))
 }
 
-// Reduces the cooldown on your Fire Nova Totem by 60% and your Fire Nova Totem now activates instantly on cast.
+// Reduces the cooldown on your Fire Nova Totem by 50%, increases its damage by 150%, and reduces its mana cost by 50%.
+// Additionally, your Fire Nova Totem now activates instantly on cast.
 func (shaman *Shaman) applyScarletEnclaveEnhancement4PBonus() {
 	if shaman.HasRune(proto.ShamanRune_RuneWaistFireNova) {
 		return
@@ -230,7 +231,9 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement4PBonus() {
 	})
 }
 
-// Maelstrom Weapon can now stack up to 10 charges and affected spells gain 10% increased damage per stack. If you have 10 charges when casting an affected spell, all charges will be used and the spell will be instantly cast twice.
+// Maelstrom Weapon can now stack up to 10 charges. You will also gain 2 charges at a time while wielding a two-handed weapon.
+// Any excess charges will increase damage or healing dealt by the affected spell by 10% per excess charge.
+// If you have 10 charges when casting an affected spell, all charges will be used and the spell will be instantly cast twice for 150% of normal damage or healing.
 func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 	if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
 		return
@@ -244,6 +247,12 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 	twoHandedBonusAura := shaman.RegisterAura(core.Aura{
 		Label:    label + " - 2h maelstrom bonus",
 		Duration: core.NeverExpires,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.maelstromWeaponProcsPerStack += 1
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.maelstromWeaponProcsPerStack -= 1
+		},
 	})
 
 	core.MakePermanent(twoHandedBonusAura)
@@ -347,18 +356,22 @@ func (shaman *Shaman) applyScarletEnclaveTank4PBonus() {
 		return
 	}
 
-	healthMetrics := shaman.NewHealthMetrics(core.ActionID{SpellID: int32(proto.ShamanRune_RuneLegsEarthShield)}) // TODO: Spell ID
-	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_ShamanLightningShieldProc) {
-				shaman.GainHealth(sim, result.Damage, healthMetrics)
-			}
+	healthMetrics := shaman.NewHealthMetrics(core.ActionID{SpellID: 1227160})
+
+	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		Name:           label,
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: ClassSpellMask_ShamanLightningShieldProc,
+		Outcome:        core.OutcomeLanded,
+		ICD:            time.Second * 3,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			shaman.GainHealth(sim, result.Damage, healthMetrics)
 		},
-	}))
+	})
 }
 
-// Your Shield Mastery stacks also reduce the cast time of your Lava Burst by 20% per stack. Lava Burst no longer consumes Maelstrom Weapon charges.
+// Your Shield Mastery stacks also reduce the cast time of your Lava Burst by 20% per stack.
+// Lava Burst no longer consumes Maelstrom Weapon charges.
 func (shaman *Shaman) applyScarletEnclaveTank6PBonus() {
 	if !shaman.HasRune(proto.ShamanRune_RuneChestShieldMastery) || !shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst) {
 		return

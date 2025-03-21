@@ -445,6 +445,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 
 	shaman.maelstromWeaponPPMM = shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
+	shaman.maelstromWeaponProcsPerStack += 1
 
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:              "Maelstrom Weapon Trigger",
@@ -455,10 +456,8 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		CanProcFromProcs:  true,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
-				shaman.MaelstromWeaponAura.Activate(sim)
-				shaman.MaelstromWeaponAura.AddStack(sim)
-
-				if shaman.MainHand().HandType == proto.HandType_HandTypeMainHand {
+				for i := 0; i < shaman.maelstromWeaponProcsPerStack; i++ {
+					shaman.MaelstromWeaponAura.Activate(sim)
 					shaman.MaelstromWeaponAura.AddStack(sim)
 				}
 			}
