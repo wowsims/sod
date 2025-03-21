@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/core"
-	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -462,6 +461,7 @@ func init() {
 	// https://www.wowhead.com/classic-ptr/item=240849/staff-of-the-glade
 	// Equip: Remaining in Cat Form for 5 seconds, causes your Energy Regeneration to increase by 100%, and the damage of your Ferocious Bite to increase by 100%.
 	// Equip: You may cast Rebirth and Innervate while in Cat Form.
+	/* TODO: Item not yet available in sim.
 	core.NewItemEffect(StaffOfTheGlade, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 
@@ -521,7 +521,7 @@ func init() {
 				}
 			},
 		})), []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
-	})
+	}) */
 
 	core.AddEffectsToTest = true
 }
