@@ -223,7 +223,15 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement4PBonus() {
 	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanFireNovaTotem,
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
-		IntValue:  -60,
+		IntValue:  -50,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanFireNovaTotem,
+		Kind:      core.SpellMod_DamageDone_Flat,
+		IntValue:  150,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_ShamanFireNovaTotem,
+		Kind:      core.SpellMod_PowerCost_Pct,
+		IntValue:  -50,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanFireNovaTotem,
 		Kind:      core.SpellMod_DotTickLength_Flat,
