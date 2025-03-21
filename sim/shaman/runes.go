@@ -384,6 +384,9 @@ func (shaman *Shaman) applyStaticShocks() {
 	}))
 }
 
+const MaelstromWeaponBaseStacks = 5
+const MaelstromWeaponSplits = 11 // 0-5 stacks + 5 more if using 6pT3.5
+
 func (shaman *Shaman) applyMaelstromWeapon() {
 	if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
 		return
@@ -399,28 +402,44 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		ppm += 5
 	}
 
-	var affectedSpells []*core.Spell
-	shaman.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.Flags.Matches(SpellFlagMaelstrom) {
-			affectedSpells = append(affectedSpells, spell)
-		}
+	shaman.MaelstromWeaponClassMask = ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning | ClassSpellMask_ShamanLesserHealingWave | ClassSpellMask_ShamanLavaBurst
+
+	castTimeMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_CastTime_Pct,
+		ClassMask: shaman.MaelstromWeaponClassMask,
 	})
+
+	costMod := shaman.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_PowerCost_Pct,
+		ClassMask: shaman.MaelstromWeaponClassMask,
+	})
+
+	shaman.MaelstromWeaponSpellMods = []*core.SpellMod{castTimeMod, costMod}
 
 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
 		Label:     "MaelstromWeapon Proc",
 		ActionID:  core.ActionID{SpellID: 408505},
 		Duration:  time.Second * 30,
-		MaxStacks: 5,
+		MaxStacks: MaelstromWeaponBaseStacks,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			castTimeMod.Activate()
+			costMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			castTimeMod.Deactivate()
+			costMod.Deactivate()
+		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			multDiff := 20 * (newStacks - oldStacks)
-			for _, spell := range affectedSpells {
-				spell.CastTimeMultiplier -= float64(multDiff) / 100
-				spell.Cost.Multiplier -= multDiff
+			if newStacks > MaelstromWeaponBaseStacks {
+				return
 			}
+
+			castTimeMod.UpdateFloatValue(-0.20 * float64(newStacks))
+			costMod.UpdateIntValue(-20 * int64(newStacks))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Flags.Matches(SpellFlagMaelstrom) {
-				shaman.MaelstromWeaponAura.Deactivate(sim)
+			if spell.Matches(shaman.MaelstromWeaponClassMask) {
+				aura.RemoveStacks(sim, min(MaelstromWeaponBaseStacks, aura.GetStacks()))
 			}
 		},
 	})

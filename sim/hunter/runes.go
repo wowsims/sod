@@ -348,6 +348,7 @@ func (hunter *Hunter) applyCobraSlayer() {
 	}
 
 	hunter.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: int32(proto.HunterRune_RuneHandsCobraSlayer)},
 		Label:     "Cobra Slayer",
 		Duration:  core.NeverExpires,
 		MaxStacks: 20,

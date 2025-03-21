@@ -23,6 +23,8 @@ func (hunter *Hunter) registerCarveSpell() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
+		MaxRange: core.MaxMeleeAttackRange,
+
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.04,
 		},
@@ -34,9 +36,6 @@ func (hunter *Hunter) registerCarveSpell() {
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 6,
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget <= core.MaxMeleeAttackDistance
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {

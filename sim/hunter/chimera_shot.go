@@ -18,11 +18,14 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 		ClassSpellMask: ClassSpellMask_HunterChimeraShot,
 		ActionID:       core.ActionID{SpellID: 409433},
 		SpellSchool:    core.SpellSchoolNature,
+		CastType:       proto.CastType_CastTypeRanged,
 		DefenseType:    core.DefenseTypeRanged,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
-		CastType:       proto.CastType_CastTypeRanged,
-		MissileSpeed:   24,
+
+		MinRange:     core.MinRangedAttackRange,
+		MaxRange:     core.MaxRangedAttackRange,
+		MissileSpeed: 24,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.06,
@@ -36,9 +39,6 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 				Timer:    hunter.NewTimer(),
 				Duration: time.Second * 6,
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
 		CritDamageBonus: hunter.mortalShots(),

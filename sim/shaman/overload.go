@@ -6,8 +6,8 @@ import (
 )
 
 // This could be value or bitflag if we ended up needing multiple flags at the same time.
-// 1 to 5 are used by MaelstromWeapon Stacks
-const CastTagOverload = 6
+// 1 to 10 are used by MaelstromWeapon Stacks
+const CastTagOverload = 11
 
 func (shaman *Shaman) applyOverload() {
 	if !shaman.HasRune(proto.ShamanRune_RuneChestOverload) {
@@ -18,6 +18,10 @@ func (shaman *Shaman) applyOverload() {
 }
 
 func (shaman *Shaman) procOverload(sim *core.Simulation, label string, multiplier float64) bool {
+	if shaman.overloadProcChance == 0 {
+		return false
+	}
+
 	return sim.Proc(shaman.overloadProcChance*multiplier, label)
 }
 

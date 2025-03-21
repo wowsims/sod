@@ -17,13 +17,16 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 		ClassSpellMask: ClassSpellMask_HunterAimedShot,
 		ActionID:       core.ActionID{SpellID: spellId},
 		SpellSchool:    core.SpellSchoolPhysical,
+		CastType:       proto.CastType_CastTypeRanged,
 		DefenseType:    core.DefenseTypeRanged,
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		CastType:       proto.CastType_CastTypeRanged,
-		Rank:           rank,
-		RequiredLevel:  level,
-		MissileSpeed:   24,
+
+		Rank:          rank,
+		RequiredLevel: level,
+		MinRange:      core.MinRangedAttackRange,
+		MaxRange:      core.MaxRangedAttackRange,
+		MissileSpeed:  24,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -48,9 +51,6 @@ func (hunter *Hunter) getAimedShotConfig(rank int, timer *core.Timer) core.Spell
 				}
 				return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed())
 			},
-		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return hunter.DistanceFromTarget >= core.MinRangedAttackDistance
 		},
 
 		CritDamageBonus: hunter.mortalShots(),

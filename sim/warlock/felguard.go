@@ -31,6 +31,7 @@ func (warlock *Warlock) makeFelguard() *WarlockPet {
 				BaseDamageMin: 24,
 				BaseDamageMax: 40,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -51,6 +52,7 @@ func (warlock *Warlock) makeFelguard() *WarlockPet {
 				BaseDamageMin: 24,
 				BaseDamageMax: 40,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -71,6 +73,7 @@ func (warlock *Warlock) makeFelguard() *WarlockPet {
 				BaseDamageMin: 67,
 				BaseDamageMax: 101,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}
@@ -91,6 +94,7 @@ func (warlock *Warlock) makeFelguard() *WarlockPet {
 				BaseDamageMin: 87,
 				BaseDamageMax: 128,
 				SwingSpeed:    2,
+				MaxRange:      core.MaxMeleeAttackRange,
 			},
 			AutoSwingMelee: true,
 		}

@@ -94,7 +94,7 @@ func (shaman *Shaman) newChainLightningSpellConfig(rank int, cdTimer *core.Timer
 		for _, result := range results {
 			spell.DealDamage(sim, result)
 
-			if shaman.procOverload(sim, "Chain Lightning Overload", 1/3) {
+			if shaman.procOverload(sim, "Chain Lightning Overload", 1.0/3) {
 				shaman.ChainLightningOverload[rank].Cast(sim, result.Target)
 			}
 		}

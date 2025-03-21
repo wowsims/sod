@@ -91,6 +91,7 @@ func (priest *Priest) NewHomunculus(idx int32, npcID int32) *Homunculus {
 			BaseDamageMin: baseDamageMin,
 			BaseDamageMax: baseDamageMax,
 			SwingSpeed:    2,
+			MaxRange:      core.MaxMeleeAttackRange,
 		},
 		AutoSwingMelee: true,
 	})

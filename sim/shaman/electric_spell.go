@@ -24,7 +24,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 
 	flags := core.SpellFlagNone
 	if !isOverload {
-		flags = core.SpellFlagAPL | SpellFlagMaelstrom
+		flags = core.SpellFlagAPL
 	}
 
 	spell := core.SpellConfig{
@@ -33,7 +33,7 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 		DefenseType:  core.DefenseTypeMagic,
 		ProcMask:     core.ProcMaskSpellDamage,
 		Flags:        flags,
-		MetricSplits: 6,
+		MetricSplits: MaelstromWeaponSplits,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   baseCost,
@@ -50,13 +50,14 @@ func (shaman *Shaman) newElectricSpellConfig(actionID core.ActionID, baseCost fl
 				if hasMaelstromWeaponRune {
 					stacks := shaman.MaelstromWeaponAura.GetStacks()
 					spell.SetMetricsSplit(stacks)
-
 					if stacks > 0 {
 						return
 					}
 				}
 
-				shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+				if castTime > 0 {
+					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+				}
 			},
 		},
 

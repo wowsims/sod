@@ -161,6 +161,7 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 			SwingSpeed:        1.5,
 			AttackPowerPerDPS: 14.0 / 6.0, // Observed 6 times stronger AP scaling then expected
 			SpellSchool:       core.SpellSchoolShadow,
+			MaxRange:          core.MaxMeleeAttackRange,
 		},
 		AutoSwingMelee: true,
 	})

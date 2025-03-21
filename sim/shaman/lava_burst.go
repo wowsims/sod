@@ -32,7 +32,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 
 	var flags core.SpellFlag
 	if !isOverload {
-		flags |= core.SpellFlagAPL | SpellFlagMaelstrom
+		flags |= core.SpellFlagAPL
 	}
 
 	spell := core.SpellConfig{
@@ -43,7 +43,7 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          flags,
 		MissileSpeed:   20,
-		MetricSplits:   6,
+		MetricSplits:   MaelstromWeaponSplits,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -63,16 +63,18 @@ func (shaman *Shaman) newLavaBurstSpellConfig(isOverload bool) core.SpellConfig 
 			},
 			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
 				castTime := shaman.ApplyCastSpeedForSpell(cast.CastTime, spell)
-				if hasMaelstromWeaponRune {
+				// The Enhancement 6pT3.5 makes Lava Burst not consume Maelstrom Weapon, so check that here
+				if hasMaelstromWeaponRune && shaman.MaelstromWeaponClassMask&ClassSpellMask_ShamanLavaBurst > 0 {
 					stacks := shaman.MaelstromWeaponAura.GetStacks()
 					spell.SetMetricsSplit(stacks)
-
 					if stacks > 0 {
 						return
 					}
 				}
 
-				shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+				if castTime > 0 {
+					shaman.AutoAttacks.StopMeleeUntil(sim, sim.CurrentTime+castTime, false)
+				}
 			},
 		},
 
