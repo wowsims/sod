@@ -1,8 +1,9 @@
 package paladin
 
 import (
-	"github.com/wowsims/sod/sim/core"
 	"time"
+
+	"github.com/wowsims/sod/sim/core"
 )
 
 func (paladin *Paladin) registerForbearance() {
@@ -18,11 +19,13 @@ func (paladin *Paladin) registerForbearance() {
 	paladin.OnSpellRegistered(func(spell *core.Spell) {
 
 		if spell.Flags.Matches(SpellFlag_Forbearance) {
-			oldEffect := spell.ApplyEffects
+			if !paladin.bypassAvengingWrathForbearance || spell.ClassSpellMask != ClassSpellMask_PaladinAvengingWrath {
+				oldEffect := spell.ApplyEffects
 
-			spell.ApplyEffects = func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
-				oldEffect(sim, unit, spell)
-				forbearanceAura.Activate(sim)
+				spell.ApplyEffects = func(sim *core.Simulation, unit *core.Unit, spell *core.Spell) {
+					oldEffect(sim, unit, spell)
+					forbearanceAura.Activate(sim)
+				}
 			}
 
 			if spell.ExtraCastCondition != nil {
