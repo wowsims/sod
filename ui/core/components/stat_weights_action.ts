@@ -6,6 +6,7 @@ import { IndividualSimUI } from '../individual_sim_ui.js';
 import { Player } from '../player.js';
 import { ProgressMetrics, StatWeightsResult, StatWeightValues } from '../proto/api.js';
 import { PseudoStat, Stat, UnitStats } from '../proto/common.js';
+import { SavedStatWeightSettings } from '../proto/ui';
 import { getClassStatName } from '../proto_utils/names.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { RequestTypes } from '../sim_signal_manager';
@@ -50,6 +51,8 @@ class EpWeightsMenu extends BaseModal {
 	private readonly table: HTMLElement;
 	private readonly tableBody: HTMLElement;
 	private readonly resultsViewer: ResultsViewer;
+	private readonly swSettingsStorageKey: string;
+	private readonly swSettings: SavedStatWeightSettings;
 
 	private statsType: string;
 	private epStats: Array<Stat>;
@@ -64,6 +67,10 @@ class EpWeightsMenu extends BaseModal {
 		this.epStats = epStats;
 		this.epPseudoStats = epPseudoStats;
 		this.epReferenceStat = epReferenceStat;
+
+		this.swSettingsStorageKey = this.simUI.getStorageKey('__statweight_settings__');
+		const storageValue = window.localStorage.getItem(this.swSettingsStorageKey);
+		this.swSettings = storageValue ? SavedStatWeightSettings.fromJsonString(storageValue) : SavedStatWeightSettings.create();
 
 		this.header?.insertAdjacentHTML('afterbegin', '<h5 class="modal-title">Calculate Stat Weights</h5>');
 		this.body.innerHTML = `
@@ -102,6 +109,7 @@ class EpWeightsMenu extends BaseModal {
 					<thead>
 						<tr>
 							<th>Stat</th>
+							<th>Update</th>
 							<th class="damage-metrics type-weight">
 								<span>DPS Weight</span>
 								<a href="javascript:void(0)" role="button" class="col-action">
@@ -183,6 +191,7 @@ class EpWeightsMenu extends BaseModal {
 						</tr>
 						<tr class="ep-ratios">
 							<td>EP Ratio</td>
+							<td></td>
 							<td class="damage-metrics type-ratio type-weight">
 							</td>
 							<td class="damage-metrics type-ratio type-ep">
@@ -338,10 +347,13 @@ class EpWeightsMenu extends BaseModal {
 				}
 			});
 
+			const epStatsToCalc = this.epStats.filter(s => !this.isStatExcludedFromCalc(s));
+			const epPseudoStatsToCalc = this.epPseudoStats.filter(ps => !this.isPseudostatExcludedFromCalc(ps));
+
 			const result = await this.simUI.player.computeStatWeights(
 				TypedEvent.nextEventID(),
-				this.epStats,
-				this.epPseudoStats,
+				epStatsToCalc,
+				epPseudoStatsToCalc,
 				this.epReferenceStat,
 				(progress: ProgressMetrics) => {
 					this.setSimProgress(progress);
@@ -390,7 +402,17 @@ class EpWeightsMenu extends BaseModal {
 			});
 
 			button.addEventListener('click', _event => {
-				this.simUI.player.setEpWeights(TypedEvent.nextEventID(), Stats.fromProto(weightsFunc()));
+				const newWeights = weightsFunc();
+				if (newWeights && this.swSettings.excludedFromCalc) {
+					const oldWeights = this.simUI.player.getEpWeights();
+					for (const stat of this.swSettings.excludedFromCalc.stats) {
+						newWeights.stats[stat] = oldWeights.getStat(stat);
+					}
+					for (const pseudoStat of this.swSettings.excludedFromCalc.pseudoStats) {
+						newWeights.pseudoStats[pseudoStat] = oldWeights.getPseudoStat(pseudoStat);
+					}
+				}
+				this.simUI.player.setEpWeights(TypedEvent.nextEventID(), Stats.fromProto(newWeights));
 				this.updateTable();
 			});
 		};
@@ -548,6 +570,59 @@ class EpWeightsMenu extends BaseModal {
 		});
 	}
 
+	/**
+	 * Check if a specific stat is included in the EP stats for this spec.
+	 * @param stat
+	 * @returns
+	 */
+	private isEpStat(stat: UnitStat) {
+		if (stat.isStat()) return this.epStats.includes(stat.getStat());
+		return this.epPseudoStats.includes(stat.getPseudoStat());
+	}
+
+	/**
+	 * Check if a stat should be excluded from weight calculation.
+	 * @param stat
+	 * @param pseudoStat
+	 * @returns
+	 */
+	private isStatExcludedFromCalc(stat: Stat) {
+		return this.swSettings.excludedFromCalc && this.swSettings.excludedFromCalc.stats.includes(stat);
+	}
+
+	/**
+	 * Check if a pseudostat should be excluded from weight calculation.
+	 * @param stat
+	 * @param pseudoStat
+	 * @returns
+	 */
+	private isPseudostatExcludedFromCalc(pseudoStat: PseudoStat) {
+		return this.swSettings.excludedFromCalc && this.swSettings.excludedFromCalc.pseudoStats.includes(pseudoStat);
+	}
+
+	/**
+	 * Set whether a stat is excluded from calculation.
+	 * @param stat
+	 * @param exclude
+	 */
+	private setStatExcluded(stat: UnitStat, exclude: boolean) {
+		const updateStatEntry = <T extends Stat | PseudoStat>(s: T, target: T[]) => {
+			const currentIdx = target.indexOf(s);
+			if (exclude) {
+				if (currentIdx === -1) target.push(s);
+			} else if (currentIdx !== -1) {
+				target.splice(currentIdx, 1);
+			}
+		};
+		if (!this.swSettings.excludedFromCalc) this.swSettings.excludedFromCalc = UnitStats.create();
+		if (stat.isStat()) {
+			updateStatEntry(stat.getStat(), this.swSettings.excludedFromCalc.stats);
+		} else {
+			updateStatEntry(stat.getPseudoStat(), this.swSettings.excludedFromCalc.pseudoStats);
+		}
+		window.localStorage.setItem(this.swSettingsStorageKey, JSON.stringify(this.swSettings).toString());
+	}
+
 	private setSimProgress(progress: ProgressMetrics) {
 		this.resultsViewer.setContent(`
 			<div class="results-sim">
@@ -582,6 +657,7 @@ class EpWeightsMenu extends BaseModal {
 		const rowTotalEp = scaledEpValue(stat, epRatios, result);
 		row.innerHTML = `
 			<td>${stat.getName(this.simUI.player.getClass())}</td>
+			<td class="swcalc-include-toggle"></td>
 			${this.makeTableRowCells(stat, result?.dps, 'damage-metrics', rowTotalEp, epRatios[0])}
 			${this.makeTableRowCells(stat, result?.hps, 'healing-metrics', rowTotalEp, epRatios[1])}
 			${this.makeTableRowCells(stat, result?.tps, 'threat-metrics', rowTotalEp, epRatios[2])}
@@ -590,6 +666,20 @@ class EpWeightsMenu extends BaseModal {
 			${this.makeTableRowCells(stat, result?.pDeath, 'threat-metrics experimental', rowTotalEp, epRatios[5])}
 			<td class="current-ep"></td>
 		`;
+
+		const includeToggleCell = row.querySelector('.swcalc-include-toggle') as HTMLElement;
+		if (this.isEpStat(stat)) {
+			const cb = document.createElement('input');
+			cb.type = 'checkbox';
+			if (stat.isStat() && this.epReferenceStat == stat.getStat()) {
+				cb.checked = true;
+				cb.disabled = true;
+			} else {
+				cb.checked = !(stat.isStat() ? this.isStatExcludedFromCalc(stat.getStat()) : this.isPseudostatExcludedFromCalc(stat.getPseudoStat()));
+				cb.addEventListener('change', () => this.setStatExcluded(stat, !cb.checked));
+			}
+			includeToggleCell.appendChild(cb);
+		}
 
 		const currentEpCell = row.querySelector('.current-ep') as HTMLElement;
 		new NumberPicker(currentEpCell, this.simUI.player, {
@@ -643,8 +733,7 @@ class EpWeightsMenu extends BaseModal {
 		const epDelta = epTotal - epCurrent;
 
 		const epAvgElem = template.content.querySelector('.type-ep .results-avg') as HTMLElement;
-		if (epDelta.toFixed(2) == '0.00')
-			epAvgElem; // no-op
+		if (epDelta.toFixed(2) == '0.00') epAvgElem; // no-op
 		else if (epDelta > 0) epAvgElem.classList.add('positive');
 		else if (epDelta < 0) epAvgElem.classList.add('negative');
 
@@ -750,9 +839,9 @@ class EpWeightsMenu extends BaseModal {
 			return true;
 		} else {
 			return [
-				PseudoStat.PseudoStatMainHandDps, 
-				PseudoStat.PseudoStatOffHandDps, 
-				PseudoStat.PseudoStatRangedDps, 
+				PseudoStat.PseudoStatMainHandDps,
+				PseudoStat.PseudoStatOffHandDps,
+				PseudoStat.PseudoStatRangedDps,
 				PseudoStat.PseudoStatBonusPhysicalDamage,
 				PseudoStat.PseudoStatMeleeSpeedMultiplier,
 				PseudoStat.PseudoStatRangedSpeedMultiplier,
