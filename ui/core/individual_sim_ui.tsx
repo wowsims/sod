@@ -19,7 +19,7 @@ import { SimSettingCategories } from './constants/sim_settings';
 import * as Tooltips from './constants/tooltips';
 import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
-import { PresetBuild, PresetEncounter, PresetGear, PresetRotation, PresetSettings } from './preset_utils';
+import { PresetBuild, PresetGear, PresetRotation, PresetSettings } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
@@ -192,14 +192,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			simStatus: simLaunchStatuses[player.spec],
 			noticeText: (
 				<span>
-					Check out the{' '}
-					<a
-						href="https://docs.google.com/spreadsheets/d/e/2PACX-1vRYT-aWTwI2L0Gp323a62t2DCBnZ3Fhf93tsFmPo0se0gCTibP7M7Vq7E8nu732FUX-AUGA6VzgpfU-/pubhtml"
-						target="_blank"
-						rel="noreferrer">
-						WoWSims Phase 7 Sim DPS Spreadsheet
-					</a>{' '}
-					for up-to-date community builds!
+					We've begun working on Phase 8 changes! Because of this, some rune or other spell behavior may not be consistent with live servers due to
+					PTR changes.
 				</span>
 			),
 		});
