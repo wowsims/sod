@@ -44,13 +44,10 @@ func (mage *Mage) applyNaxxramasDamage2PBonus() {
 	})
 
 	mage.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1218700},
+		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			// var buffAuraPA *core.PendingAction
-
 			hot := mage.Evocation.SelfHot()
-			// oldOnGain := hot.OnGain
-
 			hot.OnTick = func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				// Tick every 4th tick, aka every 1s
 				if (hot.NumTicksRemaining(sim)+3)%4 == 0 {

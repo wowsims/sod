@@ -14,6 +14,7 @@ import {
 	Profession,
 	RaidBuffs,
 	SaygesFortune,
+	Spec,
 	SpellPowerBuff,
 	StrengthBuff,
 	TristateEffect,
@@ -109,26 +110,6 @@ export const TalentPresets = {
 export const DefaultTalents = TalentPresets[Phase.Phase4][0];
 
 ///////////////////////////////////////////////////////////////////////////
-//                                 Build Presets
-///////////////////////////////////////////////////////////////////////////
-
-export const PresetBuildPhase4 = PresetUtils.makePresetBuild('Phase 4', {
-	gear: GearPhase4,
-	talents: TalentsPhase4,
-	rotation: APLPhase4,
-});
-export const PresetBuildPhase5 = PresetUtils.makePresetBuild('Phase 5', {
-	gear: GearPhase5,
-	talents: TalentsPhase4,
-	rotation: APLPhase5,
-});
-export const PresetBuildPhase6 = PresetUtils.makePresetBuild('Phase 6', {
-	gear: GearPhase6,
-	talents: TalentsPhase4,
-	rotation: APLPhase6,
-});
-
-///////////////////////////////////////////////////////////////////////////
 //                                 Options
 ///////////////////////////////////////////////////////////////////////////
 
@@ -189,3 +170,23 @@ export const OtherDefaults = {
 	profession2: Profession.Alchemy,
 	profession1: Profession.Enchanting,
 };
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Build Presets
+///////////////////////////////////////////////////////////////////////////
+
+export const PresetBuildPhase4 = PresetUtils.makePresetBuild('Phase 4', {
+	gear: GearPhase4,
+	talents: TalentsPhase4,
+	rotation: APLPhase4,
+});
+export const PresetBuildPhase5 = PresetUtils.makePresetBuild('Phase 5', {
+	gear: GearPhase5,
+	talents: TalentsPhase4,
+	rotation: APLPhase5,
+});
+export const PresetBuildPhase6 = PresetUtils.makePresetBuild('Phase 6', {
+	gear: GearPhase6,
+	talents: TalentsPhase4,
+	rotation: APLPhase6,
+});
