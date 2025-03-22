@@ -77,8 +77,8 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 			if result.Landed() {
 				dot := spell.Dot(target)
 
-				if hasInvocationRune && dot.IsActive() {
-					warlock.InvocationRefresh(sim, dot)
+				if hasInvocationRune {
+					warlock.InvocationRefresh(sim, dot, target)
 				}
 
 				dot.Apply(sim)
