@@ -26,6 +26,7 @@ func TestArcane(t *testing.T) {
 			Buffs:       core.FullBuffsPhase1,
 			Consumes:    Phase1Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -43,6 +44,7 @@ func TestArcane(t *testing.T) {
 			Buffs:       core.FullBuffsPhase2,
 			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -61,6 +63,7 @@ func TestArcane(t *testing.T) {
 			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -79,6 +82,7 @@ func TestArcane(t *testing.T) {
 			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -101,6 +105,7 @@ func TestFire(t *testing.T) {
 			Buffs:       core.FullBuffsPhase1,
 			Consumes:    Phase1Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -118,6 +123,7 @@ func TestFire(t *testing.T) {
 			Buffs:       core.FullBuffsPhase2,
 			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -135,6 +141,7 @@ func TestFire(t *testing.T) {
 			Buffs:       core.FullBuffsPhase3,
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -153,6 +160,7 @@ func TestFire(t *testing.T) {
 			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -171,6 +179,7 @@ func TestFire(t *testing.T) {
 			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -189,6 +198,7 @@ func TestFire(t *testing.T) {
 			Buffs:       core.FullBuffsPhase6,
 			Consumes:    Phase6Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -211,6 +221,7 @@ func TestFrost(t *testing.T) {
 			Buffs:       core.FullBuffsPhase3,
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -229,6 +240,7 @@ func TestFrost(t *testing.T) {
 			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -247,6 +259,7 @@ func TestFrost(t *testing.T) {
 			Buffs:       core.FullBuffsPhase5,
 			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -265,6 +278,7 @@ func TestFrost(t *testing.T) {
 			Buffs:       core.FullBuffsPhase6,
 			Consumes:    Phase6Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+			IsRanged:    true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,

@@ -116,6 +116,7 @@ type SettingsCombos struct {
 	Buffs       []BuffsCombo
 	Encounters  []EncounterCombo
 	SimOptions  *proto.SimOptions
+	IsRanged    bool
 	IsHealer    bool
 	Cooldowns   *proto.Cooldowns
 }
@@ -183,7 +184,7 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 				Profession1:        proto.Profession_Engineering,
 				Cooldowns:          combos.Cooldowns,
 				Rotation:           rotationsCombo.Rotation,
-				DistanceFromTarget: 30,
+				DistanceFromTarget: TernaryFloat64(combos.IsRanged, 20, MaxMeleeAttackRange),
 				ReactionTimeMs:     150,
 				ChannelClipDelayMs: 50,
 			}, specOptionsCombo.SpecOptions),
@@ -293,7 +294,9 @@ type ItemsTestGenerator struct {
 	Debuffs    *proto.Debuffs
 	Encounter  *proto.Encounter
 	SimOptions *proto.SimOptions
-	IsHealer   bool
+
+	IsHealer bool
+	IsRanged bool
 
 	// Some fields are populated automatically.
 	ItemFilter ItemFilter
@@ -409,6 +412,7 @@ type CharacterSuiteConfig struct {
 
 	IsHealer        bool
 	IsTank          bool
+	IsRanged        bool
 	InFrontOfTarget bool
 
 	OtherRaces       []proto.Race
@@ -464,7 +468,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 				Rotation:      config.Rotation.Rotation,
 
 				InFrontOfTarget:    config.InFrontOfTarget,
-				DistanceFromTarget: 5,
+				DistanceFromTarget: TernaryFloat64(config.IsRanged, 20, MaxMeleeAttackRange),
 				ReactionTimeMs:     150,
 				ChannelClipDelayMs: 50,
 			},
@@ -517,6 +521,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 							},
 						},
 						IsHealer:   config.IsHealer,
+						IsRanged:   config.IsRanged,
 						Encounters: MakeDefaultEncounterCombos(config.Level),
 						SimOptions: DefaultSimTestOptions,
 						Cooldowns:  config.Cooldowns,
@@ -533,6 +538,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 						SimOptions: DefaultSimTestOptions,
 						ItemFilter: config.ItemFilter,
 						IsHealer:   config.IsHealer,
+						IsRanged:   config.IsRanged,
 					},
 				},
 			},

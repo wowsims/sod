@@ -200,18 +200,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.34938
+  weights: -0.60676
   weights: 0
-  weights: 2.83889
-  weights: 0
-  weights: 0
+  weights: 3.01266
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 23.22139
+  weights: 0
+  weights: 0
+  weights: 22.49366
   weights: 0
   weights: 0
   weights: 0
@@ -249,18 +249,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.03239
+  weights: 3.23557
   weights: 0
-  weights: 0.73645
-  weights: 0
-  weights: 0
+  weights: 3.52515
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 24.75291
+  weights: 0
+  weights: 0
+  weights: 23.22396
   weights: 0
   weights: 0
   weights: 0
@@ -379,8 +379,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 4510.93489
-  tps: 2562.36918
+  dps: 4514.1813
+  tps: 2565.43393
  }
 }
 dps_results: {
@@ -400,78 +400,78 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 3194.83776
-  tps: 1459.19719
+  dps: 3191.63527
+  tps: 1456.46443
  }
 }
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 3156.60514
-  tps: 1446.57723
+  dps: 3146.37137
+  tps: 1440.4161
  }
 }
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 4510.93489
-  tps: 2562.36918
+  dps: 4514.1813
+  tps: 2565.43393
  }
 }
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4778.42798
-  tps: 2648.79494
+  dps: 4779.50957
+  tps: 2649.73203
  }
 }
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 5288.56853
-  tps: 3511.01976
+  dps: 5284.49092
+  tps: 3510.45044
  }
 }
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 4753.85697
-  tps: 2624.70396
+  dps: 4761.06978
+  tps: 2630.92014
  }
 }
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 5405.94769
-  tps: 2807.7976
+  dps: 5411.95997
+  tps: 2812.9348
  }
 }
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 2164.34846
-  tps: 2130.07224
+  dps: 2164.76987
+  tps: 2130.70052
  }
 }
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1951.71452
-  tps: 1181.82667
+  dps: 1952.19846
+  tps: 1182.19803
  }
 }
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 2235.84291
-  tps: 1271.19489
+  dps: 2240.61586
+  tps: 1275.05237
  }
 }
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4754.61736
-  tps: 2626.39619
+  dps: 4761.06978
+  tps: 2630.92014
  }
 }
 dps_results: {
@@ -498,9 +498,9 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 4600.78061
-  tps: 3553.02809
-  hps: 939.4895
+  dps: 4597.57828
+  tps: 3548.67982
+  hps: 935.60439
  }
 }
 dps_results: {
@@ -520,86 +520,86 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 2917.43098
-  tps: 1883.2263
+  dps: 2899.14041
+  tps: 1868.06872
  }
 }
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 2878.33882
-  tps: 1858.32663
+  dps: 2878.75467
+  tps: 1859.5913
  }
 }
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 4612.83175
-  tps: 3565.92898
-  hps: 935.72253
+  dps: 4588.10496
+  tps: 3540.57592
+  hps: 934.97938
  }
 }
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 4782.9314
-  tps: 3663.34972
-  hps: 940.323
+  dps: 4782.03513
+  tps: 3662.38284
+  hps: 941.139
  }
 }
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 5153.08381
-  tps: 4994.14145
-  hps: 954.48502
+  dps: 5150.77264
+  tps: 4993.99384
+  hps: 956.446
  }
 }
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 4749.70378
-  tps: 3627.86264
-  hps: 946.16124
+  dps: 4755.36978
+  tps: 3633.00302
+  hps: 943.23212
  }
 }
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-FullBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 5067.66267
-  tps: 3625.97071
-  hps: 826.91424
+  dps: 5087.51652
+  tps: 3645.53168
+  hps: 828.16641
  }
 }
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 2162.92318
-  tps: 3104.08268
-  hps: 490.71217
+  dps: 2166.9671
+  tps: 3108.09733
+  hps: 490.67684
  }
 }
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 2009.37501
-  tps: 1684.86964
-  hps: 489.89235
+  dps: 2012.58387
+  tps: 1688.01558
+  hps: 489.74678
  }
 }
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-Settings-Orc-demonology-Demonology Warlock-demonology-NoBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 2166.10508
-  tps: 1715.78963
-  hps: 454.5647
+  dps: 2171.50413
+  tps: 1721.08281
+  hps: 453.61614
  }
 }
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4748.29689
-  tps: 3627.0909
-  hps: 944.3908
+  dps: 4755.36978
+  tps: 3633.00302
+  hps: 943.23212
  }
 }

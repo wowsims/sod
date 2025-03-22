@@ -24,8 +24,9 @@ func TestFeralTank(t *testing.T) {
 			Talents:     StandardTalents,
 			Buffs:       core.FullBuffsPhase4,
 			Consumes:    FullConsumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsDefault},
 			Rotation:    core.GetAplRotation("../../../ui/feral_tank_druid/apls", "phase_6"),
+			SpecOptions: core.SpecOptionsCombo{Label: "Default", SpecOptions: PlayerOptionsDefault},
+			IsTank:      true,
 
 			ItemFilter: core.ItemFilter{
 				WeaponTypes: []proto.WeaponType{
