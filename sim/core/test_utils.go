@@ -613,15 +613,21 @@ func GetTestBuildFromJSON(class proto.Class, phase, level int32, dir string, fil
 		Level: simSettings.Player.Level,
 		Race:  simSettings.Player.Race,
 
-		Talents: simSettings.Player.TalentsString,
 		GearSet: GearSetCombo{
 			Label:   file,
 			GearSet: simSettings.Player.Equipment,
 		},
+		SpecOptions: SpecOptionsCombo{
+			Label:       file,
+			SpecOptions: getPlayerSpecOptions(simSettings.Player),
+		},
+		Talents: simSettings.Player.TalentsString,
 		Rotation: RotationCombo{
 			Label:    file,
 			Rotation: simSettings.Player.Rotation,
 		},
+		StartingDistance: simSettings.Player.DistanceFromTarget,
+
 		Buffs: BuffsCombo{
 			Label:   file,
 			Raid:    simSettings.RaidBuffs,
@@ -632,10 +638,6 @@ func GetTestBuildFromJSON(class proto.Class, phase, level int32, dir string, fil
 		Consumes: ConsumesCombo{
 			Label:    file,
 			Consumes: simSettings.Player.Consumes,
-		},
-		SpecOptions: SpecOptionsCombo{
-			Label:       file,
-			SpecOptions: getPlayerSpecOptions(simSettings.Player),
 		},
 
 		ItemFilter:      itemFilter,

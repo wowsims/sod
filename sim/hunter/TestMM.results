@@ -100,7 +100,7 @@ stat_weights_results: {
  key: "TestMM-Phase2-Lvl40-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.43422
+  weights: 0.99586
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.12328
-  weights: 3.70871
-  weights: 3.8673
+  weights: 0
+  weights: 6.47442
+  weights: 7.0245
   weights: 0
   weights: 0
   weights: 0
@@ -126,7 +126,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.03362
+  weights: 0.24763
   weights: 0
   weights: 0
   weights: 0
@@ -149,7 +149,7 @@ stat_weights_results: {
  key: "TestMM-Phase4-Lvl60-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.46257
+  weights: 2.16428
   weights: 0
   weights: 0
   weights: 0
@@ -165,17 +165,17 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.19982
-  weights: 0
-  weights: 5.71841
   weights: 0
   weights: 0
+  weights: 21.12678
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.04221
+  weights: 0
+  weights: 0
+  weights: 0.63494
   weights: 0
   weights: 0
   weights: 0
@@ -197,25 +197,22 @@ stat_weights_results: {
 dps_results: {
  key: "TestMM-Phase2-Lvl40-AllItems-BeastmasterArmor"
  value: {
-  dps: 324.94858
-  tps: 169.63259
-  hps: 14.29133
+  dps: 491.41408
+  tps: 346.93933
  }
 }
 dps_results: {
  key: "TestMM-Phase2-Lvl40-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 332.91433
-  tps: 182.26265
-  hps: 15.35667
+  dps: 648.82069
+  tps: 517.53466
  }
 }
 dps_results: {
  key: "TestMM-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 336.33264
-  tps: 183.82675
-  hps: 15.11051
+  dps: 659.51735
+  tps: 525.83893
  }
 }
 dps_results: {
@@ -305,121 +302,120 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 320.66096
-  tps: 168.56426
-  hps: 13.98533
+  dps: 657.66538
+  tps: 524.91378
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-BeastmasterArmor"
  value: {
-  dps: 543.80213
-  tps: 543.91285
-  hps: 20.61767
+  dps: 723.91424
+  tps: 736.2062
+  hps: 9.53432
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-BloodGuard'sChain"
  value: {
-  dps: 741.06355
-  tps: 741.174
-  hps: 20.40379
+  dps: 755.42585
+  tps: 768.99761
+  hps: 9.45461
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-BloodlashBow-216516"
  value: {
-  dps: 877.82992
-  tps: 877.94037
-  hps: 23.57059
+  dps: 2304.35219
+  tps: 2330.23537
+  hps: 15.08852
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-DevilsaurEye-19991"
  value: {
-  dps: 878.34798
-  tps: 878.45843
-  hps: 23.57059
+  dps: 2857.09686
+  tps: 2890.37451
+  hps: 17.66612
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-DevilsaurTooth-19992"
  value: {
-  dps: 871.3434
-  tps: 871.45385
-  hps: 23.57059
+  dps: 2836.59698
+  tps: 2869.87464
+  hps: 17.66612
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-DreadHunter'sChain"
  value: {
-  dps: 637.34453
-  tps: 637.45498
-  hps: 20.28041
+  dps: 1358.52641
+  tps: 1380.18471
+  hps: 11.40243
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-GurubashiPitFighter'sBow-221450"
  value: {
-  dps: 879.32202
-  tps: 879.43247
-  hps: 23.57059
+  dps: 2340.72472
+  tps: 2366.6079
+  hps: 15.08852
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-Knight-Lieutenant'sChain"
  value: {
-  dps: 741.06355
-  tps: 741.174
-  hps: 20.40379
+  dps: 755.42585
+  tps: 768.99761
+  hps: 9.45461
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-Maelstrom'sWrath-231320"
  value: {
-  dps: 879.14019
-  tps: 879.25064
-  hps: 23.42152
+  dps: 2877.59616
+  tps: 2910.87813
+  hps: 17.4455
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 865.66502
-  tps: 865.77547
-  hps: 23.57059
+  dps: 2772.42314
+  tps: 2805.55779
+  hps: 17.61544
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-ZandalarPredator'sBelt-231322"
  value: {
-  dps: 827.67432
-  tps: 827.78477
-  hps: 23.57059
+  dps: 2563.48287
+  tps: 2596.76053
+  hps: 17.66612
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-ZandalarPredator'sBracers-231323"
  value: {
-  dps: 749.06
-  tps: 749.17045
-  hps: 23.57059
+  dps: 2466.60664
+  tps: 2499.8843
+  hps: 17.66612
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-ZandalarPredator'sMantle-231321"
  value: {
-  dps: 863.40405
-  tps: 863.5145
-  hps: 23.57059
+  dps: 2810.1979
+  tps: 2843.47556
+  hps: 17.66612
  }
 }
 dps_results: {
  key: "TestMM-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 885.45776
-  tps: 885.57678
-  hps: 24.01245
+  dps: 2893.64513
+  tps: 2926.87966
+  hps: 17.35142
  }
 }
 dps_results: {
@@ -521,8 +517,8 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 741.72935
-  tps: 741.83954
-  hps: 19.73877
+  dps: 2882.98791
+  tps: 2916.26556
+  hps: 17.66612
  }
 }

@@ -162,46 +162,46 @@ dps_results: {
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-FullBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 289.82424
-  tps: 675.78829
-  hps: 1.48433
+  dps: 2885.70506
+  tps: 7983.63213
+  hps: 39.14167
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-FullBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 77.33923
-  tps: 212.20786
-  hps: 1.13867
+  dps: 2396.42355
+  tps: 6542.68729
+  hps: 38.80617
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-FullBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 386.69616
-  tps: 1061.0393
-  hps: 5.69333
+  dps: 2452.71725
+  tps: 6240.51849
+  hps: 37.21
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-NoBuffs-Full Consumes-LongMultiTarget"
  value: {
-  dps: 105.99931
-  tps: 287.70781
+  dps: 1238.8229
+  tps: 3559.27785
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-NoBuffs-Full Consumes-LongSingleTarget"
  value: {
-  dps: 33.2439
-  tps: 106.86845
+  dps: 1018.66796
+  tps: 2859.05081
  }
 }
 dps_results: {
  key: "TestFeralTank-Phase5-Lvl60-Settings-Tauren-phase_6-Default-phase_6-NoBuffs-Full Consumes-ShortSingleTarget"
  value: {
-  dps: 166.21948
-  tps: 534.34225
+  dps: 1020.67163
+  tps: 2644.42524
  }
 }
 dps_results: {
