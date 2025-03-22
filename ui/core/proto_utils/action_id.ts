@@ -294,6 +294,9 @@ export class ActionId {
 					name += ` (self)`;
 				}
 				break;
+			case 'Ice Lance':
+				if (this.tag !== 0) name = `${name} (${this.tag} Glaciate)`;
+				break;
 			// Combo Point Spenders
 			case 'Envenom':
 			case 'Eviscerate':

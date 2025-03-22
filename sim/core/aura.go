@@ -278,6 +278,22 @@ func (aura *Aura) ExpiresAt() time.Duration {
 	return aura.expires
 }
 
+// Adds a handler to be called OnInit, in addition to any current handlers.
+// We then return the Aura for chaining
+func (aura *Aura) ApplyOnInit(newOnInit OnInit) *Aura {
+	oldOnInit := aura.OnInit
+	if oldOnInit == nil {
+		aura.OnInit = newOnInit
+	} else {
+		aura.OnInit = func(aura *Aura, sim *Simulation) {
+			oldOnInit(aura, sim)
+			newOnInit(aura, sim)
+		}
+	}
+
+	return aura
+}
+
 // Adds a handler to be called OnGain, in addition to any current handlers.
 // We then return the Aura for chaining
 func (aura *Aura) ApplyOnGain(newOnGain OnGain) *Aura {
@@ -357,6 +373,22 @@ func (aura *Aura) ApplyOnCastComplete(newOnCastComplete OnCastComplete, applyBef
 		aura.OnCastComplete = func(aura *Aura, sim *Simulation, spell *Spell) {
 			oldOnCastComplete(aura, sim, spell)
 			newOnCastComplete(aura, sim, spell)
+		}
+	}
+
+	return aura
+}
+
+// Adds a handler to be called OnSpellHitDealt, in addition to any current handlers.
+// We then return the Aura for chaining
+func (aura *Aura) ApplyOnSpellHitDealt(newOnSpellHitDealt OnSpellHit) *Aura {
+	oldOnSpellHitDealt := aura.OnSpellHitDealt
+	if oldOnSpellHitDealt == nil {
+		aura.OnSpellHitDealt = newOnSpellHitDealt
+	} else {
+		aura.OnSpellHitDealt = func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			oldOnSpellHitDealt(aura, sim, spell, result)
+			newOnSpellHitDealt(aura, sim, spell, result)
 		}
 	}
 

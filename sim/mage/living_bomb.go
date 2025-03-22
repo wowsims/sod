@@ -7,10 +7,11 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-// TODO: Classic verify numbers such as aoe caps and base damage
-// https://www.wowhead.com/classic/news/patch-1-15-build-52124-ptr-datamining-season-of-discovery-runes-336044#news-post-336044
-// https://www.wowhead.com/classic/spell=400614/living-bomb
-// https://www.wowhead.com/classic/spell=400613/living-bomb
+const (
+	LivingBombBaseNumTicks   = 4
+	LivingBombBaseTickLength = time.Second * 3
+)
+
 func (mage *Mage) registerLivingBombSpell() {
 	if !mage.HasRune(proto.MageRune_RuneHandsLivingBomb) {
 		return
@@ -24,9 +25,6 @@ func (mage *Mage) registerLivingBombSpell() {
 	dotCoeff := .20
 	explosionCoeff := .40
 	manaCost := .22
-
-	ticks := int32(4)
-	tickLength := time.Second * 3
 
 	livingBombExplosionSpell := mage.RegisterSpell(core.SpellConfig{
 		ActionID:       actionID.WithTag(1),
@@ -78,8 +76,8 @@ func (mage *Mage) registerLivingBombSpell() {
 				},
 			},
 
-			NumberOfTicks:    ticks,
-			TickLength:       tickLength,
+			NumberOfTicks:    LivingBombBaseNumTicks,
+			TickLength:       LivingBombBaseTickLength,
 			BonusCoefficient: dotCoeff,
 
 			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {

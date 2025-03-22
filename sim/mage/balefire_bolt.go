@@ -34,7 +34,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 		statDeps[i] = mage.NewDynamicMultiplyStat(stats.Spirit, 1.0-stackMultiplier*float64(i))
 	}
 
-	balefireAura := mage.RegisterAura(core.Aura{
+	mage.BalefireAura = mage.RegisterAura(core.Aura{
 		Label:     "Balefire Bolt (Stacks)",
 		ActionID:  core.ActionID{SpellID: int32(proto.MageRune_RuneBracersBalefireBolt)}.WithTag(1),
 		Duration:  buffDuration,
@@ -96,8 +96,8 @@ func (mage *Mage) registerBalefireBoltSpell() {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
-			balefireAura.Activate(sim)
-			balefireAura.AddStack(sim)
+			mage.BalefireAura.Activate(sim)
+			mage.BalefireAura.AddStack(sim)
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)

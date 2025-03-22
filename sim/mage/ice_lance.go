@@ -40,7 +40,7 @@ func (mage *Mage) registerIceLanceSpell() {
 		Flags:          core.SpellFlagAPL,
 
 		MissileSpeed: 38,
-		MetricSplits: 6,
+		MetricSplits: 9, // Possible 8 total stacks
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,
@@ -110,8 +110,9 @@ func (mage *Mage) registerIceLanceSpell() {
 		Name:             "Glaciate Trigger",
 		ClassSpellMask:   ClassSpellMask_MageAll ^ ClassSpellMask_MageIceLance,
 		Callback:         core.CallbackOnSpellHitDealt,
-		SpellSchool:      core.SpellSchoolFrost,
 		Outcome:          core.OutcomeLanded,
+		SpellSchool:      core.SpellSchoolFrost,
+		Harmful:          true,
 		CanProcFromProcs: true,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			glaciateAura := mage.GlaciateAuras.Get(result.Target)
