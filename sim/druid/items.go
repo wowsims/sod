@@ -35,6 +35,7 @@ const (
 	IdolOfUrsinPower                 = 234468
 	IdolOfFelineFerocity             = 234469
 	IdolOfSiderealWrath              = 234474
+	StaffOfTheGlade                  = 240849
 	AtieshDruid                      = 236401
 )
 
@@ -456,6 +457,71 @@ func init() {
 			Type:     core.CooldownTypeDPS,
 		})
 	})
+
+	// https://www.wowhead.com/classic-ptr/item=240849/staff-of-the-glade
+	// Equip: Remaining in Cat Form for 5 seconds, causes your Energy Regeneration to increase by 100%, and the damage of your Ferocious Bite to increase by 100%.
+	// Equip: You may cast Rebirth and Innervate while in Cat Form.
+	/* TODO: Item not yet available in sim.
+	core.NewItemEffect(StaffOfTheGlade, func(agent core.Agent) {
+		druid := agent.(DruidAgent).GetDruid()
+
+		// https://www.wowhead.com/classic-ptr/spell=1231381/feral-dedication
+		auraBuff := druid.RegisterAura(core.Aura{
+			ActionID: core.ActionID{
+				SpellID: 1231381,
+			},
+			Duration: core.NeverExpires,
+			Label:    "Feral Dedication",
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask:  ClassSpellMask_DruidFerociousBite,
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 2.0,
+		}).AttachSpellMod(core.SpellModConfig{
+			ClassMask: ClassSpellMask_DruidFerociousBite,
+			Kind:      core.SpellMod_Custom,
+			ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
+				druid.EnergyTickMultiplier *= 2
+			},
+			RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
+				druid.EnergyTickMultiplier /= 2
+			},
+		})
+
+		// https://www.wowhead.com/classic-ptr/spell=1231380/feral-dedication
+		auraTimer := druid.GetOrRegisterAura(core.Aura{
+			Label:    "Feral Dedication (Timer)",
+			Duration: time.Second * 5,
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				if druid.CatFormAura.IsActive() {
+					auraBuff.Activate(sim)
+				}
+			},
+		})
+
+		// https://www.wowhead.com/classic-ptr/spell=1231382/feral-dedication
+		// Also handle https://www.wowhead.com/classic-ptr/spell=1232896/staff-of-the-glade
+		druid.ItemSwap.RegisterProcWithSlots(StaffOfTheGlade, core.MakePermanent(druid.GetOrRegisterAura(core.Aura{
+			Label: "Feral Dedication (Passive)",
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				// May already be in cat form.
+				auraTimer.Activate(sim)
+				druid.Innervate.FormMask |= Cat
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				auraTimer.Deactivate(sim)
+				auraBuff.Deactivate(sim)
+				druid.Innervate.FormMask &= ^Cat
+			},
+			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				if spell == druid.CatForm.Spell {
+					auraBuff.Deactivate(sim)
+					if druid.CatFormAura.IsActive() {
+						auraTimer.Activate(sim)
+					}
+				}
+			},
+		})), []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
+	}) */
 
 	core.AddEffectsToTest = true
 }
