@@ -85,12 +85,12 @@ func (hunter *Hunter) applyScarletEnclaveMelee4PBonus() {
 
 // Increases the bonus damage from Raptor Fury by an additional 10% per stack.
 func (hunter *Hunter) applyScarletEnclaveMelee6PBonus() {
-	label := "S03 - Item - Scarlet Enclave - Hunter - Melee 6P Bonus"
-	if hunter.HasAura(label) {
+	if !hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury) {
 		return
 	}
 
-	if !hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury) {
+	label := "S03 - Item - Scarlet Enclave - Hunter - Melee 6P Bonus"
+	if hunter.HasAura(label) {
 		return
 	}
 
@@ -144,7 +144,7 @@ func (hunter *Hunter) applyScarletEnclaveRanged2PBonus() {
 	})
 }
 
-// Reduces the cooldown on your Chimera Shot, Explosive Shot, and Aimed Shot abilities by 1.5 sec and reduces the cooldown on your Kill Shot ability by 3sec.
+// Your ranged critical strikes increase your Attack Power by 20% for 10 sec.
 func (hunter *Hunter) applyScarletEnclaveRanged4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Hunter - Ranged 4P Bonus"
 	if hunter.HasAura(label) {
@@ -158,16 +158,7 @@ func (hunter *Hunter) applyScarletEnclaveRanged4PBonus() {
 		Label:    "Wicked Shot",
 		ActionID: core.ActionID{SpellID: 1226136},
 		Duration: time.Second * 10,
-
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.EnableDynamicStatDep(sim, apBonus)
-			hunter.EnableDynamicStatDep(sim, apRangedBonus)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.DisableDynamicStatDep(sim, apBonus)
-			hunter.DisableDynamicStatDep(sim, apRangedBonus)
-		},
-	})
+	}).AttachStatDependency(apBonus).AttachStatDependency(apRangedBonus)
 
 	core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
 		Name:     label,
@@ -187,26 +178,19 @@ func (hunter *Hunter) applyScarletEnclaveRanged6PBonus() {
 		return
 	}
 
-	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_HunterMultiShot,
-		IntValue:  100,
-	})
-
 	multishotAura := hunter.RegisterAura(core.Aura{
-		Label:    "Multi-Shot +100% Damage",
+		Label:    "Trick Shots",
+		ActionID: core.ActionID{SpellID: 1233451},
 		Duration: time.Minute * 5,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_HunterMultiShot) {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterMultiShot,
+		IntValue:  100,
 	})
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
@@ -218,6 +202,7 @@ func (hunter *Hunter) applyScarletEnclaveRanged6PBonus() {
 		Name:           label,
 		ClassSpellMask: ClassSpellMask_HunterChimeraShot | ClassSpellMask_HunterKillShot,
 		Callback:       core.CallbackOnApplyEffects,
+		CanProcFromProcs: true,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			multishotAura.Activate(sim)
 		},
