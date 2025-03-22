@@ -45,7 +45,7 @@ func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
 		Callback:       core.CallbackOnApplyEffects,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			hasDebuff := hunter.SerpentSting.Dot(result.Target).IsActive() || hunter.WyvernStrike.Dot(result.Target).IsActive()
-			damageMod.UpdateFloatValue(core.TernaryFloat64(hasDebuff, 0.20, 0.0))
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hasDebuff, 1.20, 1.0))
 			damageMod.Activate()
 		},
 	})
@@ -138,7 +138,7 @@ func (hunter *Hunter) applyScarletEnclaveRanged2PBonus() {
 		ClassSpellMask: ClassSpellMask_HunterShots,
 		Callback:       core.CallbackOnApplyEffects,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			damageMod.UpdateIntValue(core.TernaryInt64(hunter.SerpentSting.Dot(result.Target).IsActive(), 20, 0))
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hunter.SerpentSting.Dot(result.Target).IsActive(), 1.20, 1.0))
 			damageMod.Activate()
 		},
 	})
