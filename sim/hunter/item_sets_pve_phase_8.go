@@ -35,7 +35,7 @@ func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
 	}
 
 	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
+		Kind:      core.SpellMod_DamageDone_Pct,
 		ClassMask: ClassSpellMask_HunterStrikes | ClassSpellMask_HunterMongooseBite,
 	})
 
@@ -44,8 +44,8 @@ func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
 		ClassSpellMask: ClassSpellMask_HunterStrikes | ClassSpellMask_HunterMongooseBite,
 		Callback:       core.CallbackOnApplyEffects,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			hasDebuff := result.Target.HasActiveAuraWithTag("SerpentSting") || result.Target.HasActiveAuraWithTag("WyvernStrike - Bleed")
-			damageMod.UpdateIntValue(core.TernaryInt64(hasDebuff, 20, 0))
+			hasDebuff := hunter.SerpentSting.Dot(result.Target).IsActive() || hunter.WyvernStrike.Dot(result.Target).IsActive()
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hasDebuff, 0.20, 0.0))
 			damageMod.Activate()
 		},
 	})
@@ -129,7 +129,7 @@ func (hunter *Hunter) applyScarletEnclaveRanged2PBonus() {
 	}
 
 	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
+		Kind:      core.SpellMod_DamageDone_Pct,
 		ClassMask: ClassSpellMask_HunterShots,
 	})
 
@@ -138,8 +138,7 @@ func (hunter *Hunter) applyScarletEnclaveRanged2PBonus() {
 		ClassSpellMask: ClassSpellMask_HunterShots,
 		Callback:       core.CallbackOnApplyEffects,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			hasDebuff := result.Target.HasActiveAuraWithTag("SerpentSting")
-			damageMod.UpdateIntValue(core.TernaryInt64(hasDebuff, 20, 0))
+			damageMod.UpdateIntValue(core.TernaryInt64(hunter.SerpentSting.Dot(result.Target).IsActive(), 20, 0))
 			damageMod.Activate()
 		},
 	})
@@ -187,7 +186,7 @@ func (hunter *Hunter) applyScarletEnclaveRanged6PBonus() {
 	if hunter.HasAura(label) {
 		return
 	}
-	
+
 	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_HunterMultiShot,
