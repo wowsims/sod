@@ -1,0 +1,1 @@
+import"../../index-CsPe537V.chunk.js";import{S as s,T as e}from"../../detailed_results-BxR5hXWo.chunk.js";import{S as n,P as r}from"../../preset_utils-CVF0TSmV.chunk.js";import{T as t}from"../../sim-BJbDKG0_.chunk.js";import"../../warlock_inputs-Bu-718Xl.chunk.js";const o=new n,a=new r(s.SpecTankWarlock,o);o.raid.setPlayer(e.nextEventID(),0,a),new t(document.body,a);
