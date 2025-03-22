@@ -88,6 +88,7 @@ type Warlock struct {
 	Immolate           []*core.Spell
 	Incinerate         *core.Spell
 	InfernalArmor      *core.Spell
+	InvocationSpellMap map[uint64]*core.Spell
 	LifeTap            []*core.Spell
 	SearingPain        []*core.Spell
 	ShadowBolt         []*core.Spell
