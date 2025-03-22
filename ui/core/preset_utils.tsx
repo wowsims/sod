@@ -2,6 +2,7 @@ import { IndividualLinkImporter } from './components/individual_sim_ui/importers
 import Toast, { ToastOptions } from './components/toast';
 import * as Tooltips from './constants/tooltips.js';
 import { Player } from './player.js';
+import { Player as PlayerProto } from './proto/api.js';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl.js';
 import {
 	Consumes,
@@ -12,6 +13,7 @@ import {
 	HealingModel,
 	IndividualBuffs,
 	PartyBuffs,
+	Profession,
 	Race,
 	RaidBuffs,
 	Spec,
@@ -77,6 +79,22 @@ export interface PresetEncounter extends PresetBase {
 }
 export interface PresetEncounterOptions extends PresetOptionsBase {}
 
+type PresetPlayerOptions = Partial<
+	Pick<
+		PlayerProto,
+		| 'distanceFromTarget'
+		| 'profession1'
+		| 'profession2'
+		| 'enableItemSwap'
+		| 'itemSwap'
+		| 'isbUsingShadowflame'
+		| 'isbSbFrequency'
+		| 'isbCrit'
+		| 'isbWarlocks'
+		| 'isbSpriests'
+	>
+>;
+
 export interface PresetSettings extends PresetBase {
 	level?: number;
 	race?: Race;
@@ -85,7 +103,8 @@ export interface PresetSettings extends PresetBase {
 	buffs?: IndividualBuffs;
 	debuffs?: Debuffs;
 	consumes?: Consumes;
-	options?: Partial<SpecOptions<any>>;
+	specOptions?: Partial<SpecOptions<any>>;
+	playerOptions?: PresetPlayerOptions;
 }
 
 export interface PresetBuild {
@@ -237,7 +256,7 @@ const makePresetSettingsHelper = (name: string, spec: Spec, simSettings: Individ
 	}
 
 	if (simSettings.player) {
-		settings.options = specTypeFunctions[spec].optionsFromPlayer(simSettings.player);
+		settings.specOptions = specTypeFunctions[spec].optionsFromPlayer(simSettings.player);
 
 		if (simSettings.player.buffs) {
 			settings.buffs = simSettings.player.buffs;
@@ -245,6 +264,22 @@ const makePresetSettingsHelper = (name: string, spec: Spec, simSettings: Individ
 
 		if (simSettings.player.consumes) {
 			settings.consumes = simSettings.player.consumes;
+		}
+
+		settings.playerOptions = {
+			distanceFromTarget: simSettings.player.distanceFromTarget,
+			enableItemSwap: simSettings.player.enableItemSwap,
+		};
+		if (simSettings.player.profession1 !== Profession.ProfessionUnknown) {
+			settings.playerOptions.profession1 = simSettings.player.profession1;
+		}
+
+		if (simSettings.player.profession2 !== Profession.ProfessionUnknown) {
+			settings.playerOptions.profession2 = simSettings.player.profession2;
+		}
+
+		if (simSettings.player.itemSwap) {
+			settings.playerOptions.itemSwap = simSettings.player.itemSwap;
 		}
 	}
 

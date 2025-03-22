@@ -212,7 +212,7 @@ export const PresetBuildP7Twisting = PresetUtils.makePresetBuild('Twisting', {
 	rotation: APLTwisting,
 	settings: {
 		name: 'Twisting',
-		options: {
+		specOptions: {
 			aura: PaladinAura.SanctityAura,
 			isUsingCrusaderStrikeStopAttack: true,
 			isUsingDivineStormStopAttack: true,
@@ -229,7 +229,7 @@ export const PresetBuildP7SealStacking = PresetUtils.makePresetBuild('Seal Stack
 	rotation: APLSealStacking,
 	settings: {
 		name: 'Seal Stacking',
-		options: {
+		specOptions: {
 			aura: PaladinAura.SanctityAura,
 			isUsingCrusaderStrikeStopAttack: false,
 			isUsingDivineStormStopAttack: false,
@@ -246,7 +246,7 @@ export const PresetBuildP7Shockadin1H = PresetUtils.makePresetBuild('1H Shockadi
 	rotation: APLShockadin1H,
 	settings: {
 		name: '1H Shockadin',
-		options: {
+		specOptions: {
 			aura: PaladinAura.NoPaladinAura,
 			isUsingCrusaderStrikeStopAttack: false,
 			isUsingDivineStormStopAttack: false,
@@ -263,7 +263,7 @@ export const PresetBuildP7Shockadin2H = PresetUtils.makePresetBuild('2H Shockadi
 	rotation: APLShockadin2H,
 	settings: {
 		name: '2H Shockadin',
-		options: {
+		specOptions: {
 			aura: PaladinAura.NoPaladinAura,
 			isUsingCrusaderStrikeStopAttack: false,
 			isUsingDivineStormStopAttack: false,
@@ -280,7 +280,7 @@ export const PresetBuildP7Exodin = PresetUtils.makePresetBuild('Exodin', {
 	rotation: APLExodin,
 	settings: {
 		name: 'Exodin',
-		options: {
+		specOptions: {
 			aura: PaladinAura.SanctityAura,
 			isUsingCrusaderStrikeStopAttack: false,
 			isUsingDivineStormStopAttack: false,

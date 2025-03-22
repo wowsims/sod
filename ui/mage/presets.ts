@@ -1,6 +1,6 @@
 import { Phase } from '../core/constants/other';
 import * as PresetUtils from '../core/preset_utils';
-import { Profession, Spec } from '../core/proto/common';
+import { Spec } from '../core/proto/common';
 import { SavedTalents } from '../core/proto/ui';
 // APLs
 import Phase1APLArcaneJSON from './apls/p1_arcane.apl.json';
@@ -245,14 +245,4 @@ export const TalentPresets = {
 	[Phase.Phase5]: [TalentsArcanePhase4_5, TalentsFirePhase4_5, TalentsFrostPhase5],
 	[Phase.Phase6]: [PresetBuildFirePhase6.talents!, PresetBuildFrostPhase6.talents!],
 	[Phase.Phase7]: [PresetBuildFirePhase7.talents!, PresetBuildFrostPhase7.talents!],
-};
-
-///////////////////////////////////////////////////////////////////////////
-//                                 Options
-///////////////////////////////////////////////////////////////////////////
-
-export const OtherDefaults = {
-	distanceFromTarget: 20,
-	profession1: Profession.Alchemy,
-	profession2: Profession.Tailoring,
 };
