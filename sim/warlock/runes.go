@@ -311,6 +311,44 @@ func (warlock *Warlock) applyInvocation() {
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},
 		})
 	}
+
+	warlock.RegisterAura(core.Aura{
+		Label: "Invocation",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			dotSpells := core.FilterSlice(
+				core.Flatten(
+					[][]*core.Spell{
+						warlock.Corruption,
+						warlock.Immolate,
+						warlock.CurseOfAgony,
+						warlock.SiphonLife,
+						{warlock.Shadowflame, warlock.UnstableAffliction},
+					},
+				),
+				func(spell *core.Spell) bool { return spell != nil },
+			)
+
+			for _, spell := range dotSpells {
+				for _, dot := range spell.Dots() {
+					if dot == nil {
+						continue
+					}
+
+					// Have to keep a separate local because of Go's closure behavior
+					localDot := dot
+					localDot.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+						warlock.InvocationApplication(sim, localDot, aura.Unit)
+					})
+				}
+			}
+		},
+	})
+}
+
+func (warlock *Warlock) InvocationApplication(sim *core.Simulation, dot *core.Dot, target *core.Unit) {
+	invocationSpell := warlock.InvocationSpellMap[dot.Spell.ClassSpellMask]
+	invocationSpell.Cast(sim, target)
+	invocationSpell.CalcAndDealDamage(sim, target, dot.SnapshotBaseDamage, invocationSpell.Dot(target).OutcomeTick)
 }
 
 func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot, target *core.Unit) {
