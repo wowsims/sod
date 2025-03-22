@@ -185,34 +185,13 @@ func (rogue *Rogue) applyT1Tank2PBonus() {
 	rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			oldJaWFOnGain := rogue.JustAFleshWoundAura.OnGain
-			rogue.JustAFleshWoundAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				oldJaWFOnGain(aura, sim)
+			rogue.BladeDanceAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				buffAura.Activate(sim)
+			})
 
-				if rogue.BladeDanceAura.IsActive() {
-					buffAura.Activate(sim)
-				}
-			}
-
-			oldJaFWOnExpire := rogue.JustAFleshWoundAura.OnExpire
-			rogue.JustAFleshWoundAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-				oldJaFWOnExpire(aura, sim)
+			rogue.BladeDanceAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 				buffAura.Deactivate(sim)
-			}
-
-			oldBladeDanceOnGain := rogue.BladeDanceAura.OnGain
-			rogue.BladeDanceAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				oldBladeDanceOnGain(aura, sim)
-				if rogue.JustAFleshWoundAura.IsActive() {
-					buffAura.Activate(sim)
-				}
-			}
-
-			oldBladeDanceOnExpire := rogue.BladeDanceAura.OnExpire
-			rogue.BladeDanceAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-				oldBladeDanceOnExpire(aura, sim)
-				buffAura.Deactivate(sim)
-			}
+			})
 		},
 	})
 }
