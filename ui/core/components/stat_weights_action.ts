@@ -402,17 +402,7 @@ class EpWeightsMenu extends BaseModal {
 			});
 
 			button.addEventListener('click', _event => {
-				const newWeights = weightsFunc();
-				if (newWeights && this.swSettings.excludedFromCalc) {
-					const oldWeights = this.simUI.player.getEpWeights();
-					for (const stat of this.swSettings.excludedFromCalc.stats) {
-						newWeights.stats[stat] = oldWeights.getStat(stat);
-					}
-					for (const pseudoStat of this.swSettings.excludedFromCalc.pseudoStats) {
-						newWeights.pseudoStats[pseudoStat] = oldWeights.getPseudoStat(pseudoStat);
-					}
-				}
-				this.simUI.player.setEpWeights(TypedEvent.nextEventID(), Stats.fromProto(newWeights));
+				this.setEpWeightsWithoutExcluded(Stats.fromProto(weightsFunc()));
 				this.updateTable();
 			});
 		};
@@ -550,7 +540,7 @@ class EpWeightsMenu extends BaseModal {
 				const scaledTmiEp = Stats.fromProto(results.tmi!.epValues).scale(epRatios[4]);
 				const scaledPDeathEp = Stats.fromProto(results.pDeath!.epValues).scale(epRatios[5]);
 				const newEp = scaledDpsEp.add(scaledHpsEp).add(scaledTpsEp).add(scaledDtpsEp).add(scaledTmiEp).add(scaledPDeathEp);
-				this.simUI.player.setEpWeights(TypedEvent.nextEventID(), newEp);
+				this.setEpWeightsWithoutExcluded(newEp);
 			} else {
 				const scaledDpsWeights = Stats.fromProto(results.dps!.weights).scale(epRatios[0]);
 				const scaledHpsWeights = Stats.fromProto(results.hps!.weights).scale(epRatios[1]);
@@ -564,10 +554,27 @@ class EpWeightsMenu extends BaseModal {
 					.add(scaledDtpsWeights)
 					.add(scaledTmiWeights)
 					.add(scaledPDeathWeights);
-				this.simUI.player.setEpWeights(TypedEvent.nextEventID(), newWeights);
+				this.setEpWeightsWithoutExcluded(newWeights);
 			}
 			this.updateTable();
 		});
+	}
+
+	/**
+	 * Set new ep weights while leaving excluded stats at their old value.
+	 * @param newWeights
+	 */
+	private setEpWeightsWithoutExcluded(newWeights: Stats) {
+		if (this.swSettings.excludedFromCalc) {
+			const oldWeights = this.simUI.player.getEpWeights();
+			for (const stat of this.swSettings.excludedFromCalc.stats) {
+				newWeights.setStat(stat, oldWeights.getStat(stat));
+			}
+			for (const pseudoStat of this.swSettings.excludedFromCalc.pseudoStats) {
+				newWeights.setPseudostat(pseudoStat, oldWeights.getPseudoStat(pseudoStat));
+			}
+		}
+		this.simUI.player.setEpWeights(TypedEvent.nextEventID(), newWeights);
 	}
 
 	/**

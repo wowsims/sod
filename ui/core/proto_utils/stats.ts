@@ -171,6 +171,14 @@ export class Stats {
 		);
 	}
 
+	setStat(stat: Stat, value: number) {
+		this.stats[stat] = value;
+	}
+
+	setPseudostat(stat: PseudoStat, value: number) {
+		this.pseudoStats[stat] = value;
+	}
+
 	computeEP(epWeights: Stats): number {
 		let total = 0;
 		this.stats.forEach((stat, idx) => {
