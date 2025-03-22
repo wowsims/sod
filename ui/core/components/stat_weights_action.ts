@@ -627,7 +627,7 @@ class EpWeightsMenu extends BaseModal {
 		} else {
 			updateStatEntry(stat.getPseudoStat(), this.swSettings.excludedFromCalc.pseudoStats);
 		}
-		window.localStorage.setItem(this.swSettingsStorageKey, JSON.stringify(this.swSettings).toString());
+		window.localStorage.setItem(this.swSettingsStorageKey, SavedStatWeightSettings.toJsonString(this.swSettings));
 	}
 
 	private setSimProgress(progress: ProgressMetrics) {
