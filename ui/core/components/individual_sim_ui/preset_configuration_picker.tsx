@@ -11,7 +11,13 @@ import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
 import { ContentBlock } from '../content_block';
 
-type PresetConfigurationCategory = 'epWeights' | 'gear' | 'talents' | 'rotation' | 'encounter';
+enum PresetConfigurationCategory {
+	epWeights = 'epWeights',
+	gear = 'gear',
+	talents = 'talents',
+	rotation = 'rotation',
+	encounter = 'encounter',
+}
 
 export class PresetConfigurationPicker extends Component {
 	readonly simUI: IndividualSimUI<Spec>;
