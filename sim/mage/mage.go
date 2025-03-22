@@ -28,6 +28,7 @@ const (
 	ClassSpellMask_MageFireball
 	ClassSpellMask_MageFireBlast
 	ClassSpellMask_MagePyroblast
+	ClassSpellMask_MageFrostbite
 	ClassSpellMask_MageFrostbolt
 	ClassSpellMask_MageFrostfireBolt
 	ClassSpellMask_MageFrozenOrb
@@ -120,6 +121,7 @@ type Mage struct {
 
 	ArcaneBlastAura     *core.Aura
 	ArcanePowerAura     *core.Aura
+	BalefireAura        *core.Aura
 	ClearcastingAura    *core.Aura
 	CombustionAura      *core.Aura
 	FingersOfFrostAura  *core.Aura
@@ -127,6 +129,7 @@ type Mage struct {
 	HotStreakAura       *core.Aura
 	IceArmorAura        *core.Aura
 	IceBarrierAuras     []*core.Aura
+	IcyVeinsAura        *core.Aura
 	ImprovedScorchAuras core.AuraArray
 	MageArmorAura       *core.Aura
 	MissileBarrageAura  *core.Aura
