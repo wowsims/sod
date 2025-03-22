@@ -86,8 +86,8 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
 				dot := spell.Dot(target)
-				if hasInvocationRune && dot.IsActive() {
-					warlock.InvocationRefresh(sim, dot)
+				if hasInvocationRune {
+					warlock.InvocationRefresh(sim, dot, target)
 				}
 
 				dot.Apply(sim)
