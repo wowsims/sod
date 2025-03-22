@@ -1067,7 +1067,7 @@ dps_results: {
  key: "TestFeral-Phase3-Lvl50-Average-Default"
  value: {
   dps: 2009.45836
-  tps: 1437.37706
+  tps: 1437.37964
   hps: 54.84329
  }
 }
@@ -1395,7 +1395,7 @@ dps_results: {
  key: "TestFeral-Phase4-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
  value: {
   dps: 2176.94967
-  tps: 1563.34472
+  tps: 1564.81864
   hps: 54.3205
  }
 }
@@ -1785,7 +1785,7 @@ dps_results: {
  key: "TestFeral-Phase5-Lvl60-AllItems-CoagulateBloodguard'sLeathers"
  value: {
   dps: 2474.54976
-  tps: 1774.3863
+  tps: 1774.69163
   hps: 53.33433
  }
 }

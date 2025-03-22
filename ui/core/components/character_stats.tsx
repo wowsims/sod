@@ -4,7 +4,7 @@ import { ref } from 'tsx-vanilla';
 
 import * as Mechanics from '../constants/mechanics.js';
 import { Player } from '../player.js';
-import { ItemSlot, PseudoStat, Spec, Stat, WeaponType } from '../proto/common.js';
+import { InputType, ItemSlot, PseudoStat, Spec, Stat, WeaponType } from '../proto/common.js';
 import { Stats, UnitStat } from '../proto_utils/stats.js';
 import { EventID, TypedEvent } from '../typed_event.js';
 import { Component } from './component.js';
@@ -183,7 +183,7 @@ export class CharacterStats extends Component {
 		const talentsStats = Stats.fromProto(playerStats.talentsStats);
 		const buffsStats = Stats.fromProto(playerStats.buffsStats);
 		const consumesStats = Stats.fromProto(playerStats.consumesStats);
-		const debuffStats = this.getDebuffStats();
+		const debuffStats = this.getDebuffStats(player);
 		const bonusStats = player.getBonusStats();
 
 		const baseDelta = baseStats;
@@ -529,14 +529,29 @@ export class CharacterStats extends Component {
 		return `${(stats.getPseudoStat(pseudoStat) + stats.getStat(Stat.StatSpellHit)).toFixed(2)}%`;
 	}
 
-	private getDebuffStats(): Stats {
-		const debuffStats = new Stats();
+	private authorityOfTheFrozenWastes(player: Player<any>): Stats {
+		const targets = player.sim.encounter.targets;
+		let stats = new Stats();
+		if (!targets || targets.length === 0) {
+			return stats;
+		}
 
-		// TODO: Classic ui debuffs
-		// const debuffs = this.player.sim.raid.getDebuffs();
-		// if (debuffs.improvedScorch || debuffs.wintersChill || debuffs.shadowMastery) {
-		// 	debuffStats = debuffStats.addStat(Stat.StatSpellCrit, 5 * Mechanics.SPELL_CRIT_RATING_PER_CRIT_CHANCE);
-		// }
+		const targetInputs = targets[0].targetInputs;
+		if (!targetInputs || targetInputs.length === 0) {
+			return stats;
+		}
+
+		const authorityInput = targetInputs.find(x => x.inputType === InputType.Enum && x.label === 'Difficulty Level');
+
+		if (authorityInput && authorityInput.enumValue > 0) {
+			stats = stats.addStat(Stat.StatDodge, -4 * authorityInput.enumValue);
+		}
+
+		return stats;
+	}
+
+	private getDebuffStats(player: Player<any>): Stats {
+		const debuffStats = new Stats().add(this.authorityOfTheFrozenWastes(player));
 
 		return debuffStats;
 	}
