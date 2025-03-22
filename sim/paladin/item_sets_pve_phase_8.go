@@ -258,7 +258,7 @@ func (paladin *Paladin) applyScarletEnclaveProtection6PBonus() {
 	if paladin.HasAura(label) {
 		return
 	}
-	
+
 	paladin.bypassAvengingWrathForbearance = true
 
 	blockValueModifier := paladin.NewDynamicMultiplyStat(stats.BlockValue, 1.3)

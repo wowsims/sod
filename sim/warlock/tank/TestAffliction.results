@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.11095
+  weights: 0.08886
   weights: 0
-  weights: 0.46013
-  weights: 0
-  weights: 0
+  weights: 0.55933
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.62387
+  weights: 0
+  weights: 0
+  weights: 0.61599
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.72705
+  weights: 0.30236
   weights: 0
-  weights: 1.69269
-  weights: 0
-  weights: 0
+  weights: 1.11411
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 8.93881
-  weights: 13.68718
+  weights: 0
+  weights: 0
+  weights: 9.92084
+  weights: 11.33017
   weights: 0
   weights: 0
   weights: 0
@@ -205,9 +205,10 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 218.87585
-  tps: 512.30139
-  hps: 67.93484
+  dps: 216.16164
+  tps: 495.51952
+  dtps: 1160.47092
+  hps: 67.74196
  }
 }
 dps_results: {
@@ -261,9 +262,10 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 217.76424
-  tps: 510.16962
-  hps: 68.08988
+  dps: 214.51703
+  tps: 491.47905
+  dtps: 1159.62508
+  hps: 67.11093
  }
 }
 dps_results: {
@@ -349,9 +351,10 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1993.42314
-  tps: 3945.46867
-  hps: 448.84803
+  dps: 2032.58703
+  tps: 4015.33702
+  dtps: 399.00981
+  hps: 477.37596
  }
 }
 dps_results: {
@@ -405,8 +408,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1940.92541
-  tps: 3841.71968
-  hps: 437.47172
+  dps: 1994.79248
+  tps: 3954.84408
+  dtps: 428.20465
+  hps: 471.69119
  }
 }

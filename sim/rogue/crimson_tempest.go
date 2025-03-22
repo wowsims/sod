@@ -68,6 +68,7 @@ func (rogue *Rogue) registerCrimsonTempestSpell() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          rogue.finisherFlags(),
 		MetricSplits:   6,
+		MaxRange:       8,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,

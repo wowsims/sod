@@ -346,20 +346,14 @@ func (rogue *Rogue) applyJustAFleshWound() {
 	// Implemented in the relevant files
 
 	// -50% of Current non Evasion Dodge
-	statDep := rogue.NewDynamicMultiplyStat(stats.Dodge, 0.5*core.DodgeRatingPerDodgeChance)
+	statDep := rogue.NewDynamicMultiplyStat(stats.Dodge, 0.5)
 
 	// 1% Physical DR gained for 8 defense over max
 
-	rogue.JustAFleshWoundAura = core.MakePermanent(rogue.RegisterAura(core.Aura{
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label:    "Just a Flesh Wound",
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneJustAFleshWound)},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.EnableDynamicStatDep(sim, statDep)
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.DisableDynamicStatDep(sim, statDep)
-		},
-	}))
+	})).AttachStatDependency(statDep)
 }
 
 func (rogue *Rogue) applyRollingWithThePunches() {

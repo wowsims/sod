@@ -102,18 +102,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.08075
+  weights: -0.142
   weights: 0
-  weights: 0.55212
-  weights: 0
-  weights: 0
+  weights: 0.29217
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.36188
-  weights: 1.16824
+  weights: 0
+  weights: 0
+  weights: 3.88154
+  weights: 1.09465
   weights: 0
   weights: 0
   weights: 0
@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.00928
+  weights: 0.4349
   weights: 0
-  weights: 1.47617
-  weights: 0
-  weights: 0
+  weights: 1.07689
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 13.24473
-  weights: 10.35382
+  weights: 0
+  weights: 0
+  weights: 16.40921
+  weights: 8.37339
   weights: 0
   weights: 0
   weights: 0
@@ -205,9 +205,10 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 363.84619
-  tps: 1092.58308
-  hps: 140.99093
+  dps: 357.61449
+  tps: 1057.38929
+  dtps: 929.9435
+  hps: 139.96888
  }
 }
 dps_results: {
@@ -261,9 +262,10 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 359.61859
-  tps: 1081.46085
-  hps: 141.83197
+  dps: 352.13632
+  tps: 1045.19394
+  dtps: 959.92431
+  hps: 139.43734
  }
 }
 dps_results: {
@@ -349,9 +351,10 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 2240.28286
-  tps: 4569.83462
-  hps: 423.16368
+  dps: 2230.56259
+  tps: 4494.04921
+  dtps: 408.95309
+  hps: 440.45923
  }
 }
 dps_results: {
@@ -405,8 +408,9 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2190.2106
-  tps: 4452.30842
-  hps: 401.16605
+  dps: 2197.07772
+  tps: 4408.7811
+  dtps: 428.84321
+  hps: 440.50779
  }
 }

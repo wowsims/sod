@@ -292,7 +292,8 @@ type ItemsTestGenerator struct {
 	Debuffs    *proto.Debuffs
 	Encounter  *proto.Encounter
 	SimOptions *proto.SimOptions
-	IsHealer   bool
+
+	IsHealer bool
 
 	// Some fields are populated automatically.
 	ItemFilter ItemFilter

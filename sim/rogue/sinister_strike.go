@@ -28,6 +28,7 @@ func (rogue *Rogue) registerSinisterStrikeSpell() {
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          rogue.builderFlags(),
+		MaxRange:       5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   45,

@@ -26,6 +26,7 @@ func (rogue *Rogue) registerGhostlyStrikeSpell() {
 			Cost:   40.0,
 			Refund: 0.8,
 		},
+		MaxRange: 5,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

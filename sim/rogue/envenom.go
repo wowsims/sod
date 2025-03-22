@@ -34,6 +34,7 @@ func (rogue *Rogue) registerEnvenom() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          rogue.finisherFlags() | SpellFlagColdBlooded | core.SpellFlagIgnoreResists | core.SpellFlagPoison,
 		MetricSplits:   6,
+		MaxRange:       5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,

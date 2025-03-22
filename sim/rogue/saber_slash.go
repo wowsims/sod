@@ -23,6 +23,7 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 			Cost:   45,
 			Refund: 0.8,
 		},
+		MaxRange: 5,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

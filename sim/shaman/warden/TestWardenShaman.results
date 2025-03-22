@@ -50,24 +50,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestWardenShaman-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.86251
+  weights: 0.95999
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.4011
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0.39205
+  weights: 0.52459
   weights: 0
   weights: 0
   weights: 0
@@ -78,11 +66,23 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.51899
+  weights: 0
+  weights: 0.43636
   weights: 0
   weights: 0
   weights: 0
   weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 1.81863
+  weights: 0
+  weights: 0
+  weights: 0.57215
+  weights: 2.05912
   weights: 0
   weights: 0
   weights: 0
@@ -163,9 +163,10 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1688.64857
-  tps: 2435.4007
-  hps: 18.97949
+  dps: 1994.99627
+  tps: 6197.53698
+  dtps: 594.80002
+  hps: 19.7504
  }
 }
 dps_results: {
@@ -261,8 +262,9 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1548.6105
-  tps: 2249.18121
-  hps: 15.88033
+  dps: 1875.37895
+  tps: 5888.50534
+  dtps: 634.30145
+  hps: 16.531
  }
 }
