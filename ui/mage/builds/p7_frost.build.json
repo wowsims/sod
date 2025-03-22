@@ -1,0 +1,201 @@
+{
+  "raidBuffs": {
+    "giftOfTheWild": "TristateEffectImproved",
+    "powerWordFortitude": "TristateEffectImproved",
+    "bloodPact": "TristateEffectRegular",
+    "arcaneBrilliance": true,
+    "divineSpirit": true,
+    "moonkinAura": true,
+    "manaSpringTotem": "TristateEffectRegular",
+    "vampiricTouch": 400,
+    "demonicPact": 150,
+    "aspectOfTheLion": true,
+    "atieshCastSpeedBuff": true,
+    "atieshHealingBuff": true,
+    "atieshSpellCritBuff": true,
+    "atieshSpellPowerBuff": true
+  },
+  "debuffs": {
+    "markOfChaos": true,
+    "occultPoison": true,
+    "improvedScorch": true,
+    "dreamstate": true
+  },
+  "partyBuffs": {
+  },
+  "player": {
+    "name": "Player",
+    "race": "RaceTroll",
+    "level": 60,
+    "class": "ClassMage",
+    "equipment": {
+      "items": [
+        {"id":236083,"enchant":7634,"rune":428739},
+        {"id":231324},
+        {"id":231325,"enchant":7883,"rune":1220166},
+        {"id":236327,"enchant":7564,"rune":440802},
+        {"id":236081,"enchant":7648,"rune":400647},
+        {"id":231326,"enchant":7665,"rune":428741},
+        {"id":235874,"enchant":2615,"rune":400640},
+        {"id":236078,"rune":401502},
+        {"id":236079,"enchant":7634,"rune":425121},
+        {"id":236080,"enchant":7648,"rune":412322},
+        {"id":236085,"rune":442894},
+        {"id":236273,"rune":442895},
+        {"id":236331},
+        {"id":230243},
+        {"id":236400,"enchant":7662},
+        {},
+        {"id":236349}
+      ]
+    },
+    "consumes": {
+      "flask": "FlaskOfAncientKnowledge",
+      "food": "FoodDarkclawBisque",
+      "manaRegenElixir": "MagebloodPotion",
+      "spellPowerBuff": "ElixirOfTheMageLord",
+      "firePowerBuff": "ElixirOfGreaterFirepower",
+      "frostPowerBuff": "ElixirOfFrostPower",
+      "mainHandImbue": "BlessedWizardOil",
+      "defaultPotion": "MajorManaPotion",
+      "defaultConjured": "ConjuredDemonicRune",
+      "enchantedSigil": "WrathOfTheStormSigil",
+      "mildlyIrradiatedRejuvPot": true,
+      "miscConsumes": {
+        "elixirOfCoalescedRegret": true,
+        "greaterMarkOfTheDawn": true
+      },
+      "sealOfTheDawn": "SealOfTheDawnDamageR7",
+      "zanzaBuff": "CerebralCortexCompound",
+      "healthElixir": "ElixirOfFortitude",
+      "mageScroll": "MageScrollArcaneAccuracy"
+    },
+    "bonusStats": {
+      "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    },
+    "itemSwap": {
+      "items": [
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        }
+      ],
+      "prepullBonusStats": {
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+      }
+    },
+    "buffs": {
+      "rallyingCryOfTheDragonslayer": true,
+      "valorOfAzeroth": true,
+      "saygesFortune": "SaygesDamage",
+      "spiritOfZandalar": true,
+      "songflowerSerenade": true,
+      "warchiefsBlessing": true,
+      "moldarsMoxie": true,
+      "slipkiksSavvy": true
+    },
+    "talentsString": "-055000002-20353203102351351",
+    "profession1": "Tailoring",
+    "profession2": "Enchanting",
+    "cooldowns": {
+    },
+    "rotation": {
+      "type": "TypeAPL",
+      "prepullActions": [
+        {"action":{"castSpell":{"spellId":{"spellId":13033,"rank":4}}},"doAtValue":{"const":{"val":"-10s"}}},
+        {"action":{"castSpell":{"spellId":{"spellId":12051}}},"doAtValue":{"const":{"val":"-8s"}}}
+      ],
+      "priorityList": [
+        {"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":469238}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":13033,"rank":4}}}}},{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"15s"}}}}]}},"castSpell":{"spellId":{"spellId":13033,"rank":4}}}},
+        {"action":{"condition":{"or":{"vals":[{"auraIsKnown":{"auraId":{"spellId":1218700}}},{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"15%"}}}}]}},"castSpell":{"spellId":{"spellId":12051}}}},
+        {"action":{"castSpell":{"spellId":{"itemId":231282}}}},
+        {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":26297}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":425121}}}}}]}},"castSpell":{"spellId":{"itemId":230243}}}},
+        {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}},"castSpell":{"spellId":{"spellId":440802}}}},
+        {"hide":true,"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}},"castSpell":{"spellId":{"spellId":440802}}}},
+        {"action":{"autocastOtherCooldowns":{}}},
+        {"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":456398,"tag":2}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":428878,"tag":1}}},"rhs":{"const":{"val":"4"}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":456398,"tag":2}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"castSpell":{"spellId":{"spellId":2139}}}},
+        {"action":{"condition":{"runeIsEquipped":{"runeId":{"spellId":400615}}},"castSpell":{"spellId":{"spellId":10199,"rank":7}}}},
+        {"action":{"condition":{"or":{"vals":[{"and":{"vals":[{"auraIsActive":{"auraId":{"spellId":400647}}},{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"sourceUnit":{"type":"CurrentTarget"},"auraId":{"spellId":1218345}}},"rhs":{"const":{"val":"3"}}}}]}},{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":1218995}}},{"isExecutePhase":{"threshold":"E20"}}]}}]}},"castSpell":{"spellId":{"spellId":400640}}}},
+        {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400647}}},{"runeIsEquipped":{"runeId":{"spellId":428878}}},{"runeIsEquipped":{"runeId":{"spellId":428739}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}},{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"spellId":428878,"tag":1}}},"rhs":{"const":{"val":"4"}}}},{"cmp":{"op":"OpGe","lhs":{"spellCastTime":{"spellId":{"spellId":428878}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":428878}}},{"castSpell":{"spellId":{"spellId":428739}}}]}}},
+        {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400647}}},{"runeIsEquipped":{"runeId":{"spellId":428878}}},{"runeIsEquipped":{"runeId":{"spellId":400640}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}},{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"spellId":428878,"tag":1}}},"rhs":{"const":{"val":"4"}}}},{"cmp":{"op":"OpGe","lhs":{"spellCastTime":{"spellId":{"spellId":428878}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":428878}}},{"castSpell":{"spellId":{"spellId":400640}}}]}}},
+        {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400647}}},{"runeIsEquipped":{"runeId":{"spellId":401502}}},{"runeIsEquipped":{"runeId":{"spellId":428739}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":401502}}},{"castSpell":{"spellId":{"spellId":428739}}}]}}},
+        {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400647}}},{"runeIsEquipped":{"runeId":{"spellId":401502}}},{"runeIsEquipped":{"runeId":{"spellId":400640}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}},{"cmp":{"op":"OpGe","lhs":{"spellCastTime":{"spellId":{"spellId":401502}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":401502}}},{"castSpell":{"spellId":{"spellId":400640}}}]}}},
+        {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400647}}},{"runeIsEquipped":{"runeId":{"spellId":412532}}},{"runeIsEquipped":{"runeId":{"spellId":428739}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}},{"cmp":{"op":"OpGe","lhs":{"spellCastTime":{"spellId":{"spellId":412532}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":412532}}},{"castSpell":{"spellId":{"spellId":428739}}}]}}},
+        {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400647}}},{"runeIsEquipped":{"runeId":{"spellId":412532}}},{"runeIsEquipped":{"runeId":{"spellId":400640}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}},{"cmp":{"op":"OpGe","lhs":{"spellCastTime":{"spellId":{"spellId":412532}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":412532}}},{"castSpell":{"spellId":{"spellId":400640}}}]}}},
+        {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400647}}},{"runeIsEquipped":{"runeId":{"spellId":428739}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}},{"cmp":{"op":"OpGe","lhs":{"spellCastTime":{"spellId":{"spellId":25304,"rank":11}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":10181,"rank":10}}},{"castSpell":{"spellId":{"spellId":428739}}}]}}},
+        {"action":{"condition":{"and":{"vals":[{"runeIsEquipped":{"runeId":{"spellId":400647}}},{"runeIsEquipped":{"runeId":{"spellId":400640}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":400647}}},"rhs":{"const":{"val":"1"}}}},{"cmp":{"op":"OpGe","lhs":{"spellCastTime":{"spellId":{"spellId":25304,"rank":11}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":10181,"rank":10}}},{"castSpell":{"spellId":{"spellId":400640}}}]}}},
+        {"action":{"castSpell":{"spellId":{"spellId":401556}}}},
+        {"action":{"condition":{"and":{"vals":[{"not":{"val":{"spellIsReady":{"spellId":{"spellId":425121}}}}},{"not":{"val":{"spellIsReady":{"spellId":{"spellId":428739}}}}},{"or":{"vals":[{"not":{"val":{"runeIsEquipped":{"runeId":{"spellId":440802}}}}},{"not":{"val":{"spellIsReady":{"spellId":{"spellId":440802}}}}}]}}]}},"castSpell":{"spellId":{"spellId":12472}}}},
+        {"action":{"condition":{"or":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"spellId":428878,"tag":1}}},"rhs":{"const":{"val":"4"}}}},{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"spellId":428878,"tag":1}}},"rhs":{"spellCastTime":{"spellId":{"spellId":428878}}}}}]}},"castSpell":{"spellId":{"spellId":428878}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":412532}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":401502}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":10181,"rank":10}}}}
+      ]
+    },
+    "reactionTimeMs": 200,
+    "distanceFromTarget": 20,
+    "isbUsingShadowflame": true,
+    "isbSbFrequency": 3,
+    "isbCrit": 25,
+    "isbWarlocks": 1,
+    "healingModel": {
+    },
+    "mage": {
+      "options": {
+        "armor": "IceArmor"
+      }
+    }
+  },
+  "encounter": {
+    "duration": 60,
+    "durationVariation": 15,
+    "executeProportion20": 0.2,
+    "executeProportion25": 0.25,
+    "executeProportion35": 0.35,
+    "targets": [
+      {
+        "id": 213336,
+        "name": "Level 60",
+        "level": 63,
+        "mobType": "MobTypeUndead",
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,805,0,0,0,0,0,0,0,0,3731,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0],
+        "minBaseDamage": 3000,
+        "damageSpread": 0.3333,
+        "swingSpeed": 2,
+        "parryHaste": true
+      }
+    ]
+  }
+}

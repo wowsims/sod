@@ -7,7 +7,7 @@ import { TalentsPicker } from '../../talents/talents_picker';
 import { EventID, TypedEvent } from '../../typed_event';
 import { SavedDataManager } from '../saved_data_manager';
 import { SimTab } from '../sim_tab';
-import { PresetConfigurationPicker } from './preset_configuration_picker';
+import { PresetConfigurationCategory, PresetConfigurationPicker } from './preset_configuration_picker';
 
 export class TalentsTab extends SimTab {
 	protected simUI: IndividualSimUI<Spec>;
@@ -32,7 +32,7 @@ export class TalentsTab extends SimTab {
 
 	protected buildTabContent() {
 		this.buildTalentsPicker(this.leftPanel);
-		
+
 		this.buildPresetConfigurationPicker();
 		this.buildSavedTalentsPicker();
 	}
@@ -51,7 +51,7 @@ export class TalentsTab extends SimTab {
 	}
 
 	private buildPresetConfigurationPicker() {
-		new PresetConfigurationPicker(this.rightPanel, this.simUI, ['talents']);
+		new PresetConfigurationPicker(this.rightPanel, this.simUI, [PresetConfigurationCategory.Talents]);
 	}
 
 	private buildSavedTalentsPicker() {

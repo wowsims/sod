@@ -19,7 +19,7 @@ import { SimSettingCategories } from './constants/sim_settings';
 import * as Tooltips from './constants/tooltips';
 import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
-import { PresetBuild, PresetGear, PresetRotation } from './preset_utils';
+import { PresetBuild, PresetEncounter, PresetGear, PresetRotation, PresetSettings } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
@@ -144,6 +144,7 @@ export interface IndividualSimUIConfig<SpecType extends Spec> extends PlayerConf
 		gear: Array<PresetGear>;
 		talents: Array<SavedDataConfig<Player<any>, SavedTalents>>;
 		rotations: Array<PresetRotation>;
+		settings?: Array<PresetSettings>;
 		builds?: Array<PresetBuild>;
 	};
 
