@@ -99,8 +99,8 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 					activeCurse.Deactivate(sim)
 				}
 
-				if hasInvocationRune && dot.IsActive() {
-					warlock.InvocationRefresh(sim, dot)
+				if hasInvocationRune {
+					warlock.InvocationRefresh(sim, dot, target)
 				}
 
 				dot.Apply(sim)
