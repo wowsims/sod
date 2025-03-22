@@ -675,8 +675,8 @@ class EpWeightsMenu extends BaseModal {
 			<td class="current-ep"></td>
 		`;
 
-		const includeToggleCell = row.querySelector('.swcalc-include-toggle') as HTMLElement;
 		if (this.isEpStat(stat)) {
+			const includeToggleCell = row.querySelector('.swcalc-include-toggle') as HTMLElement;
 			const cb = document.createElement('input');
 			cb.type = 'checkbox';
 			if (stat.isStat() && this.epReferenceStat == stat.getStat()) {
