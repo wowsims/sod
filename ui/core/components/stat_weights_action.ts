@@ -659,7 +659,8 @@ class EpWeightsMenu extends BaseModal {
 
 	private makeTableRow(stat: UnitStat): HTMLElement {
 		const row = document.createElement('tr');
-		const result = this.simUI.prevEpSimResult;
+		const statIsCalculated = !(stat.isStat() ? this.isStatExcludedFromCalc(stat.getStat()) : this.isPseudostatExcludedFromCalc(stat.getPseudoStat()));
+		const result = statIsCalculated ? this.simUI.prevEpSimResult : null;
 		const epRatios = this.simUI.player.getEpRatios();
 		const rowTotalEp = scaledEpValue(stat, epRatios, result);
 		row.innerHTML = `
@@ -682,7 +683,7 @@ class EpWeightsMenu extends BaseModal {
 				cb.checked = true;
 				cb.disabled = true;
 			} else {
-				cb.checked = !(stat.isStat() ? this.isStatExcludedFromCalc(stat.getStat()) : this.isPseudostatExcludedFromCalc(stat.getPseudoStat()));
+				cb.checked = statIsCalculated;
 				cb.addEventListener('change', () => this.setStatExcluded(stat, !cb.checked));
 			}
 			includeToggleCell.appendChild(cb);
