@@ -48,7 +48,7 @@ func (shaman *Shaman) newSearingTotemSpellConfig(rank int) core.SpellConfig {
 
 	attackSpell := shaman.RegisterSpell(core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_ShamanSearingTotemAttack,
-		ActionID:       core.ActionID{SpellID: SearingTotemAttackSpellId[rank]},
+		ActionID:       core.ActionID{SpellID: SearingTotemSpellId[rank]}.WithTag(1),
 		SpellSchool:    core.SpellSchoolFire,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskEmpty,

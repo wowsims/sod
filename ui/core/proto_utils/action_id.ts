@@ -455,6 +455,7 @@ export class ActionId {
 				break;
 			// Don't do anything for these but avoid adding "(??)"
 			case 'S03 - Item - T1 - Shaman - Tank 6P Bonus':
+			case 'Searing Totem':
 				break;
 			case 'Vampiric Touch':
 				// Vampiric touch provided to the party
