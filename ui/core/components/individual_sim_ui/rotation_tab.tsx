@@ -16,7 +16,7 @@ import { SavedDataManager } from '../saved_data_manager';
 import { SimTab } from '../sim_tab';
 import { APLRotationPicker } from './apl_rotation_picker';
 import { CooldownsPicker } from './cooldowns_picker';
-import { PresetConfigurationPicker } from './preset_configuration_picker';
+import { PresetConfigurationCategory, PresetConfigurationPicker } from './preset_configuration_picker';
 
 export class RotationTab extends SimTab {
 	protected simUI: IndividualSimUI<any>;
@@ -192,7 +192,7 @@ export class RotationTab extends SimTab {
 	}
 
 	private buildPresetConfigurationPicker() {
-		new PresetConfigurationPicker(this.rightPanel, this.simUI, ['rotation']);
+		new PresetConfigurationPicker(this.rightPanel, this.simUI, [PresetConfigurationCategory.Rotation]);
 	}
 
 	private buildSavedDataPickers() {

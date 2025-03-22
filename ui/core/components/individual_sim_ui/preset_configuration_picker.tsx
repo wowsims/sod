@@ -11,12 +11,13 @@ import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
 import { ContentBlock } from '../content_block';
 
-enum PresetConfigurationCategory {
-	epWeights = 'epWeights',
-	gear = 'gear',
-	talents = 'talents',
-	rotation = 'rotation',
-	encounter = 'encounter',
+export enum PresetConfigurationCategory {
+	EPWeights = 'epWeights',
+	Gear = 'gear',
+	Talents = 'talents',
+	Rotation = 'rotation',
+	Encounter = 'encounter',
+	Settings = 'settings',
 }
 
 export class PresetConfigurationPicker extends Component {

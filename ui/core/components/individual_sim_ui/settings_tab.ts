@@ -26,7 +26,7 @@ import { SimTab } from '../sim_tab';
 import { IsbConfig } from './../other_inputs';
 import { ConsumesPicker } from './consumes_picker';
 import { ItemSwapPicker } from './item_swap_picker';
-import { PresetConfigurationPicker } from './preset_configuration_picker';
+import { PresetConfigurationCategory, PresetConfigurationPicker } from './preset_configuration_picker';
 
 export class SettingsTab extends SimTab {
 	protected simUI: IndividualSimUI<Spec>;
@@ -316,7 +316,7 @@ export class SettingsTab extends SimTab {
 	}
 
 	private buildPresetConfigurationPicker() {
-		new PresetConfigurationPicker(this.rightPanel, this.simUI, ['encounter']);
+		new PresetConfigurationPicker(this.rightPanel, this.simUI, [PresetConfigurationCategory.Encounter, PresetConfigurationCategory.Settings]);
 	}
 
 	private buildSavedDataPickers() {
