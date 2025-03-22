@@ -568,10 +568,10 @@ class EpWeightsMenu extends BaseModal {
 		if (this.swSettings.excludedFromCalc) {
 			const oldWeights = this.simUI.player.getEpWeights();
 			for (const stat of this.swSettings.excludedFromCalc.stats) {
-				newWeights.setStat(stat, oldWeights.getStat(stat));
+				newWeights = newWeights.withStat(stat, oldWeights.getStat(stat));
 			}
 			for (const pseudoStat of this.swSettings.excludedFromCalc.pseudoStats) {
-				newWeights.setPseudostat(pseudoStat, oldWeights.getPseudoStat(pseudoStat));
+				newWeights = newWeights.withPseudoStat(pseudoStat, oldWeights.getPseudoStat(pseudoStat));
 			}
 		}
 		this.simUI.player.setEpWeights(TypedEvent.nextEventID(), newWeights);
