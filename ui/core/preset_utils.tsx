@@ -79,21 +79,7 @@ export interface PresetEncounter extends PresetBase {
 }
 export interface PresetEncounterOptions extends PresetOptionsBase {}
 
-type PresetPlayerOptions = Partial<
-	Pick<
-		PlayerProto,
-		| 'distanceFromTarget'
-		| 'profession1'
-		| 'profession2'
-		| 'enableItemSwap'
-		| 'itemSwap'
-		| 'isbUsingShadowflame'
-		| 'isbSbFrequency'
-		| 'isbCrit'
-		| 'isbWarlocks'
-		| 'isbSpriests'
-	>
->;
+type PresetPlayerOptions = Partial<Pick<PlayerProto, 'distanceFromTarget' | 'profession1' | 'profession2' | 'enableItemSwap' | 'itemSwap'>>;
 
 export interface PresetSettings extends PresetBase {
 	level?: number;
