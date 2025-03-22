@@ -17,6 +17,7 @@ const ArmorPenPerPercentArmor = 13.99
 
 const MaxMeleeAttackRange = 5.0        // in yards
 const MinRangedAttackRange = 12.0      // in yards
+const MaxShortSpellRange = 20.0        // in yards
 const MaxShortRangedAttackRange = 30.0 // in yards
 const MaxRangedAttackRange = 40.0      // in yards
 

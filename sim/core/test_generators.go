@@ -106,19 +106,18 @@ type EncounterCombo struct {
 	Encounter *proto.Encounter
 }
 type SettingsCombos struct {
-	Class       proto.Class
-	Races       []proto.Race
-	Level       int32
-	GearSets    []GearSetCombo
-	TalentSets  []TalentsCombo
-	SpecOptions []SpecOptionsCombo
-	Rotations   []RotationCombo
-	Buffs       []BuffsCombo
-	Encounters  []EncounterCombo
-	SimOptions  *proto.SimOptions
-	IsRanged    bool
-	IsHealer    bool
-	Cooldowns   *proto.Cooldowns
+	Class            proto.Class
+	Races            []proto.Race
+	Level            int32
+	GearSets         []GearSetCombo
+	TalentSets       []TalentsCombo
+	SpecOptions      []SpecOptionsCombo
+	Rotations        []RotationCombo
+	Buffs            []BuffsCombo
+	Encounters       []EncounterCombo
+	SimOptions       *proto.SimOptions
+	IsHealer         bool
+	StartingDistance float64
 }
 
 func (combos *SettingsCombos) NumTests() int {
@@ -182,9 +181,8 @@ func (combos *SettingsCombos) GetTest(testIdx int) (string, *proto.ComputeStatsR
 				Consumes:           consumesCombo.Consumes,
 				Buffs:              buffsCombo.Player,
 				Profession1:        proto.Profession_Engineering,
-				Cooldowns:          combos.Cooldowns,
 				Rotation:           rotationsCombo.Rotation,
-				DistanceFromTarget: TernaryFloat64(combos.IsRanged, 20, MaxMeleeAttackRange),
+				DistanceFromTarget: combos.StartingDistance,
 				ReactionTimeMs:     150,
 				ChannelClipDelayMs: 50,
 			}, specOptionsCombo.SpecOptions),
@@ -296,7 +294,6 @@ type ItemsTestGenerator struct {
 	SimOptions *proto.SimOptions
 
 	IsHealer bool
-	IsRanged bool
 
 	// Some fields are populated automatically.
 	ItemFilter ItemFilter
@@ -399,20 +396,20 @@ func (generator *CombinedTestGenerator) GetTest(testIdx int) (string, *proto.Com
 type CharacterSuiteConfig struct {
 	Class proto.Class
 
-	Race        proto.Race
-	Level       int32
-	Phase       int32
-	GearSet     GearSetCombo
-	SpecOptions SpecOptionsCombo
-	Talents     string
-	Rotation    RotationCombo
+	Race             proto.Race
+	Level            int32
+	Phase            int32
+	GearSet          GearSetCombo
+	SpecOptions      SpecOptionsCombo
+	Talents          string
+	Rotation         RotationCombo
+	StartingDistance float64
 
 	Buffs    BuffsCombo
 	Consumes ConsumesCombo
 
 	IsHealer        bool
 	IsTank          bool
-	IsRanged        bool
 	InFrontOfTarget bool
 
 	OtherRaces       []proto.Race
@@ -425,8 +422,6 @@ type CharacterSuiteConfig struct {
 
 	StatsToWeigh    []proto.Stat
 	EPReferenceStat proto.Stat
-
-	Cooldowns *proto.Cooldowns
 }
 
 func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGenerator {
@@ -444,6 +439,8 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 				panic("You must provide a Phase for level 60 tests")
 			}
 		}
+
+		startingDistance := TernaryFloat64(config.StartingDistance > 0, config.StartingDistance, MaxMeleeAttackRange)
 
 		allRaces := append(config.OtherRaces, config.Race)
 		allGearSets := append(config.OtherGearSets, config.GearSet)
@@ -468,7 +465,7 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 				Rotation:      config.Rotation.Rotation,
 
 				InFrontOfTarget:    config.InFrontOfTarget,
-				DistanceFromTarget: TernaryFloat64(config.IsRanged, 20, MaxMeleeAttackRange),
+				DistanceFromTarget: startingDistance,
 				ReactionTimeMs:     150,
 				ChannelClipDelayMs: 50,
 			},
@@ -520,11 +517,10 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 								Consumes: allConsumeOptions,
 							},
 						},
-						IsHealer:   config.IsHealer,
-						IsRanged:   config.IsRanged,
-						Encounters: MakeDefaultEncounterCombos(config.Level),
-						SimOptions: DefaultSimTestOptions,
-						Cooldowns:  config.Cooldowns,
+						IsHealer:         config.IsHealer,
+						StartingDistance: startingDistance,
+						Encounters:       MakeDefaultEncounterCombos(config.Level),
+						SimOptions:       DefaultSimTestOptions,
 					},
 				},
 				{
@@ -538,7 +534,6 @@ func FullCharacterTestSuiteGenerator(configs []CharacterSuiteConfig) []TestGener
 						SimOptions: DefaultSimTestOptions,
 						ItemFilter: config.ItemFilter,
 						IsHealer:   config.IsHealer,
-						IsRanged:   config.IsRanged,
 					},
 				},
 			},

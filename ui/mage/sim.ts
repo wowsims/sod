@@ -80,8 +80,13 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		// Default talents.
 		talents: Presets.DefaultBuild.talents!.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultBuild.settings!.options! as SpecOptions<Spec.SpecMage>,
-		other: Presets.OtherDefaults,
+		specOptions: Presets.DefaultBuild.settings!.specOptions! as SpecOptions<Spec.SpecMage>,
+		other: {
+			// Default distance from target.
+			distanceFromTarget: Presets.DefaultBuild.settings?.playerOptions?.distanceFromTarget,
+			profession1: Presets.DefaultBuild.settings?.playerOptions?.profession1,
+			profession2: Presets.DefaultBuild.settings?.playerOptions?.profession2,
+		},
 		// Default raid/party buffs settings.
 		raidBuffs: Presets.DefaultBuild.settings!.raidBuffs!,
 		partyBuffs: Presets.DefaultBuild.settings!.partyBuffs!,

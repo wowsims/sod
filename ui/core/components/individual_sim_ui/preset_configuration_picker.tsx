@@ -5,8 +5,9 @@ import { SpecOptions } from '../../../core/proto_utils/utils';
 import { IndividualSimUI } from '../../individual_sim_ui';
 import { PresetBuild } from '../../preset_utils';
 import { APLRotation, APLRotation_Type } from '../../proto/apl';
-import { Consumes, Debuffs, Encounter, EquipmentSpec, HealingModel, IndividualBuffs, RaidBuffs, Spec } from '../../proto/common';
+import { Consumes, Debuffs, Encounter, EquipmentSpec, HealingModel, IndividualBuffs, ItemSwap, RaidBuffs, Spec } from '../../proto/common';
 import { SavedTalents } from '../../proto/ui';
+import { Stats } from '../../proto_utils/stats';
 import { TypedEvent } from '../../typed_event';
 import { Component } from '../component';
 import { ContentBlock } from '../content_block';
@@ -64,7 +65,7 @@ export class PresetConfigurationPicker extends Component {
 					</button>,
 				);
 
-				const categories = Object.keys(build).filter(c => !['name', 'encounter', 'settings'].includes(c) && build[c as PresetConfigurationCategory]);
+				let categories = Object.keys(build).filter(c => !['name', 'encounter', 'settings'].includes(c) && build[c as PresetConfigurationCategory]);
 				if (build.encounter?.encounter) {
 					categories.push('encounter');
 				}
@@ -80,9 +81,9 @@ export class PresetConfigurationPicker extends Component {
 						if (c === 'options') {
 							categories.push('Class/Spec Options');
 						} else if (c === 'consumes') {
-							categories.push('consumables');
+							categories.push('Consumables');
 						} else {
-							categories.push(c);
+							categories.push('Other Settings');
 						}
 					});
 				}
@@ -91,12 +92,14 @@ export class PresetConfigurationPicker extends Component {
 					categories.push('buffs');
 				}
 
+				categories = [...new Set(categories)].sort();
+
 				tippy(dataElemRef.value!, {
 					content: (
 						<>
 							<p className="mb-1">This preset affects the following settings:</p>
 							<ul className="mb-0 text-capitalize">
-								{categories.sort().map(category => (
+								{categories.map(category => (
 									<li>{category}</li>
 								))}
 							</ul>
@@ -138,10 +141,21 @@ export class PresetConfigurationPicker extends Component {
 			if (settings) {
 				if (settings.level) this.simUI.player.setLevel(eventID, settings.level);
 				if (settings.race) this.simUI.player.setRace(eventID, settings.race);
-				if (settings.options) {
+				if (settings.playerOptions?.profession1) this.simUI.player.setProfession1(eventID, settings.playerOptions.profession1);
+				if (settings.playerOptions?.profession2) this.simUI.player.setProfession2(eventID, settings.playerOptions.profession2);
+				if (settings.playerOptions?.distanceFromTarget) this.simUI.player.setDistanceFromTarget(eventID, settings.playerOptions.distanceFromTarget);
+				if (settings.playerOptions?.enableItemSwap !== undefined && settings.playerOptions?.itemSwap) {
+					this.simUI.player.itemSwapSettings.setItemSwapSettings(
+						eventID,
+						settings.playerOptions.enableItemSwap,
+						this.simUI.sim.db.lookupItemSwap(settings.playerOptions.itemSwap),
+						Stats.fromProto(settings.playerOptions.itemSwap.prepullBonusStats),
+					);
+				}
+				if (settings.specOptions) {
 					this.simUI.player.setSpecOptions(eventID, {
 						...this.simUI.player.getSpecOptions(),
-						...settings.options,
+						...settings.specOptions,
 					});
 				}
 				if (settings.buffs) this.simUI.player.setBuffs(eventID, settings.buffs);
@@ -183,7 +197,18 @@ export class PresetConfigurationPicker extends Component {
 		const hasHealingModel = encounter?.healingModel ? HealingModel.equals(encounter.healingModel, this.simUI.player.getHealingModel()) : true;
 		const hasLevel = settings?.level ? this.simUI.player.getLevel() === settings.level : true;
 		const hasRace = settings?.race ? this.simUI.player.getRace() === settings.race : true;
-		const hasOptions = settings?.options ? this.containsAllFields(this.simUI.player.getSpecOptions(), settings.options) : true;
+		const hasProfession1 = settings?.playerOptions?.profession1 === undefined || this.simUI.player.getProfession1() === settings.playerOptions.profession1;
+		const hasProfession2 = settings?.playerOptions?.profession2 === undefined || this.simUI.player.getProfession2() === settings.playerOptions.profession2;
+		const hasDistanceFromTarget =
+			settings?.playerOptions?.distanceFromTarget === undefined ||
+			this.simUI.player.getDistanceFromTarget() === settings.playerOptions.distanceFromTarget;
+		const hasEnableItemSwap =
+			settings?.playerOptions?.enableItemSwap === undefined ||
+			this.simUI.player.itemSwapSettings.getEnableItemSwap() === settings.playerOptions.enableItemSwap;
+		const hasItemSwap =
+			settings?.playerOptions?.itemSwap === undefined ||
+			ItemSwap.equals(this.simUI.player.itemSwapSettings?.toProto(), settings?.playerOptions?.itemSwap);
+		const hasSpecOptions = settings?.specOptions ? this.containsAllFields(this.simUI.player.getSpecOptions(), settings.specOptions) : true;
 		const hasConsumes = settings?.consumes ? Consumes.equals(this.simUI.player.getConsumes(), settings.consumes) : true;
 		const hasRaidBuffs = settings?.raidBuffs ? RaidBuffs.equals(this.simUI.sim.raid.getBuffs(), settings.raidBuffs) : true;
 		const hasBuffs = settings?.buffs ? IndividualBuffs.equals(this.simUI.player.getBuffs(), settings.buffs) : true;
@@ -198,7 +223,12 @@ export class PresetConfigurationPicker extends Component {
 			hasHealingModel &&
 			hasLevel &&
 			hasRace &&
-			hasOptions &&
+			hasProfession1 &&
+			hasProfession2 &&
+			hasDistanceFromTarget &&
+			hasEnableItemSwap &&
+			hasItemSwap &&
+			hasSpecOptions &&
 			hasConsumes &&
 			hasRaidBuffs &&
 			hasBuffs &&

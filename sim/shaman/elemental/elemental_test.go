@@ -20,6 +20,7 @@ func TestElemental(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
+<<<<<<< HEAD
 			Talents:     Phase1Talents,
 			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_1"),
 			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_1"),
@@ -27,6 +28,15 @@ func TestElemental(t *testing.T) {
 			Consumes:    Phase1Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 			IsRanged:    true,
+=======
+			Talents:          Phase1Talents,
+			GearSet:          core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_1"),
+			Rotation:         core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_1"),
+			Buffs:            core.FullBuffsPhase1,
+			Consumes:         Phase1Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
+			StartingDistance: core.MaxShortSpellRange,
+>>>>>>> 60560aba4bca9f0213c928b9923cee0bd76e8df5
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -38,6 +48,7 @@ func TestElemental(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
+<<<<<<< HEAD
 			Talents:     Phase2Talents,
 			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_2"),
 			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_2"),
@@ -45,6 +56,15 @@ func TestElemental(t *testing.T) {
 			Consumes:    Phase2Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 			IsRanged:    true,
+=======
+			Talents:          Phase2Talents,
+			GearSet:          core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_2"),
+			Rotation:         core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_2"),
+			Buffs:            core.FullBuffsPhase2,
+			Consumes:         Phase2Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
+			StartingDistance: core.MaxShortSpellRange,
+>>>>>>> 60560aba4bca9f0213c928b9923cee0bd76e8df5
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -56,6 +76,7 @@ func TestElemental(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
+<<<<<<< HEAD
 			Talents:     Phase3Talents,
 			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_3"),
 			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_3"),
@@ -63,6 +84,15 @@ func TestElemental(t *testing.T) {
 			Consumes:    Phase3Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 			IsRanged:    true,
+=======
+			Talents:          Phase3Talents,
+			GearSet:          core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_3"),
+			Rotation:         core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_3"),
+			Buffs:            core.FullBuffsPhase3,
+			Consumes:         Phase3Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
+			StartingDistance: core.MaxShortSpellRange,
+>>>>>>> 60560aba4bca9f0213c928b9923cee0bd76e8df5
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -75,6 +105,7 @@ func TestElemental(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
+<<<<<<< HEAD
 			Talents:     Phase4Talents,
 			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_4"),
 			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_4"),
@@ -82,6 +113,15 @@ func TestElemental(t *testing.T) {
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 			IsRanged:    true,
+=======
+			Talents:          Phase4Talents,
+			GearSet:          core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_4"),
+			Rotation:         core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_4"),
+			Buffs:            core.FullBuffsPhase4,
+			Consumes:         Phase4Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
+			StartingDistance: core.MaxShortSpellRange,
+>>>>>>> 60560aba4bca9f0213c928b9923cee0bd76e8df5
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -94,6 +134,7 @@ func TestElemental(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
+<<<<<<< HEAD
 			Talents:     Phase4Talents,
 			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_5"),
 			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_5"),
@@ -101,6 +142,15 @@ func TestElemental(t *testing.T) {
 			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 			IsRanged:    true,
+=======
+			Talents:          Phase4Talents,
+			GearSet:          core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_5"),
+			Rotation:         core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_5"),
+			Buffs:            core.FullBuffsPhase5,
+			Consumes:         Phase5Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
+			StartingDistance: core.MaxShortSpellRange,
+>>>>>>> 60560aba4bca9f0213c928b9923cee0bd76e8df5
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -113,6 +163,7 @@ func TestElemental(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceOrc},
 
+<<<<<<< HEAD
 			Talents:     Phase4Talents,
 			GearSet:     core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_6"),
 			Rotation:    core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_6"),
@@ -120,6 +171,15 @@ func TestElemental(t *testing.T) {
 			Consumes:    Phase5Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
 			IsRanged:    true,
+=======
+			Talents:          Phase4Talents,
+			GearSet:          core.GetGearSet("../../../ui/elemental_shaman/gear_sets", "phase_6"),
+			Rotation:         core.GetAplRotation("../../../ui/elemental_shaman/apls", "phase_6"),
+			Buffs:            core.FullBuffsPhase6,
+			Consumes:         Phase5Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Adaptive", SpecOptions: PlayerOptionsAdaptive},
+			StartingDistance: core.MaxShortSpellRange,
+>>>>>>> 60560aba4bca9f0213c928b9923cee0bd76e8df5
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
