@@ -52,6 +52,10 @@ func TestBM(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, "../../ui/hunter/builds/beast_mastery", "p5_melee_dw_pet", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, "../../ui/hunter/builds/beast_mastery", "p6_melee_dw_pet", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, "../../ui/hunter/builds/beast_mastery", "p7_ranged_ks_pet", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, "../../ui/hunter/builds/beast_mastery", "p7_melee_dw_pet", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 
@@ -112,6 +116,12 @@ func TestMM(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, "../../ui/hunter/builds/marksmanship", "p4_ranged_22_lw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, "../../ui/hunter/builds/marksmanship", "p5_ranged_311_lw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, "../../ui/hunter/builds/marksmanship", "p6_ranged_311_lw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, "../../ui/hunter/builds/marksmanship", "p6_ranged_ks_lw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, "../../ui/hunter/builds/marksmanship", "p6_ranged_21_lw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, "../../ui/hunter/builds/marksmanship", "p6_ranged_ks_lw", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 
@@ -189,6 +199,12 @@ func TestSV(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, "../../ui/hunter/builds/survival", "p5_melee_2h_pet", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, "../../ui/hunter/builds/survival", "p6_melee_2h_lw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, "../../ui/hunter/builds/survival", "p6_melee_2h_pet", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, "../../ui/hunter/builds/survival", "p7_melee_2h_lw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, "../../ui/hunter/builds/survival", "p7_melee_dw_lw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, "../../ui/hunter/builds/survival", "p7_weave_2h_lw", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 
