@@ -194,8 +194,7 @@ var ItemDenyList = map[int32]struct{}{
 	241011: {}, // https://www.wowhead.com/classic-ptr/item=241011/greatstaff-of-fealty
 	241015: {}, // https://www.wowhead.com/classic-ptr/item=241015/aegis-of-the-scarlet-bastion
 	241034: {}, // https://www.wowhead.com/classic-ptr/item=241034/heart-of-light
-	241038: {}, //https://www.wowhead.com/classic-ptr/item=241038/sir-dornels-didgeridoo
-	241068: {}, // https://www.wowhead.com/classic-ptr/item=241068/stiltzs-standard
+	241038: {}, // https://www.wowhead.com/classic-ptr/item=241038/sir-dornels-didgeridoo
 	241082: {}, // https://www.wowhead.com/classic-ptr/item=241082/ashbringer
 	241123: {}, // https://www.wowhead.com/classic-ptr/item=241123/reborn-dagger
 }

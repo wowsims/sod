@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 	"github.com/wowsims/sod/sim/druid"
 	"github.com/wowsims/sod/sim/mage"
 	"github.com/wowsims/sod/sim/paladin"
@@ -14,8 +15,11 @@ import (
 )
 
 const (
+	/* ! Please keep constants ordered by ID ! */
+
 	AbandonedExperiment = 241037
 	InfusionOfSouls     = 241039
+	StiltzsStandard     = 241068
 	HandOfRebornJustice = 242310
 )
 
@@ -152,6 +156,10 @@ func init() {
 			}
 		})
 	})
+
+	// https://www.wowhead.com/classic-ptr/item=241068/stiltzs-standard
+	// Use: Throw down the Standard of Stiltz, increasing the maximum health of all nearby allies by 1000 for 20 sec. (2 Min Cooldown)
+	core.NewSimpleStatDefensiveTrinketEffect(StiltzsStandard, stats.Stats{stats.Health: 1000}, time.Second*20, time.Minute*2)
 
 	core.AddEffectsToTest = true
 }
