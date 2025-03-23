@@ -188,10 +188,10 @@ func (warrior *Warrior) applyFrenziedAssault() {
 		Label:    "Frenzied Assault",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, 1.3)
+			warrior.MultiplyMeleeSpeed(sim, 1.4)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, 1/1.3)
+			warrior.MultiplyMeleeSpeed(sim, 1/1.4)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskWhiteHit) && result.Landed() {
@@ -491,8 +491,8 @@ func (warrior *Warrior) applySingleMindedFury() {
 		Duration:  time.Second * 10,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			warrior.MultiplyAttackSpeed(sim, 1/(1+0.03*float64(oldStacks)))
-			warrior.MultiplyAttackSpeed(sim, 1+0.03*float64(newStacks))
+			warrior.MultiplyAttackSpeed(sim, 1/(1+0.04*float64(oldStacks)))
+			warrior.MultiplyAttackSpeed(sim, 1+0.04*float64(newStacks))
 		},
 	})
 

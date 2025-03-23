@@ -443,6 +443,16 @@ var spellModMap = map[SpellModType]*SpellModFunctions{
 		Remove: removeBonusThreatFlat,
 	},
 
+	// SpellMod_DebuffDuration_Flat: {
+	// 	Apply:  applyDebuffDurationFlat,
+	// 	Remove: removeDebuffDurationFlat,
+	// },
+
+	SpellMod_BuffDuration_Flat: {
+		Apply:  applyBuffDurationFlat,
+		Remove: removeBuffDurationFlat,
+	},
+
 	SpellMod_Custom: {
 		// Doesn't have dedicated Apply/Remove functions as ApplyCustom/RemoveCustom is handled in buildMod()
 	},
@@ -712,4 +722,40 @@ func applyBonusThreatFlat(mod *SpellMod, spell *Spell) {
 
 func removeBonusThreatFlat(mod *SpellMod, spell *Spell) {
 	spell.FlatThreatBonus -= mod.floatValue
+}
+
+// func applyDebuffDurationFlat(mod *SpellMod, spell *Spell) {
+// 	debuffAuraArray := spell.RelatedAuraArrays[mod.keyValue]
+
+// 	if debuffAuraArray == nil {
+// 		panic("No debuff found for key: " + mod.keyValue)
+// 	}
+
+// 	for _, debuffAura := range debuffAuraArray {
+// 		if debuffAura != nil {
+// 			debuffAura.Duration += mod.timeValue
+// 		}
+// 	}
+// }
+
+// func removeDebuffDurationFlat(mod *SpellMod, spell *Spell) {
+// 	debuffAuraArray := spell.RelatedAuraArrays[mod.keyValue]
+
+// 	if debuffAuraArray == nil {
+// 		panic("No debuff found for key: " + mod.keyValue)
+// 	}
+
+// 	for _, debuffAura := range debuffAuraArray {
+// 		if debuffAura != nil {
+// 			debuffAura.Duration -= mod.timeValue
+// 		}
+// 	}
+// }
+
+func applyBuffDurationFlat(mod *SpellMod, spell *Spell) {
+	spell.RelatedSelfBuff.Duration += mod.timeValue
+}
+
+func removeBuffDurationFlat(mod *SpellMod, spell *Spell) {
+	spell.RelatedSelfBuff.Duration -= mod.timeValue
 }
