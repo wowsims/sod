@@ -14,6 +14,7 @@ const (
 	CraftOfTheShadows              = 227280
 	SkyridersMasterworkStormhammer = 227886
 	DukesDomain                    = 227915
+	HandOfInjustice                = 227990
 	AccursedChalice                = 228078
 	GerminatingPoisonseed          = 228081
 	GloamingTreeheart              = 228083
@@ -73,6 +74,31 @@ func init() {
 	// https://www.wowhead.com/classic/item=228083/gloaming-treeheart
 	// Use: Increases your Nature Resistance by 90.  Effect lasts for 30 sec. (3 Min Cooldown)
 	core.NewSimpleStatDefensiveTrinketEffect(GloamingTreeheart, stats.Stats{stats.NatureResistance: 90}, time.Second*30, time.Minute*3)
+
+	// https://www.wowhead.com/classic/item=227990/hand-of-injustice
+	// Equip: 2% chance on ranged hit to gain 1 extra attack. (Proc chance: 2%, 2s cooldown)
+	core.NewItemEffect(HandOfInjustice, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if !character.AutoAttacks.AutoSwingRanged {
+			return
+		}
+
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Hand of Injustice Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskRanged,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			ProcChance:        0.02,
+			ICD:               time.Second * 2,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				// Extra ranged attacks do not reset the swing timer confirmed by Zirene
+				character.AutoAttacks.StoreExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
+			},
+		})
+
+		character.ItemSwap.RegisterProc(HandOfInjustice, triggerAura)
+	})
 
 	// https://www.wowhead.com/classic/item=228089/woodcarved-moonstalker
 	// Use: Increases your Strength by 60.  Effect lasts for 15 sec. (1 Min, 30 Sec Cooldown)

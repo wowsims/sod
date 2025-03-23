@@ -60,6 +60,15 @@ const (
 		ClassSpellMask_WarlockSummonImp |
 		ClassSpellMask_WarlockSummonSuccubus |
 		ClassSpellMask_WarlockSummonVoidwalker
+
+	// TODO: Hellfire
+	ClassSpellMask_WarlockHarmfulGCDSpells = ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockSoulFire | ClassSpellMask_WarlockConflagrate |
+		ClassSpellMask_WarlockSearingPain | ClassSpellMask_WarlockImmolate | ClassSpellMask_WarlockRainOfFire |
+		ClassSpellMask_WarlockCorruption | ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockCurseOfDoom |
+		ClassSpellMask_WarlockSiphonLife | ClassSpellMask_WarlockDrainSoul | ClassSpellMask_WarlockDrainLife |
+		ClassSpellMask_WarlockDeathCoil |
+		ClassSpellMask_WarlockChaosBolt | ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockShadowflame |
+		ClassSpellMask_WarlockHaunt | ClassSpellMask_WarlockUnstableAffliction
 )
 
 type Warlock struct {

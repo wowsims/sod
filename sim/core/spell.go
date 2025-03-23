@@ -125,9 +125,9 @@ type Spell struct {
 	MinRange float64
 	MaxRange float64
 
-	castTimeFn func(spell *Spell) time.Duration // allows to override CastTime()
-
-	castFn CastSuccessFunc // Performs a cast of this spell.
+	castTimeFn           func(spell *Spell) time.Duration // allows to override CastTime()
+	castFn               CastSuccessFunc                  // Performs a cast of this spell.
+	AllowGCDHasteScaling bool                             // Vanilla has no natural GCD reduction from haste, but the effect was added via the Infusion of Souls trinket in SoD
 
 	SpellMetrics []SpellMetrics
 

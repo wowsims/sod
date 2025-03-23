@@ -53,8 +53,6 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 	spell.RequiredLevel = level
 	spell.Rank = rank
 
-	spell.Cast.IgnoreHaste = true
-
 	spell.BonusCoefficient = baseSpellCoeff
 
 	spell.Dot = core.DotConfig{

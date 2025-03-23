@@ -60,7 +60,7 @@ const (
 	ZandalariHeroBadge              = 19948
 	ZandalariHeroMedallion          = 19949
 	ZandalariHeroCharm              = 19950
-	CorruptedAshbringer             = 22691
+	CorruptedAshbringer             = 241081 // 22691
 	BlisteringRagehammer            = 220569 // 10626
 	SulfurasHandOfRagnaros          = 227683 // 17182
 	SulfuronHammer                  = 227684 // 17193
@@ -72,7 +72,6 @@ const (
 	WraithScythe                    = 227941
 	SecondWind                      = 227967 // 11819
 	BurstOfKnowledge                = 227972
-	HandOfInjustice                 = 227990
 	Ironfoe                         = 227991 // 11684
 	EbonHiltOfMarduk                = 227993 // 14576
 	FrightskullShaft                = 227994 // 14531
@@ -499,30 +498,29 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponCoHProcDamage(Chillpike, "Chillpike", 1.0, 19260, core.SpellSchoolFrost, 160, 90, 0, core.DefenseTypeMagic)
 
-	// https://www.wowhead.com/classic/item=22691/corrupted-ashbringer#same-model-as
-	// Chance on hit: Steals 185 to 215 life from target enemy.
+	// https://www.wowhead.com/classic/item=239301/corrupted-ashbringer
+	// Chance on hit: Steals 475 to 525 life from up to 5 enemies, granting 30 Strength or Agility per enemy siphoned, stacking up to 5 times.
 	// Proc rate taken from Classic 2019 testing
-	// It was reported in Vanilla to scale with Spell Damage but during 2019 it was reported NOT to
-	itemhelpers.CreateWeaponProcSpell(CorruptedAshbringer, "Corrupted Ashbringer", 1.6, func(character *core.Character) *core.Spell {
-		actionID := core.ActionID{SpellID: 29155}
-		healthMetrics := character.NewHealthMetrics(actionID)
+	// itemhelpers.CreateWeaponProcSpell(CorruptedAshbringer, "Corrupted Ashbringer", 1.6, func(character *core.Character) *core.Spell {
+	// 	actionID := core.ActionID{SpellID: 1220711}
+	// 	healthMetrics := character.NewHealthMetrics(actionID)
 
-		return character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolShadow,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+	// 	return character.RegisterSpell(core.SpellConfig{
+	// 		ActionID:    actionID,
+	// 		SpellSchool: core.SpellSchoolShadow,
+	// 		DefenseType: core.DefenseTypeMagic,
+	// 		ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+	// 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
+	// 		DamageMultiplier: 1,
+	// 		ThreatMultiplier: 1,
 
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, sim.Roll(185, 215), spell.OutcomeMagicHit)
-				character.GainHealth(sim, result.Damage, healthMetrics)
-			},
-		})
-	})
+	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	// 			result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeMagicHit)
+	// 			character.GainHealth(sim, result.Damage, healthMetrics)
+	// 		},
+	// 	})
+	// })
 
 	// https://www.wowhead.com/classic/item=17068/deathbringer
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 110 to 140 Shadow damage.
@@ -2500,31 +2498,6 @@ func init() {
 	// https://www.wowhead.com/classic/item=236337/glyph-of-deflection
 	// Use: Increases the block value of your shield by 400 for 20 sec. (2 Min Cooldown)
 	core.NewSimpleStatOffensiveTrinketEffect(GlyphOfDeflection, stats.Stats{stats.BlockValue: 400}, time.Second*20, time.Minute*2)
-
-	// https://www.wowhead.com/classic/item=227990/hand-of-injustice
-	// Equip: 2% chance on ranged hit to gain 1 extra attack. (Proc chance: 2%, 2s cooldown)
-	core.NewItemEffect(HandOfInjustice, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		if !character.AutoAttacks.AutoSwingRanged {
-			return
-		}
-
-		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Hand of Injustice Trigger",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			ProcMask:          core.ProcMaskRanged,
-			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
-			ProcChance:        0.02,
-			ICD:               time.Second * 2,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				// Extra ranged attacks do not reset the swing timer confirmed by Zirene
-				character.AutoAttacks.StoreExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
-			},
-		})
-
-		character.ItemSwap.RegisterProc(HandOfInjustice, triggerAura)
-	})
 
 	core.NewItemEffect(HandOfJustice, func(agent core.Agent) {
 		character := agent.GetCharacter()
