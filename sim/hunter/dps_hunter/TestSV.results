@@ -1062,9 +1062,8 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase5-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1263.12279
-  tps: 955.80579
-  hps: 15.433
+  dps: 1456.25167
+  tps: 474.8247
  }
 }
 dps_results: {
@@ -1096,19 +1095,14 @@ dps_results: {
  }
 }
 dps_results: {
-<<<<<<< HEAD:sim/hunter/TestSV.results
- key: "TestSV-Phase5-Lvl60-AllItems-Knight-Lieutenant'sChain"
-=======
  key: "TestSV-Phase5-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1276.1754
-  tps: 968.98094
-  hps: 15.4025
+  dps: 1460.37099
+  tps: 474.45052
  }
 }
 dps_results: {
- key: "TestSV-Phase5-Lvl60-AllItems-GurubashiPitFighter'sBow-221450"
->>>>>>> master:sim/hunter/dps_hunter/TestSV.results
+ key: "TestSV-Phase5-Lvl60-AllItems-Knight-Lieutenant'sChain"
  value: {
   dps: 1508.48122
   tps: 487.7234
@@ -1208,6 +1202,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-Phase6-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 1258.50684
+  tps: 617.65608
+  dtps: 4.67649
+ }
+}
+dps_results: {
  key: "TestSV-Phase6-Lvl60-AllItems-BloodlashBow-216516"
  value: {
   dps: 5756.37404
@@ -1237,6 +1239,14 @@ dps_results: {
   dps: 2582.11975
   tps: 1826.50781
   dtps: 2.96479
+ }
+}
+dps_results: {
+ key: "TestSV-Phase6-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 1256.6661
+  tps: 616.68799
+  dtps: 4.67649
  }
 }
 dps_results: {
@@ -1368,6 +1378,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestSV-Phase7-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 1516.14718
+  tps: 716.88394
+  dtps: 2.40926
+ }
+}
+dps_results: {
  key: "TestSV-Phase7-Lvl60-AllItems-BloodlashBow-216516"
  value: {
   dps: 7285.67621
@@ -1397,6 +1415,14 @@ dps_results: {
   dps: 3805.54255
   tps: 2492.89721
   dtps: 2.34302
+ }
+}
+dps_results: {
+ key: "TestSV-Phase7-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 1513.95596
+  tps: 715.84007
+  dtps: 2.40926
  }
 }
 dps_results: {

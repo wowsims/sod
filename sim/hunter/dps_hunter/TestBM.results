@@ -1000,6 +1000,13 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBM-Phase5-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 1953.83442
+  tps: 705.64275
+ }
+}
+dps_results: {
  key: "TestBM-Phase5-Lvl60-AllItems-BloodlashBow-216516"
  value: {
   dps: 4765.48955
@@ -1025,6 +1032,13 @@ dps_results: {
  value: {
   dps: 2894.09684
   tps: 1445.10224
+ }
+}
+dps_results: {
+ key: "TestBM-Phase5-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 1961.23852
+  tps: 704.56234
  }
 }
 dps_results: {
@@ -1114,6 +1128,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBM-Phase6-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 1928.34271
+  tps: 613.42622
+  dtps: 4.72053
+ }
+}
+dps_results: {
  key: "TestBM-Phase6-Lvl60-AllItems-BloodlashBow-216516"
  value: {
   dps: 5805.18188
@@ -1143,6 +1165,14 @@ dps_results: {
   dps: 3204.21826
   tps: 1608.40922
   dtps: 3.11438
+ }
+}
+dps_results: {
+ key: "TestBM-Phase6-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 1935.34051
+  tps: 612.43291
+  dtps: 4.72053
  }
 }
 dps_results: {
@@ -1266,6 +1296,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestBM-Phase7-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 2082.90316
+  tps: 715.6892
+  dtps: 2.13727
+ }
+}
+dps_results: {
  key: "TestBM-Phase7-Lvl60-AllItems-BloodlashBow-216516"
  value: {
   dps: 6861.49931
@@ -1295,6 +1333,14 @@ dps_results: {
   dps: 4315.93126
   tps: 2523.32041
   dtps: 2.15602
+ }
+}
+dps_results: {
+ key: "TestBM-Phase7-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 2089.62595
+  tps: 714.60399
+  dtps: 2.07935
  }
 }
 dps_results: {

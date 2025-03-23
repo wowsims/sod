@@ -822,9 +822,9 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 702.78585
-  tps: 716.31174
-  hps: 9.40963
+  dps: 1516.14718
+  tps: 716.88394
+  dtps: 2.40926
  }
 }
 dps_results: {
@@ -862,9 +862,9 @@ dps_results: {
 dps_results: {
  key: "TestMM-Phase4-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 718.09157
-  tps: 731.41648
-  hps: 9.38937
+  dps: 1513.95596
+  tps: 715.84007
+  dtps: 2.40926
  }
 }
 dps_results: {
@@ -1004,6 +1004,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-Phase5-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 1516.14718
+  tps: 716.88394
+  dtps: 2.40926
+ }
+}
+dps_results: {
  key: "TestMM-Phase5-Lvl60-AllItems-BloodlashBow-216516"
  value: {
   dps: 7285.67621
@@ -1033,6 +1041,14 @@ dps_results: {
   dps: 3805.54255
   tps: 2492.89721
   dtps: 2.34302
+ }
+}
+dps_results: {
+ key: "TestMM-Phase5-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 1513.95596
+  tps: 715.84007
+  dtps: 2.40926
  }
 }
 dps_results: {
@@ -1172,6 +1188,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-Phase6-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 1516.14718
+  tps: 716.88394
+  dtps: 2.40926
+ }
+}
+dps_results: {
  key: "TestMM-Phase6-Lvl60-AllItems-BloodlashBow-216516"
  value: {
   dps: 7285.67621
@@ -1201,6 +1225,14 @@ dps_results: {
   dps: 3805.54255
   tps: 2492.89721
   dtps: 2.34302
+ }
+}
+dps_results: {
+ key: "TestMM-Phase6-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 1513.95596
+  tps: 715.84007
+  dtps: 2.40926
  }
 }
 dps_results: {
@@ -1340,6 +1372,14 @@ dps_results: {
  }
 }
 dps_results: {
+ key: "TestMM-Phase7-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 1516.14718
+  tps: 716.88394
+  dtps: 2.40926
+ }
+}
+dps_results: {
  key: "TestMM-Phase7-Lvl60-AllItems-BloodlashBow-216516"
  value: {
   dps: 7285.67621
@@ -1369,6 +1409,14 @@ dps_results: {
   dps: 3805.54255
   tps: 2492.89721
   dtps: 2.34302
+ }
+}
+dps_results: {
+ key: "TestMM-Phase7-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 1513.95596
+  tps: 715.84007
+  dtps: 2.40926
  }
 }
 dps_results: {
