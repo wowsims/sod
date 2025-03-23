@@ -58,26 +58,18 @@ const (
 		ClassSpellMask_MageFireBlast | ClassSpellMask_MageFrozenOrb | ClassSpellMask_MageFrozenOrbTick |
 		ClassSpellMask_MageIceLance | ClassSpellMask_MageIceLance | ClassSpellMask_MageLivingBomb |
 		ClassSpellMask_MageLivingFlame
+
+	// TODO: Cone of Cold, Frost Nova
+	ClassSpellMask_MageHarmfulGCDSpells = ClassSpellMask_MageFireball | ClassSpellMask_MageFrostbolt | ClassSpellMask_MageFireBlast |
+		ClassSpellMask_MagePyroblast | ClassSpellMask_MageScorch | ClassSpellMask_MageArcaneMissiles |
+		ClassSpellMask_MageArcaneExplosion | ClassSpellMask_MageBlizzard | ClassSpellMask_MageFlamestrike |
+		ClassSpellMask_MageBlastWave |
+		ClassSpellMask_MageFrostfireBolt | ClassSpellMask_MageSpellfrostBolt | ClassSpellMask_MageArcaneBlast |
+		ClassSpellMask_MageBalefireBolt | ClassSpellMask_MageArcaneBarrage | ClassSpellMask_MageLivingBomb |
+		ClassSpellMask_MageLivingFlame | ClassSpellMask_MageArcaneSurge | ClassSpellMask_MageFrozenOrb
 )
 
 var TalentTreeSizes = [3]int{16, 16, 17}
-
-func RegisterMage() {
-	core.RegisterAgentFactory(
-		proto.Player_Mage{},
-		proto.Spec_SpecMage,
-		func(character *core.Character, options *proto.Player) core.Agent {
-			return NewMage(character, options)
-		},
-		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_Mage)
-			if !ok {
-				panic("Invalid spec value for Mage!")
-			}
-			player.Spec = playerSpec
-		},
-	)
-}
 
 type Mage struct {
 	core.Character

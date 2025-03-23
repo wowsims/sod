@@ -1,4 +1,4 @@
-package mage
+package dps_mage
 
 import (
 	"testing"
