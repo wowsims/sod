@@ -17,6 +17,7 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
+	HeartOfLight        = 241034
 	AbandonedExperiment = 241037
 	InfusionOfSouls     = 241039
 	StiltzsStandard     = 241068
@@ -114,6 +115,10 @@ func init() {
 
 		character.ItemSwap.RegisterProc(HandOfInjustice, triggerAura)
 	})
+
+	// https://www.wowhead.com/classic-ptr/item=241034/heart-of-light
+	// Use: Increases maximum health by 2500 for 20 sec. (2 Min Cooldown)
+	core.NewSimpleStatDefensiveTrinketEffect(HeartOfLight, stats.Stats{stats.Health: 2500}, time.Second*20, time.Minute*2)
 
 	// https://www.wowhead.com/classic/item=241039/infusion-of-souls
 	// The Global Cooldown caused by your non-weapon based damaging spells can be reduced by Spell Haste, up to a 0.5 second reduction.
