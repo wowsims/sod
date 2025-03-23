@@ -21,6 +21,7 @@ const (
 	AbandonedExperiment = 241037
 	InfusionOfSouls     = 241039
 	StiltzsStandard     = 241068
+	LuckyDoubloon       = 241241
 	HandOfRebornJustice = 242310
 )
 
@@ -159,6 +160,63 @@ func init() {
 			if spell.Matches(classMask) {
 				spell.AllowGCDHasteScaling = true
 			}
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=241241/lucky-doubloon
+	// Use: Flip the Lucky Doubloon.
+	// On heads, the cooldown of Lucky Doubloon is refreshed, and your critical strike chance with all spells and attacks is increased by 5% for 15 sec, stacking up to 5 times.
+	// On tails, all stacks of Lucky Doubloon are removed. (Must be in combat.) (30 Sec Cooldown)
+	core.NewItemEffect(LuckyDoubloon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{ItemID: LuckyDoubloon}
+		duration := time.Second * 15
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID:  actionID,
+			Label:     "Lucky Doubloon",
+			MaxStacks: 5,
+			Duration:  duration,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				bonusCrit := 5 * float64(newStacks-oldStacks)
+				character.AddStatsDynamic(sim, stats.Stats{stats.MeleeCrit: bonusCrit, stats.SpellCrit: bonusCrit})
+			},
+		})
+
+		cdSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 30,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				if sim.Proc(0.5, "Lucky Doubloon Heads") {
+					if !buffAura.IsActive() {
+						// Assuming it doesn't refresh
+						buffAura.Activate(sim)
+					}
+					buffAura.AddStack(sim)
+
+					// Delay the reset to simulate real player reaction time
+					sim.AddPendingAction(&core.PendingAction{
+						NextActionAt: sim.CurrentTime + character.Unit.ReactionTime,
+						OnAction: func(sim *core.Simulation) {
+							spell.CD.Reset()
+						},
+					})
+				} else {
+					buffAura.Deactivate(sim)
+				}
+			},
+		})
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: cdSpell,
 		})
 	})
 
