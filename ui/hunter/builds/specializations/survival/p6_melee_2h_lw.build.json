@@ -24,7 +24,8 @@
       "curseOfRecklessness": true,
       "huntersMark": "TristateEffectImproved",
       "mangle": true,
-      "giftOfArthas": true
+      "giftOfArthas": true,
+      "improvedFaerieFire": true
     },
     "partyBuffs": {
     },
@@ -36,22 +37,22 @@
       "equipment": {
         "items": [
           {"id":233666,"enchant":7635,"rune":415405},
-          {"id":231803},
+          {"id":233587},
           {"id":233668,"enchant":2606},
-          {"id":233420,"enchant":849,"rune":440533},
-          {"id":233664,"enchant":1891,"rune":409368},
+          {"id":234802,"enchant":849,"rune":440529},
+          {"id":233664,"enchant":1891,"rune":415370},
           {"id":231063,"enchant":7656,"rune":415358},
           {"id":231069,"enchant":2564,"rune":458393},
           {"id":231065,"rune":415352},
           {"id":231067,"enchant":7635,"rune":415320},
           {"id":233665,"enchant":1887,"rune":458479},
           {"id":233600,"rune":442894},
-          {"id":233422,"rune":442891},
-          {"id":234462},
+          {"id":230734,"rune":442876},
+          {"id":231288},
           {"id":233627},
           {"id":233640,"enchant":1900},
           {},
-          {"id":221450,"enchant":7657}
+          {"id":221450,"enchant":664}
         ]
       },
       "consumes": {
@@ -134,8 +135,8 @@
         "slipkiksSavvy": true
       },
       "talentsString": "-055500005-3320202412303051",
-      "profession1": "Engineering",
-      "profession2": "Alchemy",
+      "profession1": "Alchemy",
+      "profession2": "Engineering",
       "cooldowns": {
       },
       "rotation": {
@@ -143,25 +144,26 @@
         "prepullActions": [
           {"action":{"move":{"rangeFromTarget":{"const":{"val":"5"}}}},"doAtValue":{"const":{"val":"-10s"}}},
           {"action":{"castSpell":{"spellId":{"spellId":469145}}},"doAtValue":{"const":{"val":"-5s"}}},
-          {"action":{"castSpell":{"spellId":{"spellId":13555,"rank":8}}},"doAtValue":{"const":{"val":"-1.5s"}}},
-          {"action":{"castSpell":{"spellId":{"spellId":20572}}},"doAtValue":{"const":{"val":"-1.5s"}}},
-          {"action":{"castSpell":{"spellId":{"spellId":1213366}}},"doAtValue":{"const":{"val":"-0.1s"}}}
+          {"action":{"castSpell":{"spellId":{"spellId":25295,"rank":9}}},"doAtValue":{"const":{"val":"-1.5s"}}},
+          {"action":{"castSpell":{"spellId":{"spellId":20572}}},"doAtValue":{"const":{"val":"-1.5s"}}}
         ],
         "priorityList": [
-          {"hide":true,"action":{"autocastOtherCooldowns":{}}},
-          {"hide":true,"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"2"}}}},"castSpell":{"spellId":{"spellId":3045}}}},
-          {"action":{"condition":{"or":{"vals":[{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"2"}}}},{"cmp":{"op":"OpGe","lhs":{"currentTime":{}},"rhs":{"const":{"val":"10"}}}}]}},"autocastOtherCooldowns":{}}},
-          {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":415358}}}}},{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"3"}}}}]}},"castSpell":{"spellId":{"spellId":415320}}}},
+          {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"1"}}}},"autocastOtherCooldowns":{}}},
+          {"action":{"condition":{"cmp":{"op":"OpEq","lhs":{"remainingTimePercent":{}},"rhs":{"const":{"val":"100%"}}}},"strictSequence":{"actions":[{"castSpell":{"spellId":{"spellId":415343}}},{"castSpell":{"spellId":{"spellId":458482}}},{"castSpell":{"spellId":{"spellId":468388}}},{"castSpell":{"spellId":{"spellId":415320}}},{"castSpell":{"spellId":{"spellId":415320}}},{"castSpell":{"spellId":{"spellId":415343}}},{"castSpell":{"spellId":{"spellId":14271,"rank":4}}}]}}},
+          {"hide":true,"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":415358}}}}},{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"3"}}}}]}},"castSpell":{"spellId":{"spellId":415320}}}},
           {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"2s"}}}},{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"1"}}}}]}},"castSpell":{"spellId":{"spellId":415320}}}},
+          {"hide":true,"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":415358}}},"rhs":{"const":{"val":"5"}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":467331}}}}}]}},"castSpell":{"spellId":{"spellId":415320}}}},
           {"action":{"condition":{"auraIsActive":{"auraId":{"spellId":467331}}},"castSpell":{"spellId":{"spellId":458482}}}},
-          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":415358}}},"rhs":{"const":{"val":"5"}}}},{"auraIsActiveWithReactionTime":{"auraId":{"spellId":467331}}}]}},"castSpell":{"spellId":{"spellId":14271,"rank":4}}}},
+          {"action":{"condition":{"and":{"vals":[{"auraIsActiveWithReactionTime":{"auraId":{"spellId":467331}}},{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":415358}}},"rhs":{"const":{"val":"4"}}}}]}},"castSpell":{"spellId":{"spellId":14271,"rank":4}}}},
           {"action":{"castSpell":{"spellId":{"spellId":415343}}}},
           {"action":{"castSpell":{"spellId":{"spellId":458482}}}},
           {"action":{"castSpell":{"spellId":{"spellId":14271,"rank":4}}}},
-          {"action":{"castSpell":{"spellId":{"spellId":415320}}}},
+          {"action":{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"spellId":415320}}}}},"castSpell":{"spellId":{"spellId":415320}}}},
           {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"5%"}}}},{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"4s"}}}}]}},"castSpell":{"spellId":{"spellId":415423}}}},
           {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"50%"}}}},"castSpell":{"spellId":{"spellId":469145}}}},
-          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGt","lhs":{"auraRemainingTime":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"1.5"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":415343}}},"rhs":{"const":{"val":"1.5"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":458482}}},"rhs":{"const":{"val":"1.5"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":14271,"rank":4}}},"rhs":{"const":{"val":"1.5"}}}}]}},"castSpell":{"spellId":{"spellId":409530}}}}
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":458482}}},"rhs":{"const":{"val":"1"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":14271,"rank":4}}},"rhs":{"const":{"val":"1"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":415320}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"castSpell":{"spellId":{"spellId":409530}}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":458482}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":14271,"rank":4}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":415343}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":415320}}},"rhs":{"const":{"val":"1.5s"}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":415320}}}}}]}},"castSpell":{"spellId":{"spellId":14268,"rank":3}}}},
+          {"hide":true,"action":{"castSpell":{"spellId":{"itemId":233985}}}}
         ]
       },
       "reactionTimeMs": 200,
@@ -173,7 +175,6 @@
         "options": {
           "ammo": "ThoriumHeadedArrow",
           "quiverBonus": "Speed15",
-          "petType": "Cat",
           "petTalents": {
           },
           "petUptime": 1,
