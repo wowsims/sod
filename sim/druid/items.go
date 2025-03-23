@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -408,60 +409,9 @@ func init() {
 		druid.newBloodbarkCleaveItem(RitualistsHammer)
 	})
 
-	// https://www.wowhead.com/classic/item=231280/wushoolays-charm-of-nature
-	// Use: Aligns the Druid with nature, increasing the damage done by spells by 10%, improving heal effects by 10%, and increasing the critical strike chance of spells by 10% for 20 sec.
-	// (2 Min Cooldown)
-	core.NewItemEffect(WushoolaysCharmOfNature, func(agent core.Agent) {
-		character := agent.GetCharacter()
-		actionID := core.ActionID{ItemID: WushoolaysCharmOfNature}
-		duration := time.Second * 20
-
-		// TODO: healing dealt multiplier?
-		aura := character.RegisterAura(core.Aura{
-			ActionID: actionID,
-			Label:    "Aligned with Nature",
-			Duration: duration,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.10)
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.10)
-			},
-			// TODO: healing dealt multiplier?
-		}).AttachStatBuff(stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
-
-		spell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolNature,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 2,
-				},
-				SharedCD: core.Cooldown{
-					Timer:    character.GetOffensiveTrinketCD(),
-					Duration: duration,
-				},
-			},
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				aura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell:    spell,
-			Priority: core.CooldownPriorityBloodlust,
-			Type:     core.CooldownTypeDPS,
-		})
-	})
-
 	// https://www.wowhead.com/classic-ptr/item=240849/staff-of-the-glade
 	// Equip: Remaining in Cat Form for 5 seconds, causes your Energy Regeneration to increase by 100%, and the damage of your Ferocious Bite to increase by 100%.
 	// Equip: You may cast Rebirth and Innervate while in Cat Form.
-	/* TODO: Item not yet available in sim.
 	core.NewItemEffect(StaffOfTheGlade, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
 
@@ -521,7 +471,57 @@ func init() {
 				}
 			},
 		})), []proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand})
-	}) */
+	})
+
+	// https://www.wowhead.com/classic/item=231280/wushoolays-charm-of-nature
+	// Use: Aligns the Druid with nature, increasing the damage done by spells by 10%, improving heal effects by 10%, and increasing the critical strike chance of spells by 10% for 20 sec.
+	// (2 Min Cooldown)
+	core.NewItemEffect(WushoolaysCharmOfNature, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{ItemID: WushoolaysCharmOfNature}
+		duration := time.Second * 20
+
+		// TODO: healing dealt multiplier?
+		aura := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Aligned with Nature",
+			Duration: duration,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.10)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.10)
+			},
+			// TODO: healing dealt multiplier?
+		}).AttachStatBuff(stats.SpellCrit, 10*core.SpellCritRatingPerCritChance)
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolNature,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				aura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell:    spell,
+			Priority: core.CooldownPriorityBloodlust,
+			Type:     core.CooldownTypeDPS,
+		})
+	})
 
 	core.AddEffectsToTest = true
 }

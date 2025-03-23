@@ -1,6 +1,8 @@
 package item_effects
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/druid"
@@ -12,11 +14,39 @@ import (
 )
 
 const (
-	InfusionOfSouls = 241039
+	InfusionOfSouls     = 241039
+	HandOfRebornJustice = 242310
 )
 
 func init() {
 	core.AddEffectsToTest = false
+
+	/* ! Please keep items ordered alphabetically ! */
+
+	core.NewItemEffect(HandOfRebornJustice, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		if !character.AutoAttacks.AutoSwingMelee {
+			return
+		}
+
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Hand of Reborn Justice Trigger (Melee)",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee | core.ProcMaskRanged,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			ProcChance:        0.02,
+			ICD:               time.Second * 2,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskMelee) {
+					spell.Unit.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1232044}, spell)
+				} else {
+					character.AutoAttacks.StoreExtraRangedAttack(sim, 1, core.ActionID{SpellID: 1213381}, spell.ActionID)
+				}
+			},
+		})
+		character.ItemSwap.RegisterProc(HandOfInjustice, triggerAura)
+	})
 
 	// https://www.wowhead.com/classic/item=241039/infusion-of-souls
 	// The Global Cooldown caused by your non-weapon based damaging spells can be reduced by Spell Haste, up to a 0.5 second reduction.
