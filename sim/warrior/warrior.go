@@ -148,8 +148,11 @@ type Warrior struct {
 	BerserkerStanceAura *core.Aura
 	GladiatorStanceAura *core.Aura
 
+	cleaveTargetCount                 int32
 	defensiveStanceThreatMultiplier   float64
 	gladiatorStanceDamageMultiplier   float64
+	gladiatorStanceThreatMultiplier   float64
+	gladiatorStanceArmorMultiplier    float64
 	recklessnessDamageTakenMultiplier float64
 
 	DemoralizingShoutAuras core.AuraArray
