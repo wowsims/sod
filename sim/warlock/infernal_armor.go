@@ -12,6 +12,8 @@ func (warlock *Warlock) registerInfernalArmorCD() {
 		return
 	}
 
+	warlock.bonusInfernalArmorMultiplier += 1.0
+
 	actionID := core.ActionID{SpellID: int32(proto.WarlockRune_RuneCloakInfernalArmor)}
 
 	// TODO: Unsure if there's a better way to do this
@@ -22,7 +24,7 @@ func (warlock *Warlock) registerInfernalArmorCD() {
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			attackTable := warlock.CurrentTarget.AttackTables[warlock.UnitIndex][proto.CastType_CastTypeMainHand]
-			physResistanceMultiplier = 1 - attackTable.GetArmorDamageModifier()
+			physResistanceMultiplier = attackTable.GetArmorDamageModifier() * warlock.bonusInfernalArmorMultiplier
 			warlock.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(physResistanceMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {

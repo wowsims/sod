@@ -48,6 +48,8 @@ func (warrior *Warrior) RegisterRecklessnessCD() {
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			reckAura.Activate(sim)
 		},
+
+		RelatedSelfBuff: reckAura,
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{

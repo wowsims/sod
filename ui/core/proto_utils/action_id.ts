@@ -294,6 +294,9 @@ export class ActionId {
 					name += ` (self)`;
 				}
 				break;
+			case 'Ice Lance':
+				if (this.tag !== 0) name = `${name} (${this.tag} Glaciate)`;
+				break;
 			// Combo Point Spenders
 			case 'Envenom':
 			case 'Eviscerate':
@@ -443,6 +446,14 @@ export class ActionId {
 			case 'Starfall':
 				if (this.tag === 1) name = `${name} (Tick)`;
 				else if (this.tag === 2) name = `${name} (Splash)`;
+				break;
+			case 'Invocation':
+				if (this.spellId === 426241) name = `${name} (Corruption)`;
+				else if (this.spellId === 426245) name = `${name} (Immolate)`;
+				else if (this.spellId === 426331) name = `${name} (Shadowflame)`;
+				else if (this.spellId === 454197) name = `${name} (Unstable Affliction)`;
+				else if (this.spellId === 426246) name = `${name} (Curse of Agony)`;
+				else if (this.spellId === 426247) name = `${name} (Siphon Life)`;
 				break;
 			case 'S03 - Item - T1 - Mage - Damage 4P Bonus':
 				// Tags correspond to each non-physical spell school

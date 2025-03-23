@@ -150,6 +150,9 @@ func (warrior *Warrior) registerGladiatorStanceAura() {
 	}
 
 	warrior.gladiatorStanceDamageMultiplier = 1.1
+	warrior.gladiatorStanceThreatMultiplier = 0.7
+	warrior.gladiatorStanceArmorMultiplier = 0.7
+
 	isTanking := warrior.IsTanking()
 
 	gladStanceDamageAura := warrior.RegisterAura(core.Aura{
@@ -214,8 +217,8 @@ func (warrior *Warrior) registerGladiatorStanceAura() {
 	warrior.GladiatorStanceAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{
 		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			ee.Aura.Unit.AddStatDynamic(sim, stats.Block, 10*core.BlockRatingPerBlockChance)
-			ee.Aura.Unit.PseudoStats.ArmorMultiplier *= 0.7
-			ee.Aura.Unit.PseudoStats.ThreatMultiplier *= 0.7
+			ee.Aura.Unit.PseudoStats.ArmorMultiplier *= warrior.gladiatorStanceArmorMultiplier
+			ee.Aura.Unit.PseudoStats.ThreatMultiplier *= warrior.gladiatorStanceThreatMultiplier
 			if !isTanking {
 				warrior.AddDamageDealtRageMultiplier(1.5)
 			}
@@ -224,8 +227,8 @@ func (warrior *Warrior) registerGladiatorStanceAura() {
 		},
 		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			ee.Aura.Unit.AddStatDynamic(sim, stats.Block, -10*core.BlockRatingPerBlockChance)
-			ee.Aura.Unit.PseudoStats.ArmorMultiplier /= 0.7
-			ee.Aura.Unit.PseudoStats.ThreatMultiplier /= 0.7
+			ee.Aura.Unit.PseudoStats.ArmorMultiplier /= warrior.gladiatorStanceArmorMultiplier
+			ee.Aura.Unit.PseudoStats.ThreatMultiplier /= warrior.gladiatorStanceThreatMultiplier
 			if !isTanking {
 				warrior.AddDamageDealtRageMultiplier(1 / 1.5)
 			}

@@ -48,6 +48,9 @@ const (
 	// Judgements
 	ClassSpellMask_PaladinJudgements = ClassSpellMask_PaladinJudgementOfCommand | ClassSpellMask_PaladinJudgementOfMartyrdom |
 		ClassSpellMask_PaladinJudgementOfRighteousness | ClassSpellMask_PaladinJudgementOfTheCrusader
+
+	ClassSpellMask_PaladinHarmfulGCDSpells = ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath | ClassSpellMask_PaladinHolyShock |
+		ClassSpellMask_PaladinConsecration
 )
 
 type Paladin struct {

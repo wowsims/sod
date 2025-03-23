@@ -75,6 +75,11 @@ const (
 	ClassSpellMask_ShamanWaterTotem = ClassSpellMask_ShamanHealingStreamTotem | ClassSpellMask_ShamanManaSpringTotem
 
 	ClassSpellMask_ShamanTotems = ClassSpellMask_ShamanFireTotem | ClassSpellMask_ShamanAirTotem | ClassSpellMask_ShamanEarthTotem | ClassSpellMask_ShamanWaterTotem
+
+	ClassSpellMask_ShamanHarmfulGCDSpells = ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning |
+		ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock |
+		ClassSpellMask_ShamanLavaBurst | ClassSpellMask_ShamanLavaLash | ClassSpellMask_ShamanMoltenBlast |
+		ClassSpellMask_ShamanFireNova
 )
 
 // Indexes into NextTotemDrops for self buffs
