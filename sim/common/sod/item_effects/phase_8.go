@@ -14,6 +14,7 @@ import (
 )
 
 const (
+	AbandonedExperiment = 241037
 	InfusionOfSouls     = 241039
 	HandOfRebornJustice = 242310
 )
@@ -23,6 +24,67 @@ func init() {
 
 	/* ! Please keep items ordered alphabetically ! */
 
+	// https://www.wowhead.com/classic-ptr/item=241037/abandoned-experiment
+	// Use: After drinking the experiment, ranged or melee attacks increase your attack speed by 2% for 30 sec.
+	// This effect stacks up to 15 times. (2 Min Cooldown)
+	core.NewItemEffect(AbandonedExperiment, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{ItemID: AbandonedExperiment}
+		duration := time.Second * 30
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID:  actionID,
+			Label:     "Abandoned Experiment",
+			MaxStacks: 15,
+			Duration:  duration,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				character.MultiplyAttackSpeed(sim, 1/(1+0.02*float64(oldStacks)))
+				character.MultiplyAttackSpeed(sim, 1+0.02*float64(newStacks))
+			},
+		})
+
+		buffAura.MakeDependentProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Abandoned Experiment Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee | core.ProcMaskRanged,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if !buffAura.IsActive() {
+					// Should not refresh
+					buffAura.Activate(sim)
+				}
+				buffAura.AddStack(sim)
+			},
+		})
+
+		cdSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: cdSpell,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=242310/hand-of-reborn-justice
+	// Equip: 2% chance on melee or ranged hit to gain 1 extra attack. (Proc chance: 2%, 2s cooldown)
 	core.NewItemEffect(HandOfRebornJustice, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		if !character.AutoAttacks.AutoSwingMelee {
@@ -45,6 +107,7 @@ func init() {
 				}
 			},
 		})
+
 		character.ItemSwap.RegisterProc(HandOfInjustice, triggerAura)
 	})
 
