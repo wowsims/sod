@@ -17,6 +17,7 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
+	RemnantsOfTheRed     = 241002
 	HeartOfLight         = 241034
 	AbandonedExperiment  = 241037
 	SirDornelsDidgeridoo = 241038
@@ -218,6 +219,30 @@ func init() {
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=241002/remnants-of-the-red
+	// Equip: Dealing non-periodic Fire damage has a 10% chance to increase your Fire damage dealt by 10% for 20 sec. (Proc chance: 10%)
+	core.NewItemEffect(RemnantsOfTheRed, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231625},
+			Label:    "Flames of the Red",
+			Duration: time.Second * 20,
+		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.1)
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:        "Remnants of the Red Trigger",
+			Callback:    core.CallbackOnSpellHitDealt,
+			Outcome:     core.OutcomeLanded,
+			ProcMask:    core.ProcMaskSpellDamage,
+			SpellSchool: core.SpellSchoolFire,
+			ProcChance:  0.10,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				buffAura.Activate(sim)
+			},
 		})
 	})
 
