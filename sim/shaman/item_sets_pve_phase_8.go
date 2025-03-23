@@ -7,8 +7,8 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-// var ItemSetWIPScarletCrusadeEle = core.NewItemSet(core.ItemSet{
-// 	Name: "WIPScarletCrusadeEle",
+// var ItemSetTheSoulcrushersStorm = core.NewItemSet(core.ItemSet{
+// 	Name: "The Soulcrusher's Storm",
 // 	Bonuses: map[int32]core.ApplyEffect{
 // 		2: func(agent core.Agent) {
 // 			shaman := agent.(ShamanAgent).GetShaman()
@@ -151,8 +151,8 @@ func (shaman *Shaman) applyScarletEnclaveElemental6PBonus() {
 	})
 }
 
-// var ItemSetWIPScarletCrusadeEnh = core.NewItemSet(core.ItemSet{
-// 	Name: "WIPScarletCrusadeEnh",
+// var ItemSetTheSoulcrushersRage = core.NewItemSet(core.ItemSet{
+// 	Name: "The Soulcrusher's Rage",
 // 	Bonuses: map[int32]core.ApplyEffect{
 // 		2: func(agent core.Agent) {
 // 			shaman := agent.(ShamanAgent).GetShaman()
@@ -320,8 +320,8 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 	}))
 }
 
-// var ItemSetWIPScarletCrusadeTank = core.NewItemSet(core.ItemSet{
-// 	Name: "WIPScarletCrusadeTank",
+// var ItemSetTheSoulcrushersResolve = core.NewItemSet(core.ItemSet{
+// 	Name: "The Soulcrusher's Resolve",
 // 	Bonuses: map[int32]core.ApplyEffect{
 // 		2: func(agent core.Agent) {
 // 			shaman := agent.(ShamanAgent).GetShaman()
@@ -416,8 +416,8 @@ func (shaman *Shaman) applyScarletEnclaveTank6PBonus() {
 	}))
 }
 
-// var ItemSetWIPScarletCrusadeResto = core.NewItemSet(core.ItemSet{
-// 	Name: "WIPScarletCrusadeResto",
+// var ItemSetTheSoulcrusher = core.NewItemSet(core.ItemSet{
+// 	Name: "The Soulcrusher",
 // 	Bonuses: map[int32]core.ApplyEffect{
 // 		// Heals from your Earth Shield have a 40% chance to make your next cast time heal instant cast.
 // 		2: func(agent core.Agent) {
