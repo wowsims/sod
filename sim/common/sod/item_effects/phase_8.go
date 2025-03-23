@@ -17,10 +17,13 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
-	AbandonedExperiment = 241037
-	InfusionOfSouls     = 241039
-	StiltzsStandard     = 241068
-	HandOfRebornJustice = 242310
+	HeartOfLight         = 241034
+	AbandonedExperiment  = 241037
+	SirDornelsDidgeridoo = 241038
+	InfusionOfSouls      = 241039
+	StiltzsStandard      = 241068
+	LuckyDoubloon        = 241241
+	HandOfRebornJustice  = 242310
 )
 
 func init() {
@@ -115,6 +118,10 @@ func init() {
 		character.ItemSwap.RegisterProc(HandOfInjustice, triggerAura)
 	})
 
+	// https://www.wowhead.com/classic-ptr/item=241034/heart-of-light
+	// Use: Increases maximum health by 2500 for 20 sec. (2 Min Cooldown)
+	core.NewSimpleStatDefensiveTrinketEffect(HeartOfLight, stats.Stats{stats.Health: 2500}, time.Second*20, time.Minute*2)
+
 	// https://www.wowhead.com/classic/item=241039/infusion-of-souls
 	// The Global Cooldown caused by your non-weapon based damaging spells can be reduced by Spell Haste, up to a 0.5 second reduction.
 	core.NewItemEffect(InfusionOfSouls, func(agent core.Agent) {
@@ -156,6 +163,169 @@ func init() {
 			}
 		})
 	})
+
+	// https://www.wowhead.com/classic-ptr/item=241241/lucky-doubloon
+	// Use: Flip the Lucky Doubloon.
+	// On heads, the cooldown of Lucky Doubloon is refreshed, and your critical strike chance with all spells and attacks is increased by 5% for 15 sec, stacking up to 5 times.
+	// On tails, all stacks of Lucky Doubloon are removed. (Must be in combat.) (30 Sec Cooldown)
+	core.NewItemEffect(LuckyDoubloon, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{ItemID: LuckyDoubloon}
+		duration := time.Second * 15
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID:  actionID,
+			Label:     "Lucky Doubloon",
+			MaxStacks: 5,
+			Duration:  duration,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				bonusCrit := 5 * float64(newStacks-oldStacks)
+				character.AddStatsDynamic(sim, stats.Stats{stats.MeleeCrit: bonusCrit, stats.SpellCrit: bonusCrit})
+			},
+		})
+
+		cdSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 30,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				if sim.Proc(0.5, "Lucky Doubloon Heads") {
+					if !buffAura.IsActive() {
+						// Assuming it doesn't refresh
+						buffAura.Activate(sim)
+					}
+					buffAura.AddStack(sim)
+
+					// Delay the reset to simulate real player reaction time
+					sim.AddPendingAction(&core.PendingAction{
+						NextActionAt: sim.CurrentTime + character.Unit.ReactionTime,
+						OnAction: func(sim *core.Simulation) {
+							spell.CD.Reset()
+						},
+					})
+				} else {
+					buffAura.Deactivate(sim)
+				}
+			},
+		})
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: cdSpell,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=241038/sir-dornels-didgeridoo
+	// Use: Playing the didgeridoo summons a random beast to your side, increasing your physical abilities for 30 sec.
+	// May only be used while in combat. (2 Min Cooldown)
+	// core.NewItemEffect(SirDornelsDidgeridoo, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+
+	// 	actionID := core.ActionID{ItemID: SirDornelsDidgeridoo}
+	// 	duration := time.Second * 30
+
+	// 	bonusCrit := 10.0
+	// 	bonusArp := 1000.0
+	// 	bonusAgi := 140.0
+	// 	bonusStr := 140.0
+	// 	bonusHaste := 0.14
+	// 	bonusAP := 280.0
+	// 	bonusRAP := 308.0
+
+	// 	// https://www.wowhead.com/classic-ptr/spell=1231884/accuracy-of-the-owl
+	// 	owlAura := character.RegisterAura(core.Aura{
+	// 		ActionID: actionID.WithTag(1231884),
+	// 		Label:    "Sir Dornel's Didgeridoo - Owl",
+	// 		Duration: duration,
+	// 	}).AttachStatBuff(stats.MeleeCrit, bonusCrit).AttachStatBuff(stats.SpellCrit, bonusCrit)
+
+	// 	// https://www.wowhead.com/classic-ptr/spell=1231894/ferocity-of-the-crocolisk
+	// 	crocoliskBuff := character.RegisterAura(core.Aura{
+	// 		ActionID: actionID.WithTag(1231894),
+	// 		Label:    "Sir Dornel's Didgeridoo - Crocolisk",
+	// 		Duration: duration,
+	// 	}).AttachStatBuff(stats.ArmorPenetration, bonusArp)
+
+	// 	// https://www.wowhead.com/classic-ptr/spell=1231888/agility-of-the-raptor
+	// 	raptorBuff := character.RegisterAura(core.Aura{
+	// 		ActionID: actionID.WithTag(1231888),
+	// 		Label:    "Sir Dornel's Didgeridoo - Raptor",
+	// 		Duration: duration,
+	// 	}).AttachStatBuff(stats.Agility, bonusAgi)
+
+	// 	// https://www.wowhead.com/classic-ptr/spell=1231883/strength-of-the-bear
+	// 	bearBuff := character.RegisterAura(core.Aura{
+	// 		ActionID: actionID.WithTag(1231883),
+	// 		Label:    "Sir Dornel's Didgeridoo - Bear",
+	// 		Duration: duration,
+	// 	}).AttachStatBuff(stats.Strength, bonusStr)
+
+	// 	// https://www.wowhead.com/classic-ptr/spell=1231886/speed-of-the-cat
+	// 	catBuff := character.RegisterAura(core.Aura{
+	// 		ActionID: actionID.WithTag(1231886),
+	// 		Label:    "Sir Dornel's Didgeridoo - Cat",
+	// 		Duration: duration,
+	// 	}).AttachMultiplyAttackSpeed(&character.Unit, 1+bonusHaste)
+
+	// 	// https://www.wowhead.com/classic-ptr/spell=1231891/power-of-the-gorilla
+	// 	gorillaBuff := character.RegisterAura(core.Aura{
+	// 		ActionID: actionID.WithTag(1231891),
+	// 		Label:    "Sir Dornel's Didgeridoo - Gorilla",
+	// 		Duration: duration,
+	// 	}).AttachStatBuff(stats.AttackPower, bonusAP).AttachStatBuff(stats.RangedAttackPower, bonusRAP)
+
+	// 	// https://www.wowhead.com/classic-ptr/spell=1231896/brilliance-of-mr-bigglesworth
+	// 	bigglesworthBuff := character.RegisterAura(core.Aura{
+	// 		ActionID: actionID.WithTag(1231896),
+	// 		Label:    "Sir Dornel's Didgeridoo - Mr. Bigglesworth",
+	// 		Duration: duration,
+	// 	}).AttachStatBuff(
+	// 		stats.MeleeCrit, bonusCrit/2.0,
+	// 	).AttachStatBuff(
+	// 		stats.SpellCrit, bonusCrit/2.0,
+	// 	).AttachStatBuff(
+	// 		stats.ArmorPenetration, bonusArp/2.0,
+	// 	).AttachStatBuff(
+	// 		stats.Agility, bonusAgi/2.0,
+	// 	).AttachStatBuff(
+	// 		stats.Strength, bonusStr/2.0,
+	// 	).AttachMultiplyAttackSpeed(
+	// 		&character.Unit, 1+bonusHaste/2.0,
+	// 	).AttachStatBuff(
+	// 		stats.AttackPower, bonusAP/2.0,
+	// 	).AttachStatBuff(
+	// 		stats.RangedAttackPower, bonusRAP/2.0,
+	// 	)
+
+	// 	cdSpell := character.RegisterSpell(core.SpellConfig{
+	// 		ActionID: actionID,
+	// 		ProcMask: core.ProcMaskEmpty,
+	// 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+	// 		Cast: core.CastConfig{
+	// 			CD: core.Cooldown{
+	// 				Timer:    character.NewTimer(),
+	// 				Duration: time.Minute * 2,
+	// 			},
+	// 			SharedCD: core.Cooldown{
+	// 				Timer:    character.GetOffensiveTrinketCD(),
+	// 				Duration: duration,
+	// 			},
+	// 		},
+	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+	// 			// TODO: How does this work? Equal chance for all? Or weighted?
+	// 		},
+	// 	})
+	// 	character.AddMajorCooldown(core.MajorCooldown{
+	// 		Type:  core.CooldownTypeDPS,
+	// 		Spell: cdSpell,
+	// 	})
+	// })
 
 	// https://www.wowhead.com/classic-ptr/item=241068/stiltzs-standard
 	// Use: Throw down the Standard of Stiltz, increasing the maximum health of all nearby allies by 1000 for 20 sec. (2 Min Cooldown)
