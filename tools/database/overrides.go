@@ -187,7 +187,6 @@ var ItemDenyList = map[int32]struct{}{
 	240925: {}, // https://www.wowhead.com/classic-ptr/item=240925/experiment-800m
 	240998: {}, // https://www.wowhead.com/classic-ptr/item=240998/soporific-blade
 	241001: {}, // https://www.wowhead.com/classic-ptr/item=241001/tyrs-fall
-	241002: {}, // https://www.wowhead.com/classic-ptr/item=241002/remnants-of-the-red
 	241003: {}, // https://www.wowhead.com/classic-ptr/item=241003/mirage-rod-of-illusion0
 	241004: {}, // https://www.wowhead.com/classic-ptr/item=241004/conundrum
 	241008: {}, // https://www.wowhead.com/classic-ptr/item=241008/condemnation
