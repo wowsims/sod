@@ -561,6 +561,10 @@ func (shaman *Shaman) applyWayOfEarth() {
 	)
 }
 
+func (shaman *Shaman) WayOfEarthActive() bool {
+	return shaman.HasRune(proto.ShamanRune_RuneLegsWayOfEarth) && shaman.getImbueProcMask(proto.WeaponImbue_RockbiterWeapon).Matches(core.ProcMaskMeleeMH)
+}
+
 // https://www.wowhead.com/classic/spell=408696/spirit-of-the-alpha
 func (shaman *Shaman) applySpiritOfTheAlpha() {
 	hasSpiritOfTheAlpha := shaman.HasRune(proto.ShamanRune_RuneFeetSpiritOfTheAlpha)

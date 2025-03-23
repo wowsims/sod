@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	RegisterMage()
+	RegisterDPSMage()
 }
 
 func TestArcane(t *testing.T) {
@@ -21,8 +21,8 @@ func TestArcane(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          Phase1TalentsArcane,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p1_generic"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p1_arcane"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p1_generic"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p1_arcane"),
 			Buffs:            core.FullBuffsPhase1,
 			Consumes:         Phase1Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
@@ -39,8 +39,8 @@ func TestArcane(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          Phase2TalentsArcane,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p2_arcane"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p2_arcane"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p2_arcane"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p2_arcane"),
 			Buffs:            core.FullBuffsPhase2,
 			Consumes:         Phase2Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
@@ -58,8 +58,8 @@ func TestArcane(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          Phase4TalentsArcane,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p4_arcane"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p4_arcane"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p4_arcane"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p4_arcane"),
 			Buffs:            core.FullBuffsPhase4,
 			Consumes:         Phase4Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
@@ -77,8 +77,8 @@ func TestArcane(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          Phase5TalentsArcane,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p5_arcane"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p5_spellfrost"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p5_arcane"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p5_spellfrost"),
 			Buffs:            core.FullBuffsPhase5,
 			Consumes:         Phase5Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
@@ -100,8 +100,8 @@ func TestFire(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          Phase1TalentsFire,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p1_fire"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p1_fire"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p1_fire"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p1_fire"),
 			Buffs:            core.FullBuffsPhase1,
 			Consumes:         Phase1Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
@@ -118,8 +118,8 @@ func TestFire(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          Phase2TalentsFire,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p2_fire"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p2_fire"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p2_fire"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p2_fire"),
 			Buffs:            core.FullBuffsPhase2,
 			Consumes:         Phase2Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
@@ -136,8 +136,8 @@ func TestFire(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          Phase3TalentsFire,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p3_fire"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p3_fire"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p3_fire"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p3_fire"),
 			Buffs:            core.FullBuffsPhase3,
 			Consumes:         Phase3Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
@@ -155,8 +155,8 @@ func TestFire(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          Phase5TalentsFire,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p4_fire"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p4_fire"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p4_fire"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p4_fire"),
 			Buffs:            core.FullBuffsPhase4,
 			Consumes:         Phase4Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
@@ -174,8 +174,8 @@ func TestFire(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          Phase5TalentsFire,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p5_fire"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p5_fire"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p5_fire"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p5_fire"),
 			Buffs:            core.FullBuffsPhase5,
 			Consumes:         Phase5Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
@@ -185,8 +185,8 @@ func TestFire(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
-		core.GetTestBuildFromJSON(proto.Class_ClassMage, 6, 60, "../../ui/mage/builds", "p6_fire", ItemFilters, proto.Stat_StatSpellPower, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassMage, 7, 60, "../../ui/mage/builds", "p7_fire", ItemFilters, proto.Stat_StatSpellPower, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 6, 60, "../../../ui/mage/builds", "p6_fire", ItemFilters, proto.Stat_StatSpellPower, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 7, 60, "../../../ui/mage/builds", "p7_fire", ItemFilters, proto.Stat_StatSpellPower, Stats),
 	}))
 }
 
@@ -199,8 +199,8 @@ func TestFrost(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          Phase3TalentsFrost,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p3_frost_ffb"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p3_frost"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p3_frost_ffb"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p3_frost"),
 			Buffs:            core.FullBuffsPhase3,
 			Consumes:         Phase3Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
@@ -218,8 +218,8 @@ func TestFrost(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          Phase4TalentsFrost,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p4_frost"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p4_frost"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p4_frost"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p4_frost"),
 			Buffs:            core.FullBuffsPhase4,
 			Consumes:         Phase4Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
@@ -237,8 +237,8 @@ func TestFrost(t *testing.T) {
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
 			Talents:          phase5talentsfrost,
-			GearSet:          core.GetGearSet("../../ui/mage/gear_sets", "p5_frost"),
-			Rotation:         core.GetAplRotation("../../ui/mage/apls", "p5_spellfrost"),
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p5_frost"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p5_spellfrost"),
 			Buffs:            core.FullBuffsPhase5,
 			Consumes:         Phase5Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
@@ -248,8 +248,8 @@ func TestFrost(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
-		core.GetTestBuildFromJSON(proto.Class_ClassMage, 6, 60, "../../ui/mage/builds", "p6_frost", ItemFilters, proto.Stat_StatSpellPower, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassMage, 7, 60, "../../ui/mage/builds", "p7_frost", ItemFilters, proto.Stat_StatSpellPower, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 6, 60, "../../../ui/mage/builds", "p6_frost", ItemFilters, proto.Stat_StatSpellPower, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 7, 60, "../../../ui/mage/builds", "p7_frost", ItemFilters, proto.Stat_StatSpellPower, Stats),
 	}))
 }
 

@@ -6,7 +6,7 @@ import (
 	"github.com/wowsims/sod/sim/mage"
 )
 
-func RegisterMage() {
+func RegisterDPSMage() {
 	core.RegisterAgentFactory(
 		proto.Player_Mage{},
 		proto.Spec_SpecMage,

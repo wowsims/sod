@@ -60,7 +60,7 @@ const (
 	ZandalariHeroBadge              = 19948
 	ZandalariHeroMedallion          = 19949
 	ZandalariHeroCharm              = 19950
-	CorruptedAshbringer             = 22691
+	CorruptedAshbringer             = 241081 // 22691
 	BlisteringRagehammer            = 220569 // 10626
 	SulfurasHandOfRagnaros          = 227683 // 17182
 	SulfuronHammer                  = 227684 // 17193
@@ -500,11 +500,10 @@ func init() {
 	itemhelpers.CreateWeaponCoHProcDamage(Chillpike, "Chillpike", 1.0, 19260, core.SpellSchoolFrost, 160, 90, 0, core.DefenseTypeMagic)
 
 	// https://www.wowhead.com/classic/item=22691/corrupted-ashbringer#same-model-as
-	// Chance on hit: Steals 185 to 215 life from target enemy.
+	// Chance on hit: Steals 475 to 525 life from target enemy.
 	// Proc rate taken from Classic 2019 testing
-	// It was reported in Vanilla to scale with Spell Damage but during 2019 it was reported NOT to
 	itemhelpers.CreateWeaponProcSpell(CorruptedAshbringer, "Corrupted Ashbringer", 1.6, func(character *core.Character) *core.Spell {
-		actionID := core.ActionID{SpellID: 29155}
+		actionID := core.ActionID{SpellID: 1220711}
 		healthMetrics := character.NewHealthMetrics(actionID)
 
 		return character.RegisterSpell(core.SpellConfig{
@@ -518,7 +517,7 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				result := spell.CalcAndDealDamage(sim, target, sim.Roll(185, 215), spell.OutcomeMagicHit)
+				result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeMagicHit)
 				character.GainHealth(sim, result.Damage, healthMetrics)
 			},
 		})
