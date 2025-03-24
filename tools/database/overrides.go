@@ -132,6 +132,8 @@ var ItemDenyList = map[int32]struct{}{
 	21208:  {}, // Signet Ring of the Bronze Dragonflight
 	21209:  {}, // Signet Ring of the Bronze Dragonflight
 	21210:  {}, // Signet Ring of the Bronze Dragonflight
+	22589:  {}, // https://www.wowhead.com/classic/item=22589/atiesh-greatstaff-of-the-guardian
+	22630:  {}, // https://www.wowhead.com/classic/item=22631/atiesh-greatstaff-of-the-guardian
 	22631:  {}, // https://www.wowhead.com/classic/item=22631/atiesh-greatstaff-of-the-guardian
 	22678:  {}, // https://www.wowhead.com/classic/item=22678/talisman-of-ascendance not filtered out because ilvl gap is too high
 	22736:  {}, // Andonisus, Reaper of Souls
