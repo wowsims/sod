@@ -88,8 +88,8 @@ func (druid *Druid) applyScarletEnclaveBalance4PBonus() {
 	}))
 }
 
-// Each time your Sunfire deals periodic damage, you gain 10% increased damage to your next Wrath, stacking up to 10 times.
-// Each time your Moonfire deals periodic damage, you gain 10% increased damage to your next Stafire, stacking up to 10 times.
+// Each time your Sunfire deals periodic damage, you gain 20% increased damage to your next Wrath, stacking up to 5 times.
+// Each time your Moonfire deals periodic damage, you gain 20% increased damage to your next Stafire, stacking up to 5 times.
 // These bonuses do not apply to Starsurge.
 func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Druid - Balance 6P Bonus"
@@ -103,9 +103,10 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 	})
 
 	wrathAura := druid.RegisterAura(core.Aura{
-		Label:     "TODO Wrath Buff",
-		Duration:  time.Second * 10,
-		MaxStacks: 10,
+		ActionID:  core.ActionID{SpellID: 1226105},
+		Label:     "Sunsurge",
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			wrathDamageMod.Activate()
 		},
@@ -113,7 +114,7 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 			wrathDamageMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			wrathDamageMod.UpdateIntValue(10 * int64(newStacks))
+			wrathDamageMod.UpdateIntValue(20 * int64(newStacks))
 		},
 	})
 
@@ -123,9 +124,10 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 	})
 
 	starfireAura := druid.RegisterAura(core.Aura{
-		Label:     "TODO Starfire Buff",
-		Duration:  time.Second * 10,
-		MaxStacks: 10,
+		ActionID:  core.ActionID{SpellID: 1226106},
+		Label:     "Moonsurge",
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			starfireDamageMod.Activate()
 		},
@@ -133,7 +135,7 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 			starfireDamageMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			starfireDamageMod.UpdateIntValue(10 * int64(newStacks))
+			starfireDamageMod.UpdateIntValue(20 * int64(newStacks))
 		},
 	})
 
@@ -341,7 +343,7 @@ func (druid *Druid) applyScarletEnclaveGuardian4PBonus() {
 	}))
 }
 
-// You heal for 4% of your maximum Health every time you deal a critical strike, but no more than once every 4 sec.
+// You gain 30% increased attack speed for 10 sec every time you deal a critical strike.
 func (druid *Druid) applyScarletEnclaveGuardian6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Druid - Guardian 6P Bonus"
 	if druid.HasAura(label) {
