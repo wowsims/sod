@@ -2497,7 +2497,7 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=236337/glyph-of-deflection
 	// Use: Increases the block value of your shield by 400 for 20 sec. (2 Min Cooldown)
-	core.NewSimpleStatOffensiveTrinketEffect(GlyphOfDeflection, stats.Stats{stats.BlockValue: 400}, time.Second*20, time.Minute*2)
+	core.NewSimpleStatDefensiveTrinketEffect(GlyphOfDeflection, stats.Stats{stats.BlockValue: 400}, time.Second*20, time.Minute*2)
 
 	core.NewItemEffect(HandOfJustice, func(agent core.Agent) {
 		character := agent.GetCharacter()
