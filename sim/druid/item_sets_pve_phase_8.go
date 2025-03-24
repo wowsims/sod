@@ -224,7 +224,7 @@ func (druid *Druid) applyScarletEnclaveFeral4PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1226116},
 		Label:    label,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			// Q: wtf is this??
 			// A: We can't access and manipulate the bonus directly because it only exists in the gain/expire callbacks.
 			// Without hardcoding values it's probably the easiest to just double the change made by the original handler.
