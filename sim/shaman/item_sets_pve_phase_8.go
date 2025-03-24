@@ -408,9 +408,6 @@ func (shaman *Shaman) applyScarletEnclaveTank6PBonus() {
 
 			if shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
 				shaman.MaelstromWeaponClassMask ^= ClassSpellMask_ShamanLavaBurst
-				for _, mod := range shaman.MaelstromWeaponSpellMods {
-					mod.ClassMask ^= ClassSpellMask_ShamanLavaBurst
-				}
 			}
 		},
 	}))

@@ -414,8 +414,6 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		ClassMask: shaman.MaelstromWeaponClassMask,
 	})
 
-	shaman.MaelstromWeaponSpellMods = []*core.SpellMod{castTimeMod, costMod}
-
 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
 		Label:     "MaelstromWeapon Proc",
 		ActionID:  core.ActionID{SpellID: 408505},
