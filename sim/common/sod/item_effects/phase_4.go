@@ -65,7 +65,7 @@ func init() {
 	// https://www.wowhead.com/classic/item=227915/dukes-domain
 	// Use: Expand the Duke's Domain, increasing the Fire Resistance of those who reside within by 50. Lasts for 15 sec. (1 Min, 30 Sec Cooldown)
 	// TODO: Raid-wide effect if we ever do raid sim
-	core.NewSimpleStatOffensiveTrinketEffect(DukesDomain, stats.Stats{stats.BlockValue: 128}, time.Second*20, time.Second*90)
+	core.NewSimpleStatDefensiveTrinketEffect(DukesDomain, stats.Stats{stats.FireResistance: 50}, time.Second*20, time.Second*90)
 
 	// https://www.wowhead.com/classic/item=228081/germinating-poisonseed
 	// Use: Increases your Nature Damage by up to 115.  Effect lasts for 20 sec. (2 Min Cooldown)
