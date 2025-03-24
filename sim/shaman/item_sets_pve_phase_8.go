@@ -99,10 +99,10 @@ func (shaman *Shaman) applyScarletEnclaveElemental4PBonus() {
 	})
 
 	buffAura := shaman.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaBurst)},
-		Label:     label + " Proc", // TODO: Find real spell
+		ActionID:  core.ActionID{SpellID: 1233835},
+		Label:     "Thunder and Lava",
 		MaxStacks: 5,
-		Duration:  time.Second * 10, // TODO: Find real duration
+		Duration:  time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMod.Activate()
 		},
