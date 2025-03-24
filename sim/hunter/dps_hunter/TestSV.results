@@ -852,25 +852,25 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase5-Lvl60-AllItems-BeastmasterArmor"
  value: {
-  dps: 1167.53073
-  tps: 948.48226
-  hps: 15.38217
+  dps: 1167.11454
+  tps: 948.39304
+  hps: 15.35167
  }
 }
 dps_results: {
  key: "TestSV-Phase5-Lvl60-AllItems-BloodGuard'sChain"
  value: {
-  dps: 1338.89899
-  tps: 1018.8991
-  hps: 15.1585
+  dps: 1335.00935
+  tps: 1019.76303
+  hps: 15.25
  }
 }
 dps_results: {
  key: "TestSV-Phase5-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1263.12279
-  tps: 955.80579
-  hps: 15.433
+  dps: 1258.00296
+  tps: 949.51629
+  hps: 15.311
  }
 }
 dps_results: {
@@ -908,9 +908,9 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase5-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1276.1754
-  tps: 968.98094
-  hps: 15.4025
+  dps: 1277.40638
+  tps: 969.421
+  hps: 15.44317
  }
 }
 dps_results: {
@@ -924,9 +924,9 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase5-Lvl60-AllItems-Knight-Lieutenant'sChain"
  value: {
-  dps: 1338.89899
-  tps: 1018.8991
-  hps: 15.1585
+  dps: 1335.00935
+  tps: 1019.76303
+  hps: 15.25
  }
 }
 dps_results: {
@@ -972,9 +972,9 @@ dps_results: {
 dps_results: {
  key: "TestSV-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4188.31366
-  tps: 3548.25081
-  hps: 15.48282
+  dps: 4187.9046
+  tps: 3547.89709
+  hps: 15.48553
  }
 }
 dps_results: {

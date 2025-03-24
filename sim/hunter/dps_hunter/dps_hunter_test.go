@@ -87,7 +87,7 @@ func TestMM(t *testing.T) {
 			Buffs:            core.FullBuffsPhase2,
 			Consumes:         Phase2Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase2PlayerOptions},
-			StartingDistance: core.MaxShortRangedAttackRange,
+			StartingDistance: core.MaxRangedAttackRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
@@ -106,7 +106,7 @@ func TestMM(t *testing.T) {
 			Buffs:            core.FullBuffsPhase4,
 			Consumes:         Phase4Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Weave", SpecOptions: Phase4PlayerOptions},
-			StartingDistance: core.MaxShortRangedAttackRange,
+			StartingDistance: core.MaxRangedAttackRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
