@@ -47,13 +47,16 @@ const (
 	ClassSpellMask_WarlockImmolationAura
 	ClassSpellMask_WarlockImmolationAuraProc
 
-	ClassSpellMask_WarlockAll = 1<<iota - 1
-
-	ClassSpellMask_WarlockSummonFelguard = 1 << (iota - 1)
+	ClassSpellMask_WarlockSummonFelguard
+	ClassSpellMask_WarlockSummonFelguardCleave
 	ClassSpellMask_WarlockSummonFelhunter
 	ClassSpellMask_WarlockSummonImp
+	ClassSpellMask_WarlockSummonImpFireBolt
 	ClassSpellMask_WarlockSummonSuccubus
+	ClassSpellMask_WarlockSummonSuccubusLashOfPain
 	ClassSpellMask_WarlockSummonVoidwalker
+
+	ClassSpellMask_WarlockAll = 1<<iota - 1
 
 	ClassSpellMask_WarlockSummons = ClassSpellMask_WarlockSummonFelguard |
 		ClassSpellMask_WarlockSummonFelhunter |
@@ -68,7 +71,8 @@ const (
 		ClassSpellMask_WarlockSiphonLife | ClassSpellMask_WarlockDrainSoul | ClassSpellMask_WarlockDrainLife |
 		ClassSpellMask_WarlockDeathCoil |
 		ClassSpellMask_WarlockChaosBolt | ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockShadowflame |
-		ClassSpellMask_WarlockHaunt | ClassSpellMask_WarlockUnstableAffliction
+		ClassSpellMask_WarlockHaunt | ClassSpellMask_WarlockUnstableAffliction |
+		ClassSpellMask_WarlockSummonFelguardCleave | ClassSpellMask_WarlockSummonImpFireBolt | ClassSpellMask_WarlockSummonSuccubusLashOfPain
 )
 
 type Warlock struct {
