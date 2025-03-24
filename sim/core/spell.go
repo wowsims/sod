@@ -46,8 +46,6 @@ type SpellConfig struct {
 
 	CritDamageBonus float64
 
-	JumpTargets int32
-
 	BaseDamageMultiplierAdditivePct     int64
 	DamageMultiplier                    float64
 	DamageMultiplierAdditivePct         int64
@@ -184,8 +182,6 @@ type Spell struct {
 	dots   DotArray
 	aoeDot *Dot
 
-	JumpTargets int32
-
 	shields    ShieldArray
 	selfShield *Shield
 
@@ -244,10 +240,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		}
 	}
 
-	if config.JumpTargets == 0 {
-		config.JumpTargets = 1
-	}
-
 	spell := &Spell{
 		ActionID:       config.ActionID,
 		ClassSpellMask: config.ClassSpellMask,
@@ -300,8 +292,6 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		RelatedAuras:    config.RelatedAuras,
 		RelatedDotSpell: config.RelatedDotSpell,
 		RelatedSelfBuff: config.RelatedSelfBuff,
-
-		JumpTargets: config.JumpTargets,
 	}
 
 	spell.updateBaseDamageMultiplier()
@@ -641,21 +631,14 @@ func (spell *Spell) applyEffects(sim *Simulation, target *Unit) {
 	spell.SpellMetrics[target.UnitIndex].Casts++
 	spell.casts++
 
-	targetsToHit := min(spell.JumpTargets, sim.Environment.GetNumTargets())
-	for targetIndex := int32(0); targetIndex < targetsToHit; targetIndex++ {
-		// Not sure if we want to split this flag into its own?
-		// Both are used to optimize away unneccesery calls and 99%
-		// of the time are gonna be used together. For now just in one
-		if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
-			spell.Unit.OnApplyEffects(sim, target, spell)
-		}
-
-		spell.ApplyEffects(sim, target, spell)
-
-		if targetIndex < targetsToHit-1 {
-			target = sim.Environment.NextTargetUnit(target)
-		}
+	// Not sure if we want to split this flag into its own?
+	// Both are used to optimize away unneccesery calls and 99%
+	// of the time are gonna be used together. For now just in one
+	if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
+		spell.Unit.OnApplyEffects(sim, target, spell)
 	}
+
+	spell.ApplyEffects(sim, target, spell)
 }
 
 func (spell *Spell) ApplyAOEThreatIgnoreMultipliers(threatAmount float64) {
