@@ -8,23 +8,23 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-// var ItemSetWaywatcherEclipse = core.NewItemSet(core.ItemSet{
-// 	Name: "Waywatcher Eclipse",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveBalance2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveBalance4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveBalance6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetWaywatcherEclipse = core.NewItemSet(core.ItemSet{
+	Name: "Waywatcher Eclipse",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveBalance2PBonus()
+		},
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveBalance4PBonus()
+		},
+		6: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveBalance6PBonus()
+		},
+	},
+})
 
 // Your Starfire deals 20% more damage to targets with your Moonfire, and your Wrath deals 20% more damage to targets with your Sunfire.
 func (druid *Druid) applyScarletEnclaveBalance2PBonus() {
@@ -158,23 +158,23 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 	}))
 }
 
-// var ItemSetWaywatcherFerocity = core.NewItemSet(core.ItemSet{
-// 	Name: "Waywatcher Ferocity",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveFeral2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveFeral4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveFeral6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetWaywatcherFerocity = core.NewItemSet(core.ItemSet{
+	Name: "Waywatcher Ferocity",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveFeral2PBonus()
+		},
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveFeral4PBonus()
+		},
+		6: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveFeral6PBonus()
+		},
+	},
+})
 
 // https://www.wowhead.com/classic-ptr/spell=1226109/s03-item-scarlet-enclave-druid-feral-2p-bonus
 // You gain 2 Energy each time Rake or Rip deals periodic damage.
@@ -299,23 +299,23 @@ func (druid *Druid) applyScarletEnclaveFeral6PBonus() {
 	})
 }
 
-// var ItemSetWaywatcherGuardian = core.NewItemSet(core.ItemSet{
-// 	Name: "Waywatcher Guardian",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveGuardian2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveGuardian4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveGuardian6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetWaywatcherGuardian = core.NewItemSet(core.ItemSet{
+	Name: "Waywatcher Guardian",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveGuardian2PBonus()
+		},
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveGuardian4PBonus()
+		},
+		6: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveGuardian6PBonus()
+		},
+	},
+})
 
 // Your melee critical strikes in Bear Form or Dire Bear Form grant you a shield lasting until cancelled that absorbs Physical damage equal to 25% of your Attack Power the next time you take Physical damage. Stacks up to 0 times.
 func (druid *Druid) applyScarletEnclaveGuardian2PBonus() {
@@ -353,17 +353,17 @@ func (druid *Druid) applyScarletEnclaveGuardian6PBonus() {
 	}))
 }
 
-// var ItemSetWaywatcherRaiment = core.NewItemSet(core.ItemSet{
-// 	Name: "Waywatcher Raiment",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// Each time your Lifebloom heals a target, it has a 5% chance to make your next Healing Touch, Nourish, or Regrowth within 15 sec instant cast.
-// 		2: func(agent core.Agent) {
-// 		},
-// 		// Targets with your active Rejuvenation Rank 10 or Rank 11 receive 20% increased healing from your spells.
-// 		4: func(agent core.Agent) {
-// 		},
-// 		// When your Regrowth Rank 8 or Rank 9 deals a non-periodic critical heal, your Rejuvenation on that target will spread to all members of the target's party within 43.5 yards not already affected by your Rejuvenation.
-// 		6: func(agent core.Agent) {
-// 		},
-// 	},
-// })
+var ItemSetWaywatcherRaiment = core.NewItemSet(core.ItemSet{
+	Name: "Waywatcher Raiment",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Each time your Lifebloom heals a target, it has a 5% chance to make your next Healing Touch, Nourish, or Regrowth within 15 sec instant cast.
+		2: func(agent core.Agent) {
+		},
+		// Targets with your active Rejuvenation Rank 10 or Rank 11 receive 20% increased healing from your spells.
+		4: func(agent core.Agent) {
+		},
+		// When your Regrowth Rank 8 or Rank 9 deals a non-periodic critical heal, your Rejuvenation on that target will spread to all members of the target's party within 43.5 yards not already affected by your Rejuvenation.
+		6: func(agent core.Agent) {
+		},
+	},
+})

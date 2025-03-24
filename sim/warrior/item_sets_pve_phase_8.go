@@ -7,23 +7,23 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-// var ItemSetLightbreakersWarplate = core.NewItemSet(core.ItemSet{
-// 	Name: "Lightbreaker's Warplate",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			warrior := agent.(WarriorAgent).GetWarrior()
-// 			warrior.applyScarletEnclaveDamage2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			warrior := agent.(WarriorAgent).GetWarrior()
-// 			warrior.applyScarletEnclaveDamage4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			warrior := agent.(WarriorAgent).GetWarrior()
-// 			warrior.applyScarletEnclaveDamage6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetLightbreakersWarplate = core.NewItemSet(core.ItemSet{
+	Name: "Lightbreaker's Warplate",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			warrior := agent.(WarriorAgent).GetWarrior()
+			warrior.applyScarletEnclaveDamage2PBonus()
+		},
+		4: func(agent core.Agent) {
+			warrior := agent.(WarriorAgent).GetWarrior()
+			warrior.applyScarletEnclaveDamage4PBonus()
+		},
+		6: func(agent core.Agent) {
+			warrior := agent.(WarriorAgent).GetWarrior()
+			warrior.applyScarletEnclaveDamage6PBonus()
+		},
+	},
+})
 
 // Your Cleave strikes 1 additional target.
 func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
@@ -98,23 +98,23 @@ func (warrior *Warrior) applyScarletEnclaveDamage6PBonus() {
 	}))
 }
 
-// var ItemSetLightbreakersBattlegear = core.NewItemSet(core.ItemSet{
-// 	Name: "Lightbreaker's Battlegear",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			warrior := agent.(WarriorAgent).GetWarrior()
-// 			warrior.applyScarletEnclaveProtection2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			warrior := agent.(WarriorAgent).GetWarrior()
-// 			warrior.applyScarletEnclaveProtection4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			warrior := agent.(WarriorAgent).GetWarrior()
-// 			warrior.applyScarletEnclaveProtection6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetLightbreakersBattlegear = core.NewItemSet(core.ItemSet{
+	Name: "Lightbreaker's Battlegear",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			warrior := agent.(WarriorAgent).GetWarrior()
+			warrior.applyScarletEnclaveProtection2PBonus()
+		},
+		4: func(agent core.Agent) {
+			warrior := agent.(WarriorAgent).GetWarrior()
+			warrior.applyScarletEnclaveProtection4PBonus()
+		},
+		6: func(agent core.Agent) {
+			warrior := agent.(WarriorAgent).GetWarrior()
+			warrior.applyScarletEnclaveProtection6PBonus()
+		},
+	},
+})
 
 // Your Shockwave deals 100% increased damage.
 func (warrior *Warrior) applyScarletEnclaveProtection2PBonus() {
