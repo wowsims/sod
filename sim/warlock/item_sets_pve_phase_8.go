@@ -84,14 +84,16 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 	})
 }
 
-// Your Incinerate, Shadow Bolt, and Soul Fire deal 20% more damage to targets afflicted with your Corruption.
+// Your Incinerate, Shadow Bolt, Haunt, Chaos Bolt, Shadow Cleave, and Soul Fire deal 30% more damage to targets afflicted with your Corruption.
 func (warlock *Warlock) applyScarletEnclaveDamage4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warlock - Damage 4P Bonus"
 	if warlock.HasAura(label) {
 		return
 	}
 
-	classMask := ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockShadowBolt
+	classMask := ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockHaunt |
+		ClassSpellMask_WarlockChaosBolt | ClassSpellMask_WarlockShadowCleave | ClassSpellMask_WarlockSoulFire
+
 	damageMod := warlock.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  classMask,
 		Kind:       core.SpellMod_DamageDone_Pct,
@@ -106,7 +108,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage4PBonus() {
 			hasCorruption := slices.ContainsFunc(warlock.Corruption, func(spell *core.Spell) bool {
 				return spell.Dot(result.Target).IsActive()
 			})
-			damageMod.UpdateFloatValue(core.TernaryFloat64(hasCorruption, 1.20, 1.0))
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hasCorruption, 1.30, 1.0))
 			damageMod.Activate()
 		},
 	})
