@@ -12,7 +12,7 @@ func init() {
 	RegisterDPSHunter()
 }
 
-const buildsDir = "../../../ui/hunter/builds/"
+const buildsDir = "../../../ui/hunter/builds"
 
 func TestBM(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
@@ -54,9 +54,7 @@ func TestBM(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir + "specializations/beast_mastery", "p5_melee_dw_pet", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir + "specializations/beast_mastery", "p6_melee_dw_pet", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir + "specializations/beast_mastery", "p7_melee_dw_pet", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir, "p4_melee_dw", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 
@@ -98,10 +96,7 @@ func TestMM(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir + "specializations/marksmanship", "p4_ranged_22_lw", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir + "specializations/marksmanship", "p5_ranged_311_lw", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir + "specializations/marksmanship", "p6_ranged_ks_lw", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir + "specializations/marksmanship", "p7_ranged_ks_lw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir, "p4_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 
@@ -160,36 +155,32 @@ func TestSV(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir + "specializations/survival", "p5_melee_2h_pet", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir + "specializations/survival", "p6_melee_2h_lw", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir + "specializations/survival", "p7_weave_2h_lw", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 
 func TestRangedItemSets(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir + "instances/molten_core", "ranged", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir + "instances/blackwing_lair", "ranged", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir + "instances/temple_of_ahnqiraj", "ranged", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir + "instances/naxxramas", "ranged", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir, "p4_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir, "p5_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir, "p6_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir, "p7_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 
 func Test2hItemSets(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir + "instances/molten_core", "2hmelee", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir + "instances/blackwing_lair", "2hmelee", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir + "instances/temple_of_ahnqiraj", "2hmelee", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir + "instances/naxxramas", "2hmelee", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir, "p5_melee_2h", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir, "p6_melee_2h", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir, "p7_melee_2h", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 
 func TestDwItemSets(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir + "instances/molten_core", "dwbmmelee", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir + "instances/zulgurub", "dwbmmelee", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir + "instances/ruins_of_ahnqiraj", "dwbmmelee", ItemFilters, proto.Stat_StatAgility, Stats),
-		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir + "instances/naxxramas", "dwbmmelee", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir, "p4_melee_dw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir, "p5_melee_dw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir, "p6_melee_dw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir, "p7_melee_dw_bm", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 

@@ -519,7 +519,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-ranged-ranged-ranged-FullBuffs-ranged-LongMultiTarget"
+ key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-FullBuffs-p4_ranged-LongMultiTarget"
  value: {
   dps: 6592.53987
   tps: 7281.7345
@@ -527,7 +527,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-ranged-ranged-ranged-FullBuffs-ranged-LongSingleTarget"
+ key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-FullBuffs-p4_ranged-LongSingleTarget"
  value: {
   dps: 4330.13892
   tps: 4364.59865
@@ -535,7 +535,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-ranged-ranged-ranged-FullBuffs-ranged-ShortSingleTarget"
+ key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-FullBuffs-p4_ranged-ShortSingleTarget"
  value: {
   dps: 4488.07934
   tps: 4521.61856
@@ -543,7 +543,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-ranged-ranged-ranged-NoBuffs-ranged-LongMultiTarget"
+ key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-NoBuffs-p4_ranged-LongMultiTarget"
  value: {
   dps: 3003.75081
   tps: 3727.16244
@@ -551,7 +551,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-ranged-ranged-ranged-NoBuffs-ranged-LongSingleTarget"
+ key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-NoBuffs-p4_ranged-LongSingleTarget"
  value: {
   dps: 1813.88402
   tps: 1850.0546
@@ -559,7 +559,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-ranged-ranged-ranged-NoBuffs-ranged-ShortSingleTarget"
+ key: "TestRangedItemSets-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-NoBuffs-p4_ranged-ShortSingleTarget"
  value: {
   dps: 1893.58462
   tps: 1926.95656
@@ -687,42 +687,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-ranged-ranged-ranged-FullBuffs-ranged-LongMultiTarget"
+ key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-FullBuffs-p5_ranged-LongMultiTarget"
  value: {
   dps: 8356.32672
   tps: 8901.45901
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-ranged-ranged-ranged-FullBuffs-ranged-LongSingleTarget"
+ key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-FullBuffs-p5_ranged-LongSingleTarget"
  value: {
   dps: 5322.96598
   tps: 5350.37388
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-ranged-ranged-ranged-FullBuffs-ranged-ShortSingleTarget"
+ key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-FullBuffs-p5_ranged-ShortSingleTarget"
  value: {
   dps: 5436.96476
   tps: 5458.61065
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-ranged-ranged-ranged-NoBuffs-ranged-LongMultiTarget"
+ key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-NoBuffs-p5_ranged-LongMultiTarget"
  value: {
   dps: 3618.30307
   tps: 4271.41277
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-ranged-ranged-ranged-NoBuffs-ranged-LongSingleTarget"
+ key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-NoBuffs-p5_ranged-LongSingleTarget"
  value: {
   dps: 2119.96176
   tps: 2152.56862
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-ranged-ranged-ranged-NoBuffs-ranged-ShortSingleTarget"
+ key: "TestRangedItemSets-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-NoBuffs-p5_ranged-ShortSingleTarget"
  value: {
   dps: 2203.44583
   tps: 2239.20363
@@ -848,42 +848,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-ranged-ranged-ranged-FullBuffs-ranged-LongMultiTarget"
+ key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-FullBuffs-p6_ranged-LongMultiTarget"
  value: {
   dps: 4747.62327
   tps: 4798.00976
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-ranged-ranged-ranged-FullBuffs-ranged-LongSingleTarget"
+ key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-FullBuffs-p6_ranged-LongSingleTarget"
  value: {
   dps: 4590.65019
   tps: 4593.16952
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-ranged-ranged-ranged-FullBuffs-ranged-ShortSingleTarget"
+ key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-FullBuffs-p6_ranged-ShortSingleTarget"
  value: {
   dps: 6287.67735
   tps: 6300.27397
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-ranged-ranged-ranged-NoBuffs-ranged-LongMultiTarget"
+ key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-NoBuffs-p6_ranged-LongMultiTarget"
  value: {
   dps: 1788.65911
   tps: 1839.04561
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-ranged-ranged-ranged-NoBuffs-ranged-LongSingleTarget"
+ key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-NoBuffs-p6_ranged-LongSingleTarget"
  value: {
   dps: 1754.19862
   tps: 1756.71794
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-ranged-ranged-ranged-NoBuffs-ranged-ShortSingleTarget"
+ key: "TestRangedItemSets-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-NoBuffs-p6_ranged-ShortSingleTarget"
  value: {
   dps: 2921.22604
   tps: 2933.82267
@@ -1009,42 +1009,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-ranged-ranged-ranged-FullBuffs-ranged-LongMultiTarget"
+ key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-FullBuffs-p7_ranged-LongMultiTarget"
  value: {
   dps: 9224.90183
   tps: 9286.99717
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-ranged-ranged-ranged-FullBuffs-ranged-LongSingleTarget"
+ key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-FullBuffs-p7_ranged-LongSingleTarget"
  value: {
   dps: 5645.43899
   tps: 5648.54376
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-ranged-ranged-ranged-FullBuffs-ranged-ShortSingleTarget"
+ key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-FullBuffs-p7_ranged-ShortSingleTarget"
  value: {
   dps: 7459.59352
   tps: 7459.59352
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-ranged-ranged-ranged-NoBuffs-ranged-LongMultiTarget"
+ key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-NoBuffs-p7_ranged-LongMultiTarget"
  value: {
   dps: 4405.86455
   tps: 4502.41822
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-ranged-ranged-ranged-NoBuffs-ranged-LongSingleTarget"
+ key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-NoBuffs-p7_ranged-LongSingleTarget"
  value: {
   dps: 2357.77497
   tps: 2362.60265
  }
 }
 dps_results: {
- key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-ranged-ranged-ranged-NoBuffs-ranged-ShortSingleTarget"
+ key: "TestRangedItemSets-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-NoBuffs-p7_ranged-ShortSingleTarget"
  value: {
   dps: 3674.19742
   tps: 3674.19742

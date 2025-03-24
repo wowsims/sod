@@ -496,42 +496,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-LongMultiTarget"
+ key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-FullBuffs-p4_melee_dw-LongMultiTarget"
  value: {
   dps: 4465.97612
   tps: 2729.80487
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-LongSingleTarget"
+ key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-FullBuffs-p4_melee_dw-LongSingleTarget"
  value: {
   dps: 4078.59058
   tps: 1980.08262
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-ShortSingleTarget"
+ key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-FullBuffs-p4_melee_dw-ShortSingleTarget"
  value: {
   dps: 4249.0494
   tps: 2023.33985
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-LongMultiTarget"
+ key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-NoBuffs-p4_melee_dw-LongMultiTarget"
  value: {
   dps: 1773.5292
   tps: 1322.92236
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-LongSingleTarget"
+ key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-NoBuffs-p4_melee_dw-LongSingleTarget"
  value: {
   dps: 1659.2394
   tps: 784.45785
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-ShortSingleTarget"
+ key: "TestDwItemSets-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-NoBuffs-p4_melee_dw-ShortSingleTarget"
  value: {
   dps: 1743.75612
   tps: 805.99865
@@ -622,42 +622,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-LongMultiTarget"
+ key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-p5_melee_dw-p5_melee_dw-p5_melee_dw-FullBuffs-p5_melee_dw-LongMultiTarget"
  value: {
   dps: 5200.80355
   tps: 2653.02069
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-LongSingleTarget"
+ key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-p5_melee_dw-p5_melee_dw-p5_melee_dw-FullBuffs-p5_melee_dw-LongSingleTarget"
  value: {
   dps: 4786.63014
   tps: 2018.58058
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-ShortSingleTarget"
+ key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-p5_melee_dw-p5_melee_dw-p5_melee_dw-FullBuffs-p5_melee_dw-ShortSingleTarget"
  value: {
   dps: 4864.04797
   tps: 1995.64711
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-LongMultiTarget"
+ key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-p5_melee_dw-p5_melee_dw-p5_melee_dw-NoBuffs-p5_melee_dw-LongMultiTarget"
  value: {
   dps: 2259.69953
   tps: 1335.79598
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-LongSingleTarget"
+ key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-p5_melee_dw-p5_melee_dw-p5_melee_dw-NoBuffs-p5_melee_dw-LongSingleTarget"
  value: {
   dps: 2054.73463
   tps: 840.81191
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-ShortSingleTarget"
+ key: "TestDwItemSets-Phase5-Lvl60-Settings-Orc-p5_melee_dw-p5_melee_dw-p5_melee_dw-NoBuffs-p5_melee_dw-ShortSingleTarget"
  value: {
   dps: 2084.50993
   tps: 832.92317
@@ -783,7 +783,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-LongMultiTarget"
+ key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-p6_melee_dw-p6_melee_dw-p6_melee_dw-FullBuffs-p6_melee_dw-LongMultiTarget"
  value: {
   dps: 6212.30974
   tps: 3132.44195
@@ -791,7 +791,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-LongSingleTarget"
+ key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-p6_melee_dw-p6_melee_dw-p6_melee_dw-FullBuffs-p6_melee_dw-LongSingleTarget"
  value: {
   dps: 5870.77188
   tps: 2566.38082
@@ -799,7 +799,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-ShortSingleTarget"
+ key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-p6_melee_dw-p6_melee_dw-p6_melee_dw-FullBuffs-p6_melee_dw-ShortSingleTarget"
  value: {
   dps: 6131.84609
   tps: 2604.42979
@@ -807,7 +807,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-LongMultiTarget"
+ key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-p6_melee_dw-p6_melee_dw-p6_melee_dw-NoBuffs-p6_melee_dw-LongMultiTarget"
  value: {
   dps: 2715.87778
   tps: 1573.00691
@@ -815,7 +815,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-LongSingleTarget"
+ key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-p6_melee_dw-p6_melee_dw-p6_melee_dw-NoBuffs-p6_melee_dw-LongSingleTarget"
  value: {
   dps: 2536.41269
   tps: 1075.21593
@@ -823,7 +823,7 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-ShortSingleTarget"
+ key: "TestDwItemSets-Phase6-Lvl60-Settings-Orc-p6_melee_dw-p6_melee_dw-p6_melee_dw-NoBuffs-p6_melee_dw-ShortSingleTarget"
  value: {
   dps: 2703.37336
   tps: 1139.92024
@@ -944,42 +944,42 @@ dps_results: {
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-LongMultiTarget"
+ key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-p7_melee_dw_bm-p7_melee_dw_bm-p7_melee_dw_bm-FullBuffs-p7_melee_dw_bm-LongMultiTarget"
  value: {
   dps: 6845.8274
   tps: 3923.37715
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-LongSingleTarget"
+ key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-p7_melee_dw_bm-p7_melee_dw_bm-p7_melee_dw_bm-FullBuffs-p7_melee_dw_bm-LongSingleTarget"
  value: {
   dps: 6456.90633
   tps: 3213.70938
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-FullBuffs-dwbmmelee-ShortSingleTarget"
+ key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-p7_melee_dw_bm-p7_melee_dw_bm-p7_melee_dw_bm-FullBuffs-p7_melee_dw_bm-ShortSingleTarget"
  value: {
   dps: 6665.03776
   tps: 3236.99867
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-LongMultiTarget"
+ key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-p7_melee_dw_bm-p7_melee_dw_bm-p7_melee_dw_bm-NoBuffs-p7_melee_dw_bm-LongMultiTarget"
  value: {
   dps: 2961.29303
   tps: 1919.0464
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-LongSingleTarget"
+ key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-p7_melee_dw_bm-p7_melee_dw_bm-p7_melee_dw_bm-NoBuffs-p7_melee_dw_bm-LongSingleTarget"
  value: {
   dps: 2843.03556
   tps: 1391.5489
  }
 }
 dps_results: {
- key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-dwbmmelee-dwbmmelee-dwbmmelee-NoBuffs-dwbmmelee-ShortSingleTarget"
+ key: "TestDwItemSets-Phase7-Lvl60-Settings-Orc-p7_melee_dw_bm-p7_melee_dw_bm-p7_melee_dw_bm-NoBuffs-p7_melee_dw_bm-ShortSingleTarget"
  value: {
   dps: 2999.12246
   tps: 1433.61989
