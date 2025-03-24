@@ -156,6 +156,16 @@ func init() {
 		// https://www.wowhead.com/classic/spell=1232093/infusion-of-souls
 		case proto.Class_ClassWarlock:
 			classMask = warlock.ClassSpellMask_WarlockHarmfulGCDSpells
+
+			// Infusion of souls also affects Warlock pets
+			warlock := agent.(warlock.WarlockAgent).GetWarlock()
+			for _, pet := range warlock.BasePets {
+				pet.OnSpellRegistered(func(spell *core.Spell) {
+					if spell.Matches(classMask) {
+						spell.AllowGCDHasteScaling = true
+					}
+				})
+			}
 		}
 
 		character.OnSpellRegistered(func(spell *core.Spell) {
