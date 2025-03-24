@@ -724,7 +724,7 @@ func (paladin *Paladin) applyPaladinTAQRet4P() {
 			damageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Activate()
+			damageMod.Deactivate()
 		},
 	})
 

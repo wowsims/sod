@@ -8,23 +8,23 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-// var ItemSetHereticRaiment = core.NewItemSet(core.ItemSet{
-// 	Name: "Heretic Raiment",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveDamage2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveDamage4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveDamage6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetHereticRaiment = core.NewItemSet(core.ItemSet{
+	Name: "Heretic Raiment",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveDamage2PBonus()
+		},
+		4: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveDamage4PBonus()
+		},
+		6: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveDamage6PBonus()
+		},
+	},
+})
 
 // Your Shadow and Fire non-periodic critical strikes cause the target to Burn for 25% of the damage they deal over 4 sec.
 func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
@@ -142,23 +142,23 @@ func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 	}))
 }
 
-// var ItemSetHereticStitchings = core.NewItemSet(core.ItemSet{
-// 	Name: "Heretic Stitchings",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveTank2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveTank4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveTank6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetHereticStitchings = core.NewItemSet(core.ItemSet{
+	Name: "Heretic Stitchings",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveTank2PBonus()
+		},
+		4: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveTank4PBonus()
+		},
+		6: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveTank6PBonus()
+		},
+	},
+})
 
 // Your Shadowcleave now applies your Corruption Rank 7 to every target it hits but its duration is only 12 sec.
 func (warlock *Warlock) applyScarletEnclaveTank2PBonus() {
