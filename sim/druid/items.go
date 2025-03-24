@@ -439,6 +439,9 @@ func init() {
 
 		// https://www.wowhead.com/classic-ptr/spell=1231380/feral-dedication
 		auraTimer := druid.GetOrRegisterAura(core.Aura{
+			ActionID: core.ActionID{
+				SpellID: 1231380,
+			},
 			Label:    "Feral Dedication (Timer)",
 			Duration: time.Second * 5,
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
