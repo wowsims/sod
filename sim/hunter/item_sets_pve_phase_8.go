@@ -43,8 +43,9 @@ func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
 		ClassSpellMask: ClassSpellMask_HunterStrikes | ClassSpellMask_HunterMongooseBite,
 		Callback:       core.CallbackOnApplyEffects,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			hasDebuff := hunter.SerpentSting.Dot(result.Target).IsActive() || hunter.WyvernStrike.Dot(result.Target).IsActive()
-			damageMod.UpdateFloatValue(core.TernaryFloat64(hasDebuff, 1.20, 1.0))
+			hasSerpentSting := hunter.SerpentSting.Dot(result.Target).IsActive()
+			hasWyvernStrike := hunter.WyvernStrike != nil && hunter.WyvernStrike.Dot(result.Target).IsActive()
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hasSerpentSting || hasWyvernStrike, 1.20, 1.0))
 			damageMod.Activate()
 		},
 	})
