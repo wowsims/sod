@@ -182,7 +182,7 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 			OnGain: func(aura *Aura, sim *Simulation) {
 				berserkingHaste = 1 / (1 - calcBerserkingPct())
 
-				character.MultiplyCastSpeed(berserkingHaste)
+				character.MultiplyCastSpeed(sim, berserkingHaste)
 				character.MultiplyAttackSpeed(sim, berserkingHaste)
 
 				if sim.Log != nil {
@@ -190,7 +190,7 @@ func makeBerserkingCooldown(character *Character, customPercentage float64, time
 				}
 			},
 			OnExpire: func(aura *Aura, sim *Simulation) {
-				character.MultiplyCastSpeed(1 / berserkingHaste)
+				character.MultiplyCastSpeed(sim, 1/berserkingHaste)
 				character.MultiplyAttackSpeed(sim, 1/berserkingHaste)
 			},
 		})

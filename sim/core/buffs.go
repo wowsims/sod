@@ -1435,10 +1435,10 @@ func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
 // 	return aura.NewExclusiveEffect("MultiplyCastSpeed", false, ExclusiveEffect{
 // 		Priority: multiplier,
 // 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-// 			ee.Aura.Unit.MultiplyCastSpeed(multiplier)
+// 			ee.Aura.Unit.MultiplyCastSpeed(simmultiplier)
 // 		},
 // 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
-// 			ee.Aura.Unit.MultiplyCastSpeed(1 / multiplier)
+// 			ee.Aura.Unit.MultiplyCastSpeed(sim, 1 / multiplier)
 // 		},
 // 	})
 // }
@@ -2646,10 +2646,10 @@ func AtieshCastSpeedEffect(unit *Unit) *Aura {
 		Label:      label,
 		BuildPhase: CharacterBuildPhaseBuffs,
 		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyCastSpeed(1.02)
+			aura.Unit.MultiplyCastSpeed(sim, 1.02)
 		},
 		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.MultiplyCastSpeed(1 / 1.02)
+			aura.Unit.MultiplyCastSpeed(sim, 1/1.02)
 		},
 	}))
 

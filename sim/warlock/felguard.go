@@ -125,7 +125,6 @@ func (wp *WarlockPet) registerFelguardCleaveSpell() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    wp.NewTimer(),
 				Duration: time.Second * 6,

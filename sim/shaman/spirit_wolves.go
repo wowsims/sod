@@ -47,6 +47,10 @@ func (shaman *Shaman) NewSpiritWolves() *SpiritWolves {
 	wolves.AddStatDependency(stats.Strength, stats.AttackPower, 2)
 	wolves.AddStatDependency(stats.Agility, stats.AttackPower, 0.2)
 
+	wolves.OnPetEnable = func(_ *core.Simulation) {
+		wolves.EnableDynamicAttackSpeed()
+	}
+
 	// Warrior crit scaling
 	core.ApplyPetConsumeEffects(&wolves.Character, shaman.Consumes)
 

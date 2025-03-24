@@ -158,11 +158,15 @@ func init() {
 			classMask = warlock.ClassSpellMask_WarlockHarmfulGCDSpells
 
 			// Infusion of souls also affects Warlock pets
-			warlock := agent.(warlock.WarlockAgent).GetWarlock()
-			for _, pet := range warlock.BasePets {
+			warlockPlayer := agent.(warlock.WarlockAgent).GetWarlock()
+			for _, pet := range warlockPlayer.BasePets {
 				pet.OnSpellRegistered(func(spell *core.Spell) {
 					if spell.Matches(classMask) {
 						spell.AllowGCDHasteScaling = true
+
+						if spell.Matches(warlock.ClassSpellMask_WarlockSummonImpFireBolt) {
+							spell.DefaultCast.GCDMin = time.Millisecond * 500
+						}
 					}
 				})
 			}
