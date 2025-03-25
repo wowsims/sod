@@ -403,11 +403,14 @@ func (shaman *Shaman) applyScarletEnclaveTank6PBonus() {
 			}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 				spellMod.Deactivate()
 			}).ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				spellMod.UpdateFloatValue(-0.20 * float64(newStacks-oldStacks))
+				spellMod.UpdateFloatValue(-0.20 * float64(newStacks))
 			})
 
 			if shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
 				shaman.MaelstromWeaponClassMask ^= ClassSpellMask_ShamanLavaBurst
+				for _, spellMod := range shaman.MaelstromWeaponSpellMods {
+					spellMod.RemoveSpellByClassMask(ClassSpellMask_ShamanLavaBurst)
+				}
 			}
 		},
 	}))

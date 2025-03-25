@@ -143,6 +143,15 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 	return true
 }
 
+func (mod *SpellMod) RemoveSpellByClassMask(classMask uint64) {
+	for i, spell := range mod.AffectedSpells {
+		if spell.Matches(classMask) {
+			mod.Remove(mod, spell)
+			mod.AffectedSpells = append(mod.AffectedSpells[:i], mod.AffectedSpells[i+1:]...)
+		}
+	}
+}
+
 func (mod *SpellMod) UpdateIntValue(value int64) {
 	if mod.IsActive {
 		mod.Deactivate()
