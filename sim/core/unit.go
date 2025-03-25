@@ -115,8 +115,8 @@ type Unit struct {
 	// Pets owned by this Unit.
 	PetAgents []PetAgent
 
-	DynamicStatsPets      []*Pet
-	DynamicMeleeSpeedPets []*Pet
+	DynamicStatsPets       []*Pet
+	DynamicAttackSpeedPets []*Pet
 
 	// AutoAttacks is the manager for auto attack swings.
 	// Must be enabled to use, with "EnableAutoAttacks()".
@@ -384,6 +384,11 @@ func (unit *Unit) updateCastSpeed() {
 
 func (unit *Unit) MultiplyCastSpeed(amount float64) {
 	unit.PseudoStats.CastSpeedMultiplier *= amount
+
+	for _, pet := range unit.DynamicAttackSpeedPets {
+		pet.dynamicAttackSpeedInheritance()
+	}
+
 	unit.updateCastSpeed()
 }
 func (unit *Unit) ApplyCastSpeed(dur time.Duration) time.Duration {
@@ -419,9 +424,10 @@ func (unit *Unit) RangedSwingSpeed() float64 {
 func (unit *Unit) MultiplyMeleeSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.MeleeSpeedMultiplier *= amount
 
-	for _, pet := range unit.DynamicMeleeSpeedPets {
-		pet.dynamicMeleeSpeedInheritance(amount)
+	for _, pet := range unit.DynamicAttackSpeedPets {
+		pet.dynamicAttackSpeedInheritance()
 	}
+
 	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
 
@@ -435,9 +441,10 @@ func (unit *Unit) MultiplyAttackSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.MeleeSpeedMultiplier *= amount
 	unit.PseudoStats.RangedSpeedMultiplier *= amount
 
-	for _, pet := range unit.DynamicMeleeSpeedPets {
-		pet.dynamicMeleeSpeedInheritance(amount)
+	for _, pet := range unit.DynamicAttackSpeedPets {
+		pet.dynamicAttackSpeedInheritance()
 	}
+
 	unit.AutoAttacks.UpdateSwingTimers(sim)
 }
 
@@ -542,7 +549,7 @@ func (unit *Unit) reset(sim *Simulation, _ Agent) {
 	}
 
 	unit.DynamicStatsPets = unit.DynamicStatsPets[:0]
-	unit.DynamicMeleeSpeedPets = unit.DynamicMeleeSpeedPets[:0]
+	unit.DynamicAttackSpeedPets = unit.DynamicAttackSpeedPets[:0]
 
 	if unit.Type != PetUnit {
 		sim.addTracker(&unit.auraTracker)
