@@ -133,6 +133,8 @@ func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 			if warlock.BackdraftAura != nil {
 				warlock.BackdraftAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 					hasteAura.Activate(sim)
+				}).ApplyOnRefresh(func(aura *core.Aura, sim *core.Simulation) {
+					hasteAura.Activate(sim)
 				})
 			}
 		},
