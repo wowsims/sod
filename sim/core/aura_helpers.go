@@ -541,9 +541,9 @@ func (parentAura *Aura) AttachMultiplyAttackSpeed(unit *Unit, value float64) *Au
 // Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
 func (parentAura *Aura) AttachMultiplyCastSpeed(unit *Unit, value float64) *Aura {
 	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
-		unit.MultiplyCastSpeed(sim, value)
+		unit.MultiplyCastSpeed(value)
 	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
-		unit.MultiplyCastSpeed(sim, 1/value)
+		unit.MultiplyCastSpeed(1 / value)
 	})
 	return parentAura
 }

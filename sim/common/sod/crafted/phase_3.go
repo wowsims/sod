@@ -188,10 +188,10 @@ func echoesOfMadnessEffect(agent core.Agent) {
 		ActionID: core.ActionID{SpellID: 446528},
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			character.MultiplyCastSpeed(sim, 1.1)
+			character.MultiplyCastSpeed(1.1)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			character.MultiplyCastSpeed(sim, 1/1.1)
+			character.MultiplyCastSpeed(1 / 1.1)
 		},
 	})
 

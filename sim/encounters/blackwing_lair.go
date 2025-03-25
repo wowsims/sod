@@ -143,11 +143,11 @@ func (ai *VaelastraszTheCorruptAI) registerSpells() {
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 					inverseMultiplierBonus = 1 / (1.0 + float64(oldStacks)*0.1)
 					target.MultiplyMeleeSpeed(sim, inverseMultiplierBonus)
-					target.MultiplyCastSpeed(sim, inverseMultiplierBonus)
+					target.MultiplyCastSpeed(inverseMultiplierBonus)
 					target.PseudoStats.DamageDealtMultiplier *= inverseMultiplierBonus
 					multiplierBonus = 1.0 + float64(newStacks)*0.1
 					target.MultiplyMeleeSpeed(sim, multiplierBonus)
-					target.MultiplyCastSpeed(sim, multiplierBonus)
+					target.MultiplyCastSpeed(multiplierBonus)
 					target.PseudoStats.DamageDealtMultiplier *= multiplierBonus
 				},
 			},
@@ -184,11 +184,11 @@ func (ai *VaelastraszTheCorruptAI) registerSpells() {
 				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 					inverseMultiplierBonus = 1 / (1.0 + float64(oldStacks)*0.1)
 					target.MultiplyMeleeSpeed(sim, inverseMultiplierBonus)
-					target.MultiplyCastSpeed(sim, inverseMultiplierBonus)
+					target.MultiplyCastSpeed(inverseMultiplierBonus)
 					target.PseudoStats.DamageDealtMultiplier *= inverseMultiplierBonus
 					multiplierBonus = 1.0 + float64(newStacks)*0.1
 					target.MultiplyMeleeSpeed(sim, multiplierBonus)
-					target.MultiplyCastSpeed(sim, multiplierBonus)
+					target.MultiplyCastSpeed(multiplierBonus)
 					target.PseudoStats.DamageDealtMultiplier *= multiplierBonus
 				},
 			},

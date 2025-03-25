@@ -126,9 +126,9 @@ func (warlock *Warlock) makePet(cfg PetConfig, enabledOnStart bool) *WarlockPet 
 		wp.AutoAttacks.MHConfig().DamageMultiplier *= 1 + 0.04*float64(warlock.Talents.UnholyPower)
 	}
 
-	wp.OnPetEnable = func(sim *core.Simulation) {
+	wp.ApplyOnPetEnable(func(sim *core.Simulation) {
 		wp.EnableDynamicAttackSpeed(sim)
-	}
+	})
 
 	// Having either the Fire or Shadow ring rune grants the pet 6% spell hit, 4.8% physical hit, and 0.5% expertise
 	hasRingRune := warlock.HasRuneById(int32(proto.RingRune_RuneRingFireSpecialization)) || warlock.HasRuneById(int32(proto.RingRune_RuneRingShadowSpecialization))

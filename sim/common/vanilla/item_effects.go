@@ -1047,10 +1047,10 @@ func init() {
 			Label:    "Focus (Hand of Edward the Odd)",
 			Duration: time.Second * 4,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyCastSpeed(sim, 100000)
+				character.MultiplyCastSpeed(100000)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.MultiplyCastSpeed(sim, 1/100000.0)
+				character.MultiplyCastSpeed(1 / 100000.0)
 			},
 			OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 				aura.Deactivate(sim)

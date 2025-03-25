@@ -164,9 +164,9 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		hp.AddStat(stats.Expertise, 0.5*core.ExpertiseRatingPerExpertiseChance)
 	}
 
-	hp.OnPetEnable = func(sim *core.Simulation) {
+	hp.ApplyOnPetEnable(func(sim *core.Simulation) {
 		hp.EnableDynamicAttackSpeed(sim)
-	}
+	})
 
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
 

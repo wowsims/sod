@@ -382,11 +382,11 @@ func (unit *Unit) updateCastSpeed() {
 	unit.CastSpeed = (1 / unit.PseudoStats.CastSpeedMultiplier)
 }
 
-func (unit *Unit) MultiplyCastSpeed(sim *Simulation, amount float64) {
+func (unit *Unit) MultiplyCastSpeed(amount float64) {
 	unit.PseudoStats.CastSpeedMultiplier *= amount
 
 	for _, pet := range unit.DynamicAttackSpeedPets {
-		pet.dynamicAttackSpeedInheritance(sim)
+		pet.dynamicAttackSpeedInheritance()
 	}
 
 	unit.updateCastSpeed()
@@ -425,7 +425,7 @@ func (unit *Unit) MultiplyMeleeSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.MeleeSpeedMultiplier *= amount
 
 	for _, pet := range unit.DynamicAttackSpeedPets {
-		pet.dynamicAttackSpeedInheritance(sim)
+		pet.dynamicAttackSpeedInheritance()
 	}
 
 	unit.AutoAttacks.UpdateSwingTimers(sim)
@@ -442,7 +442,7 @@ func (unit *Unit) MultiplyAttackSpeed(sim *Simulation, amount float64) {
 	unit.PseudoStats.RangedSpeedMultiplier *= amount
 
 	for _, pet := range unit.DynamicAttackSpeedPets {
-		pet.dynamicAttackSpeedInheritance(sim)
+		pet.dynamicAttackSpeedInheritance()
 	}
 
 	unit.AutoAttacks.UpdateSwingTimers(sim)
