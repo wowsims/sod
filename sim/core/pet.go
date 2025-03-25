@@ -21,7 +21,7 @@ type OnPetEnable func(sim *Simulation)
 type OnPetDisable func(sim *Simulation)
 
 type PetStatInheritance func(ownerStats stats.Stats) stats.Stats
-type PetAttackSpeedInheritance func(sim *Simulation, meleeMultiplier, castMultiplier float64)
+type PetAttackSpeedInheritance func(sim *Simulation)
 
 // Pet is an extension of Character, for any entity created by a player that can
 // take actions on its own.
@@ -213,17 +213,18 @@ func (pet *Pet) EnableDynamicStats(inheritance PetStatInheritance) {
 }
 
 // Enables and possibly updates how the pet inherits its owner's attack and cast speeds
-func (pet *Pet) EnableDynamicAttackSpeed() {
+func (pet *Pet) EnableDynamicAttackSpeed(sim *Simulation) {
 	if !slices.Contains(pet.Owner.DynamicAttackSpeedPets, pet) {
 		pet.Owner.DynamicAttackSpeedPets = append(pet.Owner.DynamicAttackSpeedPets, pet)
 	}
 
-	pet.dynamicAttackSpeedInheritance = func(sim *Simulation, meleeMultiplier, castMultiplier float64) {
+	pet.dynamicAttackSpeedInheritance = func(sim *Simulation) {
 		// From Zirene: Pets will take the highest of the owner's melee and spell haste multipliers
-		maxMultiplier := max(meleeMultiplier, castMultiplier)
+		maxMultiplier := max(pet.Owner.PseudoStats.MeleeSpeedMultiplier, pet.Owner.PseudoStats.CastSpeedMultiplier)
 		pet.MultiplyMeleeSpeed(sim, maxMultiplier/pet.PseudoStats.MeleeSpeedMultiplier)
 		pet.MultiplyCastSpeed(sim, maxMultiplier/pet.PseudoStats.CastSpeedMultiplier)
 	}
+	pet.dynamicAttackSpeedInheritance(sim)
 }
 
 func (pet *Pet) Disable(sim *Simulation) {
@@ -248,6 +249,8 @@ func (pet *Pet) Disable(sim *Simulation) {
 		if idx := slices.Index(pet.Owner.DynamicAttackSpeedPets, pet); idx != -1 {
 			pet.Owner.DynamicAttackSpeedPets = removeBySwappingToBack(pet.Owner.DynamicAttackSpeedPets, idx)
 		}
+		pet.PseudoStats.MeleeSpeedMultiplier = pet.Owner.PseudoStats.MeleeSpeedMultiplier
+		pet.PseudoStats.CastSpeedMultiplier = pet.Owner.PseudoStats.CastSpeedMultiplier
 		pet.dynamicAttackSpeedInheritance = nil
 	}
 
