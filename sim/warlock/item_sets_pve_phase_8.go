@@ -131,9 +131,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if warlock.BackdraftAura != nil {
-				warlock.BackdraftAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-					hasteAura.Activate(sim)
-				})
+				warlock.BackdraftAura.AttachDependentAura(hasteAura)
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
