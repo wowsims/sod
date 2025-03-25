@@ -13,13 +13,13 @@ import { TalentsTab } from './components/individual_sim_ui/talents_tab';
 import * as InputHelpers from './components/input_helpers';
 import { addRaidSimAction, RaidSimResultsManager } from './components/raid_sim_action';
 import { SavedDataConfig } from './components/saved_data_manager';
-import { addStatWeightsAction } from './components/stat_weights_action';
+import { addStatWeightsAction, StatWeightActionSettings } from './components/stat_weights_action';
 import { GLOBAL_DISPLAY_PSEUDO_STATS, GLOBAL_DISPLAY_STATS, GLOBAL_EP_PSEUDOSTATS, GLOBAL_EP_STATS, LEVEL_THRESHOLDS } from './constants/other';
 import { SimSettingCategories } from './constants/sim_settings';
 import * as Tooltips from './constants/tooltips';
 import { simLaunchStatuses } from './launched_sims';
 import { Player, PlayerConfig, registerSpecConfig as registerPlayerConfig } from './player';
-import { PresetBuild, PresetEncounter, PresetGear, PresetRotation, PresetSettings } from './preset_utils';
+import { PresetBuild, PresetGear, PresetRotation, PresetSettings } from './preset_utils';
 import { StatWeightsResult } from './proto/api';
 import { APLRotation, APLRotation_Type as APLRotationType } from './proto/apl';
 import {
@@ -171,7 +171,8 @@ export interface Settings {
 export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	readonly player: Player<SpecType>;
 	readonly individualConfig: IndividualSimUIConfig<SpecType>;
-
+	private readonly statWeightActionSettings: StatWeightActionSettings;
+	
 	private raidSimResultsManager: RaidSimResultsManager | null;
 
 	prevEpIterations: number;
@@ -209,6 +210,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 		this.raidSimResultsManager = null;
 		this.prevEpIterations = 0;
 		this.prevEpSimResult = null;
+		this.statWeightActionSettings = new StatWeightActionSettings(this);
 
 		if ((config.itemSwapSlots || []).length > 0 && !itemSwapEnabledSpecs.includes(player.spec)) {
 			itemSwapEnabledSpecs.push(player.spec);
@@ -335,6 +337,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 
 				window.localStorage.setItem(this.getSettingsStorageKey(), jsonStr);
 			});
+
+			this.statWeightActionSettings.load(initEventID);
 		});
 	}
 
@@ -345,6 +349,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			this.individualConfig.epStats.concat(GLOBAL_EP_STATS),
 			GLOBAL_EP_PSEUDOSTATS.concat(this.individualConfig.epPseudoStats ?? []),
 			this.individualConfig.epReferenceStat,
+			this.statWeightActionSettings,
 		);
 
 		const displayStats: UnitStat[] = [];
@@ -473,6 +478,8 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 					this.sim.raid.setTanks(eventID, []);
 				}
 			}
+
+			this.statWeightActionSettings.applyDefaults(eventID);
 		});
 	}
 
