@@ -318,15 +318,15 @@ func (hunter *Hunter) applyLockAndLoad() {
 	}))
 }
 
-const RaptorFuryPerStackDamageMultiplier = 0.15
+const RaptorFuryDamageMultiplier = 0.15
 
 func (hunter *Hunter) raptorFuryDamageMultiplier() float64 {
 	stacks := hunter.RaptorFuryAura.GetStacks()
 	if stacks == 0 {
 		return 1
 	}
-
-	return 1 + RaptorFuryPerStackDamageMultiplier*float64(stacks)
+	damageMultiplier := RaptorFuryDamageMultiplier + hunter.BonusRaptorFuryDamageMultiplier
+	return 1 + damageMultiplier*float64(stacks)
 }
 
 func (hunter *Hunter) applyRaptorFury() {
@@ -348,7 +348,7 @@ func (hunter *Hunter) applyCobraSlayer() {
 	}
 
 	hunter.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: int32(proto.HunterRune_RuneHandsCobraSlayer)},
+		ActionID:  core.ActionID{SpellID: int32(proto.HunterRune_RuneHandsCobraSlayer)},
 		Label:     "Cobra Slayer",
 		Duration:  core.NeverExpires,
 		MaxStacks: 20,

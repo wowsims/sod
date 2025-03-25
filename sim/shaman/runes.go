@@ -197,7 +197,7 @@ func (shaman *Shaman) applyStormEarthAndFire() {
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanChainLightning,
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
-		IntValue:  -50,
+		IntValue:  -25,
 	}))
 
 }
@@ -414,8 +414,6 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		ClassMask: shaman.MaelstromWeaponClassMask,
 	})
 
-	shaman.MaelstromWeaponSpellMods = []*core.SpellMod{castTimeMod, costMod}
-
 	shaman.MaelstromWeaponAura = shaman.RegisterAura(core.Aura{
 		Label:     "MaelstromWeapon Proc",
 		ActionID:  core.ActionID{SpellID: 408505},
@@ -445,6 +443,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 	})
 
 	shaman.maelstromWeaponPPMM = shaman.AutoAttacks.NewPPMManager(ppm, core.ProcMaskMelee)
+	shaman.maelstromWeaponProcsPerStack += 1
 
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
 		Name:              "Maelstrom Weapon Trigger",
@@ -455,8 +454,10 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 		CanProcFromProcs:  true,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if shaman.maelstromWeaponPPMM.Proc(sim, spell.ProcMask, "Maelstrom Weapon") {
-				shaman.MaelstromWeaponAura.Activate(sim)
-				shaman.MaelstromWeaponAura.AddStack(sim)
+				for i := 0; i < shaman.maelstromWeaponProcsPerStack; i++ {
+					shaman.MaelstromWeaponAura.Activate(sim)
+					shaman.MaelstromWeaponAura.AddStack(sim)
+				}
 			}
 		},
 	})
@@ -515,7 +516,7 @@ func (shaman *Shaman) applyPowerSurge() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: "Power Surge",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_ShamanFlameShock) && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
+			if spell.Matches(ClassSpellMask_ShamanFlameShock) && spell.ProcMask.Matches(core.ProcMaskSpellDamage) && sim.Proc(shaman.powerSurgeProcChance, "Power Surge Proc") {
 				shaman.PowerSurgeDamageAura.Activate(sim)
 			}
 		},
@@ -556,6 +557,10 @@ func (shaman *Shaman) applyWayOfEarth() {
 			},
 		}).AttachStatDependency(healthDep),
 	)
+}
+
+func (shaman *Shaman) WayOfEarthActive() bool {
+	return shaman.HasRune(proto.ShamanRune_RuneLegsWayOfEarth) && shaman.getImbueProcMask(proto.WeaponImbue_RockbiterWeapon).Matches(core.ProcMaskMeleeMH)
 }
 
 // https://www.wowhead.com/classic/spell=408696/spirit-of-the-alpha

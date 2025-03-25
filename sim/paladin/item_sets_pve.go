@@ -352,7 +352,7 @@ func (paladin *Paladin) applyPaladinT1Prot6P() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label:    bonusLabel,
 		ActionID: core.ActionID{SpellID: PaladinT1Prot6P},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -371,7 +371,7 @@ func (paladin *Paladin) applyPaladinT1Prot6P() {
 				paladin.holyShieldAura[i].MaxStacks = 0
 			}
 		},
-	})
+	}))
 }
 
 func (paladin *Paladin) applyPaladinT2Prot2P() {
@@ -387,7 +387,7 @@ func (paladin *Paladin) applyPaladinT2Prot2P() {
 
 	blockBonus := 10.0 * core.BlockRatingPerBlockChance
 
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label:    bonusLabel,
 		ActionID: core.ActionID{SpellID: PaladinT2Prot2P},
 		OnInit: func(_ *core.Aura, _ *core.Simulation) {
@@ -398,7 +398,7 @@ func (paladin *Paladin) applyPaladinT2Prot2P() {
 				hsAura.AttachStatBuff(stats.Block, blockBonus)
 			}
 		},
-	})
+	}))
 }
 
 func (paladin *Paladin) applyPaladinT2Prot4P() {
@@ -718,13 +718,13 @@ func (paladin *Paladin) applyPaladinTAQRet4P() {
 		MaxStacks: 3,
 
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			damageMod.UpdateIntValue(core.TernaryInt64(paladin.MainHand().HandType == proto.HandType_HandTypeTwoHand, 35, 0) * int64(newStacks))
+			damageMod.UpdateIntValue(35 * int64(newStacks))
 		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMod.Activate()
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Activate()
+			damageMod.Deactivate()
 		},
 	})
 
@@ -732,6 +732,10 @@ func (paladin *Paladin) applyPaladinTAQRet4P() {
 		Label:    bonusLabel,
 		ActionID: core.ActionID{SpellID: PaladinTAQRet4P},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if paladin.MainHand().HandType != proto.HandType_HandTypeTwoHand {
+				return
+			}
+
 			if result.Landed() && spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) {
 				buffAura.Activate(sim)
 				buffAura.AddStack(sim)
@@ -800,7 +804,7 @@ func (paladin *Paladin) applyPaladinRAQ3P() {
 		return
 	}
 
-	paladin.RegisterAura(core.Aura{
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label:    bonusLabel,
 		ActionID: core.ActionID{SpellID: PaladinRAQ3P},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
@@ -822,5 +826,5 @@ func (paladin *Paladin) applyPaladinRAQ3P() {
 				paladin.consumeSealsOnJudge = consumeSealsOnJudgeSaved // Restore saved value
 			}
 		},
-	})
+	}))
 }

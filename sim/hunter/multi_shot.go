@@ -13,7 +13,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 	manaCost := [6]float64{0, 100, 140, 175, 210, 230}[rank]
 	level := [6]int{0, 18, 30, 42, 54, 60}[rank]
 
-	numHits := min(3, hunter.Env.GetNumTargets())
+	numHits := min(3+hunter.MultiShotBonusTargets, hunter.Env.GetNumTargets())
 	results := make([]*core.SpellResult, numHits)
 
 	hasSerpentSpread := hunter.HasRune(proto.HunterRune_RuneLegsSerpentSpread)

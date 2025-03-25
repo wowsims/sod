@@ -28,7 +28,7 @@ func NewWowheadItemTooltipManager(filePath string) *WowheadTooltipManager {
 	return &WowheadTooltipManager{
 		TooltipManager{
 			FilePath:   filePath,
-			UrlPattern: "https://nether.wowhead.com/classic/tooltip/item/%s?lvl=60",
+			UrlPattern: core.MakeWowheadUrl("/tooltip/item/%s?lvl=60"),
 		},
 	}
 }
@@ -37,7 +37,7 @@ func NewWowheadSpellTooltipManager(filePath string) *WowheadTooltipManager {
 	return &WowheadTooltipManager{
 		TooltipManager{
 			FilePath:   filePath,
-			UrlPattern: "https://nether.wowhead.com/classic/tooltip/spell/%s",
+			UrlPattern: core.MakeWowheadUrl("/tooltip/spell/%s"),
 		},
 	}
 }
@@ -189,7 +189,8 @@ var critRegex2 = regexp.MustCompile(`Improves your chance to get a critical stri
 var spellCritRegex = regexp.MustCompile(`Improves your chance to get a critical strike with spells by ([0-9]+)%\.`)
 var meleeCritRegex = regexp.MustCompile(`Improves your chance to get a critical strike by ([0-9]+)%\.`)
 var hasteRegex = regexp.MustCompile(`Improves your haste by ([0-9]+)%\.`)
-var spellHasteRegex = regexp.MustCompile(`Increases your casting speed of non-channeled spells by ([0-9]+)%\.`)
+var spellHasteRegex1 = regexp.MustCompile(`Increases your casting speed by ([0-9]+)%\.`)
+var spellHasteRegex2 = regexp.MustCompile(`Increases your casting speed of non-channeled spells by ([0-9]+)%\.`)
 var meleeHasteRegex = regexp.MustCompile(`Increases your attack speed by ([0-9]+)%\.`)
 
 var spellPenetrationRegex = regexp.MustCompile(`Decreases the magical resistances of your spell targets by ([0-9]+)\.`)
@@ -278,7 +279,7 @@ func (item WowheadItemResponse) GetStats() Stats {
 		proto.Stat_StatMeleeHit:          float64(item.GetIntValue(hitRegex) + item.GetIntValue(hitRegex2) + item.GetIntValue(physicalHitRegex)),
 		proto.Stat_StatSpellCrit:         float64(item.GetIntValue(critRegex) + item.GetIntValue(critRegex2) + item.GetIntValue(spellCritRegex)),
 		proto.Stat_StatMeleeCrit:         float64(item.GetIntValue(critRegex) + item.GetIntValue(critRegex2) + item.GetIntValue(meleeCritRegex)),
-		proto.Stat_StatSpellHaste:        float64(item.GetIntValue(hasteRegex) + item.GetIntValue(spellHasteRegex)),
+		proto.Stat_StatSpellHaste:        float64(item.GetIntValue(hasteRegex) + item.GetIntValue(spellHasteRegex1) + item.GetIntValue(spellHasteRegex2)),
 		proto.Stat_StatMeleeHaste:        float64(item.GetIntValue(hasteRegex) + item.GetIntValue(meleeHasteRegex)),
 		proto.Stat_StatSpellPenetration:  float64(item.GetIntValue(spellPenetrationRegex)),
 		proto.Stat_StatMP5:               float64(item.GetIntValue(mp5Regex)),
@@ -719,6 +720,7 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 
 		RequiredProfession: item.GetRequiredProfession(),
 		SetName:            item.GetItemSetName(),
+		SetId:              int32(item.GetItemSetID()),
 	}
 
 	if item.GetRequiredProfession() != proto.Profession_ProfessionUnknown {
@@ -734,36 +736,16 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 	return itemProto
 }
 
-var itemSetNameRegex = regexp.MustCompile(`<a href="/classic/item-set=-?([0-9]+)/(.*)" class="q">([^<]+)<`)
+var itemSetNameRegex = regexp.MustCompile(fmt.Sprintf(`<a href="\/%s\/item-set=-?([0-9]+)\/(.*)" class="q">([^<]+)<`, core.WowheadBranch))
 
 func (item WowheadItemResponse) GetItemSetID() int {
 	idStr := item.GetTooltipRegexString(itemSetNameRegex, 1)
 	id, _ := strconv.Atoi(idStr)
 	return id
-
-	// // Strip out the 10/25 man prefixes from set names
-	// withoutTier := strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(original, "Heroes' "), "Valorous "), "Conqueror's "), "Triumphant "), "Sanctified ")
-	// if original != withoutTier { // if we found a tier prefix, return now.
-	// 	return withoutTier
-	// }
-
-	// // Now strip out the season prefix from any pvp set names
-	// withoutPvp := strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(original, "Savage Glad", "Glad", 1), "Hateful Glad", "Glad", 1), "Deadly Glad", "Glad", 1), "Furious Glad", "Glad", 1), "Relentless Glad", "Glad", 1), "Wrathful Glad", "Glad", 1)
-	// return withoutPvp
 }
 
 func (item WowheadItemResponse) GetItemSetName() string {
 	return item.GetTooltipRegexString(itemSetNameRegex, 3)
-
-	// // Strip out the 10/25 man prefixes from set names
-	// withoutTier := strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(strings.TrimPrefix(original, "Heroes' "), "Valorous "), "Conqueror's "), "Triumphant "), "Sanctified ")
-	// if original != withoutTier { // if we found a tier prefix, return now.
-	// 	return withoutTier
-	// }
-
-	// // Now strip out the season prefix from any pvp set names
-	// withoutPvp := strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(strings.Replace(original, "Savage Glad", "Glad", 1), "Hateful Glad", "Glad", 1), "Deadly Glad", "Glad", 1), "Furious Glad", "Glad", 1), "Relentless Glad", "Glad", 1), "Wrathful Glad", "Glad", 1)
-	// return withoutPvp
 }
 
 func (item WowheadItemResponse) IsHeroic() bool {

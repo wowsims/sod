@@ -68,23 +68,6 @@ const (
 	ClassSpellMask_HunterStrikes = ClassSpellMask_HunterFlankingStrike | ClassSpellMask_HunterRaptorStrike | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterWyvernStrike
 )
 
-func RegisterHunter() {
-	core.RegisterAgentFactory(
-		proto.Player_Hunter{},
-		proto.Spec_SpecHunter,
-		func(character *core.Character, options *proto.Player) core.Agent {
-			return NewHunter(character, options)
-		},
-		func(player *proto.Player, spec interface{}) {
-			playerSpec, ok := spec.(*proto.Player_Hunter)
-			if !ok {
-				panic("Invalid spec value for Hunter!")
-			}
-			player.Spec = playerSpec
-		},
-	)
-}
-
 type Hunter struct {
 	core.Character
 
@@ -98,7 +81,9 @@ type Hunter struct {
 	NormalizedAmmoDamageBonus float64
 
 	// Miscellaneous set bonuses that require extra logic inside of spells
-	SerpentStingAPCoeff float64
+	SerpentStingAPCoeff             float64
+	MultiShotBonusTargets           int32
+	BonusRaptorFuryDamageMultiplier float64
 
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *core.Spell
@@ -334,9 +319,6 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 		CastTime: func(spell *core.Spell) time.Duration {
 			return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed() * math.Max(spell.CastTimeMultiplier, 0))
 		},
-	}
-	hunter.AutoAttacks.RangedConfig().ExtraCastCondition = func(sim *core.Simulation, target *core.Unit) bool {
-		return !hunter.IsCasting(sim)
 	}
 	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
 	hunter.AutoAttacks.RangedConfig().BonusCoefficient = 1

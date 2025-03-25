@@ -4,32 +4,33 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-// var ItemSetInquisitionWarplate = core.NewItemSet(core.ItemSet{
-// 	ID:   1940,
-// 	Name: "Inquisition Warplate",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// Crusader Strike and Exorcism grant you Holy Power, increasing all Holy damage you deal by 20%, stacking up to 3 times.
-// 		2: func(agent core.Agent) {
-// 			paladin := agent.(PaladinAgent).GetPaladin()
-// 			paladin.applyScarletEnclaveRetribution2PBonus()
-// 		},
-// 		// Divine Storm, Holy Shock, and Holy Wrath consume all your Holy Power, dealing 100% increased damage per Holy Power you have accumulated.
-// 		4: func(agent core.Agent) {
-// 			paladin := agent.(PaladinAgent).GetPaladin()
-// 			paladin.applyScarletEnclaveRetribution4PBonus()
-// 		},
-// 		// Consuming Holy Power increases your Attack Power by 10% per Holy Power consumed for 10 sec.
-// 		6: func(agent core.Agent) {
-// 			paladin := agent.(PaladinAgent).GetPaladin()
-// 			paladin.applyScarletEnclaveRetribution6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetInquisitionWarplate = core.NewItemSet(core.ItemSet{
+	ID:   1940,
+	Name: "Inquisition Warplate",
+	Bonuses: map[int32]core.ApplyEffect{
+		// While you have a two-handed weapon equipped, Crusader Strike and Exorcism grant you Holy Power, increasing all Holy damage you deal by 20%, stacking up to 3 times.
+		2: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.applyScarletEnclaveRetribution2PBonus()
+		},
+		// Divine Storm, Holy Shock, and Holy Wrath consume all your Holy Power, dealing 100% increased damage per Holy Power you have accumulated.
+		4: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.applyScarletEnclaveRetribution4PBonus()
+		},
+		// Consuming Holy Power increases your Attack Power by 10% per Holy Power consumed for 10 sec.
+		6: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.applyScarletEnclaveRetribution6PBonus()
+		},
+	},
+})
 
-// Crusader Strike and Exorcism grant you Holy Power, increasing all Holy damage you deal by 20%, stacking up to 3 times.
+// While you have a two-handed weapon equipped, Crusader Strike and Exorcism grant you Holy Power, increasing all Holy damage you deal by 20%, stacking up to 3 times.
 func (paladin *Paladin) applyScarletEnclaveRetribution2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Paladin - Retribution 2P Bonus"
 	if paladin.HasAura(label) {
@@ -42,6 +43,10 @@ func (paladin *Paladin) applyScarletEnclaveRetribution2PBonus() {
 		ActionID: core.ActionID{SpellID: PaladinTSERet2P},
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if paladin.MainHand().HandType != proto.HandType_HandTypeTwoHand {
+				return
+			}
+
 			if !spell.Matches(ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinCrusaderStrike) {
 				return
 			}
@@ -155,36 +160,36 @@ func (paladin *Paladin) applyScarletEnclaveRetribution6PBonus() {
 	}))
 }
 
-// var ItemSetInquisitionBulwark = core.NewItemSet(core.ItemSet{
-// 	ID:   1942,
-// 	Name: "Inquisition Bulwark",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// Shield of Righteousness also increases your Block Value by 100% for 6 sec.
-// 		2: func(agent core.Agent) {
-// 			paladin := agent.(PaladinAgent).GetPaladin()
-// 			paladin.applyScarletEnclaveProtection2PBonus()
-// 		},
-// 		// Shield of Righteousness deals percentage increased damage equal to your Block Chance.
-// 		4: func(agent core.Agent) {
-// 			paladin := agent.(PaladinAgent).GetPaladin()
-// 			paladin.applyScarletEnclaveProtection4PBonus()
-// 		},
-// 		// Each time you Block, you heal for 50% of your Block Value.
-// 		6: func(agent core.Agent) {
-// 			paladin := agent.(PaladinAgent).GetPaladin()
-// 			paladin.applyScarletEnclaveProtection6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetInquisitionBulwark = core.NewItemSet(core.ItemSet{
+	ID:   1942,
+	Name: "Inquisition Bulwark",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Shield of Righteousness also increases your Block Value by 30% for 6 sec.
+		2: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.applyScarletEnclaveProtection2PBonus()
+		},
+		// Shield of Righteousness deals percentage increased damage equal to your Block Chance.
+		4: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.applyScarletEnclaveProtection4PBonus()
+		},
+		// Your Avenging Wrath no longer triggers Forbearance, lasts 15 sec longer, and increases your Block Value by 30%.
+		6: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.applyScarletEnclaveProtection6PBonus()
+		},
+	},
+})
 
-// Shield of Righteousness also increases your Block Value by 100% for 6 sec.
+// Shield of Righteousness also increases your Block Value by 30% for 6 sec.
 func (paladin *Paladin) applyScarletEnclaveProtection2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Paladin - Protection 2P Bonus"
 	if paladin.HasAura(label) {
 		return
 	}
 
-	blockValueModifier := paladin.NewDynamicMultiplyStat(stats.BlockValue, 2.0)
+	blockValueModifier := paladin.NewDynamicMultiplyStat(stats.BlockValue, 1.3)
 
 	righteousShieldAura := paladin.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1226466},
@@ -247,92 +252,92 @@ func (paladin *Paladin) applyScarletEnclaveProtection4PBonus() {
 	}))
 }
 
-// Each time you Block, you heal for 50% of your Block Value.
+// Your Avenging Wrath no longer triggers Forbearance, lasts 15 sec longer, and increases your Block Value by 30%.
 func (paladin *Paladin) applyScarletEnclaveProtection6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Paladin - Protection 6P Bonus"
 	if paladin.HasAura(label) {
 		return
 	}
 
-	righteousBlock := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1226480},
-		SpellSchool: core.SpellSchoolHoly,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete,
+	paladin.bypassAvengingWrathForbearance = true
 
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
+	blockValueModifier := paladin.NewDynamicMultiplyStat(stats.BlockValue, 1.3)
 
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			blockValue := paladin.BlockValue()
-			healAmount := blockValue * 0.5
-			spell.CalcAndDealHealing(sim, target, healAmount, spell.OutcomeHealingCrit)
+	avengingShield := paladin.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 1233525},
+		Label:    "Avenging Shield",
+		Duration: time.Second * 35,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.EnableDynamicStatDep(sim, blockValueModifier)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.DisableDynamicStatDep(sim, blockValueModifier)
 		},
 	})
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: PaladinTSEProt6P},
 		Label:    label,
-		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result == nil || !result.DidBlock() {
-				return
-			}
-
-			righteousBlock.Cast(sim, &paladin.Unit)
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.avengingWrathAura.Duration += time.Second * 15
+			paladin.avengingWrathAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				avengingShield.Activate(sim)
+			}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				avengingShield.Deactivate(sim)
+			})
 		},
 	}))
 }
 
-// var ItemSetInquisitionArmor = core.NewItemSet(core.ItemSet{
-// 	ID:   1941,
-// 	Name: "Inquisition Armor",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// Lay on Hands also grants you 20% spell haste for 1 min.
-// 		2: func(agent core.Agent) {
-// 			paladin := agent.(PaladinAgent).GetPaladin()
-// 			paladin.applyScarletEnclaveHoly2PBonus()
-// 		},
-// 		// Casting Holy Light, Flash of Light, or Divine Light on your Beacon of Light target causes you to gain 100% of the spell's base mana cost.
-// 		4: func(agent core.Agent) {
-// 		},
-// 		// An additional 25% of your healing is transferred to your Beacon of Light target.
-// 		6: func(agent core.Agent) {
-// 		},
-// 	},
-// })
+var ItemSetInquisitionArmor = core.NewItemSet(core.ItemSet{
+	ID:   1941,
+	Name: "Inquisition Armor",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Lay on Hands also grants you 20% spell haste for 1 min.
+		2: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.applyScarletEnclaveHoly2PBonus()
+		},
+		// Casting Holy Light, Flash of Light, or Divine Light on your Beacon of Light target causes you to gain 100% of the spell's base mana cost.
+		4: func(agent core.Agent) {
+		},
+		// An additional 25% of your healing is transferred to your Beacon of Light target.
+		6: func(agent core.Agent) {
+		},
+	},
+})
 
-// // Lay on Hands also grants you 20% spell haste for 1 min.
-// func (paladin *Paladin) applyScarletEnclaveHoly2PBonus() {
-// 	label := "S03 - Item - Scarlet Enclave - Paladin - Holy 2P Bonus"
-// 	if paladin.HasAura(label) {
-// 		return
-// 	}
+// Lay on Hands also grants you 20% spell haste for 1 min.
+func (paladin *Paladin) applyScarletEnclaveHoly2PBonus() {
+	label := "S03 - Item - Scarlet Enclave - Paladin - Holy 2P Bonus"
+	if paladin.HasAura(label) {
+		return
+	}
 
-// 	spellHasteModifier := paladin.NewDynamicMultiplyStat(stats.SpellHaste, 20.0)
+	spellHasteModifier := paladin.NewDynamicMultiplyStat(stats.SpellHaste, 20.0)
 
-// 	emergencyAura := paladin.RegisterAura(core.Aura{
-// 		ActionID: core.ActionID{SpellID: 1226451},
-// 		Label:    "Emergency",
-// 		Duration: time.Second * 60,
+	emergencyAura := paladin.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 1226451},
+		Label:    "Emergency",
+		Duration: time.Second * 60,
 
-// 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-// 			paladin.EnableDynamicStatDep(sim, spellHasteModifier)
-// 		},
-// 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-// 			paladin.DisableDynamicStatDep(sim, spellHasteModifier)
-// 		},
-// 	})
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.EnableDynamicStatDep(sim, spellHasteModifier)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			paladin.DisableDynamicStatDep(sim, spellHasteModifier)
+		},
+	})
 
-// 	core.MakePermanent(paladin.RegisterAura(core.Aura{
-// 		ActionID: core.ActionID{SpellID: PaladinTSEHoly2P},
-// 		Label:    label,
-// 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-// 			if !spell.Matches(ClassSpellMask_PaladinLayOnHands) {
-// 				return
-// 			}
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: PaladinTSEHoly2P},
+		Label:    label,
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if !spell.Matches(ClassSpellMask_PaladinLayOnHands) {
+				return
+			}
 
-// 			emergencyAura.Activate(sim)
-// 		},
-// 	}))
-// }
+			emergencyAura.Activate(sim)
+		},
+	}))
+}

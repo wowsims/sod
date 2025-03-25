@@ -74,7 +74,9 @@ type SpellConfig struct {
 	Hot    DotConfig
 	Shield ShieldConfig
 
-	RelatedAuras []AuraArray
+	RelatedAuras    []AuraArray
+	RelatedDotSpell *Spell
+	RelatedSelfBuff *Aura
 }
 
 type Spell struct {
@@ -123,9 +125,9 @@ type Spell struct {
 	MinRange float64
 	MaxRange float64
 
-	castTimeFn func(spell *Spell) time.Duration // allows to override CastTime()
-
-	castFn CastSuccessFunc // Performs a cast of this spell.
+	castTimeFn           func(spell *Spell) time.Duration // allows to override CastTime()
+	castFn               CastSuccessFunc                  // Performs a cast of this spell.
+	AllowGCDHasteScaling bool                             // Vanilla has no natural GCD reduction from haste, but the effect was added via the Infusion of Souls trinket in SoD
 
 	SpellMetrics []SpellMetrics
 
@@ -184,7 +186,9 @@ type Spell struct {
 	selfShield *Shield
 
 	// Per-target auras that are related to this spell, usually buffs or debuffs applied by the spell.
-	RelatedAuras []AuraArray
+	RelatedAuras    []AuraArray
+	RelatedDotSpell *Spell
+	RelatedSelfBuff *Aura
 
 	// Reference to a spell to be considered as the CD
 	// Defaults to this spell (Used for Next Melee spells)
@@ -285,7 +289,9 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 		splitSpellMetrics: make([][]SpellMetrics, max(1, config.MetricSplits)),
 		splitTags:         make([]int32, max(1, config.MetricSplits)),
 
-		RelatedAuras: config.RelatedAuras,
+		RelatedAuras:    config.RelatedAuras,
+		RelatedDotSpell: config.RelatedDotSpell,
+		RelatedSelfBuff: config.RelatedSelfBuff,
 	}
 
 	spell.updateBaseDamageMultiplier()
@@ -396,9 +402,21 @@ func (spell *Spell) Dots() []*Dot {
 	return spell.dots
 }
 func (spell *Spell) Dot(target *Unit) *Dot {
+	if spell.dots == nil {
+		if spell.RelatedDotSpell != nil {
+			return spell.RelatedDotSpell.Dot(target)
+		}
+		return nil
+	}
 	return spell.dots.Get(target)
 }
 func (spell *Spell) CurDot() *Dot {
+	if spell.dots == nil {
+		if spell.RelatedDotSpell != nil {
+			return spell.RelatedDotSpell.CurDot()
+		}
+		return nil
+	}
 	return spell.dots.Get(spell.Unit.CurrentTarget)
 }
 func (spell *Spell) AOEDot() *Dot {
@@ -850,4 +868,8 @@ func (cd *SpellCooldown) applyCooldownModifiers(duration time.Duration) time.Dur
 // Get cooldown after all modifiers.
 func (cd *SpellCooldown) GetCurrentDuration() time.Duration {
 	return cd.applyCooldownModifiers(cd.Duration)
+}
+
+func (spell *Spell) ModifyRemainingCooldown(sim *Simulation, duration time.Duration) {
+	spell.CD.Timer.Set(sim.CurrentTime + spell.CD.Timer.TimeToReady(sim) + duration)
 }

@@ -121,12 +121,13 @@ func (wp *WarlockPet) registerSuccubusLashOfPainSpell() {
 	level := [7]int{0, 20, 28, 36, 44, 52, 60}[rank]
 
 	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolShadow,
-		DefenseType:   core.DefenseTypeMagic,
-		ProcMask:      core.ProcMaskSpellDamage,
-		RequiredLevel: level,
-		Rank:          rank,
+		ClassSpellMask: ClassSpellMask_WarlockSummonSuccubusLashOfPain,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolShadow,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		RequiredLevel:  level,
+		Rank:           rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,

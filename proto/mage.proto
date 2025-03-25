@@ -105,7 +105,7 @@ enum MageRune {
     RuneBeltSpellfrostBolt          = 412532;
 
     RuneLegsArcaneSurge             = 425124;
-    RuneLegsIceVeins                = 425121;
+    RuneLegsIcyVeins                = 425121;
     RuneLegsLivingFlame             = 401556;
     RuneLegsMassRegeneration        = 412510;
 

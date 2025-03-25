@@ -38,6 +38,7 @@ func (warlock *Warlock) ApplyRunes() {
 	warlock.registerShadowCleaveSpell()
 
 	// Belt Runes
+	warlock.applyInvocation()
 	warlock.applyGrimoireOfSynergy()
 	warlock.applyShadowAndFlame()
 
@@ -236,11 +237,127 @@ func (warlock *Warlock) applyMarkOfChaosDebuff(sim *core.Simulation, target *cor
 	aura.Activate(sim)
 }
 
-func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot) {
-	if dot.RemainingDuration(sim) < time.Second*6 {
+func (warlock *Warlock) applyInvocation() {
+	if !warlock.HasRune(proto.WarlockRune_RuneBeltInvocation) {
+		return
+	}
+
+	copiedSpellConfig := []struct {
+		ClassMask   uint64
+		SpellID     int32
+		SpellSchool core.SpellSchool
+		Flags       core.SpellFlag
+	}{
+		{
+			ClassMask:   ClassSpellMask_WarlockCorruption,
+			SpellID:     426241,
+			SpellSchool: core.SpellSchoolShadow,
+			Flags:       WarlockFlagAffliction,
+		},
+		{
+			ClassMask:   ClassSpellMask_WarlockImmolate,
+			SpellID:     426245,
+			SpellSchool: core.SpellSchoolFire,
+			Flags:       WarlockFlagDestruction,
+		},
+		{
+			ClassMask:   ClassSpellMask_WarlockShadowflame,
+			SpellID:     426331,
+			SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
+			Flags:       WarlockFlagAffliction | WarlockFlagDestruction,
+		},
+		{
+			ClassMask:   ClassSpellMask_WarlockUnstableAffliction,
+			SpellID:     454197,
+			SpellSchool: core.SpellSchoolShadow,
+			Flags:       WarlockFlagAffliction,
+		},
+		{
+			ClassMask:   ClassSpellMask_WarlockCurseOfAgony,
+			SpellID:     426246,
+			SpellSchool: core.SpellSchoolShadow,
+			Flags:       WarlockFlagAffliction,
+		},
+		{
+			ClassMask:   ClassSpellMask_WarlockSiphonLife,
+			SpellID:     426247,
+			SpellSchool: core.SpellSchoolShadow,
+			Flags:       WarlockFlagAffliction,
+		},
+	}
+
+	warlock.InvocationSpellMap = make(map[uint64]*core.Spell)
+	for _, spellConfig := range copiedSpellConfig {
+		warlock.InvocationSpellMap[spellConfig.ClassMask] = warlock.RegisterSpell(core.SpellConfig{
+			ActionID:       core.ActionID{SpellID: spellConfig.SpellID},
+			ClassSpellMask: spellConfig.ClassMask,
+			SpellSchool:    spellConfig.SpellSchool,
+			DefenseType:    core.DefenseTypeMagic,
+			ProcMask:       core.ProcMaskSpellDamage,
+			Flags:          core.SpellFlagTreatAsPeriodic | core.SpellFlagPureDot | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | WarlockFlagHaunt | spellConfig.Flags,
+
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: fmt.Sprintf("Invocation (%d)", spellConfig.SpellID),
+				},
+
+				NumberOfTicks: 1,
+				TickLength:    0,
+			},
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},
+		})
+	}
+
+	warlock.RegisterAura(core.Aura{
+		Label: "Invocation",
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			dotSpells := core.FilterSlice(
+				core.Flatten(
+					[][]*core.Spell{
+						warlock.Corruption,
+						warlock.Immolate,
+						warlock.CurseOfAgony,
+						warlock.SiphonLife,
+						{warlock.Shadowflame, warlock.UnstableAffliction},
+					},
+				),
+				func(spell *core.Spell) bool { return spell != nil },
+			)
+
+			for _, spell := range dotSpells {
+				for _, dot := range spell.Dots() {
+					if dot == nil {
+						continue
+					}
+
+					// Have to keep a separate local because of Go's closure behavior
+					localDot := dot
+					localDot.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+						warlock.InvocationApplication(sim, localDot, aura.Unit)
+					})
+				}
+			}
+		},
+	})
+}
+
+func (warlock *Warlock) InvocationApplication(sim *core.Simulation, dot *core.Dot, target *core.Unit) {
+	invocationSpell := warlock.InvocationSpellMap[dot.Spell.ClassSpellMask]
+	invocationSpell.Cast(sim, target)
+	invocationSpell.CalcAndDealDamage(sim, target, dot.SnapshotBaseDamage, invocationSpell.Dot(target).OutcomeTick)
+}
+
+func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot, target *core.Unit) {
+	if dot.IsActive() && dot.RemainingDuration(sim) < time.Second*6 {
+		invocationSpell := warlock.InvocationSpellMap[dot.Spell.ClassSpellMask]
 		ticksLeft := dot.NumberOfTicks - dot.TickCount
 		for i := int32(0); i < ticksLeft; i++ {
-			dot.TickOnce(sim)
+			invocationSpell.Cast(sim, target)
+			invocationSpell.CalcAndDealDamage(sim, target, dot.SnapshotBaseDamage, invocationSpell.Dot(target).OutcomeTick)
 		}
 	}
 }
@@ -250,18 +367,21 @@ func (warlock *Warlock) applyEverlastingAffliction() {
 		return
 	}
 
+	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
+
 	affectedSpellClassMasks := ClassSpellMask_WarlockDrainLife | ClassSpellMask_WarlockDrainSoul | ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockShadowCleave | ClassSpellMask_WarlockSearingPain | ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockHaunt
-	warlock.RegisterAura(core.Aura{
-		Label:    "Everlasting Affliction Trigger",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() && spell.Matches(affectedSpellClassMasks) {
-				for _, spell := range warlock.Corruption {
-					if spell.Dot(result.Target).IsActive() {
-						spell.Dot(result.Target).Rollover(sim)
+	core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
+		Name:           "Everlasting Affliction Trigger",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: affectedSpellClassMasks,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			for _, spell := range warlock.Corruption {
+				if dot := spell.Dot(result.Target); dot.IsActive() {
+					dot.Rollover(sim)
+
+					if hasInvocationRune {
+						warlock.InvocationRefresh(sim, dot, result.Target)
 					}
 				}
 			}

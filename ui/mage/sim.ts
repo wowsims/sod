@@ -3,9 +3,9 @@ import { SPELL_HIT_RATING_PER_HIT_CHANCE } from '../core/constants/mechanics';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
+import { ItemSlot, PseudoStat, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
-import { getSpecIcon } from '../core/proto_utils/utils.js';
+import { SpecOptions } from '../core/proto_utils/utils.js';
 import * as MageInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -54,7 +54,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.DefaultGear.gear,
+		gear: Presets.DefaultBuild.gear!.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -76,17 +76,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			},
 		),
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumes: Presets.DefaultBuild.settings!.consumes!,
 		// Default talents.
-		talents: Presets.DefaultTalents.data,
+		talents: Presets.DefaultBuild.talents!.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultOptions,
-		other: Presets.OtherDefaults,
+		specOptions: Presets.DefaultBuild.settings!.specOptions! as SpecOptions<Spec.SpecMage>,
+		other: {
+			// Default distance from target.
+			distanceFromTarget: Presets.DefaultBuild.settings?.playerOptions?.distanceFromTarget,
+			profession1: Presets.DefaultBuild.settings?.playerOptions?.profession1,
+			profession2: Presets.DefaultBuild.settings?.playerOptions?.profession2,
+		},
 		// Default raid/party buffs settings.
-		raidBuffs: Presets.DefaultRaidBuffs,
-		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: Presets.DefaultIndividualBuffs,
-		debuffs: Presets.DefaultDebuffs,
+		raidBuffs: Presets.DefaultBuild.settings!.raidBuffs!,
+		partyBuffs: Presets.DefaultBuild.settings!.partyBuffs!,
+		individualBuffs: Presets.DefaultBuild.settings!.buffs!,
+		debuffs: Presets.DefaultBuild.settings!.debuffs!,
 	},
 
 	modifyDisplayStats: (player: Player<Spec.SpecMage>) => {
@@ -145,7 +150,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [Presets.PresetBuildArcane, Presets.PresetBuildFire, Presets.PresetBuildFrost],
+		builds: [Presets.PresetBuildFirePhase7, Presets.PresetBuildFrostPhase7, Presets.PresetBuildFirePhase6, Presets.PresetBuildFrostPhase6],
 	},
 
 	autoRotation: player => {
@@ -155,83 +160,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecMage, {
 		return Presets.DefaultAPLs[level][specNumber].rotation.rotation!;
 	},
 
-	raidSimPresets: [
-		{
-			spec: Spec.SpecMage,
-			tooltip: 'Arcane Mage',
-			defaultName: 'Arcane',
-			iconUrl: getSpecIcon(Class.ClassMage, 0),
-
-			talents: Presets.DefaultTalentsArcane.data,
-			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
-			otherDefaults: Presets.OtherDefaults,
-			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceGnome,
-				[Faction.Horde]: Race.RaceTroll,
-			},
-			defaultGear: {
-				[Faction.Unknown]: {},
-				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase1][0].gear,
-				},
-				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][0].gear,
-				},
-			},
-		},
-		{
-			spec: Spec.SpecMage,
-			tooltip: 'Fire Mage',
-			defaultName: 'Fire',
-			iconUrl: getSpecIcon(Class.ClassMage, 1),
-
-			talents: Presets.DefaultTalentsFire.data,
-			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
-			otherDefaults: Presets.OtherDefaults,
-			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceGnome,
-				[Faction.Horde]: Race.RaceTroll,
-			},
-			defaultGear: {
-				[Faction.Unknown]: {},
-				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase1][1].gear,
-				},
-				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][1].gear,
-				},
-			},
-		},
-		{
-			spec: Spec.SpecMage,
-			tooltip: 'Frost Mage',
-			defaultName: 'Frost',
-			iconUrl: getSpecIcon(Class.ClassMage, 2),
-
-			talents: Presets.DefaultTalentsFrost.data,
-			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
-			otherDefaults: Presets.OtherDefaults,
-			defaultFactionRaces: {
-				[Faction.Unknown]: Race.RaceUnknown,
-				[Faction.Alliance]: Race.RaceGnome,
-				[Faction.Horde]: Race.RaceTroll,
-			},
-			defaultGear: {
-				[Faction.Unknown]: {},
-				[Faction.Alliance]: {
-					1: Presets.GearPresets[Phase.Phase1][2].gear,
-				},
-				[Faction.Horde]: {
-					1: Presets.GearPresets[Phase.Phase1][2].gear,
-				},
-			},
-		},
-	],
+	raidSimPresets: [],
 });
 
 export class MageSimUI extends IndividualSimUI<Spec.SpecMage> {

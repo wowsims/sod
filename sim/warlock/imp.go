@@ -92,12 +92,13 @@ func (wp *WarlockPet) registerImpFireboltSpell() {
 	baseDamage[1] *= improvedImp
 
 	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
-		ActionID:      core.ActionID{SpellID: spellId},
-		SpellSchool:   core.SpellSchoolFire,
-		DefenseType:   core.DefenseTypeMagic,
-		ProcMask:      core.ProcMaskSpellDamage,
-		Rank:          rank,
-		RequiredLevel: level,
+		ClassSpellMask: ClassSpellMask_WarlockSummonImpFireBolt,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolFire,
+		DefenseType:    core.DefenseTypeMagic,
+		ProcMask:       core.ProcMaskSpellDamage,
+		Rank:           rank,
+		RequiredLevel:  level,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,

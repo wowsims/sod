@@ -41,17 +41,15 @@ const (
 	ClassSpellMask_PriestDevouringPlagueDots = ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestVoidPlague |
 		ClassSpellMask_PriestVampiricTouch
 
-	PriestSpellInstant = ClassSpellMask_PriestDevouringPlague |
-		ClassSpellMask_PriestMindFlay |
-		ClassSpellMask_PriestMindSear |
-		ClassSpellMask_PriestShadowWordPain |
-		ClassSpellMask_PriestShadowWordDeath |
-		ClassSpellMask_PriestVoidPlague |
-		ClassSpellMask_PriestVoidZone |
-		ClassSpellMask_PriestDispersion |
-		ClassSpellMask_PriestShadowFiend |
-		ClassSpellMask_PriestVampiricEmbrace |
-		ClassSpellMask_PriestPenance
+	PriestSpellInstant = ClassSpellMask_PriestDevouringPlague | ClassSpellMask_PriestMindFlay | ClassSpellMask_PriestMindSear |
+		ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestShadowWordDeath | ClassSpellMask_PriestVoidPlague | ClassSpellMask_PriestVoidZone |
+		ClassSpellMask_PriestDispersion | ClassSpellMask_PriestShadowFiend | ClassSpellMask_PriestVampiricEmbrace | ClassSpellMask_PriestPenance
+
+	// TODO: Starshards, Holy Nova
+	ClassSpellMask_PriestHarmfulGCDSpells = ClassSpellMask_PriestSmite | ClassSpellMask_PriestHolyFire | ClassSpellMask_PriestMindBlast |
+		ClassSpellMask_PriestMindFlay | ClassSpellMask_PriestShadowWordPain | ClassSpellMask_PriestDevouringPlague |
+		ClassSpellMask_PriestMindSpike | ClassSpellMask_PriestShadowWordDeath | ClassSpellMask_PriestPenance |
+		ClassSpellMask_PriestVampiricTouch | ClassSpellMask_PriestMindSear | ClassSpellMask_PriestVoidZone
 )
 
 type Priest struct {

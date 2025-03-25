@@ -75,6 +75,11 @@ const (
 	ClassSpellMask_ShamanWaterTotem = ClassSpellMask_ShamanHealingStreamTotem | ClassSpellMask_ShamanManaSpringTotem
 
 	ClassSpellMask_ShamanTotems = ClassSpellMask_ShamanFireTotem | ClassSpellMask_ShamanAirTotem | ClassSpellMask_ShamanEarthTotem | ClassSpellMask_ShamanWaterTotem
+
+	ClassSpellMask_ShamanHarmfulGCDSpells = ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning |
+		ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock |
+		ClassSpellMask_ShamanLavaBurst | ClassSpellMask_ShamanLavaLash | ClassSpellMask_ShamanMoltenBlast |
+		ClassSpellMask_ShamanFireNova
 )
 
 // Indexes into NextTotemDrops for self buffs
@@ -194,9 +199,6 @@ type Shaman struct {
 	// Dynamic Class Masks
 	MaelstromWeaponClassMask uint64
 
-	// Dynamic Spell Mods
-	MaelstromWeaponSpellMods []*core.SpellMod
-
 	// Totems
 	ActiveTotems     [4]*core.Spell
 	EarthTotems      []*core.Spell
@@ -214,19 +216,20 @@ type Shaman struct {
 	SpiritWolves *SpiritWolves
 
 	// Other data
-	ancestralHealingAmount      float64 // Used by Ancestral Awakening
-	bonusFlurrySpeed            float64 // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
-	bonusWindfuryWeaponAP       float64
-	elementalFocusProcChance    float64
-	lastFlameShockTarget        *core.Unit // Used by Ancestral Guidance rune
-	lightningShieldCanCrit      bool
-	maelstromWeaponPPMM         *core.DynamicProcManager
-	overloadProcChance          float64
-	powerSurgeProcChance        float64
-	rollingThunderProcChance    float64
-	shamanisticRageDRMultiplier float64
-	staticSHocksProcChance      float64
-	useLavaBurstCritScaling     bool
+	ancestralHealingAmount       float64 // Used by Ancestral Awakening
+	bonusFlurrySpeed             float64 // Bonus added on top of the normal speed, e.g. Earthfury Impact 6pc
+	bonusWindfuryWeaponAP        float64
+	elementalFocusProcChance     float64
+	lastFlameShockTarget         *core.Unit // Used by Ancestral Guidance rune
+	lightningShieldCanCrit       bool
+	maelstromWeaponPPMM          *core.DynamicProcManager
+	maelstromWeaponProcsPerStack int
+	overloadProcChance           float64
+	powerSurgeProcChance         float64
+	rollingThunderProcChance     float64
+	shamanisticRageDRMultiplier  float64
+	staticSHocksProcChance       float64
+	useLavaBurstCritScaling      bool
 }
 
 // Implemented by each Shaman spec.

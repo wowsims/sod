@@ -9,6 +9,9 @@ import (
 const ShoutExpirationThreshold = time.Second * 3
 
 func (warrior *Warrior) newShoutSpellConfig(actionID core.ActionID, rank int32, allyAuras core.AuraArray) *WarriorSpell {
+	// Use extra hits to simulate buffing your party for threat
+	extraHits := 5 - len(allyAuras)
+
 	return warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID: actionID,
 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagAPL | core.SpellFlagHelpful,
@@ -25,11 +28,14 @@ func (warrior *Warrior) newShoutSpellConfig(actionID core.ActionID, rank int32, 
 
 		FlatThreatBonus: float64(core.BattleShoutLevel[rank]),
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			for _, aura := range allyAuras {
-				if aura != nil {
-					aura.Activate(sim)
-				}
+				spell.CalcAndDealOutcome(sim, aura.Unit, spell.OutcomeAlwaysHit)
+				aura.Activate(sim)
+			}
+
+			for i := 0; i < extraHits; i++ {
+				spell.CalcAndDealOutcome(sim, &warrior.Unit, spell.OutcomeAlwaysHit)
 			}
 		},
 

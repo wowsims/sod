@@ -52,6 +52,7 @@ func (rogue *Rogue) registerFanOfKnives() {
 		ClassSpellMask: SpellClassMask_RogueFanOfKnives,
 		SpellSchool:    core.SpellSchoolPhysical,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagCarnage,
+		MaxRange:       8,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 50,

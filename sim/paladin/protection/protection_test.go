@@ -26,6 +26,7 @@ func TestProtection(t *testing.T) {
 			Buffs:       core.FullBuffsPhase4,
 			Consumes:    Phase4Consumes,
 			SpecOptions: core.SpecOptionsCombo{Label: "P4 Prot", SpecOptions: PlayerOptionsSealofMartyrdom},
+			IsTank:      true,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,

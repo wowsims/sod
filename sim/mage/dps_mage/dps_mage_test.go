@@ -1,4 +1,4 @@
-package mage
+package dps_mage
 
 import (
 	"testing"
@@ -9,7 +9,7 @@ import (
 )
 
 func init() {
-	RegisterMage()
+	RegisterDPSMage()
 }
 
 func TestArcane(t *testing.T) {
@@ -20,12 +20,13 @@ func TestArcane(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase1TalentsArcane,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p1_generic"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p1_arcane"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			Talents:          Phase1TalentsArcane,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p1_generic"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p1_arcane"),
+			Buffs:            core.FullBuffsPhase1,
+			Consumes:         Phase1Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -37,12 +38,13 @@ func TestArcane(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase2TalentsArcane,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p2_arcane"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p2_arcane"),
-			Buffs:       core.FullBuffsPhase2,
-			Consumes:    Phase2Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			Talents:          Phase2TalentsArcane,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p2_arcane"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p2_arcane"),
+			Buffs:            core.FullBuffsPhase2,
+			Consumes:         Phase2Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -55,12 +57,13 @@ func TestArcane(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase4TalentsArcane,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p4_arcane"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_arcane"),
-			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase4Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			Talents:          Phase4TalentsArcane,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p4_arcane"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p4_arcane"),
+			Buffs:            core.FullBuffsPhase4,
+			Consumes:         Phase4Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -73,12 +76,13 @@ func TestArcane(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase5TalentsArcane,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p5_arcane"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p5_spellfrost"),
-			Buffs:       core.FullBuffsPhase5,
-			Consumes:    Phase5Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			Talents:          Phase5TalentsArcane,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p5_arcane"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p5_spellfrost"),
+			Buffs:            core.FullBuffsPhase5,
+			Consumes:         Phase5Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Arcane", SpecOptions: PlayerOptionsArcane},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -95,12 +99,13 @@ func TestFire(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase1TalentsFire,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p1_fire"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p1_fire"),
-			Buffs:       core.FullBuffsPhase1,
-			Consumes:    Phase1Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			Talents:          Phase1TalentsFire,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p1_fire"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p1_fire"),
+			Buffs:            core.FullBuffsPhase1,
+			Consumes:         Phase1Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -112,12 +117,13 @@ func TestFire(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase2TalentsFire,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p2_fire"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p2_fire"),
-			Buffs:       core.FullBuffsPhase2,
-			Consumes:    Phase2Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			Talents:          Phase2TalentsFire,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p2_fire"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p2_fire"),
+			Buffs:            core.FullBuffsPhase2,
+			Consumes:         Phase2Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -129,12 +135,13 @@ func TestFire(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase3TalentsFire,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_fire"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p3_fire"),
-			Buffs:       core.FullBuffsPhase3,
-			Consumes:    Phase3Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			Talents:          Phase3TalentsFire,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p3_fire"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p3_fire"),
+			Buffs:            core.FullBuffsPhase3,
+			Consumes:         Phase3Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -147,12 +154,13 @@ func TestFire(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase5TalentsFire,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p4_fire"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_fire"),
-			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase4Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			Talents:          Phase5TalentsFire,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p4_fire"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p4_fire"),
+			Buffs:            core.FullBuffsPhase4,
+			Consumes:         Phase4Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -165,35 +173,20 @@ func TestFire(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase5TalentsFire,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p5_fire"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p5_fire"),
-			Buffs:       core.FullBuffsPhase5,
-			Consumes:    Phase5Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			Talents:          Phase5TalentsFire,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p5_fire"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p5_fire"),
+			Buffs:            core.FullBuffsPhase5,
+			Consumes:         Phase5Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
-		{
-			Class:      proto.Class_ClassMage,
-			Phase:      6,
-			Level:      60,
-			Race:       proto.Race_RaceTroll,
-			OtherRaces: []proto.Race{proto.Race_RaceGnome},
-
-			Talents:     Phase6TalentsFire,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p6_fire"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p6_fire"),
-			Buffs:       core.FullBuffsPhase6,
-			Consumes:    Phase6Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Fire", SpecOptions: PlayerOptionsFire},
-
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatSpellPower,
-			StatsToWeigh:    Stats,
-		},
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 6, 60, "../../../ui/mage/builds", "p6_fire", ItemFilters, proto.Stat_StatSpellPower, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 7, 60, "../../../ui/mage/builds", "p7_fire", ItemFilters, proto.Stat_StatSpellPower, Stats),
 	}))
 }
 
@@ -205,12 +198,13 @@ func TestFrost(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase3TalentsFrost,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p3_frost_ffb"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p3_frost"),
-			Buffs:       core.FullBuffsPhase3,
-			Consumes:    Phase3Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+			Talents:          Phase3TalentsFrost,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p3_frost_ffb"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p3_frost"),
+			Buffs:            core.FullBuffsPhase3,
+			Consumes:         Phase3Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -223,12 +217,13 @@ func TestFrost(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     Phase4TalentsFrost,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p4_frost"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p4_frost"),
-			Buffs:       core.FullBuffsPhase4,
-			Consumes:    Phase4Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+			Talents:          Phase4TalentsFrost,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p4_frost"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p4_frost"),
+			Buffs:            core.FullBuffsPhase4,
+			Consumes:         Phase4Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
@@ -241,35 +236,20 @@ func TestFrost(t *testing.T) {
 			Race:       proto.Race_RaceTroll,
 			OtherRaces: []proto.Race{proto.Race_RaceGnome},
 
-			Talents:     phase5talentsfrost,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p5_frost"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p5_spellfrost"),
-			Buffs:       core.FullBuffsPhase5,
-			Consumes:    Phase5Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+			Talents:          phase5talentsfrost,
+			GearSet:          core.GetGearSet("../../../ui/mage/gear_sets", "p5_frost"),
+			Rotation:         core.GetAplRotation("../../../ui/mage/apls", "p5_spellfrost"),
+			Buffs:            core.FullBuffsPhase5,
+			Consumes:         Phase5Consumes,
+			SpecOptions:      core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
+			StartingDistance: core.MaxShortSpellRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
-		{
-			Class:      proto.Class_ClassMage,
-			Phase:      6,
-			Level:      60,
-			Race:       proto.Race_RaceTroll,
-			OtherRaces: []proto.Race{proto.Race_RaceGnome},
-
-			Talents:     phase6talentsfrost,
-			GearSet:     core.GetGearSet("../../ui/mage/gear_sets", "p6_frost"),
-			Rotation:    core.GetAplRotation("../../ui/mage/apls", "p6_spellfrost"),
-			Buffs:       core.FullBuffsPhase6,
-			Consumes:    Phase6Consumes,
-			SpecOptions: core.SpecOptionsCombo{Label: "Frost", SpecOptions: PlayerOptionsFrost},
-
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatSpellPower,
-			StatsToWeigh:    Stats,
-		},
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 6, 60, "../../../ui/mage/builds", "p6_frost", ItemFilters, proto.Stat_StatSpellPower, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassMage, 7, 60, "../../../ui/mage/builds", "p7_frost", ItemFilters, proto.Stat_StatSpellPower, Stats),
 	}))
 }
 
@@ -290,9 +270,6 @@ var Phase4TalentsFrost = "-0550320003021-2035020310035105"
 var Phase5TalentsArcane = "2500550010031531--2035020310004"
 var Phase5TalentsFire = "21-5052300123033151-203500031"
 var phase5talentsfrost = "005005001--20353203112351351"
-
-var Phase6TalentsFire = "-0552323121033151-203500031"
-var phase6talentsfrost = "005005001--20353203112351351"
 
 var PlayerOptionsArcane = &proto.Player_Mage{
 	Mage: &proto.Mage{
@@ -375,19 +352,6 @@ var Phase5Consumes = core.ConsumesCombo{
 		Food:           proto.Food_FoodRunnTumTuberSurprise,
 		MainHandImbue:  proto.WeaponImbue_BrilliantWizardOil,
 		SpellPowerBuff: proto.SpellPowerBuff_GreaterArcaneElixir,
-	},
-}
-
-var Phase6Consumes = core.ConsumesCombo{
-	Label: "P6-Consumes",
-	Consumes: &proto.Consumes{
-		DefaultPotion:  proto.Potions_MajorManaPotion,
-		Flask:          proto.Flask_FlaskOfAncientKnowledge,
-		FirePowerBuff:  proto.FirePowerBuff_ElixirOfGreaterFirepower,
-		FrostPowerBuff: proto.FrostPowerBuff_ElixirOfFrostPower,
-		Food:           proto.Food_FoodDarkclawBisque,
-		MainHandImbue:  proto.WeaponImbue_EnchantedRepellent,
-		SpellPowerBuff: proto.SpellPowerBuff_ElixirOfTheMageLord,
 	},
 }
 

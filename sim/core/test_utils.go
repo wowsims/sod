@@ -7,6 +7,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
+	"google.golang.org/protobuf/encoding/protojson"
 	googleProto "google.golang.org/protobuf/proto"
 )
 
@@ -588,4 +589,124 @@ func GetGearSet(dir string, file string) GearSetCombo {
 	}
 
 	return GearSetCombo{Label: file, GearSet: EquipmentSpecFromJsonString(string(data))}
+}
+
+func GetTestBuildFromJSON(class proto.Class, phase, level int32, dir string, file string, itemFilter ItemFilter, epReferenceStat proto.Stat, statsToWeigh []proto.Stat) CharacterSuiteConfig {
+	filePath := dir + "/" + file + ".build.json"
+	data, err := os.ReadFile(filePath)
+	if err != nil {
+		log.Fatalf("failed to load gear json file: %s, %s", filePath, err)
+	}
+
+	simSettings := &proto.IndividualSimSettings{}
+	if err := protojson.Unmarshal(data, simSettings); err != nil {
+		panic(err)
+	}
+
+	if simSettings.Player.Level != level {
+		panic("Build did not match expected level")
+	}
+
+	return CharacterSuiteConfig{
+		Class: class,
+		Phase: phase,
+		Level: simSettings.Player.Level,
+		Race:  simSettings.Player.Race,
+
+		GearSet: GearSetCombo{
+			Label:   file,
+			GearSet: simSettings.Player.Equipment,
+		},
+		SpecOptions: SpecOptionsCombo{
+			Label:       file,
+			SpecOptions: getPlayerSpecOptions(simSettings.Player),
+		},
+		Talents: simSettings.Player.TalentsString,
+		Rotation: RotationCombo{
+			Label:    file,
+			Rotation: simSettings.Player.Rotation,
+		},
+		StartingDistance: simSettings.Player.DistanceFromTarget,
+
+		Buffs: BuffsCombo{
+			Label:   file,
+			Raid:    simSettings.RaidBuffs,
+			Party:   simSettings.PartyBuffs,
+			Debuffs: simSettings.Debuffs,
+			Player:  simSettings.Player.Buffs,
+		},
+		Consumes: ConsumesCombo{
+			Label:    file,
+			Consumes: simSettings.Player.Consumes,
+		},
+
+		ItemFilter:      itemFilter,
+		EPReferenceStat: epReferenceStat,
+		StatsToWeigh:    statsToWeigh,
+	}
+}
+
+func getPlayerSpecOptions(player *proto.Player) interface{} {
+	if playerSpec, ok := player.Spec.(*proto.Player_BalanceDruid); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_FeralDruid); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_FeralTankDruid); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_RestorationDruid); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_Mage); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_Hunter); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_HolyPaladin); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_ProtectionPaladin); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_RetributionPaladin); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_ShadowPriest); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_Rogue); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_TankRogue); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_ElementalShaman); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_EnhancementShaman); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_WardenShaman); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_RestorationShaman); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_Warlock); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_TankWarlock); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_Warrior); ok {
+		return playerSpec
+	}
+	if playerSpec, ok := player.Spec.(*proto.Player_TankWarrior); ok {
+		return playerSpec
+	}
+
+	panic("Unupported spec provided to getPlayerSpecOptions. Please add a case for the spec.")
 }

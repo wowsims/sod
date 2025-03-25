@@ -13,6 +13,7 @@ func (rogue *Rogue) registerFeintSpell() {
 		DefenseType: core.DefenseTypeMelee,
 		ProcMask:    core.ProcMaskMeleeMH,
 		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		MaxRange:    5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost: 20,

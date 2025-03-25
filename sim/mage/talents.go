@@ -476,13 +476,20 @@ func (mage *Mage) applyFrostbite() {
 	}
 
 	frostbiteSpell := mage.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 12494},
-		SpellSchool: core.SpellSchoolFrost,
-		ProcMask:    core.ProcMaskSpellDamage, // Considered a harmful effect
-		Flags:       SpellFlagChillSpell | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		ClassSpellMask: ClassSpellMask_MageFrostbite,
+		ActionID:       core.ActionID{SpellID: 12494},
+		SpellSchool:    core.SpellSchoolFrost,
+		ProcMask:       core.ProcMaskSpellProc,
+		Flags:          SpellFlagChillSpell | core.SpellFlagPassiveSpell,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
+
+			// For whatever reason frostbite always procs Fingers of Frost
+			if mage.FingersOfFrostAura != nil {
+				mage.FingersOfFrostAura.Activate(sim)
+				mage.FingersOfFrostAura.SetStacks(sim, mage.FingersOfFrostAura.MaxStacks)
+			}
 		},
 	})
 
@@ -490,18 +497,24 @@ func (mage *Mage) applyFrostbite() {
 
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Frostbite Trigger",
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Only Blizzard ticks proc
-			if spell.Matches(ClassSpellMask_MageBlizzard) && spell.Flags.Matches(SpellFlagChillSpell) && sim.Proc(procChance, "Frostbite") {
-				frostbiteSpell.Cast(sim, result.Target)
-			}
+	})).AttachProcTrigger(core.ProcTrigger{
+		Name:       "Frostbite Trigger Direct",
+		Callback:   core.CallbackOnSpellHitDealt,
+		Outcome:    core.OutcomeLanded,
+		SpellFlags: SpellFlagChillSpell,
+		ProcChance: procChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			frostbiteSpell.Cast(sim, result.Target)
 		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Flags.Matches(SpellFlagChillSpell) && sim.Proc(procChance, "Frostbite") {
-				frostbiteSpell.Cast(sim, result.Target)
-			}
+	}).AttachProcTrigger(core.ProcTrigger{
+		Name:           "Frostbite Trigger Periodic",
+		Callback:       core.CallbackOnPeriodicDamageDealt,
+		ClassSpellMask: ClassSpellMask_MageBlizzard, // Only procs from Blizzard
+		ProcChance:     procChance,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			frostbiteSpell.Cast(sim, result.Target)
 		},
-	}))
+	})
 }
 
 func (mage *Mage) registerColdSnapCD() {
@@ -609,11 +622,12 @@ func (mage *Mage) applyWintersChill() {
 
 	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
 		Name:             "Winters Chill",
-		ClassSpellMask:   ClassSpellMask_MageAll,
-		SpellSchool:      core.SpellSchoolFrost,
 		Callback:         core.CallbackOnSpellHitDealt,
 		Outcome:          core.OutcomeLanded,
+		ClassSpellMask:   ClassSpellMask_MageAll,
+		SpellSchool:      core.SpellSchoolFrost,
 		ProcChance:       procChance,
+		Harmful:          true,
 		CanProcFromProcs: true,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			aura := mage.WintersChillAuras.Get(result.Target)

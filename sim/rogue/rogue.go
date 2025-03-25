@@ -140,7 +140,6 @@ type Rogue struct {
 	EnvenomAura                   *core.Aura
 	ExposeArmorAuras              core.AuraArray
 	EvasionAura                   *core.Aura
-	JustAFleshWoundAura           *core.Aura
 	MasterOfSubtletyAura          *core.Aura
 	RollingWithThePunchesAura     *core.Aura
 	RollingWithThePunchesProcAura *core.Aura

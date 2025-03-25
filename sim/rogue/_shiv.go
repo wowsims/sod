@@ -27,6 +27,7 @@ func (rogue *Rogue) registerShivSpell() {
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeOHSpecial,
 		Flags:          rogue.builderFlags(),
+		MaxRange:       5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   baseCost,

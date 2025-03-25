@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: -0.08102
+  weights: -0.06617
   weights: 0
-  weights: 0.80098
-  weights: 0
-  weights: 0
+  weights: 0.8012
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.80098
   weights: 0
   weights: 0
-  weights: 1.91708
+  weights: 0.8012
+  weights: 0
+  weights: 0
+  weights: 1.90899
   weights: 0
   weights: 0
   weights: 0
@@ -396,15 +396,15 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.35226
+  weights: 0.37744
   weights: 0
-  weights: 1.10911
-  weights: 0
-  weights: 0
+  weights: 1.10913
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.10911
+  weights: 0
+  weights: 0
+  weights: 1.10913
   weights: 0
   weights: 0.57275
   weights: 8.23992
@@ -445,18 +445,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.35378
+  weights: 0.3525
   weights: 0
-  weights: 2.0056
-  weights: 0
-  weights: 0
+  weights: 2.00162
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.0056
   weights: 0
   weights: 0
-  weights: 23.92819
+  weights: 2.00162
+  weights: 0
+  weights: 0
+  weights: 23.88033
   weights: 0
   weights: 0
   weights: 0
@@ -496,16 +496,16 @@ stat_weights_results: {
   weights: 0
   weights: 0.42881
   weights: 0
-  weights: 1.96503
+  weights: 1.95592
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.96503
+  weights: 1.95592
   weights: 0
   weights: 0.00072
-  weights: 30.97776
+  weights: 30.25079
   weights: 0
   weights: 0
   weights: 0
@@ -543,18 +543,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.53951
+  weights: 0.50897
   weights: 0
-  weights: 2.68568
-  weights: 0
-  weights: 0
+  weights: 2.671
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.68568
+  weights: 0
+  weights: 0
+  weights: 2.671
   weights: 0
   weights: 0.00284
-  weights: 29.89888
+  weights: 29.56988
   weights: 0
   weights: 0
   weights: 0
@@ -701,29 +701,29 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 619.22941
-  tps: 494.28979
+  dps: 618.99476
+  tps: 494.08536
  }
 }
 dps_results: {
  key: "TestShadow-Phase2-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 617.81812
-  tps: 781.11954
+  dps: 620.75453
+  tps: 783.56855
  }
 }
 dps_results: {
  key: "TestShadow-Phase2-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 617.81812
-  tps: 492.95196
+  dps: 620.75453
+  tps: 495.40097
  }
 }
 dps_results: {
  key: "TestShadow-Phase2-Lvl40-Settings-NightElf-phase_2-Basic-phase_2-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 596.38381
-  tps: 483.13289
+  dps: 598.51062
+  tps: 484.91942
  }
 }
 dps_results: {
@@ -750,22 +750,22 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase2-Lvl40-Settings-Troll-phase_2-Basic-phase_2-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 618.19708
-  tps: 779.07194
+  dps: 620.54622
+  tps: 781.06273
  }
 }
 dps_results: {
  key: "TestShadow-Phase2-Lvl40-Settings-Troll-phase_2-Basic-phase_2-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 618.19708
-  tps: 493.43326
+  dps: 620.54622
+  tps: 495.42405
  }
 }
 dps_results: {
  key: "TestShadow-Phase2-Lvl40-Settings-Troll-phase_2-Basic-phase_2-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 596.09863
-  tps: 482.91058
+  dps: 597.35839
+  tps: 483.96878
  }
 }
 dps_results: {
@@ -792,8 +792,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 620.47341
-  tps: 495.36289
+  dps: 620.54622
+  tps: 495.42405
  }
 }
 dps_results: {
@@ -807,104 +807,104 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1283.88207
-  tps: 1035.88513
+  dps: 1282.87783
+  tps: 1035.02995
   hps: 11.44624
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1709.33533
-  tps: 1755.91847
-  hps: 10.99662
+  dps: 1720.45135
+  tps: 1764.99507
+  hps: 11.03078
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 1278.38095
-  tps: 1031.65702
-  hps: 11.67517
+  dps: 1284.06397
+  tps: 1036.43351
+  hps: 11.7116
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-FullBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 1304.11556
-  tps: 989.4589
-  hps: 12.59676
+  dps: 1308.36422
+  tps: 993.14176
+  hps: 12.61953
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-NoBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 820.88602
-  tps: 901.27596
-  hps: 6.12667
+  dps: 820.29967
+  tps: 900.8005
+  hps: 6.11283
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-NoBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 709.0596
-  tps: 563.92037
+  dps: 707.1716
+  tps: 562.33675
   hps: 7.55133
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-NightElf-phase_3-Basic-phase_3-NoBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 879.47021
-  tps: 672.26224
+  dps: 879.90554
+  tps: 672.59611
   hps: 10.06708
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-Troll-phase_3-Basic-phase_3-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1688.77316
-  tps: 1734.06975
-  hps: 10.76892
+  dps: 1696.21479
+  tps: 1739.89031
+  hps: 10.74615
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-Troll-phase_3-Basic-phase_3-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 1276.66725
-  tps: 1030.33216
-  hps: 11.87099
+  dps: 1282.5481
+  tps: 1035.33935
+  hps: 11.91653
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-Troll-phase_3-Basic-phase_3-FullBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 1304.12619
-  tps: 990.49817
-  hps: 12.57399
+  dps: 1308.37068
+  tps: 994.19458
+  hps: 12.59676
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-Troll-phase_3-Basic-phase_3-NoBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 807.18555
-  tps: 887.25956
-  hps: 6.07383
+  dps: 808.10909
+  tps: 887.97494
+  hps: 6.08192
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-Troll-phase_3-Basic-phase_3-NoBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 693.73338
-  tps: 551.35582
-  hps: 7.37708
+  dps: 691.06406
+  tps: 549.14267
+  hps: 7.35667
  }
 }
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-Settings-Troll-phase_3-Basic-phase_3-NoBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 878.92048
-  tps: 671.52547
+  dps: 879.78862
+  tps: 672.23639
   hps: 10.06708
  }
 }
@@ -920,35 +920,35 @@ dps_results: {
  key: "TestShadow-Phase4-Lvl60-AllItems-BenevolentProphet'sVestments"
  value: {
   dps: 2126.48441
-  tps: 2033.47662
+  tps: 2029.1241
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
   dps: 1689.64903
-  tps: 1612.54533
+  tps: 1609.69467
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
   dps: 1559.33836
-  tps: 1489.77533
+  tps: 1486.67116
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
   dps: 1680.39558
-  tps: 1603.75251
+  tps: 1600.8267
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
   dps: 1558.03405
-  tps: 1488.52115
+  tps: 1485.24268
  }
 }
 dps_results: {
@@ -962,21 +962,21 @@ dps_results: {
  key: "TestShadow-Phase4-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
   dps: 1689.64903
-  tps: 1612.54533
+  tps: 1609.69467
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
   dps: 1559.33836
-  tps: 1489.77533
+  tps: 1486.67116
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
   dps: 2253.97762
-  tps: 2153.87068
+  tps: 2150.01058
  }
 }
 dps_results: {
@@ -989,134 +989,134 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3555.3313
-  tps: 3308.45925
+  dps: 3547.01502
+  tps: 3298.54314
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 4047.76806
-  tps: 4330.06575
+  dps: 4025.65652
+  tps: 4308.66737
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3520.34111
-  tps: 3266.14842
+  dps: 3524.3305
+  tps: 3271.449
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3427.05212
-  tps: 3036.57093
+  dps: 3409.38288
+  tps: 3019.94613
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1784.00796
-  tps: 2018.69254
+  dps: 1785.72848
+  tps: 2020.90012
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1923.11224
-  tps: 1776.84438
+  dps: 1919.83885
+  tps: 1773.72973
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-NightElf-phase_4-Basic-phase_4-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1889.5297
-  tps: 1661.98209
+  dps: 1877.57859
+  tps: 1650.50902
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-Troll-phase_4-Basic-phase_4-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 4041.10986
-  tps: 4329.77257
+  dps: 4041.45436
+  tps: 4332.75004
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-Troll-phase_4-Basic-phase_4-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3520.59783
-  tps: 3267.07417
+  dps: 3523.37395
+  tps: 3271.10927
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-Troll-phase_4-Basic-phase_4-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3442.83451
-  tps: 3052.11654
+  dps: 3427.66569
+  tps: 3037.7152
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-Troll-phase_4-Basic-phase_4-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1775.61625
-  tps: 2004.71181
+  dps: 1783.75801
+  tps: 2018.5536
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-Troll-phase_4-Basic-phase_4-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1911.76693
-  tps: 1766.48202
+  dps: 1909.13692
+  tps: 1763.98751
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-Settings-Troll-phase_4-Basic-phase_4-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1888.77734
-  tps: 1662.11054
+  dps: 1873.68418
+  tps: 1647.6211
  }
 }
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3529.37961
-  tps: 3278.75857
+  dps: 3523.37395
+  tps: 3271.10927
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-AllItems-BenevolentProphet'sVestments"
  value: {
   dps: 2335.95874
-  tps: 2228.10859
+  tps: 2226.36262
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
   dps: 1825.43916
-  tps: 1738.99855
+  tps: 1736.93474
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
   dps: 1689.5632
-  tps: 1611.08507
+  tps: 1608.8385
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
   dps: 1816.04743
-  tps: 1730.04409
+  tps: 1727.92232
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
   dps: 1688.94615
-  tps: 1610.25276
+  tps: 1607.83539
  }
 }
 dps_results: {
@@ -1130,21 +1130,21 @@ dps_results: {
  key: "TestShadow-Phase5-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
   dps: 1825.43916
-  tps: 1738.99855
+  tps: 1736.93474
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
   dps: 1689.5632
-  tps: 1611.08507
+  tps: 1608.8385
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
   dps: 2464.95254
-  tps: 2350.30847
+  tps: 2348.76728
  }
 }
 dps_results: {
@@ -1157,190 +1157,190 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 3960.39474
-  tps: 3670.01955
+  dps: 3945.19843
+  tps: 3653.74556
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t1-Basic-phase_5-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 4216.06986
-  tps: 4443.26698
+  dps: 4211.53964
+  tps: 4438.67622
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t1-Basic-phase_5-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3920.5769
-  tps: 3626.47432
+  dps: 3921.79153
+  tps: 3628.46179
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t1-Basic-phase_5-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3740.91777
-  tps: 3277.3627
+  dps: 3725.82072
+  tps: 3266.99631
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t1-Basic-phase_5-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2013.23455
-  tps: 2240.20944
+  dps: 2036.03984
+  tps: 2269.79046
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t1-Basic-phase_5-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 2101.41222
-  tps: 1929.5091
+  dps: 2101.97476
+  tps: 1930.17604
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t1-Basic-phase_5-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 2044.38998
-  tps: 1780.59933
+  dps: 2032.78165
+  tps: 1769.50145
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t2-Basic-phase_5-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 5068.05741
-  tps: 5149.22328
+  dps: 5067.92051
+  tps: 5151.60349
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t2-Basic-phase_5-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3965.78061
-  tps: 3668.47612
+  dps: 3982.5518
+  tps: 3688.81825
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t2-Basic-phase_5-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3783.17843
-  tps: 3322.76901
+  dps: 3826.76085
+  tps: 3367.14672
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t2-Basic-phase_5-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2661.56997
-  tps: 2897.88283
+  dps: 2669.33913
+  tps: 2905.76625
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t2-Basic-phase_5-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 2222.01578
-  tps: 2045.69793
+  dps: 2220.42003
+  tps: 2046.11411
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-NightElf-phase_5_t2-Basic-phase_5-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 2142.60307
-  tps: 1872.33965
+  dps: 2154.46604
+  tps: 1885.24035
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t1-Basic-phase_5-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 4196.91986
-  tps: 4438.70437
+  dps: 4191.63089
+  tps: 4434.41766
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t1-Basic-phase_5-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3913.55701
-  tps: 3620.84376
+  dps: 3915.01541
+  tps: 3622.97849
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t1-Basic-phase_5-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3733.73328
-  tps: 3273.41791
+  dps: 3715.83555
+  tps: 3259.95248
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t1-Basic-phase_5-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1990.57471
-  tps: 2215.46019
+  dps: 2015.91863
+  tps: 2247.46919
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t1-Basic-phase_5-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 2096.79623
-  tps: 1925.22333
+  dps: 2097.36676
+  tps: 1925.88682
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t1-Basic-phase_5-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 2040.95926
-  tps: 1778.06991
+  dps: 2027.1705
+  tps: 1764.882
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t2-Basic-phase_5-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 5046.87733
-  tps: 5134.80444
+  dps: 5038.15139
+  tps: 5134.62826
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t2-Basic-phase_5-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3959.68617
-  tps: 3663.06208
+  dps: 3979.9537
+  tps: 3686.76236
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t2-Basic-phase_5-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3777.94963
-  tps: 3321.23799
+  dps: 3813.86194
+  tps: 3357.80414
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t2-Basic-phase_5-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2658.42345
-  tps: 2900.53084
+  dps: 2665.58727
+  tps: 2909.77889
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t2-Basic-phase_5-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 2218.21783
-  tps: 2042.20817
+  dps: 2219.24117
+  tps: 2045.06124
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-Settings-Troll-phase_5_t2-Basic-phase_5-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 2138.29141
-  tps: 1870.32351
+  dps: 2147.23735
+  tps: 1880.07279
  }
 }
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3933.50468
-  tps: 3642.44656
+  dps: 3915.01541
+  tps: 3622.97849
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-AllItems-BenevolentProphet'sVestments"
  value: {
-  dps: 2930.8824
-  tps: 2790.99667
+  dps: 2919.56423
+  tps: 2778.24759
  }
 }
 dps_results: {
@@ -1395,8 +1395,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 3092.00637
-  tps: 2943.00908
+  dps: 3079.95407
+  tps: 2929.66274
  }
 }
 dps_results: {
@@ -1409,98 +1409,98 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 5461.30096
-  tps: 5097.84508
+  dps: 5437.51102
+  tps: 5070.70229
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-NightElf-phase_6-Basic-phase_6-FullBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 5433.15456
-  tps: 5598.45948
+  dps: 5410.68905
+  tps: 5558.98875
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-NightElf-phase_6-Basic-phase_6-FullBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 5433.15456
-  tps: 5064.978
+  dps: 5410.68905
+  tps: 5042.58554
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-NightElf-phase_6-Basic-phase_6-FullBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 5213.9183
-  tps: 4651.713
+  dps: 5197.36228
+  tps: 4635.08111
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-NightElf-phase_6-Basic-phase_6-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 3027.40543
-  tps: 3333.1816
+  dps: 3017.15926
+  tps: 3327.41887
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-NightElf-phase_6-Basic-phase_6-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 3027.40543
-  tps: 2804.34387
+  dps: 3017.15926
+  tps: 2794.77096
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-NightElf-phase_6-Basic-phase_6-NoBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 2965.32596
-  tps: 2624.66017
+  dps: 2960.76282
+  tps: 2620.31984
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-Troll-phase_6-Basic-phase_6-FullBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 5431.13871
-  tps: 5604.73427
+  dps: 5408.6693
+  tps: 5568.4971
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-Troll-phase_6-Basic-phase_6-FullBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 5431.13871
-  tps: 5063.44738
+  dps: 5408.6693
+  tps: 5041.21304
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-Troll-phase_6-Basic-phase_6-FullBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 5212.65816
-  tps: 4651.40598
+  dps: 5196.23025
+  tps: 4635.03042
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-Troll-phase_6-Basic-phase_6-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 3025.8046
-  tps: 3336.61839
+  dps: 3015.71327
+  tps: 3331.08089
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-Troll-phase_6-Basic-phase_6-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 3025.8046
-  tps: 2803.17089
+  dps: 3015.71327
+  tps: 2793.75046
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-Settings-Troll-phase_6-Basic-phase_6-NoBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 2964.88068
-  tps: 2624.9458
+  dps: 2960.97112
+  tps: 2621.23501
  }
 }
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5434.93055
-  tps: 5070.66696
+  dps: 5408.6693
+  tps: 5041.21304
  }
 }

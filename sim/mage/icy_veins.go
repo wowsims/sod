@@ -8,17 +8,17 @@ import (
 )
 
 func (mage *Mage) registerIcyVeinsSpell() {
-	if !mage.HasRune(proto.MageRune_RuneLegsIceVeins) {
+	if !mage.HasRune(proto.MageRune_RuneLegsIcyVeins) {
 		return
 	}
 
-	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneLegsIceVeins)}
+	actionID := core.ActionID{SpellID: int32(proto.MageRune_RuneLegsIcyVeins)}
 	castSpeedMultiplier := 1.2
 	manaCost := .03
 	duration := time.Second * 20
 	cooldown := time.Minute * 3
 
-	icyVeinsAura := mage.RegisterAura(core.Aura{
+	mage.IcyVeinsAura = mage.RegisterAura(core.Aura{
 		Label:    "Icy Veins",
 		ActionID: actionID,
 		Duration: duration,
@@ -38,12 +38,9 @@ func (mage *Mage) registerIcyVeinsSpell() {
 				Duration: cooldown,
 			},
 		},
-		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			// Need to check for icy veins already active in case Cold Snap is used right after.
-			return !icyVeinsAura.IsActive()
-		},
+
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			icyVeinsAura.Activate(sim)
+			mage.IcyVeinsAura.Activate(sim)
 		},
 	})
 

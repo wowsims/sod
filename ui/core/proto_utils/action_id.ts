@@ -6,6 +6,8 @@ import { IconData, UIItem as Item } from '../proto/ui';
 import { buildWowheadTooltipDataset, WowheadTooltipItemParams, WowheadTooltipSpellParams } from '../wowhead';
 import { Database } from './database';
 
+const WOWHEAD_BRANCH = 'classic-ptr';
+
 // Used to filter action IDs by level
 export interface ActionIdConfig {
 	id: number;
@@ -160,7 +162,7 @@ export class ActionId {
 
 	static makeItemUrl(id: number, randomSuffixId?: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		const url = new URL(`https://wowhead.com/classic/${langPrefix}item=${id}`);
+		const url = new URL(`https://wowhead.com/${WOWHEAD_BRANCH}/${langPrefix}item=${id}`);
 		url.searchParams.set('level', String(MAX_CHARACTER_LEVEL));
 		url.searchParams.set('rand', String(randomSuffixId || 0));
 		return url.toString();
@@ -169,7 +171,7 @@ export class ActionId {
 		const langPrefix = getWowheadLanguagePrefix();
 		const showBuff = spellIDsToShowBuffs.has(id);
 
-		let url = `https://wowhead.com/classic/${langPrefix}spell=${id}`;
+		let url = `https://wowhead.com/${WOWHEAD_BRANCH}/${langPrefix}spell=${id}`;
 		if (showBuff) url = `${url}?buff=1`;
 
 		return url;
@@ -182,15 +184,15 @@ export class ActionId {
 	}
 	static makeQuestUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		return `https://wowhead.com/classic/${langPrefix}quest=${id}`;
+		return `https://wowhead.com/${WOWHEAD_BRANCH}/${langPrefix}quest=${id}`;
 	}
 	static makeNpcUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		return `https://wowhead.com/classic/${langPrefix}npc=${id}`;
+		return `https://wowhead.com/${WOWHEAD_BRANCH}/${langPrefix}npc=${id}`;
 	}
 	static makeZoneUrl(id: number): string {
 		const langPrefix = getWowheadLanguagePrefix();
-		return `https://wowhead.com/classic/${langPrefix}zone=${id}`;
+		return `https://wowhead.com/${WOWHEAD_BRANCH}/${langPrefix}zone=${id}`;
 	}
 
 	setWowheadHref(elem: HTMLAnchorElement) {
@@ -293,6 +295,9 @@ export class ActionId {
 				if (this.tag === playerIndex) {
 					name += ` (self)`;
 				}
+				break;
+			case 'Ice Lance':
+				if (this.tag !== 0) name = `${name} (${this.tag} Glaciate)`;
 				break;
 			// Combo Point Spenders
 			case 'Envenom':
@@ -444,6 +449,14 @@ export class ActionId {
 				if (this.tag === 1) name = `${name} (Tick)`;
 				else if (this.tag === 2) name = `${name} (Splash)`;
 				break;
+			case 'Invocation':
+				if (this.spellId === 426241) name = `${name} (Corruption)`;
+				else if (this.spellId === 426245) name = `${name} (Immolate)`;
+				else if (this.spellId === 426331) name = `${name} (Shadowflame)`;
+				else if (this.spellId === 454197) name = `${name} (Unstable Affliction)`;
+				else if (this.spellId === 426246) name = `${name} (Curse of Agony)`;
+				else if (this.spellId === 426247) name = `${name} (Siphon Life)`;
+				break;
 			case 'S03 - Item - T1 - Mage - Damage 4P Bonus':
 				// Tags correspond to each non-physical spell school
 				if (this.tag === 2) name = `${name} (Arcane)`;
@@ -455,6 +468,7 @@ export class ActionId {
 				break;
 			// Don't do anything for these but avoid adding "(??)"
 			case 'S03 - Item - T1 - Shaman - Tank 6P Bonus':
+			case 'Searing Totem':
 				break;
 			case 'Vampiric Touch':
 				// Vampiric touch provided to the party

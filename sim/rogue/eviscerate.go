@@ -46,6 +46,7 @@ func (rogue *Rogue) registerEviscerate() {
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          rogue.finisherFlags() | SpellFlagColdBlooded,
 		MetricSplits:   6,
+		MaxRange:       5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35,

@@ -1,27 +1,6 @@
 import { Phase } from '../core/constants/other';
 import * as PresetUtils from '../core/preset_utils';
-import {
-	Conjured,
-	Consumes,
-	Debuffs,
-	EnchantedSigil,
-	FirePowerBuff,
-	Flask,
-	Food,
-	FrostPowerBuff,
-	IndividualBuffs,
-	MageScroll,
-	ManaRegenElixir,
-	Potions,
-	Profession,
-	RaidBuffs,
-	SaygesFortune,
-	SpellPowerBuff,
-	TristateEffect,
-	WeaponImbue,
-	ZanzaBuff,
-} from '../core/proto/common';
-import { Mage_Options as MageOptions, Mage_Options_ArmorType as ArmorType } from '../core/proto/mage';
+import { Spec } from '../core/proto/common';
 import { SavedTalents } from '../core/proto/ui';
 // APLs
 import Phase1APLArcaneJSON from './apls/p1_arcane.apl.json';
@@ -36,8 +15,11 @@ import Phase4APLFireJSON from './apls/p4_fire.apl.json';
 import Phase4APLFrostJSON from './apls/p4_frost.apl.json';
 import Phase5APLFireJSON from './apls/p5_fire.apl.json';
 import Phase5APLSpellFrostJSON from './apls/p5_spellfrost.apl.json';
-import Phase6APLFireJSON from './apls/p6_fire.apl.json';
-import Phase6APLSpellFrostJSON from './apls/p6_spellfrost.apl.json';
+// Builds
+import Phase6BuildFireJSON from './builds/p6_fire.build.json';
+import Phase6BuildFrostJSON from './builds/p6_frost.build.json';
+import Phase7BuildFireJSON from './builds/p7_fire.build.json';
+import Phase7BuildFrostJSON from './builds/p7_frost.build.json';
 // Gear
 import Phase1GearFireJSON from './gear_sets/p1_fire.gear.json';
 import Phase1GearJSON from './gear_sets/p1_generic.gear.json';
@@ -52,8 +34,18 @@ import Phase4GearFrostJSON from './gear_sets/p4_frost.gear.json';
 import Phase5GearArcaneJSON from './gear_sets/p5_arcane.gear.json';
 import Phase5GearFireJSON from './gear_sets/p5_fire.gear.json';
 import Phase5GearFrostJSON from './gear_sets/p5_frost.gear.json';
-import Phase6GearFireJSON from './gear_sets/p6_fire.gear.json';
-import Phase6GearFrostJSON from './gear_sets/p6_frost.gear.json';
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Build Presets
+///////////////////////////////////////////////////////////////////////////
+
+export const PresetBuildFirePhase6 = PresetUtils.makePresetBuildFromJSON('P6 Fire', Spec.SpecMage, Phase6BuildFireJSON);
+export const PresetBuildFrostPhase6 = PresetUtils.makePresetBuildFromJSON('P6 Frost', Spec.SpecMage, Phase6BuildFrostJSON);
+
+export const PresetBuildFirePhase7 = PresetUtils.makePresetBuildFromJSON('P7 Fire', Spec.SpecMage, Phase7BuildFireJSON);
+export const PresetBuildFrostPhase7 = PresetUtils.makePresetBuildFromJSON('P7 Frost', Spec.SpecMage, Phase7BuildFrostJSON);
+
+export const DefaultBuild = PresetBuildFirePhase7;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
@@ -109,28 +101,15 @@ export const GearFrostPhase5 = PresetUtils.makePresetGear('P5 Frost', Phase5Gear
 	customCondition: player => player.getLevel() === 60,
 });
 
-export const GearFirePhase6 = PresetUtils.makePresetGear('P6 Fire', Phase6GearFireJSON, {
-	customCondition: player => player.getLevel() === 60,
-});
-export const GearFrostPhase6 = PresetUtils.makePresetGear('P6 Frost', Phase6GearFrostJSON, {
-	customCondition: player => player.getLevel() === 60,
-});
-
 export const GearPresets = {
 	[Phase.Phase1]: [GearArcanePhase1, GearFirePhase1, GearFrostPhase1],
 	[Phase.Phase2]: [GearArcanePhase2, GearFirePhase2, GearFrostPhase2],
 	[Phase.Phase3]: [GearArcanePhase3, GearFirePhase3, GearFrostPhase3],
 	[Phase.Phase4]: [GearArcanePhase4, GearFirePhase4, GearFrostPhase4],
 	[Phase.Phase5]: [GearArcanePhase5, GearFirePhase5, GearFrostPhase5],
-	[Phase.Phase6]: [GearFirePhase6, GearFrostPhase6],
-	[Phase.Phase7]: [],
+	[Phase.Phase6]: [PresetBuildFirePhase6.gear!, PresetBuildFrostPhase6.gear!],
+	[Phase.Phase7]: [PresetBuildFirePhase7.gear!, PresetBuildFrostPhase7.gear!],
 };
-
-export const DefaultGearArcane = GearPresets[Phase.Phase5][0];
-export const DefaultGearFire = GearPresets[Phase.Phase6][0];
-export const DefaultGearFrost = GearPresets[Phase.Phase6][1];
-
-export const DefaultGear = DefaultGearFire;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -176,21 +155,14 @@ export const APLSpellfrostPhase5 = PresetUtils.makePresetAPLRotation('P5 Frost',
 	customCondition: player => player.getLevel() >= 60,
 });
 
-export const APLFirePhase6 = PresetUtils.makePresetAPLRotation('P6 Fire', Phase6APLFireJSON, {
-	customCondition: player => player.getLevel() >= 60,
-});
-export const APLSpellfrostPhase6 = PresetUtils.makePresetAPLRotation('P6 Frost', Phase6APLSpellFrostJSON, {
-	customCondition: player => player.getLevel() >= 60,
-});
-
 export const APLPresets = {
 	[Phase.Phase1]: [APLArcanePhase1, APLFirePhase1, APLFirePhase1],
 	[Phase.Phase2]: [APLArcanePhase2, APLFirePhase2, APLFirePhase2],
 	[Phase.Phase3]: [APLArcanePhase3, APLFirePhase3, APLFrostPhase3],
 	[Phase.Phase4]: [APLArcanePhase4, APLFirePhase4, APLFrostPhase4],
 	[Phase.Phase5]: [APLFirePhase5, APLSpellfrostPhase5],
-	[Phase.Phase6]: [APLFirePhase6, APLSpellfrostPhase6],
-	[Phase.Phase7]: [],
+	[Phase.Phase6]: [PresetBuildFirePhase6.rotation!, PresetBuildFrostPhase6.rotation!],
+	[Phase.Phase7]: [PresetBuildFirePhase7.rotation!, PresetBuildFrostPhase7.rotation!],
 };
 
 export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotation>> = {
@@ -214,8 +186,8 @@ export const DefaultAPLs: Record<number, Record<number, PresetUtils.PresetRotati
 	},
 	60: {
 		0: APLPresets[Phase.Phase6][1],
-		1: APLPresets[Phase.Phase6][0],
-		2: APLPresets[Phase.Phase6][1],
+		1: APLPresets[Phase.Phase7][0],
+		2: APLPresets[Phase.Phase7][1],
 	},
 };
 
@@ -260,12 +232,8 @@ export const TalentsFrostfirePhase4 = PresetUtils.makePresetTalents('P4 Frostfir
 	customCondition: player => player.getLevel() === 60,
 });
 
-// P6
-// No new arcane build
-export const TalentsFirePhase6 = PresetUtils.makePresetTalents('P6 Fire', SavedTalents.create({ talentsString: '-0552323121033151-203500031' }), {
-	customCondition: player => player.getLevel() === 60,
-});
-export const TalentsFrostPhase6 = PresetUtils.makePresetTalents('P5/6 Spellfrost', SavedTalents.create({ talentsString: '005005001--20353203112351351' }), {
+// P5
+export const TalentsFrostPhase5 = PresetUtils.makePresetTalents('P5 Spellfrost', SavedTalents.create({ talentsString: '005005001--20353203112351351' }), {
 	customCondition: player => player.getLevel() === 60,
 });
 
@@ -274,84 +242,7 @@ export const TalentPresets = {
 	[Phase.Phase2]: [TalentsArcanePhase2, TalentsFirePhase2, TalentsFirePhase2],
 	[Phase.Phase3]: [TalentsArcanePhase3, TalentsFirePhase3, TalentsFrostPhase3],
 	[Phase.Phase4]: [TalentsArcanePhase4_5, TalentsFirePhase4_5, TalentsFrostfirePhase4],
-	[Phase.Phase5]: [TalentsArcanePhase4_5, TalentsFirePhase4_5],
-	[Phase.Phase6]: [TalentsFirePhase6, TalentsFrostPhase6],
-	[Phase.Phase7]: [],
-};
-
-export const DefaultTalentsArcane = TalentPresets[Phase.Phase5][0];
-export const DefaultTalentsFire = TalentPresets[Phase.Phase6][0];
-export const DefaultTalentsFrost = TalentPresets[Phase.Phase6][1];
-
-export const DefaultTalents = DefaultTalentsFire;
-
-export const PresetBuildArcane = PresetUtils.makePresetBuild('Arcane', {
-	gear: DefaultGearArcane,
-	talents: DefaultTalentsArcane,
-	rotation: DefaultAPLs[60][0],
-});
-export const PresetBuildFire = PresetUtils.makePresetBuild('Fire', { gear: DefaultGearFire, talents: DefaultTalentsFire, rotation: DefaultAPLs[60][1] });
-export const PresetBuildFrost = PresetUtils.makePresetBuild('Frost', { gear: DefaultGearFrost, talents: DefaultTalentsFrost, rotation: DefaultAPLs[60][2] });
-
-///////////////////////////////////////////////////////////////////////////
-//                                 Options
-///////////////////////////////////////////////////////////////////////////
-
-export const DefaultOptions = MageOptions.create({
-	armor: ArmorType.MoltenArmor,
-});
-
-export const DefaultConsumes = Consumes.create({
-	defaultConjured: Conjured.ConjuredDemonicRune,
-	defaultPotion: Potions.MajorManaPotion,
-	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
-	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
-	flask: Flask.FlaskOfAncientKnowledge,
-	food: Food.FoodDarkclawBisque,
-	frostPowerBuff: FrostPowerBuff.ElixirOfFrostPower,
-	mageScroll: MageScroll.MageScrollArcanePower,
-	mainHandImbue: WeaponImbue.EnchantedRepellent,
-	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
-
-	mildlyIrradiatedRejuvPot: true,
-	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
-	zanzaBuff: ZanzaBuff.CerebralCortexCompound,
-});
-
-export const DefaultRaidBuffs = RaidBuffs.create({
-	arcaneBrilliance: true,
-	aspectOfTheLion: true,
-	demonicPact: 120,
-	divineSpirit: true,
-	giftOfTheWild: TristateEffect.TristateEffectImproved,
-	manaSpringTotem: TristateEffect.TristateEffectRegular,
-	moonkinAura: true,
-	vampiricTouch: 300,
-});
-
-export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfWisdom: TristateEffect.TristateEffectImproved,
-	mightOfStormwind: true,
-	rallyingCryOfTheDragonslayer: true,
-	saygesFortune: SaygesFortune.SaygesDamage,
-	slipkiksSavvy: true,
-	songflowerSerenade: true,
-	spiritOfZandalar: true,
-	valorOfAzeroth: true,
-	warchiefsBlessing: true,
-});
-
-export const DefaultDebuffs = Debuffs.create({
-	dreamstate: true,
-	improvedScorch: true,
-	judgementOfWisdom: true,
-	markOfChaos: true,
-	occultPoison: true,
-	wintersChill: true,
-});
-
-export const OtherDefaults = {
-	distanceFromTarget: 20,
-	profession1: Profession.Alchemy,
-	profession2: Profession.Tailoring,
+	[Phase.Phase5]: [TalentsArcanePhase4_5, TalentsFirePhase4_5, TalentsFrostPhase5],
+	[Phase.Phase6]: [PresetBuildFirePhase6.talents!, PresetBuildFrostPhase6.talents!],
+	[Phase.Phase7]: [PresetBuildFirePhase7.talents!, PresetBuildFrostPhase7.talents!],
 };

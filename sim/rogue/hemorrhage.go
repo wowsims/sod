@@ -41,6 +41,7 @@ func (rogue *Rogue) registerHemorrhageSpell() {
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
 		Flags:          rogue.builderFlags(),
+		MaxRange:       5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   35.0,

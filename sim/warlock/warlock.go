@@ -47,19 +47,32 @@ const (
 	ClassSpellMask_WarlockImmolationAura
 	ClassSpellMask_WarlockImmolationAuraProc
 
-	ClassSpellMask_WarlockAll = 1<<iota - 1
-
-	ClassSpellMask_WarlockSummonFelguard = 1 << (iota - 1)
+	ClassSpellMask_WarlockSummonFelguard
+	ClassSpellMask_WarlockSummonFelguardCleave
 	ClassSpellMask_WarlockSummonFelhunter
 	ClassSpellMask_WarlockSummonImp
+	ClassSpellMask_WarlockSummonImpFireBolt
 	ClassSpellMask_WarlockSummonSuccubus
+	ClassSpellMask_WarlockSummonSuccubusLashOfPain
 	ClassSpellMask_WarlockSummonVoidwalker
+
+	ClassSpellMask_WarlockAll = 1<<iota - 1
 
 	ClassSpellMask_WarlockSummons = ClassSpellMask_WarlockSummonFelguard |
 		ClassSpellMask_WarlockSummonFelhunter |
 		ClassSpellMask_WarlockSummonImp |
 		ClassSpellMask_WarlockSummonSuccubus |
 		ClassSpellMask_WarlockSummonVoidwalker
+
+	// TODO: Hellfire
+	ClassSpellMask_WarlockHarmfulGCDSpells = ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockSoulFire | ClassSpellMask_WarlockConflagrate |
+		ClassSpellMask_WarlockSearingPain | ClassSpellMask_WarlockImmolate | ClassSpellMask_WarlockRainOfFire |
+		ClassSpellMask_WarlockCorruption | ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockCurseOfDoom |
+		ClassSpellMask_WarlockSiphonLife | ClassSpellMask_WarlockDrainSoul | ClassSpellMask_WarlockDrainLife |
+		ClassSpellMask_WarlockDeathCoil |
+		ClassSpellMask_WarlockChaosBolt | ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockShadowflame |
+		ClassSpellMask_WarlockHaunt | ClassSpellMask_WarlockUnstableAffliction |
+		ClassSpellMask_WarlockSummonFelguardCleave | ClassSpellMask_WarlockSummonImpFireBolt | ClassSpellMask_WarlockSummonSuccubusLashOfPain
 )
 
 type Warlock struct {
@@ -88,6 +101,7 @@ type Warlock struct {
 	Immolate           []*core.Spell
 	Incinerate         *core.Spell
 	InfernalArmor      *core.Spell
+	InvocationSpellMap map[uint64]*core.Spell
 	LifeTap            []*core.Spell
 	SearingPain        []*core.Spell
 	ShadowBolt         []*core.Spell
@@ -146,6 +160,7 @@ type Warlock struct {
 	DPSPAggregate float64
 
 	// Extra state and logic variables
+	bonusInfernalArmorMultiplier float64
 	demonicKnowledgeSp           float64
 	maintainBuffsOnSacrifice     bool    // Whether to disable the Master Demonologist and Demonic Sacrifice buffs when sacrificing/summoning pets. Used by TAQ 4pc
 	masterDemonologistMultiplier float64 // Bonus multiplier applied to the Master Demonologist talent

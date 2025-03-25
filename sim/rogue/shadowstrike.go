@@ -23,6 +23,7 @@ func (rogue *Rogue) registerShadowstrikeSpell() {
 			Cost:   20,
 			Refund: 0.8,
 		},
+		MaxRange: 25,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

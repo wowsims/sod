@@ -188,10 +188,10 @@ func (warrior *Warrior) applyFrenziedAssault() {
 		Label:    "Frenzied Assault",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, 1.3)
+			warrior.MultiplyMeleeSpeed(sim, 1.4)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, 1/1.3)
+			warrior.MultiplyMeleeSpeed(sim, 1/1.4)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskWhiteHit) && result.Landed() {
@@ -292,14 +292,18 @@ func (warrior *Warrior) applyBloodSurge() {
 		IntValue:  -100,
 	})
 
+	warrior.bloodSurgeClassMask = ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorWhirlwind | ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorQuickStrike
+
 	procTrigger := core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
-		Name:           "Blood Surge",
-		ClassSpellMask: ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorWhirlwind | ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorQuickStrike,
-		ProcChance:     0.3,
-		Callback:       core.CallbackOnSpellHitDealt,
-		Outcome:        core.OutcomeLanded,
+		Name:       "Blood Surge",
+		ProcChance: 0.3,
+		Callback:   core.CallbackOnSpellHitDealt,
+		Outcome:    core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			warrior.BloodSurgeAura.Activate(sim)
+			// Can be updated dynamically by DPS 2pT4
+			if spell.Matches(warrior.bloodSurgeClassMask) {
+				warrior.BloodSurgeAura.Activate(sim)
+			}
 		},
 	})
 
@@ -491,8 +495,8 @@ func (warrior *Warrior) applySingleMindedFury() {
 		Duration:  time.Second * 10,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-			warrior.MultiplyAttackSpeed(sim, 1/(1+0.03*float64(oldStacks)))
-			warrior.MultiplyAttackSpeed(sim, 1+0.03*float64(newStacks))
+			warrior.MultiplyAttackSpeed(sim, 1/(1+0.04*float64(oldStacks)))
+			warrior.MultiplyAttackSpeed(sim, 1+0.04*float64(newStacks))
 		},
 	})
 
