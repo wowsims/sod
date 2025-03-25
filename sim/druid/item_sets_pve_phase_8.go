@@ -250,14 +250,18 @@ func (druid *Druid) applyScarletEnclaveFeral4PBonus() {
 					druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= multToDoubleChange
 				}
 			} else {
-				repeatBonusHandler := func(aura *core.Aura, sim *core.Simulation) {
+				druid.TigersFuryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 					oldVal := druid.PseudoStats.BonusPhysicalDamage
 					origGain(aura, sim)
 					origBonus := druid.PseudoStats.BonusPhysicalDamage - oldVal
 					druid.PseudoStats.BonusPhysicalDamage += origBonus
 				}
-				druid.TigersFuryAura.OnGain = repeatBonusHandler
-				druid.TigersFuryAura.OnExpire = repeatBonusHandler
+				druid.TigersFuryAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+					oldVal := druid.PseudoStats.BonusPhysicalDamage
+					origExpire(aura, sim)
+					origBonus := druid.PseudoStats.BonusPhysicalDamage - oldVal
+					druid.PseudoStats.BonusPhysicalDamage += origBonus
+				}
 			}
 		},
 	}))
