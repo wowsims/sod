@@ -64,7 +64,7 @@ func main() {
 		database.NewWowheadSpellTooltipManager(fmt.Sprintf("%s/wowhead_spell_tooltips.csv", inputsDir)).Fetch(int32(*minId), int32(*maxId), []string{})
 		return
 	} else if *genAsset == "wowhead-gearplannerdb" {
-		tools.WriteFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir), tools.ReadWebRequired("https://nether.wowhead.com/classic/data/gear-planner?dv=100"))
+		tools.WriteFile(fmt.Sprintf("%s/wowhead_gearplannerdb.txt", inputsDir), tools.ReadWebRequired(core.MakeWowheadUrl("/data/gear-planner?dv=100")))
 		return
 	} else if *genAsset == "wago-db2-items" {
 		tools.WriteFile(fmt.Sprintf("%s/wago_db2_items.csv", inputsDir), tools.ReadWebRequired("https://wago.tools/db2/ItemSparse/csv?build=1.15.3.55646"))
@@ -175,7 +175,6 @@ func main() {
 	db.MergeRunes(database.RuneOverrides)
 	ApplyGlobalFilters(db)
 	AttachFactionInformation(db, wagoItems)
-	AttachItemSetIDs(db, wagoItems)
 
 	leftovers := db.Clone()
 	ApplyNonSimmableFilters(leftovers)
@@ -279,13 +278,6 @@ func AttachFactionInformation(db *database.WowDatabase, factionRestrictions map[
 		if item.FactionRestriction == proto.UIItem_FACTION_RESTRICTION_UNSPECIFIED {
 			item.FactionRestriction = factionRestrictions[item.Id].FactionRestriction
 		}
-	}
-}
-
-// AttachItemSetIDs attaches item set ids to the DB items.
-func AttachItemSetIDs(db *database.WowDatabase, wagoItems map[int32]database.WagoDbItem) {
-	for _, item := range db.Items {
-		item.SetId = wagoItems[item.Id].ItemSetID
 	}
 }
 

@@ -17,6 +17,8 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
+	TyrsFall             = 241001
+	RemnantsOfTheRed     = 241002
 	HeartOfLight         = 241034
 	AbandonedExperiment  = 241037
 	SirDornelsDidgeridoo = 241038
@@ -155,6 +157,20 @@ func init() {
 		// https://www.wowhead.com/classic/spell=1232093/infusion-of-souls
 		case proto.Class_ClassWarlock:
 			classMask = warlock.ClassSpellMask_WarlockHarmfulGCDSpells
+
+			// Infusion of souls also affects Warlock pets
+			warlockPlayer := agent.(warlock.WarlockAgent).GetWarlock()
+			for _, pet := range warlockPlayer.BasePets {
+				pet.OnSpellRegistered(func(spell *core.Spell) {
+					if spell.Matches(classMask) {
+						spell.AllowGCDHasteScaling = true
+
+						if spell.Matches(warlock.ClassSpellMask_WarlockSummonImpFireBolt) {
+							spell.DefaultCast.GCDMin = time.Millisecond * 500
+						}
+					}
+				})
+			}
 		}
 
 		character.OnSpellRegistered(func(spell *core.Spell) {
@@ -197,10 +213,7 @@ func init() {
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				if sim.Proc(0.5, "Lucky Doubloon Heads") {
-					if !buffAura.IsActive() {
-						// Assuming it doesn't refresh
-						buffAura.Activate(sim)
-					}
+					buffAura.Activate(sim)
 					buffAura.AddStack(sim)
 
 					// Delay the reset to simulate real player reaction time
@@ -218,6 +231,30 @@ func init() {
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=241002/remnants-of-the-red
+	// Equip: Dealing non-periodic Fire damage has a 10% chance to increase your Fire damage dealt by 10% for 20 sec. (Proc chance: 10%)
+	core.NewItemEffect(RemnantsOfTheRed, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231625},
+			Label:    "Flames of the Red",
+			Duration: time.Second * 20,
+		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.1)
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:        "Remnants of the Red Trigger",
+			Callback:    core.CallbackOnSpellHitDealt,
+			Outcome:     core.OutcomeLanded,
+			ProcMask:    core.ProcMaskSpellDamage,
+			SpellSchool: core.SpellSchoolFire,
+			ProcChance:  0.10,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				buffAura.Activate(sim)
+			},
 		})
 	})
 
@@ -331,5 +368,28 @@ func init() {
 	// Use: Throw down the Standard of Stiltz, increasing the maximum health of all nearby allies by 1000 for 20 sec. (2 Min Cooldown)
 	core.NewSimpleStatDefensiveTrinketEffect(StiltzsStandard, stats.Stats{stats.Health: 1000}, time.Second*20, time.Minute*2)
 
+	// https://www.wowhead.com/classic-ptr/item=241001/tyrs-fall
+	// Equip: Dealing periodic damage has a 5% chance to grant 120 spell damage and healing for 15 sec. (Proc chance: 5%)
+	core.NewItemEffect(TyrsFall, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231623},
+			Label:    "Tyr's Return",
+			Duration: time.Second * 15,
+		}).AttachStatBuff(stats.SpellPower, 120)
+
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Tyr's Fall Trigger",
+			Callback:   core.CallbackOnPeriodicDamageDealt,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: 0.05,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.ItemSwap.RegisterProc(TyrsFall, triggerAura)
+	})
 	core.AddEffectsToTest = true
 }

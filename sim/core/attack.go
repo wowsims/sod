@@ -41,34 +41,29 @@ func newWeaponFromUnarmed() Weapon {
 		SwingSpeed:           1,
 		NormalizedSwingSpeed: 1,
 		AttackPowerPerDPS:    DefaultAttackPowerPerDPS,
+		MinRange:             0,
+		MaxRange:             MaxMeleeAttackRange,
 	}
 }
 
 func getWeaponMinRange(item *Item) float64 {
 	switch item.RangedWeaponType {
 	case proto.RangedWeaponType_RangedWeaponTypeThrown:
-	case proto.RangedWeaponType_RangedWeaponTypeUnknown:
-	case proto.RangedWeaponType_RangedWeaponTypeWand:
-		return 0.
+		return 5
+	case proto.RangedWeaponType_RangedWeaponTypeUnknown, proto.RangedWeaponType_RangedWeaponTypeWand:
+		return 0
 	default:
-		return MaxMeleeAttackRange
+		return MinRangedAttackRange
 	}
-
-	return 0
 }
 
 func getWeaponMaxRange(item *Item) float64 {
 	switch item.RangedWeaponType {
 	case proto.RangedWeaponType_RangedWeaponTypeUnknown:
 		return MaxMeleeAttackRange
-	case proto.RangedWeaponType_RangedWeaponTypeWand:
-	case proto.RangedWeaponType_RangedWeaponTypeThrown:
-		return MaxShortRangedAttackRange
 	default:
 		return MaxRangedAttackRange
 	}
-
-	return MaxRangedAttackRange
 }
 
 func newWeaponFromItem(item *Item, bonusDps float64) Weapon {
@@ -499,6 +494,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 		CastType:    proto.CastType_CastTypeMainHand,
 
+		MaxRange:     MaxMeleeAttackRange,
 		MetricSplits: 2,
 
 		DamageMultiplier: 1,
@@ -534,6 +530,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		Flags:       SpellFlagMeleeMetrics | SpellFlagNoOnCastComplete,
 		CastType:    proto.CastType_CastTypeOffHand,
 
+		MaxRange:     MaxMeleeAttackRange,
 		MetricSplits: 2,
 
 		DamageMultiplier: 1,
@@ -563,6 +560,8 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		CastType:     proto.CastType_CastTypeRanged,
 		MissileSpeed: 24,
 
+		MinRange:     unit.AutoAttacks.ranged.MinRange,
+		MaxRange:     unit.AutoAttacks.ranged.MaxRange,
 		MetricSplits: 2,
 
 		DamageMultiplier: 1,
@@ -749,7 +748,7 @@ func (aa *AutoAttacks) startPull(sim *Simulation) {
 }
 
 func (wa *WeaponAttack) IsInRange() bool {
-	return (wa.MinRange == 0. || wa.MinRange < wa.unit.DistanceFromTarget) && (wa.MaxRange == 0. || wa.MaxRange >= wa.unit.DistanceFromTarget)
+	return (wa.MinRange == 0. || wa.MinRange <= wa.unit.DistanceFromTarget) && (wa.MaxRange == 0. || wa.MaxRange >= wa.unit.DistanceFromTarget)
 }
 
 // Stops the auto swing action for the rest of the iteration. Used for pets

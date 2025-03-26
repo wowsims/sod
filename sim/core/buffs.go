@@ -1435,7 +1435,7 @@ func PowerInfusionAura(character *Unit, actionTag int32) *Aura {
 // 	return aura.NewExclusiveEffect("MultiplyCastSpeed", false, ExclusiveEffect{
 // 		Priority: multiplier,
 // 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
-// 			ee.Aura.Unit.MultiplyCastSpeed(multiplier)
+// 			ee.Aura.Unit.MultiplyCastSpeed(simmultiplier)
 // 		},
 // 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 // 			ee.Aura.Unit.MultiplyCastSpeed(1 / multiplier)

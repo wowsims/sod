@@ -7,7 +7,7 @@ import (
 )
 
 // TODO: Classic Update
-func (warrior *Warrior) RegisterShieldWallCD() {
+func (warrior *Warrior) RegisterShieldWallCD(sharedTimer *core.Timer) {
 	if warrior.Level < 28 {
 		return
 	}
@@ -35,10 +35,13 @@ func (warrior *Warrior) RegisterShieldWallCD() {
 		ActionID:       actionID,
 		ClassSpellMask: ClassSpellMask_WarriorShieldWall,
 		Cast: core.CastConfig{
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
 				Duration: cooldownDur,
+			},
+			SharedCD: core.Cooldown{
+				Timer:    sharedTimer,
+				Duration: time.Minute * 5,
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {

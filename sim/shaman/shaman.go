@@ -198,8 +198,6 @@ type Shaman struct {
 
 	// Dynamic Class Masks
 	MaelstromWeaponClassMask uint64
-
-	// Dynamic Spell Mods
 	MaelstromWeaponSpellMods []*core.SpellMod
 
 	// Totems

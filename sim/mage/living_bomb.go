@@ -32,7 +32,7 @@ func (mage *Mage) registerLivingBombSpell() {
 		SpellSchool:    core.SpellSchoolFire,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagPassiveSpell | core.SpellFlagNoOnCastComplete,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

@@ -7,23 +7,23 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-// var ItemSetFireleafRegalia = core.NewItemSet(core.ItemSet{
-// 	Name: "Fireleaf Regalia",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			mage := agent.(MageAgent).GetMage()
-// 			mage.applyScarletEnclaveDamage2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			mage := agent.(MageAgent).GetMage()
-// 			mage.applyScarletEnclaveDamage4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			mage := agent.(MageAgent).GetMage()
-// 			mage.applyScarletEnclaveDamage6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetFireleafRegalia = core.NewItemSet(core.ItemSet{
+	Name: "Fireleaf Regalia",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+			mage.applyScarletEnclaveDamage2PBonus()
+		},
+		4: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+			mage.applyScarletEnclaveDamage4PBonus()
+		},
+		6: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+			mage.applyScarletEnclaveDamage6PBonus()
+		},
+	},
+})
 
 // Living Bomb ticks every 1 second and when it explodes it spreads Living Bomb to all targets struck that don't have an active Living Bomb.
 // Glaciate now stacks to 8 and Spellfrost Bolt grants 2 stacks per hit.
@@ -152,17 +152,17 @@ func (mage *Mage) applyScarletEnclaveDamage6PBonus() {
 	}
 }
 
-// var ItemSetFireleafVestments = core.NewItemSet(core.ItemSet{
-// 	Name: "Fireleaf Vestments",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// Rewind Time reduces the damage the target takes by 20% for x seconds.
-// 		2: func(agent core.Agent) {
-// 		},
-// 		// TODO: Casts of Arcane Blast have a 10% chance to cause your next Arcane spell cast to not consume your stacks of Arcane Blast
-// 		4: func(agent core.Agent) {
-// 		},
-// 		// Arcane Power's duration is increased by 10 seconds, and it's cooldown is reduced by 1 minute
-// 		6: func(agent core.Agent) {
-// 		},
-// 	},
-// })
+var ItemSetFireleafVestments = core.NewItemSet(core.ItemSet{
+	Name: "Fireleaf Vestments",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Rewind Time reduces the damage the target takes by 20% for x seconds.
+		2: func(agent core.Agent) {
+		},
+		// TODO: Casts of Arcane Blast have a 10% chance to cause your next Arcane spell cast to not consume your stacks of Arcane Blast
+		4: func(agent core.Agent) {
+		},
+		// Arcane Power's duration is increased by 10 seconds, and it's cooldown is reduced by 1 minute
+		6: func(agent core.Agent) {
+		},
+	},
+})

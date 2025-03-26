@@ -292,14 +292,18 @@ func (warrior *Warrior) applyBloodSurge() {
 		IntValue:  -100,
 	})
 
+	warrior.bloodSurgeClassMask = ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorWhirlwind | ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorQuickStrike
+
 	procTrigger := core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
-		Name:           "Blood Surge",
-		ClassSpellMask: ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorWhirlwind | ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorQuickStrike,
-		ProcChance:     0.3,
-		Callback:       core.CallbackOnSpellHitDealt,
-		Outcome:        core.OutcomeLanded,
+		Name:       "Blood Surge",
+		ProcChance: 0.3,
+		Callback:   core.CallbackOnSpellHitDealt,
+		Outcome:    core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			warrior.BloodSurgeAura.Activate(sim)
+			// Can be updated dynamically by DPS 2pT4
+			if spell.Matches(warrior.bloodSurgeClassMask) {
+				warrior.BloodSurgeAura.Activate(sim)
+			}
 		},
 	})
 

@@ -27,7 +27,7 @@ type CastConfig struct {
 	// Dynamic modifications for each cast.
 	ModifyCast func(*Simulation, *Spell, *Cast)
 
-	// Ignores haste when calculating the GCD and cast time for this cast.
+	// Ignores haste when calculating the cast time for this cast.
 	// Automatically set if GCD and cast times are all 0, e.g. for empty casts.
 	IgnoreHaste bool
 

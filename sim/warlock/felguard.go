@@ -111,11 +111,12 @@ func (wp *WarlockPet) registerFelguardCleaveSpell() {
 	results := make([]*core.SpellResult, min(2, wp.Env.GetNumTargets()))
 
 	wp.primaryAbility = wp.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 427744},
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics,
+		ClassSpellMask: ClassSpellMask_WarlockSummonFelguardCleave,
+		ActionID:       core.ActionID{SpellID: 427744},
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.1,
@@ -124,7 +125,6 @@ func (wp *WarlockPet) registerFelguardCleaveSpell() {
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
 			},
-			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    wp.NewTimer(),
 				Duration: time.Second * 6,

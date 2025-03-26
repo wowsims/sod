@@ -8,23 +8,23 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-// var ItemSetHereticRaiment = core.NewItemSet(core.ItemSet{
-// 	Name: "Heretic Raiment",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveDamage2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveDamage4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveDamage6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetHereticRaiment = core.NewItemSet(core.ItemSet{
+	Name: "Heretic Raiment",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveDamage2PBonus()
+		},
+		4: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveDamage4PBonus()
+		},
+		6: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveDamage6PBonus()
+		},
+	},
+})
 
 // Your Shadow and Fire non-periodic critical strikes cause the target to Burn for 25% of the damage they deal over 4 sec.
 func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
@@ -84,14 +84,16 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 	})
 }
 
-// Your Incinerate, Shadow Bolt, and Soul Fire deal 20% more damage to targets afflicted with your Corruption.
+// Your Incinerate, Shadow Bolt, Haunt, Chaos Bolt, Shadow Cleave, and Soul Fire deal 30% more damage to targets afflicted with your Corruption.
 func (warlock *Warlock) applyScarletEnclaveDamage4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warlock - Damage 4P Bonus"
 	if warlock.HasAura(label) {
 		return
 	}
 
-	classMask := ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockShadowBolt
+	classMask := ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockHaunt |
+		ClassSpellMask_WarlockChaosBolt | ClassSpellMask_WarlockShadowCleave | ClassSpellMask_WarlockSoulFire
+
 	damageMod := warlock.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  classMask,
 		Kind:       core.SpellMod_DamageDone_Pct,
@@ -106,7 +108,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage4PBonus() {
 			hasCorruption := slices.ContainsFunc(warlock.Corruption, func(spell *core.Spell) bool {
 				return spell.Dot(result.Target).IsActive()
 			})
-			damageMod.UpdateFloatValue(core.TernaryFloat64(hasCorruption, 1.20, 1.0))
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hasCorruption, 1.30, 1.0))
 			damageMod.Activate()
 		},
 	})
@@ -129,9 +131,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if warlock.BackdraftAura != nil {
-				warlock.BackdraftAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-					hasteAura.Activate(sim)
-				})
+				warlock.BackdraftAura.AttachDependentAura(hasteAura)
 			}
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
@@ -142,23 +142,23 @@ func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 	}))
 }
 
-// var ItemSetHereticStitchings = core.NewItemSet(core.ItemSet{
-// 	Name: "Heretic Stitchings",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveTank2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveTank4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			warlock := agent.(WarlockAgent).GetWarlock()
-// 			warlock.applyScarletEnclaveTank6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetHereticStitchings = core.NewItemSet(core.ItemSet{
+	Name: "Heretic Stitchings",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveTank2PBonus()
+		},
+		4: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveTank4PBonus()
+		},
+		6: func(agent core.Agent) {
+			warlock := agent.(WarlockAgent).GetWarlock()
+			warlock.applyScarletEnclaveTank6PBonus()
+		},
+	},
+})
 
 // Your Shadowcleave now applies your Corruption Rank 7 to every target it hits but its duration is only 12 sec.
 func (warlock *Warlock) applyScarletEnclaveTank2PBonus() {

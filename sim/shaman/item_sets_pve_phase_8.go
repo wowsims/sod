@@ -7,23 +7,23 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 )
 
-// var ItemSetTheSoulcrushersStorm = core.NewItemSet(core.ItemSet{
-// 	Name: "The Soulcrusher's Storm",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveElemental2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveElemental4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveElemental6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetTheSoulcrushersStorm = core.NewItemSet(core.ItemSet{
+	Name: "The Soulcrusher's Storm",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveElemental2PBonus()
+		},
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveElemental4PBonus()
+		},
+		6: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveElemental6PBonus()
+		},
+	},
+})
 
 // When your Lava Burst strikes a target afflicted with your Flame Shock Rank 5 or Rank 6, it also deals one pulse of Flame Shock's damage.
 func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
@@ -99,10 +99,10 @@ func (shaman *Shaman) applyScarletEnclaveElemental4PBonus() {
 	})
 
 	buffAura := shaman.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: int32(proto.ShamanRune_RuneHandsLavaBurst)},
-		Label:     label + " Proc", // TODO: Find real spell
+		ActionID:  core.ActionID{SpellID: 1233835},
+		Label:     "Thunder and Lava",
 		MaxStacks: 5,
-		Duration:  time.Second * 10, // TODO: Find real duration
+		Duration:  time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damageMod.Activate()
 		},
@@ -151,23 +151,23 @@ func (shaman *Shaman) applyScarletEnclaveElemental6PBonus() {
 	})
 }
 
-// var ItemSetTheSoulcrushersRage = core.NewItemSet(core.ItemSet{
-// 	Name: "The Soulcrusher's Rage",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveEnhancement2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveEnhancement4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveEnhancement6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetTheSoulcrushersRage = core.NewItemSet(core.ItemSet{
+	Name: "The Soulcrusher's Rage",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveEnhancement2PBonus()
+		},
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveEnhancement4PBonus()
+		},
+		6: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveEnhancement6PBonus()
+		},
+	},
+})
 
 // While Static Shock is active, Lava Lash, Lava Burst, and Stormstrike have a 100% chance to add charges to your Lightning Shield.
 // While dual-wielding, you will gain 1 charge, and while using a two-handed weapon you will gain 2 charges.
@@ -189,17 +189,18 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(classMask) && shaman.ActiveShield != nil && shaman.ActiveShield.Matches(ClassSpellMask_ShamanLightningShield) {
 				atMaxStacks := shaman.ActiveShieldAura.GetStacks() == 9
-
-				shaman.ActiveShieldAura.AddStack(sim)
 				if atMaxStacks {
 					shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
 				}
 
+				shaman.ActiveShieldAura.AddStack(sim) // Add back the charge removed
+
 				if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-					shaman.ActiveShieldAura.AddStack(sim)
 					if atMaxStacks {
 						shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
 					}
+
+					shaman.ActiveShieldAura.AddStack(sim) // Add back the charge removed
 				}
 			}
 		},
@@ -320,23 +321,23 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 	}))
 }
 
-// var ItemSetTheSoulcrushersResolve = core.NewItemSet(core.ItemSet{
-// 	Name: "The Soulcrusher's Resolve",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveTank2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveTank4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			shaman := agent.(ShamanAgent).GetShaman()
-// 			shaman.applyScarletEnclaveTank6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetTheSoulcrushersResolve = core.NewItemSet(core.ItemSet{
+	Name: "The Soulcrusher's Resolve",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveTank2PBonus()
+		},
+		4: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveTank4PBonus()
+		},
+		6: func(agent core.Agent) {
+			shaman := agent.(ShamanAgent).GetShaman()
+			shaman.applyScarletEnclaveTank6PBonus()
+		},
+	},
+})
 
 // Your Shield Mastery effect can now stack up to 7 times.
 func (shaman *Shaman) applyScarletEnclaveTank2PBonus() {
@@ -403,30 +404,30 @@ func (shaman *Shaman) applyScarletEnclaveTank6PBonus() {
 			}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 				spellMod.Deactivate()
 			}).ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				spellMod.UpdateFloatValue(-0.20 * float64(newStacks-oldStacks))
+				spellMod.UpdateFloatValue(-0.20 * float64(newStacks))
 			})
 
 			if shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
 				shaman.MaelstromWeaponClassMask ^= ClassSpellMask_ShamanLavaBurst
-				for _, mod := range shaman.MaelstromWeaponSpellMods {
-					mod.ClassMask ^= ClassSpellMask_ShamanLavaBurst
+				for _, spellMod := range shaman.MaelstromWeaponSpellMods {
+					spellMod.RemoveSpellByClassMask(ClassSpellMask_ShamanLavaBurst)
 				}
 			}
 		},
 	}))
 }
 
-// var ItemSetTheSoulcrusher = core.NewItemSet(core.ItemSet{
-// 	Name: "The Soulcrusher",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// Heals from your Earth Shield have a 40% chance to make your next cast time heal instant cast.
-// 		2: func(agent core.Agent) {
-// 		},
-// 		// Your Healing Wave Rank 9 and Rank 10 and Lesser Healing Wave Rank 6 spells have a 10% chance to imbue your target with Totemic Power.
-// 		4: func(agent core.Agent) {
-// 		},
-// 		// The target of your Spirit of the Alpha ability takes 20% reduced damage from Undead enemies.
-// 		6: func(agent core.Agent) {
-// 		},
-// 	},
-// })
+var ItemSetTheSoulcrusher = core.NewItemSet(core.ItemSet{
+	Name: "The Soulcrusher",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Heals from your Earth Shield have a 40% chance to make your next cast time heal instant cast.
+		2: func(agent core.Agent) {
+		},
+		// Your Healing Wave Rank 9 and Rank 10 and Lesser Healing Wave Rank 6 spells have a 10% chance to imbue your target with Totemic Power.
+		4: func(agent core.Agent) {
+		},
+		// The target of your Spirit of the Alpha ability takes 20% reduced damage from Undead enemies.
+		6: func(agent core.Agent) {
+		},
+	},
+})

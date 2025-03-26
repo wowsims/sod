@@ -63,9 +63,6 @@ func (war *TankWarrior) GetWarrior() *warrior.Warrior {
 
 func (war *TankWarrior) Initialize() {
 	war.Warrior.Initialize()
-
-	war.RegisterShieldWallCD()
-	war.RegisterShieldBlockCD()
 	war.DefensiveStanceAura.BuildPhase = core.CharacterBuildPhaseTalents
 }
 

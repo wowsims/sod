@@ -148,6 +148,7 @@ type Warrior struct {
 	BerserkerStanceAura *core.Aura
 	GladiatorStanceAura *core.Aura
 
+	bloodSurgeClassMask               uint64
 	cleaveTargetCount                 int32
 	defensiveStanceThreatMultiplier   float64
 	gladiatorStanceDamageMultiplier   float64
@@ -245,6 +246,7 @@ func (warrior *Warrior) newStanceOverrideExclusiveEffect(stance Stance, aura *co
 func (warrior *Warrior) Initialize() {
 	primaryTimer := warrior.NewTimer()
 	overpowerRevengeTimer := warrior.NewTimer()
+	shieldWallRecklessnessTimer := warrior.NewTimer()
 
 	warrior.reactionTime = time.Millisecond * 500
 
@@ -276,7 +278,9 @@ func (warrior *Warrior) Initialize() {
 	warrior.SunderArmor = warrior.registerSunderArmorSpell()
 
 	warrior.registerBloodrageCD()
-	warrior.RegisterRecklessnessCD()
+	warrior.RegisterRecklessnessCD(shieldWallRecklessnessTimer)
+	warrior.RegisterShieldWallCD(shieldWallRecklessnessTimer)
+	warrior.RegisterShieldBlockCD()
 }
 
 func (warrior *Warrior) Reset(sim *core.Simulation) {

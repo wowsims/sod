@@ -90,7 +90,7 @@ func TestMM(t *testing.T) {
 			Buffs:            core.FullBuffsPhase2,
 			Consumes:         Phase2Consumes,
 			SpecOptions:      core.SpecOptionsCombo{Label: "Basic", SpecOptions: Phase2PlayerOptions},
-			StartingDistance: core.MaxShortRangedAttackRange,
+			StartingDistance: core.MaxRangedAttackRange,
 
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,

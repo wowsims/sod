@@ -326,6 +326,18 @@ func (aura *Aura) ApplyOnRefresh(newOnRefresh OnRefresh) *Aura {
 	return aura
 }
 
+func (aura *Aura) AttachDependentAura(sibling *Aura) *Aura {
+	return aura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		sibling.Activate(sim)
+	}).ApplyOnRefresh(func(aura *Aura, sim *Simulation) {
+		sibling.Refresh(sim)
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		sibling.Deactivate(sim)
+	}).ApplyOnStacksChange(func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
+		sibling.SetStacks(sim, newStacks)
+	})
+}
+
 // Adds a handler to be called OnExpire, in addition to any current handlers.
 // We then return the Aura for chaining
 func (aura *Aura) ApplyOnExpire(newOnExpire OnExpire) *Aura {

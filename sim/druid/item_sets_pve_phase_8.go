@@ -8,23 +8,23 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-// var ItemSetWaywatcherEclipse = core.NewItemSet(core.ItemSet{
-// 	Name: "Waywatcher Eclipse",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveBalance2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveBalance4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveBalance6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetWaywatcherEclipse = core.NewItemSet(core.ItemSet{
+	Name: "Waywatcher Eclipse",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveBalance2PBonus()
+		},
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveBalance4PBonus()
+		},
+		6: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveBalance6PBonus()
+		},
+	},
+})
 
 // Your Starfire deals 20% more damage to targets with your Moonfire, and your Wrath deals 20% more damage to targets with your Sunfire.
 func (druid *Druid) applyScarletEnclaveBalance2PBonus() {
@@ -88,8 +88,8 @@ func (druid *Druid) applyScarletEnclaveBalance4PBonus() {
 	}))
 }
 
-// Each time your Sunfire deals periodic damage, you gain 10% increased damage to your next Wrath, stacking up to 10 times.
-// Each time your Moonfire deals periodic damage, you gain 10% increased damage to your next Stafire, stacking up to 10 times.
+// Each time your Sunfire deals periodic damage, you gain 20% increased damage to your next Wrath, stacking up to 5 times.
+// Each time your Moonfire deals periodic damage, you gain 20% increased damage to your next Stafire, stacking up to 5 times.
 // These bonuses do not apply to Starsurge.
 func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Druid - Balance 6P Bonus"
@@ -103,9 +103,10 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 	})
 
 	wrathAura := druid.RegisterAura(core.Aura{
-		Label:     "TODO Wrath Buff",
-		Duration:  time.Second * 10,
-		MaxStacks: 10,
+		ActionID:  core.ActionID{SpellID: 1226105},
+		Label:     "Sunsurge",
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			wrathDamageMod.Activate()
 		},
@@ -113,7 +114,7 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 			wrathDamageMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			wrathDamageMod.UpdateIntValue(10 * int64(newStacks))
+			wrathDamageMod.UpdateIntValue(20 * int64(newStacks))
 		},
 	})
 
@@ -123,9 +124,10 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 	})
 
 	starfireAura := druid.RegisterAura(core.Aura{
-		Label:     "TODO Starfire Buff",
-		Duration:  time.Second * 10,
-		MaxStacks: 10,
+		ActionID:  core.ActionID{SpellID: 1226106},
+		Label:     "Moonsurge",
+		Duration:  time.Second * 15,
+		MaxStacks: 5,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			starfireDamageMod.Activate()
 		},
@@ -133,7 +135,7 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 			starfireDamageMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			starfireDamageMod.UpdateIntValue(10 * int64(newStacks))
+			starfireDamageMod.UpdateIntValue(20 * int64(newStacks))
 		},
 	})
 
@@ -158,23 +160,23 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 	}))
 }
 
-// var ItemSetWaywatcherFerocity = core.NewItemSet(core.ItemSet{
-// 	Name: "Waywatcher Ferocity",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveFeral2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveFeral4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveFeral6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetWaywatcherFerocity = core.NewItemSet(core.ItemSet{
+	Name: "Waywatcher Ferocity",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveFeral2PBonus()
+		},
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveFeral4PBonus()
+		},
+		6: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveFeral6PBonus()
+		},
+	},
+})
 
 // https://www.wowhead.com/classic-ptr/spell=1226109/s03-item-scarlet-enclave-druid-feral-2p-bonus
 // You gain 2 Energy each time Rake or Rip deals periodic damage.
@@ -222,7 +224,7 @@ func (druid *Druid) applyScarletEnclaveFeral4PBonus() {
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1226116},
 		Label:    label,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			// Q: wtf is this??
 			// A: We can't access and manipulate the bonus directly because it only exists in the gain/expire callbacks.
 			// Without hardcoding values it's probably the easiest to just double the change made by the original handler.
@@ -248,14 +250,18 @@ func (druid *Druid) applyScarletEnclaveFeral4PBonus() {
 					druid.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical] /= multToDoubleChange
 				}
 			} else {
-				repeatBonusHandler := func(aura *core.Aura, sim *core.Simulation) {
+				druid.TigersFuryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 					oldVal := druid.PseudoStats.BonusPhysicalDamage
 					origGain(aura, sim)
 					origBonus := druid.PseudoStats.BonusPhysicalDamage - oldVal
 					druid.PseudoStats.BonusPhysicalDamage += origBonus
 				}
-				druid.TigersFuryAura.OnGain = repeatBonusHandler
-				druid.TigersFuryAura.OnExpire = repeatBonusHandler
+				druid.TigersFuryAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+					oldVal := druid.PseudoStats.BonusPhysicalDamage
+					origExpire(aura, sim)
+					origBonus := druid.PseudoStats.BonusPhysicalDamage - oldVal
+					druid.PseudoStats.BonusPhysicalDamage += origBonus
+				}
 			}
 		},
 	}))
@@ -299,23 +305,23 @@ func (druid *Druid) applyScarletEnclaveFeral6PBonus() {
 	})
 }
 
-// var ItemSetWaywatcherGuardian = core.NewItemSet(core.ItemSet{
-// 	Name: "Waywatcher Guardian",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		2: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveGuardian2PBonus()
-// 		},
-// 		4: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveGuardian4PBonus()
-// 		},
-// 		6: func(agent core.Agent) {
-// 			druid := agent.(DruidAgent).GetDruid()
-// 			druid.applyScarletEnclaveGuardian6PBonus()
-// 		},
-// 	},
-// })
+var ItemSetWaywatcherGuardian = core.NewItemSet(core.ItemSet{
+	Name: "Waywatcher Guardian",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveGuardian2PBonus()
+		},
+		4: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveGuardian4PBonus()
+		},
+		6: func(agent core.Agent) {
+			druid := agent.(DruidAgent).GetDruid()
+			druid.applyScarletEnclaveGuardian6PBonus()
+		},
+	},
+})
 
 // Your melee critical strikes in Bear Form or Dire Bear Form grant you a shield lasting until cancelled that absorbs Physical damage equal to 25% of your Attack Power the next time you take Physical damage. Stacks up to 0 times.
 func (druid *Druid) applyScarletEnclaveGuardian2PBonus() {
@@ -341,7 +347,7 @@ func (druid *Druid) applyScarletEnclaveGuardian4PBonus() {
 	}))
 }
 
-// You heal for 4% of your maximum Health every time you deal a critical strike, but no more than once every 4 sec.
+// You gain 30% increased attack speed for 10 sec every time you deal a critical strike.
 func (druid *Druid) applyScarletEnclaveGuardian6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Druid - Guardian 6P Bonus"
 	if druid.HasAura(label) {
@@ -353,17 +359,17 @@ func (druid *Druid) applyScarletEnclaveGuardian6PBonus() {
 	}))
 }
 
-// var ItemSetWaywatcherRaiment = core.NewItemSet(core.ItemSet{
-// 	Name: "Waywatcher Raiment",
-// 	Bonuses: map[int32]core.ApplyEffect{
-// 		// Each time your Lifebloom heals a target, it has a 5% chance to make your next Healing Touch, Nourish, or Regrowth within 15 sec instant cast.
-// 		2: func(agent core.Agent) {
-// 		},
-// 		// Targets with your active Rejuvenation Rank 10 or Rank 11 receive 20% increased healing from your spells.
-// 		4: func(agent core.Agent) {
-// 		},
-// 		// When your Regrowth Rank 8 or Rank 9 deals a non-periodic critical heal, your Rejuvenation on that target will spread to all members of the target's party within 43.5 yards not already affected by your Rejuvenation.
-// 		6: func(agent core.Agent) {
-// 		},
-// 	},
-// })
+var ItemSetWaywatcherRaiment = core.NewItemSet(core.ItemSet{
+	Name: "Waywatcher Raiment",
+	Bonuses: map[int32]core.ApplyEffect{
+		// Each time your Lifebloom heals a target, it has a 5% chance to make your next Healing Touch, Nourish, or Regrowth within 15 sec instant cast.
+		2: func(agent core.Agent) {
+		},
+		// Targets with your active Rejuvenation Rank 10 or Rank 11 receive 20% increased healing from your spells.
+		4: func(agent core.Agent) {
+		},
+		// When your Regrowth Rank 8 or Rank 9 deals a non-periodic critical heal, your Rejuvenation on that target will spread to all members of the target's party within 43.5 yards not already affected by your Rejuvenation.
+		6: func(agent core.Agent) {
+		},
+	},
+})
