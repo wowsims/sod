@@ -28,14 +28,14 @@ func (warrior *Warrior) newShoutSpellConfig(actionID core.ActionID, rank int32, 
 
 		FlatThreatBonus: float64(core.BattleShoutLevel[rank]),
 
-		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aura := range allyAuras {
 				spell.CalcAndDealOutcome(sim, aura.Unit, spell.OutcomeAlwaysHit)
 				aura.Activate(sim)
 			}
 
 			for i := 0; i < extraHits; i++ {
-				spell.CalcAndDealOutcome(sim, &warrior.Unit, spell.OutcomeAlwaysHit)
+				spell.CalcAndDealOutcome(sim, target, spell.OutcomeAlwaysHit)
 			}
 		},
 
