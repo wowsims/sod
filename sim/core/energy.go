@@ -148,7 +148,15 @@ func (eb *energyBar) onEnergyGain(sim *Simulation, crossedThreshold bool) {
 	}
 
 	if !sim.Options.Interactive && crossedThreshold {
-		eb.unit.Rotation.DoNextAction(sim)
+		// TODO: This is a fix for the energy gain happening during aura expiration on the last tick of a DoT,
+		// causing a the Spell to be cast, reapplying the DoT before aura expiration was fully handled.
+		// See Rogue T3 4p or feral T4/3.5 2p for examples of effects that would cause eternal DoTs without the delay.
+		StartDelayedAction(sim, DelayedActionOptions{
+			DoAt: sim.CurrentTime + time.Nanosecond,
+			OnAction: func(s *Simulation) {
+				eb.unit.Rotation.DoNextAction(sim)
+			},
+		})
 	}
 }
 
