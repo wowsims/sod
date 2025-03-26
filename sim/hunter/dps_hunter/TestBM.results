@@ -247,7 +247,7 @@ stat_weights_results: {
  key: "TestBM-Phase4-Lvl60-StatWeights-Default"
  value: {
   weights: 0
-  weights: 2.10039
+  weights: 2.1559
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.80182
-  weights: 7.34819
-  weights: 23.17495
+  weights: 0.80231
+  weights: 9.49064
+  weights: 21.98555
   weights: 0
   weights: 0
   weights: 0
@@ -273,7 +273,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.10886
+  weights: 0.13465
   weights: 0
   weights: 0
   weights: 0
@@ -792,154 +792,154 @@ dps_results: {
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-BeastmasterArmor"
  value: {
-  dps: 1331.92122
-  tps: 523.09359
+  dps: 1483.11072
+  tps: 530.72555
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-BloodGuard'sChain"
  value: {
-  dps: 1695.51925
-  tps: 553.16563
+  dps: 1827.66823
+  tps: 547.509
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-BloodGuard'sMail"
  value: {
-  dps: 1654.68652
-  tps: 539.12023
+  dps: 1785.11015
+  tps: 535.06869
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-BloodlashBow-216516"
  value: {
-  dps: 4060.73462
-  tps: 1967.24772
+  dps: 4355.80256
+  tps: 1986.84238
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-DevilsaurEye-19991"
  value: {
-  dps: 4067.01328
-  tps: 1969.17488
+  dps: 4345.60014
+  tps: 1978.49875
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-DevilsaurTooth-19992"
  value: {
-  dps: 4013.37857
-  tps: 1945.97613
+  dps: 4264.84987
+  tps: 1926.27319
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-DreadHunter'sChain"
  value: {
-  dps: 2662.07273
-  tps: 1464.06891
+  dps: 2925.04525
+  tps: 1464.72185
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-EmeraldScalemail"
  value: {
-  dps: 1660.26273
-  tps: 538.14521
+  dps: 1791.96988
+  tps: 534.1109
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-Knight-Lieutenant'sChain"
  value: {
-  dps: 1695.51925
-  tps: 553.16563
+  dps: 1827.66823
+  tps: 547.509
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-Maelstrom'sWrath-231320"
  value: {
-  dps: 4123.98433
-  tps: 1965.7243
+  dps: 4386.01622
+  tps: 1974.7045
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-SignetofBeasts-209823"
  value: {
-  dps: 3901.18252
-  tps: 1862.4589
+  dps: 4164.44538
+  tps: 1864.99916
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-ZandalarPredator'sBelt-231322"
  value: {
-  dps: 2993.51273
-  tps: 1685.66378
+  dps: 3274.07795
+  tps: 1694.60387
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-ZandalarPredator'sBracers-231323"
  value: {
-  dps: 3581.41065
-  tps: 1754.39858
+  dps: 3844.00248
+  tps: 1735.82806
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-AllItems-ZandalarPredator'sMantle-231321"
  value: {
-  dps: 4043.5877
-  tps: 1937.87153
+  dps: 4338.48461
+  tps: 1949.63858
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 4076.31892
-  tps: 1978.97034
+  dps: 4347.83041
+  tps: 1982.75947
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-FullBuffs-p4_melee_dw-LongMultiTarget"
  value: {
-  dps: 4465.97612
-  tps: 2729.80487
+  dps: 4763.80057
+  tps: 2747.6255
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-FullBuffs-p4_melee_dw-LongSingleTarget"
  value: {
-  dps: 4078.59058
-  tps: 1980.08262
+  dps: 4373.55419
+  tps: 1999.67991
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-FullBuffs-p4_melee_dw-ShortSingleTarget"
  value: {
-  dps: 4249.0494
-  tps: 2023.33985
+  dps: 4558.51409
+  tps: 2043.73648
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-NoBuffs-p4_melee_dw-LongMultiTarget"
  value: {
-  dps: 1773.5292
-  tps: 1322.92236
+  dps: 1815.32531
+  tps: 1321.1761
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-NoBuffs-p4_melee_dw-LongSingleTarget"
  value: {
-  dps: 1659.2394
-  tps: 784.45785
+  dps: 1701.46908
+  tps: 779.58047
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-Settings-Orc-p4_melee_dw-p4_melee_dw-p4_melee_dw-NoBuffs-p4_melee_dw-ShortSingleTarget"
  value: {
-  dps: 1743.75612
-  tps: 805.99865
+  dps: 1802.83814
+  tps: 807.52053
  }
 }
 dps_results: {
  key: "TestBM-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3432.3763
-  tps: 1508.92214
+  dps: 3717.07902
+  tps: 1514.92089
  }
 }
