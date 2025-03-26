@@ -21,7 +21,7 @@ type OnPetEnable func(sim *Simulation)
 type OnPetDisable func(sim *Simulation)
 
 type PetStatInheritance func(ownerStats stats.Stats) stats.Stats
-type PetAttackSpeedInheritance func()
+type PetAttackSpeedInheritance func(newMeleeSpeedMultiplier, newCastSpeedMultiplier float64)
 
 // Pet is an extension of Character, for any entity created by a player that can
 // take actions on its own.
@@ -218,13 +218,26 @@ func (pet *Pet) EnableDynamicAttackSpeed(sim *Simulation) {
 		pet.Owner.DynamicAttackSpeedPets = append(pet.Owner.DynamicAttackSpeedPets, pet)
 	}
 
-	pet.dynamicAttackSpeedInheritance = func() {
-		// From Zirene: Pets will take the highest of the owner's melee and spell haste multipliers
-		maxMultiplier := max(pet.Owner.PseudoStats.MeleeSpeedMultiplier, pet.Owner.PseudoStats.CastSpeedMultiplier)
-		pet.MultiplyMeleeSpeed(sim, maxMultiplier/pet.PseudoStats.MeleeSpeedMultiplier)
-		pet.MultiplyCastSpeed(maxMultiplier / pet.PseudoStats.CastSpeedMultiplier)
+	pet.dynamicAttackSpeedInheritance = func(newMeleeSpeedMultiplier, newCastSpeedMultiplier float64) {
+		pet.MultiplyMeleeSpeed(sim, newMeleeSpeedMultiplier)
+		pet.MultiplyCastSpeed(newCastSpeedMultiplier)
 	}
-	pet.dynamicAttackSpeedInheritance()
+	maxMultiplier := max(pet.Owner.PseudoStats.MeleeSpeedMultiplier, pet.Owner.PseudoStats.CastSpeedMultiplier)
+	pet.dynamicAttackSpeedInheritance(maxMultiplier, maxMultiplier)
+}
+
+// Call this after changing the owner's Melee Attack Speed to dynamically update the pet's Melee and/or Cast speed.
+// Pets use the highest of the owner's Melee and Cast speed multipliers and apply it to both of the pet's multipliers.
+func (pet *Pet) UpdateMeleeSpeedInheritance(amount, oldOwnerMeleeSpeedMultiplier, ownerCastSpeedMultiplier float64) {
+	maxMultiplier := max(oldOwnerMeleeSpeedMultiplier*amount, ownerCastSpeedMultiplier)
+	pet.dynamicAttackSpeedInheritance(maxMultiplier/oldOwnerMeleeSpeedMultiplier, maxMultiplier/ownerCastSpeedMultiplier)
+}
+
+// Call this after changing the owner's Cast Speed to dynamically update the pet's Melee and/or Cast speed.
+// Pets use the highest of the owner's Melee and Cast speed multipliers and apply it to both of the pet's multipliers.
+func (pet *Pet) UpdateCastSpeedInheritance(amount, ownerMeleeSpeedMultiplier, oldOwnerCastSpeedMultiplier float64) {
+	maxMultiplier := max(ownerMeleeSpeedMultiplier, oldOwnerCastSpeedMultiplier*amount)
+	pet.dynamicAttackSpeedInheritance(maxMultiplier/ownerMeleeSpeedMultiplier, maxMultiplier/oldOwnerCastSpeedMultiplier)
 }
 
 func (pet *Pet) Disable(sim *Simulation) {

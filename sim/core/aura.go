@@ -331,6 +331,10 @@ func (aura *Aura) AttachDependentAura(sibling *Aura) *Aura {
 		sibling.Activate(sim)
 	}).ApplyOnRefresh(func(aura *Aura, sim *Simulation) {
 		sibling.Refresh(sim)
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		sibling.Deactivate(sim)
+	}).ApplyOnStacksChange(func(aura *Aura, sim *Simulation, oldStacks, newStacks int32) {
+		sibling.SetStacks(sim, newStacks)
 	})
 }
 

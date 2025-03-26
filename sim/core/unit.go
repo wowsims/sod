@@ -383,10 +383,11 @@ func (unit *Unit) updateCastSpeed() {
 }
 
 func (unit *Unit) MultiplyCastSpeed(amount float64) {
+	oldCastSpeedMultiplier := unit.PseudoStats.CastSpeedMultiplier
 	unit.PseudoStats.CastSpeedMultiplier *= amount
 
 	for _, pet := range unit.DynamicAttackSpeedPets {
-		pet.dynamicAttackSpeedInheritance()
+		pet.UpdateCastSpeedInheritance(amount, unit.PseudoStats.MeleeSpeedMultiplier, oldCastSpeedMultiplier)
 	}
 
 	unit.updateCastSpeed()
@@ -422,10 +423,11 @@ func (unit *Unit) RangedSwingSpeed() float64 {
 
 // MultiplyMeleeSpeed will alter the attack speed multiplier and change swing speed of all autoattack swings in progress.
 func (unit *Unit) MultiplyMeleeSpeed(sim *Simulation, amount float64) {
+	oldMeleeSpeedMultiplier := unit.PseudoStats.MeleeSpeedMultiplier
 	unit.PseudoStats.MeleeSpeedMultiplier *= amount
 
 	for _, pet := range unit.DynamicAttackSpeedPets {
-		pet.dynamicAttackSpeedInheritance()
+		pet.UpdateMeleeSpeedInheritance(amount, oldMeleeSpeedMultiplier, unit.PseudoStats.CastSpeedMultiplier)
 	}
 
 	unit.AutoAttacks.UpdateSwingTimers(sim)
@@ -438,11 +440,12 @@ func (unit *Unit) MultiplyRangedSpeed(sim *Simulation, amount float64) {
 
 // Helper for when both MultiplyMeleeSpeed and MultiplyRangedSpeed are needed.
 func (unit *Unit) MultiplyAttackSpeed(sim *Simulation, amount float64) {
+	oldMeleeSpeedMultiplier := unit.PseudoStats.MeleeSpeedMultiplier
 	unit.PseudoStats.MeleeSpeedMultiplier *= amount
 	unit.PseudoStats.RangedSpeedMultiplier *= amount
 
 	for _, pet := range unit.DynamicAttackSpeedPets {
-		pet.dynamicAttackSpeedInheritance()
+		pet.UpdateMeleeSpeedInheritance(amount, oldMeleeSpeedMultiplier, unit.PseudoStats.CastSpeedMultiplier)
 	}
 
 	unit.AutoAttacks.UpdateSwingTimers(sim)
