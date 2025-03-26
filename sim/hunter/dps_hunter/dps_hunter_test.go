@@ -158,7 +158,7 @@ func TestSV(t *testing.T) {
 	}))
 }
 
-func TestRangedItemSets(t *testing.T) {
+func TestRangedHunter(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir, "p4_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
 		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir, "p5_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
@@ -167,7 +167,7 @@ func TestRangedItemSets(t *testing.T) {
 	}))
 }
 
-func Test2hItemSets(t *testing.T) {
+func Test2HMeleeHunter(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir, "p5_melee_2h", ItemFilters, proto.Stat_StatAgility, Stats),
 		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir, "p6_melee_2h", ItemFilters, proto.Stat_StatAgility, Stats),
@@ -175,7 +175,7 @@ func Test2hItemSets(t *testing.T) {
 	}))
 }
 
-func TestDwItemSets(t *testing.T) {
+func TestDWMeleeHunter(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir, "p4_melee_dw", ItemFilters, proto.Stat_StatAgility, Stats),
 		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir, "p5_melee_dw", ItemFilters, proto.Stat_StatAgility, Stats),
