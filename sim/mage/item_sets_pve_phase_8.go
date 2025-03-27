@@ -74,7 +74,7 @@ func (mage *Mage) applyScarletEnclaveDamage2PBonus() {
 }
 
 // Casts of Pyroblast remove a stack of Balefire Bolt.
-// Casts of Deep Freeze increase the duration of your active Icy Veins by 10 seconds.
+// Casts of Deep Freeze increase the duration of your active Icy Veins by 8 seconds.
 func (mage *Mage) applyScarletEnclaveDamage4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Mage - Damage 4P Bonus"
 	if mage.HasAura(label) {
@@ -96,7 +96,7 @@ func (mage *Mage) applyScarletEnclaveDamage4PBonus() {
 	if mage.HasRune(proto.MageRune_RuneHelmDeepFreeze) && mage.HasRune(proto.MageRune_RuneLegsIcyVeins) {
 		aura.ApplyOnCastComplete(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_MageDeepFreeze) && mage.IcyVeinsAura.IsActive() {
-				mage.IcyVeinsAura.UpdateExpires(sim, mage.IcyVeinsAura.ExpiresAt()+time.Second*10)
+				mage.IcyVeinsAura.UpdateExpires(sim, mage.IcyVeinsAura.ExpiresAt()+time.Second*8)
 			}
 		}, false)
 	}
