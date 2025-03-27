@@ -25,12 +25,15 @@ var ItemSetFrostfireRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Evocation grants you 5% increased damage done every sec you channel it, stacking up to 8 times and lasting 45 sec.
+// Your Evocation grants you 1% increased damage done every sec you channel it (increased to 5% inside of Naxxramas), stacking up to 8 times and lasting 45 sec.
 func (mage *Mage) applyNaxxramasDamage2PBonus() {
 	label := "S03 - Item - Naxxramas - Mage - Damage 2P Bonus"
 	if mage.HasAura(label) {
 		return
 	}
+
+	useNaxxBonus := mage.CurrentTarget != nil && mage.CurrentTarget.MobType == proto.MobType_MobTypeUndead
+	bonusPerStack := core.TernaryFloat64(useNaxxBonus, 0.05, 0.01)
 
 	buffAura := mage.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1218701},
@@ -38,8 +41,8 @@ func (mage *Mage) applyNaxxramasDamage2PBonus() {
 		Duration:  time.Second * 45,
 		MaxStacks: 8,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			mage.PseudoStats.DamageDealtMultiplier /= 1 + 0.05*float64(oldStacks)
-			mage.PseudoStats.DamageDealtMultiplier *= 1 + 0.05*float64(newStacks)
+			mage.PseudoStats.DamageDealtMultiplier /= 1 + bonusPerStack*float64(oldStacks)
+			mage.PseudoStats.DamageDealtMultiplier *= 1 + bonusPerStack*float64(newStacks)
 		},
 	})
 
