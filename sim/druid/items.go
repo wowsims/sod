@@ -430,10 +430,10 @@ func init() {
 			ClassMask: ClassSpellMask_DruidFerociousBite,
 			Kind:      core.SpellMod_Custom,
 			ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-				druid.EnergyTickMultiplier *= 2
+				druid.EnergyTickMultiplier *= 1.5
 			},
 			RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-				druid.EnergyTickMultiplier /= 2
+				druid.EnergyTickMultiplier /= 1.5
 			},
 		})
 

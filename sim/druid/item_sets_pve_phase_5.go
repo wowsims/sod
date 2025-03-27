@@ -144,7 +144,7 @@ func (druid *Druid) applyT2Feral2PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_DruidRake,
 		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
-		IntValue:  40,
+		IntValue:  10,
 	}))
 }
 
