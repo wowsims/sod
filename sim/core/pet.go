@@ -21,7 +21,7 @@ type OnPetEnable func(sim *Simulation)
 type OnPetDisable func(sim *Simulation)
 
 type PetStatInheritance func(ownerStats stats.Stats) stats.Stats
-type PetMeleeSpeedInheritance func(amount float64)
+type PetAttackSpeedInheritance func(newMeleeSpeedMultiplier, newCastSpeedMultiplier float64)
 
 // Pet is an extension of Character, for any entity created by a player that can
 // take actions on its own.
@@ -41,8 +41,8 @@ type Pet struct {
 	dynamicStatInheritance PetStatInheritance
 	inheritedStats         stats.Stats
 
-	// DK pets also inherit their owner's MeleeSpeed. This replace OwnerAttackSpeedChanged.
-	dynamicMeleeSpeedInheritance PetMeleeSpeedInheritance
+	// As of Phase 8 Warlock, Hunter, Shaman, and Priest pets now inherit Melee and Cast speed from their owners.
+	dynamicAttackSpeedInheritance PetAttackSpeedInheritance
 
 	isReset bool
 
@@ -212,12 +212,32 @@ func (pet *Pet) EnableDynamicStats(inheritance PetStatInheritance) {
 	pet.dynamicStatInheritance = inheritance
 }
 
-// Enables and possibly updates how the pet inherits its owner's melee speed. DK use only.
-func (pet *Pet) EnableDynamicMeleeSpeed(inheritance PetMeleeSpeedInheritance) {
-	if !slices.Contains(pet.Owner.DynamicMeleeSpeedPets, pet) {
-		pet.Owner.DynamicMeleeSpeedPets = append(pet.Owner.DynamicMeleeSpeedPets, pet)
+// Enables and possibly updates how the pet inherits its owner's attack and cast speeds
+func (pet *Pet) EnableDynamicAttackSpeed(sim *Simulation) {
+	if !slices.Contains(pet.Owner.DynamicAttackSpeedPets, pet) {
+		pet.Owner.DynamicAttackSpeedPets = append(pet.Owner.DynamicAttackSpeedPets, pet)
 	}
-	pet.dynamicMeleeSpeedInheritance = inheritance
+
+	pet.dynamicAttackSpeedInheritance = func(newMeleeSpeedMultiplier, newCastSpeedMultiplier float64) {
+		pet.MultiplyMeleeSpeed(sim, newMeleeSpeedMultiplier)
+		pet.MultiplyCastSpeed(newCastSpeedMultiplier)
+	}
+	maxMultiplier := max(pet.Owner.PseudoStats.MeleeSpeedMultiplier, pet.Owner.PseudoStats.CastSpeedMultiplier)
+	pet.dynamicAttackSpeedInheritance(maxMultiplier, maxMultiplier)
+}
+
+// Call this after changing the owner's Melee Attack Speed to dynamically update the pet's Melee and/or Cast speed.
+// Pets use the highest of the owner's Melee and Cast speed multipliers and apply it to both of the pet's multipliers.
+func (pet *Pet) UpdateMeleeSpeedInheritance(amount, oldOwnerMeleeSpeedMultiplier, ownerCastSpeedMultiplier float64) {
+	maxMultiplier := max(oldOwnerMeleeSpeedMultiplier*amount, ownerCastSpeedMultiplier)
+	pet.dynamicAttackSpeedInheritance(maxMultiplier/oldOwnerMeleeSpeedMultiplier, maxMultiplier/ownerCastSpeedMultiplier)
+}
+
+// Call this after changing the owner's Cast Speed to dynamically update the pet's Melee and/or Cast speed.
+// Pets use the highest of the owner's Melee and Cast speed multipliers and apply it to both of the pet's multipliers.
+func (pet *Pet) UpdateCastSpeedInheritance(amount, ownerMeleeSpeedMultiplier, oldOwnerCastSpeedMultiplier float64) {
+	maxMultiplier := max(ownerMeleeSpeedMultiplier, oldOwnerCastSpeedMultiplier*amount)
+	pet.dynamicAttackSpeedInheritance(maxMultiplier/ownerMeleeSpeedMultiplier, maxMultiplier/oldOwnerCastSpeedMultiplier)
 }
 
 func (pet *Pet) Disable(sim *Simulation) {
@@ -238,11 +258,13 @@ func (pet *Pet) Disable(sim *Simulation) {
 		pet.dynamicStatInheritance = nil
 	}
 
-	if pet.dynamicMeleeSpeedInheritance != nil {
-		if idx := slices.Index(pet.Owner.DynamicMeleeSpeedPets, pet); idx != -1 {
-			pet.Owner.DynamicMeleeSpeedPets = removeBySwappingToBack(pet.Owner.DynamicMeleeSpeedPets, idx)
+	if pet.dynamicAttackSpeedInheritance != nil {
+		if idx := slices.Index(pet.Owner.DynamicAttackSpeedPets, pet); idx != -1 {
+			pet.Owner.DynamicAttackSpeedPets = removeBySwappingToBack(pet.Owner.DynamicAttackSpeedPets, idx)
 		}
-		pet.dynamicMeleeSpeedInheritance = nil
+		pet.PseudoStats.MeleeSpeedMultiplier = pet.Owner.PseudoStats.MeleeSpeedMultiplier
+		pet.PseudoStats.CastSpeedMultiplier = pet.Owner.PseudoStats.CastSpeedMultiplier
+		pet.dynamicAttackSpeedInheritance = nil
 	}
 
 	pet.CancelGCDTimer(sim)

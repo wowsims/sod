@@ -189,17 +189,18 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(classMask) && shaman.ActiveShield != nil && shaman.ActiveShield.Matches(ClassSpellMask_ShamanLightningShield) {
 				atMaxStacks := shaman.ActiveShieldAura.GetStacks() == 9
-
-				shaman.ActiveShieldAura.AddStack(sim)
 				if atMaxStacks {
 					shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
 				}
 
+				shaman.ActiveShieldAura.AddStack(sim) // Add back the charge removed
+
 				if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-					shaman.ActiveShieldAura.AddStack(sim)
 					if atMaxStacks {
 						shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
 					}
+
+					shaman.ActiveShieldAura.AddStack(sim) // Add back the charge removed
 				}
 			}
 		},
@@ -263,7 +264,9 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 		},
 	})
 
-	core.MakePermanent(twoHandedBonusAura)
+	if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+		core.MakePermanent(twoHandedBonusAura)
+	}
 	shaman.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
 			twoHandedBonusAura.Activate(sim)
@@ -272,50 +275,50 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 		}
 	})
 
+	// @Lucenia: We have to use a boolean flag because otherwise the triggered cast infinitely procs this trigger
 	var damageMod *core.SpellMod
+	var isProcced bool
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(_ *core.Aura, sim *core.Simulation) {
 			shaman.MaelstromWeaponAura.MaxStacks += 5
+
 			// We have to initialize this within the OnInit for shaman.MaelstromWeaponClassMask to be set properly
 			damageMod = shaman.AddDynamicMod(core.SpellModConfig{
 				ClassMask:  shaman.MaelstromWeaponClassMask,
 				Kind:       core.SpellMod_DamageDone_Pct,
 				FloatValue: 1,
 			})
-
-			// @Lucenia: We have to use a boolean flag because otherwise the triggered cast infinitely procs this trigger
-			isProcced := false
-			shaman.MaelstromWeaponAura.ApplyOnCastComplete(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-				if spell.Matches(shaman.MaelstromWeaponClassMask) {
-					if aura.GetStacks() > 5 {
-						damageMod.UpdateFloatValue(1 + 0.10*float64(aura.GetStacks()-5))
-					} else {
-						damageMod.UpdateFloatValue(1)
-					}
-
-					if aura.GetStacks() == 10 && !isProcced {
-						isProcced = true
-
-						if spell.CD.Duration > 0 {
-							spell.CD.Reset()
-						}
-
-						defaultGCD := spell.DefaultCast.GCD
-						spell.DefaultCast.GCD = 0
-						spell.Cast(sim, shaman.CurrentTarget)
-						spell.DefaultCast.GCD = defaultGCD
-
-						isProcced = false
-					}
-				}
-			}, true)
 		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			isProcced = false
+		},
+		OnGain: func(_ *core.Aura, _ *core.Simulation) {
 			damageMod.Activate()
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+		OnExpire: func(_ *core.Aura, _ *core.Simulation) {
 			damageMod.Deactivate()
+		},
+		OnApplyEffects: func(_ *core.Aura, _ *core.Simulation, _ *core.Unit, spell *core.Spell) {
+			if spell.Matches(shaman.MaelstromWeaponClassMask) {
+				damageMod.UpdateFloatValue(1 + max(0, 0.10*float64(shaman.MaelstromWeaponAura.GetStacks()-5)))
+			}
+		},
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Matches(shaman.MaelstromWeaponClassMask) && shaman.MaelstromWeaponAura.GetStacks() == 10 && !isProcced {
+				isProcced = true
+
+				if spell.CD.Duration > 0 {
+					spell.CD.Reset()
+				}
+
+				defaultGCD := spell.DefaultCast.GCD
+				spell.DefaultCast.GCD = 0
+				spell.Cast(sim, shaman.CurrentTarget)
+				spell.DefaultCast.GCD = defaultGCD
+
+				isProcced = false
+			}
 		},
 	}))
 }
@@ -403,11 +406,14 @@ func (shaman *Shaman) applyScarletEnclaveTank6PBonus() {
 			}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 				spellMod.Deactivate()
 			}).ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				spellMod.UpdateFloatValue(-0.20 * float64(newStacks-oldStacks))
+				spellMod.UpdateFloatValue(-0.20 * float64(newStacks))
 			})
 
 			if shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
 				shaman.MaelstromWeaponClassMask ^= ClassSpellMask_ShamanLavaBurst
+				for _, spellMod := range shaman.MaelstromWeaponSpellMods {
+					spellMod.RemoveSpellByClassMask(ClassSpellMask_ShamanLavaBurst)
+				}
 			}
 		},
 	}))
