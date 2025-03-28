@@ -114,7 +114,6 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.RollingWithThePunchesProcAura.MaxStacks += 5
 			rogue.rollingWithThePunchesBonusHealthStackMultiplier -= 0.02
 			rogue.rollingWithThePunchesMaxStacks += 5
 			oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
