@@ -246,8 +246,8 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.76914
-  weights: 1.86813
+  weights: 2.15666
+  weights: 1.28486
   weights: 0
   weights: 0
   weights: 0
@@ -263,9 +263,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.96981
-  weights: 4.40925
-  weights: 28.64203
+  weights: 1.33354
+  weights: 3.8325
+  weights: 28.85118
   weights: 0
   weights: 0
   weights: 0
@@ -507,9 +507,9 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-BanishedMartyr'sFullPlate"
  value: {
-  dps: 3080.12411
-  tps: 2661.95713
-  hps: 73.749
+  dps: 3057.9613
+  tps: 2642.06248
+  hps: 73.5355
  }
 }
 dps_results: {
@@ -547,115 +547,115 @@ dps_results: {
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-AllItems-WailingBerserker'sPlateArmor"
  value: {
-  dps: 3313.85296
-  tps: 2855.4202
-  hps: 76.04667
+  dps: 3301.29065
+  tps: 2844.42075
+  hps: 75.74167
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 4214.27552
-  tps: 3295.58288
-  hps: 75.71177
+  dps: 4193.18923
+  tps: 3278.97378
+  hps: 75.40406
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 10261.20423
-  tps: 8833.67757
-  hps: 67.4965
+  dps: 10262.22623
+  tps: 8801.86241
+  hps: 67.2525
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 4077.67131
-  tps: 3190.65089
-  hps: 76.5245
+  dps: 4047.51657
+  tps: 3165.25439
+  hps: 76.22967
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 4795.19435
-  tps: 3730.11525
-  hps: 75.13167
+  dps: 4643.76796
+  tps: 3623.14338
+  hps: 74.01333
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 3872.19468
-  tps: 3535.04085
+  dps: 3860.54405
+  tps: 3483.81925
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1532.61514
-  tps: 1277.22704
+  dps: 1518.88916
+  tps: 1265.41556
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Human-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1929.27535
-  tps: 1571.63332
+  dps: 1858.25191
+  tps: 1518.50899
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 10789.48767
-  tps: 9255.14792
-  hps: 67.26267
+  dps: 10738.7626
+  tps: 9202.3028
+  hps: 67.02883
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 4220.82387
-  tps: 3301.28434
-  hps: 76.13817
+  dps: 4192.30461
+  tps: 3275.78728
+  hps: 75.75183
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 5016.13047
-  tps: 3888.09663
-  hps: 74.5725
+  dps: 4875.33285
+  tps: 3783.57804
+  hps: 73.75917
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 3981.88302
-  tps: 3581.5209
+  dps: 3972.63758
+  tps: 3570.28827
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1573.70901
-  tps: 1307.44541
+  dps: 1558.6463
+  tps: 1295.14312
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-Settings-Orc-phase_4_dw-Fury-phase_4_fury-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1999.97813
-  tps: 1622.96522
+  dps: 1930.29282
+  tps: 1573.14209
  }
 }
 dps_results: {
  key: "TestDualWieldWarrior-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3313.41946
-  tps: 2591.21636
-  hps: 63.318
+  dps: 3297.7913
+  tps: 2575.90905
+  hps: 62.99267
  }
 }
 dps_results: {

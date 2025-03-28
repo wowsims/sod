@@ -12,8 +12,6 @@ func (warlock *Warlock) registerInfernalArmorCD() {
 		return
 	}
 
-	warlock.bonusInfernalArmorMultiplier += 1.0
-
 	actionID := core.ActionID{SpellID: int32(proto.WarlockRune_RuneCloakInfernalArmor)}
 
 	// TODO: Unsure if there's a better way to do this
@@ -24,7 +22,7 @@ func (warlock *Warlock) registerInfernalArmorCD() {
 		Duration: time.Second * 10,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			attackTable := warlock.CurrentTarget.AttackTables[warlock.UnitIndex][proto.CastType_CastTypeMainHand]
-			physResistanceMultiplier = attackTable.GetArmorDamageModifier() * warlock.bonusInfernalArmorMultiplier
+			physResistanceMultiplier = attackTable.GetArmorDamageModifier()
 			warlock.PseudoStats.SchoolDamageTakenMultiplier.MultiplyMagicSchools(physResistanceMultiplier)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
@@ -37,15 +35,19 @@ func (warlock *Warlock) registerInfernalArmorCD() {
 		ClassSpellMask: ClassSpellMask_WarlockInfernalArmor,
 		SpellSchool:    core.SpellSchoolShadow,
 		Flags:          core.SpellFlagNoOnCastComplete,
+
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warlock.NewTimer(),
 				Duration: time.Minute * 1,
 			},
 		},
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			infernalArmorAura.Activate(sim)
 		},
+
+		RelatedSelfBuff: infernalArmorAura,
 	})
 
 	warlock.AddMajorCooldown(core.MajorCooldown{

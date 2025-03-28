@@ -121,7 +121,7 @@ var ItemSetCunningOfStormrage = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Increases the duration of Rake by 6 sec and its periodic damage by 40%.
+// Increases the duration of Rake by 6 sec and its periodic damage by 10%.
 func (druid *Druid) applyT2Feral2PBonus() {
 	label := "S03 - Item - T2 - Druid - Feral 2P Bonus"
 	if druid.HasAura(label) {

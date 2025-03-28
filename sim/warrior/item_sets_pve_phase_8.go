@@ -221,8 +221,8 @@ func (warrior *Warrior) applyScarletEnclaveProtection4PBonus() {
 	})
 }
 
-// Gladiator Stance no longer reduces your armor, and now increases your threat by x%.
-// Every time Revenge, Devastate, or Shield Slam deals damage your next Whirlwind, or Execute deals 20% increased damage, stacking up to 5 times.
+// Gladiator Stance no longer reduces your Armor or Threat, and instead increases threat by 30%.
+// In addition, each time your Revenge, Devastate, or Shield Slam hits, the damage done by your next Whirlwind or Execute is increased by 20%, stacking up to 5 times.
 func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
 	if !warrior.HasRune(proto.WarriorRune_RuneGladiatorStance) {
 		return
@@ -266,7 +266,7 @@ func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
 			buffAura.AddStack(sim)
 		},
 	}).ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
-		warrior.gladiatorStanceThreatMultiplier = 1
+		warrior.gladiatorStanceThreatMultiplier = 1.30
 		warrior.gladiatorStanceArmorMultiplier = 1
 	})
 }

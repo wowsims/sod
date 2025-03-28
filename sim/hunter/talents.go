@@ -28,18 +28,9 @@ func (hunter *Hunter) ApplyTalents() {
 	monsterSlayingTargets := core.FilterSlice(hunter.Env.Encounter.Targets, func(t *core.Target) bool { return slices.Contains(monsterSlayingMobTypes, t.MobType) })
 	humanoidSlayingTargets := core.FilterSlice(hunter.Env.Encounter.Targets, func(t *core.Target) bool { return t.MobType == proto.MobType_MobTypeHumanoid })
 
-	if (hunter.Talents.MonsterSlaying > 0 && len(monsterSlayingTargets) > 0) || (hunter.Talents.HumanoidSlaying > 0 && len(humanoidSlayingTargets) > 0) {
+	if hunter.Talents.MonsterSlaying > 0 && len(monsterSlayingTargets) > 0 {
+		monsterMultiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.MonsterSlaying]
 		hunter.Env.RegisterPostFinalizeEffect(func() {
-			humanoidMultiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.HumanoidSlaying]
-			monsterMultiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.MonsterSlaying]
-
-			for _, t := range humanoidSlayingTargets {
-				for _, at := range hunter.AttackTables[t.UnitIndex] {
-					at.DamageDealtMultiplier *= humanoidMultiplier
-					at.CritMultiplier *= humanoidMultiplier
-				}
-			}
-
 			for _, t := range monsterSlayingTargets {
 				for _, at := range hunter.AttackTables[t.UnitIndex] {
 					at.DamageDealtMultiplier *= monsterMultiplier
@@ -47,7 +38,22 @@ func (hunter *Hunter) ApplyTalents() {
 				}
 			}
 		})
-	} else if hunter.Consumes.MiscConsumes != nil && hunter.Consumes.MiscConsumes.DraughtOfTheSands {
+	}
+
+	if hunter.Talents.HumanoidSlaying > 0 && len(humanoidSlayingTargets) > 0 {
+		humanoidMultiplier := []float64{1, 1.01, 1.02, 1.03}[hunter.Talents.HumanoidSlaying]
+		hunter.Env.RegisterPostFinalizeEffect(func() {
+			for _, t := range humanoidSlayingTargets {
+				for _, at := range hunter.AttackTables[t.UnitIndex] {
+					at.DamageDealtMultiplier *= humanoidMultiplier
+					at.CritMultiplier *= humanoidMultiplier
+				}
+			}
+		})
+	}
+
+	// Draught was confirmed to Stack with talents
+	if hunter.Consumes.MiscConsumes != nil && hunter.Consumes.MiscConsumes.DraughtOfTheSands {
 		hunter.Env.RegisterPostFinalizeEffect(func() {
 			multiplier := 1.03
 			for _, t := range hunter.Env.Encounter.Targets {

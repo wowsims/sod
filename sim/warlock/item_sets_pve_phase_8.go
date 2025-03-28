@@ -184,7 +184,7 @@ func (warlock *Warlock) applyScarletEnclaveTank2PBonus() {
 	})
 }
 
-// You heal for 5% of all damage done by your Corruption.
+// You heal for 10% of all damage done by your Corruption. This healing is increased to 100% if the target is also afflicted with your Drain Life.
 func (warlock *Warlock) applyScarletEnclaveTank4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warlock - Tank 4P Bonus"
 	if warlock.HasAura(label) {
@@ -199,12 +199,20 @@ func (warlock *Warlock) applyScarletEnclaveTank4PBonus() {
 		ClassSpellMask:   ClassSpellMask_WarlockCorruption,
 		CanProcFromProcs: true,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			warlock.GainHealth(sim, result.Damage*0.05, healthMetrics)
+			multiplier := 0.10
+			for _, spell := range warlock.DrainLife {
+				if spell.Dot(result.Target).IsActive() {
+					multiplier = 1.0
+					break
+				}
+			}
+
+			warlock.GainHealth(sim, result.Damage*multiplier, healthMetrics)
 		},
 	})
 }
 
-// Increases the damage reduction from Infernal Armor by an additional 10%.
+// Your Infernal Armor now also increases all magical damage you deal by 20% and lasts an additional 10 sec.
 func (warlock *Warlock) applyScarletEnclaveTank6PBonus() {
 	if !warlock.HasRune(proto.WarlockRune_RuneCloakInfernalArmor) {
 		return
@@ -215,10 +223,20 @@ func (warlock *Warlock) applyScarletEnclaveTank6PBonus() {
 		return
 	}
 
+	warlock.AddStaticMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_WarlockInfernalArmor,
+		Kind:      core.SpellMod_BuffDuration_Flat,
+		TimeValue: time.Second * 10,
+	})
+
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.bonusInfernalArmorMultiplier += 0.10
+			warlock.InfernalArmor.RelatedSelfBuff.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				warlock.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1.20)
+			}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				warlock.PseudoStats.SchoolDamageDealtMultiplier.MultiplyMagicSchools(1 / 1.20)
+			})
 		},
 	}))
 }

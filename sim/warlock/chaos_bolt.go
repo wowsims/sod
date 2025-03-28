@@ -20,7 +20,7 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 	warlock.ChaosBolt = warlock.RegisterSpell(core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_WarlockChaosBolt,
 		ActionID:       core.ActionID{SpellID: 403629},
-		SpellSchool:    core.SpellSchoolFire,
+		SpellSchool:    core.SpellSchoolArcane | core.SpellSchoolFire | core.SpellSchoolFrost | core.SpellSchoolNature | core.SpellSchoolShadow,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
