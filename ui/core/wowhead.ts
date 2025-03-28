@@ -78,13 +78,17 @@ export type WowheadTooltipSpellParams = {
 	difficultyId?: 14 | 15 | 16;
 };
 
+//const WOWHEAD_BRANCH = 'classic'
+const WOWHEAD_BRANCH_PTR = 'classic-ptr'
+
 export const WOWHEAD_EXPANSION_ENV = 4;
+export const WOWHEAD_CURRENT_BRANCH = WOWHEAD_BRANCH_PTR;
 
 export const buildWowheadTooltipDataset = async (options: WowheadTooltipItemParams | WowheadTooltipSpellParams) => {
 	const lang = getLanguageCode();
 	const params = new URLSearchParams();
 	const langPrefix = lang ? lang + '.' : '';
-	params.set('domain', `${langPrefix}classic`);
+	params.set('domain', `${langPrefix}${WOWHEAD_CURRENT_BRANCH}`);
 	params.set('dataEnv', String(WOWHEAD_EXPANSION_ENV));
 
 	if (options.level) {

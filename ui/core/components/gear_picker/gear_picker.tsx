@@ -1,5 +1,6 @@
 import { ref } from 'tsx-vanilla';
 
+import { WOWHEAD_CURRENT_BRANCH } from '../../../core/wowhead';
 import { setItemQualityCssClass } from '../../css_utils';
 import { Player } from '../../player';
 import { ItemSlot } from '../../proto/common';
@@ -181,7 +182,7 @@ export class ItemRenderer extends Component {
 				this.runeElem.classList.remove('hide');
 				this.runeElem.textContent = newItem.rune.name;
 				this.runeElem.href = ActionId.makeSpellUrl(newItem.rune.id);
-				this.runeElem.dataset.wowhead = `domain=classic&spell=${newItem.rune.id}`;
+				this.runeElem.dataset.wowhead = `domain=${WOWHEAD_CURRENT_BRANCH}&spell=${newItem.rune.id}`;
 				this.runeElem.dataset.whtticon = 'false';
 			} else {
 				this.runeIconElem.src = emptyRuneImageURL;

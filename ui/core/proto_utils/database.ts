@@ -2,6 +2,7 @@ import { MAX_CHARACTER_LEVEL } from '../constants/mechanics.js';
 import { Class, EquipmentSpec, ItemRandomSuffix, ItemSlot, ItemSpec, ItemSwap, PresetEncounter, PresetTarget, SimDatabase } from '../proto/common.js';
 import { IconData, UIDatabase, UIEnchant as Enchant, UIFaction as Faction, UIItem as Item, UINPC as Npc, UIRune as Rune, UIZone as Zone } from '../proto/ui.js';
 import { distinct } from '../utils.js';
+import { WOWHEAD_CURRENT_BRANCH } from '../wowhead.js';
 import { EquippedItem } from './equipped_item.js';
 import { Gear, ItemSwapGear } from './gear.js';
 import { getEligibleEnchantSlots, getEligibleItemSlots, itemTypeToSlotsMap } from './utils.js';
@@ -294,7 +295,7 @@ export class Database {
 	private static async getWowheadTooltipData(id: number, tooltipPostfix: string): Promise<IconData> {
 		if (id === 0) return IconData.create();
 
-		const url = `https://nether.wowhead.com/classic/tooltip/${tooltipPostfix}/${id}?lvl=${MAX_CHARACTER_LEVEL}`;
+		const url = `https://nether.wowhead.com/${WOWHEAD_CURRENT_BRANCH}/tooltip/${tooltipPostfix}/${id}?lvl=${MAX_CHARACTER_LEVEL}`;
 		try {
 			const response = await fetch(url);
 			const json = await response.json();

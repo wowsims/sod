@@ -167,6 +167,7 @@ var ItemDenyList = map[int32]struct{}{
 	228498: {}, // Unused Dreadblade of the Destructor
 
 	// Phase 8 Denylist. Remove items as they're implemented
+	236317: {}, // https://www.wowhead.com/classic-ptr/item=236317/visera-the-gutrender
 	238945: {}, // https://www.wowhead.com/classic-ptr/item=238945/caladboulder
 	238961: {}, // https://www.wowhead.com/classic-ptr/item=238961/caladbolg
 	239060: {}, // https://www.wowhead.com/classic-ptr/item=239060/will-of-the-mountain
@@ -193,6 +194,7 @@ var ItemDenyList = map[int32]struct{}{
 	241011: {}, // https://www.wowhead.com/classic-ptr/item=241011/greatstaff-of-fealty
 	241015: {}, // https://www.wowhead.com/classic-ptr/item=241015/aegis-of-the-scarlet-bastion
 	241038: {}, // https://www.wowhead.com/classic-ptr/item=241038/sir-dornels-didgeridoo
+	241081: {}, // https://www.wowhead.com/classic-ptr/item=241081/corrupted-ashbringer
 	241082: {}, // https://www.wowhead.com/classic-ptr/item=241082/ashbringer
 	241123: {}, // https://www.wowhead.com/classic-ptr/item=241123/reborn-dagger
 }

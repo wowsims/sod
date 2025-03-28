@@ -736,7 +736,7 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 	return itemProto
 }
 
-var itemSetNameRegex = regexp.MustCompile(fmt.Sprintf(`<a href="\/%s\/item-set=-?([0-9]+)\/(.*)" class="q">([^<]+)<`, core.WowheadBranch))
+var itemSetNameRegex = regexp.MustCompile(fmt.Sprintf(`<a href="\/%s[\-a-z]*\/item-set=-?([0-9]+)\/(.*)" class="q">([^<]+)<`, core.WowheadBranch))
 
 func (item WowheadItemResponse) GetItemSetID() int {
 	idStr := item.GetTooltipRegexString(itemSetNameRegex, 1)

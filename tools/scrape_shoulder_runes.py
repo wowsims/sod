@@ -21,6 +21,11 @@ from selenium.webdriver.chrome.options import Options
 if len(sys.argv) < 2:
     raise Exception("Missing arguments, expected output_file_path")
 
+WowheadBranch = "classic"
+WowheadBranchPTR = "classic-ptr"
+
+CURRENT_BRANCH = WowheadBranchPTR
+
 output_file_path = sys.argv[1]
 
 # Added these options so that chrome would run in a docker container
@@ -38,7 +43,7 @@ def _get_id_from_link(link):
 
 
 def get_item_ids() -> List[int]:
-    driver.get(f"https://www.wowhead.com/classic/items/name:%22Soul+of+the%22?filter=82:142;2:0;11506:spell_holy_divinespirit")
+    driver.get(f"https://www.wowhead.com/{CURRENT_BRANCH}/items/name:%22Soul+of+the%22?filter=82:142;2:0;11506:spell_holy_divinespirit")
     wait.until(EC.presence_of_element_located(element_locator))
 
     listview = driver.find_element(By.ID, "lv-items")
@@ -48,7 +53,7 @@ def get_item_ids() -> List[int]:
 
     for page in range(pages):
         print(f'Loading page {page} for runes...')
-        driver.get(f"https://www.wowhead.com/classic/items/name:%22Soul+of+the%22?filter=82:142;2:0;11506:spell_holy_divinespirit#{page*50}")
+        driver.get(f"https://www.wowhead.com/{CURRENT_BRANCH}/items/name:%22Soul+of+the%22?filter=82:142;2:0;11506:spell_holy_divinespirit#{page*50}")
         driver.refresh()
         wait.until(EC.presence_of_element_located(element_locator))
         listview = driver.find_element(By.ID, "lv-items")
@@ -60,7 +65,7 @@ def get_item_ids() -> List[int]:
 
 def get_tooltips_response(id):
     # Get the underlying item ID from the engraving ID
-    url = f"https://nether.wowhead.com/classic/tooltip/item/{id}"
+    url = f"https://nether.wowhead.com/{CURRENT_BRANCH}/tooltip/item/{id}"
     result = requests.get(url)
 
     if result.status_code == 200:
@@ -105,7 +110,7 @@ for item_id in item_ids:
             to_export.append([mismatchedIds[enchant_spell_id], item_response]) 
         else:
             try:
-                driver.get(f"https://www.wowhead.com/classic/spell={enchant_spell_id}#see-also-other")
+                driver.get(f"https://www.wowhead.com/{CURRENT_BRANCH}/spell={enchant_spell_id}#see-also-other")
                 driver.refresh()
                 wait.until(EC.presence_of_element_located(element_locator))
 

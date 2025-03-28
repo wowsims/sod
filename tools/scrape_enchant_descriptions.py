@@ -23,6 +23,11 @@ output_file_path = sys.argv[2]
 input_file = open(input_file_path, 'r')
 input_lines = input_file.readlines()
 
+WowheadBranch = "classic"
+WowheadBranchPTR = "classic-ptr"
+
+CURRENT_BRANCH = WowheadBranchPTR
+
 enchants = []
 for line in input_lines:
     spell_id_match = re.search(r"SpellId:\s*(\d+)", line)
@@ -57,7 +62,7 @@ def get_spell_effect_description(spell_url):
     return effect_elem.text
 
 def get_enchant_description(enchant):
-    return get_spell_effect_description("https://wowhead.com/classic/spell={}".format(enchant["spell_id"]))
+    return get_spell_effect_description("https://wowhead.com/{}/spell={}".format(CURRENT_BRANCH, enchant["spell_id"]))
 
 for enchant in enchants:
     enchant["description"] = get_enchant_description(enchant)

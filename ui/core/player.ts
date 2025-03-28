@@ -78,6 +78,7 @@ import { playerTalentStringToProto } from './talents/factory.js';
 import { EventID, TypedEvent } from './typed_event.js';
 import { stringComparator } from './utils.js';
 import { WorkerProgressCallback } from './worker_pool';
+import { WOWHEAD_CURRENT_BRANCH } from './wowhead';
 
 export interface AuraStats {
 	data: AuraStatsProto;
@@ -1106,7 +1107,7 @@ export class Player<SpecType extends Spec> {
 
 		const lang = getLanguageCode();
 		const langPrefix = lang ? lang + '.' : '';
-		parts.push(`domain=${langPrefix}classic`);
+		parts.push(`domain=${langPrefix}${WOWHEAD_CURRENT_BRANCH}`);
 
 		if (equippedItem.enchant !== null) {
 			parts.push('ench=' + equippedItem.enchant.effectId);

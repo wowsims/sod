@@ -82,7 +82,6 @@
 {"id":925,"name":"Flail","icon":"inv_mace_01","type":13,"weaponType":4,"handType":1,"requiresLevel":20,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":18,"weaponDamageMax":34,"weaponSpeed":2.2,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":25,"phase":1,"quality":1},
 {"id":926,"name":"Battle Axe","icon":"inv_throwingaxe_05","type":13,"weaponType":1,"handType":4,"requiresLevel":20,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":46,"weaponDamageMax":70,"weaponSpeed":3.8,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":25,"phase":1,"quality":1},
 {"id":927,"name":"Double Axe","icon":"inv_axe_21","type":13,"weaponType":1,"handType":2,"requiresLevel":19,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":19,"weaponDamageMax":36,"weaponSpeed":2.5,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":24,"phase":1,"quality":1},
-{"id":928,"name":"Long Staff","icon":"inv_staff_20","type":13,"weaponType":8,"handType":4,"requiresLevel":20,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":36,"weaponDamageMax":55,"weaponSpeed":3,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":25,"phase":1,"quality":1},
 {"id":945,"name":"Shadow Sword","icon":"inv_sword_04","type":13,"weaponType":9,"handType":1,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":1,"weaponDamageMax":2,"weaponSpeed":2,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":1,"quality":1},
 {"id":948,"name":"Nature Sword","icon":"inv_sword_04","type":13,"weaponType":9,"handType":1,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":1,"weaponDamageMax":2,"weaponSpeed":2,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":1,"quality":1},
 {"id":983,"name":"Red Linen Sash","icon":"inv_misc_bandana_03","type":8,"armorType":1,"requiresLevel":4,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,9,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":9,"phase":1,"quality":1,"sources":[{"quest":{"id":83,"name":"Red Linen Goods"}}],"factionRestriction":1},
@@ -1468,7 +1467,9 @@
 {"id":241088,"name":"Scarlet Staff","icon":"inv_staff_13","type":13,"weaponType":8,"handType":4,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":2,"weaponDamageMax":3,"weaponSpeed":2.9,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":8},
 {"id":241091,"name":"Scarlet Mace","icon":"inv_mace_39","type":13,"weaponType":4,"handType":2,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":1,"weaponDamageMax":2,"weaponSpeed":2,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":8},
 {"id":241092,"name":"Scarlet Edge","icon":"inv_sword_1h_blacksmithing_03","type":13,"weaponType":4,"handType":2,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":1,"weaponDamageMax":2,"weaponSpeed":2,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":8},
-{"id":242710,"name":"Monster Weapon [DNT]","icon":"inv_sword_24","type":13,"weaponType":9,"handType":2,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":1,"weaponDamageMax":2,"weaponSpeed":2,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":8}
+{"id":242710,"name":"Monster Weapon [DNT]","icon":"inv_sword_24","type":13,"weaponType":9,"handType":2,"requiresLevel":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":1,"weaponDamageMax":2,"weaponSpeed":2,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":8},
+{"id":243010,"name":"Corrupted Ashbringer","icon":"inv_sword_2h_ashbringercorrupt","type":13,"weaponType":9,"handType":4,"requiresLevel":1,"stats":[0,0,-25,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":26,"weaponDamageMax":39,"weaponSpeed":3.6,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":1,"phase":8,"quality":4,"unique":true},
+{"id":243064,"name":"Long Staff","icon":"inv_staff_20","type":13,"weaponType":8,"handType":4,"requiresLevel":20,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"weaponDamageMin":36,"weaponDamageMax":55,"weaponSpeed":3,"weaponSkills":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"ilvl":25,"phase":8,"quality":1}
 ],
 "randomSuffixes":[
 ],
@@ -1593,8 +1594,8 @@
 {"effectId":1893,"spellId":20028,"name":"Enchant Chest - Major Mana","type":5,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,100,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":1894,"spellId":20029,"name":"Enchant Weapon - Icy Chill","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":1896,"spellId":20030,"name":"Enchant 2H Weapon - Superior Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
-{"effectId":1897,"spellId":20031,"name":"Enchant Weapon - Superior Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":1897,"spellId":13695,"name":"Enchant 2H Weapon - Impact","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":1},
+{"effectId":1897,"spellId":20031,"name":"Enchant Weapon - Superior Striking","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":1898,"spellId":20032,"name":"Enchant Weapon - Lifestealing","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
 {"effectId":1899,"spellId":20033,"name":"Enchant Weapon - Unholy Weapon","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
 {"effectId":1900,"spellId":20034,"name":"Enchant Weapon - Crusader","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":2},
@@ -1964,7 +1965,7 @@
 {"id":1219966,"name":"Soul of the Destroyer","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[9]},
 {"id":1219968,"name":"Soul of the Deathbound","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[9]},
 {"id":1219970,"name":"Soul of the Sanguinist","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[9]},
-{"id":1219972,"name":"Soul of the Pristine Blocker","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[4]},
+{"id":1219972,"name":"Soul of the Pristine Blocker","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[9]},
 {"id":1219974,"name":"Soul of the Savage","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[9]},
 {"id":1219976,"name":"Soul of Enmity","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[9]},
 {"id":1219978,"name":"Soul of the Deflective","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[9]},
@@ -2152,7 +2153,6 @@
 {"id":1220346,"name":"Soul of the Exsanguinator","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220348,"name":"Soul of the Thornkeeper","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220350,"name":"Soul of the Lunatic","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
-{"id":1220352,"name":"Soul of the Starcaller","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220355,"name":"Soul of the Night","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220356,"name":"Soul of the Keepers","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220358,"name":"Soul of the Wrathful","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
@@ -2160,7 +2160,8 @@
 {"id":1220362,"name":"Soul of the Astral Ascendant","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220364,"name":"Soul of the Cometcaller","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220366,"name":"Soul of the Forest","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
-{"id":1220368,"name":"Soul of Animalistic Expertise","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]}
+{"id":1220368,"name":"Soul of Animalistic Expertise","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
+{"id":1233551,"name":"Soul of the Starcaller","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]}
 ],
 "zones":[
 ],
