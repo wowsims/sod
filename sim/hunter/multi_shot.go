@@ -13,8 +13,8 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 	manaCost := [6]float64{0, 100, 140, 175, 210, 230}[rank]
 	level := [6]int{0, 18, 30, 42, 54, 60}[rank]
 
-	numHits := min(3+hunter.MultiShotBonusTargets, hunter.Env.GetNumTargets())
-	results := make([]*core.SpellResult, numHits)
+	//numHits := min(3+hunter.MultiShotBonusTargets, hunter.Env.GetNumTargets())
+	//results := make([]*core.SpellResult, numHits)
 
 	hasSerpentSpread := hunter.HasRune(proto.HunterRune_RuneLegsSerpentSpread)
 
@@ -61,37 +61,33 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
+		JumpTargets: 3,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-				baseDamage := baseDamage +
-					hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +
-					hunter.AmmoDamageBonus
+			baseDamage := baseDamage +
+				hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +
+				hunter.AmmoDamageBonus
 
-				results[hitIndex] = spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
-
-				target = sim.Environment.NextTargetUnit(target)
-			}
+			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeRangedHitAndCrit)
 
 			hunter.AutoAttacks.EnableAutoSwing(sim)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-				for _, result := range results {
-					spell.DealDamage(sim, result)
+				spell.DealDamage(sim, result)
 
-					if hasSerpentSpread {
-						serpentStingAura := hunter.SerpentSting.Dot(result.Target)
-						serpentStingTicks := serpentStingAura.NumberOfTicks
-						if serpentStingAura.IsActive() {
-							// If less then 4 ticks are left then we rollover with a 4 tick duration
-							serpentStingAura.NumberOfTicks = max(4, serpentStingAura.NumberOfTicks-serpentStingAura.TickCount)
-							serpentStingAura.Rollover(sim)
-						} else {
-							// Else we apply with a 4 tick duration
-							serpentStingAura.NumberOfTicks = 4
-							serpentStingAura.Apply(sim)
-						}
-						serpentStingAura.NumberOfTicks = serpentStingTicks
+				if hasSerpentSpread {
+					serpentStingAura := hunter.SerpentSting.Dot(result.Target)
+					serpentStingTicks := serpentStingAura.NumberOfTicks
+					if serpentStingAura.IsActive() {
+						// If less then 4 ticks are left then we rollover with a 4 tick duration
+						serpentStingAura.NumberOfTicks = max(4, serpentStingAura.NumberOfTicks-serpentStingAura.TickCount)
+						serpentStingAura.Rollover(sim)
+					} else {
+						// Else we apply with a 4 tick duration
+						serpentStingAura.NumberOfTicks = 4
+						serpentStingAura.Apply(sim)
 					}
+					serpentStingAura.NumberOfTicks = serpentStingTicks
 				}
 			})
 
