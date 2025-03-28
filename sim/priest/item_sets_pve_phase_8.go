@@ -122,7 +122,7 @@ func (priest *Priest) applyScarletEnclaveShadow6PBonus() {
 }
 
 var ItemSetVestmentsOfRevalation = core.NewItemSet(core.ItemSet{
-	Name: "Vestments of Revalation",
+	Name: "Vestments of Revelation",
 	Bonuses: map[int32]core.ApplyEffect{
 		// Each time you cast Circle of Healing or Penance, you have a 50% chance to make your next Lesser Heal, Heal, Greater Heal, Flash Heal, Binding Heal, or Prayer of Healing within 15 sec instant cast.
 		2: func(agent core.Agent) {
