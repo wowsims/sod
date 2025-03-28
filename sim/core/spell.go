@@ -61,6 +61,7 @@ type SpellConfig struct {
 
 	// Chance to avoid interruption caused by damage while casting spell
 	// Apply Aura: Modifies Pushback Reduction (9)
+	// Float value between 0 and 1
 	PushbackReduction float64
 
 	// Performs the actions of this spell.
