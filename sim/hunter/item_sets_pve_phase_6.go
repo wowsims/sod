@@ -63,13 +63,15 @@ func (hunter *Hunter) applyTAQMelee4PBonus() {
 	}))
 
 	// This also applies to the pet's Flanking Strike
-	core.MakePermanent(hunter.pet.RegisterAura(core.Aura{
-		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_ImpactDamageDone_Flat,
-		ClassMask: ClassSpellMask_HunterPetFlankingStrike,
-		IntValue:  20,
-	}))
+	if hunter.pet != nil {
+		core.MakePermanent(hunter.pet.RegisterAura(core.Aura{
+			Label: label,
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:      core.SpellMod_ImpactDamageDone_Flat,
+			ClassMask: ClassSpellMask_HunterPetFlankingStrike,
+			IntValue:  20,
+		}))
+	}
 }
 
 var StrikersPursuit = core.NewItemSet(core.ItemSet{
