@@ -1,22 +1,12 @@
 package rogue
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
-
-var ItemSetDuskwraithArmor = core.NewItemSet(core.ItemSet{
-	Name: "Duskwraith Armor",
-	Bonuses: map[int32]core.ApplyEffect{
-		2: func(agent core.Agent) {
-		},
-		4: func(agent core.Agent) {
-		},
-		6: func(agent core.Agent) {
-		},
-	},
-})
 
 var ItemSetDuskwraithLeathers = core.NewItemSet(core.ItemSet{
 	Name: "Duskwraith Leathers",
@@ -68,6 +58,60 @@ func (rogue *Rogue) applyScarletEnclaveTank4PBonus() {
 		return
 	}
 
+	var curDmg float64
+	bfHit := rogue.RegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 22482},
+		SpellSchool: core.SpellSchoolPhysical,
+		ProcMask:    core.ProcMaskEmpty, // No proc mask, so it won't proc itself.
+		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			spell.CalcAndDealDamage(sim, target, curDmg, spell.OutcomeAlwaysHit)
+		},
+	})
+
+	rogue.RegisterAura(core.Aura{
+		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
+				cdReduction := time.Millisecond * time.Duration(500) * time.Duration(comboPoints)
+				rogue.BladeFlurry.ModifyRemainingCooldown(sim, -cdReduction)
+			})
+			rogue.BladeFlurryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
+				rogue.MultiplyMeleeSpeed(sim, 1.3)
+			}
+			rogue.BladeFlurryAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
+				rogue.MultiplyMeleeSpeed(sim, 1/1.3)
+			}
+			oldOnSpellHitDealt := rogue.BladeFlurryAura.OnSpellHitDealt
+			rogue.BladeFlurryAura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				oldOnSpellHitDealt(aura, sim, spell, result)
+				bfEligible := true
+
+				//Checks for FoK Offhand and 2P TAQ Set Piece Extra Hits.
+				if (spell.ActionID.SpellID == 409240 && spell.ActionID.Tag == 2) || spell.ActionID.SpellID == 1213754 {
+					bfEligible = false
+				}
+
+				if sim.GetNumTargets() < 3 {
+					return
+				}
+
+				if result.Damage == 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) || !bfEligible {
+					return
+				}
+
+				// Undo armor reduction to get the raw damage value.
+				curDmg = result.Damage / result.ResistanceMultiplier
+
+				bfHit.Cast(sim, rogue.Env.GetTargetUnit(2))
+				bfHit.SpellMetrics[result.Target.UnitIndex].Casts--
+			}
+		},
+	})
 }
 
 // Your Rolling with the Punches can now stack up to 10 times, but grants 2% less health per stack. At 10 stacks, each time you Dodge you will gain 15 Energy.
