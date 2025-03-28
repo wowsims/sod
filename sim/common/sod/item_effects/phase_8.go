@@ -8,11 +8,14 @@ import (
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 	"github.com/wowsims/sod/sim/druid"
+	"github.com/wowsims/sod/sim/hunter"
 	"github.com/wowsims/sod/sim/mage"
 	"github.com/wowsims/sod/sim/paladin"
 	"github.com/wowsims/sod/sim/priest"
+	"github.com/wowsims/sod/sim/rogue"
 	"github.com/wowsims/sod/sim/shaman"
 	"github.com/wowsims/sod/sim/warlock"
+	"github.com/wowsims/sod/sim/warrior"
 )
 
 const (
@@ -252,28 +255,58 @@ func init() {
 	// Your Bloodthirst, Mortal Strike, Shield Slam, Heroic Strike, and Cleave critical strikes set the duration of your Rend on the target to 21 sec.
 	// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture on the target to 16 secs
 	// Your Raptor Strike and Mongoose Bite critical strikes set the duration of your Serpent Sting on the target to 15 sec
-	// core.NewItemEffect(Queensfall, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
+	core.NewItemEffect(Queensfall, func(agent core.Agent) {
+		character := agent.GetCharacter()
 
-	// 	switch character.Class {
-	// 	case proto.Class_ClassWarrior:
-	// 		warriorPlayer := agent.(warrior.WarriorAgent).GetWarrior()
-	// 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-	// 			Name:     "Queensfall Trigger - Warrior",
-	// 			Callback: core.CallbackOnSpellHitDealt,
-	// 			Outcome:  core.OutcomeCrit,
-	// 			ClassSpellMask: warrior.ClassSpellMask_WarriorBloodthirst | warrior.ClassSpellMask_WarriorMortalStrike | warrior.ClassSpellMask_WarriorShieldSlam |
-	// 				warrior.ClassSpellMask_WarriorHeroicStrike | warrior.ClassSpellMask_WarriorCleave,
-	// 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 				if dot := warriorPlayer.Rend.Dot(result.Target); dot.IsActive() {
-	// 					dot.NumberOfTicks = time.Second * 21 / dot.TickLength
-	// 				}
-	// 			},
-	// 		})
-	// 	case proto.Class_ClassRogue:
-	// 	case proto.Class_ClassHunter:
-	// 	}
-	// })
+		switch character.Class {
+		case proto.Class_ClassWarrior:
+			warriorPlayer := agent.(warrior.WarriorAgent).GetWarrior()
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:     "Queensfall Trigger - Warrior",
+				Callback: core.CallbackOnSpellHitDealt,
+				Outcome:  core.OutcomeCrit,
+				ClassSpellMask: warrior.ClassSpellMask_WarriorBloodthirst | warrior.ClassSpellMask_WarriorMortalStrike | warrior.ClassSpellMask_WarriorShieldSlam |
+					warrior.ClassSpellMask_WarriorHeroicStrike | warrior.ClassSpellMask_WarriorCleave,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if dot := warriorPlayer.Rend.Dot(result.Target); dot.IsActive() {
+						dot.NumberOfTicks = int32(21 / dot.TickLength.Seconds())
+						dot.RecomputeAuraDuration()
+						dot.Rollover(sim)
+					}
+				},
+			})
+		case proto.Class_ClassRogue:
+			roguePlayer := agent.(rogue.RogueAgent).GetRogue()
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:           "Queensfall Trigger - Rogue",
+				Callback:       core.CallbackOnSpellHitDealt,
+				Outcome:        core.OutcomeCrit,
+				ClassSpellMask: rogue.ClassSpellMask_RogueBackstab | rogue.ClassSpellMask_RogueMutilateHit | rogue.ClassSpellMask_RogueSaberSlash,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if dot := roguePlayer.Rupture.Dot(result.Target); dot.IsActive() {
+						dot.NumberOfTicks = int32(16 / dot.TickLength.Seconds())
+						dot.RecomputeAuraDuration()
+						dot.Rollover(sim)
+					}
+				},
+			})
+		case proto.Class_ClassHunter:
+			hunterPlayer := agent.(hunter.HunterAgent).GetHunter()
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				Name:           "Queensfall Trigger - Hunter",
+				Callback:       core.CallbackOnSpellHitDealt,
+				Outcome:        core.OutcomeCrit,
+				ClassSpellMask: hunter.ClassSpellMask_HunterRaptorStrikeHit | hunter.ClassSpellMask_HunterMongooseBite,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if dot := hunterPlayer.SerpentSting.Dot(result.Target); dot.IsActive() {
+						dot.NumberOfTicks = int32(16 / dot.TickLength.Seconds())
+						dot.RecomputeAuraDuration()
+						dot.Rollover(sim)
+					}
+				},
+			})
+		}
+	})
 
 	// https://www.wowhead.com/classic-ptr/item=241002/remnants-of-the-red
 	// Equip: Dealing non-periodic Fire damage has a 10% chance to increase your Fire damage dealt by 10% for 20 sec. (Proc chance: 10%)

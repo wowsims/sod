@@ -156,7 +156,7 @@ func (mage *Mage) applyScarletEnclaveDamage6PBonus() {
 	if mage.HasRune(proto.MageRune_RuneHandsLivingBomb) {
 		aura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if dot := mage.LivingBomb.Dot(result.Target); dot.IsActive() && spell.Matches(ClassSpellMask_MageFireBlast) && result.Landed() {
-				dot.Refresh(sim)
+				dot.Rollover(sim)
 			}
 		}
 	}

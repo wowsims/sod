@@ -36,7 +36,7 @@ func (rogue *Rogue) applyTAQDamage2PBonus() {
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
+		ClassMask: ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilateHit,
 		IntValue:  20,
 	}))
 }

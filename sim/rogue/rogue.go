@@ -40,6 +40,7 @@ const (
 	ClassSpellMask_RogueInstantPoison
 	ClassSpellMask_RogueMainGauche
 	ClassSpellMask_RogueMutilate
+	ClassSpellMask_RogueMutilateHit
 	ClassSpellMask_RogueOccultPoisonTick
 	ClassSpellMask_RoguePoisonedKnife
 	ClassSpellMask_RogueQuickdraw
