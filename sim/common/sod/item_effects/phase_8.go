@@ -17,6 +17,7 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
+	Queensfall           = 240853
 	TyrsFall             = 241001
 	RemnantsOfTheRed     = 241002
 	HeartOfLight         = 241034
@@ -233,6 +234,33 @@ func init() {
 			Spell: cdSpell,
 		})
 	})
+
+	// https://www.wowhead.com/classic-ptr/item=240853/queensfall
+	// Your Bloodthirst, Mortal Strike, Shield Slam, Heroic Strike, and Cleave critical strikes set the duration of your Rend on the target to 21 sec.
+	// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture on the target to 16 secs
+	// Your Raptor Strike and Mongoose Bite critical strikes set the duration of your Serpent Sting on the target to 15 sec
+	// core.NewItemEffect(Queensfall, func(agent core.Agent) {
+	// 	character := agent.GetCharacter()
+
+	// 	switch character.Class {
+	// 	case proto.Class_ClassWarrior:
+	// 		warriorPlayer := agent.(warrior.WarriorAgent).GetWarrior()
+	// 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+	// 			Name:     "Queensfall Trigger - Warrior",
+	// 			Callback: core.CallbackOnSpellHitDealt,
+	// 			Outcome:  core.OutcomeCrit,
+	// 			ClassSpellMask: warrior.ClassSpellMask_WarriorBloodthirst | warrior.ClassSpellMask_WarriorMortalStrike | warrior.ClassSpellMask_WarriorShieldSlam |
+	// 				warrior.ClassSpellMask_WarriorHeroicStrike | warrior.ClassSpellMask_WarriorCleave,
+	// 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+	// 				if dot := warriorPlayer.Rend.Dot(result.Target); dot.IsActive() {
+	// 					dot.NumberOfTicks = time.Second * 21 / dot.TickLength
+	// 				}
+	// 			},
+	// 		})
+	// 	case proto.Class_ClassRogue:
+	// 	case proto.Class_ClassHunter:
+	// 	}
+	// })
 
 	// https://www.wowhead.com/classic-ptr/item=241002/remnants-of-the-red
 	// Equip: Dealing non-periodic Fire damage has a 10% chance to increase your Fire damage dealt by 10% for 20 sec. (Proc chance: 10%)
