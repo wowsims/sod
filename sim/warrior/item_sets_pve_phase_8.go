@@ -29,10 +29,6 @@ var ItemSetLightbreakersWarplate = core.NewItemSet(core.ItemSet{
 // Increases Heroic Strike, Cleave, and Quick Strike damage by 20%.
 // Your Cleave strikes 1 additional target and can trigger Blood Surge.
 func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
-	if warrior.Env.GetNumTargets() < 3 {
-		return
-	}
-
 	label := "S03 - Item - Scarlet Enclave - Warrior - Damage 2P Bonus"
 	if warrior.HasAura(label) {
 		return
@@ -54,10 +50,6 @@ func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
 // Each time you hit a target with Whirlwind, Heroic Strike, Quick Strike, or Cleave, the damage of your next Slam is increased by 20%, stacking up to 5 times.
 // If you are wielding a two-handed weapon, you will gain 2 stacks each time.
 func (warrior *Warrior) applyScarletEnclaveDamage4PBonus() {
-	if !warrior.Talents.Bloodthirst && !warrior.Talents.MortalStrike && !warrior.Talents.ShieldSlam {
-		return
-	}
-
 	label := "S03 - Item - Scarlet Enclave - Warrior - Damage 4P Bonus"
 	if warrior.HasAura(label) {
 		return
@@ -226,10 +218,6 @@ func (warrior *Warrior) applyScarletEnclaveProtection4PBonus() {
 // Gladiator Stance no longer reduces your Armor or Threat, and instead increases threat by 30%.
 // In addition, each time your Revenge, Devastate, or Shield Slam hits, the damage done by your next Whirlwind or Execute is increased by 20%, stacking up to 5 times.
 func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
-	if !warrior.HasRune(proto.WarriorRune_RuneGladiatorStance) {
-		return
-	}
-
 	label := "S03 - Item - Scarlet Enclave - Warrior - Protection 6P Bonus"
 	if warrior.HasAura(label) {
 		return
@@ -258,7 +246,7 @@ func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
 		},
 	})
 
-	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+	aura := core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
 		Name:           label,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
@@ -267,8 +255,12 @@ func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
 			buffAura.Activate(sim)
 			buffAura.AddStack(sim)
 		},
-	}).ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
-		warrior.gladiatorStanceThreatMultiplier = 1.30
-		warrior.gladiatorStanceArmorMultiplier = 1
 	})
+
+	if warrior.HasRune(proto.WarriorRune_RuneGladiatorStance) {
+		aura.ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
+			warrior.gladiatorStanceThreatMultiplier = 1.30
+			warrior.gladiatorStanceArmorMultiplier = 1
+		})
+	}
 }
