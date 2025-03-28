@@ -35,7 +35,8 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		return
 	}
 
-	// TODO: Fix logic below here, checks above should be good
+	// TODO: Fix logic below here, checks above should be good. Using Feral Druid T2 6pc as reference here to start.
+	// Added bleed tracking variables much like Feral Druid, have updated Rupture, CT, and Garrote to add bleed trackers, need to figure out if Hemorrhage should count
 	damageMod := rogue.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
@@ -49,8 +50,11 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		ProcChance:     1,
 		ClassSpellMask: ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			damageMod.Activate()
-			damageMod.UpdateFloatValue(1 + 0.10*float64(druid.BleedsActive))
+			// Only apply the damage mod up to 3 times for the 30% bonus maximum
+			if rogue.BleedsActive < 3 {
+				damageMod.Activate()
+				damageMod.UpdateFloatValue(1 + 0.10*float64(rogue.BleedsActive))
+			}
 		},
 	})
 }

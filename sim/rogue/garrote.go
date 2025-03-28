@@ -57,6 +57,12 @@ func (rogue *Rogue) registerGarrote() {
 			Aura: core.Aura{
 				Label: "Garrote",
 				Tag:   RogueBleedTag,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.BleedsActive++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.BleedsActive--
+				},
 			},
 			NumberOfTicks: 6,
 			TickLength:    time.Second * 3,

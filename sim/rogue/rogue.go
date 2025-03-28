@@ -156,6 +156,9 @@ type Rogue struct {
 	sebaciousPoisonDebuffAura core.AuraArray
 	atrophicPoisonDebuffAura  core.AuraArray
 	numbingPoisonDebuffAura   core.AuraArray
+
+	// working on p8 dps tier
+	BleedsActive int
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -212,6 +215,8 @@ func (rogue *Rogue) Reset(_ *core.Simulation) {
 	for _, mcd := range rogue.GetMajorCooldowns() {
 		mcd.Disable()
 	}
+
+	rogue.BleedsActive = 0
 }
 
 func NewRogue(character *core.Character, options *proto.Player, rogueOptions *proto.RogueOptions) *Rogue {

@@ -48,6 +48,12 @@ func (rogue *Rogue) registerRupture() {
 			Aura: core.Aura{
 				Label: "Rupture",
 				Tag:   RogueBleedTag,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.BleedsActive++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.BleedsActive--
+				},
 			},
 			NumberOfTicks: 0, // Set dynamically
 			TickLength:    time.Second * 2,
