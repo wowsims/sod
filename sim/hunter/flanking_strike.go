@@ -42,6 +42,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 			ProcMask:       core.ProcMaskMeleeMHSpecial,
 			Flags:          core.SpellFlagMeleeMetrics,
 
+			CritDamageBonus:  hunter.mortalShots(),
 			DamageMultiplier: 1,
 			BonusCoefficient: 1,
 
