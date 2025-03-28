@@ -34,6 +34,8 @@ export const WeaponAmmo = InputHelpers.makeSpecOptionsEnumIconInput<Spec.SpecHun
 		{ actionId: () => ActionId.fromItemId(11630), value: Ammo.RockshardPellets },
 		{ actionId: () => ActionId.fromItemId(15997), value: Ammo.ThoriumShells },
 		{ actionId: () => ActionId.fromItemId(13377), value: Ammo.MiniatureCannonBalls },
+		{ actionId: () => ActionId.fromItemId(231806), value: Ammo.SearingArrow },
+		{ actionId: () => ActionId.fromItemId(231807), value: Ammo.SearingShot },
 	],
 });
 
