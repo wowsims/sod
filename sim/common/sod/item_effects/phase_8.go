@@ -24,6 +24,7 @@ const (
 	LightfistHammer      = 240850
 	CrimsonCleaver       = 240852
 	Queensfall           = 240853
+	Mercy                = 240854
 	TyrsFall             = 241001
 	RemnantsOfTheRed     = 241002
 	HeartOfLight         = 241034
@@ -116,7 +117,7 @@ func init() {
 			MaxStacks: 2,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.ProcMask.Matches(core.ProcMaskSpellDamage|core.ProcMaskSpellDamageProc) && result.Landed() &&
-					spell.SpellSchool == core.SpellSchoolNature && icd.IsReady(sim) {
+					spell.SpellSchool.Matches(core.SpellSchoolNature) && icd.IsReady(sim) {
 					icd.Use(sim)
 					aura.RemoveStack(sim)
 				}
@@ -278,6 +279,35 @@ func init() {
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240854/mercy
+	// Chance on hit: Your next 2 instances of Fire damage are increased by 20%.  Lasts 12 sec. (100ms cooldown)
+	// Confirmed PPM 1.0
+	itemhelpers.CreateWeaponProcAura(Mercy, "Mercy", 1.0, func(character *core.Character) *core.Aura {
+		duration := time.Second * 12
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Millisecond * 100,
+		}
+
+		return character.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231498},
+			Label:     "Mercy by Fire",
+			Duration:  duration,
+			MaxStacks: 2,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskSpellDamage|core.ProcMaskSpellDamageProc) && result.Landed() &&
+					spell.SpellSchool.Matches(core.SpellSchoolFire) && icd.IsReady(sim) {
+					icd.Use(sim)
+					aura.RemoveStack(sim)
+				}
+			},
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			School:     core.SpellSchoolFire,
+			FloatValue: 1.20,
 		})
 	})
 

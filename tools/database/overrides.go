@@ -180,7 +180,6 @@ var ItemDenyList = map[int32]struct{}{
 	240842: {}, // https://www.wowhead.com/classic-ptr/item=240842/scarlet-rotbringer
 	240844: {}, // https://www.wowhead.com/classic-ptr/item=240844/putress-poker
 	240851: {}, // https://www.wowhead.com/classic-ptr/item=240851/regicide
-	240854: {}, // https://www.wowhead.com/classic-ptr/item=240854/mercy
 	240919: {}, // https://www.wowhead.com/classic-ptr/item=240919/ravagane
 	240922: {}, // https://www.wowhead.com/classic-ptr/item=240922/deception
 	240923: {}, // https://www.wowhead.com/classic-ptr/item=240923/duplicity

@@ -29,7 +29,7 @@ func (shaman *Shaman) newFlametongueImbueSpell(weapon *core.Item) *core.Spell {
 		ActionID:    core.ActionID{SpellID: spellID},
 		SpellSchool: core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamageProc,
+		ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		DamageMultiplier: []float64{1, 1.05, 1.1, 1.15}[shaman.Talents.ElementalWeapons],
