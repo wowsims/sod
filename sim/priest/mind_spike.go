@@ -23,6 +23,7 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 	manaCost := .06
 	castTime := time.Millisecond * 1500
 
+	// We initialize the 2pT2.5 mind spikes using this function, so make sure we don't double initialize the aura array
 	if len(priest.MindSpikeAuras) == 0 {
 		priest.MindSpikeAuras = priest.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 			return priest.newMindSpikeAura(unit)
@@ -74,6 +75,8 @@ func (priest *Priest) newMindSpikeSpellConfig() core.SpellConfig {
 				}
 			})
 		},
+
+		RelatedAuras: []core.AuraArray{priest.MindSpikeAuras},
 	}
 }
 

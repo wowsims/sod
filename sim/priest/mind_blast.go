@@ -72,7 +72,7 @@ func (priest *Priest) getMindBlastBaseConfig(rank int, cdTimer *core.Timer) core
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			var mindSpikeAura *core.Aura
 			if hasMindSpike {
-				mindSpikeAura = priest.MindSpikeAuras.Get(target)
+				mindSpikeAura = priest.MindSpike.RelatedAuras[0].Get(target)
 			}
 
 			oldBonusCrit := spell.BonusCritRating
