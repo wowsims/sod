@@ -411,15 +411,17 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 		},
 	})
 
+	rogue.bladeFlurryAttackSpeedBonus += 1.2
+
 	rogue.BladeFlurryAura = rogue.RegisterAura(core.Aura{
 		Label:    "Blade Flurry",
 		ActionID: core.ActionID{SpellID: 13877},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, 1.2)
+			rogue.MultiplyMeleeSpeed(sim, rogue.bladeFlurryAttackSpeedBonus)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, 1/1.2)
+			rogue.MultiplyMeleeSpeed(sim, 1/rogue.bladeFlurryAttackSpeedBonus)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			bfEligible := true

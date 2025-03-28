@@ -5,7 +5,6 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 var ItemSetDuskwraithLeathers = core.NewItemSet(core.ItemSet{
@@ -44,7 +43,8 @@ func (rogue *Rogue) applyScarletEnclaveTank2PBonus() {
 			oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
 			rogue.RollingWithThePunchesProcAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 				oldOnStacksChange(aura, sim, oldStacks, newStacks)
-				rogue.PseudoStats.DamageDealtMultiplierAdditive += float64(0.1 * float64(newStacks-oldStacks))
+				rogue.PseudoStats.DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
+				rogue.PseudoStats.DamageDealtMultiplier *= 1 + 0.01*float64(newStacks)
 			}
 		},
 	})
@@ -52,66 +52,30 @@ func (rogue *Rogue) applyScarletEnclaveTank2PBonus() {
 
 // Your Blade Flurry now also strikes a third target and increases your attack speed by an additional 10%. In addition, each combo point you spend reduces the remaining cooldown on your Blade Flurry by 0.5 sec.
 func (rogue *Rogue) applyScarletEnclaveTank4PBonus() {
+
+	if rogue.Talents.BladeFlurry == 0 {
+		return
+	}
+
 	label := "S03 - Item - Scarlet Enclave - Rogue - Tank 4P Bonus"
 
 	if rogue.HasAura(label) {
 		return
 	}
 
-	var curDmg float64
-	bfHit := rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 22482},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskEmpty, // No proc mask, so it won't proc itself.
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
-
-		DamageMultiplier: 1,
-		ThreatMultiplier: 1,
-
-		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.CalcAndDealDamage(sim, target, curDmg, spell.OutcomeAlwaysHit)
-		},
-	})
-
-	rogue.RegisterAura(core.Aura{
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
 				cdReduction := time.Millisecond * time.Duration(500) * time.Duration(comboPoints)
 				rogue.BladeFlurry.CD.ModifyRemainingCooldown(sim, -cdReduction)
 			})
-			rogue.BladeFlurryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
-				rogue.MultiplyMeleeSpeed(sim, 1.3)
-			}
-			rogue.BladeFlurryAura.OnExpire = func(aura *core.Aura, sim *core.Simulation) {
-				rogue.MultiplyMeleeSpeed(sim, 1/1.3)
-			}
-			oldOnSpellHitDealt := rogue.BladeFlurryAura.OnSpellHitDealt
-			rogue.BladeFlurryAura.OnSpellHitDealt = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				oldOnSpellHitDealt(aura, sim, spell, result)
-				bfEligible := true
 
-				//Checks for FoK Offhand and 2P TAQ Set Piece Extra Hits.
-				if (spell.ActionID.SpellID == 409240 && spell.ActionID.Tag == 2) || spell.ActionID.SpellID == 1213754 {
-					bfEligible = false
-				}
+			rogue.bladeFlurryAttackSpeedBonus += 0.1
 
-				if sim.GetNumTargets() < 3 {
-					return
-				}
-
-				if result.Damage == 0 || !spell.ProcMask.Matches(core.ProcMaskMelee) || !bfEligible {
-					return
-				}
-
-				// Undo armor reduction to get the raw damage value.
-				curDmg = result.Damage / result.ResistanceMultiplier
-
-				bfHit.Cast(sim, rogue.Env.GetTargetUnit(2))
-				bfHit.SpellMetrics[result.Target.UnitIndex].Casts--
-			}
+			// specify that blade dance cleaves an additional target. Check warrior cleave new set bonus for something similar
 		},
-	})
+	}))
 }
 
 // Your Rolling with the Punches can now stack up to 10 times, but grants 2% less health per stack. At 10 stacks, each time you Dodge you will gain 15 Energy.
@@ -127,11 +91,6 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 		return
 	}
 
-	statDeps := make([]*stats.StatDependency, 11) // 10 stacks + zero condition
-	for i := 1; i < 11; i++ {
-		statDeps[i] = rogue.NewDynamicMultiplyStat(stats.Health, 1.0+.04*float64(i)) // 4% health per stack
-
-	}
 	metrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 1226956})
 
 	energyProc := rogue.RegisterSpell(core.SpellConfig{
@@ -156,23 +115,19 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.RollingWithThePunchesProcAura.MaxStacks += 5
+			rogue.rollingWithThePunchesBonusHealthStackMultiplier -= 0.02
+			rogue.rollingWithThePunchesMaxStacks += 5
+			oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
 			rogue.RollingWithThePunchesProcAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				if oldStacks != 0 {
-					aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
-				}
-				if newStacks != 0 {
-					aura.Unit.EnableDynamicStatDep(sim, statDeps[newStacks])
-				}
+				oldOnStacksChange(aura, sim, oldStacks, newStacks)
 				if newStacks == 10 {
 					energyAura.Activate(sim)
 				}
-				if newStacks != 10 && oldStacks == 10 {
+				if newStacks < 10 && oldStacks == 10 {
 					energyAura.Deactivate(sim)
 				}
-
-				// repeat the 2p set bonus because we need to override the whole onStackChange because of health scaling changes
-				rogue.PseudoStats.DamageDealtMultiplierAdditive += float64(0.1 * float64(newStacks-oldStacks))
 			}
+
 		},
 	}))
 }
