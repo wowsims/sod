@@ -165,13 +165,15 @@ func (mage *Mage) applyScarletEnclaveDamage6PBonus() {
 var ItemSetFireleafVestments = core.NewItemSet(core.ItemSet{
 	Name: "Fireleaf Vestments",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Rewind Time reduces the damage the target takes by 20% for x seconds.
+		// Your Arcane Blast has a 10% chance to cause Arcane Tunneling. Arcane Tunneling prevents your Arcane Blast effect from being consumed by the next other Arcane damage spell you cast.
+		// In addition, activating Arcane Power resets the cooldown on your Mass Regeneration.
 		2: func(agent core.Agent) {
 		},
-		// TODO: Casts of Arcane Blast have a 10% chance to cause your next Arcane spell cast to not consume your stacks of Arcane Blast
+		// Rewind Time also reduces all damage taken by your target by 20% for 8 sec.
 		4: func(agent core.Agent) {
 		},
-		// Arcane Power's duration is increased by 10 seconds, and it's cooldown is reduced by 1 minute
+		// TODO: Reduces the cooldown of your Arcane Power by 90 sec and increases its duration by 10 sec.
+		// While Arcane Power is active, your chance to gain Arcane Tunneling is increased by 10% and each cast of Arcane Blast reduces the remaining cooldown on Mass Regeneration by 1.0 sec.
 		6: func(agent core.Agent) {
 		},
 	},
