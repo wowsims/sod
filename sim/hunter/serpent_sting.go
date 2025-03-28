@@ -176,15 +176,16 @@ func (hunter *Hunter) getSoFSerpentStingConfig(stacks int) core.SpellConfig {
 	}
 }
 
-func (hunter *Hunter) registerSoFSerpentStingSpells() []*core.Spell {
+func (hunter *Hunter) registerSoFSerpentStingSpells() {
 	maxStacks := 4
 	var spells []*core.Spell
+	// indices correlate to strands of fate stacks, can't be cast at 0 stacks
+	spells = append(spells, nil)
 
 	for stacks := 1; stacks <= maxStacks; stacks++ {
 		config := hunter.getSoFSerpentStingConfig(stacks)
 		spells = append(spells, hunter.GetOrRegisterSpell(config))
-
 	}
 
-	return spells
+	hunter.SoFSerpentSting = spells
 }
