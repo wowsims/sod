@@ -41,7 +41,7 @@ func (hunter *Hunter) registerFocusFireSpell() {
 		},
 	}).AttachDependentAura(hunterFrenzyAura)
 
-	hunterFocusFireAura := hunter.RegisterAura(core.Aura{
+	hunter.FocusFireAura = hunter.RegisterAura(core.Aura{
 		Label:     "Focus Fire",
 		ActionID:  focusFireActionId,
 		Duration:  time.Second * 20,
@@ -53,11 +53,11 @@ func (hunter *Hunter) registerFocusFireSpell() {
 	})
 
 	core.MakeProcTriggerAura(&hunter.pet.Unit, core.ProcTrigger{
-		Name:     "Focus Fire Trigger",
-		Callback: core.CallbackOnSpellHitDealt,
-		Outcome:  core.OutcomeLanded,
-		ProcMask: core.ProcMaskMeleeMHSpecial | core.ProcMaskSpellDamage,
-		Harmful:  true,
+		Name:           "Focus Fire Trigger",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: ClassSpellMask_HunterPetBasicAttacks,
+		Harmful:        true,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			hunterPetFrenzyAura.Activate(sim)
 			hunterPetFrenzyAura.AddStack(sim)
@@ -65,8 +65,9 @@ func (hunter *Hunter) registerFocusFireSpell() {
 	})
 
 	hunter.FocusFire = hunter.RegisterSpell(core.SpellConfig{
-		ActionID: focusFireActionId,
-		Flags:    core.SpellFlagAPL,
+		ActionID:       focusFireActionId,
+		Flags:          core.SpellFlagAPL,
+		ClassSpellMask: ClassSpellMask_HunterFocusFire,
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
 			return hunter.pet.IsEnabled() && hunterPetFrenzyAura.GetStacks() > 0
 		},
@@ -74,8 +75,8 @@ func (hunter *Hunter) registerFocusFireSpell() {
 			frenzyStacks := hunterPetFrenzyAura.GetStacks()
 			hunter.pet.AddFocus(sim, float64(4*frenzyStacks), focusFireMetrics)
 
-			hunterFocusFireAura.Activate(sim)
-			hunterFocusFireAura.SetStacks(sim, frenzyStacks)
+			hunter.FocusFireAura.Activate(sim)
+			hunter.FocusFireAura.SetStacks(sim, frenzyStacks)
 			hunterPetFrenzyAura.Deactivate(sim)
 		},
 	})

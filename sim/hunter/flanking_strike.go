@@ -55,7 +55,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 
 		core.MakeProcTriggerAura(&hunter.pet.Unit, core.ProcTrigger{
 			Name:           "Flanking Strike Refresh",
-			ClassSpellMask: ClassSpellMask_HunterPetBite | ClassSpellMask_HunterPetClaw | ClassSpellMask_HunterPetLightningBreath | ClassSpellMask_HunterPetLavaBreath | ClassSpellMask_HunterPetScorpidPoison,
+			ClassSpellMask: ClassSpellMask_HunterPetBasicAttacks,
 			ProcChance:     0.50,
 			Callback:       core.CallbackOnCastComplete,
 			Handler: func(sim *core.Simulation, _ *core.Spell, _ *core.SpellResult) {
