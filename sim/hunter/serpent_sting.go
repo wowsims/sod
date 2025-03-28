@@ -139,7 +139,7 @@ func (hunter *Hunter) getSoFSerpentStingConfig(stacks int) core.SpellConfig {
 		SpellSchool:    core.SpellSchoolNature,
 		CastType:       proto.CastType_CastTypeUnknown,
 		ProcMask:       core.ProcMaskEmpty,
-		Flags:          core.SpellFlagAPL | core.SpellFlagPureDot | core.SpellFlagPoison | SpellFlagSting,
+		Flags:          core.SpellFlagPureDot | core.SpellFlagPoison | SpellFlagSting,
 
 		Rank:         stacks,
 		MaxRange:     core.MaxRangedAttackRange,
