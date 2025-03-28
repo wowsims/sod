@@ -51,12 +51,13 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 	})
 
 	procSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:      procActionID,
-		SpellSchool:   core.SpellSchoolHoly,
-		DefenseType:   core.DefenseTypeMelee,
-		ProcMask:      core.ProcMaskMeleeMHSpecial,
-		Flags:         core.SpellFlagMeleeMetrics | core.SpellFlagSuppressWeaponProcs,
-		RequiredLevel: 1,
+		ActionID:       procActionID,
+		SpellSchool:    core.SpellSchoolHoly,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagSuppressWeaponProcs,
+		ClassSpellMask: ClassSpellMask_PaladinSealOfMartyrdom,
+		RequiredLevel:  1,
 
 		DamageMultiplier: 0.5 * paladin.getWeaponSpecializationModifier() * paladin.improvedSoR(),
 		ThreatMultiplier: 1,

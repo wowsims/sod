@@ -600,7 +600,11 @@ func (paladin *Paladin) applyPaladinT1Ret6P() {
 			paladin.lingerDuration = time.Second * 6
 			paladin.enableMultiJudge = true // Implemented in Paladin.go
 		},
-	}))
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_PaladinSeals,
+		FloatValue: 1 / 1.15,
+	})
 }
 
 func (paladin *Paladin) applyPaladinT2Ret2P() {
@@ -809,6 +813,11 @@ func (paladin *Paladin) applyPaladinRAQ3P() {
 		ActionID: core.ActionID{SpellID: PaladinRAQ3P},
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if !paladin.hasRune(proto.PaladinRune_RuneHandsCrusaderStrike) {
+				return
+			}
+
+			handType := paladin.MainHand().HandType
+			if handType != proto.HandType_HandTypeOneHand && handType != proto.HandType_HandTypeMainHand {
 				return
 			}
 

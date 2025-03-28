@@ -197,12 +197,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestExodin-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.10265
-  weights: 1.98213
+  weights: 1.98582
+  weights: 1.87152
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.71849
+  weights: 0.67789
   weights: 0
   weights: 0
   weights: 0
@@ -210,16 +210,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 9.09175
-  weights: 1.94161
+  weights: 9.09304
+  weights: 1.91991
   weights: 0
   weights: 0
-  weights: 0.86886
+  weights: 0.82059
   weights: 0
-  weights: 22.59221
+  weights: 21.05728
   weights: 0
   weights: 0
-  weights: 45.50601
+  weights: 41.68706
   weights: 0
   weights: 0
   weights: 0
@@ -246,12 +246,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestExodin-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.95992
-  weights: 1.49084
+  weights: 2.80787
+  weights: 1.42815
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.94035
+  weights: 0.88911
   weights: 0
   weights: 0
   weights: 0
@@ -259,16 +259,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 17.46345
-  weights: 3.81233
+  weights: 17.21012
+  weights: 3.80111
   weights: 0
   weights: 0
-  weights: 1.06357
+  weights: 1.00894
   weights: 0
-  weights: 24.43312
+  weights: 23.13074
   weights: 0
   weights: 0
-  weights: 50.58536
+  weights: 46.26891
   weights: 0
   weights: 0
   weights: 0
@@ -433,106 +433,106 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3287.73809
-  tps: 3115.7818
+  dps: 3122.66634
+  tps: 2950.65044
   hps: 79.3929
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Dwarf-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 5473.62319
-  tps: 5944.16859
+  dps: 5310.39957
+  tps: 5779.7783
   hps: 78.83843
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Dwarf-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3200.91421
-  tps: 3043.74775
+  dps: 3038.09793
+  tps: 2880.869
   hps: 78.83843
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Dwarf-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3323.87132
-  tps: 3165.0665
+  dps: 3158.00707
+  tps: 2999.07211
   hps: 79.10683
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Dwarf-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2501.02331
-  tps: 3103.04804
+  dps: 2335.13076
+  tps: 2894.58587
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Dwarf-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1373.92119
-  tps: 1340.10026
+  dps: 1285.29607
+  tps: 1248.94751
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Dwarf-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1481.63532
-  tps: 1447.93416
+  dps: 1414.64492
+  tps: 1378.98794
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Human-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 5555.23031
-  tps: 6000.78046
+  dps: 5387.19501
+  tps: 5831.40323
   hps: 80.38173
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Human-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3320.23644
-  tps: 3145.17727
+  dps: 3152.40654
+  tps: 2977.27371
   hps: 80.38173
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Human-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3444.44013
-  tps: 3266.23757
+  dps: 3272.01328
+  tps: 3093.6614
   hps: 80.75383
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Human-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2628.3284
-  tps: 3232.0526
+  dps: 2448.48284
+  tps: 3016.46029
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Human-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1444.12207
-  tps: 1403.21697
+  dps: 1365.63176
+  tps: 1321.99065
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-Settings-Human-p4-exodin-6pcT1-P4 Exodin-p4-exodin-6pcT1-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1567.78685
-  tps: 1523.6553
+  dps: 1493.80525
+  tps: 1449.94865
  }
 }
 dps_results: {
  key: "TestExodin-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2718.44249
-  tps: 2585.97584
+  dps: 2598.25661
+  tps: 2465.70684
   hps: 61.69947
  }
 }
@@ -579,106 +579,106 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4684.04751
-  tps: 4440.04996
+  dps: 4467.35131
+  tps: 4223.27493
   hps: 85.16279
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 8276.31812
-  tps: 8793.57184
+  dps: 8061.58671
+  tps: 8577.20341
   hps: 84.8571
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 4536.04679
-  tps: 4312.58264
+  dps: 4322.8152
+  tps: 4099.27131
   hps: 84.0458
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 4710.45509
-  tps: 4484.08057
+  dps: 4488.55234
+  tps: 4262.05044
   hps: 85.92867
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 3748.33617
-  tps: 4391.13817
+  dps: 3452.76072
+  tps: 4048.53027
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1925.7161
-  tps: 1866.3017
+  dps: 1826.252
+  tps: 1763.84931
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Dwarf-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 2018.69967
-  tps: 1962.52903
+  dps: 1929.62028
+  tps: 1870.22005
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 8368.86455
-  tps: 8850.84661
+  dps: 8149.07343
+  tps: 8629.71471
   hps: 86.27027
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 4690.60416
-  tps: 4443.48341
+  dps: 4471.73023
+  tps: 4224.51711
   hps: 86.06693
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 4882.43628
-  tps: 4632.49515
+  dps: 4651.22204
+  tps: 4401.1407
   hps: 88.15517
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 3893.90743
-  tps: 4544.087
+  dps: 3627.43745
+  tps: 4222.01629
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 2023.53873
-  tps: 1954.42665
+  dps: 1934.9274
+  tps: 1862.50994
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-Settings-Human-p5-exodin-P5 Exodin-p5-exodin-6CF-2DR-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 2110.33827
-  tps: 2044.2508
+  dps: 2015.31975
+  tps: 1947.38102
  }
 }
 dps_results: {
  key: "TestExodin-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3870.84763
-  tps: 3691.67873
+  dps: 3709.33884
+  tps: 3530.07434
   hps: 68.23663
  }
 }
