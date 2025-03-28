@@ -180,22 +180,30 @@ func (warrior *Warrior) applyScarletEnclaveProtection2PBonus() {
 	})
 }
 
-// Recklessness no longer shares a cooldown with Shield Wall, lasts 15 more seconds, and causes you to gain strength equal to your defense skill over 300.
+// Your Recklessness, Retaliation, and Shield Wall abilities no longer share a cooldown.
+// Additionally, your Recklessness ability lasts 15 sec longer, and while it is active you gain 50% of your Defense Skill over 300 as Strength.
 func (warrior *Warrior) applyScarletEnclaveProtection4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warrior - Protection 4P Bonus"
 	if warrior.HasAura(label) {
 		return
 	}
 
+	var snapshottedDefense float64
 	buffAura := warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1227242}, // TODO: Find real spell
 		Label:    label + " Strength buff",
 		Duration: DefaultRecklessnessDuration + time.Second*15,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			snapshottedDefense = 0
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			snapshottedDefense = warrior.GetStat(stats.Defense) * 0.50
+			warrior.AddStatDynamic(sim, stats.Strength, snapshottedDefense)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.AddStatDynamic(sim, stats.Strength, snapshottedDefense)
 		},
-	}).AttachStatDependency(warrior.NewDynamicStatDependency(stats.Defense, stats.Strength, 1))
+	})
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
