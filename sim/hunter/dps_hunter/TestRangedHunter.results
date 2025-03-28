@@ -1,0 +1,1059 @@
+character_stats_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 300.564
+  final_stats: 878.0365
+  final_stats: 668.89405
+  final_stats: 253.253
+  final_stats: 205.942
+  final_stats: 190
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 53.25
+  final_stats: 3
+  final_stats: 37.77867
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2317.6005
+  final_stats: 3
+  final_stats: 51.59489
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5238.795
+  final_stats: 0
+  final_stats: 0
+  final_stats: 4230.073
+  final_stats: 3022.073
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 8275.9405
+  final_stats: 27
+  final_stats: 106
+  final_stats: 27
+  final_stats: 57
+  final_stats: 27
+  final_stats: 384
+  final_stats: 0
+  final_stats: 40
+  final_stats: 172
+ }
+}
+character_stats_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 313.0875
+  final_stats: 1021.361
+  final_stats: 708.89967
+  final_stats: 268.5595
+  final_stats: 207.3335
+  final_stats: 406
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 53.25
+  final_stats: 6
+  final_stats: 38.03123
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2374.4485
+  final_stats: 6
+  final_stats: 52.30372
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5468.3925
+  final_stats: 0
+  final_stats: 0
+  final_stats: 4833.722
+  final_stats: 3262.722
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 8795.99675
+  final_stats: 27
+  final_stats: 37
+  final_stats: 77
+  final_stats: 97
+  final_stats: 27
+  final_stats: 384
+  final_stats: 0
+  final_stats: 40
+  final_stats: 298
+ }
+}
+character_stats_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 322.828
+  final_stats: 1121.549
+  final_stats: 713.70035
+  final_stats: 198.9845
+  final_stats: 204.5505
+  final_stats: 406
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 53.25
+  final_stats: 6
+  final_stats: 37.88324
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2526.377
+  final_stats: 6
+  final_stats: 53.19728
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 4424.7675
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5240.098
+  final_stats: 3435.098
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 8844.0035
+  final_stats: 27
+  final_stats: 27
+  final_stats: 27
+  final_stats: 57
+  final_stats: 27
+  final_stats: 384
+  final_stats: 0
+  final_stats: 40
+  final_stats: 338
+ }
+}
+character_stats_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 308.913
+  final_stats: 1308.98405
+  final_stats: 723.3017
+  final_stats: 178.112
+  final_stats: 204.5505
+  final_stats: 370
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 53.25
+  final_stats: 8
+  final_stats: 46.53885
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2747.89705
+  final_stats: 8
+  final_stats: 69.7398
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 4111.68
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5815.9681
+  final_stats: 3907.9681
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 9476.41802
+  final_stats: 27
+  final_stats: 27
+  final_stats: 27
+  final_stats: 57
+  final_stats: 27
+  final_stats: 384
+  final_stats: 0
+  final_stats: 40
+  final_stats: 469
+ }
+}
+stat_weights_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 3.55479
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 39.95022
+  weights: 30.72443
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.71979
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 3.83078
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 35.94588
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.90855
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 3.20327
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 34.38032
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.6736
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 4.23775
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 39.38924
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.76149
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-BeastmasterArmor"
+ value: {
+  dps: 1071.95386
+  tps: 1092.07405
+  hps: 7.68987
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-BloodGuard'sChain"
+ value: {
+  dps: 1098.3114
+  tps: 1117.95819
+  hps: 7.59116
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 1027.45836
+  tps: 1047.03096
+  hps: 7.64201
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-BloodlashBow-216516"
+ value: {
+  dps: 3931.98508
+  tps: 3965.52916
+  hps: 12.5941
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-DevilsaurEye-19991"
+ value: {
+  dps: 4300.65225
+  tps: 4335.11198
+  hps: 13.45083
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-DevilsaurTooth-19992"
+ value: {
+  dps: 4273.5072
+  tps: 4307.96693
+  hps: 13.49088
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-DreadHunter'sChain"
+ value: {
+  dps: 2091.61502
+  tps: 2114.34213
+  hps: 8.20007
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 1044.76968
+  tps: 1064.16431
+  hps: 7.65397
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-GurubashiPitFighter'sBow-221450"
+ value: {
+  dps: 3978.46542
+  tps: 4012.0095
+  hps: 12.5941
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-Knight-Lieutenant'sChain"
+ value: {
+  dps: 1098.3114
+  tps: 1117.95819
+  hps: 7.59116
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-Maelstrom'sWrath-231320"
+ value: {
+  dps: 4292.24839
+  tps: 4326.70812
+  hps: 13.26568
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-SignetofBeasts-209823"
+ value: {
+  dps: 4147.36188
+  tps: 4181.64661
+  hps: 13.25011
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-ZandalarPredator'sBelt-231322"
+ value: {
+  dps: 3875.42991
+  tps: 3909.88964
+  hps: 13.49088
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-ZandalarPredator'sBracers-231323"
+ value: {
+  dps: 3792.83732
+  tps: 3827.29705
+  hps: 13.49088
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-AllItems-ZandalarPredator'sMantle-231321"
+ value: {
+  dps: 4243.17568
+  tps: 4277.63542
+  hps: 13.49088
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-Average-Default"
+ value: {
+  dps: 4335.94839
+  tps: 4370.23438
+  hps: 12.95138
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-FullBuffs-p4_ranged-LongMultiTarget"
+ value: {
+  dps: 6592.53987
+  tps: 7281.7345
+  hps: 13.50512
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-FullBuffs-p4_ranged-LongSingleTarget"
+ value: {
+  dps: 4330.13892
+  tps: 4364.59865
+  hps: 13.49088
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-FullBuffs-p4_ranged-ShortSingleTarget"
+ value: {
+  dps: 4488.07934
+  tps: 4521.61856
+  hps: 13.84781
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-NoBuffs-p4_ranged-LongMultiTarget"
+ value: {
+  dps: 3003.75081
+  tps: 3727.16244
+  hps: 9.31399
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-NoBuffs-p4_ranged-LongSingleTarget"
+ value: {
+  dps: 1813.88402
+  tps: 1850.0546
+  hps: 9.22205
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-Settings-Orc-p4_ranged-p4_ranged-p4_ranged-NoBuffs-p4_ranged-ShortSingleTarget"
+ value: {
+  dps: 1893.58462
+  tps: 1926.95656
+  hps: 9.65419
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 4330.13892
+  tps: 4364.59865
+  hps: 13.49088
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-BeastmasterArmor"
+ value: {
+  dps: 1087.29318
+  tps: 1107.37678
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-BloodGuard'sChain"
+ value: {
+  dps: 1149.33364
+  tps: 1168.67248
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 1079.28665
+  tps: 1098.41749
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-BloodlashBow-216516"
+ value: {
+  dps: 4826.59221
+  tps: 4851.77949
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-DevilsaurEye-19991"
+ value: {
+  dps: 5284.15519
+  tps: 5311.5631
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-DevilsaurTooth-19992"
+ value: {
+  dps: 5257.67541
+  tps: 5285.08332
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-DreadHunter'sChain"
+ value: {
+  dps: 2369.0326
+  tps: 2392.13368
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 1096.22848
+  tps: 1115.54977
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-GurubashiPitFighter'sBow-221450"
+ value: {
+  dps: 4873.9698
+  tps: 4899.15709
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-Knight-Lieutenant'sChain"
+ value: {
+  dps: 1149.33364
+  tps: 1168.67248
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-Maelstrom'sWrath-231320"
+ value: {
+  dps: 5225.69772
+  tps: 5253.07463
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-SignetofBeasts-209823"
+ value: {
+  dps: 5066.83831
+  tps: 5094.12409
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-ZandalarPredator'sBelt-231322"
+ value: {
+  dps: 4894.6245
+  tps: 4921.70845
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-ZandalarPredator'sBracers-231323"
+ value: {
+  dps: 4946.23161
+  tps: 4972.58133
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-AllItems-ZandalarPredator'sMantle-231321"
+ value: {
+  dps: 5247.95534
+  tps: 5275.27658
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-Average-Default"
+ value: {
+  dps: 5332.98349
+  tps: 5359.60639
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-FullBuffs-p5_ranged-LongMultiTarget"
+ value: {
+  dps: 8356.32672
+  tps: 8901.45901
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-FullBuffs-p5_ranged-LongSingleTarget"
+ value: {
+  dps: 5322.96598
+  tps: 5350.37388
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-FullBuffs-p5_ranged-ShortSingleTarget"
+ value: {
+  dps: 5436.96476
+  tps: 5458.61065
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-NoBuffs-p5_ranged-LongMultiTarget"
+ value: {
+  dps: 3618.30307
+  tps: 4271.41277
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-NoBuffs-p5_ranged-LongSingleTarget"
+ value: {
+  dps: 2119.96176
+  tps: 2152.56862
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-Settings-Orc-p5_ranged-p5_ranged-p5_ranged-NoBuffs-p5_ranged-ShortSingleTarget"
+ value: {
+  dps: 2203.44583
+  tps: 2239.20363
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 5322.96598
+  tps: 5350.37388
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-BeastmasterArmor"
+ value: {
+  dps: 915.36863
+  tps: 920.78796
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-BloodGuard'sChain"
+ value: {
+  dps: 955.0062
+  tps: 957.52552
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 896.45086
+  tps: 898.97018
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-BloodlashBow-216516"
+ value: {
+  dps: 3733.40716
+  tps: 3735.92649
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-DevilsaurEye-19991"
+ value: {
+  dps: 4537.09347
+  tps: 4539.61279
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-DevilsaurTooth-19992"
+ value: {
+  dps: 4537.09347
+  tps: 4539.61279
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-DreadHunter'sChain"
+ value: {
+  dps: 1857.26259
+  tps: 1859.78191
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 909.08331
+  tps: 911.60263
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-GurubashiPitFighter'sBow-221450"
+ value: {
+  dps: 3776.3623
+  tps: 3778.88163
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-Knight-Lieutenant'sChain"
+ value: {
+  dps: 955.0062
+  tps: 957.52552
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-Maelstrom'sWrath-231320"
+ value: {
+  dps: 4522.49222
+  tps: 4525.01154
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-SignetofBeasts-209823"
+ value: {
+  dps: 4507.23778
+  tps: 4509.7571
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-ZandalarPredator'sBelt-231322"
+ value: {
+  dps: 4363.05943
+  tps: 4365.57876
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-ZandalarPredator'sBracers-231323"
+ value: {
+  dps: 4310.74351
+  tps: 4313.26284
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-AllItems-ZandalarPredator'sMantle-231321"
+ value: {
+  dps: 3583.46875
+  tps: 3585.98807
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-Average-Default"
+ value: {
+  dps: 4618.766
+  tps: 4621.26006
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-FullBuffs-p6_ranged-LongMultiTarget"
+ value: {
+  dps: 4747.62327
+  tps: 4798.00976
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-FullBuffs-p6_ranged-LongSingleTarget"
+ value: {
+  dps: 4590.65019
+  tps: 4593.16952
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-FullBuffs-p6_ranged-ShortSingleTarget"
+ value: {
+  dps: 6287.67735
+  tps: 6300.27397
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-NoBuffs-p6_ranged-LongMultiTarget"
+ value: {
+  dps: 1788.65911
+  tps: 1839.04561
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-NoBuffs-p6_ranged-LongSingleTarget"
+ value: {
+  dps: 1754.19862
+  tps: 1756.71794
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-Settings-Troll-p6_ranged-p6_ranged-p6_ranged-NoBuffs-p6_ranged-ShortSingleTarget"
+ value: {
+  dps: 2921.22604
+  tps: 2933.82267
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 4590.65019
+  tps: 4593.16952
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-BeastmasterArmor"
+ value: {
+  dps: 946.50539
+  tps: 949.69693
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-BloodGuard'sChain"
+ value: {
+  dps: 1019.88064
+  tps: 1021.73187
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-BloodGuard'sMail"
+ value: {
+  dps: 937.2967
+  tps: 937.2967
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-BloodlashBow-216516"
+ value: {
+  dps: 4445.70088
+  tps: 4449.88744
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-DevilsaurEye-19991"
+ value: {
+  dps: 5525.96038
+  tps: 5529.06515
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-DevilsaurTooth-19992"
+ value: {
+  dps: 5525.96038
+  tps: 5529.06515
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-DreadHunter'sChain"
+ value: {
+  dps: 2397.51166
+  tps: 2399.24378
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-EmeraldScalemail"
+ value: {
+  dps: 951.76347
+  tps: 951.94517
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-GurubashiPitFighter'sBow-221450"
+ value: {
+  dps: 4492.70261
+  tps: 4496.88917
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-Knight-Lieutenant'sChain"
+ value: {
+  dps: 1019.88064
+  tps: 1021.73187
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-Maelstrom'sWrath-231320"
+ value: {
+  dps: 5582.84611
+  tps: 5585.95088
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-SignetofBeasts-209823"
+ value: {
+  dps: 5457.89487
+  tps: 5461.31579
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-ZandalarPredator'sBelt-231322"
+ value: {
+  dps: 5563.02965
+  tps: 5568.39965
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-ZandalarPredator'sBracers-231323"
+ value: {
+  dps: 5703.27136
+  tps: 5708.84069
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-AllItems-ZandalarPredator'sMantle-231321"
+ value: {
+  dps: 4106.74044
+  tps: 4111.24963
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-Average-Default"
+ value: {
+  dps: 5649.5779
+  tps: 5652.36845
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-FullBuffs-p7_ranged-LongMultiTarget"
+ value: {
+  dps: 9224.90183
+  tps: 9286.99717
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-FullBuffs-p7_ranged-LongSingleTarget"
+ value: {
+  dps: 5645.43899
+  tps: 5648.54376
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-FullBuffs-p7_ranged-ShortSingleTarget"
+ value: {
+  dps: 7459.59352
+  tps: 7459.59352
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-NoBuffs-p7_ranged-LongMultiTarget"
+ value: {
+  dps: 4405.86455
+  tps: 4502.41822
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-NoBuffs-p7_ranged-LongSingleTarget"
+ value: {
+  dps: 2357.77497
+  tps: 2362.60265
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-Settings-Troll-p7_ranged-p7_ranged-p7_ranged-NoBuffs-p7_ranged-ShortSingleTarget"
+ value: {
+  dps: 3674.19742
+  tps: 3674.19742
+ }
+}
+dps_results: {
+ key: "TestRangedHunter-Phase7-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 5645.43899
+  tps: 5648.54376
+ }
+}

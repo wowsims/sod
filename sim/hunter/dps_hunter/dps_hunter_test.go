@@ -12,6 +12,8 @@ func init() {
 	RegisterDPSHunter()
 }
 
+const buildsDir = "../../../ui/hunter/builds"
+
 func TestBM(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
 		{
@@ -52,6 +54,7 @@ func TestBM(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir, "p4_melee_dw", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 
@@ -93,25 +96,7 @@ func TestMM(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-		{
-			Class:      proto.Class_ClassHunter,
-			Phase:      4,
-			Level:      60,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
-
-			Talents:          Phase4RangedMMTalents,
-			GearSet:          core.GetGearSet("../../../ui/hunter/gear_sets", "p4_ranged"),
-			Rotation:         core.GetAplRotation("../../../ui/hunter/apls", "p4_ranged"),
-			Buffs:            core.FullBuffsPhase4,
-			Consumes:         Phase4Consumes,
-			SpecOptions:      core.SpecOptionsCombo{Label: "Weave", SpecOptions: Phase4PlayerOptions},
-			StartingDistance: core.MaxRangedAttackRange,
-
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir, "p4_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 
@@ -170,25 +155,32 @@ func TestSV(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},
-		{
-			Class:      proto.Class_ClassHunter,
-			Phase:      5,
-			Level:      60,
-			Race:       proto.Race_RaceOrc,
-			OtherRaces: []proto.Race{proto.Race_RaceDwarf},
+	}))
+}
 
-			Talents:          Phase4WeaveTalents,
-			GearSet:          core.GetGearSet("../../../ui/hunter/gear_sets", "p5_weave"),
-			Rotation:         core.GetAplRotation("../../../ui/hunter/apls", "p5_weave"),
-			Buffs:            core.FullBuffsPhase5,
-			Consumes:         Phase4Consumes,
-			SpecOptions:      core.SpecOptionsCombo{Label: "Weave", SpecOptions: Phase4PlayerOptions},
-			StartingDistance: core.MinRangedAttackRange,
+func TestRangedHunter(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir, "p4_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir, "p5_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir, "p6_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir, "p7_ranged", ItemFilters, proto.Stat_StatAgility, Stats),
+	}))
+}
 
-			ItemFilter:      ItemFilters,
-			EPReferenceStat: proto.Stat_StatAttackPower,
-			StatsToWeigh:    Stats,
-		},
+func Test2HMeleeHunter(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir, "p5_melee_2h", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir, "p6_melee_2h", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir, "p7_melee_2h", ItemFilters, proto.Stat_StatAgility, Stats),
+	}))
+}
+
+func TestDWMeleeHunter(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 4, 60, buildsDir, "p4_melee_dw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 5, 60, buildsDir, "p5_melee_dw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 6, 60, buildsDir, "p6_melee_dw", ItemFilters, proto.Stat_StatAgility, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassHunter, 7, 60, buildsDir, "p7_melee_dw_bm", ItemFilters, proto.Stat_StatAgility, Stats),
 	}))
 }
 
