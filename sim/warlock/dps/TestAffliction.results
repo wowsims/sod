@@ -298,18 +298,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.57895
+  weights: 0.3955
   weights: 0
-  weights: 1.84243
-  weights: 0
-  weights: 0
+  weights: 1.71355
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 11.83439
-  weights: 9.53546
+  weights: 0
+  weights: 0
+  weights: 11.5112
+  weights: 9.73528
   weights: 0
   weights: 0
   weights: 0
@@ -571,65 +571,65 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1612.10706
-  tps: 1399.11412
-  hps: 418.36611
+  dps: 1611.60624
+  tps: 1398.57368
+  hps: 418.15764
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 2385.43896
-  tps: 3153.67559
-  hps: 416.13702
+  dps: 2385.42253
+  tps: 3153.74419
+  hps: 416.12445
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 1598.98924
-  tps: 1387.45264
-  hps: 415.98421
+  dps: 1598.89962
+  tps: 1387.45465
+  hps: 416.13927
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-FullBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 1687.41139
-  tps: 1461.77016
+  dps: 1685.08443
+  tps: 1459.44321
   hps: 407.68792
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1484.12897
-  tps: 2397.52396
-  hps: 251.55836
+  dps: 1483.60389
+  tps: 2397.02286
+  hps: 251.51539
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 898.15606
-  tps: 784.56386
-  hps: 251.94293
+  dps: 897.94261
+  tps: 784.3548
+  hps: 251.9615
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-Settings-Orc-nf.ruin-Affliction Warlock-nf.ruin-NoBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 902.00021
-  tps: 796.72269
+  dps: 902.82417
+  tps: 797.54765
   hps: 241.25605
  }
 }
 dps_results: {
  key: "TestAffliction-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1598.98924
-  tps: 1387.45264
-  hps: 415.98421
+  dps: 1598.89962
+  tps: 1387.45465
+  hps: 416.13927
  }
 }
 dps_results: {

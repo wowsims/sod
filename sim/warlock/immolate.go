@@ -44,16 +44,6 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 				GCD:      core.GCDDefault,
 				CastTime: ImmolateCastTime,
 			},
-			ModifyCast: func(sim *core.Simulation, spell *core.Spell, cast *core.Cast) {
-				cast.CastTime = spell.CastTime()
-			},
-			CastTime: func(spell *core.Spell) time.Duration {
-				durationDecrease := time.Duration(0)
-				if warlock.shadowSparkAura.IsActive() {
-					durationDecrease = (spell.DefaultCast.CastTime / 2) * time.Duration(warlock.shadowSparkAura.GetStacks())
-				}
-				return spell.DefaultCast.CastTime - durationDecrease
-			},
 		},
 
 		DamageMultiplier: 1,

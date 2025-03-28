@@ -22,19 +22,33 @@ var ItemSetNightmareProphetsGarb = core.NewItemSet(core.ItemSet{
 		3: func(agent core.Agent) {
 			warlock := agent.(WarlockAgent).GetWarlock()
 
-			warlock.shadowSparkAura = warlock.GetOrRegisterAura(core.Aura{
+			castTimeMod := warlock.AddDynamicMod(core.SpellModConfig{
+				Kind:      core.SpellMod_CastTime_Pct,
+				ClassMask: ClassSpellMask_WarlockImmolate | ClassSpellMask_WarlockShadowflame,
+			})
+
+			buffAura := warlock.GetOrRegisterAura(core.Aura{
 				Label:     "Shadow Spark Proc",
 				ActionID:  core.ActionID{SpellID: 450013},
 				Duration:  time.Second * 12,
 				MaxStacks: 2,
+				OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+					castTimeMod.UpdateFloatValue(-0.50 * float64(newStacks))
+				},
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					castTimeMod.Activate()
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					castTimeMod.Deactivate()
+				},
 			})
 
 			core.MakePermanent(warlock.GetOrRegisterAura(core.Aura{
 				Label: "Shadow Spark",
 				OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 					if spell.Matches(ClassSpellMask_WarlockShadowCleave) && result.Landed() {
-						warlock.shadowSparkAura.Activate(sim)
-						warlock.shadowSparkAura.AddStack(sim)
+						buffAura.Activate(sim)
+						buffAura.AddStack(sim)
 					}
 				},
 			}))
