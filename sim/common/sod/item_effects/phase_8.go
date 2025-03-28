@@ -26,6 +26,7 @@ const (
 	StiltzsStandard      = 241068
 	LuckyDoubloon        = 241241
 	HandOfRebornJustice  = 242310
+	Experiment800M       = 240925
 )
 
 func init() {
@@ -391,5 +392,61 @@ func init() {
 
 		character.ItemSwap.RegisterProc(TyrsFall, triggerAura)
 	})
+
+	core.NewItemEffect(Experiment800M, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		explosionSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231607},
+			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				numHits := character.Env.GetNumTargets()
+				curTarget := target
+				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+					damage := sim.Roll(386, 472)
+					spell.CalcAndDealDamage(sim, curTarget, damage, spell.OutcomeMagicCrit)
+					curTarget = sim.Environment.NextTargetUnit(curTarget)
+				}
+			},
+		})
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231605},
+			Label:    "EXPERIMENT-8OOM!!!",
+			Duration: time.Second * 20,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, spellResult *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskRanged) {
+					explosionSpell.Cast(sim, spellResult.Target)
+				}
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 1231605},
+			Flags:    core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
+		})
+	})
+
 	core.AddEffectsToTest = true
 }
