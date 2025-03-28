@@ -78,7 +78,7 @@ func (rogue *Rogue) applyScarletEnclaveTank4PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
 				cdReduction := time.Millisecond * time.Duration(500) * time.Duration(comboPoints)
-				rogue.BladeFlurry.ModifyRemainingCooldown(sim, -cdReduction)
+				rogue.BladeFlurry.CD.ModifyRemainingCooldown(sim, -cdReduction)
 			})
 			rogue.BladeFlurryAura.OnGain = func(aura *core.Aura, sim *core.Simulation) {
 				rogue.MultiplyMeleeSpeed(sim, 1.3)
