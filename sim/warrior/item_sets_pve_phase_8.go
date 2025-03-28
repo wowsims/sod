@@ -123,7 +123,7 @@ func (warrior *Warrior) applyScarletEnclaveDamage6PBonus() {
 		Label: label,
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(ClassSpellMask_WarriorDeepWounds) {
-				warrior.Whirlwind.ModifyRemainingCooldown(sim, -3*time.Second)
+				warrior.Whirlwind.CD.ModifyRemainingCooldown(sim, -3*time.Second)
 			}
 		},
 		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
@@ -170,7 +170,7 @@ func (warrior *Warrior) applyScarletEnclaveProtection2PBonus() {
 		Outcome:        core.OutcomeLanded,
 		ClassSpellMask: ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorCleave,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			warrior.Shockwave.ModifyRemainingCooldown(sim, -2*time.Second)
+			warrior.Shockwave.CD.ModifyRemainingCooldown(sim, -2*time.Second)
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
