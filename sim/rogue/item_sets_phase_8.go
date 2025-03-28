@@ -2,6 +2,7 @@ package rogue
 
 import (
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 var ItemSetDuskwraithArmor = core.NewItemSet(core.ItemSet{
@@ -25,29 +26,32 @@ var ItemSetDuskwraithArmor = core.NewItemSet(core.ItemSet{
 // While Just a Flesh Wound is not active, your Backstab, Sinister Strike, Saber Slash, and Mutilate deal 10% increased damage per your active Poison or Bleed effect
 // afflicting the target, up to a maximum increase of 30%
 func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
+	if rogue.HasRune(proto.RogueRune_RuneJustAFleshWound) {
+		return
+	}
+
 	label := "S03 - Item - Scarlet Enclave - Rogue - Damage 2P Bonus"
 	if rogue.HasAura(label) {
 		return
 	}
 
-	healthMetrics := rogue.NewHealthMetrics(core.ActionID{SpellID: 1219261})
+	// TODO: Fix logic below here, checks above should be good
+	damageMod := rogue.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
+		FloatValue: 1.0,
+	})
 
 	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+		ActionID:       core.ActionID{SpellID: 1226869}, // Tracking in APL
 		Name:           label,
-		ClassSpellMask: ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueInstantPoison,
-		Callback:       core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
-		Outcome:        core.OutcomeLanded,
+		Callback:       core.CallbackOnApplyEffects,
+		ProcChance:     1,
+		ClassSpellMask: ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			rogue.GainHealth(sim, result.Damage*0.05, healthMetrics)
+			damageMod.Activate()
+			damageMod.UpdateFloatValue(1 + 0.10*float64(druid.BleedsActive))
 		},
-	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_RogueAmbush | ClassSpellMask_RogueInstantPoison,
-		IntValue:  20,
-	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_RogueBackstab,
-		IntValue:  10,
 	})
 }
 
@@ -58,14 +62,18 @@ func (rogue *Rogue) applyScarletEnclaveDamage4PBonus() {
 		return
 	}
 
-	energyMetrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 1219288})
+	comboPointMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 1226869})
 
+	// TODO: Figure out how to add autoattacks to the spell matches
 	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-		Name:        label,
-		SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolNature,
-		Callback:    core.CallbackOnPeriodicDamageDealt,
+		Name:           label,
+		ClassSpellMask: ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueInstantPoison,
+		Callback:       core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			rogue.AddEnergy(sim, 1, energyMetrics)
+			if spell.Matches(ClassSpellMask_RogueDeadlyPoisonTick|ClassSpellMask_RogueOccultPoisonTick|ClassSpellMask_RogueInstantPoison) && result.DidCrit() && sim.Proc(0.10, "Combo!") {
+				rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboPointMetrics)
+			}
 		},
 	})
 }
