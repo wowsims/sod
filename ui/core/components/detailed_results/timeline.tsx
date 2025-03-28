@@ -1284,6 +1284,8 @@ const idToCategoryMap: Record<number, number> = {
 	[48127]: SPELL_ACTION_CATEGORY + 0.2, // Mind Blast
 	[48158]: SPELL_ACTION_CATEGORY + 0.3, // Shadow Word: Death
 	[48156]: SPELL_ACTION_CATEGORY + 0.4, // Mind Flay
+	[413259]: SPELL_ACTION_CATEGORY + 0.41, // Mind Sear
+	[413260]: SPELL_ACTION_CATEGORY + 0.41, // Mind Sear
 
 	// Rogue
 	[6774]: MELEE_ACTION_CATEGORY + 0.1, // Slice and Dice
