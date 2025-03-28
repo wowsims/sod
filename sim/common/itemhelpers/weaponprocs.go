@@ -131,6 +131,9 @@ func AddWeaponProcAura(character *core.Character, itemID int32, itemName string,
 		DPMProcCheck:      core.DPMProc,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			procAura.Activate(sim)
+			if procAura.MaxStacks > 0 {
+				procAura.SetStacks(sim, procAura.MaxStacks)
+			}
 		},
 	})
 

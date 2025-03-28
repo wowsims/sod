@@ -22,6 +22,7 @@ const (
 	/* ! Please keep constants ordered by ID ! */
 
 	LightfistHammer      = 240850
+	CrimsonCleaver       = 240852
 	Queensfall           = 240853
 	TyrsFall             = 241001
 	RemnantsOfTheRed     = 241002
@@ -95,6 +96,35 @@ func init() {
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240852/crimson-cleaver
+	// Chance on hit: Your next 2 instances of Nature damage are increased by 20%. Lasts 12 sec. (100ms cooldown)
+	// Confirmed PPM 1.0
+	itemhelpers.CreateWeaponProcAura(CrimsonCleaver, "Crimson Cleaver", 1.0, func(character *core.Character) *core.Aura {
+		duration := time.Second * 12
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Millisecond * 100,
+		}
+
+		return character.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231456},
+			Label:     "Crimson Crusade",
+			Duration:  duration,
+			MaxStacks: 2,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskSpellDamage|core.ProcMaskSpellDamageProc) && result.Landed() &&
+					spell.SpellSchool == core.SpellSchoolNature && icd.IsReady(sim) {
+					icd.Use(sim)
+					aura.RemoveStack(sim)
+				}
+			},
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			School:     core.SpellSchoolNature,
+			FloatValue: 1.20,
 		})
 	})
 
@@ -188,7 +218,7 @@ func init() {
 
 	// https://www.wowhead.com/classic-ptr/item=240850/lightfist-hammer
 	// Chance on hit: Increases your attack speed by 10% for 15 sec.
-	// Confirmed proc rate 0.7
+	// Confirmed PPM 0.7
 	itemhelpers.CreateWeaponProcAura(LightfistHammer, "Lightfist Hammer", 0.7, func(character *core.Character) *core.Aura {
 		return character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{ItemID: LightfistHammer},
