@@ -467,7 +467,17 @@ func (spell *Spell) dealDamageInternal(sim *Simulation, isPeriodic bool, result 
 	spell.DisposeResult(result)
 }
 func (spell *Spell) DealDamage(sim *Simulation, result *SpellResult) {
-	spell.dealDamageInternal(sim, false, result)
+	if spell.CurCast.CastTime > 0 {
+		spell.dealDamageInternal(sim, false, result)
+	} else {
+		StartDelayedAction(sim, DelayedActionOptions{
+			DoAt:     sim.CurrentTime + SpellBatchWindow,
+			Priority: ActionPriorityLow,
+			OnAction: func(sim *Simulation) {
+				spell.dealDamageInternal(sim, false, result)
+			},
+		})
+	}
 }
 func (spell *Spell) DealPeriodicDamage(sim *Simulation, result *SpellResult) {
 	spell.dealDamageInternal(sim, true, result)
