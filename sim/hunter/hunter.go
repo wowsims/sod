@@ -37,6 +37,7 @@ const (
 
 	// Stings
 	ClassSpellMask_HunterSerpentSting
+	ClassSpellMask_HunterSoFSerpentSting // Serpent Sting from [Strings of Fate]
 
 	// Traps
 	ClassSpellMask_HunterExplosiveTrap

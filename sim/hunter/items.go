@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -34,6 +35,8 @@ const (
 	CloakOfTheUnseenPath     = 233420
 	ScytheOfTheUnseenPath    = 233421
 	SignetOfTheUnseenPath    = 233422
+	StringsOfFate            = 240837
+	PoleaxeOfTheBeast        = 240924
 )
 
 func applyRaptorStrikeDamageEffect(agent core.Agent, modifier int64) {
@@ -565,6 +568,105 @@ func init() {
 		}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.02))
 
 		hunter.ItemSwap.RegisterProc(SignetOfTheUnseenPath, procAura)
+	})
+
+	core.NewItemEffect(StringsOfFate, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+
+		hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
+
+		var sofSerpentStings []*core.Spell
+		if hasMeleeSpecialist {
+			sofSerpentStings = hunter.registerSoFSerpentStingSpells()
+		}
+
+		// After using the bow active you cannot gain strands for 30sec.
+		noGainAura := hunter.GetOrRegisterAura(core.Aura{
+			Label:    "Strand Of Fate - No Stack Gain",
+			ActionID: core.ActionID{SpellID: 1231603},
+			Duration: time.Second * 30,
+		})
+
+		// Tracks the number of strands of fate, up to 5 stacks if you're ranged or 4 if you're using the melee version.
+		stacksAura := hunter.GetOrRegisterAura(core.Aura{
+			Label:    "Strand Of Fate - Stacks",
+			ActionID: core.ActionID{SpellID: 1232946},
+			MaxStacks: core.TernaryInt32(hasMeleeSpecialist, 4, 5),
+			Duration: time.Second * 20,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				if hasMeleeSpecialist {
+					strengthChange := float64(20 * (newStacks - oldStacks))
+					hunter.Unit.AddStatDynamic(sim, stats.Strength, strengthChange)
+				}
+			},
+		}).AttachProcTrigger(core.ProcTrigger{
+			Callback: core.CallbackOnSpellHitDealt,
+			ProcMask: core.ProcMaskRanged,
+			ProcChance: 0.1,
+			ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+				return !hasMeleeSpecialist && !noGainAura.IsActive()
+			},
+		}).AttachProcTrigger(core.ProcTrigger{
+			Callback: core.CallbackOnSpellHitDealt,
+			ProcMask: core.ProcMaskMelee,
+			ProcChance: 0.1,
+			ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+				return hasMeleeSpecialist && !noGainAura.IsActive()
+			},
+		})
+		
+		// When using the melee version and activating the bow your next strike applies a special Serpent Sting effect.
+		SerpentStrikeAura := hunter.GetOrRegisterAura(core.Aura{
+			Label:    "Strand Of Fate - Serpent Sting on Next Strike",
+			ActionID: core.ActionID{SpellID: 1232976},
+			Duration: time.Second * 20,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ClassSpellMask == ClassSpellMask_HunterStrikes {
+					// Apply Special Serpent Sting effect
+					sofSerpentStings[stacksAura.GetStacks()].Cast(sim, result.Target)
+				}
+			},
+		})
+
+		// When using the melee version and activating the bow you gain 40 strength per stack of Strand of Fate for 20sec.
+		var temporaryStrength float64
+		strengthAura := hunter.GetOrRegisterAura(core.Aura{
+			Label:    "Strand Of Fate - Strength",
+			ActionID: core.ActionID{SpellID: 1232969},
+			Duration: time.Second * 20,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				temporaryStrength = float64(40 * stacksAura.GetStacks())
+				hunter.Unit.AddStatDynamic(sim, stats.Strength, temporaryStrength)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				hunter.Unit.AddStatDynamic(sim, stats.Strength, 0-temporaryStrength)
+			},
+		})
+
+		// The bow active
+		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 1231604},
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				if hasMeleeSpecialist {
+					strengthAura.Activate(sim)
+					SerpentStrikeAura.Activate(sim)
+					stacksAura.Deactivate(sim)
+					noGainAura.Activate(sim)
+				} else {
+					stacksAura.AddStacks(sim, 3)
+					noGainAura.Activate(sim)
+				}
+			},
+		})
+
+		hunter.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
+		})
+
+		hunter.ItemSwap.RegisterActive(StringsOfFate)
+		hunter.ItemSwap.RegisterProc(StringsOfFate, stacksAura)
 	})
 }
 
