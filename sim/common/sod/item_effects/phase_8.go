@@ -3,6 +3,7 @@ package item_effects
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
@@ -17,6 +18,7 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
+	LightfistHammer      = 240850
 	Queensfall           = 240853
 	TyrsFall             = 241001
 	RemnantsOfTheRed     = 241002
@@ -179,6 +181,17 @@ func init() {
 				spell.AllowGCDHasteScaling = true
 			}
 		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240850/lightfist-hammer
+	// Chance on hit: Increases your attack speed by 10% for 15 sec.
+	// Confirmed proc rate 0.7
+	itemhelpers.CreateWeaponProcAura(LightfistHammer, "Lightfist Hammer", 0.7, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: LightfistHammer},
+			Label:    "Lightfist Hammer",
+			Duration: time.Second * 15,
+		}).AttachMultiplyMeleeSpeed(&character.Unit, 1.10)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241241/lucky-doubloon
