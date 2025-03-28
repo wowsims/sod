@@ -229,21 +229,30 @@ func (mage *Mage) applyFingersOfFrost() {
 
 	core.MakePermanent(mage.RegisterAura(core.Aura{
 		Label: "Fingers of Frost Trigger",
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Blizzard seems to have intentionally made Frozen Orb's chill not proc Fingers of Frost but a Frostbite proc from the orb still can
-			if result.Landed() && spell.Flags.Matches(SpellFlagChillSpell) && !spell.Matches(ClassSpellMask_MageFrozenOrbTick) && sim.Proc(mage.FingersOfFrostProcChance, "Fingers of Frost") {
+	})).AttachProcTrigger(core.ProcTrigger{
+		Name:           "Fingers of Frost Trigger - Direct",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: ClassSpellMask_MageAll ^ ClassSpellMask_MageFrozenOrbTick, // Blizzard seems to have intentionally made Frozen Orb's chill not proc Fingers of Frost but a Frostbite proc from the orb still can
+		SpellFlags:     SpellFlagChillSpell,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if sim.Proc(mage.FingersOfFrostProcChance, "Fingers of Frost") {
 				mage.FingersOfFrostAura.Activate(sim)
 				mage.FingersOfFrostAura.SetStacks(sim, mage.FingersOfFrostAura.MaxStacks)
 			}
 		},
-		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			// Only procs from Blizzard
-			if spell.Matches(ClassSpellMask_MageBlizzard) && spell.Flags.Matches(SpellFlagChillSpell) && sim.Proc(mage.FingersOfFrostProcChance, "Fingers of Frost") {
+	}).AttachProcTrigger(core.ProcTrigger{
+		Name:           "Fingers of Frost Trigger - Periodic",
+		Callback:       core.CallbackOnPeriodicDamageDealt,
+		ClassSpellMask: ClassSpellMask_MageBlizzard, // Only procs from Blizzard and only with Improved Blizzard for the chill effect
+		SpellFlags:     SpellFlagChillSpell,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if sim.Proc(mage.FingersOfFrostProcChance, "Fingers of Frost") {
 				mage.FingersOfFrostAura.Activate(sim)
 				mage.FingersOfFrostAura.SetStacks(sim, mage.FingersOfFrostAura.MaxStacks)
 			}
 		},
-	}))
+	})
 }
 
 func (mage *Mage) applyHotStreak() {
