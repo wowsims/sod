@@ -26,8 +26,8 @@ var ItemSetLightbreakersWarplate = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Heroic Strike and Cleave damage increased by 20%.
-// Cleave hits 1 additional target, and can activate Blood Surge.
+// Increases Heroic Strike, Cleave, and Quick Strike damage by 20%.
+// Your Cleave strikes 1 additional target and can trigger Blood Surge.
 func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
 	if warrior.Env.GetNumTargets() < 3 {
 		return
@@ -46,12 +46,13 @@ func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
 		},
 	})).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorCleave,
+		ClassMask: ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorCleave | ClassSpellMask_WarriorQuickStrike,
 		IntValue:  20,
 	})
 }
 
-// Every time a target is hit by Whirlwind, or Cleave the damage of your next Slam is increased by 20% stacking up to 5 times, stacks gained twice as quickly for 2handers.
+// Each time you hit a target with Whirlwind, Heroic Strike, Quick Strike, or Cleave, the damage of your next Slam is increased by 20%, stacking up to 5 times.
+// If you are wielding a two-handed weapon, you will gain 2 stacks each time.
 func (warrior *Warrior) applyScarletEnclaveDamage4PBonus() {
 	if !warrior.Talents.Bloodthirst && !warrior.Talents.MortalStrike && !warrior.Talents.ShieldSlam {
 		return
@@ -62,11 +63,11 @@ func (warrior *Warrior) applyScarletEnclaveDamage4PBonus() {
 		return
 	}
 
-	classMask := ClassSpellMask_WarriorSlamMH | ClassSpellMask_WarriorSlamOH
+	buffClassMask := ClassSpellMask_WarriorSlamMH | ClassSpellMask_WarriorSlamOH
 
 	damageMod := warrior.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: classMask,
+		ClassMask: buffClassMask,
 	})
 
 	buffAura := warrior.RegisterAura(core.Aura{
@@ -79,7 +80,7 @@ func (warrior *Warrior) applyScarletEnclaveDamage4PBonus() {
 			damageMod.Activate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(classMask) {
+			if spell.Matches(buffClassMask) {
 				aura.Deactivate(sim)
 			}
 		},
@@ -89,7 +90,7 @@ func (warrior *Warrior) applyScarletEnclaveDamage4PBonus() {
 		Name:           label,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
-		ClassSpellMask: ClassSpellMask_WarriorWhirlwindMH | ClassSpellMask_WarriorWhirlwindOH | ClassSpellMask_WarriorCleave,
+		ClassSpellMask: ClassSpellMask_WarriorWhirlwindMH | ClassSpellMask_WarriorWhirlwindOH | ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorQuickStrike | ClassSpellMask_WarriorCleave,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			buffAura.Activate(sim)
 			buffAura.AddStack(sim)
@@ -153,7 +154,7 @@ var ItemSetLightbreakersBattlegear = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Shockwave damage increased by 100% and its cooldown is reduced by 2 sec every time you deal damage with heroic strike or cleave (better for fast weapons).
+// Your Shockwave deals 100% increased damage and its cooldown is reduced by 2.0 sec each time you hit a target with Heroic Strike, Quick Strike, or Cleave.
 func (warrior *Warrior) applyScarletEnclaveProtection2PBonus() {
 	if !warrior.HasRune(proto.WarriorRune_RuneShockwave) {
 		return
@@ -168,7 +169,7 @@ func (warrior *Warrior) applyScarletEnclaveProtection2PBonus() {
 		Name:           label,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
-		ClassSpellMask: ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorCleave,
+		ClassSpellMask: ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorQuickStrike | ClassSpellMask_WarriorCleave,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			warrior.Shockwave.CD.ModifyRemainingCooldown(sim, -2*time.Second)
 		},
@@ -186,22 +187,15 @@ func (warrior *Warrior) applyScarletEnclaveProtection4PBonus() {
 		return
 	}
 
-	var snapshottedDefense float64
 	buffAura := warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1227242}, // TODO: Find real spell
 		Label:    label + " Strength buff",
 		Duration: DefaultRecklessnessDuration + time.Second*15,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			snapshottedDefense = 0
-		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			snapshottedDefense = warrior.GetStat(stats.Defense)
-			warrior.AddStatDynamic(sim, stats.Strength, snapshottedDefense)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.AddStatDynamic(sim, stats.Strength, snapshottedDefense)
 		},
-	})
+	}).AttachStatDependency(warrior.NewDynamicStatDependency(stats.Defense, stats.Strength, 1))
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
