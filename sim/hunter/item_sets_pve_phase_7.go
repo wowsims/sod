@@ -69,7 +69,7 @@ func (hunter *Hunter) applyNaxxramasMelee4PBonus() {
 	}))
 }
 
-// You gain 4% increased damage done to Undead for 30 sec each time you hit an Undead enemy with a melee attack, stacking up to 10 times.
+// You gain 2% increased damage and critical damage done to Undead for 30 sec each time you hit an Undead enemy with a melee attack, stacking up to 12 times. Stacks are lost upon performing a ranged attack.
 func (hunter *Hunter) applyNaxxramasMelee6PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Melee 6P Bonus"
 	if hunter.HasAura(label) {
@@ -183,7 +183,7 @@ func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 	})
 }
 
-// You gain 2% increased critical strike chance for 30 sec each time you hit an Undead enemy with a ranged attack, stacking up to 15 times.
+// You gain 2% increased damage and critical damage done to Undead for 30 sec each time you hit an Undead enemy with a ranged attack, stacking up to 7 times.
 func (hunter *Hunter) applyNaxxramasRanged6PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Ranged 6P Bonus"
 	if hunter.HasAura(label) {
