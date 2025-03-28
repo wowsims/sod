@@ -277,6 +277,7 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 	// @Lucenia: We have to use a boolean flag because otherwise the triggered cast infinitely procs this trigger
 	var damageMod *core.SpellMod
 	var isProcced bool
+
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(_ *core.Aura, sim *core.Simulation) {
@@ -304,7 +305,7 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(shaman.MaelstromWeaponClassMask) && shaman.MaelstromWeaponAura.GetStacks() == 10 && !isProcced {
+			if spell.Matches(shaman.MaelstromWeaponClassMask) && !spell.ProcMask.Matches(core.ProcMaskSpellProc) && shaman.MaelstromWeaponAura.GetStacks() == 10 && !isProcced {
 				isProcced = true
 
 				if spell.CD.Duration > 0 {
