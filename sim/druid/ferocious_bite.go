@@ -112,7 +112,9 @@ func (druid *Druid) newFerociousBiteSpellConfig(rank FerociousBiteRankInfo) core
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
 
 			if result.Landed() {
-				druid.SpendEnergy(sim, excessEnergy, spell.EnergyMetrics())
+				if !druid.FerociousBiteExcessEnergyOverride {
+					druid.SpendEnergy(sim, excessEnergy, spell.EnergyMetrics())
+				}
 				druid.SpendComboPoints(sim, spell)
 			} else {
 				spell.IssueRefund(sim)
