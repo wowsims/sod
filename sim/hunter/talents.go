@@ -138,6 +138,11 @@ func (hunter *Hunter) applyFrenzy() {
 			if !spellResult.Outcome.Matches(core.OutcomeCrit) {
 				return
 			}
+
+			if spell.ClassSpellMask == ClassSpellMask_HunterPetFlankingStrike {
+				return
+			}
+
 			if procChance == 1 || sim.RandomFloat("Frenzy") < procChance {
 				procAura.Activate(sim)
 			}

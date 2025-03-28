@@ -19,6 +19,7 @@ const (
 	ClassSpellMask_MageArcaneExplosion
 	ClassSpellMask_MageArcaneMissiles
 	ClassSpellMask_MageArcaneMissilesTick
+	ClassSpellMask_MageArcanePower
 	ClassSpellMask_MageArcaneSurge
 	ClassSpellMask_MageCounterSpell
 	ClassSpellMask_MageBalefireBolt
@@ -59,6 +60,8 @@ const (
 		ClassSpellMask_MageIceLance | ClassSpellMask_MageIceLance | ClassSpellMask_MageLivingBomb |
 		ClassSpellMask_MageLivingFlame
 
+	ClassSpellMask_MageChanneled = ClassSpellMask_MageArcaneMissiles | ClassSpellMask_MageEvocation | ClassSpellMask_MageMassRegeneration
+
 	// TODO: Cone of Cold, Frost Nova
 	ClassSpellMask_MageHarmfulGCDSpells = ClassSpellMask_MageFireball | ClassSpellMask_MageFrostbolt | ClassSpellMask_MageFireBlast |
 		ClassSpellMask_MagePyroblast | ClassSpellMask_MageScorch | ClassSpellMask_MageArcaneMissiles |
@@ -85,6 +88,7 @@ type Mage struct {
 	ArcaneExplosion         []*core.Spell
 	ArcaneMissiles          []*core.Spell
 	ArcaneMissilesTickSpell []*core.Spell
+	ArcanePower             *core.Spell
 	ArcaneSurge             *core.Spell
 	BalefireBolt            *core.Spell
 	BlastWave               []*core.Spell
@@ -104,6 +108,7 @@ type Mage struct {
 	LivingBomb              *core.Spell
 	LivingFlame             *core.Spell
 	ManaGem                 []*core.Spell
+	MassRegeneration        *core.Spell
 	PresenceOfMind          *core.Spell
 	Pyroblast               []*core.Spell
 	Scorch                  []*core.Spell
@@ -112,7 +117,7 @@ type Mage struct {
 	IcyVeins *core.Spell
 
 	ArcaneBlastAura     *core.Aura
-	ArcanePowerAura     *core.Aura
+	ArcaneTunnelingAura *core.Aura
 	BalefireAura        *core.Aura
 	ClearcastingAura    *core.Aura
 	CombustionAura      *core.Aura
@@ -131,6 +136,7 @@ type Mage struct {
 
 	ArcaneBlastDamageMultiplier           float64
 	ArcaneBlastMissileBarrageChance       float64
+	ArcaneTunnelingProcChance             float64
 	FingersOfFrostProcChance              float64
 	FireballFrostboltMissileBarrageChance float64
 	FireballMissileActive                 bool // Whether Fireball has been cast but has not hit to avoid chain-casting

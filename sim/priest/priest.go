@@ -109,6 +109,7 @@ type Priest struct {
 	HomunculiPets   []*Homunculus
 	ShadowfiendPet  *Shadowfiend
 
+	DoTSpells                 []*core.Spell
 	PainAndSufferingDoTSpells []*core.Spell
 
 	ProcPrayerOfMending core.ApplySpellResults
@@ -139,6 +140,16 @@ func (priest *Priest) Initialize() {
 	priest.registerHolyFire()
 
 	priest.registerPowerInfusionCD()
+
+	priest.OnSpellRegistered(func(spell *core.Spell) {
+		if !spell.Matches(ClassSpellMask_PriestAll) {
+			return
+		}
+
+		if !spell.Flags.Matches(core.SpellFlagChanneled) && len(spell.Dots()) > 0 {
+			priest.DoTSpells = append(priest.DoTSpells, spell)
+		}
+	})
 }
 
 func (priest *Priest) RegisterHealingSpells() {

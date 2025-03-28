@@ -184,7 +184,6 @@ var ItemDenyList = map[int32]struct{}{
 	240921: {}, // https://www.wowhead.com/classic-ptr/item=240921/scarlet-smashbringer
 	240922: {}, // https://www.wowhead.com/classic-ptr/item=240922/deception
 	240923: {}, // https://www.wowhead.com/classic-ptr/item=240923/duplicity
-	240924: {}, // https://www.wowhead.com/classic-ptr/item=240924/poleaxe-of-the-beast
 	240925: {}, // https://www.wowhead.com/classic-ptr/item=240925/experiment-800m
 	240998: {}, // https://www.wowhead.com/classic-ptr/item=240998/soporific-blade
 	241003: {}, // https://www.wowhead.com/classic-ptr/item=241003/mirage-rod-of-illusion0

@@ -133,7 +133,7 @@ func (mage *Mage) applyScarletEnclaveDamage6PBonus() {
 
 				aura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 					if newStacks == 0 && !mage.DeepFreeze.CD.Cooldown.IsReady(sim) {
-						mage.DeepFreeze.ModifyRemainingCooldown(sim, -time.Second*time.Duration(oldStacks))
+						mage.DeepFreeze.CD.ModifyRemainingCooldown(sim, -time.Second*time.Duration(oldStacks))
 					}
 				})
 			}
@@ -165,16 +165,111 @@ func (mage *Mage) applyScarletEnclaveDamage6PBonus() {
 var ItemSetFireleafVestments = core.NewItemSet(core.ItemSet{
 	Name: "Fireleaf Vestments",
 	Bonuses: map[int32]core.ApplyEffect{
-		// Your Arcane Blast has a 10% chance to cause Arcane Tunneling. Arcane Tunneling prevents your Arcane Blast effect from being consumed by the next other Arcane damage spell you cast.
-		// In addition, activating Arcane Power resets the cooldown on your Mass Regeneration.
 		2: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+			mage.applyScarletEnclaveHealer2PBonus()
 		},
-		// Rewind Time also reduces all damage taken by your target by 20% for 8 sec.
 		4: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+			mage.applyScarletEnclaveHealer4PBonus()
 		},
-		// TODO: Reduces the cooldown of your Arcane Power by 90 sec and increases its duration by 10 sec.
-		// While Arcane Power is active, your chance to gain Arcane Tunneling is increased by 10% and each cast of Arcane Blast reduces the remaining cooldown on Mass Regeneration by 1.0 sec.
 		6: func(agent core.Agent) {
+			mage := agent.(MageAgent).GetMage()
+			mage.applyScarletEnclaveHealer6PBonus()
 		},
 	},
 })
+
+// Your Arcane Blast has a 10% chance to cause Arcane Tunneling.
+// Arcane Tunneling prevents your Arcane Blast effect from being consumed by the next other Arcane damage spell you cast.
+// In addition, activating Arcane Power resets the cooldown on your Mass Regeneration.
+func (mage *Mage) applyScarletEnclaveHealer2PBonus() {
+	label := "S03 - Item - Scarlet Enclave - Mage - Healer 2P Bonus"
+	if mage.HasAura(label) {
+		return
+	}
+
+	mage.ArcaneTunnelingAura = mage.RegisterAura(core.Aura{
+		Label:    "Arcane Tunneling",
+		ActionID: core.ActionID{SpellID: 1226406},
+		Duration: core.NeverExpires,
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.SpellSchool.Matches(core.SpellSchoolArcane) && spell.ClassSpellMask > 0 && !spell.Matches(ClassSpellMask_MageArcaneBlast) {
+				aura.Deactivate(sim)
+			}
+		},
+	})
+
+	aura := core.MakePermanent(mage.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 1226407},
+		Label:    label,
+	}))
+
+	mage.ArcaneTunnelingProcChance += 0.10
+
+	if mage.HasRune(proto.MageRune_RuneHandsArcaneBlast) {
+		aura.ApplyOnSpellHitDealt(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_MageArcaneBlast) && result.Landed() && sim.Proc(mage.ArcaneTunnelingProcChance, "Arcane Tunneling") {
+				mage.ArcaneTunnelingAura.Activate(sim)
+			}
+		})
+	}
+
+	if mage.Talents.ArcanePower && mage.HasRune(proto.MageRune_RuneLegsMassRegeneration) {
+		aura.ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
+			mage.ArcanePower.RelatedSelfBuff.ApplyOnCastComplete(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+				mage.MassRegeneration.CD.Reset()
+			}, false)
+		})
+	}
+}
+
+// Rewind Time also reduces all damage taken by your target by 20% for 8 sec.
+func (mage *Mage) applyScarletEnclaveHealer4PBonus() {
+	label := "S03 - Item - Scarlet Enclave - Mage - Healer 4P Bonus"
+	if mage.HasAura(label) {
+		return
+	}
+
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: label,
+	}))
+}
+
+// Reduces the cooldown of your Arcane Power by 90 sec and increases its duration by 10 sec.
+// While Arcane Power is active, your chance to gain Arcane Tunneling is increased by 10% and each cast of Arcane Blast reduces the remaining cooldown on Mass Regeneration by 1.0 sec.
+func (mage *Mage) applyScarletEnclaveHealer6PBonus() {
+	if !mage.Talents.ArcanePower {
+		return
+	}
+
+	label := "S03 - Item - Scarlet Enclave - Mage - Healer 6P Bonus"
+	if mage.HasAura(label) {
+		return
+	}
+
+	mage.AddStaticMod(core.SpellModConfig{
+		Kind:      core.SpellMod_Cooldown_Flat,
+		ClassMask: ClassSpellMask_MageArcanePower,
+		TimeValue: -time.Second * 90,
+	})
+
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			mage.ArcanePower.RelatedSelfBuff.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				mage.ArcaneTunnelingProcChance += 0.10
+			}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+				mage.ArcaneTunnelingProcChance -= 0.10
+			})
+
+			if mage.HasRune(proto.MageRune_RuneLegsMassRegeneration) {
+				mage.ArcanePower.RelatedSelfBuff.ApplyOnCastComplete(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+					if spell.Matches(ClassSpellMask_MageArcaneBlast) {
+						mage.MassRegeneration.CD.ModifyRemainingCooldown(sim, -time.Second)
+					}
+				}, false)
+			}
+		},
+	}))
+}

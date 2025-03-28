@@ -52,6 +52,7 @@ const (
 	ClassSpellMask_HunterVolley
 	ClassSpellMask_HunterChimeraSerpent
 	ClassSpellMask_HunterHuntersMark
+	ClassSpellMask_HunterFocusFire
 
 	// Pet Spells
 	ClassSpellMask_HunterPetFlankingStrike
@@ -61,6 +62,7 @@ const (
 	ClassSpellMask_HunterPetLavaBreath
 	ClassSpellMask_HunterPetScreech
 	ClassSpellMask_HunterPetScorpidPoison
+	ClassSpellMask_HunterPetBasicAttacks = ClassSpellMask_HunterPetBite | ClassSpellMask_HunterPetClaw | ClassSpellMask_HunterPetLightningBreath | ClassSpellMask_HunterPetLavaBreath | ClassSpellMask_HunterPetScorpidPoison
 
 	ClassSpellMask_HunterAll = 1<<iota - 1
 
@@ -137,6 +139,7 @@ type Hunter struct {
 	LockAndLoadAura        *core.Aura
 	RapidFireAura          *core.Aura
 	BestialWrathPetAura    *core.Aura
+	FocusFireAura          *core.Aura
 
 	HuntersMarkAuras core.AuraArray
 }

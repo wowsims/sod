@@ -171,8 +171,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarlock, {
 		BuffDebuffInputs.CurseOfVulnerability,
 		BuffDebuffInputs.GiftOfArthas,
 		BuffDebuffInputs.HolySunder,
+		BuffDebuffInputs.SpellWintersChillDebuff,
 	],
-	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff, BuffDebuffInputs.SpellWintersChillDebuff, ...ConsumablesInputs.FROST_POWER_CONFIG],
+	excludeBuffDebuffInputs: [BuffDebuffInputs.BleedDebuff],
 	petConsumeInputs: [ConsumablesInputs.PetAttackPowerConsumable, ConsumablesInputs.PetAgilityConsumable, ConsumablesInputs.PetStrengthConsumable],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {

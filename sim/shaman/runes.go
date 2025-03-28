@@ -438,7 +438,7 @@ func (shaman *Shaman) applyMaelstromWeapon() {
 			costMod.UpdateIntValue(-20 * int64(newStacks))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(shaman.MaelstromWeaponClassMask) {
+			if spell.Matches(shaman.MaelstromWeaponClassMask) && !spell.ProcMask.Matches(core.ProcMaskSpellProc) {
 				aura.RemoveStacks(sim, min(MaelstromWeaponBaseStacks, aura.GetStacks()))
 			}
 		},

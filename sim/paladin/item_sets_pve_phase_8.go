@@ -314,18 +314,16 @@ func (paladin *Paladin) applyScarletEnclaveHoly2PBonus() {
 		return
 	}
 
-	spellHasteModifier := paladin.NewDynamicMultiplyStat(stats.SpellHaste, 20.0)
-
 	emergencyAura := paladin.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1226451},
 		Label:    "Emergency",
 		Duration: time.Second * 60,
 
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.EnableDynamicStatDep(sim, spellHasteModifier)
+			paladin.MultiplyCastSpeed(1.20)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.DisableDynamicStatDep(sim, spellHasteModifier)
+			paladin.MultiplyCastSpeed(1 / 1.20)
 		},
 	})
 

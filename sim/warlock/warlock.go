@@ -150,7 +150,6 @@ type Warlock struct {
 	Metamorphosis           *core.Spell
 	MetamorphosisAura       *core.Aura
 	PyroclasmAura           *core.Aura
-	shadowSparkAura         *core.Aura
 	ShadowTranceAura        *core.Aura
 	SoulLinkAura            *core.Aura
 	VengeanceAura           *core.Aura

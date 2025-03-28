@@ -61,6 +61,7 @@ type SpellConfig struct {
 
 	// Chance to avoid interruption caused by damage while casting spell
 	// Apply Aura: Modifies Pushback Reduction (9)
+	// Float value between 0 and 1
 	PushbackReduction float64
 
 	// Performs the actions of this spell.
@@ -870,6 +871,6 @@ func (cd *SpellCooldown) GetCurrentDuration() time.Duration {
 	return cd.applyCooldownModifiers(cd.Duration)
 }
 
-func (spell *Spell) ModifyRemainingCooldown(sim *Simulation, duration time.Duration) {
-	spell.CD.Timer.Set(sim.CurrentTime + spell.CD.Timer.TimeToReady(sim) + duration)
+func (cd *SpellCooldown) ModifyRemainingCooldown(sim *Simulation, duration time.Duration) {
+	cd.Timer.Set(sim.CurrentTime + cd.Timer.TimeToReady(sim) + duration)
 }

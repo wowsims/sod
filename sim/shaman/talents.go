@@ -215,7 +215,7 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 			shaman.ElementalMastery.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if shaman.isShamanDamagingSpell(spell) {
+			if spell.Matches(ClassSpellMask_ShamanHarmfulGCDSpells) && !spell.ProcMask.Matches(core.ProcMaskSpellProc) {
 				// Elemental mastery can be batched
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
 					DoAt: sim.CurrentTime + core.SpellBatchWindow,
@@ -232,12 +232,12 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 		},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_BonusCrit_Flat,
-		ClassMask:  ClassSpellMask_ShamanAll,
+		ClassMask:  ClassSpellMask_ShamanHarmfulGCDSpells,
 		ProcMask:   core.ProcMaskSpellDamage,
 		FloatValue: core.CritRatingPerCritChance * 100,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_PowerCost_Pct,
-		ClassMask:  ClassSpellMask_ShamanAll,
+		ClassMask:  ClassSpellMask_ShamanHarmfulGCDSpells,
 		ProcMask:   core.ProcMaskSpellDamage,
 		FloatValue: -100,
 	})

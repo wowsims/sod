@@ -52,7 +52,7 @@ func (mage *Mage) registerArcaneBlastSpell() {
 			abDamageModPct.UpdateFloatValue((1 + mage.ArcaneBlastDamageMultiplier*float64(newStacks)))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_MageAll) && spell.Matches(affectedSpells) {
+			if spell.Matches(ClassSpellMask_MageAll) && spell.Matches(affectedSpells) && (mage.ArcaneTunnelingAura == nil || !mage.ArcaneTunnelingAura.IsActive()) {
 				aura.Deactivate(sim)
 			}
 		},
