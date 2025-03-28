@@ -67,6 +67,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 		Name:             label,
 		Callback:         core.CallbackOnSpellHitDealt,
 		Outcome:          core.OutcomeCrit,
+		ClassSpellMask:   ClassSpellMask_WarlockAll ^ ClassSpellMask_WarlockLifeTap,
 		CanProcFromProcs: true,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.SpellSchool.Matches(core.SpellSchoolShadow | core.SpellSchoolFire) {
