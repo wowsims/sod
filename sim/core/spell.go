@@ -871,6 +871,6 @@ func (cd *SpellCooldown) GetCurrentDuration() time.Duration {
 	return cd.applyCooldownModifiers(cd.Duration)
 }
 
-func (spell *Spell) ModifyRemainingCooldown(sim *Simulation, duration time.Duration) {
-	spell.CD.Timer.Set(sim.CurrentTime + spell.CD.Timer.TimeToReady(sim) + duration)
+func (cd *SpellCooldown) ModifyRemainingCooldown(sim *Simulation, duration time.Duration) {
+	cd.Timer.Set(sim.CurrentTime + cd.Timer.TimeToReady(sim) + duration)
 }
