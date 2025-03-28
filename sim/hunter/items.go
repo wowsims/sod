@@ -599,7 +599,7 @@ func init() {
 
 		core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
 			Name:       "Strand Of Fate - Ranged Trigger",
-			Callback:   core.CallbackOnApplyEffects,
+			Callback:   core.CallbackOnSpellHitDealt,
 			Outcome:    core.OutcomeLanded,
 			ProcMask:   core.ProcMaskRanged,
 			ProcChance: 0.1,
@@ -617,7 +617,7 @@ func init() {
 
 		core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
 			Name:       "Strand Of Fate - Melee Trigger",
-			Callback:   core.CallbackOnApplyEffects,
+			Callback:   core.CallbackOnSpellHitDealt,
 			Outcome:    core.OutcomeLanded,
 			ProcMask:   core.ProcMaskMelee,
 			ProcChance: 0.1,
@@ -657,6 +657,9 @@ func init() {
 		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 1231604},
 			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return stacksAura.IsActive()
+			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				if hasMeleeSpecialist && stacksAura.IsActive() {
 					strengthAura.Activate(sim)
