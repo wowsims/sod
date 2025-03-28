@@ -188,15 +188,14 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
 		Label: label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(classMask) && shaman.ActiveShield != nil && shaman.ActiveShield.Matches(ClassSpellMask_ShamanLightningShield) {
-				atMaxStacks := shaman.ActiveShieldAura.GetStacks() == 9
-				if atMaxStacks {
+				if shaman.ActiveShieldAura.GetStacks() == 9 {
 					shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
 				}
 
 				shaman.ActiveShieldAura.AddStack(sim) // Add back the charge removed
 
 				if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-					if atMaxStacks {
+					if shaman.ActiveShieldAura.GetStacks() == 9 {
 						shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
 					}
 
