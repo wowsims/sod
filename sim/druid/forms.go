@@ -131,6 +131,8 @@ func (druid *Druid) registerCatFormSpell() {
 
 	predBonus := stats.Stats{}
 
+	hasKotjRune := druid.HasRune(proto.DruidRune_RuneFeetKingOfTheJungle)
+
 	druid.CatFormAura = druid.RegisterAura(core.Aura{
 		Label:      "Cat Form",
 		ActionID:   actionID,
@@ -177,7 +179,9 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.form = Humanoid
 			druid.SetCurrentPowerBar(core.ManaBar)
 
-			druid.TigersFuryAura.Deactivate(sim)
+			if !hasKotjRune {
+				druid.TigersFuryAura.Deactivate(sim)
+			}
 
 			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
 
@@ -328,6 +332,9 @@ func (druid *Druid) registerBearFormSpell() {
 				druid.manageCooldownsEnabled()
 				druid.UpdateManaRegenRates()
 			}
+
+			// Can be active outside of cat with King of the Jungle rune.
+			druid.TigersFuryAura.Deactivate(sim)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			druid.form = Humanoid

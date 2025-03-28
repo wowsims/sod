@@ -282,6 +282,10 @@ func init() {
 	// Tempered Interference-Negating Helmet
 	core.NewItemEffect(215161, func(agent core.Agent) {
 		character := agent.GetCharacter()
+		if character.Level > 59 {
+			return
+		}
+
 		actionId := core.ActionID{SpellID: 437377}
 
 		buffAura := character.RegisterAura(core.Aura{

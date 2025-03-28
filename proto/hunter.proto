@@ -198,6 +198,8 @@ message Hunter {
             IceThreadedBullet = 10;
             ThoriumShells = 11;
             MiniatureCannonBalls = 12;
+            SearingArrow = 13;
+            SearingShot = 14;
         }
         Ammo ammo = 1;
 

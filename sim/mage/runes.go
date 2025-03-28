@@ -341,12 +341,12 @@ func (mage *Mage) applyMissileBarrage() {
 		return
 	}
 
-	procChance := .20
-	mage.ArcaneBlastMissileBarrageChance = .40
+	mage.FireballFrostboltMissileBarrageChance += 0.20
+	mage.ArcaneBlastMissileBarrageChance += 0.40
 	buffDuration := time.Second * 15
 
 	arcaneMissilesSpells := []*core.Spell{}
-	affectedSpellClassMasks := ClassSpellMask_MageArcaneBarrage | ClassSpellMask_MageArcaneBlast | ClassSpellMask_MageFireball | ClassSpellMask_MageFrostbolt
+	affectedSpellClassMasks := ClassSpellMask_MageArcaneBlast | ClassSpellMask_MageFireball | ClassSpellMask_MageFrostbolt
 
 	mage.MissileBarrageAura = mage.RegisterAura(core.Aura{
 		Label:    "Missile Barrage",
@@ -384,12 +384,8 @@ func (mage *Mage) applyMissileBarrage() {
 				return
 			}
 
-			procChance := procChance
-			if spell.Matches(ClassSpellMask_MageArcaneBlast) {
-				procChance = mage.ArcaneBlastMissileBarrageChance
-			}
-
-			if sim.RandomFloat("Missile Barrage") < procChance {
+			procChance := core.TernaryFloat64(spell.Matches(ClassSpellMask_MageArcaneBlast), mage.ArcaneBlastMissileBarrageChance, mage.FireballFrostboltMissileBarrageChance)
+			if sim.Proc(procChance, "Missile Barrage") {
 				mage.MissileBarrageAura.Activate(sim)
 			}
 		},
