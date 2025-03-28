@@ -370,6 +370,22 @@ func (aura *Aura) ApplyOnStacksChange(newOnStacksChange OnStacksChange) *Aura {
 	return aura
 }
 
+// Adds a handler to be called OnApplyEffects, in addition to any current handlers.
+// We then return the Aura for chaining
+func (aura *Aura) ApplyOnApplyEffects(newOnApplyEffects OnApplyEffects) *Aura {
+	oldOnApplyEffects := aura.OnApplyEffects
+	if oldOnApplyEffects == nil {
+		aura.OnApplyEffects = newOnApplyEffects
+	} else {
+		aura.OnApplyEffects = func(aura *Aura, sim *Simulation, target *Unit, spell *Spell) {
+			oldOnApplyEffects(aura, sim, target, spell)
+			newOnApplyEffects(aura, sim, target, spell)
+		}
+	}
+
+	return aura
+}
+
 // Adds a handler to be called OnStacksChange, in addition to any current handlers.
 // We then return the Aura for chaining
 func (aura *Aura) ApplyOnCastComplete(newOnCastComplete OnCastComplete, applyBefore bool) *Aura {

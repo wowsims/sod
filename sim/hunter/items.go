@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -34,6 +35,7 @@ const (
 	CloakOfTheUnseenPath     = 233420
 	ScytheOfTheUnseenPath    = 233421
 	SignetOfTheUnseenPath    = 233422
+	PoleaxeOfTheBeast        = 240924
 )
 
 func applyRaptorStrikeDamageEffect(agent core.Agent, modifier int64) {
@@ -565,6 +567,46 @@ func init() {
 		}).AttachMultiplicativePseudoStatBuff(&hunter.pet.PseudoStats.DamageDealtMultiplier, 1.02))
 
 		hunter.ItemSwap.RegisterProc(SignetOfTheUnseenPath, procAura)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240924/poleaxe-of-the-beast
+	// Equip: Focus Fire now grants you and your pet 3% increased damage per stack consumed for 20 sec.
+	core.NewItemEffect(PoleaxeOfTheBeast, func(agent core.Agent) {
+		hunter := agent.(HunterAgent).GetHunter()
+
+		if hunter.pet == nil || !hunter.HasRune(proto.HunterRune_RuneBracersFocusFire) {
+			return
+		}
+
+		bestialFocusAura := newBestialFocusAura(&hunter.Unit, 1231591)
+		bestialFocusPetAura := newBestialFocusAura(&hunter.pet.Unit, 1231590)
+
+		triggerAura := core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+			Name:           "Poleaxe of the Beast Trigger",
+			Callback:       core.CallbackOnCastComplete,
+			ClassSpellMask: ClassSpellMask_HunterFocusFire,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				stacks := hunter.FocusFireAura.GetStacks()
+				bestialFocusAura.Activate(sim)
+				bestialFocusAura.SetStacks(sim, stacks)
+				bestialFocusPetAura.Activate(sim)
+				bestialFocusPetAura.SetStacks(sim, stacks)
+			},
+		})
+
+		hunter.ItemSwap.RegisterProc(PoleaxeOfTheBeast, triggerAura)
+	})
+}
+
+func newBestialFocusAura(unit *core.Unit, spellID int32) *core.Aura {
+	return unit.RegisterAura(core.Aura{
+		Label:     "Bestial Focus",
+		ActionID:  core.ActionID{SpellID: spellID},
+		Duration:  time.Second * 20,
+		MaxStacks: 5,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= ((1.0 + (0.03 * float64(newStacks))) / (1.0 + (0.03 * float64(oldStacks))))
+		},
 	})
 }
 

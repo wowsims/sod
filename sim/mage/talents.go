@@ -220,10 +220,10 @@ func (mage *Mage) registerPresenceOfMindCD() {
 	actionID := core.ActionID{SpellID: 12043}
 	cooldown := time.Second * 180
 
-	classSpellMasks := ClassSpellMask_MageAll ^ ClassSpellMask_MageInstantCast
+	classSpellMasks := uint64(ClassSpellMask_MageAll)
 	castTimeMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_CastTime_Pct,
-		ClassMask:  classSpellMasks,
+		ClassMask:  ClassSpellMask_MageAll,
 		FloatValue: -1,
 	})
 
@@ -231,7 +231,6 @@ func (mage *Mage) registerPresenceOfMindCD() {
 		Label:    "Presence of Mind",
 		ActionID: actionID,
 		Duration: time.Second * 15,
-
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			castTimeMod.Activate()
 		},
@@ -240,11 +239,9 @@ func (mage *Mage) registerPresenceOfMindCD() {
 			mage.PresenceOfMind.CD.Use(sim)
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
-			if !spell.Matches(classSpellMasks) {
-				return
+			if spell.Matches(classSpellMasks) && spell.DefaultCast.CastTime > 0 {
+				aura.Deactivate(sim)
 			}
-
-			aura.Deactivate(sim)
 		},
 	})
 
@@ -289,7 +286,7 @@ func (mage *Mage) registerArcanePowerCD() {
 		IntValue:  30,
 	})
 
-	mage.ArcanePowerAura = mage.RegisterAura(core.Aura{
+	buffAura := mage.RegisterAura(core.Aura{
 		Label:    "Arcane Power",
 		ActionID: actionID,
 		Duration: time.Second * 15,
@@ -303,11 +300,11 @@ func (mage *Mage) registerArcanePowerCD() {
 		},
 	})
 
-	core.RegisterPercentDamageModifierEffect(mage.ArcanePowerAura, 1.3)
+	core.RegisterPercentDamageModifierEffect(buffAura, 1.3)
 
-	spell := mage.RegisterSpell(core.SpellConfig{
-		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
+	mage.ArcanePower = mage.RegisterSpell(core.SpellConfig{
+		ActionID:       actionID,
+		ClassSpellMask: ClassSpellMask_MageArcanePower,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
@@ -315,12 +312,13 @@ func (mage *Mage) registerArcanePowerCD() {
 			},
 		},
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			mage.ArcanePowerAura.Activate(sim)
+			buffAura.Activate(sim)
 		},
+		RelatedSelfBuff: buffAura,
 	})
 
 	mage.AddMajorCooldown(core.MajorCooldown{
-		Spell: spell,
+		Spell: mage.ArcanePower,
 		Type:  core.CooldownTypeDPS,
 	})
 }

@@ -146,7 +146,7 @@ func (hunter *Hunter) applyT2Ranged2PBonus() {
 	}
 
 	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
+		Kind:      core.SpellMod_DamageDone_Pct,
 		ClassMask: ClassSpellMask_HunterAimedShot,
 	})
 
@@ -155,8 +155,8 @@ func (hunter *Hunter) applyT2Ranged2PBonus() {
 		ClassSpellMask: ClassSpellMask_HunterAimedShot,
 		Callback:       core.CallbackOnApplyEffects,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			hasActiveTrap := result.Target.HasActiveAuraWithTag("ImmolationTrap") || hunter.HasActiveAuraWithTag("ExplosiveTrap")
-			damageMod.UpdateIntValue(core.TernaryInt64(hasActiveTrap, 20, 0))
+			hasActiveTrap := hunter.ImmolationTrap.Dot(result.Target).IsActive() || hunter.ExplosiveTrap.DotOrAOEDot(result.Target).IsActive()
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hasActiveTrap, 1.20, 1.0))
 			damageMod.Activate()
 		},
 	})

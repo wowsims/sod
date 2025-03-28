@@ -12,7 +12,7 @@ func (mage *Mage) registerMassRegenerationSpell() {
 		return
 	}
 
-	mage.RegisterSpell(core.SpellConfig{
+	mage.MassRegeneration = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: int32(proto.MageRune_RuneLegsMassRegeneration)},
 		ClassSpellMask: ClassSpellMask_MageMassRegeneration,
 		SpellSchool:    core.SpellSchoolArcane,
