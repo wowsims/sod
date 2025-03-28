@@ -107,11 +107,12 @@ func (paladin *Paladin) registerSealOfCommand() {
 		})
 
 		procSpell := paladin.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: rank.proc.spellID},
-			SpellSchool: core.SpellSchoolHoly,
-			DefenseType: core.DefenseTypeMelee,
-			ProcMask:    core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeProc | core.ProcMaskMeleeDamageProc,
-			Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagNotAProc | SpellFlag_RV, // RV Worked on PTR
+			ActionID:       core.ActionID{SpellID: rank.proc.spellID},
+			SpellSchool:    core.SpellSchoolHoly,
+			DefenseType:    core.DefenseTypeMelee,
+			ProcMask:       core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeProc | core.ProcMaskMeleeDamageProc,
+			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNotAProc | SpellFlag_RV, // RV Worked on PTR
+			ClassSpellMask: ClassSpellMask_PaladinSealOfCommand,
 
 			DamageMultiplier: 0.7 * paladin.getWeaponSpecializationModifier(),
 			ThreatMultiplier: 1,

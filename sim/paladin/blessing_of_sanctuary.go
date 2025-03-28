@@ -25,7 +25,7 @@ func (paladin *Paladin) registerBlessingOfSanctuary() {
 
 	hasImpSanc := paladin.hasRune(proto.PaladinRune_RuneHeadImprovedSanctuary)
 	absorbMult := core.TernaryFloat64(hasImpSanc, 2, 1)
-	bonusDamage := core.TernaryFloat64(hasImpSanc, 0.3, 0.0)
+	bonusDamage := core.TernaryFloat64(hasImpSanc, 0.2, 0.0)
 
 	for i, values := range sanctuaryValues {
 

@@ -379,32 +379,37 @@ func init() {
 
 	// https://www.wowhead.com/classic-ptr/item=240920/leogan
 	// Equip: Adds 2 holy damage to your melee attacks.
-	// Chance on hit: Increases the wielder's Strength by 375 for 15 sec.
+	// Equip: The Global Cooldown of your Exorcism and Holy Wrath spells is reduced by 0.5 seconds.
+	// Chance on hit: Increases the wielder's Strength by 250 for 15 sec.
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(Leogan, func(agent core.Agent) {
-		character := agent.GetCharacter()
+		paladin := agent.(PaladinAgent).GetPaladin()
+		
+		paladin.leoganGCDReduction = 0.5
 
-		vanilla.BlazefuryTriggerAura(character, Leogan, 1231550, 1231549, core.SpellSchoolHoly, 2)
+		vanilla.BlazefuryTriggerAura(&paladin.Character, Leogan, 1231550, 1231549, core.SpellSchoolHoly, 2)
 
-		holyMightAura := character.RegisterAura(core.Aura{
+		holyMightAura := paladin.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1231548},
 			Label:    "Holy Might",
 			Duration: time.Second * 15,
-		}).AttachStatBuff(stats.Strength, 375)
+		}).AttachStatBuff(stats.Strength, 250)
 
-		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		dpm := paladin.AutoAttacks.NewDynamicProcManagerForWeaponEffect(Leogan, 1.9, 0)
+		
+		triggerAura := core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
 			Name:              "Holy Might Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
-			DPM:               character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(Leogan, 1.9, 0),
+			DPM:               dpm,
 			DPMProcCheck:      core.DPMProc,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				holyMightAura.Activate(sim)
 			},
 		})
 
-		character.ItemSwap.RegisterProc(Leogan, triggerAura)
+		paladin.ItemSwap.RegisterProc(Leogan, triggerAura)
 	})
 
 	core.AddEffectsToTest = true

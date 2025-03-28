@@ -62,7 +62,7 @@ func (paladin *Paladin) registerExorcism() {
 
 			Cast: core.CastConfig{
 				DefaultCast: core.Cast{
-					GCD: core.GCDDefault,
+					GCD: core.GCDDefault - core.DurationFromSeconds(paladin.leoganGCDReduction),
 				},
 				CD: *paladin.exorcismCooldown,
 			},
