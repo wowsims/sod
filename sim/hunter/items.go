@@ -657,8 +657,11 @@ func init() {
 		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 1231604},
 			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-				return stacksAura.IsActive()
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    hunter.NewTimer(),
+					Duration: time.Second * 80,
+				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				if hasMeleeSpecialist && stacksAura.IsActive() {
