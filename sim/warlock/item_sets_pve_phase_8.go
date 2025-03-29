@@ -72,11 +72,9 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.SpellSchool.Matches(core.SpellSchoolShadow | core.SpellSchoolFire) {
 				dot := burnSpell.Dot(result.Target)
-				dotDamage := result.Damage * 0.3
-				if dot.IsActive() {
-					dotDamage += dot.SnapshotBaseDamage * float64(dot.MaxTicksRemaining())
-				}
-				dot.SnapshotBaseDamage = dotDamage / float64(dot.NumberOfTicks)
+				newDamage := result.Damage * 0.3
+
+				dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / float64(dot.NumberOfTicks)
 				dot.SnapshotAttackerMultiplier = 1
 
 				burnSpell.Cast(sim, result.Target)

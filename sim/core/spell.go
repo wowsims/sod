@@ -778,6 +778,17 @@ func (spell *Spell) GetPeriodicDamageMultiplierAdditive() int64 {
 	return spell.periodicDamageMultiplierAdditivePct
 }
 
+func (spell *Spell) ApplyExtraCastCondition(newExtraCastCondition CanCastCondition) {
+	oldExtraCastCondition := spell.ExtraCastCondition
+	if oldExtraCastCondition == nil {
+		spell.ExtraCastCondition = newExtraCastCondition
+	} else {
+		spell.ExtraCastCondition = func(sim *Simulation, target *Unit) bool {
+			return oldExtraCastCondition(sim, target) || newExtraCastCondition(sim, target)
+		}
+	}
+}
+
 type CostType uint8
 
 const (
@@ -871,6 +882,6 @@ func (cd *SpellCooldown) GetCurrentDuration() time.Duration {
 	return cd.applyCooldownModifiers(cd.Duration)
 }
 
-func (spell *Spell) ModifyRemainingCooldown(sim *Simulation, duration time.Duration) {
-	spell.CD.Timer.Set(sim.CurrentTime + spell.CD.Timer.TimeToReady(sim) + duration)
+func (cd *SpellCooldown) ModifyRemainingCooldown(sim *Simulation, duration time.Duration) {
+	cd.Timer.Set(sim.CurrentTime + cd.Timer.TimeToReady(sim) + duration)
 }

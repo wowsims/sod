@@ -52,10 +52,9 @@ func (mage *Mage) applyIgnite() {
 		dot := mage.Ignite.Dot(result.Target)
 
 		newDamage := result.Damage * igniteMultiplier
-		outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
 		// This was also made to not double dip on Sanctified
-		dot.Snapshot(result.Target, (outstandingDamage+newDamage)/float64(IgniteTicks), false)
+		dot.Snapshot(result.Target, (dot.OutstandingDmg()+newDamage)/float64(IgniteTicks), false)
 		dot.SnapshotAttackerMultiplier /= mage.PseudoStats.SanctifiedDamageMultiplier
 
 		mage.Ignite.Cast(sim, result.Target)

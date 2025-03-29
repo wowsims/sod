@@ -243,7 +243,6 @@ export const PresetBuildDW = PresetUtils.makePresetBuild('Dual-Wield', { gear: D
 ///////////////////////////////////////////////////////////////////////////
 
 export const DefaultOptions = WarriorOptions.create({
-	queueDelay: 250,
 	startingRage: 0,
 	shout: WarriorShout.WarriorShoutBattle,
 	stance: WarriorStance.WarriorStanceBerserker,

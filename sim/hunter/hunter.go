@@ -37,6 +37,7 @@ const (
 
 	// Stings
 	ClassSpellMask_HunterSerpentSting
+	ClassSpellMask_HunterSoFSerpentSting // Serpent Sting from [Strings of Fate]
 
 	// Traps
 	ClassSpellMask_HunterExplosiveTrap
@@ -110,6 +111,7 @@ type Hunter struct {
 	MongooseBite            *core.Spell
 	ScorpidSting            *core.Spell
 	SerpentSting            *core.Spell
+	SoFSerpentSting         []*core.Spell
 	SerpentStingChimeraShot *core.Spell
 	SilencingShot           *core.Spell
 	SteadyShot              *core.Spell
@@ -124,7 +126,6 @@ type Hunter struct {
 	MeleeSpells []*core.Spell
 	LastShot    *core.Spell
 
-	FlankingStrikeAura *core.Aura
 	RaptorFuryAura     *core.Aura
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura
@@ -198,6 +199,7 @@ func (hunter *Hunter) Initialize() {
 	arcaneShotTimer := hunter.NewTimer()
 
 	hunter.registerSerpentStingSpell()
+	hunter.registerSoFSerpentStingSpells()
 
 	hunter.registerArcaneShotSpell(arcaneShotTimer)
 	hunter.registerAimedShotSpell(arcaneShotTimer)

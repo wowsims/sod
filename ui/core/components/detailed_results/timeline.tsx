@@ -1408,6 +1408,8 @@ const idToCategoryMap: Record<number, number> = {
 	[40536]: SPELL_ACTION_CATEGORY + 0.942, // Explosive Decoy
 	[41119]: SPELL_ACTION_CATEGORY + 0.943, // Saronite Bomb
 	[40771]: SPELL_ACTION_CATEGORY + 0.944, // Cobalt Frag Bomb
+	[1231629]: SPELL_ACTION_CATEGORY + 0.945, // Part of https://www.wowhead.com/classic-ptr/item=241003/mirage-rod-of-illusion
+	[1231648]: SPELL_ACTION_CATEGORY + 0.945, // Part of https://www.wowhead.com/classic-ptr/item=241003/mirage-rod-of-illusion
 };
 
 const idsToGroupForRotation: Array<number> = [

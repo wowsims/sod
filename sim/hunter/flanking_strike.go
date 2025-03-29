@@ -17,7 +17,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		ProcMask: core.ProcMaskMelee,
 	})
 
-	hunter.FlankingStrikeAura = hunter.GetOrRegisterAura(core.Aura{
+	buffAura := hunter.GetOrRegisterAura(core.Aura{
 		Label:     "Flanking Strike Buff",
 		ActionID:  core.ActionID{SpellID: 415320},
 		MaxStacks: 3,
@@ -101,8 +101,10 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 				hunter.pet.flankingStrike.Cast(sim, hunter.pet.CurrentTarget)
 			}
 
-			hunter.FlankingStrikeAura.Activate(sim)
-			hunter.FlankingStrikeAura.AddStack(sim)
+			buffAura.Activate(sim)
+			buffAura.AddStack(sim)
 		},
+
+		RelatedSelfBuff: buffAura,
 	})
 }

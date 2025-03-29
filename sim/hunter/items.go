@@ -35,6 +35,7 @@ const (
 	CloakOfTheUnseenPath     = 233420
 	ScytheOfTheUnseenPath    = 233421
 	SignetOfTheUnseenPath    = 233422
+	StringsOfFate            = 240837
 	PoleaxeOfTheBeast        = 240924
 )
 
@@ -569,6 +570,129 @@ func init() {
 		hunter.ItemSwap.RegisterProc(SignetOfTheUnseenPath, procAura)
 	})
 
+	core.NewItemEffect(StringsOfFate, func(a core.Agent) {
+		hunter := a.(HunterAgent).GetHunter()
+		hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
+
+		// Tracks the number of strands of fate, up to 5 stacks if you're ranged or 4 if you're using the melee version.
+		// TODO: Ranged Hunter's version lets them consume these stacks to move while shooting
+		stacksAura := hunter.RegisterAura(core.Aura{
+			Label:     "Strand Of Fate - Stacks",
+			ActionID:  core.ActionID{SpellID: 1232946},
+			MaxStacks: core.TernaryInt32(hasMeleeSpecialist, 4, 5),
+			Duration:  time.Second * 20,
+		})
+
+		icd := core.Cooldown{
+			Timer:    hunter.NewTimer(),
+			Duration: time.Second * 30,
+		}
+
+		if !hasMeleeSpecialist {
+			rangedTrigger := core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+				Name:       "Strand Of Fate - Ranged Trigger",
+				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
+				ProcMask:   core.ProcMaskRanged,
+				ProcChance: 0.1,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !icd.IsReady(sim) {
+						return
+					}
+					stacksAura.Activate(sim)
+					stacksAura.AddStack(sim)
+				},
+			})
+
+			hunter.ItemSwap.RegisterProc(StringsOfFate, rangedTrigger)
+		} else {
+			stacksAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				strengthChange := float64(20 * (newStacks - oldStacks))
+				hunter.Unit.AddStatDynamic(sim, stats.Strength, strengthChange)
+			}
+
+			meleeTrigger := core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+				Name:       "Strand Of Fate - Melee Trigger",
+				Callback:   core.CallbackOnSpellHitDealt,
+				Outcome:    core.OutcomeLanded,
+				ProcMask:   core.ProcMaskMelee,
+				ProcChance: 0.1,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					if !icd.IsReady(sim) {
+						return
+					}
+					stacksAura.Activate(sim)
+					stacksAura.AddStack(sim)
+				},
+			})
+
+			hunter.ItemSwap.RegisterProc(StringsOfFate, meleeTrigger)
+		}
+
+		// When using the melee version and activating the bow your next strike applies a special Serpent Sting effect.
+		serpentStrikeAura := hunter.RegisterAura(core.Aura{
+			Label:     "Strand Of Fate - Serpent Sting on Next Strike",
+			ActionID:  core.ActionID{SpellID: 1232976},
+			Duration:  time.Second * 20,
+			MaxStacks: 4,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.SetStacks(sim, stacksAura.GetStacks())
+			},
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.Matches(ClassSpellMask_HunterStrikes) && result.Landed() {
+					hunter.SoFSerpentSting[aura.GetStacks()].Cast(sim, result.Target)
+					aura.Deactivate(sim)
+				}
+			},
+		})
+
+		// Gain 40 strength per stack of Strand of Fate consumed
+		strengthAura := hunter.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1232969},
+			Label:     "Strand Of Fate - Strength",
+			Duration:  time.Second * 20,
+			MaxStacks: 4,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.SetStacks(sim, stacksAura.GetStacks())
+			},
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				hunter.AddStatDynamic(sim, stats.Strength, float64(40*(newStacks-oldStacks)))
+			},
+		})
+
+		// The bow active
+		spell := hunter.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 1231604},
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    hunter.NewTimer(),
+					Duration: time.Second * 80,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				if hasMeleeSpecialist {
+					if stacksAura.IsActive() {
+						strengthAura.Activate(sim)
+						serpentStrikeAura.Activate(sim)
+						stacksAura.Deactivate(sim)
+					}
+				} else {
+					stacksAura.Activate(sim)
+					stacksAura.AddStacks(sim, 3)
+				}
+			},
+		})
+
+		hunter.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
+		})
+
+		hunter.ItemSwap.RegisterActive(StringsOfFate)
+		hunter.ItemSwap.RegisterProc(StringsOfFate, stacksAura)
+	})
+
 	// https://www.wowhead.com/classic-ptr/item=240924/poleaxe-of-the-beast
 	// Equip: Focus Fire now grants you and your pet 3% increased damage per stack consumed for 20 sec.
 	core.NewItemEffect(PoleaxeOfTheBeast, func(agent core.Agent) {
@@ -595,6 +719,23 @@ func init() {
 		})
 
 		hunter.ItemSwap.RegisterProc(PoleaxeOfTheBeast, triggerAura)
+	})
+}
+
+// Your Raptor Strike and Mongoose Bite critical strikes set the duration of your Serpent Sting on the target to 15 sec
+func (hunter *Hunter) ApplyQueensfallHunterEffect(aura *core.Aura) {
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:           "Queensfall Trigger - Hunter",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeCrit,
+		ClassSpellMask: ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterMongooseBite,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if dot := hunter.SerpentSting.Dot(result.Target); dot.IsActive() {
+				dot.NumberOfTicks = int32(16 / dot.TickLength.Seconds())
+				dot.RecomputeAuraDuration()
+				dot.Rollover(sim)
+			}
+		},
 	})
 }
 
@@ -625,4 +766,59 @@ func (hunter *Hunter) newBloodlashProcItem(bonusStrength float64, spellID int32)
 	})
 
 	hunter.ItemSwap.RegisterProc(BloodlashBow, aura)
+}
+
+// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Kill Shot by 5% per stack, stacking up to 20 times.
+func (hunter *Hunter) ApplyRegicideHunterEffect(itemID int32, aura *core.Aura) {
+	// Coup debuff array
+	debuffAuras := hunter.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+		return unit.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231765},
+			Label:     "Coup",
+			MaxStacks: core.TernaryInt32(unit.Level > hunter.Level, 20, 0),
+			Duration:  time.Second * 15,
+		})
+	})
+
+	killshotDamageMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Pct,
+		ClassMask: ClassSpellMask_HunterKillShot,
+	})
+
+	damageModTrigger := core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+		Name:           "Coup - Kill Shot Damage Mod Trigger",
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: ClassSpellMask_HunterKillShot,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			killshotDamageMod.UpdateFloatValue(1 + float64(debuffAuras.Get(result.Target).GetStacks())*0.05)
+			killshotDamageMod.Activate()
+		},
+	})
+	hunter.ItemSwap.RegisterProc(itemID, damageModTrigger)
+
+	consumptionTrigger := core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+		Name:           "Coup - Consume Stacks Trigger",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: ClassSpellMask_HunterKillShot,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			debuffAuras.Get(result.Target).Deactivate(sim)
+		},
+	})
+	hunter.ItemSwap.RegisterProc(itemID, consumptionTrigger)
+
+	// Apply the Coup debuff to the target hit by melee abilities
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:     "Regicide Trigger - Hunter",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			debuff := debuffAuras.Get(result.Target)
+			debuff.Activate(sim)
+			if debuff.MaxStacks > 0 {
+				debuff.AddStack(sim)
+			}
+		},
+	})
 }

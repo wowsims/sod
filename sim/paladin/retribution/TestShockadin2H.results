@@ -148,12 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestShockadin2H-Phase7-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.30757
-  weights: 2.51043
+  weights: 2.30764
+  weights: 0.50693
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.86441
+  weights: 0.86589
   weights: 0
   weights: 0
   weights: 0
@@ -161,16 +161,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.81966
-  weights: 5.48631
+  weights: -0.68502
+  weights: 10.79325
   weights: 0
   weights: 0
-  weights: 0.82916
+  weights: 0.82919
   weights: 0
-  weights: 28.24476
+  weights: 30.11776
   weights: 0
   weights: 0
-  weights: 53.42424
+  weights: 54.48705
   weights: 0
   weights: 0
   weights: 0
@@ -311,146 +311,146 @@ dps_results: {
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1710.84196
-  tps: 1735.56004
+  dps: 1703.80289
+  tps: 1728.51632
   hps: 51.73207
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1720.7171
-  tps: 1745.90299
+  dps: 1713.3458
+  tps: 1738.52474
   hps: 51.73207
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1824.12294
-  tps: 1850.08152
+  dps: 1816.84603
+  tps: 1842.78786
   hps: 51.73207
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2548.93459
-  tps: 2581.46258
+  dps: 2548.90728
+  tps: 2581.42009
   hps: 57.38677
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1624.03397
-  tps: 1639.80544
+  dps: 1624.15721
+  tps: 1639.92974
   hps: 52.1489
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Average-Default"
  value: {
-  dps: 4565.33546
-  tps: 4588.22757
-  hps: 59.70845
+  dps: 4561.41011
+  tps: 4584.3056
+  hps: 59.75688
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Dwarf-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-FullBuffs-P7-Consumes-Shockadin-LongMultiTarget"
  value: {
-  dps: 8974.9267
-  tps: 9433.69246
-  hps: 60.30257
+  dps: 8976.58118
+  tps: 9433.03698
+  hps: 60.2924
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Dwarf-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-FullBuffs-P7-Consumes-Shockadin-LongSingleTarget"
  value: {
-  dps: 4603.02438
-  tps: 4626.0409
-  hps: 60.60757
+  dps: 4577.43928
+  tps: 4600.55632
+  hps: 60.5364
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Dwarf-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-FullBuffs-P7-Consumes-Shockadin-ShortSingleTarget"
  value: {
-  dps: 4826.83155
-  tps: 4852.75639
-  hps: 61.31517
+  dps: 4780.1477
+  tps: 4806.29336
+  hps: 61.2135
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Dwarf-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-NoBuffs-P7-Consumes-Shockadin-LongMultiTarget"
  value: {
-  dps: 4152.31153
-  tps: 4531.5038
+  dps: 4142.24161
+  tps: 4520.34517
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Dwarf-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-NoBuffs-P7-Consumes-Shockadin-LongSingleTarget"
  value: {
-  dps: 1961.59803
-  tps: 1980.51492
+  dps: 1955.25668
+  tps: 1974.25174
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Dwarf-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-NoBuffs-P7-Consumes-Shockadin-ShortSingleTarget"
  value: {
-  dps: 2098.68811
-  tps: 2118.08444
+  dps: 2061.59316
+  tps: 2081.14583
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Human-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-FullBuffs-P7-Consumes-Shockadin-LongMultiTarget"
  value: {
-  dps: 8978.73308
-  tps: 9437.81707
-  hps: 60.33307
+  dps: 8984.72505
+  tps: 9443.14519
+  hps: 60.39203
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Human-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-FullBuffs-P7-Consumes-Shockadin-LongSingleTarget"
  value: {
-  dps: 4600.48777
-  tps: 4623.46534
-  hps: 60.5669
+  dps: 4584.42353
+  tps: 4607.51606
+  hps: 60.5303
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Human-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-FullBuffs-P7-Consumes-Shockadin-ShortSingleTarget"
  value: {
-  dps: 4825.7496
-  tps: 4851.6741
-  hps: 61.31517
+  dps: 4779.04433
+  tps: 4805.1793
+  hps: 61.2135
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Human-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-NoBuffs-P7-Consumes-Shockadin-LongMultiTarget"
  value: {
-  dps: 4148.76305
-  tps: 4527.09248
+  dps: 4137.32363
+  tps: 4515.04525
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Human-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-NoBuffs-P7-Consumes-Shockadin-LongSingleTarget"
  value: {
-  dps: 1967.36183
-  tps: 1986.26884
+  dps: 1957.36812
+  tps: 1976.387
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-Settings-Human-p7-shockadin-2h-naxx-P7 Shockadin 2H-p7-shockadin-2h-NoBuffs-P7-Consumes-Shockadin-ShortSingleTarget"
  value: {
-  dps: 2102.84635
-  tps: 2122.24315
+  dps: 2063.58422
+  tps: 2083.13262
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase7-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3963.66711
-  tps: 3985.42419
-  hps: 47.98463
+  dps: 3969.59889
+  tps: 3991.45101
+  hps: 48.068
  }
 }

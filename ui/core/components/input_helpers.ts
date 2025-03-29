@@ -154,6 +154,7 @@ export interface PlayerNumberInputConfig<SpecType extends Spec, Message> extends
 	percent?: boolean;
 	float?: boolean;
 	positive?: boolean;
+	defaultValue?: number;
 	enableWhen?: (player: Player<SpecType>) => boolean;
 	showWhen?: (player: Player<SpecType>) => boolean;
 	changeEmitter?: (player: Player<SpecType>) => TypedEvent<any>;
@@ -167,6 +168,7 @@ export function makeSpecOptionsNumberInput<SpecType extends Spec>(
 		labelTooltip: config.labelTooltip,
 		float: config.float,
 		positive: config.positive,
+		defaultValue: config.defaultValue,
 		getModObject: (player: Player<SpecType>) => player,
 		getValue: config.getValue || ((player: Player<SpecType>) => player.getSpecOptions()[config.fieldName] as unknown as number),
 		setValue:

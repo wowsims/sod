@@ -227,27 +227,30 @@ func (mage *Mage) applyFingersOfFrost() {
 		},
 	})
 
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: "Fingers of Frost Trigger",
-	})).AttachProcTrigger(core.ProcTrigger{
-		Name:       "Fingers of Frost Trigger Direct",
-		Callback:   core.CallbackOnSpellHitDealt,
-		Outcome:    core.OutcomeLanded,
-		SpellFlags: SpellFlagChillSpell,
-		ProcChance: mage.FingersOfFrostProcChance,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			mage.FingersOfFrostAura.Activate(sim)
-			mage.FingersOfFrostAura.SetStacks(sim, mage.FingersOfFrostAura.MaxStacks)
-		},
-	}).AttachProcTrigger(core.ProcTrigger{
-		Name:           "Fingers of Frost Trigger Periodic",
-		Callback:       core.CallbackOnPeriodicDamageDealt,
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+		Name:           "Fingers of Frost Trigger - Direct",
+		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
-		ClassSpellMask: ClassSpellMask_MageBlizzard, // Only procs from Blizzard
-		ProcChance:     mage.FingersOfFrostProcChance,
+		ClassSpellMask: ClassSpellMask_MageAll ^ ClassSpellMask_MageFrozenOrbTick, // Blizzard seems to have intentionally made Frozen Orb's chill not proc Fingers of Frost but a Frostbite proc from the orb still can
+		SpellFlags:     SpellFlagChillSpell,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			mage.FingersOfFrostAura.Activate(sim)
-			mage.FingersOfFrostAura.SetStacks(sim, mage.FingersOfFrostAura.MaxStacks)
+			if sim.Proc(mage.FingersOfFrostProcChance, "Fingers of Frost") {
+				mage.FingersOfFrostAura.Activate(sim)
+				mage.FingersOfFrostAura.SetStacks(sim, mage.FingersOfFrostAura.MaxStacks)
+			}
+		},
+	})
+
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
+		Name:           "Fingers of Frost Trigger - Periodic",
+		Callback:       core.CallbackOnPeriodicDamageDealt,
+		ClassSpellMask: ClassSpellMask_MageBlizzard, // Only procs from Blizzard and only with Improved Blizzard for the chill effect
+		SpellFlags:     SpellFlagChillSpell,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if sim.Proc(mage.FingersOfFrostProcChance, "Fingers of Frost") {
+				mage.FingersOfFrostAura.Activate(sim)
+				mage.FingersOfFrostAura.SetStacks(sim, mage.FingersOfFrostAura.MaxStacks)
+			}
 		},
 	})
 }

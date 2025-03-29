@@ -537,6 +537,17 @@ func (parentAura *Aura) AttachMultiplyAttackSpeed(unit *Unit, value float64) *Au
 	return parentAura
 }
 
+// Adds a Melee Speed Multiplier to a parent Aura
+// Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
+func (parentAura *Aura) AttachMultiplyMeleeSpeed(unit *Unit, value float64) *Aura {
+	parentAura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
+		unit.MultiplyMeleeSpeed(sim, value)
+	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
+		unit.MultiplyMeleeSpeed(sim, 1/value)
+	})
+	return parentAura
+}
+
 // Adds a Cast Speed Multiplier Stat to a parent Aura
 // Note: Only use when parent aura is used through RegisterAura() not GetOrRegisterAura. Otherwise this might apply multiple times.
 func (parentAura *Aura) AttachMultiplyCastSpeed(unit *Unit, value float64) *Aura {

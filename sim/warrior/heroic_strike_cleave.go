@@ -88,7 +88,8 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 
 	flatDamageBonus *= []float64{1, 1.4, 1.8, 2.2}[warrior.Talents.ImprovedCleave]
 
-	warrior.cleaveTargetCount += min(2, warrior.Env.GetNumTargets())
+	warrior.CleaveTargetCount += 2
+	targetCount := warrior.Env.GetNumTargets()
 
 	warrior.Cleave = warrior.RegisterSpell(AnyStance, core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: spellID},
@@ -111,10 +112,10 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			curTarget := target
-			for i := int32(0); i < warrior.cleaveTargetCount; i++ {
+			for i := int32(0); i < min(targetCount, warrior.CleaveTargetCount); i++ {
 				baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 				spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				curTarget = sim.Environment.NextTargetUnit(target)
+				curTarget = sim.Environment.NextTargetUnit(curTarget)
 				if curTarget == target {
 					break
 				}

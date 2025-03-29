@@ -88,6 +88,14 @@ func CreateWeaponEquipProcDamage(itemID int32, itemName string, ppm float64, spe
 
 // Create a weapon proc using a custom spell.
 func CreateWeaponProcSpell(itemID int32, itemName string, ppm float64, procSpellGenerator func(character *core.Character) *core.Spell) {
+	createWeaponProcSpell(itemID, itemName, ppm, core.DPMProc, procSpellGenerator)
+}
+
+func CreateFeralWeaponProcSpell(itemID int32, itemName string, ppm float64, procSpellGenerator func(character *core.Character) *core.Spell) {
+	createWeaponProcSpell(itemID, itemName, ppm, core.DPMProcWithWeaponSpecials, procSpellGenerator)
+}
+
+func createWeaponProcSpell(itemID int32, itemName string, ppm float64, dpmProcCheck core.DPMProcCheck, procSpellGenerator func(character *core.Character) *core.Spell) {
 	core.NewItemEffect(itemID, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
@@ -99,7 +107,7 @@ func CreateWeaponProcSpell(itemID int32, itemName string, ppm float64, procSpell
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			DPM:               character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0),
-			DPMProcCheck:      core.DPMProc,
+			DPMProcCheck:      dpmProcCheck,
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				procSpell.Cast(sim, result.Target)
@@ -113,24 +121,29 @@ func CreateWeaponProcSpell(itemID int32, itemName string, ppm float64, procSpell
 // Create a weapon proc for a custom aura.
 func CreateWeaponProcAura(itemID int32, itemName string, ppm float64, procAuraGenerator func(character *core.Character) *core.Aura) {
 	core.NewItemEffect(itemID, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procAura := procAuraGenerator(character)
-
-		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0)
-
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              itemName + " Proc",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			DPM:               dpm,
-			DPMProcCheck:      core.DPMProc,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procAura.Activate(sim)
-			},
-		})
-
-		character.ItemSwap.RegisterProc(itemID, aura)
+		AddWeaponProcAura(agent.GetCharacter(), itemID, itemName, ppm, procAuraGenerator)
 	})
+}
+
+// Create a weapon proc for a custom aura and add it to an existing item effect.
+func AddWeaponProcAura(character *core.Character, itemID int32, itemName string, ppm float64, procAuraGenerator func(character *core.Character) *core.Aura) {
+	procAura := procAuraGenerator(character)
+	dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0)
+
+	aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:              itemName + " Proc",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+		DPM:               dpm,
+		DPMProcCheck:      core.DPMProc,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procAura.Activate(sim)
+			if procAura.MaxStacks > 0 {
+				procAura.SetStacks(sim, procAura.MaxStacks)
+			}
+		},
+	})
+
+	character.ItemSwap.RegisterProc(itemID, aura)
 }
