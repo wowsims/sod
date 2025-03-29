@@ -695,8 +695,6 @@ func (hunter *Hunter) ApplyRegicideHunterEffect(aura *core.Aura) {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			debuffAuras[result.Target.Index].Activate(sim)
 			debuffAuras[result.Target.Index].AddStack(sim)
-			killshotDamageMod.UpdateIntValue(int64(debuffAuras[result.Target.Index].GetStacks() * 5))
-			killshotDamageMod.Activate()
 		},
 	})
 }
