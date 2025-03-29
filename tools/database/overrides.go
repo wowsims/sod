@@ -136,6 +136,7 @@ var ItemDenyList = map[int32]struct{}{
 	22630:  {}, // https://www.wowhead.com/classic/item=22631/atiesh-greatstaff-of-the-guardian
 	22631:  {}, // https://www.wowhead.com/classic/item=22631/atiesh-greatstaff-of-the-guardian
 	22678:  {}, // https://www.wowhead.com/classic/item=22678/talisman-of-ascendance not filtered out because ilvl gap is too high
+	22691:  {}, // https://www.wowhead.com/classic-ptr/item=22691/corrupted-ashbringer not filtered out automatically
 	22736:  {}, // Andonisus, Reaper of Souls
 	23207:  {}, // Mark of the Champion (Spellpower, old)
 	34576:  {}, // Battlemaster's Cruelty
@@ -165,25 +166,17 @@ var ItemDenyList = map[int32]struct{}{
 	227989: {}, // https://www.wowhead.com/classic/item=227989/hand-of-justice unused item
 	227995: {}, // https://www.wowhead.com/classic/item=227995/cadaverous-armor unused item
 	228498: {}, // Unused Dreadblade of the Destructor
+	239010: {}, // https://www.wowhead.com/classic-ptr/item=239010/hilt-of-the-ashbringer
 	240195: {}, // https://www.wowhead.com/classic-ptr/item=240195/invisible-sword confirmed unused
+	240936: {}, // https://www.wowhead.com/classic-ptr/item=240936/inert-ashbringer probably not going to be used
 	241082: {}, // https://www.wowhead.com/classic-ptr/item=241082/ashbringer confirmed unuesd
 	241123: {}, // https://www.wowhead.com/classic-ptr/item=241123/reborn-dagger confirmed unused
 
 	// Phase 8 Denylist. Remove items as they're implemented
-	236317: {}, // https://www.wowhead.com/classic-ptr/item=236317/visera-the-gutrender
-	238945: {}, // https://www.wowhead.com/classic-ptr/item=238945/caladboulder
-	238961: {}, // https://www.wowhead.com/classic-ptr/item=238961/caladbolg
-	239060: {}, // https://www.wowhead.com/classic-ptr/item=239060/will-of-the-mountain
-	239301: {}, // https://www.wowhead.com/classic-ptr/item=239301/corrupted-ashbringer
 	240837: {}, // https://www.wowhead.com/classic-ptr/item=240837/strings-of-fate
 	240842: {}, // https://www.wowhead.com/classic-ptr/item=240842/scarlet-rotbringer
-	240844: {}, // https://www.wowhead.com/classic-ptr/item=240844/putress-poker
-	240919: {}, // https://www.wowhead.com/classic-ptr/item=240919/ravagane
 	240998: {}, // https://www.wowhead.com/classic-ptr/item=240998/soporific-blade
-	241004: {}, // https://www.wowhead.com/classic-ptr/item=241004/conundrum
 	241015: {}, // https://www.wowhead.com/classic-ptr/item=241015/aegis-of-the-scarlet-bastion
-	241081: {}, // https://www.wowhead.com/classic-ptr/item=241081/corrupted-ashbringer
-
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
