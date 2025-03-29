@@ -21,30 +21,31 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
-	Caladbolg            = 238961
-	WillOfTheMountain    = 239060
-	HighCommandersGuard  = 240841
-	LightfistHammer      = 240850
-	Regicide             = 240851
-	CrimsonCleaver       = 240852
-	Queensfall           = 240853
-	Mercy                = 240854
-	Ravagane             = 240919
-	Deception            = 240922
-	Duplicity            = 240923
-	Experiment800M       = 240925
-	TyrsFall             = 241001
-	RemnantsOfTheRed     = 241002
-	MirageRodOfIllusion  = 241003
-	Condemnation         = 241008
-	GreatstaffOfFealty   = 241011
-	HeartOfLight         = 241034
-	AbandonedExperiment  = 241037
-	SirDornelsDidgeridoo = 241038
-	InfusionOfSouls      = 241039
-	StiltzsStandard      = 241068
-	LuckyDoubloon        = 241241
-	HandOfRebornJustice  = 242310
+	Caladbolg                = 238961
+	WillOfTheMountain        = 239060
+	HighCommandersGuard      = 240841
+	LightfistHammer          = 240850
+	Regicide                 = 240851
+	CrimsonCleaver           = 240852
+	Queensfall               = 240853
+	Mercy                    = 240854
+	Ravagane                 = 240919
+	Deception                = 240922
+	Duplicity                = 240923
+	Experiment800M           = 240925
+	TyrsFall                 = 241001
+	RemnantsOfTheRed         = 241002
+	MirageRodOfIllusion      = 241003
+	Condemnation             = 241008
+	GreatstaffOfFealty       = 241011
+	AegisOfTheScarletBastion = 241015
+	HeartOfLight             = 241034
+	AbandonedExperiment      = 241037
+	SirDornelsDidgeridoo     = 241038
+	InfusionOfSouls          = 241039
+	StiltzsStandard          = 241068
+	LuckyDoubloon            = 241241
+	HandOfRebornJustice      = 242310
 )
 
 func init() {
@@ -113,6 +114,42 @@ func init() {
 
 		character.ItemSwap.RegisterActive(AbandonedExperiment)
 		character.ItemSwap.RegisterProc(RemnantsOfTheRed, buffAura)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=241015/aegis-of-the-scarlet-bastion
+	// Use: Increases the amount of damage absorbed by your shield by 20% for 15 sec. (1 Min, 30 Sec Cooldown)
+	core.NewItemEffect(AegisOfTheScarletBastion, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{ItemID: AegisOfTheScarletBastion}
+		statDep := character.NewDynamicMultiplyStat(stats.BlockValue, 1.20)
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Scarlet Bastion",
+			Duration: time.Second * 15,
+		}).AttachStatDependency(statDep)
+
+		cdSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Second * 90,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: cdSpell,
+			Type:  core.CooldownTypeSurvival,
+		})
+
+		character.ItemSwap.RegisterActive(AegisOfTheScarletBastion)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=238961/caladbolg

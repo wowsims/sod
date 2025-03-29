@@ -176,7 +176,6 @@ var ItemDenyList = map[int32]struct{}{
 	240837: {}, // https://www.wowhead.com/classic-ptr/item=240837/strings-of-fate
 	240842: {}, // https://www.wowhead.com/classic-ptr/item=240842/scarlet-rotbringer
 	240998: {}, // https://www.wowhead.com/classic-ptr/item=240998/soporific-blade
-	241015: {}, // https://www.wowhead.com/classic-ptr/item=241015/aegis-of-the-scarlet-bastion
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
