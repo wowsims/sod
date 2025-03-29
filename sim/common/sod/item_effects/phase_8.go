@@ -104,10 +104,14 @@ func init() {
 				buffAura.Activate(sim)
 			},
 		})
+
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
 		})
+
+		character.ItemSwap.RegisterActive(AbandonedExperiment)
+		character.ItemSwap.RegisterProc(RemnantsOfTheRed, buffAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=238961/caladbolg
@@ -181,6 +185,9 @@ func init() {
 			Spell: cdSpell,
 			Type:  core.CooldownTypeDPS,
 		})
+
+		character.ItemSwap.RegisterActive(Caladbolg)
+		character.ItemSwap.RegisterProc(Caladbolg, rangeDummyAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241008/condemnation
@@ -355,6 +362,8 @@ func init() {
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 		})
+
+		character.ItemSwap.RegisterActive(Experiment800M)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241011/greatstaff-of-fealty
@@ -572,10 +581,13 @@ func init() {
 				}
 			},
 		})
+
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
 		})
+
+		character.ItemSwap.RegisterActive(LuckyDoubloon)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240854/mercy
@@ -763,7 +775,7 @@ func init() {
 			Duration: time.Second * 20,
 		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.1)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:        "Remnants of the Red Trigger",
 			Callback:    core.CallbackOnSpellHitDealt,
 			Outcome:     core.OutcomeLanded,
@@ -774,6 +786,8 @@ func init() {
 				buffAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(RemnantsOfTheRed, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241038/sir-dornels-didgeridoo
@@ -877,10 +891,13 @@ func init() {
 				buffAuras[int32(sim.Roll(0, 7))].Activate(sim)
 			},
 		})
+
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
 		})
+
+		character.ItemSwap.RegisterActive(SirDornelsDidgeridoo)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241068/stiltzs-standard
