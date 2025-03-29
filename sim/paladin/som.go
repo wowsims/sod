@@ -31,22 +31,10 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			flags := spell.Flags
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-
-			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
-				Priority: core.ActionPriorityLow,
-				OnAction: func(sim *core.Simulation) {
-					currentFlags := spell.Flags
-					spell.Flags = flags
-					spell.DealDamage(sim, result)
-					spell.Flags = currentFlags
-					selfDamage := result.RawDamage() * 0.1
-					paladin.RemoveHealth(sim, selfDamage, healthMetrics)
-				},
-			})
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			selfDamage := result.RawDamage() * 0.1
+			paladin.RemoveHealth(sim, selfDamage, healthMetrics)
 		},
 	})
 
@@ -64,20 +52,11 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
-
-			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
-				Priority: core.ActionPriorityLow,
-				OnAction: func(sim *core.Simulation) {
-					spell.DealDamage(sim, result)
-
-					// damages the paladin for 10% of rawDamage, then adds 133% of that for everyone in the raid
-					selfDamage := result.RawDamage() * 0.1
-					paladin.RemoveHealth(sim, selfDamage, healthMetrics)
-					paladin.AddMana(sim, selfDamage*1.33, manaMetrics)
-				},
-			})
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)
+			// damages the paladin for 10% of rawDamage, then adds 133% of that for everyone in the raid
+			selfDamage := result.RawDamage() * 0.1
+			paladin.RemoveHealth(sim, selfDamage, healthMetrics)
+			paladin.AddMana(sim, selfDamage*1.33, manaMetrics)
 		},
 	})
 
