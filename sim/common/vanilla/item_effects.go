@@ -566,15 +566,16 @@ func init() {
 				for i := 0; i < targetCount; i++ {
 					result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeAlwaysHit)
 					character.GainHealth(sim, result.Damage, healthMetrics)
+					target = sim.Environment.NextTargetUnit(target)
+				}
 
-					// Confirmed by Zirene to pick the highest of your Agility or Strength
-					if character.GetStat(stats.Agility) >= character.GetStat(stats.Strength) {
-						agilityAura.Activate(sim)
-						agilityAura.AddStack(sim)
-					} else {
-						strengthAura.Activate(sim)
-						strengthAura.AddStack(sim)
-					}
+				// Confirmed by Zirene to pick the highest of your Agility or Strength
+				if character.GetStat(stats.Agility) >= character.GetStat(stats.Strength) {
+					agilityAura.Activate(sim)
+					agilityAura.AddStacks(sim, int32(targetCount))
+				} else {
+					strengthAura.Activate(sim)
+					strengthAura.AddStacks(sim, int32(targetCount))
 				}
 			},
 		})
