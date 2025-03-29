@@ -27,6 +27,7 @@ const (
 	CrimsonCleaver       = 240852
 	Queensfall           = 240853
 	Mercy                = 240854
+	Ravagane             = 240919
 	Deception            = 240922
 	Duplicity            = 240923
 	Experiment800M       = 240925
@@ -620,6 +621,61 @@ func init() {
 		case proto.Class_ClassHunter:
 			agent.(hunter.HunterAgent).GetHunter().ApplyQueensfallHunterEffect(aura)
 		}
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240919/ravagane
+	// Chance on hit: You attack all nearby enemies for 9 sec causing weapon damage plus an additional 200 every 1.5 sec.
+	// Confirmed PPM 0.8
+	itemhelpers.CreateWeaponProcAura(Ravagane, "Ravagane", 0.8, func(character *core.Character) *core.Aura {
+		tickSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231546},
+			SpellSchool: core.SpellSchoolPhysical,
+			DefenseType: core.DefenseTypeMelee,
+			ProcMask:    core.ProcMaskMeleeMHSpecial,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			BonusCoefficient: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				damage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) + 200
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMeleeSpecialHitAndCrit)
+				}
+			},
+		})
+
+		channelSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231547},
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskMeleeMHSpecial,
+			Flags:       core.SpellFlagChanneled,
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Ravagane Whirlwind",
+				},
+				NumberOfTicks: 3,
+				TickLength:    time.Second * 3,
+				IsAOE:         true,
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					tickSpell.Cast(sim, target)
+				},
+			},
+		})
+
+		return character.RegisterAura(core.Aura{
+			Label:    "Ravagane Bladestorm",
+			Duration: time.Second * 9,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AutoAttacks.CancelAutoSwing(sim)
+				channelSpell.AOEDot().Apply(sim)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AutoAttacks.EnableAutoSwing(sim)
+				channelSpell.AOEDot().Cancel(sim)
+			},
+		})
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241002/remnants-of-the-red
