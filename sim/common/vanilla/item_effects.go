@@ -564,7 +564,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for i := 0; i < targetCount; i++ {
-					result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeMagicHit)
+					result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeAlwaysHit)
 					character.GainHealth(sim, result.Damage, healthMetrics)
 
 					// Confirmed by Zirene to pick the highest of your Agility or Strength
