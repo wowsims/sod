@@ -212,7 +212,6 @@ var weaponDamageRegex = regexp.MustCompile(`<!--dmg-->([0-9]+) - ([0-9]+)`)
 var weaponDamageRegex2 = regexp.MustCompile(`<!--dmg-->([0-9]+) Damage`)
 var weaponDamageBonusSchoolRegex = regexp.MustCompile(`\+ ([0-9]+) - ([0-9]+) [a-zA-Z]+ Damage`)
 var weaponSpeedRegex = regexp.MustCompile(`<!--spd-->(([0-9]+).([0-9]+))`)
-var physicalBonusDamageRegex = regexp.MustCompile(`\+([0-9]+) Weapon Damage.`)
 
 var axesSkill = regexp.MustCompile(`Increased Axes \+([0-9]+)\.`)
 var swordsSkill = regexp.MustCompile(`Increased Swords \+([0-9]+)\.`)
@@ -246,6 +245,9 @@ var frostResistanceRegex = regexp.MustCompile(`\+([0-9]+) Frost Resistance`)
 var natureResistanceRegex = regexp.MustCompile(`\+([0-9]+) Nature Resistance`)
 var shadowResistanceRegex = regexp.MustCompile(`\+([0-9]+) Shadow Resistance`)
 var bonusArmorRegex = regexp.MustCompile(`Has ([0-9]+) bonus armor`)
+
+var physicalBonusDamageRegex = regexp.MustCompile(`\+([0-9]+) Weapon Damage.`)
+var periodicBonusDamagePctRegex = regexp.MustCompile(`Increases the damage dealt by your damage over time spells by ([0-9]+)%.`)
 
 // Match "Requires <a href=\"/...\" class="...">Profession</a> (level)"
 var alchemyRegex = regexp.MustCompile(`Requires <a [ =/\\"\w]*>Alchemy<\/a> \([0-9]+\)`)
@@ -684,6 +686,12 @@ func (item WowheadItemResponse) GetPhysicalBonusDamage() float64 {
 	return 0
 }
 
+func (item WowheadItemResponse) GetPeriodicBonusDamagePct() int32 {
+	valueStr := item.GetTooltipRegexString(periodicBonusDamagePctRegex, 1)
+	value, _ := strconv.Atoi(valueStr)
+	return int32(value)
+}
+
 func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 	weaponDamageMin, weaponDamageMax := item.GetWeaponDamage()
 
@@ -703,6 +711,7 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		WeaponSkills: weaponSkillsToSlice(item.GetWeaponSkills()),
 
 		BonusPhysicalDamage: item.GetPhysicalBonusDamage(),
+		BonusPeriodicPct:    item.GetPeriodicBonusDamagePct(),
 
 		WeaponDamageMin: weaponDamageMin,
 		WeaponDamageMax: weaponDamageMax,

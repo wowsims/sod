@@ -10,37 +10,43 @@ SpellMod implementation.
 */
 
 type SpellModConfig struct {
-	ClassMask         uint64
-	Kind              SpellModType
-	School            SpellSchool
-	SpellFlags        SpellFlag
-	SpellFlagsExclude SpellFlag
-	DefenseType       DefenseType
-	ProcMask          ProcMask
-	IntValue          int64
-	TimeValue         time.Duration
-	FloatValue        float64
-	KeyValue          string
-	ApplyCustom       SpellModApply
-	RemoveCustom      SpellModRemove
+	Kind SpellModType
+
+	ClassMask         uint64      // Only apply to spells that have a matching ClassSpellMask
+	ClassSpellsOnly   bool        // Only apply to spells that have a ClassSpellMask set
+	School            SpellSchool // Only apply to spells that have a matching SpellSchool
+	SpellFlags        SpellFlag   // Only apply to spells that have a matching SpellFlags
+	SpellFlagsExclude SpellFlag   // Only apply to spells that do NOT have a matching SpellFlags
+	DefenseType       DefenseType // Only apply to spells that have a matching DefenseType
+	ProcMask          ProcMask    // Only apply to spells that have a matching ProcMask
+
+	IntValue     int64
+	TimeValue    time.Duration
+	FloatValue   float64
+	KeyValue     string
+	ApplyCustom  SpellModApply
+	RemoveCustom SpellModRemove
 }
 
 type SpellMod struct {
-	ClassMask         uint64
-	Kind              SpellModType
-	School            SpellSchool
-	SpellFlags        SpellFlag
-	SpellFlagsExclude SpellFlag
-	DefenseType       DefenseType
-	ProcMask          ProcMask
-	floatValue        float64
-	intValue          int64
-	timeValue         time.Duration
-	keyValue          string
-	Apply             SpellModApply
-	Remove            SpellModRemove
-	IsActive          bool
-	AffectedSpells    []*Spell
+	Kind SpellModType
+
+	ClassMask         uint64      // Only apply to spells that have a matching ClassSpellMask
+	ClassSpellsOnly   bool        // Only apply to spells that have a ClassSpellMask set
+	School            SpellSchool // Only apply to spells that have a matching SpellSchool
+	SpellFlags        SpellFlag   // Only apply to spells that have a matching SpellFlags
+	SpellFlagsExclude SpellFlag   // Only apply to spells that do NOT have a matching SpellFlags
+	DefenseType       DefenseType // Only apply to spells that have a matching DefenseType
+	ProcMask          ProcMask    // Only apply to spells that have a matching ProcMask
+
+	floatValue     float64
+	intValue       int64
+	timeValue      time.Duration
+	keyValue       string
+	Apply          SpellModApply
+	Remove         SpellModRemove
+	IsActive       bool
+	AffectedSpells []*Spell
 }
 
 type SpellModApply func(mod *SpellMod, spell *Spell)
@@ -73,6 +79,7 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 
 	mod := &SpellMod{
 		ClassMask:         config.ClassMask,
+		ClassSpellsOnly:   config.ClassSpellsOnly,
 		Kind:              config.Kind,
 		School:            config.School,
 		SpellFlags:        config.SpellFlags,
@@ -129,6 +136,10 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 	}
 
 	if mod.ClassMask > 0 && !spell.Matches(mod.ClassMask) {
+		return false
+	}
+
+	if mod.ClassSpellsOnly && spell.ClassSpellMask == 0 {
 		return false
 	}
 
