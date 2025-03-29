@@ -778,6 +778,17 @@ func (spell *Spell) GetPeriodicDamageMultiplierAdditive() int64 {
 	return spell.periodicDamageMultiplierAdditivePct
 }
 
+func (spell *Spell) ApplyExtraCastCondition(newExtraCastCondition CanCastCondition) {
+	oldExtraCastCondition := spell.ExtraCastCondition
+	if oldExtraCastCondition == nil {
+		spell.ExtraCastCondition = newExtraCastCondition
+	} else {
+		spell.ExtraCastCondition = func(sim *Simulation, target *Unit) bool {
+			return oldExtraCastCondition(sim, target) || newExtraCastCondition(sim, target)
+		}
+	}
+}
+
 type CostType uint8
 
 const (

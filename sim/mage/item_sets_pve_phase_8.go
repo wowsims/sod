@@ -49,7 +49,10 @@ func (mage *Mage) applyScarletEnclaveDamage2PBonus() {
 			ClassMask: ClassSpellMask_MageLivingBomb,
 			IntValue:  LivingBombBaseNumTicks * int64(ticksDelta.Seconds()),
 		}).ApplyOnSpellHitDealt(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if dot := mage.LivingBomb.Dot(result.Target); !dot.IsActive() && spell.Matches(ClassSpellMask_MageLivingBombExplosion) && result.Landed() {
+			if dot := mage.LivingBomb.Dot(result.Target); spell.Matches(ClassSpellMask_MageLivingBombExplosion) && result.Landed() &&
+				// This is tricky because the Explosion is triggered after the DoT expires, but it shouldn't reapply Living Bomb to the exploding target
+				// If we know the DoT isn't active and the #NextTickAt() is CurrentTTime + 1 second then it must be the same target
+				!dot.IsActive() && dot.NextTickAt() != sim.CurrentTime+time.Second {
 				dot.Apply(sim)
 			}
 		})

@@ -756,3 +756,58 @@ func (hunter *Hunter) newBloodlashProcItem(bonusStrength float64, spellID int32)
 
 	hunter.ItemSwap.RegisterProc(BloodlashBow, aura)
 }
+
+// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Kill Shot by 5% per stack, stacking up to 20 times.
+func (hunter *Hunter) ApplyRegicideHunterEffect(itemID int32, aura *core.Aura) {
+	// Coup debuff array
+	debuffAuras := hunter.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+		return unit.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231765},
+			Label:     "Coup",
+			MaxStacks: core.TernaryInt32(unit.Level > hunter.Level, 20, 0),
+			Duration:  time.Second * 15,
+		})
+	})
+
+	killshotDamageMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Pct,
+		ClassMask: ClassSpellMask_HunterKillShot,
+	})
+
+	damageModTrigger := core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+		Name:           "Coup - Kill Shot Damage Mod Trigger",
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: ClassSpellMask_HunterKillShot,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			killshotDamageMod.UpdateFloatValue(1 + float64(debuffAuras.Get(result.Target).GetStacks())*0.05)
+			killshotDamageMod.Activate()
+		},
+	})
+	hunter.ItemSwap.RegisterProc(itemID, damageModTrigger)
+
+	consumptionTrigger := core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+		Name:           "Coup - Consume Stacks Trigger",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: ClassSpellMask_HunterKillShot,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			debuffAuras.Get(result.Target).Deactivate(sim)
+		},
+	})
+	hunter.ItemSwap.RegisterProc(itemID, consumptionTrigger)
+
+	// Apply the Coup debuff to the target hit by melee abilities
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:     "Regicide Trigger - Hunter",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			debuff := debuffAuras.Get(result.Target)
+			debuff.Activate(sim)
+			if debuff.MaxStacks > 0 {
+				debuff.AddStack(sim)
+			}
+		},
+	})
+}

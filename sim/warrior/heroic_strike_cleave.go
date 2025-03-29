@@ -115,7 +115,7 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 			for i := int32(0); i < min(targetCount, warrior.CleaveTargetCount); i++ {
 				baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 				spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				curTarget = sim.Environment.NextTargetUnit(target)
+				curTarget = sim.Environment.NextTargetUnit(curTarget)
 				if curTarget == target {
 					break
 				}

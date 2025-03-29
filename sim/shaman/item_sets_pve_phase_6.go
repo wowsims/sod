@@ -249,11 +249,9 @@ func (shaman *Shaman) applyTAQEnhancement4PBonus() {
 			}
 
 			dot := burnSpell.Dot(result.Target)
-			dotDamage := result.Damage * 0.3
-			if dot.IsActive() {
-				dotDamage += dot.SnapshotBaseDamage * float64(dot.MaxTicksRemaining())
-			}
-			dot.SnapshotBaseDamage = dotDamage / float64(dot.NumberOfTicks)
+			newDamage := result.Damage * 0.3
+
+			dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / float64(dot.NumberOfTicks)
 			dot.SnapshotAttackerMultiplier = 1
 
 			burnSpell.Cast(sim, result.Target)

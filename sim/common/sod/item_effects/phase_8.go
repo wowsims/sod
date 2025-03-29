@@ -25,6 +25,7 @@ const (
 	WillOfTheMountain    = 239060
 	HighCommandersGuard  = 240841
 	LightfistHammer      = 240850
+	Regicide             = 240851
 	CrimsonCleaver       = 240852
 	Queensfall           = 240853
 	Mercy                = 240854
@@ -104,10 +105,14 @@ func init() {
 				buffAura.Activate(sim)
 			},
 		})
+
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
 		})
+
+		character.ItemSwap.RegisterActive(AbandonedExperiment)
+		character.ItemSwap.RegisterProc(RemnantsOfTheRed, buffAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=238961/caladbolg
@@ -181,6 +186,9 @@ func init() {
 			Spell: cdSpell,
 			Type:  core.CooldownTypeDPS,
 		})
+
+		character.ItemSwap.RegisterActive(Caladbolg)
+		character.ItemSwap.RegisterProc(Caladbolg, rangeDummyAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241008/condemnation
@@ -355,6 +363,8 @@ func init() {
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 		})
+
+		character.ItemSwap.RegisterActive(Experiment800M)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241011/greatstaff-of-fealty
@@ -572,10 +582,13 @@ func init() {
 				}
 			},
 		})
+
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
 		})
+
+		character.ItemSwap.RegisterActive(LuckyDoubloon)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240854/mercy
@@ -675,6 +688,29 @@ func init() {
 		character.ItemSwap.RegisterProc(MirageRodOfIllusion, triggerAura)
 	})
 
+	// https://www.wowhead.com/classic-ptr/item=240851/regicide
+	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Execute by 10% per stack, stacking up to 20 times. At 20 stacks, Execute may be cast regardless of the target's health.
+	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Envenom by 5% per stack, stacking up to 20 times.
+	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Kill Shot by 5% per stack, stacking up to 20 times.
+	core.NewItemEffect(Regicide, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		aura := core.MakePermanent(character.RegisterAura(core.Aura{
+			Label: "Regicide Trigger",
+		}))
+
+		switch character.Class {
+		case proto.Class_ClassWarrior:
+			agent.(warrior.WarriorAgent).GetWarrior().ApplyRegicideWarriorEffect(Regicide, aura)
+		case proto.Class_ClassRogue:
+			agent.(rogue.RogueAgent).GetRogue().ApplyRegicideRogueEffect(Regicide, aura)
+		case proto.Class_ClassHunter:
+			agent.(hunter.HunterAgent).GetHunter().ApplyRegicideHunterEffect(Regicide, aura)
+		}
+
+		character.ItemSwap.RegisterProc(Regicide, aura)
+	})
+
 	// https://www.wowhead.com/classic-ptr/item=240853/queensfall
 	// Your Bloodthirst, Mortal Strike, Shield Slam, Heroic Strike, and Cleave critical strikes set the duration of your Rend on the target to 21 sec.
 	// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture on the target to 16 secs
@@ -763,7 +799,7 @@ func init() {
 			Duration: time.Second * 20,
 		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.1)
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:        "Remnants of the Red Trigger",
 			Callback:    core.CallbackOnSpellHitDealt,
 			Outcome:     core.OutcomeLanded,
@@ -774,6 +810,8 @@ func init() {
 				buffAura.Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(RemnantsOfTheRed, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241038/sir-dornels-didgeridoo
@@ -877,10 +915,13 @@ func init() {
 				buffAuras[int32(sim.Roll(0, 7))].Activate(sim)
 			},
 		})
+
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
 		})
+
+		character.ItemSwap.RegisterActive(SirDornelsDidgeridoo)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241068/stiltzs-standard

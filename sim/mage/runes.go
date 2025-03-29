@@ -227,9 +227,7 @@ func (mage *Mage) applyFingersOfFrost() {
 		},
 	})
 
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: "Fingers of Frost Trigger",
-	})).AttachProcTrigger(core.ProcTrigger{
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
 		Name:           "Fingers of Frost Trigger - Direct",
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
@@ -241,7 +239,9 @@ func (mage *Mage) applyFingersOfFrost() {
 				mage.FingersOfFrostAura.SetStacks(sim, mage.FingersOfFrostAura.MaxStacks)
 			}
 		},
-	}).AttachProcTrigger(core.ProcTrigger{
+	})
+
+	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
 		Name:           "Fingers of Frost Trigger - Periodic",
 		Callback:       core.CallbackOnPeriodicDamageDealt,
 		ClassSpellMask: ClassSpellMask_MageBlizzard, // Only procs from Blizzard and only with Improved Blizzard for the chill effect
