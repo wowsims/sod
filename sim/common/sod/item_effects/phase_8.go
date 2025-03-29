@@ -481,10 +481,10 @@ func init() {
 	core.NewItemEffect(Queensfall, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		aura := character.RegisterAura(core.Aura{
+		aura := core.MakePermanent(character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1232181},
 			Label:    "Queensfall Trigger",
-		})
+		}))
 
 		switch character.Class {
 		case proto.Class_ClassWarrior:

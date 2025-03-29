@@ -223,14 +223,14 @@ func (hunter *Hunter) ApplyFallenRegalityHunterBonus(aura *core.Aura) {
 		hunter.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Pct,
 			ClassMask:  ClassSpellMask_HunterFlankingStrike,
-			FloatValue: 1.50,
+			FloatValue: 2.50,
 		})
 
 		if hunter.pet != nil {
 			hunter.pet.AddStaticMod(core.SpellModConfig{
 				Kind:       core.SpellMod_DamageDone_Pct,
 				ClassMask:  ClassSpellMask_HunterPetFlankingStrike,
-				FloatValue: 1.50,
+				FloatValue: 2.50,
 			})
 		}
 	}
