@@ -21,6 +21,7 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
+	Caladbolg            = 238961
 	WillOfTheMountain    = 239060
 	HighCommandersGuard  = 240841
 	LightfistHammer      = 240850
@@ -106,6 +107,79 @@ func init() {
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=238961/caladbolg
+	// Use: The earth once again swallow up Caladbolg for 20 sec, decreasing movement speed by 50%. If moving, your speed increases every 2 seconds.
+	// Smashing into an enemy deals 300 to 2700 fire damage, knocks back all nearby enemy players, and ends this effect. (2 Min Cooldown)
+	core.NewItemEffect(Caladbolg, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		moveSpeedActionID := &core.ActionID{SpellID: 1232322}
+
+		damageSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 1232323},
+			SpellSchool:      core.SpellSchoolFire,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(300, 2700), spell.OutcomeMagicCrit) // Has a flag that it always hits
+				}
+			},
+		})
+
+		// TODO: Increasing move speed every 2 seconds if we really care enough
+		var rangeDummyPA *core.PendingAction
+		rangeDummyAura := character.RegisterAura(core.Aura{
+			Label:    "Caladbolg Range Dummy",
+			Duration: core.NeverExpires,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				rangeDummyPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:   time.Millisecond * 500,
+					Priority: core.ActionPriorityLow,
+					OnAction: func(sim *core.Simulation) {
+						if character.DistanceFromTarget <= core.MaxMeleeAttackRange {
+							damageSpell.Cast(sim, character.CurrentTarget)
+							character.RemoveMoveSpeedModifier(moveSpeedActionID)
+							rangeDummyPA.Cancel(sim)
+						}
+					},
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				rangeDummyPA.Cancel(sim)
+			},
+		})
+
+		cdSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: Caladbolg},
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				character.AddMoveSpeedModifier(moveSpeedActionID, 0.50)
+				character.MoveTo(core.MaxMeleeAttackRange, sim)
+				rangeDummyAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: cdSpell,
+			Type:  core.CooldownTypeDPS,
 		})
 	})
 
