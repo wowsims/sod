@@ -21,6 +21,7 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
+	HighCommandersGuard  = 240841
 	LightfistHammer      = 240850
 	CrimsonCleaver       = 240852
 	Queensfall           = 240853
@@ -308,6 +309,20 @@ func init() {
 	// https://www.wowhead.com/classic-ptr/item=241034/heart-of-light
 	// Use: Increases maximum health by 2500 for 20 sec. (2 Min Cooldown)
 	core.NewSimpleStatDefensiveTrinketEffect(HeartOfLight, stats.Stats{stats.Health: 2500}, time.Second*20, time.Minute*2)
+
+	// https://www.wowhead.com/classic-ptr/item=240841/high-commanders-guard
+	// Chance on hit: Increase Defense by 20 and Armor by 750 for 10 sec.
+	// Confirmed PPM 2.5
+	itemhelpers.CreateWeaponProcAura(HighCommandersGuard, "High Commander's Guard", 2.5, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231254},
+			Label:    "Scarlet Bulwark",
+			Duration: time.Second * 10,
+		}).AttachStatsBuff(stats.Stats{
+			stats.Defense: 20,
+			stats.Armor:   750,
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=241039/infusion-of-souls
 	// The Global Cooldown caused by your non-weapon based damaging spells can be reduced by Spell Haste, up to a 0.5 second reduction.
