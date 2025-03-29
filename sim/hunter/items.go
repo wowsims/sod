@@ -664,15 +664,25 @@ func (hunter *Hunter) ApplyRegicideHunterEffect(aura *core.Aura) {
 	})
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
-		Label: "Coup Killshot Damage",
+		Label: "Coup - Consume Stacks",
 	}).AttachProcTrigger(core.ProcTrigger{
-		Name:           "Coup Trigger - Hunter",
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: ClassSpellMask_HunterKillShot,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() {
 				debuffAuras[result.Target.Index].SetStacks(sim, 0)
 			}
+		},
+	}))
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Coup - Apply Killshot Mod",
+	}).AttachProcTrigger(core.ProcTrigger{
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: ClassSpellMask_HunterKillShot,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			killshotDamageMod.UpdateIntValue(int64(debuffAuras[result.Target.Index].GetStacks() * 5))
+			killshotDamageMod.Activate()
 		},
 	}))
 

@@ -246,15 +246,25 @@ func (rogue *Rogue) ApplyRegicideRogueEffect(aura *core.Aura) {
 	})
 
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
-		Label: "Coup Execute Damage",
+		Label: "Coup - Consume Stacks",
 	}).AttachProcTrigger(core.ProcTrigger{
-		Name:           "Coup Trigger - Rogue",
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: ClassSpellMask_RogueEnvenom,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() {
 				debuffAuras[result.Target.Index].SetStacks(sim, 0)
 			}
+		},
+	}))
+
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
+		Label: "Coup - Apply Envenom Mod",
+	}).AttachProcTrigger(core.ProcTrigger{
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: ClassSpellMask_RogueEnvenom,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			envenomDamageMod.UpdateIntValue(int64(debuffAuras[result.Target.Index].GetStacks() * 5))
+			envenomDamageMod.Activate()
 		},
 	}))
 
@@ -267,8 +277,6 @@ func (rogue *Rogue) ApplyRegicideRogueEffect(aura *core.Aura) {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			debuffAuras[result.Target.Index].Activate(sim)
 			debuffAuras[result.Target.Index].AddStack(sim)
-			envenomDamageMod.UpdateIntValue(int64(debuffAuras[result.Target.Index].GetStacks() * 5))
-			envenomDamageMod.Activate()
 		},
 	})
 }

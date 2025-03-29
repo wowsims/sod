@@ -268,21 +268,40 @@ func (warrior *Warrior) ApplyRegicideWarriorEffect(aura *core.Aura) {
 		return aura
 	})
 
+	warrior.OnSpellRegistered(func(spell *core.Spell) {
+		if spell.ClassSpellMask == ClassSpellMask_WarriorExecute {
+			spell.ApplyExtraCastCondition(
+				func(sim *core.Simulation, target *core.Unit) bool {
+					return debuffAuras[target.Index].IsActive() && debuffAuras[target.Index].GetStacks() == 20
+				})
+		}
+	})
+
 	exeDamageMod := warrior.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_WarriorExecute,
 	})
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
-		Label: "Coup Execute Damage",
+		Label: "Coup - Consume Stacks",
 	}).AttachProcTrigger(core.ProcTrigger{
-		Name:           "Coup Trigger - Warrior",
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: ClassSpellMask_WarriorExecute,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() {
 				debuffAuras[result.Target.Index].SetStacks(sim, 0)
 			}
+		},
+	}))
+
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Coup - Apply Execute Mod",
+	}).AttachProcTrigger(core.ProcTrigger{
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: ClassSpellMask_WarriorExecute,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			exeDamageMod.UpdateIntValue(int64(debuffAuras[result.Target.Index].GetStacks() * 10))
+			exeDamageMod.Activate()
 		},
 	}))
 
@@ -295,8 +314,6 @@ func (warrior *Warrior) ApplyRegicideWarriorEffect(aura *core.Aura) {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			debuffAuras[result.Target.Index].Activate(sim)
 			debuffAuras[result.Target.Index].AddStack(sim)
-			exeDamageMod.UpdateIntValue(int64(debuffAuras[result.Target.Index].GetStacks() * 10))
-			exeDamageMod.Activate()
 		},
 	})
 }

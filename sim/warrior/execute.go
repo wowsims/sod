@@ -48,7 +48,7 @@ func (warrior *Warrior) registerExecuteSpell() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return sim.IsExecutePhase20() || (hasSuddenDeathRune && warrior.SuddenDeathAura.IsActive()) || (target.HasActiveAura("Coup") && target.GetAura("Coup").GetStacks() == 20)
+			return sim.IsExecutePhase20() || (hasSuddenDeathRune && warrior.SuddenDeathAura.IsActive())
 		},
 
 		CritDamageBonus: warrior.impale(),
