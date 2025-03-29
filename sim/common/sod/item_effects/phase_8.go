@@ -696,18 +696,19 @@ func init() {
 		character := agent.GetCharacter()
 
 		aura := core.MakePermanent(character.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 1231417},
-			Label:    "Regicide Trigger",
+			Label: "Regicide Trigger",
 		}))
 
 		switch character.Class {
 		case proto.Class_ClassWarrior:
-			agent.(warrior.WarriorAgent).GetWarrior().ApplyRegicideWarriorEffect(aura)
+			agent.(warrior.WarriorAgent).GetWarrior().ApplyRegicideWarriorEffect(Regicide, aura)
 		case proto.Class_ClassRogue:
-			agent.(rogue.RogueAgent).GetRogue().ApplyRegicideRogueEffect(aura)
+			agent.(rogue.RogueAgent).GetRogue().ApplyRegicideRogueEffect(Regicide, aura)
 		case proto.Class_ClassHunter:
-			agent.(hunter.HunterAgent).GetHunter().ApplyRegicideHunterEffect(aura)
+			agent.(hunter.HunterAgent).GetHunter().ApplyRegicideHunterEffect(Regicide, aura)
 		}
+
+		character.ItemSwap.RegisterProc(Regicide, aura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240853/queensfall

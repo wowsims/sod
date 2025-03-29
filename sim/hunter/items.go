@@ -645,46 +645,43 @@ func (hunter *Hunter) newBloodlashProcItem(bonusStrength float64, spellID int32)
 }
 
 // Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Kill Shot by 5% per stack, stacking up to 20 times.
-func (hunter *Hunter) ApplyRegicideHunterEffect(aura *core.Aura) {
+func (hunter *Hunter) ApplyRegicideHunterEffect(itemID int32, aura *core.Aura) {
 	// Coup debuff array
 	debuffAuras := hunter.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
-		aura := unit.RegisterAura(core.Aura{
+		return unit.RegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 1231765},
 			Label:     "Coup",
-			MaxStacks: 20,
+			MaxStacks: core.TernaryInt32(unit.Level > hunter.Level, 20, 0),
 			Duration:  time.Second * 15,
 		})
-
-		return aura
 	})
 
 	killshotDamageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
+		Kind:      core.SpellMod_DamageDone_Pct,
 		ClassMask: ClassSpellMask_HunterKillShot,
 	})
 
-	core.MakePermanent(hunter.RegisterAura(core.Aura{
-		Label: "Coup - Consume Stacks",
-	}).AttachProcTrigger(core.ProcTrigger{
-		Callback:       core.CallbackOnSpellHitDealt,
-		ClassSpellMask: ClassSpellMask_HunterKillShot,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Landed() {
-				debuffAuras[result.Target.Index].SetStacks(sim, 0)
-			}
-		},
-	}))
-
-	core.MakePermanent(hunter.RegisterAura(core.Aura{
-		Label: "Coup - Apply Killshot Mod",
-	}).AttachProcTrigger(core.ProcTrigger{
+	damageModTrigger := core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+		Name:           "Coup - Kill Shot Damage Mod Trigger",
 		Callback:       core.CallbackOnApplyEffects,
 		ClassSpellMask: ClassSpellMask_HunterKillShot,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			killshotDamageMod.UpdateIntValue(int64(debuffAuras[result.Target.Index].GetStacks() * 5))
+			killshotDamageMod.UpdateFloatValue(1 + float64(debuffAuras.Get(result.Target).GetStacks())*0.05)
 			killshotDamageMod.Activate()
 		},
-	}))
+	})
+	hunter.ItemSwap.RegisterProc(itemID, damageModTrigger)
+
+	consumptionTrigger := core.MakeProcTriggerAura(&hunter.Unit, core.ProcTrigger{
+		Name:           "Coup - Consume Stacks Trigger",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: ClassSpellMask_HunterKillShot,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			debuffAuras.Get(result.Target).Deactivate(sim)
+		},
+	})
+	hunter.ItemSwap.RegisterProc(itemID, consumptionTrigger)
 
 	// Apply the Coup debuff to the target hit by melee abilities
 	aura.AttachProcTrigger(core.ProcTrigger{
@@ -693,8 +690,11 @@ func (hunter *Hunter) ApplyRegicideHunterEffect(aura *core.Aura) {
 		Outcome:  core.OutcomeLanded,
 		ProcMask: core.ProcMaskMelee,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			debuffAuras[result.Target.Index].Activate(sim)
-			debuffAuras[result.Target.Index].AddStack(sim)
+			debuff := debuffAuras.Get(result.Target)
+			debuff.Activate(sim)
+			if debuff.MaxStacks > 0 {
+				debuff.AddStack(sim)
+			}
 		},
 	})
 }
