@@ -33,6 +33,7 @@ const (
 	Deception                = 240922
 	Duplicity                = 240923
 	Experiment800M           = 240925
+	SoporificBlade           = 240998
 	TyrsFall                 = 241001
 	RemnantsOfTheRed         = 241002
 	MirageRodOfIllusion      = 241003
@@ -959,6 +960,61 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterActive(SirDornelsDidgeridoo)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240998/soporific-blade
+	// Use: Your next regular melee attack made within 20 sec deals Arcane damage equal to 2 times your spell power, and puts the target to sleep for 20 sec. (2 Min Cooldown)
+	core.NewItemEffect(SoporificBlade, func(agent core.Agent) {
+		character := agent.GetCharacter()
+		actionID := core.ActionID{ItemID: SoporificBlade}
+
+		damageSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 1231614},
+			SpellSchool:      core.SpellSchoolArcane,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			BonusCoefficient: 2,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.CalcAndDealDamage(sim, target, 0, spell.OutcomeMagicHitAndCrit)
+			},
+		})
+
+		procTrigger := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Soporific Blade Trigger",
+			Duration: time.Second * 20,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && result.Landed() {
+					damageSpell.Cast(sim, result.Target)
+					aura.Deactivate(sim)
+				}
+			},
+		})
+
+		cdSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				procTrigger.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: cdSpell,
+		})
+
+		character.ItemSwap.RegisterActive(SoporificBlade)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241068/stiltzs-standard

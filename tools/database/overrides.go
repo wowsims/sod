@@ -171,9 +171,6 @@ var ItemDenyList = map[int32]struct{}{
 	240936: {}, // https://www.wowhead.com/classic-ptr/item=240936/inert-ashbringer probably not going to be used
 	241082: {}, // https://www.wowhead.com/classic-ptr/item=241082/ashbringer confirmed unuesd
 	241123: {}, // https://www.wowhead.com/classic-ptr/item=241123/reborn-dagger confirmed unused
-
-	// Phase 8 Denylist. Remove items as they're implemented
-	240998: {}, // https://www.wowhead.com/classic-ptr/item=240998/soporific-blade
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
