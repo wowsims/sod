@@ -253,3 +253,50 @@ func (warrior *Warrior) ApplyQueensfallWarriorEffect(aura *core.Aura) {
 		},
 	})
 }
+
+// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Execute by 10% per stack, stacking up to 20 times. At 20 stacks, Execute may be cast regardless of the target's health.
+func (warrior *Warrior) ApplyRegicideWarriorEffect(aura *core.Aura) {
+	// Coup debuff array
+	debuffAuras := warrior.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+		aura := unit.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231417},
+			Label:     "Coup",
+			MaxStacks: 20,
+			Duration:  core.NeverExpires,
+		})
+
+		return aura
+	})
+
+	exeDamageMod := warrior.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Pct,
+		ClassMask: ClassSpellMask_WarriorExecute,
+	})
+
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
+		Label: "Coup Execute Damage",
+	}).AttachProcTrigger(core.ProcTrigger{
+		Name:           "Coup Trigger - Warrior",
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: ClassSpellMask_WarriorExecute,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() {
+				debuffAuras[result.Target.Index].SetStacks(sim, 0)
+			}
+		},
+	}))
+
+	// Apply the Coup debuff to the target hit by melee abilities
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:     "Regicide Trigger - Warrior",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			debuffAuras[result.Target.Index].Activate(sim)
+			debuffAuras[result.Target.Index].AddStack(sim)
+			exeDamageMod.UpdateFloatValue(1 + float64(debuffAuras[result.Target.Index].GetStacks())*0.10)
+			exeDamageMod.Activate()
+		},
+	})
+}

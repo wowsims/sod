@@ -23,6 +23,7 @@ const (
 
 	HighCommandersGuard  = 240841
 	LightfistHammer      = 240850
+	Regicide             = 240851
 	CrimsonCleaver       = 240852
 	Queensfall           = 240853
 	Mercy                = 240854
@@ -540,6 +541,28 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterProc(MirageRodOfIllusion, triggerAura)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240851/regicide
+	// Your Bloodthirst, Mortal Strike, Shield Slam, Heroic Strike, and Cleave critical strikes set the duration of your Rend on the target to 21 sec.
+	// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture on the target to 16 secs
+	// Your Raptor Strike and Mongoose Bite critical strikes set the duration of your Serpent Sting on the target to 15 sec
+	core.NewItemEffect(Regicide, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		aura := core.MakePermanent(character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231417},
+			Label:    "Regicide Trigger",
+		}))
+
+		switch character.Class {
+		case proto.Class_ClassWarrior:
+			agent.(warrior.WarriorAgent).GetWarrior().ApplyRegicideWarriorEffect(aura)
+		case proto.Class_ClassRogue:
+			agent.(rogue.RogueAgent).GetRogue().ApplyRegicideRogueEffect(aura)
+		case proto.Class_ClassHunter:
+			agent.(hunter.HunterAgent).GetHunter().ApplyRegicideHunterEffect(aura)
+		}
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240853/queensfall
