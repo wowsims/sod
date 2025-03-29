@@ -173,7 +173,6 @@ var ItemDenyList = map[int32]struct{}{
 	236317: {}, // https://www.wowhead.com/classic-ptr/item=236317/visera-the-gutrender
 	238945: {}, // https://www.wowhead.com/classic-ptr/item=238945/caladboulder
 	238961: {}, // https://www.wowhead.com/classic-ptr/item=238961/caladbolg
-	239060: {}, // https://www.wowhead.com/classic-ptr/item=239060/will-of-the-mountain
 	239301: {}, // https://www.wowhead.com/classic-ptr/item=239301/corrupted-ashbringer
 	240837: {}, // https://www.wowhead.com/classic-ptr/item=240837/strings-of-fate
 	240842: {}, // https://www.wowhead.com/classic-ptr/item=240842/scarlet-rotbringer

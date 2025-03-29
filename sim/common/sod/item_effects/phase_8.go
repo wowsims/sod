@@ -21,6 +21,7 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
+	WillOfTheMountain    = 239060
 	HighCommandersGuard  = 240841
 	LightfistHammer      = 240850
 	CrimsonCleaver       = 240852
@@ -222,6 +223,63 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterProc(Duplicity, triggerAura)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240925/experiment-800m
+	// Use: Transform into a Scarlet Cannon for 20 sec, causing your ranged attacks to explode for 386 to 472 Fire damage to all enemies within 8 yards of your target. (2 Min Cooldown)
+	core.NewItemEffect(Experiment800M, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		numHits := character.Env.GetNumTargets()
+		explosionSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231607},
+			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				curTarget := target
+				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+					damage := sim.Roll(386, 472)
+					spell.CalcAndDealDamage(sim, curTarget, damage, spell.OutcomeMagicCrit)
+					curTarget = sim.Environment.NextTargetUnit(curTarget)
+				}
+			},
+		})
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231605},
+			Label:    "EXPERIMENT-8OOM!!!",
+			Duration: time.Second * 20,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, spellResult *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskRanged) && spellResult.Landed() {
+					explosionSpell.Cast(sim, spellResult.Target)
+				}
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 1231605},
+			Flags:    core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
+		})
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241011/greatstaff-of-fealty
@@ -723,59 +781,17 @@ func init() {
 		character.ItemSwap.RegisterProc(TyrsFall, triggerAura)
 	})
 
-	core.NewItemEffect(Experiment800M, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		numHits := character.Env.GetNumTargets()
-		explosionSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 1231607},
-			SpellSchool: core.SpellSchoolFire,
-			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
-
-			DamageMultiplier: 1,
-			ThreatMultiplier: 1,
-
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				curTarget := target
-				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
-					damage := sim.Roll(386, 472)
-					spell.CalcAndDealDamage(sim, curTarget, damage, spell.OutcomeMagicCrit)
-					curTarget = sim.Environment.NextTargetUnit(curTarget)
-				}
-			},
-		})
-
-		buffAura := character.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 1231605},
-			Label:    "EXPERIMENT-8OOM!!!",
-			Duration: time.Second * 20,
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, spellResult *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskRanged) && spellResult.Landed() {
-					explosionSpell.Cast(sim, spellResult.Target)
-				}
-			},
-		})
-
-		spell := character.RegisterSpell(core.SpellConfig{
-			ActionID: core.ActionID{SpellID: 1231605},
-			Flags:    core.SpellFlagOffensiveEquipment,
-			Cast: core.CastConfig{
-				CD: core.Cooldown{
-					Timer:    character.NewTimer(),
-					Duration: time.Minute * 2,
-				},
-			},
-			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				buffAura.Activate(sim)
-			},
-		})
-
-		character.AddMajorCooldown(core.MajorCooldown{
-			Spell: spell,
-			Type:  core.CooldownTypeDPS,
-		})
+	// https://www.wowhead.com/classic-ptr/item=239060/will-of-the-mountain
+	// Chance on hit: Invoke the Will of the Mountain, increasing physical damage dealt by 5%, armor by 500, and size by 20% for 15 sec.
+	// PPM confirmed 0.5
+	itemhelpers.CreateWeaponProcAura(WillOfTheMountain, "Will of the Mountain", 0.5, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231289},
+			Label:    "Avatar of the Mountain",
+			Duration: time.Second * 15,
+		}).AttachMultiplicativePseudoStatBuff(
+			&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.05,
+		).AttachStatBuff(stats.Armor, 500)
 	})
 
 	core.AddEffectsToTest = true
