@@ -44,6 +44,14 @@ func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
 		Callback:       core.CallbackOnApplyEffects,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			hasSerpentSting := hunter.SerpentSting.Dot(result.Target).IsActive()
+			if hunter.SoFSerpentSting != nil {
+				for _, sting := range hunter.SoFSerpentSting {
+					if sting != nil {
+						hasSerpentSting = hasSerpentSting || sting.Dot(result.Target).IsActive()
+					}
+				}
+			}
+			 
 			hasWyvernStrike := hunter.WyvernStrike != nil && hunter.WyvernStrike.Dot(result.Target).IsActive()
 			damageMod.UpdateFloatValue(core.TernaryFloat64(hasSerpentSting || hasWyvernStrike, 1.20, 1.0))
 			damageMod.Activate()

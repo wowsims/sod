@@ -106,6 +106,7 @@ func (hunter *Hunter) ApplyTalents() {
 	hunter.applyEfficiency()
 	hunter.applyTrapMastery()
 	hunter.applyCleverTraps()
+	hunter.applyImprovedSerpentSting()
 }
 
 func (hunter *Hunter) applyFrenzy() {
@@ -231,4 +232,20 @@ func (hunter *Hunter) applyEfficiency() {
 			spell.Cost.FlatModifier -= costModifier
 		}
 	})
+}
+
+func (hunter *Hunter) applyImprovedSerpentSting() {
+	if hunter.Talents.ImprovedSerpentSting == 0 {
+		return
+	}
+
+	damageBonus  := int64(2 * hunter.Talents.ImprovedSerpentSting)
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Improved Serpent Sting",
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterSoFSerpentSting | ClassSpellMask_HunterChimeraSerpent,
+		IntValue:  damageBonus,
+	}))
 }
