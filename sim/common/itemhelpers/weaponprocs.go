@@ -113,24 +113,29 @@ func CreateWeaponProcSpell(itemID int32, itemName string, ppm float64, procSpell
 // Create a weapon proc for a custom aura.
 func CreateWeaponProcAura(itemID int32, itemName string, ppm float64, procAuraGenerator func(character *core.Character) *core.Aura) {
 	core.NewItemEffect(itemID, func(agent core.Agent) {
-		character := agent.GetCharacter()
-
-		procAura := procAuraGenerator(character)
-
-		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0)
-
-		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              itemName + " Proc",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			DPM:               dpm,
-			DPMProcCheck:      core.DPMProc,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				procAura.Activate(sim)
-			},
-		})
-
-		character.ItemSwap.RegisterProc(itemID, aura)
+		AddWeaponProcAura(agent.GetCharacter(), itemID, itemName, ppm, procAuraGenerator)
 	})
+}
+
+// Create a weapon proc for a custom aura and add it to an existing item effect.
+func AddWeaponProcAura(character *core.Character, itemID int32, itemName string, ppm float64, procAuraGenerator func(character *core.Character) *core.Aura) {
+	procAura := procAuraGenerator(character)
+	dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(itemID, ppm, 0)
+
+	aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		Name:              itemName + " Proc",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+		DPM:               dpm,
+		DPMProcCheck:      core.DPMProc,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			procAura.Activate(sim)
+			if procAura.MaxStacks > 0 {
+				procAura.SetStacks(sim, procAura.MaxStacks)
+			}
+		},
+	})
+
+	character.ItemSwap.RegisterProc(itemID, aura)
 }

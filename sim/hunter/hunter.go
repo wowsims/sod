@@ -124,7 +124,6 @@ type Hunter struct {
 	MeleeSpells []*core.Spell
 	LastShot    *core.Spell
 
-	FlankingStrikeAura *core.Aura
 	RaptorFuryAura     *core.Aura
 	SniperTrainingAura *core.Aura
 	CobraStrikesAura   *core.Aura

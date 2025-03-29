@@ -384,32 +384,17 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(Leogan, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
-		
-		paladin.leoganGCDReduction = 0.5
 
-		vanilla.BlazefuryTriggerAura(&paladin.Character, Leogan, 1231550, 1231549, core.SpellSchoolHoly, 2)
-
-		holyMightAura := paladin.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 1231548},
-			Label:    "Holy Might",
-			Duration: time.Second * 15,
-		}).AttachStatBuff(stats.Strength, 250)
-
-		dpm := paladin.AutoAttacks.NewDynamicProcManagerForWeaponEffect(Leogan, 1.9, 0)
-		
-		triggerAura := core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-			Name:              "Holy Might Trigger",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
-			DPM:               dpm,
-			DPMProcCheck:      core.DPMProc,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				holyMightAura.Activate(sim)
-			},
+		paladin.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_GlobalCooldown_Flat,
+			ClassMask: ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath,
+			TimeValue: -time.Millisecond * 500,
 		})
 
-		paladin.ItemSwap.RegisterProc(Leogan, triggerAura)
+		vanilla.BlazefuryTriggerAura(&paladin.Character, Leogan, 1231550, 1231549, core.SpellSchoolHoly, 2)
+		itemhelpers.AddWeaponProcAura(paladin.GetCharacter(), Leogan, "Leogan", 2.0, func(character *core.Character) *core.Aura {
+			return paladin.NewTemporaryStatsAura("Holy Might", core.ActionID{SpellID: 1231548}, stats.Stats{stats.Strength: 250}, time.Second*15)
+		})
 	})
 
 	core.AddEffectsToTest = true

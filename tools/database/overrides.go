@@ -165,6 +165,9 @@ var ItemDenyList = map[int32]struct{}{
 	227989: {}, // https://www.wowhead.com/classic/item=227989/hand-of-justice unused item
 	227995: {}, // https://www.wowhead.com/classic/item=227995/cadaverous-armor unused item
 	228498: {}, // Unused Dreadblade of the Destructor
+	240195: {}, // https://www.wowhead.com/classic-ptr/item=240195/invisible-sword confirmed unused
+	241082: {}, // https://www.wowhead.com/classic-ptr/item=241082/ashbringer confirmed unuesd
+	241123: {}, // https://www.wowhead.com/classic-ptr/item=241123/reborn-dagger confirmed unused
 
 	// Phase 8 Denylist. Remove items as they're implemented
 	236317: {}, // https://www.wowhead.com/classic-ptr/item=236317/visera-the-gutrender
@@ -172,17 +175,12 @@ var ItemDenyList = map[int32]struct{}{
 	238961: {}, // https://www.wowhead.com/classic-ptr/item=238961/caladbolg
 	239060: {}, // https://www.wowhead.com/classic-ptr/item=239060/will-of-the-mountain
 	239301: {}, // https://www.wowhead.com/classic-ptr/item=239301/corrupted-ashbringer
-	240195: {}, // https://www.wowhead.com/classic-ptr/item=240195/invisible-sword
 	240837: {}, // https://www.wowhead.com/classic-ptr/item=240837/strings-of-fate
 	240841: {}, // https://www.wowhead.com/classic-ptr/item=240841/high-commanders-guard
 	240842: {}, // https://www.wowhead.com/classic-ptr/item=240842/scarlet-rotbringer
 	240844: {}, // https://www.wowhead.com/classic-ptr/item=240844/putress-poker
-	240850: {}, // https://www.wowhead.com/classic-ptr/item=240850/lightfist-hammer
-	240852: {}, // https://www.wowhead.com/classic-ptr/item=240852/crimson-cleaver
-	240853: {}, // https://www.wowhead.com/classic-ptr/item=240853/queensfall
-	240854: {}, // https://www.wowhead.com/classic-ptr/item=240854/mercy
+	240851: {}, // https://www.wowhead.com/classic-ptr/item=240851/regicide
 	240919: {}, // https://www.wowhead.com/classic-ptr/item=240919/ravagane
-	240921: {}, // https://www.wowhead.com/classic-ptr/item=240921/scarlet-smashbringer
 	240922: {}, // https://www.wowhead.com/classic-ptr/item=240922/deception
 	240923: {}, // https://www.wowhead.com/classic-ptr/item=240923/duplicity
 	240925: {}, // https://www.wowhead.com/classic-ptr/item=240925/experiment-800m
@@ -192,10 +190,8 @@ var ItemDenyList = map[int32]struct{}{
 	241008: {}, // https://www.wowhead.com/classic-ptr/item=241008/condemnation
 	241011: {}, // https://www.wowhead.com/classic-ptr/item=241011/greatstaff-of-fealty
 	241015: {}, // https://www.wowhead.com/classic-ptr/item=241015/aegis-of-the-scarlet-bastion
-	241038: {}, // https://www.wowhead.com/classic-ptr/item=241038/sir-dornels-didgeridoo
 	241081: {}, // https://www.wowhead.com/classic-ptr/item=241081/corrupted-ashbringer
-	241082: {}, // https://www.wowhead.com/classic-ptr/item=241082/ashbringer
-	241123: {}, // https://www.wowhead.com/classic-ptr/item=241123/reborn-dagger
+
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.

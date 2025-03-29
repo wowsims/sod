@@ -21,7 +21,7 @@ func (rogue *Rogue) newMutilateHitSpell(isMH bool) *core.Spell {
 	flatDamageBonus := rogue.baseRuneAbilityDamage()
 
 	return rogue.RegisterSpell(core.SpellConfig{
-		ClassSpellMask: ClassSpellMask_RogueMutilate,
+		ClassSpellMask: ClassSpellMask_RogueMutilateHit,
 		ActionID:       actionID.WithTag(int32(core.Ternary(isMH, 1, 2))),
 		SpellSchool:    core.SpellSchoolPhysical,
 		CastType:       castType,
@@ -68,11 +68,12 @@ func (rogue *Rogue) registerMutilateSpell() {
 	rogue.MutilateOH = rogue.newMutilateHitSpell(false)
 
 	rogue.Mutilate = rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: int32(proto.RogueRune_RuneMutilate)},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
-		MaxRange:    5,
+		ActionID:       core.ActionID{SpellID: int32(proto.RogueRune_RuneMutilate)},
+		ClassSpellMask: ClassSpellMask_RogueMutilate,
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
+		MaxRange:       5,
 
 		EnergyCost: core.EnergyCostOptions{
 			Cost:   40,

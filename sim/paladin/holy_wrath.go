@@ -54,7 +54,7 @@ func (paladin *Paladin) registerHolyWrath() {
 			},
 			Cast: core.CastConfig{
 				DefaultCast: core.Cast{
-					GCD:      core.GCDDefault - core.DurationFromSeconds(paladin.leoganGCDReduction),
+					GCD:      core.GCDDefault,
 					CastTime: time.Second * 2,
 				},
 

@@ -37,7 +37,7 @@ func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.cleaveTargetCount += 1
+			warrior.CleaveTargetCount += 1
 			warrior.bloodSurgeClassMask |= ClassSpellMask_WarriorCleave
 		},
 	})).AttachSpellMod(core.SpellModConfig{
