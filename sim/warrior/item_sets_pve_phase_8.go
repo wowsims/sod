@@ -264,3 +264,22 @@ func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
 		})
 	}
 }
+
+// If Cleave hits fewer than its maximum number of targets, it deals 35% more damage for each unused bounce.
+func (warrior *Warrior) ApplyFallenRegalityWarriorBonus(aura *core.Aura) {
+	targetCount := warrior.Env.GetNumTargets()
+
+	cleaveDamageMod := warrior.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_WarriorCleave,
+		FloatValue: 1,
+	})
+
+	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+		cleaveDamageMod.Activate()
+		// The cleave target count is set during initializing, so set the value here
+		cleaveDamageMod.UpdateFloatValue(1 + float64(warrior.CleaveTargetCount-targetCount)*0.35)
+	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+		cleaveDamageMod.Activate()
+	})
+}
