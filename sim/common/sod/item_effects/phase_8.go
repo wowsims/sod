@@ -27,6 +27,7 @@ const (
 	Mercy                = 240854
 	TyrsFall             = 241001
 	RemnantsOfTheRed     = 241002
+	Condemnation         = 241008
 	GreatstaffOfFealty   = 241011
 	HeartOfLight         = 241034
 	AbandonedExperiment  = 241037
@@ -98,6 +99,42 @@ func init() {
 		character.AddMajorCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=241008/condemnation
+	// Equip: Damaging spell casts on enemies Condemns them for 20 sec.
+	// Whenever they deal damage, their target is healed for 3% of their maximum health.
+	// Lasts 20 sec or up to 10 hits. (60 Secs Cooldown) (1m cooldown)
+	core.NewItemEffect(Condemnation, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		healthMetrics := character.NewHealthMetrics(core.ActionID{ItemID: Condemnation})
+
+		debuffs := character.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+			return core.MakeProcTriggerAura(unit, core.ProcTrigger{
+				ActionID: core.ActionID{SpellID: 1231695},
+				Name:     "Condemned",
+				Callback: core.CallbackOnSpellHitDealt,
+				Outcome:  core.OutcomeLanded,
+				ProcMask: core.ProcMaskWhiteHit, // Confirmed via Wago https://wago.tools/db2/SpellAuraOptions?build=1.15.7.60000&filter%5BSpellID%5D=1231695&page=1
+				ICD:      time.Second,
+				Duration: time.Second * 20,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					result.Target.GainHealth(sim, 0.03*result.Target.MaxHealth(), healthMetrics)
+				},
+			})
+		})
+
+		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Condemnation",
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: core.ProcMaskSpellDamage,
+			ICD:      time.Minute,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				debuffs.Get(result.Target).Activate(sim)
+			},
 		})
 	})
 

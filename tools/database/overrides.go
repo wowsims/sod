@@ -187,7 +187,6 @@ var ItemDenyList = map[int32]struct{}{
 	240998: {}, // https://www.wowhead.com/classic-ptr/item=240998/soporific-blade
 	241003: {}, // https://www.wowhead.com/classic-ptr/item=241003/mirage-rod-of-illusion0
 	241004: {}, // https://www.wowhead.com/classic-ptr/item=241004/conundrum
-	241008: {}, // https://www.wowhead.com/classic-ptr/item=241008/condemnation
 	241015: {}, // https://www.wowhead.com/classic-ptr/item=241015/aegis-of-the-scarlet-bastion
 	241081: {}, // https://www.wowhead.com/classic-ptr/item=241081/corrupted-ashbringer
 
