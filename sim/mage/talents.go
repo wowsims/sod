@@ -478,7 +478,7 @@ func (mage *Mage) applyFrostbite() {
 		ActionID:       core.ActionID{SpellID: 12494},
 		SpellSchool:    core.SpellSchoolFrost,
 		ProcMask:       core.ProcMaskSpellProc,
-		Flags:          SpellFlagChillSpell | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagPassiveSpell,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			spell.CalcAndDealOutcome(sim, target, spell.OutcomeMagicHit)
@@ -508,6 +508,7 @@ func (mage *Mage) applyFrostbite() {
 		Name:           "Frostbite Trigger Periodic",
 		Callback:       core.CallbackOnPeriodicDamageDealt,
 		ClassSpellMask: ClassSpellMask_MageBlizzard, // Only procs from Blizzard
+		SpellFlags:     SpellFlagChillSpell,
 		ProcChance:     procChance,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			frostbiteSpell.Cast(sim, result.Target)

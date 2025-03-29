@@ -39,7 +39,7 @@ func (warrior *Warrior) applyT2Damage2PBonus() {
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(ClassSpellMask_WarriorOverpower) && result.DidCrit() {
 				if dot := warrior.Rend.Dot(result.Target); dot.IsActive() {
-					dot.Refresh(sim)
+					dot.Rollover(sim)
 				}
 			}
 		},

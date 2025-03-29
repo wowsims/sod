@@ -208,3 +208,20 @@ func init() {
 
 	core.AddEffectsToTest = true
 }
+
+// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture on the target to 16 secs
+func (rogue *Rogue) ApplyQueensfallRogueEffect(aura *core.Aura) {
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:           "Queensfall Trigger - Rogue",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeCrit,
+		ClassSpellMask: ClassSpellMask_RogueBackstab | ClassSpellMask_RogueMutilateHit | ClassSpellMask_RogueSaberSlash,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if dot := rogue.Rupture.Dot(result.Target); dot.IsActive() {
+				dot.NumberOfTicks = int32(16 / dot.TickLength.Seconds())
+				dot.RecomputeAuraDuration()
+				dot.Rollover(sim)
+			}
+		},
+	})
+}
