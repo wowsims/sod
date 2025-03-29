@@ -29,10 +29,6 @@ var ItemSetLightbreakersWarplate = core.NewItemSet(core.ItemSet{
 // Increases Heroic Strike, Cleave, and Quick Strike damage by 20%.
 // Your Cleave strikes 1 additional target and can trigger Blood Surge.
 func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
-	if warrior.Env.GetNumTargets() < 3 {
-		return
-	}
-
 	label := "S03 - Item - Scarlet Enclave - Warrior - Damage 2P Bonus"
 	if warrior.HasAura(label) {
 		return
@@ -41,7 +37,7 @@ func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.cleaveTargetCount += 1
+			warrior.CleaveTargetCount += 1
 			warrior.bloodSurgeClassMask |= ClassSpellMask_WarriorCleave
 		},
 	})).AttachSpellMod(core.SpellModConfig{
