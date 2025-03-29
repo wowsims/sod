@@ -158,7 +158,8 @@ type Rogue struct {
 	numbingPoisonDebuffAura   core.AuraArray
 
 	// working on p8 dps tier
-	BleedsActive int
+	BleedsActive  int
+	PoisonsActive int
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -217,6 +218,7 @@ func (rogue *Rogue) Reset(_ *core.Simulation) {
 	}
 
 	rogue.BleedsActive = 0
+	rogue.PoisonsActive = 0
 }
 
 func NewRogue(character *core.Character, options *proto.Player, rogueOptions *proto.RogueOptions) *Rogue {

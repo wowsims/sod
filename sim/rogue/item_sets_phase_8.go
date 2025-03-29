@@ -53,9 +53,9 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		ClassSpellMask: ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			// Only apply the damage mod up to 3 times for the 30% bonus maximum
-			if rogue.BleedsActive < 3 {
+			if rogue.BleedsActive+rogue.PoisonsActive < 3 {
 				damageMod.Activate()
-				damageMod.UpdateFloatValue(1 + 0.10*float64(rogue.BleedsActive))
+				damageMod.UpdateFloatValue(1 + 0.10*float64(rogue.BleedsActive+rogue.PoisonsActive))
 			}
 		},
 	})
