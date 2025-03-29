@@ -583,8 +583,8 @@ func init() {
 			Duration:  time.Second * 20,
 		})
 
-		icd := core.Cooldown {
-			Timer: hunter.NewTimer(),
+		icd := core.Cooldown{
+			Timer:    hunter.NewTimer(),
 			Duration: time.Second * 30,
 		}
 
@@ -630,24 +630,35 @@ func init() {
 		}
 
 		// When using the melee version and activating the bow your next strike applies a special Serpent Sting effect.
-		var strands int32
 		serpentStrikeAura := hunter.RegisterAura(core.Aura{
-			Label:    "Strand Of Fate - Serpent Sting on Next Strike",
-			ActionID: core.ActionID{SpellID: 1232976},
-			Duration: time.Second * 20,
+			Label:     "Strand Of Fate - Serpent Sting on Next Strike",
+			ActionID:  core.ActionID{SpellID: 1232976},
+			Duration:  time.Second * 20,
+			MaxStacks: 4,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				strands = stacksAura.GetStacks()
+				aura.SetStacks(sim, stacksAura.GetStacks())
 			},
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.Matches(ClassSpellMask_HunterStrikes) && result.Landed() {
-					hunter.SoFSerpentSting[strands].Cast(sim, result.Target)
+					hunter.SoFSerpentSting[aura.GetStacks()].Cast(sim, result.Target)
 					aura.Deactivate(sim)
 				}
 			},
 		})
 
 		// Gain 40 strength per stack of Strand of Fate consumed
-		strengthAura := hunter.NewTemporaryStatsAura("Strand Of Fate - Strength", core.ActionID{SpellID: 1232969}, stats.Stats{stats.Strength: float64(40 * stacksAura.GetStacks())}, time.Second * 20)
+		strengthAura := hunter.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1232969},
+			Label:     "Strand Of Fate - Strength",
+			Duration:  time.Second * 20,
+			MaxStacks: 4,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				aura.SetStacks(sim, stacksAura.GetStacks())
+			},
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				hunter.AddStatDynamic(sim, stats.Strength, float64(40*(newStacks-oldStacks)))
+			},
+		})
 
 		// The bow active
 		spell := hunter.RegisterSpell(core.SpellConfig{
@@ -660,15 +671,15 @@ func init() {
 				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				if hasMeleeSpecialist && stacksAura.IsActive() {
-					strengthAura.Activate(sim)
-					serpentStrikeAura.Activate(sim)
-					stacksAura.Deactivate(sim)
-					icd.Use(sim)
+				if hasMeleeSpecialist {
+					if stacksAura.IsActive() {
+						strengthAura.Activate(sim)
+						serpentStrikeAura.Activate(sim)
+						stacksAura.Deactivate(sim)
+					}
 				} else {
 					stacksAura.Activate(sim)
 					stacksAura.AddStacks(sim, 3)
-					icd.Use(sim)
 				}
 			},
 		})
