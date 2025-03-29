@@ -677,9 +677,9 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240851/regicide
-	// Your Bloodthirst, Mortal Strike, Shield Slam, Heroic Strike, and Cleave critical strikes set the duration of your Rend on the target to 21 sec.
-	// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture on the target to 16 secs
-	// Your Raptor Strike and Mongoose Bite critical strikes set the duration of your Serpent Sting on the target to 15 sec
+	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Execute by 10% per stack, stacking up to 20 times. At 20 stacks, Execute may be cast regardless of the target's health.
+	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Envenom by 5% per stack, stacking up to 20 times.
+	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Kill Shot by 5% per stack, stacking up to 20 times.
 	core.NewItemEffect(Regicide, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
