@@ -40,7 +40,7 @@ func (hunter *Hunter) getSerpentStingConfig(rank int) core.SpellConfig {
 			IgnoreHaste: true, // Hunter GCD is locked at 1.5s
 		},
 
-		DamageMultiplier: 1 + 0.02*float64(hunter.Talents.ImprovedSerpentSting),
+		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
 		Dot: core.DotConfig{
@@ -94,7 +94,6 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		CritDamageBonus: hunter.mortalShots(),
 
 		DamageMultiplier:            0.48,
-		DamageMultiplierAdditivePct: 2 * int64(hunter.Talents.ImprovedSerpentSting),
 		ThreatMultiplier:            1,
 		BonusCoefficient:            spellCoeff,
 
@@ -121,4 +120,72 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 			break
 		}
 	}
+}
+
+/*
+ 	STRINGS OF FATE's SERPENT STING
+*/
+
+// https://www.wowhead.com/classic-ptr/spell=1232982/serpent-sting
+func (hunter *Hunter) getSoFSerpentStingConfig(stacks int) core.SpellConfig {
+	spellId := [5]int32{0, 1232979, 1232980, 1232981, 1232982}[stacks]
+	numTicks := [5]int32{0, 7, 14, 21, 28}[stacks]
+	baseDamage := [5]float64{0, 777, 1554, 2331, 3108}[stacks] / float64(numTicks)
+	
+
+	return core.SpellConfig{
+		ClassSpellMask: ClassSpellMask_HunterSoFSerpentSting,
+		ActionID:       core.ActionID{SpellID: spellId},
+		SpellSchool:    core.SpellSchoolNature,
+		CastType:       proto.CastType_CastTypeUnknown,
+		ProcMask:       core.ProcMaskRangedProc | core.ProcMaskRangedDamageProc,
+		Flags:          core.SpellFlagPassiveSpell | core.SpellFlagNoOnCastComplete | core.SpellFlagPureDot | core.SpellFlagPoison | SpellFlagSting,
+
+		Rank:         stacks,
+		MaxRange:     core.MaxRangedAttackRange,
+		MissileSpeed: 24,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+
+		Dot: core.DotConfig{
+			Aura: core.Aura{
+				Label: "StrandOfFate-SerpentSting" + hunter.Label + strconv.Itoa(stacks),
+				Tag:   "StrandOfFate-SerpentSting",
+			},
+			NumberOfTicks:    numTicks,
+			TickLength:       time.Second * 3,
+			BonusCoefficient: 0.2,
+
+			OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+				// As of phase 5 the only time serpent sting scales with AP is using the Dragonstalker's Pursuit 6P - this AP scaling doesn't benefit from target AP modifiers
+				damage := baseDamage + (hunter.SerpentStingAPCoeff*dot.Spell.RangedAttackPower(target, true))/float64(numTicks)
+				dot.Snapshot(target, damage, isRollover)
+			},
+			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTick)
+			},
+		},
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			// Cannot miss
+			spell.WaitTravelTime(sim, func(s *core.Simulation) {
+					spell.Dot(target).Apply(sim)
+			})
+		},
+	}
+}
+
+func (hunter *Hunter) registerSoFSerpentStingSpells() {
+	maxStacks := 4
+	var spells []*core.Spell
+	// indices correlate to strands of fate stacks, can't be cast at 0 stacks
+	spells = append(spells, nil)
+
+	for stacks := 1; stacks <= maxStacks; stacks++ {
+		config := hunter.getSoFSerpentStingConfig(stacks)
+		spells = append(spells, hunter.GetOrRegisterSpell(config))
+	}
+
+	hunter.SoFSerpentSting = spells
 }
