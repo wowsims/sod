@@ -17,6 +17,7 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
+	Experiment800M       = 240925
 	TyrsFall             = 241001
 	RemnantsOfTheRed     = 241002
 	HeartOfLight         = 241034
@@ -26,7 +27,6 @@ const (
 	StiltzsStandard      = 241068
 	LuckyDoubloon        = 241241
 	HandOfRebornJustice  = 242310
-	Experiment800M       = 240925
 )
 
 func init() {
@@ -396,6 +396,7 @@ func init() {
 	core.NewItemEffect(Experiment800M, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
+		numHits := character.Env.GetNumTargets()
 		explosionSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 1231607},
 			SpellSchool: core.SpellSchoolFire,
@@ -407,7 +408,6 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				numHits := character.Env.GetNumTargets()
 				curTarget := target
 				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
 					damage := sim.Roll(386, 472)
@@ -422,7 +422,7 @@ func init() {
 			Label:    "EXPERIMENT-8OOM!!!",
 			Duration: time.Second * 20,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, spellResult *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskRanged) {
+				if spell.ProcMask.Matches(core.ProcMaskRanged) && spellResult.Landed() {
 					explosionSpell.Cast(sim, spellResult.Target)
 				}
 			},
