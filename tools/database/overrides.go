@@ -170,7 +170,6 @@ var ItemDenyList = map[int32]struct{}{
 	241123: {}, // https://www.wowhead.com/classic-ptr/item=241123/reborn-dagger confirmed unused
 
 	// Phase 8 Denylist. Remove items as they're implemented
-	238945: {}, // https://www.wowhead.com/classic-ptr/item=238945/caladboulder
 	238961: {}, // https://www.wowhead.com/classic-ptr/item=238961/caladbolg
 	239301: {}, // https://www.wowhead.com/classic-ptr/item=239301/corrupted-ashbringer
 	240837: {}, // https://www.wowhead.com/classic-ptr/item=240837/strings-of-fate
@@ -178,7 +177,6 @@ var ItemDenyList = map[int32]struct{}{
 	240851: {}, // https://www.wowhead.com/classic-ptr/item=240851/regicide
 	240919: {}, // https://www.wowhead.com/classic-ptr/item=240919/ravagane
 	240998: {}, // https://www.wowhead.com/classic-ptr/item=240998/soporific-blade
-	241004: {}, // https://www.wowhead.com/classic-ptr/item=241004/conundrum
 	241015: {}, // https://www.wowhead.com/classic-ptr/item=241015/aegis-of-the-scarlet-bastion
 	241081: {}, // https://www.wowhead.com/classic-ptr/item=241081/corrupted-ashbringer
 }
