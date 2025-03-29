@@ -21,10 +21,17 @@ import (
 const (
 	/* ! Please keep constants ordered by ID ! */
 
+	Caladbolg            = 238961
+	WillOfTheMountain    = 239060
+	HighCommandersGuard  = 240841
 	LightfistHammer      = 240850
 	CrimsonCleaver       = 240852
 	Queensfall           = 240853
 	Mercy                = 240854
+	Ravagane             = 240919
+	Deception            = 240922
+	Duplicity            = 240923
+	Experiment800M       = 240925
 	TyrsFall             = 241001
 	RemnantsOfTheRed     = 241002
 	MirageRodOfIllusion  = 241003
@@ -103,6 +110,79 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic-ptr/item=238961/caladbolg
+	// Use: The earth once again swallow up Caladbolg for 20 sec, decreasing movement speed by 50%. If moving, your speed increases every 2 seconds.
+	// Smashing into an enemy deals 300 to 2700 fire damage, knocks back all nearby enemy players, and ends this effect. (2 Min Cooldown)
+	core.NewItemEffect(Caladbolg, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		moveSpeedActionID := &core.ActionID{SpellID: 1232322}
+
+		damageSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:         core.ActionID{SpellID: 1232323},
+			SpellSchool:      core.SpellSchoolFire,
+			DefenseType:      core.DefenseTypeMagic,
+			ProcMask:         core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(300, 2700), spell.OutcomeMagicCrit) // Has a flag that it always hits
+				}
+			},
+		})
+
+		// TODO: Increasing move speed every 2 seconds if we really care enough
+		var rangeDummyPA *core.PendingAction
+		rangeDummyAura := character.RegisterAura(core.Aura{
+			Label:    "Caladbolg Range Dummy",
+			Duration: core.NeverExpires,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				rangeDummyPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:   time.Millisecond * 500,
+					Priority: core.ActionPriorityLow,
+					OnAction: func(sim *core.Simulation) {
+						if character.DistanceFromTarget <= core.MaxMeleeAttackRange {
+							damageSpell.Cast(sim, character.CurrentTarget)
+							character.RemoveMoveSpeedModifier(moveSpeedActionID)
+							rangeDummyPA.Cancel(sim)
+						}
+					},
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				rangeDummyPA.Cancel(sim)
+			},
+		})
+
+		cdSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{ItemID: Caladbolg},
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				character.AddMoveSpeedModifier(moveSpeedActionID, 0.50)
+				character.MoveTo(core.MaxMeleeAttackRange, sim)
+				rangeDummyAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: cdSpell,
+			Type:  core.CooldownTypeDPS,
+		})
+	})
+
 	// https://www.wowhead.com/classic-ptr/item=241008/condemnation
 	// Equip: Damaging spell casts on enemies Condemns them for 20 sec.
 	// Whenever they deal damage, their target is healed for 3% of their maximum health.
@@ -138,7 +218,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterProc(GreatstaffOfFealty, triggerAura)
+		character.ItemSwap.RegisterProc(Condemnation, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240852/crimson-cleaver
@@ -167,6 +247,113 @@ func init() {
 			Kind:       core.SpellMod_DamageDone_Pct,
 			School:     core.SpellSchoolNature,
 			FloatValue: 1.20,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240922/deception
+	// Equip: 2% chance on melee hit to gain 1 extra attack. (Proc chance: 2%, 100ms cooldown)
+	core.NewItemEffect(Deception, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		// Use a dummy to set a flag for the set bonus that doubles the extra attacks
+		var setAura *core.Aura
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Deception Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			ProcChance:        0.02,
+			ICD:               time.Millisecond * 100,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				spell.Unit.AutoAttacks.ExtraMHAttackProc(sim, core.TernaryInt32(setAura != nil && setAura.IsActive(), 2, 1), core.ActionID{SpellID: 1231555}, spell)
+			},
+		}).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			setAura = character.GetAura("Tools of the Nathrezim")
+		})
+
+		character.ItemSwap.RegisterProc(Deception, triggerAura)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240923/duplicity
+	// Equip: 2% chance on melee hit to gain 1 extra attack. (Proc chance: 2%, 100ms cooldown)
+	core.NewItemEffect(Duplicity, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		// Use a dummy to set a flag for the set bonus that doubles the extra attacks
+		var setAura *core.Aura
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Duplicity Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			ProcChance:        0.02,
+			ICD:               time.Millisecond * 100,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				spell.Unit.AutoAttacks.ExtraMHAttackProc(sim, core.TernaryInt32(setAura != nil && setAura.IsActive(), 2, 1), core.ActionID{SpellID: 1231555}, spell)
+			},
+		}).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			setAura = character.GetAura("Tools of the Nathrezim")
+		})
+
+		character.ItemSwap.RegisterProc(Duplicity, triggerAura)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240925/experiment-800m
+	// Use: Transform into a Scarlet Cannon for 20 sec, causing your ranged attacks to explode for 386 to 472 Fire damage to all enemies within 8 yards of your target. (2 Min Cooldown)
+	core.NewItemEffect(Experiment800M, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		numHits := character.Env.GetNumTargets()
+		explosionSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231607},
+			SpellSchool: core.SpellSchoolFire,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				curTarget := target
+				for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+					damage := sim.Roll(386, 472)
+					spell.CalcAndDealDamage(sim, curTarget, damage, spell.OutcomeMagicCrit)
+					curTarget = sim.Environment.NextTargetUnit(curTarget)
+				}
+			},
+		})
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231605},
+			Label:    "EXPERIMENT-8OOM!!!",
+			Duration: time.Second * 20,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, spellResult *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskRanged) && spellResult.Landed() {
+					explosionSpell.Cast(sim, spellResult.Target)
+				}
+			},
+		})
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{SpellID: 1231605},
+			Flags:    core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
 		})
 	})
 
@@ -255,6 +442,20 @@ func init() {
 	// https://www.wowhead.com/classic-ptr/item=241034/heart-of-light
 	// Use: Increases maximum health by 2500 for 20 sec. (2 Min Cooldown)
 	core.NewSimpleStatDefensiveTrinketEffect(HeartOfLight, stats.Stats{stats.Health: 2500}, time.Second*20, time.Minute*2)
+
+	// https://www.wowhead.com/classic-ptr/item=240841/high-commanders-guard
+	// Chance on hit: Increase Defense by 20 and Armor by 750 for 10 sec.
+	// Confirmed PPM 2.5
+	itemhelpers.CreateWeaponProcAura(HighCommandersGuard, "High Commander's Guard", 2.5, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231254},
+			Label:    "Scarlet Bulwark",
+			Duration: time.Second * 10,
+		}).AttachStatsBuff(stats.Stats{
+			stats.Defense: 20,
+			stats.Armor:   750,
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=241039/infusion-of-souls
 	// The Global Cooldown caused by your non-weapon based damaging spells can be reduced by Spell Haste, up to a 0.5 second reduction.
@@ -471,7 +672,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterProc(TyrsFall, triggerAura)
+		character.ItemSwap.RegisterProc(MirageRodOfIllusion, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240853/queensfall
@@ -494,6 +695,61 @@ func init() {
 		case proto.Class_ClassHunter:
 			agent.(hunter.HunterAgent).GetHunter().ApplyQueensfallHunterEffect(aura)
 		}
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240919/ravagane
+	// Chance on hit: You attack all nearby enemies for 9 sec causing weapon damage plus an additional 200 every 1.5 sec.
+	// Confirmed PPM 0.8
+	itemhelpers.CreateWeaponProcAura(Ravagane, "Ravagane", 0.8, func(character *core.Character) *core.Aura {
+		tickSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231546},
+			SpellSchool: core.SpellSchoolPhysical,
+			DefenseType: core.DefenseTypeMelee,
+			ProcMask:    core.ProcMaskMeleeMHSpecial,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			BonusCoefficient: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				damage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) + 200
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, damage, spell.OutcomeMeleeSpecialHitAndCrit)
+				}
+			},
+		})
+
+		channelSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231547},
+			SpellSchool: core.SpellSchoolPhysical,
+			ProcMask:    core.ProcMaskMeleeMHSpecial,
+			Flags:       core.SpellFlagChanneled,
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Ravagane Whirlwind",
+				},
+				NumberOfTicks: 3,
+				TickLength:    time.Second * 3,
+				IsAOE:         true,
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					tickSpell.Cast(sim, target)
+				},
+			},
+		})
+
+		return character.RegisterAura(core.Aura{
+			Label:    "Ravagane Bladestorm",
+			Duration: time.Second * 9,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				character.AutoAttacks.CancelAutoSwing(sim)
+				channelSpell.AOEDot().Apply(sim)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				character.AutoAttacks.EnableAutoSwing(sim)
+				channelSpell.AOEDot().Cancel(sim)
+			},
+		})
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241002/remnants-of-the-red
@@ -654,5 +910,19 @@ func init() {
 
 		character.ItemSwap.RegisterProc(TyrsFall, triggerAura)
 	})
+
+	// https://www.wowhead.com/classic-ptr/item=239060/will-of-the-mountain
+	// Chance on hit: Invoke the Will of the Mountain, increasing physical damage dealt by 5%, armor by 500, and size by 20% for 15 sec.
+	// PPM confirmed 0.5
+	itemhelpers.CreateWeaponProcAura(WillOfTheMountain, "Will of the Mountain", 0.5, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231289},
+			Label:    "Avatar of the Mountain",
+			Duration: time.Second * 15,
+		}).AttachMultiplicativePseudoStatBuff(
+			&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.05,
+		).AttachStatBuff(stats.Armor, 500)
+	})
+
 	core.AddEffectsToTest = true
 }
