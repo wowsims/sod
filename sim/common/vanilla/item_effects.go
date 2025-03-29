@@ -567,7 +567,8 @@ func init() {
 					result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeMagicHit)
 					character.GainHealth(sim, result.Damage, healthMetrics)
 
-					if sim.Proc(0.5, "Corrupted Agility") {
+					// Confirmed by Zirene to pick the highest of your Agility or Strength
+					if character.GetStat(stats.Agility) >= character.GetStat(stats.Strength) {
 						agilityAura.Activate(sim)
 						agilityAura.AddStack(sim)
 					} else {
