@@ -27,6 +27,7 @@ const (
 	Mercy                = 240854
 	TyrsFall             = 241001
 	RemnantsOfTheRed     = 241002
+	MirageRodOfIllusion  = 241003
 	Condemnation         = 241008
 	GreatstaffOfFealty   = 241011
 	HeartOfLight         = 241034
@@ -126,7 +127,7 @@ func init() {
 			})
 		})
 
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Condemnation",
 			Callback: core.CallbackOnSpellHitDealt,
 			Outcome:  core.OutcomeLanded,
@@ -136,6 +137,8 @@ func init() {
 				debuffs.Get(result.Target).Activate(sim)
 			},
 		})
+
+		character.ItemSwap.RegisterProc(GreatstaffOfFealty, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240852/crimson-cleaver
@@ -401,6 +404,74 @@ func init() {
 			School:     core.SpellSchoolFire,
 			FloatValue: 1.20,
 		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=241003/mirage-rod-of-illusion
+	// Equip: Chance on landing a damaging spell to create a Mirage on top of your target that deals arcane damage to nearby enemies for 30 sec. (Proc chance: 10%, 30s cooldown)
+	core.NewItemEffect(MirageRodOfIllusion, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		explosionSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231648}, // TODO: Verify real spell ID
+			SpellSchool: core.SpellSchoolArcane,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty, // Cast by an NPC so presumably no procs
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			BonusCoefficient: 0.143, // TODO: Taken from the above spell. Verify
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(243, 263), spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		// Use an AOE DoT rather than a real NPC for performance since it hopefully just casts a constant spell
+		dot := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231629}, // https://www.wowhead.com/classic-ptr/spell=1231629/mirage
+			SpellSchool: core.SpellSchoolArcane,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Mirage",
+				},
+				NumberOfTicks: 10,
+				TickLength:    time.Second * 3,
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					explosionSpell.Cast(sim, target)
+				},
+			},
+
+			BonusCoefficient: 0.143, // TODO: Taken from the above spell. Verify
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.Dot(target).Apply(sim)
+			},
+		})
+
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Mirage Rod of Illusion Trigger",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: 0.10,
+			ICD:        time.Second * 30,
+			Harmful:    true,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				dot.Cast(sim, result.Target)
+			},
+		})
+
+		character.ItemSwap.RegisterProc(TyrsFall, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240853/queensfall
