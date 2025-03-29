@@ -231,17 +231,17 @@ func (rogue *Rogue) ApplyRegicideRogueEffect(aura *core.Aura) {
 	// Coup debuff array
 	debuffAuras := rogue.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
 		aura := unit.RegisterAura(core.Aura{
-			ActionID:  core.ActionID{SpellID: 1231417},
+			ActionID:  core.ActionID{SpellID: 1231424},
 			Label:     "Coup",
 			MaxStacks: 20,
-			Duration:  core.NeverExpires,
+			Duration:  time.Second * 15,
 		})
 
 		return aura
 	})
 
 	envenomDamageMod := rogue.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Pct,
+		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_RogueEnvenom,
 	})
 
@@ -267,7 +267,7 @@ func (rogue *Rogue) ApplyRegicideRogueEffect(aura *core.Aura) {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			debuffAuras[result.Target.Index].Activate(sim)
 			debuffAuras[result.Target.Index].AddStack(sim)
-			envenomDamageMod.UpdateFloatValue(1 + float64(debuffAuras[result.Target.Index].GetStacks())*0.05)
+			envenomDamageMod.UpdateIntValue(int64(debuffAuras[result.Target.Index].GetStacks() * 5))
 			envenomDamageMod.Activate()
 		},
 	})
