@@ -527,7 +527,7 @@ func init() {
 	// Chance on hit: Steals 475 to 525 life from up to 5 enemies, granting 30 Strength or Agility per enemy siphoned, stacking up to 5 times.
 	// PPM confirmed 5.0
 	itemhelpers.CreateWeaponProcSpell(CorruptedAshbringerLego, "Corrupted Ashbringer (Legendary)", 5.0, func(character *core.Character) *core.Spell {
-		actionID := core.ActionID{SpellID: 1220711}
+		actionID := core.ActionID{SpellID: 1231330}
 		healthMetrics := character.NewHealthMetrics(actionID)
 
 		agilityAura := character.RegisterAura(core.Aura{
@@ -564,17 +564,18 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				for i := 0; i < targetCount; i++ {
-					result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeMagicHit)
+					result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeAlwaysHit)
 					character.GainHealth(sim, result.Damage, healthMetrics)
+					target = sim.Environment.NextTargetUnit(target)
+				}
 
-					// Confirmed by Zirene to pick the highest of your Agility or Strength
-					if character.GetStat(stats.Agility) >= character.GetStat(stats.Strength) {
-						agilityAura.Activate(sim)
-						agilityAura.AddStack(sim)
-					} else {
-						strengthAura.Activate(sim)
-						strengthAura.AddStack(sim)
-					}
+				// Confirmed by Zirene to pick the highest of your Agility or Strength
+				if character.GetStat(stats.Agility) >= character.GetStat(stats.Strength) {
+					agilityAura.Activate(sim)
+					agilityAura.AddStacks(sim, int32(targetCount))
+				} else {
+					strengthAura.Activate(sim)
+					strengthAura.AddStacks(sim, int32(targetCount))
 				}
 			},
 		})
