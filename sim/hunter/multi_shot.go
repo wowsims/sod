@@ -79,18 +79,20 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 					spell.DealDamage(sim, result)
 
 					if hasSerpentSpread {
-						serpentStingAura := hunter.SerpentSting.Dot(result.Target)
-						serpentStingTicks := serpentStingAura.NumberOfTicks
-						if serpentStingAura.IsActive() {
+						dot := hunter.SerpentSting.Dot(result.Target)
+						serpentStingTicks := dot.NumberOfTicks
+
+						if dot.IsActive() {
 							// If less then 4 ticks are left then we rollover with a 4 tick duration
-							serpentStingAura.NumberOfTicks = max(4, serpentStingAura.NumberOfTicks-serpentStingAura.TickCount)
-							serpentStingAura.Rollover(sim)
+							dot.NumberOfTicks = max(4, dot.MaxTicksRemaining())
+							dot.Rollover(sim)
 						} else {
 							// Else we apply with a 4 tick duration
-							serpentStingAura.NumberOfTicks = 4
-							serpentStingAura.Apply(sim)
+							dot.NumberOfTicks = 4
+							dot.Apply(sim)
 						}
-						serpentStingAura.NumberOfTicks = serpentStingTicks
+
+						dot.NumberOfTicks = serpentStingTicks
 					}
 				}
 			})

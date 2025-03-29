@@ -85,6 +85,10 @@ func (dot *Dot) NumTicksRemaining(sim *Simulation) int {
 	return max(0, int((finalTickAt-sim.CurrentTime)/dot.tickPeriod)+1)
 }
 
+func (dot *Dot) OutstandingDmg() float64 {
+	return TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.MaxTicksRemaining()), 0)
+}
+
 // Roll over = gets carried over with everlasting refresh and doesn't get applied if triggered when the spell is already up.
 // - Example: critical strike rating, internal % damage modifiers: buffs or debuffs on player
 // Nevermelting Ice, Shadow Mastery (ISB), Trick of the Trades, Deaths Embrace, Thaddius Polarity, Hera Spores, Crit on weapons from swapping

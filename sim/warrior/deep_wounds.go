@@ -70,7 +70,6 @@ func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, 
 	dot := warrior.DeepWounds.Dot(target)
 
 	attackTable := warrior.AttackTables[target.UnitIndex][core.Ternary(isOh, proto.CastType_CastTypeOffHand, proto.CastType_CastTypeMainHand)]
-	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
 	var awd float64
 	if isOh {
@@ -83,7 +82,7 @@ func (warrior *Warrior) procDeepWounds(sim *core.Simulation, target *core.Unit, 
 
 	newDamage := awd * 0.2 * float64(warrior.Talents.DeepWounds)
 
-	dot.SnapshotBaseDamage = (outstandingDamage + newDamage) / float64(dot.NumberOfTicks)
+	dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / float64(dot.NumberOfTicks)
 	dot.SnapshotAttackerMultiplier = warrior.DeepWounds.AttackerDamageMultiplier(attackTable, true)
 
 	warrior.DeepWounds.Cast(sim, target)
