@@ -36,7 +36,9 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 	}
 
 	// TODO: Fix logic below here, checks above should be good. Using Feral Druid T2 6pc as reference here to start.
-	// Added bleed tracking variables much like Feral Druid, have updated Rupture, CT, and Garrote to add bleed trackers, need to figure out if Hemorrhage should count
+	// Added bleed tracking variables much like Feral Druid, have updated Rupture, CT, Garrote, and SSL to add bleed trackers, need to figure out if Hemorrhage should count
+	// Testing done on 3/28/2025 in Classic Rogue Discord shows that using Luffa, Hemorrhage does not count as a bleed and should also not count towards this set bonus.
+	// Wowhead seems to confirm this as Hemorrhage does not have a Mechanic of Bleeding like Rupture, Garrote, etc
 	damageMod := rogue.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
