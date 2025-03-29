@@ -16,7 +16,7 @@ const (
 	HandsOfRevelation  = 239574
 	CrownOfRevelation  = 239575
 	PantsOfRevelation  = 239577
-	MantleOfRevelation = 239579
+	MantleOfRevelation = 239581
 	GirdleOfRevelation = 239582
 	WristsOfRevelation = 239583
 )
