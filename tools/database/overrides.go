@@ -173,7 +173,6 @@ var ItemDenyList = map[int32]struct{}{
 	241123: {}, // https://www.wowhead.com/classic-ptr/item=241123/reborn-dagger confirmed unused
 
 	// Phase 8 Denylist. Remove items as they're implemented
-	240842: {}, // https://www.wowhead.com/classic-ptr/item=240842/scarlet-rotbringer
 	240998: {}, // https://www.wowhead.com/classic-ptr/item=240998/soporific-blade
 }
 
