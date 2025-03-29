@@ -25,6 +25,8 @@ const (
 	CrimsonCleaver       = 240852
 	Queensfall           = 240853
 	Mercy                = 240854
+	Deception            = 240922
+	Duplicity            = 240923
 	TyrsFall             = 241001
 	RemnantsOfTheRed     = 241002
 	MirageRodOfIllusion  = 241003
@@ -138,7 +140,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterProc(GreatstaffOfFealty, triggerAura)
+		character.ItemSwap.RegisterProc(Condemnation, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240852/crimson-cleaver
@@ -168,6 +170,56 @@ func init() {
 			School:     core.SpellSchoolNature,
 			FloatValue: 1.20,
 		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240922/deception
+	// Equip: 2% chance on melee hit to gain 1 extra attack. (Proc chance: 2%, 100ms cooldown)
+	core.NewItemEffect(Deception, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		// Use a dummy to set a flag for the set bonus that doubles the extra attacks
+		var setAura *core.Aura
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Deception Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			ProcChance:        0.02,
+			ICD:               time.Millisecond * 100,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				spell.Unit.AutoAttacks.ExtraMHAttackProc(sim, core.TernaryInt32(setAura != nil && setAura.IsActive(), 2, 1), core.ActionID{SpellID: 1231555}, spell)
+			},
+		}).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			setAura = character.GetAura("Tools of the Nathrezim")
+		})
+
+		character.ItemSwap.RegisterProc(Deception, triggerAura)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240923/duplicity
+	// Equip: 2% chance on melee hit to gain 1 extra attack. (Proc chance: 2%, 100ms cooldown)
+	core.NewItemEffect(Duplicity, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		// Use a dummy to set a flag for the set bonus that doubles the extra attacks
+		var setAura *core.Aura
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Duplicity Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			ProcChance:        0.02,
+			ICD:               time.Millisecond * 100,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				spell.Unit.AutoAttacks.ExtraMHAttackProc(sim, core.TernaryInt32(setAura != nil && setAura.IsActive(), 2, 1), core.ActionID{SpellID: 1231555}, spell)
+			},
+		}).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			setAura = character.GetAura("Tools of the Nathrezim")
+		})
+
+		character.ItemSwap.RegisterProc(Duplicity, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241011/greatstaff-of-fealty
@@ -471,7 +523,7 @@ func init() {
 			},
 		})
 
-		character.ItemSwap.RegisterProc(TyrsFall, triggerAura)
+		character.ItemSwap.RegisterProc(MirageRodOfIllusion, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240853/queensfall
