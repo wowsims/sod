@@ -149,7 +149,7 @@ type Warrior struct {
 	GladiatorStanceAura *core.Aura
 
 	bloodSurgeClassMask               uint64
-	cleaveTargetCount                 int32
+	CleaveTargetCount                 int32
 	defensiveStanceThreatMultiplier   float64
 	gladiatorStanceDamageMultiplier   float64
 	gladiatorStanceThreatMultiplier   float64

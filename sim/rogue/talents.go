@@ -86,7 +86,7 @@ func (rogue *Rogue) applyOpportunity() {
 	}
 
 	rogue.AddStaticMod(core.SpellModConfig{
-		ClassMask: ClassSpellMask_RogueBackstabDependent | ClassSpellMask_RogueAmbush | ClassSpellMask_RogueMutilate,
+		ClassMask: ClassSpellMask_RogueBackstabDependent | ClassSpellMask_RogueAmbush | ClassSpellMask_RogueMutilateHit,
 		Kind:      core.SpellMod_ImpactDamageDone_Flat,
 		IntValue:  4 * int64(rogue.Talents.Opportunity),
 	})

@@ -235,3 +235,21 @@ func init() {
 
 	core.AddEffectsToTest = true
 }
+
+// Your Bloodthirst, Mortal Strike, Shield Slam, Heroic Strike, and Cleave critical strikes set the duration of your Rend on the target to 21 sec.
+func (warrior *Warrior) ApplyQueensfallWarriorEffect(aura *core.Aura) {
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:     "Queensfall Trigger - Warrior",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeCrit,
+		ClassSpellMask: ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorMortalStrike | ClassSpellMask_WarriorShieldSlam |
+			ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorCleave,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if dot := warrior.Rend.Dot(result.Target); dot.IsActive() {
+				dot.NumberOfTicks = int32(21 / dot.TickLength.Seconds())
+				dot.RecomputeAuraDuration()
+				dot.Rollover(sim)
+			}
+		},
+	})
+}

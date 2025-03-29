@@ -54,7 +54,7 @@ func (hunter *Hunter) registerFocusFireSpell() {
 
 	core.MakeProcTriggerAura(&hunter.pet.Unit, core.ProcTrigger{
 		Name:           "Focus Fire Trigger",
-		Callback:       core.CallbackOnSpellHitDealt,
+		Callback:       core.CallbackOnCastComplete,
 		Outcome:        core.OutcomeLanded,
 		ClassSpellMask: ClassSpellMask_HunterPetBasicAttacks,
 		Harmful:        true,

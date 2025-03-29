@@ -717,6 +717,23 @@ func init() {
 	})
 }
 
+// Your Raptor Strike and Mongoose Bite critical strikes set the duration of your Serpent Sting on the target to 15 sec
+func (hunter *Hunter) ApplyQueensfallHunterEffect(aura *core.Aura) {
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:           "Queensfall Trigger - Hunter",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeCrit,
+		ClassSpellMask: ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterMongooseBite,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if dot := hunter.SerpentSting.Dot(result.Target); dot.IsActive() {
+				dot.NumberOfTicks = int32(16 / dot.TickLength.Seconds())
+				dot.RecomputeAuraDuration()
+				dot.Rollover(sim)
+			}
+		},
+	})
+}
+
 func newBestialFocusAura(unit *core.Unit, spellID int32) *core.Aura {
 	return unit.RegisterAura(core.Aura{
 		Label:     "Bestial Focus",

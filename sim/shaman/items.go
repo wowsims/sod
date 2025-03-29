@@ -33,6 +33,7 @@ const (
 	TotemOfPyroclasticThunder = 234480
 	SignetOfTheEarthshatterer = 236176
 	TotemOfUnholyMight        = 237577
+	ScarletSmashbringer       = 240921
 )
 
 func init() {
@@ -122,6 +123,24 @@ func init() {
 			Spell:    spell,
 			Priority: core.CooldownPriorityBloodlust,
 			Type:     core.CooldownTypeDPS,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240921/scarlet-smashbringer
+	// Equip: The Global Cooldown of your Shock, Lightning, and Lava Burst spells is reduced by 0.5 seconds.
+	// Chance on hit: Increases the wielder's Strength by 250 for 15 sec.
+	core.NewItemEffect(ScarletSmashbringer, func(agent core.Agent) {
+		shaman := agent.(ShamanAgent).GetShaman()
+
+		shaman.AddStaticMod(core.SpellModConfig{
+			Kind: core.SpellMod_GlobalCooldown_Flat,
+			ClassMask: ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock |
+				ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanChainLightning | ClassSpellMask_ShamanLavaBurst,
+			TimeValue: -time.Millisecond * 500,
+		})
+
+		itemhelpers.AddWeaponProcAura(shaman.GetCharacter(), ScarletSmashbringer, "Scarlet Smashbringer", 0.9, func(character *core.Character) *core.Aura {
+			return character.NewTemporaryStatsAura("Holy Might", core.ActionID{SpellID: 1231551}, stats.Stats{stats.Strength: 250}, time.Second*15)
 		})
 	})
 

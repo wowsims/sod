@@ -3,22 +3,33 @@ package item_effects
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 	"github.com/wowsims/sod/sim/druid"
+	"github.com/wowsims/sod/sim/hunter"
 	"github.com/wowsims/sod/sim/mage"
 	"github.com/wowsims/sod/sim/paladin"
 	"github.com/wowsims/sod/sim/priest"
+	"github.com/wowsims/sod/sim/rogue"
 	"github.com/wowsims/sod/sim/shaman"
 	"github.com/wowsims/sod/sim/warlock"
+	"github.com/wowsims/sod/sim/warrior"
 )
 
 const (
 	/* ! Please keep constants ordered by ID ! */
 
+	LightfistHammer      = 240850
+	CrimsonCleaver       = 240852
+	Queensfall           = 240853
+	Mercy                = 240854
 	TyrsFall             = 241001
 	RemnantsOfTheRed     = 241002
+	MirageRodOfIllusion  = 241003
+	Condemnation         = 241008
+	GreatstaffOfFealty   = 241011
 	HeartOfLight         = 241034
 	AbandonedExperiment  = 241037
 	SirDornelsDidgeridoo = 241038
@@ -90,6 +101,127 @@ func init() {
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
 		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=241008/condemnation
+	// Equip: Damaging spell casts on enemies Condemns them for 20 sec.
+	// Whenever they deal damage, their target is healed for 3% of their maximum health.
+	// Lasts 20 sec or up to 10 hits. (60 Secs Cooldown) (1m cooldown)
+	core.NewItemEffect(Condemnation, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		healthMetrics := character.NewHealthMetrics(core.ActionID{ItemID: Condemnation})
+
+		debuffs := character.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+			return core.MakeProcTriggerAura(unit, core.ProcTrigger{
+				ActionID: core.ActionID{SpellID: 1231695},
+				Name:     "Condemned",
+				Callback: core.CallbackOnSpellHitDealt,
+				Outcome:  core.OutcomeLanded,
+				ProcMask: core.ProcMaskWhiteHit, // Confirmed via Wago https://wago.tools/db2/SpellAuraOptions?build=1.15.7.60000&filter%5BSpellID%5D=1231695&page=1
+				ICD:      time.Second,
+				Duration: time.Second * 20,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					result.Target.GainHealth(sim, 0.03*result.Target.MaxHealth(), healthMetrics)
+				},
+			})
+		})
+
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:     "Condemnation",
+			Callback: core.CallbackOnSpellHitDealt,
+			Outcome:  core.OutcomeLanded,
+			ProcMask: core.ProcMaskSpellDamage,
+			ICD:      time.Minute,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				debuffs.Get(result.Target).Activate(sim)
+			},
+		})
+
+		character.ItemSwap.RegisterProc(GreatstaffOfFealty, triggerAura)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240852/crimson-cleaver
+	// Chance on hit: Your next 2 instances of Nature damage are increased by 20%. Lasts 12 sec. (100ms cooldown)
+	// Confirmed PPM 1.0
+	itemhelpers.CreateWeaponProcAura(CrimsonCleaver, "Crimson Cleaver", 1.0, func(character *core.Character) *core.Aura {
+		duration := time.Second * 12
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Millisecond * 100,
+		}
+
+		return character.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231456},
+			Label:     "Crimson Crusade",
+			Duration:  duration,
+			MaxStacks: 2,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskSpellDamage|core.ProcMaskSpellDamageProc) && result.Landed() &&
+					spell.SpellSchool.Matches(core.SpellSchoolNature) && icd.IsReady(sim) {
+					icd.Use(sim)
+					aura.RemoveStack(sim)
+				}
+			},
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			School:     core.SpellSchoolNature,
+			FloatValue: 1.20,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=241011/greatstaff-of-fealty
+	// Equip: If there are no enemies within 20 yards of you, heal all party members within 20 yards for 125 every 3 seconds.
+	// A party may only swear Fealty to one player at a time.
+	core.NewItemEffect(GreatstaffOfFealty, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{ItemID: GreatstaffOfFealty}
+		healthMetrics := character.NewHealthMetrics(actionID)
+
+		var healingPA *core.PendingAction
+		healingAura := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Fealty",
+			Duration: core.NeverExpires,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				healingPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:   time.Second * 3,
+					Priority: core.ActionPriorityLow,
+					OnAction: func(sim *core.Simulation) {
+						character.GainHealth(sim, 125, healthMetrics)
+					},
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				healingPA.Cancel(sim)
+			},
+		})
+
+		var rangeCheckPA *core.PendingAction
+		triggerAura := core.MakePermanent(character.RegisterAura(core.Aura{
+			Label: "Greater of Fealty Periodic Trigger",
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				rangeCheckPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:          time.Second * 1,
+					Priority:        core.ActionPriorityLow,
+					TickImmediately: true,
+					OnAction: func(sim *core.Simulation) {
+						if character.DistanceFromTarget >= 20 {
+							healingAura.Activate(sim)
+						} else {
+							healingAura.Deactivate(sim)
+						}
+					},
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				healingAura.Deactivate(sim)
+				rangeCheckPA.Cancel(sim)
+			},
+		}))
+
+		character.ItemSwap.RegisterProc(GreatstaffOfFealty, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=242310/hand-of-reborn-justice
@@ -180,6 +312,17 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic-ptr/item=240850/lightfist-hammer
+	// Chance on hit: Increases your attack speed by 10% for 15 sec.
+	// Confirmed PPM 0.7
+	itemhelpers.CreateWeaponProcAura(LightfistHammer, "Lightfist Hammer", 0.7, func(character *core.Character) *core.Aura {
+		return character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{ItemID: LightfistHammer},
+			Label:    "Lightfist Hammer",
+			Duration: time.Second * 15,
+		}).AttachMultiplyMeleeSpeed(&character.Unit, 1.10)
+	})
+
 	// https://www.wowhead.com/classic-ptr/item=241241/lucky-doubloon
 	// Use: Flip the Lucky Doubloon.
 	// On heads, the cooldown of Lucky Doubloon is refreshed, and your critical strike chance with all spells and attacks is increased by 5% for 15 sec, stacking up to 5 times.
@@ -234,6 +377,125 @@ func init() {
 		})
 	})
 
+	// https://www.wowhead.com/classic-ptr/item=240854/mercy
+	// Chance on hit: Your next 2 instances of Fire damage are increased by 20%.  Lasts 12 sec. (100ms cooldown)
+	// Confirmed PPM 1.0
+	itemhelpers.CreateWeaponProcAura(Mercy, "Mercy", 1.0, func(character *core.Character) *core.Aura {
+		duration := time.Second * 12
+		icd := core.Cooldown{
+			Timer:    character.NewTimer(),
+			Duration: time.Millisecond * 100,
+		}
+
+		return character.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231498},
+			Label:     "Mercy by Fire",
+			Duration:  duration,
+			MaxStacks: 2,
+			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.ProcMask.Matches(core.ProcMaskSpellDamage|core.ProcMaskSpellDamageProc) && result.Landed() &&
+					spell.SpellSchool.Matches(core.SpellSchoolFire) && icd.IsReady(sim) {
+					icd.Use(sim)
+					aura.RemoveStack(sim)
+				}
+			},
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			School:     core.SpellSchoolFire,
+			FloatValue: 1.20,
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=241003/mirage-rod-of-illusion
+	// Equip: Chance on landing a damaging spell to create a Mirage on top of your target that deals arcane damage to nearby enemies for 30 sec. (Proc chance: 10%, 30s cooldown)
+	core.NewItemEffect(MirageRodOfIllusion, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		explosionSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231648}, // TODO: Verify real spell ID
+			SpellSchool: core.SpellSchoolArcane,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskEmpty, // Cast by an NPC so presumably no procs
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			BonusCoefficient: 0.143, // TODO: Taken from the above spell. Verify
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for _, aoeTarget := range sim.Encounter.TargetUnits {
+					spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(243, 263), spell.OutcomeMagicHitAndCrit)
+				}
+			},
+		})
+
+		// Use an AOE DoT rather than a real NPC for performance since it hopefully just casts a constant spell
+		dot := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231629}, // https://www.wowhead.com/classic-ptr/spell=1231629/mirage
+			SpellSchool: core.SpellSchoolArcane,
+			ProcMask:    core.ProcMaskEmpty,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Mirage",
+				},
+				NumberOfTicks: 10,
+				TickLength:    time.Second * 3,
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					explosionSpell.Cast(sim, target)
+				},
+			},
+
+			BonusCoefficient: 0.143, // TODO: Taken from the above spell. Verify
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.Dot(target).Apply(sim)
+			},
+		})
+
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Mirage Rod of Illusion Trigger",
+			Callback:   core.CallbackOnSpellHitDealt,
+			Outcome:    core.OutcomeLanded,
+			ProcMask:   core.ProcMaskSpellDamage,
+			ProcChance: 0.10,
+			ICD:        time.Second * 30,
+			Harmful:    true,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				dot.Cast(sim, result.Target)
+			},
+		})
+
+		character.ItemSwap.RegisterProc(TyrsFall, triggerAura)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240853/queensfall
+	// Your Bloodthirst, Mortal Strike, Shield Slam, Heroic Strike, and Cleave critical strikes set the duration of your Rend on the target to 21 sec.
+	// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture on the target to 16 secs
+	// Your Raptor Strike and Mongoose Bite critical strikes set the duration of your Serpent Sting on the target to 15 sec
+	core.NewItemEffect(Queensfall, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		aura := core.MakePermanent(character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1232181},
+			Label:    "Queensfall Trigger",
+		}))
+
+		switch character.Class {
+		case proto.Class_ClassWarrior:
+			agent.(warrior.WarriorAgent).GetWarrior().ApplyQueensfallWarriorEffect(aura)
+		case proto.Class_ClassRogue:
+			agent.(rogue.RogueAgent).GetRogue().ApplyQueensfallRogueEffect(aura)
+		case proto.Class_ClassHunter:
+			agent.(hunter.HunterAgent).GetHunter().ApplyQueensfallHunterEffect(aura)
+		}
+	})
+
 	// https://www.wowhead.com/classic-ptr/item=241002/remnants-of-the-red
 	// Equip: Dealing non-periodic Fire damage has a 10% chance to increase your Fire damage dealt by 10% for 20 sec. (Proc chance: 10%)
 	core.NewItemEffect(RemnantsOfTheRed, func(agent core.Agent) {
@@ -261,108 +523,109 @@ func init() {
 	// https://www.wowhead.com/classic-ptr/item=241038/sir-dornels-didgeridoo
 	// Use: Playing the didgeridoo summons a random beast to your side, increasing your physical abilities for 30 sec.
 	// May only be used while in combat. (2 Min Cooldown)
-	// core.NewItemEffect(SirDornelsDidgeridoo, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
+	core.NewItemEffect(SirDornelsDidgeridoo, func(agent core.Agent) {
+		character := agent.GetCharacter()
 
-	// 	actionID := core.ActionID{ItemID: SirDornelsDidgeridoo}
-	// 	duration := time.Second * 30
+		duration := time.Second * 30
 
-	// 	bonusCrit := 10.0
-	// 	bonusArp := 1000.0
-	// 	bonusAgi := 140.0
-	// 	bonusStr := 140.0
-	// 	bonusHaste := 0.14
-	// 	bonusAP := 280.0
-	// 	bonusRAP := 308.0
+		bonusCrit := 10.0
+		bonusArp := 1000.0
+		bonusAgi := 140.0
+		bonusStr := 140.0
+		bonusHaste := 0.14
+		bonusAP := 280.0
+		bonusRAP := 308.0
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231884/accuracy-of-the-owl
-	// 	owlAura := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231884),
-	// 		Label:    "Sir Dornel's Didgeridoo - Owl",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(stats.MeleeCrit, bonusCrit).AttachStatBuff(stats.SpellCrit, bonusCrit)
+		// https://www.wowhead.com/classic-ptr/spell=1231884/accuracy-of-the-owl
+		owlBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231884},
+			Label:    "Sir Dornel's Didgeridoo - Owl",
+			Duration: duration,
+		}).AttachStatBuff(stats.MeleeCrit, bonusCrit).AttachStatBuff(stats.SpellCrit, bonusCrit)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231894/ferocity-of-the-crocolisk
-	// 	crocoliskBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231894),
-	// 		Label:    "Sir Dornel's Didgeridoo - Crocolisk",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(stats.ArmorPenetration, bonusArp)
+		// https://www.wowhead.com/classic-ptr/spell=1231894/ferocity-of-the-crocolisk
+		crocoliskBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231894},
+			Label:    "Sir Dornel's Didgeridoo - Crocolisk",
+			Duration: duration,
+		}).AttachStatBuff(stats.ArmorPenetration, bonusArp)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231888/agility-of-the-raptor
-	// 	raptorBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231888),
-	// 		Label:    "Sir Dornel's Didgeridoo - Raptor",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(stats.Agility, bonusAgi)
+		// https://www.wowhead.com/classic-ptr/spell=1231888/agility-of-the-raptor
+		raptorBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231888},
+			Label:    "Sir Dornel's Didgeridoo - Raptor",
+			Duration: duration,
+		}).AttachStatBuff(stats.Agility, bonusAgi)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231883/strength-of-the-bear
-	// 	bearBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231883),
-	// 		Label:    "Sir Dornel's Didgeridoo - Bear",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(stats.Strength, bonusStr)
+		// https://www.wowhead.com/classic-ptr/spell=1231883/strength-of-the-bear
+		bearBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231883},
+			Label:    "Sir Dornel's Didgeridoo - Bear",
+			Duration: duration,
+		}).AttachStatBuff(stats.Strength, bonusStr)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231886/speed-of-the-cat
-	// 	catBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231886),
-	// 		Label:    "Sir Dornel's Didgeridoo - Cat",
-	// 		Duration: duration,
-	// 	}).AttachMultiplyAttackSpeed(&character.Unit, 1+bonusHaste)
+		// https://www.wowhead.com/classic-ptr/spell=1231886/speed-of-the-cat
+		catBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231886},
+			Label:    "Sir Dornel's Didgeridoo - Cat",
+			Duration: duration,
+		}).AttachMultiplyAttackSpeed(&character.Unit, 1+bonusHaste)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231891/power-of-the-gorilla
-	// 	gorillaBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231891),
-	// 		Label:    "Sir Dornel's Didgeridoo - Gorilla",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(stats.AttackPower, bonusAP).AttachStatBuff(stats.RangedAttackPower, bonusRAP)
+		// https://www.wowhead.com/classic-ptr/spell=1231891/power-of-the-gorilla
+		gorillaBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231891},
+			Label:    "Sir Dornel's Didgeridoo - Gorilla",
+			Duration: duration,
+		}).AttachStatBuff(stats.AttackPower, bonusAP).AttachStatBuff(stats.RangedAttackPower, bonusRAP)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231896/brilliance-of-mr-bigglesworth
-	// 	bigglesworthBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231896),
-	// 		Label:    "Sir Dornel's Didgeridoo - Mr. Bigglesworth",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(
-	// 		stats.MeleeCrit, bonusCrit/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.SpellCrit, bonusCrit/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.ArmorPenetration, bonusArp/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.Agility, bonusAgi/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.Strength, bonusStr/2.0,
-	// 	).AttachMultiplyAttackSpeed(
-	// 		&character.Unit, 1+bonusHaste/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.AttackPower, bonusAP/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.RangedAttackPower, bonusRAP/2.0,
-	// 	)
+		// https://www.wowhead.com/classic-ptr/spell=1231896/brilliance-of-mr-bigglesworth
+		bigglesworthBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231896},
+			Label:    "Sir Dornel's Didgeridoo - Mr. Bigglesworth",
+			Duration: duration,
+		}).AttachStatBuff(
+			stats.MeleeCrit, bonusCrit/2.0,
+		).AttachStatBuff(
+			stats.SpellCrit, bonusCrit/2.0,
+		).AttachStatBuff(
+			stats.ArmorPenetration, bonusArp/2.0,
+		).AttachStatBuff(
+			stats.Agility, bonusAgi/2.0,
+		).AttachStatBuff(
+			stats.Strength, bonusStr/2.0,
+		).AttachMultiplyAttackSpeed(
+			&character.Unit, 1+bonusHaste/2.0,
+		).AttachStatBuff(
+			stats.AttackPower, bonusAP/2.0,
+		).AttachStatBuff(
+			stats.RangedAttackPower, bonusRAP/2.0,
+		)
 
-	// 	cdSpell := character.RegisterSpell(core.SpellConfig{
-	// 		ActionID: actionID,
-	// 		ProcMask: core.ProcMaskEmpty,
-	// 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-	// 		Cast: core.CastConfig{
-	// 			CD: core.Cooldown{
-	// 				Timer:    character.NewTimer(),
-	// 				Duration: time.Minute * 2,
-	// 			},
-	// 			SharedCD: core.Cooldown{
-	// 				Timer:    character.GetOffensiveTrinketCD(),
-	// 				Duration: duration,
-	// 			},
-	// 		},
-	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 			// TODO: How does this work? Equal chance for all? Or weighted?
-	// 		},
-	// 	})
-	// 	character.AddMajorCooldown(core.MajorCooldown{
-	// 		Type:  core.CooldownTypeDPS,
-	// 		Spell: cdSpell,
-	// 	})
-	// })
+		buffAuras := []*core.Aura{owlBuff, crocoliskBuff, raptorBuff, bearBuff, catBuff, gorillaBuff, bigglesworthBuff}
+
+		cdSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{ItemID: SirDornelsDidgeridoo},
+			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAuras[int32(sim.Roll(0, 7))].Activate(sim)
+			},
+		})
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: cdSpell,
+		})
+	})
 
 	// https://www.wowhead.com/classic-ptr/item=241068/stiltzs-standard
 	// Use: Throw down the Standard of Stiltz, increasing the maximum health of all nearby allies by 1000 for 20 sec. (2 Min Cooldown)

@@ -29,10 +29,6 @@ var ItemSetLightbreakersWarplate = core.NewItemSet(core.ItemSet{
 // Increases Heroic Strike, Cleave, and Quick Strike damage by 20%.
 // Your Cleave strikes 1 additional target and can trigger Blood Surge.
 func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
-	if warrior.Env.GetNumTargets() < 3 {
-		return
-	}
-
 	label := "S03 - Item - Scarlet Enclave - Warrior - Damage 2P Bonus"
 	if warrior.HasAura(label) {
 		return
@@ -41,7 +37,7 @@ func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.cleaveTargetCount += 1
+			warrior.CleaveTargetCount += 1
 			warrior.bloodSurgeClassMask |= ClassSpellMask_WarriorCleave
 		},
 	})).AttachSpellMod(core.SpellModConfig{
@@ -54,10 +50,6 @@ func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
 // Each time you hit a target with Whirlwind, Heroic Strike, Quick Strike, or Cleave, the damage of your next Slam is increased by 20%, stacking up to 5 times.
 // If you are wielding a two-handed weapon, you will gain 2 stacks each time.
 func (warrior *Warrior) applyScarletEnclaveDamage4PBonus() {
-	if !warrior.Talents.Bloodthirst && !warrior.Talents.MortalStrike && !warrior.Talents.ShieldSlam {
-		return
-	}
-
 	label := "S03 - Item - Scarlet Enclave - Warrior - Damage 4P Bonus"
 	if warrior.HasAura(label) {
 		return
@@ -180,22 +172,30 @@ func (warrior *Warrior) applyScarletEnclaveProtection2PBonus() {
 	})
 }
 
-// Recklessness no longer shares a cooldown with Shield Wall, lasts 15 more seconds, and causes you to gain strength equal to your defense skill over 300.
+// Your Recklessness, Retaliation, and Shield Wall abilities no longer share a cooldown.
+// Additionally, your Recklessness ability lasts 15 sec longer, and while it is active you gain 50% of your Defense Skill over 300 as Strength.
 func (warrior *Warrior) applyScarletEnclaveProtection4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warrior - Protection 4P Bonus"
 	if warrior.HasAura(label) {
 		return
 	}
 
+	var snapshottedDefense float64
 	buffAura := warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1227242}, // TODO: Find real spell
 		Label:    label + " Strength buff",
 		Duration: DefaultRecklessnessDuration + time.Second*15,
+		OnReset: func(aura *core.Aura, sim *core.Simulation) {
+			snapshottedDefense = 0
+		},
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			snapshottedDefense = warrior.GetStat(stats.Defense) * 0.50
+			warrior.AddStatDynamic(sim, stats.Strength, snapshottedDefense)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			warrior.AddStatDynamic(sim, stats.Strength, snapshottedDefense)
 		},
-	}).AttachStatDependency(warrior.NewDynamicStatDependency(stats.Defense, stats.Strength, 1))
+	})
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
@@ -218,10 +218,6 @@ func (warrior *Warrior) applyScarletEnclaveProtection4PBonus() {
 // Gladiator Stance no longer reduces your Armor or Threat, and instead increases threat by 30%.
 // In addition, each time your Revenge, Devastate, or Shield Slam hits, the damage done by your next Whirlwind or Execute is increased by 20%, stacking up to 5 times.
 func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
-	if !warrior.HasRune(proto.WarriorRune_RuneGladiatorStance) {
-		return
-	}
-
 	label := "S03 - Item - Scarlet Enclave - Warrior - Protection 6P Bonus"
 	if warrior.HasAura(label) {
 		return
@@ -250,7 +246,7 @@ func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
 		},
 	})
 
-	core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+	aura := core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
 		Name:           label,
 		Callback:       core.CallbackOnSpellHitDealt,
 		Outcome:        core.OutcomeLanded,
@@ -259,8 +255,31 @@ func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
 			buffAura.Activate(sim)
 			buffAura.AddStack(sim)
 		},
-	}).ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
-		warrior.gladiatorStanceThreatMultiplier = 1.30
-		warrior.gladiatorStanceArmorMultiplier = 1
+	})
+
+	if warrior.HasRune(proto.WarriorRune_RuneGladiatorStance) {
+		aura.ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
+			warrior.gladiatorStanceThreatMultiplier = 1.30
+			warrior.gladiatorStanceArmorMultiplier = 1
+		})
+	}
+}
+
+// If Cleave hits fewer than its maximum number of targets, it deals 35% more damage for each unused bounce.
+func (warrior *Warrior) ApplyFallenRegalityWarriorBonus(aura *core.Aura) {
+	targetCount := warrior.Env.GetNumTargets()
+
+	cleaveDamageMod := warrior.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_WarriorCleave,
+		FloatValue: 1,
+	})
+
+	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+		cleaveDamageMod.Activate()
+		// The cleave target count is set during initializing, so set the value here
+		cleaveDamageMod.UpdateFloatValue(1 + float64(warrior.CleaveTargetCount-targetCount)*0.35)
+	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+		cleaveDamageMod.Activate()
 	})
 }
