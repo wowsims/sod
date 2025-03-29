@@ -27,6 +27,7 @@ const (
 	Mercy                = 240854
 	TyrsFall             = 241001
 	RemnantsOfTheRed     = 241002
+	GreatstaffOfFealty   = 241011
 	HeartOfLight         = 241034
 	AbandonedExperiment  = 241037
 	SirDornelsDidgeridoo = 241038
@@ -127,6 +128,60 @@ func init() {
 			School:     core.SpellSchoolNature,
 			FloatValue: 1.20,
 		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=241011/greatstaff-of-fealty
+	// Equip: If there are no enemies within 20 yards of you, heal all party members within 20 yards for 125 every 3 seconds.
+	// A party may only swear Fealty to one player at a time.
+	core.NewItemEffect(GreatstaffOfFealty, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		actionID := core.ActionID{ItemID: GreatstaffOfFealty}
+		healthMetrics := character.NewHealthMetrics(actionID)
+
+		var healingPA *core.PendingAction
+		healingAura := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Fealty",
+			Duration: core.NeverExpires,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				healingPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:   time.Second * 3,
+					Priority: core.ActionPriorityLow,
+					OnAction: func(sim *core.Simulation) {
+						character.GainHealth(sim, 125, healthMetrics)
+					},
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				healingPA.Cancel(sim)
+			},
+		})
+
+		var rangeCheckPA *core.PendingAction
+		triggerAura := core.MakePermanent(character.RegisterAura(core.Aura{
+			Label: "Greater of Fealty Periodic Trigger",
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				rangeCheckPA = core.StartPeriodicAction(sim, core.PeriodicActionOptions{
+					Period:          time.Second * 1,
+					Priority:        core.ActionPriorityLow,
+					TickImmediately: true,
+					OnAction: func(sim *core.Simulation) {
+						if character.DistanceFromTarget >= 20 {
+							healingAura.Activate(sim)
+						} else {
+							healingAura.Deactivate(sim)
+						}
+					},
+				})
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				healingAura.Deactivate(sim)
+				rangeCheckPA.Cancel(sim)
+			},
+		}))
+
+		character.ItemSwap.RegisterProc(GreatstaffOfFealty, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=242310/hand-of-reborn-justice
