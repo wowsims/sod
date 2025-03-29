@@ -527,7 +527,7 @@ func init() {
 	// Chance on hit: Steals 475 to 525 life from up to 5 enemies, granting 30 Strength or Agility per enemy siphoned, stacking up to 5 times.
 	// PPM confirmed 5.0
 	itemhelpers.CreateWeaponProcSpell(CorruptedAshbringerLego, "Corrupted Ashbringer (Legendary)", 5.0, func(character *core.Character) *core.Spell {
-		actionID := core.ActionID{SpellID: 1220711}
+		actionID := core.ActionID{SpellID: 1231330}
 		healthMetrics := character.NewHealthMetrics(actionID)
 
 		agilityAura := character.RegisterAura(core.Aura{
