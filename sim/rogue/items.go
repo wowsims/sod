@@ -225,3 +225,58 @@ func (rogue *Rogue) ApplyQueensfallRogueEffect(aura *core.Aura) {
 		},
 	})
 }
+
+// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Envenom by 5% per stack, stacking up to 20 times.
+func (rogue *Rogue) ApplyRegicideRogueEffect(aura *core.Aura) {
+	// Coup debuff array
+	debuffAuras := rogue.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+		aura := unit.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231424},
+			Label:     "Coup",
+			MaxStacks: 20,
+			Duration:  time.Second * 15,
+		})
+
+		return aura
+	})
+
+	envenomDamageMod := rogue.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_RogueEnvenom,
+	})
+
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
+		Label: "Coup - Consume Stacks",
+	}).AttachProcTrigger(core.ProcTrigger{
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: ClassSpellMask_RogueEnvenom,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() {
+				debuffAuras[result.Target.Index].SetStacks(sim, 0)
+			}
+		},
+	}))
+
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
+		Label: "Coup - Apply Envenom Mod",
+	}).AttachProcTrigger(core.ProcTrigger{
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: ClassSpellMask_RogueEnvenom,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			envenomDamageMod.UpdateIntValue(int64(debuffAuras[result.Target.Index].GetStacks() * 5))
+			envenomDamageMod.Activate()
+		},
+	}))
+
+	// Apply the Coup debuff to the target hit by melee abilities
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:     "Regicide Trigger - Rogue",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			debuffAuras[result.Target.Index].Activate(sim)
+			debuffAuras[result.Target.Index].AddStack(sim)
+		},
+	})
+}

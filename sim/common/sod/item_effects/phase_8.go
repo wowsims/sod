@@ -25,6 +25,7 @@ const (
 	WillOfTheMountain    = 239060
 	HighCommandersGuard  = 240841
 	LightfistHammer      = 240850
+	Regicide             = 240851
 	CrimsonCleaver       = 240852
 	Queensfall           = 240853
 	Mercy                = 240854
@@ -685,6 +686,28 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterProc(MirageRodOfIllusion, triggerAura)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240851/regicide
+	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Execute by 10% per stack, stacking up to 20 times. At 20 stacks, Execute may be cast regardless of the target's health.
+	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Envenom by 5% per stack, stacking up to 20 times.
+	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Kill Shot by 5% per stack, stacking up to 20 times.
+	core.NewItemEffect(Regicide, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		aura := core.MakePermanent(character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231417},
+			Label:    "Regicide Trigger",
+		}))
+
+		switch character.Class {
+		case proto.Class_ClassWarrior:
+			agent.(warrior.WarriorAgent).GetWarrior().ApplyRegicideWarriorEffect(aura)
+		case proto.Class_ClassRogue:
+			agent.(rogue.RogueAgent).GetRogue().ApplyRegicideRogueEffect(aura)
+		case proto.Class_ClassHunter:
+			agent.(hunter.HunterAgent).GetHunter().ApplyRegicideHunterEffect(aura)
+		}
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240853/queensfall

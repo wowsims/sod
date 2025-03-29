@@ -643,3 +643,58 @@ func (hunter *Hunter) newBloodlashProcItem(bonusStrength float64, spellID int32)
 
 	hunter.ItemSwap.RegisterProc(BloodlashBow, aura)
 }
+
+// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Kill Shot by 5% per stack, stacking up to 20 times.
+func (hunter *Hunter) ApplyRegicideHunterEffect(aura *core.Aura) {
+	// Coup debuff array
+	debuffAuras := hunter.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+		aura := unit.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231765},
+			Label:     "Coup",
+			MaxStacks: 20,
+			Duration:  time.Second * 15,
+		})
+
+		return aura
+	})
+
+	killshotDamageMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterKillShot,
+	})
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Coup - Consume Stacks",
+	}).AttachProcTrigger(core.ProcTrigger{
+		Callback:       core.CallbackOnSpellHitDealt,
+		ClassSpellMask: ClassSpellMask_HunterKillShot,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() {
+				debuffAuras[result.Target.Index].SetStacks(sim, 0)
+			}
+		},
+	}))
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: "Coup - Apply Killshot Mod",
+	}).AttachProcTrigger(core.ProcTrigger{
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: ClassSpellMask_HunterKillShot,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			killshotDamageMod.UpdateIntValue(int64(debuffAuras[result.Target.Index].GetStacks() * 5))
+			killshotDamageMod.Activate()
+		},
+	}))
+
+	// Apply the Coup debuff to the target hit by melee abilities
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:     "Regicide Trigger - Hunter",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			debuffAuras[result.Target.Index].Activate(sim)
+			debuffAuras[result.Target.Index].AddStack(sim)
+		},
+	})
+}
