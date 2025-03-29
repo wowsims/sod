@@ -395,108 +395,109 @@ func init() {
 	// https://www.wowhead.com/classic-ptr/item=241038/sir-dornels-didgeridoo
 	// Use: Playing the didgeridoo summons a random beast to your side, increasing your physical abilities for 30 sec.
 	// May only be used while in combat. (2 Min Cooldown)
-	// core.NewItemEffect(SirDornelsDidgeridoo, func(agent core.Agent) {
-	// 	character := agent.GetCharacter()
+	core.NewItemEffect(SirDornelsDidgeridoo, func(agent core.Agent) {
+		character := agent.GetCharacter()
 
-	// 	actionID := core.ActionID{ItemID: SirDornelsDidgeridoo}
-	// 	duration := time.Second * 30
+		duration := time.Second * 30
 
-	// 	bonusCrit := 10.0
-	// 	bonusArp := 1000.0
-	// 	bonusAgi := 140.0
-	// 	bonusStr := 140.0
-	// 	bonusHaste := 0.14
-	// 	bonusAP := 280.0
-	// 	bonusRAP := 308.0
+		bonusCrit := 10.0
+		bonusArp := 1000.0
+		bonusAgi := 140.0
+		bonusStr := 140.0
+		bonusHaste := 0.14
+		bonusAP := 280.0
+		bonusRAP := 308.0
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231884/accuracy-of-the-owl
-	// 	owlAura := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231884),
-	// 		Label:    "Sir Dornel's Didgeridoo - Owl",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(stats.MeleeCrit, bonusCrit).AttachStatBuff(stats.SpellCrit, bonusCrit)
+		// https://www.wowhead.com/classic-ptr/spell=1231884/accuracy-of-the-owl
+		owlBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231884},
+			Label:    "Sir Dornel's Didgeridoo - Owl",
+			Duration: duration,
+		}).AttachStatBuff(stats.MeleeCrit, bonusCrit).AttachStatBuff(stats.SpellCrit, bonusCrit)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231894/ferocity-of-the-crocolisk
-	// 	crocoliskBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231894),
-	// 		Label:    "Sir Dornel's Didgeridoo - Crocolisk",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(stats.ArmorPenetration, bonusArp)
+		// https://www.wowhead.com/classic-ptr/spell=1231894/ferocity-of-the-crocolisk
+		crocoliskBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231894},
+			Label:    "Sir Dornel's Didgeridoo - Crocolisk",
+			Duration: duration,
+		}).AttachStatBuff(stats.ArmorPenetration, bonusArp)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231888/agility-of-the-raptor
-	// 	raptorBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231888),
-	// 		Label:    "Sir Dornel's Didgeridoo - Raptor",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(stats.Agility, bonusAgi)
+		// https://www.wowhead.com/classic-ptr/spell=1231888/agility-of-the-raptor
+		raptorBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231888},
+			Label:    "Sir Dornel's Didgeridoo - Raptor",
+			Duration: duration,
+		}).AttachStatBuff(stats.Agility, bonusAgi)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231883/strength-of-the-bear
-	// 	bearBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231883),
-	// 		Label:    "Sir Dornel's Didgeridoo - Bear",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(stats.Strength, bonusStr)
+		// https://www.wowhead.com/classic-ptr/spell=1231883/strength-of-the-bear
+		bearBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231883},
+			Label:    "Sir Dornel's Didgeridoo - Bear",
+			Duration: duration,
+		}).AttachStatBuff(stats.Strength, bonusStr)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231886/speed-of-the-cat
-	// 	catBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231886),
-	// 		Label:    "Sir Dornel's Didgeridoo - Cat",
-	// 		Duration: duration,
-	// 	}).AttachMultiplyAttackSpeed(&character.Unit, 1+bonusHaste)
+		// https://www.wowhead.com/classic-ptr/spell=1231886/speed-of-the-cat
+		catBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231886},
+			Label:    "Sir Dornel's Didgeridoo - Cat",
+			Duration: duration,
+		}).AttachMultiplyAttackSpeed(&character.Unit, 1+bonusHaste)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231891/power-of-the-gorilla
-	// 	gorillaBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231891),
-	// 		Label:    "Sir Dornel's Didgeridoo - Gorilla",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(stats.AttackPower, bonusAP).AttachStatBuff(stats.RangedAttackPower, bonusRAP)
+		// https://www.wowhead.com/classic-ptr/spell=1231891/power-of-the-gorilla
+		gorillaBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231891},
+			Label:    "Sir Dornel's Didgeridoo - Gorilla",
+			Duration: duration,
+		}).AttachStatBuff(stats.AttackPower, bonusAP).AttachStatBuff(stats.RangedAttackPower, bonusRAP)
 
-	// 	// https://www.wowhead.com/classic-ptr/spell=1231896/brilliance-of-mr-bigglesworth
-	// 	bigglesworthBuff := character.RegisterAura(core.Aura{
-	// 		ActionID: actionID.WithTag(1231896),
-	// 		Label:    "Sir Dornel's Didgeridoo - Mr. Bigglesworth",
-	// 		Duration: duration,
-	// 	}).AttachStatBuff(
-	// 		stats.MeleeCrit, bonusCrit/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.SpellCrit, bonusCrit/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.ArmorPenetration, bonusArp/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.Agility, bonusAgi/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.Strength, bonusStr/2.0,
-	// 	).AttachMultiplyAttackSpeed(
-	// 		&character.Unit, 1+bonusHaste/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.AttackPower, bonusAP/2.0,
-	// 	).AttachStatBuff(
-	// 		stats.RangedAttackPower, bonusRAP/2.0,
-	// 	)
+		// https://www.wowhead.com/classic-ptr/spell=1231896/brilliance-of-mr-bigglesworth
+		bigglesworthBuff := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231896},
+			Label:    "Sir Dornel's Didgeridoo - Mr. Bigglesworth",
+			Duration: duration,
+		}).AttachStatBuff(
+			stats.MeleeCrit, bonusCrit/2.0,
+		).AttachStatBuff(
+			stats.SpellCrit, bonusCrit/2.0,
+		).AttachStatBuff(
+			stats.ArmorPenetration, bonusArp/2.0,
+		).AttachStatBuff(
+			stats.Agility, bonusAgi/2.0,
+		).AttachStatBuff(
+			stats.Strength, bonusStr/2.0,
+		).AttachMultiplyAttackSpeed(
+			&character.Unit, 1+bonusHaste/2.0,
+		).AttachStatBuff(
+			stats.AttackPower, bonusAP/2.0,
+		).AttachStatBuff(
+			stats.RangedAttackPower, bonusRAP/2.0,
+		)
 
-	// 	cdSpell := character.RegisterSpell(core.SpellConfig{
-	// 		ActionID: actionID,
-	// 		ProcMask: core.ProcMaskEmpty,
-	// 		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-	// 		Cast: core.CastConfig{
-	// 			CD: core.Cooldown{
-	// 				Timer:    character.NewTimer(),
-	// 				Duration: time.Minute * 2,
-	// 			},
-	// 			SharedCD: core.Cooldown{
-	// 				Timer:    character.GetOffensiveTrinketCD(),
-	// 				Duration: duration,
-	// 			},
-	// 		},
-	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 			// TODO: How does this work? Equal chance for all? Or weighted?
-	// 		},
-	// 	})
-	// 	character.AddMajorCooldown(core.MajorCooldown{
-	// 		Type:  core.CooldownTypeDPS,
-	// 		Spell: cdSpell,
-	// 	})
-	// })
+		buffAuras := []*core.Aura{owlBuff, crocoliskBuff, raptorBuff, bearBuff, catBuff, gorillaBuff, bigglesworthBuff}
+
+		cdSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID: core.ActionID{ItemID: SirDornelsDidgeridoo},
+			ProcMask: core.ProcMaskEmpty,
+			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+				SharedCD: core.Cooldown{
+					Timer:    character.GetOffensiveTrinketCD(),
+					Duration: duration,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAuras[int32(sim.Roll(0, 7))].Activate(sim)
+			},
+		})
+		character.AddMajorCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeDPS,
+			Spell: cdSpell,
+		})
+	})
 
 	// https://www.wowhead.com/classic-ptr/item=241068/stiltzs-standard
 	// Use: Throw down the Standard of Stiltz, increasing the maximum health of all nearby allies by 1000 for 20 sec. (2 Min Cooldown)

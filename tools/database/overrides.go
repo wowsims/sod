@@ -190,7 +190,6 @@ var ItemDenyList = map[int32]struct{}{
 	241008: {}, // https://www.wowhead.com/classic-ptr/item=241008/condemnation
 	241011: {}, // https://www.wowhead.com/classic-ptr/item=241011/greatstaff-of-fealty
 	241015: {}, // https://www.wowhead.com/classic-ptr/item=241015/aegis-of-the-scarlet-bastion
-	241038: {}, // https://www.wowhead.com/classic-ptr/item=241038/sir-dornels-didgeridoo
 	241081: {}, // https://www.wowhead.com/classic-ptr/item=241081/corrupted-ashbringer
 
 }
