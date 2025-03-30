@@ -372,7 +372,7 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 		Label:     "Rolling with the Punches Proc",
 		ActionID:  core.ActionID{SpellID: 400015},
 		Duration:  time.Second * 30,
-		MaxStacks: int32(rogue.rollingWithThePunchesMaxStacks),
+		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 			if oldStacks != 0 {
 				aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])

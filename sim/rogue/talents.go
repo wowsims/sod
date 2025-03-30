@@ -444,7 +444,7 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 			curDmg = result.Damage / result.ResistanceMultiplier
 
 			curTarget := rogue.Env.NextTargetUnit(result.Target)
-			for i := int32(0); i < rogue.bladeFlurryTargetCount; i++ {
+			for i := int32(0); i < min(rogue.bladeFlurryTargetCount, sim.GetNumTargets()-1); i++ {
 				if curTarget == result.Target {
 					break
 				}

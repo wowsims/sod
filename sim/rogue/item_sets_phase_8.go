@@ -52,12 +52,10 @@ func (rogue *Rogue) applyScarletEnclaveTank2PBonus() {
 	rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
-			rogue.RollingWithThePunchesProcAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				oldOnStacksChange(aura, sim, oldStacks, newStacks)
+			rogue.RollingWithThePunchesProcAura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 				rogue.PseudoStats.DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
 				rogue.PseudoStats.DamageDealtMultiplier *= 1 + 0.01*float64(newStacks)
-			}
+			})
 		},
 	})
 }
@@ -103,19 +101,20 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 		return
 	}
 
-	metrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 1226956})
+	metrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 1226957})
 
 	energyProc := rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: 1226956},
-		SpellSchool: core.SpellSchoolNature,
+		ActionID: core.ActionID{SpellID: 1226957},
+		Flags:    core.SpellFlagNoOnCastComplete,
 		ApplyEffects: func(sim *core.Simulation, u *core.Unit, spell *core.Spell) {
 			rogue.AddEnergy(sim, 15, metrics)
 		},
 	})
 
 	energyAura := rogue.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 1219291},
-		Label:    "S03 - Item - Scarlet Enclave - Rogue - Tank 6P Bonus Energy Gain",
+		ActionID: core.ActionID{SpellID: 1226957},
+		Label:    "Float Like a Butterfly, Sting Like a Bee",
+		Duration: core.NeverExpires,
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Outcome.Matches(core.OutcomeDodge) {
 				energyProc.Cast(sim, result.Target)
@@ -127,17 +126,15 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.rollingWithThePunchesBonusHealthStackMultiplier -= 0.02
+			rogue.RollingWithThePunchesProcAura.MaxStacks += 5
 			rogue.rollingWithThePunchesMaxStacks += 5
-			oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
-			rogue.RollingWithThePunchesProcAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				oldOnStacksChange(aura, sim, oldStacks, newStacks)
+			rogue.RollingWithThePunchesProcAura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 				if newStacks == 10 {
 					energyAura.Activate(sim)
-				}
-				if newStacks < 10 && oldStacks == 10 {
+				} else if newStacks < 10 && oldStacks == 10 {
 					energyAura.Deactivate(sim)
 				}
-			}
+			})
 		},
 	}))
 }
