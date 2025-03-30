@@ -96,6 +96,11 @@ func (priest *Priest) NewHomunculus(idx int32, npcID int32) *Homunculus {
 		AutoSwingMelee: true,
 	})
 
+	homunculus.ApplyOnPetEnable(func(sim *core.Simulation) {
+		// Priest pets only inherit the owner's cast speed
+		homunculus.EnableDynamicCastSpeedInheritance(sim)
+	})
+
 	// Homunculus aren't very bright and often sit in front of targets
 	homunculus.PseudoStats.InFrontOfTarget = true
 

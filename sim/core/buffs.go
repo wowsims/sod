@@ -885,6 +885,16 @@ func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuf
 	individualBuffs.SlipkiksSavvy = false
 	individualBuffs.SparkOfInspiration = false
 
+	// Hunter and Shaman pets don't double dip from the Melee Speed increase of Warchief's Blessing
+	if ownerClass := petAgent.GetPet().Owner.Class; individualBuffs.WarchiefsBlessing && (ownerClass == proto.Class_ClassHunter || ownerClass == proto.Class_ClassShaman) {
+		petAgent.GetCharacter().RegisterAura(Aura{
+			Label: "Warchief's Blessing Pet Override",
+			OnInit: func(aura *Aura, sim *Simulation) {
+				aura.Unit.GetAura("Warchief's Blessing").OnReset = nil
+			},
+		})
+	}
+
 	applyBuffEffects(petAgent, playerFaction, raidBuffs, partyBuffs, individualBuffs)
 }
 
@@ -2367,10 +2377,10 @@ func ApplyWarchiefsBlessing(unit *Unit, category string) {
 			{stats.MP5, 10, false},
 		},
 		ExtraOnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.MeleeSpeedMultiplier *= 1.15
+			aura.Unit.MultiplyMeleeSpeed(sim, 1.15)
 		},
 		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.MeleeSpeedMultiplier /= 1.15
+			aura.Unit.MultiplyMeleeSpeed(sim, 1/1.15)
 		},
 	})
 }
@@ -2389,10 +2399,10 @@ func ApplyMightOfStormwind(unit *Unit, category string) {
 			{stats.MP5, 10, false},
 		},
 		ExtraOnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.MeleeSpeedMultiplier *= 1.15
+			aura.Unit.MultiplyMeleeSpeed(sim, 1.15)
 		},
 		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.MeleeSpeedMultiplier /= 1.15
+			aura.Unit.MultiplyMeleeSpeed(sim, 1/1.15)
 		},
 	})
 }
@@ -2545,12 +2555,10 @@ func ApplySparkOfInspiration(unit *Unit) {
 			{stats.SpellPower, 42, false},
 		},
 		ExtraOnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.MeleeSpeedMultiplier *= 1.1
-			aura.Unit.PseudoStats.RangedSpeedMultiplier *= 1.1
+			aura.Unit.MultiplyAttackSpeed(sim, 1.10)
 		},
 		ExtraOnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.MeleeSpeedMultiplier /= 1.1
-			aura.Unit.PseudoStats.RangedSpeedMultiplier /= 1.1
+			aura.Unit.MultiplyAttackSpeed(sim, 1/1.10)
 		},
 	})
 }

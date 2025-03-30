@@ -166,6 +166,11 @@ func (priest *Priest) NewShadowfiend() *Shadowfiend {
 		AutoSwingMelee: true,
 	})
 
+	shadowfiend.ApplyOnPetEnable(func(sim *core.Simulation) {
+		// Priest pets only inherit the owner's cast speed
+		shadowfiend.EnableDynamicCastSpeedInheritance(sim)
+	})
+
 	priest.AddPet(shadowfiend)
 
 	return shadowfiend

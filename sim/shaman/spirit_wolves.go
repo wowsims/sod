@@ -48,7 +48,8 @@ func (shaman *Shaman) NewSpiritWolves() *SpiritWolves {
 	wolves.AddStatDependency(stats.Agility, stats.AttackPower, 0.2)
 
 	wolves.ApplyOnPetEnable(func(sim *core.Simulation) {
-		wolves.EnableDynamicAttackSpeed(sim)
+		// Shaman pets inherit the highest of the owner's melee and cast speed
+		wolves.EnableDynamicAttackSpeedInheritance(sim)
 	})
 
 	// Warrior crit scaling
