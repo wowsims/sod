@@ -112,7 +112,7 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterActive(AbandonedExperiment)
-		character.ItemSwap.RegisterProc(RemnantsOfTheRed, buffAura)
+		character.ItemSwap.RegisterProc(AbandonedExperiment, buffAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241015/aegis-of-the-scarlet-bastion
@@ -817,15 +817,15 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241002/remnants-of-the-red
-	// Equip: Dealing non-periodic Fire damage has a 10% chance to increase your Fire damage dealt by 10% for 20 sec. (Proc chance: 10%)
+	// Equip: Dealing non-periodic Fire damage has a 5% chance to increase your Fire damage dealt by 5% for 15 sec. (Proc chance: 5%)
 	core.NewItemEffect(RemnantsOfTheRed, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		buffAura := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1231625},
 			Label:    "Flames of the Red",
-			Duration: time.Second * 20,
-		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.1)
+			Duration: time.Second * 15,
+		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.05)
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:        "Remnants of the Red Trigger",
@@ -833,7 +833,7 @@ func init() {
 			Outcome:     core.OutcomeLanded,
 			ProcMask:    core.ProcMaskSpellDamage,
 			SpellSchool: core.SpellSchoolFire,
-			ProcChance:  0.10,
+			ProcChance:  0.05,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 			},
