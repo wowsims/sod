@@ -135,6 +135,7 @@ type Rogue struct {
 	rollingWithThePunchesBonusHealthStackMultiplier float64
 	rollingWithThePunchesMaxStacks                  int
 	bladeFlurryAttackSpeedBonus                     float64
+	bladeFlurryTargetCount                          int32
 
 	AdrenalineRushAura            *core.Aura
 	BladeDanceAura                *core.Aura

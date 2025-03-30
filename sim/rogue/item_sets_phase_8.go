@@ -53,7 +53,7 @@ func (rogue *Rogue) applyScarletEnclaveTank2PBonus() {
 // Your Blade Flurry now also strikes a third target and increases your attack speed by an additional 10%. In addition, each combo point you spend reduces the remaining cooldown on your Blade Flurry by 0.5 sec.
 func (rogue *Rogue) applyScarletEnclaveTank4PBonus() {
 
-	if rogue.Talents.BladeFlurry == 0 {
+	if !rogue.Talents.BladeFlurry {
 		return
 	}
 
@@ -72,8 +72,8 @@ func (rogue *Rogue) applyScarletEnclaveTank4PBonus() {
 			})
 
 			rogue.bladeFlurryAttackSpeedBonus += 0.1
+			rogue.bladeFlurryTargetCount += 1
 
-			// specify that blade dance cleaves an additional target. Check warrior cleave new set bonus for something similar
 		},
 	}))
 }
@@ -126,7 +126,6 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 					energyAura.Deactivate(sim)
 				}
 			}
-
 		},
 	}))
 }

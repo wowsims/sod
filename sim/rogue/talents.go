@@ -412,6 +412,7 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 	})
 
 	rogue.bladeFlurryAttackSpeedBonus += 1.2
+	rogue.bladeFlurryTargetCount += 1
 
 	rogue.BladeFlurryAura = rogue.RegisterAura(core.Aura{
 		Label:    "Blade Flurry",
@@ -442,8 +443,15 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 			// Undo armor reduction to get the raw damage value.
 			curDmg = result.Damage / result.ResistanceMultiplier
 
-			bfHit.Cast(sim, rogue.Env.NextTargetUnit(result.Target))
-			bfHit.SpellMetrics[result.Target.UnitIndex].Casts--
+			curTarget := rogue.Env.NextTargetUnit(result.Target)
+			for i := int32(0); i < rogue.bladeFlurryTargetCount; i++ {
+				if curTarget == result.Target {
+					break
+				}
+				bfHit.Cast(sim, curTarget)
+				bfHit.SpellMetrics[curTarget.UnitIndex].Casts--
+				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			}
 		},
 	})
 
