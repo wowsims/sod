@@ -88,12 +88,13 @@ func (rogue *Rogue) applyScarletEnclaveDamage4PBonus() {
 		},
 	})
 
-	// Add a combo point for autoattack crit | Not sure if I need to add anything here to track autoattacks
+	// Add a combo point for autoattack crit
 	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
 		Name:       label,
 		Callback:   core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
 		Outcome:    core.OutcomeCrit,
 		ProcChance: 0.10,
+		ProcMask:   core.ProcMaskMeleeWhiteHit,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboPointMetrics)
 		},
