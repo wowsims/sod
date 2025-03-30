@@ -38,6 +38,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 	}
 
 	totalBleedsAndPoisons := rogue.PoisonsActive + rogue.BleedsActive
+	spellsModifiedBySetBonus := ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate
 
 	// TODO: Fix logic below here, checks above should be good. Using Feral Druid T2 6pc as reference here to start.
 	// Added bleed tracking variables much like Feral Druid, have updated Rupture, CT, Garrote, and SSL to add bleed trackers, need to figure out if Hemorrhage should count
@@ -45,7 +46,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 	// Wowhead seems to confirm this as Hemorrhage does not have a Mechanic of Bleeding like Rupture, Garrote, etc
 	damageMod := rogue.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
+		ClassMask:  spellsModifiedBySetBonus,
 		FloatValue: 1.0,
 	})
 
@@ -54,7 +55,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		Name:           label,
 		Callback:       core.CallbackOnApplyEffects,
 		ProcChance:     0.1,
-		ClassSpellMask: ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
+		ClassSpellMask: spellsModifiedBySetBonus,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			fmt.Println("Bleeds: ", rogue.BleedsActive)
 			fmt.Println("Poisons: ", rogue.PoisonsActive)
