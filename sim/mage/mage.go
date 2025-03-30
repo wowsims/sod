@@ -69,7 +69,7 @@ const (
 		ClassSpellMask_MageBlastWave |
 		ClassSpellMask_MageFrostfireBolt | ClassSpellMask_MageSpellfrostBolt | ClassSpellMask_MageArcaneBlast |
 		ClassSpellMask_MageBalefireBolt | ClassSpellMask_MageArcaneBarrage | ClassSpellMask_MageLivingBomb |
-		ClassSpellMask_MageLivingFlame | ClassSpellMask_MageArcaneSurge | ClassSpellMask_MageFrozenOrb
+		ClassSpellMask_MageIceLance | ClassSpellMask_MageLivingFlame | ClassSpellMask_MageArcaneSurge | ClassSpellMask_MageFrozenOrb
 )
 
 var TalentTreeSizes = [3]int{16, 16, 17}
