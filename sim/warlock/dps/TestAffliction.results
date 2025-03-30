@@ -659,9 +659,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 3704.39282
-  tps: 3473.73312
-  hps: 761.03831
+  dps: 3688.13587
+  tps: 3456.59233
+  hps: 746.15675
  }
 }
 dps_results: {
@@ -939,9 +939,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 4197.28461
-  tps: 4035.24036
-  hps: 968.84885
+  dps: 4156.97969
+  tps: 3995.52654
+  hps: 965.14668
  }
 }
 dps_results: {
