@@ -43,7 +43,6 @@ func NewFeralDruid(character *core.Character, options *proto.Player) *FeralDruid
 		cat.SelfBuffs.InnervateTarget = feralOptions.Options.InnervateTarget
 	}
 
-	cat.AssumeBleedActive = feralOptions.Options.AssumeBleedActive
 	cat.maxRipTicks = druid.RipTicks
 
 	cat.EnableEnergyBar(100.0)
