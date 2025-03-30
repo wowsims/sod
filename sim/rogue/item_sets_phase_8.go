@@ -1,8 +1,6 @@
 package rogue
 
 import (
-	"fmt"
-
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -54,11 +52,8 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		ProcChance:     0.1,
 		ClassSpellMask: spellsModifiedBySetBonus,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			fmt.Println("Bleeds: ", rogue.BleedsActive)
-			fmt.Println("Poisons: ", rogue.PoisonsActive)
 
 			// Only apply the damage mod up to 3 times for the 30% bonus maximum
-			fmt.Println("2P proc triggered")
 			damageMod.UpdateFloatValue(1 + 0.10*float64(min(3, totalBleedsAndPoisons)))
 			damageMod.Activate()
 		},

@@ -381,11 +381,6 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 					fmt.Println("Deadly Poison deactivated")
 					rogue.PoisonsActive[aura.Unit.UnitIndex]--
 				},
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					for _, target := range sim.Encounter.TargetUnits {
-						rogue.PoisonsActive[target.UnitIndex] = 0
-					}
-				},
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
@@ -441,11 +436,6 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 			fmt.Println("Wound Poison deactivated")
 			rogue.PoisonsActive[aura.Unit.UnitIndex]--
 		},
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			for _, target := range sim.Encounter.TargetUnits {
-				rogue.PoisonsActive[target.UnitIndex] = 0
-			}
-		},
 	}
 
 	rogue.woundPoisonDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
@@ -493,11 +483,6 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 					// p8 DPS tier bonus tracking
 					fmt.Println("Occult Poison deactivated")
 					rogue.PoisonsActive[aura.Unit.UnitIndex]--
-				},
-				OnReset: func(aura *core.Aura, sim *core.Simulation) {
-					for _, target := range sim.Encounter.TargetUnits {
-						rogue.PoisonsActive[target.UnitIndex] = 0
-					}
 				},
 			},
 			NumberOfTicks: 4,
@@ -555,13 +540,6 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 			rogue.PoisonsActive[aura.Unit.UnitIndex]--
 		})
 
-		sebaciousPoisonAura.ApplyOnReset(func(aura *core.Aura, sim *core.Simulation) {
-			// p8 DPS tier bonus tracking
-			for _, target := range sim.Encounter.TargetUnits {
-				rogue.PoisonsActive[target.UnitIndex] = 0
-			}
-		})
-
 		return sebaciousPoisonAura
 	})
 
@@ -594,13 +572,6 @@ func (rogue *Rogue) registerAtrophicPoisonSpell() {
 			rogue.PoisonsActive[aura.Unit.UnitIndex]--
 		})
 
-		atrophicPoisonAura.ApplyOnReset(func(aura *core.Aura, sim *core.Simulation) {
-			// p8 DPS tier bonus tracking
-			for _, target := range sim.Encounter.TargetUnits {
-				rogue.PoisonsActive[target.UnitIndex] = 0
-			}
-		})
-
 		return atrophicPoisonAura
 	})
 
@@ -631,13 +602,6 @@ func (rogue *Rogue) registerNumbingPoisonSpell() {
 			// p8 DPS tier bonus tracking
 			fmt.Println("Numbing Poison deactivated")
 			rogue.PoisonsActive[aura.Unit.UnitIndex]--
-		})
-
-		numbingPoisonAura.ApplyOnReset(func(aura *core.Aura, sim *core.Simulation) {
-			// p8 DPS tier bonus tracking
-			for _, target := range sim.Encounter.TargetUnits {
-				rogue.PoisonsActive[target.UnitIndex] = 0
-			}
 		})
 
 		return numbingPoisonAura
