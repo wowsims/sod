@@ -529,11 +529,19 @@ export class CharacterStats extends Component {
 		return `${(stats.getPseudoStat(pseudoStat) + stats.getStat(Stat.StatSpellHit)).toFixed(2)}%`;
 	}
 
-	private authorityOfTheFrozenWastes(player: Player<any>): Stats {
+	private raidAvoidanceDebuff(player: Player<any>): Stats {
 		const targets = player.sim.encounter.targets;
 		let stats = new Stats();
 		if (!targets || targets.length === 0) {
 			return stats;
+		}
+
+		if (player.sim.db) {
+			const preset = player.sim.db.getAllPresetEncounters().find(pe => player.sim.encounter.matchesPreset(pe));
+			if (preset && preset.path.includes('Scarlet Enclave')) {
+				stats = stats.addStat(Stat.StatDodge, -20);
+				return stats;
+			}
 		}
 
 		const targetInputs = targets[0].targetInputs;
@@ -551,7 +559,7 @@ export class CharacterStats extends Component {
 	}
 
 	private getDebuffStats(player: Player<any>): Stats {
-		const debuffStats = new Stats().add(this.authorityOfTheFrozenWastes(player));
+		const debuffStats = new Stats().add(this.raidAvoidanceDebuff(player));
 
 		return debuffStats;
 	}
