@@ -159,8 +159,8 @@ type Rogue struct {
 	numbingPoisonDebuffAura   core.AuraArray
 
 	// working on p8 dps tier
-	BleedsActive  int
-	PoisonsActive int
+	BleedsActive  map[int32]int32
+	PoisonsActive map[int32]int32
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {

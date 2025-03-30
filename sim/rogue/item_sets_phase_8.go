@@ -38,7 +38,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		return
 	}
 
-	totalBleedsAndPoisons := rogue.PoisonsActive + rogue.BleedsActive
+	totalBleedsAndPoisons := rogue.PoisonsActive[rogue.CurrentTarget.UnitIndex] + rogue.BleedsActive[rogue.CurrentTarget.UnitIndex]
 	spellsModifiedBySetBonus := ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate
 
 	damageMod := rogue.AddDynamicMod(core.SpellModConfig{

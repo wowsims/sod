@@ -39,10 +39,10 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				Duration:  time.Second * 12,
 				MaxStacks: 3,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					rogue.BleedsActive++
+					rogue.BleedsActive[aura.Unit.UnitIndex]++
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					rogue.BleedsActive--
+					rogue.BleedsActive[aura.Unit.UnitIndex]--
 				},
 			},
 			NumberOfTicks: 6,
