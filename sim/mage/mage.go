@@ -63,6 +63,7 @@ const (
 	ClassSpellMask_MageChanneled = ClassSpellMask_MageArcaneMissiles | ClassSpellMask_MageEvocation | ClassSpellMask_MageMassRegeneration
 
 	// TODO: Cone of Cold, Frost Nova
+	// Deep Freeze missing on Wowhead
 	ClassSpellMask_MageHarmfulGCDSpells = ClassSpellMask_MageFireball | ClassSpellMask_MageFrostbolt | ClassSpellMask_MageFireBlast |
 		ClassSpellMask_MagePyroblast | ClassSpellMask_MageScorch | ClassSpellMask_MageArcaneMissiles |
 		ClassSpellMask_MageArcaneExplosion | ClassSpellMask_MageBlizzard | ClassSpellMask_MageFlamestrike |
