@@ -25,6 +25,7 @@ var ItemSetDuskwraithArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
+// 2P
 // While Just a Flesh Wound is not active, your Backstab, Sinister Strike, Saber Slash, and Mutilate deal 10% increased damage per your active Poison or Bleed effect
 // afflicting the target, up to a maximum increase of 30%
 func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
@@ -40,10 +41,6 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 	totalBleedsAndPoisons := rogue.PoisonsActive + rogue.BleedsActive
 	spellsModifiedBySetBonus := ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate
 
-	// TODO: Fix logic below here, checks above should be good. Using Feral Druid T2 6pc as reference here to start.
-	// Added bleed tracking variables much like Feral Druid, have updated Rupture, CT, Garrote, and SSL to add bleed trackers, need to figure out if Hemorrhage should count
-	// Testing done on 3/28/2025 in Classic Rogue Discord shows that using Luffa, Hemorrhage does not count as a bleed and should also not count towards this set bonus.
-	// Wowhead seems to confirm this as Hemorrhage does not have a Mechanic of Bleeding like Rupture, Garrote, etc
 	damageMod := rogue.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  spellsModifiedBySetBonus,
@@ -51,7 +48,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 	})
 
 	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-		ActionID:       core.ActionID{SpellID: 1226843}, // Tracking in APL
+		ActionID:       core.ActionID{SpellID: 1226843},
 		Name:           label,
 		Callback:       core.CallbackOnApplyEffects,
 		ProcChance:     0.1,
@@ -68,6 +65,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 	})
 }
 
+// 4P
 // Your Poison and autoattack critical strikes have a 10% chance to grant you a combo point. (Proc chance: 10%)
 func (rogue *Rogue) applyScarletEnclaveDamage4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Rogue - Damage 4P Bonus"
@@ -75,9 +73,10 @@ func (rogue *Rogue) applyScarletEnclaveDamage4PBonus() {
 		return
 	}
 
+	// Combo! spell that adds the combo point for the set bonus
 	comboPointMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 1226869})
 
-	// TODO: Figure out how to add autoattacks to the spell matches
+	// Add a combo point for poison tick crit
 	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
 		Name:           label,
 		ClassSpellMask: ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueInstantPoison,
@@ -88,8 +87,20 @@ func (rogue *Rogue) applyScarletEnclaveDamage4PBonus() {
 			rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboPointMetrics)
 		},
 	})
+
+	// Add a combo point for autoattack crit | Not sure if I need to add anything here to track autoattacks
+	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
+		Name:       label,
+		Callback:   core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
+		Outcome:    core.OutcomeCrit,
+		ProcChance: 0.10,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboPointMetrics)
+		},
+	})
 }
 
+// 6P
 // Increases Ambush, Eviscerate, Crimson Tempest, and Envenom damage by 50%
 func (rogue *Rogue) applyScarletEnclaveDamage6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Rogue - Damage 6P Bonus"
