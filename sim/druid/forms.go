@@ -373,7 +373,7 @@ func (druid *Druid) registerBearFormSpell() {
 	druid.BearForm = druid.RegisterSpell(Any, core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_DruidBearForm,
 		ActionID:       actionID,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.55,
@@ -482,7 +482,7 @@ func (druid *Druid) registerMoonkinFormSpell() {
 	druid.MoonkinForm = druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: ClassSpellMask_DruidMoonkinForm,
-		Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL,
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost:   0.35,

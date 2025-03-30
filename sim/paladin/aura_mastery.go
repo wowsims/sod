@@ -41,7 +41,6 @@ func (paladin *Paladin) registerAuraMastery() {
 
 	auraMastery := paladin.RegisterSpell(core.SpellConfig{
 		ActionID: aura.ActionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: cd,
 		},

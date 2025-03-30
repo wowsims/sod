@@ -89,7 +89,7 @@ enum DruidRune {
     RuneShouldersRipper                 = 1220336;
     RuneShoulderFerocious               = 1220301;
     RuneShouldersShifter                = 1220303;
-    RuneShouldersStarcaller             = 1220352;
+    RuneShouldersStarcaller             = 1233551;
     RuneShouldersTerritorial            = 1220305;
     RuneShouldersWrathful               = 1220358;
 

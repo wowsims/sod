@@ -33,7 +33,7 @@ func (warrior *Warrior) registerHeroicStrikeSpell(realismICD *core.Cooldown) {
 		SpellSchool:    core.SpellSchoolPhysical,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeMHSpecial | core.ProcMaskMeleeMHAuto,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | SpellFlagOffensive,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
 			Cost:   15 - float64(warrior.Talents.ImprovedHeroicStrike),
@@ -116,9 +116,6 @@ func (warrior *Warrior) registerCleaveSpell(realismICD *core.Cooldown) {
 				baseDamage := flatDamageBonus + spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 				spell.CalcAndDealDamage(sim, curTarget, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				curTarget = sim.Environment.NextTargetUnit(curTarget)
-				if curTarget == target {
-					break
-				}
 			}
 
 			if warrior.curQueueAura != nil {

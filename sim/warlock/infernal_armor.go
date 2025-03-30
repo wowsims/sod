@@ -34,7 +34,6 @@ func (warlock *Warlock) registerInfernalArmorCD() {
 		ActionID:       actionID,
 		ClassSpellMask: ClassSpellMask_WarlockInfernalArmor,
 		SpellSchool:    core.SpellSchoolShadow,
-		Flags:          core.SpellFlagNoOnCastComplete,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

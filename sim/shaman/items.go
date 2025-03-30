@@ -51,7 +51,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature | core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagAPL | core.SpellFlagOffensiveEquipment,
+			Flags:       core.SpellFlagNoOnCastComplete,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -102,8 +102,6 @@ func init() {
 
 		spell := shaman.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: NaturalAlignmentCrystal},
-			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    shaman.NewTimer(),
@@ -119,7 +117,7 @@ func init() {
 			},
 		})
 
-		shaman.AddMajorCooldown(core.MajorCooldown{
+		shaman.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    spell,
 			Priority: core.CooldownPriorityBloodlust,
 			Type:     core.CooldownTypeDPS,
@@ -210,7 +208,7 @@ func init() {
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -239,7 +237,7 @@ func init() {
 			ActionID:    waterHealActionID,
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete,
+			Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -599,10 +597,7 @@ func init() {
 		})
 
 		spell := shaman.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolNature,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			ActionID: actionID,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    shaman.NewTimer(),
@@ -618,7 +613,7 @@ func init() {
 			},
 		})
 
-		shaman.AddMajorCooldown(core.MajorCooldown{
+		shaman.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    spell,
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,

@@ -50,7 +50,7 @@ func (mage *Mage) newIceBarrierSpellConfig(rank int, cdTimer *core.Timer) core.S
 	return core.SpellConfig{
 		ActionID:      core.ActionID{SpellID: spellID},
 		SpellSchool:   core.SpellSchoolFrost,
-		Flags:         core.SpellFlagAPL | core.SpellFlagNoOnCastComplete,
+		Flags:         core.SpellFlagAPL,
 		Rank:          rank,
 		RequiredLevel: level,
 		ManaCost: core.ManaCostOptions{

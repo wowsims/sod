@@ -241,15 +241,15 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1176.66905
-  tps: 2708.38474
+  dps: 1175.84557
+  tps: 2710.5505
  }
 }
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-Settings-Troll-phase_4_enh_tank-Default-phase_4_enh_tank-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 554.8214
-  tps: 836.96732
+  dps: 553.99344
+  tps: 836.22295
  }
 }
 dps_results: {

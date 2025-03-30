@@ -120,8 +120,6 @@ func init() {
 
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: ScrollsOfBlindingLight},
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-			ProcMask: core.ProcMaskEmpty,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -139,7 +137,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:     core.CooldownTypeDPS,
 			Priority: core.CooldownPriorityDefault,
 			Spell:    spell,
@@ -197,8 +195,6 @@ func init() {
 
 		spell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: GrileksCharmOfValor},
-			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -216,7 +212,7 @@ func init() {
 			},
 		})
 
-		paladin.AddMajorCooldown(core.MajorCooldown{
+		paladin.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})

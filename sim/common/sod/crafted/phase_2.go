@@ -33,7 +33,6 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionId,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -47,7 +46,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,
@@ -71,15 +70,12 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 437368},
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 15,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 				if sim.RandomFloat("Coin Flip") > 0.5 {
 					buffAuraCrit.Activate(sim)
@@ -89,7 +85,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,
@@ -147,21 +143,18 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionId,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 10,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 				spell.Cast(sim, &character.Unit)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,
@@ -187,21 +180,18 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionId,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 10,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 				buffAura.Activate(sim)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,
@@ -254,21 +244,18 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionId,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 10,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 				spell.Cast(sim, &character.Unit)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,
@@ -296,21 +283,18 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionId,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 10,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 				buffAura.Activate(sim)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,

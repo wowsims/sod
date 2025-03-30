@@ -635,7 +635,7 @@ func (spell *Spell) applyEffects(sim *Simulation, target *Unit) {
 	// Not sure if we want to split this flag into its own?
 	// Both are used to optimize away unneccesery calls and 99%
 	// of the time are gonna be used together. For now just in one
-	if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
+	if !spell.Flags.Matches(SpellFlagNoLifecycleCallbacks) {
 		spell.Unit.OnApplyEffects(sim, target, spell)
 	}
 

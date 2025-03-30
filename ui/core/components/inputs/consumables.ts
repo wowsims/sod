@@ -75,10 +75,7 @@ function makeConsumeInputFactory<T extends number>(
 		return {
 			type: 'iconEnum',
 			tooltip: tooltip,
-			numColumns: args.numColumns ? args.numColumns :
-				options.length > 11 ? 4 :
-				options.length > 8 ? 3 :
-				options.length > 5 ? 2 : 1,
+			numColumns: args.numColumns ? args.numColumns : options.length > 11 ? 4 : options.length > 8 ? 3 : options.length > 5 ? 2 : 1,
 			values: [{ value: 0 } as unknown as IconEnumValueConfig<Player<any>, T>].concat(
 				options.map(option => {
 					return {
@@ -359,6 +356,26 @@ export const makeFlasksInput = makeConsumeInputFactory({ consumesFieldName: 'fla
 //                                 FOOD
 ///////////////////////////////////////////////////////////////////////////
 
+export const ProwlerSteak: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238637, minLevel: 55 }]),
+	value: Food.FoodProwlerSteak,
+};
+export const FiletOFlank: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238638, minLevel: 55 }]),
+	value: Food.FoodFiletOFlank,
+};
+export const SunriseOmelette: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238639, minLevel: 55 }]),
+	value: Food.FoodSunriseOmelette,
+};
+export const SpecklefinFeast: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238641, minLevel: 55 }]),
+	value: Food.FoodSpecklefinFeast,
+};
+export const GrandLobsterBanquet: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238642, minLevel: 55 }]),
+	value: Food.FoodGrandLobsterBanquet,
+};
 export const DarkclawBisque: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 232436, minLevel: 45 }]),
 	value: Food.FoodDarkclawBisque,
@@ -411,29 +428,14 @@ export const SmokedSagefish: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21072, minLevel: 10 }]),
 	value: Food.FoodSmokedSagefish,
 };
-export const ProwlerSteak: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238637, minLevel: 55 }]),
-	value: Food.FoodProwlerSteak,
-};
-export const FiletOFlank: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238638, minLevel: 55 }]),
-	value: Food.FoodFiletOFlank,
-};
-export const SunriseOmelette: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238639, minLevel: 55 }]),
-	value: Food.FoodSunriseOmelette,
-};
-export const SpecklefinFeast: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238641, minLevel: 55 }]),
-	value: Food.FoodSpecklefinFeast,
-};
-export const GrandLobsterBanquet: ConsumableInputConfig<Food> = {
-	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238642, minLevel: 55 }]),
-	value: Food.FoodGrandLobsterBanquet,
-};
 
 // Ordered by level
 export const FOOD_CONFIG: ConsumableStatOption<Food>[] = [
+	{ config: SunriseOmelette, stats: [Stat.StatSpellPower, Stat.StatHealingPower, Stat.StatStamina] },
+	{ config: ProwlerSteak, stats: [Stat.StatStrength, Stat.StatStamina] },
+	{ config: FiletOFlank, stats: [Stat.StatAgility, Stat.StatStamina] },
+	{ config: SpecklefinFeast, stats: [Stat.StatAttackPower, Stat.StatSpellPower, Stat.StatHealingPower, Stat.StatStamina] },
+	{ config: GrandLobsterBanquet, stats: [Stat.StatAttackPower, Stat.StatSpellPower, Stat.StatHealingPower, Stat.StatStamina] },
 	{ config: DarkclawBisque, stats: [Stat.StatSpellDamage] },
 	{ config: SmokedRedgill, stats: [Stat.StatHealingPower] },
 	{ config: DirgesKickChimaerokChops, stats: [Stat.StatStamina] },
@@ -447,11 +449,6 @@ export const FOOD_CONFIG: ConsumableStatOption<Food>[] = [
 	{ config: SagefishDelight, stats: [Stat.StatMP5] },
 	{ config: HotWolfRibs, stats: [Stat.StatSpirit] },
 	{ config: SmokedSagefish, stats: [Stat.StatMP5] },
-	{ config: SunriseOmelette, stats: [Stat.StatSpellPower, Stat.StatHealingPower, Stat.StatStamina] },
-	{ config: ProwlerSteak, stats: [Stat.StatStrength, Stat.StatStamina] },
-	{ config: FiletOFlank, stats: [Stat.StatAgility, Stat.StatStamina] },
-	{ config: SpecklefinFeast, stats: [Stat.StatAttackPower, Stat.StatSpellPower, Stat.StatHealingPower, Stat.StatStamina] },
-	{ config: GrandLobsterBanquet, stats: [Stat.StatAttackPower, Stat.StatSpellPower, Stat.StatHealingPower, Stat.StatStamina] },
 ];
 
 export const makeFoodInput = makeConsumeInputFactory({ consumesFieldName: 'food' });
@@ -678,9 +675,12 @@ export const SEAL_OF_THE_DAWN_CONSUMES_CONFIG: ConsumableStatOption<SealOfTheDaw
 	{ config: { actionId: () => ActionId.fromItemId(236394), value: SealOfTheDawn.SealOfTheDawnTankR3 }, stats: [Stat.StatDefense] },
 	{ config: { actionId: () => ActionId.fromItemId(236395), value: SealOfTheDawn.SealOfTheDawnTankR2 }, stats: [Stat.StatDefense] },
 	{ config: { actionId: () => ActionId.fromItemId(236396), value: SealOfTheDawn.SealOfTheDawnTankR1 }, stats: [Stat.StatDefense] },
-
 ];
-export const makeSealOfTheDawnConsumesInput = makeConsumeInputFactory({ consumesFieldName: 'sealOfTheDawn', numColumns: 11, showWhen: player => player.getLevel() === 60 });
+export const makeSealOfTheDawnConsumesInput = makeConsumeInputFactory({
+	consumesFieldName: 'sealOfTheDawn',
+	numColumns: 11,
+	showWhen: player => player.getLevel() === 60,
+});
 
 // Blasted Lands Consumes
 export const ROIDS: ConsumableInputConfig<ZanzaBuff> = {
@@ -801,7 +801,7 @@ export const JujuEscape = makeBooleanMiscConsumeInput({
 });
 
 export const MISC_DEFENSIVE_CONSUMES_CONFIG: PickerStatOptions[] = [
-	{ config: GreaterMarkOfTheDawn, picker :IconPicker, stats: [] },
+	{ config: GreaterMarkOfTheDawn, picker: IconPicker, stats: [] },
 	{ config: JujuEmber, picker: IconPicker, stats: [] },
 	{ config: JujuChill, picker: IconPicker, stats: [] },
 	{ config: JujuEscape, picker: IconPicker, stats: [Stat.StatDodge] },

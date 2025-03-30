@@ -505,7 +505,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 27.52886
+  weights: 27.52851
   weights: 0
   weights: 0
   weights: 0
@@ -543,18 +543,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.37859
+  weights: 6.36418
   weights: 0
-  weights: 2.02965
+  weights: 2.02955
   weights: 0
-  weights: 2.02965
-  weights: 0
-  weights: 0
+  weights: 2.02955
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 37.16681
+  weights: 0
+  weights: 0
+  weights: 37.24384
   weights: 0
   weights: 0
   weights: 0
@@ -1044,8 +1044,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 2808.5007
-  tps: 1848.61889
+  dps: 2808.50095
+  tps: 1848.61907
  }
 }
 dps_results: {
@@ -1072,15 +1072,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 712.23439
-  tps: 701.92823
+  dps: 712.2633
+  tps: 701.94847
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Gnome-p4_fire-Fire-p4_fire-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 712.23439
-  tps: 455.19958
+  dps: 712.2633
+  tps: 455.21982
  }
 }
 dps_results: {
@@ -1114,15 +1114,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 694.65045
-  tps: 689.34736
+  dps: 694.65605
+  tps: 689.35129
  }
 }
 dps_results: {
  key: "TestFire-Phase4-Lvl60-Settings-Troll-p4_fire-Fire-p4_fire-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 694.65045
-  tps: 445.07656
+  dps: 694.65605
+  tps: 445.08048
  }
 }
 dps_results: {
@@ -1205,8 +1205,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 3150.54847
-  tps: 1674.86894
+  dps: 3150.54922
+  tps: 1674.87178
  }
 }
 dps_results: {
@@ -1219,8 +1219,8 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase5-Lvl60-Settings-Gnome-p5_fire-Fire-p5_fire-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 3379.38438
-  tps: 1792.02095
+  dps: 3381.26859
+  tps: 1792.92206
  }
 }
 dps_results: {

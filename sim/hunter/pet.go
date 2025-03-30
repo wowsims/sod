@@ -165,7 +165,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 	}
 
 	hp.ApplyOnPetEnable(func(sim *core.Simulation) {
-		hp.EnableDynamicAttackSpeed(sim)
+		// Hunter pets only inherit the owner's melee speed
+		hp.EnableDynamicMeleeSpeedInheritance(sim)
 	})
 
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)
