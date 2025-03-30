@@ -1,7 +1,6 @@
 package rogue
 
 import (
-	"fmt"
 	"strconv"
 	"time"
 
@@ -338,7 +337,6 @@ func (rogue *Rogue) registerInstantPoisonSpell() {
 	}
 }
 
-// TODO: Check this before PR
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	baseDamageTick := map[int32]float64{
 		25: 9,
@@ -373,12 +371,10 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 				Duration:  time.Second * 12,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					// p8 DPS tier bonus tracking
-					fmt.Println("Deadly Poison activated")
 					rogue.PoisonsActive[aura.Unit.UnitIndex]++
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					// p8 DPS tier bonus tracking
-					fmt.Println("Deadly Poison deactivated")
 					rogue.PoisonsActive[aura.Unit.UnitIndex]--
 				},
 			},
@@ -415,7 +411,6 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	}
 }
 
-// TODO: check this before PR
 func (rogue *Rogue) registerWoundPoisonSpell() {
 	woundPoisonDebuffAura := core.Aura{
 		Label:     "WoundPoison-" + strconv.Itoa(int(rogue.Index)),
@@ -426,14 +421,12 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 			// all healing effects used on target reduced by x, stacks 5 times
 
 			// p8 DPS tier bonus tracking
-			fmt.Println("Wound Poison activated")
 			rogue.PoisonsActive[aura.Unit.UnitIndex]++
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			// undo reduced healing effects used on targets
 
 			// p8 DPS tier bonus tracking
-			fmt.Println("Wound Poison deactivated")
 			rogue.PoisonsActive[aura.Unit.UnitIndex]--
 		},
 	}
@@ -447,7 +440,6 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 	}
 }
 
-// TODO: check this before PR
 func (rogue *Rogue) registerOccultPoisonSpell() {
 	if rogue.Level < 60 {
 		return
@@ -476,12 +468,10 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 				Duration:  time.Second * 12,
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
 					// p8 DPS tier bonus tracking
-					fmt.Println("Occult Poison activated")
 					rogue.PoisonsActive[aura.Unit.UnitIndex]++
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 					// p8 DPS tier bonus tracking
-					fmt.Println("Occult Poison deactivated")
 					rogue.PoisonsActive[aura.Unit.UnitIndex]--
 				},
 			},
@@ -518,8 +508,6 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 	}
 }
 
-// TODO: Figure out how to either use the Rogue struct in debuffs since the aura is contructed in debuffs.go
-// or move the aura constructor here
 func (rogue *Rogue) registerSebaciousPoisonSpell() {
 	if rogue.Level < 60 {
 		return
@@ -530,13 +518,11 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 
 		sebaciousPoisonAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 			// p8 DPS tier bonus tracking
-			fmt.Println("Sebacious Poison activated")
 			rogue.PoisonsActive[aura.Unit.UnitIndex]++
 		})
 
 		sebaciousPoisonAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 			// p8 DPS tier bonus tracking
-			fmt.Println("Sebacious Poison deactivated")
 			rogue.PoisonsActive[aura.Unit.UnitIndex]--
 		})
 
@@ -550,8 +536,6 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 
 }
 
-// TODO: Figure out how to either use the Rogue struct in debuffs since the aura is contructed in debuffs.go
-// or move the aura constructor here
 func (rogue *Rogue) registerAtrophicPoisonSpell() {
 	if rogue.Level < 60 {
 		return
@@ -562,13 +546,11 @@ func (rogue *Rogue) registerAtrophicPoisonSpell() {
 
 		atrophicPoisonAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 			// p8 DPS tier bonus tracking
-			fmt.Println("Atrophic Poison activated")
 			rogue.PoisonsActive[aura.Unit.UnitIndex]++
 		})
 
 		atrophicPoisonAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 			// p8 DPS tier bonus tracking
-			fmt.Println("Atrophic Poison deactivated")
 			rogue.PoisonsActive[aura.Unit.UnitIndex]--
 		})
 
@@ -582,8 +564,6 @@ func (rogue *Rogue) registerAtrophicPoisonSpell() {
 
 }
 
-// TODO: Figure out how to either use the Rogue struct in debuffs since the aura is contructed in debuffs.go
-// or move the aura constructor here
 func (rogue *Rogue) registerNumbingPoisonSpell() {
 	if rogue.Level < 60 {
 		return
@@ -594,13 +574,11 @@ func (rogue *Rogue) registerNumbingPoisonSpell() {
 
 		numbingPoisonAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 			// p8 DPS tier bonus tracking
-			fmt.Println("Numbing Poison activated")
 			rogue.PoisonsActive[aura.Unit.UnitIndex]++
 		})
 
 		numbingPoisonAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 			// p8 DPS tier bonus tracking
-			fmt.Println("Numbing Poison deactivated")
 			rogue.PoisonsActive[aura.Unit.UnitIndex]--
 		})
 
