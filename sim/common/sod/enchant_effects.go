@@ -5,6 +5,7 @@ import (
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 const (
@@ -13,6 +14,10 @@ const (
 	FrostFever      = 7879
 	MarkOfBlood     = 7880
 	Obliterate      = 7881
+	GrandCrusader   = 7940
+	GrandArcanist   = 7941
+	GrandSorceror   = 7942
+	GrandInquisitor = 7943
 
 	BloodPlagueSpellId = 1219121
 	FrostFeverSpellId  = 1219124
@@ -205,6 +210,108 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterEnchantActive(Obliterate, ObliterateSpellId)
+	})
+
+	core.NewEnchantEffect(GrandCrusader, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(GrandCrusader, 1.0, 0)
+
+		spellID := int32(1231124)
+		strBonus := 120.0
+		duration := time.Second * 20
+		mhAura := character.NewTemporaryStatsAura("Righteous Strength MH", core.ActionID{SpellID: spellID, Tag: 1}, stats.Stats{stats.Strength: strBonus}, duration)
+		ohAura := character.NewTemporaryStatsAura("Righteous Strength OH", core.ActionID{SpellID: spellID, Tag: 2}, stats.Stats{stats.Strength: strBonus}, duration)
+		healthMetrics := character.NewHealthMetrics(core.ActionID{SpellID: spellID})
+
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Grand Crusader",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			DPM:               dpm,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				if spell.IsMH() {
+					mhAura.Activate(sim)
+				} else {
+					ohAura.Activate(sim)
+				}
+				character.GainHealth(sim, sim.RollWithLabel(350, 450, "Righteous Strength"), healthMetrics)
+			},
+		})
+
+		character.ItemSwap.RegisterEnchantProc(GrandCrusader, aura)
+	})
+
+	core.NewEnchantEffect(GrandInquisitor, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(GrandInquisitor, 1.0, 0)
+
+		spellID := int32(1232169)
+		righteousInquisitionAura := character.NewTemporaryStatsAura("Righteous Inquisition", core.ActionID{SpellID: spellID}, stats.Stats{stats.Strength: 200}, time.Second*20)
+		healthMetrics := character.NewHealthMetrics(core.ActionID{SpellID: spellID})
+
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Grand Inquisitor",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			DPM:               dpm,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				righteousInquisitionAura.Activate(sim)
+				character.GainHealth(sim, sim.RollWithLabel(350, 450, "Righteous Inquisition"), healthMetrics)
+			},
+		})
+
+		character.ItemSwap.RegisterEnchantProc(GrandInquisitor, aura)
+	})
+
+	core.NewEnchantEffect(GrandSorceror, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		spellID := int32(1231162)
+		righteousBlastingAura := character.NewTemporaryStatsAura("Righteous Blasting", core.ActionID{SpellID: spellID}, stats.Stats{stats.SpellPower: 70}, time.Second*20)
+		manaMetrics := character.NewManaMetrics(core.ActionID{SpellID: spellID})
+
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Grand Sorcerer",
+			Callback:   core.CallbackOnSpellHitDealt,
+			ProcMask:   core.ProcMaskSpellDamage,
+			Outcome:    core.OutcomeLanded,
+			ProcChance: 0.07,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				righteousBlastingAura.Activate(sim)
+				if character.HasManaBar() {
+					character.AddMana(sim, sim.RollWithLabel(350, 450, "Righteous Blasting"), manaMetrics)
+				}
+			},
+		})
+
+		character.ItemSwap.RegisterEnchantProc(GrandSorceror, aura)
+	})
+
+	core.NewEnchantEffect(GrandArcanist, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		righteousFireAura := character.NewTemporaryStatsAura("Righteous Fire", core.ActionID{SpellID: 1231138}, stats.Stats{stats.SpellPower: 140}, time.Second*20)
+		manaMetrics := character.NewManaMetrics(core.ActionID{SpellID: 1231138})
+
+		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "Grand Arcanist",
+			Callback:   core.CallbackOnSpellHitDealt,
+			ProcMask:   core.ProcMaskSpellDamage,
+			Outcome:    core.OutcomeLanded,
+			ProcChance: 0.07,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				righteousFireAura.Activate(sim)
+				if character.HasManaBar() {
+					character.AddMana(sim, sim.RollWithLabel(350, 450, "Righteous Fire"), manaMetrics)
+				}
+			},
+		})
+
+		character.ItemSwap.RegisterEnchantProc(GrandArcanist, aura)
 	})
 
 	core.AddEffectsToTest = true
