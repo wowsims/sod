@@ -274,23 +274,21 @@ func init() {
 			Duration: time.Millisecond * 100,
 		}
 
+		// Confirmed on Wago - Harmful Spells and Melee Specials, plus Can proc from procs
+		procMask := core.ProcMaskMeleeSpecial | core.ProcMaskMeleeDamageProc | core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc
+
 		return character.RegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 1231456},
 			Label:     "Crimson Crusade",
 			Duration:  duration,
 			MaxStacks: 2,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage|core.ProcMaskSpellDamageProc) && result.Landed() &&
-					spell.SpellSchool.Matches(core.SpellSchoolNature) && icd.IsReady(sim) {
+				if spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolNature) && icd.IsReady(sim) {
 					icd.Use(sim)
 					aura.RemoveStack(sim)
 				}
 			},
-		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
-			School:     core.SpellSchoolNature,
-			FloatValue: 1.20,
-		})
+		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature], 1.20)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240922/deception
@@ -633,23 +631,21 @@ func init() {
 			Duration: time.Millisecond * 100,
 		}
 
+		// Confirmed on Wago - Harmful Spells and Melee Specials, plus Can proc from procs
+		procMask := core.ProcMaskMeleeSpecial | core.ProcMaskMeleeDamageProc | core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc
+
 		return character.RegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 1231498},
 			Label:     "Mercy by Fire",
 			Duration:  duration,
 			MaxStacks: 2,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(core.ProcMaskSpellDamage|core.ProcMaskSpellDamageProc) && result.Landed() &&
-					spell.SpellSchool.Matches(core.SpellSchoolFire) && icd.IsReady(sim) {
+				if spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolFire) && icd.IsReady(sim) {
 					icd.Use(sim)
 					aura.RemoveStack(sim)
 				}
 			},
-		}).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
-			School:     core.SpellSchoolFire,
-			FloatValue: 1.20,
-		})
+		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.20)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241003/mirage-rod-of-illusion
