@@ -106,9 +106,11 @@ func (warrior *Warrior) applyScarletEnclaveDamage6PBonus() {
 		return
 	}
 
+	classMask := ClassSpellMask_WarriorWhirlwindMH | ClassSpellMask_WarriorWhirlwindOH
+
 	damageMod := warrior.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  ClassSpellMask_WarriorWhirlwind,
+		ClassMask:  classMask,
 		FloatValue: 1.0,
 	})
 
@@ -120,7 +122,7 @@ func (warrior *Warrior) applyScarletEnclaveDamage6PBonus() {
 			}
 		},
 		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			if spell.Matches(ClassSpellMask_WarriorWhirlwind) {
+			if spell.Matches(classMask) {
 				damageMod.UpdateFloatValue(core.TernaryFloat64(warrior.DeepWounds.Dot(target).IsActive(), 1.5, 1.0))
 				damageMod.Activate()
 			}
