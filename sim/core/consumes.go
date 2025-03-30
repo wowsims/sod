@@ -400,6 +400,36 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 			character.AddStats(stats.Stats{
 				stats.HealingPower: 22,
 			})
+		case proto.Food_FoodProwlerSteak:
+			character.AddStats(stats.Stats{
+				stats.Strength: 25,
+				stats.Stamina:  10,
+			})
+		case proto.Food_FoodFiletOFlank:
+			character.AddStats(stats.Stats{
+				stats.Agility: 25,
+				stats.Stamina: 10,
+			})
+		case proto.Food_FoodSunriseOmelette:
+			character.AddStats(stats.Stats{
+				stats.SpellPower:   29,
+				stats.HealingPower: 55,
+				stats.Stamina:      10,
+			})
+		case proto.Food_FoodSpecklefinFeast:
+			character.AddStats(stats.Stats{
+				stats.AttackPower:  40,
+				stats.SpellPower:   23,
+				stats.HealingPower: 44,
+				stats.Stamina:      10,
+			})
+		case proto.Food_FoodGrandLobsterBanquet:
+			character.AddStats(stats.Stats{
+				stats.AttackPower:  40,
+				stats.SpellPower:   23,
+				stats.HealingPower: 44,
+				stats.Stamina:      10,
+			})
 		}
 	}
 

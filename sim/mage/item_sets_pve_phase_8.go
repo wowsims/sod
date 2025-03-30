@@ -107,7 +107,6 @@ func (mage *Mage) applyScarletEnclaveDamage4PBonus() {
 
 // Reduces the cooldown on your Frozen Orb spell by 20 sec.
 // Each time Glaciate is consumed, the cooldown on your Deep Freeze is reduced by 1.0 sec per stack consumed.
-// Increases the chance for Arcane Blast to trigger Missile Barrage by 10% and for Fireball and Frostbolt to trigger Missile Barrage by 5%.
 // Reduces the cooldown on Fire Blast by 5 sec and Fire Blast now refreshes the duration of your Living Bomb on the target.
 func (mage *Mage) applyScarletEnclaveDamage6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Mage - Damage 6P Bonus"
@@ -141,13 +140,6 @@ func (mage *Mage) applyScarletEnclaveDamage6PBonus() {
 				})
 			}
 		})
-	}
-
-	if mage.HasRune(proto.MageRune_RuneBeltMissileBarrage) {
-		if mage.HasRune(proto.MageRune_RuneHandsArcaneBlast) {
-			mage.ArcaneBlastMissileBarrageChance += 0.10
-			mage.FireballFrostboltMissileBarrageChance += 0.05
-		}
 	}
 
 	aura.AttachSpellMod(core.SpellModConfig{
