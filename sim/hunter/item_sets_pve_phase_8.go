@@ -44,6 +44,14 @@ func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
 		Callback:       core.CallbackOnApplyEffects,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			hasSerpentSting := hunter.SerpentSting.Dot(result.Target).IsActive()
+			if hunter.SoFSerpentSting != nil {
+				for _, sting := range hunter.SoFSerpentSting {
+					if sting != nil {
+						hasSerpentSting = hasSerpentSting || sting.Dot(result.Target).IsActive()
+					}
+				}
+			}
+
 			hasWyvernStrike := hunter.WyvernStrike != nil && hunter.WyvernStrike.Dot(result.Target).IsActive()
 			damageMod.UpdateFloatValue(core.TernaryFloat64(hasSerpentSting || hasWyvernStrike, 1.20, 1.0))
 			damageMod.Activate()
@@ -205,5 +213,43 @@ func (hunter *Hunter) applyScarletEnclaveRanged6PBonus() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			multishotAura.Activate(sim)
 		},
+	})
+}
+
+// Flanking Strike's damage buff is increased by an additional 2% per stack. When striking from behind, your target takes 150% increased damage from Flanking Strike.
+func (hunter *Hunter) ApplyFallenRegalityHunterBonus(aura *core.Aura) {
+	if !hunter.HasRune(proto.HunterRune_RuneLegsFlankingStrike) {
+		return
+	}
+
+	flankingBuffDamageMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:     core.SpellMod_DamageDone_Flat,
+		ProcMask: core.ProcMaskMelee,
+	})
+
+	if !hunter.PseudoStats.InFrontOfTarget {
+		hunter.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  ClassSpellMask_HunterFlankingStrike,
+			FloatValue: 2.50,
+		})
+
+		if hunter.pet != nil {
+			hunter.pet.AddStaticMod(core.SpellModConfig{
+				Kind:       core.SpellMod_DamageDone_Pct,
+				ClassMask:  ClassSpellMask_HunterPetFlankingStrike,
+				FloatValue: 2.50,
+			})
+		}
+	}
+
+	aura.ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
+		hunter.FlankingStrike.RelatedSelfBuff.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			flankingBuffDamageMod.Activate()
+		}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+			flankingBuffDamageMod.Deactivate()
+		}).ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			flankingBuffDamageMod.UpdateIntValue(int64(2 * newStacks))
+		})
 	})
 }

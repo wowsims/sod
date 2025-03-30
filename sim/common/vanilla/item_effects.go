@@ -60,7 +60,6 @@ const (
 	ZandalariHeroBadge              = 19948
 	ZandalariHeroMedallion          = 19949
 	ZandalariHeroCharm              = 19950
-	CorruptedAshbringer             = 241081 // 22691
 	BlisteringRagehammer            = 220569 // 10626
 	SulfurasHandOfRagnaros          = 227683 // 17182
 	SulfuronHammer                  = 227684 // 17193
@@ -159,6 +158,8 @@ const (
 	MarkOfTheChampionSpell          = 236351 // 23207
 	MarkOfTheChampionPhys           = 236352 // 23206
 	TalismanOfAscendance            = 237283 // 22678
+	CorruptedAshbringer             = 241081 // 22691
+	CorruptedAshbringerLego         = 239301
 )
 
 func init() {
@@ -498,29 +499,87 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponCoHProcDamage(Chillpike, "Chillpike", 1.0, 19260, core.SpellSchoolFrost, 160, 90, 0, core.DefenseTypeMagic)
 
-	// https://www.wowhead.com/classic/item=239301/corrupted-ashbringer
+	// https://www.wowhead.com/classic-ptr/item=241081/corrupted-ashbringer
+	// Chance on hit: Steals 475 to 525 life from target enemy.
+	// PPM confirmed 2.0
+	itemhelpers.CreateWeaponProcSpell(CorruptedAshbringer, "Corrupted Ashbringer", 2.0, func(character *core.Character) *core.Spell {
+		actionID := core.ActionID{SpellID: 1220711}
+		healthMetrics := character.NewHealthMetrics(actionID)
+
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeMagicHit)
+				character.GainHealth(sim, result.Damage, healthMetrics)
+			},
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=239301/corrupted-ashbringer
 	// Chance on hit: Steals 475 to 525 life from up to 5 enemies, granting 30 Strength or Agility per enemy siphoned, stacking up to 5 times.
-	// Proc rate taken from Classic 2019 testing
-	// itemhelpers.CreateWeaponProcSpell(CorruptedAshbringer, "Corrupted Ashbringer", 1.6, func(character *core.Character) *core.Spell {
-	// 	actionID := core.ActionID{SpellID: 1220711}
-	// 	healthMetrics := character.NewHealthMetrics(actionID)
+	// PPM confirmed 5.0
+	itemhelpers.CreateWeaponProcSpell(CorruptedAshbringerLego, "Corrupted Ashbringer (Legendary)", 5.0, func(character *core.Character) *core.Spell {
+		actionID := core.ActionID{SpellID: 1231330}
+		healthMetrics := character.NewHealthMetrics(actionID)
 
-	// 	return character.RegisterSpell(core.SpellConfig{
-	// 		ActionID:    actionID,
-	// 		SpellSchool: core.SpellSchoolShadow,
-	// 		DefenseType: core.DefenseTypeMagic,
-	// 		ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
-	// 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		agilityAura := character.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231406},
+			Label:     "Corrupted Agility",
+			MaxStacks: 5,
+			Duration:  time.Second * 20,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				character.AddStatDynamic(sim, stats.Agility, 30*float64(newStacks-oldStacks))
+			},
+		})
 
-	// 		DamageMultiplier: 1,
-	// 		ThreatMultiplier: 1,
+		strengthAura := character.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231339},
+			Label:     "Corrupted Strength",
+			MaxStacks: 5,
+			Duration:  time.Second * 20,
+			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+				character.AddStatDynamic(sim, stats.Strength, 30*float64(newStacks-oldStacks))
+			},
+		})
 
-	// 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-	// 			result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeMagicHit)
-	// 			character.GainHealth(sim, result.Damage, healthMetrics)
-	// 		},
-	// 	})
-	// })
+		targetCount := int(min(character.Env.GetNumTargets(), 5))
+
+		return character.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolShadow,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				for i := 0; i < targetCount; i++ {
+					result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeAlwaysHit)
+					character.GainHealth(sim, result.Damage, healthMetrics)
+					target = sim.Environment.NextTargetUnit(target)
+				}
+
+				// Confirmed by Zirene to pick the highest of your Agility or Strength
+				if character.GetStat(stats.Agility) >= character.GetStat(stats.Strength) {
+					agilityAura.Activate(sim)
+					agilityAura.AddStacks(sim, int32(targetCount))
+				} else {
+					strengthAura.Activate(sim)
+					strengthAura.AddStacks(sim, int32(targetCount))
+				}
+			},
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=17068/deathbringer
 	// Chance on hit: Sends a shadowy bolt at the enemy causing 110 to 140 Shadow damage.

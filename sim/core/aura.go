@@ -423,6 +423,22 @@ func (aura *Aura) ApplyOnSpellHitDealt(newOnSpellHitDealt OnSpellHit) *Aura {
 	return aura
 }
 
+// Adds a handler to be called OnPeriodicDamageDealt, in addition to any current handlers.
+// We then return the Aura for chaining
+func (aura *Aura) ApplyOnPeriodicDamageDealt(newOnPeriodicDamageDealt OnPeriodicDamage) *Aura {
+	oldOnPeriodicDamageDealt := aura.OnPeriodicDamageDealt
+	if oldOnPeriodicDamageDealt == nil {
+		aura.OnPeriodicDamageDealt = newOnPeriodicDamageDealt
+	} else {
+		aura.OnPeriodicDamageDealt = func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+			oldOnPeriodicDamageDealt(aura, sim, spell, result)
+			newOnPeriodicDamageDealt(aura, sim, spell, result)
+		}
+	}
+
+	return aura
+}
+
 type AuraFactory func(*Simulation) *Aura
 
 // Callback for doing something on reset.

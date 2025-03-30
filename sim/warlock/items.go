@@ -16,6 +16,7 @@ const (
 	KezansUnstoppableTaint      = 231346
 	PlagueheartRing             = 236067
 	AtieshWarlock               = 236398
+	PutressPoker                = 240844
 )
 
 func init() {
@@ -297,6 +298,47 @@ func init() {
 			if spell.Matches(ClassSpellMask_WarlockAll) && !spell.Flags.Matches(core.SpellFlagChanneled) {
 				spell.ApplyAdditivePeriodicDamageBonus(2)
 			}
+		})
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240844/putress-poker
+	// Use: Reduce the cast time and global cooldown of Searing Pain and Shadow Cleave by 0.5 sec for 15 sec. (2 Min Cooldown)
+	core.NewItemEffect(PutressPoker, func(agent core.Agent) {
+		warlock := agent.(WarlockAgent).GetWarlock()
+		actionID := core.ActionID{ItemID: PutressPoker}
+
+		buffAura := warlock.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Searing Flames",
+			Duration: time.Second * 15,
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:      core.SpellMod_CastTime_Flat,
+			ClassMask: ClassSpellMask_WarlockSearingPain | ClassSpellMask_WarlockShadowCleave,
+			TimeValue: -time.Millisecond * 500,
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:      core.SpellMod_GlobalCooldown_Flat,
+			ClassMask: ClassSpellMask_WarlockSearingPain | ClassSpellMask_WarlockShadowCleave,
+			TimeValue: -time.Millisecond * 500,
+		})
+
+		spell := warlock.RegisterSpell(core.SpellConfig{
+			ActionID:    actionID,
+			SpellSchool: core.SpellSchoolShadow,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    warlock.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		warlock.AddMajorCooldown(core.MajorCooldown{
+			Spell: spell,
+			Type:  core.CooldownTypeDPS,
 		})
 	})
 

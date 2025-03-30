@@ -235,3 +235,80 @@ func init() {
 
 	core.AddEffectsToTest = true
 }
+
+// Your Bloodthirst, Mortal Strike, Shield Slam, Heroic Strike, and Cleave critical strikes set the duration of your Rend on the target to 21 sec.
+func (warrior *Warrior) ApplyQueensfallWarriorEffect(aura *core.Aura) {
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:     "Queensfall Trigger - Warrior",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeCrit,
+		ClassSpellMask: ClassSpellMask_WarriorBloodthirst | ClassSpellMask_WarriorMortalStrike | ClassSpellMask_WarriorShieldSlam |
+			ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorCleave,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if dot := warrior.Rend.Dot(result.Target); dot.IsActive() {
+				dot.NumberOfTicks = int32(21 / dot.TickLength.Seconds())
+				dot.RecomputeAuraDuration()
+				dot.Rollover(sim)
+			}
+		},
+	})
+}
+
+// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Execute by 10% per stack, stacking up to 20 times. At 20 stacks, Execute may be cast regardless of the target's health.
+func (warrior *Warrior) ApplyRegicideWarriorEffect(itemID int32, aura *core.Aura) {
+	// Coup debuff array
+	debuffAuras := warrior.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
+		return unit.RegisterAura(core.Aura{
+			ActionID:  core.ActionID{SpellID: 1231424},
+			Label:     "Coup",
+			MaxStacks: core.TernaryInt32(unit.Level > warrior.Level, 20, 0),
+			Duration:  time.Second * 15,
+		})
+	})
+
+	envenomDamageMod := warrior.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Pct,
+		ClassMask: ClassSpellMask_WarriorExecute,
+	})
+
+	damageModTrigger := core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:           "Coup - Envenom Damage Mod Trigger",
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: ClassSpellMask_WarriorExecute,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			envenomDamageMod.UpdateFloatValue(1 + float64(debuffAuras.Get(result.Target).GetStacks())*0.05)
+			envenomDamageMod.Activate()
+		},
+	})
+	warrior.ItemSwap.RegisterProc(itemID, damageModTrigger)
+
+	consumptionTrigger := core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
+		Name:           "Coup - Consume Stacks Trigger",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: ClassSpellMask_WarriorExecute,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			debuffAuras.Get(result.Target).Deactivate(sim)
+		},
+	})
+	warrior.ItemSwap.RegisterProc(itemID, consumptionTrigger)
+
+	// Apply the Coup debuff to the target hit by melee abilities
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:     "Regicide Trigger - Rogue",
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeLanded,
+		ProcMask: core.ProcMaskMelee,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			debuff := debuffAuras.Get(result.Target)
+			debuff.Activate(sim)
+			if debuff.MaxStacks > 0 {
+				debuff.AddStack(sim)
+			}
+		},
+	}).ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
+		warrior.Execute.ApplyExtraCastCondition(func(sim *core.Simulation, target *core.Unit) bool {
+			return debuffAuras[target.Index].IsActive() && debuffAuras[target.Index].GetStacks() == 20
+		})
+	})
+}

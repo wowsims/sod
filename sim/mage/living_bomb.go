@@ -69,11 +69,6 @@ func (mage *Mage) registerLivingBombSpell() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Living Bomb (DoT)",
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					for _, aoeTarget := range sim.Encounter.TargetUnits {
-						livingBombExplosionSpell.Cast(sim, aoeTarget)
-					}
-				},
 			},
 
 			NumberOfTicks:    LivingBombBaseNumTicks,
@@ -91,6 +86,12 @@ func (mage *Mage) registerLivingBombSpell() {
 					impScorchAura := mage.ImprovedScorchAuras.Get(target)
 					impScorchAura.Activate(sim)
 					impScorchAura.AddStack(sim)
+				}
+
+				if !dot.IsActive() {
+					for _, aoeTarget := range sim.Encounter.TargetUnits {
+						livingBombExplosionSpell.Cast(sim, aoeTarget)
+					}
 				}
 			},
 		},

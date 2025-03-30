@@ -458,7 +458,7 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Average-Default"
  value: {
   dps: 4660.97443
-  tps: 3553.01992
+  tps: 3552.98095
   hps: 39.98015
  }
 }
@@ -466,7 +466,7 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t1-Arms-phase_5_2h-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 4678.06982
-  tps: 3826.16631
+  tps: 3826.19658
   hps: 40.443
  }
 }
@@ -474,7 +474,7 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t1-Arms-phase_5_2h-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 4601.5114
-  tps: 3507.53214
+  tps: 3507.61863
   hps: 40.30067
  }
 }
@@ -482,7 +482,7 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t1-Arms-phase_5_2h-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 5300.76168
-  tps: 3990.08898
+  tps: 3990.58974
   hps: 38.02333
  }
 }
@@ -490,28 +490,28 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t1-Arms-phase_5_2h-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 1799.00818
-  tps: 1656.14314
+  tps: 1656.17749
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t1-Arms-phase_5_2h-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 1764.33165
-  tps: 1365.52903
+  tps: 1365.59603
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t1-Arms-phase_5_2h-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 2059.41096
-  tps: 1577.02307
+  tps: 1577.29116
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t2-Arms-phase_5_2h-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 4371.12554
-  tps: 3547.02183
+  tps: 3547.10047
   hps: 40.24983
  }
 }
@@ -519,7 +519,7 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t2-Arms-phase_5_2h-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 4303.40889
-  tps: 3248.94607
+  tps: 3249.04124
   hps: 40.15833
  }
 }
@@ -527,7 +527,7 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t2-Arms-phase_5_2h-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 5218.51834
-  tps: 3999.84423
+  tps: 3999.96897
   hps: 38.17583
  }
 }
@@ -535,28 +535,28 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t2-Arms-phase_5_2h-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 1554.67722
-  tps: 1422.08684
+  tps: 1422.16967
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t2-Arms-phase_5_2h-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 1503.32137
-  tps: 1152.07995
+  tps: 1152.15241
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Human-phase_5_2h_t2-Arms-phase_5_2h-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 1880.49042
-  tps: 1456.54415
+  tps: 1456.6907
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t1-Arms-phase_5_2h-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 4723.15196
-  tps: 3855.9271
+  tps: 3855.88995
   hps: 39.99567
  }
 }
@@ -564,7 +564,7 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t1-Arms-phase_5_2h-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 4645.68249
-  tps: 3538.89814
+  tps: 3538.86608
   hps: 40.11767
  }
 }
@@ -572,7 +572,7 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t1-Arms-phase_5_2h-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 5372.38595
-  tps: 4056.01941
+  tps: 4055.99662
   hps: 37.3625
  }
 }
@@ -580,28 +580,28 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t1-Arms-phase_5_2h-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 1820.19681
-  tps: 1661.94065
+  tps: 1661.96683
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t1-Arms-phase_5_2h-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 1774.10746
-  tps: 1370.41515
+  tps: 1370.44278
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t1-Arms-phase_5_2h-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 2117.25749
-  tps: 1616.99439
+  tps: 1617.04813
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t2-Arms-phase_5_2h-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 4183.45054
-  tps: 3380.96011
+  tps: 3381.11738
   hps: 38.26733
  }
 }
@@ -609,7 +609,7 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t2-Arms-phase_5_2h-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 4128.02349
-  tps: 3112.96788
+  tps: 3113.08407
   hps: 38.20633
  }
 }
@@ -617,7 +617,7 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t2-Arms-phase_5_2h-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 5040.55498
-  tps: 3848.45204
+  tps: 3848.72526
   hps: 35.88833
  }
 }
@@ -625,28 +625,28 @@ dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t2-Arms-phase_5_2h-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
   dps: 1473.80202
-  tps: 1352.73781
+  tps: 1352.8111
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t2-Arms-phase_5_2h-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
   dps: 1443.59681
-  tps: 1105.87611
+  tps: 1105.94559
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-Settings-Orc-phase_5_2h_t2-Arms-phase_5_2h-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
   dps: 1854.34572
-  tps: 1428.06818
+  tps: 1428.25004
  }
 }
 dps_results: {
  key: "TestTwoHandedWarrior-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
   dps: 3851.46126
-  tps: 2918.25679
+  tps: 2918.20109
   hps: 34.23117
  }
 }

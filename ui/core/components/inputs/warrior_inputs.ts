@@ -24,6 +24,7 @@ export const QueueDelay = <SpecType extends WarriorSpecs>() =>
 		fieldName: 'queueDelay',
 		label: 'HS/Cleave Queue Delay (ms)',
 		labelTooltip: 'How long (in milliseconds) to delay re-queueing Heroic Strike/Cleave in order to simulate real reaction time and game delay.',
+		defaultValue: 250,
 	});
 
 export const ShoutPicker = <SpecType extends WarriorSpecs>() =>

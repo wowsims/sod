@@ -3,6 +3,7 @@ package druid
 import (
 	"time"
 
+	"github.com/wowsims/sod/sim/common/itemhelpers"
 	"github.com/wowsims/sod/sim/common/sod"
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
@@ -36,8 +37,9 @@ const (
 	IdolOfUrsinPower                 = 234468
 	IdolOfFelineFerocity             = 234469
 	IdolOfSiderealWrath              = 234474
-	StaffOfTheGlade                  = 240849
 	AtieshDruid                      = 236401
+	ScarletRotbringer                = 240842
+	StaffOfTheGlade                  = 240849
 )
 
 func init() {
@@ -402,6 +404,57 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterProc(Raelar, triggerAura)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240842/scarlet-rotbringer
+	// Requires Cat Form, Bear Form, Dire Bear Form
+	// Equip: Chance on melee attack to inflict your enemy with a rot, dealing 100 Nature damage every 2 sec to all enemies within an 8 yard radius of the caster for 12 sec. The attack speed of these targets is also slowed by 15%.
+	// TODO: PPM not confirmed
+	itemhelpers.CreateWeaponProcSpell(ScarletRotbringer, "Scarlet Rotbringer", 1.0, func(character *core.Character) *core.Spell {
+		druid := character.Env.GetAgentFromUnit(&character.Unit).(DruidAgent).GetDruid()
+
+		spell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231261},
+			SpellSchool: core.SpellSchoolNature,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+			Flags:       core.SpellFlagDisease | core.SpellFlagPureDot | core.SpellFlagPassiveSpell | core.SpellFlagNoOnCastComplete,
+
+			ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+				return druid.InForm(Cat | Bear)
+			},
+
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: "Rot (Scarlet Rotbringer)",
+				},
+				NumberOfTicks: 6,
+				TickLength:    time.Second * 2,
+				OnSnapshot: func(sim *core.Simulation, target *core.Unit, dot *core.Dot, isRollover bool) {
+					dot.Snapshot(target, 100, isRollover)
+				},
+				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
+					for _, aoeTarget := range sim.Encounter.TargetUnits {
+						dot.CalcAndDealPeriodicSnapshotDamage(sim, aoeTarget, dot.OutcomeTick)
+					}
+				},
+			},
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				spell.Dot(target).Apply(sim)
+			},
+		})
+
+		for _, dot := range spell.Dots() {
+			if dot != nil {
+				core.AtkSpeedReductionEffect(dot.Aura, 1.15)
+			}
+		}
+
+		return spell
 	})
 
 	core.NewItemEffect(RitualistsHammer, func(agent core.Agent) {

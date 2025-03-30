@@ -70,7 +70,7 @@ func (warrior *Warrior) newWhirlwindHitSpell(isMH bool) *WarriorSpell {
 		CastType:       castType,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       procMask,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 
 		CritDamageBonus: warrior.impale(),
 

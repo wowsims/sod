@@ -54,7 +54,7 @@ const (
 
 	ClassSpellMask_PaladinHarmfulGCDSpells = ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath | ClassSpellMask_PaladinHolyShock |
 		ClassSpellMask_PaladinConsecration
-	
+
 	ClassSpellMask_PaladinSeals = ClassSpellMask_PaladinSealOfCommand | ClassSpellMask_PaladinSealOfMartyrdom |
 		ClassSpellMask_PaladinSealOfRighteousness
 )
@@ -114,7 +114,6 @@ type Paladin struct {
 	onHolyPowerSpent               func(sim *core.Simulation, holyPower int32)
 	holyShieldExtraDamage          func(sim *core.Simulation, paladin *Paladin) float64
 	bypassAvengingWrathForbearance bool
-	leoganGCDReduction             float64
 
 	enableMultiJudge    bool
 	lingerDuration      time.Duration
