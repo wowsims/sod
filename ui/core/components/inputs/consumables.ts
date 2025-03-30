@@ -411,6 +411,26 @@ export const SmokedSagefish: ConsumableInputConfig<Food> = {
 	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 21072, minLevel: 10 }]),
 	value: Food.FoodSmokedSagefish,
 };
+export const ProwlerSteak: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238637, minLevel: 55 }]),
+	value: Food.FoodProwlerSteak,
+};
+export const FiletOFlank: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238638, minLevel: 55 }]),
+	value: Food.FoodFiletOFlank,
+};
+export const SunriseOmelette: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238639, minLevel: 55 }]),
+	value: Food.FoodSunriseOmelette,
+};
+export const SpecklefinFeast: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238641, minLevel: 55 }]),
+	value: Food.FoodSpecklefinFeast,
+};
+export const GrandLobsterBanquet: ConsumableInputConfig<Food> = {
+	actionId: (player: Player<Spec>) => player.getMatchingItemActionId([{ id: 238642, minLevel: 55 }]),
+	value: Food.FoodGrandLobsterBanquet,
+};
 
 // Ordered by level
 export const FOOD_CONFIG: ConsumableStatOption<Food>[] = [
@@ -427,6 +447,11 @@ export const FOOD_CONFIG: ConsumableStatOption<Food>[] = [
 	{ config: SagefishDelight, stats: [Stat.StatMP5] },
 	{ config: HotWolfRibs, stats: [Stat.StatSpirit] },
 	{ config: SmokedSagefish, stats: [Stat.StatMP5] },
+	{ config: SunriseOmelette, stats: [Stat.StatSpellPower, Stat.StatHealingPower, Stat.StatStamina] },
+	{ config: ProwlerSteak, stats: [Stat.StatStrength, Stat.StatStamina] },
+	{ config: FiletOFlank, stats: [Stat.StatAgility, Stat.StatStamina] },
+	{ config: SpecklefinFeast, stats: [Stat.StatAttackPower, Stat.StatSpellPower, Stat.StatHealingPower, Stat.StatStamina] },
+	{ config: GrandLobsterBanquet, stats: [Stat.StatAttackPower, Stat.StatSpellPower, Stat.StatHealingPower, Stat.StatStamina] },
 ];
 
 export const makeFoodInput = makeConsumeInputFactory({ consumesFieldName: 'food' });

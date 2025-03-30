@@ -628,7 +628,7 @@ enum WeaponImbue {
 	MagnificentTrollshine = 29;
 }
 
-// NextIndex: 14
+// NextIndex: 19
 enum Food {
 	FoodUnknown = 0;
 	FoodGrilledSquid = 1;
@@ -644,6 +644,11 @@ enum Food {
 	FoodSagefishDelight = 11;
 	FoodDarkclawBisque = 12;
 	FoodSmokedRedgill = 13;
+	FoodProwlerSteak = 14;
+	FoodFiletOFlank = 15;
+	FoodSunriseOmelette = 16;
+	FoodSpecklefinFeast = 17;
+	FoodGrandLobsterBanquet = 18;
 }
 
 enum SaygesFortune {
@@ -822,7 +827,7 @@ message Consumes {
 message Debuffs {
 	reserved 21, 24;
  	reserved "ancient_corrosive_poison", "crystal_yield";
-  
+
 	bool judgement_of_wisdom = 1;
 	bool judgement_of_light = 2;
 	TristateEffect judgement_of_the_crusader = 33;
