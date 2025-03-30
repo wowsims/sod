@@ -82,9 +82,9 @@ func (rogue *Rogue) applyScarletEnclaveDamage4PBonus() {
 		Name:           label,
 		ClassSpellMask: ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueInstantPoison,
 		Callback:       core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
-		Outcome:        core.OutcomeLanded,
+		Outcome:        core.OutcomeCrit,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_RogueDeadlyPoisonTick|ClassSpellMask_RogueOccultPoisonTick|ClassSpellMask_RogueInstantPoison) && result.DidCrit() && sim.Proc(0.10, "Combo!") {
+			if spell.Matches(ClassSpellMask_RogueDeadlyPoisonTick|ClassSpellMask_RogueOccultPoisonTick|ClassSpellMask_RogueInstantPoison) && sim.Proc(0.10, "Combo!") {
 				rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboPointMetrics)
 			}
 		},
