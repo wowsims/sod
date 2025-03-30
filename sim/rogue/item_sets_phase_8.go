@@ -37,6 +37,8 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		return
 	}
 
+	totalBleedsAndPoisons := rogue.PoisonsActive + rogue.BleedsActive
+
 	// TODO: Fix logic below here, checks above should be good. Using Feral Druid T2 6pc as reference here to start.
 	// Added bleed tracking variables much like Feral Druid, have updated Rupture, CT, Garrote, and SSL to add bleed trackers, need to figure out if Hemorrhage should count
 	// Testing done on 3/28/2025 in Classic Rogue Discord shows that using Luffa, Hemorrhage does not count as a bleed and should also not count towards this set bonus.
@@ -51,7 +53,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		ActionID:       core.ActionID{SpellID: 1226843}, // Tracking in APL
 		Name:           label,
 		Callback:       core.CallbackOnApplyEffects,
-		ProcChance:     1,
+		ProcChance:     0.1,
 		ClassSpellMask: ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			fmt.Println("Bleeds: ", rogue.BleedsActive)
@@ -59,10 +61,10 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 
 			// Only apply the damage mod up to 3 times for the 30% bonus maximum
 			fmt.Println("2P proc triggered")
-			if rogue.BleedsActive+rogue.PoisonsActive <= 3 {
-				fmt.Println("Applying 2P damage mod, value: ", rogue.BleedsActive+rogue.PoisonsActive)
+			if totalBleedsAndPoisons <= 3 {
+				fmt.Println("Applying 2P damage mod, value: ", totalBleedsAndPoisons)
 				damageMod.Activate()
-				damageMod.UpdateFloatValue(1 + 0.10*float64(rogue.BleedsActive+rogue.PoisonsActive))
+				damageMod.UpdateFloatValue(1 + 0.10*float64(totalBleedsAndPoisons))
 			}
 		},
 	})
