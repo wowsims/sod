@@ -526,7 +526,21 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 	}
 
 	rogue.sebaciousPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.SebaciousPoisonAura(unit, rogue.Talents.ImprovedExposeArmor, rogue.Level)
+		sebaciousPoisonAura := core.SebaciousPoisonAura(unit, rogue.Talents.ImprovedExposeArmor, rogue.Level)
+
+		sebaciousPoisonAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			// p8 DPS tier bonus tracking
+			fmt.Println("Sebacious Poison activated")
+			rogue.PoisonsActive++
+		})
+
+		sebaciousPoisonAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+			// p8 DPS tier bonus tracking
+			fmt.Println("Sebacious Poison deactivated")
+			rogue.PoisonsActive--
+		})
+
+		return sebaciousPoisonAura
 	})
 
 	rogue.SebaciousPoison = [2]*core.Spell{
@@ -544,7 +558,21 @@ func (rogue *Rogue) registerAtrophicPoisonSpell() {
 	}
 
 	rogue.atrophicPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.AtrophicPoisonAura(unit)
+		atrophicPoisonAura := core.AtrophicPoisonAura(unit)
+
+		atrophicPoisonAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			// p8 DPS tier bonus tracking
+			fmt.Println("Atrophic Poison activated")
+			rogue.PoisonsActive++
+		})
+
+		atrophicPoisonAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+			// p8 DPS tier bonus tracking
+			fmt.Println("Atrophic Poison deactivated")
+			rogue.PoisonsActive--
+		})
+
+		return atrophicPoisonAura
 	})
 
 	rogue.AtrophicPoison = [2]*core.Spell{
@@ -562,7 +590,21 @@ func (rogue *Rogue) registerNumbingPoisonSpell() {
 	}
 
 	rogue.numbingPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.NumbingPoisonAura(unit)
+		numbingPoisonAura := core.NumbingPoisonAura(unit)
+
+		numbingPoisonAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			// p8 DPS tier bonus tracking
+			fmt.Println("Numbing Poison activated")
+			rogue.PoisonsActive++
+		})
+
+		numbingPoisonAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+			// p8 DPS tier bonus tracking
+			fmt.Println("Numbing Poison deactivated")
+			rogue.PoisonsActive--
+		})
+
+		return numbingPoisonAura
 	})
 
 	rogue.NumbingPoison = [2]*core.Spell{
