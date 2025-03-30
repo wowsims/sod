@@ -1,6 +1,7 @@
 package core
 
 import (
+	"fmt"
 	"math"
 	"strconv"
 	"time"
@@ -730,10 +731,10 @@ func CurseOfElementsAura(target *Unit, playerLevel int32) *Aura {
 	}[playerLevel]
 
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Curse of Elements",
+		Label:      "Curse of Elements",
 		DispelType: DispelType_Curse,
-		ActionID: ActionID{SpellID: spellID},
-		Duration: time.Minute * 5,
+		ActionID:   ActionID{SpellID: spellID},
+		Duration:   time.Minute * 5,
 	})
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFire, dmgMod, 0.0, false)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFrost, dmgMod, 0.0, false)
@@ -765,10 +766,10 @@ func CurseOfShadowAura(target *Unit, playerLevel int32) *Aura {
 	}[playerLevel]
 
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Curse of Shadow",
+		Label:      "Curse of Shadow",
 		DispelType: DispelType_Curse,
-		ActionID: ActionID{SpellID: spellID},
-		Duration: time.Minute * 5,
+		ActionID:   ActionID{SpellID: spellID},
+		Duration:   time.Minute * 5,
 	})
 	spellSchoolDamageEffect(aura, stats.SchoolIndexArcane, dmgMod, 0.0, false)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexShadow, dmgMod, 0.0, false)
@@ -870,10 +871,10 @@ func HemorrhageAura(target *Unit, casterLevel int32) *Aura {
 
 func CurseOfVulnerabilityAura(target *Unit) *Aura {
 	return target.GetOrRegisterAura(Aura{
-		Label:    "Curse of Vulnerability",
+		Label:      "Curse of Vulnerability",
 		DispelType: DispelType_Curse,
-		ActionID: ActionID{SpellID: 427143},
-		Duration: time.Second * 15,
+		ActionID:   ActionID{SpellID: 427143},
+		Duration:   time.Second * 15,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			for si := stats.SchoolIndexPhysical; si < stats.SchoolLen; si++ {
 				aura.Unit.PseudoStats.SchoolBonusDamageTaken[si] += 2
@@ -1032,7 +1033,7 @@ func ExposeArmorAura(target *Unit, improvedEA int32, playerLevel int32) *Aura {
 	return aura
 }
 
-func SebaciousPoisonAura(target *Unit, improvedEA int32, playerLevel int32) *Aura {
+func SebaciousPoisonAura(target *Unit, improvedEA int32, playerLevel int32, rogue *proto.Rogue) *Aura {
 	if playerLevel < 60 {
 		return nil
 	}
@@ -1057,6 +1058,10 @@ func SebaciousPoisonAura(target *Unit, improvedEA int32, playerLevel int32) *Aur
 		Priority: arpen,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, -ee.Priority)
+
+			// p8 DPS tier bonus tracking
+			fmt.Println("Occult Poison activated")
+			rogue.PoisonsActive--
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, ee.Priority)
@@ -1138,10 +1143,10 @@ func CurseOfRecklessnessAura(target *Unit, playerLevel int32) *Aura {
 	}[playerLevel]
 
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Curse of Recklessness",
+		Label:      "Curse of Recklessness",
 		DispelType: DispelType_Curse,
-		ActionID: ActionID{SpellID: spellID},
-		Duration: time.Minute * 2,
+		ActionID:   ActionID{SpellID: spellID},
+		Duration:   time.Minute * 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, -arpen)
 			aura.Unit.AddStatDynamic(sim, stats.AttackPower, ap)
@@ -1253,10 +1258,10 @@ func CurseOfWeaknessAura(target *Unit, points int32, playerLevel int32) *Aura {
 	modDmgReduction = math.Floor(modDmgReduction)
 
 	aura := target.GetOrRegisterAura(Aura{
-		Label:    "Curse of Weakness" + strconv.Itoa(int(points)),
+		Label:      "Curse of Weakness" + strconv.Itoa(int(points)),
 		DispelType: DispelType_Curse,
-		ActionID: ActionID{SpellID: spellID},
-		Duration: time.Minute * 2,
+		ActionID:   ActionID{SpellID: spellID},
+		Duration:   time.Minute * 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.PseudoStats.BonusPhysicalDamage += modDmgReduction
 		},

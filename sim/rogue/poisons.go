@@ -419,6 +419,16 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 				Label:     "DeadlyPoison",
 				MaxStacks: 5,
 				Duration:  time.Second * 12,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					// p8 DPS tier bonus tracking
+					fmt.Println("Deadly Poison activated")
+					rogue.PoisonsActive--
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					// p8 DPS tier bonus tracking
+					fmt.Println("Deadly Poison deactivated")
+					rogue.PoisonsActive--
+				},
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
@@ -461,9 +471,17 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 		Duration:  time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			// all healing effects used on target reduced by x, stacks 5 times
+
+			// p8 DPS tier bonus tracking
+			fmt.Println("Wound Poison activated")
+			rogue.PoisonsActive++
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			// undo reduced healing effects used on targets
+
+			// p8 DPS tier bonus tracking
+			fmt.Println("Wound Poison deactivated")
+			rogue.PoisonsActive--
 		},
 	}
 
@@ -502,6 +520,16 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 				Label:     "OccultPoison",
 				MaxStacks: 5,
 				Duration:  time.Second * 12,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					// p8 DPS tier bonus tracking
+					fmt.Println("Occult Poison activated")
+					rogue.PoisonsActive--
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					// p8 DPS tier bonus tracking
+					fmt.Println("Occult Poison deactivated")
+					rogue.PoisonsActive--
+				},
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
