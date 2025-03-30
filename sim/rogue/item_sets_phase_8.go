@@ -62,11 +62,8 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 
 			// Only apply the damage mod up to 3 times for the 30% bonus maximum
 			fmt.Println("2P proc triggered")
-			if totalBleedsAndPoisons <= 3 {
-				fmt.Println("Applying 2P damage mod, value: ", totalBleedsAndPoisons)
-				damageMod.Activate()
-				damageMod.UpdateFloatValue(1 + 0.10*float64(totalBleedsAndPoisons))
-			}
+			damageMod.UpdateFloatValue(1 + 0.10*float64(min(3, totalBleedsAndPoisons)))
+			damageMod.Activate()
 		},
 	})
 }
