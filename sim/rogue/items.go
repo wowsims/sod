@@ -28,6 +28,7 @@ func init() {
 			SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagNoOnCastComplete,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -122,9 +123,6 @@ func init() {
 
 		spell := rogue.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: RenatakisCharmofTrickery},
-			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    rogue.NewTimer(),
@@ -135,7 +133,6 @@ func init() {
 					Duration: time.Second * 10,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				rogue.AddEnergy(sim, 60, cpMetrics)
 				if hasCutthroatRune {
@@ -173,8 +170,6 @@ func init() {
 
 		spell := rogue.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: VenomousTotem},
-			ProcMask: core.ProcMaskEmpty,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    rogue.NewTimer(),
@@ -185,7 +180,6 @@ func init() {
 					Duration: time.Second * 20,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				aura.Activate(sim)
 			},

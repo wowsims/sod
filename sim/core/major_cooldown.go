@@ -265,7 +265,13 @@ func (mcdm *majorCooldownManager) AddMajorCooldown(mcd MajorCooldown) {
 // Registers a major item cooldown to the Character, which will be automatically be used when available.
 // Use this for item activations that aren't considered casts and don't deal damage themselves.
 func (mcdm *majorCooldownManager) AddMajorEquipmentCooldown(mcd MajorCooldown) {
-	mcd.Spell.Flags |= SpellFlagNoLifecycleCallbacks
+	// Add the SpellFlagNoLifecycleCallbacks flag to suppress the spell lifecycle callbacks in most cases.
+	// Exceptions are items where the activation is a damaging spell, such as Smolderweb's Eye.
+	// In those cases, they should include SpellFlagNoOnCastComplete but still allow OnApplyEffects for Spell Mods
+	if !mcd.Spell.Flags.Matches(SpellFlagNoOnCastComplete) {
+		mcd.Spell.Flags |= SpellFlagNoLifecycleCallbacks
+	}
+
 	if mcd.Type.Matches(CooldownTypeSurvival) {
 		mcd.Spell.Flags |= SpellFlagDefensiveEquipment
 	} else if mcd.Type.Matches(CooldownTypeDPS) {

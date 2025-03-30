@@ -120,7 +120,6 @@ func init() {
 
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: ScrollsOfBlindingLight},
-			ProcMask: core.ProcMaskEmpty,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -196,7 +195,6 @@ func init() {
 
 		spell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: GrileksCharmOfValor},
-			ProcMask: core.ProcMaskEmpty,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{

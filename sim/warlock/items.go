@@ -63,8 +63,7 @@ func init() {
 		})
 
 		spell := warlock.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolFire,
+			ActionID: actionID,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    warlock.NewTimer(),
@@ -79,7 +78,6 @@ func init() {
 				buffAura.Activate(sim)
 			},
 		})
-
 		warlock.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    spell,
 			Priority: core.CooldownPriorityBloodlust,
@@ -109,7 +107,8 @@ func init() {
 			ActionID:    core.ActionID{SpellID: 436479},
 			SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
-			ProcMask:    core.ProcMaskEmpty,
+			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagNoOnCastComplete,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -407,7 +406,6 @@ func init() {
 
 		spell := warlock.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 448686},
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    warlock.NewTimer(),
@@ -418,7 +416,6 @@ func init() {
 					Duration: time.Second * 20,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				warlock.zilaGularAura.Activate(sim)
 			},

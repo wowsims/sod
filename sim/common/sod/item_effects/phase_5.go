@@ -230,9 +230,7 @@ func makeWillOfWarlookOnUseEffect(character *core.Character, itemID int32) {
 	buffAura := character.NewTemporaryStatsAura("Serpentine Spirit", actionID, stats.Stats{stats.Spirit: 200}, time.Second*20)
 
 	spell := character.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+		ActionID: actionID,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    character.NewTimer(),
@@ -244,7 +242,7 @@ func makeWillOfWarlookOnUseEffect(character *core.Character, itemID int32) {
 		},
 	})
 
-	character.AddMajorCooldown(core.MajorCooldown{
+	character.AddMajorEquipmentCooldown(core.MajorCooldown{
 		Spell: spell,
 		Type:  core.CooldownTypeDPS,
 	})

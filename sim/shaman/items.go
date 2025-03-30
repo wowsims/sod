@@ -51,7 +51,7 @@ func init() {
 			SpellSchool: core.SpellSchoolNature | core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagAPL | core.SpellFlagOffensiveEquipment,
+			Flags:       core.SpellFlagNoOnCastComplete,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -102,7 +102,6 @@ func init() {
 
 		spell := shaman.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: NaturalAlignmentCrystal},
-			ProcMask: core.ProcMaskEmpty,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    shaman.NewTimer(),

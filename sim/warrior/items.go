@@ -42,7 +42,6 @@ func init() {
 
 		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 24427},
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -53,7 +52,6 @@ func init() {
 					Duration: time.Second * 60,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				buffAura.Activate(sim)
 			},
@@ -74,6 +72,7 @@ func init() {
 			ActionID:    actionId,
 			SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolShadow,
 			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagNoOnCastComplete,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -128,7 +127,6 @@ func init() {
 
 		spell := warrior.Character.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    warrior.NewTimer(),
@@ -139,7 +137,6 @@ func init() {
 					Duration: duration,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				warrior.AddRage(sim, 30, rageMetrics)
 				aura.Activate(sim)
@@ -205,16 +202,13 @@ func init() {
 		})
 
 		spell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolPhysical,
-
+			ActionID: actionID,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 1,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				defenseOfDragonflights.Activate(sim)
 			},

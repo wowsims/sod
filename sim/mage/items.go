@@ -47,8 +47,7 @@ func init() {
 		}).AttachStatBuff(stats.FirePower, 100)
 
 		spell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolPhysical,
+			ActionID: actionID,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -93,8 +92,7 @@ func init() {
 		})
 
 		spell := mage.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{ItemID: HazzarahsCharmOfChilledMagic},
-			SpellSchool: core.SpellSchoolArcane,
+			ActionID: core.ActionID{ItemID: HazzarahsCharmOfChilledMagic},
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    mage.NewTimer(),
