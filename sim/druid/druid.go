@@ -73,9 +73,7 @@ type Druid struct {
 
 	StartingForm DruidForm
 
-	RebirthTiming     float64
-	BleedsActive      int
-	AssumeBleedActive bool
+	RebirthTiming float64
 
 	ReplaceBearMHFunc core.ReplaceMHSwing
 
@@ -158,6 +156,7 @@ type Druid struct {
 	// Extra data used for various calculations and overrides
 	AllowRakeRipDoTCrits              bool // From T1 Feral 4p bonus
 	BearFormThreatMultiplier          float64
+	BleedsActive                      map[int32]int // Map of unit index to count of bleeds on that unit
 	CenarionRageEnrageBonus           bool
 	FerociousBiteExcessEnergyOverride bool    // When true, disables the excess energy consumption of Ferocious bite
 	FrenziedRegenRageThreshold        float64 // Rage threshold where Frenzied Regeneration no longer consumes rage
@@ -243,6 +242,11 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 func (druid *Druid) Initialize() {
 	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
 
+	druid.BleedsActive = make(map[int32]int, len(druid.Env.Encounter.TargetUnits))
+	for _, target := range druid.Env.Encounter.TargetUnits {
+		druid.BleedsActive[target.UnitIndex] = 0
+	}
+
 	druid.registerFaerieFireSpell()
 	druid.registerInnervateCD()
 	druid.registerCatnipCD()
@@ -281,7 +285,10 @@ func (druid *Druid) Reset(_ *core.Simulation) {
 	druid.curQueueAura = nil
 	druid.curQueuedAutoSpell = nil
 
-	druid.BleedsActive = 0
+	for _, target := range druid.Env.Encounter.TargetUnits {
+		druid.BleedsActive[target.UnitIndex] = 0
+	}
+
 	druid.form = druid.StartingForm
 	druid.disabledMCDs = []*core.MajorCooldown{}
 }

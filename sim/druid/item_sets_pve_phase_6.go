@@ -118,6 +118,12 @@ func (druid *Druid) applyTAQFeral4PBonus() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Tooth and Claw",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					druid.BleedsActive[aura.Unit.UnitIndex]++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					druid.BleedsActive[aura.Unit.UnitIndex]--
+				},
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 1,
