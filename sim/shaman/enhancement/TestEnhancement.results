@@ -1537,15 +1537,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-Settings-Troll-phase_4_dw-Sync Auto-phase_4-NoBuffs-P4-Consumes WF/WF-LongMultiTarget"
  value: {
-  dps: 2346.08726
-  tps: 2091.65566
+  dps: 2344.06917
+  tps: 2090.97452
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-Settings-Troll-phase_4_dw-Sync Auto-phase_4-NoBuffs-P4-Consumes WF/WF-LongSingleTarget"
  value: {
-  dps: 1609.39541
-  tps: 1142.51474
+  dps: 1609.40025
+  tps: 1142.9795
  }
 }
 dps_results: {
@@ -1582,15 +1582,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-Settings-Troll-phase_4_dw-Sync Delay OH-phase_4-NoBuffs-P4-Consumes WF/WF-LongMultiTarget"
  value: {
-  dps: 2368.26933
-  tps: 2104.09474
+  dps: 2371.33392
+  tps: 2105.93221
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-Settings-Troll-phase_4_dw-Sync Delay OH-phase_4-NoBuffs-P4-Consumes WF/WF-LongSingleTarget"
  value: {
-  dps: 1637.16641
-  tps: 1161.09895
+  dps: 1637.67153
+  tps: 1161.48596
  }
 }
 dps_results: {
@@ -1985,8 +1985,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-Settings-Troll-phase_5_dw-Sync Auto-phase_5-NoBuffs-P4-Consumes WF/WF-LongMultiTarget"
  value: {
-  dps: 2736.73101
-  tps: 2443.74409
+  dps: 2737.13834
+  tps: 2443.87086
  }
 }
 dps_results: {
@@ -2433,15 +2433,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-Settings-Troll-phase_6_dw-Sync Auto-phase_6-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 2977.8607
-  tps: 2565.417
+  dps: 2978.14773
+  tps: 2565.73785
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-Settings-Troll-phase_6_dw-Sync Auto-phase_6-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 2158.8815
-  tps: 1514.06587
+  dps: 2159.28202
+  tps: 1513.87874
  }
 }
 dps_results: {
@@ -2478,15 +2478,15 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-Settings-Troll-phase_6_dw-Sync Delay OH-phase_6-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 2968.15347
-  tps: 2558.87427
+  dps: 2968.61507
+  tps: 2562.18779
  }
 }
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-Settings-Troll-phase_6_dw-Sync Delay OH-phase_6-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 2165.15477
-  tps: 1517.62636
+  dps: 2166.44045
+  tps: 1518.73749
  }
 }
 dps_results: {
