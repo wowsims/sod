@@ -83,7 +83,6 @@ func init() {
 
 		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 24352},
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -96,7 +95,7 @@ func init() {
 			},
 		})
 
-		hunter.AddMajorCooldown(core.MajorCooldown{
+		hunter.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 		})
@@ -148,7 +147,6 @@ func init() {
 
 		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 24353},
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				DefaultCast: core.Cast{
@@ -167,7 +165,7 @@ func init() {
 			},
 		})
 
-		hunter.AddMajorCooldown(core.MajorCooldown{
+		hunter.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 			ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
@@ -252,7 +250,6 @@ func init() {
 
 		spell := hunter.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -268,7 +265,7 @@ func init() {
 			},
 		})
 
-		hunter.AddMajorCooldown(core.MajorCooldown{
+		hunter.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 			ShouldActivate: func(sim *core.Simulation, character *core.Character) bool {
@@ -431,7 +428,6 @@ func init() {
 
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 468388},
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -445,7 +441,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 		})
@@ -506,7 +502,6 @@ func init() {
 
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: arcaneInfused.ActionID.SpellID},
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -523,7 +518,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 		})
@@ -663,7 +658,6 @@ func init() {
 		// The bow active
 		spell := hunter.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 1231604},
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    hunter.NewTimer(),
@@ -684,7 +678,7 @@ func init() {
 			},
 		})
 
-		hunter.AddMajorCooldown(core.MajorCooldown{
+		hunter.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 		})

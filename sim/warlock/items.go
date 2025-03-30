@@ -65,7 +65,6 @@ func init() {
 		spell := warlock.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
 			SpellSchool: core.SpellSchoolFire,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    warlock.NewTimer(),
@@ -81,7 +80,7 @@ func init() {
 			},
 		})
 
-		warlock.AddMajorCooldown(core.MajorCooldown{
+		warlock.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    spell,
 			Priority: core.CooldownPriorityBloodlust,
 			Type:     core.CooldownTypeDPS,
@@ -111,7 +110,6 @@ func init() {
 			SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -129,7 +127,7 @@ func init() {
 			},
 		})
 
-		warlock.AddMajorCooldown(core.MajorCooldown{
+		warlock.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    spell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,
@@ -232,9 +230,7 @@ func init() {
 		})
 
 		spell := warlock.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{ItemID: ScytheOfChaos},
-			SpellSchool: core.SpellSchoolShadow,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			ActionID: core.ActionID{ItemID: ScytheOfChaos},
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    warlock.NewTimer(),
@@ -262,7 +258,7 @@ func init() {
 			},
 		})
 
-		warlock.AddMajorCooldown(core.MajorCooldown{
+		warlock.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 			ShouldActivate: func(s *core.Simulation, c *core.Character) bool {
@@ -322,9 +318,7 @@ func init() {
 		})
 
 		spell := warlock.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolShadow,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			ActionID: actionID,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    warlock.NewTimer(),
@@ -336,7 +330,7 @@ func init() {
 			},
 		})
 
-		warlock.AddMajorCooldown(core.MajorCooldown{
+		warlock.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 		})
@@ -378,9 +372,7 @@ func init() {
 		})
 
 		spell := warlock.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolShadow,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			ActionID: actionID,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    warlock.NewTimer(),
@@ -396,7 +388,7 @@ func init() {
 			},
 		})
 
-		warlock.AddMajorCooldown(core.MajorCooldown{
+		warlock.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    spell,
 			Priority: core.CooldownPriorityBloodlust,
 			Type:     core.CooldownTypeDPS,
@@ -415,7 +407,6 @@ func init() {
 
 		spell := warlock.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 448686},
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -433,7 +424,7 @@ func init() {
 			},
 		})
 
-		warlock.AddMajorCooldown(core.MajorCooldown{
+		warlock.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    spell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,

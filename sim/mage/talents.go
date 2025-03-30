@@ -247,7 +247,6 @@ func (mage *Mage) registerPresenceOfMindCD() {
 
 	mage.PresenceOfMind = mage.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
@@ -448,7 +447,6 @@ func (mage *Mage) registerCombustionCD() {
 
 	spell := mage.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: cd,
 		},
@@ -531,7 +529,6 @@ func (mage *Mage) registerColdSnapCD() {
 
 	spell := mage.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 12472},
-		Flags:    core.SpellFlagNoOnCastComplete,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{

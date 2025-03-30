@@ -86,7 +86,7 @@ func (warlock *Warlock) registerImmolationAuraSpell() {
 		ActionID:       core.ActionID{SpellID: int32(proto.WarlockRune_RuneBracerImmolationAura)},
 		ClassSpellMask: ClassSpellMask_WarlockImmolationAura,
 		SpellSchool:    core.SpellSchoolFire,
-		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | core.SpellFlagNoOnCastComplete | WarlockFlagDestruction,
+		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

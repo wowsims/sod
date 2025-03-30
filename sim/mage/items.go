@@ -49,7 +49,6 @@ func init() {
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
 			SpellSchool: core.SpellSchoolPhysical,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -64,7 +63,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})
@@ -96,7 +95,6 @@ func init() {
 		spell := mage.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{ItemID: HazzarahsCharmOfChilledMagic},
 			SpellSchool: core.SpellSchoolArcane,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    mage.NewTimer(),
@@ -112,7 +110,7 @@ func init() {
 			},
 		})
 
-		mage.AddMajorCooldown(core.MajorCooldown{
+		mage.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    spell,
 			Priority: core.CooldownPriorityBloodlust,
 			Type:     core.CooldownTypeDPS,
@@ -152,7 +150,6 @@ func init() {
 
 		spell := mage.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    mage.NewTimer(),
@@ -168,7 +165,7 @@ func init() {
 			},
 		})
 
-		mage.AddMajorCooldown(core.MajorCooldown{
+		mage.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    spell,
 			Priority: core.CooldownPriorityBloodlust,
 			Type:     core.CooldownTypeDPS,

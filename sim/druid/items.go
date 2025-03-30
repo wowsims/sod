@@ -554,7 +554,6 @@ func init() {
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
 			SpellSchool: core.SpellSchoolNature,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -572,7 +571,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    spell,
 			Priority: core.CooldownPriorityBloodlust,
 			Type:     core.CooldownTypeDPS,
@@ -631,7 +630,6 @@ func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 
 	mainSpell := druid.GetOrRegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{ItemID: itemID},
-		Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
@@ -645,7 +643,7 @@ func (druid *Druid) newBloodbarkCleaveItem(itemID int32) {
 		},
 	})
 
-	druid.AddMajorCooldown(core.MajorCooldown{
+	druid.AddMajorEquipmentCooldown(core.MajorCooldown{
 		Spell:    mainSpell,
 		Priority: core.CooldownPriorityDefault,
 		Type:     core.CooldownTypeDPS,

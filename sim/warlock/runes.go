@@ -148,7 +148,6 @@ func (warlock *Warlock) applyVengeance() {
 
 	spell := warlock.GetOrRegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
 
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
