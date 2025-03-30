@@ -125,7 +125,6 @@ func (rogue *Rogue) applyDeadlyBrewInstant() {
 	})
 }
 
-// TODO: look this over
 // Apply Deadly Brew Deadly Poison procs
 func (rogue *Rogue) applyDeadlyBrewDeadly() {
 	if rogue.Level == 60 {
@@ -139,8 +138,6 @@ func (rogue *Rogue) applyDeadlyBrewDeadly() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
-			fmt.Println("Deadly Brew (Deadly) activated")
-			rogue.PoisonsActive++
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() || !spell.Flags.Matches(SpellFlagDeadlyBrewed) {
@@ -151,10 +148,6 @@ func (rogue *Rogue) applyDeadlyBrewDeadly() {
 			} else {
 				rogue.DeadlyPoison[DeadlyBrewProc].Cast(sim, result.Target)
 			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			fmt.Println("Deadly Brew (Deadly) deactivated")
-			rogue.PoisonsActive--
 		},
 	})
 }
@@ -184,7 +177,6 @@ func (rogue *Rogue) applyInstantPoison() {
 	})
 }
 
-// TODO: Look this over
 // Apply Deadly Poison to weapon and enable procs
 func (rogue *Rogue) applyDeadlyPoison() {
 	procMask := rogue.getImbueProcMask(proto.WeaponImbue_DeadlyPoison)
@@ -199,8 +191,6 @@ func (rogue *Rogue) applyDeadlyPoison() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
-			fmt.Println("Deadly Poison activated")
-			rogue.PoisonsActive++
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
@@ -210,14 +200,9 @@ func (rogue *Rogue) applyDeadlyPoison() {
 				rogue.DeadlyPoison[NormalProc].Cast(sim, result.Target)
 			}
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			fmt.Println("Deadly Poison deactivated")
-			rogue.PoisonsActive--
-		},
 	})
 }
 
-// TODO: Look this over
 // Apply Wound Poison to weapon and enable procs
 func (rogue *Rogue) applyWoundPoison() {
 	procMask := rogue.getImbueProcMask(proto.WeaponImbue_WoundPoison)
@@ -230,8 +215,6 @@ func (rogue *Rogue) applyWoundPoison() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
-			fmt.Println("Wound Poison activated")
-			rogue.PoisonsActive++
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
@@ -242,14 +225,9 @@ func (rogue *Rogue) applyWoundPoison() {
 				rogue.WoundPoison[NormalProc].Cast(sim, result.Target)
 			}
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			fmt.Println("Wound Poison deactivated")
-			rogue.PoisonsActive--
-		},
 	})
 }
 
-// TODO: Look this over
 // Apply Occult Poison to weapon and enable procs
 func (rogue *Rogue) applyOccultPoison() {
 	procMask := rogue.getImbueProcMask(proto.WeaponImbue_OccultPoison)
@@ -264,8 +242,6 @@ func (rogue *Rogue) applyOccultPoison() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
-			fmt.Println("Occult Poison activated")
-			rogue.PoisonsActive++
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
@@ -275,14 +251,9 @@ func (rogue *Rogue) applyOccultPoison() {
 				rogue.OccultPoison[NormalProc].Cast(sim, result.Target)
 			}
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			fmt.Println("Occult Poison deactivated")
-			rogue.PoisonsActive--
-		},
 	})
 }
 
-// TODO: Look this over
 // Apply Sebacious Poison to weapon and enable procs
 func (rogue *Rogue) applySebaciousPoison() {
 	procMask := rogue.getImbueProcMask(proto.WeaponImbue_SebaciousPoison)
@@ -295,8 +266,6 @@ func (rogue *Rogue) applySebaciousPoison() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
-			fmt.Println("Sebacious Poison activated")
-			rogue.PoisonsActive++
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
@@ -306,14 +275,9 @@ func (rogue *Rogue) applySebaciousPoison() {
 				rogue.SebaciousPoison[NormalProc].Cast(sim, result.Target)
 			}
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			fmt.Println("Sebacious Poison deactivated")
-			rogue.PoisonsActive--
-		},
 	})
 }
 
-// TODO: Look this over
 // Apply Atrophic Poison to weapon and enable procs
 func (rogue *Rogue) applyAtrophicPoison() {
 	procMask := rogue.getImbueProcMask(proto.WeaponImbue_AtrophicPoison)
@@ -326,8 +290,6 @@ func (rogue *Rogue) applyAtrophicPoison() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
-			fmt.Println("Atrophic Poison activated")
-			rogue.PoisonsActive++
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
@@ -337,14 +299,9 @@ func (rogue *Rogue) applyAtrophicPoison() {
 				rogue.AtrophicPoison[NormalProc].Cast(sim, result.Target)
 			}
 		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			fmt.Println("Atrophic Poison deactivated")
-			rogue.PoisonsActive--
-		},
 	})
 }
 
-// TODO: Look this over
 // Apply Numbing Poison to weapon and enable procs
 func (rogue *Rogue) applyNumbingPoison() {
 	procMask := rogue.getImbueProcMask(proto.WeaponImbue_NumbingPoison)
@@ -357,8 +314,6 @@ func (rogue *Rogue) applyNumbingPoison() {
 		Duration: core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
-			fmt.Println("Numbing Poison activated")
-			rogue.PoisonsActive++
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !result.Landed() || !spell.ProcMask.Matches(procMask) {
@@ -367,10 +322,6 @@ func (rogue *Rogue) applyNumbingPoison() {
 			if sim.RandomFloat("Numbing Poison") < rogue.GetDeadlyPoisonProcChance() {
 				rogue.NumbingPoison[NormalProc].Cast(sim, result.Target)
 			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			fmt.Println("Numbing Poison deactivated")
-			rogue.PoisonsActive--
 		},
 	})
 }
@@ -387,6 +338,7 @@ func (rogue *Rogue) registerInstantPoisonSpell() {
 	}
 }
 
+// TODO: Check this before PR
 func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	baseDamageTick := map[int32]float64{
 		25: 9,
@@ -463,6 +415,7 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	}
 }
 
+// TODO: check this before PR
 func (rogue *Rogue) registerWoundPoisonSpell() {
 	woundPoisonDebuffAura := core.Aura{
 		Label:     "WoundPoison-" + strconv.Itoa(int(rogue.Index)),
@@ -494,6 +447,7 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 	}
 }
 
+// TODO: check this before PR
 func (rogue *Rogue) registerOccultPoisonSpell() {
 	if rogue.Level < 60 {
 		return
@@ -564,6 +518,8 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 	}
 }
 
+// TODO: Figure out how to either use the Rogue struct in debuffs since the aura is contructed in debuffs.go
+// or move the aura constructor here
 func (rogue *Rogue) registerSebaciousPoisonSpell() {
 	if rogue.Level < 60 {
 		return
@@ -580,6 +536,8 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 
 }
 
+// TODO: Figure out how to either use the Rogue struct in debuffs since the aura is contructed in debuffs.go
+// or move the aura constructor here
 func (rogue *Rogue) registerAtrophicPoisonSpell() {
 	if rogue.Level < 60 {
 		return
@@ -596,6 +554,8 @@ func (rogue *Rogue) registerAtrophicPoisonSpell() {
 
 }
 
+// TODO: Figure out how to either use the Rogue struct in debuffs since the aura is contructed in debuffs.go
+// or move the aura constructor here
 func (rogue *Rogue) registerNumbingPoisonSpell() {
 	if rogue.Level < 60 {
 		return

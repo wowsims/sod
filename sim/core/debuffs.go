@@ -1033,7 +1033,7 @@ func ExposeArmorAura(target *Unit, improvedEA int32, playerLevel int32) *Aura {
 	return aura
 }
 
-func SebaciousPoisonAura(target *Unit, improvedEA int32, playerLevel int32, rogue *proto.Rogue) *Aura {
+func SebaciousPoisonAura(target *Unit, improvedEA int32, playerLevel int32) *Aura {
 	if playerLevel < 60 {
 		return nil
 	}
