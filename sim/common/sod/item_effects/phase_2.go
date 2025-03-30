@@ -78,18 +78,13 @@ func init() {
 		})
 
 		activationSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 11826},
-			SpellSchool: core.SpellSchoolPhysical,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
+			ActionID: core.ActionID{SpellID: 11826},
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 30,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				dmgShieldAura.Activate(sim)
 				core.StartDelayedAction(sim, core.DelayedActionOptions{
@@ -101,7 +96,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,
@@ -208,15 +203,12 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 435899},
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 30,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 				if sim.RandomFloat("Gyromatic Experiment 420b") > 0.95 {
 					chickenAura.Activate(sim)
@@ -228,7 +220,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,
@@ -321,8 +313,6 @@ func init() {
 
 		spicy := character.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				IgnoreHaste: true,
 				CD: core.Cooldown{
@@ -330,13 +320,12 @@ func init() {
 					Duration: time.Minute * 2,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 				spicyAura.Activate(sim)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: spicy,
 			Type:  core.CooldownTypeDPS,
 		})

@@ -349,16 +349,16 @@ stat_weights_results: {
   weights: 0
   weights: 1.55749
   weights: 0
-  weights: 2.07386
+  weights: 2.07394
   weights: 0
   weights: 0
-  weights: 2.07386
+  weights: 2.07394
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 18.37758
+  weights: 18.37836
   weights: 0
   weights: 0
   weights: 0
@@ -680,15 +680,15 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-Settings-Gnome-p4_frost-Frost-p4_frost-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 776.62851
-  tps: 864.38754
+  dps: 776.65888
+  tps: 864.41552
  }
 }
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-Settings-Gnome-p4_frost-Frost-p4_frost-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 776.62851
-  tps: 633.67956
+  dps: 776.65888
+  tps: 633.70754
  }
 }
 dps_results: {
@@ -722,15 +722,15 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-Settings-Troll-p4_frost-Frost-p4_frost-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 780.95926
-  tps: 867.34607
+  dps: 780.98426
+  tps: 867.36803
  }
 }
 dps_results: {
  key: "TestFrost-Phase4-Lvl60-Settings-Troll-p4_frost-Frost-p4_frost-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 780.95926
-  tps: 636.65456
+  dps: 780.98426
+  tps: 636.67653
  }
 }
 dps_results: {
@@ -813,99 +813,99 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 3306.76169
-  tps: 2328.71792
+  dps: 3306.90032
+  tps: 2328.81496
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 7552.12563
-  tps: 5580.52011
+  dps: 7552.26634
+  tps: 5580.61861
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 3338.0181
-  tps: 2351.08874
+  dps: 3338.15881
+  tps: 2351.18724
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 3925.56606
-  tps: 2767.0686
+  dps: 3926.26962
+  tps: 2767.56109
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 4037.45919
-  tps: 3006.96826
+  dps: 4037.53374
+  tps: 3007.02045
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1783.35778
-  tps: 1257.38779
+  dps: 1783.43233
+  tps: 1257.43997
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 2315.2309
-  tps: 1635.84539
+  dps: 2315.60365
+  tps: 1636.10631
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 7492.61407
-  tps: 5521.82172
+  dps: 7492.75478
+  tps: 5521.92021
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 3295.40544
-  tps: 2320.66474
+  dps: 3295.54616
+  tps: 2320.76324
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 3938.7723
-  tps: 2779.51928
+  dps: 3939.47586
+  tps: 2780.01177
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 3969.15387
-  tps: 2959.15453
+  dps: 3969.22842
+  tps: 2959.20672
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1740.23477
-  tps: 1227.20168
+  dps: 1740.30932
+  tps: 1227.25387
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 2334.92617
-  tps: 1649.63208
+  dps: 2335.29892
+  tps: 1649.893
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3295.40544
-  tps: 2320.66474
+  dps: 3295.54616
+  tps: 2320.76324
  }
 }
 dps_results: {

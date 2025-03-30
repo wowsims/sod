@@ -267,7 +267,7 @@ func (spell *Spell) makeCastFunc(config CastConfig) CastSuccessFunc {
 
 					spell.applyEffects(sim, target)
 
-					if !spell.Flags.Matches(SpellFlagNoOnCastComplete) {
+					if !spell.Flags.Matches(SpellFlagNoOnCastComplete | SpellFlagNoLifecycleCallbacks) {
 						spell.Unit.OnCastComplete(sim, spell)
 					}
 

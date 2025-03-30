@@ -91,8 +91,6 @@ func init() {
 
 		cdSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -108,7 +106,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
 		})
@@ -133,7 +131,6 @@ func init() {
 		cdSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
 			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -145,7 +142,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: cdSpell,
 			Type:  core.CooldownTypeSurvival,
 		})
@@ -385,7 +382,6 @@ func init() {
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 1231605},
-			Flags:    core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -397,7 +393,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 		})
@@ -595,8 +591,6 @@ func init() {
 
 		cdSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -621,7 +615,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
 		})
@@ -938,7 +932,6 @@ func init() {
 		cdSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: SirDornelsDidgeridoo},
 			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -954,7 +947,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
 		})
@@ -997,7 +990,6 @@ func init() {
 		cdSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
 			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -1009,7 +1001,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: cdSpell,
 		})

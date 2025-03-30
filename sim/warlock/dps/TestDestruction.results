@@ -396,18 +396,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.55088
+  weights: 0.80388
   weights: 0
-  weights: 0.65081
-  weights: 0
-  weights: 0
+  weights: 2.01908
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 18.93877
-  weights: 10.7769
+  weights: 0
+  weights: 0
+  weights: 14.53821
+  weights: 10.56647
   weights: 0
   weights: 0
   weights: 0
@@ -715,64 +715,64 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-AllItems-DeathmistRaiment"
  value: {
-  dps: 374.44326
-  tps: 249.36105
+  dps: 373.96864
+  tps: 249.11853
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Average-Default"
  value: {
-  dps: 1806.96295
-  tps: 1600.57809
+  dps: 1806.23895
+  tps: 1599.76391
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 2851.74536
-  tps: 3289.6161
+  dps: 2852.67502
+  tps: 3292.50194
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 1780.99506
-  tps: 1576.0905
+  dps: 1791.0718
+  tps: 1586.17787
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-FullBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 1957.83938
-  tps: 1736.73607
+  dps: 1940.75333
+  tps: 1715.59909
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-P3-Consumes-LongMultiTarget"
  value: {
-  dps: 1767.08163
-  tps: 2334.78698
+  dps: 1772.40418
+  tps: 2339.37222
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-P3-Consumes-LongSingleTarget"
  value: {
-  dps: 979.23101
-  tps: 865.40725
+  dps: 980.76273
+  tps: 866.8542
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-Settings-Orc-backdraft-Destruction Warlock-backdraft-NoBuffs-P3-Consumes-ShortSingleTarget"
  value: {
-  dps: 1026.67707
-  tps: 932.04694
+  dps: 1028.09184
+  tps: 933.34221
  }
 }
 dps_results: {
  key: "TestDestruction-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1780.99506
-  tps: 1576.0905
+  dps: 1791.0718
+  tps: 1586.17787
  }
 }
 dps_results: {
@@ -799,8 +799,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 3825.89379
-  tps: 3236.55094
+  dps: 3815.17744
+  tps: 3221.82135
  }
 }
 dps_results: {
@@ -1051,8 +1051,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase6-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 5502.20086
-  tps: 4559.06433
+  dps: 5503.31347
+  tps: 4560.07762
  }
 }
 dps_results: {

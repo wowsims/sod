@@ -498,9 +498,9 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 4722.43762
-  tps: 3567.31404
-  hps: 945.03818
+  dps: 4737.06768
+  tps: 3581.41779
+  hps: 944.23175
  }
 }
 dps_results: {

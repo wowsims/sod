@@ -177,7 +177,8 @@ const (
 	SpellFlagPoison                                        // Spell is categorized as poison
 	SpellFlagHelpful                                       // For healing spells / buffs.
 	SpellFlagMeleeMetrics                                  // Marks a spell as a melee ability for metrics.
-	SpellFlagNoOnCastComplete                              // Disables the OnCastComplete callback.
+	SpellFlagNoOnCastComplete                              // Disables the OnCastComplete callback for spells that aren't truly "cast" by the unit.
+	SpellFlagNoLifecycleCallbacks                          // Disables the OnCastComplete and OnApplyEffects callbacks for trivial spells that don't need them like Trinket activations. Use this only if absolutely sure you won't need the callbacks later.
 	SpellFlagNoMetrics                                     // Disables metrics for a spell.
 	SpellFlagNoLogs                                        // Disables logs for a spell.
 	SpellFlagAPL                                           // Indicates this spell can be used from an APL rotation.
