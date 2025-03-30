@@ -15,8 +15,6 @@ func (mage *Mage) applyIgnite() {
 		return
 	}
 
-	hasRemnantsOfTheRed := mage.HasAura("Flames of the Red")
-
 	mage.Ignite = mage.RegisterSpell(core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_MageIgnite,
 		ActionID:       core.ActionID{SpellID: 12654},
@@ -60,11 +58,7 @@ func (mage *Mage) applyIgnite() {
 
 		// Revert double dipping on effects confirmed to not do so
 		// - Sanctified
-		// - Remnants of the Red
 		dot.SnapshotAttackerMultiplier /= mage.PseudoStats.SanctifiedDamageMultiplier
-		if hasRemnantsOfTheRed {
-			dot.SnapshotAttackerMultiplier /= 1.05
-		}
 
 		mage.Ignite.Cast(sim, result.Target)
 	}
