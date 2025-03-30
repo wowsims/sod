@@ -55,6 +55,9 @@ func (mage *Mage) applyIgnite() {
 
 		// This was also made to not double dip on Sanctified
 		dot.Snapshot(result.Target, (dot.OutstandingDmg()+newDamage)/float64(IgniteTicks), false)
+
+		// Revert double dipping on effects confirmed to not do so
+		// - Sanctified
 		dot.SnapshotAttackerMultiplier /= mage.PseudoStats.SanctifiedDamageMultiplier
 
 		mage.Ignite.Cast(sim, result.Target)

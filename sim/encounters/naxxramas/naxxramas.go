@@ -27,10 +27,11 @@ var NaxxramasDifficultyLevels = &proto.TargetInput{
 func (naxxEncounter *NaxxramasEncounter) registerAuthorityOfTheFrozenWastesAura(target *core.Target, stacks int32) {
 	charactertarget := target.Env.Raid.Parties[0].Players[0].GetCharacter()
 
-	core.MakePermanent(charactertarget.GetOrRegisterAura(core.Aura{
+	charactertarget.GetOrRegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1218283},
 		Label:     "Authority of the Frozen Wastes",
 		MaxStacks: 4,
+		Duration:  core.NeverExpires,
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			aura.Activate(sim)
 			aura.SetStacks(sim, stacks)
@@ -44,5 +45,5 @@ func (naxxEncounter *NaxxramasEncounter) registerAuthorityOfTheFrozenWastesAura(
 				}
 			}
 		},
-	}))
+	})
 }
