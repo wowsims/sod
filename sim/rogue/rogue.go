@@ -217,9 +217,6 @@ func (rogue *Rogue) Reset(_ *core.Simulation) {
 	for _, mcd := range rogue.GetMajorCooldowns() {
 		mcd.Disable()
 	}
-
-	rogue.BleedsActive = 0
-	rogue.PoisonsActive = 0
 }
 
 func NewRogue(character *core.Character, options *proto.Player, rogueOptions *proto.RogueOptions) *Rogue {

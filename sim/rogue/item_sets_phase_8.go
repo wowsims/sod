@@ -1,6 +1,8 @@
 package rogue
 
 import (
+	"fmt"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -46,14 +48,19 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 	})
 
 	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-		ActionID:       core.ActionID{SpellID: 1226869}, // Tracking in APL
+		ActionID:       core.ActionID{SpellID: 1226843}, // Tracking in APL
 		Name:           label,
 		Callback:       core.CallbackOnApplyEffects,
 		ProcChance:     1,
 		ClassSpellMask: ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			fmt.Println("Bleeds: ", rogue.BleedsActive)
+			fmt.Println("Poisons: ", rogue.PoisonsActive)
+
 			// Only apply the damage mod up to 3 times for the 30% bonus maximum
-			if rogue.BleedsActive+rogue.PoisonsActive < 3 {
+			fmt.Println("2P proc triggered")
+			if rogue.BleedsActive+rogue.PoisonsActive <= 3 {
+				fmt.Println("Applying 2P damage mod, value: ", rogue.BleedsActive+rogue.PoisonsActive)
 				damageMod.Activate()
 				damageMod.UpdateFloatValue(1 + 0.10*float64(rogue.BleedsActive+rogue.PoisonsActive))
 			}
