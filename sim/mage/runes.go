@@ -344,7 +344,7 @@ func (mage *Mage) applyMissileBarrage() {
 		return
 	}
 
-	mage.FireballFrostboltMissileBarrageChance += 0.20
+	fireballFrostboltMissileBarrageChance := 0.20
 	mage.ArcaneBlastMissileBarrageChance += 0.40
 	buffDuration := time.Second * 15
 
@@ -387,7 +387,7 @@ func (mage *Mage) applyMissileBarrage() {
 				return
 			}
 
-			procChance := core.TernaryFloat64(spell.Matches(ClassSpellMask_MageArcaneBlast), mage.ArcaneBlastMissileBarrageChance, mage.FireballFrostboltMissileBarrageChance)
+			procChance := core.TernaryFloat64(spell.Matches(ClassSpellMask_MageArcaneBlast), mage.ArcaneBlastMissileBarrageChance, fireballFrostboltMissileBarrageChance)
 			if sim.Proc(procChance, "Missile Barrage") {
 				mage.MissileBarrageAura.Activate(sim)
 			}
