@@ -529,15 +529,7 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 	rogue.sebaciousPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		sebaciousPoisonAura := core.SebaciousPoisonAura(unit, rogue.Talents.ImprovedExposeArmor, rogue.Level)
 
-		sebaciousPoisonAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-			// p8 DPS tier bonus tracking
-			rogue.PoisonsActive[aura.Unit.UnitIndex]++
-		})
-
-		sebaciousPoisonAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-			// p8 DPS tier bonus tracking
-			rogue.PoisonsActive[aura.Unit.UnitIndex]--
-		})
+		trackTotalUniquePoisons(sebaciousPoisonAura, rogue)
 
 		return sebaciousPoisonAura
 	})
@@ -557,15 +549,7 @@ func (rogue *Rogue) registerAtrophicPoisonSpell() {
 	rogue.atrophicPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		atrophicPoisonAura := core.AtrophicPoisonAura(unit)
 
-		atrophicPoisonAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-			// p8 DPS tier bonus tracking
-			rogue.PoisonsActive[aura.Unit.UnitIndex]++
-		})
-
-		atrophicPoisonAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-			// p8 DPS tier bonus tracking
-			rogue.PoisonsActive[aura.Unit.UnitIndex]--
-		})
+		trackTotalUniquePoisons(atrophicPoisonAura, rogue)
 
 		return atrophicPoisonAura
 	})
@@ -585,15 +569,7 @@ func (rogue *Rogue) registerNumbingPoisonSpell() {
 	rogue.numbingPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		numbingPoisonAura := core.NumbingPoisonAura(unit)
 
-		numbingPoisonAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-			// p8 DPS tier bonus tracking
-			rogue.PoisonsActive[aura.Unit.UnitIndex]++
-		})
-
-		numbingPoisonAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-			// p8 DPS tier bonus tracking
-			rogue.PoisonsActive[aura.Unit.UnitIndex]--
-		})
+		trackTotalUniquePoisons(numbingPoisonAura, rogue)
 
 		return numbingPoisonAura
 	})
