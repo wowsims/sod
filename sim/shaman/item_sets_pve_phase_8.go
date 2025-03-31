@@ -169,8 +169,7 @@ var ItemSetTheSoulcrushersRage = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// While Static Shock is active, Lava Lash, Lava Burst, and Stormstrike have a 100% chance to add charges to your Lightning Shield.
-// While dual-wielding, you will gain 1 charge, and while using a two-handed weapon you will gain 2 charges.
+// While Static Shock is active, Lava Lash, Lava Burst, and Stormstrike have a 100% chance to add 1 charge to your Lightning Shield.
 // If charges exceed 9, Lightning Shield will immediately deal damage to your target instead of adding charges.
 func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
 	if !shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock) {
@@ -193,20 +192,12 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
 				}
 
 				shaman.ActiveShieldAura.AddStack(sim) // Add back the charge removed
-
-				if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-					if shaman.ActiveShieldAura.GetStacks() == 9 {
-						shaman.LightningShieldProcs[shaman.ActiveShield.Rank].Cast(sim, result.Target)
-					}
-
-					shaman.ActiveShieldAura.AddStack(sim) // Add back the charge removed
-				}
 			}
 		},
 	}))
 }
 
-// Reduces the cooldown on your Fire Nova Totem by 50%, increases its damage by 150%, and reduces its mana cost by 50%.
+// Reduces the cooldown on your Fire Nova Totem by 60%, increases its damage by 200%, and reduces its mana cost by 50%.
 // Additionally, your Fire Nova Totem now activates instantly on cast.
 func (shaman *Shaman) applyScarletEnclaveEnhancement4PBonus() {
 	if shaman.HasRune(proto.ShamanRune_RuneWaistFireNova) {
@@ -223,11 +214,11 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement4PBonus() {
 	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanFireNovaTotem,
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
-		IntValue:  -50,
+		IntValue:  -60,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanFireNovaTotemAttack,
 		Kind:      core.SpellMod_DamageDone_Flat,
-		IntValue:  150,
+		IntValue:  200,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanFireNovaTotem,
 		Kind:      core.SpellMod_PowerCost_Pct,
@@ -263,9 +254,7 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 		},
 	})
 
-	if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-		core.MakePermanent(twoHandedBonusAura)
-	}
+	core.MakePermanent(twoHandedBonusAura)
 	shaman.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
 			twoHandedBonusAura.Activate(sim)
@@ -301,7 +290,7 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 		},
 		OnApplyEffects: func(_ *core.Aura, _ *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			if spell.Matches(shaman.MaelstromWeaponClassMask) {
-				damageMod.UpdateFloatValue(1 + max(0, 0.10*float64(shaman.MaelstromWeaponAura.GetStacks()-5)))
+				damageMod.UpdateFloatValue(1 + max(0, 0.20*float64(shaman.MaelstromWeaponAura.GetStacks()-5)))
 			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
