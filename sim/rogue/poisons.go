@@ -67,6 +67,15 @@ func (rogue *Rogue) improvedPoisonsBonusProcChance() float64 {
 	return 0.02 * float64(rogue.Talents.ImprovedPoisons)
 }
 
+// p8 DPS tier bonus helper function
+func trackTotalUniquePoisons(aura *core.Aura, rogue *Rogue) {
+	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+		rogue.PoisonsActive[aura.Unit.UnitIndex]++
+	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+		rogue.PoisonsActive[aura.Unit.UnitIndex]--
+	})
+}
+
 ///////////////////////////////////////////////////////////////////////////
 //                               Apply Poisons
 ///////////////////////////////////////////////////////////////////////////
@@ -396,6 +405,12 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		},
 	})
 
+	for _, dot := range rogue.deadlyPoisonTick.Dots() {
+		if dot != nil {
+			trackTotalUniquePoisons(dot.Aura, rogue)
+		}
+	}
+
 	rogue.DeadlyPoison = [3]*core.Spell{
 		rogue.makeDeadlyPoison(NormalProc),
 		rogue.makeDeadlyPoison(ShivProc),
@@ -418,7 +433,11 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 	}
 
 	rogue.woundPoisonDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-		return target.RegisterAura(woundPoisonDebuffAura)
+		woundPoisonAura := target.RegisterAura(woundPoisonDebuffAura)
+
+		trackTotalUniquePoisons(woundPoisonAura, rogue)
+
+		return woundPoisonAura
 	})
 	rogue.WoundPoison = [2]*core.Spell{
 		rogue.makeWoundPoison(NormalProc),
@@ -479,11 +498,18 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 		},
 	})
 
+	for _, dot := range rogue.occultPoisonTick.Dots() {
+		if dot != nil {
+			trackTotalUniquePoisons(dot.Aura, rogue)
+		}
+	}
+
 	rogue.OccultPoison = [3]*core.Spell{
 		rogue.makeOccultPoison(NormalProc),
 		rogue.makeOccultPoison(ShivProc),
 		rogue.makeOccultPoison(DeadlyBrewProc),
 	}
+
 }
 
 func (rogue *Rogue) registerSebaciousPoisonSpell() {
@@ -492,7 +518,11 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 	}
 
 	rogue.sebaciousPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.SebaciousPoisonAura(unit, rogue.Talents.ImprovedExposeArmor, rogue.Level)
+		sebaciousPoisonAura := core.SebaciousPoisonAura(unit, rogue.Talents.ImprovedExposeArmor, rogue.Level)
+
+		trackTotalUniquePoisons(sebaciousPoisonAura, rogue)
+
+		return sebaciousPoisonAura
 	})
 
 	rogue.SebaciousPoison = [2]*core.Spell{
@@ -508,7 +538,11 @@ func (rogue *Rogue) registerAtrophicPoisonSpell() {
 	}
 
 	rogue.atrophicPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.AtrophicPoisonAura(unit)
+		atrophicPoisonAura := core.AtrophicPoisonAura(unit)
+
+		trackTotalUniquePoisons(atrophicPoisonAura, rogue)
+
+		return atrophicPoisonAura
 	})
 
 	rogue.AtrophicPoison = [2]*core.Spell{
@@ -524,7 +558,11 @@ func (rogue *Rogue) registerNumbingPoisonSpell() {
 	}
 
 	rogue.numbingPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.NumbingPoisonAura(unit)
+		numbingPoisonAura := core.NumbingPoisonAura(unit)
+
+		trackTotalUniquePoisons(numbingPoisonAura, rogue)
+
+		return numbingPoisonAura
 	})
 
 	rogue.NumbingPoison = [2]*core.Spell{

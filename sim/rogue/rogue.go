@@ -130,9 +130,13 @@ type Rogue struct {
 	usingDeadly      bool
 	usingOccult      bool
 
-	instantPoisonProcChanceBonus float64
-	additivePoisonBonusChance    float64
-	cutthroatBonusChance         float64
+	instantPoisonProcChanceBonus                    float64
+	additivePoisonBonusChance                       float64
+	cutthroatBonusChance                            float64
+	rollingWithThePunchesBonusHealthStackMultiplier float64
+	rollingWithThePunchesMaxStacks                  int
+	bladeFlurryAttackSpeedBonus                     float64
+	bladeFlurryTargetCount                          int32
 
 	AdrenalineRushAura            *core.Aura
 	BladeDanceAura                *core.Aura
@@ -157,6 +161,10 @@ type Rogue struct {
 	sebaciousPoisonDebuffAura core.AuraArray
 	atrophicPoisonDebuffAura  core.AuraArray
 	numbingPoisonDebuffAura   core.AuraArray
+
+	// p8 DPS tier bonus tracking
+	BleedsActive  map[int32]int32
+	PoisonsActive map[int32]int32
 }
 
 func (rogue *Rogue) GetCharacter() *core.Character {
@@ -179,6 +187,14 @@ func (rogue *Rogue) builderFlags() core.SpellFlag {
 }
 
 func (rogue *Rogue) Initialize() {
+	// p8 DPS tier bonus tracking
+	rogue.BleedsActive = make(map[int32]int32, len(rogue.Env.Encounter.TargetUnits))
+	rogue.PoisonsActive = make(map[int32]int32, len(rogue.Env.Encounter.TargetUnits))
+	for _, target := range rogue.Env.Encounter.TargetUnits {
+		rogue.BleedsActive[target.UnitIndex] = 0
+		rogue.PoisonsActive[target.UnitIndex] = 0
+	}
+
 	rogue.registerBackstabSpell()
 	rogue.registerEviscerate()
 	rogue.registerExposeArmorSpell()
@@ -212,6 +228,9 @@ func (rogue *Rogue) ApplyEnergyTickMultiplier(multiplier float64) {
 func (rogue *Rogue) Reset(_ *core.Simulation) {
 	for _, mcd := range rogue.GetMajorCooldowns() {
 		mcd.Disable()
+	}
+	for _, target := range rogue.Env.Encounter.TargetUnits {
+		rogue.PoisonsActive[target.UnitIndex] = 0
 	}
 }
 
