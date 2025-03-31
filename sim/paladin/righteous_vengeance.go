@@ -65,7 +65,7 @@ func (paladin *Paladin) registerRV() {
 func (paladin *Paladin) procRV(sim *core.Simulation, result *core.SpellResult) {
 	dot := paladin.rv.Dot(result.Target)
 
-	newDamage := result.Damage * 0.5
+	newDamage := result.Damage * 0.3
 	outstandingDamage := core.TernaryFloat64(dot.IsActive(), dot.SnapshotBaseDamage*float64(dot.NumberOfTicks-dot.TickCount), 0)
 
 	dot.Snapshot(result.Target, (outstandingDamage+newDamage)/float64(RVTicks), false)
