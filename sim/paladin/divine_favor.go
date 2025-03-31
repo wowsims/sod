@@ -50,7 +50,6 @@ func (paladin *Paladin) registerDivineFavor() {
 
 	divineFavor := paladin.RegisterSpell(core.SpellConfig{
 		ActionID: aura.ActionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: cd,
 		},

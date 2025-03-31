@@ -244,7 +244,6 @@ func (shaman *Shaman) registerElementalMasteryCD() {
 
 	shaman.ElementalMastery = shaman.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    cdTimer,
@@ -290,7 +289,6 @@ func (shaman *Shaman) registerNaturesSwiftnessCD() {
 
 	nsSpell := shaman.RegisterSpell(core.SpellConfig{
 		ActionID: actionID,
-		Flags:    core.SpellFlagNoOnCastComplete,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    cdTimer,
@@ -421,7 +419,6 @@ func (shaman *Shaman) purificationHealingModifier() float64 {
 // 	mttAura := core.ManaTideTotemAura(shaman.GetCharacter(), shaman.Index)
 // 	mttSpell := shaman.RegisterSpell(core.SpellConfig{
 // 		ActionID: core.ManaTideTotemActionID,
-// 		Flags:    core.SpellFlagNoOnCastComplete,
 // 		Cast: core.CastConfig{
 // 			DefaultCast: core.Cast{
 // 				GCD: time.Second,

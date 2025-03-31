@@ -189,7 +189,7 @@ func (druid *Druid) applyT2Feral6PBonus() {
 		ClassSpellMask: ClassSpellMask_DruidShred | ClassSpellMask_DruidMangleCat | ClassSpellMask_DruidFerociousBite,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			damageMod.Activate()
-			damageMod.UpdateFloatValue(1 + 0.10*float64(druid.BleedsActive))
+			damageMod.UpdateFloatValue(1 + 0.10*float64(druid.BleedsActive[result.Target.UnitIndex]))
 		},
 	})
 }

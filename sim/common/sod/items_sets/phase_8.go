@@ -3,6 +3,7 @@ package item_sets
 import (
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 	"github.com/wowsims/sod/sim/hunter"
 	"github.com/wowsims/sod/sim/rogue"
 	"github.com/wowsims/sod/sim/warrior"
@@ -42,18 +43,10 @@ var ItemSetHackAndSmash = core.NewItemSet(core.ItemSet{
 			character := agent.GetCharacter()
 
 			fireAura := character.GetAuraByID(core.ActionID{SpellID: 1231498})
-			fireAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Pct,
-				School:     core.SpellSchoolFire,
-				FloatValue: 1.30 / 1.20, // Revert the 20% and apply 30%
-			})
+			fireAura.AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.30/1.20) // Revert the 20% and apply 30%
 
 			natureAura := character.GetAuraByID(core.ActionID{SpellID: 1231456})
-			natureAura.AttachSpellMod(core.SpellModConfig{
-				Kind:       core.SpellMod_DamageDone_Pct,
-				School:     core.SpellSchoolNature,
-				FloatValue: 1.30 / 1.20, // Revert the 20% and apply 30%
-			})
+			natureAura.AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature], 1.30/1.20) // Revert the 20% and apply 30%
 		},
 	},
 })

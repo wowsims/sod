@@ -42,8 +42,6 @@ func init() {
 
 		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{SpellID: 24427},
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -54,13 +52,12 @@ func init() {
 					Duration: time.Second * 60,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				buffAura.Activate(sim)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    triggerSpell,
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,
@@ -75,7 +72,7 @@ func init() {
 			ActionID:    actionId,
 			SpellSchool: core.SpellSchoolPhysical | core.SpellSchoolShadow,
 			ProcMask:    core.ProcMaskSpellDamage,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
+			Flags:       core.SpellFlagNoOnCastComplete,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -113,7 +110,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    spell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,
@@ -129,11 +126,7 @@ func init() {
 		aura := warrior.NewTemporaryStatsAura("Gri'lek's Guard", actionID, stats.Stats{stats.BlockValue: 200}, duration)
 
 		spell := warrior.Character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolPhysical,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
+			ActionID: actionID,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    warrior.NewTimer(),
@@ -144,14 +137,13 @@ func init() {
 					Duration: duration,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				warrior.AddRage(sim, 30, rageMetrics)
 				aura.Activate(sim)
 			},
 		})
 
-		warrior.AddMajorCooldown(core.MajorCooldown{
+		warrior.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})
@@ -210,24 +202,19 @@ func init() {
 		})
 
 		spell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
-			SpellSchool: core.SpellSchoolPhysical,
-			ProcMask:    core.ProcMaskEmpty,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
+			ActionID: actionID,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 1,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				defenseOfDragonflights.Activate(sim)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})

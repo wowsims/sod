@@ -127,7 +127,8 @@ func (warlock *Warlock) makePet(cfg PetConfig, enabledOnStart bool) *WarlockPet 
 	}
 
 	wp.ApplyOnPetEnable(func(sim *core.Simulation) {
-		wp.EnableDynamicAttackSpeed(sim)
+		// Warlock pets only inherit the owner's cast speed
+		wp.EnableDynamicCastSpeedInheritance(sim)
 	})
 
 	// Having either the Fire or Shadow ring rune grants the pet 6% spell hit, 4.8% physical hit, and 0.5% expertise

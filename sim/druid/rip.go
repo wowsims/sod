@@ -108,10 +108,10 @@ func (druid *Druid) newRipSpellConfig(ripRank RipRankInfo) core.SpellConfig {
 			Aura: core.Aura{
 				Label: "Rip",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					druid.BleedsActive++
+					druid.BleedsActive[aura.Unit.UnitIndex]++
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					druid.BleedsActive--
+					druid.BleedsActive[aura.Unit.UnitIndex]--
 				},
 			},
 			NumberOfTicks: RipTicks,
