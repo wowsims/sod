@@ -108,7 +108,7 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 
 	energyProc := rogue.RegisterSpell(core.SpellConfig{
 		ActionID: core.ActionID{SpellID: 1226957},
-		Flags:    core.SpellFlagNoOnCastComplete,
+		Flags:    core.SpellFlagNoLifecycleCallbacks,
 		ApplyEffects: func(sim *core.Simulation, u *core.Unit, spell *core.Spell) {
 			rogue.AddEnergy(sim, 15, metrics)
 		},
