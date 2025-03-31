@@ -75,7 +75,8 @@ func (rogue *Rogue) applyScarletEnclaveDamage4PBonus() {
 	procClassMasks := ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueInstantPoison
 
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
-		Label: label,
+		Label:    label,
+		ActionID: core.ActionID{SpellID: 1226869},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidCrit() && spell.Matches(procClassMasks) && sim.Proc(0.10, "Combo! proc") {
 				rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboPointMetrics)
