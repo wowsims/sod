@@ -1,6 +1,8 @@
 package rogue
 
 import (
+	"fmt"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 )
@@ -36,7 +38,6 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		return
 	}
 
-	totalBleedsAndPoisons := rogue.PoisonsActive[rogue.CurrentTarget.UnitIndex] + rogue.BleedsActive[rogue.CurrentTarget.UnitIndex]
 	spellsModifiedBySetBonus := ClassSpellMask_RogueBackstab | ClassSpellMask_RogueSinisterStrike | ClassSpellMask_RogueSaberSlash | ClassSpellMask_RogueMutilate
 
 	damageMod := rogue.AddDynamicMod(core.SpellModConfig{
@@ -52,9 +53,11 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		ProcChance:     0.1,
 		ClassSpellMask: spellsModifiedBySetBonus,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-
+			totalBleedsAndPoisons := rogue.PoisonsActive[rogue.CurrentTarget.UnitIndex] + rogue.BleedsActive[rogue.CurrentTarget.UnitIndex]
+			fmt.Println("TotalBleedsAndPoisons: ", totalBleedsAndPoisons)
 			// Only apply the damage mod up to 3 times for the 30% bonus maximum
 			damageMod.UpdateFloatValue(1 + 0.10*float64(min(3, totalBleedsAndPoisons)))
+			fmt.Println("DamageMod updated to: ", damageMod.GetFloatValue())
 			damageMod.Activate()
 		},
 	})

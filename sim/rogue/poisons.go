@@ -379,14 +379,6 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 				Label:     "DeadlyPoison",
 				MaxStacks: 5,
 				Duration:  time.Second * 12,
-				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					// p8 DPS tier bonus tracking
-					rogue.PoisonsActive[aura.Unit.UnitIndex]++
-				},
-				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					// p8 DPS tier bonus tracking
-					rogue.PoisonsActive[aura.Unit.UnitIndex]--
-				},
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
@@ -414,6 +406,12 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		},
 	})
 
+	for _, dot := range rogue.deadlyPoisonTick.Dots() {
+		if dot != nil {
+			trackTotalUniquePoisons(dot.Aura, rogue)
+		}
+	}
+
 	rogue.DeadlyPoison = [3]*core.Spell{
 		rogue.makeDeadlyPoison(NormalProc),
 		rogue.makeDeadlyPoison(ShivProc),
@@ -430,20 +428,18 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 		Duration:  time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			// all healing effects used on target reduced by x, stacks 5 times
-
-			// p8 DPS tier bonus tracking
-			// rogue.PoisonsActive[aura.Unit.UnitIndex]++
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			// undo reduced healing effects used on targets
-
-			// p8 DPS tier bonus tracking
-			// rogue.PoisonsActive[aura.Unit.UnitIndex]--
 		},
 	}
 
 	rogue.woundPoisonDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-		return target.RegisterAura(woundPoisonDebuffAura)
+		woundPoisonAura := target.RegisterAura(woundPoisonDebuffAura)
+
+		trackTotalUniquePoisons(woundPoisonAura, rogue)
+
+		return woundPoisonAura
 	})
 	rogue.WoundPoison = [2]*core.Spell{
 		rogue.makeWoundPoison(NormalProc),
@@ -478,14 +474,6 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 				Label:     "OccultPoison",
 				MaxStacks: 5,
 				Duration:  time.Second * 12,
-				// OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				// 	// p8 DPS tier bonus tracking
-				// 	rogue.PoisonsActive[aura.Unit.UnitIndex]++
-				// },
-				// OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				// 	// p8 DPS tier bonus tracking
-				// 	rogue.PoisonsActive[aura.Unit.UnitIndex]--
-				// },
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
@@ -512,6 +500,12 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 			},
 		},
 	})
+
+	for _, dot := range rogue.occultPoisonTick.Dots() {
+		if dot != nil {
+			trackTotalUniquePoisons(dot.Aura, rogue)
+		}
+	}
 
 	rogue.OccultPoison = [3]*core.Spell{
 		rogue.makeOccultPoison(NormalProc),
