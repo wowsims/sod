@@ -70,7 +70,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage4PBonus() {
 	}
 
 	// Combo! spell that adds the combo point for the set bonus
-	comboPointMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 1226868})
+	comboPointMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 1226869})
 
 	// Add a combo point for poison tick crit
 	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
