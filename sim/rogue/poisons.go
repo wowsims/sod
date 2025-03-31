@@ -657,9 +657,6 @@ func (rogue *Rogue) makeDeadlyPoison(procSource PoisonProcSource) *core.Spell {
 func (rogue *Rogue) makeOccultPoison(procSource PoisonProcSource) *core.Spell {
 
 	rogue.occultPoisonDebuffAuras = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		occultPoisonAura := core.OccultPoisonDebuffAura(unit, rogue.Level)
-
-		trackTotalUniquePoisons(occultPoisonAura, rogue)
 		return core.OccultPoisonDebuffAura(unit, rogue.Level)
 	})
 

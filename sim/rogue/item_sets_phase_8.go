@@ -50,7 +50,6 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		ActionID:       core.ActionID{SpellID: 1226843},
 		Name:           label,
 		Callback:       core.CallbackOnApplyEffects,
-		ProcChance:     0.1,
 		ClassSpellMask: spellsModifiedBySetBonus,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			totalBleedsAndPoisons := rogue.PoisonsActive[rogue.CurrentTarget.UnitIndex] + rogue.BleedsActive[rogue.CurrentTarget.UnitIndex]
