@@ -419,7 +419,6 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 	}
 }
 
-// TODO: clean this up after checking if new helper function works
 func (rogue *Rogue) registerWoundPoisonSpell() {
 	woundPoisonDebuffAura := core.Aura{
 		Label:     "WoundPoison-" + strconv.Itoa(int(rogue.Index)),
@@ -447,7 +446,6 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 	}
 }
 
-// TODO: clean this up after checking if new helper function works
 func (rogue *Rogue) registerOccultPoisonSpell() {
 	if rogue.Level < 60 {
 		return
