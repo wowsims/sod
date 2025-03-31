@@ -101,6 +101,9 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 		return
 	}
 
+	rogue.rollingWithThePunchesBonusHealthStackMultiplier -= 0.02
+	rogue.rollingWithThePunchesMaxStacks += 5
+
 	metrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 1226957})
 
 	energyProc := rogue.RegisterSpell(core.SpellConfig{
@@ -125,9 +128,6 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.rollingWithThePunchesBonusHealthStackMultiplier -= 0.02
-			rogue.RollingWithThePunchesProcAura.MaxStacks += 5
-			rogue.rollingWithThePunchesMaxStacks += 5
 			rogue.RollingWithThePunchesProcAura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 				if newStacks == 10 {
 					energyAura.Activate(sim)
