@@ -463,7 +463,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240849/staff-of-the-glade
-	// Equip: Remaining in Cat Form for 3 seconds, causes your Energy Regeneration to increase by 25%, and the damage of your Ferocious Bite to increase by 25%.
+	// Equip: Remaining in Cat Form for 5 seconds, causes your Energy Regeneration to increase by 40%, and the damage of your Ferocious Bite to increase by 25%.
 	// Equip: You may cast Rebirth and Innervate while in Cat Form.
 	core.NewItemEffect(StaffOfTheGlade, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
@@ -485,10 +485,10 @@ func init() {
 			ClassMask: ClassSpellMask_DruidFerociousBite,
 			Kind:      core.SpellMod_Custom,
 			ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-				druid.EnergyTickMultiplier *= 1.25
+				druid.EnergyTickMultiplier *= 1.40
 			},
 			RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-				druid.EnergyTickMultiplier /= 1.25
+				druid.EnergyTickMultiplier /= 1.40
 			},
 		})
 
