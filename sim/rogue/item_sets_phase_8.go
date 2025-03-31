@@ -72,29 +72,21 @@ func (rogue *Rogue) applyScarletEnclaveDamage4PBonus() {
 	// Combo! spell that adds the combo point for the set bonus
 	comboPointMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 1226869})
 
-	// Add a combo point for poison tick crit
-	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-		Name:           label,
-		ClassSpellMask: ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueInstantPoison,
-		Callback:       core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
-		Outcome:        core.OutcomeCrit,
-		ProcChance:     0.10,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboPointMetrics)
-		},
-	})
+	procClassMasks := ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueInstantPoison
 
-	// Add a combo point for autoattack crit
-	core.MakeProcTriggerAura(&rogue.Unit, core.ProcTrigger{
-		Name:       label,
-		Callback:   core.CallbackOnPeriodicDamageDealt | core.CallbackOnSpellHitDealt,
-		Outcome:    core.OutcomeCrit,
-		ProcChance: 0.10,
-		ProcMask:   core.ProcMaskMeleeWhiteHit,
-		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboPointMetrics)
+	core.MakePermanent(rogue.RegisterAura(core.Aura{
+		Label: label,
+		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.DidCrit() && spell.Matches(procClassMasks) && sim.Proc(0.10, "Combo! proc") {
+				rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboPointMetrics)
+			}
 		},
-	})
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.DidCrit() && (spell.Matches(procClassMasks) || spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && sim.Proc(0.10, "Combo! proc")) {
+				rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboPointMetrics)
+			}
+		},
+	}))
 }
 
 // 6P

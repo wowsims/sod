@@ -71,8 +71,7 @@ func (rogue *Rogue) improvedPoisonsBonusProcChance() float64 {
 func trackTotalUniquePoisons(aura *core.Aura, rogue *Rogue) {
 	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 		rogue.PoisonsActive[aura.Unit.UnitIndex]++
-	})
-	aura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 		rogue.PoisonsActive[aura.Unit.UnitIndex]--
 	})
 }
