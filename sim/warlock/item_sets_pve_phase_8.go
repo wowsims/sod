@@ -40,7 +40,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagIgnoreTargetModifiers,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
