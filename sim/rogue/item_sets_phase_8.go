@@ -106,7 +106,8 @@ func (rogue *Rogue) applyScarletEnclaveDamage6PBonus() {
 	}
 
 	core.MakePermanent(rogue.RegisterAura(core.Aura{
-		Label: label,
+		Label:    label,
+		ActionID: core.ActionID{SpellID: 1226871},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_RogueAmbush | ClassSpellMask_RogueEviscerate | ClassSpellMask_RogueCrimsonTempest | ClassSpellMask_RogueEnvenom,
