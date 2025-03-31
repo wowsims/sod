@@ -190,7 +190,15 @@ func (warlock *Warlock) applyScarletEnclaveTank4PBonus() {
 		return
 	}
 
-	healthMetrics := warlock.NewHealthMetrics(core.ActionID{SpellID: 1227207})
+	healingSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 1227207},
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellHealing,
+		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 0,
+	})
 
 	core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
 		Name:             label,
@@ -205,8 +213,8 @@ func (warlock *Warlock) applyScarletEnclaveTank4PBonus() {
 					break
 				}
 			}
+			healingSpell.CalcAndDealHealing(sim, healingSpell.Unit, result.Damage*multiplier, healingSpell.OutcomeHealing)
 
-			warlock.GainHealth(sim, result.Damage*multiplier, healthMetrics)
 		},
 	})
 }
