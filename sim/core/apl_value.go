@@ -51,7 +51,7 @@ func (impl DefaultAPLValueImpl) GetString(_ *Simulation) string {
 	panic("Unimplemented GetString")
 }
 
-func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
+func (rot *APLRotation) NewAPLValue(config *proto.APLValue) APLValue {
 	if config == nil {
 		return nil
 	}

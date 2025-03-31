@@ -122,7 +122,7 @@ func (rot *APLRotation) newAPLAction(config *proto.APLAction) *APLAction {
 	}
 
 	action := &APLAction{
-		condition: rot.coerceTo(rot.newAPLValue(config.Condition), proto.APLValueType_ValueTypeBool),
+		condition: rot.coerceTo(rot.NewAPLValue(config.Condition), proto.APLValueType_ValueTypeBool),
 		impl:      rot.newAPLActionImpl(config),
 	}
 

@@ -18,7 +18,7 @@ type APLActionWait struct {
 
 func (rot *APLRotation) newActionWait(config *proto.APLActionWait) APLActionImpl {
 	unit := rot.unit
-	durationVal := rot.coerceTo(rot.newAPLValue(config.Duration), proto.APLValueType_ValueTypeDuration)
+	durationVal := rot.coerceTo(rot.NewAPLValue(config.Duration), proto.APLValueType_ValueTypeDuration)
 	if durationVal == nil {
 		return nil
 	}
@@ -68,7 +68,7 @@ type APLActionWaitUntil struct {
 
 func (rot *APLRotation) newActionWaitUntil(config *proto.APLActionWaitUntil) APLActionImpl {
 	unit := rot.unit
-	conditionVal := rot.coerceTo(rot.newAPLValue(config.Condition), proto.APLValueType_ValueTypeBool)
+	conditionVal := rot.coerceTo(rot.NewAPLValue(config.Condition), proto.APLValueType_ValueTypeBool)
 	if conditionVal == nil {
 		return nil
 	}

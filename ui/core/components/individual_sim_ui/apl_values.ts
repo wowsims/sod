@@ -14,6 +14,7 @@ import {
 	APLValueAutoSwingTime_SwingType as AutoSwingType,
 	APLValueAutoTimeToNext,
 	APLValueAutoTimeToNext_AttackType as AutoAttackType,
+	APLValueCatEnergyAfterDuration,
 	APLValueCatExcessEnergy,
 	APLValueCatNewSavageRoarDuration,
 	APLValueChannelClipDelay,
@@ -979,6 +980,14 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 		newValue: APLValueCatNewSavageRoarDuration.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec === Spec.SpecFeralDruid,
 		fields: [],
+	}),
+	catEnergyAfterDuration: inputBuilder({
+		label: 'Energy After Duration',
+		submenu: ['Feral Druid'],
+		shortDescription: 'Returns the amount of energy after the given duration. This will include Staff of the Glade timing and the Scarlet 2 piece bonus.',
+		newValue: APLValueCatEnergyAfterDuration.create,
+		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec === Spec.SpecFeralDruid,
+		fields: [valueFieldConfig('condition')],
 	}),
 	warlockShouldRecastDrainSoul: inputBuilder({
 		label: 'Should Recast Drain Soul',

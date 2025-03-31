@@ -40,6 +40,8 @@ const (
 	AtieshDruid                      = 236401
 	ScarletRotbringer                = 240842
 	StaffOfTheGlade                  = 240849
+
+	StaffOfTheGladeEnergyMult = 1.5
 )
 
 func init() {
@@ -483,10 +485,10 @@ func init() {
 			ClassMask: ClassSpellMask_DruidFerociousBite,
 			Kind:      core.SpellMod_Custom,
 			ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-				druid.EnergyTickMultiplier *= 1.5
+				druid.EnergyTickMultiplier *= StaffOfTheGladeEnergyMult
 			},
 			RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-				druid.EnergyTickMultiplier /= 1.5
+				druid.EnergyTickMultiplier /= StaffOfTheGladeEnergyMult
 			},
 		})
 

@@ -196,7 +196,7 @@ func (rot *APLRotation) newValueAuraShouldRefresh(config *proto.APLValueAuraShou
 		return nil
 	}
 
-	maxOverlap := rot.coerceTo(rot.newAPLValue(config.MaxOverlap), proto.APLValueType_ValueTypeDuration)
+	maxOverlap := rot.coerceTo(rot.NewAPLValue(config.MaxOverlap), proto.APLValueType_ValueTypeDuration)
 	if maxOverlap == nil {
 		maxOverlap = rot.newValueConst(&proto.APLValueConst{Val: "0ms"})
 	}

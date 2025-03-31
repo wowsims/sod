@@ -270,7 +270,7 @@ type APLValueCompare struct {
 }
 
 func (rot *APLRotation) newValueCompare(config *proto.APLValueCompare) APLValue {
-	lhs, rhs := rot.coerceToSameType(rot.newAPLValue(config.Lhs), rot.newAPLValue(config.Rhs))
+	lhs, rhs := rot.coerceToSameType(rot.NewAPLValue(config.Lhs), rot.NewAPLValue(config.Rhs))
 
 	if lhs == nil || rhs == nil {
 		return nil
@@ -376,7 +376,7 @@ type APLValueMath struct {
 }
 
 func (rot *APLRotation) newValueMath(config *proto.APLValueMath) APLValue {
-	lhs, rhs := rot.newAPLValue(config.Lhs), rot.newAPLValue(config.Rhs)
+	lhs, rhs := rot.NewAPLValue(config.Lhs), rot.NewAPLValue(config.Rhs)
 	if config.Op == proto.APLValueMath_OpAdd || config.Op == proto.APLValueMath_OpSub {
 		lhs, rhs = rot.coerceToSameType(lhs, rhs)
 	}
@@ -478,7 +478,7 @@ type APLValueMax struct {
 
 func (rot *APLRotation) newValueMax(config *proto.APLValueMax) APLValue {
 	vals := MapSlice(config.Vals, func(val *proto.APLValue) APLValue {
-		return rot.newAPLValue(val)
+		return rot.NewAPLValue(val)
 	})
 	vals = rot.coerceAllToSameType(vals)
 	vals = FilterSlice(vals, func(val APLValue) bool { return val != nil })
@@ -529,7 +529,7 @@ type APLValueMin struct {
 
 func (rot *APLRotation) newValueMin(config *proto.APLValueMin) APLValue {
 	vals := MapSlice(config.Vals, func(val *proto.APLValue) APLValue {
-		return rot.newAPLValue(val)
+		return rot.NewAPLValue(val)
 	})
 	vals = rot.coerceAllToSameType(vals)
 	vals = FilterSlice(vals, func(val APLValue) bool { return val != nil })
@@ -580,7 +580,7 @@ type APLValueAnd struct {
 
 func (rot *APLRotation) newValueAnd(config *proto.APLValueAnd) APLValue {
 	vals := MapSlice(config.Vals, func(val *proto.APLValue) APLValue {
-		return rot.coerceTo(rot.newAPLValue(val), proto.APLValueType_ValueTypeBool)
+		return rot.coerceTo(rot.NewAPLValue(val), proto.APLValueType_ValueTypeBool)
 	})
 	vals = FilterSlice(vals, func(val APLValue) bool { return val != nil })
 	if len(vals) == 0 {
@@ -617,7 +617,7 @@ type APLValueOr struct {
 
 func (rot *APLRotation) newValueOr(config *proto.APLValueOr) APLValue {
 	vals := MapSlice(config.Vals, func(val *proto.APLValue) APLValue {
-		return rot.coerceTo(rot.newAPLValue(val), proto.APLValueType_ValueTypeBool)
+		return rot.coerceTo(rot.NewAPLValue(val), proto.APLValueType_ValueTypeBool)
 	})
 	vals = FilterSlice(vals, func(val APLValue) bool { return val != nil })
 	if len(vals) == 0 {
@@ -653,7 +653,7 @@ type APLValueNot struct {
 }
 
 func (rot *APLRotation) newValueNot(config *proto.APLValueNot) APLValue {
-	val := rot.coerceTo(rot.newAPLValue(config.Val), proto.APLValueType_ValueTypeBool)
+	val := rot.coerceTo(rot.NewAPLValue(config.Val), proto.APLValueType_ValueTypeBool)
 	if val == nil {
 		return nil
 	}
