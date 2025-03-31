@@ -130,9 +130,13 @@ type Rogue struct {
 	usingDeadly      bool
 	usingOccult      bool
 
-	instantPoisonProcChanceBonus float64
-	additivePoisonBonusChance    float64
-	cutthroatBonusChance         float64
+	instantPoisonProcChanceBonus                    float64
+	additivePoisonBonusChance                       float64
+	cutthroatBonusChance                            float64
+	rollingWithThePunchesBonusHealthStackMultiplier float64
+	rollingWithThePunchesMaxStacks                  int
+	bladeFlurryAttackSpeedBonus                     float64
+	bladeFlurryTargetCount                          int32
 
 	AdrenalineRushAura            *core.Aura
 	BladeDanceAura                *core.Aura
