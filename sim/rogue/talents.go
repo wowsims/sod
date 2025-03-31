@@ -411,15 +411,18 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 		},
 	})
 
+	rogue.bladeFlurryAttackSpeedBonus += 1.2
+	rogue.bladeFlurryTargetCount += 1
+
 	rogue.BladeFlurryAura = rogue.RegisterAura(core.Aura{
 		Label:    "Blade Flurry",
 		ActionID: core.ActionID{SpellID: 13877},
 		Duration: time.Second * 15,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, 1.2)
+			rogue.MultiplyMeleeSpeed(sim, rogue.bladeFlurryAttackSpeedBonus)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			rogue.MultiplyMeleeSpeed(sim, 1/1.2)
+			rogue.MultiplyMeleeSpeed(sim, 1/rogue.bladeFlurryAttackSpeedBonus)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			bfEligible := true
@@ -440,8 +443,15 @@ func (rogue *Rogue) registerBladeFlurryCD() {
 			// Undo armor reduction to get the raw damage value.
 			curDmg = result.Damage / result.ResistanceMultiplier
 
-			bfHit.Cast(sim, rogue.Env.NextTargetUnit(result.Target))
-			bfHit.SpellMetrics[result.Target.UnitIndex].Casts--
+			curTarget := rogue.Env.NextTargetUnit(result.Target)
+			for i := int32(0); i < min(rogue.bladeFlurryTargetCount, sim.GetNumTargets()-1); i++ {
+				if curTarget == result.Target {
+					break
+				}
+				bfHit.Cast(sim, curTarget)
+				bfHit.SpellMetrics[curTarget.UnitIndex].Casts--
+				curTarget = sim.Environment.NextTargetUnit(curTarget)
+			}
 		},
 	})
 

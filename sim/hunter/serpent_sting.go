@@ -93,9 +93,9 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 
 		CritDamageBonus: hunter.mortalShots(),
 
-		DamageMultiplier:            0.48,
-		ThreatMultiplier:            1,
-		BonusCoefficient:            spellCoeff,
+		DamageMultiplier: 0.48,
+		ThreatMultiplier: 1,
+		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// As of phase 5 the only time serpent sting scales with AP is using the Dragonstalker's Pursuit 6P - this AP scaling doesn't benefit from target AP modifiers
@@ -123,7 +123,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 }
 
 /*
- 	STRINGS OF FATE's SERPENT STING
+	STRINGS OF FATE's SERPENT STING
 */
 
 // https://www.wowhead.com/classic-ptr/spell=1232982/serpent-sting
@@ -131,7 +131,6 @@ func (hunter *Hunter) getSoFSerpentStingConfig(stacks int) core.SpellConfig {
 	spellId := [5]int32{0, 1232979, 1232980, 1232981, 1232982}[stacks]
 	numTicks := [5]int32{0, 7, 14, 21, 28}[stacks]
 	baseDamage := [5]float64{0, 777, 1554, 2331, 3108}[stacks] / float64(numTicks)
-	
 
 	return core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_HunterSoFSerpentSting,
@@ -170,7 +169,7 @@ func (hunter *Hunter) getSoFSerpentStingConfig(stacks int) core.SpellConfig {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			// Cannot miss
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-					spell.Dot(target).Apply(sim)
+				spell.Dot(target).Apply(sim)
 			})
 		},
 	}
