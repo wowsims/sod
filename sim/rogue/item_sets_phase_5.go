@@ -149,7 +149,7 @@ func (rogue *Rogue) applyT2Tank2PBonus() {
 	})
 }
 
-// Your Rolling with the Punches also grants you 20% increased Armor from items per stack.
+// Your Rolling with the Punches also grants you 20% increased Armor from items per stack (capped at 100%)
 func (rogue *Rogue) applyT2Tank4PBonus() {
 	if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
 		return
@@ -165,11 +165,11 @@ func (rogue *Rogue) applyT2Tank4PBonus() {
 	rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			oldOnStacksChange := rogue.RollingWithThePunchesProcAura.OnStacksChange
-			rogue.RollingWithThePunchesProcAura.OnStacksChange = func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				oldOnStacksChange(aura, sim, oldStacks, newStacks)
-				rogue.AddStatDynamic(sim, stats.Armor, float64(0.2*initarmor*float64(newStacks-oldStacks)))
-			}
+			rogue.RollingWithThePunchesProcAura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+				if newStacks <= 5 && oldStacks <= 5 {
+					rogue.AddStatDynamic(sim, stats.Armor, float64(0.2*initarmor*float64(newStacks-oldStacks)))
+				}
+			})
 		},
 	})
 }
