@@ -166,9 +166,7 @@ func (rogue *Rogue) applyT2Tank4PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.RollingWithThePunchesProcAura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				if newStacks <= 5 && oldStacks <= 5 {
-					rogue.AddStatDynamic(sim, stats.Armor, float64(0.2*initarmor*float64(newStacks-oldStacks)))
-				}
+				rogue.AddStatDynamic(sim, stats.Armor, float64(0.2*initarmor*float64(min(5, newStacks)-min(5, oldStacks))))
 			})
 		},
 	})
