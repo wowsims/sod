@@ -33,7 +33,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	level := RaptorStrikeLevel[rank]
 
 	hunter.RaptorStrikeMH = hunter.newRaptorStrikeHitSpell(rank, true)
-	if hasMeleeSpecialist {
+	if hasDualWieldSpec {
 		hunter.RaptorStrikeOH = hunter.newRaptorStrikeHitSpell(rank, false)
 	}
 
