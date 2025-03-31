@@ -24,7 +24,7 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 
 	healingSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: spellId}.WithTag(1),
-		SpellSchool: core.SpellSchoolPhysical,
+		SpellSchool: core.SpellSchoolShadow,
 		ProcMask:    core.ProcMaskSpellHealing,
 		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
 
