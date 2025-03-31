@@ -237,7 +237,7 @@ func (value *APLValueCatEnergyAfterDuration) GetFloat(sim *core.Simulation) floa
 				timeToNextTick := targetRake.NextTickAt() - sim.CurrentTime
 				if timeToNextTick < effectiveDuration {
 					ticks := 1 + math.Floor(float64(effectiveDuration-timeToNextTick)/float64(targetRake.TickPeriod()))
-					energy += ticks * 2
+					energy += ticks * druid.WaywatcherFerocity2pEnergy
 				}
 			}
 		}
