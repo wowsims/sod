@@ -482,6 +482,7 @@ export class ActionId {
 			// Warlock T2 6 Piece Needs Heals to trigger for the player
 			case 'Drain Life':
 			case 'Death Coil':
+			case 'Siphon Life':
 				if (this.tag === 1) name += ` (Heal)`;
 				break;
 			case 'Kill Shot':
