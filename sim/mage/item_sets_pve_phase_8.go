@@ -26,7 +26,7 @@ var ItemSetFireleafRegalia = core.NewItemSet(core.ItemSet{
 })
 
 // Living Bomb ticks every 1 second and when it explodes it spreads Living Bomb to all targets struck that don't have an active Living Bomb.
-// Glaciate now stacks to 8 and Spellfrost Bolt grants 2 stacks per hit.
+// Glaciate now stacks to 10 and Spellfrost Bolt grants 2 stacks per hit.
 func (mage *Mage) applyScarletEnclaveDamage2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Mage - Damage 2P Bonus"
 	if mage.HasAura(label) {
@@ -65,7 +65,7 @@ func (mage *Mage) applyScarletEnclaveDamage2PBonus() {
 					continue
 				}
 
-				aura.MaxStacks += 3
+				aura.MaxStacks += 5
 			}
 		}).ApplyOnSpellHitDealt(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(ClassSpellMask_MageSpellfrostBolt) && result.Landed() {
@@ -76,7 +76,7 @@ func (mage *Mage) applyScarletEnclaveDamage2PBonus() {
 	}
 }
 
-// Casting Deep Freeze increases the remaining duration of your Icy Veins spell by 8 sec.
+// Casting Deep Freeze increases the remaining duration of your Icy Veins spell by 10 sec.
 // Casting Pyroblast cancels 1 stack of the effect from your Balefire Bolt.
 func (mage *Mage) applyScarletEnclaveDamage4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Mage - Damage 4P Bonus"
@@ -99,13 +99,13 @@ func (mage *Mage) applyScarletEnclaveDamage4PBonus() {
 	if mage.HasRune(proto.MageRune_RuneHelmDeepFreeze) && mage.HasRune(proto.MageRune_RuneLegsIcyVeins) {
 		aura.ApplyOnCastComplete(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_MageDeepFreeze) && mage.IcyVeinsAura.IsActive() {
-				mage.IcyVeinsAura.UpdateExpires(sim, mage.IcyVeinsAura.ExpiresAt()+time.Second*8)
+				mage.IcyVeinsAura.UpdateExpires(sim, mage.IcyVeinsAura.ExpiresAt()+time.Second*10)
 			}
 		}, false)
 	}
 }
 
-// Reduces the cooldown on your Frozen Orb spell by 20 sec.
+// Reduces the cooldown on your Frozen Orb spell by 25 sec.
 // Each time Glaciate is consumed, the cooldown on your Deep Freeze is reduced by 1.0 sec per stack consumed.
 // Reduces the cooldown on Fire Blast by 5 sec and Fire Blast now refreshes the duration of your Living Bomb on the target.
 func (mage *Mage) applyScarletEnclaveDamage6PBonus() {
@@ -122,7 +122,7 @@ func (mage *Mage) applyScarletEnclaveDamage6PBonus() {
 		aura.AttachSpellMod(core.SpellModConfig{
 			Kind:      core.SpellMod_Cooldown_Flat,
 			ClassMask: ClassSpellMask_MageFrozenOrb,
-			TimeValue: -time.Second * 20,
+			TimeValue: -time.Second * 25,
 		})
 	}
 

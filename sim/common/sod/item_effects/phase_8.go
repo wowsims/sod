@@ -754,7 +754,7 @@ func init() {
 					Label: "Mirage",
 				},
 				NumberOfTicks: 10,
-				TickLength:    time.Second * 3,
+				TickLength:    core.GCDDefault,
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					explosionSpell.Cast(sim, target)
 				},
