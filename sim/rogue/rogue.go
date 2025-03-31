@@ -158,7 +158,7 @@ type Rogue struct {
 	atrophicPoisonDebuffAura  core.AuraArray
 	numbingPoisonDebuffAura   core.AuraArray
 
-	// working on p8 dps tier
+	// p8 DPS tier bonus tracking
 	BleedsActive  map[int32]int32
 	PoisonsActive map[int32]int32
 }

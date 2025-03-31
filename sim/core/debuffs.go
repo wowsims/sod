@@ -1,7 +1,6 @@
 package core
 
 import (
-	"fmt"
 	"math"
 	"strconv"
 	"time"
@@ -1058,10 +1057,6 @@ func SebaciousPoisonAura(target *Unit, improvedEA int32, playerLevel int32) *Aur
 		Priority: arpen,
 		OnGain: func(ee *ExclusiveEffect, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, -ee.Priority)
-
-			// p8 DPS tier bonus tracking
-			fmt.Println("Occult Poison activated")
-			//rogue.PoisonsActive--
 		},
 		OnExpire: func(ee *ExclusiveEffect, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, ee.Priority)
