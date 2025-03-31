@@ -22,7 +22,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 	manaCost := .20
 	maxStacks := 5
 	stackMultiplier := 0.20
-	stackModifier := int32(20)
+	stackModifier := int32(25)
 
 	damageMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
