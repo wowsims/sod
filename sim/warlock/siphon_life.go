@@ -18,11 +18,19 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 
 	spellCoeff := 0.05
 	actionID := core.ActionID{SpellID: spellId}
-	healthMetrics := warlock.NewHealthMetrics(actionID)
 
 	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
+	healingSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: spellId}.WithTag(1),
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellHealing,
+		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 0,
+	})
 	return core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: ClassSpellMask_WarlockSiphonLife,
@@ -77,8 +85,7 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 				// revert flag changes
 				dot.Spell.Flags ^= core.SpellFlagIgnoreTargetModifiers
 
-				health := result.Damage
-				warlock.GainHealth(sim, health, healthMetrics)
+				healingSpell.CalcAndDealHealing(sim, healingSpell.Unit, result.Damage, healingSpell.OutcomeHealing)
 			},
 		},
 
