@@ -33,7 +33,9 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 	level := RaptorStrikeLevel[rank]
 
 	hunter.RaptorStrikeMH = hunter.newRaptorStrikeHitSpell(rank, true)
-	hunter.RaptorStrikeOH = hunter.newRaptorStrikeHitSpell(rank, false)
+	if hasMeleeSpecialist {
+		hunter.RaptorStrikeOH = hunter.newRaptorStrikeHitSpell(rank, false)
+	}
 
 	spellConfig := core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_HunterRaptorStrike,
@@ -105,14 +107,14 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 	castType := proto.CastType_CastTypeMainHand
 	procMask := core.ProcMaskMeleeMHSpecial
 	damageMultiplier := 1.0
-	damageFunc := core.Ternary(hasMeleeSpecialist, hunter.MHNormalizedWeaponDamage, hunter.MHWeaponDamage)
+	damageFunc := hunter.MHWeaponDamage
 
 	if !isMH {
 		baseDamage /= 2
 		castType = proto.CastType_CastTypeOffHand
 		procMask = core.ProcMaskMeleeOHSpecial
 		damageMultiplier = hunter.AutoAttacks.OHConfig().DamageMultiplier
-		damageFunc = core.Ternary(hasMeleeSpecialist, hunter.OHNormalizedWeaponDamage, hunter.OHWeaponDamage)
+		damageFunc = hunter.OHNormalizedWeaponDamage // https://www.wowhead.com/classic-ptr/spell=409755/raptor-strike
 	}
 
 	return hunter.RegisterSpell(core.SpellConfig{
