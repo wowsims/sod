@@ -41,7 +41,7 @@ func (warrior *Warrior) applyTAQDamage2PBonus() {
 	})
 }
 
-// You deal 20% increased damage while any nearby enemy is afflicted with both your Rend and your Deep Wounds.
+// You deal 15% increased damage while any nearby enemy is afflicted with both your Rend and your Deep Wounds.
 func (warrior *Warrior) applyTAQDamage4PBonus() {
 	if warrior.Talents.DeepWounds == 0 {
 		return
@@ -56,7 +56,7 @@ func (warrior *Warrior) applyTAQDamage4PBonus() {
 		ActionID: core.ActionID{SpellID: 1214166},
 		Label:    "Bloodythirsty",
 		Duration: time.Second * 3,
-	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.DamageDealtMultiplier, 1.20)
+	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.DamageDealtMultiplier, 1.15)
 
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
