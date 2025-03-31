@@ -51,7 +51,7 @@ func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
 					}
 				}
 			}
-			 
+
 			hasWyvernStrike := hunter.WyvernStrike != nil && hunter.WyvernStrike.Dot(result.Target).IsActive()
 			damageMod.UpdateFloatValue(core.TernaryFloat64(hasSerpentSting || hasWyvernStrike, 1.20, 1.0))
 			damageMod.Activate()
