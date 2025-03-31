@@ -26,6 +26,12 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 			Aura: core.Aura{
 				Label: "Crimson Tempest",
 				Tag:   RogueBleedTag,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.BleedsActive[aura.Unit.UnitIndex]++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.BleedsActive[aura.Unit.UnitIndex]--
+				},
 			},
 			NumberOfTicks: 0,
 			TickLength:    time.Second * 2,
