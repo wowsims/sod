@@ -36,6 +36,11 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 		return
 	}
 
+	// bonusMultiplier := 0
+	// if shaman.HasSetBonus("The Earthshatterer's Storm", 2) {
+
+	// }
+
 	flameShockCopy := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1226972}.WithTag(1),
 		ClassSpellMask: ClassSpellMask_ShamanFlameShock,
@@ -53,7 +58,7 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 			TickLength:    0,
 		},
 
-		DamageMultiplier: 1,
+		DamageMultiplier: 1 + 1.00, // TODO: Multiplicative based on SEF & 2pT3 Ele
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},
@@ -63,6 +68,8 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			shaman.useLavaBurstCritScaling = true
+
 			if shaman.FlameShock[5] != nil {
 				flameShockSpells = append(flameShockSpells, shaman.FlameShock[5])
 			}
@@ -71,7 +78,7 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_ShamanLavaBurst) && result.Landed() {
+			if spell.Matches(ClassSpellMask_ShamanLightningBolt|ClassSpellMask_ShamanChainLightning|ClassSpellMask_ShamanLavaBurst) && result.Landed() {
 				for _, spell := range flameShockSpells {
 					if dot := spell.Dot(result.Target); dot.IsActive() {
 						flameShockCopy.Cast(sim, result.Target)
@@ -84,7 +91,8 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 	}))
 }
 
-// Increases the chance to trigger your Overload by an additional 10%. Additionally, each time Lightning Bolt or Chain Lightning damages a target, your next Lava Burst deals 10% increased damage, stacking up to 5 times.
+// Increases the chance to trigger your Overload by an additional 10%.
+// Additionally, each time Lightning Bolt or Chain Lightning damages a target, your next Lava Burst deals 10% increased damage, stacking up to 5 times.
 func (shaman *Shaman) applyScarletEnclaveElemental4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Shaman - Elemental 4P Bonus"
 	if shaman.HasAura(label) {
