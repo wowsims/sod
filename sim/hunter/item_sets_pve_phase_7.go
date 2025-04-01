@@ -134,11 +134,11 @@ var ItemSetCryptstalkerArmor = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			hunter.applyNaxxramasRanged2PBonus()
+			hunter.applyNaxxramasRanged4PBonus()
 		},
 		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			hunter.applyNaxxramasRanged4PBonus()
+			hunter.applyNaxxramasRanged2PBonus()
 		},
 		6: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
@@ -180,6 +180,10 @@ func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 		ClassMask: ClassSpellMask_HunterKillShot,
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: -time.Second * 3,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_HunterMultiShot,
+		Kind:      core.SpellMod_Cooldown_Flat,
+		TimeValue: -time.Second * 4,
 	})
 }
 

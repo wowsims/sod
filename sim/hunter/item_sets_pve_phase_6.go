@@ -105,7 +105,7 @@ func (hunter *Hunter) applyTAQRanged2PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_HunterKillShot,
-		IntValue:  30,
+		IntValue:  10,
 	}))
 }
 

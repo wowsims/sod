@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 var OtherItemIdsToFetch = []string{}
@@ -90,6 +91,9 @@ var ItemOverrides = []*proto.UIItem{
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82081, Name: "A Broken Ritual"}}},
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
 	}},
+
+	{Id: 240925, Stats: stats.Stats{stats.Agility: 10, stats.Stamina: 10}.ToFloatArray()},
+	{Id: 240837, Stats: stats.Stats{stats.Agility: 21, stats.MeleeCrit: 1, stats.SpellCrit: 1}.ToFloatArray(), WeaponDamageMin: 177, WeaponDamageMax: 330, WeaponSpeed: 3.6},
 }
 
 // Keep these sorted by item ID.

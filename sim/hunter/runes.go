@@ -13,7 +13,7 @@ func (hunter *Hunter) ApplyRunes() {
 	hunter.applyShoulderRuneEffect()
 
 	if hunter.HasRune(proto.HunterRune_RuneChestLoneWolf) && hunter.pet == nil {
-		hunter.PseudoStats.DamageDealtMultiplier *= 1.30
+		hunter.PseudoStats.DamageDealtMultiplier *= 1.35
 	}
 
 	if hunter.HasRune(proto.HunterRune_RuneChestBeastmastery) && hunter.pet != nil {
