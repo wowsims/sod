@@ -1,6 +1,8 @@
 package priest
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/stats"
 )
@@ -113,35 +115,23 @@ func (priest *Priest) applyT1Shadow6PBonus() {
 		return
 	}
 
-	damageMod := priest.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_PriestMindFlay,
-		IntValue:  50,
-	})
-
-	dotLengthMod := priest.AddDynamicMod(core.SpellModConfig{
-		Kind:       core.SpellMod_DotTickLength_Pct,
-		ClassMask:  ClassSpellMask_PriestMindFlay,
-		FloatValue: 0.50,
-	})
-
 	buffAura := priest.GetOrRegisterAura(core.Aura{
 		Label:    "Melting Faces",
 		ActionID: core.ActionID{SpellID: 456549},
 		Duration: core.NeverExpires,
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Activate()
-			dotLengthMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Deactivate()
-			dotLengthMod.Deactivate()
-		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_PriestMindFlay) {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PriestMindFlay,
+		IntValue:  25,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DotTickLength_Flat,
+		ClassMask: ClassSpellMask_PriestMindFlay,
+		TimeValue: -time.Millisecond * 505,
 	})
 
 	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
