@@ -26,8 +26,8 @@ var ItemSetDuskwraithArmor = core.NewItemSet(core.ItemSet{
 })
 
 // 2P
-// While Just a Flesh Wound is not active, your Backstab, Sinister Strike, Saber Slash, and Mutilate deal 10% increased damage per your active Poison or Bleed effect
-// afflicting the target, up to a maximum increase of 30%
+// While Just a Flesh Wound is not active, your Backstab, Sinister Strike, Saber Slash, and Mutilate deal 20% increased damage per your active Poison or Bleed effect
+// afflicting the target, up to a maximum increase of 60%
 func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 	if rogue.HasRune(proto.RogueRune_RuneJustAFleshWound) {
 		return
@@ -54,8 +54,8 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			totalBleedsAndPoisons := rogue.PoisonsActive[rogue.CurrentTarget.UnitIndex] + rogue.BleedsActive[rogue.CurrentTarget.UnitIndex]
 
-			// Only apply the damage mod up to 3 times for the 30% bonus maximum
-			damageMod.UpdateFloatValue(1 + 0.10*float64(min(3, totalBleedsAndPoisons)))
+			// Only apply the damage mod up to 3 times for the 60% bonus maximum
+			damageMod.UpdateFloatValue(1 + 0.20*float64(min(3, totalBleedsAndPoisons)))
 			damageMod.Activate()
 		},
 	})
@@ -103,7 +103,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage6PBonus() {
 		ActionID: core.ActionID{SpellID: 1226871},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_RogueAmbush | ClassSpellMask_RogueEviscerate | ClassSpellMask_RogueCrimsonTempest | ClassSpellMask_RogueEnvenom,
+		ClassMask: ClassSpellMask_RogueAmbush | ClassSpellMask_RogueEviscerate | ClassSpellMask_RogueCrimsonTempestHit | ClassSpellMask_RogueEnvenom,
 		IntValue:  50,
 	}))
 }
