@@ -151,15 +151,15 @@ func (hunter *Hunter) applyScarletEnclaveRanged2PBonus() {
 	})
 }
 
-// Your ranged critical strikes increase your Attack Power by 30% for 10 sec.
+// Your ranged critical strikes increase your Attack Power by 25% for 10 sec.
 func (hunter *Hunter) applyScarletEnclaveRanged4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Hunter - Ranged 4P Bonus"
 	if hunter.HasAura(label) {
 		return
 	}
 
-	apBonus := hunter.NewDynamicMultiplyStat(stats.AttackPower, 1.30)
-	apRangedBonus := hunter.NewDynamicMultiplyStat(stats.RangedAttackPower, 1.30)
+	apBonus := hunter.NewDynamicMultiplyStat(stats.AttackPower, 1.25)
+	apRangedBonus := hunter.NewDynamicMultiplyStat(stats.RangedAttackPower, 1.25)
 
 	procAura := hunter.GetOrRegisterAura(core.Aura{
 		Label:    "Wicked Shot",
@@ -194,7 +194,7 @@ func (hunter *Hunter) applyScarletEnclaveRanged6PBonus() {
 		Label:     "Trick Shots",
 		ActionID:  core.ActionID{SpellID: 1233451},
 		Duration:  time.Minute * 5,
-		MaxStacks: 2,
+		MaxStacks: 4,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			damMod.Activate()
 		},
@@ -202,13 +202,16 @@ func (hunter *Hunter) applyScarletEnclaveRanged6PBonus() {
 			damMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			damMod.UpdateIntValue(int64(100 * newStacks))
+			damMod.UpdateIntValue(int64(50 * newStacks))
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_HunterMultiShot) {
 				aura.Deactivate(sim)
 			}
 		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterMultiShot,
 	})
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
@@ -217,10 +220,10 @@ func (hunter *Hunter) applyScarletEnclaveRanged6PBonus() {
 			hunter.MultiShotBonusTargets = 2
 		},
 	})).AttachProcTrigger(core.ProcTrigger{
-		Name:             label,
-		ClassSpellMask:   ClassSpellMask_HunterChimeraShot | ClassSpellMask_HunterKillShot,
-		Callback:         core.CallbackOnApplyEffects,
-		CanProcFromProcs: true,
+		Name:           label,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: ClassSpellMask_HunterChimeraShot | ClassSpellMask_HunterChimeraSerpent | ClassSpellMask_HunterKillShot,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			multishotAura.Activate(sim)
 			multishotAura.AddStack(sim)

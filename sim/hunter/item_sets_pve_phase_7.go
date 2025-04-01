@@ -134,11 +134,11 @@ var ItemSetCryptstalkerArmor = core.NewItemSet(core.ItemSet{
 	Bonuses: map[int32]core.ApplyEffect{
 		2: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			hunter.applyNaxxramasRanged4PBonus()
+			hunter.applyNaxxramasRanged2PBonus()
 		},
 		4: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
-			hunter.applyNaxxramasRanged2PBonus()
+			hunter.applyNaxxramasRanged4PBonus()
 		},
 		6: func(agent core.Agent) {
 			hunter := agent.(HunterAgent).GetHunter()
@@ -147,25 +147,9 @@ var ItemSetCryptstalkerArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Serpent Sting deals 20% more damage.
+// Reduces the cooldown on your Chimera Shot, Explosive Shot, and Aimed Shot abilities by 1.5 sec and reduces the cooldown on your Kill Shot ability by 3sec and Multishot by 4sec.
 func (hunter *Hunter) applyNaxxramasRanged2PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Ranged 2P Bonus"
-	if hunter.HasAura(label) {
-		return
-	}
-
-	core.MakePermanent(hunter.RegisterAura(core.Aura{
-		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterSoFSerpentSting | ClassSpellMask_HunterChimeraSerpent,
-		IntValue:  20,
-	}))
-}
-
-// Reduces the cooldown on your Chimera Shot, Explosive Shot, and Aimed Shot abilities by 1.5 sec and reduces the cooldown on your Kill Shot ability by 3sec.
-func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
-	label := "S03 - Item - Naxxramas - Hunter - Ranged 4P Bonus"
 	if hunter.HasAura(label) {
 		return
 	}
@@ -185,6 +169,22 @@ func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
 		Kind:      core.SpellMod_Cooldown_Flat,
 		TimeValue: -time.Second * 4,
 	})
+}
+
+// Your Serpent Sting deals 20% more damage.
+func (hunter *Hunter) applyNaxxramasRanged4PBonus() {
+	label := "S03 - Item - Naxxramas - Hunter - Ranged 4P Bonus"
+	if hunter.HasAura(label) {
+		return
+	}
+
+	core.MakePermanent(hunter.RegisterAura(core.Aura{
+		Label: label,
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterSoFSerpentSting | ClassSpellMask_HunterChimeraSerpent,
+		IntValue:  20,
+	}))
 }
 
 // You gain 2% increased damage and critical damage done to Undead for 30 sec each time you hit an Undead enemy with a ranged attack, stacking up to 7 times.

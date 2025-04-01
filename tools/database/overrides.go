@@ -92,6 +92,7 @@ var ItemOverrides = []*proto.UIItem{
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
 	}},
 
+	// TODO: Remove once we update tooltips
 	{Id: 240925, Stats: stats.Stats{stats.Agility: 10, stats.Stamina: 10}.ToFloatArray()},
 	{Id: 240837, Stats: stats.Stats{stats.Agility: 21, stats.MeleeCrit: 1, stats.SpellCrit: 1}.ToFloatArray(), WeaponDamageMin: 177, WeaponDamageMax: 330, WeaponSpeed: 3.6},
 }
