@@ -344,6 +344,9 @@ func (druid *Druid) applyScarletEnclaveGuardian4PBonus() {
 
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			druid.BerserkAura.Duration += time.Second * 15
+		},
 	}))
 }
 
@@ -354,9 +357,26 @@ func (druid *Druid) applyScarletEnclaveGuardian6PBonus() {
 		return
 	}
 
-	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: label,
-	}))
+	savageFlurryAura := druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 1226127},
+		Label:    "Savage Flurry",
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MultiplyAttackSpeed(sim, 1.3)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MultiplyAttackSpeed(sim, 1.0/1.3)
+		},
+	})
+
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:     label,
+		Callback: core.CallbackOnSpellHitDealt,
+		Outcome:  core.OutcomeCrit,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			savageFlurryAura.Activate(sim)
+		},
+	})
 }
 
 var ItemSetWaywatcherRaiment = core.NewItemSet(core.ItemSet{
