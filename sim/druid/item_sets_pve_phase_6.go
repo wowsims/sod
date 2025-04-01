@@ -78,8 +78,8 @@ func (druid *Druid) applyTAQFeral2PBonus() {
 		return
 	}
 
-	if druid.PseudoStats.InFrontOfTarget {
-		damageMod := druid.AddDynamicMod(core.SpellModConfig{
+	if !druid.PseudoStats.InFrontOfTarget {
+		druid.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_DamageDone_Pct,
 			ClassMask:  ClassSpellMask_DruidShred,
 			FloatValue: 1.05,
