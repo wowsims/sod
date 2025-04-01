@@ -70,7 +70,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage4PBonus() {
 	}
 
 	// Combo! spell that adds the combo point for the set bonus
-	comboPointMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 1226869})
+	comboPointMetrics := rogue.NewComboPointMetrics(core.ActionID{SpellID: 1226868})
 
 	procClassMasks := ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueInstantPoison
 
@@ -83,7 +83,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage4PBonus() {
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() && (spell.Matches(procClassMasks) || spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit) && sim.Proc(0.10, "Combo! proc")) {
+			if result.DidCrit() && (spell.Matches(procClassMasks) || spell.ProcMask.Matches(core.ProcMaskMeleeWhiteHit)) && sim.Proc(0.10, "Combo! proc") {
 				rogue.AddComboPoints(sim, 1, rogue.CurrentTarget, comboPointMetrics)
 			}
 		},

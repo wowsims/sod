@@ -172,7 +172,7 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 	readonly player: Player<SpecType>;
 	readonly individualConfig: IndividualSimUIConfig<SpecType>;
 	private readonly statWeightActionSettings: StatWeightActionSettings;
-	
+
 	private raidSimResultsManager: RaidSimResultsManager | null;
 
 	prevEpIterations: number;
@@ -193,8 +193,13 @@ export abstract class IndividualSimUI<SpecType extends Spec> extends SimUI {
 			simStatus: simLaunchStatuses[player.spec],
 			noticeText: (
 				<span>
-					We've begun working on Phase 8 changes! Because of this, some rune or other spell behavior may not be consistent with live servers due to
-					PTR changes.
+					Find optimal build recommendations for Phase 8 on our{' '}
+					<a
+						href="https://docs.google.com/spreadsheets/d/e/2PACX-1vSWYkkIsvWV4N09okuB2vTi2yEAYJD-QbOUli9kQgK1xzcLbA6EaLHwxDVfvwwPHUpYdSgLQ6wrSEAL/pubhtml"
+						target="_blank">
+						community spreadsheet
+					</a>
+					!
 				</span>
 			),
 		});
