@@ -26,7 +26,7 @@ var ItemSetDawnstalkerProwess = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Strikes and Mongoose Bite deal 20% increased damage to targets afflicted with your Serpent Sting or Wyvern Strike.
+// Your Strikes and Mongoose Bite deal 25% increased damage to targets afflicted with your Serpent Sting or Wyvern Strike.
 func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Hunter - Melee 2P Bonus"
 	if hunter.HasAura(label) {
@@ -53,20 +53,20 @@ func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
 			}
 
 			hasWyvernStrike := hunter.WyvernStrike != nil && hunter.WyvernStrike.Dot(result.Target).IsActive()
-			damageMod.UpdateFloatValue(core.TernaryFloat64(hasSerpentSting || hasWyvernStrike, 1.20, 1.0))
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hasSerpentSting || hasWyvernStrike, 1.25, 1.0))
 			damageMod.Activate()
 		},
 	})
 }
 
-// Your melee critical strikes increase your attack speed by 20% for 10 sec.
+// Your melee critical strikes increase your attack speed by 30% for 10 sec.
 func (hunter *Hunter) applyScarletEnclaveMelee4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Hunter - Melee 4P Bonus"
 	if hunter.HasAura(label) {
 		return
 	}
 
-	attackSpeed := 1.20
+	attackSpeed := 1.30
 
 	procAura := core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label:    "Wicked Fast",
@@ -105,7 +105,7 @@ func (hunter *Hunter) applyScarletEnclaveMelee6PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.BonusRaptorFuryDamageMultiplier = 0.10
+			hunter.BonusRaptorFuryDamageMultiplier = 0.15
 		},
 	}))
 }

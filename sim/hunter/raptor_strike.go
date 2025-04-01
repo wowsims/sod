@@ -70,7 +70,7 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 				hunter.curQueueAura.Deactivate(sim)
 			}
 
-			if hasMeleeSpecialist && sim.Proc(0.3, "Raptor Strike Reset") {
+			if hasMeleeSpecialist && sim.Proc(MeleeSpecialistProcChance, "Raptor Strike Reset") {
 				spell.CD.Reset()
 				hunter.MongooseBite.CD.Reset()
 			}
@@ -114,7 +114,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 		castType = proto.CastType_CastTypeOffHand
 		procMask = core.ProcMaskMeleeOHSpecial
 		damageMultiplier = hunter.AutoAttacks.OHConfig().DamageMultiplier
-		damageFunc = hunter.OHNormalizedWeaponDamage // https://www.wowhead.com/classic-ptr/spell=409755/raptor-strike
+		damageFunc = hunter.OHWeaponDamage // https://www.wowhead.com/classic-ptr/spell=409755/raptor-strike
 	}
 
 	return hunter.RegisterSpell(core.SpellConfig{
