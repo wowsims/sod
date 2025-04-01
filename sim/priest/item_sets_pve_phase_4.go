@@ -131,7 +131,7 @@ func (priest *Priest) applyT1Shadow6PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DotTickLength_Flat,
 		ClassMask: ClassSpellMask_PriestMindFlay,
-		TimeValue: -time.Millisecond * 505,
+		TimeValue: -time.Millisecond * 505, // The extra 5 ms is to account for an in-game bug with channel clipping and was added in Phase 8
 	})
 
 	core.MakeProcTriggerAura(&priest.Unit, core.ProcTrigger{
