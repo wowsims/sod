@@ -25,12 +25,8 @@ var ItemSetTheSoulcrushersStorm = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// When your Lava Burst strikes a target afflicted with your Flame Shock Rank 5 or Rank 6, it also deals one pulse of Flame Shock's damage.
+// When your Lightning Bolt, Lava Burst, or Chain Lightning strike a target afflicted with your Flame Shock Rank 5 or Rank 6, they also deal one pulse of Flame Shock's damage.
 func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
-	if !shaman.HasRune(proto.ShamanRune_RuneHandsLavaBurst) {
-		return
-	}
-
 	label := "S03 - Item - Scarlet Enclave - Shaman - Elemental 2P Bonus"
 	if shaman.HasAura(label) {
 		return
