@@ -85,10 +85,6 @@ func (warrior *Warrior) applyScarletEnclaveDamage4PBonus() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			buffAura.Activate(sim)
 			buffAura.AddStack(sim)
-
-			// if warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-			// 	buffAura.AddStack(sim)
-			// }
 		},
 	})
 }
