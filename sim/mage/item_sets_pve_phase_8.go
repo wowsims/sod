@@ -77,7 +77,7 @@ func (mage *Mage) applyScarletEnclaveDamage2PBonus() {
 }
 
 // Casting Deep Freeze increases the remaining duration of your Icy Veins spell by 10 sec.
-// Casting Pyroblast cancels 1 stack of the effect from your Balefire Bolt.
+// Casting Pyroblast cancels 2 stack of the effect from your Balefire Bolt.
 func (mage *Mage) applyScarletEnclaveDamage4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Mage - Damage 4P Bonus"
 	if mage.HasAura(label) {
