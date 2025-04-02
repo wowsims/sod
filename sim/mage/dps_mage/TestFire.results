@@ -1422,29 +1422,29 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase7-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 2448.99616
-  tps: 1755.73024
+  dps: 2412.47957
+  tps: 1730.16862
  }
 }
 dps_results: {
  key: "TestFire-Phase7-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 2226.91837
-  tps: 1599.48073
+  dps: 2193.83337
+  tps: 1576.32123
  }
 }
 dps_results: {
  key: "TestFire-Phase7-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 2436.28542
-  tps: 1746.74369
+  dps: 2399.9469
+  tps: 1721.30673
  }
 }
 dps_results: {
  key: "TestFire-Phase7-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 2222.74931
-  tps: 1596.61152
+  dps: 2189.80319
+  tps: 1573.54924
  }
 }
 dps_results: {
@@ -1457,15 +1457,15 @@ dps_results: {
 dps_results: {
  key: "TestFire-Phase7-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 2448.99616
-  tps: 1755.73024
+  dps: 2412.47957
+  tps: 1730.16862
  }
 }
 dps_results: {
  key: "TestFire-Phase7-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 2226.91837
-  tps: 1599.48073
+  dps: 2193.83337
+  tps: 1576.32123
  }
 }
 dps_results: {
