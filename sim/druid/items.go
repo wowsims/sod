@@ -468,6 +468,10 @@ func init() {
 	// Equip: Remaining in Cat Form for 5 seconds, causes your Energy Regeneration to increase by 25%, and the damage of your Ferocious Bite to increase by 25%.
 	// Equip: You may cast Rebirth and Innervate while in Cat Form.
 	core.NewItemEffect(StaffOfTheGlade, func(agent core.Agent) {
+		if agent.GetCharacter().Class != proto.Class_ClassDruid {
+			return
+		}
+
 		druid := agent.(DruidAgent).GetDruid()
 
 		druid.AddStaticMod(core.SpellModConfig{
