@@ -169,6 +169,31 @@ func (value *APLValueCurrentEnergy) String() string {
 	return "Current Energy"
 }
 
+type APLValueMaxEnergy struct {
+	DefaultAPLValueImpl
+	unit *Unit
+}
+
+func (rot *APLRotation) newValueMaxEnergy(_ *proto.APLValueMaxEnergy) APLValue {
+	unit := rot.unit
+	if !unit.HasEnergyBar() {
+		rot.ValidationWarning("%s does not use Energy", unit.Label)
+		return nil
+	}
+	return &APLValueMaxEnergy{
+		unit: unit,
+	}
+}
+func (value *APLValueMaxEnergy) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func (value *APLValueMaxEnergy) GetFloat(sim *Simulation) float64 {
+	return value.unit.MaxEnergy()
+}
+func (value *APLValueMaxEnergy) String() string {
+	return "Max Energy"
+}
+
 type APLValueCurrentComboPoints struct {
 	DefaultAPLValueImpl
 	unit *Unit

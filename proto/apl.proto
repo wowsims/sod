@@ -83,7 +83,7 @@ message APLAction {
     }
 }
 
-// NextIndex: 77
+// NextIndex: 78
 message APLValue {
     oneof value {
         // Operators
@@ -112,6 +112,7 @@ message APLValue {
         APLValueCurrentManaPercent current_mana_percent = 12;
         APLValueCurrentRage current_rage = 14;
         APLValueCurrentEnergy current_energy = 15;
+        APLValueMaxEnergy max_energy = 77;
         APLValueCurrentComboPoints current_combo_points = 16;
         APLValueTimeToEnergyTick time_to_energy_tick = 66;
         APLValueEnergyThreshold energy_threshold = 73;
@@ -402,6 +403,7 @@ message APLValueCurrentManaPercent {
 }
 message APLValueCurrentRage {}
 message APLValueCurrentEnergy {}
+message APLValueMaxEnergy {}
 message APLValueCurrentComboPoints {}
 message APLValueTimeToEnergyTick {}
 message APLValueEnergyThreshold {
