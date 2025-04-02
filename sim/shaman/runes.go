@@ -304,7 +304,6 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 
 	procSpellId := int32(436365)
 
-	// Two-handed mastery gives +15% AP, +30% attack speed, and +10% spell hit
 	attackSpeedMultiplier := 1.35
 	apMultiplier := 1.10
 	spellHitIncrease := core.SpellHitRatingPerHitChance * 10.0
