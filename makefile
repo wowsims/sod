@@ -168,7 +168,7 @@ endif
 rundevserver: air devserver
 ifeq ($(WATCH), 1)
 	npx vite build -m development --watch &
-	ulimit -n 10240 && air -tmp_dir "/tmp" -build.include_ext "go,proto" -build.args_bin "--usefs=true --launch=false" -build.bin "./wowsimsod" -build.cmd "make devserver" -build.exclude_dir "assets,dist,node_modules,ui,tools"
+	ulimit -n 10240 && air -tmp_dir "/tmp" -build.include_ext "go,proto" -build.args_bin "--usefs=true --launch=false" -build.bin "./wowsimsod" -build.cmd "make devserver" -build.exclude_dir "assets,dist,node_modules,ui,tools,bin,lib"
 else
 	./wowsimsod --usefs=true --launch=false --host=":3333"
 endif
