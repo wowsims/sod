@@ -371,7 +371,7 @@ func (druid *Druid) applyScarletEnclaveGuardian6PBonus() {
 
 	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
 		Name:     label,
-		Callback: core.CallbackOnSpellHitDealt,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
 		Outcome:  core.OutcomeCrit,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			savageFlurryAura.Activate(sim)
