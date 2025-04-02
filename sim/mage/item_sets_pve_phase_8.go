@@ -91,7 +91,11 @@ func (mage *Mage) applyScarletEnclaveDamage4PBonus() {
 	if mage.HasRune(proto.MageRune_RuneBracersBalefireBolt) && mage.Talents.Pyroblast {
 		aura.ApplyOnCastComplete(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_MagePyroblast) && mage.BalefireAura.IsActive() && mage.BalefireAura.GetStacks() > 0 {
-				mage.BalefireAura.RemoveStacks(sim, 2)
+				// These have to be separate
+				mage.BalefireAura.RemoveStack(sim)
+				if mage.BalefireAura.GetStacks() == 0 {
+					mage.BalefireAura.Deactivate(sim)
+				}
 			}
 		}, false)
 	}

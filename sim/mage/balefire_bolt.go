@@ -30,7 +30,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 	})
 
 	statDeps := make([]*stats.StatDependency, maxStacks+1) // 5 stacks + zero conditions
-	for i := 1; i < maxStacks+1; i++ {
+	for i := 0; i < maxStacks+1; i++ {
 		statDeps[i] = mage.NewDynamicMultiplyStat(stats.Spirit, 1.0-stackMultiplier*float64(i))
 	}
 
@@ -41,17 +41,12 @@ func (mage *Mage) registerBalefireBoltSpell() {
 		MaxStacks: int32(maxStacks),
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 			damageMod.UpdateIntValue(int64(stackModifier * newStacks))
-
-			if oldStacks != 0 {
-				aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
-			}
-			if newStacks != 0 {
-				aura.Unit.EnableDynamicStatDep(sim, statDeps[newStacks])
-			}
-
-			if newStacks == aura.MaxStacks {
+			aura.Unit.DisableDynamicStatDep(sim, statDeps[oldStacks])
+			aura.Unit.EnableDynamicStatDep(sim, statDeps[newStacks])
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_MageBalefireBolt) && aura.GetStacks() == 5 {
 				mage.RemoveHealth(sim, mage.CurrentHealth(), mage.DamageTakenHealthMetrics)
-
 				if sim.Log != nil {
 					mage.Log(sim, "YOU DIED")
 				}
