@@ -263,7 +263,7 @@ type APLActionMove struct {
 func (rot *APLRotation) newActionMove(config *proto.APLActionMove) APLActionImpl {
 	return &APLActionMove{
 		unit:      rot.unit,
-		moveRange: rot.newAPLValue(config.RangeFromTarget),
+		moveRange: rot.NewAPLValue(config.RangeFromTarget),
 	}
 }
 func (action *APLActionMove) IsReady(sim *Simulation) bool {

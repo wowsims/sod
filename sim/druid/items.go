@@ -40,6 +40,8 @@ const (
 	AtieshDruid                      = 236401
 	ScarletRotbringer                = 240842
 	StaffOfTheGlade                  = 240849
+
+	StaffOfTheGladeEnergyMult = 1.25
 )
 
 func init() {
@@ -466,6 +468,10 @@ func init() {
 	// Equip: Remaining in Cat Form for 5 seconds, causes your Energy Regeneration to increase by 25%, and the damage of your Ferocious Bite to increase by 25%.
 	// Equip: You may cast Rebirth and Innervate while in Cat Form.
 	core.NewItemEffect(StaffOfTheGlade, func(agent core.Agent) {
+		if agent.GetCharacter().Class != proto.Class_ClassDruid {
+			return
+		}
+
 		druid := agent.(DruidAgent).GetDruid()
 
 		druid.AddStaticMod(core.SpellModConfig{
@@ -485,10 +491,10 @@ func init() {
 			ClassMask: ClassSpellMask_DruidFerociousBite,
 			Kind:      core.SpellMod_Custom,
 			ApplyCustom: func(mod *core.SpellMod, spell *core.Spell) {
-				druid.EnergyTickMultiplier *= 1.25
+				druid.EnergyTickMultiplier *= StaffOfTheGladeEnergyMult
 			},
 			RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
-				druid.EnergyTickMultiplier /= 1.25
+				druid.EnergyTickMultiplier /= StaffOfTheGladeEnergyMult
 			},
 		})
 

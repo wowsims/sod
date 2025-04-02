@@ -87,7 +87,7 @@ func (unit *Unit) newAPLRotation(config *proto.APLRotation) *APLRotation {
 		prepullIdx := i // Save to local variable for correct lambda capture behavior
 		rotation.doAndRecordWarnings(&rotation.prepullWarnings[prepullIdx], true, func() {
 			if !prepullItem.Hide {
-				doAtVal := rotation.newAPLValue(prepullItem.DoAtValue)
+				doAtVal := rotation.NewAPLValue(prepullItem.DoAtValue)
 				if doAtVal != nil {
 					doAt := doAtVal.GetDuration(nil)
 					if doAt > 0 {

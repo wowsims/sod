@@ -46,7 +46,7 @@ type APLActionChannelSpell struct {
 }
 
 func (rot *APLRotation) newActionChannelSpell(config *proto.APLActionChannelSpell) APLActionImpl {
-	interruptIf := rot.coerceTo(rot.newAPLValue(config.InterruptIf), proto.APLValueType_ValueTypeBool)
+	interruptIf := rot.coerceTo(rot.NewAPLValue(config.InterruptIf), proto.APLValueType_ValueTypeBool)
 	instantInterrupt := config.InstantInterrupt
 	if interruptIf == nil && !instantInterrupt {
 		return rot.newActionCastSpell(&proto.APLActionCastSpell{
@@ -116,7 +116,7 @@ func (rot *APLRotation) newActionMultidot(config *proto.APLActionMultidot) APLAc
 		return nil
 	}
 
-	maxOverlap := rot.coerceTo(rot.newAPLValue(config.MaxOverlap), proto.APLValueType_ValueTypeDuration)
+	maxOverlap := rot.coerceTo(rot.NewAPLValue(config.MaxOverlap), proto.APLValueType_ValueTypeDuration)
 	if maxOverlap == nil {
 		maxOverlap = rot.newValueConst(&proto.APLValueConst{Val: "0ms"})
 	}
@@ -191,7 +191,7 @@ func (rot *APLRotation) newActionMultishield(config *proto.APLActionMultishield)
 		return nil
 	}
 
-	maxOverlap := rot.coerceTo(rot.newAPLValue(config.MaxOverlap), proto.APLValueType_ValueTypeDuration)
+	maxOverlap := rot.coerceTo(rot.NewAPLValue(config.MaxOverlap), proto.APLValueType_ValueTypeDuration)
 	if maxOverlap == nil {
 		maxOverlap = rot.newValueConst(&proto.APLValueConst{Val: "0ms"})
 	}

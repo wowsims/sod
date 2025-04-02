@@ -1,10 +1,12 @@
 package feral
 
 import (
+	"math"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/druid"
 )
 
 func (cat *FeralDruid) NewAPLValue(rot *core.APLRotation, config *proto.APLValue) core.APLValue {
@@ -13,6 +15,8 @@ func (cat *FeralDruid) NewAPLValue(rot *core.APLRotation, config *proto.APLValue
 		return cat.newValueCatExcessEnergy(rot, config.GetCatExcessEnergy())
 	case *proto.APLValue_CatNewSavageRoarDuration:
 		return cat.newValueCatNewSavageRoarDuration(rot, config.GetCatNewSavageRoarDuration())
+	case *proto.APLValue_CatEnergyAfterDuration:
+		return cat.newValueCatEnergyAfterDuration(rot, config.GetCatEnergyAfterDuration())
 	default:
 		return nil
 	}
@@ -152,4 +156,92 @@ func (action *APLActionCatOptimalRotationAction) Reset(*core.Simulation) {
 
 func (action *APLActionCatOptimalRotationAction) String() string {
 	return "Execute Optimal Cat Action()"
+}
+
+type APLValueCatEnergyAfterDuration struct {
+	core.DefaultAPLValueImpl
+	cat                  *FeralDruid
+	condition            core.APLValue
+	staffOfTheGladeTimer *core.Aura
+	staffOfTheGladeBuff  *core.Aura
+	has2PieceScarletTier bool
+}
+
+func (cat *FeralDruid) newValueCatEnergyAfterDuration(rot *core.APLRotation, config *proto.APLValueCatEnergyAfterDuration) core.APLValue {
+	conditionVal := rot.NewAPLValue(config.Condition)
+	if conditionVal == nil {
+		return nil
+	}
+
+	if conditionVal.Type() != proto.APLValueType_ValueTypeDuration {
+		rot.ValidationWarning("Value must be a duration type!")
+		return nil
+	}
+
+	return &APLValueCatEnergyAfterDuration{
+		cat:                  cat,
+		condition:            conditionVal,
+		staffOfTheGladeTimer: cat.GetAuraByID(core.ActionID{SpellID: 1231380}),
+		staffOfTheGladeBuff:  cat.GetAuraByID(core.ActionID{SpellID: 1231381}),
+		has2PieceScarletTier: cat.HasSetBonus(druid.ItemSetWaywatcherFerocity, 2),
+	}
+}
+func (value *APLValueCatEnergyAfterDuration) Type() proto.APLValueType {
+	return proto.APLValueType_ValueTypeFloat
+}
+func getDotTicksOverDuration(spell *core.Spell, sim *core.Simulation, duration time.Duration) float64 {
+	ticks := 0.0
+	for _, target := range sim.Encounter.Targets {
+		dot := spell.Dot(&target.Unit)
+		if dot.IsActive() {
+			effectiveDuration := min(duration, dot.RemainingDuration(sim))
+			timeToNextTick := dot.NextTickAt() - sim.CurrentTime
+			if timeToNextTick <= effectiveDuration {
+				ticks += 1 + math.Floor(float64(effectiveDuration-timeToNextTick)/float64(dot.TickPeriod()))
+			}
+		}
+	}
+	return ticks
+}
+func (value *APLValueCatEnergyAfterDuration) GetFloat(sim *core.Simulation) float64 {
+	duration := value.condition.GetDuration(sim)
+	cat := value.cat
+	energy := cat.CurrentEnergy()
+
+	if duration <= 0 {
+		return energy
+	}
+
+	timeToNextEnergyTick := cat.NextEnergyTickAt() - sim.CurrentTime
+	if timeToNextEnergyTick <= duration {
+		energyTicks := 1 + math.Floor(float64(duration-timeToNextEnergyTick)/float64(core.EnergyTickDuration))
+		currentEnergyPerTick := cat.EnergyTickMultiplier * core.EnergyPerTick
+
+		// Staff of the Glade equipped, buff not active but activation timer is active.
+		// Need to calculate how many ticks will fall inside of the buff, if any.
+		if value.staffOfTheGladeBuff != nil && !value.staffOfTheGladeBuff.IsActive() && value.staffOfTheGladeTimer.IsActive() {
+			timeToStaffActive := value.staffOfTheGladeTimer.RemainingDuration(sim)
+			if timeToStaffActive < timeToNextEnergyTick {
+				energy += energyTicks * currentEnergyPerTick * druid.StaffOfTheGladeEnergyMult
+				energyTicks = 0
+			} else if timeToStaffActive < duration {
+				ticksBeforeStaffActive := 1 + math.Floor(float64(timeToStaffActive-timeToNextEnergyTick)/float64(core.EnergyTickDuration))
+				energy += (energyTicks - ticksBeforeStaffActive) * currentEnergyPerTick * druid.StaffOfTheGladeEnergyMult
+				energyTicks = ticksBeforeStaffActive
+			}
+		}
+
+		energy += energyTicks * currentEnergyPerTick
+	}
+
+	if value.has2PieceScarletTier {
+		ticks := getDotTicksOverDuration(cat.Rake.Spell, sim, duration)
+		ticks += getDotTicksOverDuration(cat.Rip.Spell, sim, duration)
+		energy += ticks * druid.WaywatcherFerocity2pEnergy
+	}
+
+	return energy
+}
+func (value *APLValueCatEnergyAfterDuration) String() string {
+	return "Cat Energy After Duration()"
 }

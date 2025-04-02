@@ -51,7 +51,7 @@ func (impl DefaultAPLValueImpl) GetString(_ *Simulation) string {
 	panic("Unimplemented GetString")
 }
 
-func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
+func (rot *APLRotation) NewAPLValue(config *proto.APLValue) APLValue {
 	if config == nil {
 		return nil
 	}
@@ -109,6 +109,8 @@ func (rot *APLRotation) newAPLValue(config *proto.APLValue) APLValue {
 		return rot.newValueCurrentRage(config.GetCurrentRage())
 	case *proto.APLValue_CurrentEnergy:
 		return rot.newValueCurrentEnergy(config.GetCurrentEnergy())
+	case *proto.APLValue_MaxEnergy:
+		return rot.newValueMaxEnergy(config.GetMaxEnergy())
 	case *proto.APLValue_CurrentComboPoints:
 		return rot.newValueCurrentComboPoints(config.GetCurrentComboPoints())
 	case *proto.APLValue_TimeToEnergyTick:

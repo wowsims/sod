@@ -8,6 +8,8 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+const WaywatcherFerocity2pEnergy = 2
+
 var ItemSetWaywatcherEclipse = core.NewItemSet(core.ItemSet{
 	Name: "Waywatcher Eclipse",
 	Bonuses: map[int32]core.ApplyEffect{
@@ -199,7 +201,7 @@ func (druid *Druid) applyScarletEnclaveFeral2PBonus() {
 		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			spell.Unit.AddEnergy(sim, 2, scentOfBloodMetrics)
+			spell.Unit.AddEnergy(sim, WaywatcherFerocity2pEnergy, scentOfBloodMetrics)
 		},
 	})
 
