@@ -147,7 +147,7 @@ var ItemSetCryptstalkerArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Reduces the cooldown on your Chimera Shot, Explosive Shot, and Aimed Shot abilities by 1.5 sec and reduces the cooldown on your Kill Shot ability by 3sec and Multishot by 4sec.
+// Reduces the cooldown on your Chimera Shot, Explosive Shot, and Aimed Shot abilities by 1.5 sec and reduces the cooldown on your Kill Shot ability by 3sec and Multi-shot by 3sec.
 func (hunter *Hunter) applyNaxxramasRanged2PBonus() {
 	label := "S03 - Item - Naxxramas - Hunter - Ranged 2P Bonus"
 	if hunter.HasAura(label) {
@@ -167,7 +167,7 @@ func (hunter *Hunter) applyNaxxramasRanged2PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_HunterMultiShot,
 		Kind:      core.SpellMod_Cooldown_Flat,
-		TimeValue: -time.Second * 4,
+		TimeValue: -time.Second * 3,
 	})
 }
 
