@@ -16,7 +16,7 @@ func (cat *FeralDruid) NewAPLValue(rot *core.APLRotation, config *proto.APLValue
 	case *proto.APLValue_CatNewSavageRoarDuration:
 		return cat.newValueCatNewSavageRoarDuration(rot, config.GetCatNewSavageRoarDuration())
 	case *proto.APLValue_CatEnergyAfterDuration:
-		return cat.newValueCatEnergyInDuration(rot, config.GetCatEnergyAfterDuration())
+		return cat.newValueCatEnergyAfterDuration(rot, config.GetCatEnergyAfterDuration())
 	default:
 		return nil
 	}
@@ -167,7 +167,7 @@ type APLValueCatEnergyAfterDuration struct {
 	has2PieceScarletTier bool
 }
 
-func (cat *FeralDruid) newValueCatEnergyInDuration(rot *core.APLRotation, config *proto.APLValueCatEnergyAfterDuration) core.APLValue {
+func (cat *FeralDruid) newValueCatEnergyAfterDuration(rot *core.APLRotation, config *proto.APLValueCatEnergyAfterDuration) core.APLValue {
 	conditionVal := rot.NewAPLValue(config.Condition)
 	if conditionVal == nil {
 		return nil
@@ -189,18 +189,27 @@ func (cat *FeralDruid) newValueCatEnergyInDuration(rot *core.APLRotation, config
 func (value *APLValueCatEnergyAfterDuration) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeFloat
 }
+func getDotTicksOverDuration(spell *core.Spell, sim *core.Simulation, duration time.Duration) float64 {
+	ticks := 0.0
+	for _, target := range sim.Encounter.Targets {
+		dot := spell.Dot(&target.Unit)
+		if dot.IsActive() {
+			effectiveDuration := min(duration, dot.RemainingDuration(sim))
+			timeToNextTick := dot.NextTickAt() - sim.CurrentTime
+			if timeToNextTick <= effectiveDuration {
+				ticks += 1 + math.Floor(float64(effectiveDuration-timeToNextTick)/float64(dot.TickPeriod()))
+			}
+		}
+	}
+	return ticks
+}
 func (value *APLValueCatEnergyAfterDuration) GetFloat(sim *core.Simulation) float64 {
 	duration := value.condition.GetDuration(sim)
-	if duration <= 0 {
-		return 0
-	}
-
 	cat := value.cat
 	energy := cat.CurrentEnergy()
-	maxEnergy := cat.MaxEnergy()
 
-	if energy >= maxEnergy {
-		return maxEnergy
+	if duration <= 0 {
+		return energy
 	}
 
 	timeToNextEnergyTick := cat.NextEnergyTickAt() - sim.CurrentTime
@@ -225,26 +234,14 @@ func (value *APLValueCatEnergyAfterDuration) GetFloat(sim *core.Simulation) floa
 		energy += energyTicks * currentEnergyPerTick
 	}
 
-	if energy >= maxEnergy {
-		return maxEnergy
-	}
-
 	if value.has2PieceScarletTier {
-		for _, target := range sim.Environment.Encounter.Targets {
-			targetRake := cat.Rake.Dot(&target.Unit)
-			if targetRake.IsActive() {
-				effectiveDuration := min(duration, targetRake.RemainingDuration(sim))
-				timeToNextTick := targetRake.NextTickAt() - sim.CurrentTime
-				if timeToNextTick < effectiveDuration {
-					ticks := 1 + math.Floor(float64(effectiveDuration-timeToNextTick)/float64(targetRake.TickPeriod()))
-					energy += ticks * druid.WaywatcherFerocity2pEnergy
-				}
-			}
-		}
+		ticks := getDotTicksOverDuration(cat.Rake.Spell, sim, duration)
+		ticks += getDotTicksOverDuration(cat.Rip.Spell, sim, duration)
+		energy += ticks * druid.WaywatcherFerocity2pEnergy
 	}
 
-	return min(maxEnergy, energy)
+	return energy
 }
 func (value *APLValueCatEnergyAfterDuration) String() string {
-	return "Cat Energy In Duration()"
+	return "Cat Energy After Duration()"
 }

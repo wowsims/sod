@@ -993,7 +993,7 @@ const valueKindFactories: { [f in NonNullable<APLValueKind>]: ValueKindConfig<AP
 	catEnergyAfterDuration: inputBuilder({
 		label: 'Energy After Duration',
 		submenu: ['Feral Druid'],
-		shortDescription: 'Returns the amount of energy after the given duration. This will include Staff of the Glade timing and the Scarlet 2 piece bonus.',
+		shortDescription: 'Returns the <b>total uncapped</b> amount of energy after the given duration. This will include Staff of the Glade timing and the Scarlet 2 piece bonus.',
 		newValue: APLValueCatEnergyAfterDuration.create,
 		includeIf: (player: Player<any>, _isPrepull: boolean) => player.spec === Spec.SpecFeralDruid,
 		fields: [valueFieldConfig('condition')],
