@@ -70,7 +70,8 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 
 	flameShockSpells := []*core.Spell{}
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1226961},
+		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			if shaman.FlameShock[5] != nil {
 				flameShockSpells = append(flameShockSpells, shaman.FlameShock[5])
@@ -131,7 +132,8 @@ func (shaman *Shaman) applyScarletEnclaveElemental4PBonus() {
 	})
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1226977},
+		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.overloadProcChance += 0.10
 			shaman.useLavaBurstCritScaling = true
@@ -155,7 +157,8 @@ func (shaman *Shaman) applyScarletEnclaveElemental6PBonus() {
 	numTargets := shaman.Env.GetNumTargets()
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1226978},
+		Label:    label,
 	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  ClassSpellMask_ShamanChainLightning,
 		Kind:       core.SpellMod_DamageDone_Pct,
@@ -196,7 +199,8 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement2PBonus() {
 	classMask := ClassSpellMask_ShamanLavaLash | ClassSpellMask_ShamanStormstrikeHit | ClassSpellMask_ShamanLavaBurst
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1226984},
+		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(classMask) && shaman.ActiveShield != nil && shaman.ActiveShield.Matches(ClassSpellMask_ShamanLightningShield) {
 				if shaman.ActiveShieldAura.GetStacks() == 9 {
@@ -222,7 +226,8 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement4PBonus() {
 	}
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1226986},
+		Label:    label,
 	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanFireNovaTotem,
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
@@ -243,8 +248,8 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement4PBonus() {
 }
 
 // Maelstrom Weapon can now stack up to 10 charges. You will also gain 2 charges at a time while wielding a two-handed weapon.
-// Any excess charges will increase damage or healing dealt by the affected spell by 10% per excess charge.
-// If you have 10 charges when casting an affected spell, all charges will be used and the spell will be instantly cast twice for 150% of normal damage or healing.
+// Any excess charges will increase damage or healing dealt by the affected spell by 20% per excess charge.
+// If you have 10 charges when casting an affected spell, all charges will be used and the spell will be instantly cast twice for 200% of normal damage or healing.
 func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 	if !shaman.HasRune(proto.ShamanRune_RuneWaistMaelstromWeapon) {
 		return
@@ -266,7 +271,9 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 		},
 	})
 
-	core.MakePermanent(twoHandedBonusAura)
+	if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+		core.MakePermanent(twoHandedBonusAura)
+	}
 	shaman.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
 		if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
 			twoHandedBonusAura.Activate(sim)
@@ -280,7 +287,8 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 	var isProcced bool
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1226997},
+		Label:    label,
 		OnInit: func(_ *core.Aura, sim *core.Simulation) {
 			shaman.MaelstromWeaponAura.MaxStacks += 5
 
@@ -354,7 +362,8 @@ func (shaman *Shaman) applyScarletEnclaveTank2PBonus() {
 	}
 
 	shaman.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1227153},
+		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.ShieldMasteryAura.MaxStacks += 2
 		},
@@ -371,6 +380,7 @@ func (shaman *Shaman) applyScarletEnclaveTank4PBonus() {
 	healthMetrics := shaman.NewHealthMetrics(core.ActionID{SpellID: 1227160})
 
 	core.MakeProcTriggerAura(&shaman.Unit, core.ProcTrigger{
+		ActionID:       core.ActionID{SpellID: 1227159},
 		Name:           label,
 		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: ClassSpellMask_ShamanLightningShieldProc,
@@ -400,7 +410,8 @@ func (shaman *Shaman) applyScarletEnclaveTank6PBonus() {
 	})
 
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1227164},
+		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.ShieldMasteryAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 				spellMod.Activate()
