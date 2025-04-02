@@ -886,13 +886,24 @@ func applyPetBuffEffects(petAgent PetAgent, playerFaction proto.Faction, raidBuf
 	individualBuffs.SparkOfInspiration = false
 
 	// Hunter and Shaman pets don't double dip from the Melee Speed increase of Warchief's Blessing
-	if ownerClass := petAgent.GetPet().Owner.Class; individualBuffs.WarchiefsBlessing && (ownerClass == proto.Class_ClassHunter || ownerClass == proto.Class_ClassShaman) {
-		petAgent.GetCharacter().RegisterAura(Aura{
-			Label: "Warchief's Blessing Pet Override",
-			OnInit: func(aura *Aura, sim *Simulation) {
-				aura.Unit.GetAura("Warchief's Blessing").OnReset = nil
-			},
-		})
+	if ownerClass := petAgent.GetPet().Owner.Class; ownerClass == proto.Class_ClassHunter || ownerClass == proto.Class_ClassShaman {
+		if individualBuffs.WarchiefsBlessing {
+			petAgent.GetCharacter().RegisterAura(Aura{
+				Label: "Warchief's Blessing Pet Override",
+				OnInit: func(aura *Aura, sim *Simulation) {
+					aura.Unit.GetAura("Warchief's Blessing").OnReset = nil
+				},
+			})
+		}
+
+		if individualBuffs.MightOfStormwind {
+			petAgent.GetCharacter().RegisterAura(Aura{
+				Label: "Might of Stormwind Pet Override",
+				OnInit: func(aura *Aura, sim *Simulation) {
+					aura.Unit.GetAura("Might of Stormwind").OnReset = nil
+				},
+			})
+		}
 	}
 
 	applyBuffEffects(petAgent, playerFaction, raidBuffs, partyBuffs, individualBuffs)
