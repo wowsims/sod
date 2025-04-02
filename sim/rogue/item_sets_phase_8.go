@@ -137,13 +137,14 @@ func (rogue *Rogue) applyScarletEnclaveTank2PBonus() {
 	if rogue.HasAura(label) {
 		return
 	}
+	rogue.rollingWithThePunchesDamageMultiplier += 0.01
 
 	rogue.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.RollingWithThePunchesProcAura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				rogue.PseudoStats.DamageDealtMultiplier /= 1 + 0.01*float64(oldStacks)
-				rogue.PseudoStats.DamageDealtMultiplier *= 1 + 0.01*float64(newStacks)
+				rogue.PseudoStats.DamageDealtMultiplier /= 1 + rogue.rollingWithThePunchesDamageMultiplier*float64(oldStacks)
+				rogue.PseudoStats.DamageDealtMultiplier *= 1 + rogue.rollingWithThePunchesDamageMultiplier*float64(newStacks)
 			})
 		},
 	})
@@ -177,7 +178,7 @@ func (rogue *Rogue) applyScarletEnclaveTank4PBonus() {
 	}))
 }
 
-// Your Rolling with the Punches can now stack up to 10 times, but grants 2% less health per stack. At 10 stacks, each time you Dodge you will gain 15 Energy.
+// Your Rolling with the Punches now grants 2% more health and 1% more damage per stack. At 5 stacks, each time you Dodge or Parry you will gain 10 Energy.
 func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 
 	if !rogue.HasRune(proto.RogueRune_RuneRollingWithThePunches) {
@@ -190,8 +191,8 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 		return
 	}
 
-	rogue.rollingWithThePunchesBonusHealthStackMultiplier -= 0.02
-	rogue.rollingWithThePunchesMaxStacks += 5
+	rogue.rollingWithThePunchesBonusHealthStackMultiplier += 0.02
+	rogue.rollingWithThePunchesDamageMultiplier += 0.01
 
 	metrics := rogue.NewEnergyMetrics(core.ActionID{SpellID: 1226957})
 
@@ -218,9 +219,9 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.RollingWithThePunchesProcAura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				if newStacks == 10 {
+				if newStacks == 5 {
 					energyAura.Activate(sim)
-				} else if newStacks < 10 && oldStacks == 10 {
+				} else if newStacks < 5 && oldStacks == 5 {
 					energyAura.Deactivate(sim)
 				}
 			})
