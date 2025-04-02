@@ -103,7 +103,7 @@ func (priest *Priest) applyScarletEnclaveShadow4PBonus() {
 }
 
 // Damage done by your Mind Flay now increases the longer you channel the spell.
-// Each time it deals damage, subsequent damage will increase by 100%.
+// Each time it deals damage, subsequent damage will increase by 75%.
 // This resets on each new channel.
 func (priest *Priest) applyScarletEnclaveShadow6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Priest - Shadow 6P Bonus"
@@ -115,7 +115,7 @@ func (priest *Priest) applyScarletEnclaveShadow6PBonus() {
 		Label: label,
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(ClassSpellMask_PriestMindFlay) {
-				spell.Dot(result.Target).SnapshotAttackerMultiplier *= 2.0
+				spell.Dot(result.Target).SnapshotAttackerMultiplier *= 1.75
 			}
 		},
 	}))

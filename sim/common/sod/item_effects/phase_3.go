@@ -102,21 +102,18 @@ func init() {
 
 		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				buffAura.Activate(sim)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: triggerSpell,
 			Type:  core.CooldownTypeDPS,
 		})
@@ -157,21 +154,18 @@ func init() {
 
 		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				buffAura.Activate(sim)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: triggerSpell,
 			Type:  core.CooldownTypeSurvival,
 		})
@@ -212,21 +206,18 @@ func init() {
 
 		triggerSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
 					Duration: time.Minute * 2,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				buffAura.Activate(sim)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    triggerSpell,
 			Priority: core.CooldownPriorityDefault,
 			Type:     core.CooldownTypeDPS,

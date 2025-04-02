@@ -120,8 +120,6 @@ func init() {
 
 		spell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: ScrollsOfBlindingLight},
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-			ProcMask: core.ProcMaskEmpty,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -139,7 +137,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:     core.CooldownTypeDPS,
 			Priority: core.CooldownPriorityDefault,
 			Spell:    spell,
@@ -197,8 +195,6 @@ func init() {
 
 		spell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: GrileksCharmOfValor},
-			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -216,7 +212,7 @@ func init() {
 			},
 		})
 
-		paladin.AddMajorCooldown(core.MajorCooldown{
+		paladin.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})
@@ -380,7 +376,7 @@ func init() {
 	// https://www.wowhead.com/classic-ptr/item=240920/leogan
 	// Equip: Adds 2 holy damage to your melee attacks.
 	// Equip: The Global Cooldown of your Exorcism and Holy Wrath spells is reduced by 0.5 seconds.
-	// Chance on hit: Increases the wielder's Strength by 250 for 15 sec.
+	// Chance on hit: Increases the wielder's Strength by 200 for 15 sec.
 	// TODO: Proc rate assumed and needs testing
 	core.NewItemEffect(Leogan, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
@@ -393,7 +389,7 @@ func init() {
 
 		vanilla.BlazefuryTriggerAura(&paladin.Character, Leogan, 1231550, 1231549, core.SpellSchoolHoly, 2)
 		itemhelpers.AddWeaponProcAura(paladin.GetCharacter(), Leogan, "Leogan", 2.0, func(character *core.Character) *core.Aura {
-			return paladin.NewTemporaryStatsAura("Holy Might", core.ActionID{SpellID: 1231548}, stats.Stats{stats.Strength: 250}, time.Second*15)
+			return paladin.NewTemporaryStatsAura("Holy Might", core.ActionID{SpellID: 1231548}, stats.Stats{stats.Strength: 200}, time.Second*15)
 		})
 	})
 

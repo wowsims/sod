@@ -72,7 +72,7 @@ func (shaman *Shaman) applyAncestralGuidance() {
 		ActionID:       actionID,
 		ClassSpellMask: ClassSpellMask_ShamanAncestralGuidance,
 		SpellSchool:    core.SpellSchoolNature,
-		Flags:          core.SpellFlagAPL | core.SpellFlagNoOnCastComplete,
+		Flags:          core.SpellFlagAPL,
 
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{

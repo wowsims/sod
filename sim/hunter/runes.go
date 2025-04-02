@@ -128,6 +128,9 @@ func (hunter *Hunter) applyShoulderRuneEffect() {
 // 	}))
 // }
 
+// TODO: Make this an aura
+const MeleeSpecialistProcChance = 0.40
+
 func (hunter *Hunter) applyMasterMarksman() {
 	if hunter.HasRune(proto.HunterRune_RuneChestMasterMarksman) {
 		hunter.AddStat(stats.MeleeCrit, 5*core.CritRatingPerCritChance)

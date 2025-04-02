@@ -164,8 +164,14 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		hp.AddStat(stats.Expertise, 0.5*core.ExpertiseRatingPerExpertiseChance)
 	}
 
+	// Phase 8 - Given a special effect for BM hunters
+	if hunter.Ranged().Enchant.EffectID == 2523 {
+		hp.AddStat(stats.MeleeHit, 3*core.MeleeHitRatingPerHitChance)
+	}
+
 	hp.ApplyOnPetEnable(func(sim *core.Simulation) {
-		hp.EnableDynamicAttackSpeed(sim)
+		// Hunter pets only inherit the owner's melee speed
+		hp.EnableDynamicMeleeSpeedInheritance(sim)
 	})
 
 	core.ApplyPetConsumeEffects(&hp.Character, hunter.Consumes)

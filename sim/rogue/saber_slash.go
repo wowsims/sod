@@ -38,6 +38,12 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 				Tag:       RogueBleedTag,
 				Duration:  time.Second * 12,
 				MaxStacks: 3,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.BleedsActive[aura.Unit.UnitIndex]++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.BleedsActive[aura.Unit.UnitIndex]--
+				},
 			},
 			NumberOfTicks: 6,
 			TickLength:    time.Second * 2,
@@ -115,5 +121,5 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 }
 
 func (rogue *Rogue) saberSlashMultiplier(stacks int32) float64 {
-	return []float64{1, 1.33, 1.67, 2.0}[stacks]
+	return []float64{1, 1.40, 1.80, 2.20}[stacks]
 }

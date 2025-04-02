@@ -40,7 +40,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagIgnoreTargetModifiers,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -72,7 +72,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.SpellSchool.Matches(core.SpellSchoolShadow | core.SpellSchoolFire) {
 				dot := burnSpell.Dot(result.Target)
-				newDamage := result.Damage * 0.3
+				newDamage := result.Damage * 0.25
 
 				dot.SnapshotBaseDamage = (dot.OutstandingDmg() + newDamage) / float64(dot.NumberOfTicks)
 				dot.SnapshotAttackerMultiplier = 1
@@ -83,15 +83,15 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 	})
 }
 
-// Your Incinerate, Shadow Bolt, Haunt, Chaos Bolt, Shadow Cleave, and Soul Fire deal 30% more damage to targets afflicted with your Corruption.
+// Your Shadow Bolt, Haunt, Chaos Bolt, Shadow Cleave, and Soul Fire deal 30% more damage to targets afflicted with your Corruption.
 func (warlock *Warlock) applyScarletEnclaveDamage4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warlock - Damage 4P Bonus"
 	if warlock.HasAura(label) {
 		return
 	}
 
-	classMask := ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockHaunt |
-		ClassSpellMask_WarlockChaosBolt | ClassSpellMask_WarlockShadowCleave | ClassSpellMask_WarlockSoulFire
+	classMask := ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockHaunt | ClassSpellMask_WarlockChaosBolt |
+		ClassSpellMask_WarlockShadowCleave | ClassSpellMask_WarlockSoulFire
 
 	damageMod := warlock.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  classMask,
@@ -113,7 +113,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage4PBonus() {
 	})
 }
 
-// Your periodic critical strikes grant 15% spellcasting haste for 15 sec, and your Backdraft grants an additional 15% spellcasting haste.
+// Your periodic critical strikes grant 20% spellcasting haste for 15 sec, and your Backdraft grants an additional 15% spellcasting haste.
 func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warlock - Damage 6P Bonus"
 	if warlock.HasAura(label) {
@@ -124,17 +124,15 @@ func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 		ActionID: core.ActionID{SpellID: 1227200},
 		Label:    "Wickedness",
 		Duration: time.Second * 15,
-	}).AttachMultiplyCastSpeed(&warlock.Unit, 1.15)
+	}).AttachMultiplyCastSpeed(&warlock.Unit, 1.20)
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if warlock.BackdraftAura != nil {
-				warlock.BackdraftAura.AttachDependentAura(hasteAura)
-			}
+			warlock.backdraftCastSpeed += 0.15
 		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() {
+			if result.DidCrit() && spell.Matches(ClassSpellMask_WarlockAll) {
 				hasteAura.Activate(sim)
 			}
 		},
@@ -190,7 +188,15 @@ func (warlock *Warlock) applyScarletEnclaveTank4PBonus() {
 		return
 	}
 
-	healthMetrics := warlock.NewHealthMetrics(core.ActionID{SpellID: 1227207})
+	healingSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
+		ActionID:    core.ActionID{SpellID: 1227207},
+		SpellSchool: core.SpellSchoolShadow,
+		ProcMask:    core.ProcMaskSpellHealing,
+		Flags:       core.SpellFlagPassiveSpell | core.SpellFlagHelpful,
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 0,
+	})
 
 	core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
 		Name:             label,
@@ -205,8 +211,8 @@ func (warlock *Warlock) applyScarletEnclaveTank4PBonus() {
 					break
 				}
 			}
+			healingSpell.CalcAndDealHealing(sim, healingSpell.Unit, result.Damage*multiplier, healingSpell.OutcomeHealing)
 
-			warlock.GainHealth(sim, result.Damage*multiplier, healthMetrics)
 		},
 	})
 }

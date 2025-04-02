@@ -135,6 +135,11 @@ func (priest *Priest) NewEyeOfTheVoid() *EyeOfTheVoid {
 	// Mage spell crit scaling for imp
 	eyePet.AddStatDependency(stats.Intellect, stats.SpellCrit, core.CritPerIntAtLevel[proto.Class_ClassMage][int(eyePet.Level)]*core.SpellCritRatingPerCritChance)
 
+	eyePet.ApplyOnPetEnable(func(sim *core.Simulation) {
+		// Priest pets only inherit the owner's cast speed
+		eyePet.EnableDynamicCastSpeedInheritance(sim)
+	})
+
 	eyePet.ShadowBolt = eyePet.GetOrRegisterSpell(eyePet.newShadowBoltSpellConfig(priest))
 
 	priest.AddPet(eyePet)

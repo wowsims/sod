@@ -341,6 +341,7 @@ export class ActionId {
 			case 'Slam':
 			case 'Windfury Weapon':
 			case 'Holy Strength': // Weapon - Crusader Enchant
+			case 'Righteous Strength': // Weapon - Grand Crusader Enchant
 				if (this.tag === 1) {
 					name = `${name} (Main-Hand)`;
 				} else if (this.tag === 2) {
@@ -481,6 +482,7 @@ export class ActionId {
 			// Warlock T2 6 Piece Needs Heals to trigger for the player
 			case 'Drain Life':
 			case 'Death Coil':
+			case 'Siphon Life':
 				if (this.tag === 1) name += ` (Heal)`;
 				break;
 			case 'Kill Shot':

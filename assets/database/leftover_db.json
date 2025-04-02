@@ -1689,7 +1689,11 @@
 {"effectId":7882,"itemId":236323,"spellId":1219507,"name":"Resilience of the Scourge","type":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,31,0,0],"quality":4},
 {"effectId":7883,"itemId":236324,"spellId":1219510,"name":"Power of the Scourge","type":3,"stats":[0,0,0,0,0,15,0,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4},
 {"effectId":7884,"itemId":236326,"spellId":1219512,"name":"Might of the Scourge","type":3,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,26,0,1,0,0,0,0,0,0,0,26,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4},
-{"effectId":7885,"itemId":236325,"spellId":1219511,"name":"Fortitude of the Scourge","type":3,"stats":[0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4}
+{"effectId":7885,"itemId":236325,"spellId":1219511,"name":"Fortitude of the Scourge","type":3,"stats":[0,0,16,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,7,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":4},
+{"effectId":7940,"spellId":1231128,"name":"Enchant Weapon - Grand Crusader","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
+{"effectId":7941,"spellId":1231139,"name":"Enchant 2H Weapon - Grand Arcanist","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
+{"effectId":7942,"spellId":1231164,"name":"Enchant Weapon - Grand Sorceror","type":13,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3},
+{"effectId":7943,"spellId":1232172,"name":"Enchant 2H Weapon - Grand Inquisitor","type":13,"enchantType":1,"stats":[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],"quality":3}
 ],
 "runes":[
 {"id":29088,"name":"Engrave Ring - All Weapon Skills (Not Real)","icon":"ability_hunter_swiftstrike","type":11,"classAllowlist":[2,4,6,7,9]},

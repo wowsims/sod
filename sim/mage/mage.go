@@ -68,8 +68,8 @@ const (
 		ClassSpellMask_MageArcaneExplosion | ClassSpellMask_MageBlizzard | ClassSpellMask_MageFlamestrike |
 		ClassSpellMask_MageBlastWave |
 		ClassSpellMask_MageFrostfireBolt | ClassSpellMask_MageSpellfrostBolt | ClassSpellMask_MageArcaneBlast |
-		ClassSpellMask_MageBalefireBolt | ClassSpellMask_MageArcaneBarrage | ClassSpellMask_MageLivingBomb |
-		ClassSpellMask_MageLivingFlame | ClassSpellMask_MageArcaneSurge | ClassSpellMask_MageFrozenOrb
+		ClassSpellMask_MageBalefireBolt | ClassSpellMask_MageArcaneBarrage | ClassSpellMask_MageLivingBomb | ClassSpellMask_MageDeepFreeze |
+		ClassSpellMask_MageIceLance | ClassSpellMask_MageLivingFlame | ClassSpellMask_MageArcaneSurge | ClassSpellMask_MageFrozenOrb
 )
 
 var TalentTreeSizes = [3]int{16, 16, 17}
@@ -134,12 +134,11 @@ type Mage struct {
 	FrozenAuras         core.AuraArray
 	WintersChillAuras   core.AuraArray
 
-	ArcaneBlastDamageMultiplier           float64
-	ArcaneBlastMissileBarrageChance       float64
-	ArcaneTunnelingProcChance             float64
-	FingersOfFrostProcChance              float64
-	FireballFrostboltMissileBarrageChance float64
-	FireballMissileActive                 bool // Whether Fireball has been cast but has not hit to avoid chain-casting
+	ArcaneBlastDamageMultiplier     float64
+	ArcaneBlastMissileBarrageChance float64
+	ArcaneTunnelingProcChance       float64
+	FingersOfFrostProcChance        float64
+	FireballMissileActive           bool // Whether Fireball has been cast but has not hit to avoid chain-casting
 
 	// Special functions that need to be able to be overwritten by certain effects
 	isTargetFrozen func(target *core.Unit) bool

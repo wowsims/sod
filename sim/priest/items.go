@@ -65,7 +65,6 @@ func init() {
 
 		spell := priest.RegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    priest.NewTimer(),
@@ -78,7 +77,7 @@ func init() {
 			},
 		})
 
-		priest.AddMajorCooldown(core.MajorCooldown{
+		priest.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell: spell,
 			Type:  core.CooldownTypeDPS,
 		})

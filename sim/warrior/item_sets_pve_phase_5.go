@@ -46,28 +46,19 @@ func (warrior *Warrior) applyT2Damage2PBonus() {
 	}))
 }
 
-// Increases the damage of Heroic Strike, Overpower, and Slam by 25%
+// Increases the damage of Heroic Strike, Overpower, and Slam by 10%
 func (warrior *Warrior) applyT2Damage4PBonus() {
 	label := "S03 - Item - T2 - Warrior - Damage 4P Bonus"
 	if warrior.HasAura(label) {
 		return
 	}
 
-	warrior.RegisterAura(core.Aura{
+	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.HeroicStrike.ApplyMultiplicativeDamageBonus(1.25)
-			warrior.Overpower.ApplyMultiplicativeDamageBonus(1.25)
-			if warrior.SlamMH != nil {
-				warrior.SlamMH.ApplyMultiplicativeDamageBonus(1.25)
-			}
-			if warrior.SlamOH != nil {
-				warrior.SlamMH.ApplyMultiplicativeDamageBonus(1.25)
-			}
-			if warrior.QuickStrike != nil {
-				warrior.QuickStrike.ApplyMultiplicativeDamageBonus(1.25)
-			}
-		},
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorQuickStrike | ClassSpellMask_WarriorOverpower | ClassSpellMask_WarriorSlamMH | ClassSpellMask_WarriorSlamOH,
+		IntValue:  10,
 	})
 }
 

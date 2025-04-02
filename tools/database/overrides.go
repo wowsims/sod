@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 var OtherItemIdsToFetch = []string{}
@@ -90,6 +91,10 @@ var ItemOverrides = []*proto.UIItem{
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82081, Name: "A Broken Ritual"}}},
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
 	}},
+
+	// TODO: Remove once we update tooltips
+	{Id: 240925, Stats: stats.Stats{stats.Agility: 10, stats.Stamina: 10}.ToFloatArray()},
+	{Id: 240837, Stats: stats.Stats{stats.Agility: 21, stats.MeleeCrit: 1, stats.SpellCrit: 1}.ToFloatArray(), WeaponDamageMin: 177, WeaponDamageMax: 330, WeaponSpeed: 3.6},
 }
 
 // Keep these sorted by item ID.
@@ -195,6 +200,11 @@ var ExtraItemIcons = []int32{
 	21023,
 	13813,
 	13810,
+	238637,
+	238638,
+	238639,
+	238641,
+	238642,
 
 	// Flask IDs
 	13510,

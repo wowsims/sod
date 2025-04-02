@@ -116,9 +116,6 @@ func init() {
 
 		spell := character.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: WoodcarvedMoonstalker},
-			ProcMask: core.ProcMaskEmpty,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
-
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
 					Timer:    character.NewTimer(),
@@ -129,13 +126,12 @@ func init() {
 					Duration: duration,
 				},
 			},
-
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				aura.Activate(sim)
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
 		})

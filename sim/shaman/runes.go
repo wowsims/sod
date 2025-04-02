@@ -183,6 +183,8 @@ func (shaman *Shaman) applyMentalDexterity() {
 	})
 }
 
+const StormEarthAndFireFlameShockDamageBonus = 60
+
 func (shaman *Shaman) applyStormEarthAndFire() {
 	if !shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire) {
 		return
@@ -193,7 +195,7 @@ func (shaman *Shaman) applyStormEarthAndFire() {
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanFlameShock,
 		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
-		IntValue:  60,
+		IntValue:  StormEarthAndFireFlameShockDamageBonus,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanChainLightning,
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
@@ -304,9 +306,8 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 
 	procSpellId := int32(436365)
 
-	// Two-handed mastery gives +15% AP, +30% attack speed, and +10% spell hit
-	attackSpeedMultiplier := 1.5
-	apMultiplier := 1.15
+	attackSpeedMultiplier := 1.35
+	apMultiplier := 1.10
 	spellHitIncrease := core.SpellHitRatingPerHitChance * 10.0
 
 	statDep := shaman.NewDynamicMultiplyStat(stats.AttackPower, apMultiplier)

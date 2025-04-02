@@ -132,9 +132,8 @@ var Phase4Talents = "500005301-5500020323202151-15"
 var PlayerOptionsMonoCat = &proto.Player_FeralDruid{
 	FeralDruid: &proto.FeralDruid{
 		Options: &proto.FeralDruid_Options{
-			InnervateTarget:   &proto.UnitReference{}, // no Innervate
-			LatencyMs:         100,
-			AssumeBleedActive: true,
+			InnervateTarget: &proto.UnitReference{}, // no Innervate
+			LatencyMs:       100,
 		},
 	},
 }
@@ -142,9 +141,8 @@ var PlayerOptionsMonoCat = &proto.Player_FeralDruid{
 var PlayerOptionsMonoCatNoBleed = &proto.Player_FeralDruid{
 	FeralDruid: &proto.FeralDruid{
 		Options: &proto.FeralDruid_Options{
-			InnervateTarget:   &proto.UnitReference{}, // no Innervate
-			LatencyMs:         100,
-			AssumeBleedActive: false,
+			InnervateTarget: &proto.UnitReference{}, // no Innervate
+			LatencyMs:       100,
 		},
 	},
 }
@@ -152,9 +150,8 @@ var PlayerOptionsMonoCatNoBleed = &proto.Player_FeralDruid{
 var PlayerOptionsFlowerCatAoe = &proto.Player_FeralDruid{
 	FeralDruid: &proto.FeralDruid{
 		Options: &proto.FeralDruid_Options{
-			InnervateTarget:   &proto.UnitReference{}, // no Innervate
-			LatencyMs:         100,
-			AssumeBleedActive: false,
+			InnervateTarget: &proto.UnitReference{}, // no Innervate
+			LatencyMs:       100,
 		},
 	},
 }

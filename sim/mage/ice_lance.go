@@ -40,7 +40,7 @@ func (mage *Mage) registerIceLanceSpell() {
 		Flags:          core.SpellFlagAPL,
 
 		MissileSpeed: 38,
-		MetricSplits: 9, // Possible 8 total stacks
+		MetricSplits: 11, // Possible 8 total stacks
 
 		ManaCost: core.ManaCostOptions{
 			BaseCost: manaCost,

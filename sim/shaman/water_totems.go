@@ -52,7 +52,7 @@ func (shaman *Shaman) newHealingStreamTotemSpellConfig(rank int) core.SpellConfi
 		ActionID:    core.ActionID{SpellID: healId},
 		SpellSchool: core.SpellSchoolNature,
 		ProcMask:    core.ProcMaskSpellHealing,
-		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
+		Flags:       core.SpellFlagHelpful | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagNoLogs | core.SpellFlagNoMetrics,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

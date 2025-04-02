@@ -93,10 +93,10 @@ func (druid *Druid) newRakeSpellConfig(rakeRank RakeRankInfo) core.SpellConfig {
 			Aura: core.Aura{
 				Label: "Rake",
 				OnGain: func(aura *core.Aura, sim *core.Simulation) {
-					druid.BleedsActive++
+					druid.BleedsActive[aura.Unit.UnitIndex]++
 				},
 				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-					druid.BleedsActive--
+					druid.BleedsActive[aura.Unit.UnitIndex]--
 				},
 			},
 			NumberOfTicks: 3,

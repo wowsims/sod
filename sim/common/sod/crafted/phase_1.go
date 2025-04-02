@@ -77,7 +77,6 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -95,7 +94,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,
@@ -123,7 +122,6 @@ func init() {
 
 		activationSpell := character.GetOrRegisterSpell(core.SpellConfig{
 			ActionID: actionID,
-			Flags:    core.SpellFlagNoOnCastComplete | core.SpellFlagOffensiveEquipment,
 
 			Cast: core.CastConfig{
 				CD: core.Cooldown{
@@ -137,7 +135,7 @@ func init() {
 			},
 		})
 
-		character.AddMajorCooldown(core.MajorCooldown{
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Spell:    activationSpell,
 			Priority: core.CooldownPriorityLow,
 			Type:     core.CooldownTypeDPS,

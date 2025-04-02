@@ -400,6 +400,36 @@ func applyFoodConsumes(character *Character, consumes *proto.Consumes) {
 			character.AddStats(stats.Stats{
 				stats.HealingPower: 22,
 			})
+		case proto.Food_FoodProwlerSteak:
+			character.AddStats(stats.Stats{
+				stats.Strength: 25,
+				stats.Stamina:  10,
+			})
+		case proto.Food_FoodFiletOFlank:
+			character.AddStats(stats.Stats{
+				stats.Agility: 25,
+				stats.Stamina: 10,
+			})
+		case proto.Food_FoodSunriseOmelette:
+			character.AddStats(stats.Stats{
+				stats.SpellPower:   29,
+				stats.HealingPower: 55,
+				stats.Stamina:      10,
+			})
+		case proto.Food_FoodSpecklefinFeast:
+			character.AddStats(stats.Stats{
+				stats.AttackPower:  40,
+				stats.SpellPower:   23,
+				stats.HealingPower: 44,
+				stats.Stamina:      10,
+			})
+		case proto.Food_FoodGrandLobsterBanquet:
+			character.AddStats(stats.Stats{
+				stats.AttackPower:  40,
+				stats.SpellPower:   23,
+				stats.HealingPower: 44,
+				stats.Stamina:      10,
+			})
 		}
 	}
 
@@ -1392,15 +1422,10 @@ func (character *Character) newStratholmeHolyWaterSpell(sharedTimer *Timer) *Spe
 	var outcomeMagicHitAndBaseSpellCrit OutcomeApplier
 	config.ApplyEffects = func(sim *Simulation, target *Unit, spell *Spell) {
 		for _, aoeTarget := range sim.Encounter.TargetUnits {
-			damageMultiplier := spell.GetDamageMultiplier()
-			additiveMultiplierPct := spell.GetDamageMultiplierAdditive()
 			if aoeTarget.MobType != proto.MobType_MobTypeUndead {
-				spell.SetMultiplicativeDamageBonus(0)
-				spell.SetAdditiveDamageBonus(0)
+				continue
 			}
 			spell.CalcAndDealDamage(sim, aoeTarget, sim.Roll(explosiveConfig.MinDamage, explosiveConfig.MaxDamage), outcomeMagicHitAndBaseSpellCrit)
-			spell.SetMultiplicativeDamageBonus(damageMultiplier)
-			spell.ApplyAdditiveDamageBonus(additiveMultiplierPct)
 		}
 	}
 	holyWaterSpell := character.GetOrRegisterSpell(config)

@@ -239,7 +239,7 @@ func (hunter *Hunter) applyImprovedSerpentSting() {
 		return
 	}
 
-	damageBonus  := int64(2 * hunter.Talents.ImprovedSerpentSting)
+	damageBonus := int64(2 * hunter.Talents.ImprovedSerpentSting)
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: "Improved Serpent Sting",

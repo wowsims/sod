@@ -136,7 +136,7 @@ func (paladin *Paladin) applyVengeance() {
 		threatMultiplier := 1.0 + (vengeanceMultiplier * 2)
 		paladin.AddStaticMod(core.SpellModConfig{
 			Kind:       core.SpellMod_Threat_Pct,
-			School:     core.SpellSchoolPhysical,
+			School:     core.SpellSchoolPhysical | core.SpellSchoolHoly,
 			FloatValue: 1.0 / threatMultiplier,
 		})
 	}

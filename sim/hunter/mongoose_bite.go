@@ -55,7 +55,7 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			hunter.DefensiveState.Deactivate(sim)
 
-			if hasMeleeSpecialist && sim.Proc(0.3, "Raptor Strike Reset") {
+			if hasMeleeSpecialist && sim.Proc(MeleeSpecialistProcChance, "Raptor Strike Reset") {
 				hunter.RaptorStrike.CD.Reset()
 				spell.CD.Reset()
 			}

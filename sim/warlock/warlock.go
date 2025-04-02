@@ -159,6 +159,7 @@ type Warlock struct {
 	DPSPAggregate float64
 
 	// Extra state and logic variables
+	backdraftCastSpeed           float64
 	demonicKnowledgeSp           float64
 	maintainBuffsOnSacrifice     bool    // Whether to disable the Master Demonologist and Demonic Sacrifice buffs when sacrificing/summoning pets. Used by TAQ 4pc
 	masterDemonologistMultiplier float64 // Bonus multiplier applied to the Master Demonologist talent
