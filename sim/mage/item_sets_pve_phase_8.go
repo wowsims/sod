@@ -34,7 +34,8 @@ func (mage *Mage) applyScarletEnclaveDamage2PBonus() {
 	}
 
 	aura := core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1226423},
+		Label:    label,
 	}))
 
 	if mage.HasRune(proto.MageRune_RuneHandsLivingBomb) {
@@ -85,7 +86,8 @@ func (mage *Mage) applyScarletEnclaveDamage4PBonus() {
 	}
 
 	aura := core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1226446},
+		Label:    label,
 	}))
 
 	if mage.HasRune(proto.MageRune_RuneBracersBalefireBolt) && mage.Talents.Pyroblast {
@@ -119,7 +121,8 @@ func (mage *Mage) applyScarletEnclaveDamage6PBonus() {
 	}
 
 	aura := core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: label,
+		ActionID: core.ActionID{SpellID: 1226432},
+		Label:    label,
 	}))
 
 	if mage.HasRune(proto.MageRune_RuneCloakFrozenOrb) {
