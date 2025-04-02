@@ -688,7 +688,7 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240924/poleaxe-of-the-beast
-	// Equip: Focus Fire now grants you and your pet 3% increased damage per stack consumed for 20 sec.
+	// Equip: Focus Fire now grants you and your pet 5% increased damage per stack consumed for 20 sec.
 	core.NewItemEffect(PoleaxeOfTheBeast, func(agent core.Agent) {
 		hunter := agent.(HunterAgent).GetHunter()
 
@@ -740,7 +740,7 @@ func newBestialFocusAura(unit *core.Unit, spellID int32) *core.Aura {
 		Duration:  time.Second * 20,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= ((1.0 + (0.03 * float64(newStacks))) / (1.0 + (0.03 * float64(oldStacks))))
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= ((1.0 + (0.05 * float64(newStacks))) / (1.0 + (0.05 * float64(oldStacks))))
 		},
 	})
 }

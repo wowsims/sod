@@ -72,14 +72,14 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic/item=237512/blade-of-inquisition
-	// Equip: Chance on hit to Increase your Strength by 250 and movement speed by 15% for 15 sec. (15s cooldown)
+	// Equip: Chance on hit to Increase your Strength by 175 and movement speed by 15% for 15 sec. (15s cooldown)
 	// TODO: Verify proc chance, 1ppm for now
 	core.NewItemEffect(BladeOfInquisition, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
 		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(BladeOfInquisition, 1.0, 0)
 
-		buffAura := character.NewTemporaryStatsAura("Scarlet Inquisition", core.ActionID{SpellID: 1223342}, stats.Stats{stats.Strength: 250}, time.Second*15)
+		buffAura := character.NewTemporaryStatsAura("Scarlet Inquisition", core.ActionID{SpellID: 1223342}, stats.Stats{stats.Strength: 175}, time.Second*15)
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Blade of Inquisition Trigger",

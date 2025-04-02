@@ -78,20 +78,19 @@ func (druid *Druid) applyTAQFeral2PBonus() {
 		return
 	}
 
-	damageMod := druid.AddDynamicMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_DruidShred,
-		IntValue:  15,
-	})
+	if !druid.PseudoStats.InFrontOfTarget {
+		druid.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  ClassSpellMask_DruidShred,
+			FloatValue: 1.05,
+		})
+	}
 
 	druid.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1213171}, // Tracking in APL
 		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			druid.ShredPositionOverride = true
-			if !druid.PseudoStats.InFrontOfTarget {
-				damageMod.Activate()
-			}
 		},
 	})
 }

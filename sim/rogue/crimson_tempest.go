@@ -13,11 +13,12 @@ func (rogue *Rogue) makeCrimsonTempestHitSpell() *core.Spell {
 	procMask := core.ProcMaskMeleeMHSpecial
 
 	return rogue.RegisterSpell(core.SpellConfig{
-		ActionID:    actionID,
-		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMelee,
-		ProcMask:    procMask,
-		Flags:       core.SpellFlagMeleeMetrics | SpellFlagCarnage,
+		ClassSpellMask: ClassSpellMask_RogueCrimsonTempestHit,
+		ActionID:       actionID,
+		SpellSchool:    core.SpellSchoolPhysical,
+		DefenseType:    core.DefenseTypeMelee,
+		ProcMask:       procMask,
+		Flags:          core.SpellFlagMeleeMetrics | SpellFlagCarnage,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,

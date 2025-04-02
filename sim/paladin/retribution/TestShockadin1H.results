@@ -99,12 +99,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin1H-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 0.51333
-  weights: 1.4291
+  weights: 0.51403
+  weights: 1.6314
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.44389
+  weights: 1.27424
   weights: 0
   weights: 0
   weights: 0
@@ -112,16 +112,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.79165
-  weights: 8.9084
+  weights: 0.96694
+  weights: 10.04906
   weights: 0
   weights: 0
-  weights: 0.18445
-  weights: 11.10428
-  weights: 21.05079
+  weights: 0.1847
+  weights: 8.348
+  weights: 24.69669
   weights: 0
   weights: 0
-  weights: 19.4472
+  weights: 17.83218
   weights: 0
   weights: 0
   weights: 0
@@ -221,8 +221,8 @@ dps_results: {
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2897.29324
-  tps: 2984.13932
+  dps: 2871.44201
+  tps: 2958.28809
   hps: 58.93617
  }
 }
@@ -237,107 +237,107 @@ dps_results: {
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 3988.81643
-  tps: 4074.62295
-  hps: 59.76752
+  dps: 3635.60022
+  tps: 3715.95961
+  hps: 59.76352
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 9004.49459
-  tps: 10732.66466
-  hps: 60.0118
+  dps: 8548.96413
+  tps: 10154.34846
+  hps: 60.27207
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 3968.08399
-  tps: 4054.17344
-  hps: 59.94673
+  dps: 3624.25939
+  tps: 3704.25361
+  hps: 59.87353
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 4138.88666
-  tps: 4222.65354
-  hps: 59.048
+  dps: 3750.55172
+  tps: 3828.30441
+  hps: 58.88533
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 2189.63292
-  tps: 2465.71308
+  dps: 2173.256
+  tps: 2442.83616
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 921.58301
-  tps: 934.9266
+  dps: 891.16616
+  tps: 905.0785
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Dwarf-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 1954.25239
-  tps: 1982.30073
+  dps: 1893.33749
+  tps: 1925.31291
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 8922.75666
-  tps: 10642.00757
-  hps: 59.9874
+  dps: 8578.07425
+  tps: 10181.53528
+  hps: 60.2924
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 3976.22448
-  tps: 4062.27963
-  hps: 59.93657
+  dps: 3638.36823
+  tps: 3718.60152
+  hps: 59.92437
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 4141.60106
-  tps: 4225.29418
-  hps: 58.8955
+  dps: 3758.05482
+  tps: 3836.0163
+  hps: 58.88533
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 2187.91941
-  tps: 2464.54124
+  dps: 2190.25494
+  tps: 2458.2101
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 921.92025
-  tps: 935.20968
+  dps: 905.33617
+  tps: 919.49226
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-Settings-Human-p5-shockadin-P5 Shockadin-p5-shockadin-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 1958.56981
-  tps: 1986.61815
+  dps: 1896.78852
+  tps: 1929.03478
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3762.06357
-  tps: 3848.08412
-  hps: 49.28597
+  dps: 3413.77927
+  tps: 3494.81458
+  hps: 49.15787
  }
 }
 dps_results: {

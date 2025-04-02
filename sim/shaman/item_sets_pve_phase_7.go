@@ -26,7 +26,9 @@ var ItemSetTheEarthshatterersStorm = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Increases periodic damage done by your Flame Shock ability by 20%.
+const EleTier32pFlameShockDamageBonus = 40
+
+// Increases periodic damage done by your Flame Shock ability by 40%.
 func (shaman *Shaman) applyNaxxramasElemental2PBonus() {
 	label := "S03 - Item - Naxxramas - Shaman - Elemental 2P Bonus"
 	if shaman.HasAura(label) {
@@ -38,7 +40,7 @@ func (shaman *Shaman) applyNaxxramasElemental2PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanFlameShock,
 		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
-		IntValue:  20,
+		IntValue:  EleTier32pFlameShockDamageBonus,
 	}))
 }
 

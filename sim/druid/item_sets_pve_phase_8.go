@@ -26,7 +26,7 @@ var ItemSetWaywatcherEclipse = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Starfire deals 20% more damage to targets with your Moonfire, and your Wrath deals 20% more damage to targets with your Sunfire.
+// Your Starfire deals 20% more damage to targets with your Moonfire, and your Wrath deals 40% more damage to targets with your Sunfire.
 func (druid *Druid) applyScarletEnclaveBalance2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Druid - Balance 2P Bonus"
 	if druid.HasAura(label) {
@@ -62,7 +62,7 @@ func (druid *Druid) applyScarletEnclaveBalance2PBonus() {
 				wrathDamageMod.UpdateFloatValue(1)
 				if druid.Sunfire.Dot(target).IsActive() {
 					wrathDamageMod.Activate()
-					wrathDamageMod.UpdateFloatValue(1.20)
+					wrathDamageMod.UpdateFloatValue(1.40)
 				}
 			}
 		},
@@ -88,7 +88,7 @@ func (druid *Druid) applyScarletEnclaveBalance4PBonus() {
 	}))
 }
 
-// Each time your Sunfire deals periodic damage, you gain 20% increased damage to your next Wrath, stacking up to 5 times.
+// Each time your Sunfire deals periodic damage, you gain 40% increased damage to your next Wrath, stacking up to 5 times.
 // Each time your Moonfire deals periodic damage, you gain 20% increased damage to your next Stafire, stacking up to 5 times.
 // These bonuses do not apply to Starsurge.
 func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
@@ -114,7 +114,7 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 			wrathDamageMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			wrathDamageMod.UpdateIntValue(20 * int64(newStacks))
+			wrathDamageMod.UpdateIntValue(40 * int64(newStacks))
 		},
 	})
 

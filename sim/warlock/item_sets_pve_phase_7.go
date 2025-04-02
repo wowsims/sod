@@ -92,7 +92,7 @@ func (warlock *Warlock) applyNaxxramasDamage4PBonus() {
 			ProcMask:       core.ProcMaskSpellDamage,
 			Flags:          core.SpellFlagTreatAsPeriodic | core.SpellFlagPureDot | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | WarlockFlagHaunt | spellConfig.Flags,
 
-			DamageMultiplier: 0.75,
+			DamageMultiplier: 0.33,
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},

@@ -48,7 +48,6 @@ func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
 }
 
 // Each time you hit a target with Whirlwind, Heroic Strike, Quick Strike, or Cleave, the damage of your next Slam is increased by 20%, stacking up to 5 times.
-// If you are wielding a two-handed weapon, you will gain 2 stacks each time.
 func (warrior *Warrior) applyScarletEnclaveDamage4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warrior - Damage 4P Bonus"
 	if warrior.HasAura(label) {
@@ -86,16 +85,12 @@ func (warrior *Warrior) applyScarletEnclaveDamage4PBonus() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			buffAura.Activate(sim)
 			buffAura.AddStack(sim)
-
-			if warrior.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-				buffAura.AddStack(sim)
-			}
 		},
 	})
 }
 
 // Each time Deep Wounds deals damage, it reduces the remaining cooldown on your Whirlwind by 3 sec.
-// Whirlwind deals 50% increased damage to targets afflicted with your Deep Wounds.
+// Whirlwind deals 100% increased damage to targets afflicted with your Deep Wounds.
 func (warrior *Warrior) applyScarletEnclaveDamage6PBonus() {
 	if warrior.Talents.DeepWounds == 0 {
 		return
@@ -123,7 +118,7 @@ func (warrior *Warrior) applyScarletEnclaveDamage6PBonus() {
 		},
 		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if spell.Matches(classMask) {
-				damageMod.UpdateFloatValue(core.TernaryFloat64(warrior.DeepWounds.Dot(target).IsActive(), 1.5, 1.0))
+				damageMod.UpdateFloatValue(core.TernaryFloat64(warrior.DeepWounds.Dot(target).IsActive(), 2.0, 1.0))
 				damageMod.Activate()
 			}
 		},
@@ -267,7 +262,7 @@ func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
 	}
 }
 
-// If Cleave hits fewer than its maximum number of targets, it deals 35% more damage for each unused bounce.
+// If Cleave hits fewer than its maximum number of targets, it deals 25% more damage for each unused bounce.
 func (warrior *Warrior) ApplyFallenRegalityWarriorBonus(aura *core.Aura) {
 	targetCount := warrior.Env.GetNumTargets()
 
@@ -280,7 +275,7 @@ func (warrior *Warrior) ApplyFallenRegalityWarriorBonus(aura *core.Aura) {
 	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 		cleaveDamageMod.Activate()
 		// The cleave target count is set during initializing, so set the value here
-		cleaveDamageMod.UpdateFloatValue(1 + float64(warrior.CleaveTargetCount-targetCount)*0.35)
+		cleaveDamageMod.UpdateFloatValue(1 + float64(warrior.CleaveTargetCount-targetCount)*0.25)
 	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 		cleaveDamageMod.Activate()
 	})

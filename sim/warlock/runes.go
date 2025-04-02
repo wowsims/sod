@@ -175,11 +175,13 @@ func (warlock *Warlock) applyBackdraft() {
 		return
 	}
 
+	warlock.backdraftCastSpeed += 1.30
+
 	warlock.BackdraftAura = warlock.RegisterAura(core.Aura{
 		Label:    "Backdraft",
 		ActionID: core.ActionID{SpellID: 427714},
 		Duration: time.Second * 15,
-	}).AttachMultiplyCastSpeed(&warlock.Unit, 1.3)
+	}).AttachMultiplyCastSpeed(&warlock.Unit, warlock.backdraftCastSpeed)
 }
 
 func (warlock *Warlock) applyDecimation() {
