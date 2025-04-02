@@ -71,7 +71,7 @@ func (warrior *Warrior) applyScarletEnclaveDamage4PBonus() {
 			damageMod.Activate()
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(buffClassMask) {
+			if spell.Matches(ClassSpellMask_WarriorSlamMH) {
 				aura.Deactivate(sim)
 			}
 		},
