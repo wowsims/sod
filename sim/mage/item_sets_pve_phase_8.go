@@ -93,8 +93,8 @@ func (mage *Mage) applyScarletEnclaveDamage4PBonus() {
 			if spell.Matches(ClassSpellMask_MagePyroblast) && mage.BalefireAura.IsActive() && mage.BalefireAura.GetStacks() > 0 {
 				// These have to be separate
 				mage.BalefireAura.RemoveStack(sim)
-				if mage.BalefireAura.GetStacks() == 0 {
-					mage.BalefireAura.Deactivate(sim)
+				if mage.BalefireAura.GetStacks() > 0 {
+					mage.BalefireAura.RemoveStack(sim)
 				}
 			}
 		}, false)
