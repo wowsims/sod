@@ -199,7 +199,7 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 		ActionID: core.ActionID{SpellID: 1226957},
 		Flags:    core.SpellFlagNoLifecycleCallbacks,
 		ApplyEffects: func(sim *core.Simulation, u *core.Unit, spell *core.Spell) {
-			rogue.AddEnergy(sim, 15, metrics)
+			rogue.AddEnergy(sim, 10, metrics)
 		},
 	})
 
@@ -208,7 +208,7 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 		Label:    "Float Like a Butterfly, Sting Like a Bee",
 		Duration: core.NeverExpires,
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.Outcome.Matches(core.OutcomeDodge) {
+			if result.Outcome.Matches(core.OutcomeDodge | core.OutcomeParry) {
 				energyProc.Cast(sim, result.Target)
 			}
 		},
