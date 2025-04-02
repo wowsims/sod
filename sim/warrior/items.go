@@ -253,18 +253,18 @@ func (warrior *Warrior) ApplyRegicideWarriorEffect(itemID int32, aura *core.Aura
 		})
 	})
 
-	envenomDamageMod := warrior.AddDynamicMod(core.SpellModConfig{
+	executeDamageMod := warrior.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Pct,
 		ClassMask: ClassSpellMask_WarriorExecute,
 	})
 
 	damageModTrigger := core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
-		Name:           "Coup - Envenom Damage Mod Trigger",
+		Name:           "Coup - Execute Damage Mod Trigger",
 		Callback:       core.CallbackOnApplyEffects,
 		ClassSpellMask: ClassSpellMask_WarriorExecute,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			envenomDamageMod.UpdateFloatValue(1 + float64(debuffAuras.Get(result.Target).GetStacks())*0.05)
-			envenomDamageMod.Activate()
+			executeDamageMod.UpdateFloatValue(1 + float64(debuffAuras.Get(result.Target).GetStacks())*0.05)
+			executeDamageMod.Activate()
 		},
 	})
 	warrior.ItemSwap.RegisterProc(itemID, damageModTrigger)
@@ -282,7 +282,7 @@ func (warrior *Warrior) ApplyRegicideWarriorEffect(itemID int32, aura *core.Aura
 
 	// Apply the Coup debuff to the target hit by melee abilities
 	aura.AttachProcTrigger(core.ProcTrigger{
-		Name:     "Regicide Trigger - Rogue",
+		Name:     "Regicide Trigger - Warrior",
 		Callback: core.CallbackOnSpellHitDealt,
 		Outcome:  core.OutcomeLanded,
 		ProcMask: core.ProcMaskMelee,

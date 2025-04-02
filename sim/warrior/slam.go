@@ -72,11 +72,10 @@ func (warrior *Warrior) registerSlamSpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			doOffhandHit := canHitOffhand && warrior.BloodSurgeAura.IsActive()
-			warrior.SlamMH.Cast(sim, target)
-			if doOffhandHit {
+			if canHitOffhand && warrior.BloodSurgeAura.IsActive() {
 				warrior.SlamOH.Cast(sim, target)
 			}
+			warrior.SlamMH.Cast(sim, target)
 		},
 	})
 }
