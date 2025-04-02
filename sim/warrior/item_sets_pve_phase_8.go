@@ -48,7 +48,6 @@ func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
 }
 
 // Each time you hit a target with Whirlwind, Heroic Strike, Quick Strike, or Cleave, the damage of your next Slam is increased by 20%, stacking up to 5 times.
-// If you are wielding a two-handed weapon, you will gain 2 stacks each time.
 func (warrior *Warrior) applyScarletEnclaveDamage4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warrior - Damage 4P Bonus"
 	if warrior.HasAura(label) {
