@@ -38,3 +38,8 @@ wowsimsod*.so
 wowsimsod*.dll
 wowsimsod*.h
 .vscode/launch.json
+
+# python stuff
+bin/
+lib/python3.13
+pyvenv.cfg

@@ -25,9 +25,25 @@ var ItemSetFrostfireRegalia = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Evocation grants you 1% increased damage done every sec you channel it (increased to 5% inside of Naxxramas), stacking up to 8 times and lasting 45 sec.
+// Reduces the cooldown on your Evocation ability by 80%.
 func (mage *Mage) applyNaxxramasDamage2PBonus() {
 	label := "S03 - Item - Naxxramas - Mage - Damage 2P Bonus"
+	if mage.HasAura(label) {
+		return
+	}
+
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: label,
+	}).AttachSpellMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_MageEvocation,
+		Kind:      core.SpellMod_Cooldown_Multi_Flat,
+		IntValue:  -80,
+	}))
+}
+
+// Your Evocation grants you 1% increased damage done every sec you channel it (increased to 5% inside of Naxxramas), stacking up to 8 times and lasting 45 sec.
+func (mage *Mage) applyNaxxramasDamage4PBonus() {
+	label := "S03 - Item - Naxxramas - Mage - Damage 4P Bonus"
 	if mage.HasAura(label) {
 		return
 	}
@@ -60,22 +76,6 @@ func (mage *Mage) applyNaxxramasDamage2PBonus() {
 			}
 		},
 	})
-}
-
-// Reduces the cooldown on your Evocation ability by 80%.
-func (mage *Mage) applyNaxxramasDamage4PBonus() {
-	label := "S03 - Item - Naxxramas - Mage - Damage 4P Bonus"
-	if mage.HasAura(label) {
-		return
-	}
-
-	core.MakePermanent(mage.RegisterAura(core.Aura{
-		Label: label,
-	}).AttachSpellMod(core.SpellModConfig{
-		ClassMask: ClassSpellMask_MageEvocation,
-		Kind:      core.SpellMod_Cooldown_Multi_Flat,
-		IntValue:  -80,
-	}))
 }
 
 // Your Ignite damage does not decay on Undead targets below 20% health, and Undead targets below 20% health take damage as if they were Frozen.

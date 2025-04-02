@@ -126,11 +126,11 @@ func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 		Duration: time.Second * 15,
 	}).AttachMultiplyCastSpeed(&warlock.Unit, 1.20)
 
+	// The backdraft bonus is actually a mod on Backdraft itself. Additive 15%
+	warlock.backdraftCastSpeed += 0.15
+
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.backdraftCastSpeed += 0.15
-		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.DidCrit() && spell.Matches(ClassSpellMask_WarlockAll) {
 				hasteAura.Activate(sim)

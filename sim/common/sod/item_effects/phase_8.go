@@ -284,6 +284,7 @@ func init() {
 			MaxStacks: 4,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolNature) && icd.IsReady(sim) {
+					icd.Use(sim)
 					aura.RemoveStack(sim)
 				}
 			},
@@ -676,6 +677,7 @@ func init() {
 			MaxStacks: 4,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolFire) && icd.IsReady(sim) {
+					icd.Use(sim)
 					aura.RemoveStack(sim)
 				}
 			},

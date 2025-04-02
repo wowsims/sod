@@ -1030,29 +1030,29 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 2689.47836
-  tps: 1548.36954
+  dps: 2644.07392
+  tps: 1521.13017
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 2441.95231
-  tps: 1403.65326
+  dps: 2401.02201
+  tps: 1379.20163
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 2674.81724
-  tps: 1539.90697
+  dps: 2629.75708
+  tps: 1512.88189
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 2437.10086
-  tps: 1401.2584
+  dps: 2396.28189
+  tps: 1376.87698
  }
 }
 dps_results: {
@@ -1065,22 +1065,22 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 2689.47836
-  tps: 1548.36954
+  dps: 2644.07392
+  tps: 1521.13017
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 2441.95231
-  tps: 1403.65326
+  dps: 2401.02201
+  tps: 1379.20163
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 2708.65686
-  tps: 1608.68327
+  dps: 2669.39658
+  tps: 1584.94734
  }
 }
 dps_results: {
