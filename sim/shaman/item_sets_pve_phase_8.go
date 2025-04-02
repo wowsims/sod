@@ -272,16 +272,16 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 	})
 
 	// This may be reverted
-	// if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-	core.MakePermanent(twoHandedBonusAura)
-	// }
-	// shaman.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
-	// 	if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
-	// 		twoHandedBonusAura.Activate(sim)
-	// 	} else {
-	// 		twoHandedBonusAura.Deactivate(sim)
-	// 	}
-	// })
+	if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+		core.MakePermanent(twoHandedBonusAura)
+	}
+	shaman.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
+		if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+			twoHandedBonusAura.Activate(sim)
+		} else {
+			twoHandedBonusAura.Deactivate(sim)
+		}
+	})
 
 	// @Lucenia: We have to use a boolean flag because otherwise the triggered cast infinitely procs this trigger
 	var damageMod *core.SpellMod

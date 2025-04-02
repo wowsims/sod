@@ -25,6 +25,7 @@ const (
 	ClassSpellMask_ShamanFireNova
 	ClassSpellMask_ShamanFireNovaTotemAttack
 	ClassSpellMask_ShamanFlameShock
+	ClassSpellMask_ShamanFlametongueProc
 	ClassSpellMask_ShamanFrostShock
 	ClassSpellMask_ShamanHealingWave
 	ClassSpellMask_ShamanLavaLash

@@ -676,12 +676,18 @@ func init() {
 			Duration:  time.Second * 12,
 			MaxStacks: 4,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolFire) && icd.IsReady(sim) {
+				if !spell.Matches(shaman.ClassSpellMask_ShamanFlametongueProc) && spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolFire) && icd.IsReady(sim) {
 					icd.Use(sim)
 					aura.RemoveStack(sim)
 				}
 			},
-		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.20)
+		}).AttachMultiplicativePseudoStatBuff(
+			&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.20,
+		).AttachSpellMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  shaman.ClassSpellMask_ShamanFlametongueProc,
+			FloatValue: 1 / 1.20,
+		})
 
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:     "Mercy Trigger",

@@ -19,7 +19,7 @@ func (shaman *Shaman) applyLavaLash() {
 	damageMultiplier := 1.0
 	// When off-hand is imbued with flametongue weapon increases damage by 125%
 	if shaman.GetCharacter().Consumes.OffHandImbue == proto.WeaponImbue_FlametongueWeapon {
-		damageMultiplier += 1.00
+		damageMultiplier += 1.50
 	}
 
 	shaman.LavaLash = shaman.RegisterSpell(core.SpellConfig{
