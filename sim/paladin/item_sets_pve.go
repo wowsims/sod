@@ -603,7 +603,7 @@ func (paladin *Paladin) applyPaladinT1Ret6P() {
 	})).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  ClassSpellMask_PaladinSeals,
-		FloatValue: 0.65,
+		FloatValue: 0.55,
 	})
 }
 

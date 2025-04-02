@@ -12,7 +12,7 @@ var ItemSetInquisitionWarplate = core.NewItemSet(core.ItemSet{
 	ID:   1940,
 	Name: "Inquisition Warplate",
 	Bonuses: map[int32]core.ApplyEffect{
-		// While you have a two-handed weapon equipped, Crusader Strike and Exorcism grant you Holy Power, increasing all Holy damage you deal by 20%, stacking up to 3 times.
+		// While you have a two-handed weapon equipped, Crusader Strike and Exorcism grant you Holy Power, increasing all Holy damage you deal by 10%, stacking up to 3 times.
 		2: func(agent core.Agent) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 			paladin.applyScarletEnclaveRetribution2PBonus()
@@ -22,7 +22,7 @@ var ItemSetInquisitionWarplate = core.NewItemSet(core.ItemSet{
 			paladin := agent.(PaladinAgent).GetPaladin()
 			paladin.applyScarletEnclaveRetribution4PBonus()
 		},
-		// Consuming Holy Power increases your Attack Power by 10% per Holy Power consumed for 10 sec.
+		// Consuming Holy Power increases your Attack Power by 15% per Holy Power consumed for 10 sec.
 		6: func(agent core.Agent) {
 			paladin := agent.(PaladinAgent).GetPaladin()
 			paladin.applyScarletEnclaveRetribution6PBonus()
@@ -30,7 +30,7 @@ var ItemSetInquisitionWarplate = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// While you have a two-handed weapon equipped, Crusader Strike and Exorcism grant you Holy Power, increasing all Holy damage you deal by 20%, stacking up to 3 times.
+// While you have a two-handed weapon equipped, Crusader Strike and Exorcism grant you Holy Power, increasing all Holy damage you deal by 10%, stacking up to 3 times.
 func (paladin *Paladin) applyScarletEnclaveRetribution2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Paladin - Retribution 2P Bonus"
 	if paladin.HasAura(label) {
@@ -69,7 +69,7 @@ func (paladin *Paladin) registerHolyPowerAura() {
 			MaxStacks: 3,
 			Duration:  time.Second * 15,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= ((1.0 + (0.2 * float64(newStacks))) / (1.0 + (0.2 * float64(oldStacks))))
+				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= ((1.0 + (0.10 * float64(newStacks))) / (1.0 + (0.10 * float64(oldStacks))))
 			},
 		})
 	}
@@ -119,7 +119,7 @@ func (paladin *Paladin) applyScarletEnclaveRetribution4PBonus() {
 	}))
 }
 
-// Consuming Holy Power increases your Attack Power by 10% per Holy Power consumed for 10 sec.
+// Consuming Holy Power increases your Attack Power by 15% per Holy Power consumed for 10 sec.
 func (paladin *Paladin) applyScarletEnclaveRetribution6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Paladin - Retribution 6P Bonus"
 	if paladin.HasAura(label) {
@@ -128,9 +128,9 @@ func (paladin *Paladin) applyScarletEnclaveRetribution6PBonus() {
 
 	templarMultiplier := []*stats.StatDependency{
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.0),
-		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.1),
-		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.2),
-		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.3),
+		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.15),
+		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.30),
+		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.45),
 	}
 
 	templarAura := paladin.RegisterAura(core.Aura{
