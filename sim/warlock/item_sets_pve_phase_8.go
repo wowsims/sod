@@ -40,7 +40,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
 		DefenseType: core.DefenseTypeMagic,
 		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers,
+		Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagIgnoreAttackerModifiers | core.SpellFlagIgnoreTargetModifiers,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -113,7 +113,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage4PBonus() {
 	})
 }
 
-// Your periodic critical strikes grant 15% spellcasting haste for 15 sec, and your Backdraft grants an additional 15% spellcasting haste.
+// Your periodic critical strikes grant 20% spellcasting haste for 15 sec, and your Backdraft grants an additional 15% spellcasting haste.
 func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warlock - Damage 6P Bonus"
 	if warlock.HasAura(label) {
@@ -124,17 +124,15 @@ func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 		ActionID: core.ActionID{SpellID: 1227200},
 		Label:    "Wickedness",
 		Duration: time.Second * 15,
-	}).AttachMultiplyCastSpeed(&warlock.Unit, 1.15)
+	}).AttachMultiplyCastSpeed(&warlock.Unit, 1.20)
+
+	// The backdraft bonus is actually a mod on Backdraft itself. Additive 15%
+	warlock.backdraftCastSpeed += 0.15
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			if warlock.BackdraftAura != nil {
-				warlock.BackdraftAura.AttachDependentAura(hasteAura)
-			}
-		},
 		OnPeriodicDamageDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if result.DidCrit() {
+			if result.DidCrit() && spell.Matches(ClassSpellMask_WarlockAll) {
 				hasteAura.Activate(sim)
 			}
 		},

@@ -28,6 +28,7 @@ const (
 	ClassSpellMask_RogueBladeFlurry
 	SpellClassMask_RogueBlunderbuss
 	ClassSpellMask_RogueCrimsonTempest
+	ClassSpellMask_RogueCrimsonTempestHit
 	ClassSpellMask_RogueDeadlyPoisonTick
 	ClassSpellMask_RogueEnvenom
 	SpellClassMask_RogueEvasion
@@ -59,7 +60,7 @@ const (
 	ClassSpellMask_RogueBackstabDependent = ClassSpellMask_RogueBackstab | ClassSpellMask_RogueMutilate | ClassSpellMask_RogueMutilateHit
 
 	// Rupture and spells that benefit from effects that benefit it
-	ClassSpellMask_RogueRuptureDependent = ClassSpellMask_RogueRupture | ClassSpellMask_RogueCrimsonTempest
+	ClassSpellMask_RogueRuptureDependent = ClassSpellMask_RogueRupture | ClassSpellMask_RogueCrimsonTempest | ClassSpellMask_RogueCrimsonTempestHit
 
 	ClassSpellMask_RoguePoisonDependent = ClassSpellMask_RogueInstantPoison | ClassSpellMask_RogueDeadlyPoisonTick | ClassSpellMask_RogueOccultPoisonTick | ClassSpellMask_RogueEnvenom
 )

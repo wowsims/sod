@@ -8,7 +8,7 @@ import (
 )
 
 func carnageMultiplier(spell *core.Spell, _ *core.AttackTable) float64 {
-	return core.TernaryFloat64(spell.Flags.Matches(SpellFlagCarnage), 1.08, 1)
+	return core.TernaryFloat64(spell.Flags.Matches(SpellFlagCarnage), 1.15, 1)
 }
 
 func (rogue *Rogue) applyCarnage() {

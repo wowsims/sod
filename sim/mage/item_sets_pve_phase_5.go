@@ -216,7 +216,7 @@ func (mage *Mage) applyZGFrost3PBonus() {
 	})
 }
 
-// Increases damage done by your Frostbolt and Spellfrost Bolt spells by 65%.
+// Increases damage done by your Frostbolt and Spellfrost Bolt spells by 75%.
 func (mage *Mage) applyZGFrost5PBonus() {
 	label := "S03 - Item - ZG - Mage - Frost 5P Bonus"
 	if mage.HasAura(label) {
@@ -228,6 +228,6 @@ func (mage *Mage) applyZGFrost5PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_MageFrostbolt | ClassSpellMask_MageSpellfrostBolt,
-		IntValue:  65,
+		IntValue:  75,
 	}))
 }

@@ -28,7 +28,7 @@ var ItemSetWaywatcherEclipse = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Starfire deals 20% more damage to targets with your Moonfire, and your Wrath deals 20% more damage to targets with your Sunfire.
+// Your Starfire deals 20% more damage to targets with your Moonfire, and your Wrath deals 40% more damage to targets with your Sunfire.
 func (druid *Druid) applyScarletEnclaveBalance2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Druid - Balance 2P Bonus"
 	if druid.HasAura(label) {
@@ -64,7 +64,7 @@ func (druid *Druid) applyScarletEnclaveBalance2PBonus() {
 				wrathDamageMod.UpdateFloatValue(1)
 				if druid.Sunfire.Dot(target).IsActive() {
 					wrathDamageMod.Activate()
-					wrathDamageMod.UpdateFloatValue(1.20)
+					wrathDamageMod.UpdateFloatValue(1.40)
 				}
 			}
 		},
@@ -90,7 +90,7 @@ func (druid *Druid) applyScarletEnclaveBalance4PBonus() {
 	}))
 }
 
-// Each time your Sunfire deals periodic damage, you gain 20% increased damage to your next Wrath, stacking up to 5 times.
+// Each time your Sunfire deals periodic damage, you gain 40% increased damage to your next Wrath, stacking up to 5 times.
 // Each time your Moonfire deals periodic damage, you gain 20% increased damage to your next Stafire, stacking up to 5 times.
 // These bonuses do not apply to Starsurge.
 func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
@@ -116,7 +116,7 @@ func (druid *Druid) applyScarletEnclaveBalance6PBonus() {
 			wrathDamageMod.Deactivate()
 		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			wrathDamageMod.UpdateIntValue(20 * int64(newStacks))
+			wrathDamageMod.UpdateIntValue(40 * int64(newStacks))
 		},
 	})
 
@@ -346,6 +346,9 @@ func (druid *Druid) applyScarletEnclaveGuardian4PBonus() {
 
 	core.MakePermanent(druid.RegisterAura(core.Aura{
 		Label: label,
+		OnInit: func(aura *core.Aura, sim *core.Simulation) {
+			druid.BerserkAura.Duration += time.Second * 15
+		},
 	}))
 }
 
@@ -356,9 +359,26 @@ func (druid *Druid) applyScarletEnclaveGuardian6PBonus() {
 		return
 	}
 
-	core.MakePermanent(druid.RegisterAura(core.Aura{
-		Label: label,
-	}))
+	savageFlurryAura := druid.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 1226127},
+		Label:    "Savage Flurry",
+		Duration: time.Second * 10,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MultiplyAttackSpeed(sim, 1.3)
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			druid.MultiplyAttackSpeed(sim, 1.0/1.3)
+		},
+	})
+
+	core.MakeProcTriggerAura(&druid.Unit, core.ProcTrigger{
+		Name:     label,
+		Callback: core.CallbackOnSpellHitDealt | core.CallbackOnPeriodicDamageDealt,
+		Outcome:  core.OutcomeCrit,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			savageFlurryAura.Activate(sim)
+		},
+	})
 }
 
 var ItemSetWaywatcherRaiment = core.NewItemSet(core.ItemSet{

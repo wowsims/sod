@@ -201,8 +201,10 @@ func init() {
 	core.AddEffectsToTest = true
 }
 
-// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture on the target to 16 secs
+// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture and Crimson Tempest on the target to 16 secs
 func (rogue *Rogue) ApplyQueensfallRogueEffect(aura *core.Aura) {
+	hasCrimsonTempest := rogue.HasRune(proto.RogueRune_RuneCrimsonTempest)
+
 	aura.AttachProcTrigger(core.ProcTrigger{
 		Name:           "Queensfall Trigger - Rogue",
 		Callback:       core.CallbackOnSpellHitDealt,
@@ -213,6 +215,13 @@ func (rogue *Rogue) ApplyQueensfallRogueEffect(aura *core.Aura) {
 				dot.NumberOfTicks = int32(16 / dot.TickLength.Seconds())
 				dot.RecomputeAuraDuration()
 				dot.Rollover(sim)
+			}
+			if hasCrimsonTempest {
+				if dot := rogue.CrimsonTempestBleed.Dot(result.Target); dot.IsActive() {
+					dot.NumberOfTicks = int32(16 / dot.TickLength.Seconds())
+					dot.RecomputeAuraDuration()
+					dot.Rollover(sim)
+				}
 			}
 		},
 	})

@@ -190,18 +190,18 @@ func (warrior *Warrior) applyT1Damage6PBonus() {
 		ActionID: core.ActionID{SpellID: 457816},
 		Label:    "Battle Forecast",
 		Duration: duration,
-	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.10)
+	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexPhysical], 1.05)
 
 	defenseAura := warrior.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 457814},
 		Label:    "Defense Forecast",
 		Duration: duration,
-	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.DamageTakenMultiplier, 0.90)
+	}).AttachMultiplicativePseudoStatBuff(&warrior.PseudoStats.DamageTakenMultiplier, 0.95)
 
 	berserkAura := warrior.NewTemporaryStatsAura(
 		"Berserker Forecast",
 		core.ActionID{SpellID: 457817},
-		stats.Stats{stats.MeleeCrit: 10 * core.CritRatingPerCritChance},
+		stats.Stats{stats.MeleeCrit: 5 * core.CritRatingPerCritChance},
 		duration,
 	)
 

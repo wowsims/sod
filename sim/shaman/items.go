@@ -126,7 +126,7 @@ func init() {
 
 	// https://www.wowhead.com/classic-ptr/item=240921/scarlet-smashbringer
 	// Equip: The Global Cooldown of your Shock, Lightning, and Lava Burst spells is reduced by 0.5 seconds.
-	// Chance on hit: Increases the wielder's Strength by 250 for 15 sec.
+	// Chance on hit: Increases the wielder's Strength by 200 for 15 sec.
 	core.NewItemEffect(ScarletSmashbringer, func(agent core.Agent) {
 		shaman := agent.(ShamanAgent).GetShaman()
 
@@ -138,7 +138,7 @@ func init() {
 		})
 
 		itemhelpers.AddWeaponProcAura(shaman.GetCharacter(), ScarletSmashbringer, "Scarlet Smashbringer", 0.9, func(character *core.Character) *core.Aura {
-			return character.NewTemporaryStatsAura("Holy Might", core.ActionID{SpellID: 1231551}, stats.Stats{stats.Strength: 250}, time.Second*15)
+			return character.NewTemporaryStatsAura("Holy Might", core.ActionID{SpellID: 1231551}, stats.Stats{stats.Strength: 200}, time.Second*15)
 		})
 	})
 

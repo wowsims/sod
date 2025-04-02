@@ -284,9 +284,9 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 		case proto.Hunter_Options_MiniatureCannonBalls:
 			hunter.AmmoDPS = 20.5
 		case proto.Hunter_Options_SearingArrow:
-			hunter.AmmoDPS = 25
+			hunter.AmmoDPS = 30
 		case proto.Hunter_Options_SearingShot:
-			hunter.AmmoDPS = 25
+			hunter.AmmoDPS = 30
 		}
 		hunter.AmmoDamageBonus = hunter.AmmoDPS * rangedWeapon.SwingSpeed
 		hunter.NormalizedAmmoDamageBonus = hunter.AmmoDPS * 2.8

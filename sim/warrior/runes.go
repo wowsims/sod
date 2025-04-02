@@ -188,10 +188,10 @@ func (warrior *Warrior) applyFrenziedAssault() {
 		Label:    "Frenzied Assault",
 		Duration: core.NeverExpires,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, 1.4)
+			warrior.MultiplyMeleeSpeed(sim, 1.35)
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.MultiplyMeleeSpeed(sim, 1/1.4)
+			warrior.MultiplyMeleeSpeed(sim, 1/1.35)
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskWhiteHit) && result.Landed() {

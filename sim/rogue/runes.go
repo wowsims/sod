@@ -425,7 +425,7 @@ func (rogue *Rogue) applySlaughterfromtheShadows() {
 
 	rogue.OnSpellRegistered(func(spell *core.Spell) {
 		if spell.Matches(ClassSpellMask_RogueAmbush | ClassSpellMask_RogueBackstab) {
-			spell.ApplyMultiplicativeDamageBonus(1.60)
+			spell.ApplyMultiplicativeDamageBonus(1.75)
 			spell.Cost.FlatModifier -= 30
 		}
 	})

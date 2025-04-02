@@ -41,7 +41,7 @@ const (
 	ScarletRotbringer                = 240842
 	StaffOfTheGlade                  = 240849
 
-	StaffOfTheGladeEnergyMult = 1.5
+	StaffOfTheGladeEnergyMult = 1.25
 )
 
 func init() {
@@ -465,10 +465,16 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240849/staff-of-the-glade
-	// Equip: Remaining in Cat Form for 5 seconds, causes your Energy Regeneration to increase by 100%, and the damage of your Ferocious Bite to increase by 100%.
+	// Equip: Remaining in Cat Form for 5 seconds, causes your Energy Regeneration to increase by 25%, and the damage of your Ferocious Bite to increase by 25%.
 	// Equip: You may cast Rebirth and Innervate while in Cat Form.
 	core.NewItemEffect(StaffOfTheGlade, func(agent core.Agent) {
 		druid := agent.(DruidAgent).GetDruid()
+
+		druid.AddStaticMod(core.SpellModConfig{
+			ClassMask:  ClassSpellMask_DruidFerociousBite,
+			Kind:       core.SpellMod_DamageDone_Pct,
+			FloatValue: 1.25,
+		})
 
 		// https://www.wowhead.com/classic-ptr/spell=1231381/feral-dedication
 		auraBuff := druid.RegisterAura(core.Aura{
@@ -477,10 +483,6 @@ func init() {
 			},
 			Duration: core.NeverExpires,
 			Label:    "Feral Dedication",
-		}).AttachSpellMod(core.SpellModConfig{
-			ClassMask:  ClassSpellMask_DruidFerociousBite,
-			Kind:       core.SpellMod_DamageDone_Pct,
-			FloatValue: 2.0,
 		}).AttachSpellMod(core.SpellModConfig{
 			ClassMask: ClassSpellMask_DruidFerociousBite,
 			Kind:      core.SpellMod_Custom,

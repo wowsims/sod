@@ -132,15 +132,15 @@ var ItemSetTrappingsOfVaultedSecrets = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Fireball, Frostfire Bolt, and Balefire Bolt spells gain 3% increased damage for each of your Fire effects on your target, up to a maximum increased of 9%.
+// Your Fireball, Frostfire Bolt, and Balefire Bolt spells gain 4% increased damage for each of your Fire effects on your target, up to a maximum increased of 12%.
 func (mage *Mage) applyRAQFire3PBonus() {
 	label := "S03 - Item - RAQ - Mage - Fire 3P Bonus"
 	if mage.HasAura(label) {
 		return
 	}
 
-	perEffectMultiplier := 0.03
-	maxMultiplier := 1.09
+	perEffectMultiplier := 0.04
+	maxMultiplier := 1.12
 
 	classSpellMasks := ClassSpellMask_MageFireball | ClassSpellMask_MageFrostfireBolt | ClassSpellMask_MageBalefireBolt
 	damageMod := mage.AddDynamicMod(core.SpellModConfig{

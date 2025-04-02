@@ -26,7 +26,7 @@ var ItemSetDawnstalkerProwess = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Strikes and Mongoose Bite deal 20% increased damage to targets afflicted with your Serpent Sting or Wyvern Strike.
+// Your Strikes and Mongoose Bite deal 25% increased damage to targets afflicted with your Serpent Sting or Wyvern Strike.
 func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Hunter - Melee 2P Bonus"
 	if hunter.HasAura(label) {
@@ -53,20 +53,20 @@ func (hunter *Hunter) applyScarletEnclaveMelee2PBonus() {
 			}
 
 			hasWyvernStrike := hunter.WyvernStrike != nil && hunter.WyvernStrike.Dot(result.Target).IsActive()
-			damageMod.UpdateFloatValue(core.TernaryFloat64(hasSerpentSting || hasWyvernStrike, 1.20, 1.0))
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hasSerpentSting || hasWyvernStrike, 1.25, 1.0))
 			damageMod.Activate()
 		},
 	})
 }
 
-// Your melee critical strikes increase your attack speed by 20% for 10 sec.
+// Your melee critical strikes increase your attack speed by 30% for 10 sec.
 func (hunter *Hunter) applyScarletEnclaveMelee4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Hunter - Melee 4P Bonus"
 	if hunter.HasAura(label) {
 		return
 	}
 
-	attackSpeed := 1.20
+	attackSpeed := 1.30
 
 	procAura := core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label:    "Wicked Fast",
@@ -105,7 +105,7 @@ func (hunter *Hunter) applyScarletEnclaveMelee6PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.BonusRaptorFuryDamageMultiplier = 0.10
+			hunter.BonusRaptorFuryDamageMultiplier = 0.15
 		},
 	}))
 }
@@ -128,7 +128,7 @@ var ItemSetDawnstalkerArmor = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Shots deal 20% increased damage to targets afflicted with your Serpent Sting.
+// Your Shots deal 25% increased damage to targets afflicted with your Serpent Sting.
 func (hunter *Hunter) applyScarletEnclaveRanged2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Hunter - Ranged 2P Bonus"
 	if hunter.HasAura(label) {
@@ -145,21 +145,21 @@ func (hunter *Hunter) applyScarletEnclaveRanged2PBonus() {
 		ClassSpellMask: ClassSpellMask_HunterShots,
 		Callback:       core.CallbackOnApplyEffects,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			damageMod.UpdateFloatValue(core.TernaryFloat64(hunter.SerpentSting.Dot(result.Target).IsActive(), 1.20, 1.0))
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hunter.SerpentSting.Dot(result.Target).IsActive(), 1.25, 1.0))
 			damageMod.Activate()
 		},
 	})
 }
 
-// Your ranged critical strikes increase your Attack Power by 20% for 10 sec.
+// Your ranged critical strikes increase your Attack Power by 25% for 10 sec.
 func (hunter *Hunter) applyScarletEnclaveRanged4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Hunter - Ranged 4P Bonus"
 	if hunter.HasAura(label) {
 		return
 	}
 
-	apBonus := hunter.NewDynamicMultiplyStat(stats.AttackPower, 1.2)
-	apRangedBonus := hunter.NewDynamicMultiplyStat(stats.RangedAttackPower, 1.2)
+	apBonus := hunter.NewDynamicMultiplyStat(stats.AttackPower, 1.25)
+	apRangedBonus := hunter.NewDynamicMultiplyStat(stats.RangedAttackPower, 1.25)
 
 	procAura := hunter.GetOrRegisterAura(core.Aura{
 		Label:    "Wicked Shot",
@@ -185,10 +185,25 @@ func (hunter *Hunter) applyScarletEnclaveRanged6PBonus() {
 		return
 	}
 
+	damMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterMultiShot,
+	})
+
 	multishotAura := hunter.RegisterAura(core.Aura{
-		Label:    "Trick Shots",
-		ActionID: core.ActionID{SpellID: 1233451},
-		Duration: time.Minute * 5,
+		Label:     "Trick Shots",
+		ActionID:  core.ActionID{SpellID: 1233451},
+		Duration:  time.Minute * 5,
+		MaxStacks: 4,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damMod.Deactivate()
+		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			damMod.UpdateIntValue(int64(50 * newStacks))
+		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_HunterMultiShot) {
 				aura.Deactivate(sim)
@@ -197,7 +212,6 @@ func (hunter *Hunter) applyScarletEnclaveRanged6PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_HunterMultiShot,
-		IntValue:  100,
 	})
 
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
@@ -206,12 +220,13 @@ func (hunter *Hunter) applyScarletEnclaveRanged6PBonus() {
 			hunter.MultiShotBonusTargets = 2
 		},
 	})).AttachProcTrigger(core.ProcTrigger{
-		Name:             label,
-		ClassSpellMask:   ClassSpellMask_HunterChimeraShot | ClassSpellMask_HunterKillShot,
-		Callback:         core.CallbackOnApplyEffects,
-		CanProcFromProcs: true,
+		Name:           label,
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: ClassSpellMask_HunterChimeraShot | ClassSpellMask_HunterChimeraSerpent | ClassSpellMask_HunterKillShot,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			multishotAura.Activate(sim)
+			multishotAura.AddStack(sim)
 		},
 	})
 }

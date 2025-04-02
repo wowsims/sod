@@ -167,7 +167,7 @@ func (rogue *Rogue) applyT1Tank2PBonus() {
 		return
 	}
 
-	classSpellMasks := ClassSpellMask_RogueCrimsonTempest | SpellClassMask_RogueBlunderbuss | SpellClassMask_RogueFanOfKnives
+	classSpellMasks := ClassSpellMask_RogueCrimsonTempest | ClassSpellMask_RogueCrimsonTempestHit | SpellClassMask_RogueBlunderbuss | SpellClassMask_RogueFanOfKnives
 	buffAura := rogue.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 457351},
 		Label:    fmt.Sprintf("Blade Dance (%s)", label),
