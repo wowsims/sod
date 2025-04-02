@@ -201,7 +201,7 @@ func init() {
 	core.AddEffectsToTest = true
 }
 
-// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture and Crimsson Tempest on the target to 16 secs
+// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture and Crimson Tempest on the target to 16 secs
 func (rogue *Rogue) ApplyQueensfallRogueEffect(aura *core.Aura) {
 	hasCrimsonTempest := rogue.HasRune(proto.RogueRune_RuneCrimsonTempest)
 
