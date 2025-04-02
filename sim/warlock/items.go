@@ -286,13 +286,13 @@ func init() {
 	// https://www.wowhead.com/classic/item=236067/plagueheart-ring
 	// Equip: Increases the damage dealt by your damage over time spells by 2%.
 	core.NewItemEffect(PlagueheartRing, func(agent core.Agent) {
-		priest := agent.(WarlockAgent).GetWarlock()
-
-		priest.OnSpellRegistered(func(spell *core.Spell) {
-			// Unlike the Priest ring, the Warlock ring doesn't seem to affect channels https://www.wowhead.com/classic/spell=1222974/damage-over-time-increase
-			if spell.Matches(ClassSpellMask_WarlockAll) && !spell.Flags.Matches(core.SpellFlagChanneled) {
-				spell.ApplyAdditivePeriodicDamageBonus(2)
-			}
+		warlock := agent.(WarlockAgent).GetWarlock()
+		// Unlike the Priest Tier 3 ring, the Warlock ring doesn't seem to affect channels https://www.wowhead.com/classic/spell=1222974/damage-over-time-increase
+		warlock.AddStaticMod(core.SpellModConfig{
+			Kind:              core.SpellMod_PeriodicDamageDone_Flat,
+			ClassSpellsOnly:   true,
+			SpellFlagsExclude: core.SpellFlagChanneled,
+			IntValue:          -2,
 		})
 	})
 

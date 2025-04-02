@@ -330,6 +330,14 @@ func (character *Character) applyEquipment() {
 		}
 
 		character.PseudoStats.BonusPhysicalDamage += item.BonusPhysicalDamage
+
+		if item.BonusPeriodicPct > 0 {
+			character.Unit.AddStaticMod(SpellModConfig{
+				Kind:            SpellMod_PeriodicDamageDone_Flat,
+				ClassSpellsOnly: true,
+				IntValue:        int64(item.BonusPeriodicPct),
+			})
+		}
 	}
 }
 

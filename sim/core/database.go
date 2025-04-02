@@ -61,10 +61,12 @@ type Item struct {
 	Name                string
 	Stats               stats.Stats // Stats applied to wearer
 	BonusPhysicalDamage float64
-	Quality             proto.ItemQuality
-	SetName             string // Empty string if not part of a set.
-	SetID               int32  // 0 if not part of a set.
-	WeaponSkills        stats.WeaponSkills
+	BonusPeriodicPct    int32
+
+	Quality      proto.ItemQuality
+	SetName      string // Empty string if not part of a set.
+	SetID        int32  // 0 if not part of a set.
+	WeaponSkills stats.WeaponSkills
 
 	Timeworn   bool
 	Sanctified bool
@@ -94,6 +96,7 @@ func ItemFromProto(pData *proto.SimItem) Item {
 		SwingSpeed:          pData.WeaponSpeed,
 		Stats:               stats.FromFloatArray(pData.Stats),
 		BonusPhysicalDamage: pData.BonusPhysicalDamage,
+		BonusPeriodicPct:    pData.BonusPeriodicPct,
 		SetName:             pData.SetName,
 		SetID:               pData.SetId,
 		WeaponSkills:        stats.WeaponSkillsFloatArray(pData.WeaponSkills),
@@ -117,17 +120,17 @@ func (item *Item) ToItemSpecProto() *proto.ItemSpec {
 }
 
 type RandomSuffix struct {
-	ID    int32
-	Name  string
-	Stats stats.Stats
+	ID            int32
+	Name          string
+	Stats         stats.Stats
 	EnchantIDList []int32
 }
 
 func RandomSuffixFromProto(pData *proto.ItemRandomSuffix) RandomSuffix {
 	return RandomSuffix{
-		ID:    pData.Id,
-		Name:  pData.Name,
-		Stats: stats.FromFloatArray(pData.Stats),
+		ID:            pData.Id,
+		Name:          pData.Name,
+		Stats:         stats.FromFloatArray(pData.Stats),
 		EnchantIDList: pData.EnchantIdList,
 	}
 }
@@ -244,7 +247,7 @@ func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.Ite
 	if equipmentSlot.Enchant.EffectID == effectID || equipmentSlot.TempEnchant == effectID {
 		return true
 	}
-	
+
 	if len(equipmentSlot.RandomSuffix.EnchantIDList) > 0 {
 		for _, enchantID := range equipmentSlot.RandomSuffix.EnchantIDList {
 			if enchantID == effectID {
@@ -252,7 +255,7 @@ func (equipment *Equipment) containsEnchantInSlot(effectID int32, slot proto.Ite
 			}
 		}
 	}
-	
+
 	return false
 }
 

@@ -97,57 +97,5 @@ func init() {
 		}))
 	})
 
-	///////////////////////////////////////////////////////////////////////////
-	//                         Tier 4 Periodic Bonuses
-	///////////////////////////////////////////////////////////////////////////
-
-	// https://www.wowhead.com/classic-ptr/item=239572/boots-of-revelation
-	core.NewItemEffect(BootsOfRevelation, func(agent core.Agent) {
-		AddPriestPeriodicDamageEffect(agent, 2)
-	})
-
-	// https://www.wowhead.com/classic-ptr/item=239575/crown-of-revelation
-	core.NewItemEffect(CrownOfRevelation, func(agent core.Agent) {
-		AddPriestPeriodicDamageEffect(agent, 2)
-	})
-
-	// https://www.wowhead.com/classic-ptr/item=239565/garb-of-revelation
-	core.NewItemEffect(GarbofRevelation, func(agent core.Agent) {
-		AddPriestPeriodicDamageEffect(agent, 2)
-	})
-
-	// https://www.wowhead.com/classic-ptr/item=239582/girdle-of-revelation
-	core.NewItemEffect(GirdleOfRevelation, func(agent core.Agent) {
-		AddPriestPeriodicDamageEffect(agent, 2)
-	})
-
-	// https://www.wowhead.com/classic-ptr/item=239574/hands-of-revelation
-	core.NewItemEffect(HandsOfRevelation, func(agent core.Agent) {
-		AddPriestPeriodicDamageEffect(agent, 2)
-	})
-
-	// https://www.wowhead.com/classic-ptr/item=239581/mantle-of-revelation
-	core.NewItemEffect(MantleOfRevelation, func(agent core.Agent) {
-		AddPriestPeriodicDamageEffect(agent, 4)
-	})
-
-	// https://www.wowhead.com/classic-ptr/item=239577/pants-of-revelation
-	core.NewItemEffect(PantsOfRevelation, func(agent core.Agent) {
-		AddPriestPeriodicDamageEffect(agent, 2)
-	})
-
-	// https://www.wowhead.com/classic-ptr/item=239583/wrists-of-revelation
-	core.NewItemEffect(WristsOfRevelation, func(agent core.Agent) {
-		AddPriestPeriodicDamageEffect(agent, 2)
-	})
-
 	core.AddEffectsToTest = true
-}
-
-func AddPriestPeriodicDamageEffect(agent core.Agent, modifierPct int64) {
-	agent.GetCharacter().AddStaticMod(core.SpellModConfig{
-		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
-		ClassMask: PriestSpellMask_Periodicspells,
-		IntValue:  modifierPct,
-	})
 }
