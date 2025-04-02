@@ -183,6 +183,8 @@ func (shaman *Shaman) applyMentalDexterity() {
 	})
 }
 
+const StormEarthAndFireFlameShockDamageBonus = 60
+
 func (shaman *Shaman) applyStormEarthAndFire() {
 	if !shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire) {
 		return
@@ -193,7 +195,7 @@ func (shaman *Shaman) applyStormEarthAndFire() {
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanFlameShock,
 		Kind:      core.SpellMod_PeriodicDamageDone_Flat,
-		IntValue:  60,
+		IntValue:  StormEarthAndFireFlameShockDamageBonus,
 	}).AttachSpellMod(core.SpellModConfig{
 		ClassMask: ClassSpellMask_ShamanChainLightning,
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,

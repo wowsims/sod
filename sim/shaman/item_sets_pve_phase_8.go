@@ -36,10 +36,18 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 		return
 	}
 
-	// bonusMultiplier := 0
-	// if shaman.HasSetBonus("The Earthshatterer's Storm", 2) {
-
-	// }
+	// These interactions are unlisted but confirmed by Zirene. All stack multiplicatively.
+	// -1 per point of Concussion because the ticks double dip
+	// 40% from Tier 3 2-piece
+	// 60% from Storm, Earth, and Fire
+	damageMultiplier := 1.0
+	damageMultiplier *= 1 - 0.01*float64(shaman.Talents.Concussion)
+	if shaman.HasSetBonus(ItemSetTheEarthshatterersStorm, 2) {
+		damageMultiplier *= 1 + EleTier32pFlameShockDamageBonus/100
+	}
+	if shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire) {
+		damageMultiplier *= 1 + StormEarthAndFireFlameShockDamageBonus/100
+	}
 
 	flameShockCopy := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1226972}.WithTag(1),
@@ -58,7 +66,7 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 			TickLength:    0,
 		},
 
-		DamageMultiplier: 1 + 1.00, // TODO: Multiplicative based on SEF & 2pT3 Ele
+		DamageMultiplier: damageMultiplier,
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},
@@ -68,8 +76,6 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			shaman.useLavaBurstCritScaling = true
-
 			if shaman.FlameShock[5] != nil {
 				flameShockSpells = append(flameShockSpells, shaman.FlameShock[5])
 			}
@@ -93,6 +99,7 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 
 // Increases the chance to trigger your Overload by an additional 10%.
 // Additionally, each time Lightning Bolt or Chain Lightning damages a target, your next Lava Burst deals 10% increased damage, stacking up to 5 times.
+// Your Lava Burst deals increased damage equal to its critical strike chance.
 func (shaman *Shaman) applyScarletEnclaveElemental4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Shaman - Elemental 4P Bonus"
 	if shaman.HasAura(label) {
@@ -131,6 +138,7 @@ func (shaman *Shaman) applyScarletEnclaveElemental4PBonus() {
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.overloadProcChance += 0.10
+			shaman.useLavaBurstCritScaling = true
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(classMask) && result.Landed() {
