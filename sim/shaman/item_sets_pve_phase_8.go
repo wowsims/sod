@@ -351,7 +351,7 @@ var ItemSetTheSoulcrushersResolve = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Shield Mastery effect can now stack up to 7 times.
+// Your Shield Mastery effect can now stack up to 7 times and gains a stack when you cast a Shock spell.
 func (shaman *Shaman) applyScarletEnclaveTank2PBonus() {
 	if !shaman.HasRune(proto.ShamanRune_RuneChestShieldMastery) {
 		return
@@ -362,13 +362,19 @@ func (shaman *Shaman) applyScarletEnclaveTank2PBonus() {
 		return
 	}
 
-	shaman.RegisterAura(core.Aura{
+	core.MakePermanent(shaman.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: 1227153},
 		Label:    label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			shaman.ShieldMasteryAura.MaxStacks += 2
 		},
-	})
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Matches(ClassSpellMask_ShamanShocks) {
+				shaman.ShieldMasteryAura.Activate(sim)
+				shaman.ShieldMasteryAura.AddStack(sim)
+			}
+		},
+	}))
 }
 
 // Each time your Lightning Shield deals damage, you heal for 100% of the damage it dealt, no more than once every 3 sec.

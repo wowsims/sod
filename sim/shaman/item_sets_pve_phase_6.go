@@ -118,16 +118,16 @@ func (shaman *Shaman) applyTAQTank2PBonus() {
 	}))
 }
 
-// Your Spirit of the Alpha also increases your health by 10%, threat by 20%, and damage by 10% when cast on self.
+// Your Spirit of the Alpha also increases your health by 5%, threat by 20%, and damage by 5% when cast on self.
 func (shaman *Shaman) applyTAQTank4PBonus() {
 	label := "S03 - Item - TAQ - Shaman - Tank 4P Bonus"
 	if shaman.HasAura(label) {
 		return
 	}
 
-	damageMultiplier := 1.10
-	threatMultiplier := 1.20
-	healthMultiplier := 1.10
+	damageMultiplier := 1.5
+	threatMultiplier := 1.25
+	healthMultiplier := 1.5
 	statDep := shaman.NewDynamicMultiplyStat(stats.Health, healthMultiplier)
 
 	core.MakePermanent(

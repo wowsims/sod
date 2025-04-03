@@ -541,7 +541,7 @@ func (shaman *Shaman) applyWayOfEarth() {
 		return
 	}
 
-	healthDep := shaman.NewDynamicMultiplyStat(stats.Health, 1.3)
+	healthDep := shaman.NewDynamicMultiplyStat(stats.Health, 1.25)
 
 	core.MakePermanent(
 		shaman.RegisterAura(core.Aura{

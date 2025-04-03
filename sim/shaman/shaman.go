@@ -64,6 +64,8 @@ const (
 	ClassSpellMask_ShamanHealingStreamTotem
 	ClassSpellMask_ShamanManaSpringTotem
 
+	ClassSpellMask_ShamanShocks = ClassSpellMask_ShamanEarthShock | ClassSpellMask_ShamanFlameShock | ClassSpellMask_ShamanFrostShock
+
 	// Direct healing spells only. See Tidal Mastery talent
 	ClassSpellMask_ShamanHealingSpell   = ClassSpellMask_ShamanChainHeal | ClassSpellMask_ShamanHealingWave | ClassSpellMask_ShamanLesserHealingWave | ClassSpellMask_ShamanRiptide
 	ClassSpellMask_ShamanLightningSpell = ClassSpellMask_ShamanChainLightning | ClassSpellMask_ShamanLightningBolt | ClassSpellMask_ShamanLightningShield |
