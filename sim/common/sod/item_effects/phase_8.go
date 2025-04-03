@@ -290,42 +290,21 @@ func init() {
 			},
 		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature], 1.20)
 
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(CrimsonCleaver, 1.0, 0)
+
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Crimson Cleaver Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee,
-			PPM:      1.0,
-			ICD:      time.Millisecond * 100,
+			Name:              "Crimson Cleaver Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			DPM:               dpm,
+			ICD:               time.Millisecond * 100,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 				buffAura.SetStacks(sim, buffAura.MaxStacks)
 			},
 		})
 	})
-	// itemhelpers.CreateWeaponProcAura(CrimsonCleaver, "Crimson Cleaver", 1.0, func(character *core.Character) *core.Aura {
-	// 	duration := time.Second * 12
-	// 	icd := core.Cooldown{
-	// 		Timer:    character.NewTimer(),
-	// 		Duration: time.Millisecond * 100,
-	// 	}
-
-	// 	// Confirmed on Wago - Harmful Spells and Melee Specials, plus Can proc from procs
-	// 	procMask := core.ProcMaskMeleeSpecial | core.ProcMaskMeleeDamageProc | core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc
-
-	// 	return character.RegisterAura(core.Aura{
-	// 		ActionID:  core.ActionID{SpellID: 1231456},
-	// 		Label:     "Crimson Crusade",
-	// 		Duration:  duration,
-	// 		MaxStacks: 2,
-	// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 			if spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolNature) && icd.IsReady(sim) {
-	// 				icd.Use(sim)
-	// 				aura.RemoveStack(sim)
-	// 			}
-	// 		},
-	// 	}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature], 1.20)
-	// })
 
 	// https://www.wowhead.com/classic-ptr/item=240922/deception
 	// Equip: 2% chance on melee hit to gain 1 extra attack. (Proc chance: 2%, 100ms cooldown)
@@ -689,42 +668,21 @@ func init() {
 			FloatValue: 1 / 1.20,
 		})
 
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(Mercy, 1.0, 0.00)
+
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:     "Mercy Trigger",
-			Callback: core.CallbackOnSpellHitDealt,
-			Outcome:  core.OutcomeLanded,
-			ProcMask: core.ProcMaskMelee,
-			PPM:      1.0,
-			ICD:      time.Millisecond * 100,
+			Name:              "Mercy Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			DPM:               dpm,
+			ICD:               time.Millisecond * 100,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 				buffAura.SetStacks(sim, buffAura.MaxStacks)
 			},
 		})
 	})
-	// itemhelpers.CreateWeaponProcAura(Mercy, "Mercy", 1.0, func(character *core.Character) *core.Aura {
-	// 	duration := time.Second * 12
-	// 	icd := core.Cooldown{
-	// 		Timer:    character.NewTimer(),
-	// 		Duration: time.Millisecond * 100,
-	// 	}
-
-	// 	// Confirmed on Wago - Harmful Spells and Melee Specials, plus Can proc from procs
-	// 	procMask := core.ProcMaskMeleeSpecial | core.ProcMaskMeleeDamageProc | core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc
-
-	// 	return character.RegisterAura(core.Aura{
-	// 		ActionID:  core.ActionID{SpellID: 1231498},
-	// 		Label:     "Mercy by Fire",
-	// 		Duration:  duration,
-	// 		MaxStacks: 2,
-	// 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-	// 			if spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolFire) && icd.IsReady(sim) {
-	// 				icd.Use(sim)
-	// 				aura.RemoveStack(sim)
-	// 			}
-	// 		},
-	// 	}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.20)
-	// })
 
 	// https://www.wowhead.com/classic-ptr/item=241003/mirage-rod-of-illusion
 	// Equip: Chance on landing a damaging spell to create a Mirage on top of your target that deals arcane damage to nearby enemies for 30 sec. (Proc chance: 10%, 30s cooldown)

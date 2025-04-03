@@ -803,10 +803,11 @@ func (hunter *Hunter) ApplyRegicideHunterEffect(itemID int32, aura *core.Aura) {
 
 	// Apply the Coup debuff to the target hit by melee abilities
 	aura.AttachProcTrigger(core.ProcTrigger{
-		Name:     "Regicide Trigger - Hunter",
-		Callback: core.CallbackOnSpellHitDealt,
-		Outcome:  core.OutcomeLanded,
-		ProcMask: core.ProcMaskMelee,
+		Name:              "Regicide Trigger - Hunter",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee,
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			debuff := debuffAuras.Get(result.Target)
 			debuff.Activate(sim)

@@ -241,7 +241,8 @@ func (warrior *Warrior) ApplyQueensfallWarriorEffect(aura *core.Aura) {
 	})
 }
 
-// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Execute by 10% per stack, stacking up to 20 times. At 20 stacks, Execute may be cast regardless of the target's health.
+// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Execute by 10% per stack, stacking up to 20 times.
+// At 20 stacks, Execute may be cast regardless of the target's health.
 func (warrior *Warrior) ApplyRegicideWarriorEffect(itemID int32, aura *core.Aura) {
 	// Coup debuff array
 	debuffAuras := warrior.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
@@ -282,10 +283,11 @@ func (warrior *Warrior) ApplyRegicideWarriorEffect(itemID int32, aura *core.Aura
 
 	// Apply the Coup debuff to the target hit by melee abilities
 	aura.AttachProcTrigger(core.ProcTrigger{
-		Name:     "Regicide Trigger - Warrior",
-		Callback: core.CallbackOnSpellHitDealt,
-		Outcome:  core.OutcomeLanded,
-		ProcMask: core.ProcMaskMelee,
+		Name:              "Regicide Trigger - Warrior",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee,
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			debuff := debuffAuras.Get(result.Target)
 			debuff.Activate(sim)
