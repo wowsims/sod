@@ -603,7 +603,7 @@ func (paladin *Paladin) applyPaladinT1Ret6P() {
 	})).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  ClassSpellMask_PaladinSeals,
-		FloatValue: 0.55,
+		FloatValue: 0.65,
 	})
 }
 
@@ -647,8 +647,12 @@ func (paladin *Paladin) applyPaladinT2Ret4P() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
 		ClassMask: ClassSpellMask_PaladinJudgement,
-		TimeValue: -2 * time.Second,
-	}))
+		TimeValue: -5 * time.Second,
+	})).AttachSpellMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_PaladinJudgements,
+		IntValue:  -45,
+	})
 }
 
 func (paladin *Paladin) applyPaladinT2Ret6P() {
@@ -700,7 +704,7 @@ func (paladin *Paladin) applyPaladinTAQRet2P() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_PaladinCrusaderStrike,
-		IntValue:  50,
+		IntValue:  150,
 	}))
 }
 
@@ -794,7 +798,7 @@ func (paladin *Paladin) applyPaladinZG5P() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_PaladinExorcism,
-		IntValue:  50,
+		IntValue:  75,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Flat,
 		ClassMask: ClassSpellMask_PaladinExorcism,
