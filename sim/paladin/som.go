@@ -31,22 +31,14 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			flags := spell.Flags
+
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 
-			core.StartDelayedAction(sim, core.DelayedActionOptions{
-				DoAt:     sim.CurrentTime + core.SpellBatchWindow,
-				Priority: core.ActionPriorityLow,
-				OnAction: func(sim *core.Simulation) {
-					currentFlags := spell.Flags
-					spell.Flags = flags
-					spell.DealDamage(sim, result)
-					spell.Flags = currentFlags
-					selfDamage := result.RawDamage() * 0.1
-					paladin.RemoveHealth(sim, selfDamage, healthMetrics)
-				},
-			})
+			spell.DealDamage(sim, result)
+			selfDamage := result.RawDamage() * 0.1
+			paladin.RemoveHealth(sim, selfDamage, healthMetrics)
+
 		},
 	})
 

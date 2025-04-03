@@ -2183,7 +2183,7 @@ func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, au
 	apBuffAura := character.GetOrRegisterAura(Aura{
 		Label:     auraLabel + " Buff",
 		ActionID:  buffActionID,
-		Duration:  time.Millisecond * 1500,
+		Duration:  time.Millisecond * 1510,
 		MaxStacks: 2,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			bonusAP = getBonusAP(aura, rank)
