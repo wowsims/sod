@@ -290,14 +290,13 @@ func init() {
 			},
 		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature], 1.20)
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(CrimsonCleaver, 1.0, 0)
-
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Crimson Cleaver Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee, // Confirmed procs from either hand
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			DPM:               dpm,
+			PPM:               1.0,
 			ICD:               time.Millisecond * 100,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
@@ -668,14 +667,13 @@ func init() {
 			FloatValue: 1 / 1.20,
 		})
 
-		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(Mercy, 1.0, 0.00)
-
 		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
 			Name:              "Mercy Trigger",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee, // Confirmed procs from either hand
 			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			DPM:               dpm,
+			PPM:               1.0,
 			ICD:               time.Millisecond * 100,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
