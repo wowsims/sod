@@ -68,6 +68,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, spellResult *core.SpellResult) {
 			if spell.ProcMask.Matches(rogue.SinisterStrike.ProcMask) && spellResult.Landed() {
+				rogue.RollingWithThePunchesProcAura.Activate(sim)
 				rogue.RollingWithThePunchesProcAura.AddStack(sim)
 			}
 		},
