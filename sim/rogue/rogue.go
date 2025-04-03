@@ -136,6 +136,7 @@ type Rogue struct {
 	cutthroatBonusChance                            float64
 	rollingWithThePunchesBonusHealthStackMultiplier float64
 	rollingWithThePunchesMaxStacks                  int
+	rollingWithThePunchesDamageMultiplier           float64
 	bladeFlurryAttackSpeedBonus                     float64
 	bladeFlurryTargetCount                          int32
 
