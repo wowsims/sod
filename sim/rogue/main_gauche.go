@@ -18,7 +18,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 	mainGaucheAura := rogue.RegisterAura(core.Aura{
 		Label:    "Main Gauche Buff",
 		ActionID: core.ActionID{SpellID: int32(proto.RogueRune_RuneMainGauche)},
-		Duration: time.Second * 10,
+		Duration: time.Second * 5,
 		OnSpellHitTaken: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.ProcMask.Matches(core.ProcMaskMelee|core.ProcMaskRanged) && result.DidParry() {
 				aura.Deactivate(sim)
@@ -29,7 +29,7 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 	mainGaucheSSAura := rogue.RegisterAura(core.Aura{
 		Label:    "Main Gauche Sinister Strike Discount",
 		ActionID: core.ActionID{SpellID: 462752},
-		Duration: time.Second * 30,
+		Duration: time.Second * 20,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			rogue.SinisterStrike.Cost.FlatModifier -= 20
 			rogue.SinisterStrike.ThreatMultiplier *= 1.5
@@ -64,6 +64,12 @@ func (rogue *Rogue) registerMainGaucheSpell() {
 				rogue.QuickDraw.Cost.FlatModifier += 20
 				rogue.QuickDraw.ThreatMultiplier /= 1.5
 				rogue.QuickDraw.ApplyMultiplicativeDamageBonus(1 / 1.5)
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, spellResult *core.SpellResult) {
+			if spell.ProcMask.Matches(rogue.SinisterStrike.ProcMask) && spellResult.Landed() {
+				rogue.RollingWithThePunchesProcAura.Activate(sim)
+				rogue.RollingWithThePunchesProcAura.AddStack(sim)
 			}
 		},
 	})
