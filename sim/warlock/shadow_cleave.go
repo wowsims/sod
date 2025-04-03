@@ -77,7 +77,7 @@ func (warlock *Warlock) registerShadowCleaveSpell() {
 		return
 	}
 
-	warlock.defendersResolveAura = core.DefendersResolveSpellDamage(warlock.GetCharacter(), 2)
+	warlock.defendersResolveAura = core.DefendersResolveSpellDamage(warlock.GetCharacter(), 4)
 
 	warlock.ShadowCleave = make([]*core.Spell, 0)
 	for rank := 1; rank <= ShadowBoltRanks; rank++ {

@@ -11,6 +11,8 @@ func (warlock *Warlock) registerMetamorphosisSpell() {
 		return
 	}
 
+	hpMulti := warlock.NewDynamicMultiplyStat(stats.Health, 1.15)
+
 	actionID := core.ActionID{SpellID: 403789}
 	warlock.MetamorphosisAura = warlock.RegisterAura(core.Aura{
 		Label:    "Metamorphosis Aura",
@@ -19,16 +21,18 @@ func (warlock *Warlock) registerMetamorphosisSpell() {
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.ApplyDynamicEquipScaling(sim, stats.Armor, 6)
 			warlock.ApplyDynamicEquipScaling(sim, stats.BonusArmor, 6)
-			warlock.PseudoStats.DamageDealtMultiplier *= 0.85
+			warlock.EnableDynamicStatDep(sim, hpMulti)
+			warlock.PseudoStats.DamageDealtMultiplier *= 0.90
 			warlock.PseudoStats.ReducedCritTakenChance += 6
-			warlock.PseudoStats.ThreatMultiplier *= 1.77
+			warlock.PseudoStats.ThreatMultiplier *= 1.50
 		},
 		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.RemoveDynamicEquipScaling(sim, stats.Armor, 6)
 			warlock.RemoveDynamicEquipScaling(sim, stats.BonusArmor, 6)
-			warlock.PseudoStats.DamageDealtMultiplier /= 0.85
+			warlock.DisableDynamicStatDep(sim, hpMulti)
+			warlock.PseudoStats.DamageDealtMultiplier /= 0.90
 			warlock.PseudoStats.ReducedCritTakenChance -= 6
-			warlock.PseudoStats.ThreatMultiplier /= 1.77
+			warlock.PseudoStats.ThreatMultiplier /= 1.50
 		},
 	})
 
