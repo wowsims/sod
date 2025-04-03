@@ -504,21 +504,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			autoInProgress := *spell
 			baseDamage := autoInProgress.Unit.MHWeaponDamage(sim, autoInProgress.MeleeAttackPower())
-			result := autoInProgress.CalcDamage(sim, target, baseDamage, autoInProgress.OutcomeMeleeWhite)
-
-			splitIdx := spell.GetMetricsSplitIdx()
-
-			StartDelayedAction(sim, DelayedActionOptions{
-				DoAt: sim.CurrentTime + SpellBatchWindow,
-				OnAction: func(sim *Simulation) {
-					newSplitIdx := autoInProgress.GetMetricsSplitIdx()
-
-					// We have to dynamically update the split metrics to ensure extra attacks' damage are categorized correctly
-					autoInProgress.SetMetricsSplit(splitIdx)
-					autoInProgress.DealDamage(sim, result)
-					autoInProgress.SetMetricsSplit(newSplitIdx)
-				},
-			})
+			autoInProgress.CalcAndDealDamage(sim, target, baseDamage, autoInProgress.OutcomeMeleeWhite)
 		},
 	}
 
