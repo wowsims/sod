@@ -139,7 +139,7 @@ var ItemSetBattlegearOfUnyieldingStrength = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Reduces the cooldown on Shockwave by 50%.
+// Reduces the cooldown on Shockwave by 25%.
 func (warrior *Warrior) applyRAQTank3PBonus() {
 	if !warrior.HasRune(proto.WarriorRune_RuneShockwave) {
 		return
@@ -155,6 +155,6 @@ func (warrior *Warrior) applyRAQTank3PBonus() {
 	})).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_Cooldown_Multi_Flat,
 		ClassMask: ClassSpellMask_WarriorShockwave,
-		IntValue:  -50,
+		IntValue:  -25,
 	})
 }

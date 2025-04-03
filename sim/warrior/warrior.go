@@ -152,8 +152,6 @@ type Warrior struct {
 	CleaveTargetCount                 int32
 	defensiveStanceThreatMultiplier   float64
 	gladiatorStanceDamageMultiplier   float64
-	gladiatorStanceThreatMultiplier   float64
-	gladiatorStanceArmorMultiplier    float64
 	recklessnessDamageTakenMultiplier float64
 
 	DemoralizingShoutAuras core.AuraArray

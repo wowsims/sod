@@ -26,7 +26,7 @@ var ItemSetLightbreakersWarplate = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Increases Heroic Strike, Cleave, and Quick Strike damage by 20%.
+// ncreases Heroic Strike, Cleave, and Quick Strike damage by 20% while in Battle Stance or Berserker Stance.
 // Your Cleave strikes 1 additional target and can trigger Blood Surge.
 func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warrior - Damage 2P Bonus"
@@ -39,12 +39,16 @@ func (warrior *Warrior) applyScarletEnclaveDamage2PBonus() {
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			warrior.CleaveTargetCount += 1
 			warrior.bloodSurgeClassMask |= ClassSpellMask_WarriorCleave
+
+			for _, aura := range []*core.Aura{warrior.BattleStanceAura, warrior.BerserkerStanceAura} {
+				aura.AttachSpellMod(core.SpellModConfig{
+					Kind:      core.SpellMod_DamageDone_Flat,
+					ClassMask: ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorCleave | ClassSpellMask_WarriorQuickStrike,
+					IntValue:  20,
+				})
+			}
 		},
-	})).AttachSpellMod(core.SpellModConfig{
-		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_WarriorHeroicStrike | ClassSpellMask_WarriorCleave | ClassSpellMask_WarriorQuickStrike,
-		IntValue:  20,
-	})
+	}))
 }
 
 // Each time you hit a target with Whirlwind, Heroic Strike, Quick Strike, or Cleave, the damage of your next Slam is increased by 20%, stacking up to 5 times.
@@ -143,7 +147,7 @@ var ItemSetLightbreakersBattlegear = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Shockwave deals 100% increased damage and its cooldown is reduced by 2.0 sec each time you hit a target with Heroic Strike, Quick Strike, or Cleave.
+// Your Shockwave deals 35% increased damage and its cooldown is reduced by 2.0 sec each time you hit a target with Heroic Strike, Quick Strike, or Cleave.
 func (warrior *Warrior) applyScarletEnclaveProtection2PBonus() {
 	if !warrior.HasRune(proto.WarriorRune_RuneShockwave) {
 		return
@@ -165,7 +169,7 @@ func (warrior *Warrior) applyScarletEnclaveProtection2PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_WarriorShockwave,
-		IntValue:  100,
+		IntValue:  35,
 	})
 }
 
@@ -212,7 +216,7 @@ func (warrior *Warrior) applyScarletEnclaveProtection4PBonus() {
 	})
 }
 
-// Gladiator Stance no longer reduces your Armor or Threat, and instead increases threat by 30%.
+// Your abilities no longer have stance requirements.
 // In addition, each time your Revenge, Devastate, or Shield Slam hits, the damage done by your next Whirlwind or Execute is increased by 20%, stacking up to 5 times.
 func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Warrior - Protection 6P Bonus"
@@ -243,6 +247,7 @@ func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
 		},
 	})
 
+	var stanceOverrideEE *core.ExclusiveEffect
 	aura := core.MakeProcTriggerAura(&warrior.Unit, core.ProcTrigger{
 		Name:           label,
 		Callback:       core.CallbackOnSpellHitDealt,
@@ -252,14 +257,13 @@ func (warrior *Warrior) applyScarletEnclaveProtection6PBonus() {
 			buffAura.Activate(sim)
 			buffAura.AddStack(sim)
 		},
+	}).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+		stanceOverrideEE.Activate(sim)
+	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+		stanceOverrideEE.Deactivate(sim)
 	})
 
-	if warrior.HasRune(proto.WarriorRune_RuneGladiatorStance) {
-		aura.ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
-			warrior.gladiatorStanceThreatMultiplier = 1.30
-			warrior.gladiatorStanceArmorMultiplier = 1
-		})
-	}
+	stanceOverrideEE = warrior.newStanceOverrideExclusiveEffect(AnyStance, aura)
 }
 
 // If Cleave hits fewer than its maximum number of targets, it deals 25% more damage for each unused bounce.
