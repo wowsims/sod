@@ -166,7 +166,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0.29791
-  weights: 2.63935
+  weights: 2.63883
   weights: 2.29094
   weights: 0
   weights: 0
@@ -302,8 +302,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 288.44645
-  tps: 204.79698
+  dps: 288.44774
+  tps: 204.7979
  }
 }
 dps_results: {
@@ -351,15 +351,15 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Phase1-Lvl25-Settings-Orc-p1_daggers-No Poisons-mutilate-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 282.25975
-  tps: 200.40442
+  dps: 282.26208
+  tps: 200.40608
  }
 }
 dps_results: {
  key: "TestAssassination-Phase1-Lvl25-Settings-Orc-p1_daggers-No Poisons-mutilate-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 282.25975
-  tps: 200.40442
+  dps: 282.26208
+  tps: 200.40608
  }
 }
 dps_results: {
@@ -393,8 +393,8 @@ dps_results: {
 dps_results: {
  key: "TestAssassination-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 276.05014
-  tps: 195.9956
+  dps: 276.05392
+  tps: 195.99828
  }
 }
 dps_results: {
