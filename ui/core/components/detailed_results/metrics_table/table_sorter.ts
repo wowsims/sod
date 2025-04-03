@@ -19,15 +19,17 @@ export class TableSorter {
 	private sortDesc: Array<boolean>;
 
 	constructor(config: TableSorterConfig) {
+		if (config.tableHead.cells[config.defaultSortCol] === undefined) throw new Error('Default sort column must be a valid header cell index!');
+
         this.cfg = config;
 
 		this.sortCol = this.cfg.defaultSortCol;
 		this.sortDesc = Array(config.tableHead.cells.length).fill(true);
-        this.sortDesc[config.defaultSortCol] = config.defaultSortDesc;
+		this.sortDesc[config.defaultSortCol] = config.defaultSortDesc;
 
-		for (let i = 0; i < config.tableHead.cells.length; i++) {
-			config.tableHead.cells[i].addEventListener('click', () => this.setSort(i));
-		}
+		Array.from(config.tableHead.cells).forEach((cell, i) => {
+			cell.addEventListener('click', () => this.setSort(i));
+		});
 	}
 
 	private sortFunc = (a: TableSorterRowData, b: TableSorterRowData) => {
@@ -42,32 +44,28 @@ export class TableSorter {
 	};
 
 	private sort() {
-		if (this.rowData.length === 0) return;
-		if (typeof this.rowData[0].values[this.sortCol] === 'undefined') return;
+		if (!this.rowData.length || !(this.sortCol in this.rowData[0].values)) return;
+
+		const sortedRowElems: Array<HTMLTableRowElement> = [];
 
 		this.rowData.sort(this.sortFunc);
 		for (const row of this.rowData) {
-			if (row.children) row.children.sort(this.sortFunc);
-		}
-
-        const body = this.cfg.tableBody;
-		body.innerHTML = '';
-		for (const row of this.rowData) {
-			body.appendChild(row.rowElement);
+			sortedRowElems.push(row.rowElement);
 			if (row.children) {
-				for (const childRow of row.children) {
-					body.appendChild(childRow.rowElement);
-				}
+				row.children.sort(this.sortFunc);
+				sortedRowElems.push(...row.children.map(v => v.rowElement));
 			}
 		}
+
+		this.cfg.tableBody.replaceChildren(...sortedRowElems);
 	}
 
 	/**
 	 * Set column to sort by. If set to the current sort column the order will be reversed.
 	 * @param column If omitted use default column.
 	 */
-	setSort(column?: number) {
-		if (typeof column !== 'number') column = this.cfg.defaultSortCol;
+	setSort(column = -1) {
+		if (this.sortDesc[column] === undefined) column = this.cfg.defaultSortCol;
 		this.sortDesc[column] = !this.sortDesc[column];
 		this.sortCol = column;
 		this.sort();
@@ -95,7 +93,7 @@ export class TableSorter {
 				this.rowData.push({ values, rowElement });
 			} else {
 				const parentData = this.rowData[this.rowData.length - 1];
-				if (!parentData) throw new Error("Child row has no parent!");
+				if (!parentData) throw new Error('Child row has no parent!');
 				if (!parentData.children) parentData.children = [];
 				parentData.children.push({ values, rowElement });
 			}
