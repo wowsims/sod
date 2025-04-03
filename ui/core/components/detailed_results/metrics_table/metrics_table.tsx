@@ -8,8 +8,6 @@ import { TypedEvent } from '../../../typed_event';
 import { ResultComponent, ResultComponentConfig, SimResultData } from '../result_component';
 import { TableSorter } from './table_sorter';
 
-// declare let $: any;
-
 export enum ColumnSortType {
 	None,
 	Ascending,
