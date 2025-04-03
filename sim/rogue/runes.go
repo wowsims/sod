@@ -361,7 +361,7 @@ func (rogue *Rogue) applyRollingWithThePunches() {
 		return
 	}
 
-	rogue.rollingWithThePunchesBonusHealthStackMultiplier += 0.06
+	rogue.rollingWithThePunchesBonusHealthStackMultiplier += 0.05
 	rogue.rollingWithThePunchesMaxStacks += 5
 	statDeps := make([]*stats.StatDependency, rogue.rollingWithThePunchesMaxStacks+1) // amount of possible stacks + zero condition
 	for i := 1; i < rogue.rollingWithThePunchesMaxStacks+1; i++ {
