@@ -221,7 +221,7 @@ func (rogue *Rogue) applyScarletEnclaveTank6PBonus() {
 			rogue.RollingWithThePunchesProcAura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
 				if newStacks == 5 {
 					energyAura.Activate(sim)
-				} else if newStacks < 5 && oldStacks == 5 {
+				} else if oldStacks == 5 {
 					energyAura.Deactivate(sim)
 				}
 			})
