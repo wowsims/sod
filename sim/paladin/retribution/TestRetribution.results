@@ -491,12 +491,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase4-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.19233
-  weights: 1.39846
+  weights: 2.27439
+  weights: 1.4082
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.36557
+  weights: 0.37258
   weights: 0
   weights: 0
   weights: 0
@@ -504,16 +504,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 5.76541
+  weights: 5.7073
   weights: 0.75751
   weights: 0
   weights: 0
-  weights: 0.78776
-  weights: 2.27379
-  weights: 24.22749
+  weights: 0.81724
+  weights: 2.32906
+  weights: 24.71329
   weights: 0
   weights: 0
-  weights: 38.62342
+  weights: 41.31493
   weights: 0
   weights: 0
   weights: 0
@@ -540,12 +540,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 3.1084
-  weights: 2.11946
+  weights: 3.26454
+  weights: 2.43997
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.43931
+  weights: 0.47231
   weights: 0
   weights: 0
   weights: 0
@@ -553,16 +553,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 8.11835
-  weights: 0.41735
+  weights: 9.44082
+  weights: 0.56493
   weights: 0
   weights: 0
-  weights: 1.0629
-  weights: 3.6089
-  weights: 33.72347
+  weights: 1.12842
+  weights: 2.77598
+  weights: 36.9686
   weights: 0
   weights: 0
-  weights: 61.33294
+  weights: 64.45262
   weights: 0
   weights: 0
   weights: 0
@@ -589,12 +589,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase6-Lvl60-StatWeights-Default"
  value: {
-  weights: 3.2036
-  weights: 2.19705
+  weights: 3.67513
+  weights: 2.6607
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.43864
+  weights: 0.46958
   weights: 0
   weights: 0
   weights: 0
@@ -602,13 +602,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 7.19715
-  weights: 0.45727
+  weights: 7.79043
+  weights: 0.58367
   weights: 0
   weights: 0
-  weights: 1.15773
-  weights: 3.94501
-  weights: 39.4552
+  weights: 1.32607
+  weights: 4.38444
+  weights: 46.62192
   weights: 0
   weights: 0
   weights: 0
@@ -638,12 +638,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase7-Lvl60-StatWeights-Default"
  value: {
-  weights: 3.95195
-  weights: 3.11815
+  weights: 4.17941
+  weights: 3.28104
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.44802
+  weights: 0.48129
   weights: 0
   weights: 0
   weights: 0
@@ -651,13 +651,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 12.66939
-  weights: 0.46837
+  weights: 15.94712
+  weights: 0.85955
   weights: 0
   weights: 0
-  weights: 1.42003
+  weights: 1.50177
   weights: 0
-  weights: 46.04676
+  weights: 50.50387
   weights: 0
   weights: 0
   weights: 0
@@ -1060,9 +1060,9 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 3197.64378
-  tps: 2538.87694
-  hps: 48.74382
+  dps: 3308.1002
+  tps: 2624.36395
+  hps: 48.73905
  }
 }
 dps_results: {
@@ -1248,181 +1248,181 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 6366.00681
-  tps: 6224.18664
-  hps: 50.79673
+  dps: 6477.004
+  tps: 6320.07096
+  hps: 50.78657
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3087.36048
-  tps: 2450.21687
-  hps: 48.96267
+  dps: 3193.35207
+  tps: 2532.34259
+  hps: 48.9525
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3121.76181
-  tps: 2475.3884
+  dps: 3226.90705
+  tps: 2556.85272
   hps: 48.8
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2083.86661
-  tps: 2280.92557
+  dps: 2210.73726
+  tps: 2417.6397
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1011.43481
-  tps: 814.0555
+  dps: 1064.50037
+  tps: 856.72837
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1316.70542
-  tps: 1059.6303
+  dps: 1343.89336
+  tps: 1081.43947
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 418.31772
-  tps: 498.6398
-  hps: 2.99917
+  dps: 419.66657
+  tps: 502.29362
+  hps: 2.91783
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 288.30708
-  tps: 231.65984
-  hps: 2.99917
+  dps: 290.32567
+  tps: 233.37586
+  hps: 2.91783
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 499.17285
-  tps: 395.61208
+  dps: 509.48149
+  tps: 403.67739
   hps: 6.35417
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 133.1444
-  tps: 196.40996
+  dps: 138.31846
+  tps: 202.94957
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 93.91268
-  tps: 77.28336
+  dps: 97.23874
+  tps: 79.9538
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 231.31182
-  tps: 182.50047
+  dps: 236.16521
+  tps: 186.40805
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 6848.18443
-  tps: 6656.29231
-  hps: 50.03627
+  dps: 6960.1043
+  tps: 6753.57533
+  hps: 50.0261
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3120.03184
-  tps: 2478.87946
-  hps: 48.94233
+  dps: 3233.0468
+  tps: 2566.42156
+  hps: 48.9525
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3237.62663
-  tps: 2568.97909
+  dps: 3349.12865
+  tps: 2655.2054
   hps: 50.02
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2230.07137
-  tps: 2403.748
+  dps: 2334.43227
+  tps: 2517.49889
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1064.01314
-  tps: 855.84651
+  dps: 1105.35781
+  tps: 889.0641
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1295.31506
-  tps: 1043.38425
+  dps: 1348.72603
+  tps: 1086.32216
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 3515.39051
-  tps: 3279.8293
-  hps: 20.62613
+  dps: 3524.61312
+  tps: 3291.85054
+  hps: 20.6363
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1703.5296
-  tps: 1342.55776
-  hps: 19.81483
+  dps: 1708.15228
+  tps: 1346.20248
+  hps: 19.77417
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1844.41455
-  tps: 1451.74917
+  dps: 1852.89852
+  tps: 1458.42876
   hps: 21.472
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1257.45927
-  tps: 1290.58839
+  dps: 1260.79388
+  tps: 1296.17925
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 630.88124
-  tps: 503.06656
+  dps: 632.58035
+  tps: 504.47819
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Dwarf-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 692.99656
-  tps: 549.42302
+  dps: 696.16591
+  tps: 552.01574
  }
 }
 dps_results: {
@@ -1608,188 +1608,188 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 6502.48714
-  tps: 6335.05719
+  dps: 6617.92296
+  tps: 6435.09136
   hps: 51.51653
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3145.65554
-  tps: 2495.15211
-  hps: 49.08873
+  dps: 3253.47791
+  tps: 2578.69601
+  hps: 49.0989
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3189.85882
-  tps: 2527.56586
+  dps: 3295.70996
+  tps: 2609.55261
   hps: 49.0135
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2125.74682
-  tps: 2316.41251
+  dps: 2278.26582
+  tps: 2478.53468
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1049.95219
-  tps: 844.339
+  dps: 1093.30331
+  tps: 878.95642
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p4-twisting-6pcT1-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1351.47444
-  tps: 1086.50273
+  dps: 1379.55413
+  tps: 1109.25293
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 422.07539
-  tps: 501.57324
-  hps: 3.0195
+  dps: 421.40386
+  tps: 501.4107
+  hps: 2.8975
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 293.62692
-  tps: 235.71122
-  hps: 3.0195
+  dps: 291.83459
+  tps: 234.38451
+  hps: 2.8975
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 509.92578
-  tps: 403.82077
+  dps: 520.43893
+  tps: 412.03762
   hps: 6.405
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 137.52466
-  tps: 200.22847
+  dps: 138.64824
+  tps: 202.23411
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 96.28263
-  tps: 79.11138
+  dps: 99.18826
+  tps: 81.37904
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist Stopattack-p5p6p7-twist-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 236.68637
-  tps: 186.58346
+  dps: 241.51533
+  tps: 190.46913
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 6979.15816
-  tps: 6763.73426
+  dps: 7093.97785
+  tps: 6864.04323
   hps: 50.51207
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 3229.52729
-  tps: 2563.00612
+  dps: 3342.53717
+  tps: 2650.52807
   hps: 49.3856
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 3332.33869
-  tps: 2642.32238
+  dps: 3447.04119
+  tps: 2731.01654
   hps: 50.33517
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2283.91658
-  tps: 2447.64161
+  dps: 2406.06321
+  tps: 2583.34276
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1099.43856
-  tps: 883.52789
+  dps: 1136.15671
+  tps: 912.47228
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p4-twisting-6pcT1-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1344.28457
-  tps: 1081.48786
+  dps: 1383.26927
+  tps: 1113.26124
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 3594.99702
-  tps: 3340.55764
-  hps: 20.77457
+  dps: 3616.34687
+  tps: 3365.05938
+  hps: 20.7644
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1773.88375
-  tps: 1396.80458
-  hps: 19.87177
+  dps: 1779.04399
+  tps: 1400.8115
+  hps: 19.8616
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 1929.06884
-  tps: 1517.18662
+  dps: 1937.7943
+  tps: 1524.0732
   hps: 21.82783
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 1289.22269
-  tps: 1315.28238
+  dps: 1292.99015
+  tps: 1321.31282
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 657.09245
-  tps: 523.14856
+  dps: 660.93453
+  tps: 526.24471
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-Settings-Human-p4-twisting-6pcT1-P4 Twist-p5p6p7-twist-NoBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 721.73273
-  tps: 571.64841
+  dps: 724.86188
+  tps: 574.19466
  }
 }
 dps_results: {
  key: "TestRetribution-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2646.65322
-  tps: 2108.72497
+  dps: 2725.37152
+  tps: 2170.19525
   hps: 37.59837
  }
 }
@@ -1820,9 +1820,9 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 3117.26718
-  tps: 2446.47898
-  hps: 48.72883
+  dps: 3449.88122
+  tps: 2711.29341
+  hps: 60.31273
  }
 }
 dps_results: {
@@ -1836,107 +1836,107 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4478.33959
-  tps: 3512.70014
-  hps: 56.26309
+  dps: 4845.46832
+  tps: 3803.84083
+  hps: 67.48844
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Dwarf-p5-twisting-P5 Twist-p5p6p7-twist-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 7229.33395
-  tps: 6884.6245
-  hps: 57.25257
+  dps: 7735.45966
+  tps: 7429.37511
+  hps: 67.76897
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Dwarf-p5-twisting-P5 Twist-p5p6p7-twist-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 4390.17501
-  tps: 3442.98749
-  hps: 55.94513
+  dps: 4714.29319
+  tps: 3702.32965
+  hps: 67.15693
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Dwarf-p5-twisting-P5 Twist-p5p6p7-twist-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 4729.32648
-  tps: 3710.62667
-  hps: 59.64783
+  dps: 5047.28777
+  tps: 3964.50208
+  hps: 70.99383
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Dwarf-p5-twisting-P5 Twist-p5p6p7-twist-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 2503.19093
-  tps: 2736.00029
+  dps: 2605.2685
+  tps: 2872.72115
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Dwarf-p5-twisting-P5 Twist-p5p6p7-twist-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1489.22238
-  tps: 1184.15977
+  dps: 1566.25874
+  tps: 1246.88892
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Dwarf-p5-twisting-P5 Twist-p5p6p7-twist-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 1653.46021
-  tps: 1311.10093
+  dps: 1700.88631
+  tps: 1350.96585
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Human-p5-twisting-P5 Twist-p5p6p7-twist-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 7356.17048
-  tps: 6983.60028
-  hps: 58.49493
+  dps: 7962.69556
+  tps: 7617.89113
+  hps: 69.51153
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Human-p5-twisting-P5 Twist-p5p6p7-twist-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 4564.31
-  tps: 3578.17852
-  hps: 57.1265
+  dps: 4942.9626
+  tps: 3879.74009
+  hps: 68.76123
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Human-p5-twisting-P5 Twist-p5p6p7-twist-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 4900.73315
-  tps: 3843.4482
-  hps: 60.89833
+  dps: 5216.46213
+  tps: 4094.47354
+  hps: 72.346
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Human-p5-twisting-P5 Twist-p5p6p7-twist-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 2623.48838
-  tps: 2856.74401
+  dps: 2758.54966
+  tps: 3018.90561
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Human-p5-twisting-P5 Twist-p5p6p7-twist-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1588.10599
-  tps: 1261.53924
+  dps: 1669.20288
+  tps: 1326.9009
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-Settings-Human-p5-twisting-P5 Twist-p5p6p7-twist-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 1754.13475
-  tps: 1389.72231
+  dps: 1836.68484
+  tps: 1456.50716
  }
 }
 dps_results: {
  key: "TestRetribution-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3636.39412
-  tps: 2859.64641
-  hps: 44.95293
+  dps: 3981.08635
+  tps: 3133.68761
+  hps: 55.91667
  }
 }
 dps_results: {
@@ -1987,121 +1987,121 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 5226.07243
-  tps: 4090.10272
-  dtps: 2.94823
-  hps: 60.71673
+  dps: 5922.86164
+  tps: 4633.51386
+  dtps: 2.93055
+  hps: 71.64479
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Dwarf-p6-twisting-P6 Twist-p5p6p7-twist-FullBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 8192.74507
-  tps: 7645.70207
+  dps: 9018.6993
+  tps: 8423.3268
   dtps: 2.85677
-  hps: 62.50467
+  hps: 73.03733
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Dwarf-p6-twisting-P6 Twist-p5p6p7-twist-FullBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 5242.40222
-  tps: 4101.23329
+  dps: 5961.52479
+  tps: 4663.03465
   dtps: 2.84154
-  hps: 61.05897
+  hps: 71.76447
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Dwarf-p6-twisting-P6 Twist-p5p6p7-twist-FullBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 5653.45536
-  tps: 4422.8433
+  dps: 6377.24119
+  tps: 4985.77274
   dtps: 14.20768
-  hps: 62.96217
+  hps: 75.37567
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Dwarf-p6-twisting-P6 Twist-p5p6p7-twist-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 3162.07832
-  tps: 3292.42759
+  dps: 3512.56194
+  tps: 3686.15145
   dtps: 2.60688
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Dwarf-p6-twisting-P6 Twist-p5p6p7-twist-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 2061.5227
-  tps: 1628.2949
+  dps: 2330.43613
+  tps: 1840.97885
   dtps: 2.54095
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Dwarf-p6-twisting-P6 Twist-p5p6p7-twist-NoBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 2358.29939
-  tps: 1869.01754
+  dps: 2575.17547
+  tps: 2039.21553
   dtps: 12.70473
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Human-p6-twisting-P6 Twist-p5p6p7-twist-FullBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 8192.1776
-  tps: 7644.78088
+  dps: 9024.13949
+  tps: 8427.13972
   dtps: 2.85677
-  hps: 62.50467
+  hps: 73.03733
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Human-p6-twisting-P6 Twist-p5p6p7-twist-FullBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 5243.48005
-  tps: 4102.18337
+  dps: 5965.07774
+  tps: 4665.7256
   dtps: 2.84154
-  hps: 61.0488
+  hps: 71.76447
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Human-p6-twisting-P6 Twist-p5p6p7-twist-FullBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 5653.95409
-  tps: 4423.17986
+  dps: 6378.94655
+  tps: 4987.03844
   dtps: 14.20768
-  hps: 62.96217
+  hps: 75.37567
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Human-p6-twisting-P6 Twist-p5p6p7-twist-NoBuffs-P6-Consumes-LongMultiTarget"
  value: {
-  dps: 3171.79711
-  tps: 3312.93907
+  dps: 3518.42083
+  tps: 3703.08249
   dtps: 2.60688
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Human-p6-twisting-P6 Twist-p5p6p7-twist-NoBuffs-P6-Consumes-LongSingleTarget"
  value: {
-  dps: 2079.82256
-  tps: 1643.79374
+  dps: 2334.28249
+  tps: 1844.16473
   dtps: 2.54095
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-Settings-Human-p6-twisting-P6 Twist-p5p6p7-twist-NoBuffs-P6-Consumes-ShortSingleTarget"
  value: {
-  dps: 2360.06967
-  tps: 1870.36355
+  dps: 2578.65023
+  tps: 2041.87319
   dtps: 12.70473
  }
 }
 dps_results: {
  key: "TestRetribution-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4750.8837
-  tps: 3720.61578
+  dps: 5404.36729
+  tps: 4230.55039
   dtps: 2.71732
-  hps: 53.8813
+  hps: 64.63153
  }
 }
 dps_results: {
@@ -2131,9 +2131,9 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 3626.21981
-  tps: 2837.25098
-  hps: 51.61413
+  dps: 3978.37316
+  tps: 3115.61274
+  hps: 58.9382
  }
 }
 dps_results: {
@@ -2147,106 +2147,106 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Average-Default"
  value: {
-  dps: 6507.02086
-  tps: 5076.51699
-  hps: 70.77065
+  dps: 6937.87796
+  tps: 5416.82411
+  hps: 83.85104
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Dwarf-p7-twisting-naxx-P7 Twist-p5p6p7-twist-FullBuffs-P7-Consumes-TwistStack-LongMultiTarget"
  value: {
-  dps: 11390.46911
-  tps: 10135.82164
-  hps: 73.64733
+  dps: 12039.47491
+  tps: 10802.21924
+  hps: 86.52037
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Dwarf-p7-twisting-naxx-P7 Twist-p5p6p7-twist-FullBuffs-P7-Consumes-TwistStack-LongSingleTarget"
  value: {
-  dps: 6604.97868
-  tps: 5153.22563
-  hps: 71.63027
+  dps: 6999.86425
+  tps: 5463.92989
+  hps: 85.06043
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Dwarf-p7-twisting-naxx-P7 Twist-p5p6p7-twist-FullBuffs-P7-Consumes-TwistStack-ShortSingleTarget"
  value: {
-  dps: 6925.77962
-  tps: 5405.49805
-  hps: 73.64733
+  dps: 7364.88662
+  tps: 5754.37279
+  hps: 86.93517
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Dwarf-p7-twisting-naxx-P7 Twist-p5p6p7-twist-NoBuffs-P7-Consumes-TwistStack-LongMultiTarget"
  value: {
-  dps: 4422.12313
-  tps: 4318.61177
+  dps: 4691.51503
+  tps: 4664.83951
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Dwarf-p7-twisting-naxx-P7 Twist-p5p6p7-twist-NoBuffs-P7-Consumes-TwistStack-LongSingleTarget"
  value: {
-  dps: 2634.96174
-  tps: 2071.68345
+  dps: 2817.9073
+  tps: 2219.65544
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Dwarf-p7-twisting-naxx-P7 Twist-p5p6p7-twist-NoBuffs-P7-Consumes-TwistStack-ShortSingleTarget"
  value: {
-  dps: 2864.6228
-  tps: 2252.99523
+  dps: 3033.64457
+  tps: 2390.56264
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Human-p7-twisting-naxx-P7 Twist-p5p6p7-twist-FullBuffs-P7-Consumes-TwistStack-LongMultiTarget"
  value: {
-  dps: 11399.37073
-  tps: 10142.56417
-  hps: 73.64733
+  dps: 12050.76006
+  tps: 10810.66203
+  hps: 86.52037
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Human-p7-twisting-naxx-P7 Twist-p5p6p7-twist-FullBuffs-P7-Consumes-TwistStack-LongSingleTarget"
  value: {
-  dps: 6610.62414
-  tps: 5157.37821
-  hps: 71.63027
+  dps: 7000.31182
+  tps: 5464.1211
+  hps: 85.06043
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Human-p7-twisting-naxx-P7 Twist-p5p6p7-twist-FullBuffs-P7-Consumes-TwistStack-ShortSingleTarget"
  value: {
-  dps: 6928.13655
-  tps: 5407.26284
-  hps: 73.64733
+  dps: 7369.51097
+  tps: 5757.87578
+  hps: 86.93517
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Human-p7-twisting-naxx-P7 Twist-p5p6p7-twist-NoBuffs-P7-Consumes-TwistStack-LongMultiTarget"
  value: {
-  dps: 4424.49238
-  tps: 4320.00653
+  dps: 4694.93788
+  tps: 4666.89835
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Human-p7-twisting-naxx-P7 Twist-p5p6p7-twist-NoBuffs-P7-Consumes-TwistStack-LongSingleTarget"
  value: {
-  dps: 2636.68875
-  tps: 2072.8995
+  dps: 2819.35038
+  tps: 2220.70761
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-Settings-Human-p7-twisting-naxx-P7 Twist-p5p6p7-twist-NoBuffs-P7-Consumes-TwistStack-ShortSingleTarget"
  value: {
-  dps: 2866.91665
-  tps: 2254.75645
+  dps: 3036.06276
+  tps: 2392.39852
  }
 }
 dps_results: {
  key: "TestRetribution-Phase7-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5882.47208
-  tps: 4591.14643
-  hps: 62.82593
+  dps: 6308.21613
+  tps: 4929.99382
+  hps: 75.22723
  }
 }
