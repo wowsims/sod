@@ -162,7 +162,7 @@ func (shaman *Shaman) applyScarletEnclaveElemental6PBonus() {
 	})).AttachSpellMod(core.SpellModConfig{
 		ClassMask:  ClassSpellMask_ShamanChainLightning,
 		Kind:       core.SpellMod_DamageDone_Pct,
-		FloatValue: 1 + (0.35 * float64(3-numTargets)),
+		FloatValue: 1 + max(0, 0.35*float64(3-numTargets)),
 	})
 }
 
