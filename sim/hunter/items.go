@@ -740,7 +740,7 @@ func newBestialFocusAura(unit *core.Unit, spellID int32) *core.Aura {
 		Duration:  time.Second * 20,
 		MaxStacks: 5,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			aura.Unit.PseudoStats.DamageDealtMultiplier *= ((1.0 + (0.05 * float64(newStacks))) / (1.0 + (0.05 * float64(oldStacks))))
+			aura.Unit.PseudoStats.DamageDealtMultiplier *= ((1.0 + (0.04 * float64(newStacks))) / (1.0 + (0.04 * float64(oldStacks))))
 		},
 	})
 }
