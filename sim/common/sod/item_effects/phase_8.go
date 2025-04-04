@@ -1052,7 +1052,6 @@ func init() {
 		}).AttachStatBuff(stats.Defense, 20).AttachMultiplyMeleeSpeed(&character.Unit, 1.10)
 
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			ActionID:   core.ActionID{SpellID: 1231267},
 			Name:       "En Garde!",
 			Callback:   core.CallbackOnCastComplete,
 			ProcMask:   core.ProcMaskRangedAuto,
