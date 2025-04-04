@@ -24,6 +24,7 @@ const (
 	Caladbolg                = 238961
 	WillOfTheMountain        = 239060
 	HighCommandersGuard      = 240841
+	StartersPistol           = 240843
 	LightfistHammer          = 240850
 	Regicide                 = 240851
 	CrimsonCleaver           = 240852
@@ -1037,6 +1038,30 @@ func init() {
 		})
 
 		character.ItemSwap.RegisterActive(SoporificBlade)
+	})
+
+	// https://www.wowhead.com/classic-ptr/item=240843/starters-pistol
+	// Equip: Firing a regular ranged attack at a target prepares you for battle, increasing your Defense by 20 and melee attack speed by 10% for 15 sec.
+	core.NewItemEffect(StartersPistol, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1231266},
+			Label:    "En Garde!",
+			Duration: time.Second * 15,
+		}).AttachStatBuff(stats.Defense, 20).AttachMultiplyMeleeSpeed(&character.Unit, 1.10)
+
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:       "En Garde!",
+			Callback:   core.CallbackOnCastComplete,
+			ProcMask:   core.ProcMaskRangedAuto,
+			ProcChance: 1,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.ItemSwap.RegisterProc(StartersPistol, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241068/stiltzs-standard
