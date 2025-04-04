@@ -1,6 +1,7 @@
 package rogue
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -54,6 +55,7 @@ func (rogue *Rogue) applyScarletEnclaveDamage2PBonus() {
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			totalBleedsAndPoisons := rogue.PoisonsActive[rogue.CurrentTarget.UnitIndex] + rogue.BleedsActive[rogue.CurrentTarget.UnitIndex]
 
+			fmt.Println("Stack Count: ", totalBleedsAndPoisons)
 			// Only apply the damage mod up to 3 times for the 60% bonus maximum
 			damageMod.UpdateFloatValue(1 + 0.20*float64(min(3, totalBleedsAndPoisons)))
 			damageMod.Activate()
