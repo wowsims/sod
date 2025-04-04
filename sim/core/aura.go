@@ -22,7 +22,6 @@ type OnRefresh func(aura *Aura, sim *Simulation)
 type OnExpire func(aura *Aura, sim *Simulation)
 type OnStacksChange func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32)
 type OnStatsChange func(aura *Aura, sim *Simulation, oldStats stats.Stats, newStats stats.Stats)
-type IsEnabledInSettings func(aura *Aura, sim *Simulation)
 
 // Callback for after a spell hits the target and after damage is calculated. Use it for proc effects
 // or anything that comes from the final result of the spell.
@@ -123,7 +122,7 @@ type Aura struct {
 	initialized bool
 
 	// P8 Sebacious Poison fix
-	IsEnabledInSettings IsEnabledInSettings
+	IsEnabledInSettings bool
 }
 
 func (aura *Aura) init(sim *Simulation) {
@@ -439,6 +438,13 @@ func (aura *Aura) ApplyOnPeriodicDamageDealt(newOnPeriodicDamageDealt OnPeriodic
 			newOnPeriodicDamageDealt(aura, sim, spell, result)
 		}
 	}
+
+	return aura
+}
+
+// TODO: working on fixing p8 bonus applying to Sebacious in Settings>Debuffs
+func (aura *Aura) ApplyIsEnabledInSettings() *Aura {
+	aura.IsEnabledInSettings = true
 
 	return aura
 }
