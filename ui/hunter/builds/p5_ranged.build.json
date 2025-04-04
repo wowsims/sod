@@ -1,0 +1,203 @@
+{
+    "raidBuffs": {
+      "giftOfTheWild": "TristateEffectImproved",
+      "powerWordFortitude": "TristateEffectImproved",
+      "strengthOfEarthTotem": "TristateEffectImproved",
+      "graceOfAirTotem": "TristateEffectImproved",
+      "arcaneBrilliance": true,
+      "divineSpirit": true,
+      "battleShout": "TristateEffectImproved",
+      "trueshotAura": true,
+      "leaderOfThePack": true,
+      "manaSpringTotem": "TristateEffectImproved",
+      "demonicPact": 150,
+      "aspectOfTheLion": true,
+      "commandingShout": true
+    },
+    "debuffs": {
+      "faerieFire": true,
+      "markOfChaos": true,
+      "occultPoison": true,
+      "improvedScorch": true,
+      "stormstrike": true,
+      "exposeArmor": "TristateEffectImproved",
+      "curseOfRecklessness": true,
+      "huntersMark": "TristateEffectImproved",
+      "mangle": true,
+      "giftOfArthas": true
+    },
+    "partyBuffs": {
+    },
+    "player": {
+      "name": "Player",
+      "race": "RaceOrc",
+      "level": 60,
+      "class": "ClassHunter",
+      "equipment": {
+        "items": [
+          {"id":231059,"enchant":7617,"rune":415413},
+          {"id":231803},
+          {"id":231057,"enchant":2606},
+          {"id":228290,"enchant":849,"rune":440529},
+          {"id":231062,"enchant":1891,"rune":415370},
+          {"id":231055,"enchant":247,"rune":428717},
+          {"id":230859,"enchant":1887,"rune":409433},
+          {"id":231056,"rune":409504},
+          {"id":231058,"enchant":7617,"rune":415399},
+          {"id":231061,"enchant":1887,"rune":409541},
+          {"id":230921,"rune":442894},
+          {"id":230734,"rune":442891},
+          {"id":227990},
+          {"id":13965},
+          {"id":231823,"enchant":2646},
+          {},
+          {"id":230801,"enchant":664}
+        ]
+      },
+      "consumes": {
+        "flask": "FlaskOfAncientKnowledge",
+        "food": "FoodGrilledSquid",
+        "agilityElixir": "ElixirOfTheHoneyBadger",
+        "manaRegenElixir": "MagebloodPotion",
+        "strengthBuff": "JujuPower",
+        "attackPowerBuff": "JujuMight",
+        "spellPowerBuff": "ElixirOfTheMageLord",
+        "mainHandImbue": "BrilliantWizardOil",
+        "defaultPotion": "MajorManaPotion",
+        "defaultConjured": "ConjuredDemonicRune",
+        "enchantedSigil": "WrathOfTheStormSigil",
+        "mildlyIrradiatedRejuvPot": true,
+        "petAgilityConsumable": 1,
+        "petStrengthConsumable": 1,
+        "petAttackPowerConsumable": 1,
+        "dragonBreathChili": true,
+        "miscConsumes": {
+          "elixirOfCoalescedRegret": true
+        },
+        "sealOfTheDawn": "SealOfTheDawnDamageR7",
+        "zanzaBuff": "GroundScorpokAssay",
+        "healthElixir": "ElixirOfFortitude",
+        "alcohol": "AlcoholRumseyRumBlackLabel"
+      },
+      "bonusStats": {
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+      },
+      "itemSwap": {
+        "items": [
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          }
+        ],
+        "prepullBonusStats": {
+          "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        }
+      },
+      "buffs": {
+        "rallyingCryOfTheDragonslayer": true,
+        "saygesFortune": "SaygesDamage",
+        "spiritOfZandalar": true,
+        "songflowerSerenade": true,
+        "warchiefsBlessing": true,
+        "fengusFerocity": true,
+        "moldarsMoxie": true,
+        "slipkiksSavvy": true
+      },
+      "talentsString": "5-05451005503051-3320202",
+      "profession1": "Engineering",
+      "profession2": "Alchemy",
+      "cooldowns": {
+      },
+      "rotation": {
+        "type": "TypeAPL",
+        "prepullActions": [
+          {"action":{"castSpell":{"spellId":{"spellId":25296,"rank":7}}},"doAtValue":{"const":{"val":"-10s"}}},
+          {"action":{"castSpell":{"spellId":{"spellId":20904,"rank":6}}},"doAtValue":{"const":{"val":"-3.5s"}}},
+          {"action":{"castSpell":{"spellId":{"spellId":25295,"rank":9}}},"doAtValue":{"const":{"val":"-0.45s"}}}
+        ],
+        "priorityList": [
+          {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":25295,"rank":9}}}}},"castSpell":{"spellId":{"spellId":25295,"rank":9}}}},
+          {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"55%"}}}},"castSpell":{"spellId":{"itemId":13444}}}},
+          {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"65%"}}}},"castSpell":{"spellId":{"itemId":12662}}}},
+          {"action":{"autocastOtherCooldowns":{}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"50%"}}}},{"auraIsActive":{"auraId":{"spellId":415423}}}]}},"cancelAura":{"auraId":{"spellId":415423}}}},
+          {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":415413}}}}},{"cmp":{"op":"OpLt","lhs":{"spellTimeToReady":{"spellId":{"spellId":409433}}},"rhs":{"const":{"val":"2s"}}}},{"cmp":{"op":"OpGe","lhs":{"auraRemainingTime":{"auraId":{"spellId":409535}}},"rhs":{"const":{"val":"10s"}}}}]}},"castSpell":{"spellId":{"spellId":409530}}}},
+          {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":415413}}}}},{"cmp":{"op":"OpLt","lhs":{"spellTimeToReady":{"spellId":{"spellId":409433}}},"rhs":{"const":{"val":"2s"}}}}]}},"castSpell":{"spellId":{"spellId":409535}}}},
+          {"action":{"castSpell":{"spellId":{"spellId":409433}}}},
+          {"action":{"castSpell":{"spellId":{"spellId":20904,"rank":6}}}},
+          {"action":{"castSpell":{"spellId":{"spellId":14290,"rank":4}}}},
+          {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":415413}}}}}]}},"castSpell":{"spellId":{"spellId":409510}}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"5%"}}}}]}},"castSpell":{"spellId":{"spellId":415423}}}},
+          {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":415423}}}}},{"not":{"val":{"auraIsActive":{"auraId":{"spellId":25296,"rank":7}}}}},{"cmp":{"op":"OpGt","lhs":{"spellTimeToReady":{"spellId":{"spellId":409433}}},"rhs":{"const":{"val":"1.45s"}}}}]}},"castSpell":{"spellId":{"spellId":25296,"rank":7}}}}
+        ]
+      },
+      "reactionTimeMs": 200,
+      "distanceFromTarget": 12,
+      "isbUsingShadowflame": true,
+      "healingModel": {
+      },
+      "hunter": {
+        "options": {
+          "ammo": "Doomshot",
+          "quiverBonus": "Speed15",
+          "petTalents": {
+          },
+          "petUptime": 1,
+          "sniperTrainingUptime": 1,
+          "petAttackSpeed": "Two"
+        }
+      }
+    },
+    "encounter": {
+      "duration": 60,
+      "durationVariation": 15,
+      "executeProportion20": 0.2,
+      "executeProportion25": 0.25,
+      "executeProportion35": 0.35,
+      "targets": [
+        {
+          "id": 213336,
+          "name": "Level 60",
+          "level": 63,
+          "mobType": "MobTypeDragonkin",
+          "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,805,0,0,0,0,0,0,0,0,3731,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0],
+          "minBaseDamage": 3000,
+          "damageSpread": 0.3333,
+          "swingSpeed": 2,
+          "parryHaste": true
+        }
+      ]
+    }
+  }
