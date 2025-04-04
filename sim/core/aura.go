@@ -22,6 +22,7 @@ type OnRefresh func(aura *Aura, sim *Simulation)
 type OnExpire func(aura *Aura, sim *Simulation)
 type OnStacksChange func(aura *Aura, sim *Simulation, oldStacks int32, newStacks int32)
 type OnStatsChange func(aura *Aura, sim *Simulation, oldStats stats.Stats, newStats stats.Stats)
+type IsEnabledInSettings func(aura *Aura, sim *Simulation)
 
 // Callback for after a spell hits the target and after damage is calculated. Use it for proc effects
 // or anything that comes from the final result of the spell.
@@ -120,6 +121,9 @@ type Aura struct {
 	metrics AuraMetrics
 
 	initialized bool
+
+	// P8 Sebacious Poison fix
+	IsEnabledInSettings IsEnabledInSettings
 }
 
 func (aura *Aura) init(sim *Simulation) {
