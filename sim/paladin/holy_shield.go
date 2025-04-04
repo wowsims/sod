@@ -47,6 +47,7 @@ func (paladin *Paladin) registerHolyShield() {
 			SpellSchool:    core.SpellSchoolHoly,
 			DefenseType:    core.DefenseTypeMagic,
 			ProcMask:       core.ProcMaskSpellDamage,
+			Flags:          core.SpellFlagBinary, // By default HS is binary, unless T1 6pc (Radiant Defender) is equipped
 
 			RequiredLevel: int(level),
 			Rank:          rank,
@@ -56,8 +57,8 @@ func (paladin *Paladin) registerHolyShield() {
 			BonusCoefficient: 0.05,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				// Spell damage from Holy Shield can crit, but does not miss.
-				spell.CalcAndDealDamage(sim, target, paladin.getHolyShieldDamage(sim, damage), spell.OutcomeMagicCrit)
+				outcome := core.Ternary(paladin.holyShieldCanCrit, spell.OutcomeMagicHitAndCrit, spell.OutcomeMagicHit)
+				spell.CalcAndDealDamage(sim, target, paladin.getHolyShieldDamage(sim, damage), outcome)
 			},
 		})
 
