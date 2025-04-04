@@ -28,7 +28,7 @@ func (mage *Mage) registerMassRegenerationSpell() {
 			},
 			CD: core.Cooldown{
 				Timer:    mage.NewTimer(),
-				Duration: time.Second * 6,
+				Duration: time.Second * 12,
 			},
 		},
 
