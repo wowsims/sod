@@ -114,6 +114,7 @@ type Paladin struct {
 	onHolyPowerSpent               func(sim *core.Simulation, holyPower int32)
 	holyShieldExtraDamage          func(sim *core.Simulation, paladin *Paladin) float64
 	bypassAvengingWrathForbearance bool
+	holyShieldCanCrit              bool
 
 	enableMultiJudge    bool
 	lingerDuration      time.Duration
