@@ -280,7 +280,7 @@ export class ActionId {
 			case 'Frostfire Bolt':
 			case 'Pyroblast':
 			case 'Flame Shock':
-				if (this.tag === 1) name = `${name} (DoT)`;
+				if (this.spellId === 1226972) name = `${name} (Instant)`;
 				break;
 			// Channeled Tick Spells
 			case 'Evocation':
