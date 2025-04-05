@@ -1,5 +1,6 @@
 import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
+import { Spec } from '../core/proto/common';
 import {
 	Conjured,
 	Consumes,
@@ -21,12 +22,17 @@ import {
 } from '../core/proto/common.js';
 import { ShadowPriest_Options as Options } from '../core/proto/priest.js';
 import { SavedTalents } from '../core/proto/ui.js';
+// APLs
 import Phase1APL from './apls/phase_1.apl.json';
 import Phase2APL from './apls/phase_2.apl.json';
 import Phase3APL from './apls/phase_3.apl.json';
 import Phase4APL from './apls/phase_4.apl.json';
 import Phase5APL from './apls/phase_5.apl.json';
 import Phase6APL from './apls/phase_6.apl.json';
+// Builds
+import Phase7BuildJSON from './builds/phase_7.build.json';
+import Phase8BuildJSON from './builds/phase_8.build.json';
+// Gear
 import Phase1Gear from './gear_sets/phase_1.gear.json';
 import Phase2Gear from './gear_sets/phase_2.gear.json';
 import Phase3Gear from './gear_sets/phase_3.gear.json';
@@ -38,6 +44,11 @@ import Phase6Gear from './gear_sets/phase_6.gear.json';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
+
+export const PresetBuildPhase7 = PresetUtils.makePresetBuildFromJSON('Phase 7', Spec.SpecShadowPriest, Phase7BuildJSON);
+export const PresetBuildPhase8 = PresetUtils.makePresetBuildFromJSON('Phase 8', Spec.SpecShadowPriest, Phase8BuildJSON);
+
+export const DefaultBuild = PresetBuildPhase8;
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Gear Presets
@@ -60,9 +71,11 @@ export const GearPresets = {
 	[Phase.Phase4]: [GearPhase4],
 	[Phase.Phase5]: [GearPhase5Draconic, GearPhase5CoreForged],
 	[Phase.Phase6]: [GearPhase6],
+	[Phase.Phase7]: [PresetBuildPhase7.gear!],
+	[Phase.Phase8]: [PresetBuildPhase8.gear!],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase6][0];
+export const DefaultGear = GearPresets[Phase.Phase8][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -82,13 +95,15 @@ export const APLPresets = {
 	[Phase.Phase4]: [APLPhase4],
 	[Phase.Phase5]: [APLPhase5],
 	[Phase.Phase6]: [APLPhase6],
+	[Phase.Phase7]: [PresetBuildPhase7.rotation!],
+	[Phase.Phase8]: [PresetBuildPhase8.rotation!],
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 	25: APLPresets[Phase.Phase1][0],
 	40: APLPresets[Phase.Phase2][0],
 	50: APLPresets[Phase.Phase3][0],
-	60: APLPresets[Phase.Phase6][0],
+	60: APLPresets[Phase.Phase8][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -118,9 +133,11 @@ export const TalentPresets = {
 	[Phase.Phase4]: [TalentsPhase4],
 	[Phase.Phase5]: [],
 	[Phase.Phase6]: [],
+	[Phase.Phase7]: [PresetBuildPhase7.talents!],
+	[Phase.Phase8]: [PresetBuildPhase8.talents!],
 };
 
-export const DefaultTalents = TalentPresets[Phase.Phase4][0];
+export const DefaultTalents = TalentPresets[Phase.Phase8][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Build Presets
