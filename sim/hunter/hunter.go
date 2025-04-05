@@ -62,7 +62,7 @@ const (
 	ClassSpellMask_HunterPetLavaBreath
 	ClassSpellMask_HunterPetScreech
 	ClassSpellMask_HunterPetScorpidPoison
-	ClassSpellMask_HunterPetBasicAttacks = ClassSpellMask_HunterPetBite | ClassSpellMask_HunterPetClaw | ClassSpellMask_HunterPetLightningBreath | ClassSpellMask_HunterPetLavaBreath | ClassSpellMask_HunterPetScorpidPoison
+	ClassSpellMask_HunterPetSpecials = ClassSpellMask_HunterPetBite | ClassSpellMask_HunterPetClaw | ClassSpellMask_HunterPetLightningBreath | ClassSpellMask_HunterPetLavaBreath | ClassSpellMask_HunterPetScorpidPoison
 
 	ClassSpellMask_HunterAll = 1<<iota - 1
 

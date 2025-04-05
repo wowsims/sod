@@ -453,3 +453,10 @@ var ItemSetTheSoulcrusher = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+// The Fire and Nature damage increases from Mercy and Crimson Cleaver are increased by 10%.
+func (shaman *Shaman) ApplyHackAndSmashShamanBonus() {
+	// Revert the original and apply the additional 10%
+	shaman.applyMercyAuraBonuses(shaman.GetAura("Mercy by Fire"), (MercyDamageBonus+0.10)/MercyDamageBonus)
+	shaman.applyCrimsonCleaverAuraBonuses(shaman.GetAura("Crimson Crusade"), (CrimsonCleaverDamageBonus+0.10)/CrimsonCleaverDamageBonus)
+}

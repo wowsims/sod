@@ -56,7 +56,7 @@ func (hunter *Hunter) registerFocusFireSpell() {
 		Name:           "Focus Fire Trigger",
 		Callback:       core.CallbackOnCastComplete,
 		Outcome:        core.OutcomeLanded,
-		ClassSpellMask: ClassSpellMask_HunterPetBasicAttacks,
+		ClassSpellMask: ClassSpellMask_HunterPetSpecials,
 		Harmful:        true,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			hunterPetFrenzyAura.Activate(sim)

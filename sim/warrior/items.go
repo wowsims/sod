@@ -301,3 +301,83 @@ func (warrior *Warrior) ApplyRegicideWarriorEffect(itemID int32, aura *core.Aura
 		})
 	})
 }
+
+const MercyDamageBonus = 1.20
+
+// Equip: Chance on hit to cause your next 2 instances of Whirlwind damage to be increased by 20%. Lasts 12 sec.
+// Confirmed PPM 1.0
+func (warrior *Warrior) ApplyMercyWarriorEffect(aura *core.Aura) {
+	buffAura := warrior.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1231498}, // TODO: Find the real spell ID
+		Label:     "Mercy by Fire",                 // TODO: Find the real spell name
+		Duration:  time.Second * 12,
+		MaxStacks: 2,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_WarriorWhirlwindMH|ClassSpellMask_WarriorWhirlwindOH) && result.Landed() {
+				aura.RemoveStack(sim)
+			}
+		},
+	})
+	warrior.applyMercyAuraBonuses(aura, MercyDamageBonus)
+
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:              "Mercy Trigger - Warrior",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee, // Confirmed procs from either hand
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+		PPM:               1.0,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			buffAura.Activate(sim)
+			buffAura.SetStacks(sim, buffAura.MaxStacks)
+		},
+	})
+}
+
+func (warrior *Warrior) applyMercyAuraBonuses(aura *core.Aura, modifier float64) {
+	aura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_WarriorWhirlwindMH | ClassSpellMask_WarriorWhirlwindOH,
+		FloatValue: modifier,
+	})
+}
+
+const CrimsonCleaverDamageBonus = 1.20
+
+// Equip: Chance on hit to cause your next 2 instances of Cleave damage to be increased by 20%. Lasts 12 sec.
+// Confirmed PPM 1.0
+func (warrior *Warrior) ApplyCrimsonCleaverWarriorEffect(aura *core.Aura) {
+	buffAura := warrior.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1231456}, // TODO: Find the real spell ID
+		Label:     "Crimson Crusade",               // TODO: Find the real spell name
+		Duration:  time.Second * 12,
+		MaxStacks: 2,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_WarriorCleave) && result.Landed() {
+				aura.RemoveStack(sim)
+			}
+		},
+	})
+	warrior.applyCrimsonCleaverAuraBonuses(aura, CrimsonCleaverDamageBonus)
+
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:              "Crimson Cleaver Trigger - Warrior",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee, // Confirmed procs from either hand
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+		PPM:               1.0,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			buffAura.Activate(sim)
+			buffAura.SetStacks(sim, buffAura.MaxStacks)
+		},
+	})
+}
+
+func (warrior *Warrior) applyCrimsonCleaverAuraBonuses(aura *core.Aura, modifier float64) {
+	aura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_WarriorCleave,
+		FloatValue: modifier,
+	})
+}

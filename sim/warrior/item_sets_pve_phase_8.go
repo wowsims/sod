@@ -284,3 +284,10 @@ func (warrior *Warrior) ApplyFallenRegalityWarriorBonus(aura *core.Aura) {
 		cleaveDamageMod.Activate()
 	})
 }
+
+// The damage increaes from Mercy's and Crimson Cleaver's effects are increased by 10%.
+func (warrior *Warrior) ApplyHackAndSmashWarriorBonus() {
+	// Revert the original and apply the additional 10%
+	warrior.applyCrimsonCleaverAuraBonuses(warrior.GetAura("Crimson Crusade"), (CrimsonCleaverDamageBonus+0.10)/CrimsonCleaverDamageBonus)
+	warrior.applyMercyAuraBonuses(warrior.GetAura("Mercy by Fire"), (MercyDamageBonus+0.10)/MercyDamageBonus)
+}

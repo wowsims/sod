@@ -268,3 +268,12 @@ func (hunter *Hunter) ApplyFallenRegalityHunterBonus(aura *core.Aura) {
 		})
 	})
 }
+
+// The damage increaes from Mercy's and Crimson Cleaver's effects are increased by 10%.
+func (hunter *Hunter) ApplyHackAndSmashHunterBonus() {
+	// Revert the original and apply the additional 10%
+	hunter.applyCrimsonCleaverAuraBonuses(hunter.GetAura("Crimson Crusade"), (CrimsonCleaverDamageBonus+0.10)/CrimsonCleaverDamageBonus)
+	if hunter.pet != nil {
+		hunter.applyMercyAuraBonuses(hunter.GetAura("Mercy by Fire"), (MercyDamageBonus+0.10)/MercyDamageBonus)
+	}
+}

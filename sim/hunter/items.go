@@ -817,3 +817,95 @@ func (hunter *Hunter) ApplyRegicideHunterEffect(itemID int32, aura *core.Aura) {
 		},
 	})
 }
+
+const MercyDamageBonus = 1.20
+
+// Equip: Chance on hit to cause your next 2 instances of damage from your pet's special abilities to be increased by 20%. Lasts 12 sec.
+// Confirmed PPM 1.0
+func (hunter *Hunter) ApplyMercyHunterEffect(aura *core.Aura) {
+	if hunter.pet == nil {
+		return
+	}
+
+	// Create a dummy for UI tracking
+	dummyAura := hunter.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1231498}, // TODO: Find real spell ID
+		Label:     "Mercy by Fire",                 // TODO: Find real spell name
+		Duration:  time.Second * 12,
+		MaxStacks: 2,
+	})
+
+	buffAura := hunter.pet.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1231498}, // TODO: Find real spell ID
+		Label:     "Mercy by Fire",                 // TODO: Find real spell name
+		Duration:  time.Second * 12,
+		MaxStacks: 2,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_HunterPetSpecials) && result.Landed() {
+				aura.RemoveStack(sim)
+			}
+		},
+	}).AttachDependentAura(dummyAura)
+	hunter.applyMercyAuraBonuses(buffAura, CrimsonCleaverDamageBonus)
+
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:              "Mercy Trigger - Hunter",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee, // Confirmed procs from either hand
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+		PPM:               1.0,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			buffAura.Activate(sim)
+			buffAura.SetStacks(sim, buffAura.MaxStacks)
+		},
+	})
+}
+
+func (hunter *Hunter) applyMercyAuraBonuses(aura *core.Aura, modifier float64) {
+	aura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_HunterPetSpecials,
+		FloatValue: modifier,
+	})
+}
+
+const CrimsonCleaverDamageBonus = 1.20
+
+// Equip: Chance on hit to cause your next 2 instances of Raptor Strike damage to be increased by 20%. Lasts 12 sec.
+// Confirmed PPM 1.0
+func (hunter *Hunter) ApplyCrimsonCleaverHunterEffect(aura *core.Aura) {
+	buffAura := hunter.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1231456}, // TODO: Find the real spell ID
+		Label:     "Crimson Crusade",               // TODO: Find the real spell name
+		Duration:  time.Second * 12,
+		MaxStacks: 2,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_HunterRaptorStrikeHit) && result.Landed() {
+				aura.RemoveStack(sim)
+			}
+		},
+	})
+	hunter.applyCrimsonCleaverAuraBonuses(buffAura, CrimsonCleaverDamageBonus)
+
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:              "Crimson Cleaver Trigger - Hunter",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee, // Confirmed procs from either hand
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+		PPM:               1.0,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			buffAura.Activate(sim)
+			buffAura.SetStacks(sim, buffAura.MaxStacks)
+		},
+	})
+}
+
+func (hunter *Hunter) applyCrimsonCleaverAuraBonuses(aura *core.Aura, modifier float64) {
+	aura.AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_HunterRaptorStrikeHit,
+		FloatValue: modifier,
+	})
+}
