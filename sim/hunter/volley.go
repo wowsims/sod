@@ -30,10 +30,9 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 
 	hasImprovedVolley := hunter.HasRune(proto.HunterRune_RuneCloakImprovedVolley)
 
-	manaCostModifer := 100 - 2*hunter.Talents.Efficiency
-
+	manaCostMultiplier := int32(100)
 	if hasImprovedVolley {
-		manaCostModifer -= 50
+		manaCostMultiplier -= 50
 	}
 
 	return core.SpellConfig{
@@ -48,7 +47,7 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost:   manaCost,
-			Multiplier: manaCostModifer,
+			Multiplier: manaCostMultiplier,
 		},
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
@@ -82,7 +81,7 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		CritDamageBonus:  (1 + hunter.mortalShots()) * (1 + (0.05 * float64(hunter.Talents.Barrage))),
+		CritDamageBonus:  1 + hunter.mortalShots(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
