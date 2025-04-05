@@ -318,7 +318,7 @@ func (warrior *Warrior) ApplyMercyWarriorEffect(aura *core.Aura) {
 			}
 		},
 	})
-	warrior.applyMercyAuraBonuses(aura, MercyDamageBonus)
+	warrior.applyMercyAuraBonuses(buffAura, MercyDamageBonus)
 
 	aura.AttachProcTrigger(core.ProcTrigger{
 		Name:              "Mercy Trigger - Warrior",
@@ -358,7 +358,7 @@ func (warrior *Warrior) ApplyCrimsonCleaverWarriorEffect(aura *core.Aura) {
 			}
 		},
 	})
-	warrior.applyCrimsonCleaverAuraBonuses(aura, CrimsonCleaverDamageBonus)
+	warrior.applyCrimsonCleaverAuraBonuses(buffAura, CrimsonCleaverDamageBonus)
 
 	aura.AttachProcTrigger(core.ProcTrigger{
 		Name:              "Crimson Cleaver Trigger - Warrior",

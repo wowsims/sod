@@ -648,7 +648,7 @@ func (shaman *Shaman) ApplyMercyShamanEffect(aura *core.Aura) {
 			}
 		},
 	})
-	shaman.applyMercyAuraBonuses(aura, MercyDamageBonus)
+	shaman.applyMercyAuraBonuses(buffAura, MercyDamageBonus)
 
 	aura.AttachProcTrigger(core.ProcTrigger{
 		Name:              "Mercy Trigger - Shaman",
@@ -699,7 +699,7 @@ func (shaman *Shaman) ApplyCrimsonCleaverShamanEffect(aura *core.Aura) {
 			}
 		},
 	})
-	shaman.applyCrimsonCleaverAuraBonuses(aura, CrimsonCleaverDamageBonus)
+	shaman.applyCrimsonCleaverAuraBonuses(buffAura, CrimsonCleaverDamageBonus)
 
 	aura.AttachProcTrigger(core.ProcTrigger{
 		Name:              "Crimson Cleaver Trigger - Shaman",
