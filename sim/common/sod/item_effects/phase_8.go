@@ -620,7 +620,7 @@ func init() {
 
 	// https://www.wowhead.com/classic-ptr/item=240854/mercy
 	// Hunter - Equip: Chance on hit to cause your next 2 instances of damage from your pet's special abilities to be increased by 20%. Lasts 12 sec.
-	// Shaman - Equip: Chance on hit to cause your next 4 instances of Fire damage are increased by 20%.  Lasts 12 sec. (100ms cooldown)
+	// Shaman - Equip: Chance on hit to cause your next 2 instances of Fire damage are increased by 20%.  Lasts 12 sec. (100ms cooldown)
 	// Warrior - Equip: Chance on hit to cause your next 2 instances of Whirlwind damage to be increased by 20%. Lasts 12 sec.
 	core.NewItemEffect(Mercy, func(agent core.Agent) {
 		character := agent.GetCharacter()

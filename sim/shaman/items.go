@@ -625,7 +625,7 @@ func init() {
 
 const MercyDamageBonus = 1.20
 
-// Equip: Chance on hit to cause your next 4 instances of Fire damage are increased by 20%.  Lasts 12 sec. (100ms cooldown)
+// Equip: Chance on hit to cause your next 2 instances of Fire damage are increased by 20%.  Lasts 12 sec. (100ms cooldown)
 // Confirmed PPM 1.0
 // Note: Not listed but confirmed by Zirene, does not proc from or benefit Flametongue Weapon procs
 func (shaman *Shaman) ApplyMercyShamanEffect(aura *core.Aura) {
@@ -640,7 +640,7 @@ func (shaman *Shaman) ApplyMercyShamanEffect(aura *core.Aura) {
 		ActionID:  core.ActionID{SpellID: 1231498},
 		Label:     "Mercy by Fire",
 		Duration:  time.Second * 12,
-		MaxStacks: 4,
+		MaxStacks: 2,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if !spell.Matches(ClassSpellMask_ShamanFlametongueProc) && spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolFire) && result.Landed() && icd.IsReady(sim) {
 				icd.Use(sim)
