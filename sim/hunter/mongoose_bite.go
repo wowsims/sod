@@ -14,7 +14,6 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 	level := [5]int{0, 16, 30, 44, 58}[rank]
 
 	hasCobraSlayer := hunter.HasRune(proto.HunterRune_RuneHandsCobraSlayer)
-	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
 
 	spellConfig := core.SpellConfig{
@@ -60,16 +59,10 @@ func (hunter *Hunter) getMongooseBiteConfig(rank int) core.SpellConfig {
 				spell.CD.Reset()
 			}
 
-			multiplier := 1.0
-			if hasRaptorFury {
-				multiplier *= hunter.raptorFuryDamageMultiplier()
-			}
-
 			damage := baseDamage
 			if hasCobraSlayer {
 				damage += spell.MeleeAttackPower() * 0.45
 			}
-			damage *= multiplier
 
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},

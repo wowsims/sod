@@ -321,27 +321,32 @@ func (hunter *Hunter) applyLockAndLoad() {
 	}))
 }
 
-const RaptorFuryDamageMultiplier = 0.15
-
-func (hunter *Hunter) raptorFuryDamageMultiplier() float64 {
-	stacks := hunter.RaptorFuryAura.GetStacks()
-	if stacks == 0 {
-		return 1
-	}
-	damageMultiplier := RaptorFuryDamageMultiplier + hunter.BonusRaptorFuryDamageMultiplier
-	return 1 + damageMultiplier*float64(stacks)
-}
-
 func (hunter *Hunter) applyRaptorFury() {
 	if !hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury) {
 		return
 	}
+
+	hunter.RaptorFuryDamageMultiplier += 15
+
+	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask: ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterMongooseBite,
+	})
 
 	hunter.RaptorFuryAura = hunter.GetOrRegisterAura(core.Aura{
 		Label:     "Raptor Fury Buff",
 		ActionID:  core.ActionID{SpellID: int32(proto.HunterRune_RuneBracersRaptorFury)},
 		Duration:  time.Second * 30,
 		MaxStacks: 5,
+		OnGain: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Activate()
+		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			damageMod.Deactivate()
+		},
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			damageMod.UpdateIntValue(hunter.RaptorFuryDamageMultiplier * int64(newStacks))
+		},
 	})
 }
 

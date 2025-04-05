@@ -98,7 +98,6 @@ func (hunter *Hunter) getRaptorStrikeConfig(rank int) core.SpellConfig {
 
 func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 	hasMeleeSpecialist := hunter.HasRune(proto.HunterRune_RuneBeltMeleeSpecialist)
-	hasRaptorFury := hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury)
 	hasHitAndRun := hunter.HasRune(proto.HunterRune_RuneCloakHitAndRun)
 
 	spellID := core.Ternary(hasMeleeSpecialist, RaptorStrikeSpellIdMeleeSpecialist, RaptorStrikeSpellId)[rank]
@@ -136,13 +135,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 				hunter.HitAndRunAura.Activate(sim)
 			}
 
-			multiplier := 1.0
-			if hasRaptorFury {
-				multiplier *= hunter.raptorFuryDamageMultiplier()
-			}
-
-			weaponDamage := damageFunc(sim, spell.MeleeAttackPower())
-			damage := multiplier * (weaponDamage + baseDamage)
+			damage := baseDamage + damageFunc(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, damage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 		},
 	})

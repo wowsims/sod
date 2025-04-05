@@ -91,7 +91,7 @@ func (hunter *Hunter) applyScarletEnclaveMelee4PBonus() {
 	})
 }
 
-// Increases the bonus damage from Raptor Fury by an additional 10% per stack.
+// Increases the bonus damage from Raptor Fury by an additional 15% per stack.
 func (hunter *Hunter) applyScarletEnclaveMelee6PBonus() {
 	if !hunter.HasRune(proto.HunterRune_RuneBracersRaptorFury) {
 		return
@@ -102,12 +102,12 @@ func (hunter *Hunter) applyScarletEnclaveMelee6PBonus() {
 		return
 	}
 
-	core.MakePermanent(hunter.RegisterAura(core.Aura{
+	hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.BonusRaptorFuryDamageMultiplier = 0.15
+			hunter.RaptorFuryDamageMultiplier += 15
 		},
-	}))
+	})
 }
 
 var ItemSetDawnstalkerArmor = core.NewItemSet(core.ItemSet{
@@ -237,10 +237,7 @@ func (hunter *Hunter) ApplyFallenRegalityHunterBonus(aura *core.Aura) {
 		return
 	}
 
-	flankingBuffDamageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:     core.SpellMod_DamageDone_Flat,
-		ProcMask: core.ProcMaskMelee,
-	})
+	hunter.FlankingStrikeBonusPerStack += 0.02
 
 	if !hunter.PseudoStats.InFrontOfTarget {
 		hunter.AddStaticMod(core.SpellModConfig{
@@ -257,16 +254,6 @@ func (hunter *Hunter) ApplyFallenRegalityHunterBonus(aura *core.Aura) {
 			})
 		}
 	}
-
-	aura.ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
-		hunter.FlankingStrike.RelatedSelfBuff.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-			flankingBuffDamageMod.Activate()
-		}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-			flankingBuffDamageMod.Deactivate()
-		}).ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			flankingBuffDamageMod.UpdateIntValue(int64(2 * newStacks))
-		})
-	})
 }
 
 // The damage increaes from Mercy's and Crimson Cleaver's effects are increased by 10%.
