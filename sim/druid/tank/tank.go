@@ -33,7 +33,11 @@ func NewFeralTankDruid(character *core.Character, options *proto.Player) *FeralT
 	}
 
 	bear.SelfBuffs.InnervateTarget = &proto.UnitReference{}
-	if tankOptions.Options.InnervateTarget != nil {
+	if tankOptions.Options.InnervateTarget == nil || tankOptions.Options.InnervateTarget.Type == proto.UnitReference_Unknown {
+		bear.SelfBuffs.InnervateTarget = &proto.UnitReference{
+			Type: proto.UnitReference_Self,
+		}
+	} else {
 		bear.SelfBuffs.InnervateTarget = tankOptions.Options.InnervateTarget
 	}
 

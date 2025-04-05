@@ -690,6 +690,10 @@ func init() {
 	// https://www.wowhead.com/classic-ptr/item=240924/poleaxe-of-the-beast
 	// Equip: Focus Fire now grants you and your pet 5% increased damage per stack consumed for 20 sec.
 	core.NewItemEffect(PoleaxeOfTheBeast, func(agent core.Agent) {
+		if agent.GetCharacter().Class != proto.Class_ClassHunter {
+			return
+		}
+
 		hunter := agent.(HunterAgent).GetHunter()
 
 		if hunter.pet == nil || !hunter.HasRune(proto.HunterRune_RuneBracersFocusFire) {
