@@ -55,14 +55,15 @@ const (
 	ClassSpellMask_HunterFocusFire
 
 	// Pet Spells
-	ClassSpellMask_HunterPetFlankingStrike
-	ClassSpellMask_HunterPetClaw
 	ClassSpellMask_HunterPetBite
+	ClassSpellMask_HunterPetClaw
+	ClassSpellMask_HunterPetFlankingStrike
 	ClassSpellMask_HunterPetLightningBreath
 	ClassSpellMask_HunterPetLavaBreath
 	ClassSpellMask_HunterPetScreech
 	ClassSpellMask_HunterPetScorpidPoison
-	ClassSpellMask_HunterPetSpecials = ClassSpellMask_HunterPetBite | ClassSpellMask_HunterPetClaw | ClassSpellMask_HunterPetLightningBreath | ClassSpellMask_HunterPetLavaBreath | ClassSpellMask_HunterPetScorpidPoison
+	ClassSpellMask_HunterPetBasicAttacks   = ClassSpellMask_HunterPetBite | ClassSpellMask_HunterPetClaw | ClassSpellMask_HunterPetLightningBreath | ClassSpellMask_HunterPetLavaBreath | ClassSpellMask_HunterPetScorpidPoison
+	ClassSpellMask_HunterPetSpecialAttacks = ClassSpellMask_HunterPetScreech // TODO: Other specials?
 
 	ClassSpellMask_HunterAll = 1<<iota - 1
 

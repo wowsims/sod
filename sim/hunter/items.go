@@ -841,7 +841,7 @@ func (hunter *Hunter) ApplyMercyHunterEffect(aura *core.Aura) {
 		Duration:  time.Second * 12,
 		MaxStacks: 2,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.Matches(ClassSpellMask_HunterPetSpecials) && result.Landed() {
+			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial|core.ProcMaskSpellDamage) && result.Landed() {
 				aura.RemoveStack(sim)
 			}
 		},
@@ -865,7 +865,7 @@ func (hunter *Hunter) ApplyMercyHunterEffect(aura *core.Aura) {
 func (hunter *Hunter) applyMercyAuraBonuses(aura *core.Aura, modifier float64) {
 	aura.AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  ClassSpellMask_HunterPetSpecials,
+		ProcMask:   core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage,
 		FloatValue: modifier,
 	})
 }
