@@ -120,6 +120,9 @@ type Aura struct {
 	metrics AuraMetrics
 
 	initialized bool
+
+	// P8 Sebacious Poison fix
+	IsEnabledInSettings bool
 }
 
 func (aura *Aura) init(sim *Simulation) {
@@ -435,6 +438,13 @@ func (aura *Aura) ApplyOnPeriodicDamageDealt(newOnPeriodicDamageDealt OnPeriodic
 			newOnPeriodicDamageDealt(aura, sim, spell, result)
 		}
 	}
+
+	return aura
+}
+
+// TODO: working on fixing p8 bonus applying to Sebacious in Settings>Debuffs
+func (aura *Aura) ApplyIsEnabledInSettings() *Aura {
+	aura.IsEnabledInSettings = true
 
 	return aura
 }
