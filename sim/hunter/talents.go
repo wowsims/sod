@@ -354,7 +354,6 @@ func (hunter *Hunter) applySurefooted() {
 	}
 
 	hunter.AddStat(stats.MeleeHit, float64(hunter.Talents.Surefooted)*core.MeleeHitRatingPerHitChance)
-	hunter.AddStat(stats.SpellHit, float64(hunter.Talents.Surefooted)*core.SpellHitRatingPerHitChance)
 }
 
 func (hunter *Hunter) applyKillerInstinct() {
