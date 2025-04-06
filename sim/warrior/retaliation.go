@@ -42,7 +42,7 @@ func (warrior *Warrior) registerRetaliationCD(sharedTimer *core.Timer) {
 
 	warrior.Retaliation = warrior.RegisterSpell(BattleStance, core.SpellConfig{
 		ActionID:       actionID,
-		ClassSpellMask: ClassSpellMask_WarriorRecklesness,
+		ClassSpellMask: ClassSpellMask_WarriorRetaliation,
 		Cast: core.CastConfig{
 			DefaultCast: core.Cast{
 				GCD: core.GCDDefault,
