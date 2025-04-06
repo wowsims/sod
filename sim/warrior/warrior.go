@@ -30,6 +30,7 @@ const (
 	ClassSpellMask_WarriorRagingBlow
 	ClassSpellMask_WarriorRecklesness
 	ClassSpellMask_WarriorRend
+	ClassSpellMask_WarriorRetaliation
 	ClassSpellMask_WarriorRevenge
 	ClassSpellMask_WarriorShieldSlam
 	ClassSpellMask_WarriorShieldWall
@@ -115,6 +116,7 @@ type Warrior struct {
 	Overpower         *WarriorSpell
 	Recklessness      *WarriorSpell
 	Rend              *WarriorSpell
+	Retaliation       *WarriorSpell
 	Revenge           *WarriorSpell
 	ShieldBlock       *WarriorSpell
 	ShieldSlam        *WarriorSpell
@@ -244,7 +246,7 @@ func (warrior *Warrior) newStanceOverrideExclusiveEffect(stance Stance, aura *co
 func (warrior *Warrior) Initialize() {
 	primaryTimer := warrior.NewTimer()
 	overpowerRevengeTimer := warrior.NewTimer()
-	shieldWallRecklessnessTimer := warrior.NewTimer()
+	majorCDTimer := warrior.NewTimer()
 
 	warrior.reactionTime = time.Millisecond * 500
 
@@ -276,8 +278,9 @@ func (warrior *Warrior) Initialize() {
 	warrior.SunderArmor = warrior.registerSunderArmorSpell()
 
 	warrior.registerBloodrageCD()
-	warrior.RegisterRecklessnessCD(shieldWallRecklessnessTimer)
-	warrior.RegisterShieldWallCD(shieldWallRecklessnessTimer)
+	warrior.RegisterRecklessnessCD(majorCDTimer)
+	warrior.RegisterShieldWallCD(majorCDTimer)
+	warrior.registerRetaliationCD(majorCDTimer)
 	warrior.RegisterShieldBlockCD()
 }
 

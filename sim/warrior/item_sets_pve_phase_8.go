@@ -201,8 +201,9 @@ func (warrior *Warrior) applyScarletEnclaveProtection4PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.Recklessness.SharedCD.Duration = 0
-			warrior.ShieldWall.SharedCD.Duration = 0
+			for _, spell := range []*WarriorSpell{warrior.Recklessness, warrior.Retaliation, warrior.ShieldWall} {
+				spell.SharedCD.Duration = 0
+			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_WarriorRecklesness) {

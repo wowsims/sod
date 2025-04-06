@@ -50,7 +50,13 @@ func (warrior *Warrior) RegisterShieldWallCD(sharedTimer *core.Timer) {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			swAura.Activate(sim)
+			if warrior.Recklessness != nil {
+				warrior.Recklessness.RelatedSelfBuff.Deactivate(sim)
+			}
+			warrior.Retaliation.RelatedSelfBuff.Deactivate(sim)
 		},
+
+		RelatedSelfBuff: swAura,
 	})
 
 	warrior.AddMajorCooldown(core.MajorCooldown{
