@@ -176,6 +176,15 @@ func (mage *Mage) applyFrostTalents() {
 	}
 
 	mage.applyShatter()
+
+	// Improved Cone of Cold
+	if mage.Talents.ImprovedConeOfCold > 0 {
+		mage.AddStaticMod(core.SpellModConfig{
+			Kind:      core.SpellMod_DamageDone_Flat,
+			ClassMask: ClassSpellMask_MageConeOfCold,
+			IntValue:  5 + 10*int64(mage.Talents.ImprovedConeOfCold),
+		})
+	}
 }
 
 func (mage *Mage) applyArcaneConcentration() {
