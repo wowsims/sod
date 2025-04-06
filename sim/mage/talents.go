@@ -146,6 +146,18 @@ func (mage *Mage) applyFrostTalents() {
 		})
 	}
 
+	if mage.Talents.ArcticReach > 0 {
+		rangeModifier := 1 + 0.10*float64(mage.Talents.ArcticReach)
+		mage.OnSpellRegistered(func(spell *core.Spell) {
+			// TODO: Set max range on these and remove range check
+			if spell.Matches(ClassSpellMask_MageFrostbolt|ClassSpellMask_MageBlizzard) && spell.MaxRange > 0 {
+				spell.MaxRange *= rangeModifier
+			} else if spell.Matches(ClassSpellMask_MageConeOfCold) {
+				spell.MinRange *= rangeModifier
+			}
+		})
+	}
+
 	// Frost Channeling
 	if mage.Talents.FrostChanneling > 0 {
 		mage.AddStaticMod(core.SpellModConfig{
