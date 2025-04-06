@@ -50,10 +50,10 @@ export abstract class MetricsTable<T extends ActionMetrics | AuraMetrics | UnitM
 			</table>,
 		);
 
-		this.tableElem = this.rootElem.querySelector('.metrics-table') as HTMLTableElement;
-		this.bodyElem = this.rootElem.querySelector('.metrics-table-body') as HTMLTableSectionElement;
+		this.tableElem = this.rootElem.querySelector<HTMLTableElement>('.metrics-table')!;
+		this.bodyElem = this.rootElem.querySelector<HTMLTableSectionElement>('.metrics-table-body')!;
 
-		const headerRowElem = this.rootElem.querySelector('.metrics-table-header-row') as HTMLTableRowElement;
+		const headerRowElem = this.rootElem.querySelector<HTMLTableRowElement>('.metrics-table-header-row')!;
 		this.columnConfigs.forEach(columnConfig => {
 			const headerCell = document.createElement('th');
 			const tooltip = columnConfig.tooltip || TOOLTIP_METRIC_LABELS[columnConfig.name as keyof typeof TOOLTIP_METRIC_LABELS];
