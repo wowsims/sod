@@ -46,8 +46,8 @@ export class UnitReferencePicker<ModObject> extends Input<ModObject, UnitReferen
 			<div class="dropdown-menu"></div>
     `;
 
-		this.buttonElem = this.rootElem.querySelector('.raid-target-picker-button') as HTMLElement;
-		this.dropdownElem = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
+		this.buttonElem = this.rootElem.querySelector<HTMLElement>('.raid-target-picker-button')!;
+		this.dropdownElem = this.rootElem.querySelector<HTMLElement>('.dropdown-menu')!;
 
 		this.buttonElem.addEventListener('click', event => event.preventDefault());
 

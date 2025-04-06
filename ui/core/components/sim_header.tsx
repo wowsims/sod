@@ -31,8 +31,8 @@ export class SimHeader extends Component {
 	constructor(parentElem: HTMLElement, simUI: SimUI) {
 		super(parentElem, 'sim-header');
 		this.simUI = simUI;
-		this.simTabsContainer = this.rootElem.querySelector('.sim-tabs') as HTMLElement;
-		this.simToolbar = this.rootElem.querySelector('.sim-toolbar') as HTMLElement;
+		this.simTabsContainer = this.rootElem.querySelector<HTMLElement>('.sim-tabs')!;
+		this.simToolbar = this.rootElem.querySelector<HTMLElement>('.sim-toolbar')!;
 
 		this.knownIssuesContent = (<ul className="text-start ps-3 mb-0"></ul>) as HTMLUListElement;
 		this.knownIssuesLink = this.addKnownIssuesLink();

@@ -97,7 +97,7 @@ export class BlessingsPicker extends Component {
 			</div>
 		`;
 
-		const icon = fragment.querySelector('.blessings-spec-icon') as HTMLElement;
+		const icon = fragment.querySelector<HTMLElement>('.blessings-spec-icon')!;
 		tippy(icon, { content: specNames[spec] });
 
 		return fragment.children[0] as HTMLElement;

@@ -61,15 +61,15 @@ export class MultiIconPicker<ModObject> extends Component {
 			this.addOnDisposeCallback(() => tooltip.destroy());
 		}
 
-		const labelElem = this.rootElem.querySelector('.multi-icon-picker-label') as HTMLElement;
+		const labelElem = this.rootElem.querySelector<HTMLElement>('.multi-icon-picker-label')!;
 		if (config.label) {
 			labelElem.textContent = config.label;
 		} else {
 			labelElem.remove();
 		}
 
-		this.buttonElem = this.rootElem.querySelector('.icon-picker-button') as HTMLAnchorElement;
-		this.dropdownMenu = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
+		this.buttonElem = this.rootElem.querySelector<HTMLAnchorElement>('.icon-picker-button')!;
+		this.dropdownMenu = this.rootElem.querySelector<HTMLElement>('.dropdown-menu')!;
 
 		if (this.config.direction == IconPickerDirection.Horizontal) {
 			this.dropdownMenu.style.gridAutoFlow = 'column';

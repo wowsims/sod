@@ -6,7 +6,7 @@ import { isDescendant } from './utils';
 Dropdown.Default.offset = [0, -1];
 //Dropdown.Default.display = "static";
 
-const body = document.querySelector('body') as HTMLElement;
+const body = document.querySelector<HTMLElement>('body')!;
 
 export const hasTouch = () => 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 

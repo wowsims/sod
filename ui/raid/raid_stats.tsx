@@ -124,7 +124,7 @@ class RaidStatsCategory extends Component {
 		const total = sum(this.effects.map(effect => effect.count));
 		this.counterElem.textContent = String(total);
 
-		const statsLink = this.rootElem.querySelector('.raid-stats-category') as HTMLElement;
+		const statsLink = this.rootElem.querySelector<HTMLElement>('.raid-stats-category')!;
 
 		if (total == 0) {
 			statsLink?.classList.remove('active');
@@ -166,12 +166,12 @@ class RaidStatsEffect extends Component {
 		this.counterElem = counterElemRef.value!;
 
 		if (this.options.playerData?.class) {
-			const labelElem = this.rootElem.querySelector('.raid-stats-effect-label') as HTMLElement;
+			const labelElem = this.rootElem.querySelector<HTMLElement>('.raid-stats-effect-label')!;
 			const playerCssClass = textCssClassForClass(this.options.playerData.class);
 			labelElem.classList.add(playerCssClass);
 		}
 
-		const iconElem = this.rootElem.querySelector('.raid-stats-effect-icon') as HTMLImageElement;
+		const iconElem = this.rootElem.querySelector<HTMLImageElement>('.raid-stats-effect-icon')!;
 		if (options.actionId) {
 			options.actionId.fill().then(actionId => (iconElem.src = actionId.iconUrl));
 		} else {
