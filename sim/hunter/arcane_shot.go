@@ -39,7 +39,7 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 			IgnoreHaste: true,
 			CD: core.Cooldown{
 				Timer:    timer,
-				Duration: time.Second*6 - time.Millisecond*200*time.Duration(hunter.Talents.ImprovedArcaneShot),
+				Duration: time.Second * 6,
 			},
 		},
 
