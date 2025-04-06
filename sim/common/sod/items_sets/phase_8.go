@@ -3,9 +3,9 @@ package item_sets
 import (
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 	"github.com/wowsims/sod/sim/hunter"
 	"github.com/wowsims/sod/sim/rogue"
+	"github.com/wowsims/sod/sim/shaman"
 	"github.com/wowsims/sod/sim/warrior"
 )
 
@@ -38,15 +38,25 @@ var ItemSetFallenRegality = core.NewItemSet(core.ItemSet{
 var ItemSetHackAndSmash = core.NewItemSet(core.ItemSet{
 	Name: "Hack and Smash",
 	Bonuses: map[int32]core.ApplyEffect{
-		// The Fire and Nature damage increases from Mercy and Crimson Cleaver are increased by 10%.
+		// Hunter - The damage increaes from Mercy's and Crimson Cleaver's effects are increased by 10%.
+		// Shaman - The Fire and Nature damage increases from Mercy and Crimson Cleaver are increased by 10%.
+		// Warrior - The damage increaes from Mercy's and Crimson Cleaver's effects are increased by 10%.
 		2: func(agent core.Agent) {
 			character := agent.GetCharacter()
 
-			fireAura := character.GetAuraByID(core.ActionID{SpellID: 1231498})
-			fireAura.AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.30/1.20) // Revert the 20% and apply 30%
+			core.MakePermanent(character.RegisterAura(core.Aura{
+				ActionID: core.ActionID{SpellID: 1234318},
+				Label:    "Hack and Smash",
+			}))
 
-			natureAura := character.GetAuraByID(core.ActionID{SpellID: 1231456})
-			natureAura.AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature], 1.30/1.20) // Revert the 20% and apply 30%
+			switch character.Class {
+			case proto.Class_ClassHunter:
+				agent.(hunter.HunterAgent).GetHunter().ApplyHackAndSmashHunterBonus()
+			case proto.Class_ClassShaman:
+				agent.(shaman.ShamanAgent).GetShaman().ApplyHackAndSmashShamanBonus()
+			case proto.Class_ClassWarrior:
+				agent.(warrior.WarriorAgent).GetWarrior().ApplyHackAndSmashWarriorBonus()
+			}
 		},
 	},
 })

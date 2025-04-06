@@ -51,38 +51,38 @@ stat_weights_results: {
  key: "TestProtection-Phase4-Lvl60-StatWeights-Default"
  value: {
   weights: 0.94763
-  weights: 0.7863
+  weights: 0.71525
   weights: 0
-  weights: 0.23688
+  weights: -0.1323
   weights: 0
-  weights: 0.18971
-  weights: 0
-  weights: 0
-  weights: 0
-  weights: 0.10504
+  weights: 0.18883
   weights: 0
   weights: 0
   weights: 0
-  weights: 4.27199
-  weights: 2.23259
+  weights: 0.10453
   weights: 0
   weights: 0
-  weights: 0.41331
   weights: 0
-  weights: 14.38904
+  weights: 3.58275
+  weights: 1.49198
   weights: 0
   weights: 0
+  weights: 0.41361
+  weights: 0
+  weights: 14.95314
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.75188
-  weights: -0.23798
-  weights: 1.11579
-  weights: -4.73602
-  weights: -2.76022
+  weights: 0
+  weights: 0
+  weights: 1.91042
+  weights: 0.04632
+  weights: 1.09649
+  weights: -2.30515
+  weights: -0.50859
   weights: 0
   weights: 0
   weights: 0
@@ -139,10 +139,10 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 1882.6172
-  tps: 4577.88087
-  dtps: 431.23099
-  hps: 105.56614
+  dps: 1876.20909
+  tps: 4555.65527
+  dtps: 431.25301
+  hps: 105.61709
  }
 }
 dps_results: {
@@ -238,9 +238,9 @@ dps_results: {
 dps_results: {
  key: "TestProtection-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1623.04164
-  tps: 3940.51183
-  dtps: 534.06876
-  hps: 95.83329
+  dps: 1612.7989
+  tps: 3918.62187
+  dtps: 533.66711
+  hps: 95.54016
  }
 }

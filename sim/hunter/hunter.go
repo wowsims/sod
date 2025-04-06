@@ -55,20 +55,22 @@ const (
 	ClassSpellMask_HunterFocusFire
 
 	// Pet Spells
-	ClassSpellMask_HunterPetFlankingStrike
-	ClassSpellMask_HunterPetClaw
 	ClassSpellMask_HunterPetBite
+	ClassSpellMask_HunterPetClaw
+	ClassSpellMask_HunterPetFlankingStrike
 	ClassSpellMask_HunterPetLightningBreath
 	ClassSpellMask_HunterPetLavaBreath
 	ClassSpellMask_HunterPetScreech
 	ClassSpellMask_HunterPetScorpidPoison
-	ClassSpellMask_HunterPetBasicAttacks = ClassSpellMask_HunterPetBite | ClassSpellMask_HunterPetClaw | ClassSpellMask_HunterPetLightningBreath | ClassSpellMask_HunterPetLavaBreath | ClassSpellMask_HunterPetScorpidPoison
+	ClassSpellMask_HunterPetBasicAttacks   = ClassSpellMask_HunterPetBite | ClassSpellMask_HunterPetClaw | ClassSpellMask_HunterPetLightningBreath | ClassSpellMask_HunterPetLavaBreath | ClassSpellMask_HunterPetScorpidPoison
+	ClassSpellMask_HunterPetSpecialAttacks = ClassSpellMask_HunterPetScreech // TODO: Other specials?
 
 	ClassSpellMask_HunterAll = 1<<iota - 1
 
 	ClassSpellMask_HunterTraps   = ClassSpellMask_HunterExplosiveTrap | ClassSpellMask_HunterFreezingTrap | ClassSpellMask_HunterImmolationTrap
 	ClassSpellMask_HunterShots   = ClassSpellMask_HunterAimedShot | ClassSpellMask_HunterArcaneShot | ClassSpellMask_HunterChimeraShot | ClassSpellMask_HunterExplosiveShot | ClassSpellMask_HunterKillShot | ClassSpellMask_HunterMultiShot | ClassSpellMask_HunterSteadyShot
 	ClassSpellMask_HunterStrikes = ClassSpellMask_HunterFlankingStrike | ClassSpellMask_HunterRaptorStrike | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterWyvernStrike
+	ClassSpellMask_HunterStings  = ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterSoFSerpentSting
 )
 
 type Hunter struct {
@@ -84,9 +86,10 @@ type Hunter struct {
 	NormalizedAmmoDamageBonus float64
 
 	// Miscellaneous set bonuses that require extra logic inside of spells
-	SerpentStingAPCoeff             float64
-	MultiShotBonusTargets           int32
-	BonusRaptorFuryDamageMultiplier float64
+	FlankingStrikeBonusPerStack float64
+	SerpentStingAPCoeff         float64
+	MultiShotBonusTargets       int32
+	RaptorFuryDamageMultiplier  int64
 
 	curQueueAura       *core.Aura
 	curQueuedAutoSpell *core.Spell

@@ -154,7 +154,7 @@ func (hunter *Hunter) applyTAQRanged4PBonus() {
 
 					for i := 1; i < 4; i++ {
 						core.StartDelayedAction(sim, core.DelayedActionOptions{
-							DoAt: sim.CurrentTime + time.Duration(i*375)*time.Millisecond,
+							DoAt: sim.CurrentTime + time.Duration(i*200)*time.Millisecond,
 							OnAction: func(sim *core.Simulation) {
 								// Ensure that the cloned shots get any damage amps from the main Kill Shot ability
 								clonedShot.Cast(sim, target)

@@ -12,10 +12,7 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		return
 	}
 
-	damageMod := hunter.AddDynamicMod(core.SpellModConfig{
-		Kind:     core.SpellMod_DamageDone_Flat,
-		ProcMask: core.ProcMaskMelee,
-	})
+	hunter.FlankingStrikeBonusPerStack += 0.08
 
 	buffAura := hunter.GetOrRegisterAura(core.Aura{
 		Label:     "Flanking Strike Buff",
@@ -23,13 +20,8 @@ func (hunter *Hunter) registerFlankingStrikeSpell() {
 		MaxStacks: 3,
 		Duration:  time.Second * 10,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			damageMod.UpdateIntValue(int64(8 * newStacks))
-		},
-		OnGain: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Activate()
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			damageMod.Deactivate()
+			hunter.PseudoStats.DamageDealtMultiplier /= 1 + hunter.FlankingStrikeBonusPerStack*float64(oldStacks)
+			hunter.PseudoStats.DamageDealtMultiplier *= 1 + hunter.FlankingStrikeBonusPerStack*float64(newStacks)
 		},
 	})
 

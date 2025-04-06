@@ -369,6 +369,11 @@ func (paladin *Paladin) applyPaladinT1Prot6P() {
 				// Holy Shield aura no longer has stacks and does not set stacks on gain or remove stacks on block.
 				// Setting MaxStacks to 0 disables this behavior in holy_shield.go
 				paladin.holyShieldAura[i].MaxStacks = 0
+
+				// With this bonus, the proc can partial resist and crit
+				paladin.holyShieldProc[i].ActionID.SpellID = 456544
+				paladin.holyShieldProc[i].Flags ^= core.SpellFlagBinary
+				paladin.holyShieldCanCrit = true
 			}
 		},
 	}))

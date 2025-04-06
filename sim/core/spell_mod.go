@@ -257,7 +257,7 @@ const (
 	// Uses FloatValue
 	SpellMod_CritDamageBonus_Flat
 
-	// Will reduce spell.DefaultCast.Cost by % amount. -5% = -0.05
+	// Will reduce spell.DefaultCast.Cost by % amount. -5% = -5
 	// Uses IntValue
 	SpellMod_PowerCost_Pct
 

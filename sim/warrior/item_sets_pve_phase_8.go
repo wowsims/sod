@@ -201,8 +201,9 @@ func (warrior *Warrior) applyScarletEnclaveProtection4PBonus() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warrior.Recklessness.SharedCD.Duration = 0
-			warrior.ShieldWall.SharedCD.Duration = 0
+			for _, spell := range []*WarriorSpell{warrior.Recklessness, warrior.Retaliation, warrior.ShieldWall} {
+				spell.SharedCD.Duration = 0
+			}
 		},
 		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_WarriorRecklesness) {
@@ -283,4 +284,11 @@ func (warrior *Warrior) ApplyFallenRegalityWarriorBonus(aura *core.Aura) {
 	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
 		cleaveDamageMod.Activate()
 	})
+}
+
+// The damage increaes from Mercy's and Crimson Cleaver's effects are increased by 10%.
+func (warrior *Warrior) ApplyHackAndSmashWarriorBonus() {
+	// Revert the original and apply the additional 10%
+	warrior.applyCrimsonCleaverAuraBonuses(warrior.GetAura("Crimson Crusade"), (CrimsonCleaverDamageBonus+0.10)/CrimsonCleaverDamageBonus)
+	warrior.applyMercyAuraBonuses(warrior.GetAura("Mercy by Fire"), (MercyDamageBonus+0.10)/MercyDamageBonus)
 }

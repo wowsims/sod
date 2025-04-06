@@ -266,44 +266,26 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240852/crimson-cleaver
-	// Chance on hit: Your next 2 instances of Nature damage are increased by 20%. Lasts 12 sec. (100ms cooldown)
-	// Confirmed PPM 1.0
+	// Hunter - Equip: Chance on hit to cause your next 2 instances of Raptor Strike damage to be increased by 20%. Lasts 12 sec.
+	// Shaman - Equip: Chance on hit to cause your next 2 instances of Nature damage are increased by 20%. Lasts 12 sec. (100ms cooldown)
+	// Warrior - Equip: Chance on hit to cause your next 2 instances of Cleave damage to be increased by 20%. Lasts 12 sec.
 	core.NewItemEffect(CrimsonCleaver, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := core.ProcMaskMeleeSpecial | core.ProcMaskMeleeDamageProc | core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc
+		aura := core.MakePermanent(character.RegisterAura(core.Aura{
+			Label: "Crimson Cleaver Trigger",
+		}))
 
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Millisecond * 100,
+		switch character.Class {
+		case proto.Class_ClassHunter:
+			agent.(hunter.HunterAgent).GetHunter().ApplyCrimsonCleaverHunterEffect(aura)
+		case proto.Class_ClassShaman:
+			agent.(shaman.ShamanAgent).GetShaman().ApplyCrimsonCleaverShamanEffect(aura)
+		case proto.Class_ClassWarrior:
+			agent.(warrior.WarriorAgent).GetWarrior().ApplyCrimsonCleaverWarriorEffect(aura)
 		}
 
-		buffAura := character.RegisterAura(core.Aura{
-			ActionID:  core.ActionID{SpellID: 1231456},
-			Label:     "Crimson Crusade",
-			Duration:  time.Second * 12,
-			MaxStacks: 4,
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolNature) && icd.IsReady(sim) {
-					icd.Use(sim)
-					aura.RemoveStack(sim)
-				}
-			},
-		}).AttachMultiplicativePseudoStatBuff(&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature], 1.20)
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Crimson Cleaver Trigger",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			ProcMask:          core.ProcMaskMelee, // Confirmed procs from either hand
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1.0,
-			ICD:               time.Millisecond * 100,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				buffAura.Activate(sim)
-				buffAura.SetStacks(sim, buffAura.MaxStacks)
-			},
-		})
+		character.ItemSwap.RegisterProc(CrimsonCleaver, aura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240922/deception
@@ -637,50 +619,26 @@ func init() {
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=240854/mercy
-	// Chance on hit: Your next 4 instances of Fire damage are increased by 20%.  Lasts 12 sec. (100ms cooldown)
-	// Confirmed PPM 1.0
+	// Hunter - Equip: Chance on hit to cause your next 2 instances of damage from your pet's special abilities to be increased by 20%. Lasts 12 sec.
+	// Shaman - Equip: Chance on hit to cause your next 2 instances of Fire damage are increased by 20%.  Lasts 12 sec. (100ms cooldown)
+	// Warrior - Equip: Chance on hit to cause your next 2 instances of Whirlwind damage to be increased by 20%. Lasts 12 sec.
 	core.NewItemEffect(Mercy, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
-		procMask := core.ProcMaskMeleeSpecial | core.ProcMaskMeleeDamageProc | core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc
+		aura := core.MakePermanent(character.RegisterAura(core.Aura{
+			Label: "Mercy Trigger",
+		}))
 
-		icd := core.Cooldown{
-			Timer:    character.NewTimer(),
-			Duration: time.Millisecond * 100,
+		switch character.Class {
+		case proto.Class_ClassHunter:
+			agent.(hunter.HunterAgent).GetHunter().ApplyMercyHunterEffect(aura)
+		case proto.Class_ClassShaman:
+			agent.(shaman.ShamanAgent).GetShaman().ApplyMercyShamanEffect(aura)
+		case proto.Class_ClassWarrior:
+			agent.(warrior.WarriorAgent).GetWarrior().ApplyMercyWarriorEffect(aura)
 		}
 
-		buffAura := character.RegisterAura(core.Aura{
-			ActionID:  core.ActionID{SpellID: 1231498},
-			Label:     "Mercy by Fire",
-			Duration:  time.Second * 12,
-			MaxStacks: 4,
-			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				if !spell.Matches(shaman.ClassSpellMask_ShamanFlametongueProc) && spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolFire) && icd.IsReady(sim) {
-					icd.Use(sim)
-					aura.RemoveStack(sim)
-				}
-			},
-		}).AttachMultiplicativePseudoStatBuff(
-			&character.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], 1.20,
-		).AttachSpellMod(core.SpellModConfig{
-			Kind:       core.SpellMod_DamageDone_Pct,
-			ClassMask:  shaman.ClassSpellMask_ShamanFlametongueProc,
-			FloatValue: 1 / 1.20,
-		})
-
-		core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Mercy Trigger",
-			Callback:          core.CallbackOnSpellHitDealt,
-			Outcome:           core.OutcomeLanded,
-			ProcMask:          core.ProcMaskMelee, // Confirmed procs from either hand
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
-			PPM:               1.0,
-			ICD:               time.Millisecond * 100,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				buffAura.Activate(sim)
-				buffAura.SetStacks(sim, buffAura.MaxStacks)
-			},
-		})
+		character.ItemSwap.RegisterProc(Mercy, aura)
 	})
 
 	// https://www.wowhead.com/classic-ptr/item=241003/mirage-rod-of-illusion
@@ -731,7 +689,9 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				spell.Dot(target).Apply(sim)
+				if dot := spell.Dot(target); dot != nil {
+					dot.Apply(sim)
+				}
 			},
 		})
 

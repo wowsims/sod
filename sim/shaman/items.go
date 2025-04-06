@@ -622,3 +622,102 @@ func init() {
 
 	core.AddEffectsToTest = true
 }
+
+const MercyDamageBonus = 1.20
+
+// Equip: Chance on hit to cause your next 4 instances of Fire damage are increased by 20%.  Lasts 12 sec. (100ms cooldown)
+// Confirmed PPM 1.0
+// Note: Not listed but confirmed by Zirene, does not proc from or benefit Flametongue Weapon procs
+func (shaman *Shaman) ApplyMercyShamanEffect(aura *core.Aura) {
+	procMask := core.ProcMaskMeleeSpecial | core.ProcMaskMeleeDamageProc | core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc
+
+	icd := core.Cooldown{
+		Timer:    shaman.NewTimer(),
+		Duration: time.Millisecond * 100,
+	}
+
+	buffAura := shaman.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1231498},
+		Label:     "Mercy by Fire",
+		Duration:  time.Second * 12,
+		MaxStacks: 4,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !spell.Matches(ClassSpellMask_ShamanFlametongueProc) && spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolFire) && result.Landed() && icd.IsReady(sim) {
+				icd.Use(sim)
+				aura.RemoveStack(sim)
+			}
+		},
+	})
+	shaman.applyMercyAuraBonuses(buffAura, MercyDamageBonus)
+
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:              "Mercy Trigger - Shaman",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee, // Confirmed procs from either hand
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+		PPM:               1.0,
+		ICD:               time.Millisecond * 100,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			buffAura.Activate(sim)
+			buffAura.SetStacks(sim, buffAura.MaxStacks)
+		},
+	})
+}
+
+func (shaman *Shaman) applyMercyAuraBonuses(aura *core.Aura, modifier float64) {
+	aura.AttachMultiplicativePseudoStatBuff(
+		&shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire], modifier,
+	).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_ShamanFlametongueProc,
+		FloatValue: 1 / modifier,
+	})
+}
+
+const CrimsonCleaverDamageBonus = 1.20
+
+// Equip: Chance on hit to cause your next 4 instances of Nature damage are increased by 20%. Lasts 12 sec. (100ms cooldown)
+// Confirmed PPM 1.0
+func (shaman *Shaman) ApplyCrimsonCleaverShamanEffect(aura *core.Aura) {
+	procMask := core.ProcMaskMeleeSpecial | core.ProcMaskMeleeDamageProc | core.ProcMaskSpellDamage | core.ProcMaskSpellDamageProc
+
+	icd := core.Cooldown{
+		Timer:    shaman.NewTimer(),
+		Duration: time.Millisecond * 100,
+	}
+
+	buffAura := shaman.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1231456},
+		Label:     "Crimson Crusade",
+		Duration:  time.Second * 12,
+		MaxStacks: 4,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.ProcMask.Matches(procMask) && spell.SpellSchool.Matches(core.SpellSchoolNature) && result.Landed() && icd.IsReady(sim) {
+				icd.Use(sim)
+				aura.RemoveStack(sim)
+			}
+		},
+	})
+	shaman.applyCrimsonCleaverAuraBonuses(buffAura, CrimsonCleaverDamageBonus)
+
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:              "Crimson Cleaver Trigger - Shaman",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee, // Confirmed procs from either hand
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+		PPM:               1.0,
+		ICD:               time.Millisecond * 100,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			buffAura.Activate(sim)
+			buffAura.SetStacks(sim, buffAura.MaxStacks)
+		},
+	})
+}
+
+func (shaman *Shaman) applyCrimsonCleaverAuraBonuses(aura *core.Aura, modifier float64) {
+	aura.AttachMultiplicativePseudoStatBuff(
+		&shaman.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexNature], modifier,
+	)
+}

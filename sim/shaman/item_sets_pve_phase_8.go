@@ -32,21 +32,21 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 		return
 	}
 
-	// These interactions are unlisted but confirmed by Zirene. All stack multiplicatively.
-	// -1 per point of Concussion because the ticks double dip
+	// These interactions are unlisted but confirmed by Zirene. All stack additively.
+	// -1% per point of Concussion because the ticks double dip
 	// 40% from Tier 3 2-piece
 	// 60% from Storm, Earth, and Fire
-	damageMultiplier := 1.0
-	damageMultiplier *= 1 - 0.01*float64(shaman.Talents.Concussion)
+	additiveModifier := int64(0)
+	additiveModifier += -1 * int64(shaman.Talents.Concussion)
 	if shaman.HasSetBonus(ItemSetTheEarthshatterersStorm, 2) {
-		damageMultiplier *= 1 + EleTier32pFlameShockDamageBonus/100
+		additiveModifier += EleTier32pFlameShockDamageBonus
 	}
 	if shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire) {
-		damageMultiplier *= 1 + StormEarthAndFireFlameShockDamageBonus/100
+		additiveModifier += StormEarthAndFireFlameShockDamageBonus
 	}
 
 	flameShockCopy := shaman.RegisterSpell(core.SpellConfig{
-		ActionID:       core.ActionID{SpellID: 1226972}.WithTag(1),
+		ActionID:       core.ActionID{SpellID: 1226972},
 		ClassSpellMask: ClassSpellMask_ShamanFlameShock,
 		SpellSchool:    core.SpellSchoolFire,
 		DefenseType:    core.DefenseTypeMagic,
@@ -62,8 +62,9 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 			TickLength:    0,
 		},
 
-		DamageMultiplier: damageMultiplier,
-		ThreatMultiplier: 1,
+		DamageMultiplier:            1,
+		DamageMultiplierAdditivePct: additiveModifier,
+		ThreatMultiplier:            1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},
 	})
@@ -452,3 +453,10 @@ var ItemSetTheSoulcrusher = core.NewItemSet(core.ItemSet{
 		},
 	},
 })
+
+// The Fire and Nature damage increases from Mercy and Crimson Cleaver are increased by 10%.
+func (shaman *Shaman) ApplyHackAndSmashShamanBonus() {
+	// Revert the original and apply the additional 10%
+	shaman.applyMercyAuraBonuses(shaman.GetAura("Mercy by Fire"), (MercyDamageBonus+0.10)/MercyDamageBonus)
+	shaman.applyCrimsonCleaverAuraBonuses(shaman.GetAura("Crimson Crusade"), (CrimsonCleaverDamageBonus+0.10)/CrimsonCleaverDamageBonus)
+}
