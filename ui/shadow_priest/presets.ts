@@ -1,26 +1,6 @@
 import { Phase } from '../core/constants/other.js';
 import * as PresetUtils from '../core/preset_utils.js';
 import { Spec } from '../core/proto/common';
-import {
-	Conjured,
-	Consumes,
-	Debuffs,
-	EnchantedSigil,
-	Flask,
-	Food,
-	IndividualBuffs,
-	ManaRegenElixir,
-	Potions,
-	Profession,
-	RaidBuffs,
-	SaygesFortune,
-	ShadowPowerBuff,
-	SpellPowerBuff,
-	TristateEffect,
-	WeaponImbue,
-	ZanzaBuff,
-} from '../core/proto/common.js';
-import { ShadowPriest_Options as Options } from '../core/proto/priest.js';
 import { SavedTalents } from '../core/proto/ui.js';
 // APLs
 import Phase1APL from './apls/phase_1.apl.json';
@@ -44,6 +24,10 @@ import Phase6Gear from './gear_sets/phase_6.gear.json';
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
 // keep them in a separate file.
+
+///////////////////////////////////////////////////////////////////////////
+//                                 Build Presets
+///////////////////////////////////////////////////////////////////////////
 
 export const PresetBuildPhase7 = PresetUtils.makePresetBuildFromJSON('Phase 7', Spec.SpecShadowPriest, Phase7BuildJSON);
 export const PresetBuildPhase8 = PresetUtils.makePresetBuildFromJSON('Phase 8', Spec.SpecShadowPriest, Phase8BuildJSON);
@@ -74,8 +58,6 @@ export const GearPresets = {
 	[Phase.Phase7]: [PresetBuildPhase7.gear!],
 	[Phase.Phase8]: [PresetBuildPhase8.gear!],
 };
-
-export const DefaultGear = GearPresets[Phase.Phase8][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
@@ -135,92 +117,4 @@ export const TalentPresets = {
 	[Phase.Phase6]: [],
 	[Phase.Phase7]: [PresetBuildPhase7.talents!],
 	[Phase.Phase8]: [PresetBuildPhase8.talents!],
-};
-
-export const DefaultTalents = TalentPresets[Phase.Phase8][0];
-
-///////////////////////////////////////////////////////////////////////////
-//                                 Build Presets
-///////////////////////////////////////////////////////////////////////////
-
-export const PresetBuildPhase4 = PresetUtils.makePresetBuild('Phase 4', {
-	gear: GearPhase4,
-	talents: TalentsPhase4,
-	rotation: APLPhase4,
-});
-export const PresetBuildPhase5Draconic = PresetUtils.makePresetBuild('Phase 5 Draconic', {
-	gear: GearPhase5Draconic,
-	talents: TalentsPhase4,
-	rotation: APLPhase5,
-});
-export const PresetBuildPhase5CoreForged = PresetUtils.makePresetBuild('Phase 5 Core Forged', {
-	gear: GearPhase5CoreForged,
-	talents: TalentsPhase4,
-	rotation: APLPhase5,
-});
-export const PresetBuildPhase6 = PresetUtils.makePresetBuild('Phase 6', {
-	gear: GearPhase6,
-	talents: TalentsPhase4,
-	rotation: APLPhase6,
-});
-
-///////////////////////////////////////////////////////////////////////////
-//                                 Options
-///////////////////////////////////////////////////////////////////////////
-
-export const DefaultOptions = Options.create({
-});
-
-export const DefaultConsumes = Consumes.create({
-	defaultConjured: Conjured.ConjuredDemonicRune,
-	defaultPotion: Potions.MajorManaPotion,
-	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
-	flask: Flask.FlaskOfAncientKnowledge,
-	food: Food.FoodDarkclawBisque,
-	mainHandImbue: WeaponImbue.EnchantedRepellent,
-	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
-	mildlyIrradiatedRejuvPot: true,
-	shadowPowerBuff: ShadowPowerBuff.ElixirOfShadowPower,
-	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
-	zanzaBuff: ZanzaBuff.CerebralCortexCompound,
-});
-
-export const DefaultRaidBuffs = RaidBuffs.create({
-	arcaneBrilliance: true,
-	aspectOfTheLion: true,
-	demonicPact: 120,
-	divineSpirit: true,
-	fireResistanceAura: true,
-	fireResistanceTotem: true,
-	giftOfTheWild: TristateEffect.TristateEffectImproved,
-	manaSpringTotem: TristateEffect.TristateEffectImproved,
-	moonkinAura: true,
-	powerWordFortitude: TristateEffect.TristateEffectImproved,
-});
-
-export const DefaultIndividualBuffs = IndividualBuffs.create({
-	blessingOfWisdom: TristateEffect.TristateEffectImproved,
-	mightOfStormwind: true,
-	rallyingCryOfTheDragonslayer: true,
-	saygesFortune: SaygesFortune.SaygesDamage,
-	slipkiksSavvy: true,
-	songflowerSerenade: true,
-	spiritOfZandalar: true,
-	valorOfAzeroth: true,
-	warchiefsBlessing: true,
-});
-
-export const DefaultDebuffs = Debuffs.create({
-	improvedShadowBolt: true,
-	judgementOfWisdom: true,
-	occultPoison: true,
-	markOfChaos: true,
-	wintersChill: true,
-});
-
-export const OtherDefaults = {
-	channelClipDelay: 100,
-	distanceFromTarget: 30,
-	profession1: Profession.Alchemy,
-	profession2: Profession.Enchanting,
 };
