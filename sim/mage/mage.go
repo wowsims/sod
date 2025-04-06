@@ -21,6 +21,7 @@ const (
 	ClassSpellMask_MageArcaneMissilesTick
 	ClassSpellMask_MageArcanePower
 	ClassSpellMask_MageArcaneSurge
+	ClassSpellMask_MageConeOfCold
 	ClassSpellMask_MageCounterSpell
 	ClassSpellMask_MageBalefireBolt
 	ClassSpellMask_MageBlastWave
@@ -62,11 +63,11 @@ const (
 
 	ClassSpellMask_MageChanneled = ClassSpellMask_MageArcaneMissiles | ClassSpellMask_MageEvocation | ClassSpellMask_MageMassRegeneration
 
-	// TODO: Cone of Cold, Frost Nova
+	// TODO: Frost Nova
 	ClassSpellMask_MageHarmfulGCDSpells = ClassSpellMask_MageFireball | ClassSpellMask_MageFrostbolt | ClassSpellMask_MageFireBlast |
 		ClassSpellMask_MagePyroblast | ClassSpellMask_MageScorch | ClassSpellMask_MageArcaneMissiles |
 		ClassSpellMask_MageArcaneExplosion | ClassSpellMask_MageBlizzard | ClassSpellMask_MageFlamestrike |
-		ClassSpellMask_MageBlastWave |
+		ClassSpellMask_MageBlastWave | ClassSpellMask_MageConeOfCold |
 		ClassSpellMask_MageFrostfireBolt | ClassSpellMask_MageSpellfrostBolt | ClassSpellMask_MageArcaneBlast |
 		ClassSpellMask_MageBalefireBolt | ClassSpellMask_MageArcaneBarrage | ClassSpellMask_MageLivingBomb | ClassSpellMask_MageDeepFreeze |
 		ClassSpellMask_MageIceLance | ClassSpellMask_MageLivingFlame | ClassSpellMask_MageArcaneSurge | ClassSpellMask_MageFrozenOrb
@@ -93,6 +94,7 @@ type Mage struct {
 	BalefireBolt            *core.Spell
 	BlastWave               []*core.Spell
 	Blizzard                []*core.Spell
+	ConeOfCold              []*core.Spell
 	DeepFreeze              *core.Spell
 	Evocation               *core.Spell
 	Fireball                []*core.Spell
@@ -175,6 +177,7 @@ func (mage *Mage) Initialize() {
 	mage.registerArcaneExplosionSpell()
 	mage.registerBlastWaveSpell()
 	mage.registerBlizzardSpell()
+	mage.registerConeOfColdSpell()
 	mage.registerFlamestrikeSpell()
 
 	mage.registerEvocationCD()
