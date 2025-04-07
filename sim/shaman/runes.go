@@ -306,7 +306,7 @@ func (shaman *Shaman) applyTwoHandedMastery() {
 
 	procSpellId := int32(436365)
 
-	attackSpeedMultiplier := 1.35
+	attackSpeedMultiplier := 1.45
 	apMultiplier := 1.10
 	spellHitIncrease := core.SpellHitRatingPerHitChance * 10.0
 
