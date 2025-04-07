@@ -121,5 +121,5 @@ func (rogue *Rogue) registerSaberSlashSpell() {
 }
 
 func (rogue *Rogue) saberSlashMultiplier(stacks int32) float64 {
-	return []float64{1, 1.40, 1.80, 2.20}[stacks]
+	return []float64{1, 1.50, 2.00, 2.50}[stacks]
 }
