@@ -20,11 +20,6 @@ func (mage *Mage) registerIceLanceSpell() {
 	spellCoeff := 0.429
 	manaCost := 0.08
 
-	damageModFlat := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask: ClassSpellMask_MageIceLance,
-		Kind:      core.SpellMod_DamageDone_Flat,
-	})
-
 	damageModPct := mage.AddDynamicMod(core.SpellModConfig{
 		ClassMask:  ClassSpellMask_MageIceLance,
 		Kind:       core.SpellMod_DamageDone_Pct,
@@ -67,28 +62,13 @@ func (mage *Mage) registerIceLanceSpell() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageLow, baseDamageHigh)
 
-			var glaciateAura *core.Aura
-			modifier := int64(0)
-			if hasWintersChillTalent {
-				if glaciateAura = mage.GlaciateAuras.Get(target); hasWintersChillTalent && glaciateAura.IsActive() {
-					modifier += int64(20 * glaciateAura.GetStacks())
-				}
-			}
-
 			damageModPct.UpdateFloatValue(core.TernaryFloat64(mage.isTargetFrozen(target), 4, 1))
-			damageModFlat.UpdateIntValue(modifier)
-
 			damageModPct.Activate()
-			damageModFlat.Activate()
+
 			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
-			damageModPct.Deactivate()
-			damageModFlat.Deactivate()
 
 			spell.WaitTravelTime(sim, func(sim *core.Simulation) {
 				spell.DealDamage(sim, result)
-				if result.Landed() && glaciateAura != nil {
-					glaciateAura.Deactivate(sim)
-				}
 			})
 		},
 	})
@@ -96,6 +76,12 @@ func (mage *Mage) registerIceLanceSpell() {
 	if !hasWintersChillTalent {
 		return
 	}
+
+	glaciateDamageMask := ClassSpellMask_MageIceLance | ClassSpellMask_MageDeepFreeze
+	glaciateDamageMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask: glaciateDamageMask,
+		Kind:      core.SpellMod_DamageDone_Flat,
+	})
 
 	mage.GlaciateAuras = mage.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
 		return unit.RegisterAura(core.Aura{
@@ -105,6 +91,27 @@ func (mage *Mage) registerIceLanceSpell() {
 			MaxStacks: 5,
 		})
 	})
+
+	core.MakePermanent(mage.RegisterAura(core.Aura{
+		Label: "Glaciate",
+		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			if spell.Matches(glaciateDamageMask) {
+				modifier := int64(0)
+				if glaciateAura := mage.GlaciateAuras.Get(target); glaciateAura.IsActive() {
+					modifier += int64(20 * glaciateAura.GetStacks())
+				}
+
+				glaciateDamageMod.UpdateIntValue(modifier)
+				glaciateDamageMod.Activate()
+			}
+		},
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			// Note: Glaciate is not removed when using Deep Freeze even though it gains damage
+			if glaciateAura := mage.GlaciateAuras.Get(result.Target); spell.Matches(ClassSpellMask_MageIceLance) && result.Landed() && glaciateAura.IsActive() {
+				glaciateAura.Deactivate(sim)
+			}
+		},
+	}))
 
 	core.MakeProcTriggerAura(&mage.Unit, core.ProcTrigger{
 		Name:             "Glaciate Trigger",
