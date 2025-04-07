@@ -46,6 +46,8 @@ const (
 	ClassSpellMask_PaladinDivineProtection
 	ClassSpellMask_PaladinAvengingWrath
 
+	ClassSpellMask_PaladinHolyLight
+
 	ClassSpellMask_PaladinAll = 1<<iota - 1
 
 	// Judgements

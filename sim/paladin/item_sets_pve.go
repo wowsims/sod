@@ -493,8 +493,64 @@ func (paladin *Paladin) applyPaladinTAQProt2P() {
 	}))
 }
 
+// Shield of the Righteous causes your next Holy Light to be instant cast. If cast on self, it will refund 100% of its mana cost and be unaffected by Guarded by the Light.
 func (paladin *Paladin) applyPaladinTAQProt4P() {
-	// Empty Function (Not Implemented)
+	bonusLabel := "S03 - Item - TAQ - Paladin - Protection 4P Bonus"
+	if paladin.HasAura(bonusLabel) {
+		return
+	}
+
+	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 1213461}) // Spell ID for the mana return part of Shielded in Righteousness
+	shieldedInRighteousnessAura := paladin.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: 1213415},
+		Label:    "Shielded in Righteousness",
+		Duration: time.Second * 10,
+	})
+
+	paladin.RegisterSpell(core.SpellConfig{
+		ActionID:       core.ActionID{SpellID: 19968},
+		Flags:          core.SpellFlagAPL,
+		ProcMask:       core.ProcMaskSpellHealing,
+		SpellSchool:    core.SpellSchoolHoly,
+		DefenseType:    core.DefenseTypeMagic,
+		ClassSpellMask: ClassSpellMask_PaladinHolyLight,
+
+		ManaCost: core.ManaCostOptions{
+			FlatCost: 660,
+		},
+		Cast: core.CastConfig{
+			DefaultCast: core.Cast{
+				GCD: core.GCDDefault,
+			},
+			IgnoreHaste: true,
+		},
+
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return shieldedInRighteousnessAura.IsActive()
+		},
+
+		DamageMultiplier: 1,
+		ThreatMultiplier: 1,
+		BonusCoefficient: 0.714,
+
+		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+			baseHealing := sim.RollWithLabel(1590, 1770, "Holy Light")
+			spell.CalcAndDealHealing(sim, &paladin.Unit, baseHealing, spell.OutcomeHealingCrit)
+			paladin.AddMana(sim, spell.CurCast.Cost, manaMetrics)
+			shieldedInRighteousnessAura.Deactivate(sim)
+		},
+	})
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: PaladinTAQProt4P},
+		Label:    bonusLabel,
+	})).AttachProcTrigger(core.ProcTrigger{
+		ClassSpellMask: ClassSpellMask_PaladinShieldOfRighteousness,
+		Callback:       core.CallbackOnCastComplete,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			shieldedInRighteousnessAura.Activate(sim)
+		},
+	})
 }
 
 func (paladin *Paladin) applyPaladinT1Holy2P() {
