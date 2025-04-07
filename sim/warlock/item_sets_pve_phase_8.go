@@ -127,7 +127,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 	}).AttachMultiplyCastSpeed(&warlock.Unit, 1.20)
 
 	// The backdraft bonus is actually a mod on Backdraft itself. Additive 15%
-	warlock.backdraftCastSpeed += 0.15
+	warlock.backdraftCastSpeed += 0.12
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,
