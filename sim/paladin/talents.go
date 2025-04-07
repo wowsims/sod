@@ -42,6 +42,8 @@ func (paladin *Paladin) ApplyTalents() {
 	paladin.applyRedoubt()
 	paladin.applyReckoning()
 	paladin.applyImprovedLayOnHands()
+
+	paladin.applyHealingLight()
 }
 
 func (paladin *Paladin) improvedSoR() float64 {
@@ -231,6 +233,16 @@ func (paladin *Paladin) applyImprovedLayOnHands() {
 					aura.Activate(sim)
 				}
 			},
+		})
+	}
+}
+
+func (paladin *Paladin) applyHealingLight() {
+	if paladin.Talents.HealingLight > 0 {
+		paladin.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_DamageDone_Pct,
+			ClassMask:  ClassSpellMask_PaladinHolyLight,
+			FloatValue: 1 + 0.04*float64(paladin.Talents.HealingLight),
 		})
 	}
 }

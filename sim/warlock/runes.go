@@ -668,13 +668,19 @@ func (warlock *Warlock) applyDemonicPact() {
 			icd.Use(sim)
 
 			lastBonus := 0.0
-			currentSP := warlock.getHighestSP()
 			warlockAura := demonicPactAuras.Get(&warlock.Unit)
 
 			// Remove DP bonus from SP bonus if active
 			if warlockAura.IsActive() {
 				lastBonus = warlockAura.ExclusiveEffects[0].Priority
 			}
+
+			currentSP := warlock.getHighestSP()
+			// Blizzard buffed Defender's Resolve from 2 to 4 spell dam per stack but negated the change to not buff Demonic Pact
+			if warlock.defendersResolveAura != nil && warlock.defendersResolveAura.IsActive() {
+				currentSP -= float64(warlock.defendersResolveAura.GetStacks()*DefendersResolveSpellDamagePer) / 2.0
+			}
+
 			newSPBonus := max(math.Round(0.10*(currentSP-lastBonus)), math.Round(float64(warlock.Level)/2))
 
 			if warlockAura.RemainingDuration(sim) < 10*time.Second || newSPBonus >= lastBonus {
