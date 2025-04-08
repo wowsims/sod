@@ -6,7 +6,7 @@ import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.j
 import { Player } from '../core/player.js';
 import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { Stats } from '../core/proto_utils/stats.js';
-import { getSpecIcon, specNames } from '../core/proto_utils/utils.js';
+import { getSpecIcon, specNames, SpecOptions } from '../core/proto_utils/utils.js';
 import * as ShadowPriestInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -61,7 +61,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	defaults: {
 		// Default equipped gear.
-		gear: Presets.DefaultGear.gear,
+		gear: Presets.DefaultBuild.gear!.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -81,21 +81,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			},
 		),
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumes: Presets.DefaultBuild.settings!.consumes!,
 		// Default talents.
-		talents: Presets.DefaultTalents.data,
+		talents: Presets.DefaultBuild.talents!.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultOptions,
+		specOptions: Presets.DefaultBuild.settings!.specOptions! as SpecOptions<Spec.SpecShadowPriest>,
+		other: {
+			// Default distance from target.
+			distanceFromTarget: Presets.DefaultBuild.settings?.playerOptions?.distanceFromTarget,
+			profession1: Presets.DefaultBuild.settings?.playerOptions?.profession1,
+			profession2: Presets.DefaultBuild.settings?.playerOptions?.profession2,
+		},
 		// Default raid/party buffs settings.
-		raidBuffs: Presets.DefaultRaidBuffs,
-
-		partyBuffs: PartyBuffs.create({}),
-
-		individualBuffs: Presets.DefaultIndividualBuffs,
-
-		debuffs: Presets.DefaultDebuffs,
-
-		other: Presets.OtherDefaults,
+		raidBuffs: Presets.DefaultBuild.settings!.raidBuffs!,
+		partyBuffs: Presets.DefaultBuild.settings!.partyBuffs!,
+		individualBuffs: Presets.DefaultBuild.settings!.buffs!,
+		debuffs: Presets.DefaultBuild.settings!.debuffs!,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -120,6 +121,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 
 	presets: {
 		talents: [
+			...Presets.TalentPresets[Phase.Phase8],
+			...Presets.TalentPresets[Phase.Phase7],
 			...Presets.TalentPresets[Phase.Phase6],
 			...Presets.TalentPresets[Phase.Phase5],
 			...Presets.TalentPresets[Phase.Phase4],
@@ -128,6 +131,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			...Presets.TalentPresets[Phase.Phase1],
 		],
 		rotations: [
+			...Presets.APLPresets[Phase.Phase8],
+			...Presets.APLPresets[Phase.Phase7],
 			...Presets.APLPresets[Phase.Phase6],
 			...Presets.APLPresets[Phase.Phase5],
 			...Presets.APLPresets[Phase.Phase4],
@@ -136,6 +141,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			...Presets.APLPresets[Phase.Phase1],
 		],
 		gear: [
+			...Presets.GearPresets[Phase.Phase8],
+			...Presets.GearPresets[Phase.Phase7],
 			...Presets.GearPresets[Phase.Phase6],
 			...Presets.GearPresets[Phase.Phase5],
 			...Presets.GearPresets[Phase.Phase4],
@@ -143,7 +150,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [Presets.PresetBuildPhase6, Presets.PresetBuildPhase5Draconic, Presets.PresetBuildPhase5CoreForged, Presets.PresetBuildPhase4],
+		builds: [Presets.PresetBuildPhase8, Presets.PresetBuildPhase7],
 	},
 
 	autoRotation: player => {
@@ -157,9 +164,9 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecShadowPriest, {
 			defaultName: 'Shadow',
 			iconUrl: getSpecIcon(Class.ClassPriest, 2),
 
-			talents: Presets.DefaultTalents.data,
-			specOptions: Presets.DefaultOptions,
-			consumes: Presets.DefaultConsumes,
+			talents: Presets.DefaultBuild.talents!.data,
+			specOptions: Presets.DefaultBuild.settings!.specOptions! as SpecOptions<Spec.SpecShadowPriest>,
+			consumes: Presets.DefaultBuild.settings!.consumes!,
 			defaultFactionRaces: {
 				[Faction.Unknown]: Race.RaceUnknown,
 				[Faction.Alliance]: Race.RaceDwarf,

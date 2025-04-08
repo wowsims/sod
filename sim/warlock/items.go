@@ -296,7 +296,7 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240844/putress-poker
+	// https://www.wowhead.com/classic/item=240844/putress-poker
 	// Use: Reduce the cast time and global cooldown of Searing Pain and Shadow Cleave by 0.5 sec for 15 sec. (2 Min Cooldown)
 	core.NewItemEffect(PutressPoker, func(agent core.Agent) {
 		warlock := agent.(WarlockAgent).GetWarlock()

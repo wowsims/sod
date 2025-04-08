@@ -180,7 +180,7 @@ var ItemSetWaywatcherFerocity = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// https://www.wowhead.com/classic-ptr/spell=1226109/s03-item-scarlet-enclave-druid-feral-2p-bonus
+// https://www.wowhead.com/classic/spell=1226109/s03-item-scarlet-enclave-druid-feral-2p-bonus
 // You gain 2 Energy each time Rake or Rip deals periodic damage.
 func (druid *Druid) applyScarletEnclaveFeral2PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Druid - Feral 2P Bonus"
@@ -192,7 +192,7 @@ func (druid *Druid) applyScarletEnclaveFeral2PBonus() {
 	scentOfBloodMetrics := druid.NewEnergyMetrics(actionId)
 	ripOrRakeMask := ClassSpellMask_DruidRip | ClassSpellMask_DruidRake
 
-	// https://www.wowhead.com/classic-ptr/spell=1226113/scent-of-blood
+	// https://www.wowhead.com/classic/spell=1226113/scent-of-blood
 	// Not required at all to put this in a spell, but game does it like this, so why not?
 	scentOfBlood := druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID:    actionId,
@@ -269,7 +269,7 @@ func (druid *Druid) applyScarletEnclaveFeral4PBonus() {
 	}))
 }
 
-// https://www.wowhead.com/classic-ptr/spell=1226119/s03-item-scarlet-enclave-druid-feral-6p-bonus
+// https://www.wowhead.com/classic/spell=1226119/s03-item-scarlet-enclave-druid-feral-6p-bonus
 // Your Finishing Moves have a 20% chance per combo point spent to trigger Clearcasting and extend the duration of your active Tiger's Fury by 6 sec.
 func (druid *Druid) applyScarletEnclaveFeral6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Druid - Feral 6P Bonus"
@@ -279,7 +279,7 @@ func (druid *Druid) applyScarletEnclaveFeral6PBonus() {
 
 	finisherMask := ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidRip | ClassSpellMask_DruidSavageRoar
 
-	// https://www.wowhead.com/classic-ptr/spell=1226118/s03-item-scarlet-enclave-druid-feral-6p-bonus-trigger
+	// https://www.wowhead.com/classic/spell=1226118/s03-item-scarlet-enclave-druid-feral-6p-bonus-trigger
 	// Not needed but this way procs can be easily tracked.
 	triggerSpell := druid.RegisterSpell(Any, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1226118},

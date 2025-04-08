@@ -34,7 +34,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 	}
 
 	// This is the spell used for the burn proc.
-	// https://www.wowhead.com/classic-ptr/spell=1227180/burn
+	// https://www.wowhead.com/classic/spell=1227180/burn
 	burnSpell := warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1227180},
 		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
@@ -127,7 +127,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage6PBonus() {
 	}).AttachMultiplyCastSpeed(&warlock.Unit, 1.20)
 
 	// The backdraft bonus is actually a mod on Backdraft itself. Additive 15%
-	warlock.backdraftCastSpeed += 0.15
+	warlock.backdraftCastSpeed += 0.12
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: label,

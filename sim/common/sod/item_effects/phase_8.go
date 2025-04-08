@@ -55,7 +55,7 @@ func init() {
 
 	/* ! Please keep items ordered alphabetically ! */
 
-	// https://www.wowhead.com/classic-ptr/item=241037/abandoned-experiment
+	// https://www.wowhead.com/classic/item=241037/abandoned-experiment
 	// Use: After drinking the experiment, ranged or melee attacks increase your attack speed by 2% for 30 sec.
 	// This effect stacks up to 15 times. (2 Min Cooldown)
 	core.NewItemEffect(AbandonedExperiment, func(agent core.Agent) {
@@ -116,7 +116,7 @@ func init() {
 		character.ItemSwap.RegisterProc(AbandonedExperiment, buffAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=241015/aegis-of-the-scarlet-bastion
+	// https://www.wowhead.com/classic/item=241015/aegis-of-the-scarlet-bastion
 	// Use: Increases the amount of damage absorbed by your shield by 20% for 15 sec. (1 Min, 30 Sec Cooldown)
 	core.NewItemEffect(AegisOfTheScarletBastion, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -151,7 +151,7 @@ func init() {
 		character.ItemSwap.RegisterActive(AegisOfTheScarletBastion)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=238961/caladbolg
+	// https://www.wowhead.com/classic/item=238961/caladbolg
 	// Use: The earth once again swallow up Caladbolg for 20 sec, decreasing movement speed by 50%. If moving, your speed increases every 2 seconds.
 	// Smashing into an enemy deals 300 to 2700 fire damage, knocks back all nearby enemy players, and ends this effect. (2 Min Cooldown)
 	core.NewItemEffect(Caladbolg, func(agent core.Agent) {
@@ -227,7 +227,7 @@ func init() {
 		character.ItemSwap.RegisterProc(Caladbolg, rangeDummyAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=241008/condemnation
+	// https://www.wowhead.com/classic/item=241008/condemnation
 	// Equip: Damaging spell casts on enemies Condemns them for 20 sec.
 	// Whenever they deal damage, their target is healed for 3% of their maximum health.
 	// Lasts 20 sec or up to 10 hits. (60 Secs Cooldown) (1m cooldown)
@@ -265,7 +265,7 @@ func init() {
 		character.ItemSwap.RegisterProc(Condemnation, triggerAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240852/crimson-cleaver
+	// https://www.wowhead.com/classic/item=240852/crimson-cleaver
 	// Hunter - Equip: Chance on hit to cause your next 2 instances of Raptor Strike damage to be increased by 20%. Lasts 12 sec.
 	// Shaman - Equip: Chance on hit to cause your next 2 instances of Nature damage are increased by 20%. Lasts 12 sec. (100ms cooldown)
 	// Warrior - Equip: Chance on hit to cause your next 2 instances of Cleave damage to be increased by 20%. Lasts 12 sec.
@@ -288,7 +288,7 @@ func init() {
 		character.ItemSwap.RegisterProc(CrimsonCleaver, aura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240922/deception
+	// https://www.wowhead.com/classic/item=240922/deception
 	// Equip: 2% chance on melee hit to gain 1 extra attack. (Proc chance: 2%, 100ms cooldown)
 	core.NewItemEffect(Deception, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -313,7 +313,7 @@ func init() {
 		character.ItemSwap.RegisterProc(Deception, triggerAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240923/duplicity
+	// https://www.wowhead.com/classic/item=240923/duplicity
 	// Equip: 2% chance on melee hit to gain 1 extra attack. (Proc chance: 2%, 100ms cooldown)
 	core.NewItemEffect(Duplicity, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -338,7 +338,7 @@ func init() {
 		character.ItemSwap.RegisterProc(Duplicity, triggerAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240925/experiment-800m
+	// https://www.wowhead.com/classic/item=240925/experiment-800m
 	// Use: Transform into a Scarlet Cannon for 20 sec, causing your ranged attacks to explode for 386 to 472 Fire damage to all enemies within 8 yards of your target. (2 Min Cooldown)
 	core.NewItemEffect(Experiment800M, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -396,7 +396,7 @@ func init() {
 		character.ItemSwap.RegisterActive(Experiment800M)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=241011/greatstaff-of-fealty
+	// https://www.wowhead.com/classic/item=241011/greatstaff-of-fealty
 	// Equip: If there are no enemies within 20 yards of you, heal all party members within 20 yards for 125 every 3 seconds.
 	// A party may only swear Fealty to one player at a time.
 	core.NewItemEffect(GreatstaffOfFealty, func(agent core.Agent) {
@@ -450,7 +450,7 @@ func init() {
 		character.ItemSwap.RegisterProc(GreatstaffOfFealty, triggerAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=242310/hand-of-reborn-justice
+	// https://www.wowhead.com/classic/item=242310/hand-of-reborn-justice
 	// Equip: 2% chance on melee or ranged hit to gain 1 extra attack. (Proc chance: 2%, 2s cooldown)
 	core.NewItemEffect(HandOfRebornJustice, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -478,11 +478,11 @@ func init() {
 		character.ItemSwap.RegisterProc(HandOfInjustice, triggerAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=241034/heart-of-light
+	// https://www.wowhead.com/classic/item=241034/heart-of-light
 	// Use: Increases maximum health by 2500 for 20 sec. (2 Min Cooldown)
 	core.NewSimpleStatDefensiveTrinketEffect(HeartOfLight, stats.Stats{stats.Health: 2500}, time.Second*20, time.Minute*2)
 
-	// https://www.wowhead.com/classic-ptr/item=240841/high-commanders-guard
+	// https://www.wowhead.com/classic/item=240841/high-commanders-guard
 	// Chance on hit: Increase Defense by 20 and Armor by 750 for 10 sec.
 	// Confirmed PPM 2.5
 	itemhelpers.CreateWeaponProcAura(HighCommandersGuard, "High Commander's Guard", 2.5, func(character *core.Character) *core.Aura {
@@ -513,12 +513,12 @@ func init() {
 
 		// https://www.wowhead.com/classic/spell=1232104/infusion-of-souls
 		case proto.Class_ClassPaladin:
-			// Explicitly lists that it does not work for Holy Shock in the tooltip https://www.wowhead.com/classic-ptr/item=241039/infusion-of-souls?spellModifier=462814
+			// Explicitly lists that it does not work for Holy Shock in the tooltip https://www.wowhead.com/classic/item=241039/infusion-of-souls?spellModifier=462814
 			classMask = paladin.ClassSpellMask_PaladinHarmfulGCDSpells ^ paladin.ClassSpellMask_PaladinHolyShock
 
 		// https://www.wowhead.com/classic/spell=1232095/infusion-of-souls
 		case proto.Class_ClassPriest:
-			// Explicitly lists that it does not work for Penance in the tooltip https://www.wowhead.com/classic-ptr/item=241039/infusion-of-souls?spellModifier=440247
+			// Explicitly lists that it does not work for Penance in the tooltip https://www.wowhead.com/classic/item=241039/infusion-of-souls?spellModifier=440247
 			classMask = priest.ClassSpellMask_PriestHarmfulGCDSpells ^ priest.ClassSpellMask_PriestPenance
 
 		// https://www.wowhead.com/classic/spell=1232096/infusion-of-souls
@@ -552,7 +552,7 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240850/lightfist-hammer
+	// https://www.wowhead.com/classic/item=240850/lightfist-hammer
 	// Chance on hit: Increases your attack speed by 10% for 15 sec.
 	// Confirmed PPM 0.7
 	itemhelpers.CreateWeaponProcAura(LightfistHammer, "Lightfist Hammer", 0.7, func(character *core.Character) *core.Aura {
@@ -563,7 +563,7 @@ func init() {
 		}).AttachMultiplyMeleeSpeed(&character.Unit, 1.10)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=241241/lucky-doubloon
+	// https://www.wowhead.com/classic/item=241241/lucky-doubloon
 	// Use: Flip the Lucky Doubloon.
 	// On heads, the cooldown of Lucky Doubloon is refreshed, and your critical strike chance with all spells and attacks is increased by 5% for 15 sec, stacking up to 5 times.
 	// On tails, all stacks of Lucky Doubloon are removed. (Must be in combat.) (30 Sec Cooldown)
@@ -618,7 +618,7 @@ func init() {
 		character.ItemSwap.RegisterActive(LuckyDoubloon)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240854/mercy
+	// https://www.wowhead.com/classic/item=240854/mercy
 	// Hunter - Equip: Chance on hit to cause your next 2 instances of damage from your pet's special abilities to be increased by 20%. Lasts 12 sec.
 	// Shaman - Equip: Chance on hit to cause your next 2 instances of Fire damage are increased by 20%.  Lasts 12 sec. (100ms cooldown)
 	// Warrior - Equip: Chance on hit to cause your next 2 instances of Whirlwind damage to be increased by 20%. Lasts 12 sec.
@@ -641,7 +641,7 @@ func init() {
 		character.ItemSwap.RegisterProc(Mercy, aura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=241003/mirage-rod-of-illusion
+	// https://www.wowhead.com/classic/item=241003/mirage-rod-of-illusion
 	// Equip: Chance on landing a damaging spell to create a Mirage on top of your target that deals arcane damage to nearby enemies for 30 sec. (Proc chance: 10%, 30s cooldown)
 	core.NewItemEffect(MirageRodOfIllusion, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -667,7 +667,7 @@ func init() {
 
 		// Use an AOE DoT rather than a real NPC for performance since it hopefully just casts a constant spell
 		dot := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 1231629}, // https://www.wowhead.com/classic-ptr/spell=1231629/mirage
+			ActionID:    core.ActionID{SpellID: 1231629}, // https://www.wowhead.com/classic/spell=1231629/mirage
 			SpellSchool: core.SpellSchoolArcane,
 			ProcMask:    core.ProcMaskEmpty,
 			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
@@ -711,7 +711,7 @@ func init() {
 		character.ItemSwap.RegisterProc(MirageRodOfIllusion, triggerAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240851/regicide
+	// https://www.wowhead.com/classic/item=240851/regicide
 	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Execute by 10% per stack, stacking up to 20 times. At 20 stacks, Execute may be cast regardless of the target's health.
 	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Envenom by 5% per stack, stacking up to 20 times.
 	// Striking a higher level enemy applies a stack of Coup, increasing their damage taken from your next Kill Shot by 5% per stack, stacking up to 20 times.
@@ -734,7 +734,7 @@ func init() {
 		character.ItemSwap.RegisterProc(Regicide, aura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240853/queensfall
+	// https://www.wowhead.com/classic/item=240853/queensfall
 	// Your Bloodthirst, Mortal Strike, Shield Slam, Heroic Strike, and Cleave critical strikes set the duration of your Rend on the target to 21 sec.
 	// Your Backstab, Mutilate, and Saber Slash critical strikes set the duration of your Rupture on the target to 16 secs
 	// Your Raptor Strike and Mongoose Bite critical strikes set the duration of your Serpent Sting on the target to 15 sec
@@ -756,7 +756,7 @@ func init() {
 		}
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240919/ravagane
+	// https://www.wowhead.com/classic/item=240919/ravagane
 	// Chance on hit: You attack all nearby enemies for 9 sec causing weapon damage plus an additional 200 every 1.5 sec.
 	// Confirmed PPM 0.8
 	itemhelpers.CreateWeaponProcAura(Ravagane, "Ravagane", 0.8, func(character *core.Character) *core.Aura {
@@ -811,7 +811,7 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=241002/remnants-of-the-red
+	// https://www.wowhead.com/classic/item=241002/remnants-of-the-red
 	// Equip: Dealing non-periodic Fire damage has a 5% chance to increase your Fire damage dealt by 5% for 15 sec. (Proc chance: 5%)
 	core.NewItemEffect(RemnantsOfTheRed, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -837,7 +837,7 @@ func init() {
 		character.ItemSwap.RegisterProc(RemnantsOfTheRed, triggerAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=241038/sir-dornels-didgeridoo
+	// https://www.wowhead.com/classic/item=241038/sir-dornels-didgeridoo
 	// Use: Playing the didgeridoo summons a random beast to your side, increasing your physical abilities for 30 sec.
 	// May only be used while in combat. (2 Min Cooldown)
 	core.NewItemEffect(SirDornelsDidgeridoo, func(agent core.Agent) {
@@ -853,49 +853,49 @@ func init() {
 		bonusAP := 280.0
 		bonusRAP := 308.0
 
-		// https://www.wowhead.com/classic-ptr/spell=1231884/accuracy-of-the-owl
+		// https://www.wowhead.com/classic/spell=1231884/accuracy-of-the-owl
 		owlBuff := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1231884},
 			Label:    "Sir Dornel's Didgeridoo - Owl",
 			Duration: duration,
 		}).AttachStatBuff(stats.MeleeCrit, bonusCrit).AttachStatBuff(stats.SpellCrit, bonusCrit)
 
-		// https://www.wowhead.com/classic-ptr/spell=1231894/ferocity-of-the-crocolisk
+		// https://www.wowhead.com/classic/spell=1231894/ferocity-of-the-crocolisk
 		crocoliskBuff := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1231894},
 			Label:    "Sir Dornel's Didgeridoo - Crocolisk",
 			Duration: duration,
 		}).AttachStatBuff(stats.ArmorPenetration, bonusArp)
 
-		// https://www.wowhead.com/classic-ptr/spell=1231888/agility-of-the-raptor
+		// https://www.wowhead.com/classic/spell=1231888/agility-of-the-raptor
 		raptorBuff := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1231888},
 			Label:    "Sir Dornel's Didgeridoo - Raptor",
 			Duration: duration,
 		}).AttachStatBuff(stats.Agility, bonusAgi)
 
-		// https://www.wowhead.com/classic-ptr/spell=1231883/strength-of-the-bear
+		// https://www.wowhead.com/classic/spell=1231883/strength-of-the-bear
 		bearBuff := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1231883},
 			Label:    "Sir Dornel's Didgeridoo - Bear",
 			Duration: duration,
 		}).AttachStatBuff(stats.Strength, bonusStr)
 
-		// https://www.wowhead.com/classic-ptr/spell=1231886/speed-of-the-cat
+		// https://www.wowhead.com/classic/spell=1231886/speed-of-the-cat
 		catBuff := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1231886},
 			Label:    "Sir Dornel's Didgeridoo - Cat",
 			Duration: duration,
 		}).AttachMultiplyAttackSpeed(&character.Unit, 1+bonusHaste)
 
-		// https://www.wowhead.com/classic-ptr/spell=1231891/power-of-the-gorilla
+		// https://www.wowhead.com/classic/spell=1231891/power-of-the-gorilla
 		gorillaBuff := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1231891},
 			Label:    "Sir Dornel's Didgeridoo - Gorilla",
 			Duration: duration,
 		}).AttachStatBuff(stats.AttackPower, bonusAP).AttachStatBuff(stats.RangedAttackPower, bonusRAP)
 
-		// https://www.wowhead.com/classic-ptr/spell=1231896/brilliance-of-mr-bigglesworth
+		// https://www.wowhead.com/classic/spell=1231896/brilliance-of-mr-bigglesworth
 		bigglesworthBuff := character.RegisterAura(core.Aura{
 			ActionID: core.ActionID{SpellID: 1231896},
 			Label:    "Sir Dornel's Didgeridoo - Mr. Bigglesworth",
@@ -946,7 +946,7 @@ func init() {
 		character.ItemSwap.RegisterActive(SirDornelsDidgeridoo)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240998/soporific-blade
+	// https://www.wowhead.com/classic/item=240998/soporific-blade
 	// Use: Your next regular melee attack made within 20 sec deals Arcane damage equal to 2 times your spell power, and puts the target to sleep for 20 sec. (2 Min Cooldown)
 	core.NewItemEffect(SoporificBlade, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -1000,7 +1000,7 @@ func init() {
 		character.ItemSwap.RegisterActive(SoporificBlade)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240843/starters-pistol
+	// https://www.wowhead.com/classic/item=240843/starters-pistol
 	// Equip: Firing a regular ranged attack at a target prepares you for battle, increasing your Defense by 20 and melee attack speed by 10% for 15 sec.
 	core.NewItemEffect(StartersPistol, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -1024,11 +1024,11 @@ func init() {
 		character.ItemSwap.RegisterProc(StartersPistol, triggerAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=241068/stiltzs-standard
+	// https://www.wowhead.com/classic/item=241068/stiltzs-standard
 	// Use: Throw down the Standard of Stiltz, increasing the maximum health of all nearby allies by 1000 for 20 sec. (2 Min Cooldown)
 	core.NewSimpleStatDefensiveTrinketEffect(StiltzsStandard, stats.Stats{stats.Health: 1000}, time.Second*20, time.Minute*2)
 
-	// https://www.wowhead.com/classic-ptr/item=241001/tyrs-fall
+	// https://www.wowhead.com/classic/item=241001/tyrs-fall
 	// Equip: Dealing periodic damage has a 5% chance to grant 120 spell damage and healing for 15 sec. (Proc chance: 5%)
 	core.NewItemEffect(TyrsFall, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -1052,7 +1052,7 @@ func init() {
 		character.ItemSwap.RegisterProc(TyrsFall, triggerAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=239060/will-of-the-mountain
+	// https://www.wowhead.com/classic/item=239060/will-of-the-mountain
 	// Chance on hit: Invoke the Will of the Mountain, increasing physical damage dealt by 5%, armor by 500, and size by 20% for 15 sec.
 	// PPM confirmed 0.5
 	itemhelpers.CreateWeaponProcAura(WillOfTheMountain, "Will of the Mountain", 0.5, func(character *core.Character) *core.Aura {

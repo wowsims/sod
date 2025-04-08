@@ -11,5 +11,5 @@ func MakeWowheadUrl(path string) string {
 		path = "/" + path
 	}
 
-	return fmt.Sprintf("https://nether.wowhead.com/%s%s", WowheadBranchPTR, path)
+	return fmt.Sprintf("https://nether.wowhead.com/%s%s", WowheadBranch, path)
 }

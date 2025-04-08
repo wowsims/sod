@@ -113,7 +113,7 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 		castType = proto.CastType_CastTypeOffHand
 		procMask = core.ProcMaskMeleeOHSpecial
 		damageMultiplier = hunter.AutoAttacks.OHConfig().DamageMultiplier
-		damageFunc = hunter.OHWeaponDamage // https://www.wowhead.com/classic-ptr/spell=409755/raptor-strike
+		damageFunc = hunter.OHWeaponDamage // https://www.wowhead.com/classic/spell=409755/raptor-strike
 	}
 
 	return hunter.RegisterSpell(core.SpellConfig{

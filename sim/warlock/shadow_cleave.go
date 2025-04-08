@@ -72,12 +72,14 @@ func (warlock *Warlock) getShadowCleaveBaseConfig(rank int) core.SpellConfig {
 	}
 }
 
+const DefendersResolveSpellDamagePer = 4
+
 func (warlock *Warlock) registerShadowCleaveSpell() {
 	if !warlock.HasRune(proto.WarlockRune_RuneHandsMetamorphosis) {
 		return
 	}
 
-	warlock.defendersResolveAura = core.DefendersResolveSpellDamage(warlock.GetCharacter(), 4)
+	warlock.defendersResolveAura = core.DefendersResolveSpellDamage(warlock.GetCharacter(), DefendersResolveSpellDamagePer)
 
 	warlock.ShadowCleave = make([]*core.Spell, 0)
 	for rank := 1; rank <= ShadowBoltRanks; rank++ {

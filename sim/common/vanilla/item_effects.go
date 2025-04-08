@@ -499,7 +499,7 @@ func init() {
 	// TODO: Proc rate assumed and needs testing
 	itemhelpers.CreateWeaponCoHProcDamage(Chillpike, "Chillpike", 1.0, 19260, core.SpellSchoolFrost, 160, 90, 0, core.DefenseTypeMagic)
 
-	// https://www.wowhead.com/classic-ptr/item=241081/corrupted-ashbringer
+	// https://www.wowhead.com/classic/item=241081/corrupted-ashbringer
 	// Chance on hit: Steals 475 to 525 life from target enemy.
 	// PPM confirmed 2.0
 	itemhelpers.CreateWeaponProcSpell(CorruptedAshbringer, "Corrupted Ashbringer", 2.0, func(character *core.Character) *core.Spell {
@@ -523,7 +523,7 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=239301/corrupted-ashbringer
+	// https://www.wowhead.com/classic/item=239301/corrupted-ashbringer
 	// Chance on hit: Steals 475 to 525 life from up to 5 enemies, granting 30 Strength or Agility per enemy siphoned, stacking up to 5 times.
 	// PPM confirmed 5.0
 	itemhelpers.CreateWeaponProcSpell(CorruptedAshbringerLego, "Corrupted Ashbringer (Legendary)", 5.0, func(character *core.Character) *core.Spell {

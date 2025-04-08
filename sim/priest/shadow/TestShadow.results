@@ -292,6 +292,104 @@ character_stats_results: {
   final_stats: 0
  }
 }
+character_stats_results: {
+ key: "TestShadow-Phase7-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 83.49
+  final_stats: 88.55
+  final_stats: 747.01412
+  final_stats: 490.82
+  final_stats: 285.89
+  final_stats: 829
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 553
+  final_stats: 53.25
+  final_stats: 0
+  final_stats: 54.04578
+  final_stats: 0
+  final_stats: 0
+  final_stats: 453.49
+  final_stats: 0
+  final_stats: 34
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 8458.3
+  final_stats: 0
+  final_stats: 0
+  final_stats: 986.1
+  final_stats: 380
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 3
+  final_stats: 5
+  final_stats: 0
+  final_stats: 9107.14125
+  final_stats: 27
+  final_stats: 60
+  final_stats: 27
+  final_stats: 42
+  final_stats: 80
+  final_stats: 384
+  final_stats: 132
+  final_stats: 71
+  final_stats: 0
+ }
+}
+character_stats_results: {
+ key: "TestShadow-Phase8-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 39.215
+  final_stats: 44.275
+  final_stats: 807.53173
+  final_stats: 549.01
+  final_stats: 255.53
+  final_stats: 946
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 591
+  final_stats: 53.25
+  final_stats: 0
+  final_stats: 52.02337
+  final_stats: 0
+  final_stats: 0
+  final_stats: 409.215
+  final_stats: 0
+  final_stats: 31
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 9331.15
+  final_stats: 0
+  final_stats: 0
+  final_stats: 970.55
+  final_stats: 380
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 3
+  final_stats: 5
+  final_stats: 0
+  final_stats: 9712.31725
+  final_stats: 27
+  final_stats: 60
+  final_stats: 27
+  final_stats: 42
+  final_stats: 80
+  final_stats: 384
+  final_stats: 125
+  final_stats: 70
+  final_stats: 0
+ }
+}
 stat_weights_results: {
  key: "TestShadow-Phase1-Lvl25-StatWeights-Default"
  value: {
@@ -555,6 +653,104 @@ stat_weights_results: {
   weights: 0
   weights: 0.00284
   weights: 29.60325
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestShadow-Phase7-Lvl60-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.90189
+  weights: 0
+  weights: 2.79027
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 2.79027
+  weights: 0
+  weights: 25.87801
+  weights: 33.71776
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+stat_weights_results: {
+ key: "TestShadow-Phase8-Lvl60-StatWeights-Default"
+ value: {
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 1.0026
+  weights: 0
+  weights: 3.89155
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 3.89155
+  weights: 0
+  weights: 31.22039
+  weights: 55.98311
   weights: 0
   weights: 0
   weights: 0
@@ -1502,5 +1698,257 @@ dps_results: {
  value: {
   dps: 5422.74178
   tps: 5043.41862
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 2707.6975
+  tps: 1636.55742
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-AllItems-BloodGuard'sDreadweave"
+ value: {
+  dps: 1917.52046
+  tps: 1166.19293
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-AllItems-BloodGuard'sSatin"
+ value: {
+  dps: 1800.23135
+  tps: 1097.18375
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-AllItems-EmeraldEnchantedVestments"
+ value: {
+  dps: 1909.12144
+  tps: 1161.2284
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-AllItems-EmeraldWovenGarb"
+ value: {
+  dps: 1798.21169
+  tps: 1095.98497
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-AllItems-IronweaveBattlesuit"
+ value: {
+  dps: 1316.89973
+  tps: 804.7599
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
+ value: {
+  dps: 1917.52046
+  tps: 1166.19293
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-AllItems-KnightLieutenant'sSatin"
+ value: {
+  dps: 1800.23135
+  tps: 1097.18375
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 2856.97655
+  tps: 1725.30082
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-AllItems-VestmentsoftheVirtuous"
+ value: {
+  dps: 1347.34429
+  tps: 827.04834
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-Average-Default"
+ value: {
+  dps: 6910.89224
+  tps: 4057.99567
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-Settings-Undead-phase_7-phase_7-phase_7-FullBuffs-phase_7-LongMultiTarget"
+ value: {
+  dps: 6917.6384
+  tps: 4645.75899
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-Settings-Undead-phase_7-phase_7-phase_7-FullBuffs-phase_7-LongSingleTarget"
+ value: {
+  dps: 6917.6384
+  tps: 4063.65544
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-Settings-Undead-phase_7-phase_7-phase_7-FullBuffs-phase_7-ShortSingleTarget"
+ value: {
+  dps: 6698.6826
+  tps: 3785.97927
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-Settings-Undead-phase_7-phase_7-phase_7-NoBuffs-phase_7-LongMultiTarget"
+ value: {
+  dps: 3606.40557
+  tps: 2697.78221
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-Settings-Undead-phase_7-phase_7-phase_7-NoBuffs-phase_7-LongSingleTarget"
+ value: {
+  dps: 3606.40557
+  tps: 2112.64088
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-Settings-Undead-phase_7-phase_7-phase_7-NoBuffs-phase_7-ShortSingleTarget"
+ value: {
+  dps: 3562.07078
+  tps: 2001.43623
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase7-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 6917.6384
+  tps: 4063.65544
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-AllItems-BenevolentProphet'sVestments"
+ value: {
+  dps: 3063.3488
+  tps: 1250.05765
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-AllItems-BloodGuard'sDreadweave"
+ value: {
+  dps: 2231.95553
+  tps: 1356.76406
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-AllItems-BloodGuard'sSatin"
+ value: {
+  dps: 2098.11492
+  tps: 1275.30851
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-AllItems-EmeraldEnchantedVestments"
+ value: {
+  dps: 2222.98115
+  tps: 1351.34482
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-AllItems-EmeraldWovenGarb"
+ value: {
+  dps: 2096.71872
+  tps: 1275.47279
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-AllItems-IronweaveBattlesuit"
+ value: {
+  dps: 1447.94633
+  tps: 885.90602
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
+ value: {
+  dps: 2231.95553
+  tps: 1356.76406
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-AllItems-KnightLieutenant'sSatin"
+ value: {
+  dps: 2098.11492
+  tps: 1275.30851
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-AllItems-MalevolentProphet'sVestments"
+ value: {
+  dps: 3222.907
+  tps: 1323.28016
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-AllItems-VestmentsoftheVirtuous"
+ value: {
+  dps: 1440.74561
+  tps: 880.30316
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-Average-Default"
+ value: {
+  dps: 10438.07256
+  tps: 4374.00057
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-FullBuffs-phase_8-LongMultiTarget"
+ value: {
+  dps: 10380.51269
+  tps: 4710.01774
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-FullBuffs-phase_8-LongSingleTarget"
+ value: {
+  dps: 10380.51269
+  tps: 4339.45512
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-FullBuffs-phase_8-ShortSingleTarget"
+ value: {
+  dps: 9762.95423
+  tps: 3843.87204
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-NoBuffs-phase_8-LongMultiTarget"
+ value: {
+  dps: 5232.64728
+  tps: 2417.28255
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-NoBuffs-phase_8-LongSingleTarget"
+ value: {
+  dps: 5232.64728
+  tps: 2030.20648
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-NoBuffs-phase_8-ShortSingleTarget"
+ value: {
+  dps: 5069.72991
+  tps: 1864.42511
+ }
+}
+dps_results: {
+ key: "TestShadow-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 10380.51269
+  tps: 4339.45512
  }
 }

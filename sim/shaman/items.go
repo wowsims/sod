@@ -124,7 +124,7 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240921/scarlet-smashbringer
+	// https://www.wowhead.com/classic/item=240921/scarlet-smashbringer
 	// Equip: The Global Cooldown of your Shock, Lightning, and Lava Burst spells is reduced by 0.5 seconds.
 	// Chance on hit: Increases the wielder's Strength by 200 for 15 sec.
 	core.NewItemEffect(ScarletSmashbringer, func(agent core.Agent) {

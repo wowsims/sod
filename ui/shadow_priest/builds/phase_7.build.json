@@ -1,0 +1,194 @@
+{
+  "raidBuffs": {
+    "giftOfTheWild": "TristateEffectImproved",
+    "powerWordFortitude": "TristateEffectImproved",
+    "bloodPact": "TristateEffectRegular",
+    "arcaneBrilliance": true,
+    "divineSpirit": true,
+    "moonkinAura": true,
+    "manaSpringTotem": "TristateEffectImproved",
+    "fireResistanceTotem": true,
+    "demonicPact": 150,
+    "aspectOfTheLion": true,
+    "atieshSpellCritBuff": true,
+    "atieshSpellPowerBuff": true
+  },
+  "debuffs": {
+    "markOfChaos": true,
+    "occultPoison": true,
+    "wintersChill": true,
+    "improvedShadowBolt": true,
+    "improvedScorch": true,
+    "shadowWeaving": true,
+    "stormstrike": true
+  },
+  "partyBuffs": {
+  },
+  "player": {
+    "name": "Player",
+    "race": "RaceUndead",
+    "level": 60,
+    "class": "ClassPriest",
+    "equipment": {
+      "items": [
+        {"id":236279,"enchant":7623,"rune":413251},
+        {"id":236345},
+        {"id":236108,"enchant":7883,"rune":1220128},
+        {"id":236307,"enchant":804,"rune":402668},
+        {"id":233395,"enchant":7648,"rune":425198},
+        {"id":236106,"enchant":7665,"rune":431670},
+        {"id":236111,"enchant":2614,"rune":401955},
+        {"id":236107,"rune":431655},
+        {"id":236109,"enchant":7623,"rune":402799},
+        {"id":233392,"enchant":7648,"rune":425204},
+        {"id":236112,"rune":442897},
+        {"id":233431,"rune":442898},
+        {"id":236331},
+        {"id":231509},
+        {"id":236399,"enchant":7662},
+        {},
+        {"id":235894}
+      ]
+    },
+    "consumes": {
+      "flask": "FlaskOfAncientKnowledge",
+      "food": "FoodDarkclawBisque",
+      "manaRegenElixir": "MagebloodPotion",
+      "spellPowerBuff": "ElixirOfTheMageLord",
+      "shadowPowerBuff": "ElixirOfShadowPower",
+      "mainHandImbue": "EnchantedRepellent",
+      "defaultPotion": "MajorManaPotion",
+      "defaultConjured": "ConjuredDemonicRune",
+      "enchantedSigil": "WrathOfTheStormSigil",
+      "mildlyIrradiatedRejuvPot": true,
+      "miscConsumes": {
+        "elixirOfCoalescedRegret": true,
+        "greaterMarkOfTheDawn": true
+      },
+      "sealOfTheDawn": "SealOfTheDawnDamageR7",
+      "zanzaBuff": "CerebralCortexCompound",
+      "healthElixir": "ElixirOfFortitude"
+    },
+    "bonusStats": {
+      "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    },
+    "itemSwap": {
+      "items": [
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        }
+      ],
+      "prepullBonusStats": {
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+      }
+    },
+    "buffs": {
+      "rallyingCryOfTheDragonslayer": true,
+      "valorOfAzeroth": true,
+      "saygesFortune": "SaygesDamage",
+      "spiritOfZandalar": true,
+      "songflowerSerenade": true,
+      "warchiefsBlessing": true,
+      "moldarsMoxie": true,
+      "slipkiksSavvy": true
+    },
+    "talentsString": "5052001--5032505103501251",
+    "profession1": "Alchemy",
+    "profession2": "Enchanting",
+    "cooldowns": {
+    },
+    "rotation": {
+      "type": "TypeAPL",
+      "prepullActions": [
+        {"action":{"castSpell":{"spellId":{"spellId":15473}}},"doAtValue":{"const":{"val":"-10s"}}},
+        {"action":{"castSpell":{"spellId":{"spellId":402799}}},"doAtValue":{"const":{"val":"-5s"}}},
+        {"action":{"castSpell":{"spellId":{"itemId":234080}}},"doAtValue":{"const":{"val":"-1.3"}},"hide":true},
+        {"action":{"castSpell":{"spellId":{"spellId":431655}}},"doAtValue":{"const":{"val":"-2.8s"}},"hide":true},
+        {"action":{"castSpell":{"spellId":{"itemId":215162}}},"doAtValue":{"const":{"val":"0"}},"hide":true},
+        {"action":{"castSpell":{"spellId":{"spellId":402668}}},"doAtValue":{"const":{"val":"-1.3s"}},"hide":true}
+      ],
+      "priorityList": [
+        {"action":{"autocastOtherCooldowns":{}}},
+        {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":425204}}}}},"castSpell":{"spellId":{"spellId":425204}}}},
+        {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":10894,"rank":8}}}}},"castSpell":{"spellId":{"spellId":10894,"rank":8}}}},
+        {"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":402668}}}}},"castSpell":{"spellId":{"spellId":402668}}}},
+        {"action":{"castSpell":{"spellId":{"itemId":231509}}}},
+        {"hide":true,"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":19280,"rank":6}}}}},"castSpell":{"spellId":{"spellId":19280,"rank":6}}}},
+        {"action":{"condition":{"spellIsReady":{"spellId":{"spellId":10947,"rank":9}}},"castSpell":{"spellId":{"spellId":10947,"rank":9}}}},
+        {"hide":true,"action":{"castSpell":{"spellId":{"spellId":402799}}}},
+        {"action":{"condition":{"not":{"val":{"auraIsActive":{"auraId":{"itemId":231509}}}}},"castSpell":{"spellId":{"spellId":401977}}}},
+        {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":10947,"rank":9}}},"rhs":{"const":{"val":"1.5"}}}},"channelSpell":{"spellId":{"spellId":18807,"rank":6},"interruptIf":{"cmp":{"op":"OpEq","lhs":{"spellChanneledTicks":{"spellId":{"spellId":18807,"rank":6}}},"rhs":{"const":{"val":"1"}}}},"allowRecast":true}}},
+        {"hide":true,"action":{"castSpell":{"spellId":{"spellId":401955}}}},
+        {"action":{"channelSpell":{"spellId":{"spellId":18807,"rank":6},"interruptIf":{"cmp":{"op":"OpEq","lhs":{"spellChanneledTicks":{"spellId":{"spellId":18807,"rank":6}}},"rhs":{"const":{"val":"1"}}}},"allowRecast":true}}},
+        {"hide":true,"action":{"castSpell":{"spellId":{"spellId":431655}}}}
+      ]
+    },
+    "reactionTimeMs": 200,
+    "channelClipDelayMs": 100,
+    "distanceFromTarget": 30,
+    "isbUsingShadowflame": true,
+    "isbSbFrequency": 1.25,
+    "isbCrit": 62,
+    "isbWarlocks": 1,
+    "healingModel": {
+    },
+    "shadowPriest": {
+      "options": {
+        "armor": "InnerFire"
+      }
+    }
+  },
+  "encounter": {
+    "duration": 60,
+    "durationVariation": 15,
+    "executeProportion20": 0.15,
+    "executeProportion25": 0.2,
+    "executeProportion35": 0.3,
+    "targets": [
+      {
+        "id": 213336,
+        "name": "Level 60",
+        "level": 63,
+        "mobType": "MobTypeUndead",
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,805,0,0,0,0,0,0,0,0,3731,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0],
+        "minBaseDamage": 3000,
+        "damageSpread": 0.3333,
+        "swingSpeed": 2,
+        "parryHaste": true
+      }
+    ]
+  }
+}

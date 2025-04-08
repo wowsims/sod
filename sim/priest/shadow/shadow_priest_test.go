@@ -128,6 +128,8 @@ func TestShadow(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
 		},
+		core.GetTestBuildFromJSON(proto.Class_ClassPriest, 7, 60, "../../../ui/shadow_priest/builds", "phase_7", ItemFilters, proto.Stat_StatSpellPower, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassPriest, 8, 60, "../../../ui/shadow_priest/builds", "phase_8", ItemFilters, proto.Stat_StatSpellPower, Stats),
 	}))
 }
 

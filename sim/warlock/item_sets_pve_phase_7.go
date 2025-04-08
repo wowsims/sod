@@ -177,7 +177,10 @@ func (warlock *Warlock) applyNaxxramasTank2PBonus() {
 		return
 	}
 
-	bonusStats := stats.Stats{stats.Expertise: 2 * core.ExpertiseRatingPerExpertiseChance}
+	bonusStats := stats.Stats{
+		stats.Expertise: 2 * core.ExpertiseRatingPerExpertiseChance,
+		stats.SpellHit:  2 * core.SpellHitRatingPerHitChance,
+	}
 
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label:      label,
