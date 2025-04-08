@@ -739,18 +739,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.20555
+  weights: 1.17351
   weights: 0
-  weights: 3.93674
-  weights: 0
-  weights: 0
+  weights: 3.85318
   weights: 0
   weights: 0
   weights: 0
-  weights: 3.93674
   weights: 0
-  weights: 30.99382
-  weights: 57.09528
+  weights: 0
+  weights: 3.85318
+  weights: 0
+  weights: 30.43531
+  weights: 55.62313
   weights: 0
   weights: 0
   weights: 0
@@ -1899,56 +1899,56 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase8-Lvl60-Average-Default"
  value: {
-  dps: 10476.73933
-  tps: 4411.91521
+  dps: 10253.16654
+  tps: 4277.77154
  }
 }
 dps_results: {
  key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-FullBuffs-phase_8-LongMultiTarget"
  value: {
-  dps: 10410.65966
-  tps: 4742.3694
+  dps: 10189.29067
+  tps: 4609.54801
  }
 }
 dps_results: {
  key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-FullBuffs-phase_8-LongSingleTarget"
  value: {
-  dps: 10410.65966
-  tps: 4372.07771
+  dps: 10189.29067
+  tps: 4239.25632
  }
 }
 dps_results: {
  key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-FullBuffs-phase_8-ShortSingleTarget"
  value: {
-  dps: 9794.2497
-  tps: 3878.29642
+  dps: 9596.61201
+  tps: 3759.71381
  }
 }
 dps_results: {
  key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-NoBuffs-phase_8-LongMultiTarget"
  value: {
-  dps: 5229.56853
-  tps: 2426.48711
+  dps: 5122.43807
+  tps: 2362.20883
  }
 }
 dps_results: {
  key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-NoBuffs-phase_8-LongSingleTarget"
  value: {
-  dps: 5229.56853
-  tps: 2039.63076
+  dps: 5122.43807
+  tps: 1975.35248
  }
 }
 dps_results: {
  key: "TestShadow-Phase8-Lvl60-Settings-Undead-phase_8-phase_8-phase_8-NoBuffs-phase_8-ShortSingleTarget"
  value: {
-  dps: 5037.32236
-  tps: 1857.12331
+  dps: 4939.16139
+  tps: 1798.22673
  }
 }
 dps_results: {
  key: "TestShadow-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 10410.65966
-  tps: 4372.07771
+  dps: 10189.29067
+  tps: 4239.25632
  }
 }
