@@ -373,7 +373,7 @@ func init() {
 		})
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240920/leogan
+	// https://www.wowhead.com/classic/item=240920/leogan
 	// Equip: Adds 2 holy damage to your melee attacks.
 	// Equip: The Global Cooldown of your Exorcism and Holy Wrath spells is reduced by 0.5 seconds.
 	// Chance on hit: Increases the wielder's Strength by 200 for 15 sec.

@@ -126,7 +126,7 @@ func (hunter *Hunter) registerSerpentStingSpell() {
 	STRINGS OF FATE's SERPENT STING
 */
 
-// https://www.wowhead.com/classic-ptr/spell=1232982/serpent-sting
+// https://www.wowhead.com/classic/spell=1232982/serpent-sting
 func (hunter *Hunter) getSoFSerpentStingConfig(stacks int) core.SpellConfig {
 	spellId := [5]int32{0, 1232979, 1232980, 1232981, 1232982}[stacks]
 	numTicks := [5]int32{0, 7, 14, 21, 28}[stacks]

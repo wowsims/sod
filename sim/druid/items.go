@@ -408,7 +408,7 @@ func init() {
 		character.ItemSwap.RegisterProc(Raelar, triggerAura)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240842/scarlet-rotbringer
+	// https://www.wowhead.com/classic/item=240842/scarlet-rotbringer
 	// Requires Cat Form, Bear Form, Dire Bear Form
 	// Equip: Chance on melee attack to inflict your enemy with a rot, dealing 100 Nature damage every 2 sec to all enemies within an 8 yard radius of the caster for 12 sec. The attack speed of these targets is also slowed by 15%.
 	// TODO: PPM not confirmed
@@ -464,7 +464,7 @@ func init() {
 		druid.newBloodbarkCleaveItem(RitualistsHammer)
 	})
 
-	// https://www.wowhead.com/classic-ptr/item=240849/staff-of-the-glade
+	// https://www.wowhead.com/classic/item=240849/staff-of-the-glade
 	// Equip: Remaining in Cat Form for 5 seconds, causes your Energy Regeneration to increase by 25%, and the damage of your Ferocious Bite to increase by 25%.
 	// Equip: You may cast Rebirth and Innervate while in Cat Form.
 	core.NewItemEffect(StaffOfTheGlade, func(agent core.Agent) {
@@ -480,7 +480,7 @@ func init() {
 			FloatValue: 1.25,
 		})
 
-		// https://www.wowhead.com/classic-ptr/spell=1231381/feral-dedication
+		// https://www.wowhead.com/classic/spell=1231381/feral-dedication
 		auraBuff := druid.RegisterAura(core.Aura{
 			ActionID: core.ActionID{
 				SpellID: 1231381,
@@ -498,7 +498,7 @@ func init() {
 			},
 		})
 
-		// https://www.wowhead.com/classic-ptr/spell=1231380/feral-dedication
+		// https://www.wowhead.com/classic/spell=1231380/feral-dedication
 		auraTimer := druid.GetOrRegisterAura(core.Aura{
 			ActionID: core.ActionID{
 				SpellID: 1231380,
@@ -512,8 +512,8 @@ func init() {
 			},
 		})
 
-		// https://www.wowhead.com/classic-ptr/spell=1231382/feral-dedication
-		// Also handle https://www.wowhead.com/classic-ptr/spell=1232896/staff-of-the-glade
+		// https://www.wowhead.com/classic/spell=1231382/feral-dedication
+		// Also handle https://www.wowhead.com/classic/spell=1232896/staff-of-the-glade
 		druid.ItemSwap.RegisterProcWithSlots(StaffOfTheGlade, core.MakePermanent(druid.GetOrRegisterAura(core.Aura{
 			Label: "Feral Dedication (Passive)",
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {

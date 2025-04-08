@@ -61,7 +61,7 @@ var ItemSetHackAndSmash = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// https://www.wowhead.com/classic-ptr/item-set=1956/tools-of-the-nathrezim
+// https://www.wowhead.com/classic/item-set=1956/tools-of-the-nathrezim
 var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 	Name: "Tools of the Nathrezim",
 	Bonuses: map[int32]core.ApplyEffect{

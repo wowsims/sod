@@ -34,7 +34,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 	}
 
 	// This is the spell used for the burn proc.
-	// https://www.wowhead.com/classic-ptr/spell=1227180/burn
+	// https://www.wowhead.com/classic/spell=1227180/burn
 	burnSpell := warlock.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 1227180},
 		SpellSchool: core.SpellSchoolShadow | core.SpellSchoolFire,
