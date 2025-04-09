@@ -717,11 +717,11 @@ func applySealOfTheDawnBuffConsumes(character *Character, consumes *proto.Consum
 	case proto.SealOfTheDawn_SealOfTheDawnDamageR7:
 		sanctifiedDamageEffect(character, 1223353, 21.25)
 	case proto.SealOfTheDawn_SealOfTheDawnDamageR8:
-		sanctifiedDamageEffect(character, 1223354, 28.13)
+		sanctifiedDamageEffect(character, 1223354, 21.25)
 	case proto.SealOfTheDawn_SealOfTheDawnDamageR9:
-		sanctifiedDamageEffect(character, 1223355, 32.5)
+		sanctifiedDamageEffect(character, 1223355, 21.25)
 	case proto.SealOfTheDawn_SealOfTheDawnDamageR10:
-		sanctifiedDamageEffect(character, 1223357, 37.5)
+		sanctifiedDamageEffect(character, 1223357, 21.25)
 
 	case proto.SealOfTheDawn_SealOfTheDawnTankR1:
 		sanctifiedTankingEffect(character, 1220514, 3.13, 1.25)
@@ -738,32 +738,32 @@ func applySealOfTheDawnBuffConsumes(character *Character, consumes *proto.Consum
 	case proto.SealOfTheDawn_SealOfTheDawnTankR7:
 		sanctifiedTankingEffect(character, 1223373, 8.13, 21.25)
 	case proto.SealOfTheDawn_SealOfTheDawnTankR8:
-		sanctifiedTankingEffect(character, 1223374, 9.38, 28.13)
+		sanctifiedTankingEffect(character, 1223374, 8.13, 21.25)
 	case proto.SealOfTheDawn_SealOfTheDawnTankR9:
-		sanctifiedTankingEffect(character, 1223375, 10.0, 32.5)
+		sanctifiedTankingEffect(character, 1223375, 8.13, 21.25)
 	case proto.SealOfTheDawn_SealOfTheDawnTankR10:
-		sanctifiedTankingEffect(character, 1223376, 10.63, 37.5)
+		sanctifiedTankingEffect(character, 1223376, 8.13, 21.25)
 
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR1:
-		sanctifiedHealingEffect(character, 1219548, 1.25)
+		sanctifiedHealingEffect(character, 1219548, 1.25, 1.25)
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR2:
-		sanctifiedHealingEffect(character, 1223379, 4.38)
+		sanctifiedHealingEffect(character, 1223379, 3.13, 4.38)
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR3:
-		sanctifiedHealingEffect(character, 1223380, 6.25)
+		sanctifiedHealingEffect(character, 1223380, 4.38, 6.25)
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR4:
-		sanctifiedHealingEffect(character, 1223381, 10.0)
+		sanctifiedHealingEffect(character, 1223381, 7.5, 10.0)
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR5:
-		sanctifiedHealingEffect(character, 1223382, 12.5)
+		sanctifiedHealingEffect(character, 1223382, 8.75, 12.5)
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR6:
-		sanctifiedHealingEffect(character, 1223383, 18.13)
+		sanctifiedHealingEffect(character, 1223383, 13.13, 18.13)
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR7:
-		sanctifiedHealingEffect(character, 1223384, 21.25)
+		sanctifiedHealingEffect(character, 1223384, 15.0, 21.25)
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR8:
-		sanctifiedHealingEffect(character, 1223385, 28.13)
+		sanctifiedHealingEffect(character, 1223385, 15.0, 21.25)
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR9:
-		sanctifiedHealingEffect(character, 1223386, 32.5)
+		sanctifiedHealingEffect(character, 1223386, 15.0, 21.25)
 	case proto.SealOfTheDawn_SealOfTheDawnHealingR10:
-		sanctifiedHealingEffect(character, 1223387, 37.5)
+		sanctifiedHealingEffect(character, 1223387, 15.0, 21.25)
 	}
 }
 
@@ -805,12 +805,12 @@ func sanctifiedDamageEffect(character *Character, spellID int32, percentIncrease
 }
 
 // Equip: Unlocks your potential while inside Naxxramas.
-// Increasing your healing and shielding by X% and your health by X% for each piece of Sanctified armor equipped.
-func sanctifiedHealingEffect(character *Character, spellID int32, percentIncrease float64) {
+// Increasing your healing by X% and your health by Y% for each piece of Sanctified armor equipped.
+func sanctifiedHealingEffect(character *Character, spellID int32, healingPercentIncrease float64, healthPercentIncrease float64) {
 	for _, unit := range getSanctifiedUnits(character) {
 		sanctifiedBonus := int32(0)
 		multiplier := 1.0
-		healthDeps := buildSanctifiedHealthDeps(unit, percentIncrease)
+		healthDeps := buildSanctifiedHealthDeps(unit, healthPercentIncrease)
 
 		unit.GetOrRegisterAura(Aura{
 			Label:      "Seal of the Dawn (Healing)",
@@ -820,7 +820,7 @@ func sanctifiedHealingEffect(character *Character, spellID int32, percentIncreas
 			MaxStacks:  MaxSanctifiedBonus,
 			OnInit: func(aura *Aura, sim *Simulation) {
 				sanctifiedBonus = max(min(MaxSanctifiedBonus, character.PseudoStats.SanctifiedBonus), 0)
-				multiplier = 1.0 + percentIncrease/100.0*float64(sanctifiedBonus)
+				multiplier = 1.0 + healingPercentIncrease/100.0*float64(sanctifiedBonus)
 			},
 			OnReset: func(aura *Aura, sim *Simulation) {
 				aura.Activate(sim)

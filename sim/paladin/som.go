@@ -14,9 +14,8 @@ import (
 // they both target melee defense.
 
 func (paladin *Paladin) registerSealOfMartyrdom() {
-	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 407802}) // SoM's mana restore
-	procActionID := core.ActionID{SpellID: 407799}
-	healthMetrics := paladin.NewHealthMetrics(procActionID)
+	manaMetrics := paladin.NewManaMetrics(core.ActionID{SpellID: 407802})     // SoM's mana restore
+	healthMetrics := paladin.NewHealthMetrics(core.ActionID{SpellID: 407800}) // SoM's self damage
 
 	judgeSpell := paladin.RegisterSpell(core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: 407803},
@@ -31,19 +30,14 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-
 			baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-			result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
-
-			spell.DealDamage(sim, result)
-			selfDamage := result.RawDamage() * 0.1
-			paladin.RemoveHealth(sim, selfDamage, healthMetrics)
-
+			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
+			paladin.triggerSealOfMartyrdomSelfDamage(sim, result, healthMetrics, manaMetrics)
 		},
 	})
 
 	procSpell := paladin.RegisterSpell(core.SpellConfig{
-		ActionID:       procActionID,
+		ActionID:       core.ActionID{SpellID: 407799},
 		SpellSchool:    core.SpellSchoolHoly,
 		DefenseType:    core.DefenseTypeMelee,
 		ProcMask:       core.ProcMaskMeleeMHSpecial,
@@ -63,11 +57,7 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 				Priority: core.ActionPriorityLow,
 				OnAction: func(sim *core.Simulation) {
 					spell.DealDamage(sim, result)
-
-					// damages the paladin for 10% of rawDamage, then adds 133% of that for everyone in the raid
-					selfDamage := result.RawDamage() * 0.1
-					paladin.RemoveHealth(sim, selfDamage, healthMetrics)
-					paladin.AddMana(sim, selfDamage*1.33, manaMetrics)
+					paladin.triggerSealOfMartyrdomSelfDamage(sim, result, healthMetrics, manaMetrics)
 				},
 			})
 		},
@@ -112,4 +102,18 @@ func (paladin *Paladin) registerSealOfMartyrdom() {
 	})
 
 	paladin.spellsJoM = append(paladin.spellsJoM, judgeSpell)
+}
+
+func (paladin *Paladin) triggerSealOfMartyrdomSelfDamage(sim *core.Simulation, result *core.SpellResult, healthMetrics *core.ResourceMetrics, manaMetrics *core.ResourceMetrics) {
+	// Damages the paladin for 10% of rawDamage, then adds 65% of that for everyone in the raid
+	selfDamage := result.RawDamage() * 0.1
+
+	paladin.RemoveHealth(sim, selfDamage, healthMetrics)
+
+	// The mana return is unaffected by Seal of the Dawn
+	selfDamage /= paladin.PseudoStats.SanctifiedDamageMultiplier
+	// It's also adjusted back up if Soul of the Sealbearer is equipped
+	selfDamage /= core.TernaryFloat64(paladin.hasSealbearerBonus, SealbearerDamageModifier, 1)
+
+	paladin.AddMana(sim, selfDamage*0.65, manaMetrics)
 }

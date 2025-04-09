@@ -117,6 +117,7 @@ type Paladin struct {
 	holyShieldExtraDamage          func(sim *core.Simulation, paladin *Paladin) float64
 	bypassAvengingWrathForbearance bool
 	holyShieldCanCrit              bool
+	hasSealbearerBonus             bool
 
 	enableMultiJudge    bool
 	lingerDuration      time.Duration

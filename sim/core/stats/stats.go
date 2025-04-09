@@ -482,6 +482,7 @@ type PseudoStats struct {
 	// Tracks the number of Sanctified items equipped for Seal of the Dawn bonuses
 	SanctifiedBonus int32
 	// Tracks the bonus damage multiplier from Sanctified items for preventing Mage 6pT2 and Ignite double dipping
+	// As well as normalizing mana return from a Paladins Seal of Martyrdom
 	SanctifiedDamageMultiplier float64
 
 	// Tracks the cumulative amount of Thorns damage from various effects purely for UI display
