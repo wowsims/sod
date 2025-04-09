@@ -648,6 +648,8 @@ func (paladin *Paladin) applyPaladinT1Ret4P() {
 	}).AttachBuildPhaseStatsBuff(bonusStats))
 }
 
+const SealbearerDamageModifier = 0.65
+
 func (paladin *Paladin) applyPaladinT1Ret6P() {
 	bonusLabel := "S03 - Item - T1 - Paladin - Retribution 6P Bonus"
 	if paladin.HasAura(bonusLabel) {
@@ -660,11 +662,12 @@ func (paladin *Paladin) applyPaladinT1Ret6P() {
 		OnReset: func(aura *core.Aura, sim *core.Simulation) {
 			paladin.lingerDuration = time.Second * 6
 			paladin.enableMultiJudge = true // Implemented in Paladin.go
+			paladin.hasSealbearerBonus = true
 		},
 	})).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
 		ClassMask:  ClassSpellMask_PaladinSeals,
-		FloatValue: 0.65,
+		FloatValue: SealbearerDamageModifier,
 	})
 }
 
