@@ -825,7 +825,7 @@ export const SpellScorchDebuff = withLabel(
 		actionId: player => player.getMatchingSpellActionId([{ id: 12873, minLevel: 40 }]),
 		fieldName: 'improvedScorch',
 	}),
-	'Fire Damage',
+	'Scorch',
 );
 
 export const SpellWintersChillDebuff = withLabel(
@@ -833,7 +833,7 @@ export const SpellWintersChillDebuff = withLabel(
 		actionId: player => player.getMatchingSpellActionId([{ id: 28595, minLevel: 40 }]),
 		fieldName: 'wintersChill',
 	}),
-	'Frost Damage',
+	"Winter's Chill",
 );
 
 export const NatureSpellDamageDebuff = InputHelpers.makeMultiIconInput({
