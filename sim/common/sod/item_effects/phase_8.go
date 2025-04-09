@@ -46,6 +46,7 @@ const (
 	SirDornelsDidgeridoo     = 241038
 	InfusionOfSouls          = 241039
 	StiltzsStandard          = 241068
+	ChokeChain               = 241069
 	LuckyDoubloon            = 241241
 	HandOfRebornJustice      = 242310
 )
@@ -225,6 +226,20 @@ func init() {
 
 		character.ItemSwap.RegisterActive(Caladbolg)
 		character.ItemSwap.RegisterProc(Caladbolg, rangeDummyAura)
+	})
+
+	// https://www.wowhead.com/classic/item=241069/choke-chain
+	core.NewItemEffect(ChokeChain, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		// There's a hidden effect that causes Shamans and Warlocks to receive 2 hit instead of 2 expertise
+		if character.Class == proto.Class_ClassShaman || character.Class == proto.Class_ClassWarlock {
+			character.AddStats(stats.Stats{
+				stats.Expertise: -2 * core.ExpertiseRatingPerExpertiseChance,
+				stats.MeleeHit:  2 * core.MeleeHitRatingPerHitChance,
+				stats.SpellHit:  2 * core.SpellHitRatingPerHitChance,
+			})
+		}
 	})
 
 	// https://www.wowhead.com/classic/item=241008/condemnation
@@ -480,7 +495,44 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=241034/heart-of-light
 	// Use: Increases maximum health by 2500 for 20 sec. (2 Min Cooldown)
-	core.NewSimpleStatDefensiveTrinketEffect(HeartOfLight, stats.Stats{stats.Health: 2500}, time.Second*20, time.Minute*2)
+	core.NewItemEffect(HeartOfLight, func(agent core.Agent) {
+		character := agent.GetCharacter()
+
+		// There's a hidden effect that causes Shamans and Warlocks to receive 2 hit instead of 2 expertise
+		if character.Class == proto.Class_ClassShaman || character.Class == proto.Class_ClassWarlock {
+			character.AddStats(stats.Stats{
+				stats.Expertise: -2 * core.ExpertiseRatingPerExpertiseChance,
+				stats.MeleeHit:  2 * core.MeleeHitRatingPerHitChance,
+				stats.SpellHit:  2 * core.SpellHitRatingPerHitChance,
+			})
+		}
+
+		actionID := core.ActionID{ItemID: HeartOfLight}
+
+		buffAura := character.RegisterAura(core.Aura{
+			ActionID: actionID,
+			Label:    "Heart of Light",
+			Duration: time.Second * 20,
+		}).AttachStatBuff(stats.Health, 250)
+
+		cdSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID: actionID,
+			Cast: core.CastConfig{
+				CD: core.Cooldown{
+					Timer:    character.NewTimer(),
+					Duration: time.Minute * 2,
+				},
+			},
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				buffAura.Activate(sim)
+			},
+		})
+
+		character.AddMajorEquipmentCooldown(core.MajorCooldown{
+			Type:  core.CooldownTypeSurvival,
+			Spell: cdSpell,
+		})
+	})
 
 	// https://www.wowhead.com/classic/item=240841/high-commanders-guard
 	// Chance on hit: Increase Defense by 20 and Armor by 750 for 10 sec.
