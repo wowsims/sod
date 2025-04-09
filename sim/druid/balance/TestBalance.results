@@ -1275,7 +1275,7 @@ dps_results: {
 dps_results: {
  key: "TestBalance-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4783.59095
+  dps: 4752.57656
   tps: 4633.3212
  }
 }

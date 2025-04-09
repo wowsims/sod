@@ -1603,9 +1603,9 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3341.16145
+  dps: 3312.09543
   tps: 2327.50321
-  hps: 49.42017
+  hps: 49.72517
  }
 }
 dps_results: {
@@ -2051,9 +2051,9 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3964.13031
+  dps: 3931.79401
   tps: 2753.63857
-  hps: 54.3388
+  hps: 54.25137
  }
 }
 dps_results: {
@@ -2499,8 +2499,8 @@ dps_results: {
 dps_results: {
  key: "TestEnhancement-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5519.27392
+  dps: 5489.95359
   tps: 3831.12514
-  hps: 41.84397
+  hps: 42.1571
  }
 }

@@ -1051,8 +1051,8 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4287.19957
-  tps: 4136.37594
-  hps: 978.39905
+  dps: 4264.17319
+  tps: 4128.64951
+  hps: 973.15951
  }
 }

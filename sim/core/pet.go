@@ -82,8 +82,8 @@ func NewPet(name string, owner *Character, baseStats stats.Stats, statInheritanc
 	pet.AddStats(baseStats)
 	pet.addUniversalStatDependencies()
 
-	// Pets can be behind even when the owner is not
-	pet.PseudoStats.InFrontOfTarget = false
+	// Hunters have said they would prefer to be able to see what the pet loses when in front
+	pet.PseudoStats.InFrontOfTarget = owner.PseudoStats.InFrontOfTarget
 
 	return pet
 }

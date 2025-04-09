@@ -408,9 +408,9 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2527.4118
-  tps: 4442.41716
-  dtps: 506.45114
-  hps: 526.54944
+  dps: 2375.32921
+  tps: 4430.05242
+  dtps: 543.46607
+  hps: 521.70148
  }
 }

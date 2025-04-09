@@ -883,8 +883,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 119.95241
-  tps: 104.47649
+  dps: 119.87414
+  tps: 104.49011
  }
 }
 dps_results: {
@@ -988,8 +988,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 623.55746
-  tps: 495.35987
+  dps: 622.91674
+  tps: 495.41731
  }
 }
 dps_results: {
@@ -1107,7 +1107,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase3-Lvl50-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1282.62865
+  dps: 1282.48589
   tps: 1035.33935
   hps: 11.91653
  }
@@ -1276,8 +1276,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3439.17565
-  tps: 3186.13256
+  dps: 3432.46077
+  tps: 3186.3319
  }
 }
 dps_results: {
@@ -1528,8 +1528,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3859.52181
-  tps: 3560.71141
+  dps: 3852.23969
+  tps: 3561.25969
  }
 }
 dps_results: {
@@ -1696,8 +1696,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5422.74178
-  tps: 5043.41862
+  dps: 5410.6062
+  tps: 5043.50937
  }
 }
 dps_results: {
@@ -1822,8 +1822,8 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase7-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 6917.6384
-  tps: 4063.65544
+  dps: 6902.99753
+  tps: 4064.0485
  }
 }
 dps_results: {
@@ -1948,7 +1948,7 @@ dps_results: {
 dps_results: {
  key: "TestShadow-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 10380.51269
-  tps: 4339.45512
+  dps: 10365.97783
+  tps: 4340.0268
  }
 }

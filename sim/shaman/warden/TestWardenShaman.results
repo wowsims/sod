@@ -262,9 +262,9 @@ dps_results: {
 dps_results: {
  key: "TestWardenShaman-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 1917.91818
-  tps: 5862.3796
-  dtps: 632.36493
-  hps: 16.69367
+  dps: 1903.93834
+  tps: 5866.41965
+  dtps: 680.56601
+  hps: 17.141
  }
 }

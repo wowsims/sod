@@ -470,8 +470,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4764.11472
-  tps: 2633.35609
+  dps: 4426.33252
+  tps: 2622.78399
  }
 }
 dps_results: {
@@ -598,8 +598,8 @@ dps_results: {
 dps_results: {
  key: "TestDemonology-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 4758.67247
-  tps: 3636.24095
-  hps: 943.23212
+  dps: 4523.50974
+  tps: 3639.11935
+  hps: 946.2435
  }
 }
