@@ -82,9 +82,9 @@ export class IconEnumPicker<ModObject, T> extends Input<ModObject, T> {
 			</>,
 		);
 
-		this.buttonElem = this.rootElem.querySelector('.icon-picker-button') as HTMLAnchorElement;
-		this.buttonText = this.rootElem.querySelector('label') as HTMLElement;
-		this.dropdownMenu = this.rootElem.querySelector('.dropdown-menu') as HTMLElement;
+		this.buttonElem = this.rootElem.querySelector<HTMLAnchorElement>('.icon-picker-button')!;
+		this.buttonText = this.rootElem.querySelector<HTMLElement>('label')!;
+		this.dropdownMenu = this.rootElem.querySelector<HTMLElement>('.dropdown-menu')!;
 
 		if (this.config.numColumns) {
 			this.dropdownMenu.style.gridTemplateColumns = `repeat(${this.config.numColumns}, 1fr)`;

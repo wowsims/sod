@@ -521,12 +521,12 @@ export class PlayerPicker extends Component {
 				</div>
 			`;
 
-			this.labelElem = this.rootElem.querySelector('.player-label') as HTMLElement;
-			this.iconElem = this.rootElem.querySelector('.player-icon') as HTMLImageElement;
-			this.nameElem = this.rootElem.querySelector('.player-name') as HTMLInputElement;
-			this.resultsElem = this.rootElem.querySelector('.player-results') as HTMLElement;
-			this.dpsResultElem = this.rootElem.querySelector('.player-results-dps') as HTMLElement;
-			this.referenceDeltaElem = this.rootElem.querySelector('.player-results-reference-delta') as HTMLElement;
+			this.labelElem = this.rootElem.querySelector<HTMLElement>('.player-label')!;
+			this.iconElem = this.rootElem.querySelector<HTMLImageElement>('.player-icon')!;
+			this.nameElem = this.rootElem.querySelector<HTMLInputElement>('.player-name')!;
+			this.resultsElem = this.rootElem.querySelector<HTMLElement>('.player-results')!;
+			this.dpsResultElem = this.rootElem.querySelector<HTMLElement>('.player-results-dps')!;
+			this.referenceDeltaElem = this.rootElem.querySelector<HTMLElement>('.player-results-reference-delta')!;
 
 			this.bindPlayerEvents();
 		}

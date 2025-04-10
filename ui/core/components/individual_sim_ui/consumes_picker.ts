@@ -42,7 +42,7 @@ export class ConsumesPicker extends Component {
     	`;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const potionsElem = this.rootElem.querySelector('.consumes-potions') as HTMLElement;
+		const potionsElem = this.rootElem.querySelector<HTMLElement>('.consumes-potions')!;
 
 		const potionsOptions = ConsumablesInputs.makePotionsInput(relevantStatOptions(ConsumablesInputs.POTIONS_CONFIG, this.simUI), 'Potions');
 		const conjuredOptions = ConsumablesInputs.makeConjuredInput(relevantStatOptions(ConsumablesInputs.CONJURED_CONFIG, this.simUI));
@@ -67,7 +67,7 @@ export class ConsumesPicker extends Component {
     	`;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const flasksElem = this.rootElem.querySelector('.consumes-flasks') as HTMLElement;
+		const flasksElem = this.rootElem.querySelector<HTMLElement>('.consumes-flasks')!;
 
 		const flasksOptions = ConsumablesInputs.makeFlasksInput(relevantStatOptions(ConsumablesInputs.FLASKS_CONFIG, this.simUI));
 
@@ -87,7 +87,7 @@ export class ConsumesPicker extends Component {
     	`;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const imbuesElem = this.rootElem.querySelector('.consumes-weapon-imbues') as HTMLElement;
+		const imbuesElem = this.rootElem.querySelector<HTMLElement>('.consumes-weapon-imbues')!;
 
 		const mhImbueOptions = ConsumablesInputs.makeMainHandImbuesInput(
 			relevantStatOptions(ConsumablesInputs.WEAPON_IMBUES_MH_CONFIG, this.simUI),
@@ -111,7 +111,7 @@ export class ConsumesPicker extends Component {
     	`;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const foodsElem = this.rootElem.querySelector('.consumes-food') as HTMLElement;
+		const foodsElem = this.rootElem.querySelector<HTMLElement>('.consumes-food')!;
 
 		const foodOptions = ConsumablesInputs.makeFoodInput(relevantStatOptions(ConsumablesInputs.FOOD_CONFIG, this.simUI));
 		const alcoholOptions = ConsumablesInputs.makeAlcoholInput(relevantStatOptions(ConsumablesInputs.ALCOHOL_CONFIG, this.simUI));
@@ -136,7 +136,7 @@ export class ConsumesPicker extends Component {
 		`;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const physicalConsumesElem = this.rootElem.querySelector('.consumes-physical') as HTMLElement;
+		const physicalConsumesElem = this.rootElem.querySelector<HTMLElement>('.consumes-physical')!;
 
 		const apBuffOptions = ConsumablesInputs.makeAttackPowerConsumeInput(
 			relevantStatOptions(ConsumablesInputs.ATTACK_POWER_CONSUMES_CONFIG, this.simUI),
@@ -168,7 +168,7 @@ export class ConsumesPicker extends Component {
 		`;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const defensiveConsumesElem = this.rootElem.querySelector('.consumes-defensive') as HTMLElement;
+		const defensiveConsumesElem = this.rootElem.querySelector<HTMLElement>('.consumes-defensive')!;
 
 		const healthBuffOptions = ConsumablesInputs.makeHealthConsumeInput(relevantStatOptions(ConsumablesInputs.HEALTH_CONSUMES_CONFIG, this.simUI), 'Health');
 
@@ -193,7 +193,7 @@ export class ConsumesPicker extends Component {
     	`;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const spellsCnsumesElem = this.rootElem.querySelector('.consumes-spells') as HTMLElement;
+		const spellsCnsumesElem = this.rootElem.querySelector<HTMLElement>('.consumes-spells')!;
 
 		const spBuffOptions = ConsumablesInputs.makeSpellPowerConsumeInput(
 			relevantStatOptions(ConsumablesInputs.SPELL_POWER_CONFIG, this.simUI),
@@ -235,7 +235,7 @@ export class ConsumesPicker extends Component {
 		`;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const miscConsumesElem = this.rootElem.querySelector('.consumes-misc') as HTMLElement;
+		const miscConsumesElem = this.rootElem.querySelector<HTMLElement>('.consumes-misc')!;
 
 		const sealOfTheDawnOptions = ConsumablesInputs.makeSealOfTheDawnConsumesInput(
 			relevantStatOptions(ConsumablesInputs.SEAL_OF_THE_DAWN_CONSUMES_CONFIG, this.simUI),
@@ -272,7 +272,7 @@ export class ConsumesPicker extends Component {
 		`;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const engiConsumesElem = this.rootElem.querySelector('.consumes-engi') as HTMLElement;
+		const engiConsumesElem = this.rootElem.querySelector<HTMLElement>('.consumes-engi')!;
 
 		const explosiveOptions = ConsumablesInputs.makeExplosivesInput(relevantStatOptions(ConsumablesInputs.EXPLOSIVES_CONFIG, this.simUI), 'Explosives');
 		const sapperOptions = ConsumablesInputs.makeSappersInput(relevantStatOptions(ConsumablesInputs.SAPPER_CONFIG, this.simUI), 'Sappers');
@@ -297,7 +297,7 @@ export class ConsumesPicker extends Component {
     	`;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const enchConsumesElem = this.rootElem.querySelector('.consumes-ench') as HTMLElement;
+		const enchConsumesElem = this.rootElem.querySelector<HTMLElement>('.consumes-ench')!;
 
 		const enchantedSigilOptions = ConsumablesInputs.makeEncanthedSigilInput(
 			relevantStatOptions(ConsumablesInputs.ENCHANTED_SIGIL_CONFIG, this.simUI),
@@ -322,7 +322,7 @@ export class ConsumesPicker extends Component {
 		`;
 
 		const row = this.rootElem.appendChild(fragment.children[0] as HTMLElement);
-		const petConsumesElem = this.rootElem.querySelector('.consumes-pet') as HTMLElement;
+		const petConsumesElem = this.rootElem.querySelector<HTMLElement>('.consumes-pet')!;
 
 		// const miscPetConsumesOptions = relevantStatOptions(ConsumablesInputs.MISC_PET_CONSUMES, this.simUI);
 

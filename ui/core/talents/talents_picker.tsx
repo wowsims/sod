@@ -196,12 +196,12 @@ class TalentTreePicker<TalentsProto> extends Component {
 		);
 
 		this.title = this.rootElem.getElementsByClassName('talent-tree-title')[0] as HTMLElement;
-		this.pointsElem = this.rootElem.querySelector('.talent-tree-points') as HTMLElement;
+		this.pointsElem = this.rootElem.querySelector<HTMLElement>('.talent-tree-points')!;
 
-		const background = this.rootElem.querySelector('.talent-tree-background') as HTMLElement;
+		const background = this.rootElem.querySelector<HTMLElement>('.talent-tree-background')!;
 		background.style.backgroundImage = `url('${config.backgroundUrl}')`;
 
-		const main = this.rootElem.querySelector('.talent-tree-main') as HTMLElement;
+		const main = this.rootElem.querySelector<HTMLElement>('.talent-tree-main')!;
 		main.style.gridTemplateRows = `repeat(${this.picker.numRows}, 1fr)`;
 		// Add 2 for spacing on the sides
 		main.style.gridTemplateColumns = `repeat(${this.picker.numCols}, 1fr)`;
@@ -235,7 +235,7 @@ class TalentTreePicker<TalentsProto> extends Component {
 			if (t.config.prereqLocation !== undefined) continue;
 			recurseCalcIdx(t, 20);
 		}
-		const resetBtn = this.rootElem.querySelector('.talent-tree-reset') as HTMLElement;
+		const resetBtn = this.rootElem.querySelector<HTMLElement>('.talent-tree-reset')!;
 		tippy(resetBtn, { content: 'Reset talent points' });
 		resetBtn.addEventListener('click', _ => {
 			this.talents.forEach(talent => talent.setPoints(0, false));

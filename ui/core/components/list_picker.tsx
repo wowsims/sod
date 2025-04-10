@@ -90,7 +90,7 @@ export class ListPicker<ModObject, ItemType> extends Input<ModObject, Array<Item
 		}
 
 		if (this.config.titleTooltip) {
-			const titleTooltip = tippy(this.rootElem.querySelector('.list-picker-title') as HTMLElement, {
+			const titleTooltip = tippy(this.rootElem.querySelector<HTMLElement>('.list-picker-title')!, {
 				content: this.config.titleTooltip,
 			});
 			this.addOnDisposeCallback(() => titleTooltip?.destroy());
