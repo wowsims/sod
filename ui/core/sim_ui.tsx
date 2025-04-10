@@ -89,7 +89,7 @@ export abstract class SimUI extends Component {
 
 		this.rootElem.appendChild(container);
 
-		this.simContentContainer = this.rootElem.querySelector('.sim-content') as HTMLElement;
+		this.simContentContainer = this.rootElem.querySelector<HTMLElement>('.sim-content')!;
 		this.simHeader = new SimHeader(this.simContentContainer, this);
 		this.simMain = document.createElement('main');
 		this.simMain.classList.add('sim-main', 'tab-content');
@@ -156,10 +156,10 @@ export abstract class SimUI extends Component {
 
 		// Sidebar Contents
 
-		const titleElem = this.rootElem.querySelector('.sim-title') as HTMLElement;
+		const titleElem = this.rootElem.querySelector<HTMLElement>('.sim-title')!;
 		new SimTitleDropdown(titleElem, config.spec, { noDropdown: this.isWithinRaidSim });
 
-		this.simActionsContainer = this.rootElem.querySelector('.sim-sidebar-actions') as HTMLElement;
+		this.simActionsContainer = this.rootElem.querySelector<HTMLElement>('.sim-sidebar-actions')!;
 		this.iterationsPicker = new NumberPicker(this.simActionsContainer, this.sim, {
 			id: 'simui-iterations',
 			label: 'Iterations',
@@ -171,15 +171,15 @@ export abstract class SimUI extends Component {
 			},
 		}).rootElem;
 
-		const resultsViewerElem = this.rootElem.querySelector('.sim-sidebar-results') as HTMLElement;
+		const resultsViewerElem = this.rootElem.querySelector<HTMLElement>('.sim-sidebar-results')!;
 		this.resultsViewer = new ResultsViewer(resultsViewerElem);
 
-		const socialsContainer = this.rootElem.querySelector('.sim-sidebar-socials') as HTMLElement;
+		const socialsContainer = this.rootElem.querySelector<HTMLElement>('.sim-sidebar-socials')!;
 		socialsContainer.appendChild(SocialLinks.buildDiscordLink());
 		socialsContainer.appendChild(SocialLinks.buildGitHubLink());
 		socialsContainer.appendChild(SocialLinks.buildPatreonLink());
 
-		this.simTabContentsContainer = this.rootElem.querySelector('.sim-main.tab-content') as HTMLElement;
+		this.simTabContentsContainer = this.rootElem.querySelector<HTMLElement>('.sim-main.tab-content')!;
 
 		if (!this.isWithinRaidSim) {
 			window.addEventListener('message', async event => {

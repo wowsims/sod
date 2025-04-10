@@ -330,11 +330,11 @@ class EpWeightsMenu extends BaseModal {
 			</button>
 		`;
 
-		this.container = this.rootElem.querySelector('.results-ep-table-container') as HTMLElement;
-		this.table = this.rootElem.querySelector('.results-ep-table') as HTMLElement;
-		this.tableBody = this.rootElem.querySelector('.results-ep-table tbody') as HTMLElement;
+		this.container = this.rootElem.querySelector<HTMLElement>('.results-ep-table-container')!;
+		this.table = this.rootElem.querySelector<HTMLElement>('.results-ep-table')!;
+		this.tableBody = this.rootElem.querySelector<HTMLElement>('.results-ep-table tbody')!;
 
-		const resultsElem = this.rootElem.querySelector('.results-pending-overlay') as HTMLElement;
+		const resultsElem = this.rootElem.querySelector<HTMLElement>('.results-pending-overlay')!;
 		this.resultsViewer = new ResultsViewer(resultsElem);
 
 		const updateType = () => {
@@ -726,7 +726,7 @@ class EpWeightsMenu extends BaseModal {
 		`;
 
 		if (this.isEpStat(stat)) {
-			const includeToggleCell = row.querySelector('.swcalc-include-toggle') as HTMLElement;
+			const includeToggleCell = row.querySelector<HTMLElement>('.swcalc-include-toggle')!;
 			new BooleanPicker(includeToggleCell, this, {
 				id: 'sw-stat-toggle-' + stat.getName(this.simUI.player.getClass()),
 				getValue: epWeightsModal => !epWeightsModal.settings.isUnitStatExcludedFromCalc(stat),
@@ -736,7 +736,7 @@ class EpWeightsMenu extends BaseModal {
 			});
 		}
 
-		const currentEpCell = row.querySelector('.current-ep') as HTMLElement;
+		const currentEpCell = row.querySelector<HTMLElement>('.current-ep')!;
 		new NumberPicker(currentEpCell, this.simUI.player, {
 			id: `ep-weight-stat-${stat}`,
 			float: true,
@@ -787,7 +787,7 @@ class EpWeightsMenu extends BaseModal {
 		const epCurrent = this.simUI.player.getEpWeights().getUnitStat(stat);
 		const epDelta = epTotal - epCurrent;
 
-		const epAvgElem = template.content.querySelector('.type-ep .results-avg') as HTMLElement;
+		const epAvgElem = template.content.querySelector<HTMLElement>('.type-ep .results-avg')!;
 		if (epDelta.toFixed(2) == '0.00') epAvgElem; // no-op
 		else if (epDelta > 0) epAvgElem.classList.add('positive');
 		else if (epDelta < 0) epAvgElem.classList.add('negative');

@@ -332,7 +332,7 @@ export class RaidSimResultsManager {
 		lowerIsBetter?: boolean,
 		preNormalizedErrors?: boolean,
 	) {
-		const elem = this.simUI.resultsViewer.contentElem.querySelector(querySelector) as HTMLSpanElement;
+		const elem = this.simUI.resultsViewer.contentElem.querySelector<HTMLSpanElement>(querySelector)!;
 		if (!elem) {
 			return;
 		}
