@@ -831,21 +831,23 @@ func (hunter *Hunter) ApplyMercyHunterEffect(aura *core.Aura) {
 		return
 	}
 
+	actionID := core.ActionID{SpellID: 1235361}
+
 	// Create a dummy for UI tracking
 	dummyAura := hunter.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 1231498}, // TODO: Find real spell ID
-		Label:     "Mercy by Fire",                 // TODO: Find real spell name
+		ActionID:  actionID,
+		Label:     "Mercy by Fire",
 		Duration:  time.Second * 12,
 		MaxStacks: 2,
 	})
 
 	buffAura := hunter.pet.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 1231498}, // TODO: Find real spell ID
-		Label:     "Mercy by Fire",                 // TODO: Find real spell name
+		ActionID:  actionID,
+		Label:     "Mercy by Fire",
 		Duration:  time.Second * 12,
 		MaxStacks: 2,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskMeleeSpecial|core.ProcMaskSpellDamage) && result.Landed() {
+			if spell.Matches(ClassSpellMask_HunterPetBasicAttacks) && result.Landed() {
 				aura.RemoveStack(sim)
 			}
 		},
@@ -869,7 +871,7 @@ func (hunter *Hunter) ApplyMercyHunterEffect(aura *core.Aura) {
 func (hunter *Hunter) applyMercyAuraBonuses(aura *core.Aura, modifier float64) {
 	aura.AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ProcMask:   core.ProcMaskMeleeSpecial | core.ProcMaskSpellDamage,
+		ClassMask:  ClassSpellMask_HunterPetBasicAttacks,
 		FloatValue: modifier,
 	})
 }
