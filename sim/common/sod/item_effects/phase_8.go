@@ -282,7 +282,8 @@ func init() {
 
 	// https://www.wowhead.com/classic/item=240852/crimson-cleaver
 	// Hunter - Equip: Chance on hit to cause your next 2 instances of Raptor Strike damage to be increased by 20%. Lasts 12 sec.
-	// Shaman - Equip: Chance on hit to cause your next 2 instances of Nature damage are increased by 20%. Lasts 12 sec. (100ms cooldown)
+	// Paladin - Equip: Chance on hit to cause your next 2 instances of Holy damage to be increased by 20%. Lasts 12 sec.
+	// Shaman - Equip: Chance on hit to cause your next 2 instances of Nature damage are increased by 20%. Lasts 12 sec.
 	// Warrior - Equip: Chance on hit to cause your next 2 instances of Cleave damage to be increased by 20%. Lasts 12 sec.
 	core.NewItemEffect(CrimsonCleaver, func(agent core.Agent) {
 		character := agent.GetCharacter()
@@ -294,6 +295,8 @@ func init() {
 		switch character.Class {
 		case proto.Class_ClassHunter:
 			agent.(hunter.HunterAgent).GetHunter().ApplyCrimsonCleaverHunterEffect(aura)
+		case proto.Class_ClassPaladin:
+			agent.(paladin.PaladinAgent).GetPaladin().ApplyCrimsonCleaverPaladinEffect(aura)
 		case proto.Class_ClassShaman:
 			agent.(shaman.ShamanAgent).GetShaman().ApplyCrimsonCleaverShamanEffect(aura)
 		case proto.Class_ClassWarrior:

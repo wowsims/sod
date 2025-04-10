@@ -437,3 +437,43 @@ func crusadersZealAura465414(character *core.Character, itemID int32) *core.Aura
 
 	return triggerAura
 }
+
+// Equip: Chance on hit to cause your next 2 instances of Holy damage to be increased by 20%. Lasts 12 sec. (100ms cooldown)
+// Confirmed PPM 1.0
+func (paladin *Paladin) ApplyCrimsonCleaverPaladinEffect(aura *core.Aura) {
+	icd := core.Cooldown{
+		Timer:    paladin.NewTimer(),
+		Duration: time.Millisecond * 100,
+	}
+
+	buffAura := paladin.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1235348},
+		Label:     "Crimson Crusade",
+		Duration:  time.Second * 12,
+		MaxStacks: 2,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.SpellSchool.Matches(core.SpellSchoolHoly) && result.Landed() && icd.IsReady(sim) {
+				icd.Use(sim)
+				aura.RemoveStack(sim)
+			}
+		},
+	}).AttachSpellMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		School:     core.SpellSchoolHoly,
+		FloatValue: 1.20,
+	})
+
+	aura.AttachProcTrigger(core.ProcTrigger{
+		Name:              "Crimson Cleaver Trigger - Paladin",
+		Callback:          core.CallbackOnSpellHitDealt,
+		Outcome:           core.OutcomeLanded,
+		ProcMask:          core.ProcMaskMelee | core.ProcMaskSpellDamage, // Confirmed procs from melee or spell ProcTypeMask_0 69648
+		SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+		PPM:               1.0,
+		ICD:               time.Millisecond * 100,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			buffAura.Activate(sim)
+			buffAura.SetStacks(sim, buffAura.MaxStacks)
+		},
+	})
+}
