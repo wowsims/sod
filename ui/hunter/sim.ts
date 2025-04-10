@@ -1,13 +1,13 @@
 import * as BuffDebuffInputs from '../core/components/inputs/buffs_debuffs';
 import * as ConsumablesInputs from '../core/components/inputs/consumables.js';
 import * as OtherInputs from '../core/components/other_inputs.js';
-import * as Mechanics from '../core/constants/mechanics.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
 import { ItemSlot, PartyBuffs, PseudoStat, Spec, Stat } from '../core/proto/common.js';
 import { HunterRune } from '../core/proto/hunter.js';
 import { Stats } from '../core/proto_utils/stats.js';
+import { SpecOptions } from '../core/proto_utils/utils';
 import * as HunterInputs from './inputs.js';
 import * as Presets from './presets.js';
 
@@ -71,9 +71,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	displayPseudoStats: [PseudoStat.PseudoStatMeleeSpeedMultiplier, PseudoStat.PseudoStatRangedSpeedMultiplier],
 
 	defaults: {
-		race: Presets.OtherDefaults.race,
 		// Default equipped gear.
-		gear: Presets.DefaultGear.gear,
+		gear: Presets.DefaultBuild.gear!.gear,
 		// Default EP weights for sorting gear in the gear picker.
 		epWeights: Stats.fromMap(
 			{
@@ -103,17 +102,22 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			},
 		),
 		// Default consumes settings.
-		consumes: Presets.DefaultConsumes,
+		consumes: Presets.DefaultBuild.settings!.consumes!,
 		// Default talents.
-		talents: Presets.DefaultTalents.data,
+		talents: Presets.DefaultBuild.talents!.data,
 		// Default spec-specific settings.
-		specOptions: Presets.DefaultOptions,
-		other: Presets.OtherDefaults,
+		specOptions: Presets.DefaultBuild.settings!.specOptions! as SpecOptions<Spec.SpecHunter>,
+		other: {
+			// Default distance from target.
+			distanceFromTarget: Presets.DefaultBuild.settings?.playerOptions?.distanceFromTarget,
+			profession1: Presets.DefaultBuild.settings?.playerOptions?.profession1,
+			profession2: Presets.DefaultBuild.settings?.playerOptions?.profession2,
+		},
 		// Default raid/party buffs settings.
-		raidBuffs: Presets.DefaultRaidBuffs,
-		partyBuffs: PartyBuffs.create({}),
-		individualBuffs: Presets.DefaultIndividualBuffs,
-		debuffs: Presets.DefaultDebuffs,
+		raidBuffs: Presets.DefaultBuild.settings!.raidBuffs!,
+		partyBuffs: Presets.DefaultBuild.settings!.partyBuffs!,
+		individualBuffs: Presets.DefaultBuild.settings!.buffs!,
+		debuffs: Presets.DefaultBuild.settings!.debuffs!,
 	},
 
 	// IconInputs to include in the 'Player' section on the settings tab.
@@ -144,6 +148,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 	presets: {
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase8],
 			...Presets.TalentPresets[Phase.Phase7],
 			//...Presets.TalentPresets[Phase.Phase6],
 			//...Presets.TalentPresets[Phase.Phase5],
@@ -154,6 +159,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		],
 		// Preset rotations that the user can quickly select.
 		rotations: [
+			...Presets.APLPresets[Phase.Phase8],
 			...Presets.APLPresets[Phase.Phase7],
 			//...Presets.APLPresets[Phase.Phase6],
 			//...Presets.APLPresets[Phase.Phase5],
@@ -164,6 +170,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase8],
 			...Presets.GearPresets[Phase.Phase7],
 			//...Presets.GearPresets[Phase.Phase6],
 			//...Presets.GearPresets[Phase.Phase5],
@@ -172,7 +179,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecHunter, {
 			...Presets.GearPresets[Phase.Phase2],
 			...Presets.GearPresets[Phase.Phase1],
 		],
-		builds: [Presets.PresetBuildRangedKillshot, Presets.PresetBuildMeleeBM, Presets.PresetBuildMeleeSV, Presets.PresetBuildWeave],
+		builds: [Presets.PresetBuildPhase7NaxxMeleeDW, Presets.PresetBuildPhase7NaxxMelee2H, Presets.PresetBuildPhase7NaxxRanged, Presets.PresetBuildPhase7NaxxWeave, 
+			Presets.PresetBuildPhase8NaxxMeleeDW, Presets.PresetBuildPhase8NaxxMelee2H, Presets.PresetBuildPhase8NaxxRanged, Presets.PresetBuildPhase8NaxxWeave],
 	},
 
 	autoRotation: player => {

@@ -1,0 +1,225 @@
+{
+    "raidBuffs": {
+      "giftOfTheWild": "TristateEffectImproved",
+      "powerWordFortitude": "TristateEffectImproved",
+      "arcaneBrilliance": true,
+      "divineSpirit": true,
+      "battleShout": "TristateEffectImproved",
+      "leaderOfThePack": true,
+      "demonicPact": 130,
+      "hornOfLordaeron": true,
+      "aspectOfTheLion": true,
+      "commandingShout": true
+    },
+    "debuffs": {
+      "judgementOfWisdom": true,
+      "judgementOfLight": true,
+      "faerieFire": true,
+      "markOfChaos": true,
+      "occultPoison": true,
+      "improvedScorch": true,
+      "dreamstate": true,
+      "sebaciousPoison": "TristateEffectImproved",
+      "curseOfRecklessness": true,
+      "huntersMark": "TristateEffectImproved",
+      "mangle": true,
+      "giftOfArthas": true
+    },
+    "partyBuffs": {
+    },
+    "player": {
+      "name": "Player",
+      "race": "RaceNightElf",
+      "level": 60,
+      "class": "ClassHunter",
+      "equipment": {
+        "items": [
+          {"id":236054,"enchant":7635,"rune":415405},
+          {"id":236342},
+          {"id":236052,"enchant":7884,"rune":1220104},
+          {"id":236333,"enchant":7667,"rune":440533},
+          {"id":236058,"enchant":1891,"rune":415370},
+          {"id":236050,"enchant":7656,"rune":415358},
+          {"id":235876,"randomSuffix":2343,"enchant":2564,"rune":458393},
+          {"id":236051,"rune":415352},
+          {"id":233667,"enchant":7635,"rune":415320},
+          {"id":233665,"enchant":1887,"rune":458479},
+          {"id":236056,"rune":442894},
+          {"id":236291,"rune":442813},
+          {"id":236334},
+          {"id":231288},
+          {"id":237512,"enchant":1900},
+          {},
+          {"id":236322,"enchant":7657}
+        ]
+      },
+      "consumes": {
+        "flask": "FlaskOfMadness",
+        "food": "FoodSmokedDesertDumpling",
+        "agilityElixir": "ElixirOfTheHoneyBadger",
+        "manaRegenElixir": "MagebloodPotion",
+        "strengthBuff": "JujuPower",
+        "attackPowerBuff": "JujuMight",
+        "spellPowerBuff": "ElixirOfTheMageLord",
+        "sapperExplosive": "SapperFumigator",
+        "mainHandImbue": "WildStrikes",
+        "defaultPotion": "MajorManaPotion",
+        "defaultConjured": "ConjuredDemonicRune",
+        "enchantedSigil": "WrathOfTheStormSigil",
+        "mildlyIrradiatedRejuvPot": true,
+        "petAgilityConsumable": 1,
+        "petStrengthConsumable": 1,
+        "petAttackPowerConsumable": 1,
+        "dragonBreathChili": true,
+        "miscConsumes": {
+          "elixirOfCoalescedRegret": true,
+          "draughtOfTheSands": true,
+          "greaterMarkOfTheDawn": true
+        },
+        "sealOfTheDawn": "SealOfTheDawnDamageR7",
+        "zanzaBuff": "GroundScorpokAssay",
+        "healthElixir": "ElixirOfFortitude",
+        "alcohol": "AlcoholRumseyRumBlackLabel"
+      },
+      "bonusStats": {
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+      },
+      "itemSwap": {
+        "items": [
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          },
+          {
+          }
+        ],
+        "prepullBonusStats": {
+          "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+          "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        }
+      },
+      "buffs": {
+        "blessingOfWisdom": "TristateEffectImproved",
+        "rallyingCryOfTheDragonslayer": true,
+        "saygesFortune": "SaygesDamage",
+        "spiritOfZandalar": true,
+        "songflowerSerenade": true,
+        "mightOfStormwind": true,
+        "fengusFerocity": true,
+        "moldarsMoxie": true,
+        "slipkiksSavvy": true
+      },
+      "talentsString": "-055500005-3320202412303051",
+      "profession1": "Engineering",
+      "profession2": "Alchemy",
+      "cooldowns": {
+      },
+      "rotation": {
+        "type": "TypeAPL",
+        "prepullActions": [
+          {"action":{"move":{"rangeFromTarget":{"const":{"val":"5"}}}},"doAtValue":{"const":{"val":"-5s"}}},
+          {"action":{"castSpell":{"spellId":{"spellId":469145}}},"doAtValue":{"const":{"val":"-5s"}}},
+          {"action":{"castSpell":{"spellId":{"spellId":20572}}},"doAtValue":{"const":{"val":"-1.5s"}}}
+        ],
+        "priorityList": [
+          {"action":{"condition":{"or":{"vals":[{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"2"}}}},{"cmp":{"op":"OpGt","lhs":{"currentTime":{}},"rhs":{"const":{"val":"10s"}}}}]}},"autocastOtherCooldowns":{}}},
+          {"action":{"condition":{"and":{"vals":[{"or":{"vals":[{"not":{"val":{"spellIsReady":{"spellId":{"spellId":458482}}}}},{"dotIsActive":{"spellId":{"spellId":458482}}}]}},{"not":{"val":{"spellIsReady":{"spellId":{"spellId":415343}}}}},{"gcdIsReady":{}},{"spellCanCast":{"spellId":{"spellId":415320}}}]}},"castSpell":{"spellId":{"spellId":468388}}}},
+          {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"50%"}}}},"cancelAura":{"auraId":{"spellId":415423}}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"3"}}}},{"auraIsActive":{"auraId":{"spellId":468388}}}]}},"castSpell":{"spellId":{"spellId":415320}}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"1.5"}}}},{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":415320}}},"rhs":{"const":{"val":"1"}}}}]}},"castSpell":{"spellId":{"spellId":415320}}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"auraNumStacks":{"auraId":{"spellId":415358}}},"rhs":{"const":{"val":"4"}}}}]}},"castSpell":{"spellId":{"spellId":14271,"rank":4}}}},
+          {"action":{"castSpell":{"spellId":{"spellId":415343}}}},
+          {"action":{"castSpell":{"spellId":{"spellId":14271,"rank":4}}}},
+          {"action":{"castSpell":{"spellId":{"spellId":458482}}}},
+          {"action":{"condition":{"and":{"vals":[{"not":{"val":{"auraIsActive":{"auraId":{"spellId":415320}}}}}]}},"castSpell":{"spellId":{"spellId":415320}}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"5%"}}}},{"cmp":{"op":"OpGe","lhs":{"remainingTime":{}},"rhs":{"const":{"val":"4s"}}}}]}},"castSpell":{"spellId":{"spellId":415423}}}},
+          {"action":{"condition":{"cmp":{"op":"OpGe","lhs":{"currentManaPercent":{}},"rhs":{"const":{"val":"50%"}}}},"castSpell":{"spellId":{"spellId":469145}}}},
+          {"hide":true,"action":{"condition":{"cmp":{"op":"OpGt","lhs":{"spellTimeToReady":{"spellId":{"spellId":415320}}},"rhs":{"const":{"val":"3"}}}},"castSpell":{"spellId":{"spellId":409530}}}},
+          {"hide":true,"action":{"condition":{"not":{"val":{"dotIsActive":{"spellId":{"spellId":409535}}}}},"castSpell":{"spellId":{"spellId":409535}}}},
+          {"hide":true,"action":{"castSpell":{"spellId":{"spellId":409530}}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":458482}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":415343}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":14271,"rank":4}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"castSpell":{"spellId":{"spellId":1219176}}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":458482}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":415343}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":14271,"rank":4}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"castSpell":{"spellId":{"spellId":409530}}}},
+          {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":458482}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":415343}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":14271,"rank":4}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"castSpell":{"spellId":{"spellId":14268,"rank":3}}}},
+          {"action":{"castSpell":{"spellId":{"itemId":10646}}}}
+        ]
+      },
+      "reactionTimeMs": 200,
+      "distanceFromTarget": 5,
+      "isbUsingShadowflame": true,
+      "healingModel": {
+      },
+      "hunter": {
+        "options": {
+          "ammo": "Doomshot",
+          "quiverBonus": "Speed15",
+          "petTalents": {
+          },
+          "petUptime": 1,
+          "petAttackSpeed": "Two"
+        }
+      }
+    },
+    "encounter": {
+      "duration": 60,
+      "durationVariation": 5,
+      "executeProportion20": 0.2,
+      "executeProportion25": 0.25,
+      "executeProportion35": 0.35,
+      "targets": [
+        {
+          "id": 15952,
+          "name": "Generic",
+          "level": 63,
+          "mobType": "MobTypeUndead",
+          "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,805,0,0,0,0,0,0,0,0,3731,0,0,0,46,0,0,0,127393,0,0,0,0,0,0,0,0,0],
+          "minBaseDamage": 6000,
+          "damageSpread": 0.3333,
+          "swingSpeed": 2,
+          "parryHaste": true,
+          "targetInputs": [
+            {
+              "inputType": "Enum",
+              "label": "Difficulty Level",
+              "tooltip": "Affects the Authority of the Frozen Wastes debuff for tanks.",
+              "enumOptions": [
+                "Normal",
+                "Hardmode 1/4",
+                "Hardmode 2/4",
+                "Hardmode 3/4",
+                "Hardmode 4/4"
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  }
