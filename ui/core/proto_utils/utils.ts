@@ -1452,6 +1452,7 @@ export const classToEligibleWeaponTypes: Record<Class, Array<EligibleWeaponType>
 		{ weaponType: WeaponType.WeaponTypePolearm, canUseTwoHand: true },
 		{ weaponType: WeaponType.WeaponTypeShield },
 		{ weaponType: WeaponType.WeaponTypeSword, canUseTwoHand: true },
+		{ weaponType: WeaponType.WeaponTypeUnknown },
 	],
 	[Class.ClassPriest]: [
 		{ weaponType: WeaponType.WeaponTypeDagger },

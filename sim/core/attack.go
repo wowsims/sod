@@ -22,6 +22,7 @@ type Weapon struct {
 	SwingSpeed           float64
 	NormalizedSwingSpeed float64
 	SpellSchool          SpellSchool
+	BonusCoefficient     float64
 	MinRange             float64
 	MaxRange             float64
 }
@@ -76,12 +77,15 @@ func newWeaponFromItem(item *Item, bonusDps float64) Weapon {
 		normalizedWeaponSpeed = 2.8
 	}
 
+	spellSchool := SpellSchoolFromProto(item.SpellSchool)
 	return Weapon{
 		BaseDamageMin:        item.WeaponDamageMin + bonusDps*item.SwingSpeed,
 		BaseDamageMax:        item.WeaponDamageMax + bonusDps*item.SwingSpeed,
 		SwingSpeed:           item.SwingSpeed,
 		NormalizedSwingSpeed: normalizedWeaponSpeed,
 		AttackPowerPerDPS:    DefaultAttackPowerPerDPS,
+		SpellSchool:          spellSchool,
+		BonusCoefficient:     Ternary(spellSchool == SpellSchoolPhysical, 0, 1.0),
 		MinRange:             getWeaponMinRange(item),
 		MaxRange:             getWeaponMaxRange(item),
 	}
@@ -119,6 +123,14 @@ func (weapon *Weapon) GetSpellSchool() SpellSchool {
 		return SpellSchoolPhysical
 	} else {
 		return weapon.SpellSchool
+	}
+}
+
+func (weapon *Weapon) GetBonusCoefficient() float64 {
+	if weapon.BonusCoefficient > 0 {
+		return weapon.BonusCoefficient
+	} else {
+		return Ternary(weapon.GetSpellSchool() == SpellSchoolPhysical, 1.0, 0.0)
 	}
 }
 
@@ -499,7 +511,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		BonusCoefficient: TernaryFloat64(options.MainHand.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
+		BonusCoefficient: options.MainHand.GetBonusCoefficient(),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			autoInProgress := *spell
@@ -535,7 +547,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		BonusCoefficient: TernaryFloat64(options.OffHand.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
+		BonusCoefficient: options.OffHand.GetBonusCoefficient(),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			autoInProgress := *spell
@@ -566,7 +578,7 @@ func (unit *Unit) EnableAutoAttacks(agent Agent, options AutoAttackOptions) {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
-		BonusCoefficient: TernaryFloat64(options.Ranged.GetSpellSchool() == SpellSchoolPhysical, 1, 0),
+		BonusCoefficient: options.Ranged.GetBonusCoefficient(),
 
 		ApplyEffects: func(sim *Simulation, target *Unit, spell *Spell) {
 			baseDamage := spell.Unit.RangedWeaponDamage(sim, spell.RangedAttackPower(target, false))

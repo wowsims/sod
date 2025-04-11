@@ -47,6 +47,10 @@ func (paladin *Paladin) registerDivineStorm() {
 		DamageMultiplier: 1.1,
 		ThreatMultiplier: 1,
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return paladin.MainHand().WeaponType != proto.WeaponType_WeaponTypeUnknown
+		},
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			results := make([]*core.SpellResult, numTargets)
 

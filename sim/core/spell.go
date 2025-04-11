@@ -46,6 +46,7 @@ type SpellConfig struct {
 
 	CritDamageBonus float64
 
+	BaseDamageMultiplier                float64
 	BaseDamageMultiplierAdditivePct     int64
 	DamageMultiplier                    float64
 	DamageMultiplierAdditivePct         int64
@@ -153,10 +154,11 @@ type Spell struct {
 	BonusCritRating    float64
 	CastTimeMultiplier float64
 
-	baseDamageMultiplierAdditivePct     int64 // Stores an integer representation of the Spell's Base Damage Multiplier
-	damageMultiplierAdditivePct         int64 // Stores an integer representation of the Spell's Additive Damage Multiplier before Imapct or Periodic-only bonuses
-	impactDamageMultiplierAdditivePct   int64 // Stores an integer representation of the Spell's Additive Impact Damage Multiplier
-	periodicDamageMultiplierAdditivePct int64 // Stores an integer representation of the Spell's Additive Periodic Damage Multiplier
+	baseDamageMultiplierAdditivePct     int64   // Stores an integer representation of the Spell's Additive Base Damage Multiplier
+	baseDamageMultiplierMultiplicative  float64 // Stores float representation of the Spell's Multiplicative Base Damage Multiplier
+	damageMultiplierAdditivePct         int64   // Stores an integer representation of the Spell's Additive Damage Multiplier before Imapct or Periodic-only bonuses
+	impactDamageMultiplierAdditivePct   int64   // Stores an integer representation of the Spell's Additive Impact Damage Multiplier
+	periodicDamageMultiplierAdditivePct int64   // Stores an integer representation of the Spell's Additive Periodic Damage Multiplier
 
 	baseDamageMultiplier     float64 // Stores the Spell's calculated Base Damage Multiplier
 	damageMultiplier         float64 // Stores the Spell's calculated Damage Multiplier before Imapct or Periodic-only bonuses
@@ -212,6 +214,10 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 	// Default the other damage multiplier to 1 if only one or the other is set.
 	if config.DamageMultiplierAdditivePct != 0 && config.DamageMultiplier == 0 {
 		config.DamageMultiplier = 1
+	}
+
+	if config.BaseDamageMultiplier == 0 {
+		config.BaseDamageMultiplier = 1
 	}
 
 	// Default CastSlot to mainhand
@@ -274,6 +280,7 @@ func (unit *Unit) RegisterSpell(config SpellConfig) *Spell {
 
 		CritDamageBonus: 1 + config.CritDamageBonus,
 
+		baseDamageMultiplierMultiplicative:  config.BaseDamageMultiplier,
 		baseDamageMultiplierAdditivePct:     config.BaseDamageMultiplierAdditivePct,
 		damageMultiplier:                    config.DamageMultiplier,
 		damageMultiplierAdditivePct:         config.DamageMultiplierAdditivePct,
@@ -708,6 +715,12 @@ func (spell *Spell) ApplyAdditiveBaseDamageBonus(percent int64) {
 	spell.updateBaseDamageMultiplier()
 }
 
+// Applies an multiplicative multiplier to spell base damage. Used for Seal of the Crusader.
+func (spell *Spell) ApplyMultiplicativeBaseDamageBonus(multiplier float64) {
+	spell.baseDamageMultiplierMultiplicative *= multiplier
+	spell.updateBaseDamageMultiplier()
+}
+
 func (spell *Spell) SetMultiplicativeDamageBonus(multiplier float64) {
 	spell.damageMultiplier = multiplier
 	spell.updateImpactDamageMultiplier()
@@ -747,7 +760,7 @@ func (spell *Spell) ApplyAdditivePeriodicDamageBonus(percent int64) {
 }
 
 func (spell *Spell) updateBaseDamageMultiplier() {
-	spell.baseDamageMultiplier = float64(100+spell.baseDamageMultiplierAdditivePct) / 100.0
+	spell.baseDamageMultiplier = spell.baseDamageMultiplierMultiplicative * float64(100+spell.baseDamageMultiplierAdditivePct) / 100.0
 }
 
 func (spell *Spell) updateImpactDamageMultiplier() {

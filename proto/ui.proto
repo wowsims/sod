@@ -44,7 +44,7 @@ message UIFaction {
 // Contains all information about an Item needed by the UI.
 // Generally this will include everything needed by the sim, plus some
 // additional data for displaying / filtering.
-// NextIndex: 35
+// NextIndex: 36
 message UIItem {
 	int32 id = 1;
 	string name = 2;
@@ -65,6 +65,7 @@ message UIItem {
 	double weapon_damage_min = 13;
 	double weapon_damage_max = 14;
 	double weapon_speed = 15;
+	SpellSchool spell_school = 35;
 	repeated double weapon_skills = 28;
 
 	// Pseudostats
