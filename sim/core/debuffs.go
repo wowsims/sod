@@ -178,6 +178,7 @@ func applyDebuffEffects(target *Unit, targetIdx int, debuffs *proto.Debuffs, lev
 
 		if debuffs.SebaciousPoison != proto.TristateEffect_TristateEffectMissing {
 			aura := SebaciousPoisonAura(target, TernaryInt32(debuffs.SebaciousPoison == proto.TristateEffect_TristateEffectRegular, 0, 2), level)
+			aura.ApplyIsEnabledInSettings()
 			SchedulePeriodicDebuffApplication(aura, PeriodicActionOptions{
 				Period:   time.Second * 0,
 				NumTicks: 1,
