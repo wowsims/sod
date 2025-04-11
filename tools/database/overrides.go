@@ -114,6 +114,8 @@ var ItemAllowList = map[int32]struct{}{
 	20440: {}, // https://www.wowhead.com/classic/item=20440/protectors-sword
 	20441: {}, // https://www.wowhead.com/classic/item=20441/scouts-blade
 	20443: {}, // https://www.wowhead.com/classic/item=20443/sentinels-blade
+	
+	238945: {}, // https://www.wowhead.com/classic/item=238945/caladboulder
 }
 
 // Keep these sorted by item ID.
