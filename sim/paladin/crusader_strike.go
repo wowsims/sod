@@ -40,6 +40,10 @@ func (paladin *Paladin) registerCrusaderStrike() {
 		ThreatMultiplier: 1,
 		ClassSpellMask:   ClassSpellMask_PaladinCrusaderStrike,
 
+		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
+			return paladin.MainHand().WeaponType != proto.WeaponType_WeaponTypeUnknown
+		},
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := spell.Unit.MHNormalizedWeaponDamage(sim, spell.MeleeAttackPower())
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialHitAndCrit)

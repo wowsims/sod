@@ -208,8 +208,9 @@ var armorPenetrationRegex = regexp.MustCompile(`Increases armor penetration rati
 var armorPenetrationRegex2 = regexp.MustCompile(`Increases your armor penetration by <!--rtg44-->([0-9]+)\.`)
 
 var expertiseRegex = regexp.MustCompile(`Reduces the chance for your attacks to be dodged or parried by ([0-9]+)%\.`)
-var weaponDamageRegex = regexp.MustCompile(`<!--dmg-->([0-9]+) - ([0-9]+)`)
+var weaponDamageRegex = regexp.MustCompile(`<!--dmg-->([0-9]+) - ([0-9]+) Damage`)
 var weaponDamageRegex2 = regexp.MustCompile(`<!--dmg-->([0-9]+) Damage`)
+var weaponDamageRegex3 = regexp.MustCompile(`<!--dmg-->([0-9]+) - ([0-9]+) ([a-zA-Z]+) Damage`)
 var weaponDamageBonusSchoolRegex = regexp.MustCompile(`\+ ([0-9]+) - ([0-9]+) [a-zA-Z]+ Damage`)
 var weaponSpeedRegex = regexp.MustCompile(`<!--spd-->(([0-9]+).([0-9]+))`)
 
@@ -617,9 +618,10 @@ func (item WowheadItemResponse) GetRangedWeaponType() proto.RangedWeaponType {
 }
 
 // Returns min/max of weapon damage
-func (item WowheadItemResponse) GetWeaponDamage() (float64, float64) {
+func (item WowheadItemResponse) GetWeaponDamage() (float64, float64, proto.SpellSchool) {
 	noCommas := strings.ReplaceAll(item.Tooltip, ",", "")
 	min, max := 0.0, 0.0
+	school := proto.SpellSchool_SpellSchoolPhysical
 
 	// Base damage
 	if matches := weaponDamageRegex.FindStringSubmatch(noCommas); len(matches) > 0 {
@@ -641,6 +643,20 @@ func (item WowheadItemResponse) GetWeaponDamage() (float64, float64) {
 			log.Fatalf("Failed to parse weapon damage: %s", err)
 		}
 		min, max = val, val
+	} else if matches := weaponDamageRegex3.FindStringSubmatch(noCommas); len(matches) > 0 {
+		minVal, err := strconv.ParseFloat(matches[1], 64)
+		if err != nil {
+			log.Fatalf("Failed to parse weapon damage: %s", err)
+		}
+		maxVal, err := strconv.ParseFloat(matches[2], 64)
+		if err != nil {
+			log.Fatalf("Failed to parse weapon damage: %s", err)
+		}
+		if minVal > maxVal {
+			log.Fatalf("Invalid weapon damage for item %s: min = %0.1f, max = %0.1f", item.Name, min, max)
+		}
+		school = GetSchool(matches[3])
+		min, max = minVal, maxVal
 	}
 
 	// Add effects like Thunderfury + 16 - 30 Nature Damage that were intended for bonus school damage on top of the base weapon damage
@@ -661,7 +677,26 @@ func (item WowheadItemResponse) GetWeaponDamage() (float64, float64) {
 		max += maxVal
 	}
 
-	return min, max
+	return min, max, school
+}
+
+func GetSchool(school string) proto.SpellSchool {
+	switch school {
+	case "Arcane":
+		return proto.SpellSchool_SpellSchoolArcane
+	case "Fire":
+		return proto.SpellSchool_SpellSchoolFire
+	case "Frost":
+		return proto.SpellSchool_SpellSchoolFrost
+	case "Holy":
+		return proto.SpellSchool_SpellSchoolHoly
+	case "Nature":
+		return proto.SpellSchool_SpellSchoolNature
+	case "Shadow":
+		return proto.SpellSchool_SpellSchoolShadow
+	default:
+		return proto.SpellSchool_SpellSchoolPhysical
+	}
 }
 
 func (item WowheadItemResponse) GetWeaponSpeed() float64 {
@@ -693,7 +728,8 @@ func (item WowheadItemResponse) GetPeriodicBonusDamagePct() int32 {
 }
 
 func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
-	weaponDamageMin, weaponDamageMax := item.GetWeaponDamage()
+	weaponDamageMin, weaponDamageMax, school := item.GetWeaponDamage()
+	rangedWeaponType := item.GetRangedWeaponType()
 
 	itemProto := &proto.UIItem{
 		Id:   item.ID,
@@ -704,7 +740,7 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		ArmorType:        item.GetArmorType(),
 		WeaponType:       item.GetWeaponType(),
 		HandType:         item.GetHandType(),
-		RangedWeaponType: item.GetRangedWeaponType(),
+		RangedWeaponType: rangedWeaponType,
 
 		Stats: toSlice(item.GetStats()),
 
@@ -716,6 +752,7 @@ func (item WowheadItemResponse) ToItemProto() *proto.UIItem {
 		WeaponDamageMin: weaponDamageMin,
 		WeaponDamageMax: weaponDamageMax,
 		WeaponSpeed:     item.GetWeaponSpeed(),
+		SpellSchool:     core.Ternary(rangedWeaponType == proto.RangedWeaponType_RangedWeaponTypeUnknown, school, proto.SpellSchool_SpellSchoolPhysical),
 
 		Ilvl:           int32(item.GetItemLevel()),
 		Phase:          int32(item.GetPhase()),
