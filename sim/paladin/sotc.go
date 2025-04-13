@@ -78,7 +78,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			OnExpire: func(_ *core.Aura, sim *core.Simulation) {
 				paladin.MultiplyMeleeSpeed(sim, 1/1.4)
 				paladin.AutoAttacks.MHAuto().ApplyMultiplicativeBaseDamageBonus(1.4)
-				paladin.AddStatDynamic(sim, stats.AttackPower, -ap*improvedSotC+libramAp)
+				paladin.AddStatDynamic(sim, stats.AttackPower, -ap*improvedSotC-libramAp)
 			},
 		})
 
