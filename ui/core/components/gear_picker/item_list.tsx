@@ -308,7 +308,7 @@ export default class ItemList<T extends ItemListType> {
 			itemIdxs[i] = i;
 		}
 
-		const currentEquippedItem = this.player.getEquippedItem(this.slot);
+		const currentEquippedItem = this.gearData.getEquippedItem();
 
 		if (this.label === SelectorModalTabs.Items) {
 			itemIdxs = this.player.filterItemData(itemIdxs, i => this.itemData[i].item as unknown as UIItem, this.slot);
