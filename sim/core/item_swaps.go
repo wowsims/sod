@@ -399,10 +399,6 @@ func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, isPrepull b
 
 	swap.unEquippedItems[slot] = oldItem
 
-	if isPrepull {
-		return
-	}
-
 	character := swap.character
 
 	switch slot {
@@ -415,9 +411,12 @@ func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, isPrepull b
 		// depending on the updated DW status after the swap.
 		if character.AutoAttacks.AutoSwingMelee {
 			weapon := character.WeaponFromOffHand()
+			isCurrentlyDualWielding := character.AutoAttacks.IsDualWielding
 			character.AutoAttacks.SetOH(weapon)
-			character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
-			character.AutoAttacks.EnableMeleeSwing(sim)
+			if !isPrepull && !isCurrentlyDualWielding {
+				character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
+				character.AutoAttacks.EnableMeleeSwing(sim)
+			}
 			character.PseudoStats.CanBlock = character.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield
 		}
 	case proto.ItemSlot_ItemSlotRanged:
