@@ -301,6 +301,21 @@ func (wa *WeaponAttack) getWeapon() *Weapon {
 
 func (wa *WeaponAttack) setWeapon(weapon Weapon) {
 	wa.Weapon = weapon
+
+	bonusCoeff := weapon.GetBonusCoefficient()
+	school := weapon.GetSpellSchool()
+
+	wa.config.BonusCoefficient = bonusCoeff
+	wa.config.SpellSchool = school
+
+	// I know these shouldn't really be touched but this is a very niche case
+	// where if we're swapping to/from a weapon with another spell school than physical.
+	// These are also basically the only "stats" on a weapon that gets handled by the spell, not the WeaponAttack.Weapon.
+	wa.spell.BonusCoefficient = bonusCoeff
+	wa.spell.SpellSchool = school
+	wa.spell.SchoolIndex = school.GetSchoolIndex()
+	wa.spell.SchoolBaseIndices = school.GetBaseIndices()
+
 	wa.updateSwingDuration(wa.curSwingSpeed)
 }
 
