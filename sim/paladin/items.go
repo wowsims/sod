@@ -387,23 +387,20 @@ func init() {
 			TimeValue: -time.Millisecond * 500,
 		})
 
-		leoganGCDAura := paladin.RegisterAura(core.Aura{
+		leoganGCDAura := core.MakePermanent(paladin.RegisterAura(core.Aura{
 			Label:    "Leogan",
 			ActionID: core.ActionID{SpellID: 1234299},
-			Duration: core.NeverExpires,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				gcdMod.Activate()
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				gcdMod.Deactivate()
 			},
-		})
+		}))
 
-		paladin.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(sim *core.Simulation, _ proto.ItemSlot) {
-			if paladin.MainHand().ID == Leogan {
-				if !leoganGCDAura.IsActive() {
-					leoganGCDAura.Activate(sim)
-				}
+		paladin.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(sim *core.Simulation, slot proto.ItemSlot, _ bool) {
+			if paladin.ItemSwap.GetEquippedItemBySlot(slot).ID == Leogan {
+				leoganGCDAura.Activate(sim)
 			} else {
 				leoganGCDAura.Deactivate(sim)
 			}

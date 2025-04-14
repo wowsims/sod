@@ -201,9 +201,9 @@ func (aa *AutoAttacks) MH() *Weapon {
 	return aa.mh.getWeapon()
 }
 
-func (aa *AutoAttacks) SetMH(weapon Weapon) {
+func (aa *AutoAttacks) SetMH(sim *Simulation, weapon Weapon) {
 	extraAttacksAura := aa.mh.extraAttacksAura
-	aa.mh.setWeapon(weapon)
+	aa.mh.setWeapon(sim, weapon)
 
 	if extraAttacksAura != nil && aa.mh.extraAttacksAura == nil {
 		aa.mh.extraAttacksAura = extraAttacksAura
@@ -214,16 +214,16 @@ func (aa *AutoAttacks) OH() *Weapon {
 	return aa.oh.getWeapon()
 }
 
-func (aa *AutoAttacks) SetOH(weapon Weapon) {
-	aa.oh.setWeapon(weapon)
+func (aa *AutoAttacks) SetOH(sim *Simulation, weapon Weapon) {
+	aa.oh.setWeapon(sim, weapon)
 }
 
 func (aa *AutoAttacks) Ranged() *Weapon {
 	return aa.ranged.getWeapon()
 }
 
-func (aa *AutoAttacks) SetRanged(weapon Weapon) {
-	aa.ranged.setWeapon(weapon)
+func (aa *AutoAttacks) SetRanged(sim *Simulation, weapon Weapon) {
+	aa.ranged.setWeapon(sim, weapon)
 }
 
 func (aa *AutoAttacks) MHAuto() *Spell {
@@ -299,8 +299,15 @@ func (wa *WeaponAttack) getWeapon() *Weapon {
 	return &wa.Weapon
 }
 
-func (wa *WeaponAttack) setWeapon(weapon Weapon) {
+func (wa *WeaponAttack) setWeapon(sim *Simulation, weapon Weapon) {
 	wa.Weapon = weapon
+	
+	if wa.extraAttacksAura != nil {
+		wa.extraAttacksAura.SetStacks(sim, 0)
+		wa.extraAttacks = 0
+		wa.extraAttacksPending = 0
+		wa.extraAttacksStored = 0
+	}
 
 	bonusCoeff := weapon.GetBonusCoefficient()
 	school := weapon.GetSpellSchool()
@@ -1116,7 +1123,7 @@ func (aa *AutoAttacks) NewPPMManager(ppm float64, procMask ProcMask) *DynamicPro
 	dpm := aa.newDynamicProcManager(ppm, 0, procMask)
 
 	if aa.character != nil {
-		aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
+		aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot, _ bool) {
 			dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, 0, procMask)
 		})
 	}
@@ -1149,7 +1156,7 @@ func (aa *AutoAttacks) newDynamicProcManagerWithDynamicProcMask(ppm float64, fix
 	dpm := aa.newDynamicProcManager(ppm, fixedProcChance, procMaskFn())
 
 	if aa.character != nil {
-		aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
+		aa.character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot, _ bool) {
 			dpm = aa.character.AutoAttacks.newDynamicProcManager(ppm, fixedProcChance, procMaskFn())
 		})
 	}

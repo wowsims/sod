@@ -351,7 +351,7 @@ func (character *Character) NewDynamicEquipEffectAura(config DynamicEquipEffectC
 	if totalCount > 0 {
 		aura = MakePermanent(aura)
 	}
-	character.RegisterItemSwapCallback(possibleSlots, func(sim *Simulation, slot proto.ItemSlot) {
+	character.RegisterItemSwapCallback(possibleSlots, func(sim *Simulation, slot proto.ItemSlot, _ bool) {
 		if aura.IsActive() {
 			newCount := character.Equipment.GetEnchantCount(config.EffectID)
 			aura.SetStacks(sim, newCount)

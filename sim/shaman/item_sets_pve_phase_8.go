@@ -276,7 +276,7 @@ func (shaman *Shaman) applyScarletEnclaveEnhancement6PBonus() {
 	if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
 		core.MakePermanent(twoHandedBonusAura)
 	}
-	shaman.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot) {
+	shaman.RegisterItemSwapCallback(core.AllWeaponSlots(), func(sim *core.Simulation, slot proto.ItemSlot, _ bool) {
 		if shaman.MainHand().HandType == proto.HandType_HandTypeTwoHand {
 			twoHandedBonusAura.Activate(sim)
 		} else {

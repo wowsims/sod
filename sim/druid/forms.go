@@ -145,7 +145,7 @@ func (druid *Druid) registerCatFormSpell() {
 			druid.form = Cat
 			druid.SetCurrentPowerBar(core.EnergyBar)
 
-			druid.AutoAttacks.SetMH(clawWeapon)
+			druid.AutoAttacks.SetMH(sim, clawWeapon)
 
 			druid.PseudoStats.ThreatMultiplier *= 0.71
 			druid.AddStatDynamic(sim, stats.Dodge, 2*float64(druid.Talents.FelineSwiftness))
@@ -183,7 +183,7 @@ func (druid *Druid) registerCatFormSpell() {
 				druid.TigersFuryAura.Deactivate(sim)
 			}
 
-			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
+			druid.AutoAttacks.SetMH(sim, druid.WeaponFromMainHand())
 
 			druid.PseudoStats.ThreatMultiplier /= 0.71
 			druid.AddStatDynamic(sim, stats.Dodge, -2*float64(druid.Talents.FelineSwiftness))
@@ -309,7 +309,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.SetShapeshift(aura)
 			druid.SetCurrentPowerBar(core.RageBar)
 
-			druid.AutoAttacks.SetMH(clawWeapon)
+			druid.AutoAttacks.SetMH(sim, clawWeapon)
 
 			druid.PseudoStats.ThreatMultiplier *= druid.BearFormThreatMultiplier
 			druid.PseudoStats.DamageTakenMultiplier *= sotfdtm
@@ -341,7 +341,7 @@ func (druid *Druid) registerBearFormSpell() {
 			druid.SetShapeshift(nil)
 			druid.SetCurrentPowerBar(core.ManaBar)
 
-			druid.AutoAttacks.SetMH(druid.WeaponFromMainHand())
+			druid.AutoAttacks.SetMH(sim, druid.WeaponFromMainHand())
 
 			druid.PseudoStats.ThreatMultiplier /= druid.BearFormThreatMultiplier
 			druid.PseudoStats.DamageTakenMultiplier /= sotfdtm
