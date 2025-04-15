@@ -123,6 +123,11 @@ var ItemSetTheEarthshatterersRage = core.NewItemSet(core.ItemSet{
 
 // Increases damage done by your Lightning Shield by 100%.
 func (shaman *Shaman) applyNaxxramasEnhancement2PBonus() {
+	// Hotfix April 14, 2025: The T3 Enhancement Shaman 2-piece bonus now requires the player to have the  Static Shock rune engraved. The tooltip will be updated at a later date.
+	if !shaman.HasRune(proto.ShamanRune_RuneBracersStaticShock) {
+		return
+	}
+
 	label := "S03 - Item - Naxxramas - Shaman - Enhancement 2P Bonus"
 	if shaman.HasAura(label) {
 		return
