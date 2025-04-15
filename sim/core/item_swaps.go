@@ -9,7 +9,7 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
-type OnItemSwap func(*Simulation, proto.ItemSlot)
+type OnItemSwap func(*Simulation, proto.ItemSlot, bool)
 
 type ItemSwap struct {
 	character       *Character
@@ -152,7 +152,7 @@ func (swap *ItemSwap) registerProcInternal(config ItemSwapProcConfig) {
 	shouldUpdateIcd := isItemProc && (config.Aura.Icd != nil)
 
 	character := swap.character
-	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot) {
+	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot, _ bool) {
 		isItemSlotMatch := false
 
 		if isItemProc {
@@ -210,7 +210,7 @@ func (swap *ItemSwap) registerActiveInternal(config ItemSwapActiveConfig) {
 	isEnchantEffectActive := config.EnchantId != 0
 
 	character := swap.character
-	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot) {
+	character.RegisterItemSwapCallback(config.Slots, func(sim *Simulation, _ proto.ItemSlot, _ bool) {
 		spell := character.GetSpell(config.ActionID)
 		if spell == nil {
 			return
@@ -361,7 +361,7 @@ func (swap *ItemSwap) SwapItems(sim *Simulation, swapSet proto.APLActionItemSwap
 		swap.swapItem(sim, slot, isPrepull, isReset)
 
 		for _, onSwap := range swap.onSwapCallbacks[slot] {
-			onSwap(sim, slot)
+			onSwap(sim, slot, isReset)
 		}
 	}
 
@@ -399,30 +399,29 @@ func (swap *ItemSwap) swapItem(sim *Simulation, slot proto.ItemSlot, isPrepull b
 
 	swap.unEquippedItems[slot] = oldItem
 
-	if isPrepull {
-		return
-	}
-
 	character := swap.character
 
 	switch slot {
 	case proto.ItemSlot_ItemSlotMainHand:
 		if character.AutoAttacks.AutoSwingMelee {
-			character.AutoAttacks.SetMH(character.WeaponFromMainHand())
+			character.AutoAttacks.SetMH(sim, character.WeaponFromMainHand())
 		}
 	case proto.ItemSlot_ItemSlotOffHand:
 		// OH slot handling is more involved because we need to dynamically toggle the OH weapon attack on/off
 		// depending on the updated DW status after the swap.
 		if character.AutoAttacks.AutoSwingMelee {
 			weapon := character.WeaponFromOffHand()
-			character.AutoAttacks.SetOH(weapon)
-			character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
-			character.AutoAttacks.EnableMeleeSwing(sim)
+			isCurrentlyDualWielding := character.AutoAttacks.IsDualWielding
+			character.AutoAttacks.SetOH(sim, weapon)
+			if !isPrepull && !isCurrentlyDualWielding {
+				character.AutoAttacks.IsDualWielding = weapon.SwingSpeed != 0
+				character.AutoAttacks.EnableMeleeSwing(sim)
+			}
 			character.PseudoStats.CanBlock = character.OffHand().WeaponType == proto.WeaponType_WeaponTypeShield
 		}
 	case proto.ItemSlot_ItemSlotRanged:
 		if character.AutoAttacks.AutoSwingRanged {
-			character.AutoAttacks.SetRanged(character.WeaponFromRanged())
+			character.AutoAttacks.SetRanged(sim, character.WeaponFromRanged())
 		}
 	}
 }

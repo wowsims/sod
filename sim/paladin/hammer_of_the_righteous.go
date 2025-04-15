@@ -40,7 +40,8 @@ func (paladin *Paladin) registerHammerOfTheRighteous() {
 			},
 		},
 		ExtraCastCondition: func(sim *core.Simulation, target *core.Unit) bool {
-			return slices.Contains([]proto.HandType{proto.HandType_HandTypeMainHand, proto.HandType_HandTypeOneHand}, paladin.MainHand().HandType)
+			return slices.Contains([]proto.HandType{proto.HandType_HandTypeMainHand, proto.HandType_HandTypeOneHand}, paladin.MainHand().HandType) &&
+				paladin.MainHand().WeaponType != proto.WeaponType_WeaponTypeUnknown
 		},
 		DamageMultiplier: 1,
 		ThreatMultiplier: 2, // verified with TinyThreat in game

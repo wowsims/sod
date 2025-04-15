@@ -64,7 +64,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			},
 		})
 
-		ap := rank.ap + rank.scale*float64(min(paladin.Level, rank.scaleLevel)-rank.level)
+		ap := rank.ap + rank.scale*float64(min(paladin.Level, rank.scaleLevel)-rank.level) + libramAp
 
 		aura := paladin.RegisterAura(core.Aura{
 			Label:    "Seal of the Crusader" + paladin.Label + strconv.Itoa(i+1),
@@ -72,13 +72,13 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 			Duration: time.Second * 30,
 			OnGain: func(_ *core.Aura, sim *core.Simulation) {
 				paladin.MultiplyMeleeSpeed(sim, 1.4)
-				paladin.AutoAttacks.MHAuto().ApplyMultiplicativeDamageBonus(1 / 1.4)
-				paladin.AddStatDynamic(sim, stats.AttackPower, ap*improvedSotC+libramAp)
+				paladin.AutoAttacks.MHAuto().ApplyMultiplicativeBaseDamageBonus(1 / 1.4)
+				paladin.AddStatDynamic(sim, stats.AttackPower, ap*improvedSotC)
 			},
 			OnExpire: func(_ *core.Aura, sim *core.Simulation) {
 				paladin.MultiplyMeleeSpeed(sim, 1/1.4)
-				paladin.AutoAttacks.MHAuto().ApplyMultiplicativeDamageBonus(1.4)
-				paladin.AddStatDynamic(sim, stats.AttackPower, -ap*improvedSotC+libramAp)
+				paladin.AutoAttacks.MHAuto().ApplyMultiplicativeBaseDamageBonus(1.4)
+				paladin.AddStatDynamic(sim, stats.AttackPower, -ap*improvedSotC)
 			},
 		})
 

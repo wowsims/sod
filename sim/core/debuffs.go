@@ -593,30 +593,41 @@ func JudgementOfTheCrusaderAura(caster *Unit, target *Unit, level int32, mult fl
 		bonus = 140
 	}
 
-	bonus *= mult
 	bonus += extraBonus
+	bonus *= mult
 
-	return target.GetOrRegisterAura(Aura{
-		Label:    "Judgement of the Crusader",
-		ActionID: ActionID{SpellID: spellId},
-		Tag:      JudgementAuraTag,
-		Duration: 10 * time.Second,
+	onGain := func(aura *Aura, sim *Simulation) {
+		aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] += bonus
+	}
+	onExpire := func(aura *Aura, sim *Simulation) {
+		aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] -= bonus
+	}
 
-		OnGain: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] += bonus
-		},
-		OnExpire: func(aura *Aura, sim *Simulation) {
-			aura.Unit.PseudoStats.SchoolBonusDamageTaken[stats.SchoolIndexHoly] -= bonus
-		},
-		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if spell.Unit != caster { // caster is nil for permanent auras
-				return
-			}
-			if result.Landed() && spell.ProcMask.Matches(ProcMaskMelee) {
-				aura.Refresh(sim)
-			}
-		},
-	})
+	auraLabel := "Judgement of the Crusader"
+	jotcAura := target.GetAura(auraLabel)
+	if jotcAura == nil {
+		return target.GetOrRegisterAura(Aura{
+			Label:    auraLabel,
+			ActionID: ActionID{SpellID: spellId},
+			Tag:      JudgementAuraTag,
+			Duration: 10 * time.Second,
+
+			OnGain:   onGain,
+			OnExpire: onExpire,
+			OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
+				if spell.Unit != caster { // caster is nil for permanent auras
+					return
+				}
+				if result.Landed() && spell.ProcMask.Matches(ProcMaskMelee) {
+					aura.Refresh(sim)
+				}
+			},
+		})
+	} else {
+		jotcAura.OnGain = onGain
+		jotcAura.OnExpire = onExpire
+		return jotcAura
+	}
 }
 
 func OccultPoisonDebuffAura(target *Unit, playerLevel int32) *Aura {

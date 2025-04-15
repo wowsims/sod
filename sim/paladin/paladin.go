@@ -73,20 +73,19 @@ type Paladin struct {
 	sanctityAura            *core.Aura
 	blessingOfSanctuaryAura *core.Aura
 
-	currentSeal      *core.Aura
-	prevSeal         *core.Aura
-	allSealAuras     [][]*core.Aura
-	aurasSoM         []*core.Aura
-	aurasSoR         []*core.Aura
-	aurasSoC         []*core.Aura
-	aurasSotC        []*core.Aura
-	currentJudgement *core.Spell
-	prevJudgement    *core.Spell
-	allJudgeSpells   [][]*core.Spell
-	spellsJoM        []*core.Spell
-	spellsJoR        []*core.Spell
-	spellsJoC        []*core.Spell
-	spellsJotC       []*core.Spell
+	currentSeal       *core.Aura
+	prevSeal          *core.Aura
+	damagingSealAuras []*core.Aura
+	aurasSoM          []*core.Aura
+	aurasSoR          []*core.Aura
+	aurasSoC          []*core.Aura
+	aurasSotC         []*core.Aura
+	currentJudgement  *core.Spell
+	prevJudgement     *core.Spell
+	spellsJoM         []*core.Spell
+	spellsJoR         []*core.Spell
+	spellsJoC         []*core.Spell
+	spellsJotC        []*core.Spell
 
 	// Active abilities and shared cooldowns that are externally manipulated.
 	holyShockCooldown *core.Cooldown
@@ -210,15 +209,9 @@ func (paladin *Paladin) Initialize() {
 	paladin.registerSealOfMartyrdom()
 	paladin.registerSealOfTheCrusader()
 
-	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoM)
-	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoR)
-	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJoC)
-	paladin.allJudgeSpells = append(paladin.allJudgeSpells, paladin.spellsJotC)
-
-	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoM)
-	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoR)
-	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSoC)
-	paladin.allSealAuras = append(paladin.allSealAuras, paladin.aurasSotC)
+	paladin.damagingSealAuras = append(paladin.damagingSealAuras, paladin.aurasSoM...)
+	paladin.damagingSealAuras = append(paladin.damagingSealAuras, paladin.aurasSoR...)
+	paladin.damagingSealAuras = append(paladin.damagingSealAuras, paladin.aurasSoC...)
 
 	// Active abilities
 	paladin.registerForbearance()
@@ -318,6 +311,16 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 	}
 }
 
+func (paladin *Paladin) isSealbearerSeal(seal *core.Aura) bool {
+	for _, aura := range paladin.damagingSealAuras {
+		if aura.ActionID.SameAction(seal.ActionID) {
+			return true
+		}
+	}
+
+	return false
+}
+
 func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim *core.Simulation) {
 	isSameSealType := false
 	isThirdSealType := false
@@ -350,8 +353,11 @@ func (paladin *Paladin) applySeal(newSeal *core.Aura, judgement *core.Spell, sim
 	}
 
 	if !isSameSealType {
-		if paladin.currentSeal.IsActive() {
+		currentSealActive := paladin.currentSeal.IsActive()
+		if currentSealActive && paladin.isSealbearerSeal(paladin.currentSeal) {
 			paladin.currentSeal.UpdateExpires(sim, sim.CurrentTime+paladin.lingerDuration) // always update, even if it extends duration
+		} else if currentSealActive {
+			paladin.currentSeal.Deactivate(sim)
 		}
 		if isThirdSealType {
 			paladin.prevSeal.Deactivate(sim)

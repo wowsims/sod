@@ -2177,7 +2177,7 @@ func BattleSquawkAura(character *Unit, stackcount int32) *Aura {
 // 	})
 // }
 
-func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, auraLabel string, rank int32, getBonusAP func(aura *Aura, rank int32) float64) *Aura {
+func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, procTriggerActionID ActionID, auraLabel string, rank int32, getBonusAP func(aura *Aura, rank int32) float64) *Aura {
 	var bonusAP float64
 
 	apBuffAura := character.GetOrRegisterAura(Aura{
@@ -2201,8 +2201,9 @@ func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, au
 
 	apBuffAura.Icd = &icd
 
-	MakePermanent(character.GetOrRegisterAura(Aura{
-		Label: auraLabel,
+	procAura := MakePermanent(character.GetOrRegisterAura(Aura{
+		Label:    auraLabel,
+		ActionID: procTriggerActionID,
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
 			// charges are removed by every auto or next melee, whether it lands or not
 			//  this directly contradicts https://github.com/magey/classic-warrior/wiki/Windfury-Totem#triggered-by-melee-spell-while-an-on-next-swing-attack-is-queued
@@ -2230,6 +2231,26 @@ func CreateExtraAttackAuraCommon(character *Character, buffActionID ActionID, au
 		},
 	}))
 
+	if character.ItemSwap.IsEnabled() && character.ItemSwap.swapEquip.MainHand().ID > 0 {
+		procAura.Duration = time.Second * 10
+		procAura.ApplyOnReset(func(aura *Aura, sim *Simulation) {
+			StartPeriodicAction(sim, PeriodicActionOptions{
+				Period:   time.Second * 5,
+				Priority: ActionPriorityAuto,
+				OnAction: func(sim *Simulation) {
+					aura.Activate(sim)
+				},
+			})
+		})
+		character.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(sim *Simulation, slot proto.ItemSlot, isReset bool) {
+			if isReset || sim.CurrentTime < 0 {
+				return
+			}
+
+			procAura.Deactivate(sim)
+		})
+	}
+
 	return apBuffAura
 }
 
@@ -2238,16 +2259,18 @@ func GetWildStrikesAP(aura *Aura, rank int32) float64 {
 }
 
 func ApplyWildStrikes(character *Character) *Aura {
-	buffActionID := ActionID{SpellID: 407975}
+	buffActionID := ActionID{SpellID: 407973}
+	procTriggerActionID := ActionID{SpellID: 407975}
 
-	return CreateExtraAttackAuraCommon(character, buffActionID, "Wild Strikes", 1, GetWildStrikesAP)
+	return CreateExtraAttackAuraCommon(character, buffActionID, procTriggerActionID, "Wild Strikes", 1, GetWildStrikesAP)
 }
 
 const WindfuryRanks = 3
 
 var (
-	WindfuryBuffSpellId = [WindfuryRanks + 1]int32{0, 8516, 10608, 10610}
-	WindfuryBuffBonusAP = [WindfuryRanks + 1]float64{0, 122, 229, 315}
+	WindfuryBuffSpellId        = [WindfuryRanks + 1]int32{0, 8515, 10609, 10612}
+	WindfuryProcTriggerSpellId = [WindfuryRanks + 1]int32{0, 8516, 10608, 10610}
+	WindfuryBuffBonusAP        = [WindfuryRanks + 1]float64{0, 122, 229, 315}
 )
 
 func GetWindfuryAP(aura *Aura, rank int32) float64 {
@@ -2261,11 +2284,10 @@ func ApplyWindfury(character *Character) *Aura {
 	}
 
 	rank := LevelToBuffRank[Windfury][level]
-	spellId := WindfuryBuffSpellId[rank]
-	buffActionID := ActionID{SpellID: spellId}
+	buffActionID := ActionID{SpellID: WindfuryBuffSpellId[rank]}
+	procTriggerActionID := ActionID{SpellID: WindfuryBuffSpellId[rank]}
 
-	return CreateExtraAttackAuraCommon(character, buffActionID, "Windfury", rank, GetWindfuryAP)
-
+	return CreateExtraAttackAuraCommon(character, buffActionID, procTriggerActionID, "Windfury", rank, GetWindfuryAP)
 }
 
 ///////////////////////////////////////////////////////////////////////////

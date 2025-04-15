@@ -638,7 +638,7 @@ func (character *Character) GetDynamicProcMaskForWeaponEnchant(effectID int32) *
 func (character *Character) getDynamicProcMaskPointer(procMaskFn func() ProcMask) *ProcMask {
 	procMask := procMaskFn()
 
-	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot) {
+	character.RegisterItemSwapCallback(AllWeaponSlots(), func(sim *Simulation, slot proto.ItemSlot, _ bool) {
 		procMask = procMaskFn()
 	})
 

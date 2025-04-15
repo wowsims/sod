@@ -100,7 +100,7 @@ stat_weights_results: {
  key: "TestShockadin2H-Phase2-Lvl40-StatWeights-Default"
  value: {
   weights: 0.7174
-  weights: 0.20952
+  weights: 0.20854
   weights: 0
   weights: 0
   weights: 0
@@ -112,16 +112,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.84342
-  weights: 0.17098
+  weights: 1.82784
+  weights: 0.17026
   weights: 0
   weights: 0
   weights: 0.29645
-  weights: 5.14582
-  weights: 4.75859
+  weights: 5.14479
+  weights: 4.7465
   weights: 0
   weights: 0
-  weights: 5.14582
+  weights: 5.14479
   weights: 0
   weights: 0
   weights: 0
@@ -197,40 +197,40 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin2H-Phase2-Lvl40-AllItems-SoulforgeArmor"
  value: {
-  dps: 378.80014
-  tps: 395.65171
+  dps: 377.7609
+  tps: 394.61248
   hps: 17.72647
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase2-Lvl40-Average-Default"
  value: {
-  dps: 511.86072
-  tps: 535.67848
+  dps: 510.57101
+  tps: 534.38877
   hps: 21.5587
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase2-Lvl40-Settings-Dwarf-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 1622.66865
-  tps: 2097.48876
+  dps: 1621.37566
+  tps: 2096.19577
   hps: 21.04147
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase2-Lvl40-Settings-Dwarf-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 504.5332
-  tps: 528.25905
+  dps: 503.24953
+  tps: 526.97538
   hps: 21.04147
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase2-Lvl40-Settings-Dwarf-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 525.85684
-  tps: 549.03392
+  dps: 524.54188
+  tps: 547.71896
   hps: 21.046
  }
 }
@@ -258,24 +258,24 @@ dps_results: {
 dps_results: {
  key: "TestShockadin2H-Phase2-Lvl40-Settings-Human-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-LongMultiTarget"
  value: {
-  dps: 1630.61725
-  tps: 2106.6367
+  dps: 1629.31663
+  tps: 2105.33608
   hps: 21.369
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase2-Lvl40-Settings-Human-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-LongSingleTarget"
  value: {
-  dps: 510.57383
-  tps: 534.37211
+  dps: 509.27938
+  tps: 533.07765
   hps: 21.369
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase2-Lvl40-Settings-Human-p2-retsom-P2 Seal of Martyrdom Shockadin-p2-ret-FullBuffs-P2-Consumes-ShortSingleTarget"
  value: {
-  dps: 530.58144
-  tps: 553.77261
+  dps: 529.26215
+  tps: 552.45332
   hps: 21.37467
  }
 }
@@ -303,8 +303,8 @@ dps_results: {
 dps_results: {
  key: "TestShockadin2H-Phase2-Lvl40-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 479.90341
-  tps: 503.58701
+  dps: 478.61947
+  tps: 502.30307
   hps: 19.5466
  }
 }

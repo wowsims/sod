@@ -278,6 +278,22 @@ func (aura *Aura) ExpiresAt() time.Duration {
 	return aura.expires
 }
 
+// Adds a handler to be called OnReset, in addition to any current handlers.
+// We then return the Aura for chaining
+func (aura *Aura) ApplyOnReset(newOnReset OnReset) *Aura {
+	oldOnReset := aura.OnReset
+	if oldOnReset == nil {
+		aura.OnReset = newOnReset
+	} else {
+		aura.OnReset = func(aura *Aura, sim *Simulation) {
+			oldOnReset(aura, sim)
+			newOnReset(aura, sim)
+		}
+	}
+
+	return aura
+}
+
 // Adds a handler to be called OnInit, in addition to any current handlers.
 // We then return the Aura for chaining
 func (aura *Aura) ApplyOnInit(newOnInit OnInit) *Aura {
