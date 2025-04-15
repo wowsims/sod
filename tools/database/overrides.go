@@ -4,7 +4,6 @@ import (
 	"regexp"
 
 	"github.com/wowsims/sod/sim/core/proto"
-	"github.com/wowsims/sod/sim/core/stats"
 )
 
 var OtherItemIdsToFetch = []string{}
@@ -91,10 +90,6 @@ var ItemOverrides = []*proto.UIItem{
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82081, Name: "A Broken Ritual"}}},
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
 	}},
-
-	// TODO: Remove once we update tooltips
-	{Id: 240925, Stats: stats.Stats{stats.Agility: 10, stats.Stamina: 10}.ToFloatArray()},
-	{Id: 240837, Stats: stats.Stats{stats.Agility: 21, stats.MeleeCrit: 1, stats.SpellCrit: 1}.ToFloatArray(), WeaponDamageMin: 177, WeaponDamageMax: 330, WeaponSpeed: 3.6},
 }
 
 // Keep these sorted by item ID.
@@ -178,6 +173,7 @@ var ItemDenyList = map[int32]struct{}{
 	240936: {}, // https://www.wowhead.com/classic-ptr/item=240936/inert-ashbringer probably not going to be used
 	241082: {}, // https://www.wowhead.com/classic-ptr/item=241082/ashbringer confirmed unuesd
 	241123: {}, // https://www.wowhead.com/classic-ptr/item=241123/reborn-dagger confirmed unused
+	244460: {}, // https://www.wowhead.com/classic/item=244460/caladbolg mace version of https://www.wowhead.com/classic/item=238961/caladbolg ???
 }
 
 // Item icons to include in the DB, so they don't need to be separately loaded in the UI.
