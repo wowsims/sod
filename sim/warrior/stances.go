@@ -110,13 +110,13 @@ func (warrior *Warrior) registerDefensiveStanceAura() {
 	warrior.DefensiveStanceAura.NewExclusiveEffect(stanceEffectCategory, true, core.ExclusiveEffect{
 		OnGain: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			ee.Aura.Unit.PseudoStats.ThreatMultiplier *= warrior.defensiveStanceThreatMultiplier
-			ee.Aura.Unit.PseudoStats.DamageDealtMultiplier *= 0.9
-			ee.Aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.9
+			ee.Aura.Unit.PseudoStats.DamageDealtMultiplier *= 0.90
+			ee.Aura.Unit.PseudoStats.DamageTakenMultiplier *= 0.80
 		},
 		OnExpire: func(ee *core.ExclusiveEffect, sim *core.Simulation) {
 			ee.Aura.Unit.PseudoStats.ThreatMultiplier /= warrior.defensiveStanceThreatMultiplier
-			ee.Aura.Unit.PseudoStats.DamageDealtMultiplier /= 0.9
-			ee.Aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.9
+			ee.Aura.Unit.PseudoStats.DamageDealtMultiplier /= 0.90
+			ee.Aura.Unit.PseudoStats.DamageTakenMultiplier /= 0.80
 		},
 	})
 }
