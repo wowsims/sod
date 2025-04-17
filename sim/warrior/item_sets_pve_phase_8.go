@@ -147,7 +147,7 @@ var ItemSetLightbreakersBattlegear = core.NewItemSet(core.ItemSet{
 	},
 })
 
-// Your Shockwave deals 35% increased damage and its cooldown is reduced by 2.0 sec each time you hit a target with Heroic Strike, Quick Strike, or Cleave.
+// Your Shockwave deals 60% increased damage and its cooldown is reduced by 2.0 sec each time you hit a target with Heroic Strike, Quick Strike, or Cleave.
 func (warrior *Warrior) applyScarletEnclaveProtection2PBonus() {
 	if !warrior.HasRune(proto.WarriorRune_RuneShockwave) {
 		return
@@ -169,7 +169,7 @@ func (warrior *Warrior) applyScarletEnclaveProtection2PBonus() {
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_WarriorShockwave,
-		IntValue:  35,
+		IntValue:  60,
 	})
 }
 
