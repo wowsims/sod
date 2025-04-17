@@ -23,6 +23,8 @@ func (paladin *Paladin) registerAvengersShield() {
 		return paladin.Ranged().ID == LibramOfAvenging
 	}
 
+	hasDefenseSpecRune := paladin.HasRuneById(int32(proto.RingRune_RuneRingDefenseSpecialization))
+
 	// Avenger's Shield hits up to 3 targets. It cannot miss or be resisted.
 	numTargets := min(3, int(paladin.Env.GetNumTargets()))
 
@@ -36,6 +38,7 @@ func (paladin *Paladin) registerAvengersShield() {
 		DefenseType:    core.DefenseTypeRanged, // Crits as if melee for 200%
 		ProcMask:       core.ProcMaskRangedSpecial,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | core.SpellFlagBinary | core.SpellFlagBatchStartAttackMacro,
+		CastType:       proto.CastType_CastTypeRanged,
 		MissileSpeed:   35, // Verified from game files using WoW tools.
 		ManaCost: core.ManaCostOptions{
 			BaseCost: 0.26,
@@ -55,6 +58,7 @@ func (paladin *Paladin) registerAvengersShield() {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.091, // for spell damage; we add the AP bonus manually
+		BonusHitRating:   core.TernaryFloat64(hasDefenseSpecRune, 3.0*core.MeleeHitRatingPerHitChance, 0),
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			apBonus := 0.091 * spell.MeleeAttackPower()
