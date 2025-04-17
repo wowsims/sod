@@ -29,15 +29,13 @@ func (warrior *Warrior) RegisterShieldWallCD(sharedTimer *core.Timer) {
 		},
 	})
 
-	cooldownDur := time.Minute * 30
-
 	warrior.ShieldWall = warrior.RegisterSpell(DefensiveStance, core.SpellConfig{
 		ActionID:       actionID,
 		ClassSpellMask: ClassSpellMask_WarriorShieldWall,
 		Cast: core.CastConfig{
 			CD: core.Cooldown{
 				Timer:    warrior.NewTimer(),
-				Duration: cooldownDur,
+				Duration: time.Minute * 5,
 			},
 			SharedCD: core.Cooldown{
 				Timer:    sharedTimer,
