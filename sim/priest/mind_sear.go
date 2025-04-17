@@ -30,7 +30,7 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 	numTicks := tickIdx
 	flags := core.SpellFlagChanneled | core.SpellFlagNoMetrics
 	if tickIdx == 0 {
-		numTicks = 5
+		numTicks = 6
 		flags |= core.SpellFlagAPL
 	}
 	tickLength := time.Second
@@ -55,12 +55,13 @@ func (priest *Priest) newMindSearSpellConfig(tickIdx int32) core.SpellConfig {
 		},
 
 		Dot: core.DotConfig{
-			IsAOE: true,
 			Aura: core.Aura{
 				Label: fmt.Sprintf("MindSear-%d", tickIdx),
 			},
-			NumberOfTicks: numTicks,
-			TickLength:    tickLength,
+			IsAOE:               true,
+			AffectedByCastSpeed: true,
+			NumberOfTicks:       numTicks,
+			TickLength:          tickLength,
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 				for _, aoeTarget := range sim.Encounter.TargetUnits {
 					priest.MindSearTicks[tickIdx].Cast(sim, aoeTarget)
