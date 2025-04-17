@@ -1,6 +1,7 @@
 package rogue
 
 import (
+	"fmt"
 	"strconv"
 	"time"
 
@@ -69,11 +70,14 @@ func (rogue *Rogue) improvedPoisonsBonusProcChance() float64 {
 
 // p8 DPS tier bonus helper function
 func trackTotalUniquePoisons(aura *core.Aura, rogue *Rogue) {
-	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-		rogue.PoisonsActive[aura.Unit.UnitIndex]++
-	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-		rogue.PoisonsActive[aura.Unit.UnitIndex]--
-	})
+	fmt.Println("AuraIsFromSettings: ", aura.IsEnabledInSettings)
+	if !aura.IsEnabledInSettings {
+		aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			rogue.PoisonsActive[aura.Unit.UnitIndex]++
+		}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+			rogue.PoisonsActive[aura.Unit.UnitIndex]--
+		})
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////
