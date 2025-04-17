@@ -158,10 +158,16 @@ func (warrior *Warrior) applyNaxxramasProtection4PBonus() {
 		ApplyCustom: func(_ *core.SpellMod, _ *core.Spell) {
 			warrior.Recklessness.StanceMask = AnyStance
 			warrior.recklessnessDamageTakenMultiplier = 1
+			if warrior.Recklessness.SharedCD != nil {
+				warrior.Recklessness.SharedCD.Duration -= time.Minute * 3
+			}
 		},
 		RemoveCustom: func(mod *core.SpellMod, spell *core.Spell) {
 			warrior.Recklessness.StanceMask = DefaultRecklessnessStance
 			warrior.recklessnessDamageTakenMultiplier = DefaultRecklessnessDamageTakenMultiplier
+			if warrior.Recklessness.SharedCD != nil {
+				warrior.Recklessness.SharedCD.Duration += time.Minute * 3
+			}
 		},
 	})
 }

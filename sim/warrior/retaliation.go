@@ -59,12 +59,6 @@ func (warrior *Warrior) registerRetaliationCD(sharedTimer *core.Timer) {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			buffAura.Activate(sim)
-			if warrior.Recklessness != nil {
-				warrior.Recklessness.RelatedSelfBuff.Deactivate(sim)
-			}
-			if warrior.ShieldWall != nil {
-				warrior.ShieldWall.RelatedSelfBuff.Deactivate(sim)
-			}
 		},
 
 		RelatedSelfBuff: buffAura,

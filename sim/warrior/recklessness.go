@@ -53,8 +53,6 @@ func (warrior *Warrior) RegisterRecklessnessCD(sharedTimer *core.Timer) {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, spell *core.Spell) {
 			reckAura.Activate(sim)
-			warrior.Retaliation.RelatedSelfBuff.Deactivate(sim)
-			warrior.ShieldWall.RelatedSelfBuff.Deactivate(sim)
 		},
 
 		RelatedSelfBuff: reckAura,
