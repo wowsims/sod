@@ -9,12 +9,14 @@ import (
 )
 
 const (
-	DiamondFlask         = 20130
-	Exsanguinar          = 216497
-	SuzerainDefender     = 224280
-	GrileksCharmOFMight  = 231286
-	RageOfMugamba        = 231350
-	BandOfTheDreadnaught = 236022
+	DiamondFlask           = 20130
+	Exsanguinar            = 216497
+	SuzerainDefender       = 224280
+	GrileksCharmOFMight    = 231286
+	RageOfMugamba          = 231350
+	GeneralsPlateGauntlets = 231532 // 16548
+	MarshalsPlateGauntlets = 231541 // 16484
+	BandOfTheDreadnaught   = 236022
 )
 
 func init() {
@@ -117,6 +119,17 @@ func init() {
 		})
 	})
 
+	core.NewItemEffect(GeneralsPlateGauntlets, func(agent core.Agent) {
+		warrior := agent.(WarriorAgent).GetWarrior()
+		warrior.RegisterAura(core.Aura{
+			Label: "Hamstring Rage Reduction",
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:      core.SpellMod_PowerCost_Flat,
+			ClassMask: ClassSpellMask_WarriorHamstring,
+			IntValue:  -2,
+		})
+	})
+
 	core.NewItemEffect(GrileksCharmOFMight, func(agent core.Agent) {
 		warrior := agent.(WarriorAgent).GetWarrior()
 		actionID := core.ActionID{ItemID: GrileksCharmOFMight}
@@ -146,6 +159,17 @@ func init() {
 		warrior.AddMajorEquipmentCooldown(core.MajorCooldown{
 			Type:  core.CooldownTypeDPS,
 			Spell: spell,
+		})
+	})
+
+	core.NewItemEffect(MarshalsPlateGauntlets, func(agent core.Agent) {
+		warrior := agent.(WarriorAgent).GetWarrior()
+		warrior.RegisterAura(core.Aura{
+			Label: "Hamstring Rage Reduction",
+		}).AttachSpellMod(core.SpellModConfig{
+			Kind:      core.SpellMod_PowerCost_Flat,
+			ClassMask: ClassSpellMask_WarriorHamstring,
+			IntValue:  -2,
 		})
 	})
 

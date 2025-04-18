@@ -23,6 +23,7 @@ const (
 	ClassSpellMask_WarriorDeepWounds
 	ClassSpellMask_WarriorDevastate
 	ClassSpellMask_WarriorExecute
+	ClassSpellMask_WarriorHamstring
 	ClassSpellMask_WarriorHeroicStrike
 	ClassSpellMask_WarriorMortalStrike
 	ClassSpellMask_WarriorOverpower
