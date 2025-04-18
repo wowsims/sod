@@ -36,7 +36,7 @@ func (shaman *Shaman) newFlameShockSpell(rank int, shockTimer *core.Timer) core.
 
 	spellId := FlameShockSpellId[rank]
 	baseDamage := FlameShockBaseDamage[rank]
-	baseDotDamage := FlameShockBaseDotDamage[rank] / float64(numTicks)
+	baseDotDamage := FlameShockBaseDotDamage[rank] / float64(4)
 	baseSpellCoeff := FlameShockBaseSpellCoef[rank]
 	dotSpellCoeff := FlameShockDotSpellCoef[rank]
 	manaCost := FlameShockManaCost[rank]
