@@ -50,7 +50,7 @@ func (warrior *Warrior) applyDeepWounds() {
 	core.MakePermanent(warrior.RegisterAura(core.Aura{
 		Label: "Deep Wounds Talent",
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if spell.ProcMask.Matches(core.ProcMaskEmpty) || !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
+			if !spell.ProcMask.Matches(core.ProcMaskMelee) || !spell.SpellSchool.Matches(core.SpellSchoolPhysical) {
 				return
 			}
 

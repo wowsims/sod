@@ -126,7 +126,7 @@ func init() {
 		}).AttachSpellMod(core.SpellModConfig{
 			Kind:      core.SpellMod_PowerCost_Flat,
 			ClassMask: ClassSpellMask_WarriorHamstring,
-			IntValue:  -2,
+			IntValue:  -3,
 		})
 	})
 
@@ -169,7 +169,7 @@ func init() {
 		}).AttachSpellMod(core.SpellModConfig{
 			Kind:      core.SpellMod_PowerCost_Flat,
 			ClassMask: ClassSpellMask_WarriorHamstring,
-			IntValue:  -2,
+			IntValue:  -3,
 		})
 	})
 

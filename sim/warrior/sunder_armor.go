@@ -52,7 +52,7 @@ func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 
 				weapon := warrior.AutoAttacks.MH()
 				baseDamage := weapon.CalculateAverageWeaponDamage(spell.MeleeAttackPower()) / weapon.SwingSpeed
-				multiplier := 1 + 0.1*float64(effectiveStacks)
+				multiplier := 1 + 0.15*float64(effectiveStacks)
 				spell.CalcAndDealDamage(sim, target, baseDamage*multiplier, spell.OutcomeMeleeSpecialCritOnly)
 				spell.ThreatMultiplier /= threatMultiplier
 			},
@@ -60,10 +60,11 @@ func (warrior *Warrior) registerSunderArmorSpell() *WarriorSpell {
 	}
 
 	return warrior.RegisterSpell(AnyStance, core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolPhysical,
-		ProcMask:    core.ProcMaskMeleeMHSpecial,
-		Flags:       core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
+		ClassSpellMask: ClassSpellMask_WarriorSunderArmor,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolPhysical,
+		ProcMask:       core.ProcMaskMeleeMHSpecial,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
 			Cost:   15 - float64(warrior.Talents.ImprovedSunderArmor),

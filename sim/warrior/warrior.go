@@ -43,6 +43,8 @@ const (
 	ClassSpellMask_WarriorStanceBerserker
 	ClassSpellMask_WarriorStanceGladiator
 	ClassSpellMask_WarriorStanceDefensive
+	ClassSpellMask_WarriorSunderArmor
+	ClassSpellMask_WarriorThunderClap
 	ClassSpellMask_WarriorWhirlwind
 	ClassSpellMask_WarriorWhirlwindMH
 	ClassSpellMask_WarriorWhirlwindOH

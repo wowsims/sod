@@ -24,15 +24,24 @@ func (warrior *Warrior) registerThunderClapSpell() {
 
 	damageMultiplier := 1.0
 	threatMultiplier := 2.5
-	apCoef := 0.05
+	apCoef := 0.07
 	attackSpeedReduction := int32(10)
 	stanceMask := BattleStance
 
 	if hasFuriousThunder {
 		damageMultiplier *= 2
-		threatMultiplier *= 1.5
+		threatMultiplier *= 1.75
 		attackSpeedReduction += 6
 		stanceMask = AnyStance
+	}
+
+	// Engraving Defense Specialization onto your Ring will grant your Thunder Clap 3% increased chance to hit, to make up for the fact that Weapon Skill does not affect it normally.
+	if warrior.Character.HasRuneById(int32(proto.RingRune_RuneRingDefenseSpecialization)) {
+		warrior.AddStaticMod(core.SpellModConfig{
+			Kind:       core.SpellMod_BonusHit_Flat,
+			ClassMask:  ClassSpellMask_WarriorThunderClap,
+			FloatValue: 3.0,
+		})
 	}
 
 	warrior.ThunderClapAuras = warrior.NewEnemyAuraArray(func(target *core.Unit, Level int32) *core.Aura {
@@ -44,8 +53,8 @@ func (warrior *Warrior) registerThunderClapSpell() {
 	warrior.ThunderClap = warrior.RegisterSpell(stanceMask, core.SpellConfig{
 		ActionID:    core.ActionID{SpellID: info.spellID},
 		SpellSchool: core.SpellSchoolPhysical,
-		DefenseType: core.DefenseTypeMagic,
-		ProcMask:    core.ProcMaskSpellDamage,
+		DefenseType: core.DefenseTypeRanged,
+		ProcMask:    core.ProcMaskRanged,
 		Flags:       core.SpellFlagAPL | SpellFlagOffensive,
 
 		RageCost: core.RageCostOptions{
@@ -69,7 +78,7 @@ func (warrior *Warrior) registerThunderClapSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for idx := range results {
-				results[idx] = spell.CalcDamage(sim, target, info.baseDamage+apCoef*spell.MeleeAttackPower(), spell.OutcomeMagicHitAndCrit)
+				results[idx] = spell.CalcDamage(sim, target, info.baseDamage+apCoef*spell.MeleeAttackPower(), spell.OutcomeRangedHitAndCrit)
 				target = sim.Environment.NextTargetUnit(target)
 			}
 
