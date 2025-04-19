@@ -907,7 +907,22 @@ func init() {
 			stats.RangedAttackPower, bonusRAP/2.0,
 		)
 
-		buffAuras := []*core.Aura{owlBuff, crocoliskBuff, raptorBuff, bearBuff, catBuff, gorillaBuff, bigglesworthBuff}
+		var buffAuras []*core.Aura
+
+		switch character.Class {
+		case proto.Class_ClassDruid:
+			buffAuras = []*core.Aura{bearBuff, catBuff, crocoliskBuff, raptorBuff}
+		case proto.Class_ClassHunter:
+			buffAuras = []*core.Aura{crocoliskBuff, gorillaBuff, owlBuff, raptorBuff}
+		case proto.Class_ClassPaladin:
+			buffAuras = []*core.Aura{bearBuff, catBuff, gorillaBuff, owlBuff}
+		case proto.Class_ClassRogue:
+			buffAuras = []*core.Aura{catBuff, crocoliskBuff, gorillaBuff, raptorBuff}
+		case proto.Class_ClassShaman:
+			buffAuras = []*core.Aura{bearBuff, catBuff, gorillaBuff, owlBuff}
+		case proto.Class_ClassWarrior:
+			buffAuras = []*core.Aura{bearBuff, catBuff, crocoliskBuff, owlBuff}
+		}
 
 		cdSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID: core.ActionID{ItemID: SirDornelsDidgeridoo},
@@ -923,7 +938,11 @@ func init() {
 				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				buffAuras[int32(sim.Roll(0, 7))].Activate(sim)
+				if int32(sim.Roll(0, 100)) < 1 {
+					bigglesworthBuff.Activate(sim)
+				} else {
+					buffAuras[int32(sim.Roll(0, 4))].Activate(sim)
+				}
 			},
 		})
 
