@@ -1,6 +1,7 @@
 package shaman
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -32,18 +33,22 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 		return
 	}
 
-	// These interactions are unlisted but confirmed by Zirene. All stack additively.
+	// These interactions are unlisted but confirmed by Zirene. All stack additively but apply at the end of the damage calculation, not to the normal additive multiplier.
 	// -1% per point of Concussion because the ticks double dip
 	// 40% from Tier 3 2-piece
 	// 60% from Storm, Earth, and Fire
-	additiveModifier := int64(0)
-	additiveModifier += -1 * int64(shaman.Talents.Concussion)
+	// Confirmed via in-game testing:
+	// (Base + (Scaling * SP) * (1 + (Burn ? 1 : 0) + (0.01 * Concussion)) * (1 + (SE&F ? 0.6 : 0) + (2p ? 0.4 : 0))
+	bonusMultiplier := 1.0
+	bonusMultiplier -= 0.01 * float64(shaman.Talents.Concussion)
 	if shaman.HasSetBonus(ItemSetTheEarthshatterersStorm, 2) {
-		additiveModifier += EleTier32pFlameShockDamageBonus
+		bonusMultiplier += float64(EleTier32pFlameShockDamageBonus) / 100.0
 	}
 	if shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire) {
-		additiveModifier += StormEarthAndFireFlameShockDamageBonus
+		bonusMultiplier += float64(StormEarthAndFireFlameShockDamageBonus) / 100.0
 	}
+
+	fmt.Println(bonusMultiplier)
 
 	flameShockCopy := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1226972},
@@ -62,9 +67,8 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 			TickLength:    0,
 		},
 
-		DamageMultiplier:            1,
-		DamageMultiplierAdditivePct: additiveModifier,
-		ThreatMultiplier:            1,
+		DamageMultiplier: bonusMultiplier,
+		ThreatMultiplier: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},
 	})
