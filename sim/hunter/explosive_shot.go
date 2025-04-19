@@ -26,7 +26,7 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 		CastType:       proto.CastType_CastTypeRanged,
 		DefenseType:    core.DefenseTypeRanged,
 		ProcMask:       core.ProcMaskRangedSpecial,
-		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagIgnoreResists | core.SpellFlagAPL,
+		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagAPL,
 
 		MinRange:     core.MinRangedAttackRange,
 		MaxRange:     core.MaxRangedAttackRange,
@@ -62,7 +62,7 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 				dot.Snapshot(target, baseDamage, isRollover)
 			},
 			OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
-				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeSnapshotCrit)
+				dot.CalcAndDealPeriodicSnapshotDamage(sim, target, dot.OutcomeTickPhysicalCrit)
 			},
 		},
 
