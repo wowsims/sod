@@ -1,7 +1,6 @@
 package shaman
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -47,8 +46,6 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 	if shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire) {
 		bonusMultiplier += float64(StormEarthAndFireFlameShockDamageBonus) / 100.0
 	}
-
-	fmt.Println(bonusMultiplier)
 
 	flameShockCopy := shaman.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 1226972},
