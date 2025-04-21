@@ -10,6 +10,7 @@ import (
 const ShadowBoltRanks = 10
 
 func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
+	hasShadowBoltVolleyRune := warlock.HasRune(proto.WarlockRune_RuneHandsShadowBoltVolley)
 	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
 
 	spellCoeff := [ShadowBoltRanks + 1]float64{0, .14, .299, .56, .857, .857, .857, .857, .857, .857, .857}[rank]
@@ -19,10 +20,8 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 	level := [ShadowBoltRanks + 1]int{0, 1, 6, 12, 20, 28, 36, 44, 52, 60, 60}[rank]
 	castTime := [ShadowBoltRanks + 1]int32{0, 1700, 2200, 2800, 3000, 3000, 3000, 3000, 3000, 3000, 3000}[rank]
 
-	shadowboltVolley := warlock.HasRune(proto.WarlockRune_RuneHandsShadowBoltVolley)
-	damageMulti := core.TernaryFloat64(shadowboltVolley, 0.95, 1.0)
-
-	results := make([]*core.SpellResult, min(core.TernaryInt32(shadowboltVolley, 5, 1), warlock.Env.GetNumTargets()))
+	damageMulti := core.TernaryFloat64(hasShadowBoltVolleyRune && warlock.Env.GetNumTargets() > 1, 0.70, 1.0)
+	results := make([]*core.SpellResult, min(core.TernaryInt32(hasShadowBoltVolleyRune, 5, 1), warlock.Env.GetNumTargets()))
 
 	return core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_WarlockShadowBolt,
