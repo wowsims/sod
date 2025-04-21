@@ -32,19 +32,14 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 		return
 	}
 
-	// These interactions are unlisted but confirmed by Zirene. All stack additively but apply at the end of the damage calculation, not to the normal additive multiplier.
-	// -1% per point of Concussion because the ticks double dip
-	// 40% from Tier 3 2-piece
-	// 60% from Storm, Earth, and Fire
-	// Confirmed via in-game testing:
-	// (Base + (Scaling * SP) * (1 + (Burn ? 1 : 0) + (0.01 * Concussion)) * (1 + (SE&F ? 0.6 : 0) + (2p ? 0.4 : 0))
-	bonusMultiplier := 1.0
-	bonusMultiplier -= 0.01 * float64(shaman.Talents.Concussion)
+	// Normally periodic damage bonuses don't apply to instant tick spells but this set was rebuilt to allow them to so that ticks deal normal damage
+	// Concussion and Burn work as expected but we have to manually account for SE&F and 2pT3
+	bonusModifier := int64(0)
 	if shaman.HasSetBonus(ItemSetTheEarthshatterersStorm, 2) {
-		bonusMultiplier += float64(EleTier32pFlameShockDamageBonus) / 100.0
+		bonusModifier += int64(EleTier32pFlameShockDamageBonus)
 	}
 	if shaman.HasRune(proto.ShamanRune_RuneCloakStormEarthAndFire) {
-		bonusMultiplier += float64(StormEarthAndFireFlameShockDamageBonus) / 100.0
+		bonusModifier += int64(StormEarthAndFireFlameShockDamageBonus)
 	}
 
 	flameShockCopy := shaman.RegisterSpell(core.SpellConfig{
@@ -64,8 +59,9 @@ func (shaman *Shaman) applyScarletEnclaveElemental2PBonus() {
 			TickLength:    0,
 		},
 
-		DamageMultiplier: bonusMultiplier,
-		ThreatMultiplier: 1,
+		DamageMultiplier:            1,
+		DamageMultiplierAdditivePct: int64(bonusModifier),
+		ThreatMultiplier:            1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {},
 	})
