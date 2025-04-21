@@ -99,12 +99,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestSealStacking-Phase5-Lvl60-StatWeights-Default"
  value: {
-  weights: 2.62626
-  weights: 2.08681
+  weights: 2.59492
+  weights: 1.89225
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.45636
+  weights: 0.44858
   weights: 0
   weights: 0
   weights: 0
@@ -112,16 +112,16 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 13.36379
-  weights: 0.8231
+  weights: 12.58972
+  weights: 0.81654
   weights: 0
   weights: 0
-  weights: 0.94368
+  weights: 0.93242
   weights: 0
-  weights: 26.85182
+  weights: 25.46134
   weights: 0
   weights: 0
-  weights: 49.78078
+  weights: 49.07593
   weights: 0
   weights: 0
   weights: 0
@@ -148,12 +148,12 @@ stat_weights_results: {
 stat_weights_results: {
  key: "TestSealStacking-Phase7-Lvl60-StatWeights-Default"
  value: {
-  weights: 3.86447
-  weights: 2.70898
+  weights: 3.81665
+  weights: 2.47326
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.57477
+  weights: 0.56368
   weights: 0
   weights: 0
   weights: 0
@@ -161,13 +161,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 18.42438
-  weights: 0.79918
+  weights: 18.20703
+  weights: 0.79559
   weights: 0
   weights: 0
-  weights: 1.3886
+  weights: 1.37142
   weights: 0
-  weights: 49.37752
+  weights: 47.6915
   weights: 0
   weights: 0
   weights: 0
@@ -197,292 +197,292 @@ stat_weights_results: {
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 1647.38102
-  tps: 1313.21463
+  dps: 1630.54413
+  tps: 1300.18014
   hps: 26.14867
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 1650.44462
-  tps: 1315.9282
+  dps: 1630.10554
+  tps: 1300.18143
   hps: 26.18323
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 1717.96643
-  tps: 1368.46747
+  dps: 1693.17784
+  tps: 1349.31558
   hps: 25.9677
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 2775.4015
-  tps: 2207.70383
-  hps: 38.4239
+  dps: 2746.34028
+  tps: 2185.2426
+  hps: 38.44017
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1498.02583
-  tps: 1189.17323
+  dps: 1484.34874
+  tps: 1178.62593
   hps: 25.57323
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 4038.52504
-  tps: 3181.11508
-  hps: 56.76011
+  dps: 3990.89872
+  tps: 3144.4784
+  hps: 56.7563
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Dwarf-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 9251.6297
-  tps: 8574.86416
+  dps: 9197.16226
+  tps: 8532.8808
   hps: 56.73
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Dwarf-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 3915.43892
-  tps: 3084.9053
+  dps: 3869.19709
+  tps: 3049.17156
   hps: 56.059
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Dwarf-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 4228.32688
-  tps: 3331.77995
+  dps: 4185.04392
+  tps: 3297.33561
   hps: 59.28183
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Dwarf-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 3069.67047
-  tps: 3181.316
+  dps: 3057.04843
+  tps: 3170.85053
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Dwarf-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1474.43274
-  tps: 1173.98388
+  dps: 1464.19184
+  tps: 1165.8845
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Dwarf-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 1703.5253
-  tps: 1358.59447
+  dps: 1692.55846
+  tps: 1349.92843
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Human-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 9496.18985
-  tps: 8775.14308
+  dps: 9444.22347
+  tps: 8735.27718
   hps: 59.2554
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Human-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 4068.27226
-  tps: 3203.44459
+  dps: 4020.92846
+  tps: 3166.87092
   hps: 57.5474
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Human-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 4412.04973
-  tps: 3473.24879
+  dps: 4372.34732
+  tps: 3442.70184
   hps: 61.80317
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Human-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 3246.83049
-  tps: 3337.68618
+  dps: 3240.66185
+  tps: 3333.47337
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Human-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1576.41118
-  tps: 1253.79097
+  dps: 1570.34892
+  tps: 1249.30715
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-Settings-Human-p5-seal-stacking-P5 Seal Stacking-p5-seal-stacking-6CF-2DR-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 1812.48643
-  tps: 1444.26089
+  dps: 1802.94814
+  tps: 1437.12995
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3330.04553
-  tps: 2632.48126
+  dps: 3300.27985
+  tps: 2609.78948
   hps: 44.713
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 2070.09286
-  tps: 1645.46455
+  dps: 2018.27614
+  tps: 1605.69375
   hps: 28.99737
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 2070.58826
-  tps: 1646.7431
+  dps: 2018.8165
+  tps: 1607.01727
   hps: 28.99737
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 2187.77691
-  tps: 1740.5366
+  dps: 2132.50434
+  tps: 1698.11874
   hps: 28.99737
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 4203.8922
-  tps: 3324.1129
+  dps: 4142.10091
+  tps: 3276.69145
   hps: 58.69827
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1943.48199
-  tps: 1538.93829
+  dps: 1908.11002
+  tps: 1511.75472
   hps: 27.4073
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Average-Default"
  value: {
-  dps: 6437.25906
-  tps: 5041.23579
+  dps: 6363.2455
+  tps: 4984.3756
   hps: 83.88915
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Dwarf-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-FullBuffs-P7-Consumes-TwistStack-LongMultiTarget"
  value: {
-  dps: 13081.49948
-  tps: 11806.41555
+  dps: 13005.44497
+  tps: 11748.8141
   hps: 85.53623
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Dwarf-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-FullBuffs-P7-Consumes-TwistStack-LongSingleTarget"
  value: {
-  dps: 6501.16849
-  tps: 5090.65344
+  dps: 6427.07291
+  tps: 5033.58235
   hps: 84.70053
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Dwarf-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-FullBuffs-P7-Consumes-TwistStack-ShortSingleTarget"
  value: {
-  dps: 7099.40698
-  tps: 5561.02268
+  dps: 7026.27437
+  tps: 5505.10647
   hps: 90.74767
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Dwarf-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-NoBuffs-P7-Consumes-TwistStack-LongMultiTarget"
  value: {
-  dps: 5720.74254
-  tps: 5701.90309
+  dps: 5698.97632
+  tps: 5684.93662
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Dwarf-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-NoBuffs-P7-Consumes-TwistStack-LongSingleTarget"
  value: {
-  dps: 2606.3942
-  tps: 2068.19273
+  dps: 2588.64526
+  tps: 2054.55897
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Dwarf-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-NoBuffs-P7-Consumes-TwistStack-ShortSingleTarget"
  value: {
-  dps: 2864.20298
-  tps: 2270.82133
+  dps: 2839.46762
+  tps: 2251.90774
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Human-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-FullBuffs-P7-Consumes-TwistStack-LongMultiTarget"
  value: {
-  dps: 13074.045
-  tps: 11798.06458
+  dps: 13003.82809
+  tps: 11745.46056
   hps: 85.52403
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Human-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-FullBuffs-P7-Consumes-TwistStack-LongSingleTarget"
  value: {
-  dps: 6506.17786
-  tps: 5094.54615
+  dps: 6433.51462
+  tps: 5038.96265
   hps: 84.74323
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Human-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-FullBuffs-P7-Consumes-TwistStack-ShortSingleTarget"
  value: {
-  dps: 7096.9008
-  tps: 5559.03953
+  dps: 7025.27877
+  tps: 5504.64553
   hps: 90.74767
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Human-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-NoBuffs-P7-Consumes-TwistStack-LongMultiTarget"
  value: {
-  dps: 5719.65715
-  tps: 5705.41898
+  dps: 5697.25991
+  tps: 5688.17914
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Human-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-NoBuffs-P7-Consumes-TwistStack-LongSingleTarget"
  value: {
-  dps: 2604.65294
-  tps: 2066.41615
+  dps: 2585.67752
+  tps: 2051.99784
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-Settings-Human-p7-seal-stacking-naxx-P7 Seal Stacking-p7-seal-stacking-NoBuffs-P7-Consumes-TwistStack-ShortSingleTarget"
  value: {
-  dps: 2863.62302
-  tps: 2270.37083
+  dps: 2838.77747
+  tps: 2251.37229
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase7-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5937.8132
-  tps: 4656.21935
+  dps: 5867.69083
+  tps: 4601.77602
   hps: 74.98527
  }
 }
