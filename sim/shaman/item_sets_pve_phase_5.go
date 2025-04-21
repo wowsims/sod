@@ -381,10 +381,6 @@ func (shaman *Shaman) applyT2Restoration4PBonus() {
 
 // Increases the healing of Chain Heal and the damage of Chain Lightning by 20%.
 func (shaman *Shaman) applyT2Restoration6PBonus() {
-	if !shaman.HasRune(proto.ShamanRune_RuneHandsWaterShield) {
-		return
-	}
-
 	label := "S03 - Item - T2 - Shaman - Restoration 6P Bonus"
 	if shaman.HasAura(label) {
 		return
