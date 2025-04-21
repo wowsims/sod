@@ -805,9 +805,10 @@ func (item WowheadItemResponse) IsTimeworn() bool {
 }
 
 var sanctifiedRegexp = regexp.MustCompile(`<span style=\"color: #[0-9A-F]{6}\">Sanctified<\/span>`)
+var scarletUniformRegexp = regexp.MustCompile(`<span style=\"color: #[0-9A-F]{6}\">Scarlet Uniform<\/span>`)
 
 func (item WowheadItemResponse) IsSanctified() bool {
-	return sanctifiedRegexp.MatchString(item.Tooltip)
+	return sanctifiedRegexp.MatchString(item.Tooltip) || scarletUniformRegexp.MatchString(item.Tooltip)
 }
 
 func (item WowheadItemResponse) GetRequiredProfession() proto.Profession {
