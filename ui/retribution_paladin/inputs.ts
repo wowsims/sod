@@ -15,11 +15,8 @@ export const AuraSelection = InputHelpers.makeSpecOptionsEnumIconInput<Spec.Spec
 		{
 			actionId: () => ActionId.fromSpellId(20218),
 			value: PaladinAura.SanctityAura,
-			showWhen: (player: Player<Spec.SpecRetributionPaladin>) => player.getTalents().sanctityAura,
 		},
 	],
-	changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) =>
-		TypedEvent.onAny([player.gearChangeEmitter, player.talentsChangeEmitter, player.specOptionsChangeEmitter, player.levelChangeEmitter]),
 });
 
 // The below is used in the custom APL action "Cast Primary Seal".

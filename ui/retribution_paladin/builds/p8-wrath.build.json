@@ -1,0 +1,197 @@
+{
+  "raidBuffs": {
+    "giftOfTheWild": "TristateEffectImproved",
+    "powerWordFortitude": "TristateEffectImproved",
+    "arcaneBrilliance": true,
+    "divineSpirit": true,
+    "battleShout": "TristateEffectImproved",
+    "leaderOfThePack": true,
+    "fireResistanceAura": true,
+    "demonicPact": 160,
+    "hornOfLordaeron": true,
+    "aspectOfTheLion": true,
+    "commandingShout": true
+  },
+  "debuffs": {
+    "judgementOfWisdom": true,
+    "judgementOfLight": true,
+    "judgementOfTheCrusader": "TristateEffectImproved",
+    "faerieFire": true,
+    "markOfChaos": true,
+    "occultPoison": true,
+    "improvedScorch": true,
+    "dreamstate": true,
+    "exposeArmor": "TristateEffectImproved",
+    "homunculi": 70,
+    "curseOfRecklessness": true,
+    "mangle": true,
+    "giftOfArthas": true
+  },
+  "partyBuffs": {
+  },
+  "player": {
+    "name": "Player",
+    "race": "RaceHuman",
+    "level": 60,
+    "class": "ClassPaladin",
+    "equipment": {
+      "items": [
+        {"id":240027,"enchant":7619,"rune":429139},
+        {"id":241070},
+        {"id":236126,"enchant":7884,"rune":1220222},
+        {"id":241024,"enchant":7667,"rune":440672},
+        {"id":240030,"enchant":7645,"rune":407778},
+        {"id":240023,"enchant":1885,"rune":429144},
+        {"id":240028,"enchant":7666,"rune":407676},
+        {"id":241174,"rune":426158},
+        {"id":240026,"enchant":7619,"rune":407624},
+        {"id":240029,"enchant":1887,"rune":426157},
+        {"id":236130,"rune":29088},
+        {"id":241029,"rune":442898},
+        {"id":241037},
+        {"id":241038},
+        {"id":239301,"enchant":7943},
+        {},
+        {"id":234475}
+      ]
+    },
+    "consumes": {
+      "flask": "FlaskOfAncientKnowledge",
+      "food": "FoodProwlerSteak",
+      "agilityElixir": "ElixirOfTheHoneyBadger",
+      "manaRegenElixir": "MagebloodPotion",
+      "strengthBuff": "JujuPower",
+      "attackPowerBuff": "JujuMight",
+      "spellPowerBuff": "ElixirOfTheMageLord",
+      "sapperExplosive": "SapperFumigator",
+      "mainHandImbue": "WildStrikes",
+      "defaultPotion": "MajorManaPotion",
+      "defaultConjured": "ConjuredDemonicRune",
+      "enchantedSigil": "WrathOfTheStormSigil",
+      "mildlyIrradiatedRejuvPot": true,
+      "dragonBreathChili": true,
+      "miscConsumes": {
+        "elixirOfCoalescedRegret": true,
+        "jujuFlurry": true,
+        "greaterMarkOfTheDawn": true
+      },
+      "zanzaBuff": "ROIDS",
+      "healthElixir": "ElixirOfFortitude",
+      "alcohol": "AlcoholRumseyRumBlackLabel"
+    },
+    "bonusStats": {
+      "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    },
+    "itemSwap": {
+      "items": [
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        }
+      ],
+      "prepullBonusStats": {
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+      }
+    },
+    "buffs": {
+      "blessingOfWisdom": "TristateEffectImproved",
+      "rallyingCryOfTheDragonslayer": true,
+      "valorOfAzeroth": true,
+      "saygesFortune": "SaygesDamage",
+      "spiritOfZandalar": true,
+      "songflowerSerenade": true,
+      "mightOfStormwind": true,
+      "fengusFerocity": true,
+      "moldarsMoxie": true,
+      "slipkiksSavvy": true
+    },
+    "talentsString": "500501-503-52230351200315",
+    "profession1": "Alchemy",
+    "profession2": "Engineering",
+    "cooldowns": {
+    },
+    "rotation": {
+      "type": "TypeAPL",
+      "prepullActions": [
+        {"action":{"castPaladinPrimarySeal":{}},"doAtValue":{"const":{"val":"-1.5s"}}}
+      ],
+      "priorityList": [
+        {"action":{"condition":{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":1226461}}},"rhs":{"const":{"val":"3"}}}},"autocastOtherCooldowns":{}}},
+        {"action":{"castSpell":{"spellId":{"itemId":241037}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":16322}}}},
+        {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"itemId":241241}}},"rhs":{"const":{"val":"5"}}}},{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"itemId":241241}}},"rhs":{"const":{"val":"3s"}}}}]}},"castSpell":{"spellId":{"itemId":241241}}}},
+        {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentSealRemainingTime":{}},"rhs":{"const":{"val":"0.5s"}}}},"castPaladinPrimarySeal":{}}},
+        {"action":{"condition":{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":1226461}}},"rhs":{"const":{"val":"3"}}}},"castSpell":{"spellId":{"spellId":407778}}}},
+        {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":1226461}}},"rhs":{"const":{"val":"3"}}}},{"cmp":{"op":"OpLe","lhs":{"spellTimeToReady":{"spellId":{"spellId":407778}}},"rhs":{"const":{"val":"1.5"}}}},{"gcdIsReady":{}}]}},"castSpell":{"spellId":{"spellId":20271}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":407676}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":415073}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":407778}}}},
+        {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGt","lhs":{"spellTimeToReady":{"spellId":{"spellId":415073}}},"rhs":{"const":{"val":"1.5s"}}}},{"cmp":{"op":"OpGt","lhs":{"spellTimeToReady":{"spellId":{"spellId":407676}}},"rhs":{"const":{"val":"1.5s"}}}}]}},"castSpell":{"spellId":{"spellId":20924,"rank":5}}}}
+      ]
+    },
+    "reactionTimeMs": 200,
+    "isbUsingShadowflame": true,
+    "isbSbFrequency": 3,
+    "isbCrit": 25,
+    "isbWarlocks": 1,
+    "healingModel": {
+    },
+    "retributionPaladin": {
+      "options": {
+        "primarySeal": "Martyrdom",
+        "aura": "SanctityAura"
+      }
+    }
+  },
+  "encounter": {
+    "duration": 60,
+    "durationVariation": 15,
+    "executeProportion20": 0.2,
+    "executeProportion25": 0.25,
+    "executeProportion35": 0.35,
+    "targets": [
+      {
+        "id": 243269,
+        "name": "Generic",
+        "level": 63,
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,805,0,0,0,0,0,0,0,0,3731,0,0,0,46,0,0,0,127393,0,0,0,0,0,0,0,0,0],
+        "minBaseDamage": 6000,
+        "damageSpread": 0.3333,
+        "swingSpeed": 2,
+        "parryHaste": true
+      }
+    ]
+  }
+}
