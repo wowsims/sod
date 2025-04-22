@@ -938,6 +938,11 @@ func init() {
 				},
 			},
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				// Just in case people try to sim with an invalid class..
+				if len(buffAuras) == 0 {
+					return
+				}
+
 				if int32(sim.Roll(0, 100)) < 1 {
 					bigglesworthBuff.Activate(sim)
 				} else {
