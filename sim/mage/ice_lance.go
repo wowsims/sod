@@ -77,15 +77,9 @@ func (mage *Mage) registerIceLanceSpell() {
 		return
 	}
 
-	glaciateIceLanceDamageMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask: ClassSpellMask_MageIceLance,
+	glaciateDamageMod := mage.AddDynamicMod(core.SpellModConfig{
+		ClassMask: ClassSpellMask_MageIceLance | ClassSpellMask_MageDeepFreeze,
 		Kind:      core.SpellMod_DamageDone_Flat,
-	})
-
-	// For some reason they set up Deep Freeze as base points
-	glaciateDeepFreezeDamageMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask: ClassSpellMask_MageDeepFreeze,
-		Kind:      core.SpellMod_BaseDamageDone_Flat,
 	})
 
 	mage.GlaciateAuras = mage.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
@@ -106,10 +100,8 @@ func (mage *Mage) registerIceLanceSpell() {
 					modifier += int64(20 * glaciateAura.GetStacks())
 				}
 
-				glaciateIceLanceDamageMod.UpdateIntValue(modifier)
-				glaciateIceLanceDamageMod.Activate()
-				glaciateDeepFreezeDamageMod.UpdateIntValue(modifier)
-				glaciateDeepFreezeDamageMod.Activate()
+				glaciateDamageMod.UpdateIntValue(modifier)
+				glaciateDamageMod.Activate()
 			}
 		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
