@@ -233,7 +233,7 @@ func (paladin *Paladin) registerShockAndAwe() {
 		},
 	})
 
-	if paladin.Talents.HolyShock {
+	if paladin.Talents.HolyShock && paladin.hasRune(proto.PaladinRune_RuneWaistInfusionOfLight) {
 		procSpell := paladin.RegisterSpell(core.SpellConfig{
 			ActionID:         core.ActionID{SpellID: int32(proto.PaladinRune_RuneCloakShockAndAwe)},
 			SpellSchool:      core.SpellSchoolHoly,
