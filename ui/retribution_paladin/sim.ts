@@ -3,7 +3,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, HandType, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { PaladinRune } from '../core/proto/paladin.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
@@ -139,6 +139,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 
 	presets: {
 		rotations: [
+			...Presets.APLPresets[Phase.Phase8],
 			...Presets.APLPresets[Phase.Phase7],
 			...Presets.APLPresets[Phase.Phase6],
 			...Presets.APLPresets[Phase.Phase5],
@@ -149,6 +150,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		],
 		// Preset talents that the user can quickly select.
 		talents: [
+			...Presets.TalentPresets[Phase.Phase8],
 			...Presets.TalentPresets[Phase.Phase7],
 			...Presets.TalentPresets[Phase.Phase6],
 			...Presets.TalentPresets[Phase.Phase5],
@@ -159,6 +161,7 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		],
 		// Preset gear configurations that the user can quickly select.
 		gear: [
+			...Presets.GearPresets[Phase.Phase8],
 			...Presets.GearPresets[Phase.Phase7],
 			...Presets.GearPresets[Phase.Phase6],
 			...Presets.GearPresets[Phase.Phase5],
@@ -168,11 +171,11 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			...Presets.GearPresets[Phase.Phase1],
 		],
 		builds: [
-			Presets.PresetBuildP7Twisting,
-			Presets.PresetBuildP7SealStacking,
-			Presets.PresetBuildP7Exodin,
-			Presets.PresetBuildP7Shockadin2H,
-			Presets.PresetBuildP7Shockadin1H,
+			Presets.PresetBuildExodinPhase8,
+			Presets.PresetBuildSealStackingPhase8,
+			Presets.PresetBuildShockadinPhase8,
+			Presets.PresetBuildTwistingPhase8,
+			Presets.PresetBuildWrathLikePhase8,
 		],
 	},
 
@@ -182,15 +185,14 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			return Presets.DefaultAPLs[level].rotation.rotation!;
 		}
 
+		if (player.getTalents().holyShock) {
+			return Presets.APLShockadinPhase8.rotation.rotation!;
+		}
+
 		const gear = player.getGear();
 		const mainHand = gear.getEquippedItem(ItemSlot.ItemSlotMainHand);
-
-		if (player.getTalents().holyShock) {
-			if (mainHand?.item && mainHand.item.handType === HandType.HandTypeTwoHand) {
-				return Presets.APLShockadin2H.rotation.rotation!;
-			}
-
-			return Presets.APLShockadin1H.rotation.rotation!;
+		if (mainHand?.item && mainHand.item.weaponSpeed < 3) {
+			return Presets.APLExodinPhase8.rotation.rotation!;
 		}
 
 		const itemSlots = gear.getItemSlots();
@@ -206,20 +208,21 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		const shoulder = gear.getEquippedItem(ItemSlot.ItemSlotShoulder);
 		const hasSealbearer = shoulder?.rune?.id === PaladinRune.RuneShouldersSealbearer;
 		const isStacking = coreForgedCount >= 6 || hasSealbearer;
-
-		if (mainHand?.item && mainHand.item.weaponSpeed < 3) {
-			if (isStacking) {
-				return Presets.APLExodinFastStack.rotation.rotation!;
-			}
-
-			return Presets.APLExodin.rotation.rotation!;
-		}
-
 		if (isStacking) {
-			return Presets.APLSealStacking.rotation.rotation!;
+			return Presets.APLSealStackingPhase8.rotation.rotation!;
 		}
 
-		return Presets.APLTwisting.rotation.rotation!;
+		const specOptions = player.getSpecOptions();
+		if (
+			specOptions.isUsingCrusaderStrikeStopAttack ||
+			specOptions.isUsingDivineStormStopAttack ||
+			specOptions.isUsingJudgementStopAttack ||
+			specOptions.isUsingExorcismStopAttack
+		) {
+			return Presets.APLTwistingPhase8.rotation.rotation!;
+		}
+
+		return Presets.APLWrathLikePhase8.rotation.rotation!;
 	},
 
 	raidSimPresets: [
@@ -243,10 +246,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 					1: Presets.GearPresets[Phase.Phase1][0].gear,
 					2: Presets.GearPresets[Phase.Phase2][0].gear,
 					3: Presets.GearPresets[Phase.Phase3][0].gear,
-					4: Presets.GearPresets[Phase.Phase7][0].gear,
-					5: Presets.GearPresets[Phase.Phase7][0].gear,
-					6: Presets.GearPresets[Phase.Phase7][0].gear,
-					7: Presets.GearPresets[Phase.Phase7][0].gear,
+					4: Presets.GearPresets[Phase.Phase8][0].gear,
+					5: Presets.GearPresets[Phase.Phase8][0].gear,
+					6: Presets.GearPresets[Phase.Phase8][0].gear,
+					7: Presets.GearPresets[Phase.Phase8][0].gear,
 				},
 				[Faction.Horde]: {},
 			},

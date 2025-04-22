@@ -1,0 +1,196 @@
+{
+  "raidBuffs": {
+    "giftOfTheWild": "TristateEffectImproved",
+    "powerWordFortitude": "TristateEffectImproved",
+    "arcaneBrilliance": true,
+    "divineSpirit": true,
+    "battleShout": "TristateEffectImproved",
+    "leaderOfThePack": true,
+    "fireResistanceAura": true,
+    "demonicPact": 160,
+    "hornOfLordaeron": true,
+    "aspectOfTheLion": true,
+    "commandingShout": true
+  },
+  "debuffs": {
+    "judgementOfWisdom": true,
+    "judgementOfLight": true,
+    "judgementOfTheCrusader": "TristateEffectImproved",
+    "faerieFire": true,
+    "markOfChaos": true,
+    "occultPoison": true,
+    "improvedScorch": true,
+    "dreamstate": true,
+    "sunderArmor": true,
+    "homunculi": 70,
+    "curseOfRecklessness": true,
+    "mangle": true,
+    "giftOfArthas": true
+  },
+  "partyBuffs": {
+  },
+  "player": {
+    "name": "Player",
+    "race": "RaceHuman",
+    "level": 60,
+    "class": "ClassPaladin",
+    "equipment": {
+      "items": [
+        {"id":240027,"enchant":7619,"rune":429139},
+        {"id":241070},
+        {"id":241080,"enchant":7884,"rune":1220228},
+        {"id":241024,"enchant":7667,"rune":462834},
+        {"id":240030,"enchant":7645,"rune":407778},
+        {"id":240023,"enchant":1885,"rune":429144},
+        {"id":240028,"enchant":7666,"rune":407676},
+        {"id":241174,"rune":426158},
+        {"id":240026,"enchant":7619,"rune":407669},
+        {"id":240029,"enchant":1887,"rune":426157},
+        {"id":236130,"rune":29088},
+        {"id":241029,"rune":442898},
+        {"id":241037},
+        {"id":241038},
+        {"id":240920,"enchant":7943},
+        {},
+        {"id":234476}
+      ]
+    },
+    "consumes": {
+      "flask": "FlaskOfAncientKnowledge",
+      "food": "FoodProwlerSteak",
+      "agilityElixir": "ElixirOfTheHoneyBadger",
+      "manaRegenElixir": "MagebloodPotion",
+      "strengthBuff": "JujuPower",
+      "attackPowerBuff": "JujuMight",
+      "spellPowerBuff": "ElixirOfTheMageLord",
+      "sapperExplosive": "SapperFumigator",
+      "mainHandImbue": "WildStrikes",
+      "defaultPotion": "MajorManaPotion",
+      "defaultConjured": "ConjuredDemonicRune",
+      "enchantedSigil": "WrathOfTheStormSigil",
+      "mildlyIrradiatedRejuvPot": true,
+      "dragonBreathChili": true,
+      "miscConsumes": {
+        "elixirOfCoalescedRegret": true,
+        "jujuFlurry": true,
+        "greaterMarkOfTheDawn": true
+      },
+      "zanzaBuff": "ROIDS",
+      "healthElixir": "ElixirOfFortitude",
+      "alcohol": "AlcoholRumseyRumBlackLabel"
+    },
+    "bonusStats": {
+      "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+      "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+    },
+    "itemSwap": {
+      "items": [
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        },
+        {
+        }
+      ],
+      "prepullBonusStats": {
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
+        "pseudoStats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+      }
+    },
+    "buffs": {
+      "blessingOfWisdom": "TristateEffectImproved",
+      "blessingOfMight": "TristateEffectImproved",
+      "rallyingCryOfTheDragonslayer": true,
+      "valorOfAzeroth": true,
+      "saygesFortune": "SaygesDamage",
+      "spiritOfZandalar": true,
+      "songflowerSerenade": true,
+      "mightOfStormwind": true,
+      "fengusFerocity": true,
+      "moldarsMoxie": true,
+      "slipkiksSavvy": true
+    },
+    "talentsString": "55053100501051--052303502",
+    "profession1": "Alchemy",
+    "profession2": "Engineering",
+    "cooldowns": {
+    },
+    "rotation": {
+      "type": "TypeAPL",
+      "prepullActions": [
+        {"action":{"castSpell":{"spellId":{"spellId":20930,"rank":3}}},"doAtValue":{"const":{"val":"-4s"}}},
+        {"action":{"castPaladinPrimarySeal":{}},"doAtValue":{"const":{"val":"-1.5s"}}}
+      ],
+      "priorityList": [
+        {"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"itemId":241241}}},"rhs":{"const":{"val":"3s"}}}},"castSpell":{"spellId":{"itemId":241241}}}},
+        {"action":{"autocastOtherCooldowns":{}}},
+        {"action":{"condition":{"auraIsActive":{"auraId":{"spellId":426157}}},"wait":{"duration":{"auraRemainingTime":{"auraId":{"spellId":426157}}}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":415073}}}},
+        {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"currentSealRemainingTime":{}},"rhs":{"const":{"val":"1.5s"}}}},{"gcdIsReady":{}}]}},"castSpell":{"spellId":{"spellId":20271}}}},
+        {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentSealRemainingTime":{}},"rhs":{"const":{"val":"1.5s"}}}},"castPaladinPrimarySeal":{}}},
+        {"action":{"condition":{"or":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":1226460}}}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":1226461}}},"rhs":{"const":{"val":"3"}}}}]}},"castSpell":{"spellId":{"spellId":20930,"rank":3}}}},
+        {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":20930,"rank":3}}},"rhs":{"const":{"val":"2s"}}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":1226461}}},"rhs":{"const":{"val":"3"}}}}]}},"castSpell":{"spellId":{"spellId":407778}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":407676}}}}
+      ]
+    },
+    "reactionTimeMs": 200,
+    "isbUsingShadowflame": true,
+    "isbSbFrequency": 3,
+    "isbCrit": 25,
+    "isbWarlocks": 1,
+    "healingModel": {
+    },
+    "retributionPaladin": {
+      "options": {
+        "primarySeal": "Martyrdom"
+      }
+    }
+  },
+  "encounter": {
+    "duration": 60,
+    "durationVariation": 15,
+    "executeProportion20": 0.2,
+    "executeProportion25": 0.25,
+    "executeProportion35": 0.35,
+    "targets": [
+      {
+        "id": 243269,
+        "name": "Generic",
+        "level": 63,
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,805,0,0,0,0,0,0,0,0,3731,0,0,0,46,0,0,0,127393,0,0,0,0,0,0,0,0,0],
+        "minBaseDamage": 6000,
+        "damageSpread": 0.3333,
+        "swingSpeed": 2,
+        "parryHaste": true
+      }
+    ]
+  }
+}

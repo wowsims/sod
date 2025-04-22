@@ -1,0 +1,212 @@
+character_stats_results: {
+ key: "TestWrathLike-Phase8-Lvl60-CharacterStats-Default"
+ value: {
+  final_stats: 1139.6385
+  final_stats: 339.02
+  final_stats: 634.271
+  final_stats: 173.305
+  final_stats: 200.56575
+  final_stats: 404
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 0
+  final_stats: 61.6
+  final_stats: 5
+  final_stats: 44.39419
+  final_stats: 0
+  final_stats: 0
+  final_stats: 3375.277
+  final_stats: 8
+  final_stats: 57.85441
+  final_stats: 25
+  final_stats: 0
+  final_stats: 9
+  final_stats: 3831.575
+  final_stats: 0
+  final_stats: 0
+  final_stats: 7307.04
+  final_stats: 646
+  final_stats: 0
+  final_stats: 5
+  final_stats: 0
+  final_stats: 17.85441
+  final_stats: 5
+  final_stats: 0
+  final_stats: 7963.71
+  final_stats: 27
+  final_stats: 60
+  final_stats: 27
+  final_stats: 72
+  final_stats: 27
+  final_stats: 384
+  final_stats: 0
+  final_stats: 40
+  final_stats: 0
+ }
+}
+stat_weights_results: {
+ key: "TestWrathLike-Phase8-Lvl60-StatWeights-Default"
+ value: {
+  weights: 5.64498
+  weights: 5.40548
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0.34199
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 28.50171
+  weights: 0.76013
+  weights: 0
+  weights: 0
+  weights: 2.02838
+  weights: 0
+  weights: 74.38592
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+  weights: 0
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-AllItems-EmeraldEncrustedBattleplate"
+ value: {
+  dps: 3169.46486
+  tps: 2545.81734
+  dtps: 2.68849
+  hps: 35.29257
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
+ value: {
+  dps: 3169.66672
+  tps: 2546.71439
+  dtps: 2.68849
+  hps: 35.29257
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
+ value: {
+  dps: 3314.65263
+  tps: 2661.86236
+  dtps: 2.68849
+  hps: 35.29257
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-AllItems-ObsessedProphet'sPlate"
+ value: {
+  dps: 5902.82979
+  tps: 4659.34822
+  dtps: 2.79652
+  hps: 42.76507
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-AllItems-SoulforgeArmor"
+ value: {
+  dps: 2772.5771
+  tps: 2218.99016
+  dtps: 2.61861
+  hps: 33.38937
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-Average-Default"
+ value: {
+  dps: 10400.22905
+  tps: 8134.10462
+  dtps: 2.722
+  hps: 46.28187
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-FullBuffs-p8-wrath-LongMultiTarget"
+ value: {
+  dps: 26702.47629
+  tps: 22570.40736
+  dtps: 2.49173
+  hps: 47.2201
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-FullBuffs-p8-wrath-LongSingleTarget"
+ value: {
+  dps: 10360.06348
+  tps: 8099.47961
+  dtps: 2.75462
+  hps: 46.47183
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-FullBuffs-p8-wrath-ShortSingleTarget"
+ value: {
+  dps: 10520.30119
+  tps: 8225.63564
+  dtps: 13.77308
+  hps: 47.29533
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-NoBuffs-p8-wrath-LongMultiTarget"
+ value: {
+  dps: 12144.49425
+  tps: 10698.46668
+  dtps: 2.60394
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-NoBuffs-p8-wrath-LongSingleTarget"
+ value: {
+  dps: 4506.08644
+  tps: 3550.22254
+  dtps: 2.95058
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-NoBuffs-p8-wrath-ShortSingleTarget"
+ value: {
+  dps: 4558.76119
+  tps: 3589.97966
+  dtps: 14.75289
+ }
+}
+dps_results: {
+ key: "TestWrathLike-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
+ value: {
+  dps: 9741.12878
+  tps: 7618.84913
+  dtps: 3.04922
+  hps: 42.35027
+ }
+}

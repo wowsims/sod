@@ -13,7 +13,7 @@ func init() {
 
 func TestRetribution(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
+		/*{
 			Class:      proto.Class_ClassPaladin,
 			Level:      25,
 			Race:       proto.Race_RaceHuman,
@@ -141,13 +141,14 @@ func TestRetribution(t *testing.T) {
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
-		},
+		},*/
+		core.GetTestBuildFromJSON(proto.Class_ClassPaladin, 8, 60, "../../../ui/retribution_paladin/builds", "p8-twist", ItemFilters, proto.Stat_StatAttackPower, Stats),
 	}))
 }
 
 func TestExodin(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
+		/*{
 			Class:      proto.Class_ClassPaladin,
 			Phase:      4,
 			Level:      60,
@@ -218,13 +219,14 @@ func TestExodin(t *testing.T) {
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
-		},
+		},*/
+		core.GetTestBuildFromJSON(proto.Class_ClassPaladin, 8, 60, "../../../ui/retribution_paladin/builds", "p8-exodin", ItemFilters, proto.Stat_StatAttackPower, Stats),
 	}))
 }
 
 func TestShockadin1H(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
+		/*{
 			Class:      proto.Class_ClassPaladin,
 			Phase:      5,
 			Level:      60,
@@ -241,7 +243,7 @@ func TestShockadin1H(t *testing.T) {
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
-		},
+		},*/
 		{
 			Class:      proto.Class_ClassPaladin,
 			Phase:      7,
@@ -265,7 +267,7 @@ func TestShockadin1H(t *testing.T) {
 
 func TestShockadin2H(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
+		/*{
 			Class:      proto.Class_ClassPaladin,
 			Level:      40,
 			Race:       proto.Race_RaceHuman,
@@ -299,13 +301,14 @@ func TestShockadin2H(t *testing.T) {
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
-		},
+		},*/
+		core.GetTestBuildFromJSON(proto.Class_ClassPaladin, 8, 60, "../../../ui/retribution_paladin/builds", "p8-shockadin", ItemFilters, proto.Stat_StatAttackPower, Stats),
 	}))
 }
 
 func TestSealStacking(t *testing.T) {
 	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
-		{
+		/*{
 			Class:      proto.Class_ClassPaladin,
 			Phase:      5,
 			Level:      60,
@@ -340,19 +343,28 @@ func TestSealStacking(t *testing.T) {
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
-		},
+		},*/
+		core.GetTestBuildFromJSON(proto.Class_ClassPaladin, 8, 60, "../../../ui/retribution_paladin/builds", "p8-stack", ItemFilters, proto.Stat_StatAttackPower, Stats),
 	}))
 }
 
+func TestWrathLike(t *testing.T) {
+	core.RunTestSuite(t, t.Name(), core.FullCharacterTestSuiteGenerator([]core.CharacterSuiteConfig{
+		core.GetTestBuildFromJSON(proto.Class_ClassPaladin, 8, 60, "../../../ui/retribution_paladin/builds", "p8-wrath", ItemFilters, proto.Stat_StatAttackPower, Stats),
+	}))
+}
+
+/*
 var Phase1RetTalents = "--05230051"
 var Phase2RetTalents = "--532300512003151"
 var Phase2ShockadinTalents = "55050100521151--"
 var Phase3RetTalents = "500501--53230051200315"
 var Phase456RetTalents = "500501-503-52230351200315"
 var Phase45ShockadinTalents = "55053100501051--052303511"
+*/
 var Phase7ShockadinTalents = "55053100501051--052303502"
 
-var Phase1Consumes = core.ConsumesCombo{
+/*var Phase1Consumes = core.ConsumesCombo{
 	Label: "P1-Consumes",
 	Consumes: &proto.Consumes{
 		AgilityElixir: proto.AgilityElixir_ElixirOfLesserAgility,
@@ -527,7 +539,7 @@ var Phase7MiscConsumesExodin = &proto.MiscConsumes{
 	ElixirOfCoalescedRegret: true,
 	GreaterMarkOfTheDawn:    true,
 	JujuFlurry:              true,
-}
+}*/
 
 var Phase7ConsumesShockadin = core.ConsumesCombo{
 	Label: "P7-Consumes-Shockadin",
@@ -563,7 +575,7 @@ var Phase7MiscConsumesShockadin = &proto.MiscConsumes{
 	JujuFlurry:              true,
 }
 
-var PlayerOptionsSealofCommand = &proto.Player_RetributionPaladin{
+/*var PlayerOptionsSealofCommand = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{
 		Options: optionsSealOfCommand,
 	},
@@ -591,7 +603,7 @@ var PlayerOptionsSealofRighteousness = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{
 		Options: optionsSealOfRighteousness,
 	},
-}
+}*/
 
 var PlayerOptionsSealofRighteousnessNoAura = &proto.Player_RetributionPaladin{
 	RetributionPaladin: &proto.RetributionPaladin{
@@ -599,7 +611,7 @@ var PlayerOptionsSealofRighteousnessNoAura = &proto.Player_RetributionPaladin{
 	},
 }
 
-var optionsSealOfCommand = &proto.PaladinOptions{
+/*var optionsSealOfCommand = &proto.PaladinOptions{
 	Aura:        proto.PaladinAura_SanctityAura,
 	PrimarySeal: proto.PaladinSeal_Command,
 }
@@ -626,7 +638,7 @@ var optionsSealOfMartyrdomStopAttack = &proto.PaladinOptions{
 var optionsSealOfRighteousness = &proto.PaladinOptions{
 	Aura:        proto.PaladinAura_SanctityAura,
 	PrimarySeal: proto.PaladinSeal_Righteousness,
-}
+}*/
 
 var optionsSealOfRighteousnessNoAura = &proto.PaladinOptions{
 	Aura:        proto.PaladinAura_NoPaladinAura,

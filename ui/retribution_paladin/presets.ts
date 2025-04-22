@@ -21,6 +21,7 @@ import {
 	SapperExplosive,
 	SaygesFortune,
 	SealOfTheDawn,
+	Spec,
 	SpellPowerBuff,
 	StrengthBuff,
 	TristateEffect,
@@ -29,26 +30,31 @@ import {
 } from '../core/proto/common.js';
 import { PaladinAura, PaladinOptions as RetributionPaladinOptions, PaladinSeal } from '../core/proto/paladin.js';
 import { SavedTalents } from '../core/proto/ui.js';
-import APLP1RetJson from './apls/p1-ret.apl.json';
-import APLP2RetJson from './apls/p2-ret.apl.json';
-import APLP3RetJson from './apls/p3-ret.apl.json';
-import APLTwistingJson from './apls/p5p6p7-twist.apl.json';
-import APLExodinJson from './apls/p7-exodin.apl.json';
-import APLExodinFastStackJson from './apls/p7-exodin-fast-stack.apl.json';
-import APLSealStackingJson from './apls/p7-seal-stacking.apl.json';
-import APLShockadin1HJson from './apls/p7-shockadin-1h.apl.json';
-import APLShockadin2HJson from './apls/p7-shockadin-2h.apl.json';
-import Phase1RetGearJson from './gear_sets/p1-ret.gear.json';
-import Phase2RetSoCGearJson from './gear_sets/p2-retsoc.gear.json';
-import Phase2RetSoMGearJson from './gear_sets/p2-retsom.gear.json';
-import Phase3RetSoMGearJson from './gear_sets/p3-retsom.gear.json';
-import Phase7ExodinFastStackNonNaxxGearJson from './gear_sets/p7-exodin-fast-stack-non-naxx.gear.json';
-import Phase7ExodinNaxxGearJson from './gear_sets/p7-exodin-naxx.gear.json';
-import Phase7SealStackingNaxxGearJson from './gear_sets/p7-seal-stacking-naxx.gear.json';
-import Phase7Shockadin1HNaxxGearJson from './gear_sets/p7-shockadin-1h-naxx.gear.json';
-import Phase7Shockadin2HNaxxGearJson from './gear_sets/p7-shockadin-2h-naxx.gear.json';
-import Phase7TwistingNaxxGearJson from './gear_sets/p7-twisting-naxx.gear.json';
-import Phase7TwistingNonNaxxGearJson from './gear_sets/p7-twisting-non-naxx.gear.json';
+// APLs
+import Phase1APLRetJSON from './apls/p1-ret.apl.json';
+import Phase2APLRetJSON from './apls/p2-ret.apl.json';
+import Phase3APLRetJSON from './apls/p3-ret.apl.json';
+import Phase8APLExodinJSON from './apls/p8-exodin.apl.json';
+import Phase8APLShockadinJSON from './apls/p8-shockadin.apl.json';
+import Phase8APLSealStackingJSON from './apls/p8-stack.apl.json';
+import Phase8APLTwistingJSON from './apls/p8-twist.apl.json';
+import Phase8APLWrathLikeJSON from './apls/p8-wrath.apl.json';
+// Builds
+import Phase8BuildExodinJSON from './builds/p8-exodin.build.json';
+import Phase8BuildShockadinJSON from './builds/p8-shockadin.build.json';
+import Phase8BuildSealStackingJSON from './builds/p8-stack.build.json';
+import Phase8BuildTwistingJSON from './builds/p8-twist.build.json';
+import Phase8BuildWrathLikeJSON from './builds/p8-wrath.build.json';
+// Gear
+import Phase1GearRetJSON from './gear_sets/p1-ret.gear.json';
+import Phase2GearRetSoCJSON from './gear_sets/p2-retsoc.gear.json';
+import Phase2GearRetSoMJSON from './gear_sets/p2-retsom.gear.json';
+import Phase3GearRetSoMJSON from './gear_sets/p3-retsom.gear.json';
+import Phase8GearExodinJSON from './gear_sets/p8-exodin.gear.json';
+import Phase8GearShockadinJSON from './gear_sets/p8-shockadin.gear.json';
+import Phase8GearSealStackingJSON from './gear_sets/p8-stack.gear.json';
+import Phase8GearTwistingJSON from './gear_sets/p8-twist.gear.json';
+import Phase8GearWrathLikeJSON from './gear_sets/p8-wrath.gear.json';
 
 // Preset options for this spec.
 // Eventually we will import these values for the raid sim too, so its good to
@@ -58,111 +64,98 @@ import Phase7TwistingNonNaxxGearJson from './gear_sets/p7-twisting-non-naxx.gear
 //                                 Gear Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const Phase1RetGear = PresetUtils.makePresetGear('P1', Phase1RetGearJson, {
+export const GearRetPhase1 = PresetUtils.makePresetGear('P1', Phase1GearRetJSON, {
 	customCondition: player => player.getLevel() == 25,
 });
-export const Phase2RetSoCGear = PresetUtils.makePresetGear('P2 SoC/DS', Phase2RetSoCGearJson, {
+export const GearRetSoCPhase2 = PresetUtils.makePresetGear('P2 SoC/DS', Phase2GearRetSoCJSON, {
 	customCondition: player => player.getLevel() == 40,
 });
-export const Phase2RetSoMGear = PresetUtils.makePresetGear('P2 SoM', Phase2RetSoMGearJson, {
+export const GearRetSoMPhase2 = PresetUtils.makePresetGear('P2 SoM', Phase2GearRetSoMJSON, {
 	customCondition: player => player.getLevel() == 40,
 });
-export const Phase3RetSoMGear = PresetUtils.makePresetGear('P3 SoM', Phase3RetSoMGearJson, {
+export const GearRetSoMPhase3 = PresetUtils.makePresetGear('P3 SoM', Phase3GearRetSoMJSON, {
 	customCondition: player => player.getLevel() == 50,
 });
-export const Phase7Shockadin1HNaxxGear = PresetUtils.makePresetGear('1H Shockadin (Naxx BiS)', Phase7Shockadin1HNaxxGearJson, {
+export const GearExodinPhase8 = PresetUtils.makePresetGear('P8 Exodin', Phase8GearExodinJSON, {
 	customCondition: player => player.getLevel() == 60,
 });
-export const Phase7Shockadin2HNaxxGear = PresetUtils.makePresetGear('2H Shockadin (Naxx BiS)', Phase7Shockadin2HNaxxGearJson, {
+export const GearSealStackingPhase8 = PresetUtils.makePresetGear('P8 Seal Stacking', Phase8GearSealStackingJSON, {
 	customCondition: player => player.getLevel() == 60,
 });
-export const Phase7ExodinNaxxGear = PresetUtils.makePresetGear('Exodin (Naxx BiS)', Phase7ExodinNaxxGearJson, {
+export const GearShockadinPhase8 = PresetUtils.makePresetGear('P8 Shockadin', Phase8GearShockadinJSON, {
 	customCondition: player => player.getLevel() == 60,
 });
-export const Phase7ExodinFastStackNonNaxxGear = PresetUtils.makePresetGear('Exodin Fast Stack (Non-Naxx BiS)', Phase7ExodinFastStackNonNaxxGearJson, {
+export const GearTwistingPhase8 = PresetUtils.makePresetGear('P8 Twisting', Phase8GearTwistingJSON, {
 	customCondition: player => player.getLevel() == 60,
 });
-export const Phase7SealStackingNaxxGear = PresetUtils.makePresetGear('Seal Stacking (Naxx BiS)', Phase7SealStackingNaxxGearJson, {
-	customCondition: player => player.getLevel() == 60,
-});
-export const Phase7SealStackingNonNaxxGear = PresetUtils.makePresetGear('Seal Stacking (Non-Naxx BiS)', Phase7SealStackingNaxxGearJson, {
-	customCondition: player => player.getLevel() == 60,
-});
-export const Phase7TwistingNaxxGear = PresetUtils.makePresetGear('Twisting (Naxx BiS)', Phase7TwistingNaxxGearJson, {
-	customCondition: player => player.getLevel() == 60,
-});
-export const Phase7TwistingNonNaxxGear = PresetUtils.makePresetGear('Twisting (Non-Naxx BiS)', Phase7TwistingNonNaxxGearJson, {
+export const GearWrathLikePhase8 = PresetUtils.makePresetGear('P8 Wrath-like', Phase8GearWrathLikeJSON, {
 	customCondition: player => player.getLevel() == 60,
 });
 
 export const GearPresets = {
-	[Phase.Phase1]: [Phase1RetGear],
-	[Phase.Phase2]: [Phase2RetSoCGear, Phase2RetSoMGear],
-	[Phase.Phase3]: [Phase3RetSoMGear],
+	[Phase.Phase1]: [GearRetPhase1],
+	[Phase.Phase2]: [GearRetSoCPhase2, GearRetSoMPhase2],
+	[Phase.Phase3]: [GearRetSoMPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 	[Phase.Phase6]: [],
-	[Phase.Phase7]: [
-		Phase7TwistingNaxxGear,
-		Phase7SealStackingNaxxGear,
-		Phase7ExodinNaxxGear,
-		Phase7Shockadin1HNaxxGear,
-		Phase7Shockadin2HNaxxGear,
-		Phase7TwistingNonNaxxGear,
-		Phase7SealStackingNonNaxxGear,
-		Phase7ExodinFastStackNonNaxxGear,
+	[Phase.Phase7]: [],
+	[Phase.Phase8]: [
+		GearExodinPhase8,
+		GearSealStackingPhase8,
+		GearShockadinPhase8,
+		GearTwistingPhase8,
+		GearWrathLikePhase8,
 	],
 };
 
-export const DefaultGear = GearPresets[Phase.Phase7][0];
+export const DefaultGear = GearPresets[Phase.Phase8][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 APL Presets
 ///////////////////////////////////////////////////////////////////////////
 
-export const APLP1Ret = PresetUtils.makePresetAPLRotation('P1 Ret', APLP1RetJson, {
+export const APLRetPhase1 = PresetUtils.makePresetAPLRotation('P1 Ret', Phase1APLRetJSON, {
 	customCondition: player => player.getLevel() === 25,
 });
-export const APLP2Ret = PresetUtils.makePresetAPLRotation('P2 Ret/Shockadin', APLP2RetJson, {
+export const APLRetPhase2 = PresetUtils.makePresetAPLRotation('P2 Ret/Shockadin', Phase2APLRetJSON, {
 	customCondition: player => player.getLevel() === 40,
 });
-export const APLP3Ret = PresetUtils.makePresetAPLRotation('P3 Ret/Shockadin', APLP3RetJson, {
+export const APLRetPhase3 = PresetUtils.makePresetAPLRotation('P3 Ret/Shockadin', Phase3APLRetJSON, {
 	customCondition: player => player.getLevel() === 50,
 });
-export const APLSealStacking = PresetUtils.makePresetAPLRotation('Seal Stacking', APLSealStackingJson, {
+export const APLExodinPhase8 = PresetUtils.makePresetAPLRotation('P8 Exodin', Phase8APLExodinJSON, {
 	customCondition: player => player.getLevel() === 60,
 });
-export const APLShockadin1H = PresetUtils.makePresetAPLRotation('Shockadin 1H', APLShockadin1HJson, {
+export const APLSealStackingPhase8 = PresetUtils.makePresetAPLRotation('P8 Seal Stacking', Phase8APLSealStackingJSON, {
 	customCondition: player => player.getLevel() === 60,
 });
-export const APLShockadin2H = PresetUtils.makePresetAPLRotation('Shockadin 2H', APLShockadin2HJson, {
+export const APLShockadinPhase8 = PresetUtils.makePresetAPLRotation('P8 Shockadin', Phase8APLShockadinJSON, {
 	customCondition: player => player.getLevel() === 60,
 });
-export const APLExodin = PresetUtils.makePresetAPLRotation('Exodin', APLExodinJson, {
+export const APLTwistingPhase8 = PresetUtils.makePresetAPLRotation('P8 Twisting', Phase8APLTwistingJSON, {
 	customCondition: player => player.getLevel() === 60,
 });
-export const APLExodinFastStack = PresetUtils.makePresetAPLRotation('Exodin Fast Stack', APLExodinFastStackJson, {
-	customCondition: player => player.getLevel() === 60,
-});
-export const APLTwisting = PresetUtils.makePresetAPLRotation('Twist', APLTwistingJson, {
+export const APLWrathLikePhase8 = PresetUtils.makePresetAPLRotation('P8 Wrath-like', Phase8APLWrathLikeJSON, {
 	customCondition: player => player.getLevel() === 60,
 });
 
 export const APLPresets = {
-	[Phase.Phase1]: [APLP1Ret],
-	[Phase.Phase2]: [APLP2Ret],
-	[Phase.Phase3]: [APLP3Ret],
+	[Phase.Phase1]: [APLRetPhase1],
+	[Phase.Phase2]: [APLRetPhase2],
+	[Phase.Phase3]: [APLRetPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 	[Phase.Phase6]: [],
-	[Phase.Phase7]: [APLTwisting, APLExodin, APLSealStacking, APLShockadin1H, APLShockadin2H, APLExodinFastStack],
+	[Phase.Phase7]: [],
+	[Phase.Phase8]: [APLExodinPhase8, APLSealStackingPhase8, APLShockadinPhase8, APLTwistingPhase8, APLWrathLikePhase8],
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 	25: APLPresets[Phase.Phase1][0],
 	40: APLPresets[Phase.Phase2][0],
 	50: APLPresets[Phase.Phase3][0],
-	60: APLPresets[Phase.Phase7][0],
+	60: APLPresets[Phase.Phase8][0],
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -172,127 +165,48 @@ export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
 // Default talents. Uses the wowhead calculator format, make the talents on
 // https://wowhead.com/classic/talent-calc and copy the numbers in the url.
 
-export const P1RetTalents = PresetUtils.makePresetTalents('P1 Ret', SavedTalents.create({ talentsString: '--05230051' }), {
+export const TalentsRetPhase1 = PresetUtils.makePresetTalents('P1 Ret', SavedTalents.create({ talentsString: '--05230051' }), {
 	customCondition: player => player.getLevel() === 25,
 });
 
-export const P2RetTalents = PresetUtils.makePresetTalents('P2 Ret', SavedTalents.create({ talentsString: '--532300512003151' }), {
+export const TalentsRetPhase2 = PresetUtils.makePresetTalents('P2 Ret', SavedTalents.create({ talentsString: '--532300512003151' }), {
 	customCondition: player => player.getLevel() === 40,
 });
 
-export const P2ShockadinTalents = PresetUtils.makePresetTalents('P2 Shockadin', SavedTalents.create({ talentsString: '55050100521151--' }), {
+export const TalentsShockadinPhase2 = PresetUtils.makePresetTalents('P2 Shockadin', SavedTalents.create({ talentsString: '55050100521151--' }), {
 	customCondition: player => player.getLevel() === 40,
 });
 
-export const P3RetTalents = PresetUtils.makePresetTalents('P3 Ret', SavedTalents.create({ talentsString: '500501--53230051200315' }), {
+export const TalentsRetPhase3 = PresetUtils.makePresetTalents('P3 Ret', SavedTalents.create({ talentsString: '500501--53230051200315' }), {
 	customCondition: player => player.getLevel() === 50,
 });
 
-export const RetTalents = PresetUtils.makePresetTalents('Exodin / Stacking / Twisting', SavedTalents.create({ talentsString: '500501-503-52230351200315' }), {
+export const TalentsRetPhase8 = PresetUtils.makePresetTalents('P8 Ret', SavedTalents.create({ talentsString: '500501-503-52230351200315' }), {
 	customCondition: player => player.getLevel() === 60,
 });
 
-export const ShockadinTalents = PresetUtils.makePresetTalents('Shockadin', SavedTalents.create({ talentsString: '55053100501051--052303502' }), {
+export const TalentsShockadinPhase8 = PresetUtils.makePresetTalents('P8 Shockadin', SavedTalents.create({ talentsString: '55053100501051--052303502' }), {
 	customCondition: player => player.getLevel() === 60,
 });
 
 export const TalentPresets = {
-	[Phase.Phase1]: [P1RetTalents],
-	[Phase.Phase2]: [P2RetTalents, P2ShockadinTalents],
-	[Phase.Phase3]: [P3RetTalents],
+	[Phase.Phase1]: [TalentsRetPhase1],
+	[Phase.Phase2]: [TalentsRetPhase2, TalentsShockadinPhase2],
+	[Phase.Phase3]: [TalentsRetPhase3],
 	[Phase.Phase4]: [],
 	[Phase.Phase5]: [],
 	[Phase.Phase6]: [],
-	[Phase.Phase7]: [RetTalents, ShockadinTalents],
+	[Phase.Phase7]: [],
+	[Phase.Phase8]: [TalentsRetPhase8, TalentsShockadinPhase8],
 };
 
-export const PresetBuildP7Twisting = PresetUtils.makePresetBuild('Twisting', {
-	gear: Phase7TwistingNaxxGear,
-	talents: RetTalents,
-	rotation: APLTwisting,
-	settings: {
-		name: 'Twisting',
-		specOptions: {
-			aura: PaladinAura.SanctityAura,
-			isUsingCrusaderStrikeStopAttack: true,
-			isUsingDivineStormStopAttack: true,
-			isUsingExorcismStopAttack: true,
-			isUsingJudgementStopAttack: true,
-			isUsingManualStartAttack: false,
-			primarySeal: PaladinSeal.Martyrdom,
-		},
-	},
-});
-export const PresetBuildP7SealStacking = PresetUtils.makePresetBuild('Seal Stacking', {
-	gear: Phase7SealStackingNaxxGear,
-	talents: RetTalents,
-	rotation: APLSealStacking,
-	settings: {
-		name: 'Seal Stacking',
-		specOptions: {
-			aura: PaladinAura.SanctityAura,
-			isUsingCrusaderStrikeStopAttack: false,
-			isUsingDivineStormStopAttack: false,
-			isUsingExorcismStopAttack: false,
-			isUsingJudgementStopAttack: false,
-			isUsingManualStartAttack: false,
-			primarySeal: PaladinSeal.Martyrdom,
-		},
-	},
-});
-export const PresetBuildP7Shockadin1H = PresetUtils.makePresetBuild('1H Shockadin', {
-	gear: Phase7Shockadin1HNaxxGear,
-	talents: ShockadinTalents,
-	rotation: APLShockadin1H,
-	settings: {
-		name: '1H Shockadin',
-		specOptions: {
-			aura: PaladinAura.NoPaladinAura,
-			isUsingCrusaderStrikeStopAttack: false,
-			isUsingDivineStormStopAttack: false,
-			isUsingExorcismStopAttack: false,
-			isUsingJudgementStopAttack: false,
-			isUsingManualStartAttack: false,
-			primarySeal: PaladinSeal.Righteousness,
-		},
-	},
-});
-export const PresetBuildP7Shockadin2H = PresetUtils.makePresetBuild('2H Shockadin', {
-	gear: Phase7Shockadin2HNaxxGear,
-	talents: ShockadinTalents,
-	rotation: APLShockadin2H,
-	settings: {
-		name: '2H Shockadin',
-		specOptions: {
-			aura: PaladinAura.NoPaladinAura,
-			isUsingCrusaderStrikeStopAttack: false,
-			isUsingDivineStormStopAttack: false,
-			isUsingExorcismStopAttack: false,
-			isUsingJudgementStopAttack: false,
-			isUsingManualStartAttack: false,
-			primarySeal: PaladinSeal.Martyrdom,
-		},
-	},
-});
-export const PresetBuildP7Exodin = PresetUtils.makePresetBuild('Exodin', {
-	gear: Phase7ExodinNaxxGear,
-	talents: RetTalents,
-	rotation: APLExodin,
-	settings: {
-		name: 'Exodin',
-		specOptions: {
-			aura: PaladinAura.SanctityAura,
-			isUsingCrusaderStrikeStopAttack: false,
-			isUsingDivineStormStopAttack: false,
-			isUsingExorcismStopAttack: false,
-			isUsingJudgementStopAttack: false,
-			isUsingManualStartAttack: false,
-			primarySeal: PaladinSeal.Martyrdom,
-		},
-	},
-});
+export const PresetBuildExodinPhase8 = PresetUtils.makePresetBuildFromJSON('P8 Exodin', Spec.SpecRetributionPaladin, Phase8BuildExodinJSON);
+export const PresetBuildSealStackingPhase8 = PresetUtils.makePresetBuildFromJSON('P8 Seal Stacking', Spec.SpecRetributionPaladin, Phase8BuildSealStackingJSON);
+export const PresetBuildShockadinPhase8 = PresetUtils.makePresetBuildFromJSON('P8 Shockadin', Spec.SpecRetributionPaladin, Phase8BuildShockadinJSON);
+export const PresetBuildTwistingPhase8 = PresetUtils.makePresetBuildFromJSON('P8 Twisting', Spec.SpecRetributionPaladin, Phase8BuildTwistingJSON);
+export const PresetBuildWrathLikePhase8 = PresetUtils.makePresetBuildFromJSON('P8 Wrath-like', Spec.SpecRetributionPaladin, Phase8BuildWrathLikeJSON);
 
-export const DefaultTalents = TalentPresets[Phase.Phase7][0];
+export const DefaultTalents = TalentPresets[Phase.Phase8][0];
 
 ///////////////////////////////////////////////////////////////////////////
 //                                 Options
@@ -311,10 +225,10 @@ export const DefaultConsumes = Consumes.create({
 	defaultPotion: Potions.MajorManaPotion,
 	dragonBreathChili: true,
 	enchantedSigil: EnchantedSigil.WrathOfTheStormSigil,
-	fillerExplosive: Explosive.ExplosiveStratholmeHolyWater,
+	fillerExplosive: Explosive.ExplosiveUnknown,
 	firePowerBuff: FirePowerBuff.ElixirOfGreaterFirepower,
 	flask: Flask.FlaskOfAncientKnowledge,
-	food: Food.FoodSmokedDesertDumpling,
+	food: Food.FoodProwlerSteak,
 	healthElixir: HealthElixir.ElixirOfFortitude,
 	mainHandImbue: WeaponImbue.WildStrikes,
 	manaRegenElixir: ManaRegenElixir.MagebloodPotion,
@@ -326,7 +240,7 @@ export const DefaultConsumes = Consumes.create({
 	},
 	offHandImbue: WeaponImbue.EnchantedRepellent,
 	sapperExplosive: SapperExplosive.SapperFumigator,
-	sealOfTheDawn: SealOfTheDawn.SealOfTheDawnDamageR7,
+	sealOfTheDawn: SealOfTheDawn.SealOfTheDawnUnknown,
 	spellPowerBuff: SpellPowerBuff.ElixirOfTheMageLord,
 	strengthBuff: StrengthBuff.JujuPower,
 	zanzaBuff: ZanzaBuff.ROIDS,
