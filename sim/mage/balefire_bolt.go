@@ -26,7 +26,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 
 	damageMod := mage.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_MageBalefireBolt,
+		ClassMask: ClassSpellMask_MageBalefireBolt | ClassSpellMask_MagePyroblast,
 	})
 
 	statDeps := make([]*stats.StatDependency, maxStacks+1) // 5 stacks + zero conditions
