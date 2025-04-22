@@ -102,6 +102,7 @@ type Paladin struct {
 	holyShieldAura    [3]*core.Aura
 	holyShieldProc    [3]*core.Spell
 	redoubtAura       *core.Aura
+	righteousFuryAura *core.Aura
 	holyWrath         []*core.Spell
 	divineProtection  *core.Spell
 

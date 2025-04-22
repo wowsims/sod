@@ -25,7 +25,7 @@ func (paladin *Paladin) registerRighteousFury() {
 		FloatValue: rfThreatMultiplier,
 	})
 
-	rfAura := core.MakePermanent(&core.Aura{Label: "Righteous Fury", ActionID: actionID})
+	auraConfig := core.MakePermanent(&core.Aura{Label: "Righteous Fury", ActionID: actionID})
 
 	// Passive effects granted by Hand of Reckoning rune; only active if Righteous Fury is on.
 	if hasHoR {
@@ -54,12 +54,13 @@ func (paladin *Paladin) registerRighteousFury() {
 		// Gives you mana when healed by other friendly targets' spells equal to 25% of the amount healed.
 		horManaMetrics := paladin.NewManaMetrics(actionID)
 
-		rfAura.OnHealTaken = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		auraConfig.OnHealTaken = func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.IsOtherAction(proto.OtherAction_OtherActionHealingModel) {
 				manaGained := result.Damage * 0.25
 				paladin.AddMana(sim, manaGained, horManaMetrics)
 			}
 		}
 	}
-	paladin.RegisterAura(*rfAura)
+
+	paladin.righteousFuryAura = paladin.RegisterAura(*auraConfig)
 }

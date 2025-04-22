@@ -268,6 +268,11 @@ func (paladin *Paladin) registerShockAndAwe() {
 					return
 				}
 
+				// Does not work when RF is active
+				if paladin.righteousFuryAura != nil && paladin.righteousFuryAura.IsActive() {
+					return
+				}
+
 				if spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto) || spell.Matches(ClassSpellMask_PaladinCrusaderStrike|ClassSpellMask_PaladinDivineStorm) {
 					procSpell.Cast(sim, result.Target)
 				}
