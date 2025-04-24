@@ -220,8 +220,8 @@ func (paladin *Paladin) registerShockAndAwe() {
 	dep := paladin.NewDynamicStatDependency(stats.Intellect, stats.SpellDamage, 2.0)
 
 	shockAndAweAura := paladin.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: 462834},
 		Label:    "Shock and Awe",
+		ActionID: core.ActionID{SpellID: 462832},
 		Duration: time.Second * 60,
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			paladin.EnableDynamicStatDep(sim, dep)
@@ -233,16 +233,21 @@ func (paladin *Paladin) registerShockAndAwe() {
 		},
 	})
 
+	var sunlightAura *core.Aura
+
 	if paladin.Talents.HolyShock && paladin.hasRune(proto.PaladinRune_RuneWaistInfusionOfLight) {
-		procSpell := paladin.RegisterSpell(core.SpellConfig{
-			ActionID:         core.ActionID{SpellID: int32(proto.PaladinRune_RuneCloakShockAndAwe)},
-			SpellSchool:      core.SpellSchoolHoly,
-			DefenseType:      core.DefenseTypeMagic,
-			ProcMask:         core.ProcMaskEmpty,
-			Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		sunlightSpell := paladin.RegisterSpell(core.SpellConfig{
+			ActionID:       core.ActionID{SpellID: 1239548},
+			SpellSchool:    core.SpellSchoolHoly,
+			DefenseType:    core.DefenseTypeMagic,
+			ProcMask:       core.ProcMaskEmpty,
+			ClassSpellMask: ClassSpellMask_PaladinSunlight,
+			Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
 			BonusCoefficient: 1,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
+
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				bonusCrit := 0.0
 
@@ -256,8 +261,9 @@ func (paladin *Paladin) registerShockAndAwe() {
 			},
 		})
 
-		damageTriggerAura := paladin.RegisterAura(core.Aura{
-			Label:    "Shock and Awe Damage",
+		sunlightAura = paladin.RegisterAura(core.Aura{
+			Label:    "Sunlight",
+			ActionID: core.ActionID{SpellID: 1239543},
 			Duration: time.Second * 10,
 			OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				if spell.Flags.Matches(core.SpellFlagSuppressEquipProcs | core.SpellFlagSuppressWeaponProcs) {
@@ -274,29 +280,23 @@ func (paladin *Paladin) registerShockAndAwe() {
 				}
 
 				if spell.ProcMask.Matches(core.ProcMaskMeleeMHAuto) || spell.Matches(ClassSpellMask_PaladinCrusaderStrike|ClassSpellMask_PaladinDivineStorm) {
-					procSpell.Cast(sim, result.Target)
+					sunlightSpell.Cast(sim, result.Target)
 				}
 			},
 		})
-
-		shockAndAweAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-			damageTriggerAura.Activate(sim)
-		}).ApplyOnRefresh(func(aura *core.Aura, sim *core.Simulation) {
-			damageTriggerAura.Activate(sim)
-		})
 	}
 
-	paladin.RegisterAura(core.Aura{
-		Label:    "Shock and Awe (rune)",
-		Duration: core.NeverExpires,
-		OnReset: func(aura *core.Aura, sim *core.Simulation) {
-			aura.Activate(sim)
-		},
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Matches(ClassSpellMask_PaladinHolyShock) {
-				return
-			}
+	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
+		Name:           "Shock and Awe Trigger",
+		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		ClassSpellMask: ClassSpellMask_PaladinHolyShock,
+		Outcome:        core.OutcomeLanded,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			shockAndAweAura.Activate(sim)
+
+			if sunlightAura != nil {
+				sunlightAura.Activate(sim)
+			}
 		},
 	})
 }
