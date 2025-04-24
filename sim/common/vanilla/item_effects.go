@@ -526,7 +526,8 @@ func init() {
 	// https://www.wowhead.com/classic/item=239301/corrupted-ashbringer
 	// Chance on hit: Steals 475 to 525 life from up to 5 enemies, granting 30 Strength or Agility per enemy siphoned, stacking up to 5 times.
 	// PPM confirmed 5.0
-	itemhelpers.CreateWeaponProcSpell(CorruptedAshbringerLego, "Corrupted Ashbringer (Legendary)", 5.0, func(character *core.Character) *core.Spell {
+	core.NewItemEffect(CorruptedAshbringerLego, func(agent core.Agent) {
+		character := agent.GetCharacter()
 		actionID := core.ActionID{SpellID: 1231330}
 		healthMetrics := character.NewHealthMetrics(actionID)
 
@@ -552,7 +553,7 @@ func init() {
 
 		targetCount := int(min(character.Env.GetNumTargets(), 5))
 
-		return character.RegisterSpell(core.SpellConfig{
+		procSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    actionID,
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
@@ -579,6 +580,23 @@ func init() {
 				}
 			},
 		})
+
+		dpm := character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(CorruptedAshbringerLego, 5.0, 0)
+
+		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Consumption Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			ICD:               time.Millisecond * 100,
+			DPM:               dpm,
+			DPMProcCheck:      core.DPMProc,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				procSpell.Cast(sim, result.Target)
+			},
+		})
+
+		character.ItemSwap.RegisterProc(CorruptedAshbringerLego, triggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=17068/deathbringer
