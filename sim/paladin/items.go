@@ -381,28 +381,27 @@ func init() {
 	core.NewItemEffect(Leogan, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
 
-		gcdMod := paladin.AddDynamicMod(core.SpellModConfig{
+		leoganAura := core.MakePermanent(paladin.RegisterAura(core.Aura{
+			Label:      "Leogan",
+			ActionID:   core.ActionID{SpellID: 1234299},
+			BuildPhase: core.CharacterBuildPhaseGear,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				paladin.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly] += 3
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				paladin.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly] -= 3
+			},
+		})).AttachSpellMod(core.SpellModConfig{
 			Kind:      core.SpellMod_GlobalCooldown_Flat,
 			ClassMask: ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinHolyWrath,
 			TimeValue: -time.Millisecond * 500,
 		})
 
-		leoganGCDAura := core.MakePermanent(paladin.RegisterAura(core.Aura{
-			Label:    "Leogan",
-			ActionID: core.ActionID{SpellID: 1234299},
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				gcdMod.Activate()
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				gcdMod.Deactivate()
-			},
-		}))
-
 		paladin.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(sim *core.Simulation, slot proto.ItemSlot, _ bool) {
 			if paladin.ItemSwap.GetEquippedItemBySlot(slot).ID == Leogan {
-				leoganGCDAura.Activate(sim)
+				leoganAura.Activate(sim)
 			} else {
-				leoganGCDAura.Deactivate(sim)
+				leoganAura.Deactivate(sim)
 			}
 		})
 

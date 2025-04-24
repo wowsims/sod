@@ -50,12 +50,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin2H-Phase8-Lvl60-StatWeights-Default"
  value: {
-  weights: 4.49823
-  weights: 0.11967
+  weights: 4.54316
+  weights: 3.20288
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.95163
+  weights: 0.98186
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 42.22412
-  weights: 4.96145
+  weights: 47.46851
+  weights: 5.38828
   weights: 0
   weights: 0
-  weights: 1.61632
-  weights: 118.12045
-  weights: 44.36352
+  weights: 1.63247
+  weights: 115.54542
+  weights: 40.31422
   weights: 0
   weights: 0
   weights: 0
@@ -99,35 +99,35 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 2369.5844
-  tps: 1677.81919
-  dtps: 4.3549
+  dps: 2377.78671
+  tps: 1683.54266
+  dtps: 4.62431
   hps: 60.66857
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 2379.99608
-  tps: 1685.4625
-  dtps: 4.3549
+  dps: 2387.81486
+  tps: 1690.92115
+  dtps: 4.62431
   hps: 60.66857
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 2492.59135
-  tps: 1764.81854
-  dtps: 4.3549
+  dps: 2501.24042
+  tps: 1770.8582
+  dtps: 4.62431
   hps: 60.66857
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 4373.87743
-  tps: 3086.29132
+  dps: 4402.61044
+  tps: 3106.41478
   dtps: 2.60127
   hps: 72.25857
  }
@@ -135,78 +135,78 @@ dps_results: {
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1988.96314
-  tps: 1404.82141
-  dtps: 4.51368
+  dps: 1994.73987
+  tps: 1408.8521
+  dtps: 4.61541
   hps: 56.65273
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Average-Default"
  value: {
-  dps: 8771.38975
-  tps: 6159.78314
-  dtps: 3.70244
-  hps: 79.14281
+  dps: 8896.77297
+  tps: 6247.60013
+  dtps: 3.66866
+  hps: 79.11028
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-FullBuffs-p8-shockadin-LongMultiTarget"
  value: {
-  dps: 14864.58828
-  tps: 10801.61822
-  dtps: 3.01176
-  hps: 79.7026
+  dps: 15109.85825
+  tps: 10976.91849
+  dtps: 2.76816
+  hps: 79.70667
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-FullBuffs-p8-shockadin-LongSingleTarget"
  value: {
-  dps: 8858.9392
-  tps: 6221.12335
-  dtps: 2.76777
-  hps: 79.38337
+  dps: 8964.03146
+  tps: 6294.70867
+  dtps: 2.69407
+  hps: 79.41997
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-FullBuffs-p8-shockadin-ShortSingleTarget"
  value: {
-  dps: 8933.70691
-  tps: 6274.43003
+  dps: 9050.13711
+  tps: 6355.89631
   dtps: 13.00637
-  hps: 81.71967
+  hps: 81.63833
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-NoBuffs-p8-shockadin-LongMultiTarget"
  value: {
-  dps: 6032.70182
-  tps: 4581.09048
-  dtps: 3.61945
+  dps: 6072.46068
+  tps: 4610.83499
+  dtps: 3.38477
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-NoBuffs-p8-shockadin-LongSingleTarget"
  value: {
-  dps: 3689.11623
-  tps: 2600.31658
-  dtps: 2.98972
+  dps: 3738.41982
+  tps: 2634.79253
+  dtps: 2.78659
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-NoBuffs-p8-shockadin-ShortSingleTarget"
  value: {
-  dps: 3748.4737
-  tps: 2642.42025
+  dps: 3813.93237
+  tps: 2688.35524
   dtps: 12.98637
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 7997.05976
-  tps: 5617.2274
-  dtps: 2.68417
-  hps: 70.8942
+  dps: 8141.43303
+  tps: 5718.28302
+  dtps: 3.11416
+  hps: 70.8759
  }
 }
