@@ -111,6 +111,7 @@ type Paladin struct {
 	sealOfRighteousness *core.Spell
 	sealOfCommand       *core.Spell
 	sealOfMartyrdom     *core.Spell
+	sealOfTheCrusader   *core.Spell
 
 	// Set bonus specific
 	holyPowerAura                  *core.Aura
@@ -308,6 +309,8 @@ func (paladin *Paladin) getPrimarySealSpell(primarySeal proto.PaladinSeal) *core
 		return paladin.sealOfCommand
 	case proto.PaladinSeal_Righteousness:
 		return paladin.sealOfRighteousness
+	case proto.PaladinSeal_Crusader:
+		return paladin.sealOfTheCrusader
 	default:
 		return paladin.sealOfRighteousness
 	}
