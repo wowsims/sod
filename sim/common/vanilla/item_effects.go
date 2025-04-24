@@ -564,11 +564,22 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				results := make([]*core.SpellResult, targetCount)
 				for i := 0; i < targetCount; i++ {
-					result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeAlwaysHit)
-					character.GainHealth(sim, result.Damage, healthMetrics)
+					results[i] = spell.CalcDamage(sim, target, sim.Roll(475, 525), spell.OutcomeAlwaysHit)
 					target = sim.Environment.NextTargetUnit(target)
 				}
+
+				// Consumption has the flag "Missile Speed is Delay (in sec)", with a MissileSpeed of 1
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + time.Second,
+					OnAction: func(sim *core.Simulation) {
+						for _, result := range results {
+							spell.DealDamage(sim, result)
+							character.GainHealth(sim, result.Damage, healthMetrics)
+						}
+					},
+				})
 
 				// Confirmed by Zirene to pick the highest of your Agility or Strength
 				if character.GetStat(stats.Agility) >= character.GetStat(stats.Strength) {

@@ -63,7 +63,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 28.35565
+  weights: 28.35147
   weights: 0.96146
   weights: 0
   weights: 0
@@ -126,8 +126,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 6344.36767
-  tps: 5012.8601
+  dps: 6341.9374
+  tps: 5010.42984
   dtps: 2.83591
   hps: 69.3021
  }
@@ -144,8 +144,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-Average-Default"
  value: {
-  dps: 10985.80995
-  tps: 8620.60567
+  dps: 10984.83866
+  tps: 8619.63439
   dtps: 3.02386
   hps: 79.37989
  }
@@ -180,32 +180,32 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-Settings-Human-p8-twist-p8-twist-p8-twist-NoBuffs-p8-twist-LongMultiTarget"
  value: {
-  dps: 8457.65233
-  tps: 7891.31839
+  dps: 8447.6147
+  tps: 7881.28076
   dtps: 2.62796
  }
 }
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-Settings-Human-p8-twist-p8-twist-p8-twist-NoBuffs-p8-twist-LongSingleTarget"
  value: {
-  dps: 4452.76163
-  tps: 3524.62932
+  dps: 4451.55512
+  tps: 3523.4228
   dtps: 2.70051
  }
 }
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-Settings-Human-p8-twist-p8-twist-p8-twist-NoBuffs-p8-twist-ShortSingleTarget"
  value: {
-  dps: 4621.10917
-  tps: 3665.89448
+  dps: 4612.02955
+  tps: 3656.81486
   dtps: 13.50256
  }
 }
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 10299.87502
-  tps: 8085.85721
+  dps: 10299.75401
+  tps: 8085.73621
   dtps: 2.8734
   hps: 74.31427
  }
