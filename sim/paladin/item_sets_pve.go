@@ -666,7 +666,7 @@ func (paladin *Paladin) applyPaladinT1Ret6P() {
 		},
 	})).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  ClassSpellMask_PaladinSeals,
+		ClassMask:  ClassSpellMask_PaladinSeals | ClassSpellMask_PaladinSunlight,
 		FloatValue: SealbearerDamageModifier,
 	})
 }
@@ -858,7 +858,7 @@ func (paladin *Paladin) applyPaladinZG5P() {
 	// Reduces the cooldown of your Exorcism spell by 3 sec and increases its damage done by 50%.
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		Label:    bonusLabel,
-		ActionID: core.ActionID{SpellID: PaladinZG3P},
+		ActionID: core.ActionID{SpellID: PaladinZG5P},
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
 		ClassMask: ClassSpellMask_PaladinExorcism,
