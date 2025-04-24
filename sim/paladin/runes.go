@@ -288,7 +288,6 @@ func (paladin *Paladin) registerShockAndAwe() {
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
 		Name:           "Shock and Awe Trigger",
-		ActionID:       core.ActionID{SpellID: 462834},
 		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
 		ClassSpellMask: ClassSpellMask_PaladinHolyShock,
 		Outcome:        core.OutcomeLanded,
