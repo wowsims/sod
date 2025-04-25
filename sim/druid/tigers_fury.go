@@ -49,7 +49,11 @@ func (druid *Druid) registerTigersFurySpell() {
 		},
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
-			druid.TigersFuryAura.Activate(sim)
+			// This condition is here because of T3.5 6pc.
+			// Using TF doesn't reset the duration back to 6s if it currently lasts longer.
+			if !druid.TigersFuryAura.IsActive() || druid.TigersFuryAura.RemainingDuration(sim) < druid.TigersFuryAura.Duration {
+				druid.TigersFuryAura.Activate(sim)
+			}
 		},
 	})
 
@@ -80,7 +84,11 @@ func (druid *Druid) registerTigersFurySpellKotJ() {
 
 		ApplyEffects: func(sim *core.Simulation, _ *core.Unit, _ *core.Spell) {
 			druid.AddEnergy(sim, 60.0, energyMetrics)
-			druid.TigersFuryAura.Activate(sim)
+			// This condition is here because of T3.5 6pc.
+			// Using TF doesn't reset the duration back to 6s if it currently lasts longer.
+			if !druid.TigersFuryAura.IsActive() || druid.TigersFuryAura.RemainingDuration(sim) < druid.TigersFuryAura.Duration {
+				druid.TigersFuryAura.Activate(sim)
+			}
 		},
 	})
 
