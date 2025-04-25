@@ -54,6 +54,18 @@ export const PrimarySealSelection = InputHelpers.makeSpecOptionsEnumIconInput<Sp
 			actionId: () => ActionId.fromSpellId(407798),
 			value: PaladinSeal.Martyrdom,
 		},
+		{
+			actionId: player =>
+				player.getMatchingSpellActionId([
+					{ id: 21082, minLevel: 6, maxLevel: 11 },
+					{ id: 20162, minLevel: 12, maxLevel: 21 },
+					{ id: 20305, minLevel: 22, maxLevel: 31 },
+					{ id: 20306, minLevel: 32, maxLevel: 41 },
+					{ id: 20307, minLevel: 42, maxLevel: 51 },
+					{ id: 20308, minLevel: 52 },
+				]),
+			value: PaladinSeal.Crusader,
+		},
 	],
 	// changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) => player.changeEmitter,
 	changeEmitter: (player: Player<Spec.SpecRetributionPaladin>) =>

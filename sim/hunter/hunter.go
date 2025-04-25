@@ -69,7 +69,7 @@ const (
 
 	ClassSpellMask_HunterTraps   = ClassSpellMask_HunterExplosiveTrap | ClassSpellMask_HunterFreezingTrap | ClassSpellMask_HunterImmolationTrap
 	ClassSpellMask_HunterShots   = ClassSpellMask_HunterAimedShot | ClassSpellMask_HunterArcaneShot | ClassSpellMask_HunterChimeraShot | ClassSpellMask_HunterExplosiveShot | ClassSpellMask_HunterKillShot | ClassSpellMask_HunterMultiShot | ClassSpellMask_HunterSteadyShot
-	ClassSpellMask_HunterStrikes = ClassSpellMask_HunterFlankingStrike | ClassSpellMask_HunterRaptorStrike | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterWyvernStrike
+	ClassSpellMask_HunterStrikes = ClassSpellMask_HunterFlankingStrike | ClassSpellMask_HunterRaptorStrike | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterWyvernStrike | ClassSpellMask_HunterCarve | ClassSpellMask_HunterCarveHit
 	ClassSpellMask_HunterStings  = ClassSpellMask_HunterSerpentSting | ClassSpellMask_HunterSoFSerpentSting
 )
 

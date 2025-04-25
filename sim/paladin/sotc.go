@@ -84,7 +84,7 @@ func (paladin *Paladin) registerSealOfTheCrusader() {
 
 		paladin.aurasSotC = append(paladin.aurasSotC, aura)
 
-		paladin.RegisterSpell(core.SpellConfig{
+		paladin.sealOfTheCrusader = paladin.RegisterSpell(core.SpellConfig{
 			ActionID:    aura.ActionID,
 			SpellSchool: core.SpellSchoolHoly,
 			Flags:       core.SpellFlagAPL | core.SpellFlagBatchStartAttackMacro,
