@@ -190,7 +190,7 @@
     }
   },
   "encounter": {
-    "duration": 60,
+    "duration": 180,
     "durationVariation": 15,
     "executeProportion20": 0.2,
     "executeProportion25": 0.25,
