@@ -398,16 +398,16 @@ stat_weights_results: {
   weights: 0
   weights: 0.28173
   weights: 0
-  weights: 3.54833
+  weights: 3.58876
   weights: 0
   weights: 0
-  weights: 3.54833
+  weights: 3.58876
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 13.35868
+  weights: 13.3702
   weights: 0
   weights: 0
   weights: 0
@@ -447,16 +447,16 @@ stat_weights_results: {
   weights: 0
   weights: 0.05809
   weights: 0
-  weights: 3.37164
+  weights: 3.40866
   weights: 0
   weights: 0
-  weights: 3.37164
+  weights: 3.40866
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 11.09895
+  weights: 11.14026
   weights: 0
   weights: 0
   weights: 0
@@ -960,8 +960,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1960.61131
-  tps: 1398.04476
+  dps: 1969.64962
+  tps: 1404.37158
  }
 }
 dps_results: {
@@ -974,57 +974,57 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 6264.04717
-  tps: 4411.9199
+  dps: 6325.77084
+  tps: 4455.12647
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-FullBuffs-p6_frost-LongMultiTarget"
  value: {
-  dps: 12190.97224
-  tps: 9078.54866
+  dps: 12256.3584
+  tps: 9124.31897
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-FullBuffs-p6_frost-LongSingleTarget"
  value: {
-  dps: 6317.78759
-  tps: 4449.55227
+  dps: 6380.67015
+  tps: 4493.57006
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-FullBuffs-p6_frost-ShortSingleTarget"
  value: {
-  dps: 7336.87673
-  tps: 5166.2613
+  dps: 7415.44556
+  tps: 5221.25948
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-NoBuffs-p6_frost-LongMultiTarget"
  value: {
-  dps: 6290.60332
-  tps: 4693.27349
+  dps: 6327.11982
+  tps: 4718.83504
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-NoBuffs-p6_frost-LongSingleTarget"
  value: {
-  dps: 3131.35767
-  tps: 2206.489
+  dps: 3166.13297
+  tps: 2230.83171
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-NoBuffs-p6_frost-ShortSingleTarget"
  value: {
-  dps: 3766.23542
-  tps: 2660.77845
+  dps: 3810.20618
+  tps: 2691.55798
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 6317.78759
-  tps: 4449.55227
+  dps: 6380.67015
+  tps: 4493.57006
  }
 }
 dps_results: {
@@ -1079,8 +1079,8 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 2666.22354
-  tps: 1581.1897
+  dps: 2674.91033
+  tps: 1587.27045
  }
 }
 dps_results: {
@@ -1093,56 +1093,56 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Average-Default"
  value: {
-  dps: 6074.05027
-  tps: 3915.8072
+  dps: 6133.98686
+  tps: 3957.76281
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-LongMultiTarget"
  value: {
-  dps: 11748.68827
-  tps: 8404.90192
+  dps: 11810.91773
+  tps: 8448.46254
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-LongSingleTarget"
  value: {
-  dps: 6096.23509
-  tps: 3932.63083
+  dps: 6156.57674
+  tps: 3974.86999
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-ShortSingleTarget"
  value: {
-  dps: 7832.67662
-  tps: 5086.10859
+  dps: 7918.97579
+  tps: 5146.51801
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-LongMultiTarget"
  value: {
-  dps: 5639.41678
-  tps: 4047.91068
+  dps: 5671.83104
+  tps: 4070.60066
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-LongSingleTarget"
  value: {
-  dps: 2752.10075
-  tps: 1772.50196
+  dps: 2783.39546
+  tps: 1794.40825
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-ShortSingleTarget"
  value: {
-  dps: 3613.13518
-  tps: 2353.53835
+  dps: 3658.10677
+  tps: 2385.01847
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 6096.23509
-  tps: 3932.63083
+  dps: 6156.57674
+  tps: 3974.86999
  }
 }

@@ -78,8 +78,9 @@ func (mage *Mage) registerIceLanceSpell() {
 	}
 
 	glaciateDamageMod := mage.AddDynamicMod(core.SpellModConfig{
-		ClassMask: ClassSpellMask_MageIceLance | ClassSpellMask_MageDeepFreeze,
-		Kind:      core.SpellMod_DamageDone_Flat,
+		ClassMask:  ClassSpellMask_MageIceLance | ClassSpellMask_MageDeepFreeze,
+		Kind:       core.SpellMod_DamageDone_Pct,
+		FloatValue: 1.0,
 	})
 
 	mage.GlaciateAuras = mage.NewEnemyAuraArray(func(unit *core.Unit, _ int32) *core.Aura {
@@ -95,12 +96,12 @@ func (mage *Mage) registerIceLanceSpell() {
 		Label: "Glaciate",
 		OnApplyEffects: func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_MageIceLance | ClassSpellMask_MageDeepFreeze) {
-				modifier := int64(0)
+				multiplier := 1.0
 				if glaciateAura := mage.GlaciateAuras.Get(target); glaciateAura.IsActive() {
-					modifier += int64(20 * glaciateAura.GetStacks())
+					multiplier += 0.20 * float64(glaciateAura.GetStacks())
 				}
 
-				glaciateDamageMod.UpdateIntValue(modifier)
+				glaciateDamageMod.UpdateFloatValue(multiplier)
 				glaciateDamageMod.Activate()
 			}
 		},
