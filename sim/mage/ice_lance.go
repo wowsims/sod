@@ -32,7 +32,7 @@ func (mage *Mage) registerIceLanceSpell() {
 		SpellSchool:    core.SpellSchoolFrost,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellDamage,
-		Flags:          core.SpellFlagAPL,
+		Flags:          core.SpellFlagAPL | core.SpellFlagBinary,
 
 		MissileSpeed: 38,
 		MetricSplits: 11, // Possible 8 total stacks

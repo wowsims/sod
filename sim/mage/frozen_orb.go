@@ -77,10 +77,10 @@ func (mage *Mage) registerFrozenOrbTickSpell() {
 	mage.FrozenOrbTick = mage.RegisterSpell(core.SpellConfig{
 		ActionID:       core.ActionID{SpellID: 440809},
 		ClassSpellMask: ClassSpellMask_MageFrozenOrbTick,
-		SpellSchool:    core.SpellSchoolFrost | core.SpellSchoolArcane,
+		SpellSchool:    core.SpellSchoolFrost,
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
-		Flags:          SpellFlagChillSpell | core.SpellFlagNotAProc | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:          SpellFlagChillSpell | core.SpellFlagNotAProc | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagBinary,
 
 		BonusCoefficient: spellCoef,
 		DamageMultiplier: 1,
@@ -88,7 +88,7 @@ func (mage *Mage) registerFrozenOrbTickSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			for _, aoeTarget := range sim.Encounter.TargetUnits {
-				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicCrit)
+				spell.CalcAndDealDamage(sim, aoeTarget, baseDamage, spell.OutcomeMagicHitAndCrit)
 			}
 		},
 	})

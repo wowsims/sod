@@ -347,18 +347,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.62465
+  weights: 1.21371
   weights: 0
-  weights: 2.17414
-  weights: 0
-  weights: 0
-  weights: 2.17414
+  weights: 2.17656
   weights: 0
   weights: 0
+  weights: 2.17656
   weights: 0
   weights: 0
   weights: 0
-  weights: 19.24963
+  weights: 0
+  weights: 0
+  weights: 19.51707
   weights: 0
   weights: 0
   weights: 0
@@ -396,18 +396,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.50658
+  weights: 0.28173
   weights: 0
-  weights: 3.48379
-  weights: 0
-  weights: 0
-  weights: 3.48379
+  weights: 3.54833
   weights: 0
   weights: 0
+  weights: 3.54833
   weights: 0
   weights: 0
   weights: 0
-  weights: 14.441
+  weights: 0
+  weights: 0
+  weights: 13.35868
   weights: 0
   weights: 0
   weights: 0
@@ -445,18 +445,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.18024
+  weights: 0.05809
   weights: 0
-  weights: 3.30223
-  weights: 0
-  weights: 0
-  weights: 3.30223
+  weights: 3.37164
   weights: 0
   weights: 0
+  weights: 3.37164
   weights: 0
   weights: 0
   weights: 0
-  weights: 11.01451
+  weights: 0
+  weights: 0
+  weights: 11.09895
   weights: 0
   weights: 0
   weights: 0
@@ -750,399 +750,399 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1241.56209
-  tps: 881.89098
+  dps: 1246.47245
+  tps: 885.36265
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 1134.38726
-  tps: 806.10317
+  dps: 1140.44889
+  tps: 810.34139
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1231.63324
-  tps: 874.7455
+  dps: 1236.2199
+  tps: 878.1662
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 1124.0168
-  tps: 798.82102
+  dps: 1128.50315
+  tps: 801.93286
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 846.89063
-  tps: 606.09536
+  dps: 853.05119
+  tps: 610.43233
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1241.56209
-  tps: 881.89098
+  dps: 1246.47245
+  tps: 885.36265
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 1134.38726
-  tps: 806.10317
+  dps: 1140.44889
+  tps: 810.34139
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1327.44051
-  tps: 941.70201
+  dps: 1331.17126
+  tps: 944.43508
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 935.229
-  tps: 670.83035
+  dps: 935.48406
+  tps: 670.82118
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Average-Default"
  value: {
-  dps: 3468.26143
-  tps: 2441.76774
+  dps: 3479.5298
+  tps: 2449.63204
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 7717.42276
-  tps: 5696.2281
+  dps: 7948.9991
+  tps: 5858.82321
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 3501.47723
-  tps: 2465.51014
+  dps: 3519.30828
+  tps: 2478.07744
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 4103.81046
-  tps: 2891.83968
+  dps: 4167.33259
+  tps: 2938.01789
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 4124.75484
-  tps: 3068.07521
+  dps: 4208.46236
+  tps: 3126.67048
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1870.30064
-  tps: 1318.24779
+  dps: 1883.02995
+  tps: 1327.1583
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Gnome-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 2421.11781
-  tps: 1709.96623
+  dps: 2446.85901
+  tps: 1727.98506
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 7656.07974
-  tps: 5636.24768
+  dps: 7875.75698
+  tps: 5790.52699
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 3456.47582
-  tps: 2433.414
+  dps: 3485.61076
+  tps: 2454.02435
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-FullBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 4116.66727
-  tps: 2904.04576
+  dps: 4199.13073
+  tps: 2961.84393
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-LongMultiTarget"
  value: {
-  dps: 4055.07029
-  tps: 3019.29603
+  dps: 4169.12506
+  tps: 3099.13437
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-LongSingleTarget"
  value: {
-  dps: 1824.87695
-  tps: 1286.45121
+  dps: 1828.32181
+  tps: 1288.86261
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-Settings-Troll-p5_frost-Frost-p5_spellfrost-NoBuffs-P5-Consumes-ShortSingleTarget"
  value: {
-  dps: 2440.69071
-  tps: 1723.66725
+  dps: 2452.75346
+  tps: 1732.11118
  }
 }
 dps_results: {
  key: "TestFrost-Phase5-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 3456.47582
-  tps: 2433.414
+  dps: 3485.61076
+  tps: 2454.02435
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 1912.93945
-  tps: 1364.10138
+  dps: 1867.52007
+  tps: 1332.30922
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 1754.96144
-  tps: 1252.50826
+  dps: 1710.12267
+  tps: 1221.11927
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 1903.57855
-  tps: 1357.54791
+  dps: 1858.69626
+  tps: 1326.1317
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 1753.7814
-  tps: 1252.68742
+  dps: 1708.64978
+  tps: 1221.10039
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 1155.70538
-  tps: 842.17122
+  dps: 1126.64309
+  tps: 821.81572
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 1912.93945
-  tps: 1364.10138
+  dps: 1867.52007
+  tps: 1332.30922
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 1754.96144
-  tps: 1252.50826
+  dps: 1710.12267
+  tps: 1221.11927
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1986.06319
-  tps: 1415.78172
+  dps: 1960.61131
+  tps: 1398.04476
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 1198.87201
-  tps: 872.79376
+  dps: 1163.5311
+  tps: 848.04407
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 6190.45131
-  tps: 4360.40224
+  dps: 6264.04717
+  tps: 4411.9199
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-FullBuffs-p6_frost-LongMultiTarget"
  value: {
-  dps: 12925.32266
-  tps: 9589.39724
+  dps: 12190.97224
+  tps: 9078.54866
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-FullBuffs-p6_frost-LongSingleTarget"
  value: {
-  dps: 6201.06362
-  tps: 4367.8281
+  dps: 6317.78759
+  tps: 4449.55227
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-FullBuffs-p6_frost-ShortSingleTarget"
  value: {
-  dps: 7202.23672
-  tps: 5072.07057
+  dps: 7336.87673
+  tps: 5166.2613
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-NoBuffs-p6_frost-LongMultiTarget"
  value: {
-  dps: 6065.01425
-  tps: 4529.28358
+  dps: 6290.60332
+  tps: 4693.27349
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-NoBuffs-p6_frost-LongSingleTarget"
  value: {
-  dps: 3027.6075
-  tps: 2133.51393
+  dps: 3131.35767
+  tps: 2206.489
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-NoBuffs-p6_frost-ShortSingleTarget"
  value: {
-  dps: 3664.88245
-  tps: 2589.83137
+  dps: 3766.23542
+  tps: 2660.77845
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 6201.06362
-  tps: 4367.8281
+  dps: 6317.78759
+  tps: 4449.55227
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-BloodGuard'sDreadweave"
  value: {
-  dps: 2644.07392
-  tps: 1521.13017
+  dps: 2586.78816
+  tps: 1483.1456
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-BloodGuard'sSatin"
  value: {
-  dps: 2401.02201
-  tps: 1379.20163
+  dps: 2344.21803
+  tps: 1342.27935
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-EmeraldEnchantedVestments"
  value: {
-  dps: 2629.75708
-  tps: 1512.88189
+  dps: 2572.77159
+  tps: 1475.10375
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-EmeraldWovenGarb"
  value: {
-  dps: 2396.28189
-  tps: 1376.87698
+  dps: 2339.76599
+  tps: 1340.15391
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-IronweaveBattlesuit"
  value: {
-  dps: 1311.84421
-  tps: 957.5148
+  dps: 1268.67213
+  tps: 927.29435
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-Knight-Lieutenant'sDreadweave"
  value: {
-  dps: 2644.07392
-  tps: 1521.13017
+  dps: 2586.78816
+  tps: 1483.1456
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-KnightLieutenant'sSatin"
  value: {
-  dps: 2401.02201
-  tps: 1379.20163
+  dps: 2344.21803
+  tps: 1342.27935
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 2669.39658
-  tps: 1584.94734
+  dps: 2666.22354
+  tps: 1581.1897
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-AllItems-Sorcerer'sRegalia"
  value: {
-  dps: 1350.71129
-  tps: 985.11706
+  dps: 1323.69025
+  tps: 966.20233
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Average-Default"
  value: {
-  dps: 5963.1288
-  tps: 3837.99948
+  dps: 6074.05027
+  tps: 3915.8072
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-LongMultiTarget"
  value: {
-  dps: 12293.75606
-  tps: 8784.43444
+  dps: 11748.68827
+  tps: 8404.90192
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-LongSingleTarget"
  value: {
-  dps: 5991.34355
-  tps: 3855.07859
+  dps: 6096.23509
+  tps: 3932.63083
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-ShortSingleTarget"
  value: {
-  dps: 7673.03671
-  tps: 4974.01706
+  dps: 7832.67662
+  tps: 5086.10859
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-LongMultiTarget"
  value: {
-  dps: 5398.86377
-  tps: 3875.39608
+  dps: 5639.41678
+  tps: 4047.91068
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-LongSingleTarget"
  value: {
-  dps: 2657.29665
-  tps: 1704.04154
+  dps: 2752.10075
+  tps: 1772.50196
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-ShortSingleTarget"
  value: {
-  dps: 3466.77176
-  tps: 2249.68296
+  dps: 3613.13518
+  tps: 2353.53835
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 5991.34355
-  tps: 3855.07859
+  dps: 6096.23509
+  tps: 3932.63083
  }
 }
