@@ -220,8 +220,12 @@ func init() {
 		spellID := int32(1231124)
 		strBonus := 120.0
 		duration := time.Second * 20
-		mhAura := character.NewTemporaryStatsAura("Righteous Strength MH", core.ActionID{SpellID: spellID, Tag: 1}, stats.Stats{stats.Strength: strBonus}, duration)
-		ohAura := character.NewTemporaryStatsAura("Righteous Strength OH", core.ActionID{SpellID: spellID, Tag: 2}, stats.Stats{stats.Strength: strBonus}, duration)
+		mhAura := character.NewTemporaryStatsAuraWrapped("Righteous Strength MH", core.ActionID{SpellID: spellID, Tag: 1}, stats.Stats{stats.Strength: strBonus}, duration, func(aura *core.Aura) {
+			aura.Tag = "Crusader"
+		})
+		ohAura := character.NewTemporaryStatsAuraWrapped("Righteous Strength OH", core.ActionID{SpellID: spellID, Tag: 2}, stats.Stats{stats.Strength: strBonus}, duration, func(aura *core.Aura) {
+			aura.Tag = "Crusader"
+		})
 		healthMetrics := character.NewHealthMetrics(core.ActionID{SpellID: spellID})
 
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
@@ -249,7 +253,9 @@ func init() {
 		dpm := character.AutoAttacks.NewDynamicProcManagerForEnchant(GrandInquisitor, 1.0, 0)
 
 		spellID := int32(1232169)
-		righteousInquisitionAura := character.NewTemporaryStatsAura("Righteous Inquisition", core.ActionID{SpellID: spellID}, stats.Stats{stats.Strength: 200}, time.Second*20)
+		righteousInquisitionAura := character.NewTemporaryStatsAuraWrapped("Righteous Inquisition", core.ActionID{SpellID: spellID}, stats.Stats{stats.Strength: 200}, time.Second*20, func(aura *core.Aura) {
+			aura.Tag = "Crusader"
+		})
 		healthMetrics := character.NewHealthMetrics(core.ActionID{SpellID: spellID})
 
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{

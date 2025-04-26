@@ -50,12 +50,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestWrathLike-Phase8-Lvl60-StatWeights-Default"
  value: {
-  weights: 5.64498
-  weights: 5.40548
+  weights: 5.65016
+  weights: 4.84739
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.34199
+  weights: 0.34255
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 28.50171
-  weights: 0.76013
+  weights: 28.83399
+  weights: 0.75857
   weights: 0
   weights: 0
-  weights: 2.02838
+  weights: 2.03024
   weights: 0
-  weights: 74.38592
+  weights: 76.1184
   weights: 0
   weights: 0
   weights: 0
@@ -99,8 +99,8 @@ stat_weights_results: {
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 3169.46486
-  tps: 2545.81734
+  dps: 3156.61873
+  tps: 2534.47373
   dtps: 2.68849
   hps: 35.29257
  }
@@ -108,8 +108,8 @@ dps_results: {
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 3169.66672
-  tps: 2546.71439
+  dps: 3156.82861
+  tps: 2535.5285
   dtps: 2.68849
   hps: 35.29257
  }
@@ -117,8 +117,8 @@ dps_results: {
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 3314.65263
-  tps: 2661.86236
+  dps: 3301.77664
+  tps: 2650.62004
   dtps: 2.68849
   hps: 35.29257
  }
@@ -126,17 +126,17 @@ dps_results: {
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 5902.82979
-  tps: 4659.34822
-  dtps: 2.79652
+  dps: 5901.69834
+  tps: 4656.7751
+  dtps: 2.80161
   hps: 42.76507
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 2772.5771
-  tps: 2218.99016
+  dps: 2770.41176
+  tps: 2215.2337
   dtps: 2.61861
   hps: 33.38937
  }
@@ -144,69 +144,69 @@ dps_results: {
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Average-Default"
  value: {
-  dps: 10400.22905
-  tps: 8134.10462
-  dtps: 2.722
-  hps: 46.28187
+  dps: 10379.73047
+  tps: 8114.09772
+  dtps: 2.74131
+  hps: 46.28153
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-FullBuffs-p8-wrath-LongMultiTarget"
  value: {
-  dps: 26702.47629
-  tps: 22570.40736
-  dtps: 2.49173
+  dps: 26480.88333
+  tps: 22348.51809
+  dtps: 2.90387
   hps: 47.2201
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-FullBuffs-p8-wrath-LongSingleTarget"
  value: {
-  dps: 10360.06348
-  tps: 8099.47961
-  dtps: 2.75462
+  dps: 10354.23944
+  tps: 8093.78582
+  dtps: 2.92956
   hps: 46.47183
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-FullBuffs-p8-wrath-ShortSingleTarget"
  value: {
-  dps: 10520.30119
-  tps: 8225.63564
-  dtps: 13.77308
+  dps: 10479.55674
+  tps: 8195.74545
+  dtps: 14.64781
   hps: 47.29533
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-NoBuffs-p8-wrath-LongMultiTarget"
  value: {
-  dps: 12144.49425
-  tps: 10698.46668
-  dtps: 2.60394
+  dps: 11989.88104
+  tps: 10541.49693
+  dtps: 2.54836
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-NoBuffs-p8-wrath-LongSingleTarget"
  value: {
-  dps: 4506.08644
-  tps: 3550.22254
-  dtps: 2.95058
+  dps: 4496.52543
+  tps: 3541.24929
+  dtps: 2.88001
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-NoBuffs-p8-wrath-ShortSingleTarget"
  value: {
-  dps: 4558.76119
-  tps: 3589.97966
-  dtps: 14.75289
+  dps: 4521.1985
+  tps: 3559.69015
+  dtps: 14.40003
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 9741.12878
-  tps: 7618.84913
-  dtps: 3.04922
+  dps: 9742.77417
+  tps: 7618.10188
+  dtps: 3.06489
   hps: 42.35027
  }
 }

@@ -240,8 +240,12 @@ func init() {
 
 		// -4 str per level over 60
 		strBonus := 100.0 - 4.0*float64(character.Level-60)
-		mhAura := character.NewTemporaryStatsAura("Crusader Enchant MH", core.ActionID{SpellID: 20007, Tag: 1}, stats.Stats{stats.Strength: strBonus}, time.Second*15)
-		ohAura := character.NewTemporaryStatsAura("Crusader Enchant OH", core.ActionID{SpellID: 20007, Tag: 2}, stats.Stats{stats.Strength: strBonus}, time.Second*15)
+		mhAura := character.NewTemporaryStatsAuraWrapped("Crusader Enchant MH", core.ActionID{SpellID: 20007, Tag: 1}, stats.Stats{stats.Strength: strBonus}, time.Second*15, func(aura *core.Aura) {
+			aura.Tag = "Crusader"
+		})
+		ohAura := character.NewTemporaryStatsAuraWrapped("Crusader Enchant OH", core.ActionID{SpellID: 20007, Tag: 2}, stats.Stats{stats.Strength: strBonus}, time.Second*15, func(aura *core.Aura) {
+			aura.Tag = "Crusader"
+		})
 		healthMetrics := character.NewHealthMetrics(core.ActionID{SpellID: 20007})
 
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{

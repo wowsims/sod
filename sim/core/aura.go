@@ -456,6 +456,7 @@ func (aura *Aura) ApplyOnPeriodicDamageDealt(newOnPeriodicDamageDealt OnPeriodic
 }
 
 type AuraFactory func(*Simulation) *Aura
+type AuraRegisteredHandler func(aura *Aura)
 
 // Callback for doing something on reset.
 type ResetEffect func(*Simulation)
@@ -470,7 +471,8 @@ type auraTracker struct {
 	*ExclusiveEffectManager
 
 	// All registered auras, both active and inactive.
-	auras []*Aura
+	auras                    []*Aura
+	auraRegistrationHandlers []AuraRegisteredHandler
 
 	aurasByTag        map[string][]*Aura
 	aurasbyDispelType map[DispelType][]*Aura
@@ -540,6 +542,13 @@ func (at *auraTracker) HasActiveAura(label string) bool {
 	return aura != nil && aura.IsActive()
 }
 
+func (at *auraTracker) OnAuraRegistered(handler AuraRegisteredHandler) {
+	for _, spell := range at.auras {
+		handler(spell)
+	}
+	at.auraRegistrationHandlers = append(at.auraRegistrationHandlers, handler)
+}
+
 func (at *auraTracker) registerAura(unit *Unit, aura Aura) *Aura {
 	if unit.Env != nil && unit.Env.IsFinalized() {
 		panic("Tried to add new aura in a finalized environment!")
@@ -581,6 +590,10 @@ func (at *auraTracker) registerAura(unit *Unit, aura Aura) *Aura {
 	}
 	if newAura.DispelType != DispelType_None {
 		at.aurasbyDispelType[newAura.DispelType] = append(at.aurasbyDispelType[newAura.DispelType], newAura)
+	}
+
+	for _, handler := range at.auraRegistrationHandlers {
+		handler(newAura)
 	}
 
 	return newAura

@@ -526,34 +526,118 @@ func init() {
 	// https://www.wowhead.com/classic/item=239301/corrupted-ashbringer
 	// Chance on hit: Steals 475 to 525 life from up to 5 enemies, granting 30 Strength or Agility per enemy siphoned, stacking up to 5 times.
 	// PPM confirmed 5.0
-	itemhelpers.CreateWeaponProcSpell(CorruptedAshbringerLego, "Corrupted Ashbringer (Legendary)", 5.0, func(character *core.Character) *core.Spell {
-		actionID := core.ActionID{SpellID: 1231330}
-		healthMetrics := character.NewHealthMetrics(actionID)
+	core.NewItemEffect(CorruptedAshbringerLego, func(agent core.Agent) {
+		character := agent.GetCharacter()
 
-		agilityAura := character.RegisterAura(core.Aura{
+		targetCount := int(min(character.Env.GetNumTargets(), 5))
+		wrathSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    core.ActionID{SpellID: 1231377},
+			SpellSchool: core.SpellSchoolHoly,
+			DefenseType: core.DefenseTypeMagic,
+			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+			BonusCoefficient: 0.1,
+
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				results := make([]*core.SpellResult, targetCount)
+				for i := 0; i < targetCount; i++ {
+					results[i] = spell.CalcDamage(sim, target, sim.Roll(1080, 1320), spell.OutcomeMagicCrit)
+					target = sim.Environment.NextTargetUnit(target)
+				}
+
+				for _, result := range results {
+					spell.DealDamage(sim, result)
+				}
+			},
+		})
+
+		wrathOfTheAshbringerAura := character.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1239620},
+			Label:    "Wrath of the Ashbringer",
+			Duration: time.Millisecond * 100,
+		})
+
+		activateAshbringerAura := func(sim *core.Simulation, corruptedAura *core.Aura, ashbringerAura *core.Aura) {
+			corruptedAura.Deactivate(sim)
+			ashbringerAura.Activate(sim)
+
+			// Wrath of the Ashbringer is always triggered upon activation of the Ashbringer aura
+			wrathOfTheAshbringerAura.Activate(sim)
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt: sim.CurrentTime + core.SpellBatchWindow,
+				OnAction: func(sim *core.Simulation) {
+					wrathSpell.Cast(sim, character.CurrentTarget)
+				},
+			})
+		}
+
+		var crusaderAuras []*core.Aura
+
+		checkAshbringerAuraActivation := func(sim *core.Simulation, newStacks int32, corruptedAura *core.Aura, ashbringerAura *core.Aura) {
+			if newStacks != 5 || len(crusaderAuras) == 0 {
+				return
+			}
+
+			for _, aura := range crusaderAuras {
+				if aura.IsActive() {
+					// Delay by one batch to allow for damage to be dealt
+					core.StartDelayedAction(sim, core.DelayedActionOptions{
+						DoAt: sim.CurrentTime + core.SpellBatchWindow,
+						OnAction: func(sim *core.Simulation) {
+							activateAshbringerAura(sim, corruptedAura, ashbringerAura)
+						},
+					})
+					return
+				}
+			}
+		}
+
+		ashbrinigerAgilityAura := character.NewTemporaryStatsAura("Ashbringer (Agility)", core.ActionID{SpellID: 1231409}, stats.Stats{stats.Agility: 200}, time.Second*30)
+		corruptedAgilityAura := character.RegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 1231406},
 			Label:     "Corrupted Agility",
 			MaxStacks: 5,
 			Duration:  time.Second * 20,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 				character.AddStatDynamic(sim, stats.Agility, 30*float64(newStacks-oldStacks))
+				checkAshbringerAuraActivation(sim, newStacks, aura, ashbrinigerAgilityAura)
 			},
 		})
 
-		strengthAura := character.RegisterAura(core.Aura{
+		ashbrinigerStrengthAura := character.NewTemporaryStatsAura("Ashbringer (Strength)", core.ActionID{SpellID: 1230596}, stats.Stats{stats.Strength: 200}, time.Second*30)
+		corruptedStrengthAura := character.RegisterAura(core.Aura{
 			ActionID:  core.ActionID{SpellID: 1231339},
 			Label:     "Corrupted Strength",
 			MaxStacks: 5,
 			Duration:  time.Second * 20,
 			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
 				character.AddStatDynamic(sim, stats.Strength, 30*float64(newStacks-oldStacks))
+				checkAshbringerAuraActivation(sim, newStacks, aura, ashbrinigerStrengthAura)
 			},
 		})
 
-		targetCount := int(min(character.Env.GetNumTargets(), 5))
+		character.OnAuraRegistered(func(aura *core.Aura) {
+			if aura.Tag != "Crusader" {
+				return
+			}
 
-		return character.RegisterSpell(core.SpellConfig{
-			ActionID:    actionID,
+			crusaderAuras = append(crusaderAuras, aura)
+			aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+				if corruptedAgilityAura.IsActive() && corruptedAgilityAura.GetStacks() == 5 && !ashbrinigerAgilityAura.IsActive() {
+					activateAshbringerAura(sim, corruptedAgilityAura, ashbrinigerAgilityAura)
+				} else if corruptedStrengthAura.IsActive() && corruptedStrengthAura.GetStacks() == 5 && !ashbrinigerStrengthAura.IsActive() {
+					activateAshbringerAura(sim, corruptedStrengthAura, ashbrinigerStrengthAura)
+				}
+			})
+		})
+
+		consumptionActionID := core.ActionID{SpellID: 1231330}
+		healthMetrics := character.NewHealthMetrics(consumptionActionID)
+		consumptionSpell := character.RegisterSpell(core.SpellConfig{
+			ActionID:    consumptionActionID,
 			SpellSchool: core.SpellSchoolShadow,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellProc | core.ProcMaskSpellDamageProc,
@@ -563,22 +647,82 @@ func init() {
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				results := make([]*core.SpellResult, targetCount)
 				for i := 0; i < targetCount; i++ {
-					result := spell.CalcAndDealDamage(sim, target, sim.Roll(475, 525), spell.OutcomeAlwaysHit)
-					character.GainHealth(sim, result.Damage, healthMetrics)
+					results[i] = spell.CalcDamage(sim, target, sim.Roll(475, 525), spell.OutcomeAlwaysHit)
 					target = sim.Environment.NextTargetUnit(target)
 				}
 
+				// Consumption has the flag "Missile Speed is Delay (in sec)", with a MissileSpeed of 1
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: sim.CurrentTime + time.Second,
+					OnAction: func(sim *core.Simulation) {
+						for _, result := range results {
+							spell.DealDamage(sim, result)
+							character.GainHealth(sim, result.Damage, healthMetrics)
+						}
+					},
+				})
+
 				// Confirmed by Zirene to pick the highest of your Agility or Strength
 				if character.GetStat(stats.Agility) >= character.GetStat(stats.Strength) {
-					agilityAura.Activate(sim)
-					agilityAura.AddStacks(sim, int32(targetCount))
+					corruptedAgilityAura.Activate(sim)
+					corruptedAgilityAura.AddStacks(sim, int32(targetCount))
 				} else {
-					strengthAura.Activate(sim)
-					strengthAura.AddStacks(sim, int32(targetCount))
+					corruptedStrengthAura.Activate(sim)
+					corruptedStrengthAura.AddStacks(sim, int32(targetCount))
 				}
 			},
 		})
+
+		consumptionTriggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Consumption Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			ICD:               time.Millisecond * 100,
+			DPM:               character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(CorruptedAshbringerLego, 5.0, 0),
+			DPMProcCheck:      core.DPMProc,
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				consumptionSpell.Cast(sim, result.Target)
+			},
+		})
+
+		wrathTriggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+			Name:              "Wrath of the Ashbringer Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			Duration:          time.Second * 30,
+			DPM:               character.AutoAttacks.NewDynamicProcManagerForWeaponEffect(CorruptedAshbringerLego, 5.0, 0),
+			DPMProcCheck:      core.DPMProc,
+			ExtraCondition: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) bool {
+				return !wrathOfTheAshbringerAura.IsActive()
+			},
+			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+				wrathOfTheAshbringerAura.Activate(sim)
+				wrathSpell.Cast(sim, result.Target)
+			},
+		})
+
+		ashbrinigerAgilityAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			wrathTriggerAura.Activate(sim)
+			consumptionTriggerAura.Deactivate(sim)
+		}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+			consumptionTriggerAura.Activate(sim)
+			wrathTriggerAura.Deactivate(sim)
+		})
+
+		ashbrinigerStrengthAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			wrathTriggerAura.Activate(sim)
+			consumptionTriggerAura.Deactivate(sim)
+		}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+			consumptionTriggerAura.Activate(sim)
+			wrathTriggerAura.Deactivate(sim)
+		})
+
+		character.ItemSwap.RegisterProc(CorruptedAshbringerLego, consumptionTriggerAura)
+		character.ItemSwap.RegisterProc(CorruptedAshbringerLego, wrathTriggerAura)
 	})
 
 	// https://www.wowhead.com/classic/item=17068/deathbringer
