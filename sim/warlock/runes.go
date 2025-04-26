@@ -338,15 +338,15 @@ func (warlock *Warlock) applyInvocation() {
 					// Have to keep a separate local because of Go's closure behavior
 					localDot := dot
 					localDot.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-						invocationSpell := warlock.InvocationSpellMap[dot.Spell.ClassSpellMask]
-						invocationSpell.Cast(sim, dot.Unit)
-						invocationSpell.CalcAndDealDamage(sim, dot.Unit, dot.SnapshotBaseDamage, invocationSpell.Dot(dot.Unit).OutcomeTick)
+						invocationSpell := warlock.InvocationSpellMap[localDot.Spell.ClassSpellMask]
+						invocationSpell.Cast(sim, localDot.Unit)
+						invocationSpell.CalcAndDealDamage(sim, localDot.Unit, localDot.SnapshotBaseDamage, invocationSpell.Dot(localDot.Unit).OutcomeTick)
 					}).ApplyOnRefresh(func(aura *core.Aura, sim *core.Simulation) {
 						if numTicksRemaining := localDot.NumTicksRemaining(sim); localDot.TickLength*time.Duration(numTicksRemaining) <= time.Second*6 {
-							invocationSpell := warlock.InvocationSpellMap[dot.Spell.ClassSpellMask]
+							invocationSpell := warlock.InvocationSpellMap[localDot.Spell.ClassSpellMask]
 							for i := 0; i < numTicksRemaining; i++ {
-								invocationSpell.Cast(sim, dot.Unit)
-								invocationSpell.CalcAndDealDamage(sim, dot.Unit, dot.SnapshotBaseDamage, invocationSpell.Dot(dot.Unit).OutcomeTick)
+								invocationSpell.Cast(sim, localDot.Unit)
+								invocationSpell.CalcAndDealDamage(sim, localDot.Unit, localDot.SnapshotBaseDamage, invocationSpell.Dot(localDot.Unit).OutcomeTick)
 							}
 						}
 					})
