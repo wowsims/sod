@@ -19,7 +19,6 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 	spellCoeff := 0.05
 	actionID := core.ActionID{SpellID: spellId}
 
-	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
 	healingSpell := warlock.GetOrRegisterSpell(core.SpellConfig{
@@ -92,12 +91,7 @@ func (warlock *Warlock) getSiphonLifeBaseConfig(rank int) core.SpellConfig {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				dot := spell.Dot(target)
-				if hasInvocationRune {
-					warlock.InvocationRefresh(sim, dot, target)
-				}
-
-				dot.Apply(sim)
+				spell.Dot(target).ApplyOrReset(sim)
 			}
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {

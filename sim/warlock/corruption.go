@@ -19,7 +19,6 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 	level := [CorruptionRanks + 1]int{0, 4, 14, 24, 34, 44, 54, 60}[rank]
 
 	castTime := time.Millisecond * (2000 - (400 * time.Duration(warlock.Talents.ImprovedCorruption)))
-	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
 	return core.SpellConfig{
@@ -75,13 +74,7 @@ func (warlock *Warlock) getCorruptionConfig(rank int) core.SpellConfig {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				dot := spell.Dot(target)
-
-				if hasInvocationRune {
-					warlock.InvocationRefresh(sim, dot, target)
-				}
-
-				dot.Apply(sim)
+				spell.Dot(target).ApplyOrReset(sim)
 			}
 			spell.DealOutcome(sim, result)
 		},

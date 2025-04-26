@@ -16,7 +16,6 @@ func (warlock *Warlock) registerUnstableAfflictionSpell() {
 }
 
 func (warlock *Warlock) getUnstableAfflictionConfig() core.SpellConfig {
-	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
 	// TODO: Verify numbers after tooltips update
@@ -69,19 +68,13 @@ func (warlock *Warlock) getUnstableAfflictionConfig() core.SpellConfig {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			result := spell.CalcOutcome(sim, target, spell.OutcomeMagicHitNoHitCounter)
 			if result.Landed() {
-				dot := spell.Dot(target)
-
 				// UA is mutually exclusive with Immolate
 				immoDot := warlock.getActiveImmolateSpell(target)
 				if immoDot != nil {
 					immoDot.Dot(target).Deactivate(sim)
 				}
 
-				if hasInvocationRune {
-					warlock.InvocationRefresh(sim, dot, target)
-				}
-
-				dot.Apply(sim)
+				spell.Dot(target).ApplyOrReset(sim)
 			}
 			spell.DealOutcome(sim, result)
 		},

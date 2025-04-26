@@ -313,7 +313,7 @@ func (warlock *Warlock) applyInvocation() {
 		})
 	}
 
-	warlock.RegisterAura(core.Aura{
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "Invocation",
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
 			dotSpells := core.FilterSlice(
@@ -338,37 +338,28 @@ func (warlock *Warlock) applyInvocation() {
 					// Have to keep a separate local because of Go's closure behavior
 					localDot := dot
 					localDot.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-						warlock.InvocationApplication(sim, localDot, aura.Unit)
+						invocationSpell := warlock.InvocationSpellMap[dot.Spell.ClassSpellMask]
+						invocationSpell.Cast(sim, dot.Unit)
+						invocationSpell.CalcAndDealDamage(sim, dot.Unit, dot.SnapshotBaseDamage, invocationSpell.Dot(dot.Unit).OutcomeTick)
+					}).ApplyOnRefresh(func(aura *core.Aura, sim *core.Simulation) {
+						if numTicksRemaining := localDot.NumTicksRemaining(sim); localDot.TickLength*time.Duration(numTicksRemaining) <= time.Second*6 {
+							invocationSpell := warlock.InvocationSpellMap[dot.Spell.ClassSpellMask]
+							for i := 0; i < numTicksRemaining; i++ {
+								invocationSpell.Cast(sim, dot.Unit)
+								invocationSpell.CalcAndDealDamage(sim, dot.Unit, dot.SnapshotBaseDamage, invocationSpell.Dot(dot.Unit).OutcomeTick)
+							}
+						}
 					})
 				}
 			}
 		},
-	})
-}
-
-func (warlock *Warlock) InvocationApplication(sim *core.Simulation, dot *core.Dot, target *core.Unit) {
-	invocationSpell := warlock.InvocationSpellMap[dot.Spell.ClassSpellMask]
-	invocationSpell.Cast(sim, target)
-	invocationSpell.CalcAndDealDamage(sim, target, dot.SnapshotBaseDamage, invocationSpell.Dot(target).OutcomeTick)
-}
-
-func (warlock *Warlock) InvocationRefresh(sim *core.Simulation, dot *core.Dot, target *core.Unit) {
-	if dot.IsActive() && dot.RemainingDuration(sim) < time.Second*6 {
-		invocationSpell := warlock.InvocationSpellMap[dot.Spell.ClassSpellMask]
-		ticksLeft := dot.NumberOfTicks - dot.TickCount
-		for i := int32(0); i < ticksLeft; i++ {
-			invocationSpell.Cast(sim, target)
-			invocationSpell.CalcAndDealDamage(sim, target, dot.SnapshotBaseDamage, invocationSpell.Dot(target).OutcomeTick)
-		}
-	}
+	}))
 }
 
 func (warlock *Warlock) applyEverlastingAffliction() {
 	if !warlock.HasRune(proto.WarlockRune_RuneLegsEverlastingAffliction) {
 		return
 	}
-
-	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 
 	affectedSpellClassMasks := ClassSpellMask_WarlockDrainLife | ClassSpellMask_WarlockDrainSoul | ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockShadowCleave | ClassSpellMask_WarlockSearingPain | ClassSpellMask_WarlockIncinerate | ClassSpellMask_WarlockHaunt
 	core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
@@ -380,10 +371,6 @@ func (warlock *Warlock) applyEverlastingAffliction() {
 			for _, spell := range warlock.Corruption {
 				if dot := spell.Dot(result.Target); dot.IsActive() {
 					dot.Rollover(sim)
-
-					if hasInvocationRune {
-						warlock.InvocationRefresh(sim, dot, result.Target)
-					}
 				}
 			}
 		},

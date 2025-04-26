@@ -20,7 +20,6 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 	manaCost := [ImmolateRanks + 1]float64{0, 25, 45, 90, 155, 220, 295, 370, 380}[rank]
 	level := [ImmolateRanks + 1]int{0, 1, 10, 20, 30, 40, 50, 60, 60}[rank]
 
-	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 	hasUnstableAffliction := warlock.HasRune(proto.WarlockRune_RuneBracerUnstableAffliction)
 	hasShadowflameRune := warlock.HasRune(proto.WarlockRune_RuneBootsShadowflame)
@@ -75,8 +74,6 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 			result := spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicHitAndCrit)
 
 			if result.Landed() {
-				dot := spell.Dot(target)
-
 				// UA, Immo, Shadowflame exclusivity
 				if hasUnstableAffliction && warlock.UnstableAffliction.Dot(target).IsActive() {
 					warlock.UnstableAffliction.Dot(target).Deactivate(sim)
@@ -85,11 +82,7 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 					warlock.Shadowflame.Dot(target).Deactivate(sim)
 				}
 
-				if hasInvocationRune {
-					warlock.InvocationRefresh(sim, dot, target)
-				}
-
-				dot.Apply(sim)
+				spell.Dot(target).ApplyOrReset(sim)
 			}
 		},
 		ExpectedTickDamage: func(sim *core.Simulation, target *core.Unit, spell *core.Spell, useSnapshot bool) *core.SpellResult {

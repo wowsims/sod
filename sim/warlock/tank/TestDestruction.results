@@ -667,8 +667,8 @@ dps_results: {
 dps_results: {
  key: "TestDestruction-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1906.4265
-  tps: 3412.13016
+  dps: 1906.40369
+  tps: 3412.09594
   hps: 15.81933
  }
 }

@@ -19,7 +19,6 @@ func (warlock *Warlock) registerShadowflameSpell() {
 
 func (warlock *Warlock) getShadowflameConfig() core.SpellConfig {
 	hasHauntRune := warlock.HasRune(proto.WarlockRune_RuneHandsHaunt)
-	hasInvocationRune := warlock.HasRune(proto.WarlockRune_RuneBeltInvocation)
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
 
 	numTicks := int32(5)
@@ -87,19 +86,13 @@ func (warlock *Warlock) getShadowflameConfig() core.SpellConfig {
 			spell.ApplyMultiplicativeDamageBonus(damageMultiplier)
 
 			if result.Landed() {
-				dot := spell.Dot(target)
-
 				// Shadowflame and Immolate are exclusive
 				immoDot := warlock.getActiveImmolateSpell(target)
 				if immoDot != nil {
 					immoDot.Dot(target).Deactivate(sim)
 				}
 
-				if hasInvocationRune {
-					warlock.InvocationRefresh(sim, dot, target)
-				}
-
-				dot.Apply(sim)
+				spell.Dot(target).ApplyOrReset(sim)
 			}
 		},
 	}
