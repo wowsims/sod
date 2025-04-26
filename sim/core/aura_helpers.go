@@ -63,9 +63,8 @@ type ProcTrigger struct {
 }
 
 func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
-	var icd Cooldown
 	if config.ICD != 0 {
-		icd = Cooldown{
+		icd := Cooldown{
 			Timer:    unit.NewTimer(),
 			Duration: config.ICD,
 		}
@@ -118,7 +117,7 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 		if config.Harmful && result.Damage == 0 {
 			return
 		}
-		if icd.Duration != 0 && !icd.IsReady(sim) {
+		if procAura.Icd != nil && procAura.Icd.Duration != 0 && !procAura.Icd.IsReady(sim) {
 			return
 		}
 		if config.ExtraCondition != nil && !config.ExtraCondition(sim, spell, result) {
@@ -134,8 +133,8 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 			}
 		}
 
-		if icd.Duration != 0 {
-			icd.Use(sim)
+		if procAura.Icd != nil && procAura.Icd.Duration != 0 {
+			procAura.Icd.Use(sim)
 		}
 		handler(sim, spell, result)
 	}
@@ -176,15 +175,15 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 			if config.SpellFlagsExclude != SpellFlagNone && spell.Flags.Matches(config.SpellFlagsExclude) {
 				return
 			}
-			if icd.Duration != 0 && !icd.IsReady(sim) {
+			if procAura.Icd != nil && procAura.Icd.Duration != 0 && !procAura.Icd.IsReady(sim) {
 				return
 			}
 			if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
 				return
 			}
 
-			if icd.Duration != 0 {
-				icd.Use(sim)
+			if procAura.Icd != nil && procAura.Icd.Duration != 0 {
+				procAura.Icd.Use(sim)
 			}
 			handler(sim, spell, nil)
 		}
@@ -206,15 +205,15 @@ func ApplyProcTriggerCallback(unit *Unit, procAura *Aura, config ProcTrigger) {
 			if config.SpellFlagsExclude != SpellFlagNone && spell.Flags.Matches(config.SpellFlagsExclude) {
 				return
 			}
-			if icd.Duration != 0 && !icd.IsReady(sim) {
+			if procAura.Icd != nil && procAura.Icd.Duration != 0 && !procAura.Icd.IsReady(sim) {
 				return
 			}
 			if config.ProcChance != 1 && sim.RandomFloat(config.Name) > config.ProcChance {
 				return
 			}
 
-			if icd.Duration != 0 {
-				icd.Use(sim)
+			if procAura.Icd != nil && procAura.Icd.Duration != 0 {
+				procAura.Icd.Use(sim)
 			}
 			handler(sim, spell, &SpellResult{Target: target})
 		}

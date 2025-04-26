@@ -278,6 +278,7 @@ func (druid *Druid) applyScarletEnclaveFeral6PBonus() {
 	}
 
 	finisherMask := ClassSpellMask_DruidFerociousBite | ClassSpellMask_DruidRip | ClassSpellMask_DruidSavageRoar
+	extension := time.Second * 6
 
 	// https://www.wowhead.com/classic/spell=1226118/s03-item-scarlet-enclave-druid-feral-6p-bonus-trigger
 	// Not needed but this way procs can be easily tracked.
@@ -290,7 +291,8 @@ func (druid *Druid) applyScarletEnclaveFeral6PBonus() {
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			druid.ClearcastingAura.Activate(sim)
 			if druid.TigersFuryAura.IsActive() {
-				druid.TigersFuryAura.Refresh(sim)
+				newExpireTime := druid.TigersFuryAura.ExpiresAt() + extension
+				druid.TigersFuryAura.UpdateExpires(sim, newExpireTime)
 			}
 		},
 	})
@@ -301,7 +303,12 @@ func (druid *Druid) applyScarletEnclaveFeral6PBonus() {
 	}))
 
 	druid.OnComboPointsSpent(func(sim *core.Simulation, spell *core.Spell, comboPoints int32) {
-		if spell.Matches(finisherMask) && sim.Proc(0.2*float64(comboPoints), label) {
+		// Savage Roar seems to always proc and instead rolls for an additional +6s for +12s total.
+		if spell.Matches(ClassSpellMask_DruidSavageRoar) {
+			extension = core.TernaryDuration(sim.Proc(0.2*float64(comboPoints), label), 12*time.Second, 6*time.Second)
+			triggerSpell.Cast(sim, &druid.Unit)
+			extension = 6 * time.Second
+		} else if spell.Matches(finisherMask) && sim.Proc(0.2*float64(comboPoints), label) {
 			triggerSpell.Cast(sim, &druid.Unit)
 		}
 	})
