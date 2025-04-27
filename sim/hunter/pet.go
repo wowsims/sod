@@ -125,6 +125,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl,
 	}
 
+	hp.Pet.Unit.StartDistanceFromTarget = hunter.Character.DistanceFromTarget
+
 	hp.Pet.MobType = petConfig.MobType
 
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
@@ -212,6 +214,11 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	if percentRemaining < 1.0-hp.uptimePercent { // once fight is % completed, disable pet.
 		hp.Disable(sim)
 		return
+	}
+
+	// Move into melee range
+	if hp.DistanceFromTarget > core.MaxMeleeAttackRange {
+		hp.Unit.MoveTo(core.MaxMeleeAttackRange, sim)
 	}
 
 	if hp.hasOwnerCooldown && hp.CurrentFocus() < 50 {
@@ -482,7 +489,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		CustomRotation: func(sim *core.Simulation, hp *HunterPet, tryCast func(*core.Spell) bool) {
 			target := hp.CurrentTarget
 
-			if (hp.specialAbility.Dot(target).GetStacks() < hp.specialAbility.Dot(target).MaxStacks || hp.specialAbility.Dot(target).RemainingDuration(sim) < time.Second*3) && hp.CurrentFocus() < 90 {
+			if (hp.specialAbility.Dot(target).GetStacks() < hp.specialAbility.Dot(target).MaxStacks || hp.specialAbility.Dot(target).RemainingDuration(sim) < time.Second*3) && hp.specialAbility.CD.IsReady(sim) {
 				if !tryCast(hp.specialAbility) && hp.GCD.IsReady(sim) {
 					hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 				}
