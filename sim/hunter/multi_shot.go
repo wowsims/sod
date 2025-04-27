@@ -13,8 +13,9 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 	manaCost := [6]float64{0, 100, 140, 175, 210, 230}[rank]
 	level := [6]int{0, 18, 30, 42, 54, 60}[rank]
 
-	numHits := min(3+hunter.MultiShotBonusTargets, hunter.Env.GetNumTargets())
-	results := make([]*core.SpellResult, numHits)
+	hunter.MultiShotTargets += 3
+	maxNumTargets := hunter.Env.GetNumTargets()
+	results := make([]*core.SpellResult, maxNumTargets)
 
 	hasSerpentSpread := hunter.HasRune(proto.HunterRune_RuneLegsSerpentSpread)
 
@@ -62,7 +63,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for hitIndex := int32(0); hitIndex < numHits; hitIndex++ {
+			for hitIndex := int32(0); hitIndex < min(hunter.MultiShotTargets, maxNumTargets); hitIndex++ {
 				baseDamage := baseDamage +
 					hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +
 					hunter.AmmoDamageBonus
@@ -75,7 +76,11 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 			hunter.AutoAttacks.EnableAutoSwing(sim)
 
 			spell.WaitTravelTime(sim, func(s *core.Simulation) {
-				for _, result := range results {
+				for idx, result := range results {
+					if result == nil {
+						continue
+					}
+
 					spell.DealDamage(sim, result)
 
 					if hasSerpentSpread {
@@ -94,6 +99,8 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 
 						dot.NumberOfTicks = serpentStingTicks
 					}
+
+					results[idx] = nil
 				}
 			})
 

@@ -88,7 +88,7 @@ type Hunter struct {
 	// Miscellaneous set bonuses that require extra logic inside of spells
 	FlankingStrikeBonusPerStack float64
 	SerpentStingAPCoeff         float64
-	MultiShotBonusTargets       int32
+	MultiShotTargets            int32
 	RaptorFuryDamageMultiplier  int64
 
 	curQueueAura       *core.Aura
