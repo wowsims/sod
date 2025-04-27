@@ -132,8 +132,14 @@ func (spell *Spell) PhysicalCritCheck(sim *Simulation, attackTable *AttackTable)
 	return sim.RandomFloat("Physical Crit Roll") < spell.PhysicalCritChance(attackTable)
 }
 
-// The combined bonus damage (aka spell power) for this spell's school(s).
+// The combined bonus damage (aka spell power) for this spell's school(s) **including** mob type specific spell power.
 func (spell *Spell) GetBonusDamage() float64 {
+	return spell.GetSchoolDamage() +
+		spell.Unit.PseudoStats.MobTypeSpellPower
+}
+
+// The combined bonus damage (aka spell power) for this spell's school(s) **excluding** mob type specific spell power.
+func (spell *Spell) GetSchoolDamage() float64 {
 	var schoolBonusDamage float64
 
 	switch spell.SchoolIndex {
@@ -182,8 +188,7 @@ func (spell *Spell) GetBonusDamage() float64 {
 	return spell.BonusDamage +
 		schoolBonusDamage +
 		spell.Unit.GetStat(stats.SpellPower) +
-		spell.Unit.GetStat(stats.SpellDamage) +
-		spell.Unit.PseudoStats.MobTypeSpellPower
+		spell.Unit.GetStat(stats.SpellDamage)
 }
 
 func (spell *Spell) SpellHitChance(target *Unit) float64 {

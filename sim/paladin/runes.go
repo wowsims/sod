@@ -244,7 +244,6 @@ func (paladin *Paladin) registerShockAndAwe() {
 			ClassSpellMask: ClassSpellMask_PaladinSunlight,
 			Flags:          core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
-			BonusCoefficient: 1,
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 
@@ -256,7 +255,7 @@ func (paladin *Paladin) registerShockAndAwe() {
 				}
 
 				spell.BonusCritRating += bonusCrit
-				spell.CalcAndDealDamage(sim, target, 1, spell.OutcomeMagicCrit)
+				spell.CalcAndDealDamage(sim, target, spell.GetSchoolDamage(), spell.OutcomeMagicCrit)
 				spell.BonusCritRating -= bonusCrit
 			},
 		})

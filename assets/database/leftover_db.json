@@ -2158,6 +2158,7 @@
 {"id":1220346,"name":"Soul of the Exsanguinator","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220348,"name":"Soul of the Thornkeeper","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220350,"name":"Soul of the Lunatic","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
+{"id":1220352,"name":"Soul of the Starcaller","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220355,"name":"Soul of the Night","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220356,"name":"Soul of the Keepers","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220358,"name":"Soul of the Wrathful","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
@@ -2165,8 +2166,7 @@
 {"id":1220362,"name":"Soul of the Astral Ascendant","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220364,"name":"Soul of the Cometcaller","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
 {"id":1220366,"name":"Soul of the Forest","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
-{"id":1220368,"name":"Soul of Animalistic Expertise","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]},
-{"id":1233551,"name":"Soul of the Starcaller","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]}
+{"id":1220368,"name":"Soul of Animalistic Expertise","icon":"spell_holy_divinespirit","type":3,"classAllowlist":[1]}
 ],
 "zones":[
 ],

@@ -217,7 +217,7 @@ func (hunter *Hunter) applyScarletEnclaveRanged6PBonus() {
 	core.MakePermanent(hunter.RegisterAura(core.Aura{
 		Label: label,
 		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			hunter.MultiShotBonusTargets = 2
+			hunter.MultiShotTargetCount += 2
 		},
 	})).AttachProcTrigger(core.ProcTrigger{
 		Name:           label,

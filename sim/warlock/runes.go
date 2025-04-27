@@ -342,9 +342,9 @@ func (warlock *Warlock) applyInvocation() {
 						invocationSpell.Cast(sim, localDot.Unit)
 						invocationSpell.CalcAndDealDamage(sim, localDot.Unit, localDot.SnapshotBaseDamage, invocationSpell.Dot(localDot.Unit).OutcomeTick)
 					}).ApplyOnRefresh(func(aura *core.Aura, sim *core.Simulation) {
-						if numTicksRemaining := localDot.NumTicksRemaining(sim); localDot.TickLength*time.Duration(numTicksRemaining) <= time.Second*6 {
+						if numTicksRemaining := localDot.MaxTicksRemaining(); localDot.TickLength*time.Duration(numTicksRemaining) <= time.Second*6 {
 							invocationSpell := warlock.InvocationSpellMap[localDot.Spell.ClassSpellMask]
-							for i := 0; i < numTicksRemaining; i++ {
+							for i := int32(0); i < numTicksRemaining; i++ {
 								invocationSpell.Cast(sim, localDot.Unit)
 								invocationSpell.CalcAndDealDamage(sim, localDot.Unit, localDot.SnapshotBaseDamage, invocationSpell.Dot(localDot.Unit).OutcomeTick)
 							}

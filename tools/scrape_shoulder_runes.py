@@ -93,7 +93,8 @@ mismatchedIds = {
     "1219870": 1220198, # Paladin
     "1219825": 1220108, # Priest
     "1219903": 1220264, # Shaman
-    "1219786": 1220034 # Warlock
+    "1219786": 1220034, # Warlock
+    "1233551": 1220352  # Soul of the Starcaller
 }
 
 for item_id in item_ids:
