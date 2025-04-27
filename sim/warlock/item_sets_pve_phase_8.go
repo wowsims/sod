@@ -175,8 +175,11 @@ func (warlock *Warlock) applyScarletEnclaveTank2PBonus() {
 		ClassSpellMask: ClassSpellMask_WarlockShadowCleave,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			dot := warlock.Corruption[6].Dot(result.Target)
-			dot.Apply(sim)
+			oldNumberOfTicks := dot.NumberOfTicks
 			dot.NumberOfTicks = 4
+			dot.RecomputeAuraDuration()
+			dot.Apply(sim)
+			dot.NumberOfTicks = oldNumberOfTicks
 			dot.RecomputeAuraDuration()
 		},
 	})
