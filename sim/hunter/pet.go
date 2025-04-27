@@ -489,7 +489,7 @@ var PetConfigs = map[proto.Hunter_Options_PetType]PetConfig{
 		CustomRotation: func(sim *core.Simulation, hp *HunterPet, tryCast func(*core.Spell) bool) {
 			target := hp.CurrentTarget
 
-			if (hp.specialAbility.Dot(target).GetStacks() < hp.specialAbility.Dot(target).MaxStacks || hp.specialAbility.Dot(target).RemainingDuration(sim) < time.Second*3) && hp.specialAbility.CD.IsReady(sim) {
+			if (hp.specialAbility.Dot(target).GetStacks() < hp.specialAbility.Dot(target).MaxStacks || hp.specialAbility.Dot(target).RemainingDuration(sim) < time.Second*3) && hp.CurrentFocus() < 90 {
 				if !tryCast(hp.specialAbility) && hp.GCD.IsReady(sim) {
 					hp.WaitUntil(sim, sim.CurrentTime+time.Millisecond*500)
 				}
