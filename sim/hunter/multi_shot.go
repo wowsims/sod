@@ -13,7 +13,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 	manaCost := [6]float64{0, 100, 140, 175, 210, 230}[rank]
 	level := [6]int{0, 18, 30, 42, 54, 60}[rank]
 
-	hunter.MultiShotTargets += 3
+	hunter.MultiShotTargetCount += 3
 	maxNumTargets := hunter.Env.GetNumTargets()
 	results := make([]*core.SpellResult, maxNumTargets)
 
@@ -63,7 +63,7 @@ func (hunter *Hunter) getMultiShotConfig(rank int, timer *core.Timer) core.Spell
 		BonusCoefficient: 1,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for hitIndex := int32(0); hitIndex < min(hunter.MultiShotTargets, maxNumTargets); hitIndex++ {
+			for hitIndex := int32(0); hitIndex < min(hunter.MultiShotTargetCount, maxNumTargets); hitIndex++ {
 				baseDamage := baseDamage +
 					hunter.AutoAttacks.Ranged().CalculateNormalizedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +
 					hunter.AmmoDamageBonus
