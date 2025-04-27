@@ -100,7 +100,7 @@ stat_weights_results: {
  key: "TestBM-Phase1-Lvl25-StatWeights-Default"
  value: {
   weights: 0
-  weights: 0.50841
+  weights: 0.51359
   weights: 0
   weights: 0
   weights: 0
@@ -116,9 +116,9 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.0277
-  weights: 2.32311
-  weights: 2.25
+  weights: 0.02788
+  weights: 2.52427
+  weights: 2.15928
   weights: 0
   weights: 0
   weights: 0
@@ -126,7 +126,7 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.13351
+  weights: 0.13355
   weights: 0
   weights: 0
   weights: 0
@@ -197,106 +197,106 @@ stat_weights_results: {
 dps_results: {
  key: "TestBM-Phase1-Lvl25-AllItems-BeastmasterArmor"
  value: {
-  dps: 306.32349
-  tps: 207.12677
+  dps: 305.24218
+  tps: 206.61747
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Average-Default"
  value: {
-  dps: 242.55737
-  tps: 118.53655
+  dps: 242.94531
+  tps: 118.53355
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 313.59375
-  tps: 189.38011
+  dps: 315.01138
+  tps: 190.78077
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 260.70422
-  tps: 131.24928
+  dps: 260.01125
+  tps: 131.31753
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 369.17366
-  tps: 205.13035
+  dps: 370.16915
+  tps: 206.42215
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 161.98403
-  tps: 99.68135
+  dps: 162.14324
+  tps: 99.56389
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 134.08671
-  tps: 69.55842
+  dps: 133.84726
+  tps: 69.54148
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-NightElf-phase1-Basic-p1_weave-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 199.58482
-  tps: 114.78828
+  dps: 196.57937
+  tps: 113.62072
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 282.60177
-  tps: 161.38827
+  dps: 285.67826
+  tps: 165.40503
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 242.76442
-  tps: 118.24398
+  dps: 242.96293
+  tps: 119.19239
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-Orc-phase1-Basic-p1_weave-FullBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 360.49566
-  tps: 198.21077
+  dps: 362.76748
+  tps: 200.60685
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-Orc-phase1-Basic-p1_weave-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 159.59943
-  tps: 96.02722
+  dps: 160.57271
+  tps: 96.53933
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-Orc-phase1-Basic-p1_weave-NoBuffs-P1-Consumes-LongSingleTarget"
  value: {
-  dps: 133.07019
-  tps: 67.44016
+  dps: 133.12492
+  tps: 68.24827
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-Settings-Orc-phase1-Basic-p1_weave-NoBuffs-P1-Consumes-ShortSingleTarget"
  value: {
-  dps: 195.31734
-  tps: 109.20094
+  dps: 194.04482
+  tps: 110.37344
  }
 }
 dps_results: {
  key: "TestBM-Phase1-Lvl25-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 234.88773
-  tps: 117.98349
+  dps: 233.37016
+  tps: 117.77077
  }
 }
 dps_results: {
