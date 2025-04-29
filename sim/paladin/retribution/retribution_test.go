@@ -243,7 +243,7 @@ func TestShockadin1H(t *testing.T) {
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatSpellPower,
 			StatsToWeigh:    Stats,
-		},*/
+		},
 		{
 			Class:      proto.Class_ClassPaladin,
 			Phase:      7,
@@ -261,7 +261,8 @@ func TestShockadin1H(t *testing.T) {
 			ItemFilter:      ItemFilters,
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
-		},
+		},*/
+		core.GetTestBuildFromJSON(proto.Class_ClassPaladin, 8, 60, "../../../ui/retribution_paladin/builds", "p8-shockadin-1h", ItemFilters, proto.Stat_StatAttackPower, ShockadinStats),
 	}))
 }
 
@@ -302,7 +303,7 @@ func TestShockadin2H(t *testing.T) {
 			EPReferenceStat: proto.Stat_StatAttackPower,
 			StatsToWeigh:    Stats,
 		},*/
-		core.GetTestBuildFromJSON(proto.Class_ClassPaladin, 8, 60, "../../../ui/retribution_paladin/builds", "p8-shockadin", ItemFilters, proto.Stat_StatAttackPower, Stats),
+		core.GetTestBuildFromJSON(proto.Class_ClassPaladin, 8, 60, "../../../ui/retribution_paladin/builds", "p8-shockadin-2h", ItemFilters, proto.Stat_StatAttackPower, ShockadinStats),
 	}))
 }
 
@@ -661,6 +662,20 @@ var ItemFilters = core.ItemFilter{
 var Stats = []proto.Stat{
 	proto.Stat_StatStrength,
 	proto.Stat_StatAgility,
+	proto.Stat_StatAttackPower,
+	proto.Stat_StatMeleeHit,
+	proto.Stat_StatMeleeCrit,
+	proto.Stat_StatSpellPower,
+	proto.Stat_StatSpellHit,
+	proto.Stat_StatSpellCrit,
+	proto.Stat_StatMeleeHaste,
+	proto.Stat_StatExpertise,
+}
+
+var ShockadinStats = []proto.Stat{
+	proto.Stat_StatStrength,
+	proto.Stat_StatAgility,
+	proto.Stat_StatIntellect,
 	proto.Stat_StatAttackPower,
 	proto.Stat_StatMeleeHit,
 	proto.Stat_StatMeleeCrit,

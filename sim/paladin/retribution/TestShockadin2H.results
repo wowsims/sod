@@ -1,41 +1,41 @@
 character_stats_results: {
  key: "TestShockadin2H-Phase8-Lvl60-CharacterStats-Default"
  value: {
-  final_stats: 1146.596
-  final_stats: 339.02
-  final_stats: 709.918
-  final_stats: 190.6355
-  final_stats: 200.56575
-  final_stats: 404
+  final_stats: 530.1615
+  final_stats: 283.36
+  final_stats: 663.366
+  final_stats: 539.902
+  final_stats: 199.2375
+  final_stats: 600
   final_stats: 0
   final_stats: 0
   final_stats: 0
-  final_stats: 0
+  final_stats: 147
   final_stats: 0
   final_stats: 0
   final_stats: 61.6
+  final_stats: 3
+  final_stats: 41.51636
+  final_stats: 0
+  final_stats: 0
+  final_stats: 2130.323
   final_stats: 5
-  final_stats: 42.68361
+  final_stats: 44.03802
+  final_stats: 9
+  final_stats: 0
+  final_stats: 1
+  final_stats: 9330.53
   final_stats: 0
   final_stats: 0
-  final_stats: 3389.192
-  final_stats: 5
-  final_stats: 55.85441
-  final_stats: 27
+  final_stats: 5628.72
+  final_stats: 620
   final_stats: 0
-  final_stats: 7
-  final_stats: 4091.5325
-  final_stats: 0
-  final_stats: 0
-  final_stats: 7403.04
-  final_stats: 646
-  final_stats: 0
-  final_stats: 5
-  final_stats: 0
-  final_stats: 17.85441
   final_stats: 5
   final_stats: 0
-  final_stats: 8720.18
+  final_stats: 15.03802
+  final_stats: 5
+  final_stats: 0
+  final_stats: 8254.66
   final_stats: 27
   final_stats: 60
   final_stats: 27
@@ -50,29 +50,29 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin2H-Phase8-Lvl60-StatWeights-Default"
  value: {
-  weights: 4.54316
-  weights: 3.13628
+  weights: 0.57955
+  weights: 1.53403
+  weights: 0
+  weights: 12.89471
+  weights: 0
+  weights: 4.35311
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.98186
   weights: 0
   weights: 0
   weights: 0
   weights: 0
+  weights: 0.72431
+  weights: 28.12669
   weights: 0
   weights: 0
-  weights: 0
-  weights: 48.69894
-  weights: 5.78116
-  weights: 0
-  weights: 0
-  weights: 1.63247
-  weights: 115.51062
-  weights: 40.56089
+  weights: 0.20825
+  weights: 77.90223
+  weights: 33.451
   weights: 0
   weights: 0
-  weights: 0
+  weights: 77.90223
   weights: 0
   weights: 0
   weights: 0
@@ -99,114 +99,114 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 2376.82806
-  tps: 1686.9399
-  dtps: 4.62431
-  hps: 60.66857
+  dps: 3613.17548
+  tps: 2565.07166
+  dtps: 2.19032
+  hps: 33.306
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 2386.76244
-  tps: 1694.25274
-  dtps: 4.62431
-  hps: 60.66857
+  dps: 3713.88971
+  tps: 2636.24842
+  dtps: 2.19032
+  hps: 33.306
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 2500.28177
-  tps: 1774.48036
-  dtps: 4.62431
-  hps: 60.66857
+  dps: 3809.45147
+  tps: 2703.34721
+  dtps: 2.19032
+  hps: 33.306
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 4401.14013
-  tps: 3113.5108
-  dtps: 2.60127
-  hps: 72.25857
+  dps: 6083.50735
+  tps: 4309.07585
+  dtps: 2.23345
+  hps: 38.79193
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1993.05571
-  tps: 1413.59682
-  dtps: 4.61541
-  hps: 56.65273
+  dps: 906.76665
+  tps: 648.22835
+  dtps: 2.28733
+  hps: 33.30193
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Average-Default"
  value: {
-  dps: 8893.39616
-  tps: 6263.19295
-  dtps: 3.66866
-  hps: 79.11028
+  dps: 10707.88913
+  tps: 7535.47082
+  dtps: 2.6896
+  hps: 40.88058
  }
 }
 dps_results: {
- key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-FullBuffs-p8-shockadin-LongMultiTarget"
+ key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-FullBuffs-p8-shockadin-2h-LongMultiTarget"
  value: {
-  dps: 15105.124
-  tps: 10991.85219
-  dtps: 2.76816
-  hps: 79.70667
+  dps: 13940.5818
+  tps: 10496.4045
+  dtps: 2.36982
+  hps: 41.0103
  }
 }
 dps_results: {
- key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-FullBuffs-p8-shockadin-LongSingleTarget"
+ key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-FullBuffs-p8-shockadin-2h-LongSingleTarget"
  value: {
-  dps: 8960.84697
-  tps: 6304.5674
-  dtps: 2.69407
-  hps: 79.41997
+  dps: 10708.15124
+  tps: 7535.6426
+  dtps: 2.51092
+  hps: 40.8334
  }
 }
 dps_results: {
- key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-FullBuffs-p8-shockadin-ShortSingleTarget"
+ key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-FullBuffs-p8-shockadin-2h-ShortSingleTarget"
  value: {
-  dps: 9050.13711
-  tps: 6355.89631
-  dtps: 13.00637
-  hps: 81.63833
+  dps: 11070.2331
+  tps: 7801.97813
+  dtps: 12.5546
+  hps: 39.90417
  }
 }
 dps_results: {
- key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-NoBuffs-p8-shockadin-LongMultiTarget"
+ key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-NoBuffs-p8-shockadin-2h-LongMultiTarget"
  value: {
-  dps: 6071.87379
-  tps: 4614.5022
-  dtps: 3.38477
+  dps: 7228.43727
+  tps: 5736.84863
+  dtps: 2.66114
  }
 }
 dps_results: {
- key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-NoBuffs-p8-shockadin-LongSingleTarget"
+ key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-NoBuffs-p8-shockadin-2h-LongSingleTarget"
  value: {
-  dps: 3737.69996
-  tps: 2639.27887
-  dtps: 2.78659
+  dps: 5645.30255
+  tps: 3987.2766
+  dtps: 2.73648
  }
 }
 dps_results: {
- key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-p8-shockadin-p8-shockadin-NoBuffs-p8-shockadin-ShortSingleTarget"
+ key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-NoBuffs-p8-shockadin-2h-ShortSingleTarget"
  value: {
-  dps: 3813.93237
-  tps: 2688.35524
-  dtps: 12.98637
+  dps: 5865.67154
+  tps: 4148.10142
+  dtps: 13.68238
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 8137.37904
-  tps: 5735.39561
-  dtps: 3.11416
-  hps: 70.8759
+  dps: 9561.90089
+  tps: 6733.23066
+  dtps: 2.65698
+  hps: 34.5687
  }
 }

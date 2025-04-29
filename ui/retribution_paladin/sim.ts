@@ -3,7 +3,7 @@ import * as OtherInputs from '../core/components/other_inputs.js';
 import { Phase } from '../core/constants/other.js';
 import { IndividualSimUI, registerSpecConfig } from '../core/individual_sim_ui.js';
 import { Player } from '../core/player.js';
-import { Class, Faction, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
+import { Class, Faction, HandType, ItemSlot, PartyBuffs, PseudoStat, Race, Spec, Stat } from '../core/proto/common.js';
 import { PaladinRune } from '../core/proto/paladin.js';
 import { Stats } from '../core/proto_utils/stats.js';
 import { getSpecIcon } from '../core/proto_utils/utils.js';
@@ -173,7 +173,8 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 		builds: [
 			Presets.PresetBuildExodinPhase8,
 			Presets.PresetBuildSealStackingPhase8,
-			Presets.PresetBuildShockadinPhase8,
+			Presets.PresetBuildShockadin1hPhase8,
+			Presets.PresetBuildShockadin2hPhase8,
 			Presets.PresetBuildTwistingPhase8,
 			Presets.PresetBuildWrathLikePhase8,
 		],
@@ -185,12 +186,15 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecRetributionPaladin, {
 			return Presets.DefaultAPLs[level].rotation.rotation!;
 		}
 
-		if (player.getTalents().holyShock) {
-			return Presets.APLShockadinPhase8.rotation.rotation!;
-		}
-
 		const gear = player.getGear();
 		const mainHand = gear.getEquippedItem(ItemSlot.ItemSlotMainHand);
+		if (player.getTalents().holyShock) {
+			if (mainHand?.item && mainHand.item.handType == HandType.HandTypeTwoHand) {
+				return Presets.APLShockadin2hPhase8.rotation.rotation!;
+			}
+			return Presets.APLShockadin1hPhase8.rotation.rotation!;
+		}
+
 		if (mainHand?.item && mainHand.item.weaponSpeed < 3) {
 			return Presets.APLExodinPhase8.rotation.rotation!;
 		}

@@ -21,7 +21,7 @@
     "occultPoison": true,
     "improvedScorch": true,
     "dreamstate": true,
-    "sunderArmor": true,
+    "exposeArmor": "TristateEffectImproved",
     "homunculi": 70,
     "curseOfRecklessness": true,
     "mangle": true,
@@ -36,28 +36,28 @@
     "class": "ClassPaladin",
     "equipment": {
       "items": [
-        {"id":240027,"enchant":7619,"rune":429139},
-        {"id":241070},
-        {"id":241080,"enchant":7884,"rune":1220228},
-        {"id":241024,"enchant":7667,"rune":462834},
-        {"id":240030,"enchant":7645,"rune":407778},
-        {"id":240023,"enchant":1885,"rune":429144},
-        {"id":240028,"enchant":7666,"rune":407676},
-        {"id":241174,"rune":426158},
-        {"id":240026,"enchant":7619,"rune":407669},
-        {"id":240029,"enchant":1887,"rune":426157},
-        {"id":236130,"rune":29088},
-        {"id":241029,"rune":442898},
+        {"id":241078,"enchant":7621,"rune":429139},
+        {"id":231328},
+        {"id":236228,"enchant":7883,"rune":1220224},
+        {"id":241025,"enchant":7667,"rune":462834},
+        {"id":231329,"enchant":7645,"rune":407778},
+        {"id":231331,"enchant":1883,"rune":429144},
+        {"id":240028,"enchant":7646,"rune":407676},
+        {"id":231330,"rune":426065},
+        {"id":236229,"enchant":7621,"rune":425609},
+        {"id":240029,"enchant":7648,"rune":426157},
+        {"id":230867,"rune":29088},
+        {"id":231001,"rune":442898},
         {"id":241037},
-        {"id":241038},
-        {"id":240920,"enchant":7943},
+        {"id":231285},
+        {"id":240920,"enchant":7941},
         {},
         {"id":234476}
       ]
     },
     "consumes": {
       "flask": "FlaskOfAncientKnowledge",
-      "food": "FoodProwlerSteak",
+      "food": "FoodRunnTumTuberSurprise",
       "agilityElixir": "ElixirOfTheHoneyBadger",
       "manaRegenElixir": "MagebloodPotion",
       "strengthBuff": "JujuPower",
@@ -73,9 +73,10 @@
       "miscConsumes": {
         "elixirOfCoalescedRegret": true,
         "jujuFlurry": true,
-        "greaterMarkOfTheDawn": true
+        "greaterMarkOfTheDawn": true,
+        "raptorPunch": true
       },
-      "zanzaBuff": "ROIDS",
+      "zanzaBuff": "CerebralCortexCompound",
       "healthElixir": "ElixirOfFortitude",
       "alcohol": "AlcoholRumseyRumBlackLabel"
     },
@@ -138,7 +139,7 @@
       "moldarsMoxie": true,
       "slipkiksSavvy": true
     },
-    "talentsString": "55053100501051--052303502",
+    "talentsString": "55053100501051-502-0523003",
     "profession1": "Alchemy",
     "profession2": "Engineering",
     "cooldowns": {
@@ -146,19 +147,20 @@
     "rotation": {
       "type": "TypeAPL",
       "prepullActions": [
-        {"action":{"castSpell":{"spellId":{"spellId":20930,"rank":3}}},"doAtValue":{"const":{"val":"-4s"}}},
         {"action":{"castPaladinPrimarySeal":{}},"doAtValue":{"const":{"val":"-1.5s"}}}
       ],
       "priorityList": [
-        {"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"itemId":241241}}},"rhs":{"const":{"val":"3s"}}}},"castSpell":{"spellId":{"itemId":241241}}}},
-        {"action":{"autocastOtherCooldowns":{}}},
+        {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":1239543}}},"rhs":{"const":{"val":"1.5s"}}}},"castSpell":{"spellId":{"spellId":20930,"rank":3}}}},
+        {"action":{"condition":{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":1226461}}},"rhs":{"const":{"val":"3"}}}},"autocastOtherCooldowns":{}}},
         {"action":{"condition":{"auraIsActive":{"auraId":{"spellId":426157}}},"wait":{"duration":{"auraRemainingTime":{"auraId":{"spellId":426157}}}}}},
         {"action":{"castSpell":{"spellId":{"spellId":415073}}}},
         {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLe","lhs":{"currentSealRemainingTime":{}},"rhs":{"const":{"val":"1.5s"}}}},{"gcdIsReady":{}}]}},"castSpell":{"spellId":{"spellId":20271}}}},
         {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"currentSealRemainingTime":{}},"rhs":{"const":{"val":"1.5s"}}}},"castPaladinPrimarySeal":{}}},
-        {"action":{"condition":{"or":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":1226460}}}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":1226461}}},"rhs":{"const":{"val":"3"}}}}]}},"castSpell":{"spellId":{"spellId":20930,"rank":3}}}},
-        {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpGe","lhs":{"spellTimeToReady":{"spellId":{"spellId":20930,"rank":3}}},"rhs":{"const":{"val":"2s"}}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":1226461}}},"rhs":{"const":{"val":"3"}}}}]}},"castSpell":{"spellId":{"spellId":407778}}}},
-        {"action":{"castSpell":{"spellId":{"spellId":407676}}}}
+        {"action":{"castSpell":{"spellId":{"spellId":20930,"rank":3}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":407676}}}},
+        {"action":{"castSpell":{"spellId":{"spellId":407778}}}},
+        {"action":{"condition":{"and":{"vals":[{"auraIsKnown":{"auraId":{"spellId":470246}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":470246}}},"rhs":{"const":{"val":"5"}}}}]}},"castSpell":{"spellId":{"spellId":10318,"rank":2}}}},
+        {"hide":true,"action":{"castSpell":{"spellId":{"spellId":20924,"rank":5}}}}
       ]
     },
     "reactionTimeMs": 200,
@@ -170,7 +172,7 @@
     },
     "retributionPaladin": {
       "options": {
-        "primarySeal": "Martyrdom"
+        "primarySeal": "Crusader"
       }
     }
   },
@@ -182,11 +184,11 @@
     "executeProportion35": 0.35,
     "targets": [
       {
-        "id": 243269,
-        "name": "Generic",
+        "id": 213336,
+        "name": "Level 60",
         "level": 63,
-        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,805,0,0,0,0,0,0,0,0,3731,0,0,0,46,0,0,0,127393,0,0,0,0,0,0,0,0,0],
-        "minBaseDamage": 6000,
+        "stats": [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,805,0,0,0,0,0,0,0,0,3731,0,0,0,0,0,0,0,127393,0,0,0,0,0,0,0,0,0],
+        "minBaseDamage": 3000,
         "damageSpread": 0.3333,
         "swingSpeed": 2,
         "parryHaste": true
