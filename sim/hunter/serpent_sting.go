@@ -89,10 +89,6 @@ func (hunter *Hunter) chimeraShotSerpentStingSpell(rank int) *core.Spell {
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagPassiveSpell,
 		MissileSpeed:   24,
 
-		BonusCritRating: 1,
-
-		CritDamageBonus: hunter.mortalShots(),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 0.40,

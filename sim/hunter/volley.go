@@ -81,7 +81,6 @@ func (hunter *Hunter) getVolleyConfig(rank int) core.SpellConfig {
 			},
 		},
 
-		CritDamageBonus:  1 + hunter.mortalShots(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 

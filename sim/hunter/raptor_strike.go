@@ -125,7 +125,6 @@ func (hunter *Hunter) newRaptorStrikeHitSpell(rank int, isMH bool) *core.Spell {
 		ProcMask:       procMask,
 		Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete,
 
-		CritDamageBonus:  hunter.mortalShots(),
 		DamageMultiplier: damageMultiplier,
 		BonusCoefficient: 1,
 

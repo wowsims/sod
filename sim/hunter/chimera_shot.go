@@ -41,8 +41,6 @@ func (hunter *Hunter) registerChimeraShotSpell() {
 			},
 		},
 
-		CritDamageBonus: hunter.mortalShots(),
-
 		DamageMultiplier: 1.35,
 		ThreatMultiplier: 1,
 

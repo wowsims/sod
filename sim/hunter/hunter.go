@@ -332,7 +332,7 @@ func NewHunter(character *core.Character, options *proto.Player) *Hunter {
 			return time.Duration(float64(spell.DefaultCast.CastTime) / hunter.RangedSwingSpeed() * math.Max(spell.CastTimeMultiplier, 0))
 		},
 	}
-	hunter.AutoAttacks.RangedConfig().CritDamageBonus = hunter.mortalShots()
+	hunter.AutoAttacks.RangedConfig().CritDamageBonus = 0.06 * float64(hunter.Talents.MortalShots)
 	hunter.AutoAttacks.RangedConfig().BonusCoefficient = 1
 	hunter.AutoAttacks.RangedConfig().ApplyEffects = func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 		baseDamage := hunter.RangedWeaponDamage(sim, spell.RangedAttackPower(target, false)) +
