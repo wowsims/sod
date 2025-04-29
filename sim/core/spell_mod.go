@@ -3,6 +3,8 @@ package core
 import (
 	"strconv"
 	"time"
+
+	"github.com/wowsims/sod/sim/core/proto"
 )
 
 /*
@@ -12,13 +14,14 @@ SpellMod implementation.
 type SpellModConfig struct {
 	Kind SpellModType
 
-	ClassMask         uint64      // Only apply to spells that have a matching ClassSpellMask
-	ClassSpellsOnly   bool        // Only apply to spells that have a ClassSpellMask set
-	School            SpellSchool // Only apply to spells that have a matching SpellSchool
-	SpellFlags        SpellFlag   // Only apply to spells that have a matching SpellFlags
-	SpellFlagsExclude SpellFlag   // Only apply to spells that do NOT have a matching SpellFlags
-	DefenseType       DefenseType // Only apply to spells that have a matching DefenseType
-	ProcMask          ProcMask    // Only apply to spells that have a matching ProcMask
+	ClassMask         uint64         // Only apply to spells that have a matching ClassSpellMask
+	ClassSpellsOnly   bool           // Only apply to spells that have a ClassSpellMask set
+	School            SpellSchool    // Only apply to spells that have a matching SpellSchool
+	SpellFlags        SpellFlag      // Only apply to spells that have a matching SpellFlags
+	SpellFlagsExclude SpellFlag      // Only apply to spells that do NOT have a matching SpellFlags
+	DefenseType       DefenseType    // Only apply to spells that have a matching DefenseType
+	ProcMask          ProcMask       // Only apply to spells that have a matching ProcMask
+	CastType          proto.CastType // Only apply to spells that have a matching CastType
 
 	IntValue     int64
 	TimeValue    time.Duration
@@ -31,13 +34,14 @@ type SpellModConfig struct {
 type SpellMod struct {
 	Kind SpellModType
 
-	ClassMask         uint64      // Only apply to spells that have a matching ClassSpellMask
-	ClassSpellsOnly   bool        // Only apply to spells that have a ClassSpellMask set
-	School            SpellSchool // Only apply to spells that have a matching SpellSchool
-	SpellFlags        SpellFlag   // Only apply to spells that have a matching SpellFlags
-	SpellFlagsExclude SpellFlag   // Only apply to spells that do NOT have a matching SpellFlags
-	DefenseType       DefenseType // Only apply to spells that have a matching DefenseType
-	ProcMask          ProcMask    // Only apply to spells that have a matching ProcMask
+	ClassMask         uint64         // Only apply to spells that have a matching ClassSpellMask
+	ClassSpellsOnly   bool           // Only apply to spells that have a ClassSpellMask set
+	School            SpellSchool    // Only apply to spells that have a matching SpellSchool
+	SpellFlags        SpellFlag      // Only apply to spells that have a matching SpellFlags
+	SpellFlagsExclude SpellFlag      // Only apply to spells that do NOT have a matching SpellFlags
+	DefenseType       DefenseType    // Only apply to spells that have a matching DefenseType
+	ProcMask          ProcMask       // Only apply to spells that have a matching ProcMask
+	CastType          proto.CastType // Only apply to spells that have a matching CastType
 
 	floatValue     float64
 	intValue       int64
@@ -86,6 +90,7 @@ func buildMod(unit *Unit, config SpellModConfig) *SpellMod {
 		SpellFlagsExclude: config.SpellFlagsExclude,
 		DefenseType:       config.DefenseType,
 		ProcMask:          config.ProcMask,
+		CastType:          config.CastType,
 		floatValue:        config.FloatValue,
 		intValue:          config.IntValue,
 		timeValue:         config.TimeValue,
@@ -148,6 +153,10 @@ func shouldApply(spell *Spell, mod *SpellMod) bool {
 	}
 
 	if mod.ProcMask > 0 && !spell.ProcMask.Matches(mod.ProcMask) {
+		return false
+	}
+
+	if mod.CastType > 0 && !(spell.CastType == mod.CastType) {
 		return false
 	}
 
