@@ -21,6 +21,7 @@ func (hunter *Hunter) ApplyTalents() {
 	// MM Talents
 	hunter.applyEfficiency()
 	hunter.applyLethalShots()
+	hunter.applyMortalShots()
 	hunter.applyImprovedArcaneShot()
 	hunter.applyImprovedSerpentSting()
 	hunter.applyBarrage()
@@ -222,8 +223,14 @@ func (hunter *Hunter) applyMortalShots() {
 		return
 	}
 
-	// TODO: Figure out what the pattern is and move to here
-	// Could it be ProcMask Ranged + BonusCoefficient 1?
+	hunter.AutoAttacks.RangedConfig().CritDamageBonus = 0.06 * float64(hunter.Talents.MortalShots)
+
+	hunter.AddStaticMod(core.SpellModConfig{
+		Kind: core.SpellMod_CritDamageBonus_Flat,
+		// Applies to all shots, strikes, and volley
+		ClassMask:  ClassSpellMask_HunterShots | ClassSpellMask_HunterStrikes | ClassSpellMask_HunterChimeraSerpent | ClassSpellMask_HunterMongooseBite | ClassSpellMask_HunterWingClip | ClassSpellMask_HunterVolley,
+		FloatValue: 0.06 * float64(hunter.Talents.MortalShots),
+	})
 }
 
 func (hunter *Hunter) applyBarrage() {
@@ -249,10 +256,6 @@ func (hunter *Hunter) applyRangedWeaponSpecialization() {
 			spell.ApplyMultiplicativeDamageBonus(mult)
 		}
 	})
-}
-
-func (hunter *Hunter) mortalShots() float64 {
-	return 0.06 * float64(hunter.Talents.MortalShots)
 }
 
 ///////////////////////////////////////////////////////////////////////////

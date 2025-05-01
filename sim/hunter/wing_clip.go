@@ -33,7 +33,6 @@ func (hunter *Hunter) getWingClipConfig(rank int) core.SpellConfig {
 			IgnoreHaste: true,
 		},
 
-		CritDamageBonus:  hunter.mortalShots(),
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 

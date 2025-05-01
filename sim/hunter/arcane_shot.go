@@ -43,8 +43,6 @@ func (hunter *Hunter) getArcaneShotConfig(rank int, timer *core.Timer) core.Spel
 			},
 		},
 
-		CritDamageBonus: hunter.mortalShots(),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: spellCoeff,

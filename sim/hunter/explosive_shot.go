@@ -46,8 +46,6 @@ func (hunter *Hunter) registerExplosiveShotSpell() {
 			},
 		},
 
-		CritDamageBonus: hunter.mortalShots(),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 
