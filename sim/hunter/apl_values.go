@@ -35,7 +35,7 @@ func (value *APLValueHunterPetIsActive) Type() proto.APLValueType {
 	return proto.APLValueType_ValueTypeBool
 }
 func (value *APLValueHunterPetIsActive) GetBool(sim *core.Simulation) bool {
-	return value.hunter.pet != nil
+	return value.hunter.pet != nil && value.hunter.pet.IsActive()
 }
 func (value *APLValueHunterPetIsActive) String() string {
 	return fmt.Sprintf("Current Pet Focus %%")
