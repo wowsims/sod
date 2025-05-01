@@ -4,6 +4,7 @@ import (
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
+	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
@@ -82,6 +83,7 @@ func (hunter *Hunter) applyT2Melee4PBonus() {
 		Label: label,
 	}).AttachSpellMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
+		CastType:   proto.CastType_CastTypeMainHand,
 		ClassMask:  ClassSpellMask_HunterRaptorStrike | ClassSpellMask_HunterRaptorStrikeHit | ClassSpellMask_HunterWyvernStrike,
 		FloatValue: 1.20,
 	}))

@@ -35,13 +35,15 @@ import Phase1APLRetJSON from './apls/p1-ret.apl.json';
 import Phase2APLRetJSON from './apls/p2-ret.apl.json';
 import Phase3APLRetJSON from './apls/p3-ret.apl.json';
 import Phase8APLExodinJSON from './apls/p8-exodin.apl.json';
-import Phase8APLShockadinJSON from './apls/p8-shockadin.apl.json';
+import Phase8APLShockadin1hJSON from './apls/p8-shockadin-1h.apl.json';
+import Phase8APLShockadin2hJSON from './apls/p8-shockadin-2h.apl.json';
 import Phase8APLSealStackingJSON from './apls/p8-stack.apl.json';
 import Phase8APLTwistingJSON from './apls/p8-twist.apl.json';
 import Phase8APLWrathLikeJSON from './apls/p8-wrath.apl.json';
 // Builds
 import Phase8BuildExodinJSON from './builds/p8-exodin.build.json';
-import Phase8BuildShockadinJSON from './builds/p8-shockadin.build.json';
+import Phase8BuildShockadin1hJSON from './builds/p8-shockadin-1h.build.json';
+import Phase8BuildShockadin2hJSON from './builds/p8-shockadin-2h.build.json';
 import Phase8BuildSealStackingJSON from './builds/p8-stack.build.json';
 import Phase8BuildTwistingJSON from './builds/p8-twist.build.json';
 import Phase8BuildWrathLikeJSON from './builds/p8-wrath.build.json';
@@ -51,7 +53,8 @@ import Phase2GearRetSoCJSON from './gear_sets/p2-retsoc.gear.json';
 import Phase2GearRetSoMJSON from './gear_sets/p2-retsom.gear.json';
 import Phase3GearRetSoMJSON from './gear_sets/p3-retsom.gear.json';
 import Phase8GearExodinJSON from './gear_sets/p8-exodin.gear.json';
-import Phase8GearShockadinJSON from './gear_sets/p8-shockadin.gear.json';
+import Phase8GearShockadin1hJSON from './gear_sets/p8-shockadin-1h.gear.json';
+import Phase8GearShockadin2hJSON from './gear_sets/p8-shockadin-2h.gear.json';
 import Phase8GearSealStackingJSON from './gear_sets/p8-stack.gear.json';
 import Phase8GearTwistingJSON from './gear_sets/p8-twist.gear.json';
 import Phase8GearWrathLikeJSON from './gear_sets/p8-wrath.gear.json';
@@ -82,7 +85,10 @@ export const GearExodinPhase8 = PresetUtils.makePresetGear('P8 Exodin', Phase8Ge
 export const GearSealStackingPhase8 = PresetUtils.makePresetGear('P8 Seal Stacking', Phase8GearSealStackingJSON, {
 	customCondition: player => player.getLevel() == 60,
 });
-export const GearShockadinPhase8 = PresetUtils.makePresetGear('P8 Shockadin', Phase8GearShockadinJSON, {
+export const GearShockadin1hPhase8 = PresetUtils.makePresetGear('P8 Shockadin 1h', Phase8GearShockadin1hJSON, {
+	customCondition: player => player.getLevel() == 60,
+});
+export const GearShockadin2hPhase8 = PresetUtils.makePresetGear('P8 Shockadin 2h', Phase8GearShockadin2hJSON, {
 	customCondition: player => player.getLevel() == 60,
 });
 export const GearTwistingPhase8 = PresetUtils.makePresetGear('P8 Twisting', Phase8GearTwistingJSON, {
@@ -100,13 +106,7 @@ export const GearPresets = {
 	[Phase.Phase5]: [],
 	[Phase.Phase6]: [],
 	[Phase.Phase7]: [],
-	[Phase.Phase8]: [
-		GearExodinPhase8,
-		GearSealStackingPhase8,
-		GearShockadinPhase8,
-		GearTwistingPhase8,
-		GearWrathLikePhase8,
-	],
+	[Phase.Phase8]: [GearExodinPhase8, GearSealStackingPhase8, GearShockadin1hPhase8, GearShockadin2hPhase8, GearTwistingPhase8, GearWrathLikePhase8],
 };
 
 export const DefaultGear = GearPresets[Phase.Phase8][0];
@@ -130,7 +130,10 @@ export const APLExodinPhase8 = PresetUtils.makePresetAPLRotation('P8 Exodin', Ph
 export const APLSealStackingPhase8 = PresetUtils.makePresetAPLRotation('P8 Seal Stacking', Phase8APLSealStackingJSON, {
 	customCondition: player => player.getLevel() === 60,
 });
-export const APLShockadinPhase8 = PresetUtils.makePresetAPLRotation('P8 Shockadin', Phase8APLShockadinJSON, {
+export const APLShockadin1hPhase8 = PresetUtils.makePresetAPLRotation('P8 Shockadin 1h', Phase8APLShockadin1hJSON, {
+	customCondition: player => player.getLevel() === 60,
+});
+export const APLShockadin2hPhase8 = PresetUtils.makePresetAPLRotation('P8 Shockadin 2h', Phase8APLShockadin2hJSON, {
 	customCondition: player => player.getLevel() === 60,
 });
 export const APLTwistingPhase8 = PresetUtils.makePresetAPLRotation('P8 Twisting', Phase8APLTwistingJSON, {
@@ -148,7 +151,7 @@ export const APLPresets = {
 	[Phase.Phase5]: [],
 	[Phase.Phase6]: [],
 	[Phase.Phase7]: [],
-	[Phase.Phase8]: [APLExodinPhase8, APLSealStackingPhase8, APLShockadinPhase8, APLTwistingPhase8, APLWrathLikePhase8],
+	[Phase.Phase8]: [APLExodinPhase8, APLSealStackingPhase8, APLShockadin1hPhase8, APLShockadin2hPhase8, APLTwistingPhase8, APLWrathLikePhase8],
 };
 
 export const DefaultAPLs: Record<number, PresetUtils.PresetRotation> = {
@@ -185,7 +188,11 @@ export const TalentsRetPhase8 = PresetUtils.makePresetTalents('P8 Ret', SavedTal
 	customCondition: player => player.getLevel() === 60,
 });
 
-export const TalentsShockadinPhase8 = PresetUtils.makePresetTalents('P8 Shockadin', SavedTalents.create({ talentsString: '55053100501051--052303502' }), {
+export const TalentsShockadin1hPhase8 = PresetUtils.makePresetTalents('P8 Shockadin 1h', SavedTalents.create({ talentsString: '55053100501051--052303502' }), {
+	customCondition: player => player.getLevel() === 60,
+});
+
+export const TalentsShockadin2hPhase8 = PresetUtils.makePresetTalents('P8 Shockadin 2h', SavedTalents.create({ talentsString: '55053100501051-502-0523003' }), {
 	customCondition: player => player.getLevel() === 60,
 });
 
@@ -197,12 +204,13 @@ export const TalentPresets = {
 	[Phase.Phase5]: [],
 	[Phase.Phase6]: [],
 	[Phase.Phase7]: [],
-	[Phase.Phase8]: [TalentsRetPhase8, TalentsShockadinPhase8],
+	[Phase.Phase8]: [TalentsRetPhase8, TalentsShockadin1hPhase8, TalentsShockadin2hPhase8],
 };
 
 export const PresetBuildExodinPhase8 = PresetUtils.makePresetBuildFromJSON('P8 Exodin', Spec.SpecRetributionPaladin, Phase8BuildExodinJSON);
 export const PresetBuildSealStackingPhase8 = PresetUtils.makePresetBuildFromJSON('P8 Seal Stacking', Spec.SpecRetributionPaladin, Phase8BuildSealStackingJSON);
-export const PresetBuildShockadinPhase8 = PresetUtils.makePresetBuildFromJSON('P8 Shockadin', Spec.SpecRetributionPaladin, Phase8BuildShockadinJSON);
+export const PresetBuildShockadin1hPhase8 = PresetUtils.makePresetBuildFromJSON('P8 Shockadin 1h', Spec.SpecRetributionPaladin, Phase8BuildShockadin1hJSON);
+export const PresetBuildShockadin2hPhase8 = PresetUtils.makePresetBuildFromJSON('P8 Shockadin 2h', Spec.SpecRetributionPaladin, Phase8BuildShockadin2hJSON);
 export const PresetBuildTwistingPhase8 = PresetUtils.makePresetBuildFromJSON('P8 Twisting', Spec.SpecRetributionPaladin, Phase8BuildTwistingJSON);
 export const PresetBuildWrathLikePhase8 = PresetUtils.makePresetBuildFromJSON('P8 Wrath-like', Spec.SpecRetributionPaladin, Phase8BuildWrathLikeJSON);
 

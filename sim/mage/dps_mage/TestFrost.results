@@ -398,10 +398,10 @@ stat_weights_results: {
   weights: 0
   weights: 0.28173
   weights: 0
-  weights: 3.58876
+  weights: 3.44383
   weights: 0
   weights: 0
-  weights: 3.58876
+  weights: 3.44383
   weights: 0
   weights: 0
   weights: 0
@@ -447,16 +447,16 @@ stat_weights_results: {
   weights: 0
   weights: 0.05809
   weights: 0
-  weights: 3.40866
+  weights: 3.32244
   weights: 0
   weights: 0
-  weights: 3.40866
+  weights: 3.32244
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 11.14026
+  weights: 11.04966
   weights: 0
   weights: 0
   weights: 0
@@ -974,57 +974,57 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Average-Default"
  value: {
-  dps: 6325.77084
-  tps: 4455.12647
+  dps: 6225.55914
+  tps: 4384.97828
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-FullBuffs-p6_frost-LongMultiTarget"
  value: {
-  dps: 12256.3584
-  tps: 9124.31897
+  dps: 12145.56944
+  tps: 9046.7667
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-FullBuffs-p6_frost-LongSingleTarget"
  value: {
-  dps: 6380.67015
-  tps: 4493.57006
+  dps: 6276.22389
+  tps: 4420.45768
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-FullBuffs-p6_frost-ShortSingleTarget"
  value: {
-  dps: 7415.44556
-  tps: 5221.25948
+  dps: 7230.8228
+  tps: 5092.02354
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-NoBuffs-p6_frost-LongMultiTarget"
  value: {
-  dps: 6327.11982
-  tps: 4718.83504
+  dps: 6271.48591
+  tps: 4679.8913
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-NoBuffs-p6_frost-LongSingleTarget"
  value: {
-  dps: 3166.13297
-  tps: 2230.83171
+  dps: 3114.90376
+  tps: 2194.97126
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-Settings-Troll-p6_frost-p6_frost-p6_frost-NoBuffs-p6_frost-ShortSingleTarget"
  value: {
-  dps: 3810.20618
-  tps: 2691.55798
+  dps: 3719.20917
+  tps: 2627.86008
  }
 }
 dps_results: {
  key: "TestFrost-Phase6-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 6380.67015
-  tps: 4493.57006
+  dps: 6276.22389
+  tps: 4420.45768
  }
 }
 dps_results: {
@@ -1093,56 +1093,56 @@ dps_results: {
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Average-Default"
  value: {
-  dps: 6133.98686
-  tps: 3957.76281
+  dps: 6081.42457
+  tps: 3920.96921
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-LongMultiTarget"
  value: {
-  dps: 11810.91773
-  tps: 8448.46254
+  dps: 11751.56586
+  tps: 8406.91623
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-LongSingleTarget"
  value: {
-  dps: 6156.57674
-  tps: 3974.86999
+  dps: 6103.61423
+  tps: 3937.79623
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-FullBuffs-p7_frost-ShortSingleTarget"
  value: {
-  dps: 7918.97579
-  tps: 5146.51801
+  dps: 7834.53158
+  tps: 5087.40706
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-LongMultiTarget"
  value: {
-  dps: 5671.83104
-  tps: 4070.60066
+  dps: 5646.39211
+  tps: 4052.79341
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-LongSingleTarget"
  value: {
-  dps: 2783.39546
-  tps: 1794.40825
+  dps: 2763.02466
+  tps: 1780.14869
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-Settings-Troll-p7_frost-p7_frost-p7_frost-NoBuffs-p7_frost-ShortSingleTarget"
  value: {
-  dps: 3658.10677
-  tps: 2385.01847
+  dps: 3621.88945
+  tps: 2359.66634
  }
 }
 dps_results: {
  key: "TestFrost-Phase7-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 6156.57674
-  tps: 3974.86999
+  dps: 6103.61423
+  tps: 3937.79623
  }
 }

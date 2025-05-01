@@ -141,7 +141,7 @@ func (mage *Mage) applyScarletEnclaveDamage6PBonus() {
 				}
 
 				aura.ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-					if newStacks == 0 && !mage.DeepFreeze.CD.Cooldown.IsReady(sim) {
+					if newStacks == 0 {
 						mage.DeepFreeze.CD.ModifyRemainingCooldown(sim, -time.Second*time.Duration(oldStacks))
 					}
 				})

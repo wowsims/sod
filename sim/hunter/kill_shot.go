@@ -42,8 +42,6 @@ func (hunter *Hunter) newKillShotConfig() core.SpellConfig {
 			},
 		},
 
-		CritDamageBonus: hunter.mortalShots(),
-
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,

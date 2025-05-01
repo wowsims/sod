@@ -4,6 +4,7 @@ import (
 	"regexp"
 
 	"github.com/wowsims/sod/sim/core/proto"
+	"github.com/wowsims/sod/sim/core/stats"
 )
 
 var OtherItemIdsToFetch = []string{}
@@ -90,6 +91,25 @@ var ItemOverrides = []*proto.UIItem{
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82081, Name: "A Broken Ritual"}}},
 		{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 82083, Name: "A Broken Ritual"}}},
 	}},
+
+	// Dalton's Horn
+	{
+		Id:               226545,
+		Name:             "Dalton's Horn",
+		Icon:             "inv_misc_horn_04",
+		Ilvl:             60,
+		RequiresLevel:    50,
+		Phase:            4,
+		Quality:          proto.ItemQuality_ItemQualityEpic,
+		ClassAllowlist:   []proto.Class{proto.Class_ClassPaladin},
+		Type:             proto.ItemType_ItemTypeRanged,
+		RangedWeaponType: proto.RangedWeaponType_RangedWeaponTypeLibram,
+		Stats:            stats.Stats{stats.Intellect: 5}.ToFloatArray(),
+		WeaponSkills:     make([]float64, 16),
+		Sources: []*proto.UIItemSource{
+			{Source: &proto.UIItemSource_Quest{Quest: &proto.QuestSource{Id: 84008, Name: "A Lesson in Grace"}}},
+		},
+	},
 }
 
 // Keep these sorted by item ID.

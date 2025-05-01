@@ -586,9 +586,9 @@ func init() {
 					buffAura.Activate(sim)
 					buffAura.AddStack(sim)
 
-					// Delay the reset to simulate real player reaction time
+					// Effect has a 1.5s ICD to avoid misclicks
 					sim.AddPendingAction(&core.PendingAction{
-						NextActionAt: sim.CurrentTime + character.Unit.ReactionTime,
+						NextActionAt: sim.CurrentTime + time.Millisecond*1500,
 						OnAction: func(sim *core.Simulation) {
 							spell.CD.Reset()
 						},
