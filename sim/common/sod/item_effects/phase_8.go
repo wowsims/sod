@@ -754,7 +754,7 @@ func init() {
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressEquipProcs,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -772,13 +772,12 @@ func init() {
 			ActionID:    core.ActionID{SpellID: 1231547},
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
-			Flags:       core.SpellFlagChanneled,
 			Dot: core.DotConfig{
 				Aura: core.Aura{
 					Label: "Ravagane Whirlwind",
 				},
-				NumberOfTicks: 3,
-				TickLength:    time.Second * 3,
+				NumberOfTicks: 6,
+				TickLength:    time.Millisecond * 1500,
 				IsAOE:         true,
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					tickSpell.Cast(sim, target)
@@ -795,7 +794,6 @@ func init() {
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.AutoAttacks.EnableAutoSwing(sim)
-				channelSpell.AOEDot().Cancel(sim)
 			},
 		})
 	})
