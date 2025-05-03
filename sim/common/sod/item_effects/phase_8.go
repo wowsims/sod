@@ -768,7 +768,7 @@ func init() {
 			},
 		})
 
-		channelSpell := character.RegisterSpell(core.SpellConfig{
+		whirlwindSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 1231547},
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -788,12 +788,17 @@ func init() {
 		return character.RegisterAura(core.Aura{
 			Label:    "Ravagane Bladestorm",
 			Duration: time.Second * 9,
+			Icd: &core.Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Second * 8,
+			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				character.AutoAttacks.CancelAutoSwing(sim)
-				channelSpell.AOEDot().Apply(sim)
+				whirlwindSpell.AOEDot().Apply(sim)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				character.AutoAttacks.EnableAutoSwing(sim)
+				whirlwindSpell.AOEDot().Cancel(sim)
 			},
 		})
 	})
