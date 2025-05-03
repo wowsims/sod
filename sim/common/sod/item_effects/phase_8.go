@@ -665,7 +665,7 @@ func init() {
 				Aura: core.Aura{
 					Label: "Mirage",
 				},
-				NumberOfTicks: 10,
+				NumberOfTicks: 20,
 				TickLength:    core.GCDDefault,
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					explosionSpell.Cast(sim, target)
