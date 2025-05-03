@@ -798,8 +798,8 @@ func init() {
 				}
 				aura.Icd.Use(sim)
 
-				character.AutoAttacks.CancelAutoSwing(sim)
 				whirlwindSpell.AOEDot().Apply(sim)
+				character.AutoAttacks.CancelAutoSwing(sim)
 			},
 			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
 				if !aura.Icd.IsReady(sim) {
@@ -807,13 +807,12 @@ func init() {
 				}
 				aura.Icd.Use(sim)
 
-				whirlwindSpell.AOEDot().Cancel(sim)
+				whirlwindSpell.AOEDot().ApplyOrReset(sim)
 				character.AutoAttacks.CancelAutoSwing(sim)
-				whirlwindSpell.AOEDot().Apply(sim)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				character.AutoAttacks.EnableAutoSwing(sim)
 				whirlwindSpell.AOEDot().Cancel(sim)
+				character.AutoAttacks.EnableAutoSwing(sim)
 			},
 		})
 	})
