@@ -223,7 +223,7 @@ func (hunter *Hunter) applyMortalShots() {
 		return
 	}
 
-	hunter.AutoAttacks.RangedConfig().CritDamageBonus = 0.06 * float64(hunter.Talents.MortalShots)
+	hunter.AutoAttacks.RangedConfig().CritDamageBonus += 0.06 * float64(hunter.Talents.MortalShots)
 
 	hunter.AddStaticMod(core.SpellModConfig{
 		Kind: core.SpellMod_CritDamageBonus_Flat,
