@@ -125,6 +125,8 @@ func (hunter *Hunter) NewHunterPet() *HunterPet {
 		hasOwnerCooldown: petConfig.SpecialAbility == FuriousHowl,
 	}
 
+	hp.Pet.Unit.StartDistanceFromTarget = hunter.Character.DistanceFromTarget
+
 	hp.Pet.MobType = petConfig.MobType
 
 	hp.EnableAutoAttacks(hp, core.AutoAttackOptions{
@@ -212,6 +214,11 @@ func (hp *HunterPet) ExecuteCustomRotation(sim *core.Simulation) {
 	if percentRemaining < 1.0-hp.uptimePercent { // once fight is % completed, disable pet.
 		hp.Disable(sim)
 		return
+	}
+
+	// Move into melee range
+	if hp.DistanceFromTarget > core.MaxMeleeAttackRange {
+		hp.Unit.MoveTo(core.MaxMeleeAttackRange, sim)
 	}
 
 	if hp.hasOwnerCooldown && hp.CurrentFocus() < 50 {

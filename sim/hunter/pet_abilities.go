@@ -47,6 +47,7 @@ func (hp *HunterPet) NewPetAbility(abilityType PetAbilityType, isPrimary bool) *
 	}
 }
 
+// https://www.wowhead.com/classic/spell=3009/claw
 func (hp *HunterPet) newClaw() *core.Spell {
 	baseDamageMin := map[int32]float64{
 		25: 16,
@@ -93,6 +94,8 @@ func (hp *HunterPet) newClaw() *core.Spell {
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
+		MaxRange: 5,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * ApCoeff)
 			baseDamage *= hp.killCommandMult()
@@ -102,6 +105,7 @@ func (hp *HunterPet) newClaw() *core.Spell {
 	})
 }
 
+// https://www.wowhead.com/classic/spell=17261/bite
 func (hp *HunterPet) newBite() *core.Spell {
 	baseDamageMin := map[int32]float64{
 		25: 31,
@@ -152,6 +156,8 @@ func (hp *HunterPet) newBite() *core.Spell {
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
+		MaxRange: 5,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * ApCoeff)
 			baseDamage *= hp.killCommandMult()
@@ -161,6 +167,7 @@ func (hp *HunterPet) newBite() *core.Spell {
 	})
 }
 
+// https://www.wowhead.com/classic/spell=25012/lightning-breath
 func (hp *HunterPet) newLightningBreath() *core.Spell {
 	baseDamageMin := map[int32]float64{
 		25: 36,
@@ -207,6 +214,8 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 		ThreatMultiplier: 1,
 		BonusCoefficient: SpCoeff,
 
+		MaxRange: 20,
+
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * ApCoeff)
 
@@ -215,6 +224,7 @@ func (hp *HunterPet) newLightningBreath() *core.Spell {
 	})
 }
 
+// https://www.wowhead.com/classic/spell=24579/screech
 func (hp *HunterPet) newScreech() *core.Spell {
 	baseDamageMin := map[int32]float64{
 		25: 12,
@@ -259,6 +269,8 @@ func (hp *HunterPet) newScreech() *core.Spell {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+
+		MaxRange: 5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseDamageMin, baseDamageMax) + (spell.MeleeAttackPower() * ApCoeff)
@@ -314,6 +326,7 @@ func (hp *HunterPet) newScreech() *core.Spell {
 // 	return nil
 // }
 
+// https://www.wowhead.com/classic/spell=24587/scorpid-poison
 func (hp *HunterPet) newScorpidPoison() *core.Spell {
 	baseDamageTick := map[int32]float64{
 		25: 3,
@@ -354,6 +367,8 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
+
+		MaxRange: 5,
 
 		Dot: core.DotConfig{
 			Aura: core.Aura{
@@ -399,6 +414,7 @@ func (hp *HunterPet) newScorpidPoison() *core.Spell {
 	})
 }
 
+// https://www.wowhead.com/classic/spell=444681/lava-breath
 func (hp *HunterPet) newLavaBreath() *core.Spell {
 	baseDamageMin := map[int32]float64{
 		50: 78,
@@ -437,6 +453,8 @@ func (hp *HunterPet) newLavaBreath() *core.Spell {
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		BonusCoefficient: SpCoeff,
+
+		MaxRange: 5,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			damage := sim.Roll(baseDamageMin, baseDamageMax) + ApCoeff*spell.MeleeAttackPower()

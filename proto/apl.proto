@@ -179,6 +179,10 @@ message APLValue {
         APLValueWarlockPetIsActive warlock_pet_is_active = 72;
         // Paladin
         APLValueCurrentSealRemainingTime current_seal_remaining_time = 65;
+        // Hunter
+        APLValueHunterCurrentPetFocus hunter_current_pet_focus = 80;
+        APLValueHunterCurrentPetFocusPercent hunter_current_pet_focus_percent = 81;
+        APLValueHunterPetIsActive hunter_pet_is_active = 82;
     }
 }
 
@@ -553,6 +557,12 @@ message APLValueWarlockCurrentPetMana {
 message APLValueWarlockCurrentPetManaPercent {
 }
 message APLValueWarlockPetIsActive {
+}
+message APLValueHunterPetIsActive {
+}
+message APLValueHunterCurrentPetFocus {
+}
+message APLValueHunterCurrentPetFocusPercent {
 }
 message APLValueCurrentSealRemainingTime {
 }

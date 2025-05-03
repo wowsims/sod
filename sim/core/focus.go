@@ -52,6 +52,10 @@ func (fb *focusBar) CurrentFocus() float64 {
 	return fb.currentFocus
 }
 
+func (unit *Unit) CurrentFocusPercent() float64 {
+	return unit.CurrentFocus() / unit.MaxFocus()
+}
+
 func (fb *focusBar) MaxFocus() float64 {
 	return fb.maxFocus
 }
