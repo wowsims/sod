@@ -754,7 +754,7 @@ func init() {
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
-			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressEquipProcs,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -793,6 +793,21 @@ func init() {
 				Duration: time.Second * 8,
 			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				if !aura.Icd.IsReady(sim) {
+					return
+				}
+				aura.Icd.Use(sim)
+
+				character.AutoAttacks.CancelAutoSwing(sim)
+				whirlwindSpell.AOEDot().Apply(sim)
+			},
+			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+				if !aura.Icd.IsReady(sim) {
+					return
+				}
+				aura.Icd.Use(sim)
+
+				whirlwindSpell.AOEDot().Cancel(sim)
 				character.AutoAttacks.CancelAutoSwing(sim)
 				whirlwindSpell.AOEDot().Apply(sim)
 			},
