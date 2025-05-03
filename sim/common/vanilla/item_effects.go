@@ -530,6 +530,7 @@ func init() {
 		character := agent.GetCharacter()
 
 		targetCount := int(min(character.Env.GetNumTargets(), 5))
+		chainMultiplier := 1.1 // EffectChainAmplitude: 1.1
 		wrathSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 1231377},
 			SpellSchool: core.SpellSchoolHoly,
@@ -542,11 +543,16 @@ func init() {
 			BonusCoefficient: 0.1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				origMult := spell.GetDamageMultiplier()
+
 				results := make([]*core.SpellResult, targetCount)
 				for i := 0; i < targetCount; i++ {
 					results[i] = spell.CalcDamage(sim, target, sim.Roll(1080, 1320), spell.OutcomeMagicCrit)
 					target = sim.Environment.NextTargetUnit(target)
+					spell.ApplyMultiplicativeDamageBonus(chainMultiplier)
 				}
+
+				spell.SetMultiplicativeDamageBonus(origMult)
 
 				for _, result := range results {
 					spell.DealDamage(sim, result)
