@@ -317,6 +317,9 @@ export class ActionId {
 			case 'Instant Poison V':
 			case 'Instant Poison VI':
 			case 'Wound Poison':
+			case 'Sebacious Poison':
+			case 'Atrophic Poison':
+			case 'Numbing Poison':
 			case 'Occult Poison II':
 				if (this.tag === 1) {
 					name += ' (Poisoned Knife)';
@@ -324,21 +327,6 @@ export class ActionId {
 					name += ' (Deadly Brew)';
 				} else if (this.tag === 100) {
 					name += ' (Tick)';
-				}
-				break;
-			case 'Sebacious Poison':
-				if (this.tag === 1) {
-					name += ' (Poisoned Knife)';
-				}
-				break;
-			case 'Atrophic Poison':
-				if (this.tag === 1) {
-					name += ' (Poisoned Knife)';
-				}
-				break;
-			case 'Numbing Poison':
-				if (this.tag === 1) {
-					name += ' (Poisoned Knife)';
 				}
 				break;
 			case 'Saber Slash':
