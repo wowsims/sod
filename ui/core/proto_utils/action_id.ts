@@ -317,9 +317,12 @@ export class ActionId {
 			case 'Instant Poison V':
 			case 'Instant Poison VI':
 			case 'Wound Poison':
+			case 'Sebacious Poison':
+			case 'Atrophic Poison':
+			case 'Numbing Poison':
 			case 'Occult Poison II':
 				if (this.tag === 1) {
-					name += ' (Shiv)';
+					name += ' (Poisoned Knife)';
 				} else if (this.tag === 2) {
 					name += ' (Deadly Brew)';
 				} else if (this.tag === 100) {

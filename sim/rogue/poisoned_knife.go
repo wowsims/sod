@@ -81,6 +81,10 @@ func (rogue *Rogue) registerPoisonedKnife() {
 					rogue.OccultPoison[ShivProc].Cast(sim, target)
 				case proto.WeaponImbue_SebaciousPoison:
 					rogue.SebaciousPoison[ShivProc].Cast(sim, target)
+				case proto.WeaponImbue_AtrophicPoison:
+					rogue.AtrophicPoison[ShivProc].Cast(sim, target)
+				case proto.WeaponImbue_NumbingPoison:
+					rogue.NumbingPoison[ShivProc].Cast(sim, target)
 				// Add new alternative poisons as they are implemented
 				default:
 					if hasDeadlyBrew {
