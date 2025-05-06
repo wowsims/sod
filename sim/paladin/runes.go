@@ -255,7 +255,7 @@ func (paladin *Paladin) registerShockAndAwe() {
 				}
 
 				spell.BonusCritRating += bonusCrit
-				spell.CalcAndDealDamage(sim, target, spell.GetSchoolDamage(), spell.OutcomeMagicCrit)
+				spell.CalcAndDealDamage(sim, target, 0.60*spell.GetSchoolDamage(), spell.OutcomeMagicCrit)
 				spell.BonusCritRating -= bonusCrit
 			},
 		})

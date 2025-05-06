@@ -43,10 +43,6 @@ func (paladin *Paladin) applyScarletEnclaveRetribution2PBonus() {
 		ActionID: core.ActionID{SpellID: PaladinTSERet2P},
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if paladin.MainHand().HandType != proto.HandType_HandTypeTwoHand {
-				return
-			}
-
 			if !spell.Matches(ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinCrusaderStrike) {
 				return
 			}
@@ -84,29 +80,37 @@ func (paladin *Paladin) applyScarletEnclaveRetribution4PBonus() {
 
 	paladin.registerHolyPowerAura()
 
-	spenderMask := ClassSpellMask_PaladinDivineStorm | ClassSpellMask_PaladinHolyShock | ClassSpellMask_PaladinHolyWrath
-	damageMod := paladin.AddDynamicMod(core.SpellModConfig{
+	additiveMod := paladin.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: spenderMask,
+		ClassMask: ClassSpellMask_PaladinDivineStorm,
+	})
+
+	multiplicativeMod := paladin.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_PaladinHolyShock | ClassSpellMask_PaladinHolyWrath,
+		FloatValue: 1.0,
 	})
 
 	paladin.holyPowerAura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-		damageMod.Activate()
+		additiveMod.Activate()
+		multiplicativeMod.Activate()
 	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-		damageMod.Deactivate()
+		additiveMod.Deactivate()
+		multiplicativeMod.Deactivate()
 	}).ApplyOnStacksChange(func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-		damageMod.UpdateIntValue(100 * int64(newStacks))
+		additiveMod.UpdateIntValue(100 * int64(newStacks))
+		multiplicativeMod.UpdateFloatValue(1.0 + (1.0 * float64(newStacks)))
 	})
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: PaladinTSERet4P},
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Matches(spenderMask) || !paladin.holyPowerAura.IsActive() {
+			if !paladin.holyPowerAura.IsActive() {
 				return
 			}
 
-			if !result.Landed() {
+			if !spell.Matches(ClassSpellMask_PaladinDivineStorm|ClassSpellMask_PaladinHolyShock|ClassSpellMask_PaladinHolyWrath) || !result.Landed() {
 				return
 			}
 
@@ -126,11 +130,20 @@ func (paladin *Paladin) applyScarletEnclaveRetribution6PBonus() {
 		return
 	}
 
-	templarMultiplier := []*stats.StatDependency{
+	hasShockAndAwe := paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe)
+
+	apDeps := []*stats.StatDependency{
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.0),
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.15),
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.30),
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.45),
+	}
+
+	sdDeps := []*stats.StatDependency{
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.0),
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.15),
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.30),
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.45),
 	}
 
 	templarAura := paladin.RegisterAura(core.Aura{
@@ -138,12 +151,14 @@ func (paladin *Paladin) applyScarletEnclaveRetribution6PBonus() {
 		Label:     "Templar",
 		Duration:  time.Second * 10,
 		MaxStacks: 3,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			paladin.EnableDynamicStatDep(sim, templarMultiplier[0])
-		},
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			paladin.DisableDynamicStatDep(sim, templarMultiplier[oldStacks])
-			paladin.EnableDynamicStatDep(sim, templarMultiplier[newStacks])
+			if hasShockAndAwe {
+				paladin.DisableDynamicStatDep(sim, sdDeps[oldStacks])
+				paladin.EnableDynamicStatDep(sim, sdDeps[newStacks])
+			} else {
+				paladin.DisableDynamicStatDep(sim, apDeps[oldStacks])
+				paladin.EnableDynamicStatDep(sim, apDeps[newStacks])
+			}
 		},
 	})
 
