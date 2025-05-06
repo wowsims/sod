@@ -768,17 +768,16 @@ func init() {
 			},
 		})
 
-		channelSpell := character.RegisterSpell(core.SpellConfig{
+		whirlwindSpell := character.RegisterSpell(core.SpellConfig{
 			ActionID:    core.ActionID{SpellID: 1231547},
 			SpellSchool: core.SpellSchoolPhysical,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
-			Flags:       core.SpellFlagChanneled,
 			Dot: core.DotConfig{
 				Aura: core.Aura{
 					Label: "Ravagane Whirlwind",
 				},
-				NumberOfTicks: 3,
-				TickLength:    time.Second * 3,
+				NumberOfTicks: 6,
+				TickLength:    time.Millisecond * 1500,
 				IsAOE:         true,
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					tickSpell.Cast(sim, target)
@@ -789,13 +788,31 @@ func init() {
 		return character.RegisterAura(core.Aura{
 			Label:    "Ravagane Bladestorm",
 			Duration: time.Second * 9,
+			Icd: &core.Cooldown{
+				Timer:    character.NewTimer(),
+				Duration: time.Second * 8,
+			},
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				if !aura.Icd.IsReady(sim) {
+					return
+				}
+				aura.Icd.Use(sim)
+
+				whirlwindSpell.AOEDot().Apply(sim)
 				character.AutoAttacks.CancelAutoSwing(sim)
-				channelSpell.AOEDot().Apply(sim)
+			},
+			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+				if !aura.Icd.IsReady(sim) {
+					return
+				}
+				aura.Icd.Use(sim)
+
+				whirlwindSpell.AOEDot().ApplyOrReset(sim)
+				character.AutoAttacks.CancelAutoSwing(sim)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				whirlwindSpell.AOEDot().Cancel(sim)
 				character.AutoAttacks.EnableAutoSwing(sim)
-				channelSpell.AOEDot().Cancel(sim)
 			},
 		})
 	})
