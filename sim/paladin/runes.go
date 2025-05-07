@@ -219,7 +219,7 @@ func (paladin *Paladin) registerShockAndAwe() {
 
 	dep := paladin.NewDynamicStatDependency(stats.Intellect, stats.SpellDamage, 2.0)
 
-	shockAndAweAura := paladin.RegisterAura(core.Aura{
+	paladin.shockAndAweAura = paladin.RegisterAura(core.Aura{
 		Label:    "Shock and Awe",
 		ActionID: core.ActionID{SpellID: 462832},
 		Duration: time.Second * 60,
@@ -232,8 +232,6 @@ func (paladin *Paladin) registerShockAndAwe() {
 			paladin.PseudoStats.ThreatMultiplier /= 0.70
 		},
 	})
-
-	var sunlightAura *core.Aura
 
 	if paladin.Talents.HolyShock && paladin.hasRune(proto.PaladinRune_RuneWaistInfusionOfLight) {
 		sunlightSpell := paladin.RegisterSpell(core.SpellConfig{
@@ -260,7 +258,7 @@ func (paladin *Paladin) registerShockAndAwe() {
 			},
 		})
 
-		sunlightAura = paladin.RegisterAura(core.Aura{
+		paladin.shockAndAweAura.AttachDependentAura(paladin.RegisterAura(core.Aura{
 			Label:    "Sunlight",
 			ActionID: core.ActionID{SpellID: 1239543},
 			Duration: time.Second * 10,
@@ -282,20 +280,16 @@ func (paladin *Paladin) registerShockAndAwe() {
 					sunlightSpell.Cast(sim, result.Target)
 				}
 			},
-		})
+		}))
 	}
 
 	core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
 		Name:           "Shock and Awe Trigger",
-		Callback:       core.CallbackOnSpellHitDealt | core.CallbackOnHealDealt,
+		Callback:       core.CallbackOnSpellHitDealt,
 		ClassSpellMask: ClassSpellMask_PaladinHolyShock,
 		Outcome:        core.OutcomeLanded,
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			shockAndAweAura.Activate(sim)
-
-			if sunlightAura != nil {
-				sunlightAura.Activate(sim)
-			}
+			paladin.shockAndAweAura.Activate(sim)
 		},
 	})
 }

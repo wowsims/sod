@@ -327,29 +327,30 @@ func init() {
 	core.NewItemEffect(LibramOfSanctity, func(agent core.Agent) {
 		paladin := agent.(PaladinAgent).GetPaladin()
 
-		buffAura := core.MakePermanent(paladin.RegisterAura(core.Aura{
-			ActionID: core.ActionID{SpellID: 1214298},
-			Label:    "Libram of Sanctity",
-			Duration: time.Minute,
-		}))
-
-		core.ExclusiveHolyDamageDealtAura(buffAura, 1.1)
-
-		aura := core.MakeProcTriggerAura(&paladin.Unit, core.ProcTrigger{
-			Name:           "Improved Holy Shock",
-			ClassSpellMask: ClassSpellMask_PaladinHolyShock,
-			Callback:       core.CallbackOnCastComplete,
-			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				buffAura.Activate(sim)
-			},
-		}).AttachSpellMod(core.SpellModConfig{
+		core.MakePermanent(paladin.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1214297},
+			Label:    "Improved Holy Shock",
+		})).AttachSpellMod(core.SpellModConfig{
 			// Increases the damage of Holy Shock by 3%, and your Shock and Awe buff now also grants 10% increased Holy Damage. (This effect does not stack with Sanctity Aura).
 			Kind:      core.SpellMod_DamageDone_Flat,
 			ClassMask: ClassSpellMask_PaladinHolyShock,
 			IntValue:  3,
 		})
 
-		paladin.ItemSwap.RegisterProc(LibramOfSanctity, aura)
+		paladin.libramOfSanctityAura = paladin.RegisterAura(core.Aura{
+			ActionID: core.ActionID{SpellID: 1214298},
+			Label:    "Libram of Sanctity",
+			Duration: time.Minute,
+			OnInit: func(aura *core.Aura, sim *core.Simulation) {
+				if paladin.shockAndAweAura != nil {
+					paladin.shockAndAweAura.AttachDependentAura(paladin.libramOfSanctityAura)
+				}
+			},
+		})
+
+		core.ExclusiveHolyDamageDealtAura(paladin.libramOfSanctityAura, 1.1)
+
+		paladin.ItemSwap.RegisterProc(LibramOfSanctity, paladin.libramOfSanctityAura)
 	})
 
 	core.NewItemEffect(LibramOfRighteousness, func(agent core.Agent) {

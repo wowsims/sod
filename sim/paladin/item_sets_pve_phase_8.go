@@ -8,11 +8,19 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+func (paladin *Paladin) registerOnHolyPowerSpent(onHolyPowerSpent OnHolyPowerSpent) {
+	paladin.onHolyPowerSpent = append(paladin.onHolyPowerSpent, onHolyPowerSpent)
+}
+
 func (paladin *Paladin) registerHolyPowerAura() {
 	if paladin.holyPowerAura != nil {
 		return
 	}
 
+	paladin.holyPowerICD = &core.Cooldown{
+		Timer:    paladin.NewTimer(),
+		Duration: time.Millisecond * 100,
+	}
 	paladin.holyPowerAura = paladin.GetOrRegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1226461},
 		Label:     "Holy Power",
@@ -36,7 +44,7 @@ var ItemSetInquisitionWarplate = core.NewItemSet(core.ItemSet{
 		// Divine Storm, Holy Shock, and Holy Wrath consume all your Holy Power, dealing 100% increased damage per Holy Power you have accumulated.
 		4: func(agent core.Agent) {
 			paladin := agent.(PaladinAgent).GetPaladin()
-			paladin.applyScarletEnclaveRetribution4PBonus()
+			paladin.applyScarletEnclaveDps4PBonus()
 		},
 		// Consuming Holy Power increases your Attack Power by 15% per Holy Power consumed for 10 sec.
 		6: func(agent core.Agent) {
@@ -59,7 +67,16 @@ func (paladin *Paladin) applyScarletEnclaveRetribution2PBonus() {
 		ActionID: core.ActionID{SpellID: PaladinTSERet2P},
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if paladin.MainHand().HandType != proto.HandType_HandTypeTwoHand {
+				return
+			}
+
+			if !paladin.holyPowerICD.IsReady(sim) {
+				return
+			}
+
 			if spell.Matches(ClassSpellMask_PaladinExorcism|ClassSpellMask_PaladinCrusaderStrike) && result.Landed() {
+				paladin.holyPowerICD.Use(sim)
 				paladin.holyPowerAura.Activate(sim)
 				paladin.holyPowerAura.AddStack(sim)
 			}
@@ -68,7 +85,7 @@ func (paladin *Paladin) applyScarletEnclaveRetribution2PBonus() {
 }
 
 // Divine Storm, Holy Shock, and Holy Wrath consume all your Holy Power, dealing 100% increased damage per Holy Power you have accumulated.
-func (paladin *Paladin) applyScarletEnclaveRetribution4PBonus() {
+func (paladin *Paladin) applyScarletEnclaveDps4PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Paladin - Retribution 4P Bonus"
 	if paladin.HasAura(label) {
 		return
@@ -110,8 +127,9 @@ func (paladin *Paladin) applyScarletEnclaveRetribution4PBonus() {
 				return
 			}
 
-			if paladin.onHolyPowerSpent != nil {
-				paladin.onHolyPowerSpent(sim, paladin.holyPowerAura.GetStacks())
+			holyPower := paladin.holyPowerAura.GetStacks()
+			for _, onHolyPowerSpent := range paladin.onHolyPowerSpent {
+				onHolyPowerSpent(sim, holyPower)
 			}
 
 			paladin.holyPowerAura.Deactivate(sim)
@@ -144,12 +162,12 @@ func (paladin *Paladin) applyScarletEnclaveRetribution6PBonus() {
 		},
 	})
 
-	paladin.onHolyPowerSpent = func(sim *core.Simulation, holyPower int32) {
+	paladin.registerOnHolyPowerSpent(func(sim *core.Simulation, holyPower int32) {
 		if holyPower > 0 {
 			templarAura.Activate(sim)
 			templarAura.SetStacks(sim, holyPower)
 		}
-	}
+	})
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: PaladinTSERet6P},
@@ -167,7 +185,7 @@ var ItemSetInquisitionShockplate = core.NewItemSet(core.ItemSet{
 		},
 		4: func(agent core.Agent) {
 			paladin := agent.(PaladinAgent).GetPaladin()
-			paladin.applyScarletEnclaveRetribution4PBonus()
+			paladin.applyScarletEnclaveDps4PBonus()
 		},
 		6: func(agent core.Agent) {
 			paladin := agent.(PaladinAgent).GetPaladin()
@@ -193,7 +211,12 @@ func (paladin *Paladin) applyScarletEnclaveShockadin2PBonus() {
 		ActionID: core.ActionID{SpellID: PaladinTSEShock2P},
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if !paladin.holyPowerICD.IsReady(sim) {
+				return
+			}
+
 			if spell.Matches(ClassSpellMask_PaladinExorcism|ClassSpellMask_PaladinCrusaderStrike) && result.Landed() {
+				paladin.holyPowerICD.Use(sim)
 				paladin.holyPowerAura.Activate(sim)
 				paladin.holyPowerAura.AddStack(sim)
 			}
@@ -216,7 +239,7 @@ func (paladin *Paladin) applyScarletEnclaveShockadin6PBonus() {
 	}
 
 	templarAura := paladin.RegisterAura(core.Aura{
-		ActionID:  core.ActionID{SpellID: 1226464},
+		ActionID:  core.ActionID{SpellID: 1240574},
 		Label:     "Templar",
 		Duration:  time.Second * 10,
 		MaxStacks: 3,
@@ -226,12 +249,12 @@ func (paladin *Paladin) applyScarletEnclaveShockadin6PBonus() {
 		},
 	})
 
-	paladin.onHolyPowerSpent = func(sim *core.Simulation, holyPower int32) {
+	paladin.registerOnHolyPowerSpent(func(sim *core.Simulation, holyPower int32) {
 		if holyPower > 0 {
 			templarAura.Activate(sim)
 			templarAura.SetStacks(sim, holyPower)
 		}
-	}
+	})
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
 		ActionID: core.ActionID{SpellID: PaladinTSEShock6P},

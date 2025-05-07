@@ -62,6 +62,8 @@ const (
 		ClassSpellMask_PaladinSealOfRighteousness
 )
 
+type OnHolyPowerSpent func(sim *core.Simulation, holyPower int32)
+
 type Paladin struct {
 	core.Character
 
@@ -92,20 +94,24 @@ type Paladin struct {
 	holyShockCooldown *core.Cooldown
 	exorcismCooldown  *core.Cooldown
 
-	avengingWrath     *core.Spell
-	avengingWrathAura *core.Aura
-	crusaderStrike    *core.Spell
-	divineStorm       *core.Spell
-	exorcism          []*core.Spell
-	judgement         *core.Spell
-	layOnHands        *core.Spell
-	rv                *core.Spell
-	holyShieldAura    [3]*core.Aura
-	holyShieldProc    [3]*core.Spell
-	redoubtAura       *core.Aura
-	righteousFuryAura *core.Aura
-	holyWrath         []*core.Spell
-	divineProtection  *core.Spell
+	avengingWrath         *core.Spell
+	avengingWrathAura     *core.Aura
+	crusaderStrike        *core.Spell
+	divineStorm           *core.Spell
+	exorcism              []*core.Spell
+	judgement             *core.Spell
+	layOnHands            *core.Spell
+	rv                    *core.Spell
+	holyShieldAura        [3]*core.Aura
+	holyShieldProc        [3]*core.Spell
+	redoubtAura           *core.Aura
+	righteousFuryAura     *core.Aura
+	holyWrath             []*core.Spell
+	divineProtection      *core.Spell
+	auraMasteryAura       *core.Aura
+	shockAndAweAura       *core.Aura
+	libramOfSanctityAura  *core.Aura
+	auraMasterySancActive bool
 
 	// highest rank seal spell if available
 	sealOfRighteousness *core.Spell
@@ -114,8 +120,9 @@ type Paladin struct {
 	sealOfTheCrusader   *core.Spell
 
 	// Set bonus specific
+	holyPowerICD                   *core.Cooldown
 	holyPowerAura                  *core.Aura
-	onHolyPowerSpent               func(sim *core.Simulation, holyPower int32)
+	onHolyPowerSpent               []OnHolyPowerSpent
 	holyShieldExtraDamage          func(sim *core.Simulation, paladin *Paladin) float64
 	bypassAvengingWrathForbearance bool
 	holyShieldCanCrit              bool
