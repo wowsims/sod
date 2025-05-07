@@ -346,6 +346,11 @@ func (aura *Aura) AttachDependentAura(sibling *Aura) *Aura {
 	return aura.ApplyOnGain(func(aura *Aura, sim *Simulation) {
 		sibling.Activate(sim)
 	}).ApplyOnRefresh(func(aura *Aura, sim *Simulation) {
+		if !sibling.IsActive() {
+			sibling.Activate(sim)
+			return
+		}
+
 		sibling.Refresh(sim)
 	}).ApplyOnExpire(func(aura *Aura, sim *Simulation) {
 		sibling.Deactivate(sim)
