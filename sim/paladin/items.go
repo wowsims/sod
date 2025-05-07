@@ -35,6 +35,8 @@ const (
 	BandOfRedemption                     = 236130
 	ClaymoreOfUnholyMight                = 236299
 	Leogan                               = 240920
+	InquisitionArmbraces                 = 246056
+	InquisitionCuirass                   = 246060
 )
 
 func init() {
@@ -93,6 +95,18 @@ func init() {
 				spell.BonusCritRating += 2.0
 			}
 		})
+	})
+
+	// https://www.wowhead.com/classic/item=246056/inquisition-armbraces
+	core.NewItemEffect(InquisitionArmbraces, func(agent core.Agent) {
+		paladin := agent.(PaladinAgent).GetPaladin()
+		paladin.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly] += 3
+	})
+
+	// https://www.wowhead.com/classic/item=246060/inquisition-cuirass
+	core.NewItemEffect(InquisitionCuirass, func(agent core.Agent) {
+		paladin := agent.(PaladinAgent).GetPaladin()
+		paladin.PseudoStats.SchoolBonusHitChance[stats.SchoolIndexHoly] += 3
 	})
 
 	// https://www.wowhead.com/classic/item=230272/scrolls-of-blinding-light
