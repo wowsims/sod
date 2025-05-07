@@ -30,6 +30,10 @@ func (paladin *Paladin) registerHolyPowerAura() {
 			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= ((1.0 + (0.10 * float64(newStacks))) / (1.0 + (0.10 * float64(oldStacks))))
 		},
 	})
+
+	paladin.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(sim *core.Simulation, _ proto.ItemSlot, _ bool) {
+		paladin.holyPowerAura.Deactivate(sim)
+	})
 }
 
 var ItemSetInquisitionWarplate = core.NewItemSet(core.ItemSet{
@@ -231,22 +235,48 @@ func (paladin *Paladin) applyScarletEnclaveShockadin6PBonus() {
 		return
 	}
 
-	sdDeps := []*stats.StatDependency{
+	sd2hDeps := []*stats.StatDependency{
 		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.0),
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.15),
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.30),
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.45),
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.18),
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.36),
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.54),
 	}
 
+	sd1hDeps := []*stats.StatDependency{
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.0),
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.8),
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.16),
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.24),
+	}
+
+	var currentEnabledDeps *stats.StatDependency
 	templarAura := paladin.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1240574},
 		Label:     "Templar",
 		Duration:  time.Second * 10,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			paladin.DisableDynamicStatDep(sim, sdDeps[oldStacks])
-			paladin.EnableDynamicStatDep(sim, sdDeps[newStacks])
+			if currentEnabledDeps != nil {
+				paladin.DisableDynamicStatDep(sim, currentEnabledDeps)
+			}
+
+			if mh := paladin.MainHand(); mh != nil {
+				if mh.HandType == proto.HandType_HandTypeTwoHand {
+					currentEnabledDeps = sd2hDeps[newStacks]
+				} else {
+					currentEnabledDeps = sd1hDeps[newStacks]
+				}
+
+				paladin.EnableDynamicStatDep(sim, currentEnabledDeps)
+			}
 		},
+		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+			currentEnabledDeps = nil
+		},
+	})
+
+	paladin.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(sim *core.Simulation, _ proto.ItemSlot, _ bool) {
+		templarAura.Deactivate(sim)
 	})
 
 	paladin.registerOnHolyPowerSpent(func(sim *core.Simulation, holyPower int32) {
