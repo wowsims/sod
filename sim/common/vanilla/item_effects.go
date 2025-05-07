@@ -3498,12 +3498,13 @@ func init() {
 		})
 
 		triggerAura := core.MakeProcTriggerAura(&agent.GetCharacter().Unit, core.ProcTrigger{
-			Name:             "Spell Blasting Trigger",
-			Callback:         core.CallbackOnSpellHitDealt,
-			Outcome:          core.OutcomeLanded,
-			ProcMask:         core.ProcMaskSpellOrSpellProc,
-			CanProcFromProcs: true,
-			ProcChance:       0.05,
+			Name:              "Spell Blasting Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskSpellDamage,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			CanProcFromProcs:  true,
+			ProcChance:        0.05,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				buffAura.Activate(sim)
 			},
