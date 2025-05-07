@@ -62,6 +62,8 @@ const (
 		ClassSpellMask_PaladinSealOfRighteousness
 )
 
+type OnHolyPowerSpent func(sim *core.Simulation, holyPower int32)
+
 type Paladin struct {
 	core.Character
 
@@ -114,8 +116,9 @@ type Paladin struct {
 	sealOfTheCrusader   *core.Spell
 
 	// Set bonus specific
+	holyPowerICD                   *core.Cooldown
 	holyPowerAura                  *core.Aura
-	onHolyPowerSpent               func(sim *core.Simulation, holyPower int32)
+	onHolyPowerSpent               []OnHolyPowerSpent
 	holyShieldExtraDamage          func(sim *core.Simulation, paladin *Paladin) float64
 	bypassAvengingWrathForbearance bool
 	holyShieldCanCrit              bool
