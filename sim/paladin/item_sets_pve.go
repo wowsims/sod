@@ -40,20 +40,22 @@ const (
 	PaladinTSEHoly6P = 1226459
 
 	// Ret
-	PaladinT1Ret2P  = 456494
-	PaladinT1Ret4P  = 456489
-	PaladinT1Ret6P  = 456533
-	PaladinT2Ret2P  = 467518
-	PaladinT2Ret4P  = 467526
-	PaladinT2Ret6P  = 467529
-	PaladinT3Ret2P  = 1219189
-	PaladinT3Ret4P  = 1219191
-	PaladinT3Ret6P  = 1219193
-	PaladinTAQRet2P = 1213397
-	PaladinTAQRet4P = 1213406
-	PaladinTSERet2P = 1226460
-	PaladinTSERet4P = 1226462
-	PaladinTSERet6P = 1226463
+	PaladinT1Ret2P    = 456494
+	PaladinT1Ret4P    = 456489
+	PaladinT1Ret6P    = 456533
+	PaladinT2Ret2P    = 467518
+	PaladinT2Ret4P    = 467526
+	PaladinT2Ret6P    = 467529
+	PaladinT3Ret2P    = 1219189
+	PaladinT3Ret4P    = 1219191
+	PaladinT3Ret6P    = 1219193
+	PaladinTAQRet2P   = 1213397
+	PaladinTAQRet4P   = 1213406
+	PaladinTSERet2P   = 1226460
+	PaladinTSERet4P   = 1226462
+	PaladinTSERet6P   = 1226463
+	PaladinTSEShock2P = 1240571
+	PaladinTSEShock6P = 1240573
 
 	// Other
 	PaladinZG2P  = 468401

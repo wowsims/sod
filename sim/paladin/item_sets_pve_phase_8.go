@@ -8,6 +8,22 @@ import (
 	"github.com/wowsims/sod/sim/core/stats"
 )
 
+func (paladin *Paladin) registerHolyPowerAura() {
+	if paladin.holyPowerAura != nil {
+		return
+	}
+
+	paladin.holyPowerAura = paladin.GetOrRegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1226461},
+		Label:     "Holy Power",
+		MaxStacks: 3,
+		Duration:  time.Second * 15,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
+			aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= ((1.0 + (0.10 * float64(newStacks))) / (1.0 + (0.10 * float64(oldStacks))))
+		},
+	})
+}
+
 var ItemSetInquisitionWarplate = core.NewItemSet(core.ItemSet{
 	ID:   1940,
 	Name: "Inquisition Warplate",
@@ -43,32 +59,12 @@ func (paladin *Paladin) applyScarletEnclaveRetribution2PBonus() {
 		ActionID: core.ActionID{SpellID: PaladinTSERet2P},
 		Label:    label,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-			if !spell.Matches(ClassSpellMask_PaladinExorcism | ClassSpellMask_PaladinCrusaderStrike) {
-				return
+			if spell.Matches(ClassSpellMask_PaladinExorcism|ClassSpellMask_PaladinCrusaderStrike) && result.Landed() {
+				paladin.holyPowerAura.Activate(sim)
+				paladin.holyPowerAura.AddStack(sim)
 			}
-
-			if !result.Landed() {
-				return
-			}
-
-			paladin.holyPowerAura.Activate(sim)
-			paladin.holyPowerAura.AddStack(sim)
 		},
 	}))
-}
-
-func (paladin *Paladin) registerHolyPowerAura() {
-	if paladin.holyPowerAura == nil {
-		paladin.holyPowerAura = paladin.GetOrRegisterAura(core.Aura{
-			ActionID:  core.ActionID{SpellID: 1226461},
-			Label:     "Holy Power",
-			MaxStacks: 3,
-			Duration:  time.Second * 15,
-			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks int32, newStacks int32) {
-				aura.Unit.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexHoly] *= ((1.0 + (0.10 * float64(newStacks))) / (1.0 + (0.10 * float64(oldStacks))))
-			},
-		})
-	}
 }
 
 // Divine Storm, Holy Shock, and Holy Wrath consume all your Holy Power, dealing 100% increased damage per Holy Power you have accumulated.
@@ -82,12 +78,12 @@ func (paladin *Paladin) applyScarletEnclaveRetribution4PBonus() {
 
 	additiveMod := paladin.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Flat,
-		ClassMask: ClassSpellMask_PaladinDivineStorm,
+		ClassMask: ClassSpellMask_PaladinDivineStorm | ClassSpellMask_PaladinHolyShock,
 	})
 
 	multiplicativeMod := paladin.AddDynamicMod(core.SpellModConfig{
 		Kind:       core.SpellMod_DamageDone_Pct,
-		ClassMask:  ClassSpellMask_PaladinHolyShock | ClassSpellMask_PaladinHolyWrath,
+		ClassMask:  ClassSpellMask_PaladinHolyWrath,
 		FloatValue: 1.0,
 	})
 
@@ -130,13 +126,86 @@ func (paladin *Paladin) applyScarletEnclaveRetribution6PBonus() {
 		return
 	}
 
-	hasShockAndAwe := paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe)
-
 	apDeps := []*stats.StatDependency{
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.0),
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.15),
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.30),
 		paladin.NewDynamicMultiplyStat(stats.AttackPower, 1.45),
+	}
+
+	templarAura := paladin.RegisterAura(core.Aura{
+		ActionID:  core.ActionID{SpellID: 1226464},
+		Label:     "Templar",
+		Duration:  time.Second * 10,
+		MaxStacks: 3,
+		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
+			paladin.DisableDynamicStatDep(sim, apDeps[oldStacks])
+			paladin.EnableDynamicStatDep(sim, apDeps[newStacks])
+		},
+	})
+
+	paladin.onHolyPowerSpent = func(sim *core.Simulation, holyPower int32) {
+		if holyPower > 0 {
+			templarAura.Activate(sim)
+			templarAura.SetStacks(sim, holyPower)
+		}
+	}
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: PaladinTSERet6P},
+		Label:    label,
+	}))
+}
+
+var ItemSetInquisitionShockplate = core.NewItemSet(core.ItemSet{
+	ID:   1963,
+	Name: "Inquisition Shockplate",
+	Bonuses: map[int32]core.ApplyEffect{
+		2: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.applyScarletEnclaveShockadin2PBonus()
+		},
+		4: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.applyScarletEnclaveRetribution4PBonus()
+		},
+		6: func(agent core.Agent) {
+			paladin := agent.(PaladinAgent).GetPaladin()
+			paladin.applyScarletEnclaveShockadin6PBonus()
+		},
+	},
+})
+
+// While Shock and Awe is active, Crusader Strike and Exorcism grant you Holy Power, increasing all Holy damage you deal by 10%, stacking up to 3 times.
+func (paladin *Paladin) applyScarletEnclaveShockadin2PBonus() {
+	if !paladin.hasRune(proto.PaladinRune_RuneCloakShockAndAwe) {
+		return
+	}
+
+	label := "S03 - Item - Scarlet Enclave - Paladin - Shockadin 2P Bonus"
+	if paladin.HasAura(label) {
+		return
+	}
+
+	paladin.registerHolyPowerAura()
+
+	core.MakePermanent(paladin.RegisterAura(core.Aura{
+		ActionID: core.ActionID{SpellID: PaladinTSEShock2P},
+		Label:    label,
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if spell.Matches(ClassSpellMask_PaladinExorcism|ClassSpellMask_PaladinCrusaderStrike) && result.Landed() {
+				paladin.holyPowerAura.Activate(sim)
+				paladin.holyPowerAura.AddStack(sim)
+			}
+		},
+	}))
+}
+
+// Consuming Holy Power increases your Spell Power by 15% per Holy Power consumed for 10 sec.
+func (paladin *Paladin) applyScarletEnclaveShockadin6PBonus() {
+	label := "S03 - Item - Scarlet Enclave - Paladin - Shockadin 6P Bonus"
+	if paladin.HasAura(label) {
+		return
 	}
 
 	sdDeps := []*stats.StatDependency{
@@ -152,13 +221,8 @@ func (paladin *Paladin) applyScarletEnclaveRetribution6PBonus() {
 		Duration:  time.Second * 10,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			if hasShockAndAwe {
-				paladin.DisableDynamicStatDep(sim, sdDeps[oldStacks])
-				paladin.EnableDynamicStatDep(sim, sdDeps[newStacks])
-			} else {
-				paladin.DisableDynamicStatDep(sim, apDeps[oldStacks])
-				paladin.EnableDynamicStatDep(sim, apDeps[newStacks])
-			}
+			paladin.DisableDynamicStatDep(sim, sdDeps[oldStacks])
+			paladin.EnableDynamicStatDep(sim, sdDeps[newStacks])
 		},
 	})
 
@@ -170,7 +234,7 @@ func (paladin *Paladin) applyScarletEnclaveRetribution6PBonus() {
 	}
 
 	core.MakePermanent(paladin.RegisterAura(core.Aura{
-		ActionID: core.ActionID{SpellID: PaladinTSERet6P},
+		ActionID: core.ActionID{SpellID: PaladinTSEShock6P},
 		Label:    label,
 	}))
 }
