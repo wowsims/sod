@@ -257,7 +257,6 @@ func (paladin *Paladin) applyScarletEnclaveShockadin6PBonus() {
 		Duration:  time.Second * 10,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			fmt.Println(sim.CurrentTime, (*currentEnabledDeps)[oldStacks], "to", (*currentEnabledDeps)[newStacks])
 			paladin.DisableDynamicStatDep(sim, (*currentEnabledDeps)[oldStacks])
 			paladin.EnableDynamicStatDep(sim, (*currentEnabledDeps)[newStacks])
 		},
