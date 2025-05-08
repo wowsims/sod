@@ -1,6 +1,7 @@
 package paladin
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -235,49 +236,48 @@ func (paladin *Paladin) applyScarletEnclaveShockadin6PBonus() {
 		return
 	}
 
-	sd2hDeps := []*stats.StatDependency{
+	sd2hDeps := &[]*stats.StatDependency{
 		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.0),
 		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.18),
 		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.36),
 		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.54),
 	}
 
-	sd1hDeps := []*stats.StatDependency{
+	sd1hDeps := &[]*stats.StatDependency{
 		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.0),
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.8),
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.08),
 		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.16),
 		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.24),
 	}
 
-	var currentEnabledDeps *stats.StatDependency
+	var currentEnabledDeps *[]*stats.StatDependency
 	templarAura := paladin.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1240574},
 		Label:     "Templar",
 		Duration:  time.Second * 10,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			if currentEnabledDeps != nil {
-				paladin.DisableDynamicStatDep(sim, currentEnabledDeps)
-			}
-
-			if mh := paladin.MainHand(); mh != nil {
-				if mh.HandType == proto.HandType_HandTypeTwoHand {
-					currentEnabledDeps = sd2hDeps[newStacks]
-				} else {
-					currentEnabledDeps = sd1hDeps[newStacks]
-				}
-
-				paladin.EnableDynamicStatDep(sim, currentEnabledDeps)
-			}
-		},
-		OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-			currentEnabledDeps = nil
+			fmt.Println(sim.CurrentTime, (*currentEnabledDeps)[oldStacks], "to", (*currentEnabledDeps)[newStacks])
+			paladin.DisableDynamicStatDep(sim, (*currentEnabledDeps)[oldStacks])
+			paladin.EnableDynamicStatDep(sim, (*currentEnabledDeps)[newStacks])
 		},
 	})
 
 	paladin.RegisterItemSwapCallback([]proto.ItemSlot{proto.ItemSlot_ItemSlotMainHand}, func(sim *core.Simulation, _ proto.ItemSlot, _ bool) {
 		templarAura.Deactivate(sim)
+
+		if paladin.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+			currentEnabledDeps = sd2hDeps
+		} else {
+			currentEnabledDeps = sd1hDeps
+		}
 	})
+
+	if paladin.MainHand().HandType == proto.HandType_HandTypeTwoHand {
+		currentEnabledDeps = sd2hDeps
+	} else {
+		currentEnabledDeps = sd1hDeps
+	}
 
 	paladin.registerOnHolyPowerSpent(func(sim *core.Simulation, holyPower int32) {
 		if holyPower > 0 {
