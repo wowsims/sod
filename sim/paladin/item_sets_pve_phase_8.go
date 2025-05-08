@@ -1,7 +1,6 @@
 package paladin
 
 import (
-	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
