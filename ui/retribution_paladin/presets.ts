@@ -188,11 +188,7 @@ export const TalentsRetPhase8 = PresetUtils.makePresetTalents('P8 Ret', SavedTal
 	customCondition: player => player.getLevel() === 60,
 });
 
-export const TalentsShockadin1hPhase8 = PresetUtils.makePresetTalents('P8 Shockadin 1h', SavedTalents.create({ talentsString: '55053100501051--052303502' }), {
-	customCondition: player => player.getLevel() === 60,
-});
-
-export const TalentsShockadin2hPhase8 = PresetUtils.makePresetTalents('P8 Shockadin 2h', SavedTalents.create({ talentsString: '55053100501051-502-0523003' }), {
+export const TalentsShockadin1hPhase8 = PresetUtils.makePresetTalents('P8 Shockadin', SavedTalents.create({ talentsString: '55053100501051--052303502' }), {
 	customCondition: player => player.getLevel() === 60,
 });
 
@@ -204,7 +200,7 @@ export const TalentPresets = {
 	[Phase.Phase5]: [],
 	[Phase.Phase6]: [],
 	[Phase.Phase7]: [],
-	[Phase.Phase8]: [TalentsRetPhase8, TalentsShockadin1hPhase8, TalentsShockadin2hPhase8],
+	[Phase.Phase8]: [TalentsRetPhase8, TalentsShockadin1hPhase8],
 };
 
 export const PresetBuildExodinPhase8 = PresetUtils.makePresetBuildFromJSON('P8 Exodin', Spec.SpecRetributionPaladin, Phase8BuildExodinJSON);
