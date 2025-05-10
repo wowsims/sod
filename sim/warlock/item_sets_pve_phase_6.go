@@ -162,9 +162,11 @@ func (warlock *Warlock) applyRAQTank3PBonus() {
 		ActionID: core.ActionID{SpellID: 1214156},
 		Label:    "Spreading Pain",
 		Duration: time.Second * 6,
-		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_WarlockSearingPain) {
-				spell.ApplyEffects(sim, warlock.Env.NextTargetUnit(result.Target), spell)
+				spell.Flags |= core.SpellFlagNoOnCastComplete
+				spell.ApplyEffects(sim, warlock.Env.NextTargetUnit(warlock.CurrentTarget), spell)
+				spell.Flags ^= core.SpellFlagNoOnCastComplete
 			}
 		},
 	})
