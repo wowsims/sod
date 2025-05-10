@@ -91,7 +91,7 @@ func (mage *Mage) applyScarletEnclaveDamage4PBonus() {
 	}))
 
 	if mage.HasRune(proto.MageRune_RuneBracersBalefireBolt) && mage.Talents.Pyroblast {
-		aura.ApplyOnCastComplete(func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+		aura.ApplyOnApplyEffects(func(aura *core.Aura, sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			if spell.Matches(ClassSpellMask_MagePyroblast) && mage.BalefireAura.IsActive() && mage.BalefireAura.GetStacks() > 0 {
 				// These have to be separate
 				mage.BalefireAura.RemoveStack(sim)
@@ -99,7 +99,7 @@ func (mage *Mage) applyScarletEnclaveDamage4PBonus() {
 					mage.BalefireAura.RemoveStack(sim)
 				}
 			}
-		}, false)
+		})
 	}
 
 	if mage.HasRune(proto.MageRune_RuneHelmDeepFreeze) && mage.HasRune(proto.MageRune_RuneLegsIcyVeins) {

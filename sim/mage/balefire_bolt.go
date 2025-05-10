@@ -98,5 +98,7 @@ func (mage *Mage) registerBalefireBoltSpell() {
 				spell.DealDamage(sim, result)
 			})
 		},
+
+		RelatedSelfBuff: mage.BalefireAura,
 	})
 }
