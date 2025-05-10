@@ -164,7 +164,6 @@ func (warlock *Warlock) applyRAQTank3PBonus() {
 		Duration: time.Second * 6,
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if spell.Matches(ClassSpellMask_WarlockSearingPain) {
-				aura.Deactivate(sim)
 				spell.ApplyEffects(sim, warlock.Env.NextTargetUnit(result.Target), spell)
 			}
 		},
