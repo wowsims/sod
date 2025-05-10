@@ -40,7 +40,7 @@ export default class BulkItemPicker extends Component {
 			this.setItem(item);
 			const slot = getEligibleItemSlots(this.item.item)[0];
 			const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
-			const eligibleRunes = this.simUI.sim.db.getRunes(slot);
+			const eligibleRunes = this.simUI.sim.db.getRunes(slot, this.simUI.player.getClass());
 			const eligibleRandomSuffixes = this.item.item.randomSuffixOptions;
 
 			const openEnchantSelector = (event: Event) => {
