@@ -40,6 +40,7 @@ export default class BulkItemPicker extends Component {
 			this.setItem(item);
 			const slot = getEligibleItemSlots(this.item.item)[0];
 			const eligibleEnchants = this.simUI.sim.db.getEnchants(slot);
+			const eligibleRunes = this.simUI.sim.db.getRunes(slot);
 			const eligibleRandomSuffixes = this.item.item.randomSuffixOptions;
 
 			const openEnchantSelector = (event: Event) => {
@@ -47,6 +48,8 @@ export default class BulkItemPicker extends Component {
 
 				if (!!eligibleEnchants.length) {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Enchants, this.createGearData());
+				} else if (!!eligibleRunes.length) {
+					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.Runes, this.createGearData());
 				} else if (!!eligibleRandomSuffixes.length) {
 					this.bulkUI.selectorModal.openTab(slot, SelectorModalTabs.RandomSuffixes, this.createGearData());
 				}
