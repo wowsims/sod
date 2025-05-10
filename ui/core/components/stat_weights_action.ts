@@ -178,7 +178,7 @@ class EpWeightsMenu extends BaseModal {
 				</div>
 				<div class="show-all-stats-container col col-sm-3"></div>
 			</div>
-			<div class="ep-reference-options row experimental">
+			<div class="ep-reference-options row">
 				<div class="col col-sm-4 damage-metrics">
 					<span>DPS/TPS reference:</span>
 					<select class="ref-stat-select form-select damage-metrics">
@@ -253,25 +253,25 @@ class EpWeightsMenu extends BaseModal {
 									<i class="fa fa-copy"></i>
 								</a>
 							</th>
-							<th class="threat-metrics type-weight experimental">
+							<th class="threat-metrics type-weight">
 								<span>TMI Weight</span>
 								<a href="javascript:void(0)" role="button" class="col-action">
 									<i class="fa fa-copy"></i>
 								</a>
 							</th>
-							<th class="threat-metrics type-ep experimental">
+							<th class="threat-metrics type-ep">
 								<span>TMI EP</span>
 								<a href="javascript:void(0)" role="button" class="col-action">
 									<i class="fa fa-copy"></i>
 								</a>
 							</th>
-							<th class="threat-metrics type-weight experimental">
+							<th class="threat-metrics type-weight">
 								<span>Death Weight</span>
 								<a href="javascript:void(0)" role="button" class="col-action">
 									<i class="fa fa-copy"></i>
 								</a>
 							</th>
-							<th class="threat-metrics type-ep experimental">
+							<th class="threat-metrics type-ep">
 								<span>Death EP</span>
 								<a href="javascript:void(0)" role="button" class="col-action">
 									<i class="fa fa-copy"></i>
@@ -303,13 +303,13 @@ class EpWeightsMenu extends BaseModal {
 							</td>
 							<td class="threat-metrics type-ratio type-ep">
 							</td>
-							<td class="threat-metrics type-ratio type-weight experimental">
+							<td class="threat-metrics type-ratio type-weight">
 							</td>
-							<td class="threat-metrics type-ratio type-ep experimental">
+							<td class="threat-metrics type-ratio type-ep">
 							</td>
-							<td class="threat-metrics type-ratio type-weight experimental">
+							<td class="threat-metrics type-ratio type-weight">
 							</td>
-							<td class="threat-metrics type-ratio type-ep experimental">
+							<td class="threat-metrics type-ratio type-ep">
 							</td>
 							<td style="text-align: center; vertical-align: middle;">
 								<button class="btn btn-primary compute-ep">
@@ -720,8 +720,8 @@ class EpWeightsMenu extends BaseModal {
 			${this.makeTableRowCells(stat, result?.hps, 'healing-metrics', rowTotalEp, epRatios[1])}
 			${this.makeTableRowCells(stat, result?.tps, 'threat-metrics', rowTotalEp, epRatios[2])}
 			${this.makeTableRowCells(stat, result?.dtps, 'threat-metrics', rowTotalEp, epRatios[3])}
-			${this.makeTableRowCells(stat, result?.tmi, 'threat-metrics experimental', rowTotalEp, epRatios[4])}
-			${this.makeTableRowCells(stat, result?.pDeath, 'threat-metrics experimental', rowTotalEp, epRatios[5])}
+			${this.makeTableRowCells(stat, result?.tmi, 'threat-metrics', rowTotalEp, epRatios[4])}
+			${this.makeTableRowCells(stat, result?.pDeath, 'threat-metrics', rowTotalEp, epRatios[5])}
 			<td class="current-ep"></td>
 		`;
 

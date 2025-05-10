@@ -460,8 +460,10 @@ export class Player<SpecType extends Spec> {
 			defaultRatios[1] = 1;
 		} else if (isTankSpec) {
 			// By default value TPS and DTPS EP equally for tanking spec
-			defaultRatios[2] = 1;
-			defaultRatios[3] = 1;
+			defaultRatios[2] = 1; // TPS
+			defaultRatios[3] = 1; // DTPS
+			defaultRatios[4] = 0; // TMI
+			defaultRatios[5] = 0; // COD
 		} else {
 			// By default only value DPS EP
 			defaultRatios[0] = 1;
