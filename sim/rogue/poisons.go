@@ -67,15 +67,6 @@ func (rogue *Rogue) improvedPoisonsBonusProcChance() float64 {
 	return 0.02 * float64(rogue.Talents.ImprovedPoisons)
 }
 
-// p8 DPS tier bonus helper function
-func trackTotalUniquePoisons(aura *core.Aura, rogue *Rogue) {
-	aura.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
-		rogue.PoisonsActive[aura.Unit.UnitIndex]++
-	}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
-		rogue.PoisonsActive[aura.Unit.UnitIndex]--
-	})
-}
-
 ///////////////////////////////////////////////////////////////////////////
 //                               Apply Poisons
 ///////////////////////////////////////////////////////////////////////////
@@ -378,6 +369,12 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 				Label:     "DeadlyPoison",
 				MaxStacks: 5,
 				Duration:  time.Second * 12,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.PoisonsActive[aura.Unit.UnitIndex]++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.PoisonsActive[aura.Unit.UnitIndex]--
+				},
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
@@ -405,12 +402,6 @@ func (rogue *Rogue) registerDeadlyPoisonSpell() {
 		},
 	})
 
-	for _, dot := range rogue.deadlyPoisonTick.Dots() {
-		if dot != nil {
-			trackTotalUniquePoisons(dot.Aura, rogue)
-		}
-	}
-
 	rogue.DeadlyPoison = [3]*core.Spell{
 		rogue.makeDeadlyPoison(NormalProc),
 		rogue.makeDeadlyPoison(ShivProc),
@@ -433,12 +424,13 @@ func (rogue *Rogue) registerWoundPoisonSpell() {
 	}
 
 	rogue.woundPoisonDebuffAuras = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
-		woundPoisonAura := target.RegisterAura(woundPoisonDebuffAura)
-
-		trackTotalUniquePoisons(woundPoisonAura, rogue)
-
-		return woundPoisonAura
+		return target.RegisterAura(woundPoisonDebuffAura).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
+			rogue.PoisonsActive[aura.Unit.UnitIndex]++
+		}).ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+			rogue.PoisonsActive[aura.Unit.UnitIndex]--
+		})
 	})
+
 	rogue.WoundPoison = [2]*core.Spell{
 		rogue.makeWoundPoison(NormalProc),
 		rogue.makeWoundPoison(ShivProc),
@@ -471,6 +463,12 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 				Label:     "OccultPoison",
 				MaxStacks: 5,
 				Duration:  time.Second * 12,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.PoisonsActive[aura.Unit.UnitIndex]++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					rogue.PoisonsActive[aura.Unit.UnitIndex]--
+				},
 			},
 			NumberOfTicks: 4,
 			TickLength:    time.Second * 3,
@@ -498,12 +496,6 @@ func (rogue *Rogue) registerOccultPoisonSpell() {
 		},
 	})
 
-	for _, dot := range rogue.occultPoisonTick.Dots() {
-		if dot != nil {
-			trackTotalUniquePoisons(dot.Aura, rogue)
-		}
-	}
-
 	rogue.OccultPoison = [3]*core.Spell{
 		rogue.makeOccultPoison(NormalProc),
 		rogue.makeOccultPoison(ShivProc),
@@ -519,10 +511,19 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 
 	rogue.sebaciousPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		sebaciousPoisonAura := core.SebaciousPoisonAura(unit, rogue.Talents.ImprovedExposeArmor, rogue.Level)
+		wrapperAura := unit.RegisterAura(core.Aura{
+			Label:    "Sebacious Poison Wrapper",
+			Duration: core.NeverExpires,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				rogue.PoisonsActive[aura.Unit.UnitIndex]++
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				rogue.PoisonsActive[aura.Unit.UnitIndex]--
+			},
+		})
+		sebaciousPoisonAura.AttachDependentAura(wrapperAura)
 
-		trackTotalUniquePoisons(sebaciousPoisonAura, rogue)
-
-		return sebaciousPoisonAura
+		return wrapperAura
 	})
 
 	rogue.SebaciousPoison = [2]*core.Spell{
@@ -539,10 +540,19 @@ func (rogue *Rogue) registerAtrophicPoisonSpell() {
 
 	rogue.atrophicPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		atrophicPoisonAura := core.AtrophicPoisonAura(unit)
+		wrapperAura := unit.RegisterAura(core.Aura{
+			Label:    "Atrophic Poison Wrapper",
+			Duration: core.NeverExpires,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				rogue.PoisonsActive[aura.Unit.UnitIndex]++
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				rogue.PoisonsActive[aura.Unit.UnitIndex]--
+			},
+		})
+		atrophicPoisonAura.AttachDependentAura(wrapperAura)
 
-		trackTotalUniquePoisons(atrophicPoisonAura, rogue)
-
-		return atrophicPoisonAura
+		return wrapperAura
 	})
 
 	rogue.AtrophicPoison = [2]*core.Spell{
@@ -559,10 +569,19 @@ func (rogue *Rogue) registerNumbingPoisonSpell() {
 
 	rogue.numbingPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		numbingPoisonAura := core.NumbingPoisonAura(unit)
+		wrapperAura := unit.RegisterAura(core.Aura{
+			Label:    "Numbing Poison Wrapper",
+			Duration: core.NeverExpires,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				rogue.PoisonsActive[aura.Unit.UnitIndex]++
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				rogue.PoisonsActive[aura.Unit.UnitIndex]--
+			},
+		})
+		numbingPoisonAura.AttachDependentAura(wrapperAura)
 
-		trackTotalUniquePoisons(numbingPoisonAura, rogue)
-
-		return numbingPoisonAura
+		return wrapperAura
 	})
 
 	rogue.NumbingPoison = [2]*core.Spell{
