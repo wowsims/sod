@@ -628,7 +628,7 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 		// Use a wrapper to prevent an external ISB from affecting the warlock's effect count
 		return target.RegisterAura(core.Aura{
 			Label:     "Improved Shadow Bolt Wrapper",
-			Duration:  isbAura.Duration,
+			Duration:  core.ISBDuration,
 			MaxStacks: isbAura.MaxStacks,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				warlock.activeEffects[aura.Unit.UnitIndex]++
@@ -636,7 +636,8 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 				isbAura.SetStacks(sim, stackCount)
 			},
 			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
-				isbAura.Refresh(sim)
+				isbAura.Activate(sim)
+				isbAura.SetStacks(sim, stackCount)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				warlock.activeEffects[aura.Unit.UnitIndex]--
