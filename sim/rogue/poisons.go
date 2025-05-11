@@ -514,10 +514,13 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 		// Use a wrapper to prevent an external poison from affecting the rogue's poison count
 		return target.RegisterAura(core.Aura{
 			Label:    "Sebacious Poison Wrapper",
-			Duration: sebaciousPoisonAura.Duration,
+			Duration: core.SebaciousPoisonDuration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]++
 				sebaciousPoisonAura.Activate(sim)
+			},
+			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+				sebaciousPoisonAura.Refresh(sim)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]--
@@ -542,10 +545,13 @@ func (rogue *Rogue) registerAtrophicPoisonSpell() {
 		// Use a wrapper to prevent an external poison from affecting the rogue's poison count
 		return unit.RegisterAura(core.Aura{
 			Label:    "Atrophic Poison Wrapper",
-			Duration: atrophicPoisonAura.Duration,
+			Duration: core.AtrophicPoisonDuration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]++
 				atrophicPoisonAura.Activate(sim)
+			},
+			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+				atrophicPoisonAura.Refresh(sim)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]--
@@ -570,10 +576,13 @@ func (rogue *Rogue) registerNumbingPoisonSpell() {
 		// Use a wrapper to prevent an external poison from affecting the rogue's poison count
 		return target.RegisterAura(core.Aura{
 			Label:    "Numbing Poison Wrapper",
-			Duration: numbingPoisonAura.Duration,
+			Duration: core.NumbingPoisonDuration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]++
 				numbingPoisonAura.Activate(sim)
+			},
+			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+				numbingPoisonAura.Refresh(sim)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]--

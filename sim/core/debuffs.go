@@ -368,6 +368,7 @@ func (character *Character) createIsbConfig(player *proto.Player) {
 }
 
 const (
+	ISBDuration             = 12 * time.Second
 	ISBNumStacksBase        = 4
 	ISBNumStacksShadowflame = 30
 )
@@ -389,8 +390,8 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 	aura := unit.GetOrRegisterAura(Aura{
 		Label:     isbLabel,
 		ActionID:  ActionID{SpellID: 17800},
-		Duration:  12 * time.Second,
-		MaxStacks: 30,
+		Duration:  ISBDuration,
+		MaxStacks: ISBNumStacksShadowflame,
 		OnReset: func(aura *Aura, sim *Simulation) {
 			// External shadow priests simulation
 			if externalShadowPriests > 0 {
@@ -400,7 +401,7 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 					OnAction: func(s *Simulation) {
 						if priestGcds[priestCurGcd] {
 							for i := 0; i < int(externalShadowPriests); i++ {
-								if aura.IsActive() {
+								if aura.IsActive() && aura.GetStacks() > 0 {
 									aura.RemoveStack(sim)
 								}
 							}
@@ -421,7 +422,7 @@ func ImprovedShadowBoltAura(unit *Unit, rank int32) *Aura {
 			aura.Unit.PseudoStats.SchoolDamageTakenMultiplier[stats.SchoolIndexShadow] /= damageMulti
 		},
 		OnSpellHitTaken: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if spell.SpellSchool.Matches(SpellSchoolShadow) && result.Landed() && result.Damage > 0 {
+			if spell.SpellSchool.Matches(SpellSchoolShadow) && result.Landed() && result.Damage > 0 && aura.GetStacks() > 0 {
 				aura.RemoveStack(sim)
 			}
 		},
@@ -717,6 +718,8 @@ func MarkOfChaosDebuffAura(target *Unit) *Aura {
 	return aura
 }
 
+const CurseOfElementsDuration = time.Minute * 5
+
 func CurseOfElementsAura(target *Unit, playerLevel int32) *Aura {
 	if playerLevel < 40 {
 		return nil
@@ -744,7 +747,7 @@ func CurseOfElementsAura(target *Unit, playerLevel int32) *Aura {
 		Label:      "Curse of Elements",
 		DispelType: DispelType_Curse,
 		ActionID:   ActionID{SpellID: spellID},
-		Duration:   time.Minute * 5,
+		Duration:   CurseOfElementsDuration,
 	})
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFire, dmgMod, 0.0, false)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexFrost, dmgMod, 0.0, false)
@@ -754,6 +757,8 @@ func CurseOfElementsAura(target *Unit, playerLevel int32) *Aura {
 
 	return aura
 }
+
+const CurseOfShadowDuration = time.Minute * 5
 
 func CurseOfShadowAura(target *Unit, playerLevel int32) *Aura {
 	if playerLevel < 50 {
@@ -779,7 +784,7 @@ func CurseOfShadowAura(target *Unit, playerLevel int32) *Aura {
 		Label:      "Curse of Shadow",
 		DispelType: DispelType_Curse,
 		ActionID:   ActionID{SpellID: spellID},
-		Duration:   time.Minute * 5,
+		Duration:   CurseOfShadowDuration,
 	})
 	spellSchoolDamageEffect(aura, stats.SchoolIndexArcane, dmgMod, 0.0, false)
 	spellSchoolDamageEffect(aura, stats.SchoolIndexShadow, dmgMod, 0.0, false)
@@ -1043,6 +1048,8 @@ func ExposeArmorAura(target *Unit, improvedEA int32, playerLevel int32) *Aura {
 	return aura
 }
 
+const SebaciousPoisonDuration = time.Second * 15
+
 func SebaciousPoisonAura(target *Unit, improvedEA int32, playerLevel int32) *Aura {
 	if playerLevel < 60 {
 		return nil
@@ -1061,7 +1068,7 @@ func SebaciousPoisonAura(target *Unit, improvedEA int32, playerLevel int32) *Aur
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Sebacious Poison",
 		ActionID: ActionID{SpellID: spellID},
-		Duration: time.Second * 15,
+		Duration: SebaciousPoisonDuration,
 	})
 
 	aura.NewExclusiveEffect(majorArmorReductionEffectCategory, true, ExclusiveEffect{
@@ -1126,6 +1133,8 @@ func HomunculiAttackPowerAura(target *Unit, playerLevel int32) *Aura {
 	return aura
 }
 
+const CurseOfRecklessnessDuration = time.Minute * 2
+
 func CurseOfRecklessnessAura(target *Unit, playerLevel int32) *Aura {
 	spellID := map[int32]int32{
 		25: 704,
@@ -1152,7 +1161,7 @@ func CurseOfRecklessnessAura(target *Unit, playerLevel int32) *Aura {
 		Label:      "Curse of Recklessness",
 		DispelType: DispelType_Curse,
 		ActionID:   ActionID{SpellID: spellID},
-		Duration:   time.Minute * 2,
+		Duration:   CurseOfRecklessnessDuration,
 		OnGain: func(aura *Aura, sim *Simulation) {
 			aura.Unit.AddStatDynamic(sim, stats.Armor, -arpen)
 			aura.Unit.AddStatDynamic(sim, stats.AttackPower, ap)
@@ -1360,11 +1369,13 @@ func DemoralizingShoutAura(target *Unit, boomingVoicePts int32, impDemoShoutPts 
 	return aura
 }
 
+const AtrophicPoisonDuration = time.Second * 15
+
 func AtrophicPoisonAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Atrophic Poison",
 		ActionID: ActionID{SpellID: 439473},
-		Duration: time.Second * 15,
+		Duration: AtrophicPoisonDuration,
 	})
 	apReductionEffect(aura, 205)
 	return aura
@@ -1422,11 +1433,13 @@ func ThunderfuryASAura(target *Unit, _ int32) *Aura {
 	return aura
 }
 
+const NumbingPoisonDuration = time.Second * 15
+
 func NumbingPoisonAura(target *Unit) *Aura {
 	aura := target.GetOrRegisterAura(Aura{
 		Label:    "Numbing Poison",
 		ActionID: ActionID{SpellID: 439472},
-		Duration: time.Second * 15,
+		Duration: NumbingPoisonDuration,
 	})
 	AtkSpeedReductionEffect(aura, 1.2)
 	return aura

@@ -45,7 +45,6 @@ func (warlock *Warlock) registerChaosBoltSpell() {
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 			baseDamage := sim.Roll(baseLowDamage, baseHighDamage)
-			// Assuming 100% hit for all target levels, numbers could be updated for level comparison later
 			spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMagicCrit)
 		},
 	})

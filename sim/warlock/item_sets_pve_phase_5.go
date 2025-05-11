@@ -253,11 +253,19 @@ func (warlock *Warlock) applyT2Damage6PBonus() {
 		return
 	}
 
-	warlock.RegisterAura(core.Aura{
-		Label: label,
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			warlock.shadowBoltActiveEffectMultiplierPer = 0.10
-			warlock.shadowBoltActiveEffectMultiplierMax = 1.30
+	damageMod := warlock.AddDynamicMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_WarlockShadowBolt,
+		FloatValue: 1.0,
+	})
+
+	core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
+		Name:           label,
+		Callback:       core.CallbackOnApplyEffects,
+		ClassSpellMask: ClassSpellMask_WarlockShadowBolt,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			damageMod.UpdateFloatValue(1.0 + min(0.30, 0.10*float64(warlock.activeEffects[result.Target.UnitIndex])))
+			damageMod.Activate()
 		},
 	})
 }

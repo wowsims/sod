@@ -11,7 +11,6 @@ const ShadowBoltRanks = 10
 
 func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 	hasShadowBoltVolleyRune := warlock.HasRune(proto.WarlockRune_RuneHandsShadowBoltVolley)
-	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
 
 	spellCoeff := [ShadowBoltRanks + 1]float64{0, .14, .299, .56, .857, .857, .857, .857, .857, .857, .857}[rank]
 	baseDamage := [ShadowBoltRanks + 1][]float64{{0}, {13, 18}, {26, 32}, {52, 61}, {92, 104}, {150, 170}, {213, 240}, {292, 327}, {373, 415}, {455, 507}, {482, 538}}[rank]
@@ -21,7 +20,6 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 	castTime := [ShadowBoltRanks + 1]int32{0, 1700, 2200, 2800, 3000, 3000, 3000, 3000, 3000, 3000, 3000}[rank]
 
 	damageMulti := core.TernaryFloat64(hasShadowBoltVolleyRune && warlock.Env.GetNumTargets() > 1, 0.70, 1.0)
-	results := make([]*core.SpellResult, min(core.TernaryInt32(hasShadowBoltVolleyRune, 5, 1), warlock.Env.GetNumTargets()))
 
 	return core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_WarlockShadowBolt,
@@ -30,8 +28,10 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 		DefenseType:    core.DefenseTypeMagic,
 		ProcMask:       core.ProcMaskSpellDamage,
 		Flags:          core.SpellFlagAPL | core.SpellFlagResetAttackSwing | WarlockFlagDestruction,
-		RequiredLevel:  level,
-		Rank:           rank,
+		MissileSpeed:   20,
+
+		RequiredLevel: level,
+		Rank:          rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -51,39 +51,10 @@ func (warlock *Warlock) getShadowBoltBaseConfig(rank int) core.SpellConfig {
 		BonusCoefficient: spellCoeff,
 
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-			for idx := range results {
-				activeEffectMultiplier := 1.0
-
-				if warlock.shadowBoltActiveEffectMultiplierPer > 0 && warlock.shadowBoltActiveEffectMultiplierMax > 0 {
-					for _, spell := range warlock.DoTSpells {
-						if spell.Dot(warlock.CurrentTarget).IsActive() {
-							activeEffectMultiplier += warlock.shadowBoltActiveEffectMultiplierPer
-						}
-					}
-
-					for _, spell := range warlock.DebuffSpells {
-						if spell.RelatedAuras[0].Get(warlock.CurrentTarget).IsActive() {
-							activeEffectMultiplier += warlock.shadowBoltActiveEffectMultiplierPer
-						}
-					}
-
-					if hasMarkOfChaosRune && warlock.MarkOfChaosAuras.Get(warlock.CurrentTarget).IsActive() {
-						activeEffectMultiplier += warlock.shadowBoltActiveEffectMultiplierPer
-					}
-
-					activeEffectMultiplier = min(warlock.shadowBoltActiveEffectMultiplierMax, activeEffectMultiplier)
-				}
-
-				spell.ApplyMultiplicativeDamageBonus(activeEffectMultiplier)
-				results[idx] = spell.CalcDamage(sim, target, sim.Roll(baseDamage[0], baseDamage[1]), spell.OutcomeMagicHitAndCrit)
-				spell.ApplyMultiplicativeDamageBonus(1 / activeEffectMultiplier)
-
-				target = sim.Environment.NextTargetUnit(target)
-			}
-
-			for _, result := range results {
+			result := spell.CalcDamage(sim, target, sim.Roll(baseDamage[0], baseDamage[1]), spell.OutcomeMagicHitAndCrit)
+			spell.WaitTravelTime(sim, func(s *core.Simulation) {
 				spell.DealDamage(sim, result)
-			}
+			})
 		},
 	}
 }

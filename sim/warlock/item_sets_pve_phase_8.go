@@ -49,6 +49,12 @@ func (warlock *Warlock) applyScarletEnclaveDamage2PBonus() {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Burning",
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.activeEffects[aura.Unit.UnitIndex]++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.activeEffects[aura.Unit.UnitIndex]--
+				},
 			},
 			NumberOfTicks: 2,
 			TickLength:    time.Second * 2,
@@ -107,7 +113,7 @@ func (warlock *Warlock) applyScarletEnclaveDamage4PBonus() {
 			hasCorruption := slices.ContainsFunc(warlock.Corruption, func(spell *core.Spell) bool {
 				return spell.Dot(result.Target).IsActive()
 			})
-			damageMod.UpdateFloatValue(core.TernaryFloat64(hasCorruption, 1.30, 1.0))
+			damageMod.UpdateFloatValue(core.TernaryFloat64(hasCorruption, 1.3, 1.0))
 			damageMod.Activate()
 		},
 	})

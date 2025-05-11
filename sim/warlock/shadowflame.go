@@ -51,6 +51,12 @@ func (warlock *Warlock) getShadowflameConfig() core.SpellConfig {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Shadowflame" + warlock.Label,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.activeEffects[aura.Unit.UnitIndex]++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.activeEffects[aura.Unit.UnitIndex]--
+				},
 			},
 
 			NumberOfTicks:    numTicks,

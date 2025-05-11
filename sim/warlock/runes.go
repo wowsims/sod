@@ -33,6 +33,7 @@ func (warlock *Warlock) ApplyRunes() {
 
 	// Glove Runes
 	warlock.registerHauntSpell()
+	warlock.applyShadowBoltVolley()
 	warlock.registerChaosBoltSpell()
 	warlock.registerMetamorphosisSpell()
 	warlock.registerShadowCleaveSpell()
@@ -223,8 +224,46 @@ func (warlock *Warlock) applyMarkOfChaos() {
 		return
 	}
 
-	warlock.MarkOfChaosAuras = warlock.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
-		return core.MarkOfChaosDebuffAura(target)
+	debuffAuras := warlock.NewEnemyAuraArray(func(target *core.Unit, _ int32) *core.Aura {
+		mocAura := core.MarkOfChaosDebuffAura(target)
+		// Use a wrapper to prevent an external mark of chaos from affecting the warlock's effect count
+		return target.RegisterAura(core.Aura{
+			Label:    "Mark of Chaos Wrapper",
+			Duration: mocAura.Duration,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.activeEffects[aura.Unit.UnitIndex]++
+				mocAura.Activate(sim)
+				if !mocAura.IsPermanent() {
+					mocAura.UpdateExpires(sim, aura.ExpiresAt())
+				}
+			},
+			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+				mocAura.Refresh(sim)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.activeEffects[aura.Unit.UnitIndex]--
+			},
+		})
+	})
+
+	core.MakeProcTriggerAura(&warlock.Unit, core.ProcTrigger{
+		Name:           "Mark of Chaos Trigger",
+		Callback:       core.CallbackOnSpellHitDealt,
+		Outcome:        core.OutcomeLanded,
+		ClassSpellMask: ClassSpellMask_WarlockCurses ^ ClassSpellMask_WarlockCurseOfElements ^ ClassSpellMask_WarlockCurseOfShadow,
+		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			mocAura := debuffAuras.Get(result.Target)
+			mocAura.Activate(sim)
+			if len(spell.Dots()) > 0 {
+				mocAura.UpdateExpires(sim, spell.Dot(result.Target).ExpiresAt())
+			} else if len(spell.RelatedAuras) > 0 {
+				for _, auraArray := range spell.RelatedAuras {
+					if debuff := auraArray.Get(result.Target); debuff.IsActive() {
+						mocAura.UpdateExpires(sim, debuff.ExpiresAt())
+					}
+				}
+			}
+		},
 	})
 }
 
@@ -236,6 +275,34 @@ func (warlock *Warlock) applyMarkOfChaosDebuff(sim *core.Simulation, target *cor
 		aura.UpdateExpires(sim, sim.CurrentTime+duration)
 	}
 	aura.Activate(sim)
+}
+
+func (warlock *Warlock) applyShadowBoltVolley() {
+	if !warlock.HasRune(proto.WarlockRune_RuneHandsShadowBoltVolley) || warlock.Env.GetNumTargets() == 1 {
+		return
+	}
+
+	// This should technically be dynamic but we don't use dynamic enemies so this is fine for now
+	warlock.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_DamageDone_Pct,
+		ClassMask:  ClassSpellMask_WarlockShadowBolt,
+		FloatValue: 0.70,
+	})
+
+	numExtraTargets := int(min(4, warlock.Env.GetNumTargets()-1))
+
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Shadow Bolt Volley",
+		OnCastComplete: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell) {
+			if spell.Matches(ClassSpellMask_WarlockShadowBolt) {
+				target := warlock.CurrentTarget
+				for i := 0; i < numExtraTargets; i++ {
+					target = sim.Environment.NextTargetUnit(target)
+					spell.Apply(sim, target)
+				}
+			}
+		},
+	}))
 }
 
 func (warlock *Warlock) applyInvocation() {
@@ -522,7 +589,6 @@ func (warlock *Warlock) applyShadowAndFlame() {
 		Label:    "Shadow and Flame proc",
 		ActionID: core.ActionID{SpellID: 426311},
 		Duration: time.Second * 10,
-
 		OnGain: func(aura *core.Aura, sim *core.Simulation) {
 			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexFire] *= 1.10
 			warlock.PseudoStats.SchoolDamageDealtMultiplier[stats.SchoolIndexShadow] *= 1.10

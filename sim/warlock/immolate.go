@@ -52,6 +52,12 @@ func (warlock *Warlock) getImmolateConfig(rank int) core.SpellConfig {
 		Dot: core.DotConfig{
 			Aura: core.Aura{
 				Label: "Immolate-" + warlock.Label + strconv.Itoa(rank),
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.activeEffects[aura.Unit.UnitIndex]++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.activeEffects[aura.Unit.UnitIndex]--
+				},
 			},
 
 			NumberOfTicks:    5,

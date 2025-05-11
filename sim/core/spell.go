@@ -628,11 +628,24 @@ func (spell *Spell) CanCast(sim *Simulation, target *Unit) bool {
 	return true
 }
 
+// Use to cast the spell at
 func (spell *Spell) Cast(sim *Simulation, target *Unit) bool {
 	if target == nil {
 		target = spell.Unit.CurrentTarget
 	}
 	return spell.castFn(sim, target)
+}
+
+// Use to apply the spell effect to the target without the restrictions of a cast.
+// This should be used in cases where OnApplyEffects callbacks are calculated on a per-target basis.
+// Examples include Shadow Bolt Volley.
+func (spell *Spell) Apply(sim *Simulation, target *Unit) bool {
+	if target == nil {
+		return false
+	}
+
+	spell.applyEffects(sim, target)
+	return true
 }
 
 func (spell *Spell) applyEffects(sim *Simulation, target *Unit) {

@@ -623,8 +623,25 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 
 	// These debuffs get used by the T2.5 DPS 2p bonus and don't require the ISB talent, so always initialize them
 	stackCount := core.TernaryInt32(hasShadowflameRune, core.ISBNumStacksShadowflame, core.ISBNumStacksBase)
-	warlock.ImprovedShadowBoltAuras = warlock.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		return core.ImprovedShadowBoltAura(unit, warlock.Talents.ImprovedShadowBolt)
+	warlock.ImprovedShadowBoltAuras = warlock.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+		isbAura := core.ImprovedShadowBoltAura(target, warlock.Talents.ImprovedShadowBolt)
+		// Use a wrapper to prevent an external ISB from affecting the warlock's effect count
+		return target.RegisterAura(core.Aura{
+			Label:     "Improved Shadow Bolt Wrapper",
+			Duration:  isbAura.Duration,
+			MaxStacks: isbAura.MaxStacks,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.activeEffects[aura.Unit.UnitIndex]++
+				isbAura.Activate(sim)
+				isbAura.SetStacks(sim, stackCount)
+			},
+			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+				isbAura.Refresh(sim)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.activeEffects[aura.Unit.UnitIndex]--
+			},
+		})
 	})
 
 	if warlock.Talents.ImprovedShadowBolt == 0 {
@@ -634,12 +651,6 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 	improvedShadowBoltSpellClassMasks := ClassSpellMask_WarlockShadowBolt | ClassSpellMask_WarlockShadowCleave | ClassSpellMask_WarlockShadowflame
 	core.MakePermanent(warlock.RegisterAura(core.Aura{
 		Label: "ISB Trigger",
-		OnInit: func(aura *core.Aura, sim *core.Simulation) {
-			for _, spell := range warlock.ShadowBolt {
-				spell.RelatedAuras = []core.AuraArray{warlock.ImprovedShadowBoltAuras}
-			}
-			warlock.DebuffSpells = append(warlock.DebuffSpells, warlock.ShadowBolt...)
-		},
 		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			if result.Landed() && result.DidCrit() && spell.Matches(improvedShadowBoltSpellClassMasks) {
 				isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)

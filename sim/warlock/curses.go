@@ -21,7 +21,6 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 	level := [CurseOfAgonyRanks + 1]int{0, 8, 18, 28, 38, 48, 58}[rank]
 
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
-	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
 
 	snapshotBaseDmgNoBonus := 0.0
 
@@ -51,6 +50,12 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 			Aura: core.Aura{
 				Label:      "CurseofAgony-" + warlock.Label + strconv.Itoa(rank),
 				DispelType: core.DispelType_Curse,
+				OnGain: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.activeEffects[aura.Unit.UnitIndex]++
+				},
+				OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+					warlock.activeEffects[aura.Unit.UnitIndex]--
+				},
 			},
 			NumberOfTicks:    numTicks,
 			TickLength:       tickLength,
@@ -100,10 +105,6 @@ func (warlock *Warlock) getCurseOfAgonyBaseConfig(rank int) core.SpellConfig {
 
 				spell.Dot(target).ApplyOrReset(sim)
 				warlock.ActiveCurseAura[target.UnitIndex] = dot.Aura
-
-				if hasMarkOfChaosRune {
-					warlock.applyMarkOfChaosDebuff(sim, target, dot.Duration)
-				}
 			}
 			spell.DealOutcome(sim, result)
 		},
@@ -122,11 +123,26 @@ func (warlock *Warlock) registerCurseOfAgonySpell() {
 }
 
 func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
-	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
-
 	playerLevel := warlock.Level
 
-	warlock.CurseOfRecklessnessAuras = warlock.NewEnemyAuraArray(core.CurseOfRecklessnessAura)
+	warlock.CurseOfRecklessnessAuras = warlock.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+		corAura := core.CurseOfRecklessnessAura(target, level)
+		// Use a wrapper to prevent an external curse from affecting the warlock's effect count
+		return target.RegisterAura(core.Aura{
+			Label:    "Curse of Recklessness Wrapper",
+			Duration: core.CurseOfRecklessnessDuration,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.activeEffects[aura.Unit.UnitIndex]++
+				corAura.Activate(sim)
+			},
+			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+				corAura.Refresh(sim)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.activeEffects[aura.Unit.UnitIndex]--
+			},
+		})
+	})
 
 	spellID := map[int32]int32{
 		25: 704,
@@ -150,11 +166,12 @@ func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
 	}[playerLevel]
 
 	warlock.CurseOfRecklessness = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL | WarlockFlagAffliction,
-		Rank:        rank,
+		ClassSpellMask: ClassSpellMask_WarlockCurseOfRecklessness,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL | WarlockFlagAffliction,
+		Rank:           rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -178,10 +195,6 @@ func (warlock *Warlock) registerCurseOfRecklessnessSpell() {
 
 				warlock.ActiveCurseAura[target.UnitIndex] = aura
 				warlock.ActiveCurseAura.Get(target).Activate(sim)
-
-				if hasMarkOfChaosRune {
-					warlock.applyMarkOfChaosDebuff(sim, target, time.Minute*2)
-				}
 			}
 		},
 
@@ -195,7 +208,24 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 		return
 	}
 
-	warlock.CurseOfElementsAuras = warlock.NewEnemyAuraArray(core.CurseOfElementsAura)
+	warlock.CurseOfElementsAuras = warlock.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+		coeAura := core.CurseOfElementsAura(target, level)
+		// Use a wrapper to prevent an external curse from affecting the warlock's effect count
+		return target.RegisterAura(core.Aura{
+			Label:    "Curse of Elements Wrapper",
+			Duration: core.CurseOfElementsDuration,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.activeEffects[aura.Unit.UnitIndex]++
+				coeAura.Activate(sim)
+			},
+			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+				coeAura.Refresh(sim)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.activeEffects[aura.Unit.UnitIndex]--
+			},
+		})
+	})
 
 	spellID := map[int32]int32{
 		40: 1490,
@@ -216,11 +246,12 @@ func (warlock *Warlock) registerCurseOfElementsSpell() {
 	}[playerLevel]
 
 	warlock.CurseOfElements = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL | WarlockFlagAffliction,
-		Rank:        rank,
+		ClassSpellMask: ClassSpellMask_WarlockCurseOfElements,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL | WarlockFlagAffliction,
+		Rank:           rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -257,7 +288,24 @@ func (warlock *Warlock) registerCurseOfShadowSpell() {
 		return
 	}
 
-	warlock.CurseOfShadowAuras = warlock.NewEnemyAuraArray(core.CurseOfShadowAura)
+	warlock.CurseOfShadowAuras = warlock.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+		cosAura := core.CurseOfShadowAura(target, level)
+		// Use a wrapper to prevent an external curse from affecting the warlock's effect count
+		return target.RegisterAura(core.Aura{
+			Label:    "Curse of Shadow Wrapper",
+			Duration: core.CurseOfShadowDuration,
+			OnGain: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.activeEffects[aura.Unit.UnitIndex]++
+				cosAura.Activate(sim)
+			},
+			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
+				cosAura.Refresh(sim)
+			},
+			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+				warlock.activeEffects[aura.Unit.UnitIndex]--
+			},
+		})
+	})
 
 	spellID := map[int32]int32{
 		50: 17862,
@@ -275,11 +323,12 @@ func (warlock *Warlock) registerCurseOfShadowSpell() {
 	}[playerLevel]
 
 	warlock.CurseOfShadow = warlock.RegisterSpell(core.SpellConfig{
-		ActionID:    core.ActionID{SpellID: spellID},
-		SpellSchool: core.SpellSchoolShadow,
-		ProcMask:    core.ProcMaskEmpty,
-		Flags:       core.SpellFlagAPL | WarlockFlagAffliction,
-		Rank:        rank,
+		ClassSpellMask: ClassSpellMask_WarlockCurseOfShadow,
+		ActionID:       core.ActionID{SpellID: spellID},
+		SpellSchool:    core.SpellSchoolShadow,
+		ProcMask:       core.ProcMaskEmpty,
+		Flags:          core.SpellFlagAPL | WarlockFlagAffliction,
+		Rank:           rank,
 
 		ManaCost: core.ManaCostOptions{
 			FlatCost: manaCost,
@@ -347,7 +396,6 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 	}
 
 	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
-	hasMarkOfChaosRune := warlock.HasRune(proto.WarlockRune_RuneCloakMarkOfChaos)
 
 	warlock.CurseOfDoom = warlock.RegisterSpell(core.SpellConfig{
 		ClassSpellMask: ClassSpellMask_WarlockCurseOfDoom,
@@ -405,10 +453,6 @@ func (warlock *Warlock) registerCurseOfDoomSpell() {
 
 				dot.Apply(sim)
 				warlock.ActiveCurseAura[target.UnitIndex] = dot.Aura
-
-				if hasMarkOfChaosRune {
-					warlock.applyMarkOfChaosDebuff(sim, target, dot.Duration)
-				}
 			}
 		},
 	})

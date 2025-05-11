@@ -24,6 +24,9 @@ const (
 	ClassSpellMask_WarlockCorruption
 	ClassSpellMask_WarlockCurseOfAgony
 	ClassSpellMask_WarlockCurseOfDoom
+	ClassSpellMask_WarlockCurseOfElements
+	ClassSpellMask_WarlockCurseOfRecklessness
+	ClassSpellMask_WarlockCurseOfShadow
 	ClassSpellMask_WarlockDeathCoil
 	ClassSpellMask_WarlockDemonicSacrifice
 	ClassSpellMask_WarlockDrainLife
@@ -57,6 +60,9 @@ const (
 	ClassSpellMask_WarlockSummonVoidwalker
 
 	ClassSpellMask_WarlockAll = 1<<iota - 1
+
+	ClassSpellMask_WarlockCurses = ClassSpellMask_WarlockCurseOfAgony | ClassSpellMask_WarlockCurseOfDoom |
+		ClassSpellMask_WarlockCurseOfRecklessness | ClassSpellMask_WarlockCurseOfElements | ClassSpellMask_WarlockCurseOfShadow
 
 	ClassSpellMask_WarlockSummons = ClassSpellMask_WarlockSummonFelguard |
 		ClassSpellMask_WarlockSummonFelhunter |
@@ -131,10 +137,6 @@ type Warlock struct {
 	CurseOfDoom              *core.Spell
 	AmplifyCurse             *core.Spell
 
-	// Track all DoT spells for effecrs that add multipliers based on active effects
-	DoTSpells    []*core.Spell
-	DebuffSpells []*core.Spell
-
 	AmplifyCurseAura        *core.Aura
 	BackdraftAura           *core.Aura
 	defendersResolveAura    *core.Aura
@@ -159,6 +161,7 @@ type Warlock struct {
 	DPSPAggregate float64
 
 	// Extra state and logic variables
+	activeEffects                map[int32]int32 // Used by the 6pT2 DPS bonus
 	backdraftCastSpeed           float64
 	demonicKnowledgeSp           float64
 	maintainBuffsOnSacrifice     bool    // Whether to disable the Master Demonologist and Demonic Sacrifice buffs when sacrificing/summoning pets. Used by TAQ 4pc
@@ -206,17 +209,7 @@ func (warlock *Warlock) Initialize() {
 
 	warlock.registerPetAbilities()
 
-	warlock.OnSpellRegistered(func(spell *core.Spell) {
-		if !spell.Matches(ClassSpellMask_WarlockAll) {
-			return
-		}
-
-		if !spell.Flags.Matches(core.SpellFlagChanneled) && len(spell.Dots()) > 0 {
-			warlock.DoTSpells = append(warlock.DoTSpells, spell)
-		} else if len(spell.RelatedAuras) > 0 {
-			warlock.DebuffSpells = append(warlock.DebuffSpells, spell)
-		}
-	})
+	warlock.activeEffects = make(map[int32]int32)
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {
