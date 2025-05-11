@@ -119,7 +119,7 @@ export function addStatWeightsAction(
 // TMI & p(death) EP in the UI.
 function getModalConfig(simUI: IndividualSimUI<any>) {
 	const baseConfig = { footer: true, scrollContents: true };
-	if (simUI.sim.getShowThreatMetrics() && simUI.sim.getShowExperimental()) {
+	if (simUI.sim.getShowThreatMetrics()) {
 		return { size: 'xl' as const, ...baseConfig };
 	}
 	return baseConfig;
