@@ -509,21 +509,20 @@ func (rogue *Rogue) registerSebaciousPoisonSpell() {
 		return
 	}
 
-	rogue.sebaciousPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		sebaciousPoisonAura := core.SebaciousPoisonAura(unit, rogue.Talents.ImprovedExposeArmor, rogue.Level)
-		wrapperAura := unit.RegisterAura(core.Aura{
+	rogue.sebaciousPoisonDebuffAura = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+		sebaciousPoisonAura := core.SebaciousPoisonAura(target, rogue.Talents.ImprovedExposeArmor, rogue.Level)
+		// Use a wrapper to prevent an external poison from affecting the rogue's poison count
+		return target.RegisterAura(core.Aura{
 			Label:    "Sebacious Poison Wrapper",
-			Duration: core.NeverExpires,
+			Duration: sebaciousPoisonAura.Duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]++
+				sebaciousPoisonAura.Activate(sim)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]--
 			},
 		})
-		sebaciousPoisonAura.AttachDependentAura(wrapperAura)
-
-		return wrapperAura
 	})
 
 	rogue.SebaciousPoison = [2]*core.Spell{
@@ -540,19 +539,18 @@ func (rogue *Rogue) registerAtrophicPoisonSpell() {
 
 	rogue.atrophicPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
 		atrophicPoisonAura := core.AtrophicPoisonAura(unit)
-		wrapperAura := unit.RegisterAura(core.Aura{
+		// Use a wrapper to prevent an external poison from affecting the rogue's poison count
+		return unit.RegisterAura(core.Aura{
 			Label:    "Atrophic Poison Wrapper",
-			Duration: core.NeverExpires,
+			Duration: atrophicPoisonAura.Duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]++
+				atrophicPoisonAura.Activate(sim)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]--
 			},
 		})
-		atrophicPoisonAura.AttachDependentAura(wrapperAura)
-
-		return wrapperAura
 	})
 
 	rogue.AtrophicPoison = [2]*core.Spell{
@@ -567,21 +565,20 @@ func (rogue *Rogue) registerNumbingPoisonSpell() {
 		return
 	}
 
-	rogue.numbingPoisonDebuffAura = rogue.NewEnemyAuraArray(func(unit *core.Unit, level int32) *core.Aura {
-		numbingPoisonAura := core.NumbingPoisonAura(unit)
-		wrapperAura := unit.RegisterAura(core.Aura{
+	rogue.numbingPoisonDebuffAura = rogue.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
+		numbingPoisonAura := core.NumbingPoisonAura(target)
+		// Use a wrapper to prevent an external poison from affecting the rogue's poison count
+		return target.RegisterAura(core.Aura{
 			Label:    "Numbing Poison Wrapper",
-			Duration: core.NeverExpires,
+			Duration: numbingPoisonAura.Duration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]++
+				numbingPoisonAura.Activate(sim)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				rogue.PoisonsActive[aura.Unit.UnitIndex]--
 			},
 		})
-		numbingPoisonAura.AttachDependentAura(wrapperAura)
-
-		return wrapperAura
 	})
 
 	rogue.NumbingPoison = [2]*core.Spell{
