@@ -181,6 +181,8 @@ func (warlock *Warlock) GetWarlock() *Warlock {
 }
 
 func (warlock *Warlock) Initialize() {
+	warlock.activeEffects = make(map[int32]int32, len(warlock.Env.AllUnits))
+
 	warlock.registerCorruptionSpell()
 	warlock.registerImmolateSpell()
 	warlock.registerShadowBoltSpell()
@@ -208,8 +210,6 @@ func (warlock *Warlock) Initialize() {
 	warlock.registerSummonDemon()
 
 	warlock.registerPetAbilities()
-
-	warlock.activeEffects = make(map[int32]int32)
 }
 
 func (warlock *Warlock) AddRaidBuffs(raidBuffs *proto.RaidBuffs) {

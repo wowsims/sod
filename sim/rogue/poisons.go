@@ -81,13 +81,17 @@ func (rogue *Rogue) applyPoisons() {
 	rogue.applyNumbingPoison()
 
 	if rogue.Options.PkSwap && rogue.HasRune(proto.RogueRune_RunePoisonedKnife) {
-		rogue.RegisterAura(core.Aura{
-			Label:    "Apply Sebacious on pull (PK Swap)",
-			Duration: core.NeverExpires,
+		core.MakePermanent(rogue.RegisterAura(core.Aura{
+			Label: "Apply Sebacious on pull (PK Swap)",
 			OnReset: func(aura *core.Aura, sim *core.Simulation) {
-				rogue.SebaciousPoison[1].Cast(sim, sim.GetTargetUnit(0))
+				core.StartDelayedAction(sim, core.DelayedActionOptions{
+					DoAt: 0,
+					OnAction: func(sim *core.Simulation) {
+						rogue.SebaciousPoison[1].Cast(sim, sim.GetTargetUnit(0))
+					},
+				})
 			},
-		})
+		}))
 	}
 }
 

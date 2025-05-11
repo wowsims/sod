@@ -190,12 +190,8 @@ func (rogue *Rogue) builderFlags() core.SpellFlag {
 
 func (rogue *Rogue) Initialize() {
 	// p8 DPS tier bonus tracking
-	rogue.BleedsActive = make(map[int32]int32, len(rogue.Env.Encounter.TargetUnits))
-	rogue.PoisonsActive = make(map[int32]int32, len(rogue.Env.Encounter.TargetUnits))
-	for _, target := range rogue.Env.Encounter.TargetUnits {
-		rogue.BleedsActive[target.UnitIndex] = 0
-		rogue.PoisonsActive[target.UnitIndex] = 0
-	}
+	rogue.BleedsActive = make(map[int32]int32, len(rogue.Env.AllUnits))
+	rogue.PoisonsActive = make(map[int32]int32, len(rogue.Env.AllUnits))
 
 	rogue.registerBackstabSpell()
 	rogue.registerEviscerate()

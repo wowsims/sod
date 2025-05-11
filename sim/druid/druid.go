@@ -241,11 +241,7 @@ func (druid *Druid) RegisterSpell(formMask DruidForm, config core.SpellConfig) *
 
 func (druid *Druid) Initialize() {
 	druid.BleedCategories = druid.GetEnemyExclusiveCategories(core.BleedEffectCategory)
-
-	druid.BleedsActive = make(map[int32]int, len(druid.Env.Encounter.TargetUnits))
-	for _, target := range druid.Env.Encounter.TargetUnits {
-		druid.BleedsActive[target.UnitIndex] = 0
-	}
+	druid.BleedsActive = make(map[int32]int, len(druid.Env.AllUnits))
 
 	druid.registerFaerieFireSpell()
 	druid.registerInnervateCD()
