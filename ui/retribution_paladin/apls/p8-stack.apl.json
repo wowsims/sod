@@ -6,7 +6,7 @@
   ],
   "priorityList": [
     {"action":{"autocastOtherCooldowns":{}}},
-    {"action":{"condition":{"and":{"vals":[{"cmp":{"op":"OpLt","lhs":{"auraNumStacks":{"auraId":{"itemId":241241}}},"rhs":{"const":{"val":"5"}}}},{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"itemId":241241}}},"rhs":{"const":{"val":"3s"}}}}]}},"castSpell":{"spellId":{"itemId":241241}}}},
+    {"action":{"condition":{"cmp":{"op":"OpLt","lhs":{"auraRemainingTime":{"auraId":{"itemId":241241}}},"rhs":{"const":{"val":"1.5s"}}}},"castSpell":{"spellId":{"itemId":241241}}}},
     {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":20920,"rank":5}}},"rhs":{"const":{"val":"1s"}}}},"castSpell":{"spellId":{"spellId":20920,"rank":5}}}},
     {"action":{"condition":{"cmp":{"op":"OpLe","lhs":{"auraRemainingTime":{"auraId":{"spellId":407798}}},"rhs":{"const":{"val":"1s"}}}},"castSpell":{"spellId":{"spellId":407798}}}},
     {"action":{"condition":{"or":{"vals":[{"not":{"val":{"auraIsKnown":{"auraId":{"spellId":1226460}}}}},{"cmp":{"op":"OpEq","lhs":{"auraNumStacks":{"auraId":{"spellId":1226461}}},"rhs":{"const":{"val":"3"}}}}]}},"castSpell":{"spellId":{"spellId":407778}}}},
