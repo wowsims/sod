@@ -168,8 +168,13 @@ func (paladin *Paladin) applyScarletEnclaveRetribution6PBonus() {
 
 	paladin.registerOnHolyPowerSpent(func(sim *core.Simulation, holyPower int32) {
 		if holyPower > 0 {
-			templarAura.Activate(sim)
-			templarAura.SetStacks(sim, holyPower)
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt: sim.CurrentTime + core.DurationFromSeconds(sim.Roll(0.05, 0.1)),
+				OnAction: func(sim *core.Simulation) {
+					templarAura.Activate(sim)
+					templarAura.SetStacks(sim, holyPower)
+				},
+			})
 		}
 	})
 
@@ -279,8 +284,13 @@ func (paladin *Paladin) applyScarletEnclaveShockadin6PBonus() {
 
 	paladin.registerOnHolyPowerSpent(func(sim *core.Simulation, holyPower int32) {
 		if holyPower > 0 {
-			templarAura.Activate(sim)
-			templarAura.SetStacks(sim, holyPower)
+			core.StartDelayedAction(sim, core.DelayedActionOptions{
+				DoAt: sim.CurrentTime + core.DurationFromSeconds(sim.Roll(0.05, 0.1)),
+				OnAction: func(sim *core.Simulation) {
+					templarAura.Activate(sim)
+					templarAura.SetStacks(sim, holyPower)
+				},
+			})
 		}
 	})
 

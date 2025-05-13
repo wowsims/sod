@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestSealStacking-Phase8-Lvl60-StatWeights-Default"
  value: {
-  weights: 5.33987
-  weights: 4.81483
+  weights: 5.28719
+  weights: 4.67694
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 28.88182
-  weights: 1.51789
+  weights: 29.51179
+  weights: 1.50406
   weights: 0
   weights: 0
-  weights: 1.91875
+  weights: 1.89982
   weights: 0
-  weights: 70.519
+  weights: 71.2835
   weights: 0
   weights: 0
   weights: 0
@@ -144,35 +144,35 @@ dps_results: {
 dps_results: {
  key: "TestSealStacking-Phase8-Lvl60-Average-Default"
  value: {
-  dps: 9933.36949
-  tps: 7788.30195
-  dtps: 3.77529
+  dps: 9864.13976
+  tps: 7733.95307
+  dtps: 3.77752
   hps: 66.07382
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase8-Lvl60-Settings-Human-p8-stack-p8-stack-p8-stack-FullBuffs-p8-stack-LongMultiTarget"
  value: {
-  dps: 22966.65611
-  tps: 19817.18199
-  dtps: 4.19847
+  dps: 22520.69958
+  tps: 19412.81002
+  dtps: 4.19192
   hps: 66.91497
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase8-Lvl60-Settings-Human-p8-stack-p8-stack-p8-stack-FullBuffs-p8-stack-LongSingleTarget"
  value: {
-  dps: 9982.95864
-  tps: 7825.70178
-  dtps: 4.7635
+  dps: 9906.92171
+  tps: 7766.25599
+  dtps: 4.78852
   hps: 66.41477
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase8-Lvl60-Settings-Human-p8-stack-p8-stack-p8-stack-FullBuffs-p8-stack-ShortSingleTarget"
  value: {
-  dps: 10343.26644
-  tps: 8114.10843
+  dps: 10243.71336
+  tps: 8036.46931
   dtps: 13.44244
   hps: 69.91617
  }
@@ -180,33 +180,33 @@ dps_results: {
 dps_results: {
  key: "TestSealStacking-Phase8-Lvl60-Settings-Human-p8-stack-p8-stack-p8-stack-NoBuffs-p8-stack-LongMultiTarget"
  value: {
-  dps: 10618.65645
-  tps: 9706.63618
-  dtps: 2.80107
+  dps: 10431.9577
+  tps: 9539.70427
+  dtps: 2.80674
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase8-Lvl60-Settings-Human-p8-stack-p8-stack-p8-stack-NoBuffs-p8-stack-LongSingleTarget"
  value: {
-  dps: 4270.02874
-  tps: 3383.69125
-  dtps: 3.11269
+  dps: 4219.47582
+  tps: 3344.41072
+  dtps: 3.13671
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase8-Lvl60-Settings-Human-p8-stack-p8-stack-p8-stack-NoBuffs-p8-stack-ShortSingleTarget"
  value: {
-  dps: 4363.78024
-  tps: 3462.43956
+  dps: 4291.25277
+  tps: 3405.63986
   dtps: 13.20956
  }
 }
 dps_results: {
  key: "TestSealStacking-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 9032.49816
-  tps: 7086.12346
-  dtps: 4.07551
+  dps: 8973.8514
+  tps: 7040.09188
+  dtps: 4.0006
   hps: 59.01953
  }
 }

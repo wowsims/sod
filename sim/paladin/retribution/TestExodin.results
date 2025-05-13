@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestExodin-Phase8-Lvl60-StatWeights-Default"
  value: {
-  weights: 5.68655
-  weights: 8.12548
+  weights: 5.74788
+  weights: 8.56319
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 31.12375
-  weights: 1.72497
+  weights: 35.04717
+  weights: 2.73346
   weights: 0
   weights: 0
-  weights: 2.04332
+  weights: 2.06536
   weights: 0
-  weights: 65.98036
+  weights: 65.69383
   weights: 0
   weights: 0
   weights: 0
@@ -144,35 +144,35 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase8-Lvl60-Average-Default"
  value: {
-  dps: 10253.60923
-  tps: 7969.83882
-  dtps: 3.70644
+  dps: 10339.95271
+  tps: 8035.83139
+  dtps: 3.71122
   hps: 82.11889
  }
 }
 dps_results: {
  key: "TestExodin-Phase8-Lvl60-Settings-Human-p8-exodin-p8-exodin-p8-exodin-FullBuffs-p8-exodin-LongMultiTarget"
  value: {
-  dps: 17016.3128
-  tps: 14635.96298
-  dtps: 2.75034
+  dps: 17243.15415
+  tps: 14782.49406
+  dtps: 2.72888
   hps: 82.50047
  }
 }
 dps_results: {
  key: "TestExodin-Phase8-Lvl60-Settings-Human-p8-exodin-p8-exodin-p8-exodin-FullBuffs-p8-exodin-LongSingleTarget"
  value: {
-  dps: 10346.00219
-  tps: 8038.92705
-  dtps: 3.06101
+  dps: 10432.32691
+  tps: 8104.95486
+  dtps: 3.07081
   hps: 82.32357
  }
 }
 dps_results: {
  key: "TestExodin-Phase8-Lvl60-Settings-Human-p8-exodin-p8-exodin-p8-exodin-FullBuffs-p8-exodin-ShortSingleTarget"
  value: {
-  dps: 10641.37454
-  tps: 8279.32099
+  dps: 10694.85686
+  tps: 8320.33177
   dtps: 13.44244
   hps: 85.22717
  }
@@ -180,33 +180,33 @@ dps_results: {
 dps_results: {
  key: "TestExodin-Phase8-Lvl60-Settings-Human-p8-exodin-p8-exodin-p8-exodin-NoBuffs-p8-exodin-LongMultiTarget"
  value: {
-  dps: 6829.44927
-  tps: 6077.0904
-  dtps: 3.32502
+  dps: 6936.8252
+  tps: 6148.81485
+  dtps: 3.33398
  }
 }
 dps_results: {
  key: "TestExodin-Phase8-Lvl60-Settings-Human-p8-exodin-p8-exodin-p8-exodin-NoBuffs-p8-exodin-LongSingleTarget"
  value: {
-  dps: 4231.68586
-  tps: 3295.56012
-  dtps: 3.63679
+  dps: 4262.99016
+  tps: 3319.38944
+  dtps: 3.65167
  }
 }
 dps_results: {
  key: "TestExodin-Phase8-Lvl60-Settings-Human-p8-exodin-p8-exodin-p8-exodin-NoBuffs-p8-exodin-ShortSingleTarget"
  value: {
-  dps: 4385.66908
-  tps: 3420.57422
+  dps: 4411.3442
+  tps: 3440.02269
   dtps: 13.20956
  }
 }
 dps_results: {
  key: "TestExodin-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 9212.53924
-  tps: 7162.19869
-  dtps: 3.37674
+  dps: 9284.26967
+  tps: 7217.0295
+  dtps: 3.39648
   hps: 73.41757
  }
 }

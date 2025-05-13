@@ -50,8 +50,8 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestRetribution-Phase8-Lvl60-StatWeights-Default"
  value: {
-  weights: 6.03385
-  weights: 4.00623
+  weights: 6.03203
+  weights: 4.00785
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 22.94203
-  weights: 1.0305
+  weights: 23.17304
+  weights: 1.02382
   weights: 0
   weights: 0
-  weights: 2.16811
+  weights: 2.16746
   weights: 0
-  weights: 69.59662
+  weights: 69.6052
   weights: 0
   weights: 0
   weights: 0
@@ -141,8 +141,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-Average-Default"
  value: {
-  dps: 10995.57941
-  tps: 8627.9976
+  dps: 10993.13115
+  tps: 8625.54151
   dtps: 2.65796
   hps: 79.41934
  }
@@ -150,8 +150,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-Settings-Human-p8-twist-p8-twist-p8-twist-FullBuffs-p8-twist-LongMultiTarget"
  value: {
-  dps: 21027.34392
-  tps: 18422.01546
+  dps: 20872.6008
+  tps: 18267.30766
   dtps: 2.75802
   hps: 80.68877
  }
@@ -159,8 +159,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-Settings-Human-p8-twist-p8-twist-p8-twist-FullBuffs-p8-twist-LongSingleTarget"
  value: {
-  dps: 11019.69714
-  tps: 8643.565
+  dps: 11018.00412
+  tps: 8641.85111
   dtps: 2.60361
   hps: 79.178
  }
@@ -168,8 +168,8 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-Settings-Human-p8-twist-p8-twist-p8-twist-FullBuffs-p8-twist-ShortSingleTarget"
  value: {
-  dps: 11200.83146
-  tps: 8804.39248
+  dps: 11197.56978
+  tps: 8801.13578
   dtps: 13.01803
   hps: 82.045
  }
@@ -177,32 +177,32 @@ dps_results: {
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-Settings-Human-p8-twist-p8-twist-p8-twist-NoBuffs-p8-twist-LongMultiTarget"
  value: {
-  dps: 8468.09319
-  tps: 7896.07354
+  dps: 8419.71172
+  tps: 7847.66576
   dtps: 2.392
  }
 }
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-Settings-Human-p8-twist-p8-twist-p8-twist-NoBuffs-p8-twist-LongSingleTarget"
  value: {
-  dps: 4465.50778
-  tps: 3534.35857
+  dps: 4464.35822
+  tps: 3533.20431
   dtps: 2.76072
  }
 }
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-Settings-Human-p8-twist-p8-twist-p8-twist-NoBuffs-p8-twist-ShortSingleTarget"
  value: {
-  dps: 4658.83996
-  tps: 3693.22509
+  dps: 4657.43328
+  tps: 3691.85915
   dtps: 13.80362
  }
 }
 dps_results: {
  key: "TestRetribution-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 10258.06108
-  tps: 8054.32217
+  dps: 10255.60284
+  tps: 8051.89278
   dtps: 2.67488
   hps: 74.26953
  }

@@ -50,12 +50,12 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestWrathLike-Phase8-Lvl60-StatWeights-Default"
  value: {
-  weights: 5.65016
-  weights: 4.84739
+  weights: 5.82969
+  weights: 8.3712
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.34255
+  weights: 0.33967
   weights: 0
   weights: 0
   weights: 0
@@ -63,13 +63,13 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 28.83399
-  weights: 0.75857
+  weights: 42.12887
+  weights: 0.49964
   weights: 0
   weights: 0
-  weights: 2.03024
+  weights: 2.09475
   weights: 0
-  weights: 76.1184
+  weights: 73.26498
   weights: 0
   weights: 0
   weights: 0
@@ -144,69 +144,69 @@ dps_results: {
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Average-Default"
  value: {
-  dps: 10379.73047
-  tps: 8114.09772
-  dtps: 2.74131
-  hps: 46.28153
+  dps: 10628.10227
+  tps: 8301.28674
+  dtps: 2.73297
+  hps: 45.3266
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-FullBuffs-p8-wrath-LongMultiTarget"
  value: {
-  dps: 26480.88333
-  tps: 22348.51809
-  dtps: 2.90387
-  hps: 47.2201
+  dps: 27987.65465
+  tps: 23440.48723
+  dtps: 2.9605
+  hps: 46.2807
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-FullBuffs-p8-wrath-LongSingleTarget"
  value: {
-  dps: 10354.23944
-  tps: 8093.78582
-  dtps: 2.92956
-  hps: 46.47183
+  dps: 10597.82536
+  tps: 8276.69992
+  dtps: 2.90116
+  hps: 45.40637
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-FullBuffs-p8-wrath-ShortSingleTarget"
  value: {
-  dps: 10479.55674
-  tps: 8195.74545
-  dtps: 14.64781
-  hps: 47.29533
+  dps: 10536.14609
+  tps: 8232.27701
+  dtps: 14.50581
+  hps: 46.2685
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-NoBuffs-p8-wrath-LongMultiTarget"
  value: {
-  dps: 11989.88104
-  tps: 10541.49693
-  dtps: 2.54836
+  dps: 12256.98391
+  tps: 10719.3617
+  dtps: 2.49558
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-NoBuffs-p8-wrath-LongSingleTarget"
  value: {
-  dps: 4496.52543
-  tps: 3541.24929
-  dtps: 2.88001
+  dps: 4534.19049
+  tps: 3568.60538
+  dtps: 2.9038
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-Settings-Human-p8-wrath-p8-wrath-p8-wrath-NoBuffs-p8-wrath-ShortSingleTarget"
  value: {
-  dps: 4521.1985
-  tps: 3559.69015
-  dtps: 14.40003
+  dps: 4527.01508
+  tps: 3562.12758
+  dtps: 14.519
  }
 }
 dps_results: {
  key: "TestWrathLike-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 9742.77417
-  tps: 7618.10188
-  dtps: 3.06489
-  hps: 42.35027
+  dps: 9764.17697
+  tps: 7627.03765
+  dtps: 3.06679
+  hps: 41.47187
  }
 }
