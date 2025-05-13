@@ -477,7 +477,7 @@ func DragonBreathChiliAura(character *Character) *Aura {
 		SpellSchool: SpellSchoolFire,
 		DefenseType: DefenseTypeMagic,
 		ProcMask:    ProcMaskSpellDamageProc | ProcMaskSpellProc,
-		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell,
+		Flags:       SpellFlagNoOnCastComplete | SpellFlagPassiveSpell | SpellFlagSuppressEquipProcs,
 
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
@@ -495,7 +495,7 @@ func DragonBreathChiliAura(character *Character) *Aura {
 		ActionID: ActionID{SpellID: 15852},
 		Duration: NeverExpires,
 		OnSpellHitDealt: func(aura *Aura, sim *Simulation, spell *Spell, result *SpellResult) {
-			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) {
+			if !result.Landed() || !spell.ProcMask.Matches(ProcMaskMelee) || spell.Flags.Matches(SpellFlagSuppressEquipProcs) {
 				return
 			}
 			if icd.IsReady(sim) && sim.RandomFloat("Dragonbreath Chili") < procChance {

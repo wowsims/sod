@@ -39,6 +39,7 @@ func init() {
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    core.ProcMaskSpellDamage,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressEquipProcs,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
@@ -110,6 +111,7 @@ func init() {
 			SpellSchool: core.SpellSchoolFire,
 			DefenseType: core.DefenseTypeMagic,
 			ProcMask:    procMaskOnAuto,
+			Flags:       core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressEquipProcs,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
