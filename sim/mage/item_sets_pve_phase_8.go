@@ -59,7 +59,7 @@ func (mage *Mage) applyScarletEnclaveDamage2PBonus() {
 		})
 	}
 
-	if mage.HasRune(proto.MageRune_RuneHandsIceLance) {
+	if mage.HasRune(proto.MageRune_RuneHandsIceLance) && mage.Talents.WintersChill > 0 {
 		aura.ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
 			for _, aura := range mage.GlaciateAuras {
 				if aura == nil {
