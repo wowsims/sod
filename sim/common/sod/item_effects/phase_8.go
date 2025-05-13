@@ -748,13 +748,12 @@ func init() {
 	// https://www.wowhead.com/classic/item=240919/ravagane
 	// Chance on hit: You attack all nearby enemies for 9 sec causing weapon damage plus an additional 200 every 1.5 sec.
 	// Confirmed PPM 0.8
-
 	core.NewItemEffect(Ravagane, func(agent core.Agent) {
 		character := agent.GetCharacter()
-		tickPeriod := time.Millisecond * 1500
+		actionID := core.ActionID{SpellID: 1231547}
 
 		tickSpell := character.RegisterSpell(core.SpellConfig{
-			ActionID:    core.ActionID{SpellID: 1231546},
+			ActionID:    actionID,
 			SpellSchool: core.SpellSchoolPhysical,
 			DefenseType: core.DefenseTypeMelee,
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
@@ -777,7 +776,23 @@ func init() {
 			ProcMask:    core.ProcMaskMeleeMHSpecial,
 			Dot: core.DotConfig{
 				Aura: core.Aura{
-					Label: "Ravagane Whirlwind",
+					ActionID: actionID,
+					Label:    "Ravagane Whirlwind",
+					OnGain: func(aura *core.Aura, sim *core.Simulation) {
+						// In-game testing shows that there is a slight delay before auto attacks are disablecd.
+						// Extra attacks are able to proc during this time.
+						core.StartDelayedAction(sim, core.DelayedActionOptions{
+							DoAt: sim.CurrentTime + time.Millisecond*50, // Exact amount of time unknown
+							OnAction: func(sim *core.Simulation) {
+								if aura.IsActive() {
+									character.AutoAttacks.AllowAutoSwing(sim, false)
+								}
+							},
+						})
+					},
+					OnExpire: func(aura *core.Aura, sim *core.Simulation) {
+						character.AutoAttacks.AllowAutoSwing(sim, true)
+					},
 				},
 				NumberOfTicks: 6,
 				TickLength:    time.Millisecond * 1500,
@@ -785,45 +800,6 @@ func init() {
 				OnTick: func(sim *core.Simulation, target *core.Unit, dot *core.Dot) {
 					tickSpell.Cast(sim, target)
 				},
-			},
-		})
-
-		whirlwindAura := character.RegisterAura(core.Aura{
-			Label:    "Ravagane Bladestorm Disable Autos",
-			ActionID:    core.ActionID{SpellID: 1231547},
-			Duration: time.Second * 9 + core.SpellBatchWindow, // Allows 6th and final tick
-			MaxStacks: 6,
-			OnGain: func(aura *core.Aura, sim *core.Simulation) {
-				character.AutoAttacks.AllowAutoSwing(sim, false)
-			},
-			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
-				// Delay Disabling of Auto to allow Extra attacks to go out
-				core.StartDelayedAction(sim, core.DelayedActionOptions{
-					DoAt: sim.CurrentTime + time.Millisecond * 50, // Exact amount of time unknown
-					OnAction: func(s *core.Simulation) {
-						if aura.IsActive() {
-							character.AutoAttacks.AllowAutoSwing(sim, false)
-						}
-					},
-				})
-
-				core.StartPeriodicAction(sim, core.PeriodicActionOptions{
-					Period:          tickPeriod,
-					NumTicks:        6,
-					Priority:        core.ActionPriorityDOT,
-					TickImmediately: false,
-					OnAction: func(sim *core.Simulation) {
-						if aura.IsActive() && aura.TimeActive(sim) >= tickPeriod { // Prevent previous proc from casting on Refresh
-							aura.RemoveStack(sim)
-							whirlwindSpell.AOEDot().TickOnce(sim)
-						}
-					},
-				})
-			},
-			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
-				if aura.GetStacks() == 0 { // This Check is needed for some cases where On Expire triggers right after On Refresh
-					character.AutoAttacks.AllowAutoSwing(sim, true)
-				}
 			},
 		})
 
@@ -836,8 +812,7 @@ func init() {
 			PPM:               0.8,
 			ICD:               8 * time.Second,
 			Handler: func(sim *core.Simulation, _ *core.Spell, result *core.SpellResult) {
-				whirlwindAura.Activate(sim)
-				whirlwindAura.SetStacks(sim, 6)
+				whirlwindSpell.AOEDot().Apply(sim)
 			},
 		})
 
