@@ -293,6 +293,7 @@ type WeaponAttack struct {
 	curSwingSpeed    float64
 	curSwingDuration time.Duration
 	enabled          bool
+	allowed          bool
 }
 
 func (wa *WeaponAttack) getWeapon() *Weapon {
@@ -329,6 +330,10 @@ func (wa *WeaponAttack) setWeapon(sim *Simulation, weapon Weapon) {
 // inlineable stub for swing
 func (wa *WeaponAttack) trySwing(sim *Simulation) time.Duration {
 	if sim.CurrentTime < wa.swingAt {
+		return wa.swingAt
+	} else if !wa.allowed {
+		wa.swingAt = sim.CurrentTime + wa.curSwingDuration // Auto Attack Fails due to being disabled by an item or effect (e.g. Ravagane)
+        sim.rescheduleWeaponAttack(wa.swingAt)
 		return wa.swingAt
 	}
 	return wa.swing(sim)
@@ -466,6 +471,8 @@ func (wa *WeaponAttack) addWeaponAttack(sim *Simulation, swingSpeed float64) {
 type AutoAttacks struct {
 	AutoSwingMelee  bool
 	AutoSwingRanged bool
+
+	AutoSwingDisabled bool
 
 	IsDualWielding bool
 
@@ -676,6 +683,10 @@ func (aa *AutoAttacks) reset(sim *Simulation) {
 	aa.oh.enabled = false
 	aa.ranged.enabled = false
 
+	aa.mh.allowed = true
+	aa.oh.allowed = true
+	aa.ranged.allowed = true
+
 	aa.mh.swingAt = NeverExpires
 	aa.oh.swingAt = NeverExpires
 
@@ -798,6 +809,13 @@ func (aa *AutoAttacks) EnableAutoSwing(sim *Simulation) {
 	aa.EnableRangedSwing(sim)
 }
 
+// Allow the auto swing action for the iteration
+func (aa *AutoAttacks) AllowAutoSwing(sim *Simulation, isAllowed bool) {
+	aa.mh.allowed = isAllowed
+	aa.oh.allowed = isAllowed
+	aa.ranged.allowed = isAllowed
+}
+
 func (aa *AutoAttacks) EnableMeleeSwing(sim *Simulation) {
 	if !aa.AutoSwingMelee {
 		return
@@ -821,7 +839,7 @@ func (aa *AutoAttacks) EnableMeleeSwing(sim *Simulation) {
 		}
 	}
 
-	if !aa.IsDualWielding && aa.oh.enabled {
+	if (!aa.IsDualWielding && aa.oh.enabled) {
 		sim.removeWeaponAttack(&aa.oh)
 		aa.oh.enabled = false
 	}
