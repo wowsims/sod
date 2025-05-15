@@ -94,11 +94,10 @@ const SPEC_CONFIG = registerSpecConfig(Spec.SpecWarrior, {
 	playerIconInputs: [WarriorInputs.ShoutPicker<Spec.SpecWarrior>(), WarriorInputs.StancePicker<Spec.SpecWarrior>()],
 	// Buff and Debuff inputs to include/exclude, overriding the EP-based defaults.
 	includeBuffDebuffInputs: [
+		BuffDebuffInputs.JudgementOfTheCrusader,
 		BuffDebuffInputs.SanctityAura,
 	],
-	excludeBuffDebuffInputs: [
-		BuffDebuffInputs.JudgementOfTheCrusader
-	],
+	excludeBuffDebuffInputs: [],
 	// Inputs to include in the 'Other' section on the settings tab.
 	otherInputs: {
 		inputs: [
