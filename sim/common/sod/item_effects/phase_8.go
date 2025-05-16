@@ -245,18 +245,43 @@ func init() {
 	core.NewItemEffect(Deception, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
+		spellProc := character.RegisterSpell(core.SpellConfig{
+			ActionID:       core.ActionID{SpellID: 1231552},   
+			SpellSchool:    core.SpellSchoolPhysical,
+			DefenseType:    core.DefenseTypeMelee,
+			ProcMask:       core.ProcMaskMeleeMHAuto, // Normal Melee Attack Flag
+			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			CastType:       proto.CastType_CastTypeMainHand,
+	
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+	
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			},
+		})
+
+		character.NewRageMetrics(spellProc.ActionID)
+		spellProc.ResourceMetrics = character.NewRageMetrics(spellProc.ActionID)
+
 		// Use a dummy to set a flag for the set bonus that doubles the extra attacks
 		var setAura *core.Aura
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Deception Trigger",
+			ActionID:          core.ActionID{SpellID: 1231553},
+			Name:              "Deception Proc",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 			ProcChance:        0.02,
 			ICD:               time.Millisecond * 100,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				spell.Unit.AutoAttacks.ExtraMHAttackProc(sim, core.TernaryInt32(setAura != nil && setAura.IsActive(), 2, 1), core.ActionID{SpellID: 1231555}, spell)
+				spellProc.Cast(sim, result.Target)
+
+				if (setAura != nil && setAura.IsActive()) {
+					spellProc.Cast(sim, result.Target)
+				}
 			},
 		}).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 			setAura = character.GetAura("Tools of the Nathrezim")
@@ -270,18 +295,43 @@ func init() {
 	core.NewItemEffect(Duplicity, func(agent core.Agent) {
 		character := agent.GetCharacter()
 
+		spellProc := character.RegisterSpell(core.SpellConfig{
+			ActionID:       core.ActionID{SpellID: 1231555},
+			SpellSchool:    core.SpellSchoolPhysical,
+			DefenseType:    core.DefenseTypeMelee,
+			ProcMask:       core.ProcMaskMeleeMHAuto, // Normal Melee Attack Flag
+			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			CastType:       proto.CastType_CastTypeMainHand,
+
+			DamageMultiplier: 1,
+			ThreatMultiplier: 1,
+	
+			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+			},
+		})
+
+		character.NewRageMetrics(spellProc.ActionID)
+		spellProc.ResourceMetrics = character.NewRageMetrics(spellProc.ActionID)
+
 		// Use a dummy to set a flag for the set bonus that doubles the extra attacks
 		var setAura *core.Aura
 		triggerAura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:              "Duplicity Trigger",
+			ActionID:          core.ActionID{SpellID: 1231554},
+			Name:              "Duplicity Proc",  
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
 			ProcMask:          core.ProcMaskMelee,
-			SpellFlagsExclude: core.SpellFlagSuppressWeaponProcs,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 			ProcChance:        0.02,
 			ICD:               time.Millisecond * 100,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				spell.Unit.AutoAttacks.ExtraMHAttackProc(sim, core.TernaryInt32(setAura != nil && setAura.IsActive(), 2, 1), core.ActionID{SpellID: 1231555}, spell)
+				spellProc.Cast(sim, result.Target)
+
+				if (setAura != nil && setAura.IsActive()) {
+					spellProc.Cast(sim, result.Target)
+				}
 			},
 		}).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 			setAura = character.GetAura("Tools of the Nathrezim")
