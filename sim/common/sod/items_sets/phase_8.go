@@ -101,7 +101,7 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 						baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * spell.GetDamageMultiplier()
 						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 					} else {
-						baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * 2.0 // Undo Dual Wield Penalty but don't gain Dual wield Spec Bonuses (Only for Set)
+						baseDamage := spell.Unit.AutoAttacks.OH().CalculateWeaponDamage(sim, spell.MeleeAttackPower()) // Avoid using OHWeaponDamage(sim, spell.MeleeAttackPower() to avoid 50% DW Penalty
 						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 					}
 				},
@@ -146,7 +146,7 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 						baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * spell.GetDamageMultiplier()
 						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 					} else {
-						baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * 2.0 // Undo Dual Wield Penalty but don't gain Dual wield Spec Bonuses (Only for Set)
+						baseDamage := spell.Unit.AutoAttacks.OH().CalculateWeaponDamage(sim, spell.MeleeAttackPower()) // Avoid using OHWeaponDamage(sim, spell.MeleeAttackPower() to avoid 50% DW Penalty
 						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 					}
 				},
