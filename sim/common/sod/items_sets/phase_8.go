@@ -1,6 +1,8 @@
 package item_sets
 
 import (
+	"time"
+
 	"github.com/wowsims/sod/sim/core"
 	"github.com/wowsims/sod/sim/core/proto"
 	"github.com/wowsims/sod/sim/hunter"
@@ -61,6 +63,11 @@ var ItemSetHackAndSmash = core.NewItemSet(core.ItemSet{
 	},
 })
 
+const (
+	Deception                = 240922
+	Duplicity                = 240923
+)
+
 // https://www.wowhead.com/classic/item-set=1956/tools-of-the-nathrezim
 var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 	Name: "Tools of the Nathrezim",
@@ -72,6 +79,96 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 				ActionID: core.ActionID{SpellID: 1231556},
 				Label:    "Tools of the Nathrezim",
 			}))
+
+			// Duplicity
+			isMhDuplicity  := character.GetMHWeapon().ID == Duplicity
+			castTypeDuplicity := core.Ternary(isMhDuplicity, proto.CastType_CastTypeMainHand, proto.CastType_CastTypeOffHand)
+			procMaskDuplicity := core.Ternary(isMhDuplicity, core.ProcMaskMeleeMHAuto, core.ProcMaskMeleeOHAuto)
+
+			spellProcSetDuplicity := character.RegisterSpell(core.SpellConfig{
+				ActionID:       core.ActionID{SpellID: 1231557},
+				SpellSchool:    core.SpellSchoolPhysical,
+				DefenseType:    core.DefenseTypeMelee,
+				ProcMask:       procMaskDuplicity, // Normal Melee Attack Flag
+				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+				CastType:       castTypeDuplicity,
+	
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+	
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					if isMhDuplicity {
+						baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * spell.GetDamageMultiplier()
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+					} else {
+						baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * 2.0 // Undo Dual Wield Penalty but don't gain Dual wield Spec Bonuses (Only for Set)
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+					}
+				},
+			})
+
+			character.NewRageMetrics(spellProcSetDuplicity.ActionID)
+			spellProcSetDuplicity.ResourceMetrics = character.NewRageMetrics(spellProcSetDuplicity.ActionID)
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				ActionID:          core.ActionID{SpellID: 1231556},
+				Name:              "Tools of the Nathrezim (Duplicity)", 
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ProcChance:        0.02,
+				ICD:               time.Millisecond * 100,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					spellProcSetDuplicity.Cast(sim, result.Target)
+					spellProcSetDuplicity.Cast(sim, result.Target)
+				},
+			})
+
+			// Deception
+			isMhDeception  := character.GetMHWeapon().ID == Deception
+			castTypeDeception := core.Ternary(isMhDeception, proto.CastType_CastTypeMainHand, proto.CastType_CastTypeOffHand)
+			procMaskDeception := core.Ternary(isMhDeception, core.ProcMaskMeleeMHAuto, core.ProcMaskMeleeOHAuto)
+
+			spellProcSetDeception := character.RegisterSpell(core.SpellConfig{
+				ActionID:       core.ActionID{SpellID: 1231558},
+				SpellSchool:    core.SpellSchoolPhysical,
+				DefenseType:    core.DefenseTypeMelee,
+				ProcMask:       procMaskDeception, // Normal Melee Attack Flag
+				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+				CastType:       castTypeDeception,
+	
+				DamageMultiplier: 1,
+				ThreatMultiplier: 1,
+	
+				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
+					if isMhDeception {
+						baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * spell.GetDamageMultiplier()
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+					} else {
+						baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * 2.0 // Undo Dual Wield Penalty but don't gain Dual wield Spec Bonuses (Only for Set)
+						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
+					}
+				},
+			})
+
+			character.NewRageMetrics(spellProcSetDeception.ActionID)
+			spellProcSetDeception.ResourceMetrics = character.NewRageMetrics(spellProcSetDeception.ActionID)
+
+			core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
+				ActionID:          core.ActionID{SpellID: 1231556},
+				Name:              "Tools of the Nathrezim (Deception)", 
+				Callback:          core.CallbackOnSpellHitDealt,
+				Outcome:           core.OutcomeLanded,
+				ProcMask:          core.ProcMaskMelee,
+				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+				ProcChance:        0.02,
+				ICD:               time.Millisecond * 100,
+				Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+					spellProcSetDeception.Cast(sim, result.Target)
+					spellProcSetDeception.Cast(sim, result.Target)
+				},
+			})
 		},
 	},
 })

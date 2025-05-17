@@ -248,6 +248,7 @@ func init() {
 		isMH  := character.GetMHWeapon().ID == Deception
 		castType := core.Ternary(isMH, proto.CastType_CastTypeMainHand, proto.CastType_CastTypeOffHand)
 		procMask := core.Ternary(isMH, core.ProcMaskMeleeMHAuto, core.ProcMaskMeleeOHAuto)
+		procMaskAura := core.Ternary(isMH, core.ProcMaskMeleeMH, core.ProcMaskMeleeOH)
 
 		spellProc := character.RegisterSpell(core.SpellConfig{
 			ActionID:       core.ActionID{SpellID: 1231552},   
@@ -281,19 +282,23 @@ func init() {
 			Name:              "Deception Proc",
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			ProcMask:          core.ProcMaskMelee,
+			ProcMask:          procMaskAura,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 			ProcChance:        0.02,
 			ICD:               time.Millisecond * 100,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				spellProc.Cast(sim, result.Target)
-
 				if (setAura != nil && setAura.IsActive()) {
+					return
+				} else {
 					spellProc.Cast(sim, result.Target)
 				}
 			},
 		}).ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 			setAura = character.GetAura("Tools of the Nathrezim")
+
+			if setAura != nil {
+				procMaskAura = core.ProcMaskMelee
+			}
 		})
 
 		character.ItemSwap.RegisterProc(Deception, triggerAura)
@@ -307,6 +312,7 @@ func init() {
 		isMH  := character.GetMHWeapon().ID == Duplicity
 		castType := core.Ternary(isMH, proto.CastType_CastTypeMainHand, proto.CastType_CastTypeOffHand)
 		procMask := core.Ternary(isMH, core.ProcMaskMeleeMHAuto, core.ProcMaskMeleeOHAuto)
+		procMaskAura := core.Ternary(isMH, core.ProcMaskMeleeMH, core.ProcMaskMeleeOH)
 
 		spellProc := character.RegisterSpell(core.SpellConfig{
 			ActionID:       core.ActionID{SpellID: 1231555},
@@ -324,7 +330,6 @@ func init() {
 					baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * spell.GetDamageMultiplier()
 					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				} else {
-					//character.AutoAttacks.OHConfig().DamageMultiplier)
 					baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * character.AutoAttacks.OHConfig().DamageMultiplier
 					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				}
@@ -341,14 +346,14 @@ func init() {
 			Name:              "Duplicity Proc",  
 			Callback:          core.CallbackOnSpellHitDealt,
 			Outcome:           core.OutcomeLanded,
-			ProcMask:          core.ProcMaskMelee,
+			ProcMask:          procMaskAura,
 			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 			ProcChance:        0.02,
 			ICD:               time.Millisecond * 100,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
-				spellProc.Cast(sim, result.Target)
-
 				if (setAura != nil && setAura.IsActive()) {
+					return
+				} else {
 					spellProc.Cast(sim, result.Target)
 				}
 			},
