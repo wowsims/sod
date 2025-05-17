@@ -14,6 +14,7 @@ func (shaman *Shaman) ApplyTalents() {
 	shaman.applyCallOfFlame()
 	shaman.applyElementalFocus()
 	shaman.applyElementalDevastation()
+	shaman.applyImprovedFireTotems()
 	shaman.applyElementalFury()
 	shaman.registerElementalMasteryCD()
 
@@ -181,6 +182,24 @@ func (shaman *Shaman) applyElementalDevastation() {
 				procAura.Activate(sim)
 			}
 		},
+	})
+}
+
+func (shaman *Shaman) applyImprovedFireTotems() {
+	if shaman.Talents.ImprovedFireTotems == 0 {
+		return
+	}
+
+	shaman.AddStaticMod(core.SpellModConfig{
+		Kind:      core.SpellMod_DotTickLength_Flat,
+		ClassMask: ClassSpellMask_ShamanFireNovaTotem,
+		TimeValue: -time.Second * time.Duration(shaman.Talents.ImprovedFireTotems),
+	})
+
+	shaman.AddStaticMod(core.SpellModConfig{
+		Kind:       core.SpellMod_Threat_Pct,
+		ClassMask:  ClassSpellMask_ShamanMagmaTotemAttack,
+		FloatValue: 1.0 - (0.25 * float64(shaman.Talents.ImprovedFireTotems)),
 	})
 }
 
