@@ -70,7 +70,7 @@ func (warrior *Warrior) newWhirlwindHitSpell(isMH bool) *WarriorSpell {
 
 		CritDamageBonus: warrior.impale(),
 
-		DamageMultiplier: 1,
+		DamageMultiplier: core.Ternary(isMH, 1.0, warrior.AutoAttacks.OHConfig().DamageMultiplier),
 		ThreatMultiplier: 1.25,
 		BonusCoefficient: 1,
 

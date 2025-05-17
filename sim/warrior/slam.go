@@ -119,7 +119,7 @@ func (warrior *Warrior) newSlamHitSpell(isMH bool) *WarriorSpell {
 		CritDamageBonus: warrior.impale(),
 		FlatThreatBonus: 1 * requiredLevel,
 
-		DamageMultiplier: 1,
+		DamageMultiplier: core.Ternary(isMH, 1.0, warrior.AutoAttacks.OHConfig().DamageMultiplier),
 		ThreatMultiplier: 1,
 		BonusCoefficient: 1,
 
