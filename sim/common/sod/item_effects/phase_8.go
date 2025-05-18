@@ -255,7 +255,7 @@ func init() {
 			SpellSchool:    core.SpellSchoolPhysical,
 			DefenseType:    core.DefenseTypeMelee,
 			ProcMask:       procMask, // Normal Melee Attack Flag
-			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs
 			CastType:       castType,
 	
 			DamageMultiplier: 1.0,
@@ -263,7 +263,7 @@ func init() {
 	
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				if isMH {
-					baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * spell.GetDamageMultiplier()
+					baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				} else {
 					baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * character.AutoAttacks.OHConfig().DamageMultiplier
@@ -319,7 +319,7 @@ func init() {
 			SpellSchool:    core.SpellSchoolPhysical,
 			DefenseType:    core.DefenseTypeMelee,
 			ProcMask:       procMask, // Normal Melee Attack Flag
-			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs
 			CastType:       castType,
 
 			DamageMultiplier: 1,
@@ -327,7 +327,7 @@ func init() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				if isMH {
-					baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * spell.GetDamageMultiplier()
+					baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				} else {
 					baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * character.AutoAttacks.OHConfig().DamageMultiplier

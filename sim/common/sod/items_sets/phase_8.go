@@ -90,7 +90,7 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 				SpellSchool:    core.SpellSchoolPhysical,
 				DefenseType:    core.DefenseTypeMelee,
 				ProcMask:       procMaskDuplicity, // Normal Melee Attack Flag
-				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs
 				CastType:       castTypeDuplicity,
 	
 				DamageMultiplier: 1,
@@ -98,7 +98,7 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 	
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					if isMhDuplicity {
-						baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * spell.GetDamageMultiplier()
+						baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 					} else {
 						baseDamage := spell.Unit.AutoAttacks.OH().CalculateWeaponDamage(sim, spell.MeleeAttackPower()) // Avoid using OHWeaponDamage(sim, spell.MeleeAttackPower() to avoid 50% DW Penalty
@@ -135,7 +135,7 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 				SpellSchool:    core.SpellSchoolPhysical,
 				DefenseType:    core.DefenseTypeMelee,
 				ProcMask:       procMaskDeception, // Normal Melee Attack Flag
-				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs
 				CastType:       castTypeDeception,
 	
 				DamageMultiplier: 1,
@@ -143,7 +143,7 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 	
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 					if isMhDeception {
-						baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower()) * spell.GetDamageMultiplier()
+						baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
 						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 					} else {
 						baseDamage := spell.Unit.AutoAttacks.OH().CalculateWeaponDamage(sim, spell.MeleeAttackPower()) // Avoid using OHWeaponDamage(sim, spell.MeleeAttackPower() to avoid 50% DW Penalty
