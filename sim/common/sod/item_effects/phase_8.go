@@ -255,7 +255,7 @@ func init() {
 			SpellSchool:    core.SpellSchoolPhysical,
 			DefenseType:    core.DefenseTypeMelee,
 			ProcMask:       procMask, // Normal Melee Attack Flag
-			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs
+			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs(Chance on Hit)
 			CastType:       castType,
 	
 			DamageMultiplier: 1.0,
@@ -319,7 +319,7 @@ func init() {
 			SpellSchool:    core.SpellSchoolPhysical,
 			DefenseType:    core.DefenseTypeMelee,
 			ProcMask:       procMask, // Normal Melee Attack Flag
-			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs
+			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs(Chance on Hit)
 			CastType:       castType,
 
 			DamageMultiplier: 1,

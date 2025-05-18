@@ -90,7 +90,7 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 				SpellSchool:    core.SpellSchoolPhysical,
 				DefenseType:    core.DefenseTypeMelee,
 				ProcMask:       procMaskDuplicity, // Normal Melee Attack Flag
-				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs
+				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs(Chance on Hit)
 				CastType:       castTypeDuplicity,
 	
 				DamageMultiplier: 1,
@@ -115,7 +115,7 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 				Name:              "Tools of the Nathrezim (Duplicity)", 
 				Callback:          core.CallbackOnSpellHitDealt,
 				Outcome:           core.OutcomeLanded,
-				ProcMask:          core.ProcMaskMelee,
+				ProcMask:          core.ProcMaskMelee, // Can proc the Deception Proc
 				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 				ProcChance:        0.02,
 				ICD:               time.Millisecond * 100,
@@ -135,7 +135,7 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 				SpellSchool:    core.SpellSchoolPhysical,
 				DefenseType:    core.DefenseTypeMelee,
 				ProcMask:       procMaskDeception, // Normal Melee Attack Flag
-				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs
+				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs(Chance on Hit)
 				CastType:       castTypeDeception,
 	
 				DamageMultiplier: 1,
@@ -160,7 +160,7 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 				Name:              "Tools of the Nathrezim (Deception)", 
 				Callback:          core.CallbackOnSpellHitDealt,
 				Outcome:           core.OutcomeLanded,
-				ProcMask:          core.ProcMaskMelee,
+				ProcMask:          core.ProcMaskMelee, // Can proc the Duplicity Proc
 				SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
 				ProcChance:        0.02,
 				ICD:               time.Millisecond * 100,
