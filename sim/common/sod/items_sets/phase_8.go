@@ -81,29 +81,20 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 			}))
 
 			// Duplicity
-			isMhDuplicity  := character.GetMHWeapon().ID == Duplicity
-			castTypeDuplicity := core.Ternary(isMhDuplicity, proto.CastType_CastTypeMainHand, proto.CastType_CastTypeOffHand)
-			procMaskDuplicity := core.Ternary(isMhDuplicity, core.ProcMaskMeleeMHAuto, core.ProcMaskMeleeOHAuto)
-
 			spellProcSetDuplicity := character.RegisterSpell(core.SpellConfig{
 				ActionID:       core.ActionID{SpellID: 1231557},
 				SpellSchool:    core.SpellSchoolPhysical,
 				DefenseType:    core.DefenseTypeMelee,
-				ProcMask:       procMaskDuplicity, // Normal Melee Attack Flag
+				ProcMask:       core.ProcMaskMeleeMHAuto, // Normal Melee Attack Flag
 				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs(Chance on Hit)
-				CastType:       castTypeDuplicity,
+				CastType:       proto.CastType_CastTypeMainHand,
 	
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
 	
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					if isMhDuplicity {
-						baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-					} else {
-						baseDamage := spell.Unit.AutoAttacks.OH().CalculateWeaponDamage(sim, spell.MeleeAttackPower()) // Avoid using OHWeaponDamage(sim, spell.MeleeAttackPower() to avoid 50% DW Penalty
-						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-					}
+					baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				},
 			})
 
@@ -126,29 +117,20 @@ var ItemSetToolsOfTheNathrezim = core.NewItemSet(core.ItemSet{
 			})
 
 			// Deception
-			isMhDeception  := character.GetMHWeapon().ID == Deception
-			castTypeDeception := core.Ternary(isMhDeception, proto.CastType_CastTypeMainHand, proto.CastType_CastTypeOffHand)
-			procMaskDeception := core.Ternary(isMhDeception, core.ProcMaskMeleeMHAuto, core.ProcMaskMeleeOHAuto)
-
 			spellProcSetDeception := character.RegisterSpell(core.SpellConfig{
 				ActionID:       core.ActionID{SpellID: 1231558},
 				SpellSchool:    core.SpellSchoolPhysical,
 				DefenseType:    core.DefenseTypeMelee,
-				ProcMask:       procMaskDeception, // Normal Melee Attack Flag
+				ProcMask:       core.ProcMaskMeleeMHAuto, // Normal Melee Attack Flag
 				Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs(Chance on Hit)
-				CastType:       castTypeDeception,
+				CastType:       proto.CastType_CastTypeMainHand,
 	
 				DamageMultiplier: 1,
 				ThreatMultiplier: 1,
 	
 				ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-					if isMhDeception {
-						baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-					} else {
-						baseDamage := spell.Unit.AutoAttacks.OH().CalculateWeaponDamage(sim, spell.MeleeAttackPower()) // Avoid using OHWeaponDamage(sim, spell.MeleeAttackPower() to avoid 50% DW Penalty
-						spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-					}
+					baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 				},
 			})
 

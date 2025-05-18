@@ -246,29 +246,22 @@ func init() {
 		character := agent.GetCharacter()
 
 		isMH  := character.GetMHWeapon().ID == Deception
-		castType := core.Ternary(isMH, proto.CastType_CastTypeMainHand, proto.CastType_CastTypeOffHand)
-		procMask := core.Ternary(isMH, core.ProcMaskMeleeMHAuto, core.ProcMaskMeleeOHAuto)
 		procMaskAura := core.Ternary(isMH, core.ProcMaskMeleeMH, core.ProcMaskMeleeOH)
 
 		spellProc := character.RegisterSpell(core.SpellConfig{
 			ActionID:       core.ActionID{SpellID: 1231552},   
 			SpellSchool:    core.SpellSchoolPhysical,
 			DefenseType:    core.DefenseTypeMelee,
-			ProcMask:       procMask, // Normal Melee Attack Flag
+			ProcMask:       core.ProcMaskMeleeMHAuto, // Normal Melee Attack Flag
 			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs(Chance on Hit)
-			CastType:       castType,
+			CastType:       proto.CastType_CastTypeMainHand,
 	
 			DamageMultiplier: 1.0,
 			ThreatMultiplier: 1,
 	
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				if isMH {
-					baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				} else {
-					baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * character.AutoAttacks.OHConfig().DamageMultiplier
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				}
+				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			},
 		})
 
@@ -310,29 +303,22 @@ func init() {
 		character := agent.GetCharacter()
 
 		isMH  := character.GetMHWeapon().ID == Duplicity
-		castType := core.Ternary(isMH, proto.CastType_CastTypeMainHand, proto.CastType_CastTypeOffHand)
-		procMask := core.Ternary(isMH, core.ProcMaskMeleeMHAuto, core.ProcMaskMeleeOHAuto)
 		procMaskAura := core.Ternary(isMH, core.ProcMaskMeleeMH, core.ProcMaskMeleeOH)
 
 		spellProc := character.RegisterSpell(core.SpellConfig{
 			ActionID:       core.ActionID{SpellID: 1231555},
 			SpellSchool:    core.SpellSchoolPhysical,
 			DefenseType:    core.DefenseTypeMelee,
-			ProcMask:       procMask, // Normal Melee Attack Flag
+			ProcMask:       core.ProcMaskMeleeMHAuto, // Normal Melee Attack Flag
 			Flags:          core.SpellFlagMeleeMetrics | core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressWeaponProcs, // Cannot proc Oil, Poisons, and presumably Weapon Enchants or Procs(Chance on Hit)
-			CastType:       castType,
+			CastType:       proto.CastType_CastTypeMainHand,
 
 			DamageMultiplier: 1,
 			ThreatMultiplier: 1,
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
-				if isMH {
-					baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				} else {
-					baseDamage := spell.Unit.OHWeaponDamage(sim, spell.MeleeAttackPower()) * character.AutoAttacks.OHConfig().DamageMultiplier
-					spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
-				}
+				baseDamage := spell.Unit.MHWeaponDamage(sim, spell.MeleeAttackPower())
+				spell.CalcAndDealDamage(sim, target, baseDamage, spell.OutcomeMeleeWeaponSpecialHitAndCrit)
 			},
 		})
 
