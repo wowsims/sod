@@ -51,25 +51,25 @@ stat_weights_results: {
  key: "TestShockadin1H-Phase8-Lvl60-StatWeights-Default"
  value: {
   weights: 0.71649
-  weights: 1.88807
+  weights: 1.85036
   weights: 0
-  weights: 12.2998
+  weights: 12.30177
   weights: 0
-  weights: 3.57368
-  weights: 0
-  weights: 0
+  weights: 4.40689
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 2.52927
-  weights: 1.0808
+  weights: 0
+  weights: 0
+  weights: 2.6501
+  weights: 1.12935
   weights: 0
   weights: 0
   weights: 0.25745
-  weights: 86.91402
-  weights: 34.67986
+  weights: 91.1045
+  weights: 36.03121
   weights: 0
   weights: 0
   weights: 0
@@ -144,8 +144,8 @@ dps_results: {
 dps_results: {
  key: "TestShockadin1H-Phase8-Lvl60-Average-Default"
  value: {
-  dps: 12493.69766
-  tps: 8774.66764
+  dps: 13006.76688
+  tps: 9133.81609
   dtps: 2.80581
   hps: 86.74411
  }
@@ -153,8 +153,8 @@ dps_results: {
 dps_results: {
  key: "TestShockadin1H-Phase8-Lvl60-Settings-Human-p8-shockadin-1h-p8-shockadin-1h-p8-shockadin-1h-FullBuffs-p8-shockadin-1h-LongMultiTarget"
  value: {
-  dps: 16284.64691
-  tps: 11935.94911
+  dps: 16975.60937
+  tps: 12419.62283
   dtps: 3.08179
   hps: 86.90263
  }
@@ -162,8 +162,8 @@ dps_results: {
 dps_results: {
  key: "TestShockadin1H-Phase8-Lvl60-Settings-Human-p8-shockadin-1h-p8-shockadin-1h-p8-shockadin-1h-FullBuffs-p8-shockadin-1h-LongSingleTarget"
  value: {
-  dps: 12547.71638
-  tps: 8812.388
+  dps: 13063.43577
+  tps: 9173.39157
   dtps: 2.87342
   hps: 87.07343
  }
@@ -171,8 +171,8 @@ dps_results: {
 dps_results: {
  key: "TestShockadin1H-Phase8-Lvl60-Settings-Human-p8-shockadin-1h-p8-shockadin-1h-p8-shockadin-1h-FullBuffs-p8-shockadin-1h-ShortSingleTarget"
  value: {
-  dps: 12846.32262
-  tps: 9031.85632
+  dps: 13326.90555
+  tps: 9368.26438
   dtps: 14.3671
   hps: 88.47033
  }
@@ -180,32 +180,32 @@ dps_results: {
 dps_results: {
  key: "TestShockadin1H-Phase8-Lvl60-Settings-Human-p8-shockadin-1h-p8-shockadin-1h-p8-shockadin-1h-NoBuffs-p8-shockadin-1h-LongMultiTarget"
  value: {
-  dps: 7996.11096
-  tps: 6087.84374
+  dps: 8329.90487
+  tps: 6321.49948
   dtps: 2.71746
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase8-Lvl60-Settings-Human-p8-shockadin-1h-p8-shockadin-1h-p8-shockadin-1h-NoBuffs-p8-shockadin-1h-LongSingleTarget"
  value: {
-  dps: 6394.22651
-  tps: 4501.69234
+  dps: 6654.69473
+  tps: 4684.0201
   dtps: 2.65017
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase8-Lvl60-Settings-Human-p8-shockadin-1h-p8-shockadin-1h-p8-shockadin-1h-NoBuffs-p8-shockadin-1h-ShortSingleTarget"
  value: {
-  dps: 6608.2035
-  tps: 4657.49119
+  dps: 6849.07043
+  tps: 4826.09804
   dtps: 13.25083
  }
 }
 dps_results: {
  key: "TestShockadin1H-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 11862.73955
-  tps: 8332.4637
+  dps: 12347.29772
+  tps: 8671.65442
   dtps: 2.6384
   hps: 80.02387
  }

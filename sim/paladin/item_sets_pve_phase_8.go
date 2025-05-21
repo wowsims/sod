@@ -233,6 +233,20 @@ func (paladin *Paladin) applyScarletEnclaveShockadin2PBonus() {
 	}))
 }
 
+func (paladin *Paladin) getStatMultipliers(amount float64) []*stats.StatDependency {
+	return []*stats.StatDependency{
+		paladin.NewDynamicMultiplyStat(stats.SpellPower, amount),
+		paladin.NewDynamicMultiplyStat(stats.SpellDamage, amount),
+		paladin.NewDynamicMultiplyStat(stats.HealingPower, amount),
+		paladin.NewDynamicMultiplyStat(stats.ArcanePower, amount),
+		paladin.NewDynamicMultiplyStat(stats.FirePower, amount),
+		paladin.NewDynamicMultiplyStat(stats.FrostPower, amount),
+		paladin.NewDynamicMultiplyStat(stats.HolyPower, amount),
+		paladin.NewDynamicMultiplyStat(stats.NaturePower, amount),
+		paladin.NewDynamicMultiplyStat(stats.ShadowPower, amount),
+	}
+}
+
 // Consuming Holy Power increases your Spell Power by 15% per Holy Power consumed for 10 sec.
 func (paladin *Paladin) applyScarletEnclaveShockadin6PBonus() {
 	label := "S03 - Item - Scarlet Enclave - Paladin - Shockadin 6P Bonus"
@@ -240,29 +254,36 @@ func (paladin *Paladin) applyScarletEnclaveShockadin6PBonus() {
 		return
 	}
 
-	sd2hDeps := &[]*stats.StatDependency{
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.0),
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.18),
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.36),
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.54),
+	sd2hDeps := &[][]*stats.StatDependency{
+		paladin.getStatMultipliers(1.0),
+		paladin.getStatMultipliers(1.18),
+		paladin.getStatMultipliers(1.36),
+		paladin.getStatMultipliers(1.54),
 	}
 
-	sd1hDeps := &[]*stats.StatDependency{
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.0),
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.08),
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.16),
-		paladin.NewDynamicMultiplyStat(stats.SpellDamage, 1.24),
+	sd1hDeps := &[][]*stats.StatDependency{
+		paladin.getStatMultipliers(1.0),
+		paladin.getStatMultipliers(1.08),
+		paladin.getStatMultipliers(1.16),
+		paladin.getStatMultipliers(1.24),
 	}
 
-	var currentEnabledDeps *[]*stats.StatDependency
+	var currentEnabledDeps *[][]*stats.StatDependency
 	templarAura := paladin.RegisterAura(core.Aura{
 		ActionID:  core.ActionID{SpellID: 1240574},
 		Label:     "Templar",
 		Duration:  time.Second * 10,
 		MaxStacks: 3,
 		OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-			paladin.DisableDynamicStatDep(sim, (*currentEnabledDeps)[oldStacks])
-			paladin.EnableDynamicStatDep(sim, (*currentEnabledDeps)[newStacks])
+			depsToDisable := (*currentEnabledDeps)[oldStacks]
+			for _, dep := range depsToDisable {
+				paladin.DisableDynamicStatDep(sim, dep)
+			}
+
+			depsToEnable := (*currentEnabledDeps)[newStacks]
+			for _, dep := range depsToEnable {
+				paladin.EnableDynamicStatDep(sim, dep)
+			}
 		},
 	})
 
