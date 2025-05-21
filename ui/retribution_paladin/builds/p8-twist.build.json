@@ -36,7 +36,7 @@
     "class": "ClassPaladin",
     "equipment": {
       "items": [
-        {"id":240027,"enchant":7619,"rune":429139},
+        {"id":240027,"enchant":7619,"rune":429142},
         {"id":235886},
         {"id":231176,"enchant":7884,"rune":1220218},
         {"id":230842,"enchant":7667,"rune":440672},
