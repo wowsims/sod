@@ -27,7 +27,6 @@ func (warlock *Warlock) registerShadowflameSpell() {
 			if spell.Matches(ClassSpellMask_WarlockShadowflame) && result.Landed() && result.DidCrit() {
 				isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
 				isbAura.Activate(sim)
-				isbAura.SetStacks(sim, isbAura.MaxStacks)
 			}
 		},
 	}))

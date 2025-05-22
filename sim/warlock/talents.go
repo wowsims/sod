@@ -622,24 +622,28 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 	warlock.ImprovedShadowBoltAuras = warlock.NewEnemyAuraArray(func(target *core.Unit, level int32) *core.Aura {
 		isbAura := core.ImprovedShadowBoltAura(target, warlock.Talents.ImprovedShadowBolt)
 		// Use a wrapper to prevent an external ISB from affecting the warlock's effect count
-		return target.RegisterAura(core.Aura{
-			Label:     "Improved Shadow Bolt Wrapper",
-			Duration:  core.ISBDuration,
-			MaxStacks: core.ISBNumStacksBase,
+		wrapperAura := target.RegisterAura(core.Aura{
+			Label:    "Improved Shadow Bolt Wrapper",
+			Duration: core.ISBDuration,
 			OnGain: func(aura *core.Aura, sim *core.Simulation) {
 				warlock.activeEffects[aura.Unit.UnitIndex]++
 				isbAura.Activate(sim)
+				isbAura.SetStacks(sim, isbAura.MaxStacks)
 			},
 			OnRefresh: func(aura *core.Aura, sim *core.Simulation) {
-				isbAura.Refresh(sim)
-			},
-			OnStacksChange: func(aura *core.Aura, sim *core.Simulation, oldStacks, newStacks int32) {
-				isbAura.SetStacks(sim, newStacks)
+				isbAura.Activate(sim)
+				isbAura.SetStacks(sim, isbAura.MaxStacks)
 			},
 			OnExpire: func(aura *core.Aura, sim *core.Simulation) {
 				warlock.activeEffects[aura.Unit.UnitIndex]--
 			},
 		})
+
+		isbAura.ApplyOnExpire(func(aura *core.Aura, sim *core.Simulation) {
+			wrapperAura.Deactivate(sim)
+		})
+
+		return wrapperAura
 	})
 
 	if warlock.Talents.ImprovedShadowBolt == 0 {
@@ -652,7 +656,6 @@ func (warlock *Warlock) applyImprovedShadowBolt() {
 			if result.Landed() && result.DidCrit() && spell.Matches(ClassSpellMask_WarlockShadowBolt) {
 				isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
 				isbAura.Activate(sim)
-				isbAura.SetStacks(sim, isbAura.MaxStacks)
 			}
 		},
 	}))

@@ -45,8 +45,6 @@ func (warlock *Warlock) applyTAQDamage2PBonus() {
 			if result.Landed() && result.DidCrit() && spell.Matches(ClassSpellMask_WarlockChaosBolt) {
 				isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
 				isbAura.Activate(sim)
-				// This set always uses 30 stacks
-				isbAura.SetStacks(sim, core.ISBNumStacksShadowflame)
 			}
 		},
 	})).AttachSpellMod(core.SpellModConfig{

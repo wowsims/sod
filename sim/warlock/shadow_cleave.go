@@ -96,7 +96,6 @@ func (warlock *Warlock) registerShadowCleaveSpell() {
 			if result.Landed() && result.DidCrit() && spell.Matches(ClassSpellMask_WarlockShadowCleave) {
 				isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
 				isbAura.Activate(sim)
-				isbAura.SetStacks(sim, isbAura.MaxStacks)
 			}
 		},
 	}))
