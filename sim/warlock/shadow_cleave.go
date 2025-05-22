@@ -89,4 +89,15 @@ func (warlock *Warlock) registerShadowCleaveSpell() {
 			warlock.ShadowCleave = append(warlock.ShadowCleave, warlock.GetOrRegisterSpell(config))
 		}
 	}
+
+	core.MakePermanent(warlock.RegisterAura(core.Aura{
+		Label: "Shadow Cleave ISB Trigger",
+		OnSpellHitDealt: func(aura *core.Aura, sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
+			if result.Landed() && result.DidCrit() && spell.Matches(ClassSpellMask_WarlockShadowCleave) {
+				isbAura := warlock.ImprovedShadowBoltAuras.Get(result.Target)
+				isbAura.Activate(sim)
+				isbAura.SetStacks(sim, isbAura.MaxStacks)
+			}
+		},
+	}))
 }

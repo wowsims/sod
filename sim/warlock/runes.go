@@ -310,6 +310,8 @@ func (warlock *Warlock) applyInvocation() {
 		return
 	}
 
+	hasPandemicRune := warlock.HasRune(proto.WarlockRune_RuneHelmPandemic)
+
 	copiedSpellConfig := []struct {
 		ClassMask   uint64
 		SpellID     int32
@@ -411,9 +413,11 @@ func (warlock *Warlock) applyInvocation() {
 					}).ApplyOnRefresh(func(aura *core.Aura, sim *core.Simulation) {
 						if numTicksRemaining := localDot.MaxTicksRemaining(); localDot.TickLength*time.Duration(numTicksRemaining) <= time.Second*6 {
 							invocationSpell := warlock.InvocationSpellMap[localDot.Spell.ClassSpellMask]
+							invocationDot := invocationSpell.Dot(localDot.Unit)
 							for i := int32(0); i < numTicksRemaining; i++ {
 								invocationSpell.Cast(sim, localDot.Unit)
-								invocationSpell.CalcAndDealDamage(sim, localDot.Unit, localDot.SnapshotBaseDamage, invocationSpell.Dot(localDot.Unit).OutcomeTick)
+								outcome := core.Ternary(hasPandemicRune, invocationDot.OutcomeSnapshotCrit, invocationDot.OutcomeTick)
+								invocationSpell.CalcAndDealDamage(sim, localDot.Unit, localDot.SnapshotBaseDamage, outcome)
 							}
 						}
 					})
