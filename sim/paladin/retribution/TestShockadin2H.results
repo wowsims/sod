@@ -50,26 +50,26 @@ character_stats_results: {
 stat_weights_results: {
  key: "TestShockadin2H-Phase8-Lvl60-StatWeights-Default"
  value: {
-  weights: 1.81552
-  weights: 0.66495
+  weights: 1.81681
+  weights: 3.10118
   weights: 0
-  weights: 13.03679
+  weights: 13.31681
   weights: 0
-  weights: 4.38475
-  weights: 0
-  weights: 0
+  weights: 2.88173
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 1.30827
-  weights: 11.09319
   weights: 0
   weights: 0
-  weights: 0.65236
+  weights: 5.13373
+  weights: 18.85167
   weights: 0
-  weights: 37.27766
+  weights: 0
+  weights: 0.65283
+  weights: 0
+  weights: 26.73385
   weights: 0
   weights: 0
   weights: 0
@@ -99,114 +99,114 @@ stat_weights_results: {
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-EmeraldEncrustedBattleplate"
  value: {
-  dps: 4033.99383
-  tps: 2860.39598
-  dtps: 2.58381
-  hps: 54.38963
+  dps: 4032.48725
+  tps: 2861.33621
+  dtps: 4.29001
+  hps: 54.473
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-Knight-Lieutenant'sImbuedPlate"
  value: {
-  dps: 4117.28821
-  tps: 2919.38202
-  dtps: 2.6304
-  hps: 54.40997
+  dps: 4113.28874
+  tps: 2918.49988
+  dtps: 4.47377
+  hps: 54.4913
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-Knight-Lieutenant'sLamellarPlate"
  value: {
-  dps: 4249.52063
-  tps: 3012.63491
-  dtps: 2.58381
-  hps: 54.38963
+  dps: 4247.80115
+  tps: 3013.43345
+  dtps: 4.29001
+  hps: 54.473
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-ObsessedProphet'sPlate"
  value: {
-  dps: 6779.67994
-  tps: 4780.42671
-  dtps: 2.64163
-  hps: 66.52863
+  dps: 6783.21527
+  tps: 4784.61477
+  dtps: 3.2748
+  hps: 66.57743
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-AllItems-SoulforgeArmor"
  value: {
-  dps: 1744.03566
-  tps: 1234.71225
-  dtps: 1.97602
-  hps: 52.44373
+  dps: 1753.59083
+  tps: 1243.10825
+  dtps: 4.58092
+  hps: 52.4966
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Average-Default"
  value: {
-  dps: 13465.79731
-  tps: 9457.00802
-  dtps: 2.80876
-  hps: 71.86267
+  dps: 12750.08219
+  tps: 8957.89341
+  dtps: 3.76518
+  hps: 71.80188
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-FullBuffs-p8-shockadin-2h-LongMultiTarget"
  value: {
-  dps: 19029.05886
-  tps: 13889.83995
-  dtps: 2.90979
-  hps: 71.87833
+  dps: 17824.93081
+  tps: 13073.68604
+  dtps: 2.49852
+  hps: 71.98
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-FullBuffs-p8-shockadin-2h-LongSingleTarget"
  value: {
-  dps: 13431.87294
-  tps: 9432.99647
-  dtps: 3.02008
+  dps: 12731.61079
+  tps: 8944.57525
+  dtps: 3.03684
   hps: 71.84987
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-FullBuffs-p8-shockadin-2h-ShortSingleTarget"
  value: {
-  dps: 13820.04287
-  tps: 9715.33053
-  dtps: 15.10041
-  hps: 74.5725
+  dps: 13067.33368
+  tps: 9197.30641
+  dtps: 13.82224
+  hps: 74.603
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-NoBuffs-p8-shockadin-2h-LongMultiTarget"
  value: {
-  dps: 8913.80861
-  tps: 6742.96229
-  dtps: 2.48222
+  dps: 8425.9488
+  tps: 6426.2061
+  dtps: 3.09392
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-NoBuffs-p8-shockadin-2h-LongSingleTarget"
  value: {
-  dps: 6560.62755
-  tps: 4618.9195
-  dtps: 2.62697
+  dps: 6240.63882
+  tps: 4396.69095
+  dtps: 3.05554
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-Settings-Human-p8-shockadin-2h-p8-shockadin-2h-p8-shockadin-2h-NoBuffs-p8-shockadin-2h-ShortSingleTarget"
  value: {
-  dps: 6694.633
-  tps: 4718.80331
-  dtps: 13.13487
+  dps: 6397.02605
+  tps: 4518.22216
+  dtps: 13.45784
  }
 }
 dps_results: {
  key: "TestShockadin2H-Phase8-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 12679.96262
-  tps: 8906.1251
-  dtps: 2.361
-  hps: 64.3916
+  dps: 11976.52706
+  tps: 8415.54778
+  dtps: 2.94897
+  hps: 64.1842
  }
 }

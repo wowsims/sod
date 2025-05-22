@@ -151,18 +151,18 @@ stat_weights_results: {
   weights: 0
   weights: 0
   weights: 0
-  weights: 0.72207
+  weights: 0.70386
   weights: 0
-  weights: 1.1725
-  weights: 0
-  weights: 0
+  weights: 1.16646
   weights: 0
   weights: 0
   weights: 0
   weights: 0
   weights: 0
-  weights: 8.27749
-  weights: 11.45111
+  weights: 0
+  weights: 0
+  weights: 8.70146
+  weights: 11.37115
   weights: 0
   weights: 0
   weights: 0
@@ -214,9 +214,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase1-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-FullBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 336.04859
-  tps: 1204.25085
-  hps: 60.14914
+  dps: 336.01395
+  tps: 1204.16688
+  hps: 60.15266
  }
 }
 dps_results: {
@@ -238,9 +238,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase1-Lvl25-Settings-Orc-p1.affi.tank-Affliction Warlock-p1.affi.tank-NoBuffs-P1-Consumes-LongMultiTarget"
  value: {
-  dps: 253.99878
-  tps: 1042.75908
-  hps: 40.24498
+  dps: 254.00143
+  tps: 1042.76305
+  hps: 40.2405
  }
 }
 dps_results: {
@@ -295,9 +295,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-InfernalPactEssence-216509"
  value: {
-  dps: 2333.87306
-  tps: 3937.11416
-  hps: 621.07431
+  dps: 2329.76889
+  tps: 3935.5283
+  hps: 619.6738
  }
 }
 dps_results: {
@@ -311,9 +311,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-Kezan'sUnstoppableTaint-231346"
  value: {
-  dps: 2322.72737
-  tps: 3955.33902
-  hps: 614.46164
+  dps: 2320.22492
+  tps: 3946.77623
+  hps: 611.54632
  }
 }
 dps_results: {
@@ -327,74 +327,74 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-MalevolentProphet'sVestments"
  value: {
-  dps: 1857.81958
-  tps: 3151.30338
-  hps: 91.05962
+  dps: 1852.18243
+  tps: 3141.63013
+  hps: 90.70408
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-NightmareProphet'sGarb"
  value: {
-  dps: 1835.16116
-  tps: 3126.14277
-  hps: 89.3328
+  dps: 1830.21889
+  tps: 3117.19256
+  hps: 88.95252
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-AllItems-ZilaGular-223214"
  value: {
-  dps: 2331.60711
-  tps: 3937.11416
-  hps: 621.07431
+  dps: 2327.65822
+  tps: 3935.5283
+  hps: 619.6738
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Average-Default"
  value: {
-  dps: 2398.71103
-  tps: 4049.62763
-  dtps: 495.81314
-  hps: 655.87353
+  dps: 2387.1146
+  tps: 4029.62313
+  dtps: 495.81491
+  hps: 650.33415
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-p4_destro_aff_tank-Affliction Warlock-p4_destro_aff_tank-FullBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 4886.25574
-  tps: 11973.8114
-  hps: 656.14382
+  dps: 4856.44937
+  tps: 11902.02359
+  hps: 648.11918
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-p4_destro_aff_tank-Affliction Warlock-p4_destro_aff_tank-FullBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 2331.60711
-  tps: 3937.11416
-  hps: 621.07431
+  dps: 2327.65822
+  tps: 3935.5283
+  hps: 619.6738
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-p4_destro_aff_tank-Affliction Warlock-p4_destro_aff_tank-FullBuffs-P4-Consumes-ShortSingleTarget"
  value: {
-  dps: 2348.73637
-  tps: 3949.69137
-  hps: 610.69058
+  dps: 2343.57033
+  tps: 3939.53607
+  hps: 608.47734
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-p4_destro_aff_tank-Affliction Warlock-p4_destro_aff_tank-NoBuffs-P4-Consumes-LongMultiTarget"
  value: {
-  dps: 2489.44754
-  tps: 7114.37525
-  hps: 310.8722
+  dps: 2489.26093
+  tps: 7114.0472
+  hps: 310.8005
  }
 }
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-Settings-Orc-p4_destro_aff_tank-Affliction Warlock-p4_destro_aff_tank-NoBuffs-P4-Consumes-LongSingleTarget"
  value: {
-  dps: 1097.72648
-  tps: 1854.0303
-  hps: 305.73408
+  dps: 1097.69311
+  tps: 1853.98025
+  hps: 305.6959
  }
 }
 dps_results: {
@@ -408,9 +408,9 @@ dps_results: {
 dps_results: {
  key: "TestAffliction-Phase4-Lvl60-SwitchInFrontOfTarget-Default"
  value: {
-  dps: 2343.59155
-  tps: 3942.80546
+  dps: 2333.25969
+  tps: 3925.1228
   dtps: 521.99735
-  hps: 647.55532
+  hps: 642.95327
  }
 }
