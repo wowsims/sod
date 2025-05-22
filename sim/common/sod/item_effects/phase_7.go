@@ -58,12 +58,13 @@ func init() {
 	core.NewItemEffect(TheHungeringCold, func(agent core.Agent) {
 		character := agent.GetCharacter()
 		aura := core.MakeProcTriggerAura(&character.Unit, core.ProcTrigger{
-			Name:       "The Hungering Cold Trigger",
-			Callback:   core.CallbackOnSpellHitDealt,
-			Outcome:    core.OutcomeLanded,
-			ProcMask:   core.ProcMaskMelee,
-			ProcChance: 0.02,
-			ICD:        time.Millisecond * 200,
+			Name:              "The Hungering Cold Trigger",
+			Callback:          core.CallbackOnSpellHitDealt,
+			Outcome:           core.OutcomeLanded,
+			ProcMask:          core.ProcMaskMelee,
+			SpellFlagsExclude: core.SpellFlagSuppressEquipProcs,
+			ProcChance:        0.02,
+			ICD:               time.Millisecond * 200,
 			Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 				character.AutoAttacks.ExtraMHAttackProc(sim, 1, core.ActionID{SpellID: 1223010}, spell)
 			},

@@ -3577,7 +3577,7 @@ func BlazefuryTriggerAura(character *core.Character, itemID int32, triggerSpellI
 		SpellSchool:      spellSchool,
 		DefenseType:      core.DefenseTypeMagic,
 		ProcMask:         core.ProcMaskMeleeDamageProc,
-		Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell,
+		Flags:            core.SpellFlagNoOnCastComplete | core.SpellFlagPassiveSpell | core.SpellFlagSuppressEquipProcs,
 		DamageMultiplier: 1,
 		ThreatMultiplier: 1,
 		ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
