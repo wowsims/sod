@@ -193,11 +193,8 @@ func (warrior *Warrior) applyDualWieldSpecialization() {
 	}
 
 	multiplier := 1 + 0.05*float64(warrior.Talents.DualWieldSpecialization)
-	warrior.OnSpellRegistered(func(spell *core.Spell) {
-		if spell.ProcMask.Matches(core.ProcMaskMeleeOH) && spell.BonusCoefficient > 0 {
-			spell.ApplyMultiplicativeDamageBonus(multiplier)
-		}
-	})
+
+	warrior.AutoAttacks.OHConfig().DamageMultiplier *= multiplier
 }
 
 func (warrior *Warrior) applyEnrage() {
