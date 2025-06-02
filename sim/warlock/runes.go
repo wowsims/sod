@@ -408,15 +408,22 @@ func (warlock *Warlock) applyInvocation() {
 					localDot := dot
 					localDot.ApplyOnGain(func(aura *core.Aura, sim *core.Simulation) {
 						invocationSpell := warlock.InvocationSpellMap[localDot.Spell.ClassSpellMask]
+						invocationDot := invocationSpell.Dot(localDot.Unit)
+						outcome := core.Ternary(hasPandemicRune, invocationDot.OutcomeSnapshotCrit, invocationDot.OutcomeTick)
+
+						invocationDot.SnapshotCritChance = localDot.SnapshotCritChance
 						invocationSpell.Cast(sim, localDot.Unit)
-						invocationSpell.CalcAndDealDamage(sim, localDot.Unit, localDot.SnapshotBaseDamage, invocationSpell.Dot(localDot.Unit).OutcomeTick)
+						invocationSpell.CalcAndDealDamage(sim, localDot.Unit, localDot.SnapshotBaseDamage, outcome)
 					}).ApplyOnRefresh(func(aura *core.Aura, sim *core.Simulation) {
 						if numTicksRemaining := localDot.MaxTicksRemaining(); localDot.TickLength*time.Duration(numTicksRemaining) <= time.Second*6 {
 							invocationSpell := warlock.InvocationSpellMap[localDot.Spell.ClassSpellMask]
 							invocationDot := invocationSpell.Dot(localDot.Unit)
+
 							for i := int32(0); i < numTicksRemaining; i++ {
-								invocationSpell.Cast(sim, localDot.Unit)
 								outcome := core.Ternary(hasPandemicRune, invocationDot.OutcomeSnapshotCrit, invocationDot.OutcomeTick)
+
+								invocationDot.SnapshotCritChance = localDot.SnapshotCritChance
+								invocationSpell.Cast(sim, localDot.Unit)
 								invocationSpell.CalcAndDealDamage(sim, localDot.Unit, localDot.SnapshotBaseDamage, outcome)
 							}
 						}

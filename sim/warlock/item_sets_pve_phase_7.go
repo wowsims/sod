@@ -1,6 +1,7 @@
 package warlock
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/wowsims/sod/sim/core"
@@ -94,6 +95,15 @@ func (warlock *Warlock) applyNaxxramasDamage4PBonus() {
 			ProcMask:       core.ProcMaskSpellDamage,
 			Flags:          core.SpellFlagTreatAsPeriodic | core.SpellFlagPureDot | core.SpellFlagNoLifecycleCallbacks | core.SpellFlagPassiveSpell | WarlockFlagHaunt | spellConfig.Flags,
 
+			Dot: core.DotConfig{
+				Aura: core.Aura{
+					Label: fmt.Sprintf("%s (%d)", label, spellConfig.SpellID),
+				},
+
+				NumberOfTicks: 1,
+				TickLength:    0,
+			},
+
 			DamageMultiplier: 0.33,
 			ThreatMultiplier: 1,
 
@@ -120,7 +130,10 @@ func (warlock *Warlock) applyNaxxramasDamage4PBonus() {
 				for _, spell := range affectedDotSpells {
 					if dot := spell.Dot(result.Target); dot.IsActive() {
 						copiedDoTSpell := dotSpellsMap[spell.ClassSpellMask]
+						copiedDoT := copiedDoTSpell.Dot(result.Target)
 						outcome := core.Ternary(hasPandemicRune, copiedDoTSpell.OutcomeMagicCrit, spell.OutcomeAlwaysHit)
+
+						copiedDoT.SnapshotCritChance = dot.SnapshotCritChance
 						copiedDoTSpell.Cast(sim, result.Target)
 						copiedDoTSpell.CalcAndDealDamage(sim, result.Target, dot.SnapshotBaseDamage, outcome)
 					}
