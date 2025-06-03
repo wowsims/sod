@@ -782,6 +782,10 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 		BattleSquawkAura(&character.Unit, numBattleSquawks)
 	}
 
+	if raidBuffs.ResilienceOfTheDawn {
+		ResilienceOfTheDawn(character)
+	}
+
 	if raidBuffs.AtieshCastSpeedBuff {
 		AtieshCastSpeedEffect(&character.Unit)
 	}
@@ -2672,6 +2676,32 @@ func DefendersResolveSpellDamage(character *Character, spellDamageAmount int32) 
 			aura.Unit.AddStatDynamic(sim, stats.SpellDamage, float64(spellDamageAmount*(newStacks-oldStacks)))
 		},
 	})
+}
+
+func ResilienceOfTheDawn(character *Character) *Aura {
+	playerAura := buildResilienceOfTheDawnBuff(&character.Unit)
+
+	for _, pet := range character.Pets {
+		petAura := buildResilienceOfTheDawnBuff(&pet.Unit)
+		playerAura.AttachDependentAura(petAura)
+	}
+
+	return playerAura
+}
+
+func buildResilienceOfTheDawnBuff(unit *Unit) *Aura {
+	multiplier := 1.05
+	statDep := unit.NewDynamicMultiplyStat(stats.Health, multiplier)
+
+	return MakePermanent(unit.RegisterAura(Aura{
+		ActionID:   ActionID{SpellID: 1232037},
+		Label:      "Resilience of the Dawn",
+		BuildPhase: CharacterBuildPhaseBuffs,
+	})).AttachMultiplicativePseudoStatBuff(
+		&unit.PseudoStats.DamageDealtMultiplier, multiplier,
+	).AttachMultiplicativePseudoStatBuff(
+		&unit.PseudoStats.HealingDealtMultiplier, multiplier,
+	).AttachStatDependency(statDep)
 }
 
 // Equip: Increases spell casting speed of all party members within 30 yards by 2%. This specific effect does not stack from multiple sources.

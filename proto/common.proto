@@ -661,7 +661,7 @@ enum SaygesFortune {
 }
 
 // Buffs that affect the entire raid.
-// NextIndex: 48
+// NextIndex: 49
 message RaidBuffs {
 	reserved 42, 43;
 	reserved "flowing_waters_sigil", "spirit_of_the_alpha";
@@ -733,6 +733,7 @@ message RaidBuffs {
 	bool sanctity_aura = 36;
 	int32 battle_squawk = 37;
 	bool improved_stoneskin_windwall = 40;
+	bool resilience_of_the_dawn = 48;
 
 	bool atiesh_cast_speed_buff = 44;
 	bool atiesh_healing_buff = 45;

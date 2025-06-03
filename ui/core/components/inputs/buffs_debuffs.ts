@@ -449,6 +449,10 @@ export const SpellIncreaseBuff = withLabel(
 );
 
 // Misc Buffs
+export const ResilienceOfTheDawn = makeBooleanRaidBuffInput({
+	actionId: () => ActionId.fromSpellId(1232037),
+	fieldName: 'resilienceOfTheDawn',
+});
 export const AtieshCastSpeedBuff = makeBooleanRaidBuffInput({
 	actionId: () => ActionId.fromSpellId(1219557),
 	fieldName: 'atieshCastSpeedBuff',
@@ -1112,6 +1116,11 @@ export const RAID_BUFFS_CONFIG = [
 ] as PickerStatOptions[];
 
 export const MISC_BUFFS_CONFIG = [
+	{
+		config: ResilienceOfTheDawn,
+		picker: IconPicker,
+		stats: [],
+	},
 	{
 		config: AtieshSpellPowerBuff,
 		picker: IconPicker,
