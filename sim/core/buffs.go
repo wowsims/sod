@@ -783,7 +783,7 @@ func applyBuffEffects(agent Agent, playerFaction proto.Faction, raidBuffs *proto
 	}
 
 	if raidBuffs.ResilienceOfTheDawn {
-		ResilienceOfTheDawn(character)
+		ResilienceOfTheDawn(&character.Unit)
 	}
 
 	if raidBuffs.AtieshCastSpeedBuff {
@@ -2678,18 +2678,7 @@ func DefendersResolveSpellDamage(character *Character, spellDamageAmount int32) 
 	})
 }
 
-func ResilienceOfTheDawn(character *Character) *Aura {
-	playerAura := buildResilienceOfTheDawnBuff(&character.Unit)
-
-	for _, pet := range character.Pets {
-		petAura := buildResilienceOfTheDawnBuff(&pet.Unit)
-		playerAura.AttachDependentAura(petAura)
-	}
-
-	return playerAura
-}
-
-func buildResilienceOfTheDawnBuff(unit *Unit) *Aura {
+func ResilienceOfTheDawn(unit *Unit) *Aura {
 	multiplier := 1.05
 	statDep := unit.NewDynamicMultiplyStat(stats.Health, multiplier)
 
