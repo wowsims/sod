@@ -1,0 +1,146 @@
+[
+    {
+        "id": 21, 
+        "name": "Booty Bay"
+    },
+    {
+        "id": 47, 
+        "name": "Ironforge"
+    },
+    {
+        "id": 54, 
+        "name": "Gnomeregan"
+    },
+    {
+        "id": 59, 
+        "name": "Thorium Brotherhood"
+    },
+    {
+        "id": 68, 
+        "name": "Undercity"
+    },
+    {
+        "id": 69, 
+        "name": "Darnassus"
+    },
+    {
+        "id": 70, 
+        "name": "Syndicate"
+    },
+    {
+        "id": 72, 
+        "name": "Stormwind"
+    },
+    {
+        "id": 76,
+        "name": "Orgrimmar"
+    },
+    {
+        "id": 81,
+        "name": "Thunder Bluff"
+    },
+    {
+        "id": 87, 
+        "name": "Bloodsail Buccaneers"
+    },
+    {
+        "id": 92, 
+        "name": "Gelkis Clan Centaur"
+    },
+    {
+        "id": 93, 
+        "name": "Magram Clan Centaur"
+    }, 
+    {
+        "id": 270, 
+        "name": "Zandalar Tribe"
+    },
+    {
+        "id": 349, 
+        "name": "Ravenholdt"
+    },
+    {
+        "id": 369, 
+        "name": "Gadgetzan"
+    },
+    {
+        "id": 470, 
+        "name": "Ratchet"
+    }, 
+    {
+        "id": 509, 
+        "name": "The League of Arathor"
+    },
+    {
+        "id": 510, 
+        "name": "The Defilers"
+    },
+    {
+        "id": 529, 
+        "name": "Argent Dawn"
+    },
+    {
+        "id": 530, 
+        "name": "Darkspear Trolls"
+    },
+    {
+        "id": 576, 
+        "name": "Timbermaw Hold"
+    },
+    {
+        "id": 577, 
+        "name": "Everlook"
+    },
+    {
+        "id": 589, 
+        "name": "Wintersaber Trainers"
+    },
+    {
+        "id": 609, 
+        "name": "Cenarion Circle"
+    },
+    {
+        "id": 729, 
+        "name": "Frostwolf Clan"
+    },
+    {
+        "id": 730, 
+        "name": "Stormpike Guard"
+    },
+    {
+        "id": 749, 
+        "name": "Hydraxian Waterlords"
+    },
+    {
+        "id": 809, 
+        "name": "Shen'dralar"
+    }, 
+    {
+        "id": 889, 
+        "name": "Silverwing Sentinels"
+    },
+    {
+        "id": 890, 
+        "name": "Warsong Outriders"
+    },
+    {
+        "id": 909, 
+        "name": "Darkmoon Faire"
+    },
+    {
+        "id": 910, 
+        "name": "Brood of Nozdormu"
+    },  
+    {
+        "id": 2586,
+        "name": "Azeroth Commerce Authority"
+    },
+    {
+        "id": 2587,
+        "name": "Durotar Supply and Logistics"
+    },
+    {
+        "id": 2641,
+        "name": "Emerald Wardens"
+    }
+]
