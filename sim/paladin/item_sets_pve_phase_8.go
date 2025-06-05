@@ -284,6 +284,8 @@ func (paladin *Paladin) applyScarletEnclaveShockadin6PBonus() {
 			for _, dep := range depsToEnable {
 				paladin.EnableDynamicStatDep(sim, dep)
 			}
+
+			paladin.activeShockadinTemplarBonus = depsToEnable[0].Amount()
 		},
 	})
 

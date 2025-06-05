@@ -117,7 +117,14 @@ func (paladin *Paladin) registerSealOfRighteousness() {
 
 			ApplyEffects: func(sim *core.Simulation, target *core.Unit, spell *core.Spell) {
 				// effectively scales with coeff x 2, and damage dealt multipliers affect half the damage taken bonus
-				baseDamage := damage*improvedSoR + spell.BonusCoefficient*(spell.GetBonusDamage()+target.GetSchoolBonusDamageTaken(spell))
+				spellPower := spell.GetBonusDamage()
+				
+				// For some reason the Templar bonus is only applied on the "client side" portion of the calculation
+				if paladin.activeShockadinTemplarBonus > 0 {
+					spellPower /= paladin.activeShockadinTemplarBonus
+				}
+				
+				baseDamage := damage*improvedSoR + spell.BonusCoefficient*(spellPower+target.GetSchoolBonusDamageTaken(spell))
 				result := spell.CalcDamage(sim, target, baseDamage, spell.OutcomeMeleeSpecialCritOnly)
 
 				core.StartDelayedAction(sim, core.DelayedActionOptions{

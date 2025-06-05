@@ -127,6 +127,7 @@ type Paladin struct {
 	bypassAvengingWrathForbearance bool
 	holyShieldCanCrit              bool
 	hasSealbearerBonus             bool
+	activeShockadinTemplarBonus    float64
 
 	enableMultiJudge    bool
 	lingerDuration      time.Duration

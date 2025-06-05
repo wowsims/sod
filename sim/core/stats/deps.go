@@ -89,6 +89,10 @@ func (sd StatDependency) String() string {
 	}
 }
 
+func (sd StatDependency) Amount() float64 {
+	return sd.amount
+}
+
 // Manages dependencies between stats.
 //
 // Some examples:
