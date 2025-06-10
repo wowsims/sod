@@ -2679,7 +2679,7 @@ func DefendersResolveSpellDamage(character *Character, spellDamageAmount int32) 
 }
 
 func ResilienceOfTheDawn(unit *Unit) *Aura {
-	multiplier := 1.05
+	multiplier := 1.10
 	statDep := unit.NewDynamicMultiplyStat(stats.Health, multiplier)
 
 	return MakePermanent(unit.RegisterAura(Aura{
