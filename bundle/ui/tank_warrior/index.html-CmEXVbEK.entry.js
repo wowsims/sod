@@ -1,0 +1,1 @@
+import"../../index-CsPe537V.chunk.js";import{S as r,T as s}from"../../detailed_results-BqEt4z0s.chunk.js";import{S as e,P as n}from"../../preset_utils-CHt9qupk.chunk.js";import{T as t}from"../../sim-C_HRPdtI.chunk.js";import"../../warrior_inputs-Zr-7Plt9.chunk.js";const i=new e,o=new n(r.SpecTankWarrior,i);i.raid.setPlayer(s.nextEventID(),0,o),new t(document.body,o);
