@@ -123,7 +123,7 @@ export default class ItemList<T extends ItemListType> {
 		const show2hWeaponRef = ref<HTMLDivElement>();
 		const modalListRef = ref<HTMLUListElement>();
 		const removeButtonRef = ref<HTMLButtonElement>();
-		const compareLabelRef = ref<HTMLElement>();
+		const compareLabelRef = ref<HTMLHeadingElement>();
 
 		this.tabContent = (
 			<div id={this.id} className={clsx('selector-modal-tab-pane tab-pane fade', selected && 'active show')}>
@@ -143,28 +143,24 @@ export default class ItemList<T extends ItemListType> {
 					</button>
 				</div>
 				<div className="selector-modal-list-labels">
-					<span className="item-label">
-						<small>Item</small>
-					</span>
-					{label === SelectorModalTabs.Items && (
-						<>
-							<span className="source-label">
-								<small>Source</small>
-							</span>
-							<span className="ilvl-label interactive" onclick={sortByIlvl}>
-								<small>ILvl</small>
-							</span>
-						</>
-					)}
-					<span className="ep-label interactive" onclick={sortByEP}>
-						<small>EP</small>
+					{label === SelectorModalTabs.Items && <h6 className="ilvl-label interactive" onclick={sortByIlvl}>ILvl</h6>}
+					<h6 className="item-label">
+						{
+							label === SelectorModalTabs.Items ? "Item" :
+							label === SelectorModalTabs.Enchants ? "Enchant" :
+							label === SelectorModalTabs.Runes ? "Rune" : ""
+						}
+					</h6>
+					{label === SelectorModalTabs.Items && <h6 className="source-label">Source</h6>}
+					<h6 className="ep-label interactive" onclick={sortByEP}>
+						<span>EP</span>
 						<i className="fa-solid fa-plus-minus fa-2xs" />
 						<button ref={epButtonRef} className="btn btn-link p-0 ms-1">
 							<i className="far fa-question-circle fa-lg" />
 						</button>
-					</span>
-					<span className="favorite-label" />
-					<span ref={compareLabelRef} className="compare-label hide" />
+					</h6>
+					<h6 className="favorite-label" />
+					<h6 ref={compareLabelRef} className="compare-label hide" />
 				</div>
 				<ul ref={modalListRef} className="selector-modal-list" />
 			</div>
@@ -458,6 +454,9 @@ export default class ItemList<T extends ItemListType> {
 
 		const listItemElem = (
 			<li className={clsx('selector-modal-list-item', equippedItemID === itemData.id && 'active')} dataset={{ idx: item.idx.toString() }}>
+				{this.label === SelectorModalTabs.Items && (
+					<div className="selector-modal-list-item-ilvl-container">{(itemData.item as unknown as UIItem).ilvl}</div>
+				)}
 				<div className="selector-modal-list-label-cell">
 					<a className="selector-modal-list-item-link" ref={anchorElem} dataset={{ whtticon: 'false' }}>
 						<img className="selector-modal-list-item-icon" ref={iconElem}></img>
@@ -467,12 +466,9 @@ export default class ItemList<T extends ItemListType> {
 					</a>
 				</div>
 				{this.label === SelectorModalTabs.Items && (
-					<>
-						<div className="selector-modal-list-item-source-container">
-							{this.getSourceInfo(itemData.item as unknown as UIItem, this.player.sim)}
-						</div>
-						<div className="selector-modal-list-item-ilvl-container">{(itemData.item as unknown as UIItem).ilvl}</div>
-					</>
+					<div className="selector-modal-list-item-source-container">
+						{this.getSourceInfo(itemData.item as unknown as UIItem, this.player.sim)}
+					</div>
 				)}
 				{![ItemSlot.ItemSlotTrinket1, ItemSlot.ItemSlotTrinket2].includes(this.slot) && (
 					<div className="selector-modal-list-item-ep">
