@@ -329,7 +329,7 @@ func (warrior *Warrior) ApplyRegicideWarriorEffect(itemID int32, aura *core.Aura
 		},
 	}).ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
 		warrior.Execute.ApplyExtraCastCondition(func(sim *core.Simulation, target *core.Unit) bool {
-			return debuffAuras[target.Index].IsActive() && debuffAuras[target.Index].GetStacks() == 20
+			return debuffAuras[target.Index].IsActive() && debuffAuras[target.Index].GetStacks() == 20 && regicideAura.IsActive()
 		})
 	})
 }
