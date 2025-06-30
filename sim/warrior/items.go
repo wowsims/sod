@@ -278,7 +278,12 @@ func (warrior *Warrior) ApplyRegicideWarriorEffect(itemID int32, aura *core.Aura
 		})
 	})
 	// Regicide aura for APL use on trigger from stacks
-	regicideAura := warrior.NewTemporaryStatsAura("Regicide", core.ActionID{SpellID: 1231436}, stats.Stats{}, 10*time.Second)
+	regicideAura := warrior.RegisterAura(
+		core.Aura{
+			ActionID: core.ActionID{SpellID: 1231436},
+			Label:    "Regicide",
+			Duration: time.Second * 10,
+		})
 
 	executeDamageMod := warrior.AddDynamicMod(core.SpellModConfig{
 		Kind:      core.SpellMod_DamageDone_Pct,
@@ -318,13 +323,14 @@ func (warrior *Warrior) ApplyRegicideWarriorEffect(itemID int32, aura *core.Aura
 		Handler: func(sim *core.Simulation, spell *core.Spell, result *core.SpellResult) {
 			debuff := debuffAuras.Get(result.Target)
 			debuff.Activate(sim)
+
+			if debuff.MaxStacks > 0 {
+				debuff.AddStack(sim)
+			}
 			// Activate aura for APL usage when effect is triggered
 			// Implementation of cast condition is below in 'ApplyOnInit'
 			if debuff.GetStacks() == 20 {
 				regicideAura.Activate(sim)
-			}
-			if debuff.MaxStacks > 0 {
-				debuff.AddStack(sim)
 			}
 		},
 	}).ApplyOnInit(func(aura *core.Aura, sim *core.Simulation) {
