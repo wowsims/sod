@@ -39,7 +39,7 @@ jobs:
               run: |
                   make test
 
-            - name: Deploy 🚀
+            - name: Deploy for Cloudflare 🚀
               uses: JamesIves/github-pages-deploy-action@v4
               with:
                   repository-name: wowsims/pages-deploy
@@ -48,3 +48,10 @@ jobs:
                   target-folder: sod
                   single-commit: true
                   token: ${{ secrets.DEPLOY_REPO_TOKEN }}
+
+            - name: Deploy for GH Pages 🚀
+              uses: JamesIves/github-pages-deploy-action@v4
+              with:
+                  branch: gh-pages
+                  folder: dist/sod
+                  single-commit: true
