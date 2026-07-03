@@ -1,0 +1,1 @@
+import"../../index-CsPe537V.chunk.js";import{S as s,T as e}from"../../detailed_results-BbkThem3.chunk.js";import{S as r,P as t}from"../../preset_utils-h_o5u_vb.chunk.js";import{W as n}from"../../sim-xXVOTDkh.chunk.js";import"../../warlock_inputs-D3EX5iiR.chunk.js";const o=new r,i=new t(s.SpecWarlock,o);o.raid.setPlayer(e.nextEventID(),0,i),new n(document.body,i);
